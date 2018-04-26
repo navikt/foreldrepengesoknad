@@ -1,6 +1,11 @@
 {
   "extends": [
     "tslint:latest",
+    "tslint-react",
     "tslint-config-prettier"
-  ]
+  ],
+  "rules": {
+    "indent": [true, "spaces", 4],
+    "member-access": false
+  }
 }
