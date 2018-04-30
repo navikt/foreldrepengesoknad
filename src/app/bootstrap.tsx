@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import ForeldrepengeSøknad from './connected-components/ForeldrepengeSøknad';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Foreldrepengesøknad from './connected-components/Foreldrepengesøknad';
+import store from './redux';
+
+import './assets/styles/app.less';
 
 const root = document.getElementById('app');
-render(<ForeldrepengeSøknad />, root);
+render(
+    <Provider store={store}>
+        <Router>
+            <Foreldrepengesøknad />
+        </Router>
+    </Provider>,
+    root
+);
