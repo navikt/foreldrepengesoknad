@@ -19,8 +19,7 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
                 <div className="content">
                     <Switch>
                         {routes}
-                        <StegRoutes />
-                        <Redirect to={routeConfig.ROUTE_PREFIX} />
+                        <Redirect to={routeConfig.APP_ROUTE_PREFIX} />
                     </Switch>
                 </div>
             </React.Fragment>
@@ -37,9 +36,14 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
         return this.renderRoutes([
             <Route
                 exact={true}
-                path={routeConfig.ROUTE_PREFIX}
+                path={routeConfig.APP_ROUTE_PREFIX}
                 component={Velkommen}
                 key="velkommen"
+            />,
+            <Route
+                path={routeConfig.SOKNAD_ROUTE_PREFIX}
+                component={StegRoutes}
+                key="steg"
             />
         ]);
     }
