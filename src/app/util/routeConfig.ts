@@ -1,3 +1,4 @@
 export default {
-    ROUTE_PREFIX: '/foreldrepengesoknad'
-}
+    APP_ROUTE_PREFIX: '/foreldrepengesoknad',
+    SOKNAD_ROUTE_PREFIX: '/foreldrepengesoknad/soknad'
+};
