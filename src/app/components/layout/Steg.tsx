@@ -1,17 +1,20 @@
 import * as React from 'react';
+import stegConfig, { StegID } from '../../util/stegConfig';
 
 export interface Props {
-    tittel: string;
+    id: StegID;
 }
 
 class Steg extends React.Component<Props, {}> {
     render() {
+        const { id } = this.props;
         return (
             <div className="steg">
-                <h1>{this.props.tittel}</h1>
+                <h1>{stegConfig[id].tittel}</h1>
                 {this.props.children}
             </div>
         );
     }
 }
+
 export default Steg;
