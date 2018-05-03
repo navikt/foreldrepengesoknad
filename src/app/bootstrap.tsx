@@ -6,13 +6,16 @@ import Foreldrepengesøknad from './connected-components/Foreldrepengesøknad';
 import store from './redux';
 
 import './assets/styles/app.less';
+import { IntlProvider } from 'react-intl';
 
 const root = document.getElementById('app');
 render(
     <Provider store={store}>
-        <Router>
-            <Foreldrepengesøknad />
-        </Router>
+        <IntlProvider>
+            <Router>
+                <Foreldrepengesøknad />
+            </Router>
+        </IntlProvider>
     </Provider>,
     root
 );

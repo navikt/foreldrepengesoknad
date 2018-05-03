@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Feilside from '../components/layout/Feilside';
+import UtenlandsoppholdBolk from './poc/utenlandsopphold/UtenlandsoppholdBolk';
 
 class WorkbenchFH extends React.Component<{}, {}> {
     render() {
@@ -9,6 +10,12 @@ class WorkbenchFH extends React.Component<{}, {}> {
                     dokumenttittel="ABC"
                     tittel="Feilside"
                     ingress="abc"
+                />
+                <UtenlandsoppholdBolk
+                    utenlandsopphold={[]}
+                    onAdd={() => null}
+                    onDelete={() => null}
+                    onUpdate={() => null}
                 />
             </div>
         );
