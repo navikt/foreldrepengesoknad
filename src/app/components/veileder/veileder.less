@@ -1,0 +1,127 @@
+@import '../../styles/variables.less';
+
+@blinkDuration: 6s;
+@hairstrandNBaseTransform: rotate(-24deg) translateX(30px) translateY(23px);
+@blowHairDuration: 60s;
+@blowHairDelay: 20s;
+
+.chromeSvgRenderFix() {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    transform: translateZ(0);
+}
+
+.veileder {
+    .chromeSvgRenderFix();
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    transform: translateZ(0);
+    width: 100%;
+    @noseColor: #d1bfa3;
+    @mouthColor: #d19e9c;
+    transform: translate3d();
+    .nose {
+        stroke: @noseColor;
+        stroke-width: 0.2;
+        vector-effect: non-scaling-stroke;
+        animation: noseUp @blinkDuration infinite;
+        animation-timing-function: ease;
+    }
+    .eye {
+        // transform-origin: 0 0;
+        animation: eyeBlink @blinkDuration infinite;
+        animation-timing-function: ease;
+    }
+    #Mouth-happy {
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    #Mouth-unsure {
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    #Mouth-hesitant {
+        opacity: 0;
+        transition: all 0.3s ease;
+        .mouth,
+        .nose {
+            stroke-width: 2;
+        }
+    }
+    &--glad #Mouth-happy {
+        opacity: 1;
+    }
+
+    &--skeptisk #Mouth-unsure {
+        opacity: 1;
+    }
+
+    &--undrende #Mouth-hesitant {
+        opacity: 1;
+    }
+
+    #bakgrunn {
+        transition: fill 0.5s ease;
+    }
+    &--tema-lilla #bakgrunn {
+        fill: #c1b5d0;
+    }
+    &--tema-gronn #bakgrunn {
+        fill: #9bd0b0;
+    }
+    &--tema-bla #bakgrunn {
+        fill: #c2eaf7;
+    }
+}
+
+.m-relative {
+    position: relative;
+}
+
+@keyframes eyeBlink {
+    0% {
+        transform: scaleY(1);
+    }
+    79% {
+        transform: scaleY(1);
+    }
+    80% {
+        transform: translateY(3px) scaleY(0.1);
+    }
+    81.5% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes noseUp {
+    0% {
+        transform: scaleY(1);
+    }
+    79% {
+        transform: scaleY(1);
+    }
+    80% {
+        transform: translate(0, -0.4px);
+    }
+    81.5% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes mouth {
+    0% {
+        transform: scaleY(1);
+    }
+    30% {
+        transform: scaleY(1);
+    }
+    60% {
+        transform: translateX(0) scaleY(0.8) scaleX(0.92);
+    }
+    89% {
+        transform: translateX(0) scaleY(0.9) scaleX(0.97);
+    }
+    96% {
+        transform: scaleY(1);
+    }
+}

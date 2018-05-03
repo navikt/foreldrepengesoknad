@@ -5,6 +5,7 @@
         "member-access": false,
         "interface-name": [true, "never-prefix"],
         "jsx-no-lambda": false,
+        "no-submodule-imports": false,
         "object-literal-sort-keys": false,
         "no-bitwise": false,
         "ordered-imports": false
