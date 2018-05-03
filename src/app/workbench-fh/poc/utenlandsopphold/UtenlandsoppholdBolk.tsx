@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { UtenlandsoppholdData } from '../../../types/søknad/Søknad';
-import Bolk from '../../layout/Bolk';
-import UtenlandsoppholdDialog from './../../skjema/bolker/UtenlandsoppholdDialog';
 import UtenlandsoppholdListe from './UtenlandsoppholdListe';
+import Bolk from '../../../components/layout/Bolk';
+import UtenlandsoppholdDialog from './UtenlandsoppholdDialog';
 
 export interface Props {
     utenlandsopphold: UtenlandsoppholdData[];
