@@ -10,6 +10,10 @@ class WorkbenchFH extends React.Component<{}, {}> {
                     dokumenttittel="ABC"
                     tittel="Feilside"
                     ingress="abc"
+                    illustrasjon={{
+                        tittel: 'Hei',
+                        tekst: 'Whoo'
+                    }}
                 />
                 <UtenlandsoppholdBolk
                     utenlandsopphold={[]}
