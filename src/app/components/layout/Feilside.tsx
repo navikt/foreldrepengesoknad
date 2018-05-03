@@ -3,8 +3,8 @@ import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
 import LanguageToggle from '../../intl/LanguageToggle';
-import SimpleIllustration from '../simple-illustration/SimpleIllustration';
 import { VeilederProps } from '../veileder/Veileder';
+import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
 export interface Props {
     containerId?: string;
@@ -44,7 +44,7 @@ const Feilside: React.StatelessComponent<Props> = ({
                     />
                 )}
             {illustrasjon && (
-                <SimpleIllustration
+                <VeilederMedSnakkeboble
                     veileder={illustrasjon.veileder}
                     dialog={{
                         title: illustrasjon.tittel,
