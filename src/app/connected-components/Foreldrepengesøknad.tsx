@@ -10,6 +10,7 @@ import {
 import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './velkommen/Velkommen';
+import WorkbenchFH from '../workbench-fh';
 
 class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
     renderRoutes(routes: JSX.Element[]) {
@@ -44,6 +45,11 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
                 component={StegRoutes}
                 key="steg"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}/workbench`}
+                component={WorkbenchFH}
+                key="workbench"
             />
         ]);
     }
