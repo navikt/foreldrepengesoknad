@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Språkkode } from '../../intl/types';
 
-import './sprakvelger.less';
+import './språkvelger.less';
 
 interface Props {
     kode: Språkkode;
@@ -24,7 +24,9 @@ const Språkvelger: React.StatelessComponent<Props & InjectedIntlProps> = ({
                     kode === 'nb' ? setSpråkkode('nn') : setSpråkkode('nb');
                 }}
                 href="#">
-                {intl.formatMessage({ id: 'komponent.språkvelger.endreMålform' })}
+                {intl.formatMessage({
+                    id: 'komponent.språkvelger.endreMålform'
+                })}
             </a>
         </div>
     );
