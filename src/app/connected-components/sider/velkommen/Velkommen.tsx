@@ -4,6 +4,7 @@ import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import { Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Applikasjonsside from '../Applikasjonsside';
+import DocumentTitle from 'react-document-title';
 
 interface Props {
     history: History;
@@ -25,9 +26,8 @@ class Velkommen extends React.Component<Props, State> {
         const { history } = this.props;
 
         return (
-            <Applikasjonsside
-                visSpråkvelger={true}
-                dokumenttittel="Søknad om foreldrepenger">
+            <Applikasjonsside visSpråkvelger={true}>
+                <DocumentTitle title="Søknad om foreldrepenger" />
                 <div className="velkommenSide">
                     <Ingress>Velkommen til foreldrepengesøknaden</Ingress>
                     <BekreftCheckboksPanel
