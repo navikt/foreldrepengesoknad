@@ -1,8 +1,13 @@
 import * as React from 'react';
+import Applikasjonsside from '../applikasjonsside/Applikasjonsside';
 
 class Velkommen extends React.Component {
     render() {
-        return <p>Velkommen content</p>;
+        return (
+            <Applikasjonsside visSpråkvelger={true} dokumenttittel="Søknad om foreldrepenger">
+                Velkommen
+            </Applikasjonsside>
+        );
     }
 }
 
