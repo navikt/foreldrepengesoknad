@@ -1,38 +1,24 @@
-import Søknad from '../../types/søknad/Søknad';
+import { SøknadPartial } from '../../types/søknad/Søknad';
 import {
-  SøknadActionKeys,
-  UpdateSøknadState,
-  UpdateUtenlandsopphold
+    SøknadAction,
+    SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
-import { updateUtenlandsoppholdState } from './utenlandsopphold';
 
-const getDefaultState = (): Søknad => {
-  return {
-    navn: '',
-    utenlandsopphold: []
-  };
+const getDefaultState = (): SøknadPartial => {
+    return {
+        søker: {}
+    };
 };
 
-const søknadReducer = (
-  state = getDefaultState(),
-  action: UpdateSøknadState | UpdateUtenlandsopphold
-) => {
-  switch (action.type) {
-    case SøknadActionKeys.UPDATE_SØKNAD_STATE:
-      return {
-        ...state,
-        ...action.payload
-      };
-    case SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD:
-      return {
-        ...state,
-        utenlandsopphold: updateUtenlandsoppholdState(
-          action.payload,
-          state.utenlandsopphold || []
-        )
-      };
-  }
-  return state;
+const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
+    switch (action.type) {
+        case SøknadActionKeys.UPDATE_SØKER:
+            return {
+                ...state,
+                søker: { ...state.søker, ...action.payload }
+            };
+    }
+    return state;
 };
 
 export default søknadReducer;

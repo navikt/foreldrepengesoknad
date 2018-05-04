@@ -1,28 +1,20 @@
-export interface UtenlandsoppholdData {
-    id?: string;
-    landkode: string;
-    fom: Date;
-    tom: Date;
+export enum SøkerRolle {
+    MOR = 'MOR',
+    FAR = 'FAR',
+    MEDMOR = 'MEDMOR',
+    ANDRE = 'ANDRE'
 }
-export type UtenlandsoppholdPartial = Partial<UtenlandsoppholdData>;
 
-export interface FødselData {
-    harFødt: boolean;
-    antallBarn: number;
-    termindato: number;
+export interface Søker {
+    rolle: SøkerRolle;
 }
-export type FødselDataPartial = Partial<FødselData>;
 
-export interface TerminbekreftelseData {
-    vedlegg: File[];
-    terminbekreftelsesdato: Date;
-}
+export type SøkerPartial = Partial<Søker>;
 
 interface Søknad {
-    navn: string;
-    fødsel?: FødselData;
-    terminbekreftelse?: TerminbekreftelseData;
-    utenlandsopphold?: UtenlandsoppholdData[];
+    søker: SøkerPartial;
 }
+
+export type SøknadPartial = Partial<Søknad>;
 
 export default Søknad;
