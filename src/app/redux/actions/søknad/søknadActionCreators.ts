@@ -1,25 +1,9 @@
-import Søknad, { UtenlandsoppholdData } from '../../../types/søknad/Søknad';
-import {
-  ListActionEvent,
-  SøknadActionKeys,
-  UpdateSøknadState,
-  UpdateUtenlandsopphold
-} from './søknadActionDefinitions';
+import { SøkerPartial } from '../../../types/søknad/Søknad';
+import { SøknadActionKeys, UpdateSøker } from './søknadActionDefinitions';
 
-const updateSøknadState = (payload: Søknad): UpdateSøknadState => ({
-  type: SøknadActionKeys.UPDATE_SØKNAD_STATE,
-  payload
+const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
+    type: SøknadActionKeys.UPDATE_SØKER,
+    payload
 });
 
-export const updateUtenlandsopphold = (
-  action: ListActionEvent,
-  opphold: UtenlandsoppholdData
-): UpdateUtenlandsopphold => ({
-  type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
-  payload: {
-    action,
-    utenlandsopphold: opphold
-  }
-});
-
-export default { updateSøknadState, updateUtenlandsopphold };
+export default { updateSøker };

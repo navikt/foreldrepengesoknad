@@ -10,7 +10,7 @@ import {
 import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './velkommen/Velkommen';
-import WorkbenchFH from '../workbench-fh';
+import Eksempelsøknad from './Eksempelsøknad';
 
 class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
     renderRoutes(routes: JSX.Element[]) {
@@ -47,9 +47,9 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
                 key="steg"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/workbench`}
-                component={WorkbenchFH}
-                key="workbench"
+                path="/foreldrepengesoknad/eksempel"
+                component={Eksempelsøknad}
+                key="eksempelsøknad"
             />
         ]);
     }

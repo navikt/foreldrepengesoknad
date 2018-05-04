@@ -16,7 +16,7 @@ const Bolk: React.StatelessComponent<Props> = ({
     }
     return (
         <section className="bolk">
-            <h1 className="bolk__tittel">{tittel || 'bolk'}</h1>
+            {tittel && <h1 className="bolk__tittel">{tittel || 'bolk'}</h1>}
             {render && render()}
         </section>
     );
