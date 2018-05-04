@@ -6,7 +6,6 @@ import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakk
 
 export interface Props {
     containerId?: string;
-    dokumenttittel: string;
     illustrasjon?: {
         tittel: string;
         tekst: React.ReactNode;
@@ -22,9 +21,8 @@ export interface Props {
     setLanguage?: (languageCode: string) => void;
 }
 
-const Feilside: React.StatelessComponent<Props> = ({
+const FeilsideMelding: React.StatelessComponent<Props> = ({
     containerId,
-    dokumenttittel,
     illustrasjon,
     tittel,
     ingress,
@@ -66,4 +64,4 @@ const Feilside: React.StatelessComponent<Props> = ({
     );
 };
 
-export default Feilside;
+export default FeilsideMelding;
