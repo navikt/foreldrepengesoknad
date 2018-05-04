@@ -1,8 +1,6 @@
 import * as React from 'react';
-import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
-import LanguageToggle from '../../intl/LanguageToggle';
 import { VeilederProps } from '../veileder/Veileder';
 import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
@@ -35,14 +33,6 @@ const Feilside: React.StatelessComponent<Props> = ({
 }) => {
     return (
         <div id={containerId}>
-            <DocumentTitle title={dokumenttittel} />
-            {setLanguage &&
-                language && (
-                    <LanguageToggle
-                        language={language}
-                        toggleLanguage={setLanguage}
-                    />
-                )}
             {illustrasjon && (
                 <VeilederMedSnakkeboble
                     veileder={illustrasjon.veileder}

@@ -1,8 +1,10 @@
-import Søknad from "../../types/søknad/Søknad";
-import søknadReducer from "./søknadReducer";
+import Søknad from '../../types/søknad/Søknad';
+import søknadReducer from './søknadReducer';
+import commonReducer, { CommonState } from './commonReducer';
 
 export interface AppState {
-  søknadReducer: Søknad;
+    søknad: Søknad;
+    common: CommonState;
 }
 
-export default { søknadReducer };
+export default { søknad: søknadReducer, common: commonReducer };
