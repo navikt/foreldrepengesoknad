@@ -10,7 +10,7 @@ class Steg extends React.Component<Props, {}> {
         const { id } = this.props;
         return (
             <div className="steg">
-                <h1>{stegConfig[id].tittel}</h1>
+                <h1 className="steg__tittel">{stegConfig[id].tittel}</h1>
                 {this.props.children}
             </div>
         );

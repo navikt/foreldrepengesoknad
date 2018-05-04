@@ -15,6 +15,16 @@ export interface CommonState {
     godkjentVilkar: boolean;
     bekreftetInformasjon: boolean;
 }
+type CommonStatePartial = Partial<CommonState>;
+
+// Hjelper til med typesjekking
+const updateCommonState = (
+    state: CommonState,
+    newStatePartial: CommonStatePartial
+): CommonState => ({
+    ...state,
+    ...newStatePartial
+});
 
 const commonReducer = (
     state = getDefaultState(),
@@ -22,14 +32,15 @@ const commonReducer = (
 ) => {
     switch (action.type) {
         case CommonActionKeys.SET_BEKREFTET_INFORMASJON:
-            return {
-                ...state,
+            return updateCommonState(state, {
                 bekreftetInformasjon: action.bekreftetInformasjon
-            };
+            });
         case CommonActionKeys.SET_SPRÅK:
-            return { ...state, language: action.språkkode };
+            return updateCommonState(state, { språkkode: action.språkkode });
         case CommonActionKeys.SET_GODKJENT_VILKAR:
-            return { ...state, godkjentVilkar: action.godkjentVilkar };
+            return updateCommonState(state, {
+                godkjentVilkar: action.godkjentVilkar
+            });
     }
     return state;
 };
