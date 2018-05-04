@@ -5,15 +5,13 @@ import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
 import { Språkkode } from '../../intl/types';
 import Språkvelger from '../../components/spr\u00E5kvelger/Spr\u00E5kvelger';
-import DocumentTitle from 'react-document-title';
+import Side from '../../components/layout/Side';
 
 export interface OwnProps {
     /** Tittel som settes som vindustittel */
     dokumenttittel?: string;
     /** Om språlvelger skal vises eller ikke */
     visSpråkvelger?: boolean;
-    /** Id som settes på container */
-    id?: string;
 }
 
 interface StateProps {
@@ -22,25 +20,35 @@ interface StateProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-class Applikasjonsside extends React.Component<Props> {
+class Sidemal extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
     render() {
-        const { id, visSpråkvelger, dokumenttittel, språkkode, children, dispatch } = this.props;
+        const {
+            visSpråkvelger,
+            dokumenttittel,
+            språkkode,
+            children,
+            dispatch
+        } = this.props;
         return (
-            <div className="side" id={id}>
-                {dokumenttittel && <DocumentTitle title={dokumenttittel} />}
-                {visSpråkvelger && (
-                    <div className="side__språkvelger">
+            <Side
+                dokumenttittel={dokumenttittel}
+                språkvelger={
+                    visSpråkvelger ? (
                         <Språkvelger
                             kode={språkkode}
-                            setSpråkkode={(kode: Språkkode) => dispatch(setSpråk(kode))}
+                            setSpråkkode={(kode: Språkkode) =>
+                                dispatch(setSpråk(kode))
+                            }
                         />
-                    </div>
-                )}
-                <div className="side__innhold">{children}</div>
-            </div>
+                    ) : (
+                        undefined
+                    )
+                }>
+                {children}
+            </Side>
         );
     }
 }
@@ -49,4 +57,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
     språkkode: state.common.språkkode
 });
 
-export default connect(mapStateToProps)(Applikasjonsside);
+export default connect(mapStateToProps)(Sidemal);
