@@ -10,25 +10,16 @@ interface Props {
 }
 
 class Eksempelsøknad extends React.Component<Props & DispatchProps> {
-    componentWillMount() {
-        this.updateSøkerrolle = this.updateSøkerrolle.bind(this);
-    }
-
-    updateSøkerrolle(rolle: SøkerRolle) {
-        const { dispatch } = this.props;
-        dispatch(søknadActions.updateSøker({ rolle }));
-    }
-
     render() {
-        const { søker } = this.props;
+        const { dispatch, søker } = this.props;
         return (
             <React.Fragment>
                 <MedmorBolk
                     checked={søker.rolle}
                     onChange={(
                         e: React.ChangeEvent<HTMLInputElement>,
-                        rolleValue: SøkerRolle
-                    ) => this.updateSøkerrolle(rolleValue)}
+                        rolle: SøkerRolle
+                    ) => dispatch(søknadActions.updateSøker({ rolle }))}
                 />
             </React.Fragment>
         );
