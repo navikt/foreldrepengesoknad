@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Søknadstittel from '../components/søknadstittel/Søknadstittel';
+import { connect } from 'react-redux';
 import {
     Redirect,
     Route,
@@ -7,12 +7,37 @@ import {
     Switch,
     withRouter
 } from 'react-router-dom';
+
+import Spinner from 'nav-frontend-spinner';
+
+import Søknadstittel from '../components/søknadstittel/Søknadstittel';
 import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './velkommen/Velkommen';
 import Eksempelsøknad from './Eksempelsøknad';
 
-class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
+import Person from '../types/Person';
+
+import { DispatchProps } from '../redux/types';
+import { apiActionCreators as api } from '../redux/actions';
+import Feilside from '../components/layout/Feilside';
+
+interface StateProps {
+    person: Person;
+    error: any;
+    isLoadingPerson: boolean;
+}
+
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
+
+class Foreldrepengesøknad extends React.Component<Props> {
+    componentWillMount() {
+        const { dispatch, person } = this.props;
+        if (!person) {
+            dispatch(api.getPerson());
+        }
+    }
+
     renderRoutes(routes: JSX.Element[]) {
         return (
             <React.Fragment>
@@ -56,6 +81,22 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
 
     render() {
         const applicationStateIsInvalid = false;
+        const { error, isLoadingPerson } = this.props;
+
+        if (
+            isLoadingPerson ||
+            (error.response && error.response.status === 401)
+        ) {
+            return <Spinner type="XXL" />;
+        } else if (error.networkError || error.response !== undefined) {
+            return (
+                <Feilside
+                    dokumenttittel="Error"
+                    tittel="ops"
+                    ingress="Noe gikk galt."
+                />
+            );
+        }
 
         if (applicationStateIsInvalid) {
             return this.renderErrorRoute();
@@ -65,4 +106,12 @@ class Foreldrepengesøknad extends React.Component<RouteComponentProps<any>> {
     }
 }
 
-export default withRouter(Foreldrepengesøknad);
+const mapStateToProps = (state: any) => ({
+    person: state.api.person,
+    error: state.api.error,
+    isLoadingPerson: state.api.isLoadingPerson
+});
+
+export default withRouter(
+    connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad)
+);
