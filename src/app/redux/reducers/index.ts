@@ -1,8 +1,8 @@
-import Søknad from "../../types/søknad/Søknad";
-import søknadReducer from "./søknadReducer";
+import Søknad from '../../types/søknad/Søknad';
+import søknad from './søknadReducer';
 
 export interface AppState {
-  søknadReducer: Søknad;
+    søknad: Søknad;
 }
 
-export default { søknadReducer };
+export default { søknad };
