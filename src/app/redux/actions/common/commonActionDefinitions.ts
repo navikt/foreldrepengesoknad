@@ -1,3 +1,5 @@
+import { Språkkode } from '../../../intl/types';
+
 export enum CommonActionKeys {
     'SET_BEKREFTET_INFORMASJON' = 'setBekreftetInformasjon',
     'SET_GODKJENT_VILKAR' = 'setGodkjentVilkar',
@@ -16,7 +18,7 @@ interface SetGodkjentVilkar {
 
 interface SetSpråk {
     type: CommonActionKeys.SET_SPRÅK;
-    språkkode: string;
+    språkkode: Språkkode;
 }
 
 export type CommonActionTypes =
