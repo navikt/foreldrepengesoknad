@@ -1,23 +1,12 @@
-import Søknad, { UtenlandsoppholdData } from '../../../types/søknad/Søknad';
+import { SøkerPartial } from '../../../types/søknad/Søknad';
 
 export enum SøknadActionKeys {
-    'UPDATE_SØKNAD_STATE' = 'updateSøknadState',
-    'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold'
+    'UPDATE_SØKER' = 'updateSøker'
 }
 
-export interface UpdateSøknadState {
-    type: SøknadActionKeys.UPDATE_SØKNAD_STATE;
-    payload: Søknad;
+export interface UpdateSøker {
+    type: SøknadActionKeys.UPDATE_SØKER;
+    payload: SøkerPartial;
 }
 
-export type ListActionEvent = 'add' | 'update' | 'delete';
-
-export interface UpdateUtenlandsopppholdPayload {
-    action: ListActionEvent;
-    utenlandsopphold: UtenlandsoppholdData;
-}
-
-export interface UpdateUtenlandsopphold {
-    type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD;
-    payload: UpdateUtenlandsopppholdPayload;
-}
+export type SøknadAction = UpdateSøker;
