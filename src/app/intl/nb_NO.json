@@ -1,1 +1,6 @@
-{}
+{
+    "komponent.bekreftDialog.avbrytLabel": "Avbryt",
+    "komponent.bekreftDialog.bekreftLabel": "Ok",
+
+    "komponent.språkvelger.endreMålform": "Endre målform til nynorsk"
+}
