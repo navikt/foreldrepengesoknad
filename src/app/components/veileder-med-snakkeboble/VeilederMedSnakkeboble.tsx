@@ -1,7 +1,7 @@
 import * as React from 'react';
-import SpeechBubble from '../speech-bubble/SpeechBubble';
+import Snakkeboble from '../snakkeboble/Snakkeboble';
 
-import './simpleIllustration.less';
+import './veilederMedSnakkeboble.less';
 import Veileder, { VeilederProps } from '../veileder/Veileder';
 
 interface Props {
@@ -14,15 +14,15 @@ interface Dialog {
     text: string | React.ReactNode;
 }
 
-const SimpleIllustration: React.StatelessComponent<Props> = ({
+const VeilederMedSnakkeboble: React.StatelessComponent<Props> = ({
     dialog,
     veileder
 }) => {
     return (
-        <div className="simpleIllustration">
+        <div className="veilederMedSnakkeboble">
             {dialog && (
-                <div className="simpleIllustration__speechbubble">
-                    <SpeechBubble title={dialog.title} text={dialog.text} />
+                <div className="veilederMedSnakkeboble__snakkeboble">
+                    <Snakkeboble tittel={dialog.title} tekst={dialog.text} />
                 </div>
             )}
             <Veileder {...veileder} />
@@ -30,4 +30,4 @@ const SimpleIllustration: React.StatelessComponent<Props> = ({
     );
 };
 
-export default SimpleIllustration;
+export default VeilederMedSnakkeboble;
