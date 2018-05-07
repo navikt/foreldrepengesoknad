@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Bolk from '../components/layout/Bolk';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { SøkerRolle } from '../types/søknad/Søknad';
+import Spørsmål from '../components/spørsmål/Spørsmål';
 
 interface MedmorBolkProps {
     erMedmor: string;
@@ -31,5 +31,7 @@ const ErDuMedmorSpørsmål = (props: MedmorBolkProps) => {
 };
 
 export default (props: MedmorBolkProps) => (
-    <Bolk render={() => <ErDuMedmorSpørsmål {...props} />} />
+    <Spørsmål>
+        <ErDuMedmorSpørsmål {...props} />
+    </Spørsmål>
 );
