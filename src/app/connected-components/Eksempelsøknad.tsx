@@ -22,9 +22,11 @@ class Eksempelsøknad extends React.Component<Props & DispatchProps> {
             <React.Fragment>
                 <FødselEllerAdopsjonSpørsmål
                     gjelderAdopsjon={gjelderAdopsjon}
-                    onChange={(gjelderAdopsjon) =>
+                    onChange={(value) =>
                         dispatch(
-                            søknadActions.updateSøknad({ gjelderAdopsjon })
+                            søknadActions.updateSøknad({
+                                gjelderAdopsjon: value
+                            })
                         )
                     }
                 />

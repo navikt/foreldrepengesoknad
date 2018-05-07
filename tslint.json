@@ -9,6 +9,6 @@
         "object-literal-sort-keys": false,
         "no-bitwise": false,
         "ordered-imports": false,
-        "no-shadowed-variable": false
+        "no-shadowed-variable": true
     }
 }
