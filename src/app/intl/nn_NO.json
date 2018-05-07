@@ -1,4 +1,10 @@
 {
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
-    "komponent.bekreftDialog.bekreftLabel": "Ok"
+    "komponent.bekreftDialog.bekreftLabel": "Ok",
+    "komponent.språkvelger.endreMålform": "Endre målform til bokmål",
+
+    "antallBarn.alternativ.ettbarn": "eitt barn",
+    "antallBarn.alternativ.tvillinger": "tvillingar",
+    "antallBarn.alternativ.flere": "fleire barn",
+    "antallBarn.select.tekst": "vel talet på barn"
 }
