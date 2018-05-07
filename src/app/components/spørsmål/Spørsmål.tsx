@@ -6,11 +6,8 @@ export type BottomMargin = 'm' | 's' | 'xs' | 'xxs';
 
 export interface Props {
     children: React.ReactNode;
-    /** Default true */
     visible?: boolean;
-    /** Default true */
     animated?: boolean;
-    /** Size - default m */
     margin?: BottomMargin;
 }
 
