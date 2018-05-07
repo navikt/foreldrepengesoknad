@@ -5,8 +5,10 @@
     "scripts": {
         "build": "node src/build/scripts/production-build.js",
         "clean-build": "rimraf ./dist",
-        "docker-build": "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
-        "docker-start": "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
+        "docker-build":
+            "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
+        "docker-start":
+            "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
         "docker-kill": "npm run docker-stop && npm run docker-rm",
         "docker-rm": "docker rm foreldrepengesoknad",
         "docker-stop": "docker stop foreldrepengesoknad",
@@ -15,16 +17,16 @@
         "start-express": "node ./server.js",
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
-        "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
+        "start-no-decorator":
+            "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "lint-staged",
-        "cypress": "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
-        "cy": "cypress open & npm run build && export PORT=8081 && npm run start-express"
+        "cypress":
+            "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
+        "cy":
+            "cypress open & npm run build && export PORT=8081 && npm run start-express"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx,json,css,less,md}": [
-            "prettier --write",
-            "git add"
-        ]
+        "*.{ts,tsx,js,jsx,json,css,less,md}": ["prettier --write", "git add"]
     },
     "keywords": [],
     "author": "NAV",
@@ -32,11 +34,11 @@
     "devDependencies": {
         "@types/classnames": "2.2.3",
         "@types/history": "4.6.2",
+        "@types/prop-types": "15.5.2",
         "@types/react": "16.3.12",
         "@types/react-dom": "16.0.5",
         "@types/react-redux": "5.0.18",
         "@types/react-router-dom": "4.2.6",
-        "@types/prop-types": "15.5.2",
         "babel-loader": "7.1.4",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-polyfill": "6.26.0",
@@ -72,19 +74,23 @@
     "dependencies": {
         "@types/react-document-title": "2.0.2",
         "@types/react-intl": "2.3.8",
+        "axios": "0.18.0",
         "classnames": "2.2.5",
         "express": "4.16.3",
         "history": "4.7.2",
         "jsdom": "11.9.0",
         "lodash.throttle": "4.1.1",
         "mustache-express": "1.2.5",
+        "nav-frontend-ikoner-assets": "0.2.27",
         "nav-frontend-js-utils": "1.0.3",
         "nav-frontend-knapper": "1.0.5",
-        "nav-frontend-skjema": "1.0.3",
-        "nav-frontend-skjema-style": "0.3.19",
         "nav-frontend-lenker": "1.0.3",
         "nav-frontend-lukknapp": "0.1.13",
         "nav-frontend-modal": "1.0.1",
+        "nav-frontend-skjema": "1.0.3",
+        "nav-frontend-skjema-style": "0.3.19",
+        "nav-frontend-spinner": "1.0.8",
+        "nav-frontend-spinner-style": "0.2.4",
         "nav-frontend-typografi": "2.0.3",
         "promise": "8.0.1",
         "react": "16.3.2",
@@ -94,6 +100,7 @@
         "react-modal": "3.4.4",
         "react-redux": "5.0.7",
         "react-router-dom": "4.2.2",
-        "redux": "4.0.0"
+        "redux": "4.0.0",
+        "redux-saga": "0.16.0"
     }
 }
