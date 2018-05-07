@@ -14,7 +14,7 @@ export interface Props {
     margin?: BottomMargin;
 }
 
-import './sporsmal.less';
+import './spørsmål.less';
 
 const Spørsmål: React.StatelessComponent<Props> = ({
     visible = true,
