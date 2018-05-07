@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Bolk from '../components/layout/Bolk';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import Spørsmål from '../components/spørsmål/Spørsmål';
 
 export enum FødselEllerAdopsjon {
     'GJELDER_ADOPSJON' = 'gjelderAdopsjon',
@@ -47,5 +47,7 @@ const FødselEllerAdopsjonSpørsmål = (props: FødselEllerAdopsjonProps) => {
 };
 
 export default (props: FødselEllerAdopsjonProps) => (
-    <Bolk render={() => <FødselEllerAdopsjonSpørsmål {...props} />} />
+    <Spørsmål>
+        <FødselEllerAdopsjonSpørsmål {...props} />
+    </Spørsmål>
 );

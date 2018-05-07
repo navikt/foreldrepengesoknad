@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Bolk from '../components/layout/Bolk';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import Spørsmål from '../components/spørsmål/Spørsmål';
 
 export enum BarnFødt {
     'ER_FØDT' = 'erFødt',
@@ -43,5 +43,7 @@ const ErBarnetFødtSpørsmål = (props: BarnFødtBolkProps) => {
 };
 
 export default (props: BarnFødtBolkProps) => (
-    <Bolk render={() => <ErBarnetFødtSpørsmål {...props} />} />
+    <Spørsmål>
+        <ErBarnetFødtSpørsmål {...props} />
+    </Spørsmål>
 );
