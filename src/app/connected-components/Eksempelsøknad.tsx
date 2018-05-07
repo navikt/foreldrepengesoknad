@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
-import { Søker, SøkerRolle, default as Søknad } from '../types/søknad/Søknad';
+import { Søker, SøkerRolle } from '../types/søknad/Søknad';
 import { DispatchProps } from '../redux/types/index';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import Barn from '../types/søknad/Barn';
@@ -11,17 +11,17 @@ import FødselEllerAdopsjonSpørsmål from '../spørsmål/FødselEllerAdopsjonSp
 interface Props {
     barn: Barn;
     søker: Søker;
-    søknad: Søknad;
+    gjelderAdopsjon: boolean;
 }
 
 class Eksempelsøknad extends React.Component<Props & DispatchProps> {
     render() {
-        const { dispatch, søker, barn, søknad } = this.props;
+        const { dispatch, søker, barn, gjelderAdopsjon } = this.props;
 
         return (
             <React.Fragment>
                 <FødselEllerAdopsjonSpørsmål
-                    gjelderAdopsjon={søknad.gjelderAdopsjon}
+                    gjelderAdopsjon={gjelderAdopsjon}
                     onChange={(gjelderAdopsjon) =>
                         dispatch(
                             søknadActions.updateSøknad({ gjelderAdopsjon })
@@ -29,7 +29,7 @@ class Eksempelsøknad extends React.Component<Props & DispatchProps> {
                     }
                 />
 
-                {søknad.gjelderAdopsjon !== undefined && (
+                {gjelderAdopsjon !== undefined && (
                     <ErDuMedmorSpørsmål
                         erMedmor={søker.rolle}
                         onChange={(rolle: SøkerRolle) =>
@@ -58,5 +58,5 @@ class Eksempelsøknad extends React.Component<Props & DispatchProps> {
 export default connect<Props>((state: any) => ({
     barn: state.søknad.barn,
     søker: state.søknad.søker,
-    søknad: state.søknad
+    gjelderAdopsjon: state.søknad.gjelderAdopsjon
 }))(Eksempelsøknad);
