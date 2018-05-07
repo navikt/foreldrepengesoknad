@@ -5,10 +5,8 @@
     "scripts": {
         "build": "node src/build/scripts/production-build.js",
         "clean-build": "rimraf ./dist",
-        "docker-build":
-            "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
-        "docker-start":
-            "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
+        "docker-build": "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
+        "docker-start": "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
         "docker-kill": "npm run docker-stop && npm run docker-rm",
         "docker-rm": "docker rm foreldrepengesoknad",
         "docker-stop": "docker stop foreldrepengesoknad",
@@ -17,16 +15,16 @@
         "start-express": "node ./server.js",
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
-        "start-no-decorator":
-            "node ./src/build/scripts/start-dev-nodecorator.js",
+        "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "lint-staged",
-        "cypress":
-            "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
-        "cy":
-            "cypress open & npm run build && export PORT=8081 && npm run start-express"
+        "cypress": "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
+        "cy": "cypress open & npm run build && export PORT=8081 && npm run start-express"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx,json,css,less,md}": ["prettier --write", "git add"]
+        "*.{ts,tsx,js,jsx,json,css,less,md}": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "keywords": [],
     "author": "NAV",
@@ -36,6 +34,7 @@
         "@types/history": "4.6.2",
         "@types/prop-types": "15.5.2",
         "@types/react": "16.3.12",
+        "@types/react-collapse": "4.0.1",
         "@types/react-dom": "16.0.5",
         "@types/react-redux": "5.0.18",
         "@types/react-router-dom": "4.2.6",
@@ -87,13 +86,14 @@
         "nav-frontend-lenker": "1.0.3",
         "nav-frontend-lukknapp": "0.1.13",
         "nav-frontend-modal": "1.0.1",
-        "nav-frontend-skjema": "1.0.3",
+        "nav-frontend-skjema": "1.0.4",
         "nav-frontend-skjema-style": "0.3.19",
         "nav-frontend-spinner": "1.0.8",
         "nav-frontend-spinner-style": "0.2.4",
         "nav-frontend-typografi": "2.0.3",
         "promise": "8.0.1",
         "react": "16.3.2",
+        "react-collapse": "4.0.3",
         "react-document-title": "2.0.3",
         "react-dom": "16.3.2",
         "react-intl": "2.4.0",
