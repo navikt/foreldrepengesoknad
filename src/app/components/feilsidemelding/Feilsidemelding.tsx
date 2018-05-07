@@ -21,7 +21,7 @@ export interface Props {
     setLanguage?: (languageCode: string) => void;
 }
 
-const FeilsideMelding: React.StatelessComponent<Props> = ({
+const Feilsidemelding: React.StatelessComponent<Props> = ({
     containerId,
     illustrasjon,
     tittel,
@@ -64,4 +64,4 @@ const FeilsideMelding: React.StatelessComponent<Props> = ({
     );
 };
 
-export default FeilsideMelding;
+export default Feilsidemelding;
