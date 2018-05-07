@@ -15,7 +15,7 @@ interface ResponsiveProps {
 
 type Props = RadioPanelGruppeProps & ResponsiveProps;
 
-export default class RadioPanelGruppeResponsive extends React.Component<Props> {
+class RadioPanelGruppeResponsive extends React.Component<Props> {
     render() {
         const {
             feil,
@@ -56,3 +56,5 @@ export default class RadioPanelGruppeResponsive extends React.Component<Props> {
         );
     }
 }
+
+export default RadioPanelGruppeResponsive;
