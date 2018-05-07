@@ -5,10 +5,8 @@
     "scripts": {
         "build": "node src/build/scripts/production-build.js",
         "clean-build": "rimraf ./dist",
-        "docker-build":
-            "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
-        "docker-start":
-            "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
+        "docker-build": "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
+        "docker-start": "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
         "docker-kill": "npm run docker-stop && npm run docker-rm",
         "docker-rm": "docker rm foreldrepengesoknad",
         "docker-stop": "docker stop foreldrepengesoknad",
@@ -17,16 +15,16 @@
         "start-express": "node ./server.js",
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
-        "start-no-decorator":
-            "node ./src/build/scripts/start-dev-nodecorator.js",
+        "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "lint-staged",
-        "cypress":
-            "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
-        "cy":
-            "cypress open & npm run build && export PORT=8081 && npm run start-express"
+        "cypress": "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
+        "cy": "cypress open & npm run build && export PORT=8081 && npm run start-express"
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx,json,css,less,md}": ["prettier --write", "git add"]
+        "*.{ts,tsx,js,jsx,json,css,less,md}": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "keywords": [],
     "author": "NAV",
