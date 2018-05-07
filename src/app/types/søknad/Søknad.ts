@@ -1,3 +1,5 @@
+import { FødtBarnPartial, UfødtBarnPartial } from './Barn';
+
 export enum SøkerRolle {
     MOR = 'MOR',
     FAR = 'FAR',
@@ -12,6 +14,7 @@ export interface Søker {
 export type SøkerPartial = Partial<Søker>;
 
 interface Søknad {
+    barn: FødtBarnPartial | UfødtBarnPartial;
     søker: SøkerPartial;
 }
 
