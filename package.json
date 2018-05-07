@@ -16,15 +16,9 @@
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
         "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
-        "precommit": "lint-staged",
+        "precommit": "pretty-quick --staged",
         "cypress": "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
         "cy": "cypress open & npm run build && export PORT=8081 && npm run start-express"
-    },
-    "lint-staged": {
-        "*.{ts,tsx,js,jsx,json,css,less,md}": [
-            "prettier --write",
-            "git add"
-        ]
     },
     "keywords": [],
     "author": "NAV",
@@ -57,6 +51,7 @@
         "nav-frontend-typografi-style": "1.0.8",
         "postcss-loader": "2.1.4",
         "prettier": "1.12.1",
+        "pretty-quick": "^1.4.1",
         "prop-types": "15.6.1",
         "style-loader": "0.21.0",
         "svg-sprite-loader": "3.7.3",
