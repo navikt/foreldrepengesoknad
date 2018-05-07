@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { SøkerRolle } from '../types/søknad/Søknad';
 import Spørsmål from '../components/spørsmål/Spørsmål';
+import getMessage from '../util/i18nUtils';
 
 interface MedmorBolkProps {
     erMedmor: string;
@@ -11,15 +13,17 @@ interface MedmorBolkProps {
     ) => void;
 }
 
-const ErDuMedmorSpørsmål = (props: MedmorBolkProps) => {
-    const { onChange, erMedmor, ...otherProps } = props;
+type Props = MedmorBolkProps & InjectedIntlProps;
+
+const ErDuMedmorSpørsmål = (props: Props) => {
+    const { onChange, erMedmor, intl, ...otherProps } = props;
     return (
         <RadioPanelGruppeResponsive
             checked={erMedmor}
-            legend="Er du medmor?"
+            legend={getMessage(intl, 'erDuMedmor.spørsmål')}
             radios={[
-                { label: 'Ja', value: SøkerRolle.MEDMOR },
-                { label: 'Nei', value: SøkerRolle.MOR }
+                { label: getMessage(intl, 'ja'), value: SøkerRolle.MEDMOR },
+                { label: getMessage(intl, 'nei'), value: SøkerRolle.MOR }
             ]}
             name="erMedmor"
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: SøkerRolle) =>
@@ -30,8 +34,8 @@ const ErDuMedmorSpørsmål = (props: MedmorBolkProps) => {
     );
 };
 
-export default (props: MedmorBolkProps) => (
+export default injectIntl((props: Props) => (
     <Spørsmål>
         <ErDuMedmorSpørsmål {...props} />
     </Spørsmål>
-);
+));
