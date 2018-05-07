@@ -1,0 +1,60 @@
+@import '../../styles/variables.less';
+
+.attachmentButton {
+    display: flex;
+    height: 4rem;
+    border: 2px dashed #c6c2bf;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    &__label {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-left: 12px;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    input {
+        display: none;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px @orangeFocus;
+    }
+}
+
+.attachmentList {
+    margin: 0;
+    padding: 0;
+    li  {
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+        list-style-type: none;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+.attachment {
+    position: relative;
+    display: flex;
+    align-items: center;
+    &__icon {
+        * {
+            fill: @navMorkGra;
+        }
+    }
+    &__fileName {
+        margin-left: 1rem;
+        margin-right: 3rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    &__delete {
+        position: absolute;
+        right: 0;
+    }
+}
