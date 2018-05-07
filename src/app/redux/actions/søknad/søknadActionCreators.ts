@@ -1,8 +1,9 @@
-import { SøkerPartial } from '../../../types/søknad/Søknad';
+import { SøkerPartial, SøknadPartial } from '../../../types/søknad/Søknad';
 import {
     SøknadActionKeys,
     UpdateBarn,
-    UpdateSøker
+    UpdateSøker,
+    UpdateSøknad
 } from './søknadActionDefinitions';
 import { BarnPartial } from '../../../types/søknad/Barn';
 
@@ -16,4 +17,9 @@ const updateRelasjonTilBarn = (payload: BarnPartial): UpdateBarn => ({
     payload
 });
 
-export default { updateRelasjonTilBarn, updateSøker };
+const updateSøknad = (payload: SøknadPartial): UpdateSøknad => ({
+    type: SøknadActionKeys.UPDATE_SØKNAD,
+    payload
+});
+
+export default { updateRelasjonTilBarn, updateSøker, updateSøknad };

@@ -14,6 +14,7 @@ export interface Søker {
 export type SøkerPartial = Partial<Søker>;
 
 interface Søknad {
+    gjelderAdopsjon: boolean;
     barn: FødtBarnPartial | UfødtBarnPartial;
     søker: SøkerPartial;
 }

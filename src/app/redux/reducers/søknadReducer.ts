@@ -23,6 +23,11 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 barn: { ...state.barn, ...action.payload }
             };
+        case SøknadActionKeys.UPDATE_SØKNAD:
+            return {
+                ...state,
+                ...action.payload
+            };
     }
     return state;
 };
