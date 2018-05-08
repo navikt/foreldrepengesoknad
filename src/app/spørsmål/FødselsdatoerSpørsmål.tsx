@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Labeltekst from '../components/labeltekst/Labeltekst';
 import DatoInput from '../components/dato-input/DatoInput';
-
-export type Fødselsdato = Date | undefined;
+import { Fødselsdato } from '../types/common';
 
 export interface Props {
     fødselsdatoer: Fødselsdato[];
