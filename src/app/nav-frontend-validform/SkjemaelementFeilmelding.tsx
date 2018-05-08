@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
+import { SkjemaelementFeil } from 'nav-frontend-skjema/src/skjemaelement-feilmelding';
 
 export interface Props {
     feil: SkjemaelementFeil;

@@ -12,11 +12,6 @@ export interface Validator {
     failText: string;
 }
 
-export interface Feil {
-    tittel?: string;
-    feilmelding: string;
-}
-
 export interface SummaryError {
     name: string;
     text: string;
