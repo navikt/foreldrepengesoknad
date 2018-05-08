@@ -9,14 +9,16 @@ interface DatospørsmålProps {
     onChange: (dato: Date) => void;
     spørsmål: string;
     id: string;
+    språkkode: string;
 }
 
 const DatoSpørsmål = (props: DatospørsmålProps) => {
-    const { onChange, spørsmål, ...rest } = props;
+    const { onChange, spørsmål, språkkode, ...rest } = props;
     return (
         <DatoInput
             onChange={(dato: Date) => onChange(dato)}
             label={spørsmål}
+            språkkode={språkkode}
             {...rest}
         />
     );
