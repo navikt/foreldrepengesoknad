@@ -3,18 +3,22 @@ abstract class Barn {
     erBarnetFødt: boolean;
 }
 
-export class FødtBarn extends Barn {
+export interface FødtBarn extends Barn {
     fødselsdatoer: string[];
 }
 
-export class UfødtBarn extends Barn {
+export interface UfødtBarn extends Barn {
     termindato: string;
     terminbekreftelseDato: string;
 }
 
-export type BarnPartial = Partial<Barn>;
+export interface Adopsjonsbarn extends FødtBarn {
+    adopsjonsdato: Date;
+}
 
+export type BarnPartial = Partial<Barn>;
 export type FødtBarnPartial = Partial<FødtBarn>;
 export type UfødtBarnPartial = Partial<UfødtBarn>;
+export type AdopsjonsbarnPartial = Partial<Adopsjonsbarn>;
 
 export default Barn;

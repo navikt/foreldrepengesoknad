@@ -1,6 +1,7 @@
 export enum StegID {
     'RELASJON_TIL_BARN' = 'relasjon-til-barn',
     'RELASJON_TIL_BARN_ADOPSJON' = 'relasjon-til-barn-adopsjon',
+    'RELASJON_TIL_BARN_STEBARNSADOPSJON' = 'relasjon-til-barn-stebarnsadopsjon',
     'ANNEN_FORELDER' = 'annen-forelder'
 }
 
@@ -15,6 +16,10 @@ export default {
     },
     [StegID.ANNEN_FORELDER]: {
         tittel: 'Annen forelder header',
+        nesteKnapp: 'Fortsett'
+    },
+    [StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON]: {
+        tittel: 'Relasjon til barn tidlig stebarnsadopsjon',
         nesteKnapp: 'Fortsett'
     }
 };
