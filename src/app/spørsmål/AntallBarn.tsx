@@ -5,6 +5,7 @@ import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-respons
 import Spørsmål from '../components/spørsmål/Spørsmål';
 import Labeltekst from '../components/labeltekst/Labeltekst';
 import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
+import getMessage from '../util/i18nUtils';
 
 export interface OwnProps {
     /** Spørsmålstekst */
@@ -89,23 +90,26 @@ class AntallBarn extends React.Component<Props, State> {
                         radios={[
                             {
                                 inputProps: { id: 'js-ettBarn' },
-                                label: intl.formatMessage({
-                                    id: 'antallBarn.alternativ.ettbarn'
-                                }),
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.ettbarn'
+                                ),
                                 value: 'ett'
                             },
                             {
                                 inputProps: { id: 'js-tvillinger' },
-                                label: intl.formatMessage({
-                                    id: 'antallBarn.alternativ.tvillinger'
-                                }),
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.tvillinger'
+                                ),
                                 value: 'tvillinger'
                             },
                             {
                                 inputProps: { id: 'js-flereBarn' },
-                                label: intl.formatMessage({
-                                    id: 'antallBarn.alternativ.flere'
-                                }),
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.flere'
+                                ),
                                 value: 'flere'
                             }
                         ]}

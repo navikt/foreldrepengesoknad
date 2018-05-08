@@ -1,9 +1,10 @@
-import { SøkerPartial } from '../../../types/søknad/Søknad';
+import { SøkerPartial, SøknadPartial } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 
 export enum SøknadActionKeys {
     'UPDATE_BARN' = 'updateBarn',
-    'UPDATE_SØKER' = 'updateSøker'
+    'UPDATE_SØKER' = 'updateSøker',
+    'UPDATE_SØKNAD' = 'updateSøknad'
 }
 
 export interface UpdateSøker {
@@ -16,4 +17,9 @@ export interface UpdateBarn {
     payload: BarnPartial;
 }
 
-export type SøknadAction = UpdateSøker | UpdateBarn;
+export interface UpdateSøknad {
+    type: SøknadActionKeys.UPDATE_SØKNAD;
+    payload: SøknadPartial;
+}
+
+export type SøknadAction = UpdateSøker | UpdateBarn | UpdateSøknad;

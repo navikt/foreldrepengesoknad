@@ -1,10 +1,21 @@
 {
+    "ja": "Ja",
+    "nei": "Nei",
+
+    "antallBarn.alternativ.ettbarn": "ett barn",
+    "antallBarn.alternativ.tvillinger": "tvillinger",
+    "antallBarn.alternativ.flere": "flere barn",
+    "antallBarn.select.tekst": "Antall barn...",
+
+    "erBarnetFødt.spørsmål": "Er barnet født?",
+
+    "erDuMedmor.spørsmål": "Er du medmor?",
+
+    "fødselEllerAdopsjon.spørsmål": "Gjelder søknaden fødsel eller adopsjon?",
+    "fødselEllerAdopsjon.alternativ.fødsel": "Fødsel",
+    "fødselEllerAdopsjon.alternativ.adopsjon": "Adopsjon",
+
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
-    "komponent.språkvelger.endreMålform": "Endre målform til bokmål",
-
-    "antallBarn.alternativ.ettbarn": "eitt barn",
-    "antallBarn.alternativ.tvillinger": "tvillingar",
-    "antallBarn.alternativ.flere": "fleire barn",
-    "antallBarn.select.tekst": "vel talet på barn"
+    "komponent.språkvelger.endreMålform": "Endre målform til nynorsk"
 }
