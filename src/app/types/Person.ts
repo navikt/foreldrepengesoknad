@@ -7,6 +7,7 @@ interface Person {
     kjønn: string;
     fødselsdato: string;
     ikkeNordiskEøsLand: boolean;
+    erMyndig: boolean;
 }
 
 export default Person;
