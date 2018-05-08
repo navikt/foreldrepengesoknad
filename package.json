@@ -31,7 +31,7 @@
     "devDependencies": {
         "@types/classnames": "2.2.3",
         "@types/history": "4.6.2",
-        "@types/prop-types": "^15.5.2",
+        "@types/prop-types": "15.5.2",
         "@types/react": "16.3.12",
         "@types/react-collapse": "4.0.1",
         "@types/react-dom": "16.0.5",
@@ -93,7 +93,7 @@
         "nav-frontend-spinner-style": "0.2.4",
         "nav-frontend-typografi": "2.0.3",
         "promise": "8.0.1",
-        "prop-types": "^15.6.1",
+        "prop-types": "15.6.1",
         "react": "16.3.2",
         "react-collapse": "4.0.3",
         "react-document-title": "2.0.3",
