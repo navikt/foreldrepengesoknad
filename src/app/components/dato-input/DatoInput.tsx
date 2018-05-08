@@ -7,16 +7,17 @@ export interface Props extends DatovelgerProps {
     dato?: Date;
     label: string | React.ReactNode;
     feil?: Feil;
+    språkkode: string;
 }
 
 class DatoInput extends React.Component<Props, {}> {
     render() {
-        const { label, feil, ...rest } = this.props;
+        const { label, feil, språkkode, ...rest } = this.props;
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
                 <Datovelger
                     {...rest}
-                    locale="nb"
+                    locale={språkkode}
                     inputProps={{ placeholder: 'dd.mm.åååå' }}
                 />
             </SkjemaInputElement>

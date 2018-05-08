@@ -17,13 +17,21 @@ interface EksempelsøknadProps {
     barn: Barn;
     søker: Søker;
     gjelderAdopsjon: boolean;
+    språkkode: string;
 }
 
 type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
     render() {
-        const { dispatch, søker, barn, gjelderAdopsjon, intl } = this.props;
+        const {
+            dispatch,
+            søker,
+            barn,
+            gjelderAdopsjon,
+            intl,
+            språkkode
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -83,6 +91,7 @@ class Eksempelsøknad extends React.Component<Props> {
                         }}
                         dato={getDateFromString((barn as UfødtBarn).termindato)}
                         id="termindatoinput"
+                        språkkode={språkkode}
                     />
                 )}
 
@@ -104,6 +113,7 @@ class Eksempelsøknad extends React.Component<Props> {
                             (barn as UfødtBarn).terminbekreftelseDato
                         )}
                         id="termindatoinput"
+                        språkkode={språkkode}
                     />
                 )}
             </React.Fragment>
@@ -114,5 +124,6 @@ class Eksempelsøknad extends React.Component<Props> {
 export default connect<EksempelsøknadProps>((state: any) => ({
     barn: state.søknad.barn,
     søker: state.søknad.søker,
-    gjelderAdopsjon: state.søknad.gjelderAdopsjon
+    gjelderAdopsjon: state.søknad.gjelderAdopsjon,
+    språkkode: state.common.språkkode
 }))(injectIntl(Eksempelsøknad));
