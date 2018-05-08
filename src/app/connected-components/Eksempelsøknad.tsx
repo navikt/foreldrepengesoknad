@@ -13,7 +13,6 @@ import getMessage from '../util/i18nUtils';
 import DatoSpørsmål from '../spørsmål/DatoSpørsmål';
 import { getDateFromString } from '../util/dates';
 import Spørsmål from '../components/spørsmål/Spørsmål';
-import { Språkkode } from '../intl/types';
 
 interface EksempelsøknadProps {
     barn: Barn;
@@ -106,7 +105,6 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).termindato
                             )}
                             id="termindatoinput"
-                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />
@@ -131,7 +129,6 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).terminbekreftelseDato
                             )}
                             id="termindatoinput"
-                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />

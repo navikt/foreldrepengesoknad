@@ -21,6 +21,7 @@ import Person from '../types/Person';
 import { DispatchProps } from '../redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
+import Workbench from '../workbench';
 
 interface StateProps {
     person: Person;
@@ -42,6 +43,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
         return (
             <Switch>
                 {routes}
+                <Route
+                    path="/foreldrepengesoknad/workbench"
+                    component={Workbench}
+                    key="workbench"
+                />
                 <Redirect to={routeConfig.APP_ROUTE_PREFIX} />
             </Switch>
         );
