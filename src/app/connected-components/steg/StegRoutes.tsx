@@ -14,36 +14,33 @@ import { StegID } from '../../util/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
 import RelasjonTilBarnStebarnsadopsjon from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjon';
 
+const soknadSteg = (stegPath: string): string =>
+    `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
+
 class Steg extends React.Component<RouteComponentProps<any>> {
     render() {
         return (
             <Applikasjonsside visSpråkvelger={false}>
                 <Switch>
                     <Route
-                        path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
-                            StegID.RELASJON_TIL_BARN
-                        }`}
+                        path={soknadSteg(StegID.RELASJON_TIL_BARN)}
                         component={RelasjonTilBarnSteg}
                         key={StegID.RELASJON_TIL_BARN}
                     />
                     <Route
-                        path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
-                            StegID.RELASJON_TIL_BARN_ADOPSJON
-                        }`}
+                        path={soknadSteg(StegID.RELASJON_TIL_BARN_ADOPSJON)}
                         component={RelasjonTilBarnAdopsjonSteg}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
                     />
                     <Route
-                        path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
+                        path={soknadSteg(
                             StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON
-                        }`}
+                        )}
                         component={RelasjonTilBarnStebarnsadopsjon}
                         key={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}
                     />
                     <Route
-                        path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
-                            StegID.ANNEN_FORELDER
-                        }`}
+                        path={soknadSteg(StegID.ANNEN_FORELDER)}
                         component={AnnenForelderSteg}
                         key={StegID.ANNEN_FORELDER}
                     />
