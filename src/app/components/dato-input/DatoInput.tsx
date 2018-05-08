@@ -2,12 +2,13 @@ import * as React from 'react';
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { Feil } from '../skjema-input-element/types';
 import Datovelger, { Props as DatovelgerProps } from 'nav-datovelger';
+import { Språkkode } from '../../intl/types';
 
 export interface Props extends DatovelgerProps {
     dato?: Date;
     label: string | React.ReactNode;
     feil?: Feil;
-    språkkode: string;
+    språkkode: Språkkode;
 }
 
 class DatoInput extends React.Component<Props, {}> {
