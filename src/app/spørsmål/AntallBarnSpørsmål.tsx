@@ -42,7 +42,7 @@ const getAntallBarnVerdiFraTall = (
     }
 };
 
-class AntallBarn extends React.Component<Props, State> {
+class AntallBarnSpørsmål extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.onRadioChange = this.onRadioChange.bind(this);
@@ -150,4 +150,4 @@ class AntallBarn extends React.Component<Props, State> {
     }
 }
 
-export default injectIntl(AntallBarn);
+export default injectIntl(AntallBarnSpørsmål);

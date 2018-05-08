@@ -2,6 +2,7 @@
     "ja": "Ja",
     "nei": "Nei",
 
+    "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
     "antallBarn.alternativ.ettbarn": "ett barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
@@ -17,5 +18,9 @@
 
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
-    "komponent.språkvelger.endreMålform": "Endre målform til nynorsk"
+    "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
+
+    "termindato.spørsmål": "Når er termindato?",
+
+    "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?"
 }

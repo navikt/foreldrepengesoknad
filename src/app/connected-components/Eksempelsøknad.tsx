@@ -1,22 +1,37 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import { Søker, SøkerRolle } from '../types/søknad/Søknad';
 import { DispatchProps } from '../redux/types/index';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
-import Barn from '../types/søknad/Barn';
+import Barn, { UfødtBarn } from '../types/søknad/Barn';
 import FødselEllerAdopsjonSpørsmål from '../spørsmål/FødselEllerAdopsjonSpørsmål';
+import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
+import getMessage from '../util/i18nUtils';
+import DatoSpørsmål from '../spørsmål/DatoSpørsmål';
+import { getDateFromString } from '../util/dates';
 
-interface Props {
+interface EksempelsøknadProps {
     barn: Barn;
     søker: Søker;
     gjelderAdopsjon: boolean;
+    språkkode: string;
 }
 
-class Eksempelsøknad extends React.Component<Props & DispatchProps> {
+type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
+
+class Eksempelsøknad extends React.Component<Props> {
     render() {
-        const { dispatch, søker, barn, gjelderAdopsjon } = this.props;
+        const {
+            dispatch,
+            søker,
+            barn,
+            gjelderAdopsjon,
+            intl,
+            språkkode
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -45,11 +60,60 @@ class Eksempelsøknad extends React.Component<Props & DispatchProps> {
                         erBarnetFødt={barn.erBarnetFødt}
                         onChange={(erBarnetFødt: boolean) => {
                             dispatch(
-                                søknadActions.updateRelasjonTilBarn({
+                                søknadActions.updateBarn({
                                     erBarnetFødt
                                 })
                             );
                         }}
+                    />
+                )}
+
+                {barn.erBarnetFødt !== undefined && (
+                    <AntallBarnSpørsmål
+                        antallBarn={barn.antallBarn}
+                        inputName="antallBarn"
+                        onChange={(antallBarn: number) => {
+                            dispatch(søknadActions.updateBarn({ antallBarn }));
+                        }}
+                        spørsmål={getMessage(
+                            intl,
+                            'antallBarn.spørsmål.venter'
+                        )}
+                    />
+                )}
+
+                {barn.antallBarn !== undefined && (
+                    <DatoSpørsmål
+                        spørsmål={getMessage(intl, 'termindato.spørsmål')}
+                        onChange={(value: Date) => {
+                            const termindato = value.toISOString();
+                            dispatch(søknadActions.updateBarn({ termindato }));
+                        }}
+                        dato={getDateFromString((barn as UfødtBarn).termindato)}
+                        id="termindatoinput"
+                        språkkode={språkkode}
+                    />
+                )}
+
+                {(barn as UfødtBarn).termindato && (
+                    <DatoSpørsmål
+                        spørsmål={getMessage(
+                            intl,
+                            'terminbekreftelseDato.spørsmål'
+                        )}
+                        onChange={(value: Date) => {
+                            const terminbekreftelseDato = value.toISOString();
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    terminbekreftelseDato
+                                })
+                            );
+                        }}
+                        dato={getDateFromString(
+                            (barn as UfødtBarn).terminbekreftelseDato
+                        )}
+                        id="termindatoinput"
+                        språkkode={språkkode}
                     />
                 )}
             </React.Fragment>
@@ -57,8 +121,9 @@ class Eksempelsøknad extends React.Component<Props & DispatchProps> {
     }
 }
 
-export default connect<Props>((state: any) => ({
+export default connect<EksempelsøknadProps>((state: any) => ({
     barn: state.søknad.barn,
     søker: state.søknad.søker,
-    gjelderAdopsjon: state.søknad.gjelderAdopsjon
-}))(Eksempelsøknad);
+    gjelderAdopsjon: state.søknad.gjelderAdopsjon,
+    språkkode: state.common.språkkode
+}))(injectIntl(Eksempelsøknad));
