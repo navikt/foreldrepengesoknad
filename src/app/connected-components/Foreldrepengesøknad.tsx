@@ -13,7 +13,7 @@ import Spinner from 'nav-frontend-spinner';
 import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './sider/velkommen/Velkommen';
-import Feilside from './sider/feilside/Feilside';
+import GenerellFeil from './sider/feilsider/GenerellFeil';
 import Eksempelsøknad from './Eksempelsøknad';
 
 import Person from '../types/Person';
@@ -47,7 +47,9 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     renderErrorRoute() {
-        return this.renderRoutes([<Route key="feil" component={Feilside} />]);
+        return this.renderRoutes([
+            <Route key="feil" component={GenerellFeil} />
+        ]);
     }
 
     renderSøknadRoutes() {
@@ -81,7 +83,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         ) {
             return <Spinner type="XXL" />;
         } else if (error.networkError || error.response !== undefined) {
-            return <Feilside />;
+            return <GenerellFeil />;
         }
 
         if (applicationStateIsInvalid) {
