@@ -16,7 +16,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from '../../../components/labeltekst/Labeltekst';
 
-import stegUtils from './stegUtils';
+import utils from '../../../util/fødselsdato';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -36,7 +36,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                 barn: {
                     ...this.props.barn,
                     antallBarn: antall,
-                    fødselsdatoer: stegUtils.trimFødselsdatoer(
+                    fødselsdatoer: utils.trimFødselsdatoer(
                         antall,
                         this.props.barn.fødselsdatoer
                     )
@@ -90,12 +90,12 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     synlig={barn.antallBarn !== undefined}
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={stegUtils.fødselsdatoerFromString(
+                            fødselsdatoer={utils.fødselsdatoerFromString(
                                 barn.fødselsdatoer
                             )}
                             onChange={(fødselsdatoer) =>
                                 this.oppdaterState({
-                                    fødselsdatoer: stegUtils.fødselsdatoerToString(
+                                    fødselsdatoer: utils.fødselsdatoerToString(
                                         fødselsdatoer
                                     )
                                 })
