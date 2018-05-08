@@ -20,6 +20,7 @@ import Person from '../types/Person';
 
 import { DispatchProps } from '../redux/types';
 import { apiActionCreators as api } from '../redux/actions';
+import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 
 interface StateProps {
     person: Person;
@@ -46,9 +47,13 @@ class Foreldrepengesøknad extends React.Component<Props> {
         );
     }
 
-    renderErrorRoute() {
+    renderErrorRoute(component: React.ComponentType) {
         return this.renderRoutes([
-            <Route key="feil" component={GenerellFeil} />
+            <Route
+                key="feil"
+                path={routeConfig.APP_ROUTE_PREFIX}
+                component={component}
+            />
         ]);
     }
 
@@ -66,7 +71,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 key="steg"
             />,
             <Route
-                path="/foreldrepengesoknad/eksempel"
+                path={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
                 component={Eksempelsøknad}
                 key="eksempelsøknad"
             />
@@ -74,8 +79,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     render() {
-        const applicationStateIsInvalid = false;
-        const { error, isLoadingPerson } = this.props;
+        const { error, isLoadingPerson, person } = this.props;
 
         if (
             isLoadingPerson ||
@@ -83,11 +87,9 @@ class Foreldrepengesøknad extends React.Component<Props> {
         ) {
             return <Spinner type="XXL" />;
         } else if (error.networkError || error.response !== undefined) {
-            return <GenerellFeil />;
-        }
-
-        if (applicationStateIsInvalid) {
-            return this.renderErrorRoute();
+            return this.renderErrorRoute(GenerellFeil);
+        } else if (person && !person.erMyndig) {
+            return this.renderErrorRoute(IkkeMyndig);
         }
 
         return this.renderSøknadRoutes();

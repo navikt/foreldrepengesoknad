@@ -16,6 +16,10 @@
     "fødselEllerAdopsjon.alternativ.fødsel": "Fødsel",
     "fødselEllerAdopsjon.alternativ.adopsjon": "Adopsjon",
 
+    "ikkeMyndig.tittel": "Hei, {navn}!",
+    "ikkeMyndig.ingress":
+        "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
+
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",

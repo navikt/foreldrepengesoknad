@@ -3,7 +3,7 @@ import Feilsidemelding from '../../../components/feilsideMelding/Feilsidemelding
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 
-class Feilside extends React.Component {
+class GenerellFeil extends React.Component {
     render() {
         return (
             <Applikasjonsside visSpråkvelger={false}>
@@ -17,4 +17,4 @@ class Feilside extends React.Component {
     }
 }
 
-export default Feilside;
+export default GenerellFeil;
