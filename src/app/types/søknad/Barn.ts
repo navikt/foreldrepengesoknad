@@ -1,5 +1,5 @@
 abstract class Barn {
-    antallBarn?: number | undefined;
+    antallBarn?: number;
     erBarnetFødt: boolean;
 }
 
@@ -8,8 +8,8 @@ export class FødtBarn extends Barn {
 }
 
 export class UfødtBarn extends Barn {
-    termindato?: string | undefined;
-    terminbekreftelseDato?: string | undefined;
+    termindato: string;
+    terminbekreftelseDato: string;
 }
 
 export type BarnPartial = Partial<Barn>;
