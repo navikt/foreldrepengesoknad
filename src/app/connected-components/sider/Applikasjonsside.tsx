@@ -4,7 +4,7 @@ import { DispatchProps } from '../../redux/types';
 import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
 import { Språkkode } from '../../intl/types';
-import Språkvelger from '../../components/spr\u00E5kvelger/Spr\u00E5kvelger';
+import Språkvelger from '../../components/språkvelger/Språkvelger';
 
 export interface OwnProps {
     /** Om språkvelger skal vises eller ikke */
