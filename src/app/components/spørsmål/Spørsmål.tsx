@@ -5,39 +5,37 @@ import * as classnames from 'classnames';
 export type BottomMargin = 'm' | 's' | 'xs' | 'xxs';
 
 export interface Props {
-    children: React.ReactNode;
     /** Default true */
-    visible?: boolean;
+    synlig?: boolean;
     /** Default true */
     animated?: boolean;
     /** Size - default m */
     margin?: BottomMargin;
+    render: () => JSX.Element;
 }
 
 import './spørsmål.less';
 
 const Spørsmål: React.StatelessComponent<Props> = ({
-    visible = true,
+    synlig = true,
     animated = true,
     margin = 'm',
-    children
+    render = () => null
 }) => {
     const getContent = () => (
         <div className={classnames('sporsmal', `sporsmal--${margin}`)}>
-            {children}
+            {render()}
         </div>
     );
 
     if (animated === true && margin === 'm') {
         return (
-            <Collapse
-                isOpened={visible === true}
-                className="sporsmal__collapse">
-                {visible ? getContent() : <div />}
+            <Collapse isOpened={synlig === true} className="sporsmal__collapse">
+                {synlig ? getContent() : <div />}
             </Collapse>
         );
     }
-    if (!visible) {
+    if (!synlig) {
         return null;
     }
     return getContent();
