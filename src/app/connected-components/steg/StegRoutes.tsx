@@ -12,6 +12,7 @@ import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTi
 import RelasjonTilBarnSteg from './relasjon-til-barn/RelasjonTilBarnSteg';
 import { StegID } from '../../util/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
+import RelasjonTilBarnStebarnsadopsjon from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjon';
 
 class Steg extends React.Component<RouteComponentProps<any>> {
     render() {
@@ -31,6 +32,13 @@ class Steg extends React.Component<RouteComponentProps<any>> {
                         }`}
                         component={RelasjonTilBarnAdopsjonSteg}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
+                    />
+                    <Route
+                        path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
+                            StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON
+                        }`}
+                        component={RelasjonTilBarnStebarnsadopsjon}
+                        key={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}
                     />
                     <Route
                         path={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${
