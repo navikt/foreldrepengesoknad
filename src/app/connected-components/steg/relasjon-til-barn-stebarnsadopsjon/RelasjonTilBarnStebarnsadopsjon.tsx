@@ -13,44 +13,16 @@ import {
 } from '../../../types/søknad/Barn';
 import DatoInput from '../../../components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import FødselsdatoerSpørsmål, {
-    Fødselsdato
-} from '../../../spørsmål/FødselsdatoerSpørsmål';
-import { getDateFromString } from '../../../util/dates';
+import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from '../../../components/labeltekst/Labeltekst';
+
+import stegUtils from './stegUtils';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
-
-const fødselsdatoerToString = (datoer: Fødselsdato[]): string[] => {
-    return datoer.map((dato) => (dato !== undefined ? dato.toISOString() : ''));
-};
-
-const fødselsdatoerFromString = (datoer: string[]) => {
-    return datoer.map(
-        (dato) =>
-            dato !== undefined && dato !== ''
-                ? getDateFromString(dato)
-                : undefined
-    );
-};
-
-export const trimFødselsdatoer = (
-    antall: number,
-    datoer: string[] = []
-): string[] => {
-    let fødselsdatoer: string[] = [...datoer];
-    if (datoer.length > antall) {
-        fødselsdatoer = datoer.slice(0, antall);
-    }
-    while (fødselsdatoer.length < antall) {
-        fødselsdatoer.push('');
-    }
-    return fødselsdatoer;
-};
 
 class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -64,7 +36,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                 barn: {
                     ...this.props.barn,
                     antallBarn: antall,
-                    fødselsdatoer: trimFødselsdatoer(
+                    fødselsdatoer: stegUtils.trimFødselsdatoer(
                         antall,
                         this.props.barn.fødselsdatoer
                     )
@@ -118,12 +90,12 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     synlig={barn.antallBarn !== undefined}
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={fødselsdatoerFromString(
+                            fødselsdatoer={stegUtils.fødselsdatoerFromString(
                                 barn.fødselsdatoer
                             )}
                             onChange={(fødselsdatoer) =>
                                 this.oppdaterState({
-                                    fødselsdatoer: fødselsdatoerToString(
+                                    fødselsdatoer: stegUtils.fødselsdatoerToString(
                                         fødselsdatoer
                                     )
                                 })
