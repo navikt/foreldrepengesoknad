@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Avgrensninger } from 'nav-datovelger';
 import DatoInput from '../components/dato-input/DatoInput';
+import { Språkkode } from '../intl/types';
 
 interface DatospørsmålProps {
+    spørsmål: string;
+    id: string;
+    språkkode: Språkkode;
+    onChange: (dato: Date) => void;
     avgrensninger?: Avgrensninger;
     dato?: Date;
     kalenderplassering?: 'under' | 'fullskjerm' | undefined;
-    onChange: (dato: Date) => void;
-    spørsmål: string;
-    id: string;
-    språkkode: string;
 }
 
 const DatoSpørsmål = (props: DatospørsmålProps) => {

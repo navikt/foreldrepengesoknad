@@ -13,26 +13,19 @@ import getMessage from '../util/i18nUtils';
 import DatoSpørsmål from '../spørsmål/DatoSpørsmål';
 import { getDateFromString } from '../util/dates';
 import Spørsmål from '../components/spørsmål/Spørsmål';
+import { Språkkode } from '../intl/types';
 
 interface EksempelsøknadProps {
     barn: Barn;
     søker: Søker;
     gjelderAdopsjon: boolean;
-    språkkode: string;
 }
 
 type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
     render() {
-        const {
-            dispatch,
-            søker,
-            barn,
-            gjelderAdopsjon,
-            intl,
-            språkkode
-        } = this.props;
+        const { dispatch, søker, barn, gjelderAdopsjon, intl } = this.props;
 
         return (
             <React.Fragment>
@@ -113,7 +106,7 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).termindato
                             )}
                             id="termindatoinput"
-                            språkkode={språkkode}
+                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />
@@ -138,7 +131,7 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).terminbekreftelseDato
                             )}
                             id="termindatoinput"
-                            språkkode={språkkode}
+                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />
