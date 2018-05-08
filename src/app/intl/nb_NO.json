@@ -7,6 +7,19 @@
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
     "antallBarn.select.tekst": "Antall barn...",
+    "antallBarn.select.velg": "Velg",
+    "fødselsdatoer.flere.1": "Første barnet ble født den...",
+    "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
+    "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
+    "fødselsdatoer.flere.4": "Det fjerde barnet ble født den...",
+    "fødselsdatoer.flere.5": "Det femte barnet ble født den...",
+    "fødselsdatoer.flere.6": "Det sjette barnet ble født den...",
+    "fødselsdatoer.flere.7": "Det syvende barnet ble født den...",
+    "fødselsdatoer.flere.8": "Det åttende barnet ble født den...",
+    "fødselsdatoer.flere.9": "Det niende barnet ble født den...",
+
+    "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
+    "stebarnsadopsjon.antallBarn": "Antall barn",
 
     "erBarnetFødt.spørsmål": "Er barnet født?",
 
