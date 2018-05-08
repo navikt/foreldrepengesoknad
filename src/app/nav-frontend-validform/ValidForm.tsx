@@ -48,13 +48,13 @@ class ValidForm extends React.Component<Props, State> {
         };
     }
 
-    onChange(e: any, component: React.Component) {
+    onChange(e: any, component: React.ComponentType) {
         if (this.state.failedSubmit) {
             this.validateOne(component);
         }
     }
 
-    onBlur(e: any, component: React.Component) {
+    onBlur(e: any, component: React.ComponentType) {
         if (this.state.failedSubmit) {
             this.validateOne(component);
         }
@@ -73,7 +73,7 @@ class ValidForm extends React.Component<Props, State> {
         }
     }
 
-    validateOne(component: React.Component) {
+    validateOne(component: React.ComponentType) {
         const index = this.components.indexOf(component);
         if (index !== -1) {
             setTimeout(() => {
