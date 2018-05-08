@@ -2,7 +2,6 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { SøkerRolle } from '../types/søknad/Søknad';
-import Spørsmål from '../components/spørsmål/Spørsmål';
 import getMessage from '../util/i18nUtils';
 
 interface MedmorBolkProps {
@@ -34,8 +33,4 @@ const ErDuMedmorSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl((props: Props) => (
-    <Spørsmål>
-        <ErDuMedmorSpørsmål {...props} />
-    </Spørsmål>
-));
+export default injectIntl(ErDuMedmorSpørsmål);

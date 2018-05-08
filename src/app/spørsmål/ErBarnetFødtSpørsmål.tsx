@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
-import Spørsmål from '../components/spørsmål/Spørsmål';
 import getMessage from '../util/i18nUtils';
 
 export enum BarnFødt {
@@ -46,8 +45,4 @@ const ErBarnetFødtSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl((props: Props) => (
-    <Spørsmål>
-        <ErBarnetFødtSpørsmål {...props} />
-    </Spørsmål>
-));
+export default injectIntl(ErBarnetFødtSpørsmål);
