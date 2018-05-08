@@ -43,11 +43,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
         return (
             <Switch>
                 {routes}
-                <Route
-                    path="/foreldrepengesoknad/workbench"
-                    component={Workbench}
-                    key="workbench"
-                />
                 <Redirect to={routeConfig.APP_ROUTE_PREFIX} />
             </Switch>
         );
