@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import { Søker, SøkerRolle } from '../types/søknad/Søknad';
-import { DispatchProps } from '../redux/types/index';
+import { DispatchProps } from '../redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import Barn, { UfødtBarn } from '../types/søknad/Barn';
 import FødselEllerAdopsjonSpørsmål from '../spørsmål/FødselEllerAdopsjonSpørsmål';
@@ -12,9 +12,15 @@ import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
 import getMessage from '../util/i18nUtils';
 import { getDateFromString } from '../util/dates';
 import Spørsmål from '../components/spørsmål/Spørsmål';
+import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
+import AnnenForelder, {
+    AnnenForelderPartial
+} from '../types/søknad/AnnenForelder';
+import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
 
 interface EksempelsøknadProps {
+    annenForelder: AnnenForelder;
     barn: Barn;
     søker: Søker;
     gjelderAdopsjon: boolean;
@@ -24,7 +30,14 @@ type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
     render() {
-        const { dispatch, søker, barn, gjelderAdopsjon, intl } = this.props;
+        const {
+            dispatch,
+            søker,
+            barn,
+            gjelderAdopsjon,
+            annenForelder,
+            intl
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -132,12 +145,29 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
+                <Bolk
+                    synlig={
+                        (barn as UfødtBarn).terminbekreftelseDato !== undefined
+                    }
+                    render={() => (
+                        <AnnenForelderBolk
+                            annenForelderData={annenForelder}
+                            onChange={(data: AnnenForelderPartial) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(data)
+                                )
+                            }
+                        />
+                    )}
+                />
             </React.Fragment>
         );
     }
 }
 
 export default connect<EksempelsøknadProps>((state: any) => ({
+    annenForelder: state.søknad.annenForelder,
     barn: state.søknad.barn,
     søker: state.søknad.søker,
     gjelderAdopsjon: state.søknad.gjelderAdopsjon,
