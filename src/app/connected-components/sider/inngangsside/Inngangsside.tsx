@@ -7,9 +7,9 @@ import Spørsmål from '../../../components/spørsmål/Spørsmål';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Applikasjonsside from '../../sider/Applikasjonsside';
-import SøkerrolleSpørsmål from '../../../sp\u00F8rsm\u00E5l/S\u00F8kerrolleSp\u00F8rsm\u00E5l';
+import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 import { Kjønn } from '../../../types/common';
-import { getSøkerrollerForBruker } from '../../../util/s\u00F8kerrollerUtils';
+import { getSøkerrollerForBruker } from '../../../util/søkerrollerUtils';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
