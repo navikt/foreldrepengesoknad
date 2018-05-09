@@ -13,9 +13,13 @@ type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
 
 export enum SøkerRolle {
     MOR = 'MOR',
+    MOR2 = 'MOR2',
     FAR = 'FAR',
+    FAR2 = 'FAR2',
     MEDMOR = 'MEDMOR',
-    ANDRE = 'ANDRE'
+    MEDFAR = 'MEDFAR',
+    FORESATT = 'FORESATT',
+    FORESATT2 = 'FORESATT2'
 }
 
 export enum Søkersituasjon {
