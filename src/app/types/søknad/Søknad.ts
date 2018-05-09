@@ -1,4 +1,7 @@
 import { FødtBarnPartial, UfødtBarnPartial } from './Barn';
+import { AnnenForelderPartial } from './AnnenForelder';
+
+export type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
 
 export enum SøkerRolle {
     MOR = 'MOR',
@@ -14,8 +17,10 @@ export interface Søker {
 export type SøkerPartial = Partial<Søker>;
 
 interface Søknad {
-    gjelderAdopsjon: boolean;
+    type: Foreldrepengesøknad;
+    annenForelder: AnnenForelderPartial;
     barn: FødtBarnPartial | UfødtBarnPartial;
+    gjelderAdopsjon: boolean;
     søker: SøkerPartial;
 }
 
