@@ -6,6 +6,7 @@ import {
     UpdateSøknad
 } from './søknadActionDefinitions';
 import { FødtBarnPartial, UfødtBarnPartial } from '../../../types/søknad/Barn';
+import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 
 const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
     type: SøknadActionKeys.UPDATE_SØKER,
@@ -19,9 +20,14 @@ const updateBarn = (
     payload
 });
 
+const updateAnnenForelder = (payload: AnnenForelderPartial) => ({
+    type: SøknadActionKeys.UPDATE_ANNEN_FORELDER,
+    payload
+});
+
 const updateSøknad = (payload: SøknadPartial): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
 });
 
-export default { updateBarn, updateSøker, updateSøknad };
+export default { updateAnnenForelder, updateBarn, updateSøker, updateSøknad };

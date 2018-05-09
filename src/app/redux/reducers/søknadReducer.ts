@@ -6,6 +6,7 @@ import {
 
 const getDefaultState = (): SøknadPartial => {
     return {
+        annenForelder: {},
         barn: {},
         søker: {}
     };
@@ -22,6 +23,11 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
             return {
                 ...state,
                 barn: { ...state.barn, ...action.payload }
+            };
+        case SøknadActionKeys.UPDATE_ANNEN_FORELDER:
+            return {
+                ...state,
+                annenForelder: { ...state.annenForelder, ...action.payload }
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
