@@ -22,6 +22,7 @@ import { DispatchProps } from '../redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevStegoversikt from '../dev/DevStegoversikt';
+import Inngangsside from './sider/inngangsside/Inngangsside';
 
 interface StateProps {
     person: Person;
@@ -80,6 +81,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
                 component={Eksempelsøknad}
                 key="eksempelsøknad"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
+                component={Inngangsside}
+                key="inngang"
             />
         ]);
     }
