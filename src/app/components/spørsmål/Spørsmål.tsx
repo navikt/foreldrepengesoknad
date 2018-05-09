@@ -2,23 +2,24 @@ import * as React from 'react';
 import { Collapse } from 'react-collapse';
 import * as classnames from 'classnames';
 
-export type BottomMargin = 'm' | 's' | 'xs' | 'xxs';
+export type BottomMargin = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
 export interface Props {
     /** Default true */
     synlig?: boolean;
     /** Default true */
-    animated?: boolean;
+    animert?: boolean;
     /** Size - default m */
     margin?: BottomMargin;
     render: () => JSX.Element;
 }
 
 import './spørsmål.less';
+import { collapseSpringConfig } from '../../util/animasjon';
 
 const Spørsmål: React.StatelessComponent<Props> = ({
     synlig = true,
-    animated = true,
+    animert = true,
     margin = 'm',
     render = () => null
 }) => {
@@ -28,9 +29,14 @@ const Spørsmål: React.StatelessComponent<Props> = ({
         </div>
     );
 
-    if (animated === true && margin === 'm') {
+    if (animert === true && margin === 'm') {
         return (
-            <Collapse isOpened={synlig === true} className="sporsmal__collapse">
+            <Collapse
+                springConfig={collapseSpringConfig}
+                isOpened={synlig === true}
+                className={classnames('sporsmal__collapse', {
+                    'sporsmal__collapse--skjult': !synlig
+                })}>
                 {synlig ? getContent() : <div />}
             </Collapse>
         );

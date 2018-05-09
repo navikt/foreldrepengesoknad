@@ -7,6 +7,11 @@
         padding-right: @outlineSize;
         margin-left: -1 * @outlineSize;
         margin-right: -1 * @outlineSize;
+        &--skjult {
+            .sporsmal {
+                padding-bottom: 0;
+            }
+        }
     }
 
     /** Variasjoner på luft under. --m er default */
@@ -21,5 +26,8 @@
     }
     &--xxs {
         padding-bottom: 0.5rem;
+    }
+    &--none {
+        padding-bottom: 0;
     }
 }

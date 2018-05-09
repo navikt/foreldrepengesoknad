@@ -20,52 +20,19 @@ export interface OwnProps {
     feil?: SkjemaelementFeil;
 }
 
-export interface State {
-    antallBarnVerdi: AntallBarnVerdi;
-}
 type Props = OwnProps & InjectedIntlProps;
 
-type AntallBarnVerdi = 'ett' | 'tvillinger' | 'flere' | undefined;
+type AntallBarnVerdi = '1' | '2' | '3';
 
-const getAntallBarnVerdiFraTall = (
-    antall: number | undefined
-): AntallBarnVerdi => {
-    switch (antall) {
-        case 1:
-            return 'ett';
-        case 2:
-            return 'tvillinger';
-        case undefined:
-            return undefined;
-        default:
-            return 'flere';
-    }
-};
-
-class AntallBarnSpørsmål extends React.Component<Props, State> {
+class AntallBarnSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onRadioChange = this.onRadioChange.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.state = {
-            antallBarnVerdi: getAntallBarnVerdiFraTall(props.antallBarn)
-        };
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        this.setState({
-            antallBarnVerdi: getAntallBarnVerdiFraTall(nextProps.antallBarn)
-        });
     }
 
     onRadioChange(antall: AntallBarnVerdi) {
-        this.setState({
-            antallBarnVerdi: antall
-        });
-        if (antall === 'ett' || antall === 'tvillinger') {
-            this.props.onChange(antall === 'ett' ? 1 : 2);
-            return;
-        }
+        this.props.onChange(parseInt(antall, 10));
     }
 
     onSelectChange(antall: number) {
@@ -74,7 +41,10 @@ class AntallBarnSpørsmål extends React.Component<Props, State> {
 
     render() {
         const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
-        const { antallBarnVerdi } = this.state;
+        const antallBarnVerdi: AntallBarnVerdi | undefined =
+            antallBarn !== undefined
+                ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi)
+                : undefined;
 
         return (
             <React.Fragment>
@@ -95,7 +65,7 @@ class AntallBarnSpørsmål extends React.Component<Props, State> {
                                         intl,
                                         'antallBarn.alternativ.ettbarn'
                                     ),
-                                    value: 'ett'
+                                    value: '1'
                                 },
                                 {
                                     inputProps: { id: 'js-tvillinger' },
@@ -103,7 +73,7 @@ class AntallBarnSpørsmål extends React.Component<Props, State> {
                                         intl,
                                         'antallBarn.alternativ.tvillinger'
                                     ),
-                                    value: 'tvillinger'
+                                    value: '2'
                                 },
                                 {
                                     inputProps: { id: 'js-flereBarn' },
@@ -111,14 +81,14 @@ class AntallBarnSpørsmål extends React.Component<Props, State> {
                                         intl,
                                         'antallBarn.alternativ.flere'
                                     ),
-                                    value: 'flere'
+                                    value: '3'
                                 }
                             ]}
                         />
                     )}
                 />
                 <Spørsmål
-                    synlig={antallBarnVerdi === 'flere'}
+                    synlig={antallBarnVerdi === '3'}
                     render={() => (
                         <Select
                             bredde="xs"
@@ -132,6 +102,15 @@ class AntallBarnSpørsmål extends React.Component<Props, State> {
                                     parseInt(evt.target.value, 10)
                                 )
                             }>
+                            {antallBarn === undefined && (
+                                <option
+                                    value=""
+                                    selected={antallBarn === undefined}>
+                                    {intl.formatMessage({
+                                        id: 'antallBarn.select.velg'
+                                    })}
+                                </option>
+                            )}
                             <option value={3} selected={antallBarn === 3}>
                                 3
                             </option>
