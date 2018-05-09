@@ -7,24 +7,25 @@ import Steg from '../../../components/layout/Steg';
 import { StegID } from '../../../util/stegConfig';
 import Spørsmål from '../../../components/spørsmål/Spørsmål';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
-import {
-    Adopsjonsbarn,
-    AdopsjonsbarnPartial
-} from '../../../types/søknad/Barn';
 import DatoInput from '../../../components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from '../../../components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
+import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
+import Veilederinfo from '../../../components/veileder-info/Veilederinfo';
+import { Fødselsdato } from '../../../types/common';
+import { getAlderFraDato } from '../../../util/dates';
 
 export interface StateProps {
-    barn: Adopsjonsbarn;
+    barn: ForeldreansvarBarnPartial;
+    visOver15årMelding: boolean;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
 
-class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
+class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
@@ -45,7 +46,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
         );
     }
 
-    oppdaterState(barn: AdopsjonsbarnPartial) {
+    oppdaterState(barn: ForeldreansvarBarnPartial) {
         this.props.dispatch(
             søknadActions.updateSøknad({
                 barn: { ...this.props.barn, ...barn }
@@ -54,33 +55,35 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, intl } = this.props;
+        const { barn, visOver15årMelding, intl } = this.props;
         return (
-            <Steg id={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}>
+            <Steg id={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}>
                 <Spørsmål
                     render={() => (
                         <DatoInput
-                            id="adopsjonsdato"
+                            id="foreldreansvar_dato"
                             label={
-                                <Labeltekst intlId="stebarnsadopsjon.adopsjonsdato" />
+                                <Labeltekst intlId="foreldreansvar.overtakelsedato" />
                             }
                             onChange={(dato) =>
-                                this.oppdaterState({ adopsjonsdato: dato })
+                                this.oppdaterState({
+                                    foreldreansvarsdato: dato
+                                })
                             }
-                            dato={barn.adopsjonsdato}
+                            dato={barn.foreldreansvarsdato}
                         />
                     )}
                 />
                 <Spørsmål
                     animert={false}
-                    synlig={barn.adopsjonsdato !== undefined}
+                    synlig={barn.foreldreansvarsdato !== undefined}
                     margin="none"
                     render={() => (
                         <AntallBarnSpørsmål
                             spørsmål={intl.formatMessage({
-                                id: 'stebarnsadopsjon.antallBarn'
+                                id: 'foreldreansvar.antallBarn'
                             })}
-                            inputName="stebarnsadopsjon.antallBarn.input"
+                            inputName="foreldreansvar.antallBarn.input"
                             antallBarn={barn.antallBarn}
                             onChange={this.oppdaterAntallBarn}
                         />
@@ -92,7 +95,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     render={() => (
                         <FødselsdatoerSpørsmål
                             fødselsdatoer={utils.fødselsdatoerFromString(
-                                barn.fødselsdatoer
+                                barn.fødselsdatoer || []
                             )}
                             onChange={(fødselsdatoer) =>
                                 this.oppdaterState({
@@ -104,17 +107,36 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                         />
                     )}
                 />
+                {visOver15årMelding && (
+                    <Veilederinfo type="advarsel">
+                        Barn over 15 år er registrert.
+                    </Veilederinfo>
+                )}
             </Steg>
         );
     }
 }
 
+const erAlderOver15År = (datoer: Fødselsdato[]) => {
+    const harBarnOver15 = datoer.find((dato: Fødselsdato) => {
+        if (dato) {
+            return getAlderFraDato(dato).år > 15;
+        }
+        return false;
+    });
+    return harBarnOver15 !== undefined;
+};
+
 const mapStateToProps = (state: AppState): StateProps => {
+    const barn = state.søknad.barn as ForeldreansvarBarnPartial;
     return {
-        barn: state.søknad.barn as Adopsjonsbarn
+        barn,
+        visOver15årMelding: erAlderOver15År(
+            utils.fødselsdatoerFromString(barn.fødselsdatoer || [])
+        )
     };
 };
 
 export default injectIntl(
-    connect(mapStateToProps)(RelasjonTilBarnStebarnsadopsjon)
+    connect(mapStateToProps)(RelasjonTilBarnForeldreansvar)
 );
