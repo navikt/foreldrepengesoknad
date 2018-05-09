@@ -18,11 +18,14 @@ import AnnenForelder, {
 } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
+import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
+import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
 
 interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
     barn: Barn;
     søker: Søker;
+    utenlandsopphold: Utenlandsopphold;
     gjelderAdopsjon: boolean;
 }
 
@@ -36,6 +39,7 @@ class Eksempelsøknad extends React.Component<Props> {
             barn,
             gjelderAdopsjon,
             annenForelder,
+            utenlandsopphold,
             intl
         } = this.props;
 
@@ -161,6 +165,22 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
+                <Spørsmål
+                    synlig={annenForelder !== undefined}
+                    render={() => (
+                        <VæreINorgeVedFødselSpørsmål
+                            fødselINorge={utenlandsopphold.fødselINorge}
+                            onChange={(fødselINorge: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        fødselINorge
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
             </React.Fragment>
         );
     }
@@ -171,5 +191,6 @@ export default connect<EksempelsøknadProps>((state: any) => ({
     barn: state.søknad.barn,
     søker: state.søknad.søker,
     gjelderAdopsjon: state.søknad.gjelderAdopsjon,
+    utenlandsopphold: state.søknad.utenlandsopphold,
     språkkode: state.common.språkkode
 }))(injectIntl(Eksempelsøknad));
