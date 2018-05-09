@@ -10,7 +10,7 @@ import Veilederinfo from '../components/veileder-info/Veilederinfo';
 import './dev.less';
 import routeConfig from '../util/routeConfig';
 
-class DevStegoversikt extends React.Component<{}, {}> {
+class DevSideoversikt extends React.Component<{}, {}> {
     render() {
         return (
             <Applikasjonsside visSpråkvelger={true}>
@@ -23,7 +23,7 @@ class DevStegoversikt extends React.Component<{}, {}> {
 
                 <h2>Eksempelsøknad</h2>
                 <div className="blokk-l">
-                    <ul className="stegoversikt">
+                    <ul className="dev-sider">
                         <li>
                             <Link
                                 to={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
@@ -34,8 +34,28 @@ class DevStegoversikt extends React.Component<{}, {}> {
                     </ul>
                 </div>
 
+                <h2>Frittstående sider</h2>
+                <div className="blokk-l">
+                    <ul className="dev-sider">
+                        <li>
+                            <Link
+                                to={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
+                                className="lenke">
+                                Inngangsside (valg av situasjon)
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to={`${routeConfig.APP_ROUTE_PREFIX}/velkommen`}
+                                className="lenke">
+                                Velkommen
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+
                 <h2>Enkeltsteg i søknadsskjemaet</h2>
-                <ul className="stegoversikt">
+                <ul className="dev-sider">
                     {Object.keys(stegConfig).map((key, index) => (
                         <li key={index}>
                             <Link to={soknadStegPath(key)} className="lenke">
@@ -48,4 +68,4 @@ class DevStegoversikt extends React.Component<{}, {}> {
         );
     }
 }
-export default DevStegoversikt;
+export default DevSideoversikt;
