@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from '../util/i18nUtils';
-import { Søkersituasjon } from '../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 
 interface SøkersituasjonProps {
