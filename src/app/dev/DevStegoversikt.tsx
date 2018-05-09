@@ -14,7 +14,7 @@ class DevStegoversikt extends React.Component<{}, {}> {
                 <ul>
                     {Object.keys(stegConfig).map((key, index) => (
                         <li>
-                            <Link to={soknadStegPath(key)} className="lenk">
+                            <Link to={soknadStegPath(key)} className="lenke">
                                 {stegConfig[key].tittel}
                             </Link>
                         </li>
