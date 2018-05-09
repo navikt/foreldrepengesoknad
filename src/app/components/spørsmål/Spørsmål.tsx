@@ -15,6 +15,7 @@ export interface Props {
 }
 
 import './spørsmål.less';
+import { collapseSpringConfig } from '../../util/animasjon';
 
 const Spørsmål: React.StatelessComponent<Props> = ({
     synlig = true,
@@ -31,6 +32,7 @@ const Spørsmål: React.StatelessComponent<Props> = ({
     if (animert === true && margin === 'm') {
         return (
             <Collapse
+                springConfig={collapseSpringConfig}
                 isOpened={synlig === true}
                 className={classnames('sporsmal__collapse', {
                     'sporsmal__collapse--skjult': !synlig
