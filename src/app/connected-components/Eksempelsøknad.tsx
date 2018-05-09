@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
-import { Søker, SøkerRolle } from '../types/søknad/Søknad';
+import { Søker, SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
 import { DispatchProps } from '../redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import Barn, { UfødtBarn } from '../types/søknad/Barn';
-import FødselEllerAdopsjonSpørsmål from '../spørsmål/FødselEllerAdopsjonSpørsmål';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
 import getMessage from '../util/i18nUtils';
 import { getDateFromString } from '../util/dates';
@@ -18,6 +17,7 @@ import AnnenForelder, {
 } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
+import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
 
@@ -25,8 +25,8 @@ interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
     barn: Barn;
     søker: Søker;
+    situasjon: Søkersituasjon;
     utenlandsopphold: Utenlandsopphold;
-    gjelderAdopsjon: boolean;
 }
 
 type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
@@ -37,7 +37,7 @@ class Eksempelsøknad extends React.Component<Props> {
             dispatch,
             søker,
             barn,
-            gjelderAdopsjon,
+            situasjon,
             annenForelder,
             utenlandsopphold,
             intl
@@ -47,12 +47,12 @@ class Eksempelsøknad extends React.Component<Props> {
             <React.Fragment>
                 <Spørsmål
                     render={() => (
-                        <FødselEllerAdopsjonSpørsmål
-                            gjelderAdopsjon={gjelderAdopsjon}
+                        <SøkersituasjonSpørsmål
+                            situasjon={situasjon}
                             onChange={(value) =>
                                 dispatch(
                                     søknadActions.updateSøknad({
-                                        gjelderAdopsjon: value
+                                        situasjon: value
                                     })
                                 )
                             }
@@ -61,7 +61,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={gjelderAdopsjon !== undefined}
+                    synlig={situasjon === Søkersituasjon.ADOPSJON}
                     render={() => (
                         <ErDuMedmorSpørsmål
                             erMedmor={søker.rolle}
@@ -190,7 +190,7 @@ export default connect<EksempelsøknadProps>((state: any) => ({
     annenForelder: state.søknad.annenForelder,
     barn: state.søknad.barn,
     søker: state.søknad.søker,
-    gjelderAdopsjon: state.søknad.gjelderAdopsjon,
+    situasjon: state.søknad.situasjon,
     utenlandsopphold: state.søknad.utenlandsopphold,
     språkkode: state.common.språkkode
 }))(injectIntl(Eksempelsøknad));

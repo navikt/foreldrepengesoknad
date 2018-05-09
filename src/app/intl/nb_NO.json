@@ -34,9 +34,11 @@
 
     "erDuMedmor.spørsmål": "Er du medmor?",
 
-    "fødselEllerAdopsjon.spørsmål": "Gjelder søknaden fødsel eller adopsjon?",
-    "fødselEllerAdopsjon.alternativ.fødsel": "Fødsel",
-    "fødselEllerAdopsjon.alternativ.adopsjon": "Adopsjon",
+    "søkersituasjon.spørsmål": "Gjelder søknaden fødsel eller adopsjon?",
+    "søkersituasjon.alternativ.fødsel": "Fødsel",
+    "søkersituasjon.alternativ.adopsjon": "Adopsjon",
+    "søkersituasjon.alternativ.stebarn": "Stebarn",
+    "søkersituasjon.alternativ.foreldreansvar": "Foreldreansvar",
 
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
