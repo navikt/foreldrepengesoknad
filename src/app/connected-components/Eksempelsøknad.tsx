@@ -17,7 +17,7 @@ import AnnenForelder, {
 } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
-import SøkersituasjonSpørsmål from '../sp\u00F8rsm\u00E5l/S\u00F8kersituasjonSp\u00F8rsm\u00E5l';
+import SøkersituasjonSpørsmål from '../spørsm\u00E5l/SøkersituasjonSpørsm\u00E5l';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
 
