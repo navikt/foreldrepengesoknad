@@ -5,7 +5,14 @@ export enum StegID {
     'ANNEN_FORELDER' = 'annen-forelder'
 }
 
-export default {
+export interface StegConfig {
+    [key: string]: {
+        tittel: string;
+        nesteKnapp: string;
+    };
+}
+
+const stegConfig: StegConfig = {
     [StegID.RELASJON_TIL_BARN]: {
         tittel: 'Relasjon til barn header',
         nesteKnapp: 'Fortsett'
@@ -23,3 +30,5 @@ export default {
         nesteKnapp: 'Fortsett'
     }
 };
+
+export default stegConfig;
