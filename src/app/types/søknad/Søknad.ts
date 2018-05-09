@@ -16,6 +16,13 @@ export enum SøkerRolle {
     ANDRE = 'ANDRE'
 }
 
+export enum Søkersituasjon {
+    FØDSEL = 'fødsel',
+    ADOPSJON = 'adopsjon',
+    STEBARN = 'stebarn',
+    FORELDREANSVAR = 'foreldreansvar'
+}
+
 export interface Søker {
     rolle: SøkerRolle;
 }
@@ -25,7 +32,7 @@ export type SøkerPartial = Partial<Søker>;
 interface Søknad {
     type: Foreldrepengesøknad;
     annenForelder: AnnenForelderPartial;
-    gjelderAdopsjon: boolean;
+    situasjon: Søkersituasjon;
     barn:
         | FødtBarnPartial
         | UfødtBarnPartial
