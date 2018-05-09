@@ -41,8 +41,10 @@ class AntallBarnSpørsmål extends React.Component<Props> {
 
     render() {
         const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
-        const antallBarnVerdi =
-            antallBarn !== undefined ? `${Math.min(antallBarn, 3)}` : undefined;
+        const antallBarnVerdi: AntallBarnVerdi | undefined =
+            antallBarn !== undefined
+                ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi)
+                : undefined;
 
         return (
             <React.Fragment>
@@ -86,7 +88,7 @@ class AntallBarnSpørsmål extends React.Component<Props> {
                     )}
                 />
                 <Spørsmål
-                    synlig={antallBarnVerdi === 'flere'}
+                    synlig={antallBarnVerdi === '3'}
                     render={() => (
                         <Select
                             bredde="xs"
