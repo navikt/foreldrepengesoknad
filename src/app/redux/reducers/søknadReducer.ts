@@ -8,7 +8,8 @@ const getDefaultState = (): SøknadPartial => {
     return {
         annenForelder: {},
         barn: {},
-        søker: {}
+        søker: {},
+        utenlandsopphold: {}
     };
 };
 
@@ -28,6 +29,14 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
             return {
                 ...state,
                 annenForelder: { ...state.annenForelder, ...action.payload }
+            };
+        case SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD:
+            return {
+                ...state,
+                utenlandsopphold: {
+                    ...state.utenlandsopphold,
+                    ...action.payload
+                }
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
