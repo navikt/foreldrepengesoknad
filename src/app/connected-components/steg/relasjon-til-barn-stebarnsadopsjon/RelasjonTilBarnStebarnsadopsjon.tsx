@@ -28,6 +28,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        this.oppdaterState = this.oppdaterState.bind(this);
     }
 
     oppdaterAntallBarn(antall: number) {
