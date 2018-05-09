@@ -14,7 +14,7 @@ const mockResponse = {
     ikkeNordiskEøsLand: true
 };
 
-const startServer = html => {
+const startServer = (html) => {
     server.get(
         ['/', '/foreldrepengesoknad-api/rest/personinfo?'],
         (req, res) => {

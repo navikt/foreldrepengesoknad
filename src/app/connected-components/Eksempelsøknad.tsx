@@ -4,21 +4,20 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import { Søker, SøkerRolle } from '../types/søknad/Søknad';
-import { DispatchProps } from '../redux/types/index';
+import { DispatchProps } from '../redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import Barn, { UfødtBarn } from '../types/søknad/Barn';
 import FødselEllerAdopsjonSpørsmål from '../spørsmål/FødselEllerAdopsjonSpørsmål';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
 import getMessage from '../util/i18nUtils';
-import DatoSpørsmål from '../spørsmål/DatoSpørsmål';
 import { getDateFromString } from '../util/dates';
 import Spørsmål from '../components/spørsmål/Spørsmål';
-import { Språkkode } from '../intl/types';
 import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
 import AnnenForelder, {
     AnnenForelderPartial
 } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
+import DatoInput from '../components/dato-input/DatoInput';
 
 interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
@@ -107,8 +106,8 @@ class Eksempelsøknad extends React.Component<Props> {
                 <Spørsmål
                     synlig={barn.antallBarn !== undefined}
                     render={() => (
-                        <DatoSpørsmål
-                            spørsmål={getMessage(intl, 'termindato.spørsmål')}
+                        <DatoInput
+                            label={getMessage(intl, 'termindato.spørsmål')}
                             onChange={(value: Date) => {
                                 const termindato = value.toISOString();
                                 dispatch(
@@ -119,7 +118,6 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).termindato
                             )}
                             id="termindatoinput"
-                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />
@@ -127,8 +125,8 @@ class Eksempelsøknad extends React.Component<Props> {
                 <Spørsmål
                     synlig={(barn as UfødtBarn).termindato !== undefined}
                     render={() => (
-                        <DatoSpørsmål
-                            spørsmål={getMessage(
+                        <DatoInput
+                            label={getMessage(
                                 intl,
                                 'terminbekreftelseDato.spørsmål'
                             )}
@@ -144,7 +142,6 @@ class Eksempelsøknad extends React.Component<Props> {
                                 (barn as UfødtBarn).terminbekreftelseDato
                             )}
                             id="termindatoinput"
-                            språkkode={intl.locale as Språkkode}
                         />
                     )}
                 />
