@@ -22,7 +22,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-type AntallBarnVerdi = '1' | '2' | '3' | undefined;
+type AntallBarnVerdi = '1' | '2' | '3';
 
 class AntallBarnSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
@@ -32,9 +32,7 @@ class AntallBarnSpørsmål extends React.Component<Props> {
     }
 
     onRadioChange(antall: AntallBarnVerdi) {
-        if (antall !== undefined) {
-            this.props.onChange(parseInt(antall, 10));
-        }
+        this.props.onChange(parseInt(antall, 10));
     }
 
     onSelectChange(antall: number) {
@@ -43,7 +41,7 @@ class AntallBarnSpørsmål extends React.Component<Props> {
 
     render() {
         const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
-        const antallBarnVerdi: AntallBarnVerdi =
+        const antallBarnVerdi: AntallBarnVerdi | undefined =
             antallBarn !== undefined
                 ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi)
                 : undefined;
