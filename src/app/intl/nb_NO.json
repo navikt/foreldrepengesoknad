@@ -34,6 +34,16 @@
 
     "erDuMedmor.spørsmål": "Er du medmor?",
 
+    "søkerrolle.spørsmål": "Jeg søker som ...",
+    "søkerrolle.rolle.MOR": "Mor",
+    "søkerrolle.rolle.MOR2": "Mor 2",
+    "søkerrolle.rolle.FAR": "Far",
+    "søkerrolle.rolle.FAR2": "Far 2",
+    "søkerrolle.rolle.MEDMOR": "Medmor",
+    "søkerrolle.rolle.MEDFAR": "Medfar",
+    "søkerrolle.rolle.FORESATT": "Foresatt",
+    "søkerrolle.rolle.FORESATT2": "Foresatt 2",
+
     "søkersituasjon.spørsmål": "Gjelder søknaden fødsel eller adopsjon?",
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
