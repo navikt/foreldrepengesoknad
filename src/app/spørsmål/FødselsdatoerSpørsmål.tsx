@@ -27,17 +27,19 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         return (
             <React.Fragment>
                 {fødselsdatoer.map((dato: Fødselsdato, idx: number) => (
-                    <DatoInput
-                        id={getKey(idx)}
-                        key={getKey(idx)}
-                        dato={fødselsdatoer[idx]}
-                        onChange={(d: Date) => this.onDatoChange(d, idx)}
-                        label={
-                            <Labeltekst
-                                intlId={`fødselsdatoer.flere.${idx + 1}`}
-                            />
-                        }
-                    />
+                    <div className="blokk-m">
+                        <DatoInput
+                            id={getKey(idx)}
+                            key={getKey(idx)}
+                            dato={fødselsdatoer[idx]}
+                            onChange={(d: Date) => this.onDatoChange(d, idx)}
+                            label={
+                                <Labeltekst
+                                    intlId={`fødselsdatoer.flere.${idx + 1}`}
+                                />
+                            }
+                        />
+                    </div>
                 ))}
             </React.Fragment>
         );
