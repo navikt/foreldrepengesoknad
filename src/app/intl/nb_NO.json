@@ -50,5 +50,7 @@
 
     "termindato.spørsmål": "Når er termindato?",
 
-    "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?"
+    "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
+
+    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?"
 }

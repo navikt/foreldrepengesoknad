@@ -7,6 +7,8 @@ import {
     ForeldreansvarBarnPartial
 } from './Barn';
 
+import { UtenlandsoppholdPartial } from './Utenlandsopphold';
+
 type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
 
 export enum SøkerRolle {
@@ -39,6 +41,7 @@ interface Søknad {
         | AdopsjonsbarnPartial
         | ForeldreansvarBarnPartial;
     søker: SøkerPartial;
+    utenlandsopphold: UtenlandsoppholdPartial;
 }
 
 export type SøknadPartial = Partial<Søknad>;
