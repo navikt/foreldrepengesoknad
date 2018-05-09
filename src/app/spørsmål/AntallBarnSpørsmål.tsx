@@ -22,7 +22,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-type AntallBarnVerdi = '1' | '2' | '3';
+type AntallBarnVerdi = '1' | '2' | '3' | undefined;
 
 class AntallBarnSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
@@ -32,7 +32,9 @@ class AntallBarnSpørsmål extends React.Component<Props> {
     }
 
     onRadioChange(antall: AntallBarnVerdi) {
-        this.props.onChange(parseInt(antall, 10));
+        if (antall !== undefined) {
+            this.props.onChange(parseInt(antall, 10));
+        }
     }
 
     onSelectChange(antall: number) {
@@ -41,8 +43,10 @@ class AntallBarnSpørsmål extends React.Component<Props> {
 
     render() {
         const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
-        const antallBarnVerdi =
-            antallBarn !== undefined ? `${Math.min(antallBarn, 3)}` : undefined;
+        const antallBarnVerdi: AntallBarnVerdi =
+            antallBarn !== undefined
+                ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi)
+                : undefined;
 
         return (
             <React.Fragment>
@@ -86,7 +90,7 @@ class AntallBarnSpørsmål extends React.Component<Props> {
                     )}
                 />
                 <Spørsmål
-                    synlig={antallBarnVerdi === 'flere'}
+                    synlig={antallBarnVerdi === '3'}
                     render={() => (
                         <Select
                             bredde="xs"
