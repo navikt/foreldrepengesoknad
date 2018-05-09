@@ -13,6 +13,7 @@ import RelasjonTilBarnSteg from './relasjon-til-barn/RelasjonTilBarnSteg';
 import { StegID } from '../../util/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
 import RelasjonTilBarnStebarnsadopsjon from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjon';
+import RelasjonTilBarnForeldreansvar from './relasjon-til-barn-foreldreansvar/RelasjonTilBarnForeldreansvar';
 
 export const soknadStegPath = (stegPath: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
@@ -38,6 +39,13 @@ class Steg extends React.Component<RouteComponentProps<any>> {
                         )}
                         component={RelasjonTilBarnStebarnsadopsjon}
                         key={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}
+                    />
+                    <Route
+                        path={soknadStegPath(
+                            StegID.RELASJON_TIL_BARN_FORELDREANSVAR
+                        )}
+                        component={RelasjonTilBarnForeldreansvar}
+                        key={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}
                     />
                     <Route
                         path={soknadStegPath(StegID.ANNEN_FORELDER)}
