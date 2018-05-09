@@ -14,8 +14,14 @@ import DatoSpørsmål from '../spørsmål/DatoSpørsmål';
 import { getDateFromString } from '../util/dates';
 import Spørsmål from '../components/spørsmål/Spørsmål';
 import { Språkkode } from '../intl/types';
+import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
+import AnnenForelder, {
+    AnnenForelderPartial
+} from '../types/søknad/AnnenForelder';
+import Bolk from '../components/layout/Bolk';
 
 interface EksempelsøknadProps {
+    annenForelder: AnnenForelder;
     barn: Barn;
     søker: Søker;
     gjelderAdopsjon: boolean;
@@ -25,7 +31,14 @@ type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
     render() {
-        const { dispatch, søker, barn, gjelderAdopsjon, intl } = this.props;
+        const {
+            dispatch,
+            søker,
+            barn,
+            gjelderAdopsjon,
+            annenForelder,
+            intl
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -135,12 +148,29 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
+                <Bolk
+                    synlig={
+                        (barn as UfødtBarn).terminbekreftelseDato !== undefined
+                    }
+                    render={() => (
+                        <AnnenForelderBolk
+                            annenForelderData={annenForelder}
+                            onChange={(data: AnnenForelderPartial) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(data)
+                                )
+                            }
+                        />
+                    )}
+                />
             </React.Fragment>
         );
     }
 }
 
 export default connect<EksempelsøknadProps>((state: any) => ({
+    annenForelder: state.søknad.annenForelder,
     barn: state.søknad.barn,
     søker: state.søknad.søker,
     gjelderAdopsjon: state.søknad.gjelderAdopsjon,
