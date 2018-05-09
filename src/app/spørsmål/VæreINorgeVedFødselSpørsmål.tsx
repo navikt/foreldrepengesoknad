@@ -19,7 +19,7 @@ interface VæreINorgeVedFødselSpørsmålProps {
 type Props = VæreINorgeVedFødselSpørsmålProps & InjectedIntlProps;
 
 const VæreINorgeVedFødselSpørsmål = (props: Props) => {
-    const { onChange, fødselINorge, intl, ...otherProps } = props;
+    const { onChange, fødselINorge, intl } = props;
 
     let fødselINorgeValue;
     if (fødselINorge === true) {
@@ -41,7 +41,6 @@ const VæreINorgeVedFødselSpørsmål = (props: Props) => {
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: INorgeVedFødsel
             ) => onChange(v === INorgeVedFødsel.JA, e)}
-            {...otherProps}
         />
     );
 };
