@@ -2,6 +2,11 @@
     "ja": "Ja",
     "nei": "Nei",
 
+    "annenForelder.spørsmål.kanOppgis": "Kan ikke oppgis",
+    "annenForelder.spørsmål.navn": "Navn",
+    "annenForelder.spørsmål.fnr": "Fødselsnummer",
+    "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
+
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
     "antallBarn.alternativ.ettbarn": "ett barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",

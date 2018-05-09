@@ -2,12 +2,18 @@
     "ja": "Ja",
     "nei": "Nei",
 
+    "annenForelder.spørsmål.kanOppgis": "Kan ikke oppgis",
+    "annenForelder.spørsmål.navn": "Navn",
+    "annenForelder.spørsmål.fnr": "Fødselsnummer",
+    "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
+
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
     "antallBarn.alternativ.ettbarn": "ett barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
     "antallBarn.select.tekst": "Antall barn...",
     "antallBarn.select.velg": "Velg",
+
     "fødselsdatoer.flere.1": "Første barnet ble født den...",
     "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
     "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
