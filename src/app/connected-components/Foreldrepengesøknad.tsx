@@ -21,7 +21,7 @@ import Person from '../types/Person';
 import { DispatchProps } from '../redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
-import DevStegoversikt from '../dev/DevStegoversikt';
+import DevSideoversikt from '../dev/DevSideoversikt';
 import Inngangsside from './sider/inngangsside/Inngangsside';
 
 interface StateProps {
@@ -45,9 +45,9 @@ class Foreldrepengesøknad extends React.Component<Props> {
             <Switch>
                 {routes}
                 <Route
-                    path={`${routeConfig.APP_ROUTE_PREFIX}/stegoversikt`}
-                    component={DevStegoversikt}
-                    key="devStegoversikt"
+                    path={`${routeConfig.APP_ROUTE_PREFIX}/sideoversikt`}
+                    component={DevSideoversikt}
+                    key="devSideoversikt"
                 />
                 <Redirect to={routeConfig.APP_ROUTE_PREFIX} />
             </Switch>
