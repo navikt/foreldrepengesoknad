@@ -14,7 +14,7 @@ import { StegID } from '../../util/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
 import RelasjonTilBarnStebarnsadopsjon from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjon';
 
-const soknadSteg = (stegPath: string): string =>
+export const soknadStegPath = (stegPath: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
 class Steg extends React.Component<RouteComponentProps<any>> {
@@ -23,24 +23,24 @@ class Steg extends React.Component<RouteComponentProps<any>> {
             <Applikasjonsside visSpråkvelger={false}>
                 <Switch>
                     <Route
-                        path={soknadSteg(StegID.RELASJON_TIL_BARN)}
+                        path={soknadStegPath(StegID.RELASJON_TIL_BARN)}
                         component={RelasjonTilBarnSteg}
                         key={StegID.RELASJON_TIL_BARN}
                     />
                     <Route
-                        path={soknadSteg(StegID.RELASJON_TIL_BARN_ADOPSJON)}
+                        path={soknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}
                         component={RelasjonTilBarnAdopsjonSteg}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
                     />
                     <Route
-                        path={soknadSteg(
+                        path={soknadStegPath(
                             StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON
                         )}
                         component={RelasjonTilBarnStebarnsadopsjon}
                         key={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}
                     />
                     <Route
-                        path={soknadSteg(StegID.ANNEN_FORELDER)}
+                        path={soknadStegPath(StegID.ANNEN_FORELDER)}
                         component={AnnenForelderSteg}
                         key={StegID.ANNEN_FORELDER}
                     />
