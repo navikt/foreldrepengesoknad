@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Checkbox, Input } from 'nav-frontend-skjema';
 import Spørsmål from '../components/spørsmål/Spørsmål';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
+import getMessage from '../util/i18nUtils';
 
 interface AnnenForelderBolkProps {
     annenForelderData: AnnenForelderPartial;
@@ -11,8 +13,10 @@ interface AnnenForelderBolkProps {
     ) => void;
 }
 
-const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
-    const { annenForelderData, onChange } = props;
+type Props = AnnenForelderBolkProps & InjectedIntlProps;
+
+const AnnenForelderBolk = (props: Props) => {
+    const { annenForelderData, onChange, intl } = props;
     const { kanIkkeOppgis, navn, fnr, utenlandskFnr } = annenForelderData;
 
     const handleOnChange = (
@@ -28,7 +32,10 @@ const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
                 render={() => (
                     <Checkbox
                         checked={kanIkkeOppgis}
-                        label="Kan ikke oppgis"
+                        label={getMessage(
+                            intl,
+                            'annenForelder.spørsmål.kanOppgis'
+                        )}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleOnChange(
                                 {
@@ -47,7 +54,7 @@ const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
                 render={() => (
                     <Input
                         disabled={kanIkkeOppgis}
-                        label="Navn"
+                        label={getMessage(intl, 'annenForelder.spørsmål.navn')}
                         name="navn"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleOnChange({ navn: e.target.value }, e)
@@ -60,7 +67,7 @@ const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
                 render={() => (
                     <Input
                         disabled={kanIkkeOppgis}
-                        label="Fødselsnummer"
+                        label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
                         name="fødselsnummer"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleOnChange({ fnr: e.target.value }, e)
@@ -74,7 +81,10 @@ const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
                     <Checkbox
                         disabled={kanIkkeOppgis}
                         checked={utenlandskFnr}
-                        label="Utenlandsk fødselsnummer"
+                        label={getMessage(
+                            intl,
+                            'annenForelder.spørsmål.utenlandskFnr'
+                        )}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleOnChange(
                                 { utenlandskFnr: e.target.checked },
@@ -88,4 +98,4 @@ const AnnenForelderBolk = (props: AnnenForelderBolkProps) => {
     );
 };
 
-export default AnnenForelderBolk;
+export default injectIntl(AnnenForelderBolk);
