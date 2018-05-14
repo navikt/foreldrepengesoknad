@@ -39,7 +39,7 @@ node {
             sh "npm install"
             //sh "npm run test"
             sh "npm run build"
-            sh "npm run cypress"
+            //sh "npm run cypress"
         }
 
         sh "docker build --build-arg version=${releaseVersion} --build-arg app_name=${app} -t ${dockerRepo}/${app}:${releaseVersion} ."
