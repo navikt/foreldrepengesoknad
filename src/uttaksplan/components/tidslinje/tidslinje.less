@@ -1,0 +1,266 @@
+@import '../../styles/variabler.less';
+
+/** Scopet less for tidslinje */
+.tidslinje() {
+    @padding-left: 2rem;
+
+    @z-strek: 3;
+    @z-sirkel: 4;
+
+    @strekOffsetTop: 0px;
+    @strekOffsetBottom: 0px;
+    @strekOffsetAvrundet: 2px;
+
+    @sirkelSize: 12px;
+    @sirkelOffsetTop: 8/2;
+    @sirkelOffsetBottom: -1 * @sirkelOffsetTop;
+    @sirkelBorderWidth: 3px;
+
+    .periodedato() {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    /** Mixins */
+
+    .gradering(@col1, @col2:transparent) {
+        background: repeating-linear-gradient(
+            0deg,
+            @col1,
+            @col1 4px,
+            @col2 4px,
+            @col2 8px
+        );
+    }
+
+    .polkaGradering(@col) {
+        background-color: transparent;
+        background-color: transparent;
+        background-image: radial-gradient(@col 34%, transparent 0);
+        background-size: 14px 11px;
+        background-position: -3px 10px;
+    }
+
+    .sirkel(@borderColor, @bkgColor: white) {
+        content: '';
+        z-index: @z-sirkel;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: @sirkelSize;
+        height: @sirkelSize;
+        border-radius: 50%;
+        border: @sirkelBorderWidth solid @borderColor;
+        background-color: @bkgColor;
+        margin-top: -1 * @sirkelOffsetTop;
+        margin-left: -1 * (@sirkelSize / 2 - @sirkelBorderWidth) + 1;
+    }
+
+    .strekavrunding() {
+        border: none;
+        background: inherit;
+        display: block;
+        width: 8px;
+        height: 8px;
+        left: 2px;
+    }
+
+    .setStrekColor(@color) {
+        background-color: @color;
+        &:before,
+        &:after {
+            border-color: @color;
+        }
+        &:after {
+            background-color: @color;
+        }
+    }
+
+    .visStrek(@color) {
+        width: 8px;
+        position: absolute;
+        top: @strekOffsetTop;
+        bottom: @strekOffsetBottom;
+        left: 0;
+        z-index: @z-strek;
+        .setStrekColor(@color);
+    }
+
+    .avrundStrekTop() {
+        &:before {
+            .strekavrunding();
+            top: @strekOffsetAvrundet;
+        }
+    }
+
+    .avrundStrekBunn() {
+        &:after {
+            .strekavrunding();
+            bottom: @sirkelOffsetBottom + @strekOffsetAvrundet;
+        }
+    }
+
+    .visSirkelTop() {
+        &:before {
+            display: block;
+        }
+    }
+    .skjulSirkelTop() {
+        &:before {
+            display: none;
+        }
+        .avrundStrekTop();
+    }
+    .visSirkelBottom() {
+        &:after {
+            display: block;
+        }
+    }
+    .skjulSirkelBottom() {
+        &:after {
+            display: none;
+        }
+        .avrundStrekBunn();
+    }
+
+    /** Klasser */
+    .tidslinje {
+        @verticalSpacing: 1rem;
+
+        &__innslag {
+            margin-bottom: @verticalSpacing;
+            position: relative;
+            padding-left: @padding-left;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            &__dato {
+                font-weight: bold;
+            }
+            &--hendelse {
+                margin-top: -1 * @verticalSpacing;
+                margin-bottom: 0;
+            }
+        }
+        &__varighet {
+            white-space: nowrap;
+        }
+    }
+    .hendelseinnslag {
+        padding: 1rem;
+        &__dato {
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.2rem; // justerer vertical alignment av tekst
+        }
+        &__hendelse {
+            display: inline-block;
+        }
+        &__ikon {
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+    }
+
+    .periodeinnslag {
+        &__topp {
+            display: flex;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+            &__venstre {
+                flex-basis: 100%;
+            }
+            &__hoyre {
+                display: flex;
+                flex-grow: 0;
+            }
+        }
+        &__rediger {
+            padding-left: 0.5rem;
+            flex-grow: 0;
+            white-space: nowrap;
+            text-align: right;
+        }
+        &__ekstrainfo  {
+            margin: 0.5rem 0;
+        }
+    }
+    .periodefortsettelse {
+        &__dato {
+            .periodedato();
+        }
+    }
+
+    .tidslinjestrek {
+        &:before {
+            .sirkel(@c-purple);
+            display: none;
+        }
+        &:after {
+            .sirkel(@c-purple, @c-purple);
+            top: initial;
+            bottom: @sirkelOffsetBottom;
+            display: none;
+        }
+        &--periode {
+            .visStrek(@c-purple);
+            .visSirkelTop();
+            .visSirkelBottom();
+        }
+        &--hendelse--termin {
+            .visStrek(@c-purple);
+        }
+        &--forelder2 {
+            .setStrekColor(@c-blue);
+        }
+        &--utsettelse {
+            .setStrekColor(@c-green);
+            .polkaGradering(@c-green);
+        }
+        &--fortsettelse {
+            .skjulSirkelTop();
+        }
+        &--fortsetter {
+            .skjulSirkelBottom();
+        }
+    }
+}
+
+/** Generer css  */
+.tidslinje();
+@media print {
+    .tidslinje {
+        &__innslag {
+            padding-left: 0;
+            margin: 0 0 2rem 0 !important;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #b7b1a9;
+            &:first-child {
+                padding-top: 2rem;
+                border-top: 1px solid #b7b1a9;
+            }
+        }
+        .callout {
+            border: none;
+            &__arrow {
+                display: none;
+            }
+            &__content {
+                padding: 0;
+            }
+        }
+        .innslagLayout,
+        .hendelseinnslag {
+            padding: 0;
+        }
+    }
+    .tidslinjestrek {
+        display: none;
+    }
+}
+
+.innslagLayout {
+    padding: 1rem;
+}

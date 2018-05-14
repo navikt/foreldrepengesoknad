@@ -15,7 +15,11 @@ const webpackConfig = {
         publicPath: '/foreldrepengesoknad/dist'
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
+        alias: {
+            app: path.resolve(__dirname, './../../app'),
+            uttaksplan: path.resolve(__dirname, './../../uttaksplan')
+        }
     },
     module: {
         rules: [
@@ -26,7 +30,10 @@ const webpackConfig = {
             },
             {
                 test: /\.(ts|tsx)$/,
-                include: [path.resolve(__dirname, './../../app')],
+                include: [
+                    path.resolve(__dirname, './../../app'),
+                    path.resolve(__dirname, './../../uttaksplan')
+                ],
                 loader: require.resolve('ts-loader')
             },
 

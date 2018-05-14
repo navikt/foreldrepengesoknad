@@ -23,6 +23,7 @@ import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevSideoversikt from '../dev/DevSideoversikt';
 import Inngangsside from './sider/inngangsside/Inngangsside';
+import UttaksplanSide from './sider/uttaksplanSide/UttaksplanSide';
 
 interface StateProps {
     person: Person;
@@ -86,6 +87,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
                 component={Inngangsside}
                 key="inngang"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}/uttaksplan`}
+                component={UttaksplanSide}
+                key="uttaksplan"
             />
         ]);
     }
