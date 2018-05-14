@@ -1,0 +1,13 @@
+@import '../../styles/variables.less';
+@import '../../../../node_modules/nav-frontend-knapper-style/src/mixins.less';
+
+.deleteButton {
+    .knappbase-mixin(inherit);
+    width: 2rem;
+    padding: 0.3em;
+    border: none;
+    background: none;
+    svg * {
+        stroke: @c-buttonBlue;
+    }
+}

@@ -4,9 +4,15 @@ import {
     UpdateBarn,
     UpdateSøker,
     UpdateSøknad,
+    UpdateVedlegg,
     UpdateUtenlandsopphold
 } from './søknadActionDefinitions';
-import { FødtBarnPartial, UfødtBarnPartial } from '../../../types/søknad/Barn';
+import {
+    FødtBarnPartial,
+    UfødtBarnPartial,
+    AdopsjonsbarnPartial
+} from '../../../types/søknad/Barn';
+import { VedleggPartial } from '../../../types/søknad/Vedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
 
@@ -16,7 +22,7 @@ const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
 });
 
 const updateBarn = (
-    payload: FødtBarnPartial | UfødtBarnPartial
+    payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial
 ): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
     payload
@@ -39,10 +45,16 @@ const updateSøknad = (payload: SøknadPartial): UpdateSøknad => ({
     payload
 });
 
+const updateVedlegg = (payload: VedleggPartial): UpdateVedlegg => ({
+    type: SøknadActionKeys.UPDATE_VEDLEGG,
+    payload
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
     updateSøker,
     updateUtenlandsopphold,
-    updateSøknad
+    updateSøknad,
+    updateVedlegg
 };
