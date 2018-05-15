@@ -52,5 +52,13 @@
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
 
-    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?"
+    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
+
+    "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
+    "adoptertIUtlandet.spørsmål": "Adoptert i utlandet?",
+
+    "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
+    "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
+    "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
+    "vedlegg.lastoppknapp.label": "Last opp vedlegg"
 }

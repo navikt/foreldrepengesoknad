@@ -1,15 +1,20 @@
-import { SøknadPartial } from '../../types/søknad/Søknad';
 import {
     SøknadAction,
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
+import { SøknadPartial } from '../../types/s\u00F8knad/S\u00F8knad';
 
 const getDefaultState = (): SøknadPartial => {
     return {
         annenForelder: {},
-        barn: {},
+        barn: {
+            fødselsdatoer: []
+        },
         søker: {},
-        utenlandsopphold: {}
+        utenlandsopphold: {},
+        vedlegg: {
+            omsorgsovertakelse: []
+        }
     };
 };
 
@@ -42,6 +47,11 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
             return {
                 ...state,
                 ...action.payload
+            };
+        case SøknadActionKeys.UPDATE_VEDLEGG:
+            return {
+                ...state,
+                vedlegg: { ...state.vedlegg, ...action.payload }
             };
     }
     return state;
