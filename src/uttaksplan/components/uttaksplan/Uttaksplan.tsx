@@ -42,6 +42,8 @@ interface OwnProps {
     sprak?: Spraak;
 }
 
+import '../../styles/uttaksplan.less';
+
 export type Props = OwnProps & StateProps & DispatchProps;
 
 export class Main extends React.Component<Props> {
