@@ -5,3 +5,8 @@ export interface Alder {
     måneder: number;
     dager: number;
 }
+
+export enum Kjønn {
+    'MANN' = 'M',
+    'KVINNE' = 'K'
+}
