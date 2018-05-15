@@ -4,10 +4,10 @@ import formReducer from './formReducer';
 import utsettelseReducer from './utsettelseReducer';
 import viewReducer from './viewReducer';
 
-const PlanleggerAppReducer = combineReducers({
+const UttaksplanReducer = combineReducers({
     form: formReducer,
     utsettelse: utsettelseReducer,
     view: viewReducer
 });
 
-export default PlanleggerAppReducer;
+export default UttaksplanReducer;

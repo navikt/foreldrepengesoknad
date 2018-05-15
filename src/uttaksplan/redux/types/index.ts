@@ -38,3 +38,7 @@ export interface UttaksplanState {
     utsettelse: UtsettelseState;
     view: UttaksplanViewState;
 }
+
+export interface UttaksplanAppState {
+    uttaksplan: UttaksplanState;
+}

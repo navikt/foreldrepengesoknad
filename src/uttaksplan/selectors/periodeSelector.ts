@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
-import { UttaksplanState, UttaksplanFormState } from '../redux/types';
+import { UttaksplanFormState, UttaksplanAppState } from '../redux/types';
 import { Utsettelsesperiode, Periode, Stonadsperiode } from '../types';
 import { leggUtsettelserTilPerioder } from '../utils/periodeUtils';
 import { opprettStønadsperioder } from '../utils/permisjonUtils';
 
-const formSelector = (state: UttaksplanState) => state.form;
-const utsettelseSelector = (state: UttaksplanState) =>
-    state.utsettelse.utsettelser;
+const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
+const utsettelseSelector = (state: UttaksplanAppState) =>
+    state.uttaksplan.utsettelse.utsettelser;
 
 /**
  * Henter ut sortert liste med alle stønadsperioder fra state
