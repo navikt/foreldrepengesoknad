@@ -7,8 +7,8 @@ import Person from '../../types/Person';
 
 const erMyndig = (person: Person) => {
     const now = moment();
-    const momentDate = moment(person.fødselsdato);
-    return now.diff(momentDate, 'years') > 18;
+    const fødselsdato = moment(person.fødselsdato);
+    return now.diff(fødselsdato, 'years') >= 18;
 };
 
 function* getPerson(action: any) {
