@@ -42,7 +42,7 @@ class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
             <section className="tidsplan" id="permisjonsplan">
                 <div className="blokk-s">
                     <Systemtittel className="tidslinje__tittel">
-                        <FormattedMessage id="tidslinje.tittel" />
+                        <FormattedMessage id="uttaksplan.tidslinje.tittel" />
                     </Systemtittel>
                 </div>
                 <div className="blokk-m">
@@ -56,11 +56,11 @@ class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
                         fellesukerForelder2={fellesperiodeukerForelder2}
                         navnForelder1={
                             navnForelder1 ||
-                            intl.formatMessage({ id: 'Forelder1' })
+                            intl.formatMessage({ id: 'uttaksplan.Forelder1' })
                         }
                         navnForelder2={
                             navnForelder2 ||
-                            intl.formatMessage({ id: 'Forelder2' })
+                            intl.formatMessage({ id: 'uttaksplan.Forelder2' })
                         }
                     />
                 </div>
@@ -69,18 +69,18 @@ class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
                         innslag={innslag}
                         navnForelder1={
                             navnForelder1 ||
-                            intl.formatMessage({ id: 'Forelder1' })
+                            intl.formatMessage({ id: 'uttaksplan.Forelder1' })
                         }
                         navnForelder2={
                             navnForelder2 ||
-                            intl.formatMessage({ id: 'Forelder2' })
+                            intl.formatMessage({ id: 'uttaksplan.Forelder2' })
                         }
                         onRedigerUtsettelse={onRedigerUtsettelse}
                     />
                 </div>
                 <div className="m-textCenter blokk-m no-print">
                     <LeggTilKnapp onClick={() => onLeggTilUtsettelse()}>
-                        <FormattedMessage id="opphold.knapp.leggtil" />
+                        <FormattedMessage id="uttaksplan.opphold.knapp.leggtil" />
                     </LeggTilKnapp>
                 </div>
             </section>

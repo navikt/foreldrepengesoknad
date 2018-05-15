@@ -58,10 +58,10 @@ const InnslagLayout: React.StatelessComponent<Props & InjectedIntlProps> = ({
             <div className="periodeinnslag__ekstrainfo">
                 <UtvidetInformasjon
                     apneLabel={intl.formatMessage({
-                        id: 'tidslinje.visdetaljer'
+                        id: 'uttaksplan.tidslinje.visdetaljer'
                     })}
                     lukkLabel={intl.formatMessage({
-                        id: 'tidslinje.skjuldetaljer'
+                        id: 'uttaksplan.tidslinje.skjuldetaljer'
                     })}>
                     <div className="blokkPad-xxs">{ekstrainfo.tekst}</div>
                 </UtvidetInformasjon>

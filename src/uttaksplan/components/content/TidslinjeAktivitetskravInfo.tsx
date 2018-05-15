@@ -18,14 +18,15 @@ const TidslinjeAktivitetskravInfo: React.StatelessComponent<
                 values={{
                     navnForelder1:
                         navnForelder1 ||
-                        intl.formatMessage({ id: 'forelder1' }),
+                        intl.formatMessage({ id: 'uttaksplan.forelder1' }),
                     navnForelder2:
-                        navnForelder2 || intl.formatMessage({ id: 'forelder2' })
+                        navnForelder2 ||
+                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }}
             />
         </div>
         <Lenke href={EksterneLenker.nav_aktivitetskrav} target="_blank">
-            <FormattedMessage id="skjema.fordeling.veiledning.lenketekst" />
+            <FormattedMessage id="uttaksplan.skjema.fordeling.veiledning.lenketekst" />
         </Lenke>
     </div>
 );

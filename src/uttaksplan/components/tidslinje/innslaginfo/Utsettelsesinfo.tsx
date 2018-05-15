@@ -26,7 +26,7 @@ const Utsettelsesinfo: React.StatelessComponent<
     if (feriedager.length > 0) {
         ekstrainfo = {
             tekst: intl.formatMessage(
-                { id: 'tidslinje.ferie.fridager' },
+                { id: 'uttaksplan.tidslinje.ferie.fridager' },
                 {
                     antallDager: feriedager.length
                 }
@@ -44,7 +44,7 @@ const Utsettelsesinfo: React.StatelessComponent<
                     : undefined
             }>
             <FormattedMessage
-                id="tidslinje.utsettelse"
+                id="uttaksplan.tidslinje.utsettelse"
                 values={{
                     navn,
                     arsak

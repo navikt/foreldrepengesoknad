@@ -9,7 +9,7 @@ const DekningsgradInfo: React.StatelessComponent<{}> = (props) => (
         type="info"
         visVeileder={false}
         stil="kunTekst">
-        <FormattedMessage id="skjema.veiledning.sats" />
+        <FormattedMessage id="uttaksplan.skjema.veiledning.sats" />
     </VeilederinfoContainer>
 );
 

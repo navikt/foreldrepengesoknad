@@ -32,10 +32,10 @@ const SkjemaDekningsgrad: React.StatelessComponent<Props> = ({
                 info={{
                     id: Infotekster.sats,
                     label: intl.formatMessage({
-                        id: 'skjema.veiledning.sats.alttekst'
+                        id: 'uttaksplan.skjema.veiledning.sats.alttekst'
                     })
                 }}>
-                <FormattedMessage id="skjema.label.sats" />
+                <FormattedMessage id="uttaksplan.skjema.label.sats" />
             </Sporsmal>
         }
         beskrivelse={<DekningsgradInfo />}
@@ -47,7 +47,7 @@ const SkjemaDekningsgrad: React.StatelessComponent<Props> = ({
             {
                 tittel: intl.formatMessage(
                     {
-                        id: 'skjema.label.sats100'
+                        id: 'uttaksplan.skjema.label.sats100'
                     },
                     {
                         uker: antallUkerTotalt100
@@ -58,7 +58,7 @@ const SkjemaDekningsgrad: React.StatelessComponent<Props> = ({
             {
                 tittel: intl.formatMessage(
                     {
-                        id: 'skjema.label.sats80'
+                        id: 'uttaksplan.skjema.label.sats80'
                     },
                     {
                         uker: antallUkerTotalt80

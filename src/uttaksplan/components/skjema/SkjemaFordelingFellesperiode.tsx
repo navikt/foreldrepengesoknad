@@ -31,14 +31,14 @@ const FordelingFellesperiode: React.StatelessComponent<
                 info={{
                     id: Infotekster.fordelingFellesperiode,
                     label: intl.formatMessage({
-                        id: 'skjema.fordeling.sporsmal.ikonlabel'
+                        id: 'uttaksplan.skjema.fordeling.sporsmal.ikonlabel'
                     })
                 }}>
-                <FormattedMessage id="skjema.fordeling.sporsmal" />
+                <FormattedMessage id="uttaksplan.skjema.fordeling.sporsmal" />
             </Sporsmal>
         }
         ariaDescription={intl.formatMessage(
-            { id: 'skjema.fordeling.aria.fordeling' },
+            { id: 'uttaksplan.skjema.fordeling.aria.fordeling' },
             {
                 navnForelder1,
                 ukerFellesperiode
@@ -50,31 +50,34 @@ const FordelingFellesperiode: React.StatelessComponent<
         onChange={onChange}
         steppers={{
             reduceLabel: intl.formatMessage(
-                { id: 'skjema.fordeling.reduser.tooltip' },
+                { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                 {
                     navn:
-                        navnForelder1 || intl.formatMessage({ id: 'forelder1' })
+                        navnForelder1 ||
+                        intl.formatMessage({ id: 'uttaksplan.forelder1' })
                 }
             ),
             increaseLabel: intl.formatMessage(
-                { id: 'skjema.fordeling.reduser.tooltip' },
+                { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                 {
                     navn:
-                        navnForelder2 || intl.formatMessage({ id: 'forelder2' })
+                        navnForelder2 ||
+                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }
             )
         }}
         ariaValueChangedMessage={(value) =>
             intl.formatMessage(
-                { id: 'skjermleser.fordeling_av_fellesperiode' },
+                { id: 'uttaksplan.skjermleser.fordeling_av_fellesperiode' },
                 {
                     ukerForelder1: value,
                     ukerForelder2: ukerFellesperiode - value,
                     navnForelder1:
                         navnForelder1 ||
-                        intl.formatMessage({ id: 'forelder1' }),
+                        intl.formatMessage({ id: 'uttaksplan.forelder1' }),
                     navnForelder2:
-                        navnForelder2 || intl.formatMessage({ id: 'forelder2' })
+                        navnForelder2 ||
+                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }
             )
         }
@@ -82,10 +85,12 @@ const FordelingFellesperiode: React.StatelessComponent<
             <FordelingFellesperiodeLabelRenderer
                 options={options}
                 navnForelder1={
-                    navnForelder1 || intl.formatMessage({ id: 'Forelder1' })
+                    navnForelder1 ||
+                    intl.formatMessage({ id: 'uttaksplan.Forelder1' })
                 }
                 navnForelder2={
-                    navnForelder2 || intl.formatMessage({ id: 'Forelder2' })
+                    navnForelder2 ||
+                    intl.formatMessage({ id: 'uttaksplan.Forelder2' })
                 }
                 introRenderer={introRenderer}
             />

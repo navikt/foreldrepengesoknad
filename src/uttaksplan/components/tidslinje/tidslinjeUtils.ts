@@ -107,23 +107,23 @@ export const getForelderNavn = (
 export const getStondskontoTekstKey = (konto: StonadskontoType) => {
     switch (konto) {
         case StonadskontoType.Fellesperiode:
-            return 'stonadskonto.fellesperiode';
+            return 'uttaksplan.stonadskonto.fellesperiode';
         case StonadskontoType.Fedrekvote:
-            return 'stonadskonto.fedrekvote';
+            return 'uttaksplan.stonadskonto.fedrekvote';
         case StonadskontoType.Modrekvote:
-            return 'stonadskonto.modrekvote';
+            return 'uttaksplan.stonadskonto.modrekvote';
         case StonadskontoType.ModrekvotePakrevd:
-            return 'stonadskonto.modrekvotePakrevd';
+            return 'uttaksplan.stonadskonto.modrekvotePakrevd';
         default:
-            return 'stonadskonto.foreldrepenger';
+            return 'uttaksplan.stonadskonto.foreldrepenger';
     }
 };
 
 export const getArsakTekstKey = (arsak: UtsettelseArsakType) => {
     switch (arsak) {
         case UtsettelseArsakType.Arbeid:
-            return 'opphold.arsak.Arbeid';
+            return 'uttaksplan.opphold.arsak.Arbeid';
         default:
-            return 'opphold.arsak.Ferie';
+            return 'uttaksplan.opphold.arsak.Ferie';
     }
 };

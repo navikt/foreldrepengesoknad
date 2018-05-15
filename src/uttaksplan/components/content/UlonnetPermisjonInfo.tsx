@@ -10,15 +10,15 @@ const UlonnetPermisjonInfo: React.StatelessComponent<InjectedIntlProps> = ({
     return (
         <div>
             <Element tag="h2">
-                <FormattedMessage id="veileder.ulonnetpermisjon.tittel" />
+                <FormattedMessage id="uttaksplan.veileder.ulonnetpermisjon.tittel" />
             </Element>
             <p>
-                <FormattedMessage id="veileder.ulonnetpermisjon.tekst1" />
+                <FormattedMessage id="uttaksplan.veileder.ulonnetpermisjon.tekst1" />
             </p>
             <p>
-                <FormattedMessage id="veileder.ulonnetpermisjon.tekst2" />{' '}
+                <FormattedMessage id="uttaksplan.veileder.ulonnetpermisjon.tekst2" />{' '}
                 <Lenke href={EksterneLenker.nav_foreldrepenger} target="_blank">
-                    <FormattedMessage id="veileder.ulonnetpermisjon.navlenketekst" />
+                    <FormattedMessage id="uttaksplan.veileder.ulonnetpermisjon.navlenketekst" />
                 </Lenke>
             </p>
         </div>

@@ -61,7 +61,7 @@ export function validerUtsettelseskjema(
     if (!startdato) {
         valideringsfeil.set('startdato', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.startdatoMangler'
+                id: 'uttaksplan.utsettelseskjema.feil.startdatoMangler'
             })
         });
     } else {
@@ -74,8 +74,14 @@ export function validerUtsettelseskjema(
         if (datoValideringsfeil) {
             valideringsfeil.set('startdato', {
                 feilmelding: intl.formatMessage(
-                    { id: `datovalidering.${datoValideringsfeil}` },
-                    { datonavn: intl.formatMessage({ id: 'startdato' }) }
+                    {
+                        id: `uttaksplan.uttaksplan.datovalidering.${datoValideringsfeil}`
+                    },
+                    {
+                        datonavn: intl.formatMessage({
+                            id: 'uttaksplan.uttaksplan.startdato'
+                        })
+                    }
                 )
             });
         }
@@ -83,7 +89,7 @@ export function validerUtsettelseskjema(
     if (!sluttdato) {
         valideringsfeil.set('sluttdato', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.sluttdatoMangler'
+                id: 'uttaksplan.utsettelseskjema.feil.sluttdatoMangler'
             })
         });
     } else {
@@ -103,14 +109,21 @@ export function validerUtsettelseskjema(
         if (datoValideringsfeil) {
             valideringsfeil.set('sluttdato', {
                 feilmelding: intl.formatMessage(
-                    { id: `datovalidering.${datoValideringsfeil}` },
-                    { datonavn: intl.formatMessage({ id: 'sluttdato' }) }
+                    {
+                        id: `uttaksplan.uttaksplan.datovalidering.${datoValideringsfeil}`
+                    },
+                    {
+                        datonavn: intl.formatMessage({
+                            id: 'uttaksplan.uttaksplan.sluttdato'
+                        })
+                    }
                 )
             });
         } else if (startdato && isBefore(sluttdato, startdato)) {
             valideringsfeil.set('sluttdato', {
                 feilmelding: intl.formatMessage({
-                    id: 'utsettelseskjema.feil.sluttdatoEtterStartdato'
+                    id:
+                        'uttaksplan.utsettelseskjema.feil.sluttdatoEtterStartdato'
                 })
             });
         }
@@ -128,7 +141,7 @@ export function validerUtsettelseskjema(
     ) {
         valideringsfeil.set('feriedager', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.ugyldigAntallFeriedager'
+                id: 'uttaksplan.utsettelseskjema.feil.ugyldigAntallFeriedager'
             })
         });
     }
@@ -141,7 +154,7 @@ export function validerUtsettelseskjema(
         helligdagFeilErRegistrert = true;
         valideringsfeil.set('startdato', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.startdatoErHelligdag'
+                id: 'uttaksplan.utsettelseskjema.feil.startdatoErHelligdag'
             })
         });
     }
@@ -154,7 +167,7 @@ export function validerUtsettelseskjema(
         helligdagFeilErRegistrert = true;
         valideringsfeil.set('sluttdato', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.sluttdatoErHelligdag'
+                id: 'uttaksplan.utsettelseskjema.feil.sluttdatoErHelligdag'
             })
         });
     }
@@ -170,7 +183,7 @@ export function validerUtsettelseskjema(
     ) {
         valideringsfeil.set('tidsperiode', {
             feilmelding: intl.formatMessage({
-                id: 'utsettelseskjema.feil.helligdagIPeriode'
+                id: 'uttaksplan.utsettelseskjema.feil.helligdagIPeriode'
             })
         });
     }

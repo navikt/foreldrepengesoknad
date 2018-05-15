@@ -27,7 +27,7 @@ const FordelingFellesperiodeLabelRenderer: React.StatelessComponent<Props> = ({
                     </div>
                     <div className="skjema_fordelingFellesperiode__uker">
                         <FormattedMessage
-                            id="skjema.fordeling.uker"
+                            id="uttaksplan.skjema.fordeling.uker"
                             values={{
                                 uker: ukerForelder1
                             }}
@@ -40,7 +40,7 @@ const FordelingFellesperiodeLabelRenderer: React.StatelessComponent<Props> = ({
                     </div>
                     <div className="skjema_fordelingFellesperiode__uker">
                         <FormattedMessage
-                            id="skjema.fordeling.uker"
+                            id="uttaksplan.skjema.fordeling.uker"
                             values={{
                                 uker: ukerForelder2
                             }}
