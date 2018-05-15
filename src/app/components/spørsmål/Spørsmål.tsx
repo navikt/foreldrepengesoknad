@@ -11,7 +11,7 @@ export interface Props {
     animert?: boolean;
     /** Size - default m */
     margin?: BottomMargin;
-    render: () => JSX.Element;
+    render: () => JSX.Element | undefined;
 }
 
 import './spørsmål.less';
@@ -23,11 +23,12 @@ const Spørsmål: React.StatelessComponent<Props> = ({
     margin = 'm',
     render = () => null
 }) => {
-    const getContent = () => (
-        <div className={classnames('sporsmal', `sporsmal--${margin}`)}>
-            {render()}
-        </div>
-    );
+    const getContent = () =>
+        render ? (
+            <div className={classnames('sporsmal', `sporsmal--${margin}`)}>
+                {render()}
+            </div>
+        ) : null;
 
     if (animert === true && margin === 'm') {
         return (
