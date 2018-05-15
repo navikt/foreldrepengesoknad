@@ -6,7 +6,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const webpackConfig = {
     entry: [
         'babel-polyfill',
-        './src/app/bootstrap.tsx',
+        `${__dirname}/../../app/bootstrap.tsx`,
         'webpack-dev-server/client?http://localhost:8080'
     ],
     output: {
