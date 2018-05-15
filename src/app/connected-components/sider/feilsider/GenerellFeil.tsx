@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Feilsidemelding from '../../../components/feilsideMelding/Feilsidemelding';
+import Feilsidemelding from '../../../components/feilsidemelding/Feilsidemelding';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 

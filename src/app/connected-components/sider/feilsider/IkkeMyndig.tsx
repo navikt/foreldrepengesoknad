@@ -5,10 +5,10 @@ import { injectIntl } from 'react-intl';
 import getMessage from '../../../util/i18nUtils';
 
 import { ApiReducerState } from '../../../redux/reducers/apiReducer';
-import Feilsidemelding from '../../../components/feilsideMelding/Feilsidemelding';
 import DocumentTitle from 'react-document-title';
 import Applikasjonsside from '../Applikasjonsside';
 import Person from '../../../types/Person';
+import Feilsidemelding from '../../../components/feilsidemelding/Feilsidemelding';
 
 interface StateProps {
     person: Person;

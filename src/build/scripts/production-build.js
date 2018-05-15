@@ -10,5 +10,16 @@ const cb = (err) => {
     }
 };
 
-const compiler = webpack(webpackConfig);
+const compiler = webpack(webpackConfig, (err, stats) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    console.log(
+        stats.toString({
+            colors: true
+        })
+    );
+});
 compiler.run(cb);
