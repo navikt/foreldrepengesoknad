@@ -1,3 +1,4 @@
+import { VedleggPartial } from './Vedlegg';
 import { AnnenForelderPartial } from './AnnenForelder';
 
 import {
@@ -46,6 +47,7 @@ interface Søknad {
         | ForeldreansvarBarnPartial;
     søker: SøkerPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
+    vedlegg: VedleggPartial;
 }
 
 export type SøknadPartial = Partial<Søknad>;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Opplastingsikon</title>
+    <defs></defs>
+    <g id="Icons/upload" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="icon-upload" transform="translate(2.000000, 2.000000)" stroke="#0067C5" stroke-width="0.930000007">
+            <path d="M20,16.4347826 L20,18.2608696 C20,19.7728696 18.8318182,21 17.3918182,21 L2.60818182,21 C1.16727273,21 0,19.7728696 0,18.2608696 L0,16.4347826 M10,0 L10,15.5217391 M3.63636364,6.39130435 L10,0 L16.3636364,6.39130435" id="Shape"></path>
+        </g>
+    </g>
+</svg>
