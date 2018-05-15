@@ -3,7 +3,7 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { getPermisjonsregler } from '../../data/permisjonsregler';
-import { UttaksplanFormState } from '../types';
+import { UttaksplanFormState, UttaksplanFormStatePartial } from '../types';
 import { normaliserDato } from '../../utils';
 import { FellesperiodeFordeling, Dekningsgrad } from '../../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
@@ -43,10 +43,10 @@ const getInitialState = (): UttaksplanFormState => {
     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
 
     return {
-        termindato: undefined,
+        termindato: new Date(),
         navnForelder1: undefined,
         navnForelder2: undefined,
-        dekningsgrad: undefined,
+        dekningsgrad: '100%',
         ukerFellesperiode,
         fellesperiodeukerForelder1: ukerForelder1,
         fellesperiodeukerForelder2: ukerForelder2,
@@ -86,32 +86,43 @@ const validerTermindato = (termindato: Date) => {
     );
 };
 
+const updateFormState = (
+    state: UttaksplanFormState,
+    data: UttaksplanFormStatePartial
+): UttaksplanFormState => ({
+    ...state,
+    ...data
+});
+
 const FormReducer = (
     state = getInitialState(),
     action: PlanleggerActionTypes
 ): UttaksplanFormState => {
     switch (action.type) {
         case PlanleggerActionTypeKeys.SET_NAVN_FORELDER1:
-            return { ...state, navnForelder1: action.navn };
+            return updateFormState(state, {
+                navnForelder1: action.navn
+            });
         case PlanleggerActionTypeKeys.SET_NAVN_FORELDER2:
-            return { ...state, navnForelder2: action.navn };
+            return updateFormState(state, {
+                navnForelder2: action.navn
+            });
         case PlanleggerActionTypeKeys.SET_TERMINDATO:
             const dato = normaliserDato(action.termindato);
             const permisjonsregler = getPermisjonsregler(dato);
             const erGyldigTermindato = validerTermindato(dato);
             if (erGyldigTermindato) {
-                return {
-                    ...getDefaultState(dato, state.dekningsgrad || '100%'),
-                    navnForelder1: state.navnForelder1,
-                    navnForelder2: state.navnForelder2,
-                    termindato: dato,
-                    permisjonsregler
-                };
+                return updateFormState(
+                    getDefaultState(dato, state.dekningsgrad || '100%'),
+                    {
+                        navnForelder1: state.navnForelder1,
+                        navnForelder2: state.navnForelder2,
+                        termindato: dato,
+                        permisjonsregler
+                    }
+                );
             } else {
-                return {
-                    ...state,
-                    termindatoErUgyldig: true
-                };
+                return updateFormState(state, { termindatoErUgyldig: true });
             }
         case PlanleggerActionTypeKeys.SET_DEKNINGSGRAD:
             if (!action.dekningsgrad) {
@@ -130,22 +141,20 @@ const FormReducer = (
             );
             const fellesperiodeukerForelder2 =
                 ukerFellesperiode - fellesperiodeukerForelder1;
-            return {
-                ...state,
+            return updateFormState(state, {
                 dekningsgrad: action.dekningsgrad,
                 ukerFellesperiode,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2
-            };
+            });
         case PlanleggerActionTypeKeys.SET_UKER_FORELDER1:
-            return {
-                ...state,
+            return updateFormState(state, {
                 fellesperiodeukerForelder1: action.uker,
                 fellesperiodeukerForelder2: beregnUkerForelder2(
                     state.ukerFellesperiode,
                     action.uker
                 )
-            };
+            });
         default:
             return state;
     }

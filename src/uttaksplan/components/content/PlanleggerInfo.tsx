@@ -11,7 +11,9 @@ import {
 } from 'react-intl';
 import EksterneLenker from 'uttaksplan/eksterneLenker';
 
-const PlanleggerInfo: React.StatelessComponent<InjectedIntlProps> = ({
+export interface Props {}
+
+const PlanleggerInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     intl
 }) => (
     <div>
@@ -20,8 +22,12 @@ const PlanleggerInfo: React.StatelessComponent<InjectedIntlProps> = ({
                 <FormattedMessage id="veileder.forbehold.intro" />
             </p>
             <UtvidetInformasjon
-                apneLabel={intl.formatMessage({ id: 'planleggerinfo.apne' })}
-                lukkLabel={intl.formatMessage({ id: 'planleggerinfo.lukk' })}>
+                apneLabel={intl.formatMessage({
+                    id: 'planleggerinfo.apne'
+                })}
+                lukkLabel={intl.formatMessage({
+                    id: 'planleggerinfo.lukk'
+                })}>
                 <div className="blokkPad-m">
                     <Element tag="h2">
                         <FormattedMessage id="veileder.forbehold.utvidetinfo.tittel" />
