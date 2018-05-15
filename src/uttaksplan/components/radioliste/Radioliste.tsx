@@ -11,6 +11,8 @@ type RadiolisteChangeEvent = (verdi: RadiolisteValgVerdi) => void;
 
 type RadiobuttonStil = 'intern' | 'ekstern';
 
+import './radioliste.less';
+
 export interface RadiolisteValg {
     tittel: string;
     verdi: string;
