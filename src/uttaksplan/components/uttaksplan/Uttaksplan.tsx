@@ -42,7 +42,7 @@ interface OwnProps {
     sprak?: Spraak;
 }
 
-import '../../styles/uttaksplan.less';
+import './uttaksplan.less';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -90,7 +90,7 @@ export class Main extends React.Component<Props> {
 
         return (
             <div>
-                <section className="introtekst">
+                <section className="blokk-l">
                     <h1 className="m-textCenter applikasjonstittel blokk-s">
                         <FormattedMessage id="applikasjonstittel" />
                     </h1>
