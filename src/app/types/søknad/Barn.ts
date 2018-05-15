@@ -14,6 +14,7 @@ export interface FødtBarn extends Barn {
 
 export interface Adopsjonsbarn extends FødtBarn {
     adopsjonsdato: Date;
+    adoptertIUtlandet: boolean;
 }
 
 export interface ForeldreansvarBarn extends FødtBarn {
