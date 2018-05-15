@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+
+import { StegID } from '../../../util/stegConfig';
+import Steg from '../../../components/layout/Steg';
+
 import { DispatchProps } from '../../../redux/types';
 import { AppState } from '../../../redux/reducers';
-import Steg from '../../../components/layout/Steg';
-import { StegID } from '../../../util/stegConfig';
 import Spørsmål from '../../../components/spørsmål/Spørsmål';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import DatoInput from '../../../components/dato-input/DatoInput';
@@ -29,7 +31,6 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
-        this.oppdaterState = this.oppdaterState.bind(this);
     }
 
     oppdaterAntallBarn(antall: number) {
@@ -47,16 +48,8 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
         );
     }
 
-    oppdaterState(barn: ForeldreansvarBarnPartial) {
-        this.props.dispatch(
-            søknadActions.updateSøknad({
-                barn: { ...this.props.barn, ...barn }
-            })
-        );
-    }
-
     render() {
-        const { barn, visOver15årMelding, intl } = this.props;
+        const { barn, visOver15årMelding, intl, dispatch } = this.props;
         return (
             <Steg id={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}>
                 <Spørsmål
@@ -66,10 +59,12 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                             label={
                                 <Labeltekst intlId="foreldreansvar.overtakelsedato" />
                             }
-                            onChange={(dato) =>
-                                this.oppdaterState({
-                                    foreldreansvarsdato: dato
-                                })
+                            onChange={(dato: Date) =>
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        foreldreansvarsdato: dato
+                                    })
+                                )
                             }
                             dato={barn.foreldreansvarsdato}
                         />
@@ -99,11 +94,13 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                                 barn.fødselsdatoer || []
                             )}
                             onChange={(fødselsdatoer) =>
-                                this.oppdaterState({
-                                    fødselsdatoer: utils.fødselsdatoerToString(
-                                        fødselsdatoer
-                                    )
-                                })
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        fødselsdatoer: utils.fødselsdatoerToString(
+                                            fødselsdatoer
+                                        )
+                                    })
+                                )
                             }
                         />
                     )}
