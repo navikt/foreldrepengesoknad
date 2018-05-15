@@ -6,7 +6,7 @@ import { Søkersituasjon } from '../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 
 interface SøkersituasjonProps {
-    situasjon: Søkersituasjon;
+    situasjon?: Søkersituasjon;
     onChange: (
         situasjon: Søkersituasjon,
         e: React.ChangeEvent<HTMLInputElement>
