@@ -5,7 +5,7 @@ import utsettelseReducer from './utsettelseReducer';
 import viewReducer from './viewReducer';
 
 const UttaksplanReducer = combineReducers({
-    form: formReducer,
+    uttaksplanForm: formReducer,
     utsettelse: utsettelseReducer,
     view: viewReducer
 });

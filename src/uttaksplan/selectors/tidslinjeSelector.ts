@@ -9,7 +9,8 @@ import { Periode, Periodetype } from '../types';
 import { getSammenhengendePerioder } from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
-const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
+const formSelector = (state: UttaksplanAppState) =>
+    state.uttaksplan.uttaksplanForm;
 
 export const tidslinjeFraPerioder = createSelector(
     getStonadsperioderOgUtsettelser,

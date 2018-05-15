@@ -18,6 +18,7 @@ export interface UttaksplanFormState {
     ukerFellesperiode: number;
     permisjonsregler: Permisjonsregler;
 }
+export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 
 export interface UtsettelseState {
     dialogErApen: boolean;
@@ -34,7 +35,7 @@ export interface UttaksplanViewState {
 export type ViewStatePartial = Partial<UttaksplanViewState>;
 
 export interface UttaksplanState {
-    form: UttaksplanFormState;
+    uttaksplanForm: UttaksplanFormState;
     utsettelse: UtsettelseState;
     view: UttaksplanViewState;
 }

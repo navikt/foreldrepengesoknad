@@ -4,7 +4,8 @@ import { Utsettelsesperiode, Periode, Stonadsperiode } from '../types';
 import { leggUtsettelserTilPerioder } from '../utils/periodeUtils';
 import { opprettStønadsperioder } from '../utils/permisjonUtils';
 
-const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
+const formSelector = (state: UttaksplanAppState) =>
+    state.uttaksplan.uttaksplanForm;
 const utsettelseSelector = (state: UttaksplanAppState) =>
     state.uttaksplan.utsettelse.utsettelser;
 
@@ -13,16 +14,16 @@ const utsettelseSelector = (state: UttaksplanAppState) =>
  */
 export const getStonadsperioder = createSelector(
     formSelector,
-    (form: UttaksplanFormState): Stonadsperiode[] => {
-        if (!form.termindato || !form.dekningsgrad) {
+    (uttaksplanForm: UttaksplanFormState): Stonadsperiode[] => {
+        if (!uttaksplanForm.termindato || !uttaksplanForm.dekningsgrad) {
             return [];
         }
         return opprettStønadsperioder(
-            form.termindato,
-            form.dekningsgrad,
-            form.fellesperiodeukerForelder1 || 0,
-            form.fellesperiodeukerForelder2 || 0,
-            form.permisjonsregler
+            uttaksplanForm.termindato,
+            uttaksplanForm.dekningsgrad,
+            uttaksplanForm.fellesperiodeukerForelder1 || 0,
+            uttaksplanForm.fellesperiodeukerForelder2 || 0,
+            uttaksplanForm.permisjonsregler
         );
     }
 );
