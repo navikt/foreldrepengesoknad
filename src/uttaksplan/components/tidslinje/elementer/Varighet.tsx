@@ -10,9 +10,12 @@ const Varighet: React.StatelessComponent<Props> = (props) => {
     const ukerOgDager = getUkerOgDagerFromDager(props.dager);
 
     return ukerOgDager.uker > 0 ? (
-        <FormattedMessage id="ukerogdager" values={{ ...ukerOgDager }} />
+        <FormattedMessage
+            id="uttaksplan.ukerogdager"
+            values={{ ...ukerOgDager }}
+        />
     ) : (
-        <FormattedMessage id="dager" values={{ ...ukerOgDager }} />
+        <FormattedMessage id="uttaksplan.dager" values={{ ...ukerOgDager }} />
     );
 };
 

@@ -46,7 +46,7 @@ class UttaksplanSkjema extends React.Component<Props> {
                             <Input
                                 name="navnforelder1"
                                 label={intl.formatMessage({
-                                    id: 'skjema.label.forelder1'
+                                    id: 'uttaksplan.skjema.label.forelder1'
                                 })}
                                 value={uttaksplanForm.navnForelder1 || ''}
                                 placeholder="Navn"
@@ -59,7 +59,7 @@ class UttaksplanSkjema extends React.Component<Props> {
                             <Input
                                 name="navnforelder2"
                                 label={intl.formatMessage({
-                                    id: 'skjema.label.forelder2'
+                                    id: 'uttaksplan.skjema.label.forelder2'
                                 })}
                                 value={uttaksplanForm.navnForelder2 || ''}
                                 placeholder="Navn"
@@ -75,7 +75,7 @@ class UttaksplanSkjema extends React.Component<Props> {
                         id="input-termindato"
                         dato={uttaksplanForm.termindato}
                         label={intl.formatMessage({
-                            id: 'skjema.label.termindato'
+                            id: 'uttaksplan.skjema.label.termindato'
                         })}
                         onChange={(dato: Date) => dispatch(setTermindato(dato))}
                         avgrensninger={{

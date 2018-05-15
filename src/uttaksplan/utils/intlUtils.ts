@@ -7,7 +7,7 @@ export const getVarighetString = (
 ): string => {
     const { uker, dager } = getUkerOgDagerFromDager(antallDager);
     const dagerStr = intl.formatMessage(
-        { id: 'dager' },
+        { id: 'uttaksplan.dager' },
         {
             dager
         }
@@ -16,9 +16,11 @@ export const getVarighetString = (
     if (uker === 0) {
         return `${tallTilTekst(dager, intl)} ${dagerStr}`;
     }
-    const ukerStr = intl.formatMessage({ id: 'uker' }, { uker });
+    const ukerStr = intl.formatMessage({ id: 'uttaksplan.uker' }, { uker });
     if (dager > 0) {
-        return `${ukerStr} ${intl.formatMessage({ id: 'og' })} ${dagerStr}`;
+        return `${ukerStr} ${intl.formatMessage({
+            id: 'uttaksplan.og'
+        })} ${dagerStr}`;
     }
     return ukerStr;
 };
@@ -30,6 +32,6 @@ export const tallTilTekst = (tall: number, intl: InjectedIntl): string => {
     if (tall > 10 || tall < 0) {
         return `${tall}`;
     } else {
-        return intl.formatMessage({ id: `tall-${tall}` });
+        return intl.formatMessage({ id: `uttaksplan.tall-${tall}` });
     }
 };

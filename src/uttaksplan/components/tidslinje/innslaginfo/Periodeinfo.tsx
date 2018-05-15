@@ -46,7 +46,7 @@ const Periodeinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
             tidsperiode={tidsperiode}
             ekstrainfo={innslag.ekstrainfo}>
             {intl.formatMessage(
-                { id: 'tidslinje.innslag.foreldrepenger' },
+                { id: 'uttaksplan.tidslinje.innslag.foreldrepenger' },
                 { navn }
             )}
         </InnslagLayout>

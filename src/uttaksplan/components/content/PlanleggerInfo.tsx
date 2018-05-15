@@ -19,20 +19,20 @@ const PlanleggerInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     <div>
         <Veilederinfo>
             <p>
-                <FormattedMessage id="veileder.forbehold.intro" />
+                <FormattedMessage id="uttaksplan.veileder.forbehold.intro" />
             </p>
             <UtvidetInformasjon
                 apneLabel={intl.formatMessage({
-                    id: 'planleggerinfo.apne'
+                    id: 'uttaksplan.planleggerinfo.apne'
                 })}
                 lukkLabel={intl.formatMessage({
-                    id: 'planleggerinfo.lukk'
+                    id: 'uttaksplan.planleggerinfo.lukk'
                 })}>
                 <div className="blokkPad-m">
                     <Element tag="h2">
-                        <FormattedMessage id="veileder.forbehold.utvidetinfo.tittel" />
+                        <FormattedMessage id="uttaksplan.veileder.forbehold.utvidetinfo.tittel" />
                     </Element>
-                    <FormattedHTMLMessage id="veileder.forbehold.utvidetinfo.html" />
+                    <FormattedHTMLMessage id="uttaksplan.veileder.forbehold.utvidetinfo.html" />
                     <Lenke href={EksterneLenker.nav_foreldrepenger}>
                         Les om foreldrepenger
                     </Lenke>

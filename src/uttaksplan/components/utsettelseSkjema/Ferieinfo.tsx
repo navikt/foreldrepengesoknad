@@ -19,7 +19,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     if (feriedager <= permisjonsregler.maksFeriedagerEttÅr) {
         return (
             <Veilederinfo>
-                <FormattedMessage id="utsettelseskjema.veiledning.ferie" />
+                <FormattedMessage id="uttaksplan.utsettelseskjema.veiledning.ferie" />
             </Veilederinfo>
         );
     }
@@ -28,7 +28,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
         return (
             <Veilederinfo type="feil">
                 <FormattedMessage
-                    id="utsettelseskjema.ferievarsel.ulovlig"
+                    id="uttaksplan.utsettelseskjema.ferievarsel.ulovlig"
                     values={{ ukerOgDager, forelderNavn }}
                 />
             </Veilederinfo>
@@ -37,7 +37,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
         return (
             <Veilederinfo type="advarsel">
                 <FormattedMessage
-                    id="utsettelseskjema.ferievarsel.kreveroverforing"
+                    id="uttaksplan.utsettelseskjema.ferievarsel.kreveroverforing"
                     values={{ ukerOgDager, forelderNavn }}
                 />
             </Veilederinfo>

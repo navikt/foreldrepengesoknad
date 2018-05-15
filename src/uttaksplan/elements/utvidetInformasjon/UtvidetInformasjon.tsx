@@ -38,8 +38,12 @@ class UtvidetInformasjon extends React.Component<Props, State> {
         const { intl } = this.props;
 
         const {
-            apneLabel = intl.formatMessage({ id: 'utvidetinfo.lesmer' }),
-            lukkLabel = intl.formatMessage({ id: 'utvidetinfo.lukk' })
+            apneLabel = intl.formatMessage({
+                id: 'uttaksplan.utvidetinfo.lesmer'
+            }),
+            lukkLabel = intl.formatMessage({
+                id: 'uttaksplan.utvidetinfo.lukk'
+            })
         } = this.props;
         return (
             <div className={cls}>

@@ -42,7 +42,7 @@ interface OwnProps {
     sprak?: Spraak;
 }
 
-import './uttaksplan.less';
+import '../../styles/uttaksplan.less';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -92,7 +92,7 @@ export class Main extends React.Component<Props> {
             <div>
                 <section className="blokk-l">
                     <h1 className="m-textCenter applikasjonstittel blokk-s">
-                        <FormattedMessage id="applikasjonstittel" />
+                        <FormattedMessage id="uttaksplan.applikasjonstittel" />
                     </h1>
                     <div className="blokk-m">
                         <PlanleggerInfo />
@@ -101,7 +101,7 @@ export class Main extends React.Component<Props> {
 
                 <section>
                     <h2 className="sr-only">
-                        <FormattedMessage id="skjermleser.skjema.tittel" />
+                        <FormattedMessage id="uttaksplan.skjermleser.skjema.tittel" />
                     </h2>
                     <div className="blokk-m no-print">
                         <UttaksplanSkjema />
@@ -114,7 +114,7 @@ export class Main extends React.Component<Props> {
                                     onClick={() =>
                                         dispatch(visTidslinje(true))
                                     }>
-                                    <FormattedMessage id="knapp.vispermisjonsplan" />
+                                    <FormattedMessage id="uttaksplan.knapp.vispermisjonsplan" />
                                 </Knapp>
                             </div>
                         )}

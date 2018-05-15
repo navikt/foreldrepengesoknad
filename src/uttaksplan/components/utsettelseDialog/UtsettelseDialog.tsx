@@ -37,7 +37,7 @@ const UtsettelseDialog: React.StatelessComponent<Props> = (props: Props) => {
         <Modal
             isOpen={props.isOpen}
             contentLabel={props.intl.formatMessage({
-                id: 'utsettelseskjema.tittel'
+                id: 'uttaksplan.utsettelseskjema.tittel'
             })}
             onRequestClose={() => props.dispatch(utsettelseLukkDialog())}
             className="utsettelseSkjemaDialog"

@@ -58,13 +58,19 @@ const Fordeling: React.StatelessComponent<Props> = ({
                     className="fordeling__graf__bar fordeling__graf__bar--forelder1"
                     style={b1}>
                     <span className="sr-only">{navnForelder1}:</span>
-                    <FormattedMessage id="uker" values={{ uker: ukerF1 }} />
+                    <FormattedMessage
+                        id="uttaksplan.uker"
+                        values={{ uker: ukerF1 }}
+                    />
                 </span>
                 <span
                     className="fordeling__graf__bar fordeling__graf__bar--forelder2"
                     style={b2}>
                     <span className="sr-only">{navnForelder2}:</span>
-                    <FormattedMessage id="uker" values={{ uker: ukerF2 }} />
+                    <FormattedMessage
+                        id="uttaksplan.uker"
+                        values={{ uker: ukerF2 }}
+                    />
                 </span>
             </div>
         </div>

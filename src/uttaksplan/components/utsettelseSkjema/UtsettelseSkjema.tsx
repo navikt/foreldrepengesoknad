@@ -210,13 +210,13 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 onSubmit={preventDefaultEvent}
                 className="utsettelseSkjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
-                    <FormattedMessage id="utsettelseskjema.tittel" />
+                    <FormattedMessage id="uttaksplan.utsettelseskjema.tittel" />
                 </h1>
                 <div className="blokkPad-s">
                     <Radioliste
                         kolonner="2"
                         tittel={intl.formatMessage({
-                            id: 'utsettelseskjema.hvem.sporsmal'
+                            id: 'uttaksplan.utsettelseskjema.hvem.sporsmal'
                         })}
                         inputnavn="forelder"
                         stil="ekstern"
@@ -226,7 +226,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 tittel:
                                     navnForelder1 ||
                                     intl.formatMessage({
-                                        id: 'Forelder1'
+                                        id: 'uttaksplan.Forelder1'
                                     }),
                                 verdi: 'forelder1'
                             },
@@ -234,7 +234,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 tittel:
                                     navnForelder2 ||
                                     intl.formatMessage({
-                                        id: 'Forelder2'
+                                        id: 'uttaksplan.Forelder2'
                                     }),
                                 verdi: 'forelder2'
                             }
@@ -254,20 +254,22 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                         <Radioliste
                             tittel={
                                 <FormattedMessage
-                                    id="utsettelseskjema.arsak.sporsmal"
+                                    id="uttaksplan.utsettelseskjema.arsak.sporsmal"
                                     values={{
                                         navn:
                                             forelder === 'forelder1'
                                                 ? navnForelder1 ||
                                                   intl
                                                       .formatMessage({
-                                                          id: 'forelder1'
+                                                          id:
+                                                              'uttaksplan.forelder1'
                                                       })
                                                       .toLowerCase()
                                                 : navnForelder2 ||
                                                   intl
                                                       .formatMessage({
-                                                          id: 'forelder2'
+                                                          id:
+                                                              'uttaksplan.forelder2'
                                                       })
                                                       .toLowerCase()
                                     }}
@@ -278,13 +280,15 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                             valg={[
                                 {
                                     tittel: intl.formatMessage({
-                                        id: 'utsettelseskjema.arsak.arbeid'
+                                        id:
+                                            'uttaksplan.utsettelseskjema.arsak.arbeid'
                                     }),
                                     verdi: UtsettelseArsakType.Arbeid
                                 },
                                 {
                                     tittel: intl.formatMessage({
-                                        id: 'utsettelseskjema.arsak.ferie'
+                                        id:
+                                            'uttaksplan.utsettelseskjema.arsak.ferie'
                                     }),
                                     verdi: UtsettelseArsakType.Ferie
                                 }
@@ -318,7 +322,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                             id="startdato"
                                             label={intl.formatMessage({
                                                 id:
-                                                    'utsettelseskjema.startdato.sporsmal'
+                                                    'uttaksplan.utsettelseskjema.startdato.sporsmal'
                                             })}
                                             dato={startdato}
                                             feil={
@@ -350,7 +354,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                             dato={sluttdato}
                                             label={intl.formatMessage({
                                                 id:
-                                                    'utsettelseskjema.sluttdato.sporsmal'
+                                                    'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
                                             })}
                                             feil={
                                                 visSluttdatofeil &&
@@ -384,11 +388,11 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                     forelder === 'forelder1'
                                         ? navnForelder1 ||
                                           intl.formatMessage({
-                                              id: 'forelder1'
+                                              id: 'uttaksplan.forelder1'
                                           })
                                         : navnForelder2 ||
                                           intl.formatMessage({
-                                              id: 'forelder2'
+                                              id: 'uttaksplan.forelder2'
                                           })
                                 }
                             />
@@ -405,9 +409,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                     }
                                     className="m-fullBredde">
                                     {utsettelse ? (
-                                        <FormattedMessage id="utsettelseskjema.knapp.oppdater" />
+                                        <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.oppdater" />
                                     ) : (
-                                        <FormattedMessage id="utsettelseskjema.knapp.leggtil" />
+                                        <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.leggtil" />
                                     )}
                                 </Hovedknapp>
                             </div>
@@ -421,7 +425,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                         this.props.onFjern(utsettelse)
                                     }
                                     className="m-fullBredde">
-                                    <FormattedMessage id="utsettelseskjema.knapp.fjern" />
+                                    <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.fjern" />
                                 </Knapp>
                             </Column>
                         )}
