@@ -2,7 +2,8 @@ import { getPermisjonsregler } from '../../data/permisjonsregler';
 import {
     Utsettelsesperiode,
     UtsettelseArsakType,
-    Periodetype
+    Periodetype,
+    Dekningsgrad
 } from '../../types';
 import { leggTilUtsettelse } from '../../utils/periodeUtils';
 import { tidslinjeFraPerioder } from '../../selectors/tidslinjeSelector';
@@ -38,7 +39,7 @@ const utsettelse: Utsettelsesperiode = {
 const permisjonsregler = getPermisjonsregler(datoer.termin);
 
 const formState = {
-    dekningsgrad: '100%',
+    dekningsgrad: '100%' as Dekningsgrad,
     termindato: datoer.termin,
     navnForelder1: 'a',
     navnForelder2: 'b',
