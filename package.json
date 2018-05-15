@@ -37,6 +37,7 @@
         "@types/react-dom": "16.0.5",
         "@types/react-redux": "5.0.18",
         "@types/react-router-dom": "4.2.6",
+        "awesome-typescript-loader": "^5.0.0",
         "babel-loader": "7.1.4",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-polyfill": "6.26.0",
