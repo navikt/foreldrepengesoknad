@@ -25,7 +25,7 @@ const AdoptertIUtlandetSpørsmål = (props: Props) => {
     if (adoptertIUtlandet === true) {
         checked = BarnAdoptert.ADOPTERT_I_UTLANDET;
     } else if (adoptertIUtlandet === false) {
-        checked = BarnAdoptert.IKKE_ADOPTERT_i_UTLANDET;
+        checked = BarnAdoptert.IKKE_ADOPTERT_I_UTLANDET;
     }
 
     return (
