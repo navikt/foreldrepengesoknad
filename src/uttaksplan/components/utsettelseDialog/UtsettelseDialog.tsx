@@ -17,6 +17,8 @@ import {
 } from 'uttaksplan/types';
 import UtsettelseSkjema from 'uttaksplan/components/utsettelseSkjema/UtsettelseSkjema';
 
+import './utsettelseDialog.less';
+
 interface OwnProps {
     isOpen: boolean;
     utsettelser: Utsettelsesperiode[];

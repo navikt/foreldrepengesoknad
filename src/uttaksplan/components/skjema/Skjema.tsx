@@ -25,6 +25,8 @@ import SkjemaDekningsgrad from 'uttaksplan/components/skjema/SkjemaDekningsgrad'
 import SkjemaFordelingFellesperiode from 'uttaksplan/components/skjema/SkjemaFordelingFellesperiode';
 import AktivitetskravInfo from 'uttaksplan/components/content/AktivitetskravInfo';
 
+import './skjema.less';
+
 export interface StateProps {
     uttaksplanForm: UttaksplanFormState;
     utsettelse: UtsettelseState;
@@ -37,7 +39,7 @@ class UttaksplanSkjema extends React.Component<Props> {
         const { dispatch, intl, uttaksplanForm } = this.props;
 
         return (
-            <div className="planlegger-skjema">
+            <div>
                 <div className="blokk-s">
                     <Row>
                         <Column xs="6">
