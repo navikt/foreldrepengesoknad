@@ -8,12 +8,11 @@ import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørs
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Applikasjonsside from '../../sider/Applikasjonsside';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
-import { Kjønn } from '../../../types/common';
 import { getSøkerrollerForBruker } from '../../../util/søkerrollerUtils';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
-    kjønn?: Kjønn;
+    visSpørsmålOmSøkerrolle?: boolean;
     rolle?: SøkerRolle;
     roller?: SøkerRolle[];
 }
@@ -22,7 +21,13 @@ export type Props = DispatchProps & StateProps;
 
 class Inngangsside extends React.Component<Props, {}> {
     render() {
-        const { roller, situasjon, rolle, kjønn, dispatch } = this.props;
+        const {
+            roller,
+            situasjon,
+            rolle,
+            visSpørsmålOmSøkerrolle,
+            dispatch
+        } = this.props;
         return (
             <Applikasjonsside>
                 <Spørsmål
@@ -40,9 +45,9 @@ class Inngangsside extends React.Component<Props, {}> {
                     )}
                 />
                 <Spørsmål
-                    synlig={roller !== undefined}
+                    synlig={visSpørsmålOmSøkerrolle !== undefined}
                     render={() =>
-                        kjønn ? (
+                        visSpørsmålOmSøkerrolle ? (
                             <SøkerrolleSpørsmål
                                 rolle={rolle}
                                 roller={roller}
@@ -73,7 +78,7 @@ const mapStateToProps = (state: AppState): StateProps => {
             : undefined;
 
     return {
-        kjønn,
+        visSpørsmålOmSøkerrolle: roller !== undefined,
         rolle: state.søknad.søker.rolle,
         situasjon,
         roller
