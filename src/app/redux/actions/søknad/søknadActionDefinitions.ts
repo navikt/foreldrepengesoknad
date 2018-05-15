@@ -1,5 +1,6 @@
 import { SøkerPartial, SøknadPartial } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
+import { VedleggPartial } from '../../../types/søknad/Vedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
 
@@ -7,6 +8,7 @@ export enum SøknadActionKeys {
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
     'UPDATE_SØKER' = 'updateSøker',
+    'UPDATE_VEDLEGG' = 'updateVedlegg',
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKNAD' = 'updateSøknad'
 }
@@ -36,9 +38,15 @@ export interface UpdateSøknad {
     payload: SøknadPartial;
 }
 
+export interface UpdateVedlegg {
+    type: SøknadActionKeys.UPDATE_VEDLEGG;
+    payload: VedleggPartial;
+}
+
 export type SøknadAction =
     | UpdateSøker
     | UpdateBarn
     | UpdateSøknad
+    | UpdateVedlegg
     | UpdateAnnenForelder
     | UpdateUtenlandsopphold;
