@@ -21,10 +21,6 @@ export interface StateProps {
 export type Props = DispatchProps & StateProps;
 
 class Inngangsside extends React.Component<Props, {}> {
-    constructor(props: Props) {
-        super(props);
-    }
-
     render() {
         const { roller, situasjon, rolle, kjønn, dispatch } = this.props;
         return (
