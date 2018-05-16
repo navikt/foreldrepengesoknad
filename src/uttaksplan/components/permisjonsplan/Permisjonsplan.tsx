@@ -5,7 +5,7 @@ import Tidslinje from '../tidslinje/Tidslinje';
 import LeggTilKnapp from '../../elements/leggTilKnapp/LeggTilKnapp';
 import { Permisjonsregler, Utsettelsesperiode } from '../../types';
 import { Tidslinjeinnslag } from '../tidslinje/types';
-// import { scrollToElement } from '../../utils/animationUtils';
+import { scrollToElement } from '../../utils/animationUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 export interface OwnProps {
@@ -17,13 +17,16 @@ export interface OwnProps {
     permisjonsregler: Permisjonsregler;
     onLeggTilUtsettelse: () => void;
     onRedigerUtsettelse: (u: Utsettelsesperiode) => void;
+    scrollOnMount?: boolean;
 }
 
 type Props = OwnProps;
 
 class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
     componentDidMount() {
-        // scrollToElement('permisjonsplan', { offset: -40 });
+        if (this.props.scrollOnMount) {
+            scrollToElement('permisjonsplan', { offset: -40 });
+        }
     }
     render() {
         const {
