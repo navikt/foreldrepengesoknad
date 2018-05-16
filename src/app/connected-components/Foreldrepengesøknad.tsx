@@ -23,7 +23,7 @@ import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevSideoversikt from '../dev/DevSideoversikt';
 import Inngangsside from './sider/inngangsside/Inngangsside';
-import UttaksplanSide from './sider/uttaksplanSide/UttaksplanSide';
+import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 
 interface StateProps {
     person: Person;
