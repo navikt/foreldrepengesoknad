@@ -23,6 +23,9 @@
             "uttaksplan/*": ["./uttaksplan/*"]
         }
     },
+    "awesomeTypescriptLoaderOptions": {
+        "useCache": true
+    },
     "exclude": [
         "node_modules",
         "build",
