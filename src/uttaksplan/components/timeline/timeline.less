@@ -9,6 +9,7 @@
 .timelineItem {
     @border-left-width: 6px;
     border-radius: 0.25rem;
+    position: relative;
     padding: 1rem;
     background-color: white;
     border: none;
@@ -47,6 +48,19 @@
     }
     &__labels {
         margin: 0.5rem 0;
+    }
+    &__icons {
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+    }
+    &__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-top: 0.5rem;
+        &:first-child {
+            margin-top: 0;
+        }
     }
 
     &--blue {

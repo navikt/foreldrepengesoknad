@@ -10,7 +10,8 @@ import {
     TimelineEvent,
     TimelineMarker,
     TimelineItem,
-    TimelineLabel
+    TimelineLabel,
+    TimelineIcon
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 
@@ -39,6 +40,12 @@ export const getLabelsForInnslag = (
     return undefined;
 };
 
+export const getTimelineIconsFromInnslag = (
+    innslag: InnslagPeriodetype
+): TimelineIcon[] | undefined => {
+    return [{ key: 'plaster' }];
+};
+
 export const mapInnslagToEvent = (
     innslag: InnslagPeriodetype
 ): TimelineEvent => ({
@@ -52,7 +59,8 @@ export const mapInnslagToEvent = (
     personName: innslag.periode.forelder,
     days: getAntallUttaksdagerITidsperiode(innslag.periode.tidsperiode),
     color: mapForelderTilInnslagfarge(innslag),
-    labels: getLabelsForInnslag(innslag)
+    labels: getLabelsForInnslag(innslag),
+    icons: getTimelineIconsFromInnslag(innslag)
 });
 
 export const mapInnslagToMarker = (
