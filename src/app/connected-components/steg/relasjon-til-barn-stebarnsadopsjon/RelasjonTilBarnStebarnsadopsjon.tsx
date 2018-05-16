@@ -86,15 +86,11 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     margin="none"
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={utils.fødselsdatoerFromString(
-                                barn.fødselsdatoer
-                            )}
+                            fødselsdatoer={barn.fødselsdatoer}
                             onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        fødselsdatoer: utils.fødselsdatoerToString(
-                                            fødselsdatoer
-                                        )
+                                        fødselsdatoer
                                     })
                                 )
                             }
