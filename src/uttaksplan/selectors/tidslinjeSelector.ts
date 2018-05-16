@@ -12,6 +12,8 @@ import { UttaksplanAppState } from 'uttaksplan/redux/types';
 const formSelector = (state: UttaksplanAppState) =>
     state.uttaksplan.uttaksplanForm;
 
+const FILTRER_PERIODER = false;
+
 export const tidslinjeFraPerioder = createSelector(
     getStonadsperioderOgUtsettelser,
     formSelector,
@@ -43,9 +45,11 @@ export const tidslinjeFraPerioder = createSelector(
             }
         ];
 
-        return alleInnslag
-            .sort(sorterTidslinjeinnslagEtterStartdato)
-            .filter(filtrerOmInnslagSkalVises);
+        return FILTRER_PERIODER
+            ? alleInnslag
+                  .sort(sorterTidslinjeinnslagEtterStartdato)
+                  .filter(filtrerOmInnslagSkalVises)
+            : alleInnslag.sort(sorterTidslinjeinnslagEtterStartdato);
     }
 );
 
@@ -62,7 +66,7 @@ const mapPeriodeTilTidslinjeinnslag = (
     };
 };
 
-const filtrerOmInnslagSkalVises = (
+export const filtrerOmInnslagSkalVises = (
     innslag: Tidslinjeinnslag,
     index: number,
     alleInnslag: Tidslinjeinnslag[]
