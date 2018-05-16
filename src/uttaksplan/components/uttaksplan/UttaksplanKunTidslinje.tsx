@@ -41,6 +41,7 @@ import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
 import { utsettelseVisDialog } from 'uttaksplan/redux/actions';
 import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
+import Icons from 'uttaksplan/components/uttaksplan/Icons';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -95,6 +96,7 @@ export class Main extends React.Component<Props> {
                         items={innslag.map((i) => mapInnslagToTimelineItem(i))}
                         navnForelder1={navnForelder1}
                         navnForelder2={navnForelder2}
+                        iconRenderer={(icon) => <Icons icon={icon} />}
                     />
                 </section>
                 <hr />

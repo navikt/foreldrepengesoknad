@@ -4,7 +4,11 @@ import Dato from 'uttaksplan/elements/dato/Dato';
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
-import { TimelineLabel } from 'uttaksplan/components/timeline/types';
+import {
+    TimelineLabel,
+    TimelineIcon,
+    TimelineIconRenderer
+} from 'uttaksplan/components/timeline/types';
 import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel';
 
 export type TimelineItemColor = 'blue' | 'purple' | 'green';
@@ -17,15 +21,38 @@ export interface Props {
     days: number;
     color?: TimelineItemColor;
     labels?: TimelineLabel[];
-    icons?: string[];
+    icons?: TimelineIcon[];
+    iconRenderer?: TimelineIconRenderer;
 }
 
 const BEM = BEMHelper('timelineItem');
 
 const TimelineItem: React.StatelessComponent<Props> = (props) => {
-    const { title, from, to, personName, labels, days, color = 'blue' } = props;
+    const {
+        title,
+        from,
+        to,
+        personName,
+        labels,
+        days,
+        color = 'blue',
+        icons,
+        iconRenderer
+    } = props;
     return (
         <article className={classnames(BEM.className, BEM.modifier(color))}>
+            {icons &&
+                iconRenderer && (
+                    <div className={BEM.element('icons')}>
+                        {icons.map((icon, idx) => (
+                            <span
+                                key={icon.key}
+                                className={BEM.element('icon')}>
+                                {iconRenderer(icon)}
+                            </span>
+                        ))}
+                    </div>
+                )}
             <div className={BEM.element('header')}>
                 <EtikettLiten
                     className={BEM.element('header__personName')}

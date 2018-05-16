@@ -11,11 +11,14 @@ export interface TimelineIcon {
     key: string;
 }
 
+export type TimelineIconRenderer = (icon: TimelineIcon) => React.ReactNode;
+
 interface TimelineBaseItem {
     type: TimelineItemType;
     title: string;
-    icon?: TimelineIcon[];
     color?: 'blue' | 'purple' | 'green';
+    icons?: TimelineIcon[];
+    iconRenderer?: (icon: TimelineIcon) => React.ReactNode;
 }
 
 export interface TimelineEvent extends TimelineBaseItem {
