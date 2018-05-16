@@ -4,8 +4,10 @@ import Dato from 'uttaksplan/elements/dato/Dato';
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
+import { TimelineLabel } from 'uttaksplan/components/timeline/types';
+import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel';
 
-export type TimelineItemColor = 'blue' | 'purple';
+export type TimelineItemColor = 'blue' | 'purple' | 'green';
 
 export interface Props {
     personName: string;
@@ -14,13 +16,14 @@ export interface Props {
     to: Date;
     days: number;
     color?: TimelineItemColor;
+    labels?: TimelineLabel[];
     icons?: string[];
 }
 
 const BEM = BEMHelper('timelineItem');
 
 const TimelineItem: React.StatelessComponent<Props> = (props) => {
-    const { title, from, to, personName, days, color = 'blue' } = props;
+    const { title, from, to, personName, labels, days, color = 'blue' } = props;
     return (
         <article className={classnames(BEM.className, BEM.modifier(color))}>
             <div className={BEM.element('header')}>
@@ -40,6 +43,14 @@ const TimelineItem: React.StatelessComponent<Props> = (props) => {
                 <Dato dato={from} />
                 <Dato dato={to} />
             </div>
+            {labels &&
+                labels.length > 0 && (
+                    <div className={BEM.element('labels')}>
+                        {labels.map((label, idx) => (
+                            <TimelineItemLabel key={idx} label={label} />
+                        ))}
+                    </div>
+                )}
         </article>
     );
 };

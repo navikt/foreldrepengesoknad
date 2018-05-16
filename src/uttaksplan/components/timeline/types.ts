@@ -1,9 +1,10 @@
 export type TimelineItemType = 'marker' | 'event' | 'gap';
 
+export type TimelineLabelType = 'suksess' | 'info' | 'advarsel' | 'fokus';
+
 export interface TimelineLabel {
-    title: string;
-    description?: string;
-    onClick?: () => void;
+    type: TimelineLabelType;
+    text: string;
 }
 
 export interface TimelineIcon {
@@ -14,8 +15,7 @@ interface TimelineBaseItem {
     type: TimelineItemType;
     title: string;
     icon?: TimelineIcon[];
-    /** Default blue */
-    color?: 'blue' | 'purple';
+    color?: 'blue' | 'purple' | 'green';
 }
 
 export interface TimelineEvent extends TimelineBaseItem {
