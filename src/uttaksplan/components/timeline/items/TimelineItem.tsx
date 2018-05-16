@@ -3,6 +3,7 @@ import * as classnames from 'classnames';
 import Dato from 'uttaksplan/elements/dato/Dato';
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
+import BEMHelper from 'uttaksplan/utils/bem';
 
 export type TimelineItemColor = 'blue' | 'purple';
 
@@ -16,12 +17,7 @@ export interface Props {
     icons?: string[];
 }
 
-const componentBaseClassName = 'timelineItem';
-const BEM = {
-    className: componentBaseClassName,
-    element: (p?: string) => `${componentBaseClassName}__${p}`,
-    modifier: (p?: string) => `${componentBaseClassName}--${p}`
-};
+const BEM = BEMHelper('timelineItem');
 
 const TimelineItem: React.StatelessComponent<Props> = (props) => {
     const { title, from, to, personName, days, color = 'blue' } = props;
