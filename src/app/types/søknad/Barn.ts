@@ -4,12 +4,12 @@ abstract class Barn {
 }
 
 export interface UfødtBarn extends Barn {
-    termindato: string;
-    terminbekreftelseDato: string;
+    termindato: Date;
+    terminbekreftelseDato: Date;
 }
 
 export interface FødtBarn extends Barn {
-    fødselsdatoer: string[];
+    fødselsdatoer: Date[];
 }
 
 export interface Adopsjonsbarn extends FødtBarn {
