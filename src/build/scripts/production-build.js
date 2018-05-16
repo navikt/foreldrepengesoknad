@@ -10,7 +10,7 @@ const cb = (err) => {
     }
 };
 
-const compiler = webpack(webpackConfig, (err, stats) => {
+webpack(webpackConfig, (err, stats) => {
     if (err) {
         console.error(err);
         return;
@@ -22,4 +22,3 @@ const compiler = webpack(webpackConfig, (err, stats) => {
         })
     );
 });
-compiler.run(cb);

@@ -4,11 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const webpackConfig = {
-    entry: [
-        'babel-polyfill',
-        `${__dirname}/../../app/bootstrap.tsx`,
-        'webpack-dev-server/client?http://localhost:8080'
-    ],
+    entry: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
     output: {
         path: path.resolve(__dirname, './../../../dist'),
         filename: 'js/bundle.js',
