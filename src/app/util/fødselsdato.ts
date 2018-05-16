@@ -14,13 +14,15 @@ const fødselsdatoerFromString = (datoer: string[]) => {
     );
 };
 
-const trimFødselsdatoer = (antall: number, datoer: string[] = []): string[] => {
-    let fødselsdatoer: string[] = [...datoer];
+const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
+    let fødselsdatoer = [...datoer];
     if (datoer.length > antall) {
         fødselsdatoer = datoer.slice(0, antall);
-    }
-    while (fødselsdatoer.length < antall) {
-        fødselsdatoer.push('');
+    } else {
+        fødselsdatoer = new Array(antall - fødselsdatoer.length).fill(
+            undefined
+        );
+        fødselsdatoer.unshift(...datoer);
     }
     return fødselsdatoer;
 };
