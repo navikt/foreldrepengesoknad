@@ -62,6 +62,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             id="adopsjonsdato"
                             label={getMessage(intl, 'adopsjonsdato.spørsmål')}
                             onChange={(adopsjonsdato: Date) => {
+                                console.log(adopsjonsdato);
                                 dispatch(
                                     søknadActions.updateBarn({
                                         adopsjonsdato
@@ -125,15 +126,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     synlig={barn.antallBarn !== undefined}
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={utils.fødselsdatoerFromString(
-                                barn.fødselsdatoer || []
-                            )}
+                            fødselsdatoer={barn.fødselsdatoer || []}
                             onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        fødselsdatoer: utils.fødselsdatoerToString(
-                                            fødselsdatoer
-                                        )
+                                        fødselsdatoer
                                     })
                                 )
                             }
