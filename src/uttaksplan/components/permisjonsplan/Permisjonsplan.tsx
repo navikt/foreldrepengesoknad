@@ -5,7 +5,7 @@ import Tidslinje from '../tidslinje/Tidslinje';
 import LeggTilKnapp from '../../elements/leggTilKnapp/LeggTilKnapp';
 import { Permisjonsregler, Utsettelsesperiode } from '../../types';
 import { Tidslinjeinnslag } from '../tidslinje/types';
-import { scrollToElement } from '../../utils/animationUtils';
+// import { scrollToElement } from '../../utils/animationUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 export interface OwnProps {
@@ -23,7 +23,7 @@ type Props = OwnProps;
 
 class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
     componentDidMount() {
-        scrollToElement('permisjonsplan', { offset: -40 });
+        // scrollToElement('permisjonsplan', { offset: -40 });
     }
     render() {
         const {

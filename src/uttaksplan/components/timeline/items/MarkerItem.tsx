@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TimelineMarker } from 'uttaksplan/components/timeline/timelineTypes';
+import { TimelineMarker } from 'uttaksplan/components/timeline/types';
 
 export interface Props {
     item: TimelineMarker;

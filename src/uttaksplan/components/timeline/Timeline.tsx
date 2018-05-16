@@ -1,24 +1,25 @@
 import * as React from 'react';
 
-import './timeline.less';
 import {
-    TimelineBaseItem,
     TimelineEvent,
     TimelineMarker,
-    TimelineGap
+    TimelineGap,
+    TimelineItem
 } from 'uttaksplan/components/timeline/types';
 import EventItem from 'uttaksplan/components/timeline/items/EventItem';
 import MarkerItem from 'uttaksplan/components/timeline/items/MarkerItem';
 import GapItem from 'uttaksplan/components/timeline/items/GapItem';
 
+import './timeline.less';
+
 export interface Props {
-    items: TimelineBaseItem[];
+    items: TimelineItem[];
     navnForelder1: string;
     navnForelder2: string;
 }
 
 class Timeline extends React.Component<Props, {}> {
-    renderItem(item: TimelineBaseItem) {
+    renderItem(item: TimelineItem) {
         switch (item.type) {
             case 'event':
                 return <EventItem item={item as TimelineEvent} />;
