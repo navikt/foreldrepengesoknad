@@ -9,16 +9,14 @@ import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import {
     Tidslinjeinnslag,
     TidslinjeinnslagType,
-    InnslagPeriodetype,
-    InnslagHendelsetype
+    InnslagPeriodetype
 } from 'uttaksplan/components/tidslinje/types';
 import {
     Utsettelsesperiode,
     Tidsperiode,
     Periodetype,
     StonadskontoType,
-    Spraak,
-    Forelder
+    Spraak
 } from 'uttaksplan/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
 import TidslinjeAktivitetskravInfo from 'uttaksplan/components/content/TidslinjeAktivitetskravInfo';
@@ -41,46 +39,10 @@ interface OwnProps {
 import '../../styles/uttaksplan.less';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
-import {
-    TimelineEvent,
-    TimelineMarker,
-    TimelineItem
-} from 'uttaksplan/components/timeline/types';
-import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
-import { TimelineItemColor } from 'uttaksplan/components/timeline/items/TimelineItem';
 import { utsettelseVisDialog } from 'uttaksplan/redux/actions';
+import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
 
 export type Props = OwnProps & StateProps & DispatchProps;
-
-const mapForelderTilInnslagfarge = (forelder: Forelder): TimelineItemColor =>
-    forelder === 'forelder1' ? 'blue' : 'purple';
-
-const mapInnslagToEvent = (innslag: InnslagPeriodetype): TimelineEvent => ({
-    type: 'event',
-    title:
-        innslag.periode.type === Periodetype.Stonadsperiode
-            ? 'Uttaksperiode'
-            : 'Utsettelse',
-    from: innslag.periode.tidsperiode.startdato,
-    to: innslag.periode.tidsperiode.sluttdato,
-    personName: innslag.periode.forelder,
-    days: getAntallUttaksdagerITidsperiode(innslag.periode.tidsperiode),
-    color: mapForelderTilInnslagfarge(innslag.periode.forelder)
-});
-const mapInnslagToMarker = (innslag: InnslagHendelsetype): TimelineMarker => ({
-    type: 'marker',
-    title: 'Marker',
-    date: innslag.dato
-});
-
-const mapInnslagToTimelineItem = (innslag: Tidslinjeinnslag): TimelineItem => {
-    switch (innslag.type) {
-        case TidslinjeinnslagType.hendelse:
-            return mapInnslagToMarker(innslag);
-        case TidslinjeinnslagType.periode:
-            return mapInnslagToEvent(innslag);
-    }
-};
 
 export class Main extends React.Component<Props> {
     render() {
