@@ -4,18 +4,18 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const webpackConfig = {
-    entry: [
-        'babel-polyfill',
-        `${__dirname}/../../app/bootstrap.tsx`,
-        'webpack-dev-server/client?http://localhost:8080'
-    ],
+    entry: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
     output: {
         path: path.resolve(__dirname, './../../../dist'),
         filename: 'js/bundle.js',
         publicPath: '/foreldrepengesoknad/dist'
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
+        alias: {
+            app: path.resolve(__dirname, './../../app'),
+            uttaksplan: path.resolve(__dirname, './../../uttaksplan')
+        }
     },
     module: {
         rules: [
@@ -26,7 +26,10 @@ const webpackConfig = {
             },
             {
                 test: /\.(ts|tsx)$/,
-                include: [path.resolve(__dirname, './../../app')],
+                include: [
+                    path.resolve(__dirname, './../../app'),
+                    path.resolve(__dirname, './../../uttaksplan')
+                ],
                 loader: require.resolve('awesome-typescript-loader')
             },
 

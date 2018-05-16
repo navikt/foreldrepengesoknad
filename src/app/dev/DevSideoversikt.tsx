@@ -51,6 +51,15 @@ class DevSideoversikt extends React.Component<{}, {}> {
                                 Velkommen
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                to={`${
+                                    routeConfig.APP_ROUTE_PREFIX
+                                }/uttaksplan`}
+                                className="lenke">
+                                Uttaksplan
+                            </Link>
+                        </li>
                     </ul>
                 </div>
 

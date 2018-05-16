@@ -19,7 +19,9 @@
         "noUnusedLocals": true,
         "baseUrl": "./src",
         "typeRoots": ["./node_modules/@types", "./src/@types"],
-        "paths": {}
+        "paths": {
+            "uttaksplan/*": ["./uttaksplan/*"]
+        }
     },
     "awesomeTypescriptLoaderOptions": {
         "useCache": true

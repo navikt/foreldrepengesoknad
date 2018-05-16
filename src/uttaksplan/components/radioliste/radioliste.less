@@ -1,0 +1,51 @@
+@import '../../styles/variabler.less';
+@import '../../styles/nav-frontend-radiobutton.less';
+
+.radioliste {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    margin-bottom: -0.5rem; // Motvirke margin på siste radio
+
+    legend {
+        .typo-element-mixin();
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    &__radio {
+        margin-bottom: 0.5rem;
+        label {
+            font-weight: normal;
+        }
+        &__details {
+            padding: 0.5rem 0;
+        }
+    }
+    &--ekstern {
+        .nav-frontend-radiobuttonEkstern();
+    }
+    &--toKolonner {
+        @media screen and (min-width: @screen-sm) {
+            .radioliste__radioer {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: stretch;
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+                .radioliste__radiowrapper {
+                    flex-basis: 50%;
+                    width: 50%;
+                }
+                .radioliste__radio {
+                    margin-top: 0;
+                    margin-bottom: 0.5rem;
+                    padding-right: 0.5rem;
+                    padding-left: 0.5rem;
+                }
+            }
+        }
+    }
+}
