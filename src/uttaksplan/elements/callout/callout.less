@@ -1,0 +1,81 @@
+@import '../../styles/variabler.less';
+
+@callout_defaultBorderColor: #ccc;
+@callout_defaultBackgroundColor: white;
+
+.setCalloutBorderColor(@color) {
+    border-color: @color;
+    .topLeftArrow {
+        border-top: 1px solid @color;
+        border-left: 1px solid @color;
+        &:before {
+            border-top-color: @color;
+        }
+        &:after {
+            border-bottom-color: @color;
+        }
+    }
+}
+
+.callout {
+    position: relative;
+    display: block;
+    border-radius: @defaultBorderRadius;
+    background-color: @callout_defaultBackgroundColor;
+    border: 1px solid @callout_defaultBorderColor;
+    z-index: 1;
+    .setCalloutBorderColor(#ccc);
+    &__arrow {
+        background-color: inherit;
+        position: absolute;
+        top: -1px;
+        left: -7px;
+    }
+    &--green {
+        .setCalloutBorderColor(@c-green);
+    }
+    &--blue {
+        .setCalloutBorderColor(@c-blue);
+    }
+    &--purple {
+        .setCalloutBorderColor(@c-purple);
+    }
+}
+
+.topLeftArrow {
+    display: block;
+    width: 6px;
+    height: 6px;
+    background-color: inherit;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-radius: 50%;
+    z-index: 2;
+    /** Top line */
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 3px;
+        width: 15px;
+        height: 5px;
+        background-color: inherit;
+        border-top: inherit;
+        z-index: 3;
+    }
+    /** Left angled line */
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 6px;
+        left: -1px;
+        width: 14px;
+        height: 6px;
+        background-color: inherit;
+        border-bottom: 1px solid @callout_defaultBorderColor;
+        transform: rotate(63deg);
+        z-index: 3;
+    }
+}

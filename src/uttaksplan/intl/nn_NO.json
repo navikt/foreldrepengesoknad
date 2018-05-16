@@ -1,0 +1,162 @@
+{
+    "uttaksplan.applikasjonstittel": "Foreldrepengeplanleggjar",
+    "uttaksplan.Forelder1": "Mor",
+    "uttaksplan.Forelder2": "Far eller medmor",
+    "uttaksplan.forelder1": "mor",
+    "uttaksplan.forelder2": "far eller medmor",
+    "uttaksplan.dager": "{dager, plural, one {# dag} other {# dagar}}",
+    "uttaksplan.uker": "{uker, plural, one {# veke} other {# veker}}",
+    "uttaksplan.ukerogdager":
+        "{uker, plural, zero {} one {# veke} other {# veker}} {dager, plural, =0 {} one {og # dag} other {og # dagar}}",
+    "uttaksplan.tall-1": "éin",
+    "uttaksplan.tall-2": "to",
+    "uttaksplan.tall-3": "tre",
+    "uttaksplan.tall-4": "fire",
+    "uttaksplan.tall-5": "fem",
+    "uttaksplan.tall-6": "seks",
+    "uttaksplan.tall-7": "sju",
+    "uttaksplan.tall-8": "åtte",
+    "uttaksplan.tall-9": "ni",
+    "uttaksplan.tall-10": "ti",
+    "uttaksplan.og": "og",
+    "uttaksplan.utvidetinfo.lesmer": "Les meir",
+    "uttaksplan.utvidetinfo.lukk": "Lukk",
+    "uttaksplan.startdato": "Startdato",
+    "uttaksplan.sluttdato": "Sluttdato",
+    "uttaksplan.byttSprakTilBokmal": "Endre målform til bokmål",
+    "uttaksplan.byttSprakTilNynorsk": "Endre målform til nynorsk",
+    "uttaksplan.datovalidering.ikkeUttaksdag":
+        "{datonavn} kan ikkje vere laurdag eller søndag",
+    "uttaksplan.datovalidering.utenforPerioder":
+        "{datonavn} er ikkje innanfor gyldig tidsrom",
+    "uttaksplan.datovalidering.ugyldigDato": "{datonavn} er ikkje gyldig",
+    "uttaksplan.datovalidering.innenforUlovligPeriode'":
+        "{datonavn} er innanfor ein annan periode",
+    "uttaksplan.datovalidering.innenforForsteSeksUker":
+        "Foreldrepengane kan tidlegast utsetjast seks veker etter fødselen.",
+    "uttaksplan.planleggerinfo.lukk": "Lukk informasjon",
+    "uttaksplan.planleggerinfo.apne": "Les om avgrensinger i planleggjaren",
+    "uttaksplan.knapp.vispermisjonsplan": "Vis planen",
+    "uttaksplan.stonadskonto.modrekvotePakrevd": "mødrekvote",
+    "uttaksplan.stonadskonto.modrekvote": "mødrekvote",
+    "uttaksplan.stonadskonto.fedrekvote": "fedrekvote",
+    "uttaksplan.stonadskonto.fellesperiode": "fellesperiode",
+    "uttaksplan.stonadskonto.foreldrepenger": "foreldrepengar",
+    "uttaksplan.tittel.introtekst":
+        "Velkommen til foreldrepengenplanleggjaren. Her kan de planleggje korleis de vil ta ut perioden med foreldrepengar når de ventar barn.",
+    "uttaksplan.utsettelseskjema.tittel": "Legg til opphald",
+    "uttaksplan.utsettelseskjema.tittel.endre": "Opphald i foreldrepengane",
+    "uttaksplan.utsettelseskjema.arsak.sporsmal": "Kva skal {navn} gjere?",
+    "uttaksplan.utsettelseskjema.arsak.ferie": "Ta ut ferie",
+    "uttaksplan.utsettelseskjema.veiledning.ferie":
+        "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på heilagdagar.",
+    "uttaksplan.utsettelseskjema.arsak.arbeid": "Arbeide heiltid",
+    "uttaksplan.utsettelseskjema.hvem.sporsmal":
+        "Kven skal ha opphald i foreldrepane?",
+    "uttaksplan.utsettelseskjema.hvem.sporsmal.ferie": "Kven skal ta ut ferie?",
+    "uttaksplan.utsettelseskjema.hvem.sporsmal.arbeid": "Kven skal arbeide?",
+    "uttaksplan.utsettelseskjema.startdato.sporsmal": "Startdato",
+    "uttaksplan.utsettelseskjema.sluttdato.sporsmal": "Sluttdato",
+    "uttaksplan.utsettelseskjema.knapp.leggtil": "Legg til",
+    "uttaksplan.utsettelseskjema.knapp.oppdater": "Oppdater",
+    "uttaksplan.utsettelseskjema.knapp.fjern": "Fjern opphald",
+    "uttaksplan.utsettelseskjema.feil.ugyldigStartdato":
+        "Startdato er ikkje ein gyldig dato",
+    "uttaksplan.utsettelseskjema.feil.ugyldigSluttdato":
+        "Sluttdato er ikkje ein gyldig dato",
+    "uttaksplan.utsettelseskjema.feil.startdatoMangler":
+        "Startdato må fyllast ut",
+    "uttaksplan.utsettelseskjema.feil.sluttdatoMangler":
+        "Sluttdato må fyllast ut",
+    "uttaksplan.utsettelseskjema.feil.sluttdatoEtterStartdato":
+        "Sluttdato kan ikkje vere før startdato",
+    "uttaksplan.utsettelseskjema.feil.ugyldigAntallFeriedager":
+        "For mange feriedagar er registrerte",
+    "uttaksplan.utsettelseskjema.feil.startdatoErHelligdag":
+        "Du har lagt inn ferie på ein heilagdag. Du må endre datoen.",
+    "uttaksplan.utsettelseskjema.feil.sluttdatoErHelligdag":
+        "Du har lagt inn ferie på ein heilagdag. Du må endre datoen.",
+    "uttaksplan.utsettelseskjema.feil.helligdagIPeriode":
+        "Du har lagt til ein periode med heilagdagar. Du må endre perioden.",
+    "uttaksplan.utsettelseskjema.ferievarsel.ulovlig":
+        "Du har lagt inn {ukerOgDager}. Du kan ikkje ha opphald på grunn av ferie meir enn ti veker og to dagar.",
+    "uttaksplan.utsettelseskjema.ferievarsel.kreveroverforing":
+        "Du har lagt inn {ukerOgDager}. For å ha opphald meir enn fire veker og éin dag, må du ha overført ferie frå i fjor eller ta ut ferie frå neste år.",
+    "uttaksplan.skjema.fordeling.reduser.tooltip":
+        "Ei veke mindre fellesperiode til {navn}",
+    "uttaksplan.skjema.fordeling.sporsmal":
+        "Korleis vil de dele fellesperioden?",
+    "uttaksplan.skjema.fordeling.aria.fordeling":
+        "Kor mange veker av fellesperioden skal {navnForelder1} ha av totalt {ukerFellesperiode} veker?",
+    "uttaksplan.skjema.label.forelder1": "Mor",
+    "uttaksplan.skjema.label.forelder2": "Far eller medmor",
+    "uttaksplan.skjema.label.termindato": "Termindato",
+    "uttaksplan.skjema.feilmelding.ugyldig_termindato":
+        "Termindato er ikkje gyldig",
+    "uttaksplan.skjema.label.sats":
+        "Kor lang periode med foreldrepengar ønskjer de?",
+    "uttaksplan.skjema.label.sats80":
+        "{uker} veker med 80 prosent foreldrepengar",
+    "uttaksplan.skjema.label.sats100":
+        "{uker} veker med 100 prosent foreldrepengar",
+    "uttaksplan.skjema.veiledning.sats.alttekst":
+        "Les meir om valet av lengda med foreldrepengar",
+    "uttaksplan.skjema.veiledning.sats":
+        "Valet av antall veker gjeld dykk begge. Den totale utbetalinga blir høgare ved å velje 100 prosent.",
+    "uttaksplan.skjema.fordeling.veiledning":
+        "Av perioden med foreldrepengar må mor ta ut {pakrevdForelder1} veker, og den andre forelderen {pakrevdForelder2} veker. Resten av vekene med foreldrepengar kan de dele. Når {navnForelder2} har fellesperiode er det aktivitetskrav til {navnForelder1}.",
+    "uttaksplan.skjema.fordeling.veiledning.lenketekst":
+        "Les meir om aktivitetskravet her.",
+    "uttaksplan.skjema.fordeling.uker":
+        "{uker, plural, one {# veke} other {# veker}}",
+    "uttaksplan.skjema.fordeling.sporsmal.ikonlabel":
+        "Les meir om fordeling av fellesperioden",
+    "uttaksplan.tidslinje.tittel": "Planen dykkar",
+    "uttaksplan.tidslinje.periodeinfo.konto.uker":
+        "{uker, plural, one {# veke} other {# veker}} {konto}",
+    "uttaksplan.tidslinje.periodeinfo.starterpermisjon.enkel":
+        "{navn} startar perioden sin med foreldrepengar",
+    "uttaksplan.tidslinje.periodeinfo.starterpermisjon.detaljert":
+        "{navn} startar perioden sin med foreldrepengar: {uker, plural, one {# veke} other {# veker}} totalt delt opp i {detaljer}",
+    "uttaksplan.tidslinje.utsettelse": "{arsak} {navn}",
+    "uttaksplan.tidslinje.ferie.fridager":
+        "{antallDager} av dagane i perioden er offentlege fridagar som ein ikkje kan ta ut som ferie",
+    "uttaksplan.tidslinje.periodeinfo.fortsettelse.fortsetter":
+        "{navn} held fram med foreldrepengane sine",
+    "uttaksplan.tidslinje.periodeinfo.fortsettelse.avslutter":
+        "{navn} avsluttar foreldrepengane sine",
+    "uttaksplan.tidslinje.hendelse.termin": "Termin",
+    "uttaksplan.tidslinje.hendelse.sistepermisjonsdag":
+        "Siste dag med foreldrepengar",
+    "uttaksplan.tidslinje.innslag.foreldrepenger": "Foreldrepengar {navn}",
+    "uttaksplan.tidslinje.aktivitetskrav":
+        "Når {navnForelder2} tek ut foreldrepengar i fellesperioden, blir det stilt krav til kva aktivitet {navnForelder1}s kan drive med.",
+    "uttaksplan.tidslinje.visdetaljer": "Fleire detaljar",
+    "uttaksplan.tidslinje.skjuldetaljer": "Skjul detaljar",
+    "uttaksplan.opphold.arsak.ferie": "ferie",
+    "uttaksplan.opphold.arsak.arbeid": "arbeid",
+    "uttaksplan.opphold.arsak.Ferie": "Ferie",
+    "uttaksplan.opphold.arsak.Arbeid": "Arbeid",
+    "uttaksplan.opphold.tittel": "Opphald i perioden med foreldrepengar?",
+    "uttaksplan.opphold.knapp.leggtil": "Legg til opphald",
+    "uttaksplan.skjermleser.skjema.tittel":
+        "Fyll ut skjemaet og sjå foreldrepengeplanen dykkar",
+    "uttaksplan.skjermleser.tidslinje.oppsummering.tittel":
+        "Fordeling av foreldrepengar summert opp",
+    "uttaksplan.skjermleser.fordeling_av_fellesperiode":
+        "{ukerForelder1, plural, one {# veke} other {# veker}} til {navnForelder1}, {ukerForelder2, plural, one {# veke} other {# veker}} til {navnForelder2}",
+    "uttaksplan.veileder.ulonnetpermisjon.tittel":
+        "Ønskjer du ulønt permisjon?",
+    "uttaksplan.veileder.ulonnetpermisjon.tekst1":
+        "Ulønt permisjon krev at den andre forelderen tek ut foreldrepengar eller registrerer opphald.",
+    "uttaksplan.veileder.ulonnetpermisjon.tekst2":
+        "Ulønt permisjon må avtalas med arbeidsgivaren. Ulønt permisjon i meir enn 14 dager kan påverke retten til blant anna sjukepengar og pleiepengar.",
+    "uttaksplan.veileder.ulonnetpermisjon.navlenketekst":
+        "Les meir om foreldrepengar på nav.no",
+    "uttaksplan.veileder.forbehold.intro":
+        "Her finn de ut kor mange veker de kan få foreldrepengar, og korleis de kan utsetje periodar med foreldrepengar. Han viser ikkje kor mykje de kan få utbetalt.",
+    "uttaksplan.veileder.forbehold.utvidetinfo.tittel":
+        "Avgrensingar i planleggjaren",
+    "uttaksplan.veileder.forbehold.utvidetinfo.html":
+        "Foreldrepengeplanleggjaren er under utvikling. De kan ikkje bruke han for å planleggje:<ul><li>kombinasjon av delvis arbeid og foreldrepengar</li><li>opphald i foreldrepengane på grunn av sjukdom</li><li>ekstraveker på grunn av fleirbarnsfødsel</li><li>foreldrepengar på grunn av adopsjon</li><li>oppstart av foreldrepengane tidligere enn tre veker før termindato</li><li>ulønt permisjon</li></ul>"
+}
