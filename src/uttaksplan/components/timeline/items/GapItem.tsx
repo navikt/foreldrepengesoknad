@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TimelineGap } from 'uttaksplan/components/timeline/timelineTypes';
+import { TimelineGap } from 'uttaksplan/components/timeline/types';
 
 export interface Props {
     item: TimelineGap;

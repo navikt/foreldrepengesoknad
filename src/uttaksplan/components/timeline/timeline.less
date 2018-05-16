@@ -1,3 +1,5 @@
+@import '../../styles/variabler.less';
+
 .timeline {
     &__itemWrapper {
         margin-bottom: 1rem;
@@ -5,8 +7,48 @@
 }
 
 .timelineItem {
+    @border-left-width: 6px;
     border-radius: 0.25rem;
+    padding: 1rem;
     background-color: white;
     border: none;
-    border-left: 4px solid red;
+    border-left-width: @border-left-width;
+    border-left-style: solid;
+    padding-left: calc(4rem - @border-left-width);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+    &__header {
+        color: #78706a;
+        font-size: 0.875rem;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 0.25rem;
+        &__personName {
+            flex: 1 1 100%;
+            font-size: 1rem;
+            font-size: inherit;
+            color: inherit;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        &__duration {
+            font-size: inherit;
+            color: inherit;
+            overflow: hidden;
+            white-space: nowrap;
+            flex: 1 0 20%;
+            text-align: right;
+        }
+    }
+    &__title {
+        font-size: 1rem;
+        margin: 0 0 0.25rem 0;
+    }
+    &--blue {
+        border-left-color: @c-purple;
+    }
+    &--purple {
+        border-left-color: @c-blue;
+    }
 }
