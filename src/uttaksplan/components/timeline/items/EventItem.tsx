@@ -31,7 +31,6 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
         icons
     } = item;
 
-    const renderIcons = icons && icons.length > 0 && iconRenderer;
     return (
         <article className={classnames(BEM.className, BEM.modifier(color))}>
             <div className={BEM.element('header')}>
@@ -46,14 +45,11 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                     <Varighet dager={days} />
                 </EtikettLiten>
             </div>
-            {renderIcons && (
-                <div className={BEM.element('icons')}>
-                    <TimelineIcons icons={icons} iconRenderer={iconRenderer} />
-                </div>
-            )}
+            <TimelineIcons icons={icons} iconRenderer={iconRenderer} />
             <h2 className={BEM.element('title')}>{title}</h2>
             <div className={BEM.element('timespan')}>
                 <Dato dato={from} />
+                {' - '}
                 <Dato dato={to} />
             </div>
             {labels &&

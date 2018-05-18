@@ -4,7 +4,7 @@ import FerieIkon from 'uttaksplan/components/uttaksplan/ikoner/FerieIkon';
 import UttakIkon from 'uttaksplan/components/uttaksplan/ikoner/UttakIkon';
 import GradertIkon from 'uttaksplan/components/uttaksplan/ikoner/GradertIkon';
 import PlasterIkon from 'uttaksplan/components/uttaksplan/ikoner/PlasterIkon';
-import TerminIkon from 'uttaksplan/elements/ikoner/TerminIkon';
+import TerminIkon from 'uttaksplan/components/uttaksplan/ikoner/TerminIkon';
 
 export type UttaksplanIkonKeys =
     | 'arbeid'
