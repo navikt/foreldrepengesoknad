@@ -4,14 +4,14 @@ import {
     Tidslinjeinnslag,
     TidslinjeinnslagType
 } from 'uttaksplan/components/tidslinje/types';
-import { TimelineItemColor } from 'uttaksplan/components/timeline/items/TimelineItem';
 import { Periodetype, UtsettelseArsakType } from 'uttaksplan/types';
 import {
     TimelineEvent,
     TimelineMarker,
     TimelineItem,
     TimelineLabel,
-    TimelineIcon
+    TimelineIcon,
+    TimelineItemColor
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 

@@ -6,7 +6,7 @@
     }
 }
 
-.timelineItem {
+.timelineEventItem {
     @border-left-width: 6px;
     border-radius: 0.25rem;
     position: relative;
@@ -54,6 +54,14 @@
         left: 1rem;
         top: 1rem;
     }
+    &--blue {
+        border-left-color: @c-purple;
+    }
+    &--purple {
+        border-left-color: @c-blue;
+    }
+}
+.timelineIcons {
     &__icon {
         width: 1.5rem;
         height: 1.5rem;
@@ -61,12 +69,5 @@
         &:first-child {
             margin-top: 0;
         }
-    }
-
-    &--blue {
-        border-left-color: @c-purple;
-    }
-    &--purple {
-        border-left-color: @c-blue;
     }
 }
