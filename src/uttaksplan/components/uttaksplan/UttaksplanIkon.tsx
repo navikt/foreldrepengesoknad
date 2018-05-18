@@ -5,6 +5,7 @@ import UttakIkon from 'uttaksplan/components/uttaksplan/ikoner/UttakIkon';
 import GradertIkon from 'uttaksplan/components/uttaksplan/ikoner/GradertIkon';
 import PlasterIkon from 'uttaksplan/components/uttaksplan/ikoner/PlasterIkon';
 import TerminIkon from 'uttaksplan/components/uttaksplan/ikoner/TerminIkon';
+import ArbeidIkon from 'uttaksplan/components/uttaksplan/ikoner/ArbeidIkon';
 
 export type UttaksplanIkonKeys =
     | 'arbeid'
@@ -22,7 +23,7 @@ export interface Props {
 const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon }) => {
     switch (ikon) {
         case 'arbeid':
-            return <SykehusIkon />;
+            return <ArbeidIkon />;
         case 'ferie':
             return <FerieIkon />;
         case 'gradert':

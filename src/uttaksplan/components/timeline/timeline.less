@@ -55,6 +55,9 @@
     &--purple {
         border-left-color: @c-blue;
     }
+    &--green {
+        border-left-color: @c-green;
+    }
 
     .timelineIcons {
         position: absolute;
@@ -64,7 +67,8 @@
 }
 
 .timelineMarkerItem {
-    padding: 0.5rem 1rem 0.5rem 4rem;
+    @vPad: 0;
+    padding: @vPad 1rem @vPad 4rem;
     position: relative;
     &__title {
         display: inline-block;
@@ -84,7 +88,7 @@
     .timelineIcons {
         position: absolute;
         left: calc(1rem + @timeline-border-left-width);
-        top: 0.5rem;
+        top: @vPad;
     }
 }
 .timelineIcons {
