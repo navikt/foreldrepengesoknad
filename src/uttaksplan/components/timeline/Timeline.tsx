@@ -35,7 +35,12 @@ class Timeline extends React.Component<Props, {}> {
                     />
                 );
             case 'marker':
-                return <MarkerItem item={item as TimelineMarker} />;
+                return (
+                    <MarkerItem
+                        item={item as TimelineMarker}
+                        iconRenderer={this.props.iconRenderer}
+                    />
+                );
             default:
                 return <GapItem item={item as TimelineGap} />;
         }

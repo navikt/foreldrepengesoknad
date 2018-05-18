@@ -18,7 +18,6 @@ interface TimelineBaseItem {
     title: string;
     color?: 'blue' | 'purple' | 'green';
     icons?: TimelineIcon[];
-    iconRenderer?: (icon: TimelineIcon) => React.ReactNode;
 }
 
 export interface TimelineEvent extends TimelineBaseItem {
@@ -33,7 +32,7 @@ export interface TimelineEvent extends TimelineBaseItem {
 export interface TimelineMarker extends TimelineBaseItem {
     type: 'marker';
     date: Date;
-    comment?: string;
+    comment?: React.ReactNode;
 }
 
 export interface TimelineGap extends TimelineBaseItem {
@@ -44,3 +43,5 @@ export interface TimelineGap extends TimelineBaseItem {
 }
 
 export type TimelineItem = TimelineEvent | TimelineGap | TimelineMarker;
+
+export type TimelineItemColor = 'blue' | 'purple' | 'green';
