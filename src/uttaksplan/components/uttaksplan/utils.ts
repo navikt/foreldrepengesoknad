@@ -41,9 +41,16 @@ export const getLabelsForInnslag = (
 };
 
 export const getTimelineIconsFromInnslag = (
-    innslag: InnslagPeriodetype
+    innslag: Tidslinjeinnslag
 ): TimelineIcon[] | undefined => {
-    return [{ key: 'plaster' }];
+    if (innslag.type === 'hendelse') {
+        if (innslag.hendelse === 'termin') {
+            return [{ key: 'termin' }];
+        }
+    } else {
+        return [{ key: 'plaster' }];
+    }
+    return undefined;
 };
 
 export const mapInnslagToEvent = (
@@ -67,8 +74,9 @@ export const mapInnslagToMarker = (
     innslag: InnslagHendelsetype
 ): TimelineMarker => ({
     type: 'marker',
-    title: 'Marker',
-    date: innslag.dato
+    title: innslag.hendelse,
+    date: innslag.dato,
+    icons: getTimelineIconsFromInnslag(innslag)
 });
 
 export const mapInnslagToTimelineItem = (

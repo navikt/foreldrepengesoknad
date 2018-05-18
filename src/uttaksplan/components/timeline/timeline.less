@@ -6,16 +6,16 @@
     }
 }
 
+@timeline-border-left-width: 6px;
 .timelineEventItem {
-    @border-left-width: 6px;
     border-radius: 0.25rem;
     position: relative;
     padding: 1rem;
     background-color: white;
     border: none;
-    border-left-width: @border-left-width;
+    border-left-width: @timeline-border-left-width;
     border-left-style: solid;
-    padding-left: calc(4rem - @border-left-width);
+    padding-left: calc(4rem - @timeline-border-left-width);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 
     &__header {
@@ -49,16 +49,42 @@
     &__labels {
         margin: 0.5rem 0;
     }
-    &__icons {
-        position: absolute;
-        left: 1rem;
-        top: 1rem;
-    }
     &--blue {
         border-left-color: @c-purple;
     }
     &--purple {
         border-left-color: @c-blue;
+    }
+
+    .timelineIcons {
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+    }
+}
+
+.timelineMarkerItem {
+    padding: 0.5rem 1rem 0.5rem 4rem;
+    position: relative;
+    &__title {
+        display: inline-block;
+        font-size: 1rem;
+        margin: 0;
+    }
+    &__comment {
+        display: inline-block;
+        color: #78706a;
+        padding-left: 0.5rem;
+    }
+    &__date {
+        display: inline-block;
+        color: #78706a;
+        padding-left: 0.5rem;
+    }
+    .timelineIcons {
+        position: absolute;
+        left: calc(1rem + @timeline-border-left-width);
+        top: 0.5rem;
     }
 }
 .timelineIcons {
