@@ -7,9 +7,7 @@ export interface TimelineLabel {
     text: string;
 }
 
-export interface TimelineIcon {
-    key: string;
-}
+export type TimelineIcon = string;
 
 export type TimelineIconRenderer = (icon: TimelineIcon) => React.ReactNode;
 

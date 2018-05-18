@@ -10,10 +10,10 @@ import {
     TimelineMarker,
     TimelineItem,
     TimelineLabel,
-    TimelineIcon,
     TimelineItemColor
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
+import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -42,13 +42,23 @@ export const getLabelsForInnslag = (
 
 export const getTimelineIconsFromInnslag = (
     innslag: Tidslinjeinnslag
-): TimelineIcon[] | undefined => {
+): UttaksplanIkonKeys[] | undefined => {
     if (innslag.type === 'hendelse') {
         if (innslag.hendelse === 'termin') {
-            return [{ key: 'termin' }];
+            return ['termin'];
         }
-    } else {
-        return [{ key: 'plaster' }];
+    } else if (innslag.type === 'periode') {
+        const { periode } = innslag;
+        if (periode.type === Periodetype.Utsettelse) {
+            if (periode.arsak === UtsettelseArsakType.Ferie) {
+                return ['ferie'];
+            }
+            if (periode.arsak === UtsettelseArsakType.Arbeid) {
+                return ['arbeid'];
+            }
+        } else if (periode.type === Periodetype.Stonadsperiode) {
+            return ['uttak'];
+        }
     }
     return undefined;
 };

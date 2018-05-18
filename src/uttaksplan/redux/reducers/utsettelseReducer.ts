@@ -5,10 +5,11 @@ import {
 import { UtsettelseState, UtsettelseStatePartial } from '../types';
 import { Utsettelsesperiode } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
+import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 
 const defaultState: UtsettelseState = {
     dialogErApen: false,
-    utsettelser: []
+    utsettelser: mockUtsettelser
 };
 
 const opprettEllerOppdaterUtsettelse = (

@@ -99,9 +99,7 @@ export class Main extends React.Component<Props> {
                         navnForelder1={navnForelder1}
                         navnForelder2={navnForelder2}
                         iconRenderer={(icon) => (
-                            <UttaksplanIkon
-                                ikon={icon.key as UttaksplanIkonKeys}
-                            />
+                            <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
                         )}
                     />
                 </section>
