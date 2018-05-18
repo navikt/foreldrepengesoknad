@@ -246,7 +246,8 @@ export function opprettStønadsperioder(
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
             konto: StonadskontoType.ForeldrepengerForFodsel,
-            tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler)
+            tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler),
+            låstForelder: true
         },
         {
             type: Periodetype.Stonadsperiode,
@@ -255,7 +256,9 @@ export function opprettStønadsperioder(
             tidsperiode: getPakrevdModrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
-            )
+            ),
+            låstForelder: true,
+            låstTidsperiode: true
         },
         {
             type: Periodetype.Stonadsperiode,
