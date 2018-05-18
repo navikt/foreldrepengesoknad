@@ -17,13 +17,16 @@ export interface OwnProps {
     permisjonsregler: Permisjonsregler;
     onLeggTilUtsettelse: () => void;
     onRedigerUtsettelse: (u: Utsettelsesperiode) => void;
+    scrollOnMount?: boolean;
 }
 
 type Props = OwnProps;
 
 class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
     componentDidMount() {
-        scrollToElement('permisjonsplan', { offset: -40 });
+        if (this.props.scrollOnMount) {
+            scrollToElement('permisjonsplan', { offset: -40 });
+        }
     }
     render() {
         const {
