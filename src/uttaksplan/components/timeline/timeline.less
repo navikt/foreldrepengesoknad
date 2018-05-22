@@ -4,6 +4,8 @@
 @sirkelSize: 12px;
 @sirkelBorderWidth: 2px;
 @sirkelCenterOffset: @sirkelSize / 2 - @sirkelBorderWidth / 2;
+@timeline-border-left-width: 6px;
+@timeline-border-radius: 0.25rem;
 
 .timelineSirkel(@borderColor, @bkgColor: white) {
     content: '';
@@ -16,19 +18,27 @@
     background-color: @bkgColor;
 }
 
+.interactiveItemStyling() {
+    &:focus,
+    &:active {
+        .buttonFocus();
+    }
+}
+
 .timelineMoreLink() {
     position: absolute;
     top: 0;
-    left: 0;
+    left: -1 * @timeline-border-left-width;
     right: 0;
     bottom: 0;
     background: transparent;
+    border-radius: @timeline-border-radius;
+    .interactiveItemStyling();
     &:focus,
     &:active {
         background: transparent;
     }
 }
-
 .timeline {
     &__itemWrapper {
         position: relative;
@@ -45,9 +55,8 @@
     .timelineMoreLink();
 }
 
-@timeline-border-left-width: 6px;
 .timelineEventItem {
-    border-radius: 0.25rem;
+    border-radius: @timeline-border-radius;
     position: relative;
     padding: 1rem 1rem 1rem calc(4rem - @timeline-border-left-width);
     background-color: white;
@@ -60,6 +69,13 @@
         .timelineSirkel(#78706a, #f1f1f1);
         top: 1.25rem;
         left: calc(-1rem - @timeline-border-left-width - @sirkelCenterOffset);
+    }
+
+    &--interactive {
+        .interactiveItemStyling();
+        &:hover {
+            background-color: #fbfbfb;
+        }
     }
 
     &__header {
