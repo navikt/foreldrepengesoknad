@@ -24,10 +24,10 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
             onFilesSelect
         } = this.props;
 
-        const visListe = vedlegg.length > 0;
+        const showVedleggListe = vedlegg.length > 0;
         return (
             <div>
-                <div className={visListe ? 'blokk-m' : ''}>
+                <div className={showVedleggListe ? 'blokk-m' : undefined}>
                     <VedleggInput
                         id={id}
                         onFilesSelect={(files: File[]) => {
@@ -35,7 +35,7 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                         }}
                     />
                 </div>
-                {visListe && (
+                {showVedleggListe && (
                     <div>
                         <div className="blokk-xs" id={id}>
                             <LabelText>
