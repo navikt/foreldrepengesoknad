@@ -14,9 +14,8 @@ const VedleggListe: React.StatelessComponent<Props> = (props) => {
     return (
         <ul className="vedleggListe">
             {vedlegg.map((vedleggFile, index) => (
-                <li>
+                <li key={index}>
                     <Vedlegg
-                        key={index}
                         vedlegg={vedleggFile}
                         onDelete={onDelete}
                         visFilstørrelse={visFilstørrelse}
