@@ -1,8 +1,30 @@
 @import '../../styles/variabler.less';
 
+@z-sirkel: 4;
+@sirkelSize: 12px;
+@sirkelBorderWidth: 2px;
+@sirkelCenterOffset: @sirkelSize / 2 - @sirkelBorderWidth / 2;
+
+.timelineSirkel(@borderColor, @bkgColor: white) {
+    content: '';
+    z-index: @z-sirkel;
+    position: absolute;
+    width: @sirkelSize;
+    height: @sirkelSize;
+    border-radius: 50%;
+    border: @sirkelBorderWidth solid @borderColor;
+    background-color: @bkgColor;
+}
+
 .timeline {
     &__itemWrapper {
-        margin-bottom: 1rem;
+        position: relative;
+        padding-bottom: 1rem;
+        border-left: 2px solid #b7b1a9;
+        padding-left: 1rem;
+        &:last-child {
+            padding-bottom: 0;
+        }
     }
 }
 
@@ -10,13 +32,18 @@
 .timelineEventItem {
     border-radius: 0.25rem;
     position: relative;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem calc(4rem - @timeline-border-left-width);
     background-color: white;
     border: none;
     border-left-width: @timeline-border-left-width;
     border-left-style: solid;
-    padding-left: calc(4rem - @timeline-border-left-width);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+    &:after  {
+        .timelineSirkel(#78706a, #f1f1f1);
+        top: 1.25rem;
+        left: calc(-1rem - @timeline-border-left-width - @sirkelCenterOffset);
+    }
 
     &__header {
         color: #78706a;
@@ -71,6 +98,14 @@
     @vPad: 0;
     padding: @vPad 1rem @vPad 4rem;
     position: relative;
+    line-height: 1.5rem;
+
+    &:after  {
+        .timelineSirkel(#78706a, #f1f1f1);
+        top: 0.1rem;
+        left: calc(-1rem - @sirkelCenterOffset);
+    }
+
     &__title {
         display: inline-block;
         font-size: 1rem;
