@@ -15,7 +15,8 @@ const getDefaultState = (): SøknadPartial => {
         utenlandsopphold: {},
         vedlegg: {
             omsorgsovertakelse: [],
-            adopsjonsvedtak: []
+            adopsjonsvedtak: [],
+            overtakelsedokumentasjon: []
         }
     };
 };
