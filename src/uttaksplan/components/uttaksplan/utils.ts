@@ -35,6 +35,13 @@ export const getLabelsForInnslag = (
                     type: 'fokus'
                 }
             ];
+        } else if (innslag.periode.arsak === UtsettelseArsakType.Ferie) {
+            return [
+                {
+                    text: 'Ferie er viktig',
+                    type: 'fokus'
+                }
+            ];
         }
     }
     return undefined;
@@ -77,7 +84,8 @@ export const mapInnslagToEvent = (
     days: getAntallUttaksdagerITidsperiode(innslag.periode.tidsperiode),
     color: mapForelderTilInnslagfarge(innslag),
     labels: getLabelsForInnslag(innslag),
-    icons: getTimelineIconsFromInnslag(innslag)
+    icons: getTimelineIconsFromInnslag(innslag),
+    data: innslag
 });
 
 export const mapInnslagToMarker = (
@@ -86,7 +94,8 @@ export const mapInnslagToMarker = (
     type: 'marker',
     title: innslag.hendelse,
     date: innslag.dato,
-    icons: getTimelineIconsFromInnslag(innslag)
+    icons: getTimelineIconsFromInnslag(innslag),
+    data: innslag
 });
 
 export const mapInnslagToTimelineItem = (

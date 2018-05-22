@@ -44,6 +44,7 @@ import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
+import { TimelineItem } from 'uttaksplan/components/timeline/types';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -101,6 +102,9 @@ export class Main extends React.Component<Props> {
                         iconRenderer={(icon) => (
                             <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
                         )}
+                        onItemClick={(item: TimelineItem) => {
+                            // console.log(item);
+                        }}
                     />
                 </section>
                 <hr />

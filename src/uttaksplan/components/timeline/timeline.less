@@ -1,22 +1,82 @@
 @import '../../styles/variabler.less';
 
-.timeline {
-    &__itemWrapper {
-        margin-bottom: 1rem;
+@z-sirkel: 4;
+@sirkelSize: 12px;
+@sirkelBorderWidth: 2px;
+@sirkelCenterOffset: @sirkelSize / 2 - @sirkelBorderWidth / 2;
+@timeline-border-left-width: 6px;
+@timeline-border-radius: 0.25rem;
+
+.timelineSirkel(@borderColor, @bkgColor: white) {
+    content: '';
+    z-index: @z-sirkel;
+    position: absolute;
+    width: @sirkelSize;
+    height: @sirkelSize;
+    border-radius: 50%;
+    border: @sirkelBorderWidth solid @borderColor;
+    background-color: @bkgColor;
+}
+
+.interactiveItemStyling() {
+    &:focus,
+    &:active {
+        .buttonFocus();
     }
 }
 
-@timeline-border-left-width: 6px;
+.timelineMoreLink() {
+    position: absolute;
+    top: 0;
+    left: -1 * @timeline-border-left-width;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    border-radius: @timeline-border-radius;
+    .interactiveItemStyling();
+    &:focus,
+    &:active {
+        background: transparent;
+    }
+}
+.timeline {
+    &__itemWrapper {
+        position: relative;
+        padding-bottom: 1rem;
+        border-left: 2px solid #b7b1a9;
+        padding-left: 1rem;
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+}
+
+.timelineItemMoreLink {
+    .timelineMoreLink();
+}
+
 .timelineEventItem {
-    border-radius: 0.25rem;
+    border-radius: @timeline-border-radius;
     position: relative;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem calc(4rem - @timeline-border-left-width);
     background-color: white;
     border: none;
     border-left-width: @timeline-border-left-width;
     border-left-style: solid;
-    padding-left: calc(4rem - @timeline-border-left-width);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+    &:after  {
+        .timelineSirkel(#78706a, #f1f1f1);
+        top: 1.25rem;
+        left: calc(-1rem - @timeline-border-left-width - @sirkelCenterOffset);
+    }
+
+    &--interactive {
+        .interactiveItemStyling();
+        &:hover {
+            background-color: #fbfbfb;
+        }
+    }
 
     &__header {
         color: #78706a;
@@ -63,7 +123,7 @@
     .timelineIcons {
         position: absolute;
         left: 1rem;
-        top: 1rem;
+        top: 1.25rem;
     }
 }
 
@@ -71,20 +131,28 @@
     @vPad: 0;
     padding: @vPad 1rem @vPad 4rem;
     position: relative;
+    line-height: 1.5rem;
+
+    &:after  {
+        .timelineSirkel(#78706a, #f1f1f1);
+        top: 0.1rem;
+        left: calc(-1rem - @sirkelCenterOffset);
+    }
+
     &__title {
         display: inline-block;
         font-size: 1rem;
         margin: 0;
+        padding-right: 0.5rem;
     }
     &__comment {
         display: inline-block;
         color: #78706a;
-        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
     &__date {
         display: inline-block;
         color: #78706a;
-        padding-left: 0.5rem;
     }
     .timelineIcons {
         position: absolute;
