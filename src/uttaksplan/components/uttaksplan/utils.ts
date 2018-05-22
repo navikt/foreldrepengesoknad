@@ -35,6 +35,13 @@ export const getLabelsForInnslag = (
                     type: 'fokus'
                 }
             ];
+        } else if (innslag.periode.arsak === UtsettelseArsakType.Ferie) {
+            return [
+                {
+                    text: 'Ferie er viktig',
+                    type: 'fokus'
+                }
+            ];
         }
     }
     return undefined;
