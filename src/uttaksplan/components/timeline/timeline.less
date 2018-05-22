@@ -16,6 +16,19 @@
     background-color: @bkgColor;
 }
 
+.timelineMoreLink() {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    &:focus,
+    &:active {
+        background: transparent;
+    }
+}
+
 .timeline {
     &__itemWrapper {
         position: relative;
@@ -26,6 +39,10 @@
             padding-bottom: 0;
         }
     }
+}
+
+.timelineItemMoreLink {
+    .timelineMoreLink();
 }
 
 @timeline-border-left-width: 6px;
@@ -90,7 +107,7 @@
     .timelineIcons {
         position: absolute;
         left: 1rem;
-        top: 1rem;
+        top: 1.25rem;
     }
 }
 
@@ -110,16 +127,16 @@
         display: inline-block;
         font-size: 1rem;
         margin: 0;
+        padding-right: 0.5rem;
     }
     &__comment {
         display: inline-block;
         color: #78706a;
-        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
     &__date {
         display: inline-block;
         color: #78706a;
-        padding-left: 0.5rem;
     }
     .timelineIcons {
         position: absolute;

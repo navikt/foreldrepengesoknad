@@ -18,6 +18,7 @@ export interface Props {
     iconRenderer: TimelineIconRenderer;
     navnForelder1: string;
     navnForelder2: string;
+    onItemClick?: (item: TimelineItem) => void;
 }
 
 class Timeline extends React.Component<Props, {}> {
@@ -32,6 +33,7 @@ class Timeline extends React.Component<Props, {}> {
                     <EventItem
                         item={item as TimelineEvent}
                         iconRenderer={this.props.iconRenderer}
+                        onClick={this.props.onItemClick}
                     />
                 );
             case 'marker':
