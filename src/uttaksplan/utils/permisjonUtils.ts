@@ -258,7 +258,7 @@ export function opprettStønadsperioder(
                 permisjonsregler
             ),
             låstForelder: true,
-            låstTidsperiode: true
+            låstPeriode: true
         },
         {
             type: Periodetype.Stonadsperiode,
