@@ -23,9 +23,10 @@
         font-size: 0.875rem;
         display: flex;
         flex-wrap: nowrap;
+        justify-content: stretch;
         margin-bottom: 0.25rem;
         &__personName {
-            flex: 1 1 100%;
+            flex-basis: 80%;
             font-size: 1rem;
             font-size: inherit;
             color: inherit;
@@ -34,11 +35,11 @@
             white-space: nowrap;
         }
         &__duration {
+            flex-basis: 20%;
+            flex-grow: 2;
             font-size: inherit;
             color: inherit;
-            overflow: hidden;
             white-space: nowrap;
-            flex: 1 0 20%;
             text-align: right;
         }
     }
