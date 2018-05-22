@@ -16,6 +16,7 @@ interface TimelineBaseItem {
     title: string;
     color?: 'blue' | 'purple' | 'green';
     icons?: TimelineIcon[];
+    data?: any;
 }
 
 export interface TimelineEvent extends TimelineBaseItem {
@@ -25,6 +26,7 @@ export interface TimelineEvent extends TimelineBaseItem {
     to: Date;
     days: number;
     labels?: TimelineLabel[];
+    data: any;
 }
 
 export interface TimelineMarker extends TimelineBaseItem {
