@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Collapse } from 'react-collapse';
-import * as classnames from 'classnames';
+import * as classNames from 'classnames';
 
 export type BottomMargin = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
@@ -16,7 +16,7 @@ export interface Props {
 
 import './spørsmål.less';
 import { collapseSpringConfig } from '../../util/animasjon';
-
+console.log(classNames);
 const Spørsmål: React.StatelessComponent<Props> = ({
     synlig = true,
     animert = true,
@@ -25,7 +25,7 @@ const Spørsmål: React.StatelessComponent<Props> = ({
 }) => {
     const getContent = () =>
         render ? (
-            <div className={classnames('sporsmal', `sporsmal--${margin}`)}>
+            <div className={classNames('sporsmal', `sporsmal--${margin}`)}>
                 {render()}
             </div>
         ) : null;
@@ -35,7 +35,7 @@ const Spørsmål: React.StatelessComponent<Props> = ({
             <Collapse
                 springConfig={collapseSpringConfig}
                 isOpened={synlig === true}
-                className={classnames('sporsmal__collapse', {
+                className={classNames('sporsmal__collapse', {
                     'sporsmal__collapse--skjult': !synlig
                 })}>
                 {synlig ? getContent() : <div />}
