@@ -14,7 +14,7 @@ const TidslinjeAktivitetskravInfo: React.StatelessComponent<
     <div className="blokkPad-xs">
         <div className="blokkPad-xxs">
             <FormattedMessage
-                id="tidslinje.aktivitetskrav"
+                id="uttaksplan.tidslinje.aktivitetskrav"
                 values={{
                     navnForelder1:
                         navnForelder1 ||

@@ -23,15 +23,18 @@
             "uttaksplan/*": ["./uttaksplan/*"]
         }
     },
+    "awesomeTypescriptLoaderOptions": {
+        "useCache": false
+    },
     "exclude": [
         "node_modules",
         "build",
         "scripts",
         "config",
-        "__tests__/unit",
+        "jest/__tests__/unit",
         "src/build",
         "src/config",
-        "e2e",
+        "cypress",
         "dist",
         "**.js"
     ]

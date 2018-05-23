@@ -48,6 +48,8 @@ export interface Stonadsperiode extends PeriodeBase {
     type: Periodetype.Stonadsperiode;
     konto: Stonadskontoer;
     forelder: Forelder;
+    låstPeriode?: boolean;
+    låstForelder?: boolean;
 }
 
 export interface Utsettelsesperiode extends PeriodeBase {

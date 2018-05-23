@@ -1,22 +1,30 @@
 import * as React from 'react';
 import { getUkerOgDagerFromDager } from '../../../utils/uttaksdagerUtils';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface Props {
     dager: number;
 }
 
-const Varighet: React.StatelessComponent<Props> = (props) => {
-    const ukerOgDager = getUkerOgDagerFromDager(props.dager);
+const Varighet: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    dager,
+    intl
+}) => {
+    const ukerOgDager = getUkerOgDagerFromDager(dager);
 
-    return ukerOgDager.uker > 0 ? (
-        <FormattedMessage
-            id="uttaksplan.ukerogdager"
-            values={{ ...ukerOgDager }}
-        />
-    ) : (
-        <FormattedMessage id="uttaksplan.dager" values={{ ...ukerOgDager }} />
+    return (
+        <React.Fragment>
+            {intl.formatMessage(
+                {
+                    id:
+                        ukerOgDager.uker > 0
+                            ? 'uttaksplan.ukerogdager'
+                            : 'uttaksplan.dager'
+                },
+                { ...ukerOgDager }
+            )}
+        </React.Fragment>
     );
 };
 
-export default Varighet;
+export default injectIntl(Varighet);
