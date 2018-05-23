@@ -75,7 +75,7 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={situasjon === Søkersituasjon.ADOPSJON}
                     render={() => (
                         <ErDuMedmorSpørsmål
-                            erMedmor={søker.rolle as string}
+                            erMedmor={søker.rolle}
                             onChange={(rolle: SøkerRolle) =>
                                 dispatch(søknadActions.updateSøker({ rolle }))
                             }
