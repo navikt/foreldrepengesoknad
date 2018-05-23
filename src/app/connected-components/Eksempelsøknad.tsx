@@ -91,7 +91,7 @@ class Eksempelsøknad extends React.Component<Props> {
                             onChange={(erBarnetFødt: boolean) => {
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        erBarnetFødt: erBarnetFødt === true
+                                        erBarnetFødt
                                     })
                                 );
                             }}
@@ -182,9 +182,7 @@ class Eksempelsøknad extends React.Component<Props> {
                             onChange={(iNorgeNeste12Mnd: boolean) =>
                                 dispatch(
                                     søknadActions.updateUtenlandsopphold({
-                                        iNorgeNeste12Mnd:
-                                            utenlandsopphold.iNorgeNeste12Mnd ===
-                                            true
+                                        iNorgeNeste12Mnd
                                     })
                                 )
                             }
@@ -200,8 +198,7 @@ class Eksempelsøknad extends React.Component<Props> {
                             onChange={(iNorgeSiste12Mnd: boolean) =>
                                 dispatch(
                                     søknadActions.updateUtenlandsopphold({
-                                        iNorgeSiste12Mnd:
-                                            iNorgeSiste12Mnd === true
+                                        iNorgeSiste12Mnd
                                     })
                                 )
                             }
@@ -213,9 +210,7 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={utenlandsopphold.iNorgeSiste12Mnd !== undefined}
                     render={() => (
                         <VæreINorgeVedFødselSpørsmål
-                            fødselINorge={
-                                utenlandsopphold.fødselINorge === true
-                            }
+                            fødselINorge={utenlandsopphold.fødselINorge}
                             onChange={(fødselINorge: boolean) =>
                                 dispatch(
                                     søknadActions.updateUtenlandsopphold({
