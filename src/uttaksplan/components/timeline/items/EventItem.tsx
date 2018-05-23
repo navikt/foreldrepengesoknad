@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
 import {
@@ -11,18 +10,29 @@ import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel'
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import { guid } from 'nav-frontend-js-utils';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
-import TimelineRange from 'uttaksplan/components/timeline/TimelineRange';
-import { TimelineItemProps } from 'uttaksplan/components/timeline/Timeline';
+import {
+    TimelineItemProps,
+    RangeRenderer,
+    DurationRenderer
+} from 'uttaksplan/components/timeline/Timeline';
 
 export interface Props extends TimelineItemProps {
     item: TimelineEvent;
+    rangeRenderer: RangeRenderer;
+    durationRenderer: DurationRenderer;
     onClick?: (item: TimelineItem) => void;
 }
 
 const BEM = BEMHelper('timelineEventItem');
 
 const EventItem: React.StatelessComponent<Props> = (props) => {
-    const { iconRenderer, item, onClick } = props;
+    const {
+        iconRenderer,
+        rangeRenderer,
+        durationRenderer,
+        item,
+        onClick
+    } = props;
     const {
         title,
         from,
@@ -55,12 +65,12 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                     <EtikettLiten
                         tag="div"
                         className={BEM.element('header__duration')}>
-                        <Varighet dager={days} />
+                        {durationRenderer(days)}
                     </EtikettLiten>
                 </div>
             </h1>
             <div className={BEM.element('timespan')}>
-                <TimelineRange from={from} to={to} />
+                {rangeRenderer(from, to)}
             </div>
             {labels &&
                 labels.length > 0 && (
