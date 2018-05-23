@@ -168,7 +168,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
     return {
         barn,
-        vedlegg: state.søknad.vedlegg as Vedlegg,
+        vedlegg: state.søknad.vedlegg,
         visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || [])
     };
 };

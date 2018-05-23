@@ -161,7 +161,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     barn: state.søknad.barn as FødtBarn,
-    vedlegg: state.søknad.vedlegg as Vedlegg
+    vedlegg: state.søknad.vedlegg
 });
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(

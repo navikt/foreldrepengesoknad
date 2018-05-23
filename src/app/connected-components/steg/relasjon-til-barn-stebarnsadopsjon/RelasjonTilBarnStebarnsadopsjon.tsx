@@ -17,7 +17,7 @@ import Labeltekst from '../../../components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
 import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../../../types/s\u00F8knad/Vedlegg';
+import Vedlegg from '../../../types/søknad/Vedlegg';
 import {
     concatNewFiles,
     removeFileFromArray
@@ -142,7 +142,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         barn: state.søknad.barn as Adopsjonsbarn,
-        vedlegg: state.søknad.vedlegg as Vedlegg
+        vedlegg: state.søknad.vedlegg
     };
 };
 
