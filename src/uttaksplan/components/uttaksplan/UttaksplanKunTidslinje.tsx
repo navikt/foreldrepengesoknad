@@ -45,6 +45,8 @@ import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
 import { TimelineItem } from 'uttaksplan/components/timeline/types';
+import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
+import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -105,6 +107,15 @@ export class Main extends React.Component<Props> {
                         onItemClick={(item: TimelineItem) => {
                             // console.log(item);
                         }}
+                        durationRenderer={(dager: number) => (
+                            <Varighet dager={dager} />
+                        )}
+                        rangeRenderer={(startdato: Date, sluttdato: Date) => (
+                            <TidsperiodeTekst
+                                tidsperiode={{ startdato, sluttdato }}
+                                visSluttdato={true}
+                            />
+                        )}
                     />
                 </div>
                 <hr />

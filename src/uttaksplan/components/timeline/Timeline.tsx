@@ -13,6 +13,9 @@ import GapItem from 'uttaksplan/components/timeline/items/GapItem';
 
 import './timeline.less';
 
+export type RangeRenderer = (from: Date, to: Date) => React.ReactNode;
+export type DurationRenderer = (days: number) => React.ReactNode;
+
 export interface TimelineItemProps {
     iconRenderer: TimelineIconRenderer;
     onItemClick?: (item: TimelineItem) => void;
@@ -22,6 +25,8 @@ export interface Props extends TimelineItemProps {
     items: TimelineItem[];
     navnForelder1: string;
     navnForelder2: string;
+    rangeRenderer: RangeRenderer;
+    durationRenderer: DurationRenderer;
 }
 
 class Timeline extends React.Component<Props, {}> {
@@ -37,6 +42,8 @@ class Timeline extends React.Component<Props, {}> {
                         item={item as TimelineEvent}
                         iconRenderer={this.props.iconRenderer}
                         onClick={this.props.onItemClick}
+                        durationRenderer={this.props.durationRenderer}
+                        rangeRenderer={this.props.rangeRenderer}
                     />
                 );
             case 'marker':
