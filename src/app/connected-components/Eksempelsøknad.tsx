@@ -30,12 +30,12 @@ import { Periode } from 'uttaksplan/types';
 import { AppState } from '../redux/reducers';
 
 interface StateProps {
-    annenForelder?: AnnenForelderPartial;
-    barn?: BarnPartial;
-    søker?: SøkerPartial;
-    situasjon?: Søkersituasjon;
-    utenlandsopphold?: UtenlandsoppholdPartial;
-    perioder?: Periode[];
+    annenForelder: AnnenForelderPartial;
+    barn: BarnPartial;
+    søker: SøkerPartial;
+    situasjon: Søkersituasjon;
+    utenlandsopphold: UtenlandsoppholdPartial;
+    perioder: Periode[];
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -73,63 +73,49 @@ class Eksempelsøknad extends React.Component<Props> {
 
                 <Spørsmål
                     synlig={situasjon === Søkersituasjon.ADOPSJON}
-                    render={() =>
-                        søker !== undefined ? (
-                            <ErDuMedmorSpørsmål
-                                erMedmor={søker.rolle as string}
-                                onChange={(rolle: SøkerRolle) =>
-                                    dispatch(
-                                        søknadActions.updateSøker({ rolle })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <ErDuMedmorSpørsmål
+                            erMedmor={søker.rolle as string}
+                            onChange={(rolle: SøkerRolle) =>
+                                dispatch(søknadActions.updateSøker({ rolle }))
+                            }
+                        />
+                    )}
                 />
 
                 <Spørsmål
                     synlig={søker && søker.rolle !== undefined}
-                    render={() =>
-                        barn !== undefined ? (
-                            <ErBarnetFødtSpørsmål
-                                erBarnetFødt={barn.erBarnetFødt}
-                                onChange={(erBarnetFødt: boolean) => {
-                                    dispatch(
-                                        søknadActions.updateBarn({
-                                            erBarnetFødt: erBarnetFødt === true
-                                        })
-                                    );
-                                }}
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <ErBarnetFødtSpørsmål
+                            erBarnetFødt={barn.erBarnetFødt}
+                            onChange={(erBarnetFødt: boolean) => {
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        erBarnetFødt: erBarnetFødt === true
+                                    })
+                                );
+                            }}
+                        />
+                    )}
                 />
 
                 <Spørsmål
                     synlig={barn && barn.erBarnetFødt !== undefined}
-                    render={() =>
-                        barn !== undefined ? (
-                            <AntallBarnSpørsmål
-                                antallBarn={barn.antallBarn}
-                                inputName="antallBarn"
-                                onChange={(antallBarn: number) => {
-                                    dispatch(
-                                        søknadActions.updateBarn({ antallBarn })
-                                    );
-                                }}
-                                spørsmål={getMessage(
-                                    intl,
-                                    'antallBarn.spørsmål.venter'
-                                )}
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <AntallBarnSpørsmål
+                            antallBarn={barn.antallBarn}
+                            inputName="antallBarn"
+                            onChange={(antallBarn: number) => {
+                                dispatch(
+                                    søknadActions.updateBarn({ antallBarn })
+                                );
+                            }}
+                            spørsmål={getMessage(
+                                intl,
+                                'antallBarn.spørsmål.venter'
+                            )}
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -173,20 +159,16 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={
                         (barn as UfødtBarn).terminbekreftelseDato !== undefined
                     }
-                    render={() =>
-                        annenForelder !== undefined ? (
-                            <AnnenForelderBolk
-                                annenForelderData={annenForelder}
-                                onChange={(data: AnnenForelderPartial) =>
-                                    dispatch(
-                                        søknadActions.updateAnnenForelder(data)
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <AnnenForelderBolk
+                            annenForelderData={annenForelder}
+                            onChange={(data: AnnenForelderPartial) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(data)
+                                )
+                            }
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -195,27 +177,20 @@ class Eksempelsøknad extends React.Component<Props> {
                         (annenForelder.kanIkkeOppgis ||
                             annenForelder.fnr !== undefined)
                     }
-                    render={() =>
-                        annenForelder !== undefined &&
-                        utenlandsopphold !== undefined ? (
-                            <SkalBoINorgeNeste12MndSpørsmål
-                                iNorgeNeste12={
-                                    utenlandsopphold.iNorgeNeste12Mnd
-                                }
-                                onChange={(iNorgeNeste12Mnd: boolean) =>
-                                    dispatch(
-                                        søknadActions.updateUtenlandsopphold({
-                                            iNorgeNeste12Mnd:
-                                                utenlandsopphold.iNorgeNeste12Mnd ===
-                                                true
-                                        })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <SkalBoINorgeNeste12MndSpørsmål
+                            iNorgeNeste12={utenlandsopphold.iNorgeNeste12Mnd}
+                            onChange={(iNorgeNeste12Mnd: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        iNorgeNeste12Mnd:
+                                            utenlandsopphold.iNorgeNeste12Mnd ===
+                                            true
+                                    })
+                                )
+                            }
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -223,25 +198,19 @@ class Eksempelsøknad extends React.Component<Props> {
                         utenlandsopphold &&
                         utenlandsopphold.iNorgeNeste12Mnd !== undefined
                     }
-                    render={() =>
-                        utenlandsopphold !== undefined ? (
-                            <BoddINorgeSiste12MndSpørsmål
-                                iNorgeSiste12={
-                                    utenlandsopphold.iNorgeSiste12Mnd
-                                }
-                                onChange={(iNorgeSiste12Mnd: boolean) =>
-                                    dispatch(
-                                        søknadActions.updateUtenlandsopphold({
-                                            iNorgeSiste12Mnd:
-                                                iNorgeSiste12Mnd === true
-                                        })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <BoddINorgeSiste12MndSpørsmål
+                            iNorgeSiste12={utenlandsopphold.iNorgeSiste12Mnd}
+                            onChange={(iNorgeSiste12Mnd: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        iNorgeSiste12Mnd:
+                                            iNorgeSiste12Mnd === true
+                                    })
+                                )
+                            }
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -249,24 +218,20 @@ class Eksempelsøknad extends React.Component<Props> {
                         utenlandsopphold &&
                         utenlandsopphold.iNorgeSiste12Mnd !== undefined
                     }
-                    render={() =>
-                        utenlandsopphold ? (
-                            <VæreINorgeVedFødselSpørsmål
-                                fødselINorge={
-                                    utenlandsopphold.fødselINorge === true
-                                }
-                                onChange={(fødselINorge: boolean) =>
-                                    dispatch(
-                                        søknadActions.updateUtenlandsopphold({
-                                            fødselINorge
-                                        })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
+                    render={() => (
+                        <VæreINorgeVedFødselSpørsmål
+                            fødselINorge={
+                                utenlandsopphold.fødselINorge === true
+                            }
+                            onChange={(fødselINorge: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        fødselINorge
+                                    })
+                                )
+                            }
+                        />
+                    )}
                 />
                 {barn &&
                     !barn.erBarnetFødt &&

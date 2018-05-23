@@ -8,9 +8,7 @@ import { VedleggPartial } from '../../types/søknad/Vedlegg';
 const getDefaultState = (): SøknadPartial => {
     return {
         annenForelder: {},
-        barn: {
-            fødselsdatoer: []
-        },
+        barn: {},
         søker: {},
         utenlandsopphold: {},
         vedlegg: {
