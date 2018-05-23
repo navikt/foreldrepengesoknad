@@ -9,7 +9,7 @@ export enum SkalBoINorgeNeste12Mnd {
 }
 
 interface SkalBoINorgeNeste12MndSpørsmålProps {
-    iNorgeNeste12: boolean;
+    iNorgeNeste12?: boolean;
     onChange: (
         iNorgeSiste12: boolean,
         e: React.ChangeEvent<HTMLInputElement>

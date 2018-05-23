@@ -9,7 +9,7 @@ export enum BarnFødt {
 }
 
 interface BarnFødtBolkProps {
-    erBarnetFødt: boolean;
+    erBarnetFødt?: boolean;
     onChange: (
         erBarnetFødt: boolean,
         e: React.ChangeEvent<HTMLInputElement>
