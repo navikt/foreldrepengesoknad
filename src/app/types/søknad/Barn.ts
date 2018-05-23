@@ -28,3 +28,5 @@ export type FødtBarnPartial = Partial<FødtBarn>;
 export type UfødtBarnPartial = Partial<UfødtBarn>;
 export type AdopsjonsbarnPartial = Partial<Adopsjonsbarn>;
 export type ForeldreansvarBarnPartial = Partial<ForeldreansvarBarn>;
+
+export default Barn;
