@@ -2,10 +2,10 @@ import {
     SøknadAction,
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
-import { SøknadPartial } from '../../types/søknad/Søknad';
+import { Skjemadata } from '../../types/søknad/Søknad';
 import { VedleggPartial } from '../../types/søknad/Vedlegg';
 
-const getDefaultState = (): SøknadPartial => {
+const getDefaultState = (): Skjemadata => {
     return {
         annenForelder: {},
         barn: {},
@@ -19,7 +19,7 @@ const getDefaultState = (): SøknadPartial => {
     };
 };
 
-const updateVedlegg = (state: SøknadPartial, vedlegg: VedleggPartial) => ({
+const updateVedlegg = (state: Skjemadata, vedlegg: VedleggPartial) => ({
     ...state,
     vedlegg: { ...state.vedlegg, ...vedlegg }
 });

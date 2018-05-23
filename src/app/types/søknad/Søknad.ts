@@ -42,7 +42,7 @@ interface Søknad {
     vedlegg: Vedlegg;
 }
 
-export interface Skjemadata {
+export interface SøknadPartial {
     type?: Foreldrepengesøknad;
     annenForelder: AnnenForelderPartial;
     situasjon?: Søkersituasjon;
@@ -53,6 +53,6 @@ export interface Skjemadata {
     vedlegg: Vedlegg;
 }
 
-export type SøknadPartial = Partial<Skjemadata>;
+export type Skjemadata = Partial<SøknadPartial>;
 
 export default Søknad;
