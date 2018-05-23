@@ -13,12 +13,15 @@ import GapItem from 'uttaksplan/components/timeline/items/GapItem';
 
 import './timeline.less';
 
-export interface Props {
-    items: TimelineItem[];
+export interface TimelineItemProps {
     iconRenderer: TimelineIconRenderer;
+    onItemClick?: (item: TimelineItem) => void;
+}
+
+export interface Props extends TimelineItemProps {
+    items: TimelineItem[];
     navnForelder1: string;
     navnForelder2: string;
-    onItemClick?: (item: TimelineItem) => void;
 }
 
 class Timeline extends React.Component<Props, {}> {

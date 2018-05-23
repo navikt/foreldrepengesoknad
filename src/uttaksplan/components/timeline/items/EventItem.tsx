@@ -5,19 +5,17 @@ import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
 import {
     TimelineEvent,
-    TimelineIconRenderer,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
 import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel';
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import { guid } from 'nav-frontend-js-utils';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
-import Dato from 'uttaksplan/elements/dato/Dato';
-import { startOfDay } from 'date-fns';
+import TimelineRange from 'uttaksplan/components/timeline/TimelineRange';
+import { TimelineItemProps } from 'uttaksplan/components/timeline/Timeline';
 
-export interface Props {
+export interface Props extends TimelineItemProps {
     item: TimelineEvent;
-    iconRenderer: TimelineIconRenderer;
     onClick?: (item: TimelineItem) => void;
 }
 
@@ -62,13 +60,7 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                 </div>
             </h1>
             <div className={BEM.element('timespan')}>
-                {startOfDay(from) === startOfDay(to) ? (
-                    <Dato dato={from} />
-                ) : (
-                    <React.Fragment>
-                        <Dato dato={from} /> - <Dato dato={to} />
-                    </React.Fragment>
-                )}
+                <TimelineRange from={from} to={to} />
             </div>
             {labels &&
                 labels.length > 0 && (
