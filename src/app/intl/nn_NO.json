@@ -33,6 +33,16 @@
 
     "erDuMedmor.spørsmål": "Er du medmor?",
 
+    "boddINorgeSiste12Mnd.spørsmål": "Dei siste 12 månadene har eg...",
+    "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun budd i Noreg",
+    "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
+        "budd i utlandet helt eller delvis",
+
+    "iNorgeNeste12Mnd.spørsmål": "Dei neste 12 månadene skal eg...",
+    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bu i Noreg",
+    "iNorgeNeste12Mnd.alternativ.boIUtlandet":
+        "bu i utlandet helt eller delvis",
+
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
     "søkerrolle.rolle.MOR2": "Mor 2",
@@ -61,5 +71,15 @@
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
 
-    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?"
+    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
+
+    "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
+    "adoptertIUtlandet.spørsmål": "Adoptert i utlandet?",
+
+    "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
+    "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
+    "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
+    "vedlegg.lastoppknapp.label": "Last opp vedlegg",
+    "vedlegg.tittel.omsorgsovertakelse":
+        "Last opp dokumentasjon på omsorgsovertakelse"
 }

@@ -19,10 +19,17 @@ import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from '../../../components/veileder-info/Veilederinfo';
 import { Fødselsdato } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
+import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
+import {
+    concatNewFiles,
+    removeFileFromArray
+} from '../../../components/vedlegg/util';
+import Vedlegg from '../../../types/s\u00F8knad/Vedlegg';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
     visOver15årMelding: boolean;
+    vedlegg: Vedlegg;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -49,7 +56,13 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, visOver15årMelding, intl, dispatch } = this.props;
+        const {
+            barn,
+            visOver15årMelding,
+            vedlegg,
+            intl,
+            dispatch
+        } = this.props;
         return (
             <Steg id={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}>
                 <Spørsmål
@@ -67,6 +80,36 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                                 )
                             }
                             dato={barn.foreldreansvarsdato}
+                        />
+                    )}
+                />
+                <Spørsmål
+                    animert={true}
+                    synlig={barn.foreldreansvarsdato !== undefined}
+                    render={() => (
+                        <VedleggOversikt
+                            id="adopsjonsbekreftelse"
+                            vedlegg={vedlegg.adopsjonsvedtak}
+                            onFilesSelect={(files: File[]) => {
+                                dispatch(
+                                    søknadActions.updateVedlegg({
+                                        adopsjonsvedtak: concatNewFiles(
+                                            files,
+                                            vedlegg.adopsjonsvedtak
+                                        )
+                                    })
+                                );
+                            }}
+                            onFileDelete={(file: File) =>
+                                dispatch(
+                                    søknadActions.updateVedlegg({
+                                        adopsjonsvedtak: removeFileFromArray(
+                                            file,
+                                            vedlegg.adopsjonsvedtak
+                                        )
+                                    })
+                                )
+                            }
                         />
                     )}
                 />
@@ -125,6 +168,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
     return {
         barn,
+        vedlegg: state.søknad.vedlegg,
         visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || [])
     };
 };

@@ -34,6 +34,16 @@
 
     "erDuMedmor.spørsmål": "Er du medmor?",
 
+    "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
+    "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
+    "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
+        "bodd i utlandet helt eller delvis",
+
+    "iNorgeNeste12Mnd.spørsmål": "De neste 12 månedene skal jeg...",
+    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
+    "iNorgeNeste12Mnd.alternativ.boIUtlandet":
+        "bo i utlandet helt eller delvis",
+
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
     "søkerrolle.rolle.MOR2": "Mor 2",
