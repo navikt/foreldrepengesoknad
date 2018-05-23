@@ -13,6 +13,7 @@
     "antallBarn.alternativ.flere": "flere barn",
     "antallBarn.select.tekst": "Antall barn...",
     "antallBarn.select.velg": "Velg",
+
     "fødselsdatoer.flere.1": "Det første barnet blei født den...",
     "fødselsdatoer.flere.2": "Det andre barnet blei født den...",
     "fødselsdatoer.flere.3": "Det tredje barnet blei født den...",
@@ -32,6 +33,8 @@
     "erBarnetFødt.spørsmål": "Er barnet født?",
 
     "erDuMedmor.spørsmål": "Er du medmor?",
+    "erForelder1ForSyk.spørsmål":
+        "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
     "boddINorgeSiste12Mnd.spørsmål": "Dei siste 12 månadene har eg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun budd i Noreg",
@@ -81,5 +84,9 @@
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.label": "Last opp vedlegg",
     "vedlegg.tittel.omsorgsovertakelse":
-        "Last opp dokumentasjon på omsorgsovertakelse"
+        "Last opp dokumentasjon på omsorgsovertakelse",
+    "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
+    "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
+
+    "annenForelder.forelder1IkkeSyk": "Du må søke etter at barnet er født."
 }

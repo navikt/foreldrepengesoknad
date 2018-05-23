@@ -32,6 +32,7 @@ export enum Søkersituasjon {
 
 export interface Søker {
     rolle: SøkerRolle;
+    erForelder1ForSyk: boolean;
 }
 
 export type SøkerPartial = Partial<Søker>;
