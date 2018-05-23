@@ -84,7 +84,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={søker && søker.rolle !== undefined}
+                    synlig={søker.rolle !== undefined}
                     render={() => (
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -100,7 +100,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={barn && barn.erBarnetFødt !== undefined}
+                    synlig={barn.erBarnetFødt !== undefined}
                     render={() => (
                         <AntallBarnSpørsmål
                             antallBarn={barn.antallBarn}
@@ -119,7 +119,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={barn && barn.antallBarn !== undefined}
+                    synlig={barn.antallBarn !== undefined}
                     render={() => (
                         <DatoInput
                             id="termindatoinput"
@@ -173,9 +173,8 @@ class Eksempelsøknad extends React.Component<Props> {
 
                 <Spørsmål
                     synlig={
-                        annenForelder &&
-                        (annenForelder.kanIkkeOppgis ||
-                            annenForelder.fnr !== undefined)
+                        annenForelder.kanIkkeOppgis ||
+                        annenForelder.fnr !== undefined
                     }
                     render={() => (
                         <SkalBoINorgeNeste12MndSpørsmål
@@ -194,10 +193,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={
-                        utenlandsopphold &&
-                        utenlandsopphold.iNorgeNeste12Mnd !== undefined
-                    }
+                    synlig={utenlandsopphold.iNorgeNeste12Mnd !== undefined}
                     render={() => (
                         <BoddINorgeSiste12MndSpørsmål
                             iNorgeSiste12={utenlandsopphold.iNorgeSiste12Mnd}
@@ -214,10 +210,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={
-                        utenlandsopphold &&
-                        utenlandsopphold.iNorgeSiste12Mnd !== undefined
-                    }
+                    synlig={utenlandsopphold.iNorgeSiste12Mnd !== undefined}
                     render={() => (
                         <VæreINorgeVedFødselSpørsmål
                             fødselINorge={
@@ -233,8 +226,7 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
-                {barn &&
-                    !barn.erBarnetFødt &&
+                {!barn.erBarnetFødt &&
                     (barn as UfødtBarn).termindato && (
                         <UttaksplanEksempelskjema
                             termindato={(barn as UfødtBarn).termindato}
