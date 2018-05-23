@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import Dato from 'uttaksplan/elements/dato/Dato';
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
@@ -13,6 +12,8 @@ import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel'
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import { guid } from 'nav-frontend-js-utils';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
+import Dato from 'uttaksplan/elements/dato/Dato';
+import { startOfDay } from 'date-fns';
 
 export interface Props {
     item: TimelineEvent;
@@ -36,17 +37,21 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
     } = item;
 
     const itemId = guid();
+    const isInteractive = onClick !== undefined;
 
     return (
         <article
+            id={itemId}
             className={classnames(BEM.className, BEM.modifier(color), {
-                [BEM.modifier('interactive')]: onClick !== undefined
+                [BEM.modifier('interactive')]: isInteractive
             })}>
-            <div id={itemId}>
+            <TimelineIcons icons={icons} iconRenderer={iconRenderer} />
+            <h1 className={BEM.element('headerAndTitle')}>
+                <strong className={BEM.element('title')}>{title}</strong>
                 <div className={BEM.element('header')}>
                     <EtikettLiten
                         className={BEM.element('header__personName')}
-                        tag="h1">
+                        tag="div">
                         {personName}
                     </EtikettLiten>
                     <EtikettLiten
@@ -55,22 +60,25 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                         <Varighet dager={days} />
                     </EtikettLiten>
                 </div>
-                <TimelineIcons icons={icons} iconRenderer={iconRenderer} />
-                <h2 className={BEM.element('title')}>{title}</h2>
-                <div className={BEM.element('timespan')}>
+            </h1>
+            <div className={BEM.element('timespan')}>
+                {startOfDay(from) === startOfDay(to) ? (
                     <Dato dato={from} />
-                    {' - '}
-                    <Dato dato={to} />
-                </div>
-                {labels &&
-                    labels.length > 0 && (
-                        <div className={BEM.element('labels')}>
-                            {labels.map((label, idx) => (
-                                <TimelineItemLabel key={idx} label={label} />
-                            ))}
-                        </div>
-                    )}
+                ) : (
+                    <React.Fragment>
+                        <Dato dato={from} /> - <Dato dato={to} />
+                    </React.Fragment>
+                )}
             </div>
+            {labels &&
+                labels.length > 0 && (
+                    <div className={BEM.element('labels')}>
+                        {labels.map((label, idx) => (
+                            <TimelineItemLabel key={idx} label={label} />
+                        ))}
+                    </div>
+                )}
+
             {onClick && (
                 <TimelineItemMoreLink
                     itemId={itemId}

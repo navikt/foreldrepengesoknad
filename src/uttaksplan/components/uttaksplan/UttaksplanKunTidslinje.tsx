@@ -94,7 +94,7 @@ export class Main extends React.Component<Props> {
 
         return (
             <div>
-                <section className="tidsplan">
+                <div className="tidsplan">
                     <Timeline
                         items={innslag.map((i) => mapInnslagToTimelineItem(i))}
                         navnForelder1={navnForelder1}
@@ -106,7 +106,7 @@ export class Main extends React.Component<Props> {
                             // console.log(item);
                         }}
                     />
-                </section>
+                </div>
                 <hr />
                 <Permisjonsplan
                     navnForelder1={navnForelder1}

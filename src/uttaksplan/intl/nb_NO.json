@@ -159,5 +159,8 @@
     "uttaksplan.veileder.forbehold.utvidetinfo.tittel":
         "Begrensninger i planleggeren",
     "uttaksplan.veileder.forbehold.utvidetinfo.html":
-        "Foreldrepengeplanleggeren er under utvikling. Dere kan ikke bruke den for å planlegge:<ul><li>kombinasjon av delvis arbeid og foreldrepenger</li><li>opphold i foreldrepengene på grunn av sykdom</li><li>ekstrauker på grunn av flerbarnsfødsel</li><li>foreldrepenger på grunn av adopsjon</li><li>oppstart av foreldrepengene tidligere enn tre uker før termindato</li><li>ulønnet permisjon</li></ul>"
+        "Foreldrepengeplanleggeren er under utvikling. Dere kan ikke bruke den for å planlegge:<ul><li>kombinasjon av delvis arbeid og foreldrepenger</li><li>opphold i foreldrepengene på grunn av sykdom</li><li>ekstrauker på grunn av flerbarnsfødsel</li><li>foreldrepenger på grunn av adopsjon</li><li>oppstart av foreldrepengene tidligere enn tre uker før termindato</li><li>ulønnet permisjon</li></ul>",
+
+    "timeline.range.aria": "Fra {from} til {to}",
+    "timeline.range.visible": "{from} - {to}"
 }
