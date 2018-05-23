@@ -1,15 +1,12 @@
 import * as React from 'react';
-import {
-    TimelineMarker,
-    TimelineIconRenderer
-} from 'uttaksplan/components/timeline/types';
+import { TimelineMarker } from 'uttaksplan/components/timeline/types';
 import BEMHelper from 'uttaksplan/utils/bem';
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import Dato from 'uttaksplan/elements/dato/Dato';
+import { TimelineItemProps } from 'uttaksplan/components/timeline/Timeline';
 
-export interface Props {
+export interface Props extends TimelineItemProps {
     item: TimelineMarker;
-    iconRenderer: TimelineIconRenderer;
 }
 
 const BEM = BEMHelper('timelineMarkerItem');
