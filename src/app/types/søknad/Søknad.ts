@@ -9,6 +9,7 @@ import {
 } from './Barn';
 
 import { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import { Periode } from 'uttaksplan/types';
 
 type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
 
@@ -48,6 +49,7 @@ interface Søknad {
     søker: SøkerPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     vedlegg: VedleggPartial;
+    uttaksplan: Periode[];
 }
 
 export type SøknadPartial = Partial<Søknad>;
