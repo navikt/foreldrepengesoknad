@@ -16,7 +16,9 @@ const getDefaultState = (): SøknadPartial => {
         vedlegg: {
             omsorgsovertakelse: [],
             adopsjonsvedtak: [],
-            overtakelsedokumentasjon: []
+            overtakelsedokumentasjon: [],
+            terminbekreftelse: [],
+            fødselsattest: []
         }
     };
 };
