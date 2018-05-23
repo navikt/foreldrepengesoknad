@@ -19,6 +19,9 @@ import DatoInput from '../components/dato-input/DatoInput';
 import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
+import DocumentTitle from 'react-document-title';
+import Applikasjonsside from './sider/Applikasjonsside';
+import UttaksplanEksempelskjema from 'uttaksplan/components/uttaksplan/UttaksplanEksempelskjema';
 
 interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
@@ -43,7 +46,8 @@ class Eksempelsøknad extends React.Component<Props> {
         } = this.props;
 
         return (
-            <React.Fragment>
+            <Applikasjonsside visSpråkvelger={true}>
+                <DocumentTitle title="Eksempelsøknad" />
                 <Spørsmål
                     render={() => (
                         <SøkersituasjonSpørsmål
@@ -174,7 +178,23 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
-            </React.Fragment>
+                {!barn.erBarnetFødt &&
+                    (barn as UfødtBarn).termindato && (
+                        <UttaksplanEksempelskjema
+                            termindato={(barn as UfødtBarn).termindato}
+                            dekningsgrad="100%"
+                            navnForelder1="Mor"
+                            navnForelder2={annenForelder.navn}
+                            onVelgPerioder={(perioder) =>
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        uttaksplan: perioder
+                                    })
+                                )
+                            }
+                        />
+                    )}
+            </Applikasjonsside>
         );
     }
 }
