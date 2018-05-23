@@ -50,13 +50,13 @@ class Timeline extends React.Component<Props, {}> {
     render() {
         const { items } = this.props;
         return (
-            <section className="timeline">
+            <ol className="timeline">
                 {items.map((item, idx) => (
-                    <div className="timeline__itemWrapper" key={idx}>
+                    <li className="timeline__itemWrapper" key={idx}>
                         {this.renderItem(item)}
-                    </div>
+                    </li>
                 ))}
-            </section>
+            </ol>
         );
     }
 }

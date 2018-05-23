@@ -40,6 +40,9 @@
     }
 }
 .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     &__itemWrapper {
         position: relative;
         padding-bottom: 1rem;
@@ -75,6 +78,18 @@
         .interactiveItemStyling();
         &:hover {
             background-color: #fbfbfb;
+        }
+    }
+
+    &__headerAndTitle {
+        display: flex;
+        flex-flow: column-reverse;
+        width: 100%;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+        > * {
+            width: 100%;
         }
     }
 
