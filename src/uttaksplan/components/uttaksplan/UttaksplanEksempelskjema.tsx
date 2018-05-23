@@ -7,21 +7,13 @@ import {
 } from 'uttaksplan/redux/types';
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
-import { utsettelseVisDialog } from 'uttaksplan/redux/actions';
-import {
-    Utsettelsesperiode,
-    Tidsperiode,
-    Spraak,
-    Dekningsgrad,
-    Periode
-} from 'uttaksplan/types';
+import { Tidsperiode, Spraak, Dekningsgrad, Periode } from 'uttaksplan/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
 import {
     getSisteRegistrertePermisjonsdag,
     getStonadsperioderOgUtsettelser
 } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'app/redux/types';
-import Permisjonsplan from 'uttaksplan/components/permisjonsplan/Permisjonsplan';
 import UtsettelseDialog from 'uttaksplan/components/utsettelseDialog/UtsettelseDialog';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
@@ -46,6 +38,14 @@ interface OwnProps {
 
 import '../../styles/uttaksplan.less';
 import { Knapp } from 'nav-frontend-knapper';
+import Timeline from 'uttaksplan/components/timeline/Timeline';
+import UttaksplanIkon, {
+    UttaksplanIkonKeys
+} from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
+import { TimelineItem } from 'uttaksplan/components/timeline/types';
+import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
+import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
+import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
@@ -54,7 +54,6 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
         const {
             utsettelse,
             innslag,
-            dispatch,
             sisteRegistrertePermisjonsdag,
             termindato,
             dekningsgrad,
@@ -88,18 +87,26 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
                 : undefined;
 
         return (
-            <div>
-                <Permisjonsplan
+            <div className="tidsplan">
+                <Timeline
+                    items={innslag.map((i) => mapInnslagToTimelineItem(i))}
                     navnForelder1={navnForelder1}
                     navnForelder2={navnForelder2}
-                    permisjonsregler={permisjonsregler}
-                    fellesperiodeukerForelder1={13}
-                    fellesperiodeukerForelder2={13}
-                    innslag={innslag}
-                    onRedigerUtsettelse={(u: Utsettelsesperiode) =>
-                        dispatch(utsettelseVisDialog(u))
-                    }
-                    onLeggTilUtsettelse={() => dispatch(utsettelseVisDialog())}
+                    iconRenderer={(icon) => (
+                        <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
+                    )}
+                    onItemClick={(item: TimelineItem) => {
+                        // console.log(item);
+                    }}
+                    durationRenderer={(dager: number) => (
+                        <Varighet dager={dager} />
+                    )}
+                    rangeRenderer={(startdato: Date, sluttdato: Date) => (
+                        <TidsperiodeTekst
+                            tidsperiode={{ startdato, sluttdato }}
+                            visSluttdato={true}
+                        />
+                    )}
                 />
 
                 {tidsromForUtsettelse &&
