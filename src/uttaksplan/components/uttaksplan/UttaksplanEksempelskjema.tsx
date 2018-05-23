@@ -31,7 +31,7 @@ export interface StateProps {
     utsettelse: UtsettelseState;
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
-    perioder: Periode[];
+    statePerioder: Periode[];
 }
 
 interface OwnProps {
@@ -40,7 +40,8 @@ interface OwnProps {
     navnForelder2: string;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
-    onVelgPerioder: (perioder: Periode[]) => void;
+    perioder?: Periode[];
+    onLagPerioder: (perioder: Periode[]) => void;
 }
 
 import '../../styles/uttaksplan.less';
@@ -58,12 +59,23 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
             termindato,
             dekningsgrad,
             perioder,
-            onVelgPerioder
+            statePerioder,
+            onLagPerioder
         } = this.props;
 
         const navnForelder1 = this.props.navnForelder1;
         const navnForelder2 = this.props.navnForelder2;
         const permisjonsregler = getPermisjonsregler(this.props.termindato);
+
+        if (!perioder) {
+            return (
+                <div className="blokk-m no-print m-textCenter">
+                    <Knapp onClick={() => onLagPerioder(statePerioder)}>
+                        Vis uttaksplan
+                    </Knapp>
+                </div>
+            );
+        }
 
         const tidsromForUtsettelse: Tidsperiode | undefined =
             termindato && dekningsgrad && sisteRegistrertePermisjonsdag
@@ -105,9 +117,6 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
                             />
                         </div>
                     )}
-                <Knapp onClick={() => onVelgPerioder(perioder)}>
-                    Velg denne uttaksplanen
-                </Knapp>
             </div>
         );
     }
@@ -118,7 +127,7 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     innslag = tidslinjeFraPerioder(state);
 
     return {
-        perioder: getStonadsperioderOgUtsettelser(state),
+        statePerioder: getStonadsperioderOgUtsettelser(state),
         innslag,
         form: state.uttaksplan.uttaksplanForm,
         utsettelse: state.uttaksplan.utsettelse,
