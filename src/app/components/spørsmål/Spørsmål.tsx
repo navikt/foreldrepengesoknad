@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Collapse } from 'react-collapse';
 import * as classNames from 'classnames';
+import { collapseSpringConfig } from '../../util/animasjon';
 
 export type BottomMargin = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
@@ -15,8 +16,7 @@ export interface Props {
 }
 
 import './spørsmål.less';
-import { collapseSpringConfig } from '../../util/animasjon';
-console.log(classNames);
+
 const Spørsmål: React.StatelessComponent<Props> = ({
     synlig = true,
     animert = true,

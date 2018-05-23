@@ -30,7 +30,7 @@ const webpackConfig = {
                     path.resolve(__dirname, './../../app'),
                     path.resolve(__dirname, './../../uttaksplan')
                 ],
-                loader: require.resolve('ts-loader')
+                loader: require.resolve('awesome-typescript-loader')
             },
 
             {

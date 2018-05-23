@@ -125,15 +125,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     synlig={barn.antallBarn !== undefined}
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={utils.fødselsdatoerFromString(
-                                barn.fødselsdatoer || []
-                            )}
+                            fødselsdatoer={barn.fødselsdatoer || []}
                             onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        fødselsdatoer: utils.fødselsdatoerToString(
-                                            fødselsdatoer
-                                        )
+                                        fødselsdatoer
                                     })
                                 )
                             }

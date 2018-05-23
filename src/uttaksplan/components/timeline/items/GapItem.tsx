@@ -1,0 +1,10 @@
+import * as React from 'react';
+import { TimelineGap } from 'uttaksplan/components/timeline/types';
+
+export interface Props {
+    item: TimelineGap;
+}
+
+const GapItem: React.StatelessComponent<Props> = (props) => <div>Gap</div>;
+
+export default GapItem;

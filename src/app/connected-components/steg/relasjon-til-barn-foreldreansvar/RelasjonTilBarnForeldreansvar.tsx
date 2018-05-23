@@ -90,15 +90,11 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                     margin="none"
                     render={() => (
                         <FødselsdatoerSpørsmål
-                            fødselsdatoer={utils.fødselsdatoerFromString(
-                                barn.fødselsdatoer || []
-                            )}
-                            onChange={(fødselsdatoer) =>
+                            fødselsdatoer={barn.fødselsdatoer || []}
+                            onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
                                     søknadActions.updateBarn({
-                                        fødselsdatoer: utils.fødselsdatoerToString(
-                                            fødselsdatoer
-                                        )
+                                        fødselsdatoer
                                     })
                                 )
                             }
@@ -129,9 +125,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
     return {
         barn,
-        visOver15årMelding: erAlderOver15År(
-            utils.fødselsdatoerFromString(barn.fødselsdatoer || [])
-        )
+        visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || [])
     };
 };
 
