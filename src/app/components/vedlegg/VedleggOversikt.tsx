@@ -14,7 +14,7 @@ export interface VedleggOversiktProps {
     onFileDelete: (file: File) => void;
 }
 
-class VedleggForm extends React.Component<VedleggOversiktProps> {
+class VedleggOversikt extends React.Component<VedleggOversiktProps> {
     render() {
         const {
             id,
@@ -24,9 +24,10 @@ class VedleggForm extends React.Component<VedleggOversiktProps> {
             onFilesSelect
         } = this.props;
 
+        const showVedleggListe = vedlegg.length > 0;
         return (
             <div>
-                <div className="blokk-m">
+                <div className={showVedleggListe ? 'blokk-m' : undefined}>
                     <VedleggInput
                         id={id}
                         onFilesSelect={(files: File[]) => {
@@ -34,7 +35,7 @@ class VedleggForm extends React.Component<VedleggOversiktProps> {
                         }}
                     />
                 </div>
-                {vedlegg.length > 0 && (
+                {showVedleggListe && (
                     <div>
                         <div className="blokk-xs" id={id}>
                             <LabelText>
@@ -59,4 +60,4 @@ class VedleggForm extends React.Component<VedleggOversiktProps> {
         );
     }
 }
-export default VedleggForm;
+export default VedleggOversikt;
