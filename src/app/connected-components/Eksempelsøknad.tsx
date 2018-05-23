@@ -19,6 +19,8 @@ import DatoInput from '../components/dato-input/DatoInput';
 import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
+import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
+import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 
 interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
@@ -160,7 +162,42 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={annenForelder !== undefined}
+                    synlig={
+                        annenForelder.kanIkkeOppgis ||
+                        annenForelder.fnr !== undefined
+                    }
+                    render={() => (
+                        <SkalBoINorgeNeste12MndSpørsmål
+                            iNorgeNeste12={utenlandsopphold.iNorgeNeste12Mnd}
+                            onChange={(iNorgeNeste12Mnd: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        iNorgeNeste12Mnd
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={utenlandsopphold.iNorgeNeste12Mnd !== undefined}
+                    render={() => (
+                        <BoddINorgeSiste12MndSpørsmål
+                            iNorgeSiste12={utenlandsopphold.iNorgeSiste12Mnd}
+                            onChange={(iNorgeSiste12Mnd: boolean) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        iNorgeSiste12Mnd
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={utenlandsopphold.iNorgeSiste12Mnd !== undefined}
                     render={() => (
                         <VæreINorgeVedFødselSpørsmål
                             fødselINorge={utenlandsopphold.fødselINorge}
