@@ -5,7 +5,7 @@ import {
 import {
     UttaksplanViewState,
     SynligInfoMap,
-    ViewStatePartial
+    UttaksplanViewStatePartial
 } from '../../redux/types';
 
 export enum Infotekster {
@@ -34,7 +34,7 @@ const fjernInfo = (infoMap: SynligInfoMap, id: string): SynligInfoMap => {
 
 const updateState = (
     state: UttaksplanViewState,
-    viewState: ViewStatePartial
+    viewState: UttaksplanViewStatePartial
 ): UttaksplanViewState => {
     return {
         ...state,

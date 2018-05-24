@@ -7,7 +7,7 @@ import { Row, Column } from 'nav-frontend-grid';
 import { Input } from 'nav-frontend-skjema';
 import {
     UttaksplanFormState,
-    UtsettelseState,
+    PeriodeState,
     UttaksplanAppState
 } from 'uttaksplan/redux/types';
 import {
@@ -29,7 +29,7 @@ import './skjema.less';
 
 export interface StateProps {
     uttaksplanForm: UttaksplanFormState;
-    utsettelse: UtsettelseState;
+    periode: PeriodeState;
 }
 
 type Props = StateProps & DispatchProps & InjectedIntlProps;
@@ -155,8 +155,8 @@ class UttaksplanSkjema extends React.Component<Props> {
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
-        uttaksplanForm: state.uttaksplan.uttaksplanForm,
-        utsettelse: state.uttaksplan.utsettelse
+        uttaksplanForm: state.uttaksplan.form,
+        periode: state.uttaksplan.periode
     };
 };
 
