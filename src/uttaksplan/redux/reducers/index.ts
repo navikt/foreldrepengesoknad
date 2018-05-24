@@ -5,7 +5,7 @@ import periodeReducer from './periodeReducer';
 import viewReducer from './viewReducer';
 
 const UttaksplanReducer = combineReducers({
-    uttaksplanForm: formReducer,
+    form: formReducer,
     periode: periodeReducer,
     view: viewReducer
 });
