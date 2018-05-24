@@ -1,14 +1,9 @@
 import Vedlegg from './Vedlegg';
-import { AnnenForelderPartial } from './AnnenForelder';
+import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
-import {
-    FødtBarnPartial,
-    UfødtBarnPartial,
-    AdopsjonsbarnPartial,
-    ForeldreansvarBarnPartial
-} from './Barn';
-
-import { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import { Periode } from 'uttaksplan/types';
+import { BarnPartial, Barn } from './Barn';
 
 type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
 
@@ -39,18 +34,26 @@ export type SøkerPartial = Partial<Søker>;
 
 interface Søknad {
     type: Foreldrepengesøknad;
-    annenForelder: AnnenForelderPartial;
+    annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
-    barn:
-        | FødtBarnPartial
-        | UfødtBarnPartial
-        | AdopsjonsbarnPartial
-        | ForeldreansvarBarnPartial;
-    søker: SøkerPartial;
-    utenlandsopphold: UtenlandsoppholdPartial;
+    barn: Barn;
+    søker: Søker;
+    utenlandsopphold: Utenlandsopphold;
+    uttaksplan: Periode[];
     vedlegg: Vedlegg;
 }
 
-export type SøknadPartial = Partial<Søknad>;
+export interface SøknadPartial {
+    type?: Foreldrepengesøknad;
+    annenForelder: AnnenForelderPartial;
+    situasjon?: Søkersituasjon;
+    barn: BarnPartial;
+    søker: SøkerPartial;
+    utenlandsopphold: UtenlandsoppholdPartial;
+    uttaksplan?: Periode[];
+    vedlegg: Vedlegg;
+}
+
+export type Skjemadata = Partial<SøknadPartial>;
 
 export default Søknad;

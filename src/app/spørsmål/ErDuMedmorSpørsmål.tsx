@@ -5,7 +5,7 @@ import { SøkerRolle } from '../types/søknad/Søknad';
 import getMessage from '../util/i18nUtils';
 
 interface MedmorBolkProps {
-    erMedmor: string;
+    erMedmor?: string;
     onChange: (
         erMedmor: SøkerRolle,
         e: React.ChangeEvent<HTMLInputElement>

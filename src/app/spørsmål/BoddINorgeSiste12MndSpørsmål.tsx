@@ -9,7 +9,7 @@ export enum BoddINorgeSiste12Mnd {
 }
 
 interface BoddINorgeSiste12MndSpørsmålProps {
-    iNorgeSiste12: boolean;
+    iNorgeSiste12?: boolean;
     onChange: (
         iNorgeSiste12: boolean,
         e: React.ChangeEvent<HTMLInputElement>

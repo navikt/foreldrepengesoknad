@@ -1,30 +1,38 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'uttaksplan/utils/bem';
 import {
     TimelineEvent,
-    TimelineIconRenderer,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
 import TimelineItemLabel from 'uttaksplan/components/timeline/TimelineItemLabel';
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import { guid } from 'nav-frontend-js-utils';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
-import Dato from 'uttaksplan/elements/dato/Dato';
-import { startOfDay } from 'date-fns';
+import {
+    TimelineItemProps,
+    RangeRenderer,
+    DurationRenderer
+} from 'uttaksplan/components/timeline/Timeline';
 
-export interface Props {
+export interface Props extends TimelineItemProps {
     item: TimelineEvent;
-    iconRenderer: TimelineIconRenderer;
+    rangeRenderer: RangeRenderer;
+    durationRenderer: DurationRenderer;
     onClick?: (item: TimelineItem) => void;
 }
 
 const BEM = BEMHelper('timelineEventItem');
 
 const EventItem: React.StatelessComponent<Props> = (props) => {
-    const { iconRenderer, item, onClick } = props;
+    const {
+        iconRenderer,
+        rangeRenderer,
+        durationRenderer,
+        item,
+        onClick
+    } = props;
     const {
         title,
         from,
@@ -57,18 +65,12 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                     <EtikettLiten
                         tag="div"
                         className={BEM.element('header__duration')}>
-                        <Varighet dager={days} />
+                        {durationRenderer(days)}
                     </EtikettLiten>
                 </div>
             </h1>
             <div className={BEM.element('timespan')}>
-                {startOfDay(from) === startOfDay(to) ? (
-                    <Dato dato={from} />
-                ) : (
-                    <React.Fragment>
-                        <Dato dato={from} /> - <Dato dato={to} />
-                    </React.Fragment>
-                )}
+                {rangeRenderer(from, to)}
             </div>
             {labels &&
                 labels.length > 0 && (

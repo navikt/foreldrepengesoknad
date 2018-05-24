@@ -9,7 +9,7 @@ enum SelvstendigNæringsdrivendeEllerFrilanser {
 }
 
 interface SelvstendigNæringsdrivendeEllerFrilanserBolkProps {
-    erSelvstendigNæringsdrivendeEllerFrilanser: boolean;
+    erSelvstendigNæringsdrivendeEllerFrilanser?: boolean;
     onChange: (
         erSelvstendigNæringsdrivendeEllerFrilanser: boolean,
         e: React.ChangeEvent<HTMLInputElement>
