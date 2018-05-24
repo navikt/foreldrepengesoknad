@@ -185,7 +185,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                   )
                 : 0;
 
-        const visFerieinfo = forelder && arsak === 'ferie';
+        const visFerieinfo = forelder && arsak === UtsettelseArsakType.Ferie;
 
         const startdatoFeil = this.getSkjemaelementFeil('startdato');
         const sluttdatoFeil = this.getSkjemaelementFeil('sluttdato');
