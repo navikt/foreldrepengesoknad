@@ -28,6 +28,7 @@ import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSp
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import { Periode } from 'uttaksplan/types';
 import { AppState } from '../redux/reducers';
+import ErDuSelvstendigNæringsdrivendeEllerFrilanser from '../spørsmål/ErDuSelvstendigNæringsdrivendeEllerFrilanser';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -215,6 +216,22 @@ class Eksempelsøknad extends React.Component<Props> {
                                 dispatch(
                                     søknadActions.updateUtenlandsopphold({
                                         fødselINorge
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+                <Spørsmål
+                    render={() => (
+                        <ErDuSelvstendigNæringsdrivendeEllerFrilanser
+                            erSelvstendigNæringsdrivendeEllerFrilanser={
+                                søker.selvstendigNæringsdrivendeEllerFrilanser
+                            }
+                            onChange={(value: boolean) =>
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        selvstendigNæringsdrivendeEllerFrilanser: value
                                     })
                                 )
                             }
