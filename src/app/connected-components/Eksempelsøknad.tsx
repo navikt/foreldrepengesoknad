@@ -238,6 +238,7 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
                 {!barn.erBarnetFødt &&
                     (barn as UfødtBarn).termindato && (
                         <UttaksplanEksempelskjema
