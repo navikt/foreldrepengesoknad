@@ -1,0 +1,81 @@
+import {
+    PlanleggerActionTypes,
+    PlanleggerActionTypeKeys
+} from '../actions/actionTypes';
+import { PeriodeState, PeriodeStatePartial } from '../types';
+import { Periodetype, Periode } from '../../types';
+import { guid } from 'nav-frontend-js-utils';
+import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
+
+const defaultState: PeriodeState = {
+    dialogErApen: false,
+    perioder: mockUtsettelser
+};
+
+const opprettEllerOppdaterPeriode = (
+    state: PeriodeState,
+    periode: Periode
+): PeriodeState => {
+    let perioder = state.perioder;
+    if (periode.type === Periodetype.Utsettelse) {
+        perioder = periode.id
+            ? state.perioder.map(
+                  (u, idx) =>
+                      u.id === periode.id ? periode : state.perioder[idx]
+              )
+            : [
+                  ...state.perioder,
+                  {
+                      ...periode,
+                      id: guid()
+                  }
+              ];
+    }
+    return {
+        ...state,
+        perioder,
+        dialogErApen: false
+    };
+};
+
+const updateState = (
+    state: PeriodeState,
+    newState: PeriodeStatePartial
+): PeriodeState => ({
+    ...state,
+    ...newState
+});
+
+const PeriodeReducer = (
+    state = defaultState,
+    action: PlanleggerActionTypes
+): PeriodeState => {
+    switch (action.type) {
+        case PlanleggerActionTypeKeys.SET_TERMINDATO:
+            return defaultState;
+        case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
+            return updateState(state, {
+                dialogErApen: true,
+                valgtPeriode: action.periode
+            });
+        case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
+            return updateState(state, {
+                dialogErApen: false,
+                valgtPeriode: undefined
+            });
+        case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
+            return opprettEllerOppdaterPeriode(state, action.periode);
+        case PlanleggerActionTypeKeys.PERIODE_SLETT:
+            return updateState(state, {
+                perioder: state.perioder.filter(
+                    (u) => u.id !== action.periode.id
+                ),
+                valgtPeriode: undefined,
+                dialogErApen: false
+            });
+        default:
+            return state;
+    }
+};
+
+export default PeriodeReducer;
