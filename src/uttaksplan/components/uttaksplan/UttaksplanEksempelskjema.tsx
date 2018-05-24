@@ -2,12 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {
     UttaksplanAppState,
-    UtsettelseState,
+    PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
-import { Tidsperiode, Spraak, Dekningsgrad, Periode } from 'uttaksplan/types';
+import {
+    Tidsperiode,
+    Spraak,
+    Dekningsgrad,
+    Periode,
+    Utsettelsesperiode
+} from 'uttaksplan/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
 import {
     getSisteRegistrertePermisjonsdag,
@@ -20,7 +26,7 @@ import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 export interface StateProps {
     form: UttaksplanFormState;
     innslag: Tidslinjeinnslag[];
-    utsettelse: UtsettelseState;
+    periode: PeriodeState;
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
     statePerioder: Periode[];
@@ -52,7 +58,7 @@ export type Props = OwnProps & StateProps & DispatchProps;
 class UttaksplanEksempelskjema extends React.Component<Props> {
     render() {
         const {
-            utsettelse,
+            periode,
             innslag,
             sisteRegistrertePermisjonsdag,
             termindato,
@@ -113,11 +119,15 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
                     termindato && (
                         <div>
                             <UtsettelseDialog
-                                isOpen={utsettelse.dialogErApen}
+                                isOpen={periode.dialogErApen}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}
-                                utsettelser={utsettelse.utsettelser}
-                                utsettelse={utsettelse.valgtUtsettelse}
+                                utsettelser={
+                                    periode.perioder as Utsettelsesperiode[]
+                                }
+                                utsettelse={
+                                    periode.valgtPeriode as Utsettelsesperiode
+                                }
                                 tidsrom={tidsromForUtsettelse}
                                 permisjonsregler={permisjonsregler}
                                 termindato={termindato}
@@ -136,14 +146,14 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
         statePerioder: getStonadsperioderOgUtsettelser(state),
         innslag,
-        form: state.uttaksplan.uttaksplanForm,
-        utsettelse: state.uttaksplan.utsettelse,
+        form: state.uttaksplan.form,
+        periode: state.uttaksplan.periode,
         sisteRegistrertePermisjonsdag: getSisteRegistrertePermisjonsdag(state),
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
-            state.uttaksplan.uttaksplanForm.dekningsgrad !== undefined &&
-            state.uttaksplan.uttaksplanForm.termindato !== undefined &&
+            state.uttaksplan.form.dekningsgrad !== undefined &&
+            state.uttaksplan.form.termindato !== undefined &&
             state.uttaksplan.view.visTidslinje === true
     };
 };

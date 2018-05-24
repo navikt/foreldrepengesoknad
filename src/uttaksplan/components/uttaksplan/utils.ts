@@ -28,7 +28,7 @@ export const getLabelsForInnslag = (
     innslag: InnslagPeriodetype
 ): TimelineLabel[] | undefined => {
     if (innslag.periode.type === Periodetype.Utsettelse) {
-        if (innslag.periode.arsak === UtsettelseArsakType.Sykdom) {
+        if (innslag.periode.arsak === UtsettelseArsakType.SykdomSkade) {
             return [
                 {
                     text: 'Krav på dokumentasjon',
@@ -38,7 +38,7 @@ export const getLabelsForInnslag = (
         } else if (innslag.periode.arsak === UtsettelseArsakType.Ferie) {
             return [
                 {
-                    text: 'Ferie er viktig',
+                    text: 'Krever dokumentasjon',
                     type: 'fokus'
                 }
             ];

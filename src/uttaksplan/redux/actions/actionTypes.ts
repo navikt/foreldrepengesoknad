@@ -1,4 +1,4 @@
-import { Dekningsgrad, Utsettelsesperiode, Spraak } from '../../types';
+import { Dekningsgrad, Spraak, Periode } from '../../types';
 
 export enum PlanleggerActionTypeKeys {
     'SET_NAVN_FORELDER1' = 'setNavnForelder1',
@@ -7,10 +7,10 @@ export enum PlanleggerActionTypeKeys {
     'SET_UKER_FORELDER1' = 'setUkerForelder1',
     'SET_UKER_FORELDER2' = 'setUkerForelder2',
     'SET_DEKNINGSGRAD' = 'setDekningsgrad',
-    'UTSETTELSE_VIS_DIALOG' = 'utsettelseVisDialog',
-    'UTSETTELSE_LUKK_DIALOG' = 'utsettelseLukkDialog',
-    'UTSETTELSE_OPPRETT_ELLER_OPPDATER' = 'utsettelseOpprettEllerOppdater',
-    'UTSETTELSE_SLETT' = 'utsettelseSlett',
+    'PERIODE_VIS_DIALOG' = 'periodeVisDialog',
+    'PERIODE_LUKK_DIALOG' = 'periodeLukkDialog',
+    'PERIODE_OPPRETT_ELLER_OPPDATER' = 'periodeOpprettEllerOppdater',
+    'PERIODE_SLETT' = 'periodeSlett',
     'INFO_VIS' = 'infoVis',
     'INFO_SKJUL' = 'infoSkjul',
     'VIS_TIDSLINJE' = 'visTidslinje',
@@ -24,10 +24,10 @@ export type PlanleggerActionTypes =
     | SetUkerForelder2
     | SetUkerForelder1
     | SetDekningsgrad
-    | UtsettelseVisDialog
-    | UtsettelseLukkDialog
-    | OpprettEllerOppdaterUtsettelse
-    | SlettUtsettelse
+    | PeriodeVisDialog
+    | PeriodeLukkDialog
+    | OpprettEllerOppdaterPeriode
+    | SlettPeriode
     | SkjulInfo
     | VisInfo
     | VisTidslinje
@@ -63,23 +63,23 @@ export interface SetDekningsgrad {
     dekningsgrad: Dekningsgrad | undefined;
 }
 
-export interface UtsettelseVisDialog {
-    type: PlanleggerActionTypeKeys.UTSETTELSE_VIS_DIALOG;
-    utsettelse?: Utsettelsesperiode;
+export interface PeriodeVisDialog {
+    type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG;
+    periode?: Periode;
 }
 
-export interface UtsettelseLukkDialog {
-    type: PlanleggerActionTypeKeys.UTSETTELSE_LUKK_DIALOG;
+export interface PeriodeLukkDialog {
+    type: PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG;
 }
 
-export interface OpprettEllerOppdaterUtsettelse {
-    type: PlanleggerActionTypeKeys.UTSETTELSE_OPPRETT_ELLER_OPPDATER;
-    utsettelse: Utsettelsesperiode;
+export interface OpprettEllerOppdaterPeriode {
+    type: PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER;
+    periode: Periode;
 }
 
-export interface SlettUtsettelse {
-    type: PlanleggerActionTypeKeys.UTSETTELSE_SLETT;
-    utsettelse: Utsettelsesperiode;
+export interface SlettPeriode {
+    type: PlanleggerActionTypeKeys.PERIODE_SLETT;
+    periode: Periode;
 }
 
 export interface SkjulInfo {
