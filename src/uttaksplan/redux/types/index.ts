@@ -27,10 +27,10 @@ export interface UttaksplanViewState {
     synligInfo: SynligInfoMap;
     visTidslinje: boolean;
 }
-export type ViewStatePartial = Partial<UttaksplanViewState>;
+export type UttaksplanViewStatePartial = Partial<UttaksplanViewState>;
 
 export interface UttaksplanState {
-    uttaksplanForm: UttaksplanFormState;
+    form: UttaksplanFormState;
     periode: PeriodeState;
     view: UttaksplanViewState;
 }

@@ -146,14 +146,14 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
         statePerioder: getStonadsperioderOgUtsettelser(state),
         innslag,
-        form: state.uttaksplan.uttaksplanForm,
+        form: state.uttaksplan.form,
         periode: state.uttaksplan.periode,
         sisteRegistrertePermisjonsdag: getSisteRegistrertePermisjonsdag(state),
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
-            state.uttaksplan.uttaksplanForm.dekningsgrad !== undefined &&
-            state.uttaksplan.uttaksplanForm.termindato !== undefined &&
+            state.uttaksplan.form.dekningsgrad !== undefined &&
+            state.uttaksplan.form.termindato !== undefined &&
             state.uttaksplan.view.visTidslinje === true
     };
 };
