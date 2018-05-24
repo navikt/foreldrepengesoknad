@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import ErDuMedmorSpørsmål from '../spørsmål/ErDuMedmorSpørsmål';
 import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import {
     SøkerRolle,
     Søkersituasjon,
-    SøkerPartial
+    default as Søknad
 } from '../types/søknad/Søknad';
 import { DispatchProps } from '../redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
-import { UfødtBarn, BarnPartial } from '../types/søknad/Barn';
+import apiActions from './../redux/actions/api/apiActionCreators';
+import { BarnPartial, UfødtBarn } from '../types/søknad/Barn';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
 import getMessage from '../util/i18nUtils';
 import Spørsmål from '../components/spørsmål/Spørsmål';
@@ -18,25 +18,31 @@ import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
-import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import { UtenlandsoppholdPartial } from '../types/søknad/Utenlandsopphold';
 import DocumentTitle from 'react-document-title';
-import Applikasjonsside from './sider/Applikasjonsside';
 import UttaksplanEksempelskjema from 'uttaksplan/components/uttaksplan/UttaksplanEksempelskjema';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
+import ErDuSelvstendigNæringsdrivendeSpørsmål from '../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
+import Hovedknapp from 'nav-frontend-knapper/lib/hovedknapp';
+import ErDuFrilanserSpørsmål from '../spørsmål/ErDuFrilanserSpørsmål';
+import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
+import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
+import Applikasjonsside from './sider/Applikasjonsside';
+import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
-import { AppState } from '../redux/reducers';
-import ErDuSelvstendigNæringsdrivendeEllerFrilanser from '../spørsmål/ErDuSelvstendigNæringsdrivendeEllerFrilanser';
+import { Språkkode } from '../intl/types';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
     barn: BarnPartial;
-    søker: SøkerPartial;
     situasjon: Søkersituasjon;
     utenlandsopphold: UtenlandsoppholdPartial;
     perioder: Periode[];
+    roller?: SøkerRolle[];
+    søknad: Søknad;
+    språkkode: Språkkode;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -45,8 +51,9 @@ class Eksempelsøknad extends React.Component<Props> {
     render() {
         const {
             dispatch,
-            søker,
+            søknad,
             barn,
+            roller,
             situasjon,
             annenForelder,
             utenlandsopphold,
@@ -73,19 +80,24 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={situasjon === Søkersituasjon.ADOPSJON}
+                    synlig={situasjon !== undefined}
                     render={() => (
-                        <ErDuMedmorSpørsmål
-                            erMedmor={søker.rolle}
-                            onChange={(rolle: SøkerRolle) =>
-                                dispatch(søknadActions.updateSøker({ rolle }))
+                        <SøkerrolleSpørsmål
+                            rolle={søknad.søkerRolle}
+                            roller={roller}
+                            onChange={(nyRolle: SøkerRolle) =>
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        søkerRolle: nyRolle
+                                    })
+                                )
                             }
                         />
                     )}
                 />
 
                 <Spørsmål
-                    synlig={søker.rolle !== undefined}
+                    synlig={søknad.søkerRolle !== undefined}
                     render={() => (
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -222,16 +234,34 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
                 <Spørsmål
+                    synlig={utenlandsopphold.fødselINorge !== undefined}
                     render={() => (
-                        <ErDuSelvstendigNæringsdrivendeEllerFrilanser
-                            erSelvstendigNæringsdrivendeEllerFrilanser={
-                                søker.selvstendigNæringsdrivendeEllerFrilanser
+                        <ErDuSelvstendigNæringsdrivendeSpørsmål
+                            erSelvstendigNæringsdrivende={
+                                søknad.erSelvstendigNæringsdrivende
                             }
-                            onChange={(value: boolean) =>
+                            onChange={(erSelvstendigNæringsdrivende) =>
                                 dispatch(
-                                    søknadActions.updateSøker({
-                                        selvstendigNæringsdrivendeEllerFrilanser: value
+                                    søknadActions.updateSøknad({
+                                        erSelvstendigNæringsdrivende
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={utenlandsopphold.fødselINorge !== undefined}
+                    render={() => (
+                        <ErDuFrilanserSpørsmål
+                            erFrilanser={søknad.erFrilanser}
+                            onChange={(erFrilanser) =>
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        erFrilanser
                                     })
                                 )
                             }
@@ -260,18 +290,33 @@ class Eksempelsøknad extends React.Component<Props> {
                             }
                         />
                     )}
+
+                <Hovedknapp
+                    onClick={() => dispatch(apiActions.sendSøknad(søknad))}>
+                    Send søknad
+                </Hovedknapp>
             </Applikasjonsside>
         );
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-    annenForelder: state.søknad.annenForelder,
-    barn: state.søknad.barn,
-    søker: state.søknad.søker,
-    situasjon: state.søknad.situasjon,
-    utenlandsopphold: state.søknad.utenlandsopphold,
-    perioder: state.søknad.uttaksplan
-});
+export default connect<StateProps>((state: any) => {
+    const { situasjon } = state.søknad;
 
-export default connect(mapStateToProps)(injectIntl(Eksempelsøknad));
+    const kjønn = state.api.person ? state.api.person.kjønn : undefined;
+    const roller =
+        kjønn && situasjon
+            ? getSøkerrollerForBruker(kjønn, situasjon)
+            : undefined;
+
+    return {
+        søknad: state.søknad,
+        annenForelder: state.søknad.annenForelder,
+        barn: state.søknad.barn,
+        utenlandsopphold: state.søknad.utenlandsopphold,
+        perioder: state.søknad.uttaksplan,
+        språkkode: state.common.språkkode,
+        situasjon,
+        roller
+    };
+})(injectIntl(Eksempelsøknad));

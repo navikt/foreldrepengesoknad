@@ -42,15 +42,12 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
 
     oppdaterAntallBarn(antall: number) {
         this.props.dispatch(
-            søknadActions.updateSøknad({
-                barn: {
-                    ...this.props.barn,
-                    antallBarn: antall,
-                    fødselsdatoer: utils.trimFødselsdatoer(
-                        antall,
-                        this.props.barn.fødselsdatoer
-                    )
-                }
+            søknadActions.updateBarn({
+                antallBarn: antall,
+                fødselsdatoer: utils.trimFødselsdatoer(
+                    antall,
+                    this.props.barn.fødselsdatoer
+                )
             })
         );
     }
