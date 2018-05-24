@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import { DispatchProps } from '../redux/types';
 import { UfødtBarn } from '../types/søknad/Barn';
 import Spørsmål from '../components/spørsmål/Spørsmål';
-import Forelder1ForSykSpørsmål from '../spørsmål/Forelder1ForSykSpørsmål';
+import MorForSykSpørsmål from '../spørsmål/MorForSykSpørsmål';
 import DatoInput from '../components/dato-input/DatoInput';
 import Bolk from '../components/layout/Bolk';
 import getMessage from '../util/i18nUtils';
@@ -27,19 +27,19 @@ interface StateProps {
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
-class UFødtBarnForelder2Partial extends React.Component<Props> {
+class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
     render() {
         const { intl, dispatch, barn, vedlegg, søker } = this.props;
         return (
             <div>
                 <Spørsmål
                     render={() => (
-                        <Forelder1ForSykSpørsmål
-                            erForelder1ForSyk={søker.erForelder1ForSyk}
-                            onChange={(erForelder1ForSyk) => {
+                        <MorForSykSpørsmål
+                            erMorForSyk={søker.erMorForSyk}
+                            onChange={(erMorForSyk: boolean) => {
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        erForelder1ForSyk
+                                        erMorForSyk
                                     })
                                 );
                             }}
@@ -47,16 +47,16 @@ class UFødtBarnForelder2Partial extends React.Component<Props> {
                     )}
                 />
 
-                {søker.erForelder1ForSyk === false && (
+                {søker.erMorForSyk === false && (
                     <Veilederinfo type="feil">
                         {getMessage(intl, 'annenForelder.forelder1IkkeSyk')}
                     </Veilederinfo>
                 )}
 
-                {søker.erForelder1ForSyk === true && (
-                    <div>
+                {søker.erMorForSyk === true && (
+                    <React.Fragment>
                         <Spørsmål
-                            synlig={søker.erForelder1ForSyk === true}
+                            synlig={søker.erMorForSyk === true}
                             render={() => (
                                 <DatoInput
                                     id="termindato"
@@ -133,11 +133,10 @@ class UFødtBarnForelder2Partial extends React.Component<Props> {
                                 />
                             )}
                         />
-                    </div>
+                    </React.Fragment>
                 )}
             </div>
         );
     }
 }
-
-export default UFødtBarnForelder2Partial;
+export default injectIntl(UFødtBarnAnnenForelderPartial);

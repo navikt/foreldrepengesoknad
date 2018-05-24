@@ -33,8 +33,11 @@
     "erBarnetFødt.spørsmål": "Er barnet født?",
 
     "erDuMedmor.spørsmål": "Er du medmor?",
-    "erForelder1ForSyk.spørsmål":
+    "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
+
+    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+        "Er du selvstendig næringsdrivende eller frilanser?",
 
     "boddINorgeSiste12Mnd.spørsmål": "Dei siste 12 månadene har eg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun budd i Noreg",
@@ -88,5 +91,5 @@
     "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
     "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
 
-    "annenForelder.forelder1IkkeSyk": "Du må søke etter at barnet er født."
+    "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født."
 }
