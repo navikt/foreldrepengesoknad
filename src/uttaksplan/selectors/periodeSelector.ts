@@ -9,10 +9,8 @@ import {
 import { leggUtsettelserTilPerioder } from '../utils/periodeUtils';
 import { opprettStønadsperioder } from '../utils/permisjonUtils';
 
-const formSelector = (state: UttaksplanAppState) =>
-    state.uttaksplan.uttaksplanForm;
+const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
 const utsettelseSelector = (state: UttaksplanAppState) => {
-    console.log(state);
     return state.uttaksplan.periode.perioder.filter(
         (p) => p.type === Periodetype.Utsettelse
     );

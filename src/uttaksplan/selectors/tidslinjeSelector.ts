@@ -9,8 +9,7 @@ import { Periode, Periodetype } from '../types';
 import { getSammenhengendePerioder } from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
-const formSelector = (state: UttaksplanAppState) =>
-    state.uttaksplan.uttaksplanForm;
+const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
 
 const FILTRER_PERIODER = false;
 

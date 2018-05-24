@@ -155,7 +155,7 @@ class UttaksplanSkjema extends React.Component<Props> {
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
-        uttaksplanForm: state.uttaksplan.uttaksplanForm,
+        uttaksplanForm: state.uttaksplan.form,
         periode: state.uttaksplan.periode
     };
 };
