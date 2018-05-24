@@ -29,7 +29,7 @@ import './skjema.less';
 
 export interface StateProps {
     uttaksplanForm: UttaksplanFormState;
-    utsettelse: PeriodeState;
+    periode: PeriodeState;
 }
 
 type Props = StateProps & DispatchProps & InjectedIntlProps;
@@ -156,7 +156,7 @@ class UttaksplanSkjema extends React.Component<Props> {
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
         uttaksplanForm: state.uttaksplan.uttaksplanForm,
-        utsettelse: state.uttaksplan.periode
+        periode: state.uttaksplan.periode
     };
 };
 
