@@ -21,6 +21,7 @@ import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødsel
 import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
+import ErDuSelvstendigNæringsdrivendeEllerFrilanser from '../spørsmål/ErDuSelvstendigNæringsdrivendeEllerFrilanser';
 
 interface EksempelsøknadProps {
     annenForelder: AnnenForelder;
@@ -205,6 +206,23 @@ class Eksempelsøknad extends React.Component<Props> {
                                 dispatch(
                                     søknadActions.updateUtenlandsopphold({
                                         fødselINorge
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    render={() => (
+                        <ErDuSelvstendigNæringsdrivendeEllerFrilanser
+                            erSelvstendigNæringsdrivendeEllerFrilanser={
+                                søker.selvstendigNæringsdrivendeEllerFrilanser
+                            }
+                            onChange={(value: boolean) =>
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        selvstendigNæringsdrivendeEllerFrilanser: value
                                     })
                                 )
                             }
