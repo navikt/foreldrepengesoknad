@@ -18,6 +18,7 @@ export interface OwnProps {
     onLeggTilUtsettelse: () => void;
     onRedigerUtsettelse: (u: Utsettelsesperiode) => void;
     scrollOnMount?: boolean;
+    readOnly?: boolean;
 }
 
 type Props = OwnProps;
@@ -38,6 +39,7 @@ class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
             innslag,
             onRedigerUtsettelse,
             onLeggTilUtsettelse,
+            readOnly = false,
             intl
         } = this.props;
 
@@ -81,11 +83,13 @@ class Permisjonsplan extends React.Component<Props & InjectedIntlProps, {}> {
                         onRedigerUtsettelse={onRedigerUtsettelse}
                     />
                 </div>
-                <div className="m-textCenter blokk-m no-print">
-                    <LeggTilKnapp onClick={() => onLeggTilUtsettelse()}>
-                        <FormattedMessage id="uttaksplan.opphold.knapp.leggtil" />
-                    </LeggTilKnapp>
-                </div>
+                {!readOnly && (
+                    <div className="m-textCenter blokk-m no-print">
+                        <LeggTilKnapp onClick={() => onLeggTilUtsettelse()}>
+                            <FormattedMessage id="uttaksplan.opphold.knapp.leggtil" />
+                        </LeggTilKnapp>
+                    </div>
+                )}
             </section>
         );
     }
