@@ -1,14 +1,9 @@
 import Vedlegg from './Vedlegg';
-import { AnnenForelderPartial } from './AnnenForelder';
+import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
-import {
-    FødtBarnPartial,
-    UfødtBarnPartial,
-    AdopsjonsbarnPartial,
-    ForeldreansvarBarnPartial
-} from './Barn';
-
-import { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import { Periode } from 'uttaksplan/types';
+import { BarnPartial, Barn } from './Barn';
 
 type Foreldrepengesøknad = 'foreldrepengesøknad';
 
@@ -32,20 +27,30 @@ export enum Søkersituasjon {
 
 interface Søknad {
     type: Foreldrepengesøknad;
-    annenForelder: AnnenForelderPartial;
+    annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
-    barn:
-        | FødtBarnPartial
-        | UfødtBarnPartial
-        | AdopsjonsbarnPartial
-        | ForeldreansvarBarnPartial;
-    utenlandsopphold: UtenlandsoppholdPartial;
+    barn: Barn;
+    utenlandsopphold: Utenlandsopphold;
+    uttaksplan: Periode[];
     vedlegg: Vedlegg;
     søkerRolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
 }
 
-export type SøknadPartial = Partial<Søknad>;
+export interface SøknadPartial {
+    type?: Foreldrepengesøknad;
+    annenForelder: AnnenForelderPartial;
+    situasjon?: Søkersituasjon;
+    barn: BarnPartial;
+    utenlandsopphold: UtenlandsoppholdPartial;
+    uttaksplan?: Periode[];
+    vedlegg: Vedlegg;
+    søkerRolle?: SøkerRolle;
+    erSelvstendigNæringsdrivende?: boolean;
+    erFrilanser?: boolean;
+}
+
+export type Skjemadata = Partial<Søknad>;
 
 export default Søknad;

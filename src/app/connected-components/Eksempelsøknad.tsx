@@ -10,18 +10,18 @@ import {
 import { DispatchProps } from '../redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import apiActions from './../redux/actions/api/apiActionCreators';
-import Barn, { UfødtBarn } from '../types/søknad/Barn';
+import { BarnPartial, UfødtBarn } from '../types/søknad/Barn';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
 import getMessage from '../util/i18nUtils';
 import Spørsmål from '../components/spørsmål/Spørsmål';
 import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
-import AnnenForelder, {
-    AnnenForelderPartial
-} from '../types/søknad/AnnenForelder';
+import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
-import Utenlandsopphold from '../types/søknad/Utenlandsopphold';
+import { UtenlandsoppholdPartial } from '../types/søknad/Utenlandsopphold';
+import DocumentTitle from 'react-document-title';
+import UttaksplanEksempelskjema from 'uttaksplan/components/uttaksplan/UttaksplanEksempelskjema';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import { default as ErDuSelvstendigNæringsdrivende } from '../spørsmål/ErDuSelvstendigNæringsdrivende';
@@ -31,14 +31,16 @@ import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
 import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
+import { Periode } from 'uttaksplan/types';
 
 interface EksempelsøknadProps {
-    annenForelder: AnnenForelder;
-    barn: Barn;
-    søknad: Søknad;
+    annenForelder: AnnenForelderPartial;
+    barn: BarnPartial;
     situasjon: Søkersituasjon;
-    utenlandsopphold: Utenlandsopphold;
+    utenlandsopphold: UtenlandsoppholdPartial;
+    perioder: Periode[];
     roller?: SøkerRolle[];
+    søknad: Søknad;
 }
 
 type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
@@ -53,11 +55,13 @@ class Eksempelsøknad extends React.Component<Props> {
             situasjon,
             annenForelder,
             utenlandsopphold,
+            perioder,
             intl
         } = this.props;
 
         return (
-            <Applikasjonsside>
+            <Applikasjonsside visSpråkvelger={true}>
+                <DocumentTitle title="Eksempelsøknad" />
                 <Spørsmål
                     render={() => (
                         <SøkersituasjonSpørsmål
@@ -246,22 +250,41 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
-
                 <Spørsmål
                     synlig={utenlandsopphold.fødselINorge !== undefined}
                     render={() => (
                         <ErDuFrilanser
                             erFrilanser={søknad.erFrilanser}
                             onChange={(erFrilanser) =>
+                                søknadActions.updateSøknad({
+                                    erFrilanser
+                                })
+                            }
+                        />
+                    )}
+                />
+
+                {!barn.erBarnetFødt &&
+                    (barn as UfødtBarn).termindato && (
+                        <UttaksplanEksempelskjema
+                            termindato={(barn as UfødtBarn).termindato}
+                            dekningsgrad="100%"
+                            navnForelder1="Mor"
+                            navnForelder2={
+                                annenForelder && annenForelder.navn
+                                    ? annenForelder.navn
+                                    : 'Forelder 2'
+                            }
+                            perioder={perioder}
+                            onLagPerioder={(p) =>
                                 dispatch(
                                     søknadActions.updateSøknad({
-                                        erFrilanser
+                                        uttaksplan: p
                                     })
                                 )
                             }
                         />
                     )}
-                />
 
                 <Hovedknapp
                     onClick={() => dispatch(apiActions.sendSøknad(søknad))}>
@@ -286,6 +309,7 @@ export default connect<EksempelsøknadProps>((state: any) => {
         annenForelder: state.søknad.annenForelder,
         barn: state.søknad.barn,
         utenlandsopphold: state.søknad.utenlandsopphold,
+        perioder: state.søknad.uttaksplan,
         språkkode: state.common.språkkode,
         situasjon,
         roller

@@ -1,4 +1,4 @@
-import { SøknadPartial } from '../../../types/søknad/Søknad';
+import { Skjemadata } from '../../../types/søknad/Søknad';
 import {
     SøknadActionKeys,
     UpdateBarn,
@@ -39,7 +39,7 @@ const updateUtenlandsopphold = (
     payload
 });
 
-const updateSøknad = (payload: SøknadPartial): UpdateSøknad => ({
+const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
 });

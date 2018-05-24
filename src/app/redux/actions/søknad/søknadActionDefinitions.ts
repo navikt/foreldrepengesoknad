@@ -1,4 +1,4 @@
-import { SøknadPartial } from '../../../types/søknad/Søknad';
+import { Skjemadata } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { VedleggPartial } from '../../../types/søknad/Vedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
@@ -29,7 +29,7 @@ export interface UpdateUtenlandsopphold {
 
 export interface UpdateSøknad {
     type: SøknadActionKeys.UPDATE_SØKNAD;
-    payload: SøknadPartial;
+    payload: Skjemadata;
 }
 
 export interface UpdateVedlegg {
