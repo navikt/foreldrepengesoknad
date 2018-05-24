@@ -33,7 +33,7 @@ import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 
-interface EksempelsøknadProps {
+interface StateProps {
     annenForelder: AnnenForelderPartial;
     barn: BarnPartial;
     situasjon: Søkersituasjon;
@@ -43,7 +43,7 @@ interface EksempelsøknadProps {
     søknad: Søknad;
 }
 
-type Props = EksempelsøknadProps & InjectedIntlProps & DispatchProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
     render() {
