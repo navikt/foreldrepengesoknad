@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { DispatchProps } from '../redux/types';
 import Spørsmål from '../components/spørsmål/Spørsmål';
 import Bolk from '../components/layout/Bolk';
@@ -117,4 +117,4 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 }
 
-export default FødtBarnPartial;
+export default injectIntl(FødtBarnPartial);

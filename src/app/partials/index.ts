@@ -1,7 +1,7 @@
 import FødtBarnPartial from './FødtBarnPartial';
-import UFødtBarnForelder2Partial from './UFødtBarnForelder2Partial';
+import UFødtBarnAnnenForelderPartial from './UFødtBarnAnnenForelderPartial';
 
 export const partials = {
     FødtBarnPartial,
-    UFødtBarnForelder2Partial
+    UFødtBarnAnnenForelderPartial
 };
