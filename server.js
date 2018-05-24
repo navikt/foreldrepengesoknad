@@ -12,6 +12,11 @@ server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
+server.use(function(req, res, next) {
+    res.removeHeader('X-Powered-By');
+    next();
+});
+
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
         server.render(
@@ -41,7 +46,11 @@ const startServer = (html) => {
     );
 
     server.get(
-        ['/', '/foreldrepengesoknad/?', /^\/foreldrepengesoknad\/(?!.*dist).*$/],
+        [
+            '/',
+            '/foreldrepengesoknad/?',
+            /^\/foreldrepengesoknad\/(?!.*dist).*$/
+        ],
         (req, res) => {
             res.send(html);
         }
