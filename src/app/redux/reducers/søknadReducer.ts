@@ -8,7 +8,9 @@ import { VedleggPartial } from '../../types/søknad/Vedlegg';
 const getDefaultState = (): Skjemadata => {
     return {
         annenForelder: {},
-        barn: {},
+        barn: {
+            fødselsdatoer: []
+        },
         søker: {},
         utenlandsopphold: {},
         vedlegg: {
