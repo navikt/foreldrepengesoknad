@@ -3,7 +3,7 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { PeriodeState, PeriodeStatePartial } from '../types';
-import { Utsettelsesperiode } from '../../types';
+import { Periodetype, Periode } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
 import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 
@@ -12,22 +12,25 @@ const defaultState: PeriodeState = {
     perioder: mockUtsettelser
 };
 
-const opprettEllerOppdaterUtsettelse = (
+const opprettEllerOppdaterPeriode = (
     state: PeriodeState,
-    utsettelse: Utsettelsesperiode
+    periode: Periode
 ): PeriodeState => {
-    const perioder = utsettelse.id
-        ? state.perioder.map(
-              (u, idx) =>
-                  u.id === utsettelse.id ? utsettelse : state.perioder[idx]
-          )
-        : [
-              ...state.perioder,
-              {
-                  ...utsettelse,
-                  id: guid()
-              }
-          ];
+    let perioder = state.perioder;
+    if (periode.type === Periodetype.Utsettelse) {
+        perioder = periode.id
+            ? state.perioder.map(
+                  (u, idx) =>
+                      u.id === periode.id ? periode : state.perioder[idx]
+              )
+            : [
+                  ...state.perioder,
+                  {
+                      ...periode,
+                      id: guid()
+                  }
+              ];
+    }
     return {
         ...state,
         perioder,
@@ -50,22 +53,22 @@ const PeriodeReducer = (
     switch (action.type) {
         case PlanleggerActionTypeKeys.SET_TERMINDATO:
             return defaultState;
-        case PlanleggerActionTypeKeys.UTSETTELSE_VIS_DIALOG:
+        case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
             return updateState(state, {
                 dialogErApen: true,
-                valgtPeriode: action.utsettelse
+                valgtPeriode: action.periode
             });
-        case PlanleggerActionTypeKeys.UTSETTELSE_LUKK_DIALOG:
+        case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
             return updateState(state, {
                 dialogErApen: false,
                 valgtPeriode: undefined
             });
-        case PlanleggerActionTypeKeys.UTSETTELSE_OPPRETT_ELLER_OPPDATER:
-            return opprettEllerOppdaterUtsettelse(state, action.utsettelse);
-        case PlanleggerActionTypeKeys.UTSETTELSE_SLETT:
+        case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
+            return opprettEllerOppdaterPeriode(state, action.periode);
+        case PlanleggerActionTypeKeys.PERIODE_SLETT:
             return updateState(state, {
                 perioder: state.perioder.filter(
-                    (u) => u.id !== action.utsettelse.id
+                    (u) => u.id !== action.periode.id
                 ),
                 valgtPeriode: undefined,
                 dialogErApen: false

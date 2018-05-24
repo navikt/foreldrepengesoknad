@@ -132,16 +132,6 @@ export function leggTilUtsettelse(
     if (!periode) {
         throw new Error('Ingen periode funnet som passer til utsettelse');
     }
-    // if (utsettelse.arsak === UtsettelseArsakType.Ferie) {
-    // 	// Dersom ferien inneholder helligdager, splitt disse opp
-    // 	// i egne uttaksdager og ferie
-    // 	const antallHelligdager = getUttaksdagerSomErFridager(
-    // 		utsettelse.tidsperiode
-    // 	);
-    // 	if (antallHelligdager.length > 0) {
-    // 		console.log(antallHelligdager);
-    // 	}
-    // }
     if (
         isSameDay(
             periode.tidsperiode.startdato,
