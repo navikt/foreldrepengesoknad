@@ -24,14 +24,15 @@ import DocumentTitle from 'react-document-title';
 import UttaksplanEksempelskjema from 'uttaksplan/components/uttaksplan/UttaksplanEksempelskjema';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
-import { default as ErDuSelvstendigNæringsdrivende } from '../spørsmål/ErDuSelvstendigNæringsdrivende';
+import ErDuSelvstendigNæringsdrivendeSpørsmål from '../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
 import Hovedknapp from 'nav-frontend-knapper/lib/hovedknapp';
-import ErDuFrilanser from '../spørsmål/ErDuFrilanser';
+import ErDuFrilanserSpørsmål from '../spørsmål/ErDuFrilanserSpørsmål';
 import SøkersituasjonSpørsmål from '../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
 import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
+import { Språkkode } from '../intl/types';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -41,6 +42,7 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
+    språkkode: Språkkode;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -236,7 +238,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 <Spørsmål
                     synlig={utenlandsopphold.fødselINorge !== undefined}
                     render={() => (
-                        <ErDuSelvstendigNæringsdrivende
+                        <ErDuSelvstendigNæringsdrivendeSpørsmål
                             erSelvstendigNæringsdrivende={
                                 søknad.erSelvstendigNæringsdrivende
                             }
@@ -250,15 +252,18 @@ class Eksempelsøknad extends React.Component<Props> {
                         />
                     )}
                 />
+
                 <Spørsmål
                     synlig={utenlandsopphold.fødselINorge !== undefined}
                     render={() => (
-                        <ErDuFrilanser
+                        <ErDuFrilanserSpørsmål
                             erFrilanser={søknad.erFrilanser}
                             onChange={(erFrilanser) =>
-                                søknadActions.updateSøknad({
-                                    erFrilanser
-                                })
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        erFrilanser
+                                    })
+                                )
                             }
                         />
                     )}
@@ -295,7 +300,7 @@ class Eksempelsøknad extends React.Component<Props> {
     }
 }
 
-export default connect<EksempelsøknadProps>((state: any) => {
+export default connect<StateProps>((state: any) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
