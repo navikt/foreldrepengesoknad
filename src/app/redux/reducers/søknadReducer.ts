@@ -9,9 +9,7 @@ const getDefaultState = (): SøknadPartial => {
     return {
         type: 'foreldrepengesøknad',
         annenForelder: {},
-        barn: {
-            fødselsdatoer: []
-        },
+        barn: {},
         utenlandsopphold: {},
         vedlegg: {
             omsorgsovertakelse: [],
