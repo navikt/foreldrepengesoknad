@@ -10,7 +10,7 @@ import {
 
 import { UtenlandsoppholdPartial } from './Utenlandsopphold';
 
-type Foreldrepengesøknad = 'FORELDREPENGESØKNAD';
+type Foreldrepengesøknad = 'foreldrepengesøknad';
 
 export enum SøkerRolle {
     MOR = 'MOR',
@@ -30,13 +30,6 @@ export enum Søkersituasjon {
     FORELDREANSVAR = 'foreldreansvar'
 }
 
-export interface Søker {
-    rolle: SøkerRolle;
-    selvstendigNæringsdrivendeEllerFrilanser: boolean;
-}
-
-export type SøkerPartial = Partial<Søker>;
-
 interface Søknad {
     type: Foreldrepengesøknad;
     annenForelder: AnnenForelderPartial;
@@ -46,9 +39,11 @@ interface Søknad {
         | UfødtBarnPartial
         | AdopsjonsbarnPartial
         | ForeldreansvarBarnPartial;
-    søker: SøkerPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     vedlegg: Vedlegg;
+    søkerRolle: SøkerRolle;
+    erSelvstendigNæringsdrivende: boolean;
+    erFrilanser: boolean;
 }
 
 export type SøknadPartial = Partial<Søknad>;

@@ -1,8 +1,7 @@
-import { SøkerPartial, SøknadPartial } from '../../../types/søknad/Søknad';
+import { SøknadPartial } from '../../../types/søknad/Søknad';
 import {
     SøknadActionKeys,
     UpdateBarn,
-    UpdateSøker,
     UpdateSøknad,
     UpdateVedlegg,
     UpdateUtenlandsopphold
@@ -16,11 +15,6 @@ import {
 import { VedleggPartial } from '../../../types/søknad/Vedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
-
-const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
-    type: SøknadActionKeys.UPDATE_SØKER,
-    payload
-});
 
 const updateBarn = (
     payload:
@@ -58,7 +52,6 @@ const updateVedlegg = (payload: VedleggPartial): UpdateVedlegg => ({
 export default {
     updateAnnenForelder,
     updateBarn,
-    updateSøker,
     updateUtenlandsopphold,
     updateSøknad,
     updateVedlegg

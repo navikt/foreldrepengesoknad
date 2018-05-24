@@ -39,5 +39,5 @@ function* getPerson(action: any) {
 }
 
 export default function* personSaga() {
-    yield all([takeLatest(ApiActionKeys.GET_PERSON, getPerson)]);
+    yield all([takeLatest(ApiActionKeys.GET_PERSON_REQUEST, getPerson)]);
 }
