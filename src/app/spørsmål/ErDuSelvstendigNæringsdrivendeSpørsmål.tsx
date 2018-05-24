@@ -18,7 +18,7 @@ interface ErDuSelvstendigNæringsdrivendeProps {
 
 type Props = ErDuSelvstendigNæringsdrivendeProps & InjectedIntlProps;
 
-const ErDuSelvstendigNæringsdrivende = (props: Props) => {
+const ErDuSelvstendigNæringsdrivendeSpørsmål = (props: Props) => {
     const {
         onChange,
         erSelvstendigNæringsdrivende,
@@ -65,4 +65,4 @@ const ErDuSelvstendigNæringsdrivende = (props: Props) => {
     );
 };
 
-export default injectIntl(ErDuSelvstendigNæringsdrivende);
+export default injectIntl(ErDuSelvstendigNæringsdrivendeSpørsmål);
