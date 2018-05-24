@@ -53,8 +53,8 @@ class Inngangsside extends React.Component<Props, {}> {
                                 roller={roller}
                                 onChange={(nyRolle: SøkerRolle) =>
                                     dispatch(
-                                        søknadActions.updateSøker({
-                                            rolle: nyRolle
+                                        søknadActions.updateSøknad({
+                                            søkerRolle: nyRolle
                                         })
                                     )
                                 }
@@ -79,7 +79,7 @@ const mapStateToProps = (state: AppState): StateProps => {
 
     return {
         visSpørsmålOmSøkerrolle: roller !== undefined,
-        rolle: state.søknad.søker.rolle,
+        rolle: state.søknad.søkerRolle,
         situasjon,
         roller
     };

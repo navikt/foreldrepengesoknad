@@ -7,11 +7,11 @@ import { VedleggPartial } from '../../types/søknad/Vedlegg';
 
 const getDefaultState = (): SøknadPartial => {
     return {
+        type: 'foreldrepengesøknad',
         annenForelder: {},
         barn: {
             fødselsdatoer: []
         },
-        søker: {},
         utenlandsopphold: {},
         vedlegg: {
             omsorgsovertakelse: [],
@@ -28,11 +28,6 @@ const updateVedlegg = (state: SøknadPartial, vedlegg: VedleggPartial) => ({
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
     switch (action.type) {
-        case SøknadActionKeys.UPDATE_SØKER:
-            return {
-                ...state,
-                søker: { ...state.søker, ...action.payload }
-            };
         case SøknadActionKeys.UPDATE_BARN:
             return {
                 ...state,
