@@ -1,5 +1,3 @@
-export type TimelineItemType = 'marker' | 'event' | 'gap';
-
 export type TimelineLabelType = 'suksess' | 'info' | 'advarsel' | 'fokus';
 
 export interface TimelineLabel {
@@ -19,8 +17,13 @@ interface TimelineBaseItem {
     data?: any;
 }
 
+export enum TimelineItemType {
+    'event' = 'event',
+    'marker' = 'marker',
+    'gap' = 'gap'
+}
 export interface TimelineEvent extends TimelineBaseItem {
-    type: 'event';
+    type: TimelineItemType.event;
     personName: string;
     from: Date;
     to: Date;
@@ -30,13 +33,13 @@ export interface TimelineEvent extends TimelineBaseItem {
 }
 
 export interface TimelineMarker extends TimelineBaseItem {
-    type: 'marker';
+    type: TimelineItemType.marker;
     date: Date;
     comment?: React.ReactNode;
 }
 
 export interface TimelineGap extends TimelineBaseItem {
-    type: 'gap';
+    type: TimelineItemType.gap;
     from: Date;
     to: Date;
     comment?: string;

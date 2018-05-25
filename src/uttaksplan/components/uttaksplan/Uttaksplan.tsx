@@ -12,7 +12,8 @@ import {
     Dekningsgrad,
     Periode,
     Utsettelsesperiode,
-    Permisjonsregler
+    Permisjonsregler,
+    Periodetype
 } from 'uttaksplan/types';
 import {
     getGyldigTidsromForUtsettelse,
@@ -32,7 +33,10 @@ import Timeline from 'uttaksplan/components/timeline/Timeline';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
-import { TimelineItem } from 'uttaksplan/components/timeline/types';
+import {
+    TimelineItem,
+    TimelineItemType
+} from 'uttaksplan/components/timeline/types';
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
@@ -40,7 +44,8 @@ import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/uttaksplanSkjema'
 import {
     setDekningsgrad,
     setFellesperiodeukerMor,
-    visTidslinje
+    visTidslinje,
+    visPeriodeDialog
 } from 'uttaksplan/redux/actions';
 
 export type Props = OwnProps & StateProps & DispatchProps;
@@ -71,6 +76,18 @@ interface OwnProps {
 }
 
 class Uttaksplan extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.handleItemClick = this.handleItemClick.bind(this);
+    }
+    handleItemClick(item: TimelineItem) {
+        if (item.type === TimelineItemType.event) {
+            const periode = item.data as Periode;
+            if (periode.type === Periodetype.Utsettelse) {
+                this.props.dispatch(visPeriodeDialog(periode));
+            }
+        }
+    }
     render() {
         const {
             periode,
@@ -129,7 +146,7 @@ class Uttaksplan extends React.Component<Props> {
                                 />
                             )}
                             onItemClick={(item: TimelineItem) => {
-                                // console.log(item);
+                                this.handleItemClick(item);
                             }}
                             durationRenderer={(dager: number) => (
                                 <Varighet dager={dager} />
@@ -145,7 +162,8 @@ class Uttaksplan extends React.Component<Props> {
                             )}
                         />
 
-                        {tidsromForUtsettelse &&
+                        {visPermisjonsplan &&
+                            tidsromForUtsettelse &&
                             termindato && (
                                 <div>
                                     <UtsettelseDialog

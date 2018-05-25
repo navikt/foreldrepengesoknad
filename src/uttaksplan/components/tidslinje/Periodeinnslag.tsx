@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { InnslagPeriodetype, Tidslinjeinnslag } from './types';
-import { Periodetype, Utsettelsesperiode } from '../../types';
+import { Periodetype, Periode } from '../../types';
 
 import { getInnslagfarge, innslagErFortsettelse } from './tidslinjeUtils';
 import Utsettelsesinfo from './innslaginfo/Utsettelsesinfo';
@@ -14,22 +14,20 @@ export interface PeriodeinnslagProps {
     navnForelder1: string;
     navnForelder2: string;
     erSisteInnslag?: boolean;
-    onRedigerUtsettelse?: (utsettelse: Utsettelsesperiode) => void;
+    onRedigerPeriode?: (periode: Periode) => void;
 }
 
 const Periodeinnslag: React.StatelessComponent<PeriodeinnslagProps> = (
     props
 ) => {
-    const { innslag, onRedigerUtsettelse } = props;
+    const { innslag, onRedigerPeriode } = props;
 
     const getInnslaginfo = (): React.ReactNode => {
         return innslag.periode.type === Periodetype.Utsettelse ? (
             <Utsettelsesinfo
                 {...props}
-                onRedigerUtsettelse={
-                    onRedigerUtsettelse
-                        ? (i) => onRedigerUtsettelse(i)
-                        : undefined
+                onRedigerPeriode={
+                    onRedigerPeriode ? (i) => onRedigerPeriode(i) : undefined
                 }
             />
         ) : (
