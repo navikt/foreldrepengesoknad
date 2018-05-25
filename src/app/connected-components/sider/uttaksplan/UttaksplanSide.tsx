@@ -4,7 +4,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DispatchProps } from '../../../redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
-import { Permisjonsregler } from '../../../../uttaksplan/types';
+import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
@@ -22,13 +22,29 @@ export interface StateProps {
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
 
-class UttaksplanSide extends React.Component<Props, {}> {
+export interface State {
+    perioder: Periode[];
+}
+
+class UttaksplanSide extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            perioder: []
+        };
+    }
     render() {
         // const { dispatch, form, innslag } = this.props;
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
-                <Uttaksplan />
+                <Uttaksplan
+                    navnForelder1="Kari"
+                    navnForelder2="Ola"
+                    termindato={new Date()}
+                    perioder={this.state.perioder}
+                    onLagPerioder={(perioder) => this.setState({ perioder })}
+                />
             </Applikasjonsside>
         );
     }

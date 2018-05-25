@@ -13,17 +13,11 @@ import {
 import {
     setNavnForelder1,
     setNavnForelder2,
-    setTermindato,
-    setDekningsgrad,
-    settAntallDagerMor
+    setTermindato
 } from 'uttaksplan/redux/actions';
 import { DispatchProps } from 'app/redux/types';
 import { renderDag } from 'uttaksplan/utils/renderUtils';
-import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
 import DatoInput from 'app/components/dato-input/DatoInput';
-import SkjemaDekningsgrad from 'uttaksplan/components/skjema/SkjemaDekningsgrad';
-import SkjemaFordelingFellesperiode from 'uttaksplan/components/skjema/SkjemaFordelingFellesperiode';
-import AktivitetskravInfo from 'uttaksplan/components/content/AktivitetskravInfo';
 
 import './skjema.less';
 
@@ -97,57 +91,6 @@ class UttaksplanSkjema extends React.Component<Props> {
                         }}
                     />
                 </div>
-                <EkspanderbartInnhold
-                    erApen={uttaksplanForm.termindato !== undefined}
-                    animert={false}>
-                    <div className="blokk-m">
-                        <SkjemaDekningsgrad
-                            dekningsgrad={uttaksplanForm.dekningsgrad}
-                            antallUkerTotalt80={
-                                uttaksplanForm.permisjonsregler
-                                    .antallUkerTotalt80
-                            }
-                            antallUkerTotalt100={
-                                uttaksplanForm.permisjonsregler
-                                    .antallUkerTotalt100
-                            }
-                            permisjonsregler={uttaksplanForm.permisjonsregler}
-                            onChange={(dekningsgrad) =>
-                                dispatch(setDekningsgrad(dekningsgrad))
-                            }
-                        />
-                    </div>
-                </EkspanderbartInnhold>
-
-                <EkspanderbartInnhold
-                    animert={false}
-                    erApen={
-                        uttaksplanForm.dekningsgrad &&
-                        uttaksplanForm.termindato !== undefined
-                    }>
-                    <div className="blokk-s">
-                        <SkjemaFordelingFellesperiode
-                            navnForelder1={uttaksplanForm.navnForelder1}
-                            navnForelder2={uttaksplanForm.navnForelder2}
-                            ukerFellesperiode={uttaksplanForm.ukerFellesperiode}
-                            ukerForelder1={
-                                uttaksplanForm.fellesperiodeukerForelder1
-                            }
-                            onChange={(uker) =>
-                                dispatch(settAntallDagerMor(uker))
-                            }
-                            introRenderer={() => (
-                                <AktivitetskravInfo
-                                    permisjonsregler={
-                                        uttaksplanForm.permisjonsregler
-                                    }
-                                    navnForelder1={uttaksplanForm.navnForelder1}
-                                    navnForelder2={uttaksplanForm.navnForelder2}
-                                />
-                            )}
-                        />
-                    </div>
-                </EkspanderbartInnhold>
             </div>
         );
     }

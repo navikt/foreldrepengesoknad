@@ -9,7 +9,7 @@ import { getUttaksdagerSomErFridager } from '../../../utils/uttaksdagerUtils';
 const Utsettelsesinfo: React.StatelessComponent<
     PeriodeinnslagProps & InjectedIntlProps
 > = (props) => {
-    const { innslag, onRedigerUtsettelse, intl } = props;
+    const { innslag, onRedigerPeriode, intl } = props;
     const periode: Utsettelsesperiode = innslag.periode as Utsettelsesperiode;
     const navn = getForelderNavn(
         periode.forelder,
@@ -39,9 +39,7 @@ const Utsettelsesinfo: React.StatelessComponent<
             trekkFraFeriedager={feriedager.length > 0}
             ekstrainfo={ekstrainfo}
             onRediger={
-                onRedigerUtsettelse
-                    ? () => onRedigerUtsettelse(periode)
-                    : undefined
+                onRedigerPeriode ? () => onRedigerPeriode(periode) : undefined
             }>
             <FormattedMessage
                 id="uttaksplan.tidslinje.utsettelse"
