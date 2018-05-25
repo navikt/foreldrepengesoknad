@@ -2,12 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+require('dotenv').config();
 
 const webpackConfig = {
-    entry: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
+    entry: {
+        'js/settings': [`${__dirname}/../../setup.js`],
+        'js/bundle': ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`]
+    },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
-        filename: 'js/bundle.js',
+        filename: '[name].js',
         publicPath: '/foreldrepengesoknad/dist'
     },
     resolve: {
@@ -68,6 +72,14 @@ const webpackConfig = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            appSettings: {
+                REST_API_URL: JSON.stringify(
+                    process.env.FORELDREPENGESOKNAD_API_URL
+                ),
+                LOGIN_URL: JSON.stringify(process.env.LOGINSERVICE_URL)
+            }
+        }),
         new ExtractTextPlugin({
             filename: 'css/[name].css?[hash]-[chunkhash]-[name]',
             disable: false,

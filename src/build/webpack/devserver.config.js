@@ -7,25 +7,20 @@ const configureDevServer = (decoratorFragments) => ({
         app.set('views', `${__dirname}/../../../dist/dev`);
         app.set('view engine', 'mustache');
         app.get(
-            ['/', '/foreldrepengesoknad/?', /^\/foreldrepengesoknad\/(?!.*dist).*$/],
+            [
+                '/',
+                '/foreldrepengesoknad/?',
+                /^\/foreldrepengesoknad\/(?!.*dist).*$/
+            ],
             (req, res) => {
-                res.render(
-                    'index.html',
-                    Object.assign(
-                        {
-                            REST_API_URL: process.env.FORELDREPENGESOKNAD_API_URL,
-                            LOGIN_URL: process.env.LOGINSERVICE_URL
-                        },
-                        decoratorFragments
-                    )
-                );
+                res.render('index.html', Object.assign(decoratorFragments));
             }
         );
     },
     watchContentBase: true,
     quiet: false,
     noInfo: false,
-    stats: "minimal",
+    stats: 'minimal',
     publicPath: '/foreldrepengesoknad/dist'
 });
 
