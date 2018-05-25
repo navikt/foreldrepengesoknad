@@ -13,7 +13,10 @@ webpackConfig.plugins.push(
         template: './src/app/index.html',
         inject: 'body',
         alwaysWriteToDisk: true
-    }),
+    })
+);
+
+webpackConfig.plugins.push(
     new webpack.DefinePlugin({
         appSettings: {
             REST_API_URL: JSON.stringify(
