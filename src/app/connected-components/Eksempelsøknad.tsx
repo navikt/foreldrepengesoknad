@@ -21,7 +21,6 @@ import DatoInput from '../components/dato-input/DatoInput';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import { UtenlandsoppholdPartial } from '../types/søknad/Utenlandsopphold';
 import DocumentTitle from 'react-document-title';
-import UttaksplanEksempelskjema from 'uttaksplan/components/uttaksplan/UttaksplanEksempelskjema';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import ErDuSelvstendigNæringsdrivendeSpørsmål from '../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
@@ -33,6 +32,7 @@ import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 import { Språkkode } from '../intl/types';
+import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -271,9 +271,8 @@ class Eksempelsøknad extends React.Component<Props> {
 
                 {!barn.erBarnetFødt &&
                     (barn as UfødtBarn).termindato && (
-                        <UttaksplanEksempelskjema
+                        <Uttaksplan
                             termindato={(barn as UfødtBarn).termindato}
-                            dekningsgrad="100%"
                             navnForelder1="Mor"
                             navnForelder2={
                                 annenForelder && annenForelder.navn

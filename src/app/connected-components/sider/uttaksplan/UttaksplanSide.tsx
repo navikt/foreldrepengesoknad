@@ -28,7 +28,12 @@ class UttaksplanSide extends React.Component<Props, {}> {
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
-                <Uttaksplan />
+                <Uttaksplan
+                    navnForelder1="Kari"
+                    navnForelder2="Ola"
+                    termindato={new Date()}
+                    onLagPerioder={() => null}
+                />
             </Applikasjonsside>
         );
     }
