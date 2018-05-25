@@ -1,6 +1,6 @@
-import EnvUrls from '../../app/EnvUrls';
+import Environment from '../../app/Environment';
 
 export const redirectToLogin = () => {
     window.location.href =
-        EnvUrls.LOGIN_URL + '?redirect=' + window.location.href;
+        Environment.LOGIN_URL + '?redirect=' + window.location.href;
 };

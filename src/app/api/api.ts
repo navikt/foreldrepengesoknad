@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Søknad from '../types/søknad/Søknad';
-import EnvUrls from '../../app/EnvUrls';
+import Environment from '../../app/Environment';
 
 function getPerson() {
-    const endpoint = EnvUrls.REST_API_URL;
+    const endpoint = Environment.REST_API_URL;
     return axios.get(`${endpoint}/personinfo`, {
         timeout: 15 * 1000,
         withCredentials: true
@@ -22,7 +22,7 @@ function sendSøknad(søknad: Søknad) {
     const { vedlegg } = søknad;
     formData.append('vedlegg', vedlegg[0]);
 
-    const url = `${EnvUrls.REST_API_URL}/soknad`;
+    const url = `${Environment.REST_API_URL}/soknad`;
     return axios.post(url, formData, {
         withCredentials: true,
         headers: {
