@@ -1,7 +1,7 @@
 import { getPermisjonsregler } from '../../data/permisjonsregler';
 import {
     Utsettelsesperiode,
-    UtsettelseArsakType,
+    UtsettelseÅrsakType,
     Periodetype,
     Dekningsgrad
 } from '../../types';
@@ -27,7 +27,7 @@ const datoer = {
 };
 
 const utsettelse: Utsettelsesperiode = {
-    arsak: UtsettelseArsakType.Arbeid,
+    årsak: UtsettelseÅrsakType.Arbeid,
     forelder: 'forelder1',
     tidsperiode: {
         startdato: new Date(2018, 3, 16),

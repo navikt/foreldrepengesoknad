@@ -1,5 +1,5 @@
 import {
-    UtsettelseArsakType,
+    UtsettelseÅrsakType,
     Forelder,
     Tidsperiode,
     Utsettelsesperiode,
@@ -25,7 +25,7 @@ export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
     return utsettelse
         ? {
               valideringsfeil: new Map(),
-              arsak: utsettelse.arsak,
+              årsak: utsettelse.årsak,
               forelder: utsettelse.forelder,
               startdato: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.startdato
@@ -51,7 +51,7 @@ export function validerUtsettelseskjema(
         utsettelse,
         intl
     } = props;
-    const { arsak, forelder, startdato, sluttdato } = state;
+    const { årsak, forelder, startdato, sluttdato } = state;
     const valideringsfeil: Valideringsfeil = new Map();
     const ugyldigeTidsrom = getUgyldigeTidsrom(
         registrerteUtsettelser,
@@ -129,9 +129,9 @@ export function validerUtsettelseskjema(
         }
     }
     if (
-        arsak === UtsettelseArsakType.Ferie &&
+        årsak === UtsettelseÅrsakType.Ferie &&
         getAntallFeriedager(
-            arsak,
+            årsak,
             forelder,
             startdato,
             sluttdato,
@@ -147,7 +147,7 @@ export function validerUtsettelseskjema(
     }
     let helligdagFeilErRegistrert = false;
     if (
-        arsak === UtsettelseArsakType.Ferie &&
+        årsak === UtsettelseÅrsakType.Ferie &&
         startdato &&
         erFridag(startdato)
     ) {
@@ -160,7 +160,7 @@ export function validerUtsettelseskjema(
     }
 
     if (
-        arsak === UtsettelseArsakType.Ferie &&
+        årsak === UtsettelseÅrsakType.Ferie &&
         sluttdato &&
         erFridag(sluttdato)
     ) {
@@ -173,7 +173,7 @@ export function validerUtsettelseskjema(
     }
     if (
         !helligdagFeilErRegistrert &&
-        arsak === UtsettelseArsakType.Ferie &&
+        årsak === UtsettelseÅrsakType.Ferie &&
         startdato &&
         sluttdato &&
         getUttaksdagerSomErFridager({
@@ -240,7 +240,7 @@ export function getTilTidsromSluttdato(
 /**
  * Henter ut antall feriedager som er registrert for en forelder, inkludert
  * ny utsettelse
- * @param arsak
+ * @param årsak
  * @param forelder
  * @param startdato
  * @param sluttdato
@@ -248,7 +248,7 @@ export function getTilTidsromSluttdato(
  * @param utsettelse
  */
 export function getAntallFeriedager(
-    arsak: UtsettelseArsakType | undefined,
+    årsak: UtsettelseÅrsakType | undefined,
     forelder: Forelder | undefined,
     startdato: Date | undefined,
     sluttdato: Date | undefined,
@@ -259,7 +259,7 @@ export function getAntallFeriedager(
     let nyeFeriedager = 0;
     let feriedagerDenneUtsettelsen = 0;
 
-    if (forelder && arsak === UtsettelseArsakType.Ferie) {
+    if (forelder && årsak === UtsettelseÅrsakType.Ferie) {
         registrerteFeriedager = getAntallFeriedagerForForelder(
             registrerteUtsettelser,
             forelder

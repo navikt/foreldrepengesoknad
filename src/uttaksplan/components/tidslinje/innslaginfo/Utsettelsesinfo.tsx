@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import { Utsettelsesperiode, UtsettelseArsakType } from '../../../types';
-import { getForelderNavn, getArsakTekstKey } from '../tidslinjeUtils';
+import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../../types';
+import { getForelderNavn, getÅrsakTekstKey } from '../tidslinjeUtils';
 import InnslagLayout from '../elementer/InnslagLayout';
 import { PeriodeinnslagProps } from '../Periodeinnslag';
 import { getUttaksdagerSomErFridager } from '../../../utils/uttaksdagerUtils';
@@ -17,9 +17,9 @@ const Utsettelsesinfo: React.StatelessComponent<
         props.navnForelder2
     );
 
-    const arsak = intl.formatMessage({ id: getArsakTekstKey(periode.arsak) });
+    const årsak = intl.formatMessage({ id: getÅrsakTekstKey(periode.årsak) });
     const feriedager =
-        periode.arsak === UtsettelseArsakType.Ferie
+        periode.årsak === UtsettelseÅrsakType.Ferie
             ? getUttaksdagerSomErFridager(periode.tidsperiode)
             : [];
     let ekstrainfo;
@@ -47,7 +47,7 @@ const Utsettelsesinfo: React.StatelessComponent<
                 id="uttaksplan.tidslinje.utsettelse"
                 values={{
                     navn,
-                    arsak
+                    årsak
                 }}
             />
         </InnslagLayout>
