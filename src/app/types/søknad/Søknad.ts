@@ -36,6 +36,7 @@ interface Søknad {
     søkerRolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
+    erMorForSyk: boolean;
 }
 
 export interface SøknadPartial {
@@ -49,6 +50,7 @@ export interface SøknadPartial {
     søkerRolle?: SøkerRolle;
     erSelvstendigNæringsdrivende?: boolean;
     erFrilanser?: boolean;
+    erMorForSyk?: boolean;
 }
 
 export type Skjemadata = Partial<Søknad>;
