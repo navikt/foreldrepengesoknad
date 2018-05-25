@@ -8,6 +8,14 @@ webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
         template: `${__dirname}/../../app/index.html`,
         inject: 'body'
+    }),
+    new webpack.DefinePlugin({
+        appSettings: {
+            REST_API_URL: JSON.stringify(
+                process.env.FORELDREPENGESOKNAD_API_URL
+            ),
+            LOGIN_URL: JSON.stringify(process.env.LOGINSERVICE_URL)
+        }
     })
 );
 
