@@ -5,12 +5,11 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const webpackConfig = {
     entry: {
-        'js/settings': [`${__dirname}/../../setup.js`],
-        'js/bundle': ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`]
+        bundle: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`]
     },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
-        filename: '[name].js',
+        filename: 'js/[name].js',
         publicPath: '/foreldrepengesoknad/dist'
     },
     resolve: {
