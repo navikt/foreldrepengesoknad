@@ -4,7 +4,7 @@ import {
     Tidslinjeinnslag,
     TidslinjeinnslagType
 } from 'uttaksplan/components/tidslinje/types';
-import { Periodetype, UtsettelseArsakType } from 'uttaksplan/types';
+import { Periodetype, UtsettelseÅrsakType } from 'uttaksplan/types';
 import {
     TimelineEvent,
     TimelineMarker,
@@ -28,14 +28,14 @@ export const getLabelsForInnslag = (
     innslag: InnslagPeriodetype
 ): TimelineLabel[] | undefined => {
     if (innslag.periode.type === Periodetype.Utsettelse) {
-        if (innslag.periode.arsak === UtsettelseArsakType.SykdomSkade) {
+        if (innslag.periode.årsak === UtsettelseÅrsakType.SykdomSkade) {
             return [
                 {
                     text: 'Krav på dokumentasjon',
                     type: 'fokus'
                 }
             ];
-        } else if (innslag.periode.arsak === UtsettelseArsakType.Ferie) {
+        } else if (innslag.periode.årsak === UtsettelseÅrsakType.Ferie) {
             return [
                 {
                     text: 'Krever dokumentasjon',
@@ -57,10 +57,10 @@ export const getTimelineIconsFromInnslag = (
     } else if (innslag.type === 'periode') {
         const { periode } = innslag;
         if (periode.type === Periodetype.Utsettelse) {
-            if (periode.arsak === UtsettelseArsakType.Ferie) {
+            if (periode.årsak === UtsettelseÅrsakType.Ferie) {
                 return ['ferie'];
             }
-            if (periode.arsak === UtsettelseArsakType.Arbeid) {
+            if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
                 return ['arbeid'];
             }
         } else if (periode.type === Periodetype.Stonadsperiode) {

@@ -4,7 +4,7 @@ import * as classnames from 'classnames';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Row, Column } from 'nav-frontend-grid';
 import {
-    UtsettelseArsakType,
+    UtsettelseÅrsakType,
     Utsettelsesperiode,
     Forelder,
     Periodetype,
@@ -49,7 +49,7 @@ interface OwnProps {
 export type Props = OwnProps & InjectedIntlProps;
 
 export interface State {
-    arsak?: UtsettelseArsakType;
+    årsak?: UtsettelseÅrsakType;
     forelder?: Forelder;
     startdato?: Date;
     sluttdato?: Date;
@@ -120,11 +120,11 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     }
 
     hentSkjemadata(): Utsettelsesperiode {
-        const { arsak, startdato, sluttdato, forelder } = this.state;
+        const { årsak, startdato, sluttdato, forelder } = this.state;
         return {
             id: this.props.utsettelse ? this.props.utsettelse.id : undefined,
             type: Periodetype.Utsettelse,
-            arsak,
+            årsak,
             tidsperiode: {
                 startdato,
                 sluttdato
@@ -145,7 +145,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     }
 
     render() {
-        const { arsak, startdato, sluttdato, forelder } = this.state;
+        const { årsak, startdato, sluttdato, forelder } = this.state;
         const {
             utsettelse,
             navnForelder1,
@@ -174,9 +174,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         );
 
         const antallFeriedager =
-            this.state.arsak === UtsettelseArsakType.Ferie
+            this.state.årsak === UtsettelseÅrsakType.Ferie
                 ? getAntallFeriedager(
-                      arsak,
+                      årsak,
                       forelder,
                       startdato,
                       sluttdato,
@@ -185,7 +185,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                   )
                 : 0;
 
-        const visFerieinfo = forelder && arsak === UtsettelseArsakType.Ferie;
+        const visFerieinfo = forelder && årsak === UtsettelseÅrsakType.Ferie;
 
         const startdatoFeil = this.getSkjemaelementFeil('startdato');
         const sluttdatoFeil = this.getSkjemaelementFeil('sluttdato');
@@ -254,7 +254,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                         <Radioliste
                             tittel={
                                 <FormattedMessage
-                                    id="uttaksplan.utsettelseskjema.arsak.sporsmal"
+                                    id="uttaksplan.utsettelseskjema.årsak.sporsmal"
                                     values={{
                                         navn:
                                             forelder === 'forelder1'
@@ -276,28 +276,28 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 />
                             }
                             stil="ekstern"
-                            feil={this.getSkjemaelementFeil('arsak')}
+                            feil={this.getSkjemaelementFeil('årsak')}
                             valg={[
                                 {
                                     tittel: intl.formatMessage({
                                         id:
-                                            'uttaksplan.utsettelseskjema.arsak.arbeid'
+                                            'uttaksplan.utsettelseskjema.årsak.arbeid'
                                     }),
-                                    verdi: UtsettelseArsakType.Arbeid
+                                    verdi: UtsettelseÅrsakType.Arbeid
                                 },
                                 {
                                     tittel: intl.formatMessage({
                                         id:
-                                            'uttaksplan.utsettelseskjema.arsak.ferie'
+                                            'uttaksplan.utsettelseskjema.årsak.ferie'
                                     }),
-                                    verdi: UtsettelseArsakType.Ferie
+                                    verdi: UtsettelseÅrsakType.Ferie
                                 }
                             ]}
                             inputnavn="utsettelse"
-                            valgtVerdi={arsak}
+                            valgtVerdi={årsak}
                             onChange={(value) => {
                                 this.setState({
-                                    arsak: value as UtsettelseArsakType
+                                    årsak: value as UtsettelseÅrsakType
                                 });
                                 this.revaliderSkjema();
                             }}
@@ -306,7 +306,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 </EkspanderbartInnhold>
 
                 <EkspanderbartInnhold
-                    erApen={this.state.arsak !== undefined}
+                    erApen={this.state.årsak !== undefined}
                     harEkspanderbartInnhold={true}>
                     <div className="blokkPad-s">
                         <SkjemaGruppe
@@ -399,7 +399,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                         )}
                     </div>
                 </EkspanderbartInnhold>
-                {this.state.arsak !== undefined && (
+                {this.state.årsak !== undefined && (
                     <Row>
                         <Column xs="12" sm={utsettelse ? '6' : '12'}>
                             <div className="blokkPad-xxs">
