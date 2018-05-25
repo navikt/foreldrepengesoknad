@@ -2,16 +2,16 @@ import {
     SøknadAction,
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
-import { Skjemadata } from '../../types/søknad/Søknad';
+import { SøknadPartial } from '../../types/søknad/Søknad';
 import { VedleggPartial } from '../../types/søknad/Vedlegg';
 
-const getDefaultState = (): Skjemadata => {
+const getDefaultState = (): SøknadPartial => {
     return {
+        type: 'foreldrepengesøknad',
         annenForelder: {},
         barn: {
             fødselsdatoer: []
         },
-        søker: {},
         utenlandsopphold: {},
         vedlegg: {
             omsorgsovertakelse: [],
@@ -23,18 +23,13 @@ const getDefaultState = (): Skjemadata => {
     };
 };
 
-const updateVedlegg = (state: Skjemadata, vedlegg: VedleggPartial) => ({
+const updateVedlegg = (state: SøknadPartial, vedlegg: VedleggPartial) => ({
     ...state,
     vedlegg: { ...state.vedlegg, ...vedlegg }
 });
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
     switch (action.type) {
-        case SøknadActionKeys.UPDATE_SØKER:
-            return {
-                ...state,
-                søker: { ...state.søker, ...action.payload }
-            };
         case SøknadActionKeys.UPDATE_BARN:
             return {
                 ...state,

@@ -1,13 +1,18 @@
 import Person from '../../../types/Person';
+import Søknad from '../../../types/søknad/Søknad';
 
 export enum ApiActionKeys {
-    'GET_PERSON' = 'getPerson',
+    'GET_PERSON_REQUEST' = 'getPersonRequest',
     'GET_PERSON_SUCCESS' = 'getPersonSuccess',
-    'GET_PERSON_FAILED' = 'getPersonFailed'
+    'GET_PERSON_FAILED' = 'getPersonFailed',
+
+    'SEND_SØKNAD_REQUEST' = 'sendSøknadRequest',
+    'SEND_SØKNAD_SUCCESS' = 'sendSøknadSuccess',
+    'SEND_SØKNAD_FAILED' = 'sendSøknadFailed'
 }
 
-interface GetPerson {
-    type: ApiActionKeys.GET_PERSON;
+interface GetPersonRequest {
+    type: ApiActionKeys.GET_PERSON_REQUEST;
 }
 
 interface GetPersonSuccess {
@@ -20,4 +25,25 @@ interface GetPersonFailed {
     error: any;
 }
 
-export type ApiActionTypes = GetPerson | GetPersonSuccess | GetPersonFailed;
+export interface SendSøknadRequest {
+    type: ApiActionKeys.SEND_SØKNAD_REQUEST;
+    søknad: Søknad;
+}
+
+interface SendSøknadSuccess {
+    type: ApiActionKeys.SEND_SØKNAD_SUCCESS;
+    response: any;
+}
+
+interface SendSøknadFailed {
+    type: ApiActionKeys.SEND_SØKNAD_FAILED;
+    error: any;
+}
+
+export type ApiActionTypes =
+    | GetPersonRequest
+    | GetPersonSuccess
+    | GetPersonFailed
+    | SendSøknadRequest
+    | SendSøknadSuccess
+    | SendSøknadFailed;

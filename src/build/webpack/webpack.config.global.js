@@ -4,10 +4,13 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const webpackConfig = {
-    entry: ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`],
+    entry: {
+        'js/settings': [`${__dirname}/../../setup.js`],
+        'js/bundle': ['babel-polyfill', `${__dirname}/../../app/bootstrap.tsx`]
+    },
     output: {
         path: path.resolve(__dirname, './../../../dist'),
-        filename: 'js/bundle.js',
+        filename: '[name].js',
         publicPath: '/foreldrepengesoknad/dist'
     },
     resolve: {

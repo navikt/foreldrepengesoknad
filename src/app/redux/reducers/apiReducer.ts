@@ -21,7 +21,7 @@ const getDefaultState = (): ApiReducerState => ({
 
 const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
     switch (action.type) {
-        case ApiActionKeys.GET_PERSON:
+        case ApiActionKeys.GET_PERSON_REQUEST:
             return {
                 ...state,
                 isLoadingPerson: true

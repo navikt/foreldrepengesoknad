@@ -11,20 +11,20 @@ import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål
 import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from '../../../redux/types';
 import { partials } from '../../../partials';
-import { Søker } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Vedlegg from '../../../types/søknad/Vedlegg';
 
 interface StateProps {
     barn: BarnPartial;
-    søker: Søker;
+    søknad: Søknad;
     vedlegg: Vedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 class AnnenForelderSteg extends React.Component<Props, StateProps> {
     renderPartial() {
-        const { barn, vedlegg, dispatch, søker } = this.props;
+        const { barn, vedlegg, dispatch, søknad } = this.props;
         if (barn.erBarnetFødt === true) {
             return (
                 <partials.FødtBarnPartial
@@ -39,7 +39,7 @@ class AnnenForelderSteg extends React.Component<Props, StateProps> {
                 dispatch={dispatch}
                 barn={barn as UfødtBarn}
                 vedlegg={vedlegg}
-                søker={søker}
+                søknad={søknad}
             />
         );
     }
@@ -69,9 +69,9 @@ class AnnenForelderSteg extends React.Component<Props, StateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
+    søknad: state.søknad,
     barn: state.søknad.barn,
-    søker: state.søknad.søker as Søker,
-    vedlegg: state.søknad.vedlegg as Vedlegg
+    vedlegg: state.søknad.vedlegg
 });
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(

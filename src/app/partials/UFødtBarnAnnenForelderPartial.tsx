@@ -16,12 +16,12 @@ import VedleggOversikt from '../components/vedlegg/VedleggOversikt';
 import Vedlegg from '../types/søknad/Vedlegg';
 
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
-import { Søker } from '../types/søknad/Søknad';
 import Veilederinfo from '../components/veileder-info/Veilederinfo';
+import { SøknadPartial } from '../types/søknad/Søknad';
 
 interface StateProps {
     barn: UfødtBarn;
-    søker: Søker;
+    søknad: SøknadPartial;
     vedlegg: Vedlegg;
 }
 
@@ -29,16 +29,16 @@ type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
     render() {
-        const { intl, dispatch, barn, vedlegg, søker } = this.props;
+        const { intl, dispatch, barn, vedlegg, søknad } = this.props;
         return (
             <div>
                 <Spørsmål
                     render={() => (
                         <MorForSykSpørsmål
-                            erMorForSyk={søker.erMorForSyk}
+                            erMorForSyk={søknad.erMorForSyk}
                             onChange={(erMorForSyk: boolean) => {
                                 dispatch(
-                                    søknadActions.updateSøker({
+                                    søknadActions.updateSøknad({
                                         erMorForSyk
                                     })
                                 );
@@ -47,16 +47,16 @@ class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
                     )}
                 />
 
-                {søker.erMorForSyk === false && (
+                {søknad.erMorForSyk === false && (
                     <Veilederinfo type="feil">
                         {getMessage(intl, 'annenForelder.forelder1IkkeSyk')}
                     </Veilederinfo>
                 )}
 
-                {søker.erMorForSyk === true && (
+                {søknad.erMorForSyk === true && (
                     <React.Fragment>
                         <Spørsmål
-                            synlig={søker.erMorForSyk === true}
+                            synlig={søknad.erMorForSyk === true}
                             render={() => (
                                 <DatoInput
                                     id="termindato"

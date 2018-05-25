@@ -39,8 +39,9 @@
     "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",
 
-    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
-        "Er du selvstendig næringsdrivende eller frilanser?",
+    "erDuFrilanser.spørsmål": "Er du frilanser?",
+    "erDuSelvstendigNæringsdrivende.spørsmål":
+        "Er du selvstendig næringsdrivende?",
 
     "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",

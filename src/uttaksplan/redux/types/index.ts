@@ -1,9 +1,4 @@
-import {
-    Dekningsgrad,
-    Permisjonsregler,
-    Utsettelsesperiode,
-    Spraak
-} from '../../types';
+import { Dekningsgrad, Permisjonsregler, Spraak, Periode } from '../../types';
 
 export type SynligInfoMap = Map<string, boolean>;
 
@@ -20,23 +15,23 @@ export interface UttaksplanFormState {
 }
 export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 
-export interface UtsettelseState {
+export interface PeriodeState {
     dialogErApen: boolean;
-    utsettelser: Utsettelsesperiode[];
-    valgtUtsettelse?: Utsettelsesperiode;
+    perioder: Periode[];
+    valgtPeriode?: Periode;
 }
-export type UtsettelseStatePartial = Partial<UtsettelseState>;
+export type PeriodeStatePartial = Partial<PeriodeState>;
 
 export interface UttaksplanViewState {
     spraak: Spraak;
     synligInfo: SynligInfoMap;
     visTidslinje: boolean;
 }
-export type ViewStatePartial = Partial<UttaksplanViewState>;
+export type UttaksplanViewStatePartial = Partial<UttaksplanViewState>;
 
 export interface UttaksplanState {
-    uttaksplanForm: UttaksplanFormState;
-    utsettelse: UtsettelseState;
+    form: UttaksplanFormState;
+    periode: PeriodeState;
     view: UttaksplanViewState;
 }
 

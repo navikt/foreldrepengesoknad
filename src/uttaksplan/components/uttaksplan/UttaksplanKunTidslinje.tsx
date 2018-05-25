@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {
     UttaksplanAppState,
-    UtsettelseState,
+    PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
@@ -28,7 +28,7 @@ import UtsettelseDialog from 'uttaksplan/components/utsettelseDialog/UtsettelseD
 export interface StateProps {
     form: UttaksplanFormState;
     innslag: Tidslinjeinnslag[];
-    utsettelse: UtsettelseState;
+    periode: PeriodeState;
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
 }
@@ -54,7 +54,7 @@ export class Main extends React.Component<Props> {
     render() {
         const {
             form,
-            utsettelse,
+            periode,
             innslag,
             sisteRegistrertePermisjonsdag,
             dispatch
@@ -135,11 +135,15 @@ export class Main extends React.Component<Props> {
                     form.termindato && (
                         <div>
                             <UtsettelseDialog
-                                isOpen={utsettelse.dialogErApen}
+                                isOpen={periode.dialogErApen}
                                 navnForelder1={form.navnForelder1}
                                 navnForelder2={form.navnForelder2}
-                                utsettelser={utsettelse.utsettelser}
-                                utsettelse={utsettelse.valgtUtsettelse}
+                                utsettelser={
+                                    periode.perioder as Utsettelsesperiode[]
+                                }
+                                utsettelse={
+                                    periode.valgtPeriode as Utsettelsesperiode
+                                }
                                 tidsrom={tidsromForUtsettelse}
                                 permisjonsregler={form.permisjonsregler}
                                 termindato={form.termindato}
@@ -157,14 +161,14 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
 
     return {
         innslag,
-        form: state.uttaksplan.uttaksplanForm,
-        utsettelse: state.uttaksplan.utsettelse,
+        form: state.uttaksplan.form,
+        periode: state.uttaksplan.periode,
         sisteRegistrertePermisjonsdag: getSisteRegistrertePermisjonsdag(state),
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
-            state.uttaksplan.uttaksplanForm.dekningsgrad !== undefined &&
-            state.uttaksplan.uttaksplanForm.termindato !== undefined &&
+            state.uttaksplan.form.dekningsgrad !== undefined &&
+            state.uttaksplan.form.termindato !== undefined &&
             state.uttaksplan.view.visTidslinje === true
     };
 };

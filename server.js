@@ -19,20 +19,13 @@ server.use((req, res, next) => {
 
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
-        server.render(
-            'index.html',
-            Object.assign(decoratorFragments, {
-                REST_API_URL: process.env.FORELDREPENGESOKNAD_API_URL,
-                LOGIN_URL: process.env.LOGINSERVICE_URL
-            }),
-            (err, html) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(html);
-                }
+        server.render('index.html', (err, html) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(html);
             }
-        );
+        });
     });
 
 const startServer = (html) => {

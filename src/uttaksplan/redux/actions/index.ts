@@ -49,35 +49,35 @@ export function setDekningsgrad(
 }
 
 export function utsettelseVisDialog(
-    utsettelse?: Utsettelsesperiode
+    periode?: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.UTSETTELSE_VIS_DIALOG,
-        utsettelse
+        type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG,
+        periode
     };
 }
 
 export function utsettelseLukkDialog(): PlanleggerActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.UTSETTELSE_LUKK_DIALOG
+        type: PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG
     };
 }
 
 export function opprettEllerOppdaterUtsettelse(
-    utsettelse: Utsettelsesperiode
+    periode: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.UTSETTELSE_OPPRETT_ELLER_OPPDATER,
-        utsettelse
+        type: PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER,
+        periode
     };
 }
 
 export function slettUtsettelse(
-    utsettelse: Utsettelsesperiode
+    periode: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.UTSETTELSE_SLETT,
-        utsettelse
+        type: PlanleggerActionTypeKeys.PERIODE_SLETT,
+        periode
     };
 }
 
