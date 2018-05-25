@@ -39,7 +39,7 @@ export function setDekningsgrad(
     };
 }
 
-export function utsettelseVisDialog(
+export function visPeriodeDialog(
     periode?: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
@@ -48,13 +48,13 @@ export function utsettelseVisDialog(
     };
 }
 
-export function utsettelseLukkDialog(): PlanleggerActionTypes {
+export function lukkPeriodeDialog(): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG
     };
 }
 
-export function opprettEllerOppdaterUtsettelse(
+export function opprettEllerOppdaterPeriode(
     periode: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
@@ -63,7 +63,7 @@ export function opprettEllerOppdaterUtsettelse(
     };
 }
 
-export function slettUtsettelse(
+export function slettPeriode(
     periode: Utsettelsesperiode
 ): PlanleggerActionTypes {
     return {
