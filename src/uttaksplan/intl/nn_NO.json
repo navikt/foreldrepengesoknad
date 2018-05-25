@@ -46,11 +46,11 @@
         "Velkommen til foreldrepengenplanleggjaren. Her kan de planleggje korleis de vil ta ut perioden med foreldrepengar når de ventar barn.",
     "uttaksplan.utsettelseskjema.tittel": "Legg til opphald",
     "uttaksplan.utsettelseskjema.tittel.endre": "Opphald i foreldrepengane",
-    "uttaksplan.utsettelseskjema.arsak.sporsmal": "Kva skal {navn} gjere?",
-    "uttaksplan.utsettelseskjema.arsak.ferie": "Ta ut ferie",
+    "uttaksplan.utsettelseskjema.årsak.sporsmal": "Kva skal {navn} gjere?",
+    "uttaksplan.utsettelseskjema.årsak.ferie": "Ta ut ferie",
     "uttaksplan.utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på heilagdagar.",
-    "uttaksplan.utsettelseskjema.arsak.arbeid": "Arbeide heiltid",
+    "uttaksplan.utsettelseskjema.årsak.arbeid": "Arbeide heiltid",
     "uttaksplan.utsettelseskjema.hvem.sporsmal":
         "Kven skal ha opphald i foreldrepane?",
     "uttaksplan.utsettelseskjema.hvem.sporsmal.ferie": "Kven skal ta ut ferie?",
@@ -118,7 +118,7 @@
         "{navn} startar perioden sin med foreldrepengar",
     "uttaksplan.tidslinje.periodeinfo.starterpermisjon.detaljert":
         "{navn} startar perioden sin med foreldrepengar: {uker, plural, one {# veke} other {# veker}} totalt delt opp i {detaljer}",
-    "uttaksplan.tidslinje.utsettelse": "{arsak} {navn}",
+    "uttaksplan.tidslinje.utsettelse": "{årsak} {navn}",
     "uttaksplan.tidslinje.ferie.fridager":
         "{antallDager} av dagane i perioden er offentlege fridagar som ein ikkje kan ta ut som ferie",
     "uttaksplan.tidslinje.periodeinfo.fortsettelse.fortsetter":
@@ -133,10 +133,10 @@
         "Når {navnForelder2} tek ut foreldrepengar i fellesperioden, blir det stilt krav til kva aktivitet {navnForelder1}s kan drive med.",
     "uttaksplan.tidslinje.visdetaljer": "Fleire detaljar",
     "uttaksplan.tidslinje.skjuldetaljer": "Skjul detaljar",
-    "uttaksplan.opphold.arsak.ferie": "ferie",
-    "uttaksplan.opphold.arsak.arbeid": "arbeid",
-    "uttaksplan.opphold.arsak.Ferie": "Ferie",
-    "uttaksplan.opphold.arsak.Arbeid": "Arbeid",
+    "uttaksplan.opphold.årsak.ferie": "ferie",
+    "uttaksplan.opphold.årsak.arbeid": "arbeid",
+    "uttaksplan.opphold.årsak.Ferie": "Ferie",
+    "uttaksplan.opphold.årsak.Arbeid": "Arbeid",
     "uttaksplan.opphold.tittel": "Opphald i perioden med foreldrepengar?",
     "uttaksplan.opphold.knapp.leggtil": "Legg til opphald",
     "uttaksplan.skjermleser.skjema.tittel":

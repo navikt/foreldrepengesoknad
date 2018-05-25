@@ -78,9 +78,6 @@ const webpackConfig = {
         }),
         new SpriteLoaderPlugin({
             plainSprite: true
-        }),
-        new webpack.DefinePlugin({
-            __ENV__: JSON.stringify(process.env.NODE_ENV)
         })
     ]
 };

@@ -1,7 +1,7 @@
 import { Feil } from 'app/components/skjema-input-element/types';
 
 export type Skjemaelement =
-    | 'arsak'
+    | 'årsak'
     | 'forelder'
     | 'startdato'
     | 'sluttdato'
