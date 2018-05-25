@@ -39,7 +39,8 @@ import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils
 import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/uttaksplanSkjema';
 import {
     setDekningsgrad,
-    setFellesperiodeukerMor
+    setFellesperiodeukerMor,
+    visTidslinje
 } from 'uttaksplan/redux/actions';
 
 export type Props = OwnProps & StateProps & DispatchProps;
@@ -47,6 +48,8 @@ export type Props = OwnProps & StateProps & DispatchProps;
 import '../skjema/skjema.less';
 
 export interface StateProps {
+    dekningsgrad: Dekningsgrad;
+    ukerFellesperiode: number;
     permisjonsregler: Permisjonsregler;
     form: UttaksplanFormState;
     innslag: Tidslinjeinnslag[];
@@ -55,7 +58,6 @@ export interface StateProps {
     sisteRegistrertePermisjonsdag?: Date;
     statePerioder: Periode[];
     tidsromForUtsettelse?: Tidsperiode;
-    dekningsgrad?: Dekningsgrad;
 }
 
 interface OwnProps {
@@ -63,28 +65,32 @@ interface OwnProps {
     navnForelder1: string;
     navnForelder2: string;
     perioder?: Periode[];
+    /** Default 100% */
+    initialDekningsgrad?: Dekningsgrad;
     onLagPerioder: (perioder: Periode[]) => void;
 }
 
-class UttaksplanEksempelskjema extends React.Component<Props> {
+class Uttaksplan extends React.Component<Props> {
     render() {
         const {
             periode,
             innslag,
             termindato,
-            perioder,
+            // perioder,
             statePerioder,
             onLagPerioder,
             tidsromForUtsettelse,
             navnForelder1,
             navnForelder2,
             permisjonsregler,
+            ukerFellesperiode,
+            visPermisjonsplan,
             dispatch,
             form
         } = this.props;
 
-        if (!perioder) {
-            return (
+        return (
+            <React.Fragment>
                 <div className="blokk-m no-print">
                     <UttaksplanSkjema
                         dekningsgrad={form.dekningsgrad}
@@ -94,10 +100,7 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
                         navnForelder1={navnForelder1}
                         navnForelder2={navnForelder2}
                         permisjonsregler={permisjonsregler}
-                        ukerFellesperiode={getAntallUkerFellesperiode(
-                            permisjonsregler,
-                            form.dekningsgrad
-                        )}
+                        ukerFellesperiode={ukerFellesperiode}
                         onChangeDekningsgrad={(dg) =>
                             dispatch(setDekningsgrad(dg))
                         }
@@ -105,56 +108,66 @@ class UttaksplanEksempelskjema extends React.Component<Props> {
                             dispatch(setFellesperiodeukerMor(uker))
                         }
                     />
-                    <Knapp onClick={() => onLagPerioder(statePerioder)}>
+                    <Knapp
+                        onClick={() => {
+                            onLagPerioder(statePerioder);
+                            dispatch(visTidslinje(true));
+                        }}>
                         Vis uttaksplan
                     </Knapp>
                 </div>
-            );
-        }
-
-        return (
-            <div className="tidsplan">
-                <Timeline
-                    items={innslag.map((i) => mapInnslagToTimelineItem(i))}
-                    navnForelder1={navnForelder1}
-                    navnForelder2={navnForelder2}
-                    iconRenderer={(icon) => (
-                        <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
-                    )}
-                    onItemClick={(item: TimelineItem) => {
-                        // console.log(item);
-                    }}
-                    durationRenderer={(dager: number) => (
-                        <Varighet dager={dager} />
-                    )}
-                    rangeRenderer={(startdato: Date, sluttdato: Date) => (
-                        <TidsperiodeTekst
-                            tidsperiode={{ startdato, sluttdato }}
-                            visSluttdato={true}
+                {visPermisjonsplan && (
+                    <div className="tidsplan">
+                        <Timeline
+                            items={innslag.map((i) =>
+                                mapInnslagToTimelineItem(i)
+                            )}
+                            navnForelder1={navnForelder1}
+                            navnForelder2={navnForelder2}
+                            iconRenderer={(icon) => (
+                                <UttaksplanIkon
+                                    ikon={icon as UttaksplanIkonKeys}
+                                />
+                            )}
+                            onItemClick={(item: TimelineItem) => {
+                                // console.log(item);
+                            }}
+                            durationRenderer={(dager: number) => (
+                                <Varighet dager={dager} />
+                            )}
+                            rangeRenderer={(
+                                startdato: Date,
+                                sluttdato: Date
+                            ) => (
+                                <TidsperiodeTekst
+                                    tidsperiode={{ startdato, sluttdato }}
+                                    visSluttdato={true}
+                                />
+                            )}
                         />
-                    )}
-                />
 
-                {tidsromForUtsettelse &&
-                    termindato && (
-                        <div>
-                            <UtsettelseDialog
-                                isOpen={periode.dialogErApen}
-                                navnForelder1={navnForelder1}
-                                navnForelder2={navnForelder2}
-                                utsettelser={
-                                    periode.perioder as Utsettelsesperiode[]
-                                }
-                                utsettelse={
-                                    periode.valgtPeriode as Utsettelsesperiode
-                                }
-                                tidsrom={tidsromForUtsettelse}
-                                permisjonsregler={permisjonsregler}
-                                termindato={termindato}
-                            />
-                        </div>
-                    )}
-            </div>
+                        {tidsromForUtsettelse &&
+                            termindato && (
+                                <div>
+                                    <UtsettelseDialog
+                                        isOpen={periode.dialogErApen}
+                                        navnForelder1={navnForelder1}
+                                        navnForelder2={navnForelder2}
+                                        utsettelser={
+                                            periode.perioder as Utsettelsesperiode[]
+                                        }
+                                        utsettelse={
+                                            periode.valgtPeriode as Utsettelsesperiode
+                                        }
+                                        tidsrom={tidsromForUtsettelse}
+                                        permisjonsregler={permisjonsregler}
+                                        termindato={termindato}
+                                    />
+                                </div>
+                            )}
+                    </div>
+                )}
+            </React.Fragment>
         );
     }
 }
@@ -168,8 +181,13 @@ const mapStateToProps = (
     );
     const { termindato } = props;
     const { form, periode, view } = appState.uttaksplan;
-    const { dekningsgrad } = form;
+    const dekningsgrad: Dekningsgrad =
+        form.dekningsgrad || props.initialDekningsgrad || '100%';
     const permisjonsregler = getPermisjonsregler(props.termindato);
+    const ukerFellesperiode = getAntallUkerFellesperiode(
+        permisjonsregler,
+        dekningsgrad
+    );
     const tidsromForUtsettelse =
         termindato && dekningsgrad && sisteRegistrertePermisjonsdag
             ? getGyldigTidsromForUtsettelse(
@@ -189,6 +207,8 @@ const mapStateToProps = (
         sisteRegistrertePermisjonsdag,
         tidsromForUtsettelse,
         permisjonsregler,
+        ukerFellesperiode,
+        dekningsgrad,
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
@@ -198,4 +218,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect(mapStateToProps)(UttaksplanEksempelskjema);
+export default connect(mapStateToProps)(Uttaksplan);

@@ -17,7 +17,7 @@ export enum Infotekster {
 const defaultState: UttaksplanViewState = {
     synligInfo: new Map(),
     spraak: 'nb',
-    visTidslinje: true
+    visTidslinje: false
 };
 
 const leggTilInfo = (infoMap: SynligInfoMap, id: string): SynligInfoMap => {
