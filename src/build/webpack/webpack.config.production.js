@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.global.js');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,7 +9,10 @@ webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
         template: `${__dirname}/../../app/index.html`,
         inject: 'body'
-    }),
+    })
+);
+
+webpackConfig.plugins.push(
     new webpack.DefinePlugin({
         appSettings: {
             REST_API_URL: JSON.stringify(
