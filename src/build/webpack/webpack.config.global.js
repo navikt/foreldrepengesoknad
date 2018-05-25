@@ -71,14 +71,6 @@ const webpackConfig = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-            appSettings: {
-                REST_API_URL: JSON.stringify(
-                    process.env.FORELDREPENGESOKNAD_API_URL
-                ),
-                LOGIN_URL: JSON.stringify(process.env.LOGINSERVICE_URL)
-            }
-        }),
         new ExtractTextPlugin({
             filename: 'css/[name].css?[hash]-[chunkhash]-[name]',
             disable: false,
