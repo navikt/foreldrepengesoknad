@@ -21,14 +21,14 @@ export enum StonadskontoType {
     'ForeldrepengerForFodsel' = 'ForeldrepengerForFodsel'
 }
 
-export enum UtsettelseArsakType {
+export enum UtsettelseÅrsakType {
     'Ferie' = 'FERIE',
     'Arbeid' = 'ARBEID',
     'SykdomSkade' = 'SYKDOM_SKADE',
     'InnlagtBarn' = 'INNLAGT_BARN'
 }
 
-export enum OppholdArsakType {
+export enum OppholdÅrsakType {
     'VenterSøknadFraAnnenForelder' = 'VENTER_SØKNAD_FRA_ANNEN_FORELDRE',
     'ManglendeSøktPeriode' = 'MANGLENDE_SØKT_PERIODE'
 }
@@ -61,14 +61,14 @@ export interface Stonadsperiode extends PeriodeBase {
 
 export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
-    arsak: UtsettelseArsakType;
+    årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
 }
 
 export interface OppholdPeriode extends PeriodeBase {
     type: Periodetype.Opphold;
-    arsak: OppholdArsakType;
+    årsak: OppholdÅrsakType;
 }
 
 export type Periode = Stonadsperiode | Utsettelsesperiode;
