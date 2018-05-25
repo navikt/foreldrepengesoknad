@@ -76,7 +76,6 @@ class Uttaksplan extends React.Component<Props> {
             periode,
             innslag,
             termindato,
-            // perioder,
             statePerioder,
             onLagPerioder,
             tidsromForUtsettelse,
