@@ -4,7 +4,7 @@ import {
     Periodetype,
     Forelder,
     StonadskontoType,
-    UtsettelseArsakType
+    UtsettelseÅrsakType
 } from '../../types';
 import { getStonadsperioder } from '../../utils/periodeUtils';
 import {
@@ -119,11 +119,11 @@ export const getStondskontoTekstKey = (konto: StonadskontoType) => {
     }
 };
 
-export const getArsakTekstKey = (arsak: UtsettelseArsakType) => {
-    switch (arsak) {
-        case UtsettelseArsakType.Arbeid:
-            return 'uttaksplan.opphold.arsak.Arbeid';
+export const getÅrsakTekstKey = (årsak: UtsettelseÅrsakType) => {
+    switch (årsak) {
+        case UtsettelseÅrsakType.Arbeid:
+            return 'uttaksplan.opphold.årsak.Arbeid';
         default:
-            return 'uttaksplan.opphold.arsak.Ferie';
+            return 'uttaksplan.opphold.årsak.Ferie';
     }
 };
