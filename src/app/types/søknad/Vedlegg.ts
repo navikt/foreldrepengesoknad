@@ -2,6 +2,8 @@ interface Vedlegg {
     omsorgsovertakelse: File[];
     adopsjonsvedtak: File[];
     overtakelsedokumentasjon: File[];
+    terminbekreftelse: File[];
+    fødselsattest: File[];
 }
 
 export interface VedleggMetadata {

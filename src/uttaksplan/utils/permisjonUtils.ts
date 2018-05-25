@@ -12,7 +12,7 @@ import {
     Forelder,
     Periode,
     Utsettelsesperiode,
-    UtsettelseArsakType,
+    UtsettelseÅrsakType,
     Stonadsperiode,
     Periodetype,
     StonadskontoType
@@ -220,7 +220,7 @@ export const getAntallFeriedagerForForelder = (
 ): number => {
     const ferier = utsettelser.filter(
         (utsettelse) =>
-            utsettelse.arsak === UtsettelseArsakType.Ferie &&
+            utsettelse.årsak === UtsettelseÅrsakType.Ferie &&
             utsettelse.forelder === forelder
     );
     return ferier.length === 0

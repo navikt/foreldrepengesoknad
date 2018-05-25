@@ -33,6 +33,11 @@
     "erBarnetFødt.spørsmål": "Er barnet født?",
 
     "erDuMedmor.spørsmål": "Er du medmor?",
+    "morForSykSpørsmål.spørsmål":
+        "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
+
+    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+        "Er du selvstendig næringsdrivende eller frilanser?",
 
     "erDuFrilanser.spørsmål": "Er du frilanser?",
     "erDuSelvstendigNæringsdrivende.spørsmål":
@@ -86,5 +91,9 @@
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.label": "Last opp vedlegg",
     "vedlegg.tittel.omsorgsovertakelse":
-        "Last opp dokumentasjon på omsorgsovertakelse"
+        "Last opp dokumentasjon på omsorgsovertakelse",
+    "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
+    "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
+
+    "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født."
 }
