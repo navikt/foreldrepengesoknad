@@ -60,15 +60,6 @@ class DevSideoversikt extends React.Component<{}, {}> {
                                 Uttaksplan
                             </Link>
                         </li>
-                        <li>
-                            <Link
-                                to={`${
-                                    routeConfig.APP_ROUTE_PREFIX
-                                }/uttaksplan/tidslinje`}
-                                className="lenke">
-                                Uttaksplan - tidslinje
-                            </Link>
-                        </li>
                     </ul>
                 </div>
 

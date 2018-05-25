@@ -23,18 +23,9 @@ export function setTermindato(termindato: Date): PlanleggerActionTypes {
     };
 }
 
-export function settAntallDagerMor(uker: number): PlanleggerActionTypes {
+export function setFellesperiodeukerMor(uker: number): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.SET_UKER_FORELDER1,
-        uker
-    };
-}
-
-export function settAntallDagerMedforelder(
-    uker: number
-): PlanleggerActionTypes {
-    return {
-        type: PlanleggerActionTypeKeys.SET_UKER_FORELDER2,
         uker
     };
 }
