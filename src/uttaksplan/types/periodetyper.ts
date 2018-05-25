@@ -1,29 +1,36 @@
 import { Tidsperiode, Forelder } from '../types';
 
 export enum Periodetype {
-    'Stonadsperiode' = 'Stønadsperiode',
-    'Utsettelse' = 'Utsettelse'
+    'Stonadsperiode' = 'STØNADSPERIODE',
+    'Utsettelse' = 'UTSETTELSE',
+    'Opphold' = 'OPPHOLD'
 }
 
 export enum StonadskontoType {
     /** Kvote forbeholdt mor */
     'ModrekvotePakrevd' = 'ModrekvotePakrevd',
     /** Kvote forbeholdt mor */
-    'Modrekvote' = 'Modrekvote',
+    'Modrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
-    'Fedrekvote' = 'Fedrekvote',
+    'Fedrekvote' = 'FEDREKVOTE',
     /** Felleskvote som kan fordeles mellom mor og medforelder */
-    'Fellesperiode' = 'Fellesperiode',
+    'Fellesperiode' = 'FELLESPERIODE',
     /** Når det kun er en forsørger/forelder */
-    'Foreldrepenger' = 'Foreldrepenger',
+    'Foreldrepenger' = 'FORELDREPENGER',
     /** Mors permisjon før fødsel */
     'ForeldrepengerForFodsel' = 'ForeldrepengerForFodsel'
 }
 
 export enum UtsettelseArsakType {
-    'Ferie' = 'ferie',
-    'Arbeid' = 'arbeid',
-    'Sykdom' = 'sykdom'
+    'Ferie' = 'FERIE',
+    'Arbeid' = 'ARBEID',
+    'SykdomSkade' = 'SYKDOM_SKADE',
+    'InnlagtBarn' = 'INNLAGT_BARN'
+}
+
+export enum OppholdArsakType {
+    'VenterSøknadFraAnnenForelder' = 'VENTER_SØKNAD_FRA_ANNEN_FORELDRE',
+    'ManglendeSøktPeriode' = 'MANGLENDE_SØKT_PERIODE'
 }
 
 export interface Helligdag {
@@ -57,6 +64,11 @@ export interface Utsettelsesperiode extends PeriodeBase {
     arsak: UtsettelseArsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+}
+
+export interface OppholdPeriode extends PeriodeBase {
+    type: Periodetype.Opphold;
+    arsak: OppholdArsakType;
 }
 
 export type Periode = Stonadsperiode | Utsettelsesperiode;
