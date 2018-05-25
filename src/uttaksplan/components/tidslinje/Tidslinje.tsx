@@ -73,7 +73,7 @@ const Tidslinje: React.StatelessComponent<TidslinjeProps> = ({
                                 erSisteInnslag={idx === innslag.length - 1}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}
-                                onRedigerUtsettelse={onRedigerUtsettelse}
+                                onRedigerPeriode={onRedigerUtsettelse}
                             />
                         ) : (
                             <Hendelseinnslag innslag={i} />

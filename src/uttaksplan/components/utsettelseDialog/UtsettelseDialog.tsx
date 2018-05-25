@@ -6,9 +6,9 @@ import Modal from 'nav-frontend-modal';
 
 import { DispatchProps } from 'app/redux/types';
 import {
-    utsettelseLukkDialog,
-    opprettEllerOppdaterUtsettelse,
-    slettUtsettelse
+    lukkPeriodeDialog,
+    opprettEllerOppdaterPeriode,
+    slettPeriode
 } from 'uttaksplan/redux/actions';
 import {
     Utsettelsesperiode,
@@ -39,7 +39,7 @@ const UtsettelseDialog: React.StatelessComponent<Props> = (props: Props) => {
             contentLabel={props.intl.formatMessage({
                 id: 'uttaksplan.utsettelseskjema.tittel'
             })}
-            onRequestClose={() => props.dispatch(utsettelseLukkDialog())}
+            onRequestClose={() => props.dispatch(lukkPeriodeDialog())}
             className="utsettelseSkjemaDialog"
             children={
                 props.isOpen && (
@@ -52,11 +52,11 @@ const UtsettelseDialog: React.StatelessComponent<Props> = (props: Props) => {
                         tidsrom={props.tidsrom}
                         onChange={(utsettelse) =>
                             props.dispatch(
-                                opprettEllerOppdaterUtsettelse(utsettelse)
+                                opprettEllerOppdaterPeriode(utsettelse)
                             )
                         }
                         onFjern={(utsettelse) =>
-                            props.dispatch(slettUtsettelse(utsettelse))
+                            props.dispatch(slettPeriode(utsettelse))
                         }
                         termindato={props.termindato}
                     />

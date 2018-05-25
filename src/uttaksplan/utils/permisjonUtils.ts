@@ -177,7 +177,7 @@ export function getGyldigTidsromForUtsettelse(
  */
 export function getAntallUkerFellesperiode(
     permisjonsregler: Permisjonsregler,
-    dekningsgrad?: Dekningsgrad
+    dekningsgrad: Dekningsgrad
 ) {
     const totaltAntallUker =
         dekningsgrad === '80%'
