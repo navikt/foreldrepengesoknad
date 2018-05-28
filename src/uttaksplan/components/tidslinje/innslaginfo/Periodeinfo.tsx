@@ -4,7 +4,7 @@ import { getForelderNavn } from '../tidslinjeUtils';
 import InnslagLayout from '../elementer/InnslagLayout';
 import { PeriodeinnslagProps } from '../Periodeinnslag';
 import { TidslinjeinnslagType } from '../types';
-import { getForsteUttaksdagForDato } from '../../../utils/uttaksdagerUtils';
+import { getForsteUttaksdagFørDato } from '../../../utils/uttaksdagerUtils';
 
 interface OwnProps {
     /** Default false. Om en skal vise fordeling av kvoter */
@@ -33,7 +33,7 @@ const Periodeinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
         ) {
             tidsperiode.sluttdato = nesteInnslag.dato;
         } else {
-            tidsperiode.sluttdato = getForsteUttaksdagForDato(
+            tidsperiode.sluttdato = getForsteUttaksdagFørDato(
                 nesteInnslag.type === TidslinjeinnslagType.hendelse
                     ? nesteInnslag.dato
                     : nesteInnslag.periode.tidsperiode.startdato

@@ -6,7 +6,7 @@ import {
     Stonadsperiode,
     Periodetype
 } from '../types';
-import { leggUtsettelserTilPerioder } from '../utils/periodeUtils';
+import { leggUtsettelserTilStønadsperioder } from '../utils/periodeUtils';
 
 const utsettelseSelector = (state: UttaksplanAppState) => {
     return state.uttaksplan.periode.perioder.filter(
@@ -15,7 +15,14 @@ const utsettelseSelector = (state: UttaksplanAppState) => {
 };
 
 export const getStonadsperioder = (state: UttaksplanAppState) =>
-    state.uttaksplan.periode.perioder;
+    state.uttaksplan.periode.perioder.filter(
+        (p) => p.type === Periodetype.Stonadsperiode
+    );
+
+export const getTaptePerioder = (state: UttaksplanAppState) =>
+    state.uttaksplan.periode.perioder.filter(
+        (p) => p.type === Periodetype.TaptPeriode
+    );
 
 /**
  * Henter ut perioder og utsettelser fra state
@@ -27,7 +34,7 @@ export const getStonadsperioderOgUtsettelser = createSelector(
         stonadsperioder: Stonadsperiode[],
         utsettelser: Utsettelsesperiode[]
     ): Periode[] => {
-        return leggUtsettelserTilPerioder(stonadsperioder, utsettelser);
+        return leggUtsettelserTilStønadsperioder(stonadsperioder, utsettelser);
     }
 );
 

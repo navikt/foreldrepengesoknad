@@ -1,21 +1,24 @@
-import { addDays, isWithinRange, isSameDay } from 'date-fns';
+import { addDays, isWithinRange, isSameDay, isBefore } from 'date-fns';
 import {
     Periode,
     Stonadsperiode,
     Utsettelsesperiode,
     Periodesplitt,
     Tidsperiode,
-    Periodetype
+    Periodetype,
+    Perioder,
+    TaptPeriode
 } from '../types';
 import {
     getForsteUttaksdagPaEllerForDato,
-    getForsteUttaksdagForDato,
+    getForsteUttaksdagFørDato,
     getForsteUttaksdagPaEllerEtterDato,
     getForsteUttaksdagEtterDato,
     leggUttaksdagerTilDato,
     getAntallUttaksdagerITidsperiode,
     utsettDatoUttaksdager
 } from './uttaksdagerUtils';
+import { guid } from 'nav-frontend-js-utils';
 
 /**
  * Sorterer perioder ut fra startdato - asc
@@ -52,6 +55,50 @@ export function finnPeriodeMedDato(
             periode.tidsperiode.sluttdato
         );
     });
+}
+
+export function finnOgLeggTilTapteUttak(perioder: Perioder): Perioder {
+    const taptePerioder: TaptPeriode[] = [];
+    const filtrertePerioder = perioder.filter(
+        (p) => p.type !== Periodetype.TaptPeriode
+    );
+    const len = filtrertePerioder.length;
+    filtrertePerioder.forEach((periode, idx) => {
+        if (idx === len - 1) {
+            return;
+        }
+        const nestePeriode = filtrertePerioder[idx + 1];
+
+        const tidsperiodeMellomPerioder = {
+            startdato: getForsteUttaksdagEtterDato(
+                periode.tidsperiode.sluttdato
+            ),
+            sluttdato: getForsteUttaksdagFørDato(
+                nestePeriode.tidsperiode.startdato
+            )
+        };
+        if (
+            isBefore(
+                tidsperiodeMellomPerioder.sluttdato,
+                tidsperiodeMellomPerioder.startdato
+            )
+        ) {
+            return;
+        }
+
+        const uttaksdagerITidsperiode = getAntallUttaksdagerITidsperiode(
+            tidsperiodeMellomPerioder
+        );
+        if (uttaksdagerITidsperiode > 0) {
+            taptePerioder.push({
+                id: guid(),
+                type: Periodetype.TaptPeriode,
+                tidsperiode: tidsperiodeMellomPerioder,
+                forelder: 'forelder1'
+            });
+        }
+    });
+    return filtrertePerioder.concat(taptePerioder).sort(sorterPerioder);
 }
 
 /**
@@ -101,7 +148,7 @@ export function getPeriodeSluttdato(startdato: Date, uker: number): Date {
  * @param stonadsperioder
  * @param utsettelser
  */
-export function leggUtsettelserTilPerioder(
+export function leggUtsettelserTilStønadsperioder(
     stonadsperioder: Stonadsperiode[],
     utsettelser: Utsettelsesperiode[]
 ): Periode[] {
@@ -221,7 +268,7 @@ const leggUtsettelseInnIPeriode = (
         ...(periode as Stonadsperiode),
         tidsperiode: {
             startdato: periode.tidsperiode.startdato,
-            sluttdato: getForsteUttaksdagForDato(
+            sluttdato: getForsteUttaksdagFørDato(
                 utsettelse.tidsperiode.startdato
             )
         }

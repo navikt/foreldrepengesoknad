@@ -62,7 +62,15 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                 />
             );
         } else if (periodetype === Periodetype.Stonadsperiode) {
-            return <StonadsperiodeSkjema periode={periode as Stonadsperiode} />;
+            return (
+                <StonadsperiodeSkjema
+                    periode={periode as Stonadsperiode}
+                    onChange={(p) =>
+                        props.dispatch(opprettEllerOppdaterPeriode(p))
+                    }
+                    onFjern={(p) => null}
+                />
+            );
         }
         return <div>{props.periodetype}</div>;
     };

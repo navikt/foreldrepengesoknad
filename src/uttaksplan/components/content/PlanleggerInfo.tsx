@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Lenke from 'nav-frontend-lenker';
-import Veilederinfo from 'uttaksplan/elements/veilederinfo/Veilederinfo';
 import UtvidetInformasjon from 'uttaksplan/elements/utvidetInformasjon/UtvidetInformasjon';
 import { Element } from 'nav-frontend-typografi';
 import {
@@ -10,6 +9,7 @@ import {
     FormattedHTMLMessage
 } from 'react-intl';
 import EksterneLenker from 'uttaksplan/eksterneLenker';
+import Veilederinfo from 'app/components/veileder-info/Veilederinfo';
 
 export interface Props {}
 

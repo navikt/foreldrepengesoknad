@@ -3,10 +3,16 @@ import {
     Tidslinjeinnslag,
     TidslinjeinnslagType
 } from '../components/tidslinje/types';
-import { getStonadsperioderOgUtsettelser } from './periodeSelector';
+import {
+    getStonadsperioderOgUtsettelser,
+    getTaptePerioder
+} from './periodeSelector';
 import { isSameDay } from 'date-fns';
 import { Periode, Periodetype } from '../types';
-import { getSammenhengendePerioder } from '../utils/periodeUtils';
+import {
+    getSammenhengendePerioder,
+    sorterPerioder
+} from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
 const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
@@ -15,8 +21,12 @@ const FILTRER_PERIODER = false;
 
 export const tidslinjeFraPerioder = createSelector(
     getStonadsperioderOgUtsettelser,
+    getTaptePerioder,
     formSelector,
-    (perioder, form): Tidslinjeinnslag[] => {
+    (stønadsperioder, taptePerioder, form): Tidslinjeinnslag[] => {
+        const perioder = stønadsperioder
+            .concat(taptePerioder)
+            .sort(sorterPerioder);
         if (!perioder || perioder.length === 0) {
             return [];
         }

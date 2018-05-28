@@ -1,6 +1,5 @@
 import {
     Dekningsgrad,
-    Utsettelsesperiode,
     Spraak,
     Periodetype,
     Periode,
@@ -64,7 +63,7 @@ export function lukkPeriodeDialog(): PlanleggerActionTypes {
 }
 
 export function opprettEllerOppdaterPeriode(
-    periode: Utsettelsesperiode
+    periode: Periode
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER,
@@ -72,9 +71,7 @@ export function opprettEllerOppdaterPeriode(
     };
 }
 
-export function slettPeriode(
-    periode: Utsettelsesperiode
-): PlanleggerActionTypes {
+export function slettPeriode(periode: Periode): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.PERIODE_SLETT,
         periode

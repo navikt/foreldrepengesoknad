@@ -11,7 +11,8 @@ import {
     TimelineItem,
     TimelineLabel,
     TimelineItemColor,
-    TimelineItemType
+    TimelineItemType,
+    TimelineGap
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
@@ -66,6 +67,8 @@ export const getTimelineIconsFromInnslag = (
             }
         } else if (periode.type === Periodetype.Stonadsperiode) {
             return ['uttak'];
+        } else if (periode.type === Periodetype.TaptPeriode) {
+            return ['advarsel'];
         }
     }
     return undefined;
@@ -73,21 +76,37 @@ export const getTimelineIconsFromInnslag = (
 
 export const mapInnslagToEvent = (
     innslag: InnslagPeriodetype
-): TimelineEvent => ({
-    type: TimelineItemType.event,
-    title:
-        innslag.periode.type === Periodetype.Stonadsperiode
-            ? 'Uttaksperiode'
-            : 'Utsettelse',
-    from: innslag.periode.tidsperiode.startdato,
-    to: innslag.periode.tidsperiode.sluttdato,
-    personName: innslag.periode.forelder,
-    days: getAntallUttaksdagerITidsperiode(innslag.periode.tidsperiode),
-    color: mapForelderTilInnslagfarge(innslag),
-    labels: getLabelsForInnslag(innslag),
-    icons: getTimelineIconsFromInnslag(innslag),
-    data: innslag.periode
-});
+): TimelineEvent | TimelineGap => {
+    const { periode } = innslag;
+    if (innslag.periode.type === Periodetype.Stonadsperiode) {
+        return {
+            type: TimelineItemType.event,
+            title:
+                periode.type === Periodetype.Stonadsperiode
+                    ? 'Uttaksperiode'
+                    : 'Utsettelse',
+            from: periode.tidsperiode.startdato,
+            to: periode.tidsperiode.sluttdato,
+            personName: periode.forelder,
+            days: getAntallUttaksdagerITidsperiode(periode.tidsperiode),
+            color: mapForelderTilInnslagfarge(innslag),
+            labels: getLabelsForInnslag(innslag),
+            icons: getTimelineIconsFromInnslag(innslag),
+            data: periode
+        };
+    } else {
+        const gapItem: TimelineGap = {
+            type: TimelineItemType.gap,
+            from: periode.tidsperiode.startdato,
+            to: periode.tidsperiode.sluttdato,
+            title: 'Opphold',
+            days: getAntallUttaksdagerITidsperiode(periode.tidsperiode),
+            icons: getTimelineIconsFromInnslag(innslag),
+            data: periode
+        };
+        return gapItem;
+    }
+};
 
 export const mapInnslagToMarker = (
     innslag: InnslagHendelsetype
