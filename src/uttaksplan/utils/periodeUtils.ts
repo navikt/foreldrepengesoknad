@@ -5,7 +5,9 @@ import {
     Utsettelsesperiode,
     Periodesplitt,
     Tidsperiode,
-    Periodetype
+    Periodetype,
+    Perioder,
+    TaptPeriode
 } from '../types';
 import {
     getForsteUttaksdagPaEllerForDato,
@@ -16,6 +18,7 @@ import {
     getAntallUttaksdagerITidsperiode,
     utsettDatoUttaksdager
 } from './uttaksdagerUtils';
+import { guid } from 'nav-frontend-js-utils';
 
 /**
  * Sorterer perioder ut fra startdato - asc
@@ -52,6 +55,43 @@ export function finnPeriodeMedDato(
             periode.tidsperiode.sluttdato
         );
     });
+}
+
+export function finnOgLeggTilTapteUttak(perioder: Perioder): Perioder {
+    const taptePerioder: TaptPeriode[] = [];
+    const len = perioder.length;
+    perioder.forEach((periode, idx) => {
+        if (idx === len - 1) {
+            return;
+        }
+        const nestePeriode = perioder[idx + 1];
+        const tidsperiodeMellomPerioder = {
+            startdato: getForsteUttaksdagEtterDato(
+                periode.tidsperiode.sluttdato
+            ),
+            sluttdato: nestePeriode.tidsperiode.startdato
+        };
+        if (
+            isSameDay(
+                tidsperiodeMellomPerioder.startdato,
+                tidsperiodeMellomPerioder.sluttdato
+            )
+        ) {
+            return;
+        }
+        const uttaksdagerITidsperiode = getAntallUttaksdagerITidsperiode(
+            tidsperiodeMellomPerioder
+        );
+        if (uttaksdagerITidsperiode > 0) {
+            taptePerioder.push({
+                id: guid(),
+                type: Periodetype.TaptPeriode,
+                tidsperiode: tidsperiodeMellomPerioder,
+                forelder: 'forelder1'
+            });
+        }
+    });
+    return perioder.concat(taptePerioder).sort(sorterPerioder);
 }
 
 /**
@@ -101,7 +141,7 @@ export function getPeriodeSluttdato(startdato: Date, uker: number): Date {
  * @param stonadsperioder
  * @param utsettelser
  */
-export function leggUtsettelserTilPerioder(
+export function leggUtsettelserTilStønadsperioder(
     stonadsperioder: Stonadsperiode[],
     utsettelser: Utsettelsesperiode[]
 ): Periode[] {
