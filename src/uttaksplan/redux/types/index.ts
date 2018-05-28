@@ -1,4 +1,10 @@
-import { Dekningsgrad, Permisjonsregler, Spraak, Periode } from '../../types';
+import {
+    Dekningsgrad,
+    Permisjonsregler,
+    Spraak,
+    Periode,
+    Periodetype
+} from '../../types';
 
 export type SynligInfoMap = Map<string, boolean>;
 
@@ -18,7 +24,10 @@ export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 export interface PeriodeState {
     dialogErApen: boolean;
     perioder: Periode[];
-    valgtPeriode?: Periode;
+    valgtPeriode?: {
+        periodetype: Periodetype;
+        periode?: Periode;
+    };
 }
 export type PeriodeStatePartial = Partial<PeriodeState>;
 

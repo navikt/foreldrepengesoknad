@@ -15,19 +15,21 @@ import {
     Permisjonsregler,
     Periode,
     Periodetype,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    Stonadsperiode
 } from 'uttaksplan/types';
 import UtsettelseSkjema from 'uttaksplan/components/utsettelseSkjema/UtsettelseSkjema';
 
 import './periodeDialog.less';
+import StonadsperiodeSkjema from 'uttaksplan/components/stonadsperiodeSkjema/StonadsperiodeSkjema';
 
 interface OwnProps {
-    type: Periodetype;
+    periodetype: Periodetype;
+    periode?: Periode;
     isOpen: boolean;
     perioder: Periode[];
     tidsrom: Tidsperiode;
     permisjonsregler: Permisjonsregler;
-    periode: Periode;
     navnForelder1?: string;
     navnForelder2?: string;
     termindato: Date;
@@ -37,8 +39,8 @@ type Props = OwnProps & DispatchProps & InjectedIntlProps;
 
 const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const renderDialogContent = () => {
-        const { periode } = props;
-        if (periode.type === Periodetype.Utsettelse) {
+        const { periode, periodetype } = props;
+        if (periodetype === Periodetype.Utsettelse) {
             const utsettelse = periode
                 ? (periode as Utsettelsesperiode)
                 : undefined;
@@ -59,8 +61,10 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     termindato={props.termindato}
                 />
             );
+        } else if (periodetype === Periodetype.Stonadsperiode) {
+            return <StonadsperiodeSkjema periode={periode as Stonadsperiode} />;
         }
-        return <div>{props.type}</div>;
+        return <div>{props.periodetype}</div>;
     };
 
     return (
