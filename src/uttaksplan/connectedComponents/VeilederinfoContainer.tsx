@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import Veilederinfo, {
-    VeilederInfoProps
-} from 'uttaksplan/elements/veilederinfo/Veilederinfo';
 import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
+import Veilederinfo, {
+    VeilederInfoProps
+} from 'app/components/veileder-info/Veilederinfo';
 
 export interface StateProps {
     isOpen: boolean;
