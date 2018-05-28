@@ -53,8 +53,10 @@ class Timeline extends React.Component<Props, {}> {
                         iconRenderer={this.props.iconRenderer}
                     />
                 );
-            default:
+            case 'gap':
                 return <GapItem item={item as TimelineGap} />;
+            default:
+                return <div>Unknown item</div>;
         }
     }
     render() {
