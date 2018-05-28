@@ -280,7 +280,7 @@ class Eksempelsøknad extends React.Component<Props> {
                                     : 'Forelder 2'
                             }
                             perioder={perioder}
-                            onLagPerioder={(p) =>
+                            onChange={(p) =>
                                 dispatch(
                                     søknadActions.updateSøknad({
                                         uttaksplan: p
