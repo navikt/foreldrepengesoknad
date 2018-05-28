@@ -27,6 +27,7 @@ export enum Søkersituasjon {
 
 interface Søknad {
     type: Foreldrepengesøknad;
+    harGodkjentVilkår: boolean;
     annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
     barn: Barn;
@@ -43,6 +44,7 @@ export interface SøknadPartial {
     type?: Foreldrepengesøknad;
     annenForelder: AnnenForelderPartial;
     situasjon?: Søkersituasjon;
+    harGodkjentVilkår: boolean;
     barn: BarnPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     uttaksplan?: Periode[];

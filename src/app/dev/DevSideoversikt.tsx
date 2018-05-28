@@ -4,7 +4,7 @@ import Applikasjonsside from '../connected-components/sider/Applikasjonsside';
 import { Link } from 'react-router-dom';
 
 import stegConfig from '../util/stegConfig';
-import { soknadStegPath } from '../connected-components/steg/StegRoutes';
+import { søknadStegPath } from '../connected-components/steg/StegRoutes';
 import Veilederinfo from '../components/veileder-info/Veilederinfo';
 
 import './dev.less';
@@ -67,7 +67,7 @@ class DevSideoversikt extends React.Component<{}, {}> {
                 <ul className="dev-sider">
                     {Object.keys(stegConfig).map((key, index) => (
                         <li key={index}>
-                            <Link to={soknadStegPath(key)} className="lenke">
+                            <Link to={søknadStegPath(key)} className="lenke">
                                 {stegConfig[key].tittel}
                             </Link>
                         </li>

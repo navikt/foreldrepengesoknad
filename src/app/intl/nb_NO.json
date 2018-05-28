@@ -33,6 +33,10 @@
     "erBarnetFødt.spørsmål": "Er barnet født?",
 
     "erDuMedmor.spørsmål": "Er du medmor?",
+
+    "begynnsøknad.label": "Begynn med søknaden",
+    "fortsettknapp.label": "Fortsett",
+
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
@@ -52,6 +56,8 @@
     "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet":
         "bo i utlandet helt eller delvis",
+
+    "samtykke": "Jeg bekrefter at jeg har lest og forstått",
 
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
