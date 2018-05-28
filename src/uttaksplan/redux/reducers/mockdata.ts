@@ -36,4 +36,4 @@ export const taptPeriodeMock: TaptPeriode = {
     forelder: 'forelder1'
 };
 
-export const mockUtsettelser = [];
+export const mockUtsettelser = [mockFerie];

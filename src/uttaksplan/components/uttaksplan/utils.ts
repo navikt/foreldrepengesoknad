@@ -78,7 +78,10 @@ export const mapInnslagToEvent = (
     innslag: InnslagPeriodetype
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
-    if (innslag.periode.type === Periodetype.Stonadsperiode) {
+    if (
+        innslag.periode.type === Periodetype.Stonadsperiode ||
+        innslag.periode.type === Periodetype.Utsettelse
+    ) {
         return {
             type: TimelineItemType.event,
             title:

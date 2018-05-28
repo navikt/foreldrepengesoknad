@@ -47,7 +47,9 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
             return (
                 <UtsettelseSkjema
                     registrerteUtsettelser={
-                        props.perioder as Utsettelsesperiode[]
+                        props.perioder.filter(
+                            (p) => p.type === Periodetype.Utsettelse
+                        ) as Utsettelsesperiode[]
                     }
                     utsettelse={utsettelse}
                     navnForelder1={props.navnForelder1}
