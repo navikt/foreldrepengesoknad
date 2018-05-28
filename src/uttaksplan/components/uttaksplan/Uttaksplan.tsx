@@ -18,10 +18,7 @@ import {
     getGyldigTidsromForUtsettelse,
     getAntallUkerFellesperiode
 } from 'uttaksplan/utils/permisjonUtils';
-import {
-    getSisteRegistrertePermisjonsdag,
-    getStonadsperioderOgUtsettelser
-} from 'uttaksplan/selectors/periodeSelector';
+import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'app/redux/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
@@ -62,7 +59,6 @@ export interface StateProps {
     periode: PeriodeState;
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
-    statePerioder: Periode[];
     tidsromForUtsettelse?: Tidsperiode;
 }
 
@@ -170,33 +166,46 @@ class Uttaksplan extends React.Component<Props> {
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
-                        <Timeline
-                            items={innslag.map((i) =>
-                                mapInnslagToTimelineItem(i)
-                            )}
-                            navnForelder1={navnForelder1}
-                            navnForelder2={navnForelder2}
-                            iconRenderer={(icon) => (
-                                <UttaksplanIkon
-                                    ikon={icon as UttaksplanIkonKeys}
-                                />
-                            )}
-                            onItemClick={(item: TimelineItem) => {
-                                this.handleItemClick(item);
-                            }}
-                            durationRenderer={(dager: number) => (
-                                <Varighet dager={dager} />
-                            )}
-                            rangeRenderer={(
-                                startdato: Date,
-                                sluttdato: Date
-                            ) => (
-                                <TidsperiodeTekst
-                                    tidsperiode={{ startdato, sluttdato }}
-                                    visSluttdato={true}
-                                />
-                            )}
-                        />
+                        <div className="blokk-m">
+                            <Timeline
+                                items={innslag.map((i) =>
+                                    mapInnslagToTimelineItem(i)
+                                )}
+                                navnForelder1={navnForelder1}
+                                navnForelder2={navnForelder2}
+                                iconRenderer={(icon) => (
+                                    <UttaksplanIkon
+                                        ikon={icon as UttaksplanIkonKeys}
+                                    />
+                                )}
+                                onItemClick={(item: TimelineItem) => {
+                                    this.handleItemClick(item);
+                                }}
+                                durationRenderer={(dager: number) => (
+                                    <Varighet dager={dager} />
+                                )}
+                                rangeRenderer={(
+                                    startdato: Date,
+                                    sluttdato: Date
+                                ) => (
+                                    <TidsperiodeTekst
+                                        tidsperiode={{ startdato, sluttdato }}
+                                        visSluttdato={true}
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        <div className="m-textCenter">
+                            <Knapp
+                                onClick={() =>
+                                    dispatch(
+                                        visPeriodeDialog(Periodetype.Utsettelse)
+                                    )
+                                }>
+                                Legg til utsettelse
+                            </Knapp>
+                        </div>
 
                         {visPermisjonsplan &&
                             tidsromForUtsettelse &&
@@ -250,7 +259,6 @@ const mapStateToProps = (
             : undefined;
     const innslag: Tidslinjeinnslag[] = tidslinjeFraPerioder(appState);
     return {
-        statePerioder: getStonadsperioderOgUtsettelser(appState),
         innslag,
         form,
         periode,
