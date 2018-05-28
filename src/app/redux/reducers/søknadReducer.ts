@@ -19,7 +19,8 @@ const getDefaultState = (): SøknadPartial => {
             overtakelsedokumentasjon: [],
             terminbekreftelse: [],
             fødselsattest: []
-        }
+        },
+        harGodkjentVilkår: false
     };
 };
 
