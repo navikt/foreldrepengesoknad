@@ -44,7 +44,8 @@ import {
     setFellesperiodeukerMor,
     visTidslinje,
     visPeriodeDialog,
-    opprettPerioder
+    opprettPerioder,
+    setTermindato
 } from 'uttaksplan/redux/actions';
 
 export type Props = OwnProps & StateProps & DispatchProps;
@@ -83,6 +84,12 @@ class Uttaksplan extends React.Component<Props> {
     }
 
     componentDidMount() {
+        this.props.dispatch(setTermindato(this.props.termindato));
+        this.props.dispatch(
+            setDekningsgrad(
+                this.props.dekningsgrad || this.props.initialDekningsgrad
+            )
+        );
         this.opprettPerioder();
     }
 
@@ -241,8 +248,7 @@ const mapStateToProps = (
                   sisteRegistrertePermisjonsdag
               )
             : undefined;
-    let innslag: Tidslinjeinnslag[] = [];
-    innslag = tidslinjeFraPerioder(appState);
+    const innslag: Tidslinjeinnslag[] = tidslinjeFraPerioder(appState);
     return {
         statePerioder: getStonadsperioderOgUtsettelser(appState),
         innslag,

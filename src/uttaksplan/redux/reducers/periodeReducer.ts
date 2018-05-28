@@ -3,7 +3,7 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { PeriodeState, PeriodeStatePartial } from '../types';
-import { Periode } from '../../types';
+import { Periode, TaptPeriode, Periodetype } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
 import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 import { opprettStønadsperioder } from 'uttaksplan/utils/permisjonUtils';
@@ -47,6 +47,16 @@ const updateState = (
     ...newState
 });
 
+const taptPeriodeMock: TaptPeriode = {
+    id: '047917579-30650-03820-6480-44252887821741',
+    type: Periodetype.TaptPeriode,
+    tidsperiode: {
+        startdato: new Date('2018-07-06T10:00:00.000Z'),
+        sluttdato: new Date('2018-07-08T22:00:00.000Z')
+    },
+    forelder: 'forelder1'
+};
+
 const PeriodeReducer = (
     state = defaultState,
     action: PlanleggerActionTypes
@@ -56,15 +66,18 @@ const PeriodeReducer = (
             return defaultState;
 
         case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
+            const pers: Periode[] = [];
+            const stønadsperioder = opprettStønadsperioder(
+                action.termindato,
+                action.dekningsgrad,
+                action.fellesukerForelder1,
+                action.fellesukerForelder2,
+                action.permisjonsregler
+            );
+
             return {
                 ...state,
-                perioder: opprettStønadsperioder(
-                    action.termindato,
-                    action.dekningsgrad,
-                    action.fellesukerForelder1,
-                    action.fellesukerForelder2,
-                    action.permisjonsregler
-                )
+                perioder: pers.concat(stønadsperioder, taptPeriodeMock)
             };
 
         case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:

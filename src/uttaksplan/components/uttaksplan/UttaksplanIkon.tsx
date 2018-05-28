@@ -6,6 +6,7 @@ import GradertIkon from 'uttaksplan/components/uttaksplan/ikoner/GradertIkon';
 import PlasterIkon from 'uttaksplan/components/uttaksplan/ikoner/PlasterIkon';
 import TerminIkon from 'uttaksplan/components/uttaksplan/ikoner/TerminIkon';
 import ArbeidIkon from 'uttaksplan/components/uttaksplan/ikoner/ArbeidIkon';
+import AdvarselIkon from 'uttaksplan/components/uttaksplan/ikoner/AdvarselIkon';
 
 export type UttaksplanIkonKeys =
     | 'arbeid'
@@ -14,7 +15,8 @@ export type UttaksplanIkonKeys =
     | 'sykehus'
     | 'sykdom'
     | 'termin'
-    | 'uttak';
+    | 'uttak'
+    | 'advarsel';
 
 export interface Props {
     ikon: UttaksplanIkonKeys;
@@ -34,6 +36,8 @@ const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon }) => {
             return <SykehusIkon />;
         case 'termin':
             return <TerminIkon />;
+        case 'advarsel':
+            return <AdvarselIkon />;
         default:
             return <UttakIkon />;
     }

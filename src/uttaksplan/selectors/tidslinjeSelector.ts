@@ -3,7 +3,10 @@ import {
     Tidslinjeinnslag,
     TidslinjeinnslagType
 } from '../components/tidslinje/types';
-import { getStonadsperioderOgUtsettelser } from './periodeSelector';
+import {
+    getStonadsperioderOgUtsettelser,
+    getTaptePerioder
+} from './periodeSelector';
 import { isSameDay } from 'date-fns';
 import { Periode, Periodetype } from '../types';
 import { getSammenhengendePerioder } from '../utils/periodeUtils';
@@ -15,8 +18,10 @@ const FILTRER_PERIODER = false;
 
 export const tidslinjeFraPerioder = createSelector(
     getStonadsperioderOgUtsettelser,
+    getTaptePerioder,
     formSelector,
-    (perioder, form): Tidslinjeinnslag[] => {
+    (stønadsperioder, taptePerioder, form): Tidslinjeinnslag[] => {
+        const perioder = stønadsperioder.concat(taptePerioder);
         if (!perioder || perioder.length === 0) {
             return [];
         }

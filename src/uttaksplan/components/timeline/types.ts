@@ -42,6 +42,8 @@ export interface TimelineGap extends TimelineBaseItem {
     type: TimelineItemType.gap;
     from: Date;
     to: Date;
+    days: number;
+    data: any;
     comment?: string;
 }
 
