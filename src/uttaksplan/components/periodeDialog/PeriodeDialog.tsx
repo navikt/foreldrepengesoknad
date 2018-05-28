@@ -71,7 +71,7 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
         <Modal
             isOpen={props.isOpen}
             contentLabel={props.intl.formatMessage({
-                id: 'uttaksplan.utsettelseskjema.tittel'
+                id: `uttaksplan.periodedialog.${props.periodetype}.tittel`
             })}
             onRequestClose={() => props.dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog"
