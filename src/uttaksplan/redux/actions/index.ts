@@ -3,7 +3,8 @@ import {
     Utsettelsesperiode,
     Spraak,
     Periodetype,
-    Periode
+    Periode,
+    Permisjonsregler
 } from '../../types';
 
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
@@ -105,5 +106,22 @@ export function setSpraak(spraak: Spraak): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.SET_SPRAAK,
         spraak
+    };
+}
+
+export function opprettPerioder(
+    termindato: Date,
+    dekningsgrad: Dekningsgrad,
+    fellesukerForelder1: number,
+    fellesukerForelder2: number,
+    permisjonsregler: Permisjonsregler
+): PlanleggerActionTypes {
+    return {
+        type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
+        termindato,
+        dekningsgrad,
+        fellesukerForelder1,
+        fellesukerForelder2,
+        permisjonsregler
     };
 }

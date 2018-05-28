@@ -1,4 +1,10 @@
-import { Dekningsgrad, Spraak, Periode, Periodetype } from '../../types';
+import {
+    Dekningsgrad,
+    Spraak,
+    Periode,
+    Periodetype,
+    Permisjonsregler
+} from '../../types';
 
 export enum PlanleggerActionTypeKeys {
     'SET_NAVN_FORELDER1' = 'setNavnForelder1',
@@ -14,7 +20,8 @@ export enum PlanleggerActionTypeKeys {
     'INFO_VIS' = 'infoVis',
     'INFO_SKJUL' = 'infoSkjul',
     'VIS_TIDSLINJE' = 'visTidslinje',
-    'SET_SPRAAK' = 'setSpraak'
+    'SET_SPRAAK' = 'setSpraak',
+    'OPPRETT_PERIODER' = 'opprettPerioder'
 }
 
 export type PlanleggerActionTypes =
@@ -31,8 +38,17 @@ export type PlanleggerActionTypes =
     | SkjulInfo
     | VisInfo
     | VisTidslinje
-    | SettSpraak;
+    | SettSpraak
+    | OpprettPerioder;
 
+export interface OpprettPerioder {
+    type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
+    fellesukerForelder1: number;
+    fellesukerForelder2: number;
+    permisjonsregler: Permisjonsregler;
+}
 export interface SetNavnForelder1 {
     type: PlanleggerActionTypeKeys.SET_NAVN_FORELDER1;
     navn: string;

@@ -43,7 +43,8 @@ import {
     setDekningsgrad,
     setFellesperiodeukerMor,
     visTidslinje,
-    visPeriodeDialog
+    visPeriodeDialog,
+    opprettPerioder
 } from 'uttaksplan/redux/actions';
 
 export type Props = OwnProps & StateProps & DispatchProps;
@@ -71,13 +72,14 @@ interface OwnProps {
     perioder?: Periode[];
     /** Default 100% */
     initialDekningsgrad?: Dekningsgrad;
-    onLagPerioder: (perioder: Periode[]) => void;
+    onChange: (perioder: Periode[]) => void;
 }
 
 class Uttaksplan extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
+        this.opprettPerioder = this.opprettPerioder.bind(this);
     }
     handleItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
@@ -93,13 +95,32 @@ class Uttaksplan extends React.Component<Props> {
             }
         }
     }
+    opprettPerioder() {
+        const {
+            dispatch,
+            termindato,
+            permisjonsregler,
+            dekningsgrad,
+            form
+        } = this.props;
+        const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
+
+        dispatch(
+            opprettPerioder(
+                termindato,
+                dekningsgrad,
+                fellesperiodeukerForelder1,
+                fellesperiodeukerForelder2,
+                permisjonsregler
+            )
+        );
+        dispatch(visTidslinje(true));
+    }
     render() {
         const {
             periode,
             innslag,
             termindato,
-            statePerioder,
-            onLagPerioder,
             tidsromForUtsettelse,
             navnForelder1,
             navnForelder2,
@@ -129,13 +150,11 @@ class Uttaksplan extends React.Component<Props> {
                             dispatch(setFellesperiodeukerMor(uker))
                         }
                     />
-                    <Knapp
-                        onClick={() => {
-                            onLagPerioder(statePerioder);
-                            dispatch(visTidslinje(true));
-                        }}>
-                        Vis uttaksplan
-                    </Knapp>
+                    <div className="m-textCenter">
+                        <Knapp onClick={() => this.opprettPerioder()}>
+                            Opprett perioder
+                        </Knapp>
+                    </div>
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
