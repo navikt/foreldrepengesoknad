@@ -6,9 +6,11 @@ import { PeriodeState, PeriodeStatePartial } from '../types';
 import { Periodetype, Periode } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
 import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
+import { opprettStønadsperioder } from 'uttaksplan/utils/permisjonUtils';
 
 const defaultState: PeriodeState = {
     dialogErApen: false,
+    valgtPeriode: undefined,
     perioder: mockUtsettelser
 };
 
@@ -53,10 +55,25 @@ const PeriodeReducer = (
     switch (action.type) {
         case PlanleggerActionTypeKeys.SET_TERMINDATO:
             return defaultState;
+
+        case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
+            return {
+                ...state,
+                perioder: opprettStønadsperioder(
+                    action.termindato,
+                    action.dekningsgrad,
+                    action.fellesukerForelder1,
+                    action.fellesukerForelder2,
+                    action.permisjonsregler
+                )
+            };
         case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
             return updateState(state, {
                 dialogErApen: true,
-                valgtPeriode: action.periode
+                valgtPeriode: {
+                    periodetype: action.periodetype,
+                    periode: action.periode
+                }
             });
         case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
             return updateState(state, {

@@ -17,6 +17,9 @@ export const tidslinjeFraPerioder = createSelector(
     getStonadsperioderOgUtsettelser,
     formSelector,
     (perioder, form): Tidslinjeinnslag[] => {
+        if (!perioder || perioder.length === 0) {
+            return [];
+        }
         const { dekningsgrad, termindato } = form;
         if (!termindato || !dekningsgrad) {
             return [];
