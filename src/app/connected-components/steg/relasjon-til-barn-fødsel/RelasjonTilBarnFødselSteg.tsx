@@ -22,7 +22,7 @@ interface StateProps {
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
-class AnnenForelderSteg extends React.Component<Props, StateProps> {
+class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
     renderPartial() {
         const { barn, vedlegg, dispatch, søknad } = this.props;
         if (barn.erBarnetFødt === true) {
@@ -75,5 +75,5 @@ const mapStateToProps = (state: AppState): StateProps => ({
 });
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(AnnenForelderSteg)
+    injectIntl(RelasjonTilBarnFødsel)
 );
