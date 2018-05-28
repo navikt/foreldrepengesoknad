@@ -59,12 +59,15 @@ export function finnPeriodeMedDato(
 
 export function finnOgLeggTilTapteUttak(perioder: Perioder): Perioder {
     const taptePerioder: TaptPeriode[] = [];
-    const len = perioder.length;
-    perioder.forEach((periode, idx) => {
+    const filtrertePerioder = perioder.filter(
+        (p) => p.type !== Periodetype.TaptPeriode
+    );
+    const len = filtrertePerioder.length;
+    filtrertePerioder.forEach((periode, idx) => {
         if (idx === len - 1) {
             return;
         }
-        const nestePeriode = perioder[idx + 1];
+        const nestePeriode = filtrertePerioder[idx + 1];
         const tidsperiodeMellomPerioder = {
             startdato: getForsteUttaksdagEtterDato(
                 periode.tidsperiode.sluttdato
@@ -91,7 +94,7 @@ export function finnOgLeggTilTapteUttak(perioder: Perioder): Perioder {
             });
         }
     });
-    return perioder.concat(taptePerioder).sort(sorterPerioder);
+    return filtrertePerioder.concat(taptePerioder).sort(sorterPerioder);
 }
 
 /**
