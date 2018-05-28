@@ -3,7 +3,7 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { PeriodeState, PeriodeStatePartial } from '../types';
-import { Periodetype, Periode } from '../../types';
+import { Periode } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
 import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 import { opprettStønadsperioder } from 'uttaksplan/utils/permisjonUtils';
@@ -19,20 +19,19 @@ const opprettEllerOppdaterPeriode = (
     periode: Periode
 ): PeriodeState => {
     let perioder = state.perioder;
-    if (periode.type === Periodetype.Utsettelse) {
-        perioder = periode.id
-            ? state.perioder.map(
-                  (u, idx) =>
-                      u.id === periode.id ? periode : state.perioder[idx]
-              )
-            : [
-                  ...state.perioder,
-                  {
-                      ...periode,
-                      id: guid()
-                  }
-              ];
-    }
+    // if (periode.type === Periodetype.Utsettelse) {
+    perioder = periode.id
+        ? state.perioder.map(
+              (u, idx) => (u.id === periode.id ? periode : state.perioder[idx])
+          )
+        : [
+              ...state.perioder,
+              {
+                  ...periode,
+                  id: guid()
+              }
+          ];
+    // }
     return {
         ...state,
         perioder,
