@@ -59,6 +59,7 @@ describe('tidslinjeUtils', () => {
     );
     const innslagUtenUtsettelse = tidslinjeFraPerioder.resultFunc(
         stonadsperioder,
+        [],
         formState
     );
     it('lager riktig oppsummering uten utsettelser', () => {
@@ -74,6 +75,7 @@ describe('tidslinjeUtils', () => {
     );
     const innslagMedUtsettelse = tidslinjeFraPerioder.resultFunc(
         perioderMedUtsettelse,
+        [],
         formState
     );
 

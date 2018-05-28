@@ -6,6 +6,7 @@
 @sirkelCenterOffset: @sirkelSize / 2 - @sirkelBorderWidth / 2;
 @timeline-border-left-width: 6px;
 @timeline-border-radius: 0.25rem;
+@timeline-gray: #b7b1a9;
 
 .timelineSirkel(@borderColor, @bkgColor: white) {
     content: '';
@@ -46,7 +47,7 @@
     &__itemWrapper {
         position: relative;
         padding-bottom: 1rem;
-        border-left: 2px solid #b7b1a9;
+        border-left: 2px solid @timeline-gray;
         padding-left: 1rem;
         &:last-child {
             padding-bottom: 0;
@@ -175,6 +176,47 @@
         top: @vPad;
     }
 }
+
+.timelineGapItem {
+    @vPad: 1rem;
+    border: 2px solid #ba3a26;
+    border-radius: 4px;
+    padding: @vPad 1rem @vPad 4rem;
+    position: relative;
+    line-height: 1.5rem;
+    color: #ba3a26;
+
+    &:after  {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: calc(1rem + 4px);
+        border-top: 2px solid @timeline-gray;
+        border-bottom: 2px solid @timeline-gray;
+        background-color: #f1f1f1;
+        top: 1rem;
+        left: calc(-1rem - 8px);
+    }
+
+    &__title {
+        display: inline-block;
+        font-size: 1rem;
+        margin: 0;
+        padding-right: 0.5rem;
+    }
+    &__duration {
+        display: inline-block;
+    }
+    .timelineIcons {
+        position: absolute;
+        left: calc(1rem + @timeline-border-left-width);
+        top: @vPad;
+    }
+    .timelineItemMoreLink {
+        left: 0;
+    }
+}
+
 .timelineIcons {
     &__icon {
         width: 1.5rem;
