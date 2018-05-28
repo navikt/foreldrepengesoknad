@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 const webpackConfig = {
     entry: {
@@ -70,6 +71,7 @@ const webpackConfig = {
         ]
     },
     plugins: [
+        new CaseSensitivePathsPlugin(),
         new ExtractTextPlugin({
             filename: 'css/[name].css?[hash]-[chunkhash]-[name]',
             disable: false,
