@@ -38,7 +38,7 @@ import {
 import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
-import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/uttaksplanSkjema';
+import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/UttaksplanSkjema';
 import {
     setDekningsgrad,
     setFellesperiodeukerMor,
