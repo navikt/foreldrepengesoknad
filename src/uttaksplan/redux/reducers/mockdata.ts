@@ -25,4 +25,4 @@ export const mockFerie: Utsettelsesperiode = {
     forelder: 'forelder1'
 };
 
-export const mockUtsettelser = [mockArbeid]; // mockArbeid, mockFerie];
+export const mockUtsettelser = [];

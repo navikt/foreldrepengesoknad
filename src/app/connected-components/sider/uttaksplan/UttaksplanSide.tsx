@@ -34,7 +34,6 @@ class UttaksplanSide extends React.Component<Props, State> {
         };
     }
     render() {
-        // const { dispatch, form, innslag } = this.props;
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
@@ -43,7 +42,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                     navnForelder2="Ola"
                     termindato={new Date()}
                     perioder={this.state.perioder}
-                    onLagPerioder={(perioder) => this.setState({ perioder })}
+                    onChange={(perioder) => this.setState({ perioder })}
                 />
             </Applikasjonsside>
         );

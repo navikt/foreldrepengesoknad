@@ -44,6 +44,8 @@
     "uttaksplan.stonadskonto.foreldrepenger": "foreldrepengar",
     "uttaksplan.tittel.introtekst":
         "Velkommen til foreldrepengenplanleggjaren. Her kan de planleggje korleis de vil ta ut perioden med foreldrepengar når de ventar barn.",
+    "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til opphald",
+    "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
     "uttaksplan.utsettelseskjema.tittel": "Legg til opphald",
     "uttaksplan.utsettelseskjema.tittel.endre": "Opphald i foreldrepengane",
     "uttaksplan.utsettelseskjema.årsak.sporsmal": "Kva skal {navn} gjere?",

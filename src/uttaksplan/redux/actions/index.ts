@@ -1,4 +1,11 @@
-import { Dekningsgrad, Utsettelsesperiode, Spraak } from '../../types';
+import {
+    Dekningsgrad,
+    Utsettelsesperiode,
+    Spraak,
+    Periodetype,
+    Periode,
+    Permisjonsregler
+} from '../../types';
 
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
 
@@ -40,11 +47,13 @@ export function setDekningsgrad(
 }
 
 export function visPeriodeDialog(
-    periode?: Utsettelsesperiode
+    periodetype: Periodetype,
+    periode?: Periode
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG,
-        periode
+        periode,
+        periodetype
     };
 }
 
@@ -97,5 +106,22 @@ export function setSpraak(spraak: Spraak): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.SET_SPRAAK,
         spraak
+    };
+}
+
+export function opprettPerioder(
+    termindato: Date,
+    dekningsgrad: Dekningsgrad,
+    fellesukerForelder1: number,
+    fellesukerForelder2: number,
+    permisjonsregler: Permisjonsregler
+): PlanleggerActionTypes {
+    return {
+        type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
+        termindato,
+        dekningsgrad,
+        fellesukerForelder1,
+        fellesukerForelder2,
+        permisjonsregler
     };
 }
