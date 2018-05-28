@@ -34,7 +34,13 @@ export const getStonadsperioderOgUtsettelser = createSelector(
         stonadsperioder: Stonadsperiode[],
         utsettelser: Utsettelsesperiode[]
     ): Periode[] => {
-        return leggUtsettelserTilStønadsperioder(stonadsperioder, utsettelser);
+        if (stonadsperioder.length > 0) {
+            return leggUtsettelserTilStønadsperioder(
+                stonadsperioder,
+                utsettelser
+            );
+        }
+        return [];
     }
 );
 
