@@ -1,4 +1,4 @@
-import { Dekningsgrad, Spraak, Periode } from '../../types';
+import { Dekningsgrad, Spraak, Periode, Periodetype } from '../../types';
 
 export enum PlanleggerActionTypeKeys {
     'SET_NAVN_FORELDER1' = 'setNavnForelder1',
@@ -65,6 +65,7 @@ export interface SetDekningsgrad {
 
 export interface PeriodeVisDialog {
     type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG;
+    periodetype: Periodetype;
     periode?: Periode;
 }
 

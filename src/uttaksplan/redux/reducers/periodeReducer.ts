@@ -9,6 +9,7 @@ import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 
 const defaultState: PeriodeState = {
     dialogErApen: false,
+    valgtPeriode: undefined,
     perioder: mockUtsettelser
 };
 
@@ -56,7 +57,10 @@ const PeriodeReducer = (
         case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
             return updateState(state, {
                 dialogErApen: true,
-                valgtPeriode: action.periode
+                valgtPeriode: {
+                    periodetype: action.periodetype,
+                    periode: action.periode
+                }
             });
         case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
             return updateState(state, {

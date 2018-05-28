@@ -11,7 +11,6 @@ import {
     Tidsperiode,
     Dekningsgrad,
     Periode,
-    Utsettelsesperiode,
     Permisjonsregler,
     Periodetype
 } from 'uttaksplan/types';
@@ -24,7 +23,6 @@ import {
     getStonadsperioderOgUtsettelser
 } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'app/redux/types';
-import UtsettelseDialog from 'uttaksplan/components/utsettelseDialog/UtsettelseDialog';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
 import '../../styles/uttaksplan.less';
@@ -51,6 +49,7 @@ import {
 export type Props = OwnProps & StateProps & DispatchProps;
 
 import '../skjema/skjema.less';
+import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -84,7 +83,13 @@ class Uttaksplan extends React.Component<Props> {
         if (item.type === TimelineItemType.event) {
             const periode = item.data as Periode;
             if (periode.type === Periodetype.Utsettelse) {
-                this.props.dispatch(visPeriodeDialog(periode));
+                this.props.dispatch(
+                    visPeriodeDialog(Periodetype.Utsettelse, periode)
+                );
+            } else if (periode.type === Periodetype.Stonadsperiode) {
+                this.props.dispatch(
+                    visPeriodeDialog(Periodetype.Stonadsperiode, periode)
+                );
             }
         }
     }
@@ -164,23 +169,21 @@ class Uttaksplan extends React.Component<Props> {
 
                         {visPermisjonsplan &&
                             tidsromForUtsettelse &&
-                            termindato && (
-                                <div>
-                                    <UtsettelseDialog
-                                        isOpen={periode.dialogErApen}
-                                        navnForelder1={navnForelder1}
-                                        navnForelder2={navnForelder2}
-                                        utsettelser={
-                                            periode.perioder as Utsettelsesperiode[]
-                                        }
-                                        utsettelse={
-                                            periode.valgtPeriode as Utsettelsesperiode
-                                        }
-                                        tidsrom={tidsromForUtsettelse}
-                                        permisjonsregler={permisjonsregler}
-                                        termindato={termindato}
-                                    />
-                                </div>
+                            termindato &&
+                            periode.valgtPeriode && (
+                                <PeriodeDialog
+                                    periodetype={
+                                        periode.valgtPeriode.periodetype
+                                    }
+                                    isOpen={periode.dialogErApen}
+                                    navnForelder1={navnForelder1}
+                                    navnForelder2={navnForelder2}
+                                    perioder={periode.perioder}
+                                    periode={periode.valgtPeriode.periode}
+                                    tidsrom={tidsromForUtsettelse}
+                                    permisjonsregler={permisjonsregler}
+                                    termindato={termindato}
+                                />
                             )}
                     </div>
                 )}

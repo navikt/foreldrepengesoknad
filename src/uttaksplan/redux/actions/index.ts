@@ -1,4 +1,10 @@
-import { Dekningsgrad, Utsettelsesperiode, Spraak } from '../../types';
+import {
+    Dekningsgrad,
+    Utsettelsesperiode,
+    Spraak,
+    Periodetype,
+    Periode
+} from '../../types';
 
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
 
@@ -40,11 +46,13 @@ export function setDekningsgrad(
 }
 
 export function visPeriodeDialog(
-    periode?: Utsettelsesperiode
+    periodetype: Periodetype,
+    periode?: Periode
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG,
-        periode
+        periode,
+        periodetype
     };
 }
 
