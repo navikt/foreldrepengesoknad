@@ -15,7 +15,9 @@ const utsettelseSelector = (state: UttaksplanAppState) => {
 };
 
 export const getStonadsperioder = (state: UttaksplanAppState) =>
-    state.uttaksplan.periode.perioder;
+    state.uttaksplan.periode.perioder.filter(
+        (p) => p.type === Periodetype.Stonadsperiode
+    );
 
 /**
  * Henter ut perioder og utsettelser fra state
