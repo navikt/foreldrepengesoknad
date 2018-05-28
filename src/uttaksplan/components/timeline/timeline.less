@@ -7,6 +7,8 @@
 @timeline-border-left-width: 6px;
 @timeline-border-radius: 0.25rem;
 @timeline-gray: #b7b1a9;
+@timeline-yellow: #ff9100;
+@timeline-red: #ba3a26;
 
 .timelineSirkel(@borderColor, @bkgColor: white) {
     content: '';
@@ -179,12 +181,12 @@
 
 .timelineGapItem {
     @vPad: 1rem;
-    border: 2px solid #ba3a26;
+    border: 2px solid @timeline-yellow;
     border-radius: 4px;
     padding: @vPad 1rem @vPad 4rem;
     position: relative;
     line-height: 1.5rem;
-    color: #ba3a26;
+    // color: #ba3a26;
 
     &:after  {
         content: '';

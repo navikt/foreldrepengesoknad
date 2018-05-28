@@ -99,7 +99,7 @@ export const mapInnslagToEvent = (
             type: TimelineItemType.gap,
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
-            title: 'Tapt uttak',
+            title: 'Opphold',
             days: getAntallUttaksdagerITidsperiode(periode.tidsperiode),
             icons: getTimelineIconsFromInnslag(innslag),
             data: periode
