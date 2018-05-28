@@ -19,6 +19,7 @@ import {
 } from '../types';
 import { getPeriodeSluttdato, sorterPerioder } from './periodeUtils';
 import { normaliserDato } from '../utils';
+import { guid } from 'nav-frontend-js-utils';
 
 export function getPermisjonStartdato(
     termindato: Date,
@@ -243,6 +244,7 @@ export function opprettStønadsperioder(
     termindato = normaliserDato(termindato);
     const perioder: Stonadsperiode[] = [
         {
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
             konto: StonadskontoType.ForeldrepengerForFodsel,
@@ -250,6 +252,7 @@ export function opprettStønadsperioder(
             låstForelder: true
         },
         {
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
             konto: StonadskontoType.ModrekvotePakrevd,
@@ -261,6 +264,7 @@ export function opprettStønadsperioder(
             låstPeriode: true
         },
         {
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
             konto: StonadskontoType.Modrekvote,
@@ -270,6 +274,7 @@ export function opprettStønadsperioder(
             )
         },
         {
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder2',
             konto: StonadskontoType.Fedrekvote,
@@ -283,6 +288,7 @@ export function opprettStønadsperioder(
     ];
     if (fellesukerForelder1 > 0) {
         perioder.push({
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
             konto: StonadskontoType.Fellesperiode,
@@ -295,6 +301,7 @@ export function opprettStønadsperioder(
     }
     if (fellesukerForelder2 > 0) {
         perioder.push({
+            id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder2',
             konto: StonadskontoType.Fellesperiode,

@@ -47,6 +47,14 @@
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til opphold",
     "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
 
+    "uttaksplan.stonadsperiodeskjema.tittel": "Legg til periode",
+    "uttaksplan.stonadsperiodeskjema.endre.tittel": "Endre periode",
+    "uttaksplan.stonadsperiodeskjema.startdato.sporsmal": "Startdato",
+    "uttaksplan.stonadsperiodeskjema.sluttdato.sporsmal": "Sluttdato",
+    "uttaksplan.stonadsperiodeskjema.knapp.leggtil": "Legg til",
+    "uttaksplan.stonadsperiodeskjema.knapp.oppdater": "Oppdater",
+    "uttaksplan.stonadsperiodeskjema.knapp.fjern": "Fjern periode",
+
     "uttaksplan.utsettelseskjema.tittel": "Legg til opphold",
     "uttaksplan.utsettelseskjema.tittel.endre": "Opphold i foreldrepengene",
     "uttaksplan.utsettelseskjema.årsak.sporsmal": "Hva skal {navn} gjøre?",

@@ -11,7 +11,7 @@ import {
     Tidsperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { normaliserDato } from 'uttaksplan/utils';
+import { normaliserDato, preventFormSubmit } from 'uttaksplan/utils';
 import { isBefore, isSameDay } from 'date-fns';
 import Ferieinfo from 'uttaksplan/components/utsettelseSkjema/Ferieinfo';
 import { renderDag } from 'uttaksplan/utils/renderUtils';
@@ -56,11 +56,6 @@ export interface State {
     valideringsfeil: Valideringsfeil;
     visValideringsfeil?: boolean;
 }
-
-const preventDefaultEvent = (e: React.FormEvent<HTMLFormElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-};
 
 class UtsettelseSkjema extends React.Component<Props, State> {
     revaliderTimeoutId: number;
@@ -207,7 +202,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         return (
             <form
                 action="#"
-                onSubmit={preventDefaultEvent}
+                onSubmit={preventFormSubmit}
                 className="utsettelseSkjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id="uttaksplan.utsettelseskjema.tittel" />

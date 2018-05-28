@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { år, mnd, dagIMåned, ukedag } from './datoUtils';
+import { år, mnd, dagIMåned, ukedag } from '../../utils/datoUtils';
 
 import './dato.less';
 
