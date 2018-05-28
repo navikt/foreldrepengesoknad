@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Stonadsperiode, Periode } from 'uttaksplan/types';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { preventFormSubmit } from 'uttaksplan/utils';
+import { preventFormSubmit, normaliserDato } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import DatoInput from 'app/components/dato-input/DatoInput';
 import { Column, Row } from 'nav-frontend-grid';
@@ -36,10 +36,10 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
     }
 
     setStartdato(startdato: Date) {
-        this.setState({ startdato });
+        this.setState({ startdato: normaliserDato(startdato) });
     }
     setSluttdato(sluttdato: Date) {
-        this.setState({ sluttdato });
+        this.setState({ sluttdato: normaliserDato(sluttdato) });
     }
     handleSubmitClick(evt: React.MouseEvent<HTMLButtonElement>) {
         evt.preventDefault();
@@ -71,7 +71,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
             <form
                 action="#"
                 onSubmit={preventFormSubmit}
-                className="utsettelseSkjema dialogContent">
+                className="stonadsperiodeskjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
@@ -84,7 +84,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                                         id="startdato"
                                         label={intl.formatMessage({
                                             id:
-                                                'uttaksplan.utsettelseskjema.startdato.sporsmal'
+                                                'uttaksplan.stonadsperiodeskjema.startdato.sporsmal'
                                         })}
                                         dato={startdato}
                                         onChange={(dato: Date) =>
@@ -107,7 +107,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                                         dato={sluttdato}
                                         label={intl.formatMessage({
                                             id:
-                                                'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
+                                                'uttaksplan.stonadsperiodeskjema.sluttdato.sporsmal'
                                         })}
                                         avgrensninger={{
                                             helgedagerIkkeTillatt: true
@@ -131,9 +131,9 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                                     onClick={this.handleSubmitClick}
                                     className="m-fullBredde">
                                     {periode ? (
-                                        <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.oppdater" />
+                                        <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.oppdater" />
                                     ) : (
-                                        <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.leggtil" />
+                                        <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.leggtil" />
                                     )}
                                 </Hovedknapp>
                             </div>
@@ -145,11 +145,11 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                                     data-ref="fjern-knapp"
                                     onClick={() => onFjern(periode)}
                                     className="m-fullBredde">
-                                    <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.fjern" />
+                                    <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.fjern" />
                                 </Knapp>
                             </Column>
                         )}
-                    </Row>{' '}
+                    </Row>
                 </div>
             </form>
         );

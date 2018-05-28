@@ -1,4 +1,4 @@
-import { addDays, isWithinRange, isSameDay } from 'date-fns';
+import { addDays, isWithinRange, isSameDay, isBefore } from 'date-fns';
 import {
     Periode,
     Stonadsperiode,
@@ -11,7 +11,7 @@ import {
 } from '../types';
 import {
     getForsteUttaksdagPaEllerForDato,
-    getForsteUttaksdagForDato,
+    getForsteUttaksdagFørDato,
     getForsteUttaksdagPaEllerEtterDato,
     getForsteUttaksdagEtterDato,
     leggUttaksdagerTilDato,
@@ -68,20 +68,24 @@ export function finnOgLeggTilTapteUttak(perioder: Perioder): Perioder {
             return;
         }
         const nestePeriode = filtrertePerioder[idx + 1];
+
         const tidsperiodeMellomPerioder = {
             startdato: getForsteUttaksdagEtterDato(
                 periode.tidsperiode.sluttdato
             ),
-            sluttdato: nestePeriode.tidsperiode.startdato
+            sluttdato: getForsteUttaksdagFørDato(
+                nestePeriode.tidsperiode.startdato
+            )
         };
         if (
-            isSameDay(
-                tidsperiodeMellomPerioder.startdato,
-                tidsperiodeMellomPerioder.sluttdato
+            isBefore(
+                tidsperiodeMellomPerioder.sluttdato,
+                tidsperiodeMellomPerioder.startdato
             )
         ) {
             return;
         }
+
         const uttaksdagerITidsperiode = getAntallUttaksdagerITidsperiode(
             tidsperiodeMellomPerioder
         );
@@ -264,7 +268,7 @@ const leggUtsettelseInnIPeriode = (
         ...(periode as Stonadsperiode),
         tidsperiode: {
             startdato: periode.tidsperiode.startdato,
-            sluttdato: getForsteUttaksdagForDato(
+            sluttdato: getForsteUttaksdagFørDato(
                 utsettelse.tidsperiode.startdato
             )
         }

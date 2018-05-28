@@ -1,6 +1,6 @@
 import { Tidsperiode } from '../types';
-import { isWithinRange } from 'date-fns';
-import { erUttaksdag, getForsteUttaksdagForDato } from './uttaksdagerUtils';
+import { isWithinRange, startOfDay } from 'date-fns';
+import { erUttaksdag, getForsteUttaksdagFørDato } from './uttaksdagerUtils';
 
 export type DatoValideringsfeil =
     | 'ikkeUttaksdag'
@@ -13,8 +13,7 @@ export type DatoValideringsfeil =
 /**
  * Fjerner klokkeslett på dato
  */
-export const normaliserDato = (dato: Date): Date =>
-    new Date(dato.getFullYear(), dato.getMonth(), dato.getDate());
+export const normaliserDato = (dato: Date): Date => startOfDay(dato);
 
 export const nyDato = (datostring?: string): Date =>
     normaliserDato(datostring ? new Date(datostring) : new Date());
@@ -42,7 +41,7 @@ export const validerDato = (
         isWithinRange(
             normaliserDato(dato),
             normaliserDato(termindato),
-            normaliserDato(getForsteUttaksdagForDato(tidsrom.startdato))
+            normaliserDato(getForsteUttaksdagFørDato(tidsrom.startdato))
         )
     ) {
         return 'innenforForsteSeksUker';

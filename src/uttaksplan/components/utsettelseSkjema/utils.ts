@@ -9,7 +9,7 @@ import { validerDato } from 'uttaksplan/utils';
 import {
     getUttaksdagerSomErFridager,
     getAntallUttaksdagerITidsperiode,
-    getForsteUttaksdagForDato
+    getForsteUttaksdagFørDato
 } from 'uttaksplan/utils/uttaksdagerUtils';
 import {
     getAntallFeriedagerForForelder,
@@ -229,7 +229,7 @@ export function getTilTidsromSluttdato(
             isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
         );
         if (pafolgendeUtsettelser.length > 0) {
-            return getForsteUttaksdagForDato(
+            return getForsteUttaksdagFørDato(
                 pafolgendeUtsettelser[0].tidsperiode.startdato
             );
         }

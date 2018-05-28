@@ -12,7 +12,7 @@ export const erUttaksdag = (dato: Date): boolean =>
  * Finner første uttaksdag før dato
  * @param dato
  */
-export const getForsteUttaksdagForDato = (dato: Date): Date => {
+export const getForsteUttaksdagFørDato = (dato: Date): Date => {
     return getForsteUttaksdagPaEllerForDato(addDays(dato, -1));
 };
 
