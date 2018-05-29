@@ -12,7 +12,10 @@ const getDefaultState = (): SøknadPartial => {
         barn: {
             fødselsdatoer: []
         },
-        utenlandsopphold: {},
+        utenlandsopphold: {
+            tidligerePerioder: [],
+            senerePerioder: []
+        },
         vedlegg: {
             omsorgsovertakelse: [],
             adopsjonsvedtak: [],

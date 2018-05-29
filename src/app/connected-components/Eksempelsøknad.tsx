@@ -33,6 +33,7 @@ import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 import { Språkkode } from '../intl/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
+import UtenlandsoppholdBolk from '../bolker/UtenlandsoppholdBolk';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -64,6 +65,37 @@ class Eksempelsøknad extends React.Component<Props> {
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Eksempelsøknad" />
+
+                <Bolk
+                    render={() => (
+                        <UtenlandsoppholdBolk
+                            renderSpørsmål={() => (
+                                <SkalBoINorgeNeste12MndSpørsmål
+                                    iNorgeNeste12={
+                                        utenlandsopphold.iNorgeNeste12Mnd
+                                    }
+                                    onChange={(iNorgeNeste12Mnd: boolean) =>
+                                        dispatch(
+                                            søknadActions.updateUtenlandsopphold(
+                                                {
+                                                    iNorgeNeste12Mnd
+                                                }
+                                            )
+                                        )
+                                    }
+                                />
+                            )}
+                            showLandContent={
+                                utenlandsopphold.iNorgeNeste12Mnd === false
+                            }
+                            oppfølgingsspørsmål="Jeg skal bo i..."
+                            perioder={søknad.utenlandsopphold.senerePerioder}
+                            onPeriodeLinkClick={() => {}}
+                            onPeriodeTrashClick={() => {}}
+                        />
+                    )}
+                />
+
                 <Spørsmål
                     render={() => (
                         <SøkersituasjonSpørsmål
