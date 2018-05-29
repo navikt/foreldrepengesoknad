@@ -6,17 +6,18 @@ import { bytesString } from '../../util/attachment';
 import SlettKnapp from '../slett-knapp/SlettKnapp';
 
 import './vedlegg.less';
+import { Attachment } from '../../types/Attachment';
 
 interface OwnProps {
-    vedlegg: File;
+    attachment: Attachment;
     visFilstørrelse?: boolean;
-    onDelete?: (file: File) => void;
+    onDelete?: (file: Attachment) => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
 const Vedlegg: React.StatelessComponent<Props> = ({
-    vedlegg,
+    attachment,
     visFilstørrelse,
     onDelete,
     intl
@@ -25,16 +26,18 @@ const Vedlegg: React.StatelessComponent<Props> = ({
         <div className="vedlegg">
             <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
             <div className="vedlegg__filnavn">
-                {vedlegg.name}
-                {visFilstørrelse && <div>{bytesString(vedlegg.size)}</div>}
+                {attachment.filename}
+                {visFilstørrelse && (
+                    <div>{bytesString(attachment.filesize)}</div>
+                )}
             </div>
             {onDelete && (
                 <span className="vedlegg__slett">
                     <SlettKnapp
-                        onClick={() => onDelete(vedlegg)}
+                        onClick={() => onDelete(attachment)}
                         ariaLabel={intl.formatMessage(
                             { id: 'vedlegg.arialabel.slett' },
-                            { navn: vedlegg.name }
+                            { navn: attachment.filename }
                         )}
                     />
                 </span>

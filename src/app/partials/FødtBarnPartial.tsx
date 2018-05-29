@@ -9,7 +9,7 @@ import {
     removeFileFromArray
 } from '../components/vedlegg/util';
 import VedleggOversikt from '../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../types/søknad/Vedlegg';
+import Søknadsvedlegg from '../types/søknad/Søknadsvedlegg';
 
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
@@ -17,10 +17,11 @@ import { FødtBarn } from '../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../util/fødselsdato';
+import { Attachment } from '../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -89,7 +90,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         <VedleggOversikt
                             id="fødselsattest"
                             vedlegg={vedlegg.fødselsattest}
-                            onFilesSelect={(files: File[]) => {
+                            onFilesSelect={(files: Attachment[]) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         fødselsattest: concatNewFiles(
@@ -99,7 +100,7 @@ class FødtBarnPartial extends React.Component<Props> {
                                     })
                                 );
                             }}
-                            onFileDelete={(file: File) =>
+                            onFileDelete={(file: Attachment) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         fødselsattest: removeFileFromArray(

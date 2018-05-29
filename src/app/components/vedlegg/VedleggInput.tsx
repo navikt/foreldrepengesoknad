@@ -25,9 +25,9 @@ class VedleggInput extends React.Component<Props> {
         this.onKeyPress = this.onKeyPress.bind(this);
     }
 
-    isFileExtensionValid(file: File): boolean {
+    isFileExtensionValid(filename: string): boolean {
         const validExtensions = ['pdf', 'jpeg', 'jpg', 'png'];
-        const extension = file.name.split('.').pop();
+        const extension = filename.split('.').pop();
         if (extension) {
             return validExtensions.includes(extension.toLowerCase());
         }
@@ -36,7 +36,7 @@ class VedleggInput extends React.Component<Props> {
 
     getValidFiles(files: File[]): File[] {
         return files.filter((file: File) => {
-            return this.isFileExtensionValid(file);
+            return this.isFileExtensionValid(file.name);
         });
     }
 
@@ -44,7 +44,7 @@ class VedleggInput extends React.Component<Props> {
         const files = Array.from(fileList) as File[];
         const validFiles = this.getValidFiles(files);
         if (validFiles.length > 0) {
-            this.props.onFilesSelect(this.getValidFiles(files));
+            this.props.onFilesSelect(validFiles);
         }
     }
 

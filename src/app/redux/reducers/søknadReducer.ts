@@ -3,7 +3,7 @@ import {
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
-import { VedleggPartial } from '../../types/søknad/Vedlegg';
+import { SøknadsvedleggPartial } from '../../types/søknad/Søknadsvedlegg';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -24,7 +24,10 @@ const getDefaultState = (): SøknadPartial => {
     };
 };
 
-const updateVedlegg = (state: SøknadPartial, vedlegg: VedleggPartial) => ({
+const updateVedlegg = (
+    state: SøknadPartial,
+    vedlegg: SøknadsvedleggPartial
+) => ({
     ...state,
     vedlegg: { ...state.vedlegg, ...vedlegg }
 });
