@@ -13,12 +13,12 @@ import { DispatchProps } from '../../../redux/types';
 import { partials } from '../../../partials';
 import Søknad from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
-import Vedlegg from '../../../types/søknad/Vedlegg';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 
 interface StateProps {
     barn: BarnPartial;
     søknad: Søknad;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;

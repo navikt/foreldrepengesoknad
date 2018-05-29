@@ -1,6 +1,6 @@
 import { Skjemadata } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
-import { VedleggPartial } from '../../../types/søknad/Vedlegg';
+import { SøknadsvedleggPartial } from '../../../types/søknad/Søknadsvedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
 
@@ -34,7 +34,7 @@ export interface UpdateSøknad {
 
 export interface UpdateVedlegg {
     type: SøknadActionKeys.UPDATE_VEDLEGG;
-    payload: VedleggPartial;
+    payload: SøknadsvedleggPartial;
 }
 
 export type SøknadAction =

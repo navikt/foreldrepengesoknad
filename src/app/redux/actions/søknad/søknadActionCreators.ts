@@ -12,7 +12,7 @@ import {
     AdopsjonsbarnPartial,
     ForeldreansvarBarnPartial
 } from '../../../types/søknad/Barn';
-import { VedleggPartial } from '../../../types/søknad/Vedlegg';
+import { SøknadsvedleggPartial } from '../../../types/søknad/Søknadsvedlegg';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
 
@@ -44,7 +44,7 @@ const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
     payload
 });
 
-const updateVedlegg = (payload: VedleggPartial): UpdateVedlegg => ({
+const updateVedlegg = (payload: SøknadsvedleggPartial): UpdateVedlegg => ({
     type: SøknadActionKeys.UPDATE_VEDLEGG,
     payload
 });

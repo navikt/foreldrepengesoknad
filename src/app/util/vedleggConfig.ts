@@ -1,8 +1,7 @@
+import { SøknadsvedleggMetadata } from '../types/s\u00F8knad/Søknadsvedlegg';
+
 export interface VedleggConfig {
-    [key: string]: {
-        beskrivelse: string;
-        skjemanummer: string;
-    };
+    [key: string]: SøknadsvedleggMetadata;
 }
 
 const vedleggConfig: VedleggConfig = {

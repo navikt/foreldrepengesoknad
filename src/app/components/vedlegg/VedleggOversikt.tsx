@@ -5,13 +5,15 @@ import VedleggInput from '../vedlegg/VedleggInput';
 import VedleggListe from '../vedlegg/VedleggListe';
 import LabelText from '../labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from '../../util/attachment';
+import { Attachment } from '../../types/Attachment';
+import { mapFileToAttachment } from './util';
 
 export interface VedleggOversiktProps {
     id: string;
-    vedlegg: File[];
+    vedlegg: Attachment[];
     visFilstørrelse?: boolean;
-    onFilesSelect: (files: File[]) => void;
-    onFileDelete: (file: File) => void;
+    onFilesSelect: (files: Attachment[]) => void;
+    onFileDelete: (file: Attachment) => void;
 }
 
 class VedleggOversikt extends React.Component<VedleggOversiktProps> {
@@ -31,7 +33,9 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                     <VedleggInput
                         id={id}
                         onFilesSelect={(files: File[]) => {
-                            onFilesSelect(files);
+                            onFilesSelect(
+                                files.map((f) => mapFileToAttachment(f))
+                            );
                         }}
                     />
                 </div>
@@ -43,7 +47,9 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                                     id="vedlegg.liste.tittel"
                                     values={{
                                         størrelse: bytesString(
-                                            getTotalFileSize(vedlegg)
+                                            getTotalFileSize(
+                                                vedlegg.map((v) => v.file)
+                                            )
                                         )
                                     }}
                                 />
@@ -52,7 +58,7 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                         <VedleggListe
                             vedlegg={vedlegg}
                             visFilstørrelse={visFilstørrelse}
-                            onDelete={(file: File) => onFileDelete(file)}
+                            onDelete={(file: Attachment) => onFileDelete(file)}
                         />
                     </div>
                 )}

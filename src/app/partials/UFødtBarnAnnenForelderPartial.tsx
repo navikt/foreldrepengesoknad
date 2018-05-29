@@ -13,16 +13,17 @@ import {
     removeFileFromArray
 } from '../components/vedlegg/util';
 import VedleggOversikt from '../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../types/søknad/Vedlegg';
+import Søknadsvedlegg from '../types/søknad/Søknadsvedlegg';
 
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from '../components/veileder-info/Veilederinfo';
 import { SøknadPartial } from '../types/søknad/Søknad';
+import { Attachment } from '../types/Attachment';
 
 interface StateProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -86,7 +87,7 @@ class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
                                 <VedleggOversikt
                                     id="terminbekreftelse"
                                     vedlegg={vedlegg.terminbekreftelse}
-                                    onFilesSelect={(files: File[]) => {
+                                    onFilesSelect={(files: Attachment[]) => {
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: concatNewFiles(
@@ -96,7 +97,7 @@ class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
                                             })
                                         );
                                     }}
-                                    onFileDelete={(file: File) =>
+                                    onFileDelete={(file: Attachment) =>
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: removeFileFromArray(
