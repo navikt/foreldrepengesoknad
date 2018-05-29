@@ -26,32 +26,8 @@ interface StateProps {
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
-    renderRelasjonTilBarnPartial(erFarEllerMedmor: boolean) {
-        const { barn, vedlegg, dispatch, søknad, history } = this.props;
-        if (barn.erBarnetFødt === true) {
-            return (
-                <partials.FødtBarnPartial
-                    dispatch={dispatch}
-                    barn={barn as FødtBarn}
-                    vedlegg={vedlegg}
-                    history={history}
-                />
-            );
-        }
-        return (
-            <partials.UfødtBarnPartial
-                dispatch={dispatch}
-                barn={barn as UfødtBarn}
-                vedlegg={vedlegg}
-                søknad={søknad}
-                erFarEllerMedmor={erFarEllerMedmor}
-                history={history}
-            />
-        );
-    }
-
     render() {
-        const { barn, dispatch, person, søknad } = this.props;
+        const { barn, dispatch, person, søknad, vedlegg, history } = this.props;
 
         if (person) {
             const { søkerRolle } = søknad;
@@ -76,8 +52,23 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
                         )}
                     />
 
-                    {barn.erBarnetFødt !== undefined &&
-                        this.renderRelasjonTilBarnPartial(erFarEllerMedmor)}
+                    {barn && barn.erBarnetFødt === true ? (
+                        <partials.FødtBarnPartial
+                            dispatch={dispatch}
+                            barn={barn as FødtBarn}
+                            vedlegg={vedlegg}
+                            history={history}
+                        />
+                    ) : (
+                        <partials.UfødtBarnPartial
+                            dispatch={dispatch}
+                            barn={barn as UfødtBarn}
+                            vedlegg={vedlegg}
+                            søknad={søknad}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            history={history}
+                        />
+                    )}
                 </Steg>
             );
         }
