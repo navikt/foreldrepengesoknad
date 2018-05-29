@@ -16,7 +16,7 @@ import DatoInput from '../../../components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../util/fødselsdato';
-import Vedlegg from '../../../types/søknad/Vedlegg';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import {
     removeFileFromArray,
     concatNewFiles
@@ -25,10 +25,11 @@ import {
 import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
 import Bolk from '../../../components/layout/Bolk';
 import { AppState } from '../../../redux/reducers';
+import { Attachment } from '../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -82,7 +83,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         <VedleggOversikt
                             id="omsorgsovertakelse"
                             vedlegg={vedlegg.omsorgsovertakelse}
-                            onFilesSelect={(files: File[]) => {
+                            onFilesSelect={(files: Attachment[]) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: concatNewFiles(
@@ -92,7 +93,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     })
                                 );
                             }}
-                            onFileDelete={(file: File) =>
+                            onFileDelete={(file: Attachment) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: removeFileFromArray(

@@ -39,9 +39,16 @@
 
 .vedlegg {
     position: relative;
-    display: flex;
-    align-items: center;
+    padding-left: 1rem;
+    &__spinner {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
     &__ikon {
+        position: absolute;
+        left: 0;
+        top: 0;
         * {
             fill: @navMorkGra;
         }
@@ -56,5 +63,11 @@
     &__slett {
         position: absolute;
         right: 0;
+        top: -0.5rem;
+    }
+    &--pending {
+        .vedlegg__ikon {
+            display: none;
+        }
     }
 }

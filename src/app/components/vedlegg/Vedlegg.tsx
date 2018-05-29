@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -6,39 +7,57 @@ import { bytesString } from '../../util/attachment';
 import SlettKnapp from '../slett-knapp/SlettKnapp';
 
 import './vedlegg.less';
+import { Attachment } from '../../types/Attachment';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import Lenke from 'nav-frontend-lenker';
 
 interface OwnProps {
-    vedlegg: File;
+    attachment: Attachment;
     visFilstørrelse?: boolean;
-    onDelete?: (file: File) => void;
+    onDelete?: (file: Attachment) => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
 const Vedlegg: React.StatelessComponent<Props> = ({
-    vedlegg,
+    attachment,
     visFilstørrelse,
     onDelete,
     intl
 }) => {
     return (
-        <div className="vedlegg">
+        <div
+            className={classnames('vedlegg', {
+                'vedlegg--pending': attachment.pending
+            })}>
+            {attachment.pending && (
+                <div className="vedlegg__spinner">
+                    <NavFrontendSpinner type="S" />
+                </div>
+            )}
             <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
             <div className="vedlegg__filnavn">
-                {vedlegg.name}
-                {visFilstørrelse && <div>{bytesString(vedlegg.size)}</div>}
+                {attachment.url ? (
+                    <Lenke href={attachment.url}>{attachment.filename}</Lenke>
+                ) : (
+                    <React.Fragment>{attachment.filename}</React.Fragment>
+                )}
+                {visFilstørrelse && (
+                    <div>{bytesString(attachment.filesize)}</div>
+                )}
             </div>
-            {onDelete && (
-                <span className="vedlegg__slett">
-                    <SlettKnapp
-                        onClick={() => onDelete(vedlegg)}
-                        ariaLabel={intl.formatMessage(
-                            { id: 'vedlegg.arialabel.slett' },
-                            { navn: vedlegg.name }
-                        )}
-                    />
-                </span>
-            )}
+            {onDelete &&
+                attachment.uploaded && (
+                    <span className="vedlegg__slett">
+                        <SlettKnapp
+                            onClick={() => onDelete(attachment)}
+                            ariaLabel={intl.formatMessage(
+                                { id: 'vedlegg.arialabel.slett' },
+                                { navn: attachment.filename }
+                            )}
+                        />
+                    </span>
+                )}
         </div>
     );
 };

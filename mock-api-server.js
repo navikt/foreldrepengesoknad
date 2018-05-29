@@ -42,6 +42,16 @@ const startServer = (html) => {
         res.sendStatus(200)
     );
 
+    server.post('/foreldrepengesoknad-api/rest/storage/vedlegg', (req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
+        res.location(
+            'https://localhost:8080/foreldrepengesoknad/mock-vedlegg.pdf'
+        );
+        res.sendStatus(201);
+    });
+
     const port = process.env.PORT || 8888;
     server.listen(port, () => {
         console.log(`Mock-api listening on port: ${port}`);

@@ -12,7 +12,6 @@ import {
     removeFileFromArray
 } from '../../../../components/vedlegg/util';
 import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../../../../types/søknad/Vedlegg';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from '../../../../components/veileder-info/Veilederinfo';
@@ -21,11 +20,13 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
+import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
+import { Attachment } from '../../../../types/Attachment';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
     erFarEllerMedmor: boolean;
 }
 
@@ -126,7 +127,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 <VedleggOversikt
                                     id="terminbekreftelse"
                                     vedlegg={vedlegg.terminbekreftelse}
-                                    onFilesSelect={(files: File[]) => {
+                                    onFilesSelect={(files: Attachment[]) => {
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: concatNewFiles(
@@ -136,7 +137,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                             })
                                         );
                                     }}
-                                    onFileDelete={(file: File) =>
+                                    onFileDelete={(file: Attachment) =>
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: removeFileFromArray(

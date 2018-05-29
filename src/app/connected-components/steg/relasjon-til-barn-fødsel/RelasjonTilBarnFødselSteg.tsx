@@ -13,14 +13,14 @@ import { DispatchProps } from '../../../redux/types';
 import { partials } from './partials';
 import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
-import Vedlegg from '../../../types/søknad/Vedlegg';
 import Person from '../../../types/Person';
 import { HistoryProps, Kjønn } from '../../../types/common';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 
 interface StateProps {
     barn: BarnPartial;
     søknad: Søknad;
-    vedlegg: Vedlegg;
+    vedlegg: Søknadsvedlegg;
     person?: Person;
 }
 
