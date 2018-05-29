@@ -1,39 +1,59 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-
-import { DispatchProps } from '../redux/types';
-import { UfødtBarn } from '../types/søknad/Barn';
-import Spørsmål from '../components/spørsmål/Spørsmål';
-import MorForSykSpørsmål from '../spørsmål/MorForSykSpørsmål';
-import DatoInput from '../components/dato-input/DatoInput';
-import Bolk from '../components/layout/Bolk';
-import getMessage from '../util/i18nUtils';
+import { DispatchProps } from '../../../../redux/types/index';
+import { UfødtBarn } from '../../../../types/søknad/Barn';
+import Spørsmål from '../../../../components/spørsmål/Spørsmål';
+import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
+import DatoInput from '../../../../components/dato-input/DatoInput';
+import Bolk from '../../../../components/layout/Bolk';
+import getMessage from '../../../../util/i18nUtils';
 import {
     concatNewFiles,
     removeFileFromArray
-} from '../components/vedlegg/util';
-import VedleggOversikt from '../components/vedlegg/VedleggOversikt';
-import Søknadsvedlegg from '../types/søknad/Søknadsvedlegg';
+} from '../../../../components/vedlegg/util';
+import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
 
-import søknadActions from './../redux/actions/søknad/søknadActionCreators';
-import Veilederinfo from '../components/veileder-info/Veilederinfo';
-import { SøknadPartial } from '../types/søknad/Søknad';
-import { Attachment } from '../types/Attachment';
+import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
+import Veilederinfo from '../../../../components/veileder-info/Veilederinfo';
+import { SøknadPartial } from '../../../../types/søknad/Søknad';
+import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import { søknadStegPath } from '../../StegRoutes';
+import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
+import { HistoryProps } from '../../../../types/common';
+import Søknadsvedlegg from '../../../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import { Attachment } from '../../../../types/Attachment';
 
-interface StateProps {
+interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
     vedlegg: Søknadsvedlegg;
+    erFarEllerMedmor: boolean;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+type Props = UfødtBarnPartialProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 
-class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
+class UfødtBarnPartial extends React.Component<Props> {
     render() {
-        const { intl, dispatch, barn, vedlegg, søknad } = this.props;
+        const {
+            intl,
+            dispatch,
+            barn,
+            vedlegg,
+            søknad,
+            erFarEllerMedmor,
+            history
+        } = this.props;
+
+        const erMorEllerMorErForSyk =
+            !erFarEllerMedmor || søknad.erMorForSyk === true;
+
         return (
-            <div>
+            <React.Fragment>
                 <Spørsmål
+                    synlig={erFarEllerMedmor}
                     render={() => (
                         <MorForSykSpørsmål
                             erMorForSyk={søknad.erMorForSyk}
@@ -54,10 +74,30 @@ class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
                     </Veilederinfo>
                 )}
 
-                {søknad.erMorForSyk === true && (
+                {erMorEllerMorErForSyk && (
                     <React.Fragment>
                         <Spørsmål
-                            synlig={søknad.erMorForSyk === true}
+                            render={() => (
+                                <AntallBarnSpørsmål
+                                    antallBarn={barn.antallBarn}
+                                    inputName="antallBarn"
+                                    onChange={(antallBarn: number) => {
+                                        dispatch(
+                                            søknadActions.updateBarn({
+                                                antallBarn
+                                            })
+                                        );
+                                    }}
+                                    spørsmål={getMessage(
+                                        intl,
+                                        'antallBarn.spørsmål.venter'
+                                    )}
+                                />
+                            )}
+                        />
+
+                        <Spørsmål
+                            synlig={barn.antallBarn !== undefined}
                             render={() => (
                                 <DatoInput
                                     id="termindato"
@@ -134,10 +174,19 @@ class UFødtBarnAnnenForelderPartial extends React.Component<Props> {
                                 />
                             )}
                         />
+
+                        {barn.terminbekreftelseDato &&
+                            vedlegg.terminbekreftelse.length > 0 && (
+                                <FortsettKnapp
+                                    history={history}
+                                    location={søknadStegPath('annen-forelder')}>
+                                    {getMessage(intl, 'fortsettknapp.label')}
+                                </FortsettKnapp>
+                            )}
                     </React.Fragment>
                 )}
-            </div>
+            </React.Fragment>
         );
     }
 }
-export default injectIntl(UFødtBarnAnnenForelderPartial);
+export default injectIntl(UfødtBarnPartial);

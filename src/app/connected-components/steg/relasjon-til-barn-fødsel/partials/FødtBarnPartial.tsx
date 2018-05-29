@@ -1,30 +1,33 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { DispatchProps } from '../redux/types';
-import Spørsmål from '../components/spørsmål/Spørsmål';
-import Bolk from '../components/layout/Bolk';
-import getMessage from '../util/i18nUtils';
+import { DispatchProps } from '../../../../redux/types/index';
+import Spørsmål from '../../../../components/spørsmål/Spørsmål';
+import Bolk from '../../../../components/layout/Bolk';
+import getMessage from '../../../../util/i18nUtils';
 import {
     concatNewFiles,
     removeFileFromArray
-} from '../components/vedlegg/util';
-import VedleggOversikt from '../components/vedlegg/VedleggOversikt';
-import Søknadsvedlegg from '../types/søknad/Søknadsvedlegg';
+} from '../../../../components/vedlegg/util';
+import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
 
-import søknadActions from './../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
-import { FødtBarn } from '../types/søknad/Barn';
-import FødselsdatoerSpørsmål from '../spørsmål/FødselsdatoerSpørsmål';
+import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
+import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import { FødtBarn } from '../../../../types/søknad/Barn';
+import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
-import utils from '../util/fødselsdato';
-import { Attachment } from '../types/Attachment';
+import utils from '../../../../util/fødselsdato';
+import { søknadStegPath } from '../../StegRoutes';
+import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
+import { HistoryProps } from '../../../../types/common';
+import Søknadsvedlegg from '../../../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import { Attachment } from '../../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
     vedlegg: Søknadsvedlegg;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class FødtBarnPartial extends React.Component<Props> {
     constructor(props: Props) {
@@ -46,15 +49,15 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, vedlegg } = this.props;
+        const { intl, dispatch, barn, vedlegg, history } = this.props;
         return (
-            <div>
+            <React.Fragment>
                 <Spørsmål
                     render={() => (
                         <AntallBarnSpørsmål
                             spørsmål={getMessage(
                                 intl,
-                                'antallBarn.spørsmål.venter'
+                                'antallBarn.spørsmål.fått'
                             )}
                             inputName="antallBarn"
                             antallBarn={barn.antallBarn}
@@ -113,7 +116,15 @@ class FødtBarnPartial extends React.Component<Props> {
                         />
                     )}
                 />
-            </div>
+
+                {vedlegg.fødselsattest.length > 0 && (
+                    <FortsettKnapp
+                        history={history}
+                        location={søknadStegPath('annen-forelder')}>
+                        {getMessage(intl, 'fortsettknapp.label')}
+                    </FortsettKnapp>
+                )}
+            </React.Fragment>
         );
     }
 }
