@@ -1,15 +1,34 @@
-export const concatNewFiles = (files: File[], storedFiles: File[]): File[] => {
+import { Attachment } from '../../types/Attachment';
+import { guid } from 'nav-frontend-js-utils';
+
+export const concatNewFiles = (
+    files: Attachment[],
+    storedFiles: Attachment[]
+): Attachment[] => {
     const newFiles = files.filter(
         (file) =>
             storedFiles.find(
-                (storedFile: File) => storedFile.name === file.name
+                (storedFile: Attachment) =>
+                    storedFile.filename === file.filename
             ) === undefined
     );
     return [...storedFiles, ...newFiles];
 };
 
-export const removeFileFromArray = (file: File, storedFiles: File[]) => {
+export const removeFileFromArray = (
+    file: Attachment,
+    storedFiles: Attachment[]
+) => {
     return storedFiles.filter(
-        (storedFile: File) => storedFile.name !== file.name
+        (storedFile: Attachment) => storedFile.filename !== file.filename
     );
 };
+
+export const mapFileToAttachment = (file: File): Attachment => ({
+    id: guid(),
+    file,
+    filename: file.name,
+    filesize: file.size,
+    uploaded: false,
+    pending: false
+});

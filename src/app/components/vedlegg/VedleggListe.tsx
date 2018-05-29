@@ -1,22 +1,23 @@
 import * as React from 'react';
 import Vedlegg from './Vedlegg';
+import { Attachment } from '../../types/Attachment';
 
 import './vedlegg.less';
 
 interface Props {
-    vedlegg: File[];
+    vedlegg: Attachment[];
     visFilstørrelse?: boolean;
-    onDelete?: (file: File) => void;
+    onDelete?: (file: Attachment) => void;
 }
 
 const VedleggListe: React.StatelessComponent<Props> = (props) => {
     const { vedlegg, visFilstørrelse, onDelete } = props;
     return (
         <ul className="vedleggListe">
-            {vedlegg.map((vedleggFile, index) => (
+            {vedlegg.map((attachment, index) => (
                 <li key={index}>
                     <Vedlegg
-                        vedlegg={vedleggFile}
+                        attachment={attachment}
                         onDelete={onDelete}
                         visFilstørrelse={visFilstørrelse}
                     />

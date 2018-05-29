@@ -31,6 +31,21 @@ function sendSøknad(søknad: Søknad) {
     });
 }
 
-const Api = { getPerson, sendSøknad };
+function saveVedlegg(vedlegg: File) {
+    const config = {
+        withCredentials: true,
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    };
+
+    const formData = new FormData();
+    formData.append('vedlegg', vedlegg);
+
+    const url = `${Environment.REST_API_URL}/storage/vedlegg`;
+    return axios.post(url, formData, config);
+}
+
+const Api = { getPerson, sendSøknad, saveVedlegg };
 
 export default Api;
