@@ -13,12 +13,11 @@ import {
 function* saveVedlegg(action: UploadAttachment) {
     const { attachment } = action;
     try {
-        yield put(attachmentUploadPending(true, attachment));
+        yield put(attachmentUploadPending(attachment));
         const response = yield call(Api.saveVedlegg, attachment.file);
-        const uri: URL = response.headers.location;
+        const uri: string = response.headers.location || 'mockurl';
         yield put(attachmentUploadSuccess(uri, attachment));
     } catch (error) {
-        yield put(attachmentUploadPending(false, attachment));
         yield put(attachmentUploadFailed(error, attachment));
     }
 }

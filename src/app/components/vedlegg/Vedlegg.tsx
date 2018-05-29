@@ -9,6 +9,7 @@ import SlettKnapp from '../slett-knapp/SlettKnapp';
 import './vedlegg.less';
 import { Attachment } from '../../types/Attachment';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import Lenke from 'nav-frontend-lenker';
 
 interface OwnProps {
     attachment: Attachment;
@@ -36,7 +37,11 @@ const Vedlegg: React.StatelessComponent<Props> = ({
             )}
             <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
             <div className="vedlegg__filnavn">
-                {attachment.filename}
+                {attachment.url ? (
+                    <Lenke href={attachment.url}>{attachment.filename}</Lenke>
+                ) : (
+                    <React.Fragment>{attachment.filename}</React.Fragment>
+                )}
                 {visFilstørrelse && (
                     <div>{bytesString(attachment.filesize)}</div>
                 )}
