@@ -1,4 +1,5 @@
 import { Attachment } from '../../types/Attachment';
+import { guid } from 'nav-frontend-js-utils';
 
 export const concatNewFiles = (
     files: Attachment[],
@@ -24,6 +25,7 @@ export const removeFileFromArray = (
 };
 
 export const mapFileToAttachment = (file: File): Attachment => ({
+    id: guid(),
     file,
     filename: file.name,
     filesize: file.size,

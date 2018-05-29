@@ -1,8 +1,9 @@
 export interface Attachment {
+    id: string;
     filename: string;
     filesize: number;
     file: File;
-    url?: URL;
+    url?: string;
     pending: boolean;
     uploaded: boolean;
 }

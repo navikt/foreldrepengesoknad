@@ -32,18 +32,16 @@ export function uploadAttachment(
 }
 
 export function attachmentUploadPending(
-    pending: boolean,
     attachment: Attachment
 ): AttachmentActionTypes {
     return {
         type: AttachmentActionKeys.UPLOAD_PENDING,
-        pending,
         attachment
     };
 }
 
 export function attachmentUploadSuccess(
-    url: URL,
+    url: string,
     attachment: Attachment
 ): AttachmentActionTypes {
     return {

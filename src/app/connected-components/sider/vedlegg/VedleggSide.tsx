@@ -52,7 +52,6 @@ class VedleggSide extends React.Component<Props, {}> {
                         vedlegg={attachments}
                         onFilesSelect={this.onFilesSelect}
                         onFileDelete={this.onFileDelete}
-                        visFilstørrelse={true}
                     />
                 </div>
                 {newFiles.length > 0 && (

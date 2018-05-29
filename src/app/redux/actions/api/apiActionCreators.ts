@@ -14,25 +14,4 @@ export function sendSøknad(søknad: Søknad): ApiActionTypes {
     };
 }
 
-export function saveVedlegg(vedlegg: File): ApiActionTypes {
-    return {
-        type: ApiActionKeys.SAVE_VEDLEGG,
-        vedlegg
-    };
-}
-
-export function saveVedleggSuccess(uri: URL): ApiActionTypes {
-    return {
-        type: ApiActionKeys.SAVE_VEDLEGG_SUCCESS,
-        uri
-    };
-}
-
-export function saveVedleggFailed(error: any): ApiActionTypes {
-    return {
-        type: ApiActionKeys.SAVE_VEDLEGG_FAILED,
-        error
-    };
-}
-
 export default { getPerson, sendSøknad };

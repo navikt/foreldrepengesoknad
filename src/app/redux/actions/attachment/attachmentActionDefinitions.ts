@@ -21,14 +21,13 @@ export interface UploadAttachment {
 
 export interface UploadPending {
     type: AttachmentActionKeys.UPLOAD_PENDING;
-    pending: boolean;
     attachment: Attachment;
 }
 
 interface AttachmentUploadSuccess {
     type: AttachmentActionKeys.UPLOAD_SUCCESS;
     attachment: Attachment;
-    url: URL;
+    url: string;
 }
 
 interface AttachmentUploadFailed {
