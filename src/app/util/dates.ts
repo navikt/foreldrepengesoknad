@@ -24,3 +24,8 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
         dager
     };
 };
+
+export const ISODateToMaskedInput = (dato: string) => {
+    const parsetDato = moment(dato);
+    return dato && parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
+};
