@@ -26,5 +26,7 @@ export const removeFileFromArray = (
 export const mapFileToAttachment = (file: File): Attachment => ({
     file,
     filename: file.name,
-    filesize: file.size
+    filesize: file.size,
+    uploaded: false,
+    pending: false
 });

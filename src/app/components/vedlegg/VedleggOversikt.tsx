@@ -7,9 +7,10 @@ import LabelText from '../labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from '../../util/attachment';
 import { Attachment } from '../../types/Attachment';
 import { mapFileToAttachment } from './util';
+import { SøknadsvedleggKeys } from '../../types/s\u00F8knad/S\u00F8knadsvedlegg';
 
 export interface VedleggOversiktProps {
-    id: string;
+    id: SøknadsvedleggKeys;
     vedlegg: Attachment[];
     visFilstørrelse?: boolean;
     onFilesSelect: (files: Attachment[]) => void;
