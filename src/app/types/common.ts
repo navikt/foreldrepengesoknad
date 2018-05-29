@@ -1,3 +1,5 @@
+import { History } from 'history';
+
 export type Fødselsdato = Date | undefined;
 
 export interface Alder {
@@ -9,4 +11,8 @@ export interface Alder {
 export enum Kjønn {
     'MANN' = 'M',
     'KVINNE' = 'K'
+}
+
+export interface HistoryProps {
+    history: History;
 }
