@@ -9,13 +9,13 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Applikasjonsside from '../../sider/Applikasjonsside';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 import { getSøkerrollerForBruker } from '../../../util/søkerrollerUtils';
-import { History } from 'history';
 import { StegID } from '../../../util/stegConfig';
 import { søknadStegPath } from '../../steg/StegRoutes';
 import FortsettKnapp from '../../../components/fortsett-knapp/FortsettKnapp';
 import getMessage from '../../../util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BekreftCheckboksPanel from 'nav-frontend-skjema/lib/bekreft-checkboks-panel';
+import { HistoryProps } from '../../../types/common';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
@@ -24,10 +24,6 @@ export interface StateProps {
     rolle?: SøkerRolle;
     roller?: SøkerRolle[];
     nesteStegRoute?: StegID;
-}
-
-interface HistoryProps {
-    history: History;
 }
 
 export type Props = DispatchProps &
