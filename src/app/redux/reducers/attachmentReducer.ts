@@ -54,6 +54,9 @@ const attachmentReducer = (
 
         case AttachmentActionKeys.UPLOAD_SUCCESS:
             return setAttachmentUploaded(state, action.attachment, action.url);
+
+        case AttachmentActionKeys.DELETE_SUCCESS:
+            return [...state.filter((a) => a.id !== action.attachment.id)];
     }
     return state;
 };
