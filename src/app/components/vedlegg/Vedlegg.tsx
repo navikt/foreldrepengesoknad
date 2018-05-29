@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -7,6 +8,7 @@ import SlettKnapp from '../slett-knapp/SlettKnapp';
 
 import './vedlegg.less';
 import { Attachment } from '../../types/Attachment';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 
 interface OwnProps {
     attachment: Attachment;
@@ -23,7 +25,15 @@ const Vedlegg: React.StatelessComponent<Props> = ({
     intl
 }) => {
     return (
-        <div className="vedlegg">
+        <div
+            className={classnames('vedlegg', {
+                'vedlegg--pending': attachment.pending
+            })}>
+            {attachment.pending && (
+                <div className="vedlegg__spinner">
+                    <NavFrontendSpinner type="S" />
+                </div>
+            )}
             <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
             <div className="vedlegg__filnavn">
                 {attachment.filename}
@@ -31,17 +41,18 @@ const Vedlegg: React.StatelessComponent<Props> = ({
                     <div>{bytesString(attachment.filesize)}</div>
                 )}
             </div>
-            {onDelete && (
-                <span className="vedlegg__slett">
-                    <SlettKnapp
-                        onClick={() => onDelete(attachment)}
-                        ariaLabel={intl.formatMessage(
-                            { id: 'vedlegg.arialabel.slett' },
-                            { navn: attachment.filename }
-                        )}
-                    />
-                </span>
-            )}
+            {onDelete &&
+                attachment.uploaded && (
+                    <span className="vedlegg__slett">
+                        <SlettKnapp
+                            onClick={() => onDelete(attachment)}
+                            ariaLabel={intl.formatMessage(
+                                { id: 'vedlegg.arialabel.slett' },
+                                { navn: attachment.filename }
+                            )}
+                        />
+                    </span>
+                )}
         </div>
     );
 };

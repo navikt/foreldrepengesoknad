@@ -42,6 +42,10 @@ const startServer = (html) => {
         res.sendStatus(200)
     );
 
+    server.post('/foreldrepengesoknad-api/storage/vedlegg', (req, res) =>
+        res.sendStatus(200)
+    );
+
     const port = process.env.PORT || 8888;
     server.listen(port, () => {
         console.log(`Mock-api listening on port: ${port}`);

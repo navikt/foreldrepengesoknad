@@ -79,7 +79,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     synlig={barn.adopsjonsdato !== undefined}
                     render={() => (
                         <VedleggOversikt
-                            id="adopsjonsbekreftelse"
+                            id="adopsjonsvedtak"
                             vedlegg={vedlegg.adopsjonsvedtak}
                             onFilesSelect={(files: Attachment[]) => {
                                 dispatch(

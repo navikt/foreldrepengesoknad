@@ -1,5 +1,12 @@
 import { Attachment } from '../Attachment';
 
+export type SøknadsvedleggKeys =
+    | 'omsorgsovertakelse'
+    | 'adopsjonsvedtak'
+    | 'overtakelsedokumentasjon'
+    | 'terminbekreftelse'
+    | 'fødselsattest';
+
 interface Søknadsvedlegg {
     omsorgsovertakelse: Attachment[];
     adopsjonsvedtak: Attachment[];
