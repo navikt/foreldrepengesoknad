@@ -20,7 +20,7 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import Søknadsvedlegg from '../../../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
 import { Attachment } from '../../../../types/Attachment';
 
 interface UfødtBarnPartialProps {

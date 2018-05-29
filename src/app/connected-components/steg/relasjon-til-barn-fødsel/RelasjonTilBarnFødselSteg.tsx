@@ -15,7 +15,7 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
 import { HistoryProps, Kjønn } from '../../../types/common';
-import Søknadsvedlegg from '../../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 
 interface StateProps {
     barn: BarnPartial;

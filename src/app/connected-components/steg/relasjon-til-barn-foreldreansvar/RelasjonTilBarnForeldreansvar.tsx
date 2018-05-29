@@ -24,7 +24,7 @@ import {
     concatNewFiles,
     removeFileFromArray
 } from '../../../components/vedlegg/util';
-import Søknadsvedlegg from '../../../types/s\u00F8knad/Søknadsvedlegg';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import { Attachment } from '../../../types/Attachment';
 
 export interface StateProps {
