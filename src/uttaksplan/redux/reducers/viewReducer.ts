@@ -6,7 +6,7 @@ import {
     UttaksplanViewState,
     SynligInfoMap,
     UttaksplanViewStatePartial
-} from '../../redux/types';
+} from 'uttaksplan/redux/types';
 
 export enum Infotekster {
     sats = 'sats',

@@ -3,7 +3,7 @@ import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import CustomSVG from '../custom-svg/CustomSVG';
 
-const uploadIcon = require('../../assets/svg/upload.svg').default;
+const uploadIcon = require('./upload.svg').default;
 
 import './vedlegg.less';
 

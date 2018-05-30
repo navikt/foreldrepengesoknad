@@ -6,8 +6,8 @@ import {
     addAttachments,
     uploadAttachment
 } from 'storage/attachment/redux/attachmentActionCreators';
-import { DispatchProps } from 'app/redux/types';
-import VedleggOversikt from 'app/components/vedlegg/VedleggOversikt';
+import { DispatchProps } from 'common/redux/types';
+import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 import { AttachmentAppState } from '../../redux/attachmentReducer';
 
 export interface OwnProps {

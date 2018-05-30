@@ -15,9 +15,9 @@ import {
     setNavnForelder2,
     setTermindato
 } from 'uttaksplan/redux/actions';
-import { DispatchProps } from 'app/redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { renderDag } from 'uttaksplan/utils/renderUtils';
-import DatoInput from 'app/components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 
 import './skjema.less';
 

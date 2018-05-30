@@ -3,27 +3,27 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from '../../../components/layout/Steg';
+import Steg from 'app/components/layout/Steg';
 
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
-import DatoInput from '../../../components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
-import Labeltekst from '../../../components/labeltekst/Labeltekst';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
 import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
-import Veilederinfo from '../../../components/veileder-info/Veilederinfo';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
-import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
+import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 import {
     concatNewFiles,
     removeFileFromArray
-} from '../../../components/vedlegg/util';
+} from 'common/components/vedlegg/util';
 import SøknadsvedleggType from '../../../types/søknad/Søknadsvedlegg';
 
 export interface StateProps {

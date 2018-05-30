@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from '../../../components/layout/Steg';
 
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
-import getMessage from '../../../util/i18nUtils';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
+import getMessage from 'common/util/i18nUtils';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { FødtBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
-import DatoInput from '../../../components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../util/fødselsdato';
@@ -20,11 +19,12 @@ import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import {
     removeFileFromArray,
     concatNewFiles
-} from '../../../components/vedlegg/util';
+} from 'common/components/vedlegg/util';
 
-import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
-import Bolk from '../../../components/layout/Bolk';
+import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 import { AppState } from '../../../redux/reducers';
+import Steg from '../../../components/layout/Steg';
+import Bolk from '../../../components/layout/Bolk';
 
 interface StateProps {
     barn: FødtBarn;

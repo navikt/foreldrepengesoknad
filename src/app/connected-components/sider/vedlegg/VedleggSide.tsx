@@ -3,7 +3,7 @@ import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AttachmentUploader from 'storage/attachment/connected-components/attachment-uploader/AttachmentUploader';

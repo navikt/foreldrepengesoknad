@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { DispatchProps } from '../../../redux/types';
 import { AppState } from '../../../redux/reducers';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Applikasjonsside from '../../sider/Applikasjonsside';
@@ -11,11 +9,13 @@ import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 import { getSøkerrollerForBruker } from '../../../util/søkerrollerUtils';
 import { StegID } from '../../../util/stegConfig';
 import { søknadStegPath } from '../../steg/StegRoutes';
-import FortsettKnapp from '../../../components/fortsett-knapp/FortsettKnapp';
-import getMessage from '../../../util/i18nUtils';
+import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BekreftCheckboksPanel from 'nav-frontend-skjema/lib/bekreft-checkboks-panel';
 import { HistoryProps } from '../../../types/common';
+import { DispatchProps } from 'common/redux/types';
+import Spørsmål from 'common/components/sp\u00F8rsm\u00E5l/Sp\u00F8rsm\u00E5l';
+import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;

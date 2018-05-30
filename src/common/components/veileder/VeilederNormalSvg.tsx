@@ -9,8 +9,7 @@ const VeilederNormal: React.StatelessComponent<Props> = ({ svgProps }) => (
     <svg
         viewBox="0 0 184 184"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...svgProps}
-    >
+        {...svgProps}>
         <title>NAV veileder</title>
         <defs>
             <circle id="path-1" cx="92" cy="92" r="92" />
@@ -28,8 +27,7 @@ const VeilederNormal: React.StatelessComponent<Props> = ({ svgProps }) => (
             stroke="none"
             strokeWidth="1"
             fill="none"
-            fillRule="evenodd"
-        >
+            fillRule="evenodd">
             <use id="Background" fill="#C1B5D0" xlinkHref="#path-1" />
             <g id="Head" transform="translate(34.000000, 33.000000)">
                 <use id="Hair" fill="#D2654C" xlinkHref="#path-3" />
@@ -46,8 +44,7 @@ const VeilederNormal: React.StatelessComponent<Props> = ({ svgProps }) => (
                 <g
                     id="Eyes"
                     transform="translate(41.000000, 48.000000)"
-                    fill="#635E59"
-                >
+                    fill="#635E59">
                     <path
                         d="M3.47531756,8.31698633 C1.06143428,8.49687891 0.385813879,4.9765957 1.11314844,2.67760156 C1.24994072,2.24189844 2.04900781,0.258128906 3.46364017,0.258128906 C4.87660432,0.258128906 5.50051057,1.34243555 5.58725689,1.52892969 C6.62654458,3.77016016 6.11607583,8.11893945 3.47531756,8.31698633"
                         id="Left-eye"

@@ -1,26 +1,26 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { DispatchProps } from '../../../../redux/types/index';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
-import Spørsmål from '../../../../components/spørsmål/Spørsmål';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
-import DatoInput from '../../../../components/dato-input/DatoInput';
-import Bolk from '../../../../components/layout/Bolk';
-import getMessage from '../../../../util/i18nUtils';
+import DatoInput from 'common/components/dato-input/DatoInput';
+import Bolk from 'app/components/layout/Bolk';
 import {
     concatNewFiles,
     removeFileFromArray
-} from '../../../../components/vedlegg/util';
-import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
+} from 'common/components/vedlegg/util';
+import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import Veilederinfo from '../../../../components/veileder-info/Veilederinfo';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøknadPartial } from '../../../../types/søknad/Søknad';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
+import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
 import SøknadsvedleggType from '../../../../types/søknad/Søknadsvedlegg';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;

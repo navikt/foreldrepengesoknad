@@ -9,7 +9,7 @@ import {
     FormattedHTMLMessage
 } from 'react-intl';
 import EksterneLenker from 'uttaksplan/eksterneLenker';
-import Veilederinfo from 'app/components/veileder-info/Veilederinfo';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface Props {}
 

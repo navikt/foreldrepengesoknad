@@ -18,7 +18,7 @@ import Eksempelsøknad from './Eksempelsøknad';
 
 import Person from '../types/Person';
 
-import { DispatchProps } from '../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevSideoversikt from '../dev/DevSideoversikt';
