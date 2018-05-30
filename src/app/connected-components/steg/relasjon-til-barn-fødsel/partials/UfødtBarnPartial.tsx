@@ -20,13 +20,12 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import ISøknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
-import { Attachment } from '../../../../types/Attachment';
+import SøknadsvedleggType from '../../../../types/søknad/Søknadsvedlegg';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: ISøknadsvedlegg;
+    vedlegg: SøknadsvedleggType;
     erFarEllerMedmor: boolean;
 }
 
@@ -127,7 +126,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 <VedleggOversikt
                                     inputId="terminbekreftelse"
                                     vedlegg={vedlegg.terminbekreftelse}
-                                    onFilesSelect={(files: Attachment[]) => {
+                                    onFilesSelect={(files) => {
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: concatNewFiles(
@@ -137,7 +136,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                             })
                                         );
                                     }}
-                                    onFileDelete={(file: Attachment) =>
+                                    onFileDelete={(file) =>
                                         dispatch(
                                             søknadActions.updateVedlegg({
                                                 terminbekreftelse: removeFileFromArray(

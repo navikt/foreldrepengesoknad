@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Attachment } from '../../types/Attachment';
 import { DispatchProps } from '../../redux/types';
-import {
-    addAttachments,
-    deleteAttachment,
-    uploadAttachment
-} from '../../redux/actions/attachment/attachmentActionCreators';
 import VedleggOversikt from '../vedlegg/VedleggOversikt';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import { SøknadsvedleggKey } from '../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import { Attachment } from 'storage/attachment/types/Attachment';
+import {
+    deleteAttachment,
+    addAttachments,
+    uploadAttachment
+} from 'storage/attachment/redux/attachmentActionCreators';
 
 export interface OwnProps {
     gruppe: SøknadsvedleggKey;

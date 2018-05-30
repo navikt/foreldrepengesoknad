@@ -16,7 +16,7 @@ import DatoInput from '../../../components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../util/fødselsdato';
-import ISøknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import {
     removeFileFromArray,
     concatNewFiles
@@ -25,11 +25,10 @@ import {
 import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
 import Bolk from '../../../components/layout/Bolk';
 import { AppState } from '../../../redux/reducers';
-import { Attachment } from '../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: ISøknadsvedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -83,21 +82,21 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         <VedleggOversikt
                             inputId="omsorgsovertakelse"
                             vedlegg={vedlegg.omsorgsovertakelse}
-                            onFilesSelect={(files: Attachment[]) => {
+                            onFilesSelect={(attachment) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: concatNewFiles(
-                                            files,
+                                            attachment,
                                             vedlegg.omsorgsovertakelse
                                         )
                                     })
                                 );
                             }}
-                            onFileDelete={(file: Attachment) =>
+                            onFileDelete={(attachment) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: removeFileFromArray(
-                                            file,
+                                            attachment,
                                             vedlegg.omsorgsovertakelse
                                         )
                                     })

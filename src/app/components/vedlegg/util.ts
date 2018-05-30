@@ -1,5 +1,5 @@
-import { Attachment } from '../../types/Attachment';
 import { guid } from 'nav-frontend-js-utils';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 export const concatNewFiles = (
     files: Attachment[],

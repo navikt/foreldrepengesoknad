@@ -7,9 +7,9 @@ import { bytesString } from '../../util/attachment';
 import SlettKnapp from '../slett-knapp/SlettKnapp';
 
 import './vedlegg.less';
-import { Attachment } from '../../types/Attachment';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface OwnProps {
     attachment: Attachment;

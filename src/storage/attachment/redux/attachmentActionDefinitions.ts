@@ -1,4 +1,4 @@
-import { Attachment } from '../../../types/Attachment';
+import { Attachment } from '../types/Attachment';
 
 export enum AttachmentActionKeys {
     'ADD' = 'add',

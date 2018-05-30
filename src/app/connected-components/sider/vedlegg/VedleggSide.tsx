@@ -4,13 +4,12 @@ import DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from '../../../redux/types';
-import ISøknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
-import { Attachment } from '../../../types/Attachment';
+import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import SøknadsvedleggOversikt from '../../../components/søknadsvedleggOversikt/SøknadsvedleggOversikt';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 
 export interface StateProps {
-    vedlegg: ISøknadsvedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 export type Props = StateProps & DispatchProps;
@@ -26,7 +25,7 @@ class VedleggSide extends React.Component<Props, {}> {
                     <SøknadsvedleggOversikt
                         gruppe="adopsjonsvedtak"
                         vedlegg={vedlegg.adopsjonsvedtak}
-                        onChange={(files: Attachment[]) => {
+                        onChange={(files) => {
                             this.props.dispatch(
                                 søknadActions.updateVedlegg({
                                     adopsjonsvedtak: files
@@ -40,7 +39,7 @@ class VedleggSide extends React.Component<Props, {}> {
                     <SøknadsvedleggOversikt
                         gruppe="fødselsattest"
                         vedlegg={vedlegg.fødselsattest}
-                        onChange={(files: Attachment[]) => {
+                        onChange={(files) => {
                             this.props.dispatch(
                                 søknadActions.updateVedlegg({
                                     fødselsattest: files

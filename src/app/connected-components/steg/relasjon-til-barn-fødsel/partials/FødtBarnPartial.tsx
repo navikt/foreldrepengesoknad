@@ -19,12 +19,11 @@ import utils from '../../../../util/fødselsdato';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import ISøknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
-import { Attachment } from '../../../../types/Attachment';
+import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: ISøknadsvedlegg;
+    vedlegg: Søknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -93,7 +92,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         <VedleggOversikt
                             inputId="fødselsattest"
                             vedlegg={vedlegg.fødselsattest}
-                            onFilesSelect={(files: Attachment[]) => {
+                            onFilesSelect={(files) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         fødselsattest: concatNewFiles(
@@ -103,7 +102,7 @@ class FødtBarnPartial extends React.Component<Props> {
                                     })
                                 );
                             }}
-                            onFileDelete={(file: Attachment) =>
+                            onFileDelete={(file) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         fødselsattest: removeFileFromArray(

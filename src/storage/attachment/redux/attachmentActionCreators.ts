@@ -1,8 +1,8 @@
-import { Attachment } from '../../../types/Attachment';
 import {
     AttachmentActionTypes,
     AttachmentActionKeys
 } from './attachmentActionDefinitions';
+import { Attachment } from '../types/Attachment';
 
 export function addAttachments(
     attachments: Attachment[],

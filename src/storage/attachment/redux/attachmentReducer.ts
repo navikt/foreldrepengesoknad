@@ -1,8 +1,8 @@
-import { Attachment } from '../../types/Attachment';
+import { Attachment } from '../types/Attachment';
 import {
     AttachmentActionTypes,
     AttachmentActionKeys
-} from '../actions/attachment/attachmentActionDefinitions';
+} from './attachmentActionDefinitions';
 
 export type AttachmentReducerState = Attachment[];
 
