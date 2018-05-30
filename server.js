@@ -6,6 +6,7 @@ const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 const fs = require('fs');
+const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 
 const server = express();
 
@@ -13,7 +14,6 @@ server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
-const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 server.use((req, res, next) => {

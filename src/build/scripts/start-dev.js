@@ -4,10 +4,10 @@ const webpackConfig = require('../webpack/webpack.config.dev');
 const configureDevServer = require('../webpack/devserver.config');
 const getDecorator = require('./decorator');
 const path = require('path');
+const createEnvSettingsFile = require('./envSettings');
 
 require('dotenv').config();
 
-const createEnvSettingsFile = require('./envSettings');
 createEnvSettingsFile(
     path.resolve(`${__dirname}/../../../dist/js/settings.js`)
 );
