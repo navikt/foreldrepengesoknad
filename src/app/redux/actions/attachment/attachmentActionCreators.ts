@@ -35,7 +35,7 @@ export function attachmentPending(
     attachment: Attachment
 ): AttachmentActionTypes {
     return {
-        type: AttachmentActionKeys.UPLOAD_PENDING,
+        type: AttachmentActionKeys.PENDING,
         attachment
     };
 }
