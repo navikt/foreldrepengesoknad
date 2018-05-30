@@ -1,13 +1,13 @@
 import { Attachment } from '../../../types/Attachment';
 
 export enum AttachmentActionKeys {
+    'ADD' = 'add',
+    'PENDING' = 'pending',
     'UPLOAD' = 'upload',
-    'UPLOAD_PENDING' = 'uploadPending',
     'UPLOAD_SUCCESS' = 'uploadSuccess',
     'UPLOAD_FAILED' = 'uploadFailed',
     'DELETE_SUCCESS' = 'deleteSuccess',
     'DELETE_FAILED' = 'deleteFailed',
-    'ADD' = 'add',
     'DELETE' = 'delete'
 }
 
@@ -22,7 +22,7 @@ export interface UploadAttachment {
 }
 
 export interface UploadPending {
-    type: AttachmentActionKeys.UPLOAD_PENDING;
+    type: AttachmentActionKeys.PENDING;
     attachment: Attachment;
 }
 
