@@ -59,7 +59,8 @@ class Eksempelsøknad extends React.Component<Props> {
             annenForelder,
             utenlandsopphold,
             perioder,
-            intl
+            intl,
+            språkkode
         } = this.props;
 
         return (
@@ -90,8 +91,8 @@ class Eksempelsøknad extends React.Component<Props> {
                             }
                             oppfølgingsspørsmål="Jeg skal bo i..."
                             perioder={søknad.utenlandsopphold.senerePerioder}
-                            onPeriodeLinkClick={() => {}}
-                            onPeriodeTrashClick={() => {}}
+                            periodeType={'siste12mnd'}
+                            språk={språkkode}
                         />
                     )}
                 />

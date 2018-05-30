@@ -92,6 +92,9 @@
     "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
     "adoptertIUtlandet.spørsmål": "Adoptert i utlandet?",
 
+    "utenlandsopphold.select.spørsmål.siste12mnd": "Jeg bodde i...",
+    "utenlandsopphold.select.spørsmål.neste12mnd": "Jeg skal bo i...",
+
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
