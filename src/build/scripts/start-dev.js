@@ -7,6 +7,7 @@ const fsExtra = require('fs-extra');
 const path = require('path');
 
 require('dotenv').config();
+
 const settingsFile = path.resolve(`${__dirname}/../../../dist/js/settings.js`);
 fsExtra.ensureFile(settingsFile).then((f) => {
     fsExtra.writeFileSync(
