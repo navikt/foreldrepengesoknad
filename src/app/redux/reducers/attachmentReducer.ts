@@ -13,10 +13,13 @@ const setAttachmentPending = (
     attachment: Attachment
 ): Attachment[] => {
     return state.map((a) => {
-        return {
-            ...a,
-            pending: a.id === attachment.id
-        };
+        if (a.id === attachment.id) {
+            return {
+                ...a,
+                pending: true
+            };
+        }
+        return a;
     });
 };
 
@@ -46,7 +49,7 @@ const attachmentReducer = (
         case AttachmentActionKeys.ADD:
             return [...state, ...action.attachments];
 
-        case AttachmentActionKeys.UPLOAD_PENDING:
+        case AttachmentActionKeys.PENDING:
             return setAttachmentPending(state, action.attachment);
 
         case AttachmentActionKeys.UPLOAD_SUCCESS:
