@@ -1,6 +1,6 @@
 import { Attachment } from '../Attachment';
 
-export type SøknadsvedleggKeys =
+export type SøknadsvedleggKey =
     | 'omsorgsovertakelse'
     | 'adopsjonsvedtak'
     | 'overtakelsedokumentasjon'

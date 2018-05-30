@@ -1,4 +1,4 @@
-import Søknadsvedlegg from './Søknadsvedlegg';
+import ISøknadsvedlegg from './Søknadsvedlegg';
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
 import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
@@ -33,7 +33,7 @@ interface Søknad {
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
     uttaksplan: Periode[];
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
     søkerRolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
@@ -48,7 +48,7 @@ export interface SøknadPartial {
     barn: BarnPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     uttaksplan?: Periode[];
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
     søkerRolle?: SøkerRolle;
     erSelvstendigNæringsdrivende?: boolean;
     erFrilanser?: boolean;

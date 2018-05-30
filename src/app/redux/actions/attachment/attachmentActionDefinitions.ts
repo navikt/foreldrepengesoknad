@@ -14,6 +14,7 @@ export enum AttachmentActionKeys {
 interface Add {
     type: AttachmentActionKeys.ADD;
     attachments: Attachment[];
+    group?: string;
 }
 
 export interface UploadAttachment {
