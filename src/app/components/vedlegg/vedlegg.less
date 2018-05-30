@@ -1,4 +1,6 @@
 @import '../../styles/variables.less';
+@import '../../styles/animation.less';
+
 .vedleggKnapp {
     display: flex;
     height: 4rem;
@@ -7,6 +9,10 @@
     justify-content: center;
     align-items: center;
     padding-left: 0;
+    &__ikon {
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
     &__label {
         overflow: hidden;
         white-space: nowrap;

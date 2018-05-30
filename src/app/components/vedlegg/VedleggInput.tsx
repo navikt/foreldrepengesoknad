@@ -89,7 +89,9 @@ class VedleggInput extends React.Component<Props> {
                 onDragOver={(e) => this.onFileDragOverHandler(e)}
                 onDrop={(e) => this.onFileDropHandler(e)}
                 onKeyPress={(e) => this.onKeyPress(e)}>
-                <CustomSVG iconRef={uploadIcon} size={22} />
+                <div className="vedleggKnapp__ikon">
+                    <CustomSVG iconRef={uploadIcon} size={22} />
+                </div>
                 <Element className="vedleggKnapp__label">
                     <FormattedMessage id="vedlegg.lastoppknapp.label" />
                 </Element>

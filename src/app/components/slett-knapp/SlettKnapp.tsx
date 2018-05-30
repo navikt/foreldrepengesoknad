@@ -1,9 +1,11 @@
 import * as React from 'react';
 // tslint:disable-next-line:no-var-requires
 const Icon = require('nav-frontend-ikoner-assets').default;
+import { KnappProps } from 'nav-frontend-knapper/lib/knapp';
+
 import './slettKnapp.less';
 
-export interface SlettKnappProps {
+export interface SlettKnappProps extends KnappProps {
     ariaLabel: string;
     onClick: () => void;
 }

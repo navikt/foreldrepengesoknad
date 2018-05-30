@@ -31,7 +31,7 @@ export function uploadAttachment(
     };
 }
 
-export function attachmentUploadPending(
+export function attachmentPending(
     attachment: Attachment
 ): AttachmentActionTypes {
     return {
@@ -57,6 +57,26 @@ export function attachmentUploadFailed(
 ): AttachmentActionTypes {
     return {
         type: AttachmentActionKeys.UPLOAD_FAILED,
+        attachment,
+        error
+    };
+}
+
+export function attachmentDeleteSuccess(
+    attachment: Attachment
+): AttachmentActionTypes {
+    return {
+        type: AttachmentActionKeys.DELETE_SUCCESS,
+        attachment
+    };
+}
+
+export function attachmentDeleteFailed(
+    error: string,
+    attachment: Attachment
+): AttachmentActionTypes {
+    return {
+        type: AttachmentActionKeys.DELETE_FAILED,
         attachment,
         error
     };

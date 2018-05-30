@@ -8,6 +8,7 @@ import { bytesString, getTotalFileSize } from '../../util/attachment';
 import { Attachment } from '../../types/Attachment';
 import { mapFileToAttachment } from './util';
 import { SøknadsvedleggKeys } from '../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import { CSSTransition } from 'react-transition-group';
 
 export interface VedleggOversiktProps {
     id: SøknadsvedleggKeys;
@@ -40,29 +41,41 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                         }}
                     />
                 </div>
-                {showVedleggListe && (
-                    <div>
-                        <div className="blokk-xs" id={id}>
-                            <LabelText>
-                                <FormattedMessage
-                                    id="vedlegg.liste.tittel"
-                                    values={{
-                                        størrelse: bytesString(
-                                            getTotalFileSize(
-                                                vedlegg.map((v) => v.file)
-                                            )
-                                        )
-                                    }}
+                <CSSTransition
+                    classNames="transitionFade"
+                    timeout={150}
+                    in={showVedleggListe}
+                    unmountOnExit={true}>
+                    <React.Fragment>
+                        {showVedleggListe && (
+                            <div>
+                                <div className="blokk-xs" id={id}>
+                                    <LabelText>
+                                        <FormattedMessage
+                                            id="vedlegg.liste.tittel"
+                                            values={{
+                                                størrelse: bytesString(
+                                                    getTotalFileSize(
+                                                        vedlegg.map(
+                                                            (v) => v.file
+                                                        )
+                                                    )
+                                                )
+                                            }}
+                                        />
+                                    </LabelText>
+                                </div>
+                                <VedleggListe
+                                    vedlegg={vedlegg}
+                                    visFilstørrelse={visFilstørrelse}
+                                    onDelete={(file: Attachment) =>
+                                        onFileDelete(file)
+                                    }
                                 />
-                            </LabelText>
-                        </div>
-                        <VedleggListe
-                            vedlegg={vedlegg}
-                            visFilstørrelse={visFilstørrelse}
-                            onDelete={(file: Attachment) => onFileDelete(file)}
-                        />
-                    </div>
-                )}
+                            </div>
+                        )}
+                    </React.Fragment>
+                </CSSTransition>
             </div>
         );
     }

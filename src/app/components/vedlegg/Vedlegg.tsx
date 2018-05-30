@@ -47,7 +47,8 @@ const Vedlegg: React.StatelessComponent<Props> = ({
                 )}
             </div>
             {onDelete &&
-                attachment.uploaded && (
+                attachment.uploaded &&
+                !attachment.pending && (
                     <span className="vedlegg__slett">
                         <SlettKnapp
                             onClick={() => onDelete(attachment)}
