@@ -5,6 +5,8 @@ export enum AttachmentActionKeys {
     'UPLOAD_PENDING' = 'uploadPending',
     'UPLOAD_SUCCESS' = 'uploadSuccess',
     'UPLOAD_FAILED' = 'uploadFailed',
+    'DELETE_SUCCESS' = 'deleteSuccess',
+    'DELETE_FAILED' = 'deleteFailed',
     'ADD' = 'add',
     'DELETE' = 'delete'
 }
@@ -36,15 +38,28 @@ interface AttachmentUploadFailed {
     error: string;
 }
 
-interface Delete {
+export interface DeleteAttachment {
     type: AttachmentActionKeys.DELETE;
     attachment: Attachment;
 }
 
+interface AttachmentDeleteSuccess {
+    type: AttachmentActionKeys.DELETE_SUCCESS;
+    attachment: Attachment;
+}
+
+interface AttachmentDeleteFailed {
+    type: AttachmentActionKeys.DELETE_FAILED;
+    attachment: Attachment;
+    error: string;
+}
+
 export type AttachmentActionTypes =
-    | Delete
     | Add
     | UploadPending
     | UploadAttachment
     | AttachmentUploadSuccess
-    | AttachmentUploadFailed;
+    | AttachmentUploadFailed
+    | DeleteAttachment
+    | AttachmentDeleteSuccess
+    | AttachmentDeleteFailed;

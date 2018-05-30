@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Vedlegg from './Vedlegg';
 import { Attachment } from '../../types/Attachment';
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './vedlegg.less';
 
 interface Props {
@@ -14,15 +14,22 @@ const VedleggListe: React.StatelessComponent<Props> = (props) => {
     const { vedlegg, visFilstørrelse, onDelete } = props;
     return (
         <ul className="vedleggListe">
-            {vedlegg.map((attachment, index) => (
-                <li key={index}>
-                    <Vedlegg
-                        attachment={attachment}
-                        onDelete={onDelete}
-                        visFilstørrelse={visFilstørrelse}
-                    />
-                </li>
-            ))}
+            <TransitionGroup>
+                {vedlegg.map((attachment, index) => (
+                    <CSSTransition
+                        classNames="transitionFade"
+                        timeout={500}
+                        key={index}>
+                        <li>
+                            <Vedlegg
+                                attachment={attachment}
+                                onDelete={onDelete}
+                                visFilstørrelse={visFilstørrelse}
+                            />
+                        </li>
+                    </CSSTransition>
+                ))}
+            </TransitionGroup>
         </ul>
     );
 };
