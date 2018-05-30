@@ -5,12 +5,21 @@ const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
+const fs = require('fs');
 
 const server = express();
 
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
+
+fs.writeFileSync(
+    `${__dirname}/dist/js/settings.js`,
+    `window.appSettings = {
+        REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
+        LOGIN_URL: '${process.env.LOGINSERVICE_URL}'
+    };`
+);
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -48,6 +57,9 @@ const startServer = (html) => {
             res.send(html);
         }
     );
+    server.get(['/foreldrepengesoknad/dist/js/settings.js'], (req, res) => {
+        res.sendFile(path.resolve(`../../dist/js/settings.js`));
+    });
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
