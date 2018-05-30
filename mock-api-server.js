@@ -25,8 +25,14 @@ const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 };
+const delayAllResponses = function(millis) {
+    return function(req, res, next) {
+        setTimeout(next, millis);
+    };
+};
 
 app.use(allowCrossDomain);
+app.use(delayAllResponses(500));
 
 router.get(['/rest/personinfo'], (req, res) => {
     res.send(mockResponse);
