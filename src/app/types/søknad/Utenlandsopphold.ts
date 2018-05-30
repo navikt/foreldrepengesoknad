@@ -18,5 +18,6 @@ type Utenlandsopphold = {
 };
 
 export type UtenlandsoppholdPartial = Partial<Utenlandsopphold>;
+export type UtenlandsoppholdPeriodePartial = Partial<UtenlandsoppholdPeriode>;
 
 export default Utenlandsopphold;

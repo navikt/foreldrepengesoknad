@@ -18,6 +18,7 @@ interface UtenlandsoppholdBolkProps {
 
 interface UtenlandsoppholdBolkState {
     modalIsOpen: boolean;
+    periodeToEdit?: UtenlandsoppholdPeriode;
 }
 
 class UtenlandsoppholdBolk extends React.Component<
@@ -48,6 +49,8 @@ class UtenlandsoppholdBolk extends React.Component<
             språk
         } = this.props;
 
+        const { periodeToEdit } = this.state;
+
         return (
             <React.Fragment>
                 {renderSpørsmål()}
@@ -70,6 +73,8 @@ class UtenlandsoppholdBolk extends React.Component<
                     contentLabel={`Landvelger for ${periodeType}`}
                     children={null}
                     språk={språk}
+                    periode={periodeToEdit}
+                    onSubmit={() => {}}
                 />
             </React.Fragment>
         );
