@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { DispatchProps } from '../../redux/types';
-import VedleggOversikt from '../vedlegg/VedleggOversikt';
 import { connect } from 'react-redux';
-import { AppState } from '../../redux/reducers';
-import { SøknadsvedleggKey } from '../../types/s\u00F8knad/S\u00F8knadsvedlegg';
 import { Attachment } from 'storage/attachment/types/Attachment';
 import {
     deleteAttachment,
     addAttachments,
     uploadAttachment
 } from 'storage/attachment/redux/attachmentActionCreators';
+import { DispatchProps } from 'app/redux/types';
+import VedleggOversikt from 'app/components/vedlegg/VedleggOversikt';
+import { AttachmentAppState } from '../../redux/attachmentReducer';
 
 export interface OwnProps {
-    gruppe: SøknadsvedleggKey;
-    vedlegg?: Attachment[];
-    onChange: (vedlegg: Attachment[]) => void;
+    group: string;
+    attachments?: Attachment[];
+    onChange: (attachment: Attachment[]) => void;
 }
 
 export interface StateProps {
@@ -23,17 +22,17 @@ export interface StateProps {
 
 export type Props = StateProps & OwnProps & DispatchProps;
 
-export const getGruppeAttachments = (
+export const getGroupedAttachments = (
     attachments: Attachment[],
-    gruppe?: string
+    group?: string
 ) => {
-    if (!gruppe) {
+    if (!group) {
         return attachments;
     }
-    return attachments.filter((a) => a.group === gruppe);
+    return attachments.filter((a) => a.group === group);
 };
 
-class SøknadsvedleggOversikt extends React.Component<Props, {}> {
+class AttachmentsUploader extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.onFileDelete = this.onFileDelete.bind(this);
@@ -42,13 +41,13 @@ class SøknadsvedleggOversikt extends React.Component<Props, {}> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const curr = getGruppeAttachments(
+        const curr = getGroupedAttachments(
             this.props.attachments,
-            this.props.gruppe
+            this.props.group
         );
-        const next = getGruppeAttachments(
+        const next = getGroupedAttachments(
             nextProps.attachments,
-            nextProps.gruppe
+            nextProps.group
         );
         if (JSON.stringify(curr) !== JSON.stringify(next)) {
             this.props.onChange(nextProps.attachments);
@@ -56,7 +55,7 @@ class SøknadsvedleggOversikt extends React.Component<Props, {}> {
     }
 
     onFilesSelect(files: Attachment[]) {
-        this.props.dispatch(addAttachments(files, this.props.gruppe));
+        this.props.dispatch(addAttachments(files, this.props.group));
         this.uploadNewFiles(files);
     }
 
@@ -71,10 +70,10 @@ class SøknadsvedleggOversikt extends React.Component<Props, {}> {
     }
 
     render() {
-        const { vedlegg } = this.props;
+        const { attachments } = this.props;
         return (
             <VedleggOversikt
-                vedlegg={vedlegg || []}
+                vedlegg={attachments || []}
                 onFilesSelect={this.onFilesSelect}
                 onFileDelete={this.onFileDelete}
             />
@@ -82,8 +81,11 @@ class SøknadsvedleggOversikt extends React.Component<Props, {}> {
     }
 }
 
-const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
-    attachments: getGruppeAttachments(state.attachments, props.gruppe)
+const mapStateToProps = (
+    state: AttachmentAppState,
+    props: OwnProps
+): StateProps => ({
+    attachments: getGroupedAttachments(state.attachments, props.group)
 });
 
-export default connect(mapStateToProps)(SøknadsvedleggOversikt);
+export default connect(mapStateToProps)(AttachmentsUploader);
