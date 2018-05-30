@@ -17,7 +17,7 @@ import Labeltekst from '../../../components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
 import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
-import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
+import ISøknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import {
     concatNewFiles,
     removeFileFromArray
@@ -26,7 +26,7 @@ import { Attachment } from '../../../types/Attachment';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -79,7 +79,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     synlig={barn.adopsjonsdato !== undefined}
                     render={() => (
                         <VedleggOversikt
-                            id="adopsjonsvedtak"
+                            inputId="adopsjonsvedtak"
                             vedlegg={vedlegg.adopsjonsvedtak}
                             onFilesSelect={(files: Attachment[]) => {
                                 dispatch(

@@ -20,13 +20,13 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
+import ISøknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
 import { Attachment } from '../../../../types/Attachment';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
     erFarEllerMedmor: boolean;
 }
 
@@ -125,7 +125,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             )}
                             render={() => (
                                 <VedleggOversikt
-                                    id="terminbekreftelse"
+                                    inputId="terminbekreftelse"
                                     vedlegg={vedlegg.terminbekreftelse}
                                     onFilesSelect={(files: Attachment[]) => {
                                         dispatch(

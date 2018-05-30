@@ -5,11 +5,13 @@ import {
 } from './attachmentActionDefinitions';
 
 export function addAttachments(
-    attachments: Attachment[]
+    attachments: Attachment[],
+    group?: string
 ): AttachmentActionTypes {
     return {
         type: AttachmentActionKeys.ADD,
-        attachments
+        attachments,
+        group
     };
 }
 

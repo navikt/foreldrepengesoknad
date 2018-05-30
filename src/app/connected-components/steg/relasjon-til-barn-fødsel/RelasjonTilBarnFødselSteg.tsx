@@ -15,12 +15,12 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
 import { HistoryProps, Kjønn } from '../../../types/common';
-import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
+import ISøknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 
 interface StateProps {
     barn: BarnPartial;
     søknad: Søknad;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
     person?: Person;
 }
 

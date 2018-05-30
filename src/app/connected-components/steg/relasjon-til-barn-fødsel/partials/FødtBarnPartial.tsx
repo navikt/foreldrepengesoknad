@@ -19,12 +19,12 @@ import utils from '../../../../util/fødselsdato';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
+import ISøknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
 import { Attachment } from '../../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -91,7 +91,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
                     render={() => (
                         <VedleggOversikt
-                            id="fødselsattest"
+                            inputId="fødselsattest"
                             vedlegg={vedlegg.fødselsattest}
                             onFilesSelect={(files: Attachment[]) => {
                                 dispatch(

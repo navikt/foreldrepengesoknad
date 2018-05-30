@@ -16,7 +16,7 @@ import DatoInput from '../../../components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../util/fødselsdato';
-import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
+import ISøknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
 import {
     removeFileFromArray,
     concatNewFiles
@@ -29,7 +29,7 @@ import { Attachment } from '../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: ISøknadsvedlegg;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -81,7 +81,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     )}
                     render={() => (
                         <VedleggOversikt
-                            id="omsorgsovertakelse"
+                            inputId="omsorgsovertakelse"
                             vedlegg={vedlegg.omsorgsovertakelse}
                             onFilesSelect={(files: Attachment[]) => {
                                 dispatch(
