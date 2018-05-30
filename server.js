@@ -13,13 +13,8 @@ server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
 
-fs.writeFileSync(
-    `${__dirname}/dist/js/settings.js`,
-    `window.appSettings = {
-        REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-        LOGIN_URL: '${process.env.LOGINSERVICE_URL}'
-    };`
-);
+const createEnvSettingsFile = require('./src/build/scripts/envSettings');
+createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
