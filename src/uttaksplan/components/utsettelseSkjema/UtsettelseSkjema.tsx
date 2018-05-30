@@ -28,11 +28,11 @@ import {
     Valideringsfeil,
     Skjemaelement
 } from 'uttaksplan/components/utsettelseSkjema/types';
-import { Feil } from 'app/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema-input-element/types';
 import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
 import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import DatoInput from 'app/components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 
 interface OwnProps {
     termindato: Date;

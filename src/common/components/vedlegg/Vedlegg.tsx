@@ -3,13 +3,13 @@ import * as classnames from 'classnames';
 const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { bytesString } from '../../util/attachment';
 import SlettKnapp from '../slett-knapp/SlettKnapp';
 
 import './vedlegg.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'storage/attachment/types/Attachment';
+import { bytesString } from '../../util/filesize';
 
 interface OwnProps {
     attachment: Attachment;

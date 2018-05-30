@@ -2,7 +2,7 @@ import * as React from 'react';
 import { History } from 'history';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import getMessage from '../../util/i18nUtils';
+import getMessage from 'common/util/i18nUtils';
 import './fortsettKnapp.less';
 
 interface FortsettKnappProps {

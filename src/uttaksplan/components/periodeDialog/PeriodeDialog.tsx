@@ -4,7 +4,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import Modal from 'nav-frontend-modal';
 
-import { DispatchProps } from 'app/redux/types';
+import { DispatchProps } from 'common/redux/types';
 import {
     lukkPeriodeDialog,
     opprettEllerOppdaterPeriode,
