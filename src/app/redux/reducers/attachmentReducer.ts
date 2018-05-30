@@ -46,9 +46,6 @@ const attachmentReducer = (
         case AttachmentActionKeys.ADD:
             return [...state, ...action.attachments];
 
-        case AttachmentActionKeys.DELETE:
-            return [...state.filter((a) => a !== action.attachment)];
-
         case AttachmentActionKeys.UPLOAD_PENDING:
             return setAttachmentPending(state, action.attachment);
 
