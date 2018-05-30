@@ -6,6 +6,10 @@ import {
 
 export type AttachmentReducerState = Attachment[];
 
+export interface AttachmentAppState {
+    attachments: AttachmentReducerState;
+}
+
 const getDefaultState = (): AttachmentReducerState => [];
 
 const addGroupToAttachments = (
