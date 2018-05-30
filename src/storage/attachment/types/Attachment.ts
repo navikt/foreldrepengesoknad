@@ -6,4 +6,5 @@ export interface Attachment {
     url?: string;
     pending: boolean;
     uploaded: boolean;
+    group?: string;
 }

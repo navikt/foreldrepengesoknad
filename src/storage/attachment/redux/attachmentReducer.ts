@@ -1,12 +1,34 @@
-import { Attachment } from '../../types/Attachment';
+import { Attachment } from '../types/Attachment';
 import {
     AttachmentActionTypes,
     AttachmentActionKeys
-} from '../actions/attachment/attachmentActionDefinitions';
+} from './attachmentActionDefinitions';
 
 export type AttachmentReducerState = Attachment[];
 
+export interface AttachmentAppState {
+    attachments: AttachmentReducerState;
+}
+
 const getDefaultState = (): AttachmentReducerState => [];
+
+const addGroupToAttachments = (
+    attachments: Attachment[],
+    group: string
+): Attachment[] => {
+    return attachments.map((a) => ({ ...a, group }));
+};
+
+const addAttachments = (
+    state: AttachmentReducerState,
+    attachments: Attachment[],
+    group?: string
+): Attachment[] => {
+    return [
+        ...state,
+        ...(group ? addGroupToAttachments(attachments, group) : attachments)
+    ];
+};
 
 const setAttachmentPending = (
     state: AttachmentReducerState,
@@ -47,7 +69,7 @@ const attachmentReducer = (
 ): AttachmentReducerState => {
     switch (action.type) {
         case AttachmentActionKeys.ADD:
-            return [...state, ...action.attachments];
+            return addAttachments(state, action.attachments, action.group);
 
         case AttachmentActionKeys.PENDING:
             return setAttachmentPending(state, action.attachment);

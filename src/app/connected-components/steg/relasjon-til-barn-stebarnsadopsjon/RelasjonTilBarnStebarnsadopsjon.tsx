@@ -22,7 +22,6 @@ import {
     concatNewFiles,
     removeFileFromArray
 } from '../../../components/vedlegg/util';
-import { Attachment } from '../../../types/Attachment';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -79,9 +78,9 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                     synlig={barn.adopsjonsdato !== undefined}
                     render={() => (
                         <VedleggOversikt
-                            id="adopsjonsvedtak"
+                            inputId="adopsjonsvedtak"
                             vedlegg={vedlegg.adopsjonsvedtak}
-                            onFilesSelect={(files: Attachment[]) => {
+                            onFilesSelect={(files) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         adopsjonsvedtak: concatNewFiles(
@@ -91,7 +90,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                                     })
                                 );
                             }}
-                            onFileDelete={(file: Attachment) =>
+                            onFileDelete={(file) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         adopsjonsvedtak: removeFileFromArray(

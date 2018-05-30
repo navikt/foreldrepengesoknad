@@ -1,6 +1,6 @@
-import { Attachment } from '../Attachment';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
-export type SøknadsvedleggKeys =
+export type SøknadsvedleggKey =
     | 'omsorgsovertakelse'
     | 'adopsjonsvedtak'
     | 'overtakelsedokumentasjon'

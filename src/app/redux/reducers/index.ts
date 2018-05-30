@@ -2,9 +2,11 @@ import Søknad from '../../types/søknad/Søknad';
 import søknad from './søknadReducer';
 import common, { CommonState } from './commonReducer';
 import api, { ApiReducerState } from './apiReducer';
-import attachments, { AttachmentReducerState } from './attachmentReducer';
 import uttaksplan from 'uttaksplan/redux/reducers';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import attachments, {
+    AttachmentReducerState
+} from 'storage/attachment/redux/attachmentReducer';
 
 interface MainState extends UttaksplanAppState {
     søknad: Søknad;

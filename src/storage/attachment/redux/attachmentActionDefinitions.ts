@@ -1,4 +1,4 @@
-import { Attachment } from '../../../types/Attachment';
+import { Attachment } from '../types/Attachment';
 
 export enum AttachmentActionKeys {
     'ADD' = 'add',
@@ -14,6 +14,7 @@ export enum AttachmentActionKeys {
 interface Add {
     type: AttachmentActionKeys.ADD;
     attachments: Attachment[];
+    group?: string;
 }
 
 export interface UploadAttachment {

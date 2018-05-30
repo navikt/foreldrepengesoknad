@@ -5,14 +5,15 @@ import VedleggInput from '../vedlegg/VedleggInput';
 import VedleggListe from '../vedlegg/VedleggListe';
 import LabelText from '../labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from '../../util/attachment';
-import { Attachment } from '../../types/Attachment';
 import { mapFileToAttachment } from './util';
-import { SøknadsvedleggKeys } from '../../types/s\u00F8knad/S\u00F8knadsvedlegg';
+import { SøknadsvedleggKey } from '../../types/søknad/Søknadsvedlegg';
 import { CSSTransition } from 'react-transition-group';
+import { guid } from 'nav-frontend-js-utils';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 export interface VedleggOversiktProps {
-    id: SøknadsvedleggKeys;
     vedlegg: Attachment[];
+    inputId?: SøknadsvedleggKey;
     visFilstørrelse?: boolean;
     onFilesSelect: (files: Attachment[]) => void;
     onFileDelete: (file: Attachment) => void;
@@ -21,7 +22,7 @@ export interface VedleggOversiktProps {
 class VedleggOversikt extends React.Component<VedleggOversiktProps> {
     render() {
         const {
-            id,
+            inputId = guid(),
             vedlegg,
             visFilstørrelse,
             onFileDelete,
@@ -33,7 +34,7 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
             <div>
                 <div className={showVedleggListe ? 'blokk-m' : undefined}>
                     <VedleggInput
-                        id={id}
+                        id={inputId}
                         onFilesSelect={(files: File[]) => {
                             onFilesSelect(
                                 files.map((f) => mapFileToAttachment(f))
@@ -49,7 +50,7 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                     <React.Fragment>
                         {showVedleggListe && (
                             <div>
-                                <div className="blokk-xs" id={id}>
+                                <div className="blokk-xs">
                                     <LabelText>
                                         <FormattedMessage
                                             id="vedlegg.liste.tittel"

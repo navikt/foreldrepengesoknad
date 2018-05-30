@@ -24,13 +24,12 @@ import {
     concatNewFiles,
     removeFileFromArray
 } from '../../../components/vedlegg/util';
-import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
-import { Attachment } from '../../../types/Attachment';
+import SøknadsvedleggType from '../../../types/søknad/Søknadsvedlegg';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
     visOver15årMelding: boolean;
-    vedlegg: Søknadsvedlegg;
+    vedlegg: SøknadsvedleggType;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -86,9 +85,9 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                     synlig={barn.foreldreansvarsdato !== undefined}
                     render={() => (
                         <VedleggOversikt
-                            id="adopsjonsvedtak"
+                            inputId="adopsjonsvedtak"
                             vedlegg={vedlegg.adopsjonsvedtak}
-                            onFilesSelect={(files: Attachment[]) => {
+                            onFilesSelect={(files) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         adopsjonsvedtak: concatNewFiles(
@@ -98,7 +97,7 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
                                     })
                                 );
                             }}
-                            onFileDelete={(file: Attachment) =>
+                            onFileDelete={(file) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         adopsjonsvedtak: removeFileFromArray(

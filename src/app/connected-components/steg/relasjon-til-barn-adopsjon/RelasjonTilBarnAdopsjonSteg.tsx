@@ -25,7 +25,6 @@ import {
 import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
 import Bolk from '../../../components/layout/Bolk';
 import { AppState } from '../../../redux/reducers';
-import { Attachment } from '../../../types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
@@ -81,23 +80,23 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     )}
                     render={() => (
                         <VedleggOversikt
-                            id="omsorgsovertakelse"
+                            inputId="omsorgsovertakelse"
                             vedlegg={vedlegg.omsorgsovertakelse}
-                            onFilesSelect={(files: Attachment[]) => {
+                            onFilesSelect={(attachment) => {
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: concatNewFiles(
-                                            files,
+                                            attachment,
                                             vedlegg.omsorgsovertakelse
                                         )
                                     })
                                 );
                             }}
-                            onFileDelete={(file: Attachment) =>
+                            onFileDelete={(attachment) =>
                                 dispatch(
                                     søknadActions.updateVedlegg({
                                         omsorgsovertakelse: removeFileFromArray(
-                                            file,
+                                            attachment,
                                             vedlegg.omsorgsovertakelse
                                         )
                                     })
