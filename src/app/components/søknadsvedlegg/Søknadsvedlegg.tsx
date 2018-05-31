@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AttachmentUploader from 'storage/attachment/connected-components/attachment-uploader/AttachmentUploader';
-import { SøknadsvedleggType } from '../../types/s\u00F8knad/S\u00F8knad';
+import { SøknadsvedleggType } from '../../types/søknad/Søknad';
 
 export interface Props {
     type: SøknadsvedleggType;
