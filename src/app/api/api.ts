@@ -1,11 +1,8 @@
 import axios from 'axios';
-import Søknad, {
-    Søknadsvedlegginfo,
-    SøknadsvedleggType
-} from '../types/søknad/Søknad';
+import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { Attachment } from 'storage/attachment/types/Attachment';
-import { getMetadataForSøknadsvedlegg } from '../util/vedleggUtil';
+import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
 
 function getPerson() {
     const endpoint = Environment.REST_API_URL;
@@ -15,23 +12,8 @@ function getPerson() {
     });
 }
 
-const mapAttachmentTilSøknadsvedlegginfo = (
-    attachment: Attachment
-): Søknadsvedlegginfo => {
-    const type = attachment.group as SøknadsvedleggType;
-    return {
-        id: attachment.id,
-        filnavn: attachment.filename,
-        url: attachment.url as string,
-        type,
-        filstørrelse: attachment.filesize,
-        metadata: getMetadataForSøknadsvedlegg(type)
-    };
-};
-
 function sendSøknad(søknad: Søknad, vedlegg: Attachment[]) {
     const formData = new FormData();
-
     søknad.vedlegg = vedlegg.map((v) => mapAttachmentTilSøknadsvedlegginfo(v));
     formData.append(
         'soknad',

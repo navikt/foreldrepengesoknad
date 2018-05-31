@@ -1,6 +1,7 @@
 import {
     SøknadsvedleggType,
-    SøknadsvedleggMetadata
+    SøknadsvedleggMetadata,
+    Søknadsvedlegginfo
 } from '../types/søknad/Søknad';
 import { AttachmentAppState } from 'storage/attachment/redux/attachmentReducer';
 import { Attachment } from 'storage/attachment/types/Attachment';
@@ -41,4 +42,18 @@ export const getMetadataForSøknadsvedlegg = (
                 beskrivelse: 'tom'
             };
     }
+};
+
+export const mapAttachmentTilSøknadsvedlegginfo = (
+    attachment: Attachment
+): Søknadsvedlegginfo => {
+    const type = attachment.group as SøknadsvedleggType;
+    return {
+        id: attachment.id,
+        filnavn: attachment.filename,
+        url: attachment.url as string,
+        type,
+        filstørrelse: attachment.filesize,
+        metadata: getMetadataForSøknadsvedlegg(type)
+    };
 };
