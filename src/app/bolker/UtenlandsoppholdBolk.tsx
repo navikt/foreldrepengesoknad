@@ -19,12 +19,13 @@ interface UtenlandsoppholdBolkProps {
         periode: UtenlandsoppholdPeriode,
         index: number
     ) => void;
+    onDeleteUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
 }
 
 interface UtenlandsoppholdBolkState {
     modalIsOpen: boolean;
     periodeToEdit?: UtenlandsoppholdPeriode;
-    periodeToEditIndex?: number;
+    periodeIndex?: number;
 }
 
 type UtenlandsoppholdBolkStatePartial = Partial<UtenlandsoppholdBolkState>;
@@ -54,28 +55,26 @@ class UtenlandsoppholdBolk extends React.Component<
 
     onEdit(periode: UtenlandsoppholdPeriode) {
         const { onEditUtenlandsoppholdPeriode } = this.props;
-        const { periodeToEditIndex } = this.state;
+        const { periodeIndex } = this.state;
         onEditUtenlandsoppholdPeriode(
             periode,
-            periodeToEditIndex === undefined ? -1 : periodeToEditIndex
+            periodeIndex === undefined ? -1 : periodeIndex
         );
         this.toggleModal({
             periodeToEdit: undefined,
-            periodeToEditIndex: undefined
+            periodeIndex: undefined
         });
     }
 
     onPeriodeLinkClick(
         periodeToEdit: UtenlandsoppholdPeriode,
-        periodeToEditIndex: number
+        periodeIndex: number
     ) {
         this.toggleModal({
             periodeToEdit,
-            periodeToEditIndex
+            periodeIndex
         });
     }
-
-    onPeriodeTrashClick() {}
 
     toggleModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
         this.setState({
@@ -88,6 +87,7 @@ class UtenlandsoppholdBolk extends React.Component<
         const {
             renderSpørsmål,
             showUtenlandsoppholdPeriodeContent,
+            onDeleteUtenlandsoppholdPeriode,
             oppfølgingsspørsmål,
             perioder,
             periodeType,
@@ -104,7 +104,9 @@ class UtenlandsoppholdBolk extends React.Component<
                         <UtenlandsoppholdPeriodeListe
                             perioder={perioder}
                             onPeriodeLinkClick={this.onPeriodeLinkClick}
-                            onPeriodeTrashClick={this.onPeriodeTrashClick}
+                            onPeriodeTrashClick={
+                                onDeleteUtenlandsoppholdPeriode
+                            }
                         />
                         <Knapp onClick={() => this.toggleModal()}>
                             Legg til land
@@ -117,7 +119,7 @@ class UtenlandsoppholdBolk extends React.Component<
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={() =>
                         this.toggleModal({
-                            periodeToEditIndex: undefined,
+                            periodeIndex: undefined,
                             periodeToEdit: undefined
                         })
                     }
