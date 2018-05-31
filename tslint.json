@@ -12,7 +12,6 @@
         "no-shadowed-variable": true,
         "no-var-requires": false,
         "no-implicit-dependencies": false,
-        "no-empty-interface": false,
-        "prefer-object-spread": false
+        "no-empty-interface": false
     }
 }

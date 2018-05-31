@@ -27,7 +27,8 @@ export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
 type Props = UtenlandsoppholdPeriodeModalProps & InjectedIntlProps;
 
 interface State {
-    periode: UtenlandsoppholdPeriode;
+    periode: UtenlandsoppholdPeriodePartial;
+    editMode: boolean;
 }
 
 class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
@@ -36,8 +37,8 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
 
         const { periode } = props;
         this.state = periode
-            ? { periode: Object.assign({}, periode as any) }
-            : { periode: { varighet: {} } };
+            ? { periode: { ...periode }, editMode: true }
+            : { periode: { varighet: {} }, editMode: false };
 
         this.submitPeriode = this.submitPeriode.bind(this);
     }
@@ -58,7 +59,24 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
         const { onSubmit } = this.props;
         const { periode } = this.state;
 
-        onSubmit(periode);
+        onSubmit(periode as UtenlandsoppholdPeriode);
+    }
+
+    varighet() {
+        const { periode } = this.state;
+        if (periode.varighet) {
+            return periode.varighet;
+        }
+        return {};
+    }
+
+    varighetDate(property: 'fom' | 'tom') {
+        const { periode } = this.state;
+        const dateValue = periode.varighet && periode.varighet[property];
+        if (dateValue) {
+            return new Date(dateValue);
+        }
+        return undefined;
     }
 
     render() {
@@ -103,16 +121,12 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                 onChange={(fom: Date) => {
                                     this.updatePeriode({
                                         varighet: {
-                                            fom: fom.toISOString(),
-                                            tom: periode.varighet.tom
+                                            ...this.varighet(),
+                                            fom: fom.toISOString()
                                         }
                                     });
                                 }}
-                                dato={
-                                    periode.varighet.fom
-                                        ? new Date(periode.varighet.fom)
-                                        : undefined
-                                }
+                                dato={this.varighetDate('fom')}
                             />
                         )}
                     />
@@ -128,16 +142,12 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                 onChange={(tom: Date) => {
                                     this.updatePeriode({
                                         varighet: {
-                                            tom: tom.toISOString(),
-                                            fom: periode.varighet.fom
+                                            ...this.varighet(),
+                                            tom: tom.toISOString()
                                         }
                                     });
                                 }}
-                                dato={
-                                    periode.varighet.tom
-                                        ? new Date(periode.varighet.tom)
-                                        : undefined
-                                }
+                                dato={this.varighetDate('tom')}
                             />
                         )}
                     />
