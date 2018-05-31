@@ -14,13 +14,20 @@ interface UtenlandsoppholdBolkProps {
     perioder: UtenlandsoppholdPeriode[];
     periodeType: PeriodeType;
     språk: Språkkode;
-    onUtenlandsoppholdPeriodeSubmit: (periode: UtenlandsoppholdPeriode) => void;
+    onAddUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
+    onEditUtenlandsoppholdPeriode: (
+        periode: UtenlandsoppholdPeriode,
+        index: number
+    ) => void;
 }
 
 interface UtenlandsoppholdBolkState {
     modalIsOpen: boolean;
     periodeToEdit?: UtenlandsoppholdPeriode;
+    periodeToEditIndex?: number;
 }
+
+type UtenlandsoppholdBolkStatePartial = Partial<UtenlandsoppholdBolkState>;
 
 class UtenlandsoppholdBolk extends React.Component<
     UtenlandsoppholdBolkProps,
@@ -28,14 +35,51 @@ class UtenlandsoppholdBolk extends React.Component<
 > {
     constructor(props: UtenlandsoppholdBolkProps) {
         super(props);
+
         this.toggleModal = this.toggleModal.bind(this);
+        this.onAdd = this.onAdd.bind(this);
+        this.onEdit = this.onEdit.bind(this);
+        this.onPeriodeLinkClick = this.onPeriodeLinkClick.bind(this);
+
         this.state = {
             modalIsOpen: false
         };
     }
 
-    toggleModal() {
+    onAdd(periode: UtenlandsoppholdPeriode) {
+        const { onAddUtenlandsoppholdPeriode } = this.props;
+        onAddUtenlandsoppholdPeriode(periode);
+        this.toggleModal();
+    }
+
+    onEdit(periode: UtenlandsoppholdPeriode) {
+        const { onEditUtenlandsoppholdPeriode } = this.props;
+        const { periodeToEditIndex } = this.state;
+        onEditUtenlandsoppholdPeriode(
+            periode,
+            periodeToEditIndex === undefined ? -1 : periodeToEditIndex
+        );
+        this.toggleModal({
+            periodeToEdit: undefined,
+            periodeToEditIndex: undefined
+        });
+    }
+
+    onPeriodeLinkClick(
+        periodeToEdit: UtenlandsoppholdPeriode,
+        periodeToEditIndex: number
+    ) {
+        this.toggleModal({
+            periodeToEdit,
+            periodeToEditIndex
+        });
+    }
+
+    onPeriodeTrashClick() {}
+
+    toggleModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
         this.setState({
+            ...otherState,
             modalIsOpen: !this.state.modalIsOpen
         });
     }
@@ -47,10 +91,8 @@ class UtenlandsoppholdBolk extends React.Component<
             oppfølgingsspørsmål,
             perioder,
             periodeType,
-            språk,
-            onUtenlandsoppholdPeriodeSubmit
+            språk
         } = this.props;
-
         const { periodeToEdit } = this.state;
 
         return (
@@ -61,25 +103,30 @@ class UtenlandsoppholdBolk extends React.Component<
                         <label htmlFor="">{oppfølgingsspørsmål}</label>
                         <UtenlandsoppholdPeriodeListe
                             perioder={perioder}
-                            onPeriodeLinkClick={this.toggleModal}
-                            onPeriodeTrashClick={this.toggleModal}
+                            onPeriodeLinkClick={this.onPeriodeLinkClick}
+                            onPeriodeTrashClick={this.onPeriodeTrashClick}
                         />
-                        <Knapp onClick={this.toggleModal}>Legg til land</Knapp>
+                        <Knapp onClick={() => this.toggleModal()}>
+                            Legg til land
+                        </Knapp>
                     </React.Fragment>
                 )}
 
                 <UtenlandsoppholdPeriodeModal
                     type={periodeType}
                     isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.toggleModal}
+                    onRequestClose={() =>
+                        this.toggleModal({
+                            periodeToEditIndex: undefined,
+                            periodeToEdit: undefined
+                        })
+                    }
                     contentLabel={`Landvelger for ${periodeType}`}
                     children={null}
                     språk={språk}
                     periode={periodeToEdit}
-                    onSubmit={(periode: UtenlandsoppholdPeriode) => {
-                        onUtenlandsoppholdPeriodeSubmit(periode);
-                        this.toggleModal();
-                    }}
+                    onAdd={this.onAdd}
+                    onEdit={this.onEdit}
                 />
             </React.Fragment>
         );

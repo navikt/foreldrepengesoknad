@@ -21,7 +21,8 @@ export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
     type: PeriodeType;
     periode?: UtenlandsoppholdPeriode;
     språk: Språkkode;
-    onSubmit: (periode: UtenlandsoppholdPeriode) => void;
+    onAdd: (periode: UtenlandsoppholdPeriode) => void;
+    onEdit: (periode: UtenlandsoppholdPeriode) => void;
 }
 
 type Props = UtenlandsoppholdPeriodeModalProps & InjectedIntlProps;
@@ -32,15 +33,23 @@ interface State {
 }
 
 class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
+    static getDerivedStateFromProps(props: Props, state: State) {
+        return UtenlandsoppholdPeriodeModal.buildStateFromProps(props);
+    }
+
+    static buildStateFromProps(props: Props) {
+        const { periode } = props;
+        return {
+            periode: periode ? { ...periode } : { varighet: {} },
+            editMode: props.periode !== undefined
+        };
+    }
+
     constructor(props: Props) {
         super(props);
 
-        const { periode } = props;
-        this.state = periode
-            ? { periode: { ...periode }, editMode: true }
-            : { periode: { varighet: {} }, editMode: false };
-
-        this.submitPeriode = this.submitPeriode.bind(this);
+        this.state = UtenlandsoppholdPeriodeModal.buildStateFromProps(props);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     updatePeriode(periodeProperties: UtenlandsoppholdPeriodePartial) {
@@ -52,14 +61,18 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
         });
     }
 
-    submitPeriode(event: React.FormEvent<HTMLFormElement>) {
+    onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         event.stopPropagation();
 
-        const { onSubmit } = this.props;
-        const { periode } = this.state;
+        const { onAdd, onEdit } = this.props;
+        const { periode, editMode } = this.state;
 
-        onSubmit(periode as UtenlandsoppholdPeriode);
+        if (editMode) {
+            onEdit(periode as UtenlandsoppholdPeriode);
+        } else {
+            onAdd(periode as UtenlandsoppholdPeriode);
+        }
     }
 
     varighet() {
@@ -88,7 +101,7 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                 className="utenlandsoppholdPeriodeModal"
                 onRequestClose={onRequestClose}
                 {...modalProps}>
-                <form onSubmit={this.submitPeriode}>
+                <form onSubmit={this.onSubmit}>
                     <Undertittel className="utenlandsoppholdPeriodeModal__title">
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>

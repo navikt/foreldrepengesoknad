@@ -5,8 +5,14 @@ import UtenlandsoppholdPeriodeListeElement from '../utenlandsopphold-periode-lis
 
 interface UtenlandsoppholdPeriodeListeProps {
     perioder: UtenlandsoppholdPeriode[];
-    onPeriodeLinkClick: (periode: UtenlandsoppholdPeriode) => void;
-    onPeriodeTrashClick: (periode: UtenlandsoppholdPeriode) => void;
+    onPeriodeLinkClick: (
+        periode: UtenlandsoppholdPeriode,
+        index: number
+    ) => void;
+    onPeriodeTrashClick: (
+        periode: UtenlandsoppholdPeriode,
+        index: number
+    ) => void;
 }
 
 const UtenlandsoppholdPeriodeListe: React.StatelessComponent<
@@ -21,8 +27,8 @@ const UtenlandsoppholdPeriodeListe: React.StatelessComponent<
                     <UtenlandsoppholdPeriodeListeElement
                         key={index}
                         periode={periode}
-                        onLinkClick={() => onPeriodeLinkClick(periode)}
-                        onTrashClick={() => onPeriodeTrashClick(periode)}
+                        onLinkClick={() => onPeriodeLinkClick(periode, index)}
+                        onTrashClick={() => onPeriodeTrashClick(periode, index)}
                     />
                 ))}
             </ul>
