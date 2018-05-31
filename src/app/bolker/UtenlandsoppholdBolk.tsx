@@ -9,11 +9,12 @@ import { Språkkode } from '../intl/types';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
-    showLandContent: boolean;
+    showUtenlandsoppholdPeriodeContent: boolean;
     oppfølgingsspørsmål: string;
     perioder: UtenlandsoppholdPeriode[];
     periodeType: PeriodeType;
     språk: Språkkode;
+    onUtenlandsoppholdPeriodeSubmit: (periode: UtenlandsoppholdPeriode) => void;
 }
 
 interface UtenlandsoppholdBolkState {
@@ -42,11 +43,12 @@ class UtenlandsoppholdBolk extends React.Component<
     render() {
         const {
             renderSpørsmål,
-            showLandContent,
+            showUtenlandsoppholdPeriodeContent,
             oppfølgingsspørsmål,
             perioder,
             periodeType,
-            språk
+            språk,
+            onUtenlandsoppholdPeriodeSubmit
         } = this.props;
 
         const { periodeToEdit } = this.state;
@@ -54,7 +56,7 @@ class UtenlandsoppholdBolk extends React.Component<
         return (
             <React.Fragment>
                 {renderSpørsmål()}
-                {showLandContent && (
+                {showUtenlandsoppholdPeriodeContent && (
                     <React.Fragment>
                         <label htmlFor="">{oppfølgingsspørsmål}</label>
                         <UtenlandsoppholdPeriodeListe
@@ -74,7 +76,10 @@ class UtenlandsoppholdBolk extends React.Component<
                     children={null}
                     språk={språk}
                     periode={periodeToEdit}
-                    onSubmit={() => {}}
+                    onSubmit={(periode: UtenlandsoppholdPeriode) => {
+                        onUtenlandsoppholdPeriodeSubmit(periode);
+                        this.toggleModal();
+                    }}
                 />
             </React.Fragment>
         );

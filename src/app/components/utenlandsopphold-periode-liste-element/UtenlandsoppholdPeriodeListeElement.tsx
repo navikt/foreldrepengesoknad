@@ -39,9 +39,9 @@ const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<Props> = (
                             {countries.getName(land, 'nb')}
                         </div>
                         <div className="countryListElement__date">
-                            {getMessage(props.intl, 'standard.text.fromTo', {
-                                from: ISODateToMaskedInput(varighet.fom),
-                                to: ISODateToMaskedInput(varighet.tom)
+                            {getMessage(props.intl, 'tidsintervall', {
+                                fom: ISODateToMaskedInput(varighet.fom),
+                                tom: ISODateToMaskedInput(varighet.tom)
                             })}
                         </div>
                     </div>
