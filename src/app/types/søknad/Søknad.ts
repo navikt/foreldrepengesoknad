@@ -1,4 +1,3 @@
-import Søknadsvedlegg from './Søknadsvedlegg';
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
 import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
@@ -33,11 +32,11 @@ interface Søknad {
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
     uttaksplan: Periode[];
-    vedlegg: Søknadsvedlegg;
     søkerRolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
     erMorForSyk: boolean;
+    vedlegg: Søknadsvedlegginfo[];
 }
 
 export interface SøknadPartial {
@@ -48,7 +47,6 @@ export interface SøknadPartial {
     barn: BarnPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     uttaksplan?: Periode[];
-    vedlegg: Søknadsvedlegg;
     søkerRolle?: SøkerRolle;
     erSelvstendigNæringsdrivende?: boolean;
     erFrilanser?: boolean;
@@ -56,5 +54,24 @@ export interface SøknadPartial {
 }
 
 export type Skjemadata = Partial<Søknad>;
+
+export type SøknadsvedleggType =
+    | 'omsorgsovertakelse'
+    | 'adopsjonsvedtak'
+    | 'overtakelsedokumentasjon'
+    | 'terminbekreftelse'
+    | 'fødselsattest';
+
+export interface Søknadsvedlegginfo {
+    id: string;
+    url: string;
+    filnavn: string;
+    type: SøknadsvedleggType;
+    filstørrelse: number;
+}
+export interface SøknadsvedleggMetadata {
+    beskrivelse: string;
+    skjemanummer: string;
+}
 
 export default Søknad;

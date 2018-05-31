@@ -1,5 +1,6 @@
 import Person from '../../../types/Person';
 import Søknad from '../../../types/søknad/Søknad';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 export enum ApiActionKeys {
     'GET_PERSON_REQUEST' = 'getPersonRequest',
@@ -28,6 +29,7 @@ interface GetPersonFailed {
 export interface SendSøknadRequest {
     type: ApiActionKeys.SEND_SØKNAD_REQUEST;
     søknad: Søknad;
+    vedlegg: Attachment[];
 }
 
 interface SendSøknadSuccess {

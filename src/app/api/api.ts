@@ -1,6 +1,10 @@
 import axios from 'axios';
-import Søknad from '../types/søknad/Søknad';
+import Søknad, {
+    Søknadsvedlegginfo,
+    SøknadsvedleggType
+} from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 function getPerson() {
     const endpoint = Environment.REST_API_URL;
@@ -10,17 +14,25 @@ function getPerson() {
     });
 }
 
-function sendSøknad(søknad: Søknad) {
+const mapAttachmentTilSøknadsvedlegginfo = (
+    attachment: Attachment
+): Søknadsvedlegginfo => ({
+    id: attachment.id,
+    filnavn: attachment.filename,
+    url: attachment.url as string,
+    type: attachment.group as SøknadsvedleggType,
+    filstørrelse: attachment.filesize
+});
+
+function sendSøknad(søknad: Søknad, vedlegg: Attachment[]) {
     const formData = new FormData();
+    søknad.vedlegg = vedlegg.map((v) => mapAttachmentTilSøknadsvedlegginfo(v));
     formData.append(
         'soknad',
         new Blob([JSON.stringify(søknad)], {
             type: 'application/json'
         })
     );
-
-    const { vedlegg } = søknad;
-    formData.append('vedlegg', vedlegg[0]);
 
     const url = `${Environment.REST_API_URL}/soknad`;
     return axios.post(url, formData, {
