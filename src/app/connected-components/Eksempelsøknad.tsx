@@ -33,6 +33,8 @@ import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
 import { Språkkode } from 'common/intl/types';
+import { Attachment } from 'storage/attachment/types/Attachment';
+import { AppState } from '../redux/reducers';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -42,6 +44,7 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
+    vedlegg: Attachment[];
     språkkode: Språkkode;
 }
 
@@ -58,6 +61,7 @@ class Eksempelsøknad extends React.Component<Props> {
             annenForelder,
             utenlandsopphold,
             perioder,
+            vedlegg,
             intl
         } = this.props;
 
@@ -291,7 +295,9 @@ class Eksempelsøknad extends React.Component<Props> {
                     )}
 
                 <Hovedknapp
-                    onClick={() => dispatch(apiActions.sendSøknad(søknad))}>
+                    onClick={() =>
+                        dispatch(apiActions.sendSøknad(søknad, vedlegg))
+                    }>
                     Send søknad
                 </Hovedknapp>
             </Applikasjonsside>
@@ -299,7 +305,7 @@ class Eksempelsøknad extends React.Component<Props> {
     }
 }
 
-export default connect<StateProps>((state: any) => {
+export default connect<StateProps>((state: AppState) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
@@ -310,6 +316,7 @@ export default connect<StateProps>((state: any) => {
 
     return {
         søknad: state.søknad,
+        vedlegg: state.attachments,
         annenForelder: state.søknad.annenForelder,
         barn: state.søknad.barn,
         utenlandsopphold: state.søknad.utenlandsopphold,

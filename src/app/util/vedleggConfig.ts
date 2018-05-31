@@ -1,4 +1,4 @@
-import { SøknadsvedleggMetadata } from '../types/søknad/Søknadsvedlegg';
+import { SøknadsvedleggMetadata } from '../types/s\u00F8knad/S\u00F8knad';
 
 export interface VedleggConfig {
     [key: string]: SøknadsvedleggMetadata;

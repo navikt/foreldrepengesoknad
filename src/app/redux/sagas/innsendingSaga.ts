@@ -7,7 +7,11 @@ import {
 
 function* sendSøknad(action: SendSøknadRequest) {
     try {
-        const response = yield call(Api.sendSøknad, action.søknad);
+        const response = yield call(
+            Api.sendSøknad,
+            action.søknad,
+            action.vedlegg
+        );
         yield put({ type: ApiActionKeys.SEND_SØKNAD_SUCCESS, response });
     } catch (error) {
         yield put({ type: ApiActionKeys.SEND_SØKNAD_FAILED, error });

@@ -5,11 +5,6 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import Bolk from 'app/components/layout/Bolk';
-import {
-    concatNewFiles,
-    removeFileFromArray
-} from 'common/components/vedlegg/util';
-import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -18,14 +13,15 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { søknadStegPath } from '../../StegRoutes';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
-import SøknadsvedleggType from '../../../../types/søknad/Søknadsvedlegg';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
+import Søknadsvedlegg from '../../../../components/s\u00F8knadsvedlegg/S\u00F8knadsvedlegg';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: SøknadsvedleggType;
+    vedlegg: Attachment[];
     erFarEllerMedmor: boolean;
 }
 
@@ -123,36 +119,13 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 'vedlegg.tittel.terminbekreftelse'
                             )}
                             render={() => (
-                                <VedleggOversikt
-                                    inputId="terminbekreftelse"
-                                    vedlegg={vedlegg.terminbekreftelse}
-                                    onFilesSelect={(files) => {
-                                        dispatch(
-                                            søknadActions.updateVedlegg({
-                                                terminbekreftelse: concatNewFiles(
-                                                    files,
-                                                    vedlegg.terminbekreftelse
-                                                )
-                                            })
-                                        );
-                                    }}
-                                    onFileDelete={(file) =>
-                                        dispatch(
-                                            søknadActions.updateVedlegg({
-                                                terminbekreftelse: removeFileFromArray(
-                                                    file,
-                                                    vedlegg.terminbekreftelse
-                                                )
-                                            })
-                                        )
-                                    }
-                                />
+                                <Søknadsvedlegg type="terminbekreftelse" />
                             )}
                         />
 
                         <Spørsmål
                             synlig={
-                                vedlegg.terminbekreftelse.length > 0 &&
+                                vedlegg.length > 0 &&
                                 barn.termindato !== undefined
                             }
                             render={() => (
@@ -175,7 +148,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         {barn.terminbekreftelseDato &&
-                            vedlegg.terminbekreftelse.length > 0 && (
+                            vedlegg.length > 0 && (
                                 <FortsettKnapp
                                     history={history}
                                     location={søknadStegPath('annen-forelder')}>
