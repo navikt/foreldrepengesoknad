@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import stegConfig from '../util/stegConfig';
 import { søknadStegPath } from '../connected-components/steg/StegRoutes';
-import Veilederinfo from '../components/veileder-info/Veilederinfo';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 import './dev.less';
 import routeConfig from '../util/routeConfig';

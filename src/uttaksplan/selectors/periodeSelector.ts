@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { UttaksplanAppState } from '../redux/types';
 import {
     Utsettelsesperiode,
     Periode,
@@ -7,6 +6,7 @@ import {
     Periodetype
 } from '../types';
 import { leggUtsettelserTilStønadsperioder } from '../utils/periodeUtils';
+import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
 const utsettelseSelector = (state: UttaksplanAppState) => {
     return state.uttaksplan.periode.perioder.filter(

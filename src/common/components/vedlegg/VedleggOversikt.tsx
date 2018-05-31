@@ -4,16 +4,15 @@ import { FormattedMessage } from 'react-intl';
 import VedleggInput from '../vedlegg/VedleggInput';
 import VedleggListe from '../vedlegg/VedleggListe';
 import LabelText from '../labeltekst/Labeltekst';
-import { bytesString, getTotalFileSize } from '../../util/attachment';
+import { bytesString, getTotalFileSize } from 'common/util/filesize';
 import { mapFileToAttachment } from './util';
-import { SøknadsvedleggKey } from '../../types/søknad/Søknadsvedlegg';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'storage/attachment/types/Attachment';
 
 export interface VedleggOversiktProps {
     vedlegg: Attachment[];
-    inputId?: SøknadsvedleggKey;
+    inputId?: string;
     visFilstørrelse?: boolean;
     onFilesSelect: (files: Attachment[]) => void;
     onFileDelete: (file: Attachment) => void;

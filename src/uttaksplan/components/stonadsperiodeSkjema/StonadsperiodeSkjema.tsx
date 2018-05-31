@@ -3,7 +3,7 @@ import { Stonadsperiode, Periode } from 'uttaksplan/types';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { preventFormSubmit, normaliserDato } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import DatoInput from 'app/components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import { Column, Row } from 'nav-frontend-grid';
 import { renderDag } from 'uttaksplan/utils/renderUtils';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';

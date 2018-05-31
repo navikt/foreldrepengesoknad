@@ -1,5 +1,5 @@
 import { CommonActionKeys, CommonActionTypes } from './commonActionDefinitions';
-import { Språkkode } from '../../../intl/types';
+import { Språkkode } from 'common/intl/types';
 
 export function setSpråk(språkkode: Språkkode): CommonActionTypes {
     return {
