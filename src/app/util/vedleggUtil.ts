@@ -1,4 +1,7 @@
-import { SøknadsvedleggType } from '../types/søknad/Søknad';
+import {
+    SøknadsvedleggType,
+    SøknadsvedleggMetadata
+} from '../types/søknad/Søknad';
 import { AttachmentAppState } from 'storage/attachment/redux/attachmentReducer';
 import { Attachment } from 'storage/attachment/types/Attachment';
 import { getAttachmentsInGroup } from 'storage/attachment/util/attachmentUtil';
@@ -7,3 +10,35 @@ export const getSøknadsvedlegg = (
     type: SøknadsvedleggType,
     state: AttachmentAppState
 ): Attachment[] => getAttachmentsInGroup(state, type);
+
+export const getMetadataForSøknadsvedlegg = (
+    type: SøknadsvedleggType
+): SøknadsvedleggMetadata => {
+    switch (type) {
+        case 'adopsjonsvedtak':
+            return {
+                skjemanummer: 'skjema-adopsjonsvedtak',
+                beskrivelse: 'tom'
+            };
+        case 'fødselsattest':
+            return {
+                skjemanummer: 'skjema-fødselsattest',
+                beskrivelse: 'tom'
+            };
+        case 'omsorgsovertakelse':
+            return {
+                skjemanummer: 'skjema-omsorgsovertakelse',
+                beskrivelse: 'tom'
+            };
+        case 'overtakelsedokumentasjon':
+            return {
+                skjemanummer: 'skjema-overtakelsedokumentasjon',
+                beskrivelse: 'tom'
+            };
+        case 'terminbekreftelse':
+            return {
+                skjemanummer: 'skjema-terminbekreftelse',
+                beskrivelse: 'tom'
+            };
+    }
+};
