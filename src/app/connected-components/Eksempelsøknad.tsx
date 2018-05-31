@@ -96,7 +96,7 @@ class Eksempelsøknad extends React.Component<Props> {
                             perioder={søknad.utenlandsopphold.senerePerioder}
                             periodeType={'siste12mnd'}
                             språk={språkkode}
-                            onUtenlandsoppholdPeriodeSubmit={(
+                            onAddUtenlandsoppholdPeriode={(
                                 periode: UtenlandsoppholdPeriode
                             ) =>
                                 dispatch(
@@ -109,6 +109,21 @@ class Eksempelsøknad extends React.Component<Props> {
                                     })
                                 )
                             }
+                            onEditUtenlandsoppholdPeriode={(
+                                periode: UtenlandsoppholdPeriode,
+                                index: number
+                            ) => {
+                                const senerePerioder =
+                                    utenlandsopphold.senerePerioder;
+                                if (senerePerioder && index > -1) {
+                                    senerePerioder[index] = periode;
+                                }
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        senerePerioder
+                                    })
+                                );
+                            }}
                         />
                     )}
                 />
