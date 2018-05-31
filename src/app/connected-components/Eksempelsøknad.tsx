@@ -5,7 +5,8 @@ import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import {
     SøkerRolle,
     Søkersituasjon,
-    default as Søknad
+    default as Søknad,
+    Søknadsvedlegginfo
 } from '../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
@@ -33,8 +34,8 @@ import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
 import { Språkkode } from 'common/intl/types';
-import { Attachment } from 'storage/attachment/types/Attachment';
 import { AppState } from '../redux/reducers';
+import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -44,7 +45,7 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
-    vedlegg: Attachment[];
+    vedlegg: Søknadsvedlegginfo[];
     språkkode: Språkkode;
 }
 
@@ -309,6 +310,9 @@ export default connect<StateProps>((state: AppState) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
+    const vedlegg = state.attachments.map((a) =>
+        mapAttachmentTilSøknadsvedlegginfo(a)
+    );
     const roller =
         kjønn && situasjon
             ? getSøkerrollerForBruker(kjønn, situasjon)
@@ -316,13 +320,13 @@ export default connect<StateProps>((state: AppState) => {
 
     return {
         søknad: state.søknad,
-        vedlegg: state.attachments,
         annenForelder: state.søknad.annenForelder,
         barn: state.søknad.barn,
         utenlandsopphold: state.søknad.utenlandsopphold,
         perioder: state.søknad.uttaksplan,
         språkkode: state.common.språkkode,
         situasjon,
+        vedlegg,
         roller
     };
 })(injectIntl(Eksempelsøknad));

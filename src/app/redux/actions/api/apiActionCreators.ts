@@ -1,6 +1,5 @@
 import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
-import Søknad from '../../../types/søknad/Søknad';
-import { Attachment } from 'storage/attachment/types/Attachment';
+import Søknad, { Søknadsvedlegginfo } from '../../../types/søknad/Søknad';
 
 export function getPerson(): ApiActionTypes {
     return {
@@ -10,7 +9,7 @@ export function getPerson(): ApiActionTypes {
 
 export function sendSøknad(
     søknad: Søknad,
-    vedlegg: Attachment[]
+    vedlegg: Søknadsvedlegginfo[]
 ): ApiActionTypes {
     return {
         type: ApiActionKeys.SEND_SØKNAD_REQUEST,
