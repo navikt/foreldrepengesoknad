@@ -5,8 +5,7 @@ import ErBarnetFødtSpørsmål from '../spørsmål/ErBarnetFødtSpørsmål';
 import {
     SøkerRolle,
     Søkersituasjon,
-    default as Søknad,
-    Søknadsvedlegginfo
+    default as Søknad
 } from '../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
@@ -36,6 +35,7 @@ import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
 import { Språkkode } from 'common/intl/types';
 import { AppState } from '../redux/reducers';
 import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -45,13 +45,27 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
-    vedlegg: Søknadsvedlegginfo[];
+    attachments: Attachment[];
     språkkode: Språkkode;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+    }
+    sendInnSøknad() {
+        const vedlegg = this.props.attachments.map((a) =>
+            mapAttachmentTilSøknadsvedlegginfo(a)
+        );
+
+        const søknadsdata: Søknad = {
+            ...this.props.søknad,
+            vedlegg
+        };
+        this.props.dispatch(apiActions.sendSøknad(søknadsdata));
+    }
     render() {
         const {
             dispatch,
@@ -62,7 +76,6 @@ class Eksempelsøknad extends React.Component<Props> {
             annenForelder,
             utenlandsopphold,
             perioder,
-            vedlegg,
             intl
         } = this.props;
 
@@ -296,9 +309,8 @@ class Eksempelsøknad extends React.Component<Props> {
                     )}
 
                 <Hovedknapp
-                    onClick={() =>
-                        dispatch(apiActions.sendSøknad(søknad, vedlegg))
-                    }>
+                    htmlType="button"
+                    onClick={() => this.sendInnSøknad()}>
                     Send søknad
                 </Hovedknapp>
             </Applikasjonsside>
@@ -310,9 +322,6 @@ export default connect<StateProps>((state: AppState) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
-    const vedlegg = state.attachments.map((a) =>
-        mapAttachmentTilSøknadsvedlegginfo(a)
-    );
     const roller =
         kjønn && situasjon
             ? getSøkerrollerForBruker(kjønn, situasjon)
@@ -326,7 +335,7 @@ export default connect<StateProps>((state: AppState) => {
         perioder: state.søknad.uttaksplan,
         språkkode: state.common.språkkode,
         situasjon,
-        vedlegg,
+        attachments: state.attachments,
         roller
     };
 })(injectIntl(Eksempelsøknad));
