@@ -19,9 +19,6 @@ function sendSøknad(søknad: Søknad) {
         })
     );
 
-    const { vedlegg } = søknad;
-    formData.append('vedlegg', vedlegg[0]);
-
     const url = `${Environment.REST_API_URL}/soknad`;
     return axios.post(url, formData, {
         withCredentials: true,

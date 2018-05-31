@@ -16,16 +16,10 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
-import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
-import Søknadsvedlegg from '../../../types/søknad/Søknadsvedlegg';
-import {
-    concatNewFiles,
-    removeFileFromArray
-} from 'common/components/vedlegg/util';
+import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
-    vedlegg: Søknadsvedlegg;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -52,7 +46,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, intl, vedlegg, dispatch } = this.props;
+        const { barn, intl, dispatch } = this.props;
         return (
             <Steg id={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}>
                 <Spørsmål
@@ -76,32 +70,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                 <Spørsmål
                     animert={true}
                     synlig={barn.adopsjonsdato !== undefined}
-                    render={() => (
-                        <VedleggOversikt
-                            inputId="adopsjonsvedtak"
-                            vedlegg={vedlegg.adopsjonsvedtak}
-                            onFilesSelect={(files) => {
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        adopsjonsvedtak: concatNewFiles(
-                                            files,
-                                            vedlegg.adopsjonsvedtak
-                                        )
-                                    })
-                                );
-                            }}
-                            onFileDelete={(file) =>
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        adopsjonsvedtak: removeFileFromArray(
-                                            file,
-                                            vedlegg.adopsjonsvedtak
-                                        )
-                                    })
-                                )
-                            }
-                        />
-                    )}
+                    render={() => <Søknadsvedlegg type="adopsjonsvedtak" />}
                 />
                 <Spørsmål
                     animert={false}
@@ -141,8 +110,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        barn: state.søknad.barn as Adopsjonsbarn,
-        vedlegg: state.søknad.vedlegg
+        barn: state.søknad.barn as Adopsjonsbarn
     };
 };
 

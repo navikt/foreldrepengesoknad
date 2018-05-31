@@ -33,6 +33,9 @@ import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
 import { Språkkode } from 'common/intl/types';
+import { AppState } from '../redux/reducers';
+import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
+import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -42,12 +45,28 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
+    attachments: Attachment[];
     språkkode: Språkkode;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class Eksempelsøknad extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.sendInnSøknad = this.sendInnSøknad.bind(this);
+    }
+    sendInnSøknad() {
+        const vedlegg = this.props.attachments.map((a) =>
+            mapAttachmentTilSøknadsvedlegginfo(a)
+        );
+
+        const søknadsdata: Søknad = {
+            ...this.props.søknad,
+            vedlegg
+        };
+        this.props.dispatch(apiActions.sendSøknad(søknadsdata));
+    }
     render() {
         const {
             dispatch,
@@ -291,7 +310,8 @@ class Eksempelsøknad extends React.Component<Props> {
                     )}
 
                 <Hovedknapp
-                    onClick={() => dispatch(apiActions.sendSøknad(søknad))}>
+                    htmlType="button"
+                    onClick={() => this.sendInnSøknad()}>
                     Send søknad
                 </Hovedknapp>
             </Applikasjonsside>
@@ -299,7 +319,7 @@ class Eksempelsøknad extends React.Component<Props> {
     }
 }
 
-export default connect<StateProps>((state: any) => {
+export default connect<StateProps>((state: AppState) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
@@ -316,6 +336,7 @@ export default connect<StateProps>((state: any) => {
         perioder: state.søknad.uttaksplan,
         språkkode: state.common.språkkode,
         situasjon,
+        attachments: state.attachments,
         roller
     };
 })(injectIntl(Eksempelsøknad));
