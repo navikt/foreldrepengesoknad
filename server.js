@@ -23,7 +23,7 @@ server.use((req, res, next) => {
 
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
-        server.render('index.html', (err, html) => {
+        server.render('index.html', decoratorFragments, (err, html) => {
             if (err) {
                 reject(err);
             } else {

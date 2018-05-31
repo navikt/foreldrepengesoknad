@@ -18,11 +18,7 @@ For å kjøre cypress-tester:
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes mot:
-
-*   Erlend Vige, erlend.edvardsen.vige@nav.no
-*   Odd Einar Hoel, odd.einar.hoel@nav.no
-*   Frode Hansen, frode.hansen@nav.no
+Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.bris@nav.no.
 
 ## For NAV-ansatte
 
