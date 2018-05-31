@@ -55,7 +55,7 @@ interface AttachmentDeleteFailed {
     error: string;
 }
 
-export type AttachmentActionTypes =
+export type AttachmentAction =
     | Add
     | UploadPending
     | UploadAttachment
