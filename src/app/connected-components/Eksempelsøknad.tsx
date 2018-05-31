@@ -54,6 +54,7 @@ type Props = StateProps & InjectedIntlProps & DispatchProps;
 class Eksempelsøknad extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.sendInnSøknad = this.sendInnSøknad.bind(this);
     }
     sendInnSøknad() {
         const vedlegg = this.props.attachments.map((a) =>
