@@ -1,6 +1,6 @@
 import { Attachment } from '../types/Attachment';
 import {
-    AttachmentActionTypes,
+    AttachmentAction,
     AttachmentActionKeys
 } from './attachmentActionDefinitions';
 
@@ -65,7 +65,7 @@ const setAttachmentUploaded = (
 
 const attachmentReducer = (
     state = getDefaultState(),
-    action: AttachmentActionTypes
+    action: AttachmentAction
 ): AttachmentReducerState => {
     switch (action.type) {
         case AttachmentActionKeys.ADD:
