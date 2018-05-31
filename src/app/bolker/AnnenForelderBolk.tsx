@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Checkbox, Input } from 'nav-frontend-skjema';
-import Spørsmål from '../components/spørsmål/Spørsmål';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
-import getMessage from '../util/i18nUtils';
+import getMessage from 'common/util/i18nUtils';
 
 interface AnnenForelderBolkProps {
     annenForelderData: AnnenForelderPartial;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Permisjonsregler } from 'uttaksplan/types';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { getVarighetString } from 'uttaksplan/utils/intlUtils';
-import Veilederinfo from 'app/components/veileder-info/Veilederinfo';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface Props {
     forelderNavn: string;

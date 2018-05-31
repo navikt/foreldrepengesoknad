@@ -1,9 +1,5 @@
 import { createSelector } from 'reselect';
 import {
-    Tidslinjeinnslag,
-    TidslinjeinnslagType
-} from '../components/tidslinje/types';
-import {
     getStonadsperioderOgUtsettelser,
     getTaptePerioder
 } from './periodeSelector';
@@ -14,6 +10,10 @@ import {
     sorterPerioder
 } from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import {
+    Tidslinjeinnslag,
+    TidslinjeinnslagType
+} from 'uttaksplan/components/tidslinje/types';
 
 const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
 

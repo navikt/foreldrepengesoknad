@@ -7,7 +7,7 @@ import Foreldrepengesøknad from './connected-components/Foreldrepengesøknad';
 import store from './redux';
 import IntlProvider from './intl/IntlProvider';
 
-import './assets/styles/app.less';
+import './styles/app.less';
 
 Modal.setAppElement('#app');
 const root = document.getElementById('app');

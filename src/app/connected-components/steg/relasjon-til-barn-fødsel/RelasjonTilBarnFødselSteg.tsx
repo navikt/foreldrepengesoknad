@@ -5,11 +5,11 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from '../../../components/layout/Steg';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
+import Steg from 'app/components/layout/Steg';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
 import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { partials } from './partials';
 import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';

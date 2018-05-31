@@ -9,7 +9,7 @@ import nbMessages from './nb_NO.json';
 import nnMessagesUttaksplan from '../../uttaksplan/intl/nn_NO.json';
 import nbMessagesUttaksplan from '../../uttaksplan/intl/nb_NO.json';
 import { AppState } from '../redux/reducers';
-import { Språkkode } from './types';
+import { Språkkode } from 'common/intl/types';
 
 interface StateProps {
     språkkode: Språkkode;

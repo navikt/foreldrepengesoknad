@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { DispatchProps } from '../../../../redux/types/index';
-import Spørsmål from '../../../../components/spørsmål/Spørsmål';
-import Bolk from '../../../../components/layout/Bolk';
-import getMessage from '../../../../util/i18nUtils';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Bolk from 'app/components/layout/Bolk';
 import {
     concatNewFiles,
     removeFileFromArray
-} from '../../../../components/vedlegg/util';
-import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
+} from 'common/components/vedlegg/util';
+import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
@@ -17,9 +15,11 @@ import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpør
 
 import utils from '../../../../util/fødselsdato';
 import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
+import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
 import Søknadsvedlegg from '../../../../types/søknad/Søknadsvedlegg';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
 
 interface StateProps {
     barn: FødtBarn;

@@ -9,8 +9,7 @@ const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps }) => (
     <svg
         viewBox="0 0 96 96"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...svgProps}
-    >
+        {...svgProps}>
         <title>NAV veileder</title>
         <defs>
             <path

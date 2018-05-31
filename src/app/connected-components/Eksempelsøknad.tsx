@@ -7,17 +7,17 @@ import {
     Søkersituasjon,
     default as Søknad
 } from '../types/søknad/Søknad';
-import { DispatchProps } from '../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import apiActions from './../redux/actions/api/apiActionCreators';
 import { BarnPartial, UfødtBarn } from '../types/søknad/Barn';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
-import getMessage from '../util/i18nUtils';
-import Spørsmål from '../components/spørsmål/Spørsmål';
+import getMessage from 'common/util/i18nUtils';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
-import Bolk from '../components/layout/Bolk';
-import DatoInput from '../components/dato-input/DatoInput';
+import Bolk from 'app/components/layout/Bolk';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import { UtenlandsoppholdPartial } from '../types/søknad/Utenlandsopphold';
 import DocumentTitle from 'react-document-title';
@@ -31,8 +31,8 @@ import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
 import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
-import { Språkkode } from '../intl/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
+import { Språkkode } from 'common/intl/types';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
