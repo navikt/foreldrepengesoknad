@@ -19,7 +19,7 @@ import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
-import Søknadsvedlegg from '../../../components/s\u00F8knadsvedlegg/S\u00F8knadsvedlegg';
+import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;

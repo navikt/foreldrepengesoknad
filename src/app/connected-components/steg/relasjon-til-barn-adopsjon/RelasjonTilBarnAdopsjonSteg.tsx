@@ -18,7 +18,7 @@ import utils from '../../../util/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
-import Søknadsvedlegg from '../../../components/s\u00F8knadsvedlegg/S\u00F8knadsvedlegg';
+import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 
 interface StateProps {

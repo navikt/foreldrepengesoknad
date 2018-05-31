@@ -14,7 +14,7 @@ import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
-import Søknadsvedlegg from '../../../../components/s\u00F8knadsvedlegg/S\u00F8knadsvedlegg';
+import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface StateProps {

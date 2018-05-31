@@ -14,7 +14,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import BekreftCheckboksPanel from 'nav-frontend-skjema/lib/bekreft-checkboks-panel';
 import { HistoryProps } from '../../../types/common';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsm\u00E5l/Spørsm\u00E5l';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 
 export interface StateProps {
