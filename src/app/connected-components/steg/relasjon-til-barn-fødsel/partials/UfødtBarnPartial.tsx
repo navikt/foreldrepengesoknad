@@ -16,12 +16,11 @@ import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
-import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søknad: SøknadPartial;
-    vedlegg: Attachment[];
+    terminbekreftelseErLastetOpp: boolean;
     erFarEllerMedmor: boolean;
 }
 
@@ -36,7 +35,7 @@ class UfødtBarnPartial extends React.Component<Props> {
             intl,
             dispatch,
             barn,
-            vedlegg,
+            terminbekreftelseErLastetOpp,
             søknad,
             erFarEllerMedmor,
             history
@@ -125,7 +124,7 @@ class UfødtBarnPartial extends React.Component<Props> {
 
                         <Spørsmål
                             synlig={
-                                vedlegg.length > 0 &&
+                                terminbekreftelseErLastetOpp &&
                                 barn.termindato !== undefined
                             }
                             render={() => (
@@ -148,7 +147,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         {barn.terminbekreftelseDato &&
-                            vedlegg.length > 0 && (
+                            terminbekreftelseErLastetOpp && (
                                 <FortsettKnapp
                                     history={history}
                                     location={søknadStegPath('annen-forelder')}>

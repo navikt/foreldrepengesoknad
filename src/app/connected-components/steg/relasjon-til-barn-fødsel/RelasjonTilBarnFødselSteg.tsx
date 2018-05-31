@@ -15,14 +15,13 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
 import { HistoryProps, Kjønn } from '../../../types/common';
-import { Attachment } from 'storage/attachment/types/Attachment';
 import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 
 interface StateProps {
     barn: BarnPartial;
     søknad: Søknad;
-    fødselsattest: Attachment[];
-    terminbekreftelse: Attachment[];
+    fødselsattestLastetOpp: boolean;
+    terminbekreftelseErLastetOpp: boolean;
     person?: Person;
 }
 
@@ -34,8 +33,8 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
             dispatch,
             person,
             søknad,
-            fødselsattest,
-            terminbekreftelse,
+            fødselsattestLastetOpp,
+            terminbekreftelseErLastetOpp,
             history
         } = this.props;
 
@@ -66,14 +65,16 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
                         <partials.FødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
-                            vedlegg={terminbekreftelse}
+                            fødselsattestErLastetOpp={fødselsattestLastetOpp}
                             history={history}
                         />
                     ) : (
                         <partials.UfødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as UfødtBarn}
-                            vedlegg={fødselsattest}
+                            terminbekreftelseErLastetOpp={
+                                terminbekreftelseErLastetOpp
+                            }
                             søknad={søknad}
                             erFarEllerMedmor={erFarEllerMedmor}
                             history={history}
@@ -90,8 +91,10 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: AppState): StateProps => ({
     søknad: state.søknad,
     barn: state.søknad.barn,
-    fødselsattest: getSøknadsvedlegg('fødselsattest', state),
-    terminbekreftelse: getSøknadsvedlegg('terminbekreftelse', state),
+    fødselsattestLastetOpp:
+        getSøknadsvedlegg('fødselsattest', state).length > 0,
+    terminbekreftelseErLastetOpp:
+        getSøknadsvedlegg('terminbekreftelse', state).length > 0,
     person: state.api.person
 });
 

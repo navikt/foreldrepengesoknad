@@ -15,11 +15,10 @@ import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
-import { Attachment } from 'storage/attachment/types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Attachment[];
+    fødselsattestErLastetOpp: boolean;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -44,7 +43,13 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, vedlegg, history } = this.props;
+        const {
+            intl,
+            dispatch,
+            barn,
+            fødselsattestErLastetOpp,
+            history
+        } = this.props;
         return (
             <React.Fragment>
                 <Spørsmål
@@ -87,7 +92,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     render={() => <Søknadsvedlegg type="fødselsattest" />}
                 />
 
-                {vedlegg.length > 0 && (
+                {fødselsattestErLastetOpp && (
                     <FortsettKnapp
                         history={history}
                         location={søknadStegPath('annen-forelder')}>
