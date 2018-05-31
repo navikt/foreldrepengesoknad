@@ -68,18 +68,13 @@ export interface Søknadsvedlegginfo {
     filnavn: string;
     type: SøknadsvedleggType;
     filstørrelse: number;
-    metadata: MottaksvedleggMetadata;
-}
-
-export interface MottaksvedleggMetadata {
-    skjemanummer: string;
-    type?: string;
-    beskrivelse?: string;
+    metadata: SøknadsvedleggMetadata;
 }
 
 export interface SøknadsvedleggMetadata {
-    beskrivelse: string;
     skjemanummer: string;
+    type?: string;
+    beskrivelse?: string;
 }
 
 export default Søknad;
