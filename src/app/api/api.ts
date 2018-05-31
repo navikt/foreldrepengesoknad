@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Søknad, { Søknadsvedlegginfo } from '../types/søknad/Søknad';
+import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 
 function getPerson() {
@@ -10,9 +10,8 @@ function getPerson() {
     });
 }
 
-function sendSøknad(søknad: Søknad, vedlegg: Søknadsvedlegginfo[]) {
+function sendSøknad(søknad: Søknad) {
     const formData = new FormData();
-    søknad.vedlegg = vedlegg;
     formData.append(
         'soknad',
         new Blob([JSON.stringify(søknad)], {
