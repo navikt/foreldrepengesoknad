@@ -6,7 +6,8 @@ module.exports = {
     setupTestFrameworkScriptFile: './jest/setup.ts',
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
-        '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules'
+        '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules',
+        'uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1'
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     globals: {
