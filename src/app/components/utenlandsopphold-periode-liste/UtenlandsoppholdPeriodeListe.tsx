@@ -9,10 +9,7 @@ interface UtenlandsoppholdPeriodeListeProps {
         periode: UtenlandsoppholdPeriode,
         index: number
     ) => void;
-    onPeriodeTrashClick: (
-        periode: UtenlandsoppholdPeriode,
-        index: number
-    ) => void;
+    onPeriodeTrashClick: (periode: UtenlandsoppholdPeriode) => void;
 }
 
 const UtenlandsoppholdPeriodeListe: React.StatelessComponent<
@@ -28,7 +25,7 @@ const UtenlandsoppholdPeriodeListe: React.StatelessComponent<
                         key={index}
                         periode={periode}
                         onLinkClick={() => onPeriodeLinkClick(periode, index)}
-                        onTrashClick={() => onPeriodeTrashClick(periode, index)}
+                        onTrashClick={() => onPeriodeTrashClick(periode)}
                     />
                 ))}
             </ul>

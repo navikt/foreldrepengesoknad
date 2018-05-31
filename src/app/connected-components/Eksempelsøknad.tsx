@@ -124,6 +124,23 @@ class Eksempelsøknad extends React.Component<Props> {
                                     })
                                 );
                             }}
+                            onDeleteUtenlandsoppholdPeriode={(
+                                periode: UtenlandsoppholdPeriode
+                            ) => {
+                                const senerePerioder =
+                                    utenlandsopphold.senerePerioder;
+                                if (senerePerioder) {
+                                    senerePerioder.splice(
+                                        senerePerioder.indexOf(periode),
+                                        1
+                                    );
+                                    dispatch(
+                                        søknadActions.updateUtenlandsopphold({
+                                            senerePerioder
+                                        })
+                                    );
+                                }
+                            }}
                         />
                     )}
                 />
