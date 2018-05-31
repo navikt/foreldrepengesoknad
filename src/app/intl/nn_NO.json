@@ -94,6 +94,8 @@
     "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
     "adoptertIUtlandet.spørsmål": "Adoptert i utlandet?",
 
+    "tidsintervall": "{fom} - {tom}",
+
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.datoinput.fra": "Fra og med",
     "utenlandsopphold.datoinput.til": "Til og med",

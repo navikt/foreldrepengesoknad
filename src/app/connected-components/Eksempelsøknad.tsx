@@ -19,7 +19,10 @@ import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import Bolk from '../components/layout/Bolk';
 import DatoInput from '../components/dato-input/DatoInput';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
-import { UtenlandsoppholdPartial } from '../types/søknad/Utenlandsopphold';
+import {
+    UtenlandsoppholdPartial,
+    UtenlandsoppholdPeriode
+} from '../types/søknad/Utenlandsopphold';
 import DocumentTitle from 'react-document-title';
 import BoddINorgeSiste12MndSpørsmål from '../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
@@ -86,13 +89,26 @@ class Eksempelsøknad extends React.Component<Props> {
                                     }
                                 />
                             )}
-                            showLandContent={
+                            showUtenlandsoppholdPeriodeContent={
                                 utenlandsopphold.iNorgeNeste12Mnd === false
                             }
                             oppfølgingsspørsmål="Jeg skal bo i..."
                             perioder={søknad.utenlandsopphold.senerePerioder}
                             periodeType={'siste12mnd'}
                             språk={språkkode}
+                            onUtenlandsoppholdPeriodeSubmit={(
+                                periode: UtenlandsoppholdPeriode
+                            ) =>
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        senerePerioder: [
+                                            ...(utenlandsopphold.senerePerioder ||
+                                                []),
+                                            periode
+                                        ]
+                                    })
+                                )
+                            }
                         />
                     )}
                 />
