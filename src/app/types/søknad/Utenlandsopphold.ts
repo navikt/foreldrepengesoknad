@@ -3,10 +3,17 @@ export type UtenlandsoppholdPeriode = {
     varighet: Varighet;
 };
 
+type UtenlandsoppholdPeriodeSkjemaData = {
+    land: string;
+    varighet: VarighetPartial;
+};
+
 export type Varighet = {
     tom: string;
     fom: string;
 };
+
+type VarighetPartial = Partial<Varighet>;
 
 type Utenlandsopphold = {
     jobbetINorgeSiste12Mnd: boolean;
@@ -18,6 +25,8 @@ type Utenlandsopphold = {
 };
 
 export type UtenlandsoppholdPartial = Partial<Utenlandsopphold>;
-export type UtenlandsoppholdPeriodePartial = Partial<UtenlandsoppholdPeriode>;
+export type UtenlandsoppholdPeriodePartial = Partial<
+    UtenlandsoppholdPeriodeSkjemaData
+>;
 
 export default Utenlandsopphold;
