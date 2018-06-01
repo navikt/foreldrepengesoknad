@@ -24,6 +24,8 @@ type Utenlandsopphold = {
     senerePerioder: UtenlandsoppholdPeriode[];
 };
 
+export type PeriodeType = 'neste12mnd' | 'siste12mnd';
+
 export type UtenlandsoppholdPartial = Partial<Utenlandsopphold>;
 export type UtenlandsoppholdPeriodePartial = Partial<
     UtenlandsoppholdPeriodeSkjemaData
