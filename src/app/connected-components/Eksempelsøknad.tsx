@@ -46,6 +46,7 @@ interface StateProps {
     roller?: SøkerRolle[];
     søknad: Søknad;
     attachments: Attachment[];
+    uttaksplan: Periode[];
     språkkode: Språkkode;
 }
 
@@ -63,6 +64,7 @@ class Eksempelsøknad extends React.Component<Props> {
 
         const søknadsdata: Søknad = {
             ...this.props.søknad,
+            uttaksplan: [...this.props.uttaksplan],
             vedlegg
         };
         this.props.dispatch(apiActions.sendSøknad(søknadsdata));
@@ -337,6 +339,7 @@ export default connect<StateProps>((state: AppState) => {
         språkkode: state.common.språkkode,
         situasjon,
         attachments: state.attachments,
+        uttaksplan: state.uttaksplan.periode.perioder,
         roller
     };
 })(injectIntl(Eksempelsøknad));
