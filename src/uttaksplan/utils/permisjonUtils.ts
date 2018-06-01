@@ -18,8 +18,8 @@ import {
     StonadskontoType
 } from '../types';
 import { getPeriodeSluttdato, sorterPerioder } from './periodeUtils';
-import { normaliserDato } from '../utils';
 import { guid } from 'nav-frontend-js-utils';
+import { normaliserDato } from 'common/util/datoUtils';
 
 export function getPermisjonStartdato(
     termindato: Date,

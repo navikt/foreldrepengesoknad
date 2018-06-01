@@ -16,10 +16,10 @@ import {
     setTermindato
 } from 'uttaksplan/redux/actions';
 import { DispatchProps } from 'common/redux/types';
-import { renderDag } from 'uttaksplan/utils/renderUtils';
 import DatoInput from 'common/components/dato-input/DatoInput';
 
 import './skjema.less';
+import { renderDag } from 'common/util/renderUtils';
 
 export interface StateProps {
     uttaksplanForm: UttaksplanFormState;

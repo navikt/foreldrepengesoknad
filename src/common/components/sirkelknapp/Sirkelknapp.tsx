@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 
 import './sirkelknapp.less';
-import preventDoubleTapZoom from '../../utils/preventDoubleTapZoom';
 import { guid } from 'nav-frontend-js-utils';
 import AriaText from '../aria/AriaText';
+import preventDoubleTapZoom from 'common/util/preventDoubleTapZoom';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Lenke from 'nav-frontend-lenker';
-import UtvidetInformasjon from 'uttaksplan/elements/utvidetInformasjon/UtvidetInformasjon';
 import { Element } from 'nav-frontend-typografi';
 import {
     injectIntl,
@@ -10,6 +9,7 @@ import {
 } from 'react-intl';
 import EksterneLenker from 'uttaksplan/eksterneLenker';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import UtvidetInformasjon from 'uttaksplan/components/utvidetInformasjon/UtvidetInformasjon';
 
 export interface Props {}
 
