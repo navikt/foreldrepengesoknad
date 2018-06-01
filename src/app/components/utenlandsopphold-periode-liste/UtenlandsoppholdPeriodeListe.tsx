@@ -3,6 +3,8 @@ import * as React from 'react';
 import { UtenlandsoppholdPeriode } from '../../types/søknad/Utenlandsopphold';
 import UtenlandsoppholdPeriodeListeElement from '../utenlandsopphold-periode-liste-element/UtenlandsoppholdPeriodeListeElement';
 
+import './utenlandsoppholdPeriodeListe.less';
+
 interface UtenlandsoppholdPeriodeListeProps {
     perioder: UtenlandsoppholdPeriode[];
     onPeriodeLinkClick: (
@@ -19,7 +21,7 @@ const UtenlandsoppholdPeriodeListe: React.StatelessComponent<
     if (perioder.length > 0) {
         const { onPeriodeLinkClick, onPeriodeTrashClick } = props;
         return (
-            <ul className="countryList">
+            <ul className="utenlandsoppholdPeriodeListe">
                 {props.perioder.map((periode, index) => (
                     <UtenlandsoppholdPeriodeListeElement
                         key={index}
