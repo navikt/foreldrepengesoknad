@@ -1,13 +1,14 @@
-require('dotenv').config();
-
 const express = require('express');
 const path = require('path');
 const app = express();
 const guid = require('nav-frontend-js-utils').guid;
-
 const server = express();
 const router = express.Router();
 const contextPath = '/foreldrepengesoknad-api';
+
+const multer = require('multer');
+
+require('dotenv').config();
 
 const mockResponse = {
     fnr: '11111111111',
@@ -20,8 +21,15 @@ const mockResponse = {
 
 const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN');
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET,PUT,POST,DELETE,OPTIONS'
+    );
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Content-Type,X-XSRF-TOKEN,Location'
+    );
+    res.setHeader('Access-Control-Expose-Headers', 'Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 };
@@ -39,13 +47,21 @@ router.get(['/rest/personinfo'], (req, res) => {
 });
 
 router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));
-router.post('/rest/storage/vedlegg', (req, res) => {
-    const randomFileName = guid();
-    res.location(
-        `https://localhost:8080/foreldrepengesoknad/${randomFileName}`
-    );
-    res.sendStatus(201);
-});
+
+const vedleggUpload = multer({ dest: './dist/vedlegg/' });
+router.post(
+    '/rest/storage/vedlegg',
+    vedleggUpload.single('vedlegg'),
+    (req, res) => {
+        res.setHeader(
+            'Location',
+            `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${
+                req.body.id
+            }`
+        );
+        res.sendStatus(201);
+    }
+);
 
 router.delete('/rest/storage/vedlegg/:id', (req, res) => {
     res.sendStatus(204);
