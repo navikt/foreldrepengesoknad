@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { getUkerOgDagerFromDager } from '../../../utils/uttaksdagerUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 
 export interface Props {
     dager: number;
@@ -18,8 +18,8 @@ const Varighet: React.StatelessComponent<Props & InjectedIntlProps> = ({
                 {
                     id:
                         ukerOgDager.uker > 0
-                            ? 'uttaksplan.ukerogdager'
-                            : 'uttaksplan.dager'
+                            ? 'common.varighet.ukerogdager'
+                            : 'common.varighet.dager'
                 },
                 { ...ukerOgDager }
             )}
