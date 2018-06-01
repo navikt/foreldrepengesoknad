@@ -5,7 +5,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from 'app/components/layout/Steg';
+import Steg, { StegProps } from 'app/components/layout/Steg';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
 import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
@@ -23,6 +23,7 @@ interface StateProps {
     fødselsattestLastetOpp: boolean;
     terminbekreftelseErLastetOpp: boolean;
     person?: Person;
+    stegProps: StegProps;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -33,9 +34,8 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
             dispatch,
             person,
             søknad,
-            fødselsattestLastetOpp,
             terminbekreftelseErLastetOpp,
-            history
+            stegProps
         } = this.props;
 
         if (person) {
@@ -45,7 +45,7 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
                 kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR;
 
             return (
-                <Steg id={StegID.RELASJON_TIL_BARN_FØDSEL}>
+                <Steg {...stegProps}>
                     <Spørsmål
                         render={() => (
                             <ErBarnetFødtSpørsmål
@@ -65,19 +65,16 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
                         <partials.FødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
-                            fødselsattestErLastetOpp={fødselsattestLastetOpp}
-                            history={history}
                         />
                     ) : (
                         <partials.UfødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as UfødtBarn}
+                            søknad={søknad}
+                            erFarEllerMedmor={erFarEllerMedmor}
                             terminbekreftelseErLastetOpp={
                                 terminbekreftelseErLastetOpp
                             }
-                            søknad={søknad}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            history={history}
                         />
                     )}
                 </Steg>
@@ -88,15 +85,33 @@ class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-    søknad: state.søknad,
-    barn: state.søknad.barn,
-    fødselsattestLastetOpp:
-        getSøknadsvedlegg('fødselsattest', state).length > 0,
-    terminbekreftelseErLastetOpp:
-        getSøknadsvedlegg('terminbekreftelse', state).length > 0,
-    person: state.api.person
-});
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const barn = state.søknad.barn;
+    const erBarnetFødt = barn && barn.erBarnetFødt === true;
+    const harTerminbekreftelseDato =
+        (barn as UfødtBarn).terminbekreftelseDato !== undefined;
+    const fødselsattestLastetOpp =
+        getSøknadsvedlegg('fødselsattest', state).length > 0;
+    const terminbekreftelseErLastetOpp =
+        getSøknadsvedlegg('terminbekreftelse', state).length > 0;
+
+    const stegProps: StegProps = {
+        id: StegID.RELASJON_TIL_BARN_FØDSEL,
+        renderFortsettKnapp:
+            (erBarnetFødt && fødselsattestLastetOpp) ||
+            (harTerminbekreftelseDato && terminbekreftelseErLastetOpp),
+        history: props.history
+    };
+
+    return {
+        søknad: state.søknad,
+        person: state.api.person,
+        barn,
+        fødselsattestLastetOpp,
+        terminbekreftelseErLastetOpp,
+        stegProps
+    };
+};
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(
     injectIntl(RelasjonTilBarnFødsel)

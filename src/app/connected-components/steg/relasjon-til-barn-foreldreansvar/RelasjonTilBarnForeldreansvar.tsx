@@ -17,16 +17,21 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import utils from '../../../util/fødselsdato';
 import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { Fødselsdato } from '../../../types/common';
+import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
 import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
+import { StegProps } from '../../../components/layout/Steg';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
     visOver15årMelding: boolean;
+    stegProps: StegProps;
 }
 
-export type Props = DispatchProps & StateProps & InjectedIntlProps;
+export type Props = DispatchProps &
+    StateProps &
+    InjectedIntlProps &
+    HistoryProps;
 
 class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -47,9 +52,15 @@ class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, visOver15årMelding, intl, dispatch } = this.props;
+        const {
+            barn,
+            visOver15årMelding,
+            intl,
+            stegProps,
+            dispatch
+        } = this.props;
         return (
-            <Steg id={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}>
+            <Steg {...stegProps}>
                 <Spørsmål
                     render={() => (
                         <DatoInput
@@ -124,11 +135,20 @@ const erAlderOver15År = (datoer: Fødselsdato[]) => {
     return harBarnOver15 !== undefined;
 };
 
-const mapStateToProps = (state: AppState): StateProps => {
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
+
+    const stegProps: StegProps = {
+        id: StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
+        renderFortsettKnapp:
+            barn.fødselsdatoer && barn.fødselsdatoer.length > 0,
+        history: props.history
+    };
+
     return {
         barn,
-        visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || [])
+        visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || []),
+        stegProps
     };
 };
 

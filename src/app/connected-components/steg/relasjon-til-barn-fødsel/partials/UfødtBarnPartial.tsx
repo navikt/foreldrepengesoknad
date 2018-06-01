@@ -10,9 +10,6 @@ import søknadActions from '../../../../redux/actions/søknad/søknadActionCreat
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøknadPartial } from '../../../../types/søknad/Søknad';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
-import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
@@ -24,10 +21,7 @@ interface UfødtBarnPartialProps {
     erFarEllerMedmor: boolean;
 }
 
-type Props = UfødtBarnPartialProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+type Props = UfødtBarnPartialProps & InjectedIntlProps & DispatchProps;
 
 class UfødtBarnPartial extends React.Component<Props> {
     render() {
@@ -37,8 +31,7 @@ class UfødtBarnPartial extends React.Component<Props> {
             barn,
             terminbekreftelseErLastetOpp,
             søknad,
-            erFarEllerMedmor,
-            history
+            erFarEllerMedmor
         } = this.props;
 
         const erMorEllerMorErForSyk =
@@ -145,15 +138,6 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 />
                             )}
                         />
-
-                        {barn.terminbekreftelseDato &&
-                            terminbekreftelseErLastetOpp && (
-                                <FortsettKnapp
-                                    history={history}
-                                    location={søknadStegPath('annen-forelder')}>
-                                    {getMessage(intl, 'fortsettknapp.label')}
-                                </FortsettKnapp>
-                            )}
                     </React.Fragment>
                 )}
             </React.Fragment>

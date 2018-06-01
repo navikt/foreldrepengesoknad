@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from 'app/components/layout/Steg';
+import Steg, { StegProps } from 'app/components/layout/Steg';
 
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
@@ -17,12 +17,17 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
 import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
+import { HistoryProps } from '../../../types/common';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
+    stegProps: StegProps;
 }
 
-export type Props = DispatchProps & StateProps & InjectedIntlProps;
+export type Props = DispatchProps &
+    StateProps &
+    InjectedIntlProps &
+    HistoryProps;
 
 class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -46,9 +51,9 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, intl, dispatch } = this.props;
+        const { barn, intl, dispatch, stegProps } = this.props;
         return (
-            <Steg id={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}>
+            <Steg {...stegProps}>
                 <Spørsmål
                     render={() => (
                         <DatoInput
@@ -108,9 +113,22 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => {
+const mapStateToProps = (
+    state: AppState & StegProps,
+    props: Props
+): StateProps => {
+    const barn = state.søknad.barn as Adopsjonsbarn;
+
+    const stegProps: StegProps = {
+        id: StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
+        renderFortsettKnapp:
+            barn.fødselsdatoer && barn.fødselsdatoer.length > 0,
+        history: props.history
+    };
+
     return {
-        barn: state.søknad.barn as Adopsjonsbarn
+        barn,
+        stegProps
     };
 };
 
