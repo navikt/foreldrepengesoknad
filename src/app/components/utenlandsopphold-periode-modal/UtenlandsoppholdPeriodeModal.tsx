@@ -6,7 +6,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import {
-    PeriodeType,
+    UtenlandsoppholdPeriodeType,
     UtenlandsoppholdPeriode,
     UtenlandsoppholdPeriodePartial
 } from '../../types/søknad/Utenlandsopphold';
@@ -17,7 +17,7 @@ import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 
 export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
-    type: PeriodeType;
+    type: UtenlandsoppholdPeriodeType;
     periode?: UtenlandsoppholdPeriode;
     språk: Språkkode;
     onAdd: (periode: UtenlandsoppholdPeriode) => void;
@@ -134,7 +134,7 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                     this.updatePeriode({
                                         varighet: {
                                             ...this.getVarighet(),
-                                            fom: fom.toISOString()
+                                            fom
                                         }
                                     });
                                 }}
@@ -155,7 +155,7 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                     this.updatePeriode({
                                         varighet: {
                                             ...this.getVarighet(),
-                                            tom: tom.toISOString()
+                                            tom
                                         }
                                     });
                                 }}
