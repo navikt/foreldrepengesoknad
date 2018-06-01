@@ -6,7 +6,7 @@ export interface Props {
     dager: number;
 }
 
-const Varighet: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const UkerOgDager: React.StatelessComponent<Props & InjectedIntlProps> = ({
     dager,
     intl
 }) => {
@@ -27,4 +27,4 @@ const Varighet: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
 };
 
-export default injectIntl(Varighet);
+export default injectIntl(UkerOgDager);
