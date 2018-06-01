@@ -1,5 +1,5 @@
 import { InjectedIntl } from 'react-intl';
-import { getUkerOgDagerFromDager } from 'uttaksplan/utils/uttaksdagerUtils';
+import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 
 export const getVarighetString = (
     antallDager: number,
@@ -7,7 +7,7 @@ export const getVarighetString = (
 ): string => {
     const { uker, dager } = getUkerOgDagerFromDager(antallDager);
     const dagerStr = intl.formatMessage(
-        { id: 'uttaksplan.dager' },
+        { id: 'common.varighet.dager' },
         {
             dager
         }
@@ -16,10 +16,13 @@ export const getVarighetString = (
     if (uker === 0) {
         return `${tallTilTekst(dager, intl)} ${dagerStr}`;
     }
-    const ukerStr = intl.formatMessage({ id: 'uttaksplan.uker' }, { uker });
+    const ukerStr = intl.formatMessage(
+        { id: 'common.varighet.uker' },
+        { uker }
+    );
     if (dager > 0) {
         return `${ukerStr} ${intl.formatMessage({
-            id: 'uttaksplan.og'
+            id: 'common.varighet.og'
         })} ${dagerStr}`;
     }
     return ukerStr;
@@ -32,6 +35,6 @@ export const tallTilTekst = (tall: number, intl: InjectedIntl): string => {
     if (tall > 10 || tall < 0) {
         return `${tall}`;
     } else {
-        return intl.formatMessage({ id: `uttaksplan.tall-${tall}` });
+        return intl.formatMessage({ id: `common.tall-${tall}` });
     }
 };
