@@ -20,7 +20,9 @@
         "baseUrl": "./src",
         "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
-            "uttaksplan/*": ["./uttaksplan/*"]
+            "uttaksplan/*": ["./uttaksplan/*"],
+            "storage/*": ["./storage/*"],
+            "common/*": ["./common/*"]
         }
     },
     "awesomeTypescriptLoaderOptions": {

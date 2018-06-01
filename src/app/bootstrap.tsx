@@ -7,7 +7,7 @@ import Foreldrepengesøknad from './connected-components/Foreldrepengesøknad';
 import store from './redux';
 import IntlProvider from './intl/IntlProvider';
 
-import './assets/styles/app.less';
+import './styles/app.less';
 
 import * as countries from 'i18n-iso-countries';
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));

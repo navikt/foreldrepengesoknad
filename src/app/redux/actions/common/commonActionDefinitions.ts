@@ -1,4 +1,4 @@
-import { Språkkode } from '../../../intl/types';
+import { Språkkode } from 'common/intl/types';
 
 export enum CommonActionKeys {
     'SET_SPRÅK' = 'setSpråk'

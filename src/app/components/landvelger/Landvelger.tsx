@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { Feil } from '../skjema-input-element/types';
 import { Select } from 'nav-frontend-skjema';
-import ValidSelect from '../../nav-frontend-validform/ValidSelect';
+import { Feil } from 'common/components/skjema-input-element/types';
+import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
 
 interface StateProps {
     defaultValue?: string;

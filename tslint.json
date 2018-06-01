@@ -8,10 +8,13 @@
         "no-submodule-imports": false,
         "object-literal-sort-keys": false,
         "no-bitwise": false,
-        "ordered-imports": false,
+        "import-spacing": true,
+        "no-duplicate-imports": true,
         "no-shadowed-variable": true,
         "no-var-requires": false,
         "no-implicit-dependencies": false,
-        "no-empty-interface": false
+        "no-empty-interface": false,
+        "ordered-imports": false,
+        "prefer-object-spread": true
     }
 }

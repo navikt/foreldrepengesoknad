@@ -1,4 +1,4 @@
-import { Feil } from 'app/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema-input-element/types';
 
 export type Skjemaelement =
     | 'årsak'

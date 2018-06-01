@@ -3,13 +3,18 @@ import søknad from './søknadReducer';
 import common, { CommonState } from './commonReducer';
 import api, { ApiReducerState } from './apiReducer';
 import uttaksplan from 'uttaksplan/redux/reducers';
-import { UttaksplanState } from 'uttaksplan/redux/types';
+import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import attachments, {
+    AttachmentReducerState
+} from 'storage/attachment/redux/attachmentReducer';
 
-export interface AppState {
+interface MainState extends UttaksplanAppState {
     søknad: Søknad;
     common: CommonState;
     api: ApiReducerState;
-    uttaksplan: UttaksplanState;
+    attachments: AttachmentReducerState;
 }
 
-export default { søknad, common, api, uttaksplan };
+export type AppState = MainState & UttaksplanAppState & AttachmentReducerState;
+
+export default { søknad, common, api, uttaksplan, attachments };

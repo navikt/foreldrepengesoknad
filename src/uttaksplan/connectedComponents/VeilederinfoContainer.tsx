@@ -5,7 +5,7 @@ import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
 import Veilederinfo, {
     VeilederInfoProps
-} from 'app/components/veileder-info/Veilederinfo';
+} from 'common/components/veileder-info/Veilederinfo';
 
 export interface StateProps {
     isOpen: boolean;

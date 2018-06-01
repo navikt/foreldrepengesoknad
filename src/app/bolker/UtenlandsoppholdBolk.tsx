@@ -6,7 +6,7 @@ import {
     UtenlandsoppholdPeriode
 } from '../types/søknad/Utenlandsopphold';
 import UtenlandsoppholdPeriodeModal from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
-import { Språkkode } from '../intl/types';
+import { Språkkode } from 'common/intl/types';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;

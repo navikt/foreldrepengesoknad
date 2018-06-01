@@ -1,13 +1,8 @@
 import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import Landvelger from '../landvelger/Landvelger';
-import Labeltekst from '../labeltekst/Labeltekst';
-import { Språkkode } from '../../intl/types';
 import './utenlandsoppholdPeriodeModal.less';
-import Spørsmål from '../spørsmål/Spørsmål';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import getMessage from '../../util/i18nUtils';
-import DatoInput from '../dato-input/DatoInput';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import {
@@ -15,6 +10,11 @@ import {
     UtenlandsoppholdPeriode,
     UtenlandsoppholdPeriodePartial
 } from '../../types/søknad/Utenlandsopphold';
+import { Språkkode } from 'common/intl/types';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import DatoInput from 'common/components/dato-input/DatoInput';
+import getMessage from 'common/util/i18nUtils';
 
 export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
     type: PeriodeType;
