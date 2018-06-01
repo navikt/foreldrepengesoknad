@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Knapp } from 'nav-frontend-knapper';
-import PlussIkon from '../ikoner/PlussIkon';
+import PlussIkon from 'common/components/ikoner/PlussIkon';
 
 import './leggTilKnapp.less';
 

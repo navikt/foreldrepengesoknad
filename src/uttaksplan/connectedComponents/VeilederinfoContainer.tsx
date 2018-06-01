@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
-import EkspanderbartInnhold from 'common/components/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Veilederinfo, {
     VeilederInfoProps
 } from 'common/components/veileder-info/Veilederinfo';

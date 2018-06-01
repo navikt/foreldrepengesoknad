@@ -4,8 +4,8 @@ import { visInfo, skjulInfo } from 'uttaksplan/redux/actions';
 import { DispatchProps } from 'common/redux/types';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import Sirkelknapp from 'common/components/sirkelknapp/Sirkelknapp';
-import LukkInfoIkon from 'uttaksplan/components/ikoner/LukkInfoIkon';
-import InfoIkon from 'uttaksplan/components/ikoner/InfoIkon';
+import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
+import InfoIkon from 'common/components/ikoner/InfoIkon';
 
 interface OwnProps {
     id: string;

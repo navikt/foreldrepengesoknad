@@ -3,7 +3,7 @@ import * as React from 'react';
 import { InnslagHendelsetype } from './types';
 import { FormattedMessage } from 'react-intl';
 import FormatertDato from 'common/components/formatert-dato/FormatertDato';
-import TerminIkon from 'uttaksplan/components/ikoner/TerminIkon';
+import TerminIkon from 'common/components/ikoner/TerminIkon';
 
 interface Props {
     innslag: InnslagHendelsetype;
