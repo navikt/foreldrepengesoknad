@@ -6,7 +6,7 @@ import { guid } from 'nav-frontend-js-utils';
 import InfoToggler from '../utvidetInformasjon/InfoToggler';
 
 import './utvidetInformasjon.less';
-import EkspanderbartInnhold from 'common/components/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 
 interface OwnProps {
     children: React.ReactNode;

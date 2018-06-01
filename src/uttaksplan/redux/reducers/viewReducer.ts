@@ -16,7 +16,6 @@ export enum Infotekster {
 
 const defaultState: UttaksplanViewState = {
     synligInfo: new Map(),
-    Språkkode: 'nb',
     visTidslinje: false
 };
 

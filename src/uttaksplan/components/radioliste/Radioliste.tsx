@@ -11,7 +11,7 @@ type RadiolisteChangeEvent = (verdi: RadiolisteValgVerdi) => void;
 type RadiobuttonStil = 'intern' | 'ekstern';
 
 import './radioliste.less';
-import EkspanderbartInnhold from 'common/components/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 
 export interface RadiolisteValg {
     tittel: string;

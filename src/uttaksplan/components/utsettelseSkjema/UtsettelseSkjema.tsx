@@ -29,7 +29,7 @@ import {
 } from 'uttaksplan/components/utsettelseSkjema/types';
 import { Feil } from 'common/components/skjema-input-element/types';
 import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
-import EkspanderbartInnhold from 'common/components/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { renderDag } from 'common/util/renderUtils';
