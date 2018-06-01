@@ -4,7 +4,7 @@ import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
 import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 
-type Foreldrepengesøknad = 'foreldrepengesøknad';
+type Foreldrepenger = 'foreldrepenger';
 
 export enum SøkerRolle {
     MOR = 'MOR',
@@ -25,7 +25,7 @@ export enum Søkersituasjon {
 }
 
 interface Søknad {
-    type: Foreldrepengesøknad;
+    type: Foreldrepenger;
     harGodkjentVilkår: boolean;
     annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
@@ -40,7 +40,7 @@ interface Søknad {
 }
 
 export interface SøknadPartial {
-    type?: Foreldrepengesøknad;
+    type?: Foreldrepenger;
     annenForelder: AnnenForelderPartial;
     situasjon?: Søkersituasjon;
     harGodkjentVilkår: boolean;
