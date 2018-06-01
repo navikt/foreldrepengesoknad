@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
+import { FormattedMessage } from 'react-intl';
 import UtenlandsoppholdPeriodeListe from '../components/utenlandsopphold-periode-liste/UtenlandsoppholdPeriodeListe';
 import {
-    PeriodeType,
+    UtenlandsoppholdPeriodeType,
     UtenlandsoppholdPeriode
 } from '../types/søknad/Utenlandsopphold';
 import UtenlandsoppholdPeriodeModal from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
@@ -13,7 +14,7 @@ interface UtenlandsoppholdBolkProps {
     showUtenlandsoppholdPeriodeContent: boolean;
     oppfølgingsspørsmål: string;
     perioder: UtenlandsoppholdPeriode[];
-    periodeType: PeriodeType;
+    periodeType: UtenlandsoppholdPeriodeType;
     språk: Språkkode;
     onAddUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
     onEditUtenlandsoppholdPeriode: (
@@ -38,7 +39,8 @@ class UtenlandsoppholdBolk extends React.Component<
     constructor(props: UtenlandsoppholdBolkProps) {
         super(props);
 
-        this.toggleModal = this.toggleModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.onAdd = this.onAdd.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.onPeriodeLinkClick = this.onPeriodeLinkClick.bind(this);
@@ -51,7 +53,7 @@ class UtenlandsoppholdBolk extends React.Component<
     onAdd(periode: UtenlandsoppholdPeriode) {
         const { onAddUtenlandsoppholdPeriode } = this.props;
         onAddUtenlandsoppholdPeriode(periode);
-        this.toggleModal();
+        this.closeModal();
     }
 
     onEdit(periode: UtenlandsoppholdPeriode) {
@@ -61,7 +63,7 @@ class UtenlandsoppholdBolk extends React.Component<
             periode,
             periodeIndex === undefined ? -1 : periodeIndex
         );
-        this.toggleModal({
+        this.closeModal({
             periodeToEdit: undefined,
             periodeIndex: undefined
         });
@@ -71,16 +73,23 @@ class UtenlandsoppholdBolk extends React.Component<
         periodeToEdit: UtenlandsoppholdPeriode,
         periodeIndex: number
     ) {
-        this.toggleModal({
+        this.openModal({
             periodeToEdit,
             periodeIndex
         });
     }
 
-    toggleModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
+    openModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
         this.setState({
             ...otherState,
-            modalIsOpen: !this.state.modalIsOpen
+            modalIsOpen: true
+        });
+    }
+
+    closeModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
+        this.setState({
+            ...otherState,
+            modalIsOpen: false
         });
     }
 
@@ -102,7 +111,7 @@ class UtenlandsoppholdBolk extends React.Component<
                 {showUtenlandsoppholdPeriodeContent && (
                     <React.Fragment>
                         <div className="blokk-xs">
-                            <label>{oppfølgingsspørsmål}</label>
+                            <h4>{oppfølgingsspørsmål}</h4>
                         </div>
 
                         <div className="blokk-xs">
@@ -116,8 +125,8 @@ class UtenlandsoppholdBolk extends React.Component<
                         </div>
 
                         <div className="blokk-s">
-                            <Knapp onClick={() => this.toggleModal()}>
-                                Legg til land
+                            <Knapp onClick={() => this.openModal()}>
+                                <FormattedMessage id="utenlandsopphold.leggTilLand" />
                             </Knapp>
                         </div>
                     </React.Fragment>
@@ -127,7 +136,7 @@ class UtenlandsoppholdBolk extends React.Component<
                     type={periodeType}
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={() =>
-                        this.toggleModal({
+                        this.closeModal({
                             periodeIndex: undefined,
                             periodeToEdit: undefined
                         })

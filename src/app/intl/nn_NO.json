@@ -97,6 +97,7 @@
     "tidsintervall": "{fom} - {tom}",
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
+    "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.datoinput.fra": "Fra og med",
     "utenlandsopphold.datoinput.til": "Til og med",
     "utenlandsopphold.select.spørsmål.siste12mnd": "Jeg bodde i...",
