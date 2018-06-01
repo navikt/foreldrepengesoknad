@@ -3,29 +3,23 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from '../../../components/layout/Steg';
+import Steg from 'app/components/layout/Steg';
 
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import DatoInput from '../../../components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
-import Labeltekst from '../../../components/labeltekst/Labeltekst';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
-import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../../../types/søknad/Vedlegg';
-import {
-    concatNewFiles,
-    removeFileFromArray
-} from '../../../components/vedlegg/util';
+import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
-    vedlegg: Vedlegg;
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -52,7 +46,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, intl, vedlegg, dispatch } = this.props;
+        const { barn, intl, dispatch } = this.props;
         return (
             <Steg id={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}>
                 <Spørsmål
@@ -76,32 +70,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
                 <Spørsmål
                     animert={true}
                     synlig={barn.adopsjonsdato !== undefined}
-                    render={() => (
-                        <VedleggOversikt
-                            id="adopsjonsbekreftelse"
-                            vedlegg={vedlegg.adopsjonsvedtak}
-                            onFilesSelect={(files: File[]) => {
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        adopsjonsvedtak: concatNewFiles(
-                                            files,
-                                            vedlegg.adopsjonsvedtak
-                                        )
-                                    })
-                                );
-                            }}
-                            onFileDelete={(file: File) =>
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        adopsjonsvedtak: removeFileFromArray(
-                                            file,
-                                            vedlegg.adopsjonsvedtak
-                                        )
-                                    })
-                                )
-                            }
-                        />
-                    )}
+                    render={() => <Søknadsvedlegg type="adopsjonsvedtak" />}
                 />
                 <Spørsmål
                     animert={false}
@@ -141,8 +110,7 @@ class RelasjonTilBarnStebarnsadopsjon extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        barn: state.søknad.barn as Adopsjonsbarn,
-        vedlegg: state.søknad.vedlegg
+        barn: state.søknad.barn as Adopsjonsbarn
     };
 };
 

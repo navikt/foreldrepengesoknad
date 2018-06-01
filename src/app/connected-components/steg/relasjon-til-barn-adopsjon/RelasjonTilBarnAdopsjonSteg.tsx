@@ -3,32 +3,27 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from '../../../components/layout/Steg';
 
-import { DispatchProps } from '../../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
-import getMessage from '../../../util/i18nUtils';
-import Spørsmål from '../../../components/spørsmål/Spørsmål';
+import getMessage from 'common/util/i18nUtils';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { FødtBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
-import DatoInput from '../../../components/dato-input/DatoInput';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../util/fødselsdato';
-import Vedlegg from '../../../types/søknad/Vedlegg';
-import {
-    removeFileFromArray,
-    concatNewFiles
-} from '../../../components/vedlegg/util';
-
-import VedleggOversikt from '../../../components/vedlegg/VedleggOversikt';
-import Bolk from '../../../components/layout/Bolk';
 import { AppState } from '../../../redux/reducers';
+import Steg from '../../../components/layout/Steg';
+import Bolk from '../../../components/layout/Bolk';
+import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
+import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Vedlegg;
+    visSpørsmålOmAntallBarn: boolean;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -52,7 +47,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const { vedlegg, barn, dispatch, intl } = this.props;
+        const { visSpørsmålOmAntallBarn, barn, dispatch, intl } = this.props;
 
         return (
             <Steg id={StegID.RELASJON_TIL_BARN_ADOPSJON}>
@@ -78,36 +73,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         intl,
                         'vedlegg.tittel.omsorgsovertakelse'
                     )}
-                    render={() => (
-                        <VedleggOversikt
-                            id="omsorgsovertakelse"
-                            vedlegg={vedlegg.omsorgsovertakelse}
-                            onFilesSelect={(files: File[]) => {
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        omsorgsovertakelse: concatNewFiles(
-                                            files,
-                                            vedlegg.omsorgsovertakelse
-                                        )
-                                    })
-                                );
-                            }}
-                            onFileDelete={(file: File) =>
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        omsorgsovertakelse: removeFileFromArray(
-                                            file,
-                                            vedlegg.omsorgsovertakelse
-                                        )
-                                    })
-                                )
-                            }
-                        />
-                    )}
+                    render={() => <Søknadsvedlegg type="omsorgsovertakelse" />}
                 />
 
                 <Spørsmål
-                    synlig={vedlegg.omsorgsovertakelse.length > 0}
+                    synlig={visSpørsmålOmAntallBarn}
                     render={() => (
                         <AntallBarnSpørsmål
                             spørsmål={getMessage(
@@ -161,7 +131,8 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     barn: state.søknad.barn as FødtBarn,
-    vedlegg: state.søknad.vedlegg
+    visSpørsmålOmAntallBarn:
+        getSøknadsvedlegg('omsorgsovertakelse', state).length > 0
 });
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(

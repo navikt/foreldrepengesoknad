@@ -1,0 +1,24 @@
+@import '../../../node_modules/nav-frontend-core/less/_mixins';
+@import '../../../node_modules/nav-datovelger/dist/datovelger/styles/datovelger.css';
+
+@import 'variables.less';
+@import 'modifiers.less';
+@import 'nav-frontend-override';
+
+@import '../../common/styles/animation';
+
+#app {
+    background-color: white;
+    min-width: 320px;
+    .clearfix();
+    .bolk {
+        &__tittel {
+            font-size: 1rem;
+        }
+    }
+    .content {
+        margin: 0 auto;
+        max-width: 704px;
+        padding: 2rem;
+    }
+}

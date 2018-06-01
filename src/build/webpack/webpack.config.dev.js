@@ -17,17 +17,6 @@ webpackConfig.plugins.push(
 );
 
 webpackConfig.plugins.push(
-    new webpack.DefinePlugin({
-        appSettings: {
-            REST_API_URL: JSON.stringify(
-                process.env.FORELDREPENGESOKNAD_API_URL
-            ),
-            LOGIN_URL: JSON.stringify(process.env.LOGINSERVICE_URL)
-        }
-    })
-);
-
-webpackConfig.plugins.push(
     new HtmlWebpackHarddiskPlugin({
         outputPath: path.resolve(__dirname, '../../../dist/dev')
     })

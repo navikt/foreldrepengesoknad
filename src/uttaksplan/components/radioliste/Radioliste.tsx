@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 
 import { RadioProps, RadioPanel, SkjemaGruppe } from 'nav-frontend-skjema';
-import { Feil } from 'app/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema-input-element/types';
 import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
 
 type RadiolisteValgVerdi = string | number | undefined;

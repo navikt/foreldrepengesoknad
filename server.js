@@ -5,12 +5,16 @@ const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
+const fs = require('fs');
+const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 
 const server = express();
 
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
 server.engine('html', mustacheExpress());
+
+createEnvSettingsFile(path.resolve(`${__dirname}/dist/js/settings.js`));
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -19,7 +23,7 @@ server.use((req, res, next) => {
 
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
-        server.render('index.html', (err, html) => {
+        server.render('index.html', decoratorFragments, (err, html) => {
             if (err) {
                 reject(err);
             } else {
@@ -48,6 +52,9 @@ const startServer = (html) => {
             res.send(html);
         }
     );
+    server.get(['/foreldrepengesoknad/dist/js/settings.js'], (req, res) => {
+        res.sendFile(path.resolve(`../../dist/js/settings.js`));
+    });
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));

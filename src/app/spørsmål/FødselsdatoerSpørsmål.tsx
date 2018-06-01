@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Labeltekst from '../components/labeltekst/Labeltekst';
-import DatoInput from '../components/dato-input/DatoInput';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import { Fødselsdato } from '../types/common';
 
 export interface Props {

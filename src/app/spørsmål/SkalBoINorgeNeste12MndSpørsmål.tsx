@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
-import getMessage from '../util/i18nUtils';
+import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import getMessage from 'common/util/i18nUtils';
 
 export enum SkalBoINorgeNeste12Mnd {
     'SKAL_BO_I_NORGE_NESTE_12' = 'skalBoINorgeNeste12',

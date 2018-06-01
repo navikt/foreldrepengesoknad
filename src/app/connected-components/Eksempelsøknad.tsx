@@ -7,17 +7,17 @@ import {
     Søkersituasjon,
     default as Søknad
 } from '../types/søknad/Søknad';
-import { DispatchProps } from '../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../redux/actions/søknad/søknadActionCreators';
 import apiActions from './../redux/actions/api/apiActionCreators';
 import { BarnPartial, UfødtBarn } from '../types/søknad/Barn';
 import AntallBarnSpørsmål from '../spørsmål/AntallBarnSpørsmål';
-import getMessage from '../util/i18nUtils';
-import Spørsmål from '../components/spørsmål/Spørsmål';
+import getMessage from 'common/util/i18nUtils';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AnnenForelderBolk from '../bolker/AnnenForelderBolk';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
-import Bolk from '../components/layout/Bolk';
-import DatoInput from '../components/dato-input/DatoInput';
+import Bolk from 'app/components/layout/Bolk';
+import DatoInput from 'common/components/dato-input/DatoInput';
 import VæreINorgeVedFødselSpørsmål from '../spørsmål/VæreINorgeVedFødselSpørsmål';
 import {
     UtenlandsoppholdPartial,
@@ -34,8 +34,11 @@ import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
 import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
-import { Språkkode } from '../intl/types';
 import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
+import { Språkkode } from 'common/intl/types';
+import { AppState } from '../redux/reducers';
+import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
+import { Attachment } from 'storage/attachment/types/Attachment';
 import UtenlandsoppholdBolk from '../bolker/UtenlandsoppholdBolk';
 
 interface StateProps {
@@ -46,6 +49,8 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
+    attachments: Attachment[];
+    uttaksplan: Periode[];
     språkkode: Språkkode;
 }
 
@@ -57,6 +62,7 @@ class Eksempelsøknad extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
+        this.sendInnSøknad = this.sendInnSøknad.bind(this);
         this.addUtenlandsoppholdPeriode = this.addUtenlandsoppholdPeriode.bind(
             this
         );
@@ -72,6 +78,19 @@ class Eksempelsøknad extends React.Component<Props> {
         this.renderHarBoddINorgeSiste12MndSpørsmål = this.renderHarBoddINorgeSiste12MndSpørsmål.bind(
             this
         );
+    }
+
+    sendInnSøknad() {
+        const vedlegg = this.props.attachments.map((a) =>
+            mapAttachmentTilSøknadsvedlegginfo(a)
+        );
+
+        const søknadsdata: Søknad = {
+            ...this.props.søknad,
+            uttaksplan: [...this.props.uttaksplan],
+            vedlegg
+        };
+        this.props.dispatch(apiActions.sendSøknad(søknadsdata));
     }
 
     addUtenlandsoppholdPeriode(
@@ -464,7 +483,8 @@ class Eksempelsøknad extends React.Component<Props> {
                     )}
 
                 <Hovedknapp
-                    onClick={() => dispatch(apiActions.sendSøknad(søknad))}>
+                    htmlType="button"
+                    onClick={() => this.sendInnSøknad()}>
                     Send søknad
                 </Hovedknapp>
             </Applikasjonsside>
@@ -472,7 +492,7 @@ class Eksempelsøknad extends React.Component<Props> {
     }
 }
 
-export default connect<StateProps>((state: any) => {
+export default connect<StateProps>((state: AppState) => {
     const { situasjon } = state.søknad;
 
     const kjønn = state.api.person ? state.api.person.kjønn : undefined;
@@ -489,6 +509,8 @@ export default connect<StateProps>((state: any) => {
         perioder: state.søknad.uttaksplan,
         språkkode: state.common.språkkode,
         situasjon,
+        attachments: state.attachments,
+        uttaksplan: state.uttaksplan.periode.perioder,
         roller
     };
 })(injectIntl(Eksempelsøknad));

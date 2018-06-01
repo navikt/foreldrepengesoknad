@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { DispatchProps } from '../../redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
-import { Språkkode } from '../../intl/types';
-import Språkvelger from '../../components/språkvelger/Språkvelger';
+import { Språkkode } from 'common/intl/types';
+import Språkvelger from 'common/components/språkvelger/Språkvelger';
 
 export interface OwnProps {
     /** Om språkvelger skal vises eller ikke */

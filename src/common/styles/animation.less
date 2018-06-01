@@ -1,0 +1,17 @@
+.transitionFade {
+    @duration: 150ms;
+    &-enter {
+        opacity: 0.01;
+    }
+    &-enter-active {
+        opacity: 1;
+        transition: all @duration ease-out;
+    }
+    &-exit {
+        opacity: 1;
+    }
+    &-exit-active {
+        opacity: 0.01;
+        transition: all @duration ease-out;
+    }
+}

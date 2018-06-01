@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import classnames from 'classnames';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import SlettKnapp from '../slett-knapp/SlettKnapp';
-import getMessage from '../../util/i18nUtils';
 import { ISODateToMaskedInput } from '../../util/dates';
 import { UtenlandsoppholdPeriode } from '../../types/søknad/Utenlandsopphold';
 import LinkButton from '../link-button/LinkButton';
+import getMessage from 'common/util/i18nUtils';
+import SlettKnapp from 'common/components/slett-knapp/SlettKnapp';
 
 import './utenlandsoppholdPeriodeListeElement.less';
 

@@ -17,7 +17,9 @@ const webpackConfig = {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
         alias: {
             app: path.resolve(__dirname, './../../app'),
-            uttaksplan: path.resolve(__dirname, './../../uttaksplan')
+            uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
+            storage: path.resolve(__dirname, './../../storage'),
+            common: path.resolve(__dirname, './../../common')
         }
     },
     module: {
@@ -31,7 +33,9 @@ const webpackConfig = {
                 test: /\.(ts|tsx)$/,
                 include: [
                     path.resolve(__dirname, './../../app'),
-                    path.resolve(__dirname, './../../uttaksplan')
+                    path.resolve(__dirname, './../../uttaksplan'),
+                    path.resolve(__dirname, './../../common'),
+                    path.resolve(__dirname, './../../storage')
                 ],
                 loader: require.resolve('awesome-typescript-loader')
             },

@@ -3,7 +3,6 @@ import {
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
-import { VedleggPartial } from '../../types/søknad/Vedlegg';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -16,21 +15,9 @@ const getDefaultState = (): SøknadPartial => {
             tidligerePerioder: [],
             senerePerioder: []
         },
-        vedlegg: {
-            omsorgsovertakelse: [],
-            adopsjonsvedtak: [],
-            overtakelsedokumentasjon: [],
-            terminbekreftelse: [],
-            fødselsattest: []
-        },
         harGodkjentVilkår: false
     };
 };
-
-const updateVedlegg = (state: SøknadPartial, vedlegg: VedleggPartial) => ({
-    ...state,
-    vedlegg: { ...state.vedlegg, ...vedlegg }
-});
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
     switch (action.type) {
@@ -57,8 +44,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 ...action.payload
             };
-        case SøknadActionKeys.UPDATE_VEDLEGG:
-            return updateVedlegg(state, action.payload);
     }
     return state;
 };

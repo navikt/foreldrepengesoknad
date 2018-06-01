@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Select } from 'nav-frontend-skjema';
-import RadioPanelGruppeResponsive from '../components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
-import Spørsmål from '../components/spørsmål/Spørsmål';
-import Labeltekst from '../components/labeltekst/Labeltekst';
+import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
-import getMessage from '../util/i18nUtils';
+import getMessage from 'common/util/i18nUtils';
 
 export interface OwnProps {
     /** Spørsmålstekst */

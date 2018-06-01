@@ -19,7 +19,7 @@ import {
     getAntallUkerFellesperiode
 } from 'uttaksplan/utils/permisjonUtils';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
-import { DispatchProps } from 'app/redux/types';
+import { DispatchProps } from 'common/redux/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
 import '../../styles/uttaksplan.less';

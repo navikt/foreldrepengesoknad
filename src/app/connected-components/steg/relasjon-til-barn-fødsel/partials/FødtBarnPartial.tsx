@@ -1,15 +1,7 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { DispatchProps } from '../../../../redux/types/index';
-import Spørsmål from '../../../../components/spørsmål/Spørsmål';
-import Bolk from '../../../../components/layout/Bolk';
-import getMessage from '../../../../util/i18nUtils';
-import {
-    concatNewFiles,
-    removeFileFromArray
-} from '../../../../components/vedlegg/util';
-import VedleggOversikt from '../../../../components/vedlegg/VedleggOversikt';
-import Vedlegg from '../../../../types/søknad/Vedlegg';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Bolk from 'app/components/layout/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
@@ -18,12 +10,15 @@ import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpør
 
 import utils from '../../../../util/fødselsdato';
 import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from '../../../../components/fortsett-knapp/FortsettKnapp';
+import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import { HistoryProps } from '../../../../types/common';
+import { DispatchProps } from 'common/redux/types';
+import getMessage from 'common/util/i18nUtils';
+import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 
 interface StateProps {
     barn: FødtBarn;
-    vedlegg: Vedlegg;
+    fødselsattestErLastetOpp: boolean;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -48,7 +43,13 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, vedlegg, history } = this.props;
+        const {
+            intl,
+            dispatch,
+            barn,
+            fødselsattestErLastetOpp,
+            history
+        } = this.props;
         return (
             <React.Fragment>
                 <Spørsmål
@@ -88,35 +89,10 @@ class FødtBarnPartial extends React.Component<Props> {
                         )
                     }
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
-                    render={() => (
-                        <VedleggOversikt
-                            id="fødselsattest"
-                            vedlegg={vedlegg.fødselsattest}
-                            onFilesSelect={(files: File[]) => {
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        fødselsattest: concatNewFiles(
-                                            files,
-                                            vedlegg.fødselsattest
-                                        )
-                                    })
-                                );
-                            }}
-                            onFileDelete={(file: File) =>
-                                dispatch(
-                                    søknadActions.updateVedlegg({
-                                        fødselsattest: removeFileFromArray(
-                                            file,
-                                            vedlegg.fødselsattest
-                                        )
-                                    })
-                                )
-                            }
-                        />
-                    )}
+                    render={() => <Søknadsvedlegg type="fødselsattest" />}
                 />
 
-                {vedlegg.fødselsattest.length > 0 && (
+                {fødselsattestErLastetOpp && (
                     <FortsettKnapp
                         history={history}
                         location={søknadStegPath('annen-forelder')}>

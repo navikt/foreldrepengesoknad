@@ -1,28 +1,28 @@
-export type UtenlandsoppholdPeriode = {
+export interface UtenlandsoppholdPeriode {
     land: string;
     varighet: Varighet;
-};
+}
 
 type UtenlandsoppholdPeriodeSkjemaData = {
     land: string;
     varighet: VarighetPartial;
 };
 
-export type Varighet = {
+export interface Varighet {
     tom: string;
     fom: string;
-};
+}
 
 type VarighetPartial = Partial<Varighet>;
 
-type Utenlandsopphold = {
+interface Utenlandsopphold {
     jobbetINorgeSiste12Mnd: boolean;
     fødselINorge: boolean;
     iNorgeSiste12Mnd: boolean;
     iNorgeNeste12Mnd: boolean;
     tidligerePerioder: UtenlandsoppholdPeriode[];
     senerePerioder: UtenlandsoppholdPeriode[];
-};
+}
 
 export type PeriodeType = 'neste12mnd' | 'siste12mnd';
 
