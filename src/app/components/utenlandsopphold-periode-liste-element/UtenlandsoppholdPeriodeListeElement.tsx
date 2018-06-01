@@ -8,6 +8,8 @@ import { ISODateToMaskedInput } from '../../util/dates';
 import { UtenlandsoppholdPeriode } from '../../types/søknad/Utenlandsopphold';
 import LinkButton from '../link-button/LinkButton';
 
+import './utenlandsoppholdPeriodeListeElement.less';
+
 interface UtenlandsoppholdPeriodeListeElementProps {
     periode: UtenlandsoppholdPeriode;
     onTrashClick?: (periode: UtenlandsoppholdPeriode) => void;
@@ -29,16 +31,17 @@ const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<Props> = (
 
     return (
         <li
-            className={classnames('countryListElement', {
-                countryListElement__editable: onLinkClick !== undefined
+            className={classnames('utenlandsoppholdPeriodeListeElement', {
+                utenlandsoppholdPeriodeListeElement__editable:
+                    onLinkClick !== undefined
             })}>
-            <div className="countryListElement__stay">
+            <div className="utenlandsoppholdPeriodeListeElement__stay">
                 <LinkButton onClick={onEditClickHandler}>
-                    <div className="countryListElement__nameAndDate">
-                        <div className="countryListElement__country">
+                    <div className="utenlandsoppholdPeriodeListeElement__navnOgDato">
+                        <div className="utenlandsoppholdPeriodeListeElement__land">
                             {countries.getName(land, 'nb')}
                         </div>
-                        <div className="countryListElement__date">
+                        <div className="utenlandsoppholdPeriodeListeElement__dato">
                             {getMessage(props.intl, 'tidsintervall', {
                                 fom: ISODateToMaskedInput(varighet.fom),
                                 tom: ISODateToMaskedInput(varighet.tom)
@@ -48,7 +51,7 @@ const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<Props> = (
                 </LinkButton>
             </div>
             {onTrashClick && (
-                <span className="countryListElement__delete">
+                <span className="utenlandsoppholdPeriodeListeElement__slettIkon">
                     <SlettKnapp
                         ariaLabel="Slett utenlandsopphold"
                         onClick={() => onTrashClick(props.periode)}

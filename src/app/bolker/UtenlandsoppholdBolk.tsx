@@ -100,17 +100,25 @@ class UtenlandsoppholdBolk extends React.Component<
                 {renderSpørsmål()}
                 {showUtenlandsoppholdPeriodeContent && (
                     <React.Fragment>
-                        <label htmlFor="">{oppfølgingsspørsmål}</label>
-                        <UtenlandsoppholdPeriodeListe
-                            perioder={perioder}
-                            onPeriodeLinkClick={this.onPeriodeLinkClick}
-                            onPeriodeTrashClick={
-                                onDeleteUtenlandsoppholdPeriode
-                            }
-                        />
-                        <Knapp onClick={() => this.toggleModal()}>
-                            Legg til land
-                        </Knapp>
+                        <div className="blokk-xs">
+                            <label>{oppfølgingsspørsmål}</label>
+                        </div>
+
+                        <div className="blokk-xs">
+                            <UtenlandsoppholdPeriodeListe
+                                perioder={perioder}
+                                onPeriodeLinkClick={this.onPeriodeLinkClick}
+                                onPeriodeTrashClick={
+                                    onDeleteUtenlandsoppholdPeriode
+                                }
+                            />
+                        </div>
+
+                        <div className="blokk-s">
+                            <Knapp onClick={() => this.toggleModal()}>
+                                Legg til land
+                            </Knapp>
+                        </div>
                     </React.Fragment>
                 )}
 
