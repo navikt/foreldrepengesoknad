@@ -9,6 +9,10 @@ import IntlProvider from './intl/IntlProvider';
 
 import './styles/app.less';
 
+import * as countries from 'i18n-iso-countries';
+countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
+countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
+
 Modal.setAppElement('#app');
 const root = document.getElementById('app');
 
