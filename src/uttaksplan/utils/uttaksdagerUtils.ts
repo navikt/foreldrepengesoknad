@@ -1,7 +1,7 @@
 import { addDays, getISODay } from 'date-fns';
 import { Tidsperiode, Periodetype, Periode } from '../types';
 import { Holiday } from 'date-holidays';
-import { getOffentligeFridager } from './fridagerUtils';
+import { getOffentligeFridager } from 'common/util/fridagerUtils';
 
 export const getUkedag = (dato: Date) => getISODay(dato);
 

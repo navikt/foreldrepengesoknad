@@ -19,7 +19,7 @@ import { isAfter, isBefore } from 'date-fns';
 
 import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { Valideringsfeil } from 'uttaksplan/components/utsettelseSkjema/types';
-import { erFridag } from 'uttaksplan/utils/fridagerUtils';
+import { erFridag } from 'common/util/fridagerUtils';
 
 export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
     return utsettelse

@@ -7,13 +7,7 @@ import {
 } from 'uttaksplan/redux/types';
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
-import {
-    Tidsperiode,
-    Dekningsgrad,
-    Periode,
-    Permisjonsregler,
-    Periodetype
-} from 'uttaksplan/types';
+import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
 import {
     getGyldigTidsromForUtsettelse,
     getAntallUkerFellesperiode
@@ -49,6 +43,8 @@ export type Props = OwnProps & StateProps & DispatchProps;
 
 import '../skjema/skjema.less';
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
+import { Dekningsgrad } from 'common/types';
+import { Tidsperiode } from 'nav-datovelger';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;

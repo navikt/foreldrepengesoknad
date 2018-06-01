@@ -1,5 +1,7 @@
 import { scroller, animateScroll } from 'react-scroll';
 
+export const collapseSpringConfig = { stiffness: 250, damping: 30 };
+
 const defaultOptions = {
     duration: 1000,
     delay: 50,
