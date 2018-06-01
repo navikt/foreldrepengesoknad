@@ -3,9 +3,9 @@ import * as classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
 
 import './rangeInput.less';
-import RangeStepper from '../rangeInput/RangeStepper';
+import RangeStepper from './RangeStepper';
 import AriaText from '../aria/AriaText';
-import SkjemaInputElement from 'common/components/skjema-input-element/SkjemaInputElement';
+import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 
 export interface RangeInputValueLabelRendererOptions {
     value: number;

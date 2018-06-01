@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { visInfo, skjulInfo } from 'uttaksplan/redux/actions';
-import Sirkelknapp from 'uttaksplan/elements/sirkelknapp/Sirkelknapp';
 import LukkInfoIkon from 'uttaksplan/elements/ikoner/LukkInfoIkon';
 import InfoIkon from 'uttaksplan/elements/ikoner/InfoIkon';
 import { DispatchProps } from 'common/redux/types';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import Sirkelknapp from 'common/components/sirkelknapp/Sirkelknapp';
 
 interface OwnProps {
     id: string;

@@ -1,6 +1,5 @@
 import {
     Dekningsgrad,
-    Spraak,
     Periodetype,
     Periode,
     Permisjonsregler
@@ -96,13 +95,6 @@ export function visTidslinje(synlig: boolean): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.VIS_TIDSLINJE,
         synlig
-    };
-}
-
-export function setSpraak(spraak: Spraak): PlanleggerActionTypes {
-    return {
-        type: PlanleggerActionTypeKeys.SET_SPRAAK,
-        spraak
     };
 }
 

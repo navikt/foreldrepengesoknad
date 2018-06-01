@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Stonadsperiode, Periode } from 'uttaksplan/types';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { preventFormSubmit, normaliserDato } from 'uttaksplan/utils';
+import { preventFormSubmit } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { Column, Row } from 'nav-frontend-grid';
-import { renderDag } from 'uttaksplan/utils/renderUtils';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
+import { renderDag } from 'common/util/renderUtils';
+import { normaliserDato } from 'common/util/datoUtils';
 
 export interface OwnProps {
     periode: Stonadsperiode;
@@ -75,6 +76,12 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
+                <div className="blokkPad-s">
+                    <SkjemaGruppe>Hvem skal ha perioden</SkjemaGruppe>
+                </div>
+                <div className="blokkPad-s">
+                    <SkjemaGruppe>Hvilken stønadskonto</SkjemaGruppe>
+                </div>
                 <div className="blokkPad-s">
                     <SkjemaGruppe>
                         <Row>

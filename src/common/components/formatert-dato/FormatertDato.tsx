@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { år, mnd, dagIMåned, ukedag } from '../../utils/datoUtils';
+import { år, mnd, dagIMåned, ukedag } from '../../util/datoUtils';
 
-import './dato.less';
+import './formatertDato.less';
 
 export type Datoformat = 'Full';
 
@@ -12,7 +12,7 @@ interface Props {
 export const datoString = (dato: Date) =>
     `${ukedag(dato).substr(0, 3)}. ${dagIMåned(dato)} ${mnd(dato)} ${år(dato)}`;
 
-const Dato: React.StatelessComponent<Props> = ({ dato }) => (
+const FormatertDato: React.StatelessComponent<Props> = ({ dato }) => (
     <span className="formatert-dato">
         <span className="formatert-dato__ukedag">
             {ukedag(dato).substr(0, 3)}.{' '}
@@ -23,4 +23,4 @@ const Dato: React.StatelessComponent<Props> = ({ dato }) => (
     </span>
 );
 
-export default Dato;
+export default FormatertDato;

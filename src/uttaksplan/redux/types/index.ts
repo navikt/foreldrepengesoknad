@@ -1,7 +1,7 @@
 import {
     Dekningsgrad,
     Permisjonsregler,
-    Spraak,
+    Språkkode,
     Periode,
     Periodetype
 } from '../../types';
@@ -32,7 +32,7 @@ export interface PeriodeState {
 export type PeriodeStatePartial = Partial<PeriodeState>;
 
 export interface UttaksplanViewState {
-    spraak: Spraak;
+    Språkkode: Språkkode;
     synligInfo: SynligInfoMap;
     visTidslinje: boolean;
 }

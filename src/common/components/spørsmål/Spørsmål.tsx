@@ -15,7 +15,7 @@ export interface Props {
 }
 
 import './spørsmål.less';
-import { collapseSpringConfig } from '../../util/animation';
+import { collapseSpringConfig } from 'common/util/animationUtils';
 
 const Spørsmål: React.StatelessComponent<Props> = ({
     synlig = true,
