@@ -6,12 +6,15 @@ import { SøknadPartial } from '../../types/søknad/Søknad';
 
 const getDefaultState = (): SøknadPartial => {
     return {
-        type: 'foreldrepengesøknad',
+        type: 'foreldrepenger',
         annenForelder: {},
         barn: {
             fødselsdatoer: []
         },
-        utenlandsopphold: {},
+        utenlandsopphold: {
+            tidligerePerioder: [],
+            senerePerioder: []
+        },
         harGodkjentVilkår: false
     };
 };
