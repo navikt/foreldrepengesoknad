@@ -1,12 +1,21 @@
 export interface UtenlandsoppholdPeriode {
     land: string;
-    varighet: Varighet;
+    varighet: UtenlandsoppholdPeriodeVarighet;
 }
 
-export interface Varighet {
-    tom: string;
-    fom: string;
+interface UtenlandsoppholdPeriodeSkjemaData {
+    land: string;
+    varighet: UtenlandsoppholdPeriodeVarighetPartial;
 }
+
+export interface UtenlandsoppholdPeriodeVarighet {
+    tom: Date;
+    fom: Date;
+}
+
+type UtenlandsoppholdPeriodeVarighetPartial = Partial<
+    UtenlandsoppholdPeriodeVarighet
+>;
 
 interface Utenlandsopphold {
     jobbetINorgeSiste12Mnd: boolean;
@@ -17,6 +26,11 @@ interface Utenlandsopphold {
     senerePerioder: UtenlandsoppholdPeriode[];
 }
 
+export type UtenlandsoppholdPeriodeType = 'neste12mnd' | 'siste12mnd';
+
 export type UtenlandsoppholdPartial = Partial<Utenlandsopphold>;
+export type UtenlandsoppholdPeriodePartial = Partial<
+    UtenlandsoppholdPeriodeSkjemaData
+>;
 
 export default Utenlandsopphold;

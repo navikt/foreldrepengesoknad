@@ -11,7 +11,10 @@ const getDefaultState = (): SøknadPartial => {
         barn: {
             fødselsdatoer: []
         },
-        utenlandsopphold: {},
+        utenlandsopphold: {
+            tidligerePerioder: [],
+            senerePerioder: []
+        },
         harGodkjentVilkår: false
     };
 };
