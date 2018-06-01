@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { EtikettLiten } from 'nav-frontend-typografi';
-import BEMHelper from 'uttaksplan/utils/bem';
 import {
     TimelineEvent,
     TimelineItem
@@ -15,6 +14,7 @@ import {
     RangeRenderer,
     DurationRenderer
 } from 'uttaksplan/components/timeline/Timeline';
+import BEMHelper from 'common/util/bem';
 
 export interface Props extends TimelineItemProps {
     item: TimelineEvent;

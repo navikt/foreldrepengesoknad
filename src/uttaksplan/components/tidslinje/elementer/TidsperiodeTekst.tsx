@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Dato from '../../../elements/dato/Dato';
 import { Tidsperiode } from '../../../types';
 
 import './tidsperiodeTekst.less';
+import FormatertDato from 'common/components/formatert-dato/FormatertDato';
 
 export interface Props {
     tidsperiode: Tidsperiode;
@@ -18,11 +18,11 @@ const TidsperiodeTekst: React.StatelessComponent<Props> = ({
     return (
         <div className="tidsperiodeTekst">
             <span className="tidsperiodeTekst__periode">
-                <Dato dato={tidsperiode.startdato} />
+                <FormatertDato dato={tidsperiode.startdato} />
                 {visSluttdato && (
                     <span>
                         {' '}
-                        - <Dato dato={tidsperiode.sluttdato} />
+                        - <FormatertDato dato={tidsperiode.sluttdato} />
                     </span>
                 )}
             </span>

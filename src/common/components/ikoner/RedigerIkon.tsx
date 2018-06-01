@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const SvgComponent = (props: any) => (
+const RedigerIkon = (props: any) => (
     <svg
         width={16}
         height={16}
@@ -35,4 +35,4 @@ const SvgComponent = (props: any) => (
     </svg>
 );
 
-export default SvgComponent;
+export default RedigerIkon;

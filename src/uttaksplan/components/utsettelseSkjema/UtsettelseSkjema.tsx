@@ -11,10 +11,9 @@ import {
     Tidsperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { normaliserDato, preventFormSubmit } from 'uttaksplan/utils';
+import { preventFormSubmit } from 'uttaksplan/utils';
 import { isBefore, isSameDay } from 'date-fns';
 import Ferieinfo from 'uttaksplan/components/utsettelseSkjema/Ferieinfo';
-import { renderDag } from 'uttaksplan/utils/renderUtils';
 import {
     validerUtsettelseskjema,
     getTilTidsromSluttdato,
@@ -30,9 +29,11 @@ import {
 } from 'uttaksplan/components/utsettelseSkjema/types';
 import { Feil } from 'common/components/skjema-input-element/types';
 import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
-import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import DatoInput from 'common/components/dato-input/DatoInput';
+import { renderDag } from 'common/util/renderUtils';
+import { normaliserDato } from 'common/util/datoUtils';
 
 interface OwnProps {
     termindato: Date;

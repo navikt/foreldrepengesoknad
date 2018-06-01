@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { RangeInputValueLabelRendererOptions } from 'uttaksplan/elements/rangeInput/RangeInput';
 import { FormattedMessage } from 'react-intl';
+import { RangeInputValueLabelRendererOptions } from 'common/components/range-input/RangeInput';
 
 export interface Props {
     options: RangeInputValueLabelRendererOptions;

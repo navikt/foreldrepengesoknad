@@ -6,7 +6,7 @@ import { Periodetype, Periode } from '../../types';
 import { getInnslagfarge, innslagErFortsettelse } from './tidslinjeUtils';
 import Utsettelsesinfo from './innslaginfo/Utsettelsesinfo';
 import Periodeinfo from './innslaginfo/Periodeinfo';
-import Callout from '../../elements/callout/Callout';
+import Callout from 'uttaksplan/components/callout/Callout';
 
 export interface PeriodeinnslagProps {
     innslag: InnslagPeriodetype;

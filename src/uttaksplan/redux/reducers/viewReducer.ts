@@ -16,7 +16,6 @@ export enum Infotekster {
 
 const defaultState: UttaksplanViewState = {
     synligInfo: new Map(),
-    spraak: 'nb',
     visTidslinje: false
 };
 
@@ -44,8 +43,6 @@ const updateState = (
 
 const ViewReducer = (state = defaultState, action: PlanleggerActionTypes) => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.SET_SPRAAK:
-            return updateState(state, { spraak: action.spraak });
         case PlanleggerActionTypeKeys.INFO_VIS:
             return updateState(state, {
                 synligInfo: leggTilInfo(state.synligInfo, action.id)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { Dekningsgrad, Permisjonsregler } from 'uttaksplan/types';
 import SkjemaDekningsgrad from 'uttaksplan/components/skjema/SkjemaDekningsgrad';
 import SkjemaFordelingFellesperiode from 'uttaksplan/components/skjema/SkjemaFordelingFellesperiode';

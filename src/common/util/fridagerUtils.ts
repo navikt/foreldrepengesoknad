@@ -1,5 +1,4 @@
 import DateHolidays, { Holiday } from 'date-holidays';
-import { Tidsperiode } from '../types';
 import {
     isBefore,
     isAfter,
@@ -8,7 +7,8 @@ import {
     endOfMonth,
     isEqual
 } from 'date-fns';
-import { normaliserDato } from './';
+import { normaliserDato } from 'common/util/datoUtils';
+import { Tidsperiode } from 'nav-datovelger';
 
 const holidays = DateHolidays('no');
 

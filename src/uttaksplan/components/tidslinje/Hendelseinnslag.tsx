@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import { InnslagHendelsetype } from './types';
-import TerminIkon from '../../elements/ikoner/TerminIkon';
 import { FormattedMessage } from 'react-intl';
-import Dato from '../../elements/dato/Dato';
+import FormatertDato from 'common/components/formatert-dato/FormatertDato';
+import TerminIkon from 'common/components/ikoner/TerminIkon';
 
 interface Props {
     innslag: InnslagHendelsetype;
@@ -13,7 +13,7 @@ const Hendelseinnslag: React.StatelessComponent<Props> = ({ innslag }) => {
     return (
         <div className="hendelseinnslag">
             <div className="hendelseinnslag__dato">
-                <Dato dato={innslag.dato} />
+                <FormatertDato dato={innslag.dato} />
             </div>
             <div className="hendelseinnslag__hendelse">
                 {innslag.hendelse === 'termin' ? (
