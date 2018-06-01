@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import UtenlandsoppholdPeriodeListe from '../components/utenlandsopphold-periode-liste/UtenlandsoppholdPeriodeListe';
-import { UtenlandsoppholdPeriode } from '../types/søknad/Utenlandsopphold';
-import UtenlandsoppholdPeriodeModal, {
-    PeriodeType
-} from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
+import {
+    PeriodeType,
+    UtenlandsoppholdPeriode
+} from '../types/søknad/Utenlandsopphold';
+import UtenlandsoppholdPeriodeModal from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
 import { Språkkode } from '../intl/types';
 
 interface UtenlandsoppholdBolkProps {

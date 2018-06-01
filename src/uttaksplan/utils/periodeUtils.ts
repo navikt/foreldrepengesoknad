@@ -134,7 +134,7 @@ export function getSammenhengendePerioder(
 }
 
 /**
- * Finner gyldig sluttdato for en periode ut fra startdato og varighet i antall uker
+ * Finner gyldig sluttdato for en periode ut fra startdato og getVarighet i antall uker
  * @param startdato
  * @param uker
  */
@@ -250,7 +250,7 @@ const leggTilUtsettelseIPeriode = (
 
 /**
  * Legger en utsettelse inn i en periode og forskyver sluttdatoen for perioden
- * tilsvarende utsettelsens varighet
+ * tilsvarende utsettelsens getVarighet
  * @param periode
  * @param utsettelse
  */
