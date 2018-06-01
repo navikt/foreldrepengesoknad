@@ -110,7 +110,7 @@
         "date-holidays": "1.2.5",
         "express": "4.16.3",
         "history": "4.7.2",
-        "i18n-iso-countries": "^3.6.3",
+        "i18n-iso-countries": "3.6.3",
         "jsdom": "11.9.0",
         "lodash.throttle": "4.1.1",
         "moment": "2.22.1",
