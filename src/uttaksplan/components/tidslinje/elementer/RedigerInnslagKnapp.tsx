@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RedigerIkon from '../../../elements/ikoner/RedigerIkon';
+import RedigerIkon from 'uttaksplan/components/ikoner/RedigerIkon';
 
 export interface Props {
     title?: string;

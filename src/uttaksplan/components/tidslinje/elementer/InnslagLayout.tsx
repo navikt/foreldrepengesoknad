@@ -5,8 +5,8 @@ import RedigerInnslagKnapp from './RedigerInnslagKnapp';
 import Varighet from './Varighet';
 import { getAntallUttaksdagerITidsperiode } from '../../../utils/uttaksdagerUtils';
 import { InnslagEkstrainfo } from '../types';
-import UtvidetInformasjon from '../../../elements/utvidetInformasjon/UtvidetInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import UtvidetInformasjon from 'uttaksplan/components/utvidetInformasjon/UtvidetInformasjon';
 
 export interface Props {
     children: React.ReactNode;
