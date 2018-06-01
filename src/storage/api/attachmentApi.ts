@@ -11,9 +11,10 @@ function saveAttachment(attachment: Attachment) {
     };
 
     const formData = new FormData();
-    formData.append('vedlegg', attachment.file);
+    formData.set('id', attachment.id);
+    formData.append('vedlegg', attachment.file, attachment.filename);
 
-    const url = `${Environment.REST_API_URL}/storage/vedlegg/${attachment.id}`;
+    const url = `${Environment.REST_API_URL}/storage/vedlegg`;
     return axios.post(url, formData, config);
 }
 
