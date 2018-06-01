@@ -5,7 +5,6 @@ import Datovelger, { Props as DatovelgerProps } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface OwnProps extends DatovelgerProps {
-    dato?: Date;
     label: string | React.ReactNode;
     feil?: Feil;
 }
