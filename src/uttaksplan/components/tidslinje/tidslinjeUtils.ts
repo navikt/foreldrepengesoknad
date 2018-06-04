@@ -31,7 +31,6 @@ const normaliserStonadsperiodekonto = (
 ): StonadskontoType => {
     switch (konto) {
         case StonadskontoType.Modrekvote:
-        case StonadskontoType.ModrekvotePakrevd:
             return StonadskontoType.Modrekvote;
         default:
             return konto;
@@ -112,8 +111,6 @@ export const getStondskontoTekstKey = (konto: StonadskontoType) => {
             return 'uttaksplan.stonadskonto.fedrekvote';
         case StonadskontoType.Modrekvote:
             return 'uttaksplan.stonadskonto.modrekvote';
-        case StonadskontoType.ModrekvotePakrevd:
-            return 'uttaksplan.stonadskonto.modrekvotePakrevd';
         default:
             return 'uttaksplan.stonadskonto.foreldrepenger';
     }
