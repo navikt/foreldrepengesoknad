@@ -1,9 +1,9 @@
 import * as React from 'react';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { Dekningsgrad, Permisjonsregler } from 'uttaksplan/types';
-import SkjemaDekningsgrad from 'uttaksplan/components/skjema/SkjemaDekningsgrad';
-import SkjemaFordelingFellesperiode from 'uttaksplan/components/skjema/SkjemaFordelingFellesperiode';
 import AktivitetskravInfo from 'uttaksplan/components/content/AktivitetskravInfo';
+import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
+import FordelingFellesperiodeSpørsmål from '../spørsmål/FordelingFellesperiodeSpørsmål';
 
 export interface Props {
     navnForelder1: string;
@@ -31,7 +31,7 @@ class UttaksplanSkjema extends React.Component<Props, {}> {
         return (
             <React.Fragment>
                 <div className="blokk-m">
-                    <SkjemaDekningsgrad
+                    <DekningsgradSpørsmål
                         dekningsgrad={dekningsgrad}
                         antallUkerTotalt80={permisjonsregler.antallUkerTotalt80}
                         antallUkerTotalt100={
@@ -46,7 +46,7 @@ class UttaksplanSkjema extends React.Component<Props, {}> {
                     animert={false}
                     erApen={dekningsgrad !== undefined}>
                     <div className="blokk-s">
-                        <SkjemaFordelingFellesperiode
+                        <FordelingFellesperiodeSpørsmål
                             navnForelder1={navnForelder1}
                             navnForelder2={navnForelder2}
                             ukerFellesperiode={ukerFellesperiode}

@@ -34,7 +34,7 @@ import SøkerrolleSpørsmål from '../spørsmål/SøkerrolleSpørsmål';
 import Applikasjonsside from './sider/Applikasjonsside';
 import { getSøkerrollerForBruker } from '../util/søkerrollerUtils';
 import { Periode } from 'uttaksplan/types';
-import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
+import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import { Språkkode } from 'common/intl/types';
 import { AppState } from '../redux/reducers';
 import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
