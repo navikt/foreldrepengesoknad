@@ -9,17 +9,13 @@ export enum Periodetype {
 
 export enum StonadskontoType {
     /** Kvote forbeholdt mor */
-    'ModrekvotePakrevd' = 'ModrekvotePakrevd',
-    /** Kvote forbeholdt mor */
     'Modrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
     'Fedrekvote' = 'FEDREKVOTE',
     /** Felleskvote som kan fordeles mellom mor og medforelder */
     'Fellesperiode' = 'FELLESPERIODE',
     /** Når det kun er en forsørger/forelder */
-    'Foreldrepenger' = 'FORELDREPENGER',
-    /** Mors permisjon før fødsel */
-    'ForeldrepengerForFodsel' = 'ForeldrepengerForFodsel'
+    'Foreldrepenger' = 'FORELDREPENGER'
 }
 
 export enum UtsettelseÅrsakType {
