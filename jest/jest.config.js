@@ -7,7 +7,8 @@ module.exports = {
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
         '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules',
-        'uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1'
+        '^uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1',
+        '^common/(.*)': '<rootDir>/src/common/$1'
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     globals: {
