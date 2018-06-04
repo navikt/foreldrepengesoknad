@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Stonadsperiode, Periode } from 'uttaksplan/types';
+import { Stonadsperiode, Periode, Forelder } from 'uttaksplan/types';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { preventFormSubmit } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Column, Row } from 'nav-frontend-grid';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
-import SøkerrolleSpørsmål from 'app/spørsmål/SøkerrolleSpørsmål';
-import { SøkerRolle } from 'app/types/søknad/Søknad';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
 
 export interface OwnProps {
     periode: Stonadsperiode;
@@ -17,6 +16,7 @@ export interface OwnProps {
 }
 
 export interface State {
+    forelder?: Forelder;
     startdato?: Date;
     sluttdato?: Date;
 }
@@ -72,7 +72,6 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.stonadsperiodeskjema.endre.tittel'
             : 'uttaksplan.stonadsperiodeskjema.tittel';
 
-        const roller = Object.keys(SøkerRolle).map((key) => SøkerRolle[key]);
         return (
             <form
                 action="#"
@@ -83,9 +82,10 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                 </h1>
                 <div className="blokkPad-s">
                     <SkjemaGruppe>
-                        <SøkerrolleSpørsmål
-                            roller={roller}
-                            onChange={(rolle) => null}
+                        <HvemGjelderPeriodenSpørsmål
+                            spørsmål="Hvem gjelder perioden"
+                            forelder={this.state.forelder}
+                            onChange={(forelder) => this.setState({ forelder })}
                         />
                     </SkjemaGruppe>
                 </div>
