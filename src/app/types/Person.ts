@@ -10,6 +10,7 @@ interface Person {
     fødselsdato: string;
     ikkeNordiskEøsLand: boolean;
     erMyndig: boolean;
+    erFarEllerMedmor: boolean;
 }
 
 export default Person;

@@ -48,6 +48,26 @@
     "erDuSelvstendigNæringsdrivende.spørsmål":
         "Er du selvstendig næringsdrivende?",
 
+    "annenForelder.sectionheading": "Informasjon om den andre forelderen",
+    "annenForelder.label.navn": "Den andre forelderen heter...",
+    "annenForelder.label.kanIkkeOppgiNavn":
+        "Jeg kan ikke oppgi den andre forelderen",
+    "annenForelder.label.fødselsnummer":
+        "og har fødselsnummer eller D-nummer...",
+    "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
+    "annenForelder.label.bostedsland": "og bor i...",
+    "annenForelder.placeholder.navn": "Navn",
+    "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
+    "annenForelder.hjelpetekst.dNummer":
+        "Du kan også skrive D-nummeret til den andre forelderen.",
+    "annenForelder.ugyldigFødselsnummer":
+        "Du må skrive et gyldig nummer (11 sifre)",
+    "annenForelder.ugyldigEgetFødselsnummer":
+        "Du kan ikke oppgi ditt eget fødselsnummer",
+    "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
+    "annenForelder.ugyldigBostedsland":
+        "Du må oppgi hvor den andre forelderen bor",
+
     "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
