@@ -16,19 +16,13 @@ import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSe
 import { DispatchProps } from 'common/redux/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
-import '../../styles/uttaksplan.less';
 import { Knapp } from 'nav-frontend-knapper';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
-import UttaksplanIkon, {
-    UttaksplanIkonKeys
-} from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
 import {
     TimelineItem,
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
 import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
-import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
-import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/UttaksplanSkjema';
 import {
     setDekningsgrad,
     setFellesperiodeukerMor,
@@ -40,11 +34,19 @@ import {
 
 export type Props = OwnProps & StateProps & DispatchProps;
 
-import '../skjema/skjema.less';
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
 import { Dekningsgrad } from 'common/types';
 import { Tidsperiode } from 'nav-datovelger';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
+import Knapperad from 'common/components/knapperad/Knapperad';
+import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
+
+import { mapInnslagToTimelineItem } from 'uttaksplan/utils/innslagUtils';
+import UttaksplanIkon, {
+    UttaksplanIkonKeys
+} from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
+
+import '../styles/uttaksplan.less';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -68,7 +70,7 @@ interface OwnProps {
     onChange: (perioder: Periode[]) => void;
 }
 
-class Uttaksplan extends React.Component<Props> {
+class UttaksplanMain extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
@@ -193,14 +195,28 @@ class Uttaksplan extends React.Component<Props> {
                         </div>
 
                         <div className="m-textCenter">
-                            <Knapp
-                                onClick={() =>
-                                    dispatch(
-                                        visPeriodeDialog(Periodetype.Utsettelse)
-                                    )
-                                }>
-                                Legg til utsettelse
-                            </Knapp>
+                            <Knapperad>
+                                <Knapp
+                                    onClick={() =>
+                                        dispatch(
+                                            visPeriodeDialog(
+                                                Periodetype.Stonadsperiode
+                                            )
+                                        )
+                                    }>
+                                    Legg til uttak
+                                </Knapp>
+                                <Knapp
+                                    onClick={() =>
+                                        dispatch(
+                                            visPeriodeDialog(
+                                                Periodetype.Utsettelse
+                                            )
+                                        )
+                                    }>
+                                    Legg til utsettelse
+                                </Knapp>
+                            </Knapperad>
                         </div>
 
                         {visPermisjonsplan &&
@@ -272,4 +288,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect(mapStateToProps)(Uttaksplan);
+export default connect(mapStateToProps)(UttaksplanMain);

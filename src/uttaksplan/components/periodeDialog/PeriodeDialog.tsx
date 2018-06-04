@@ -18,10 +18,10 @@ import {
     Utsettelsesperiode,
     Stonadsperiode
 } from 'uttaksplan/types';
-import UtsettelseSkjema from 'uttaksplan/components/utsettelseSkjema/UtsettelseSkjema';
 
 import './periodeDialog.less';
-import StonadsperiodeSkjema from 'uttaksplan/components/stonadsperiodeSkjema/StonadsperiodeSkjema';
+import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
+import StonadsperiodeSkjema from 'uttaksplan/skjema/stonadsperiodeSkjema/StonadsperiodeSkjema';
 
 interface OwnProps {
     periodetype: Periodetype;

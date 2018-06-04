@@ -15,7 +15,7 @@ import {
     TimelineGap
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
-import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplan/UttaksplanIkon';
+import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype

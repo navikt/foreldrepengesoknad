@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import * as classnames from 'classnames';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Row, Column } from 'nav-frontend-grid';
 import {
@@ -13,27 +12,23 @@ import {
 } from 'uttaksplan/types';
 import { preventFormSubmit } from 'uttaksplan/utils';
 import { isBefore, isSameDay } from 'date-fns';
-import Ferieinfo from 'uttaksplan/components/utsettelseSkjema/Ferieinfo';
+import Ferieinfo from './Ferieinfo';
 import {
     validerUtsettelseskjema,
     getTilTidsromSluttdato,
     getAntallFeriedager,
     getUgyldigeTidsrom,
     getDefaultState
-} from 'uttaksplan/components/utsettelseSkjema/utils';
+} from './utils';
 
 import './utsettelseSkjema.less';
-import {
-    Valideringsfeil,
-    Skjemaelement
-} from 'uttaksplan/components/utsettelseSkjema/types';
+import { Valideringsfeil, Skjemaelement } from './types';
 import { Feil } from 'common/components/skjema-input-element/types';
-import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
-import DatoInput from 'common/components/dato-input/DatoInput';
-import { renderDag } from 'common/util/renderUtils';
 import { normaliserDato } from 'common/util/datoUtils';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 
 interface OwnProps {
     termindato: Date;
@@ -191,11 +186,13 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             startdatoFeil &&
             (this.state.visValideringsfeil ||
                 this.state.startdato !== undefined);
+
         const visSluttdatofeil =
             !this.skalValidere &&
             sluttdatoFeil &&
             (this.state.visValideringsfeil ||
                 this.state.sluttdato !== undefined);
+
         const tidsperiodeFeil =
             !visStartdatofeil && !visSluttdatofeil
                 ? this.getSkjemaelementFeil('tidsperiode')
@@ -209,33 +206,14 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     <FormattedMessage id="uttaksplan.utsettelseskjema.tittel" />
                 </h1>
                 <div className="blokkPad-s">
-                    <Radioliste
-                        kolonner="2"
-                        tittel={intl.formatMessage({
+                    <HvemGjelderPeriodenSpørsmål
+                        spørsmål={intl.formatMessage({
                             id: 'uttaksplan.utsettelseskjema.hvem.sporsmal'
                         })}
-                        inputnavn="forelder"
-                        stil="ekstern"
+                        forelder={forelder}
+                        navnForelder1={navnForelder1}
+                        navnForelder2={navnForelder2}
                         feil={this.getSkjemaelementFeil('forelder')}
-                        valg={[
-                            {
-                                tittel:
-                                    navnForelder1 ||
-                                    intl.formatMessage({
-                                        id: 'uttaksplan.Forelder1'
-                                    }),
-                                verdi: 'forelder1'
-                            },
-                            {
-                                tittel:
-                                    navnForelder2 ||
-                                    intl.formatMessage({
-                                        id: 'uttaksplan.Forelder2'
-                                    }),
-                                verdi: 'forelder2'
-                            }
-                        ]}
-                        valgtVerdi={forelder}
                         onChange={(value) => {
                             this.setState({ forelder: value as Forelder });
                             this.revaliderSkjema();
@@ -246,136 +224,54 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 <EkspanderbartInnhold
                     erApen={forelder !== undefined}
                     harEkspanderbartInnhold={true}>
-                    <div className="blokkPad-xxs">
-                        <Radioliste
-                            tittel={
-                                <FormattedMessage
-                                    id="uttaksplan.utsettelseskjema.årsak.sporsmal"
-                                    values={{
-                                        navn:
-                                            forelder === 'forelder1'
-                                                ? navnForelder1 ||
-                                                  intl
-                                                      .formatMessage({
-                                                          id:
-                                                              'uttaksplan.forelder1'
-                                                      })
-                                                      .toLowerCase()
-                                                : navnForelder2 ||
-                                                  intl
-                                                      .formatMessage({
-                                                          id:
-                                                              'uttaksplan.forelder2'
-                                                      })
-                                                      .toLowerCase()
-                                    }}
-                                />
-                            }
-                            stil="ekstern"
-                            feil={this.getSkjemaelementFeil('årsak')}
-                            valg={[
-                                {
-                                    tittel: intl.formatMessage({
-                                        id:
-                                            'uttaksplan.utsettelseskjema.årsak.arbeid'
-                                    }),
-                                    verdi: UtsettelseÅrsakType.Arbeid
-                                },
-                                {
-                                    tittel: intl.formatMessage({
-                                        id:
-                                            'uttaksplan.utsettelseskjema.årsak.ferie'
-                                    }),
-                                    verdi: UtsettelseÅrsakType.Ferie
-                                }
-                            ]}
-                            inputnavn="utsettelse"
-                            valgtVerdi={årsak}
-                            onChange={(value) => {
-                                this.setState({
-                                    årsak: value as UtsettelseÅrsakType
-                                });
-                                this.revaliderSkjema();
-                            }}
-                        />
-                    </div>
+                    {forelder && (
+                        <div className="blokkPad-xxs">
+                            <UtsettelsesårsakSpørsmål
+                                utsettelsesårsak={årsak}
+                                forelder={forelder}
+                                navnForelder1={navnForelder1}
+                                navnForelder2={navnForelder2}
+                                feil={this.getSkjemaelementFeil('årsak')}
+                                onChange={(nyÅrsak) => {
+                                    this.setState({ årsak: nyÅrsak });
+                                    this.revaliderSkjema();
+                                }}
+                            />
+                        </div>
+                    )}
                 </EkspanderbartInnhold>
 
                 <EkspanderbartInnhold
                     erApen={this.state.årsak !== undefined}
                     harEkspanderbartInnhold={true}>
                     <div className="blokkPad-s">
-                        <SkjemaGruppe
-                            feil={tidsperiodeFeil}
-                            className={classnames('tidsperiodeSkjemagruppe', {
-                                'tidsperiodeSkjemagruppe--harFeil':
-                                    tidsperiodeFeil !== undefined
-                            })}>
-                            <Row>
-                                <Column xs="12" sm="6">
-                                    <div className="blokkPad-s">
-                                        <DatoInput
-                                            id="startdato"
-                                            label={intl.formatMessage({
-                                                id:
-                                                    'uttaksplan.utsettelseskjema.startdato.sporsmal'
-                                            })}
-                                            dato={startdato}
-                                            feil={
-                                                visStartdatofeil &&
-                                                startdatoFeil
-                                                    ? startdatoFeil
-                                                    : undefined
-                                            }
-                                            onChange={(dato: Date) =>
-                                                this.setStartdato(dato)
-                                            }
-                                            avgrensninger={{
-                                                minDato: tidsrom.startdato,
-                                                maksDato: tidsrom.sluttdato,
-                                                helgedagerIkkeTillatt: true,
-                                                ugyldigeTidsperioder: ugyldigeTidsrom
-                                            }}
-                                            kalenderplassering="fullskjerm"
-                                            dayPickerProps={{
-                                                renderDay: renderDag
-                                            }}
-                                        />
-                                    </div>
-                                </Column>
-                                <Column xs="12" sm="6">
-                                    <div className="blokkPad-s">
-                                        <DatoInput
-                                            id="sluttdato"
-                                            dato={sluttdato}
-                                            label={intl.formatMessage({
-                                                id:
-                                                    'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
-                                            })}
-                                            feil={
-                                                visSluttdatofeil &&
-                                                sluttdatoFeil
-                                                    ? sluttdatoFeil
-                                                    : undefined
-                                            }
-                                            avgrensninger={{
-                                                minDato: tilTidsrom.startdato,
-                                                maksDato: tilTidsrom.sluttdato,
-                                                ugyldigeTidsperioder: ugyldigeTidsrom,
-                                                helgedagerIkkeTillatt: true
-                                            }}
-                                            onChange={(date) =>
-                                                this.setSluttdato(date)
-                                            }
-                                            kalenderplassering="fullskjerm"
-                                            dayPickerProps={{
-                                                renderDay: renderDag
-                                            }}
-                                        />
-                                    </div>
-                                </Column>
-                            </Row>
-                        </SkjemaGruppe>
+                        <TidsperiodeSpørsmål
+                            startdato={{
+                                dato: startdato,
+                                label: intl.formatMessage({
+                                    id:
+                                        'uttaksplan.utsettelseskjema.startdato.sporsmal'
+                                }),
+                                tidsperiode: tidsrom,
+                                onChange: this.setStartdato,
+                                feil: startdatoFeil,
+                                visFeil: visStartdatofeil
+                            }}
+                            sluttdato={{
+                                dato: sluttdato,
+                                label: intl.formatMessage({
+                                    id:
+                                        'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
+                                }),
+                                tidsperiode: tilTidsrom,
+                                onChange: this.setSluttdato,
+                                feil: sluttdatoFeil,
+                                visFeil: visSluttdatofeil
+                            }}
+                            ugyldigeTidsperioder={ugyldigeTidsrom}
+                            tidsperiodeFeil={tidsperiodeFeil}
+                        />
+
                         {visFerieinfo && (
                             <Ferieinfo
                                 feriedager={antallFeriedager}
