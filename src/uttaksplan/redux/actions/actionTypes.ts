@@ -1,6 +1,5 @@
 import {
     Dekningsgrad,
-    Spraak,
     Periode,
     Periodetype,
     Permisjonsregler
@@ -20,7 +19,6 @@ export enum PlanleggerActionTypeKeys {
     'INFO_VIS' = 'infoVis',
     'INFO_SKJUL' = 'infoSkjul',
     'VIS_TIDSLINJE' = 'visTidslinje',
-    'SET_SPRAAK' = 'setSpraak',
     'OPPRETT_PERIODER' = 'opprettPerioder'
 }
 
@@ -38,7 +36,6 @@ export type PlanleggerActionTypes =
     | SkjulInfo
     | VisInfo
     | VisTidslinje
-    | SettSpraak
     | OpprettPerioder;
 
 export interface OpprettPerioder {
@@ -110,8 +107,4 @@ export interface VisInfo {
 export interface VisTidslinje {
     type: PlanleggerActionTypeKeys.VIS_TIDSLINJE;
     synlig: boolean;
-}
-export interface SettSpraak {
-    type: PlanleggerActionTypeKeys.SET_SPRAAK;
-    spraak: Spraak;
 }

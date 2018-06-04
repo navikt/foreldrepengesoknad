@@ -7,13 +7,7 @@ import {
 } from 'uttaksplan/redux/types';
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
-import {
-    Tidsperiode,
-    Dekningsgrad,
-    Periode,
-    Permisjonsregler,
-    Periodetype
-} from 'uttaksplan/types';
+import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
 import {
     getGyldigTidsromForUtsettelse,
     getAntallUkerFellesperiode
@@ -32,7 +26,6 @@ import {
     TimelineItem,
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
-import Varighet from 'uttaksplan/components/tidslinje/elementer/Varighet';
 import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import { mapInnslagToTimelineItem } from 'uttaksplan/components/uttaksplan/utils';
 import UttaksplanSkjema from 'uttaksplan/components/uttaksplan/UttaksplanSkjema';
@@ -49,6 +42,9 @@ export type Props = OwnProps & StateProps & DispatchProps;
 
 import '../skjema/skjema.less';
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
+import { Dekningsgrad } from 'common/types';
+import { Tidsperiode } from 'nav-datovelger';
+import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -182,7 +178,7 @@ class Uttaksplan extends React.Component<Props> {
                                     this.handleItemClick(item);
                                 }}
                                 durationRenderer={(dager: number) => (
-                                    <Varighet dager={dager} />
+                                    <UkerOgDager dager={dager} />
                                 )}
                                 rangeRenderer={(
                                     startdato: Date,

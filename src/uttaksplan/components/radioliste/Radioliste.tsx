@@ -3,7 +3,6 @@ import * as classnames from 'classnames';
 
 import { RadioProps, RadioPanel, SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
-import EkspanderbartInnhold from 'uttaksplan/elements/ekspanderbartInnhold/EkspanderbartInnhold';
 
 type RadiolisteValgVerdi = string | number | undefined;
 
@@ -12,6 +11,7 @@ type RadiolisteChangeEvent = (verdi: RadiolisteValgVerdi) => void;
 type RadiobuttonStil = 'intern' | 'ekstern';
 
 import './radioliste.less';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 
 export interface RadiolisteValg {
     tittel: string;

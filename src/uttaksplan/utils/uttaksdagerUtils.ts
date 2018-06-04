@@ -1,7 +1,7 @@
 import { addDays, getISODay } from 'date-fns';
 import { Tidsperiode, Periodetype, Periode } from '../types';
 import { Holiday } from 'date-holidays';
-import { getOffentligeFridager } from './fridagerUtils';
+import { getOffentligeFridager } from 'common/util/fridagerUtils';
 
 export const getUkedag = (dato: Date) => getISODay(dato);
 
@@ -98,15 +98,6 @@ export interface UkerOgDager {
     dager: number;
     uker: number;
 }
-export const getUkerOgDagerFromDager = (
-    dager: number
-): { uker: number; dager: number } => {
-    const uker = Math.floor(dager / 5);
-    return {
-        dager: dager - uker * 5,
-        uker
-    };
-};
 
 /**
  * Legger til dager til en dato og returnerer ny dato

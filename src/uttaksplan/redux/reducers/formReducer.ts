@@ -4,10 +4,10 @@ import {
 } from '../actions/actionTypes';
 import { getPermisjonsregler } from '../../data/permisjonsregler';
 import { UttaksplanFormState, UttaksplanFormStatePartial } from '../types';
-import { normaliserDato } from '../../utils';
 import { FellesperiodeFordeling, Dekningsgrad } from '../../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
 import { addYears, isWithinRange } from 'date-fns';
+import { normaliserDato } from 'common/util/datoUtils';
 
 const getDefaultState = (
     dato: Date,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import BEMHelper from 'uttaksplan/utils/bem';
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
 import {
     TimelineItemProps,
@@ -12,6 +11,7 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
 import { guid } from 'nav-frontend-js-utils';
+import BEMHelper from 'common/util/bem';
 
 export interface Props extends TimelineItemProps {
     item: TimelineGap;

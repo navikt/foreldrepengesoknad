@@ -3,7 +3,7 @@ import {
     TimelineIcon,
     TimelineIconRenderer
 } from 'uttaksplan/components/timeline/types';
-import BEMHelper from 'uttaksplan/utils/bem';
+import BEMHelper from 'common/util/bem';
 
 export interface Props {
     icons?: TimelineIcon[];
