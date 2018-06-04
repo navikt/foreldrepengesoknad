@@ -45,16 +45,9 @@ interface PeriodeBase {
     tidsperiode: Tidsperiode;
 }
 
-export type Stonadskontoer =
-    | StonadskontoType.Fedrekvote
-    | StonadskontoType.Modrekvote
-    | StonadskontoType.ModrekvotePakrevd
-    | StonadskontoType.Fellesperiode
-    | StonadskontoType.ForeldrepengerForFodsel;
-
 export interface Stonadsperiode extends PeriodeBase {
     type: Periodetype.Stonadsperiode;
-    konto: Stonadskontoer;
+    konto: StonadskontoType;
     forelder: Forelder;
     låstPeriode?: boolean;
     låstForelder?: boolean;

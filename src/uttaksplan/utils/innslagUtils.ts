@@ -16,6 +16,7 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
+import { InjectedIntl } from 'react-intl';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -75,19 +76,33 @@ export const getTimelineIconsFromInnslag = (
 };
 
 export const mapInnslagToEvent = (
-    innslag: InnslagPeriodetype
+    innslag: InnslagPeriodetype,
+    intl: InjectedIntl
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
+    const getTittel = () => {
+        if (periode.type === Periodetype.Stonadsperiode) {
+            return `Stønadsperiode (${intl
+                .formatMessage({
+                    id: `stønadskontotype.${periode.konto}`
+                })
+                .toLowerCase()})`;
+        } else if (periode.type === Periodetype.Utsettelse) {
+            return `Utsettelse (${intl
+                .formatMessage({
+                    id: `utsettelsesårsak.${periode.årsak}`
+                })
+                .toLowerCase()})`;
+        }
+        return periode.type;
+    };
     if (
         innslag.periode.type === Periodetype.Stonadsperiode ||
         innslag.periode.type === Periodetype.Utsettelse
     ) {
         return {
             type: TimelineItemType.event,
-            title:
-                periode.type === Periodetype.Stonadsperiode
-                    ? 'Uttaksperiode'
-                    : 'Utsettelse',
+            title: getTittel(),
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
@@ -122,12 +137,13 @@ export const mapInnslagToMarker = (
 });
 
 export const mapInnslagToTimelineItem = (
-    innslag: Tidslinjeinnslag
+    innslag: Tidslinjeinnslag,
+    intl: InjectedIntl
 ): TimelineItem => {
     switch (innslag.type) {
         case TidslinjeinnslagType.hendelse:
             return mapInnslagToMarker(innslag);
         case TidslinjeinnslagType.periode:
-            return mapInnslagToEvent(innslag);
+            return mapInnslagToEvent(innslag, intl);
     }
 };
