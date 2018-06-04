@@ -22,8 +22,6 @@
     "uttaksplan.planleggerinfo.lukk": "Lukk informasjon",
     "uttaksplan.planleggerinfo.apne": "Les om begrensninger i planleggeren",
     "uttaksplan.knapp.vispermisjonsplan": "Vis planen",
-    "uttaksplan.stonadskonto.modrekvotePakrevd": "mødrekvote",
-    "uttaksplan.stonadskonto.modrekvote": "mødrekvote",
     "uttaksplan.stonadskonto.fedrekvote": "fedrekvote",
     "uttaksplan.stonadskonto.fellesperiode": "fellesperiode",
     "uttaksplan.stonadskonto.foreldrepenger": "foreldrepenger",
@@ -165,7 +163,6 @@
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.ModrekvotePakrevd": "Mødrekvote",
-    "stønadskontotype.ForeldrepengerForFodsel": "Foreldrepenger",
 
     "uttaksplan.startdato.sporsmal": "Startdato",
     "uttaksplan.sluttdato.sporsmal": "Sluttdato"

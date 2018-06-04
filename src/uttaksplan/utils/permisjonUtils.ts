@@ -247,15 +247,16 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.ForeldrepengerForFodsel,
+            konto: StonadskontoType.Foreldrepenger,
             tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler),
-            låstForelder: true
+            låstForelder: true,
+            låstPeriode: true
         },
         {
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.ModrekvotePakrevd,
+            konto: StonadskontoType.Modrekvote,
             tidsperiode: getPakrevdModrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
