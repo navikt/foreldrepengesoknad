@@ -40,8 +40,8 @@ const AnnenForelderBolk = (props: Props) => {
                             handleOnChange(
                                 {
                                     kanIkkeOppgis: e.target.checked,
-                                    navn: '',
-                                    fnr: '',
+                                    navn: undefined,
+                                    fnr: undefined,
                                     utenlandskFnr: undefined
                                 },
                                 e
