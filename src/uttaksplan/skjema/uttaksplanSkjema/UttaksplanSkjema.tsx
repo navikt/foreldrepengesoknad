@@ -16,6 +16,8 @@ export interface Props {
     onChangeFordeling: (uker: number) => void;
 }
 
+import './uttaksplanSkjema.less';
+
 class UttaksplanSkjema extends React.Component<Props, {}> {
     render() {
         const {

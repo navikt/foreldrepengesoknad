@@ -45,7 +45,12 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                 <div className="blokkPad-s">
                     <DatoInput
                         id="startdato"
-                        label={startdato.label}
+                        label={
+                            startdato.label ||
+                            intl.formatMessage({
+                                id: 'uttaksplan.startdato.sporsmal'
+                            })
+                        }
                         dato={startdato.dato}
                         feil={
                             startdato.visFeil && startdato.feil
@@ -75,7 +80,12 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                     <DatoInput
                         id="sluttdato"
                         dato={sluttdato.dato}
-                        label={sluttdato.label}
+                        label={
+                            sluttdato.label ||
+                            intl.formatMessage({
+                                id: 'uttaksplan.sluttdato.sporsmal'
+                            })
+                        }
                         feil={
                             sluttdato.visFeil && sluttdato.feil
                                 ? sluttdato.feil

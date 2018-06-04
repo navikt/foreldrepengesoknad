@@ -32,8 +32,6 @@ import {
     setTermindato
 } from 'uttaksplan/redux/actions';
 
-export type Props = OwnProps & StateProps & DispatchProps;
-
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
 import { Dekningsgrad } from 'common/types';
 import { Tidsperiode } from 'nav-datovelger';
@@ -47,6 +45,7 @@ import UttaksplanIkon, {
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 
 import '../styles/uttaksplan.less';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -69,6 +68,8 @@ interface OwnProps {
     initialDekningsgrad?: Dekningsgrad;
     onChange: (perioder: Periode[]) => void;
 }
+
+export type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 
 class UttaksplanMain extends React.Component<Props> {
     constructor(props: Props) {
@@ -134,6 +135,7 @@ class UttaksplanMain extends React.Component<Props> {
             ukerFellesperiode,
             visPermisjonsplan,
             dispatch,
+            intl,
             form
         } = this.props;
 
@@ -167,7 +169,7 @@ class UttaksplanMain extends React.Component<Props> {
                         <div className="blokk-m">
                             <Timeline
                                 items={innslag.map((i) =>
-                                    mapInnslagToTimelineItem(i)
+                                    mapInnslagToTimelineItem(i, intl)
                                 )}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}
@@ -288,4 +290,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect(mapStateToProps)(UttaksplanMain);
+export default connect(mapStateToProps)(injectIntl(UttaksplanMain));
