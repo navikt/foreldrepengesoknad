@@ -9,8 +9,8 @@ import { renderDag } from 'common/util/renderUtils';
 import { Tidsperiode } from 'nav-datovelger';
 
 interface TidsperiodeDatoProps {
-    label: string;
-    tidsperiode: Tidsperiode;
+    label?: string;
+    tidsperiode?: Tidsperiode;
     dato?: Date;
     feil?: Feil;
     visFeil?: boolean;
@@ -22,15 +22,17 @@ export interface OwnProps {
     sluttdato: TidsperiodeDatoProps;
     tidsperiodeFeil?: Feil;
     ugyldigeTidsperioder?: Tidsperiode[];
+    helgedagerIkkeTillatt?: boolean;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
+const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     startdato,
     sluttdato,
     tidsperiodeFeil,
     ugyldigeTidsperioder,
+    helgedagerIkkeTillatt,
     intl
 }) => (
     <SkjemaGruppe
@@ -52,9 +54,13 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                         }
                         onChange={(dato: Date) => startdato.onChange(dato)}
                         avgrensninger={{
-                            minDato: startdato.tidsperiode.startdato,
-                            maksDato: startdato.tidsperiode.sluttdato,
-                            helgedagerIkkeTillatt: true,
+                            minDato: startdato.tidsperiode
+                                ? startdato.tidsperiode.startdato
+                                : undefined,
+                            maksDato: startdato.tidsperiode
+                                ? startdato.tidsperiode.sluttdato
+                                : undefined,
+                            helgedagerIkkeTillatt,
                             ugyldigeTidsperioder
                         }}
                         kalenderplassering="fullskjerm"
@@ -76,10 +82,14 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 : undefined
                         }
                         avgrensninger={{
-                            minDato: sluttdato.tidsperiode.startdato,
-                            maksDato: sluttdato.tidsperiode.sluttdato,
+                            minDato: sluttdato.tidsperiode
+                                ? sluttdato.tidsperiode.startdato
+                                : undefined,
+                            maksDato: sluttdato.tidsperiode
+                                ? sluttdato.tidsperiode.sluttdato
+                                : undefined,
                             ugyldigeTidsperioder,
-                            helgedagerIkkeTillatt: true
+                            helgedagerIkkeTillatt
                         }}
                         onChange={(date) => sluttdato.onChange(date)}
                         kalenderplassering="fullskjerm"
@@ -93,4 +103,4 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     </SkjemaGruppe>
 );
 
-export default injectIntl(UtsettelseTidsperiodeSpørsmål);
+export default injectIntl(TidsperiodeSpørsmål);
