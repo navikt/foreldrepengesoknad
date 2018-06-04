@@ -8,7 +8,7 @@ import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
 import SøkerrolleSpørsmål from 'app/spørsmål/SøkerrolleSpørsmål';
 import { SøkerRolle } from 'app/types/søknad/Søknad';
-import PeriodevarighetSpørsmål from '../spørsmål/PeriodevarighetSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
 
 export interface OwnProps {
     periode: Stonadsperiode;
@@ -93,11 +93,15 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                     <SkjemaGruppe>Hvilken stønadskonto</SkjemaGruppe>
                 </div>
                 <div className="blokkPad-s">
-                    <PeriodevarighetSpørsmål
-                        startdato={this.state.startdato}
-                        sluttdato={this.state.sluttdato}
-                        setStartdato={this.setStartdato}
-                        setSluttdato={this.setSluttdato}
+                    <TidsperiodeSpørsmål
+                        startdato={{
+                            dato: this.state.startdato,
+                            onChange: this.setStartdato
+                        }}
+                        sluttdato={{
+                            dato: this.state.sluttdato,
+                            onChange: this.setSluttdato
+                        }}
                     />
                 </div>
 

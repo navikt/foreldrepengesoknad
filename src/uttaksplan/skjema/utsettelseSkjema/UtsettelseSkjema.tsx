@@ -26,9 +26,9 @@ import { Valideringsfeil, Skjemaelement } from './types';
 import { Feil } from 'common/components/skjema-input-element/types';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { normaliserDato } from 'common/util/datoUtils';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
-import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/Utsettelses\u00E5rsakSp\u00F8rsm\u00E5l';
-import UtsettelseTidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/UtsettelseTidsperiode';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 
 interface OwnProps {
     termindato: Date;
@@ -245,7 +245,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     erApen={this.state.årsak !== undefined}
                     harEkspanderbartInnhold={true}>
                     <div className="blokkPad-s">
-                        <UtsettelseTidsperiodeSpørsmål
+                        <TidsperiodeSpørsmål
                             startdato={{
                                 dato: startdato,
                                 label: intl.formatMessage({
