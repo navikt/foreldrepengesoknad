@@ -1,13 +1,19 @@
 import * as React from 'react';
-import { Stonadsperiode, Periode, Forelder } from 'uttaksplan/types';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
+import {
+    Stonadsperiode,
+    Periode,
+    Forelder,
+    StonadskontoType
+} from 'uttaksplan/types';
 import { preventFormSubmit } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { Column, Row } from 'nav-frontend-grid';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
+import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface OwnProps {
     periode: Stonadsperiode;
@@ -19,6 +25,7 @@ export interface State {
     forelder?: Forelder;
     startdato?: Date;
     sluttdato?: Date;
+    stønadskonto?: StonadskontoType;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -29,9 +36,12 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
         this.setSluttdato = this.setSluttdato.bind(this);
         this.setStartdato = this.setStartdato.bind(this);
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
+        this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
 
         const { periode } = props;
         this.state = {
+            forelder: periode ? periode.forelder : undefined,
+            stønadskonto: periode ? periode.konto : undefined,
             startdato: periode ? periode.tidsperiode.startdato : undefined,
             sluttdato: periode ? periode.tidsperiode.sluttdato : undefined
         };
@@ -54,8 +64,8 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
     }
 
     getPeriodeFromSkjema(): Stonadsperiode | undefined {
-        const { startdato, sluttdato } = this.state;
-        if (!startdato || !sluttdato) {
+        const { startdato, sluttdato, stønadskonto, forelder } = this.state;
+        if (!startdato || !sluttdato || !stønadskonto || !forelder) {
             return undefined;
         }
         return {
@@ -63,14 +73,28 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
             tidsperiode: {
                 startdato,
                 sluttdato
-            }
+            },
+            forelder,
+            konto: stønadskonto
         };
     }
+
+    skjemaErGyldig() {
+        return (
+            this.state.forelder !== undefined &&
+            this.state.stønadskonto !== undefined &&
+            this.state.startdato !== undefined &&
+            this.state.sluttdato !== undefined
+        );
+    }
+
     render() {
         const { periode, onFjern } = this.props;
         const tittelKey = periode
             ? 'uttaksplan.stonadsperiodeskjema.endre.tittel'
             : 'uttaksplan.stonadsperiodeskjema.tittel';
+
+        const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
         return (
             <form
@@ -80,18 +104,6 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
-                <div className="blokkPad-s">
-                    <SkjemaGruppe>
-                        <HvemGjelderPeriodenSpørsmål
-                            spørsmål="Hvem gjelder perioden"
-                            forelder={this.state.forelder}
-                            onChange={(forelder) => this.setState({ forelder })}
-                        />
-                    </SkjemaGruppe>
-                </div>
-                <div className="blokkPad-s">
-                    <SkjemaGruppe>Hvilken stønadskonto</SkjemaGruppe>
-                </div>
                 <div className="blokkPad-s">
                     <TidsperiodeSpørsmål
                         startdato={{
@@ -104,33 +116,54 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                         }}
                     />
                 </div>
+                <EkspanderbartInnhold
+                    erApen={
+                        this.state.startdato !== undefined &&
+                        this.state.sluttdato !== undefined
+                    }>
+                    <div className="blokkPad-s">
+                        <HvemGjelderPeriodenSpørsmål
+                            spørsmål="Hvem gjelder perioden?"
+                            forelder={this.state.forelder}
+                            onChange={(forelder) => this.setState({ forelder })}
+                        />
+                    </div>
+                </EkspanderbartInnhold>
 
-                <Row>
-                    <Column xs="12" sm={periode ? '6' : '12'}>
-                        <div className="blokkPad-xxs">
-                            <Hovedknapp
-                                onClick={this.handleSubmitClick}
-                                className="m-fullBredde">
-                                {periode ? (
-                                    <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.oppdater" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.leggtil" />
-                                )}
-                            </Hovedknapp>
-                        </div>
-                    </Column>
+                <EkspanderbartInnhold
+                    erApen={this.state.forelder !== undefined}>
+                    <div className="blokkPad-s">
+                        <StønadskontoSpørsmål
+                            spørsmål="Hvilken stønadskonto skal brukes?"
+                            stønadskonto={this.state.stønadskonto}
+                            onChange={(stønadskonto) =>
+                                this.setState({ stønadskonto })
+                            }
+                        />
+                    </div>
+                </EkspanderbartInnhold>
+
+                <Knapperad>
+                    <Hovedknapp
+                        onClick={this.handleSubmitClick}
+                        className="m-fullBredde"
+                        disabled={lagreKnappTilgjengelig}>
+                        {periode ? (
+                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.oppdater" />
+                        ) : (
+                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.leggtil" />
+                        )}
+                    </Hovedknapp>
                     {periode && (
-                        <Column xs="12" sm="6">
-                            <Knapp
-                                htmlType="button"
-                                data-ref="fjern-knapp"
-                                onClick={() => onFjern(periode)}
-                                className="m-fullBredde">
-                                <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.fjern" />
-                            </Knapp>
-                        </Column>
+                        <Knapp
+                            htmlType="button"
+                            data-ref="fjern-knapp"
+                            onClick={() => onFjern(periode)}
+                            className="m-fullBredde">
+                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.fjern" />
+                        </Knapp>
                     )}
-                </Row>
+                </Knapperad>
             </form>
         );
     }
