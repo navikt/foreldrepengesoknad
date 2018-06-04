@@ -11,7 +11,7 @@ import {
     getAntallUttaksdagerITidsperiode,
     getAntallUttaksdagerIPerioder
 } from '../../utils/uttaksdagerUtils';
-import { CalloutBorderColor } from '../../elements/callout/Callout';
+import { CalloutBorderColor } from 'uttaksplan/components/callout/Callout';
 
 /**
  * Oppsummerer et periodeinnslag

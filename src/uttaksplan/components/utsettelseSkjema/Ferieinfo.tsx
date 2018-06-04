@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Permisjonsregler } from 'uttaksplan/types';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import { getVarighetString } from 'uttaksplan/utils/intlUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { getVarighetString } from 'common/util/intlUtils';
 
 export interface Props {
     forelderNavn: string;
