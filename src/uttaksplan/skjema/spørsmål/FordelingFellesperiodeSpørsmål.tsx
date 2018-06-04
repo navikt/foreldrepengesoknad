@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import RangeInput from 'common/components/range-input/RangeInput';
-import FordelingFellesperiodeLabelRenderer from 'uttaksplan/components/skjema/FordelingFellesperiodeLabelRenderer';
 import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import Sporsmal from 'uttaksplan/components/sporsmal/Sporsmal';
+import FordelingFellesperiodeLabelRenderer from './fordelingFellesperiode/FordelingFellesperiodeLabelRenderer';
 
 export interface OwnProps {
     navnForelder1?: string;
@@ -14,7 +14,7 @@ export interface OwnProps {
     onChange: (dager: number) => void;
 }
 
-const FordelingFellesperiode: React.StatelessComponent<
+const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
     OwnProps & InjectedIntlProps
 > = ({
     navnForelder1,
@@ -98,4 +98,4 @@ const FordelingFellesperiode: React.StatelessComponent<
     />
 );
 
-export default injectIntl(FordelingFellesperiode);
+export default injectIntl(FordelingFellesperiodeSpørsmål);

@@ -17,7 +17,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const SkjemaDekningsgrad: React.StatelessComponent<Props> = ({
+const DekningsgradSpørsmål: React.StatelessComponent<Props> = ({
     intl,
     onChange,
     antallUkerTotalt80,
@@ -70,4 +70,4 @@ const SkjemaDekningsgrad: React.StatelessComponent<Props> = ({
     />
 );
 
-export default injectIntl(SkjemaDekningsgrad);
+export default injectIntl(DekningsgradSpørsmål);

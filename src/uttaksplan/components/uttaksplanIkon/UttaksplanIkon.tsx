@@ -1,12 +1,12 @@
 import * as React from 'react';
-import SykehusIkon from 'uttaksplan/components/uttaksplan/ikoner/SykehusIkon';
-import FerieIkon from 'uttaksplan/components/uttaksplan/ikoner/FerieIkon';
-import UttakIkon from 'uttaksplan/components/uttaksplan/ikoner/UttakIkon';
-import GradertIkon from 'uttaksplan/components/uttaksplan/ikoner/GradertIkon';
-import PlasterIkon from 'uttaksplan/components/uttaksplan/ikoner/PlasterIkon';
-import TerminIkon from 'uttaksplan/components/uttaksplan/ikoner/TerminIkon';
-import ArbeidIkon from 'uttaksplan/components/uttaksplan/ikoner/ArbeidIkon';
-import AdvarselIkon from 'uttaksplan/components/uttaksplan/ikoner/AdvarselIkon';
+import SykehusIkon from './ikoner/SykehusIkon';
+import FerieIkon from './ikoner/FerieIkon';
+import UttakIkon from './ikoner/UttakIkon';
+import GradertIkon from './ikoner/GradertIkon';
+import PlasterIkon from './ikoner/PlasterIkon';
+import TerminIkon from './ikoner/TerminIkon';
+import ArbeidIkon from './ikoner/ArbeidIkon';
+import AdvarselIkon from './ikoner/AdvarselIkon';
 
 export type UttaksplanIkonKeys =
     | 'arbeid'
