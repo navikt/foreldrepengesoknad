@@ -4,6 +4,8 @@ interface AnnenForelder {
     utenlandskFnr: boolean;
     bostedsland: string;
     kanIkkeOppgis: boolean;
+    harRettPåForeldrepenger: boolean;
+    erInformertOmSøknaden: boolean;
 }
 
 export type AnnenForelderPartial = Partial<AnnenForelder>;

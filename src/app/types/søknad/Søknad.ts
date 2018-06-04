@@ -37,6 +37,8 @@ interface Søknad {
     erFrilanser: boolean;
     erMorForSyk: boolean;
     vedlegg: Søknadsvedlegginfo[];
+    erMorUfør: boolean;
+    aleneOmOmsorg: boolean;
 }
 
 export interface SøknadPartial {
