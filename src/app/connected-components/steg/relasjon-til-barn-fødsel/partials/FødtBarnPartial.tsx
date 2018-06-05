@@ -9,19 +9,15 @@ import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
 import utils from '../../../../util/fødselsdato';
-import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 
 interface StateProps {
     barn: FødtBarn;
-    fødselsattestErLastetOpp: boolean;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class FødtBarnPartial extends React.Component<Props> {
     constructor(props: Props) {
@@ -43,13 +39,7 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const {
-            intl,
-            dispatch,
-            barn,
-            fødselsattestErLastetOpp,
-            history
-        } = this.props;
+        const { intl, dispatch, barn } = this.props;
         return (
             <React.Fragment>
                 <Spørsmål
@@ -91,14 +81,6 @@ class FødtBarnPartial extends React.Component<Props> {
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
                     render={() => <Søknadsvedlegg type="fødselsattest" />}
                 />
-
-                {fødselsattestErLastetOpp && (
-                    <FortsettKnapp
-                        history={history}
-                        location={søknadStegPath('annen-forelder')}>
-                        {getMessage(intl, 'fortsettknapp.label')}
-                    </FortsettKnapp>
-                )}
             </React.Fragment>
         );
     }
