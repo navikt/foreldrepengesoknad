@@ -27,7 +27,7 @@ interface StateProps {
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
-class RelasjonTilBarnFødsel extends React.Component<Props, StateProps> {
+class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
     render() {
         const {
             barn,
@@ -114,5 +114,5 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 };
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(RelasjonTilBarnFødsel)
+    injectIntl(RelasjonTilBarnFødselSteg)
 );
