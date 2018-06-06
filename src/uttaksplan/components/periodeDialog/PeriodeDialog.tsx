@@ -63,7 +63,7 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     termindato={props.termindato}
                 />
             );
-        } else if (periodetype === Periodetype.Stonadsperiode) {
+        } else if (periodetype === Periodetype.Stønadsperiode) {
             return (
                 <StonadsperiodeSkjema
                     periode={periode as Stønadsperiode}

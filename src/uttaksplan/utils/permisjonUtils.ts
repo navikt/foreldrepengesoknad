@@ -245,7 +245,7 @@ export function opprettStønadsperioder(
     const perioder: Stønadsperiode[] = [
         {
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler),
@@ -254,7 +254,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Modrekvote,
             tidsperiode: getPakrevdModrekvoteEtterTermin(
@@ -266,7 +266,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Modrekvote,
             tidsperiode: getFrivilligModrekvoteEtterTermin(
@@ -276,7 +276,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder2',
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getFedrekvote(
@@ -290,7 +290,7 @@ export function opprettStønadsperioder(
     if (fellesukerForelder1 > 0) {
         perioder.push({
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder1(
@@ -303,7 +303,7 @@ export function opprettStønadsperioder(
     if (fellesukerForelder2 > 0) {
         perioder.push({
             id: guid(),
-            type: Periodetype.Stonadsperiode,
+            type: Periodetype.Stønadsperiode,
             forelder: 'forelder2',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder2(
