@@ -13,9 +13,9 @@ import {
     Periode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Stonadsperiode,
+    Stønadsperiode,
     Periodetype,
-    StonadskontoType
+    StønadskontoType
 } from '../types';
 import { getPeriodeSluttdato, sorterPerioder } from './periodeUtils';
 import { guid } from 'nav-frontend-js-utils';
@@ -240,14 +240,14 @@ export function opprettStønadsperioder(
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
-): Stonadsperiode[] {
+): Stønadsperiode[] {
     termindato = normaliserDato(termindato);
-    const perioder: Stonadsperiode[] = [
+    const perioder: Stønadsperiode[] = [
         {
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.Foreldrepenger,
+            konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler),
             låstForelder: true,
             låstPeriode: true
@@ -256,7 +256,7 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.Modrekvote,
+            konto: StønadskontoType.Modrekvote,
             tidsperiode: getPakrevdModrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
@@ -268,7 +268,7 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.Modrekvote,
+            konto: StønadskontoType.Modrekvote,
             tidsperiode: getFrivilligModrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
@@ -278,7 +278,7 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder2',
-            konto: StonadskontoType.Fedrekvote,
+            konto: StønadskontoType.Fedrekvote,
             tidsperiode: getFedrekvote(
                 termindato,
                 permisjonsregler,
@@ -292,7 +292,7 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder1',
-            konto: StonadskontoType.Fellesperiode,
+            konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder1(
                 termindato,
                 permisjonsregler,
@@ -305,7 +305,7 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stonadsperiode,
             forelder: 'forelder2',
-            konto: StonadskontoType.Fellesperiode,
+            konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder2(
                 termindato,
                 permisjonsregler,

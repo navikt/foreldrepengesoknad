@@ -16,7 +16,7 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    Stonadsperiode
+    Stønadsperiode
 } from 'uttaksplan/types';
 
 import './periodeDialog.less';
@@ -66,7 +66,7 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
         } else if (periodetype === Periodetype.Stonadsperiode) {
             return (
                 <StonadsperiodeSkjema
-                    periode={periode as Stonadsperiode}
+                    periode={periode as Stønadsperiode}
                     onChange={(p) =>
                         props.dispatch(opprettEllerOppdaterPeriode(p))
                     }

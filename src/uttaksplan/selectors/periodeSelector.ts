@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import {
     Utsettelsesperiode,
     Periode,
-    Stonadsperiode,
+    Stønadsperiode,
     Periodetype
 } from '../types';
 import { leggUtsettelserTilStønadsperioder } from '../utils/periodeUtils';
@@ -31,7 +31,7 @@ export const getStonadsperioderOgUtsettelser = createSelector(
     getStonadsperioder,
     utsettelseSelector,
     (
-        stonadsperioder: Stonadsperiode[],
+        stonadsperioder: Stønadsperiode[],
         utsettelser: Utsettelsesperiode[]
     ): Periode[] => {
         if (stonadsperioder.length > 0) {
