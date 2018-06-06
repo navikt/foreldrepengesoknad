@@ -3,7 +3,7 @@ import {
     Tidsperiode,
     Periodetype,
     Forelder,
-    StonadskontoType,
+    StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
 import { getStonadsperioder } from '../../utils/periodeUtils';
@@ -24,14 +24,14 @@ export interface SammenslattPeriodeOppsummering {
     perioder: Periodeoppsummering;
 }
 
-export type Periodeoppsummering = Map<StonadskontoType, number>;
+export type Periodeoppsummering = Map<StønadskontoType, number>;
 
 const normaliserStonadsperiodekonto = (
-    konto: StonadskontoType
-): StonadskontoType => {
+    konto: StønadskontoType
+): StønadskontoType => {
     switch (konto) {
-        case StonadskontoType.Modrekvote:
-            return StonadskontoType.Modrekvote;
+        case StønadskontoType.Modrekvote:
+            return StønadskontoType.Modrekvote;
         default:
             return konto;
     }
@@ -103,13 +103,13 @@ export const getForelderNavn = (
     navnForelder2: string
 ): string => (forelder === 'forelder1' ? navnForelder1 : navnForelder2);
 
-export const getStondskontoTekstKey = (konto: StonadskontoType) => {
+export const getStondskontoTekstKey = (konto: StønadskontoType) => {
     switch (konto) {
-        case StonadskontoType.Fellesperiode:
+        case StønadskontoType.Fellesperiode:
             return 'uttaksplan.stonadskonto.fellesperiode';
-        case StonadskontoType.Fedrekvote:
+        case StønadskontoType.Fedrekvote:
             return 'uttaksplan.stonadskonto.fedrekvote';
-        case StonadskontoType.Modrekvote:
+        case StønadskontoType.Modrekvote:
             return 'uttaksplan.stonadskonto.modrekvote';
         default:
             return 'uttaksplan.stonadskonto.foreldrepenger';

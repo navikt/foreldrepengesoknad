@@ -3,23 +3,23 @@ import Radioliste, {
     RadiolisteValg
 } from 'uttaksplan/components/radioliste/Radioliste';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { StonadskontoType } from 'uttaksplan/types';
+import { StønadskontoType } from 'uttaksplan/types';
 import { Feil } from 'common/components/skjema-input-element/types';
 
 export interface OwnProps {
     spørsmål: string;
-    stønadskonto?: StonadskontoType;
+    stønadskonto?: StønadskontoType;
     feil?: Feil;
-    onChange: (type: StonadskontoType) => void;
+    onChange: (type: StønadskontoType) => void;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
 
 const tilgjengeligeValg = [
-    StonadskontoType.Modrekvote,
-    StonadskontoType.Fedrekvote,
-    StonadskontoType.Foreldrepenger,
-    StonadskontoType.Fellesperiode
+    StønadskontoType.Modrekvote,
+    StønadskontoType.Fedrekvote,
+    StønadskontoType.Foreldrepenger,
+    StønadskontoType.Fellesperiode
 ];
 
 const StønadskontoSpørsmål: React.StatelessComponent<Props> = ({
@@ -45,7 +45,7 @@ const StønadskontoSpørsmål: React.StatelessComponent<Props> = ({
             valg={valg}
             inputnavn="stønadskonto"
             valgtVerdi={stønadskonto}
-            onChange={(value) => onChange(value as StonadskontoType)}
+            onChange={(value) => onChange(value as StønadskontoType)}
         />
     );
 };
