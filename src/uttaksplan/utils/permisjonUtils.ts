@@ -40,7 +40,7 @@ export function getSisteMuligePermisjonsdag(
     );
 }
 
-export function getModrekvoteFørTermin(
+export function getMødrekvoteFørTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
@@ -54,7 +54,7 @@ export function getModrekvoteFørTermin(
     };
 }
 
-export function getPakrevdModrekvoteEtterTermin(
+export function getPakrevdMødrekvoteEtterTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
@@ -67,12 +67,12 @@ export function getPakrevdModrekvoteEtterTermin(
     };
 }
 
-export function getFrivilligModrekvoteEtterTermin(
+export function getFrivilligMødrekvoteEtterTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     const startdato = getForsteUttaksdagEtterDato(
-        getPakrevdModrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
+        getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
     );
     return {
         startdato,
@@ -90,7 +90,7 @@ export function getFellesperiodeForelder1(
     fellesukerForelder1: number
 ): Tidsperiode {
     const startdato = getForsteUttaksdagEtterDato(
-        getFrivilligModrekvoteEtterTermin(termindato, permisjonsregler)
+        getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
             .sluttdato
     );
     return {
@@ -107,7 +107,7 @@ export function getFellesperiodeForelder2(
 ): Tidsperiode {
     const startdato = getForsteUttaksdagEtterDato(
         fellesukerForelder1 === 0
-            ? getFrivilligModrekvoteEtterTermin(termindato, permisjonsregler)
+            ? getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
                   .sluttdato
             : getFellesperiodeForelder1(
                   termindato,
@@ -164,7 +164,7 @@ export function getGyldigTidsromForUtsettelse(
 ): Tidsperiode {
     return {
         startdato: getForsteUttaksdagEtterDato(
-            getPakrevdModrekvoteEtterTermin(termindato, permisjonsregler)
+            getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler)
                 .sluttdato
         ),
         sluttdato: sisteRegistrertePermisjonsdag
@@ -248,7 +248,7 @@ export function opprettStønadsperioder(
             type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getModrekvoteFørTermin(termindato, permisjonsregler),
+            tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
             låstForelder: true,
             låstPeriode: true
         },
@@ -256,8 +256,8 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
-            konto: StønadskontoType.Modrekvote,
-            tidsperiode: getPakrevdModrekvoteEtterTermin(
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: getPakrevdMødrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
             ),
@@ -268,8 +268,8 @@ export function opprettStønadsperioder(
             id: guid(),
             type: Periodetype.Stønadsperiode,
             forelder: 'forelder1',
-            konto: StønadskontoType.Modrekvote,
-            tidsperiode: getFrivilligModrekvoteEtterTermin(
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: getFrivilligMødrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
             )
