@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import UtenlandsoppholdPeriodeListe from '../components/utenlandsopphold-periode-liste/UtenlandsoppholdPeriodeListe';
+import Liste from '../components/liste/Liste';
 import {
     UtenlandsoppholdPeriodeType,
     UtenlandsoppholdPeriode
 } from '../types/søknad/Utenlandsopphold';
 import UtenlandsoppholdPeriodeModal from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
 import { Språkkode } from 'common/intl/types';
+import { ISODateToMaskedInput } from '../util/dates';
+import * as countries from 'i18n-iso-countries';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -118,10 +120,17 @@ class UtenlandsoppholdBolk extends React.Component<
                         </div>
 
                         <div className="blokk-xs">
-                            <UtenlandsoppholdPeriodeListe
-                                perioder={perioder}
+                            <Liste
+                                data={perioder}
                                 onPeriodeLinkClick={this.onPeriodeLinkClick}
                                 onPeriodeTrashClick={this.onDelete}
+                                renderElement={(
+                                    periode: UtenlandsoppholdPeriode
+                                ) => (
+                                    <UtenlandsoppholdPeriodeListeElement
+                                        periode={periode}
+                                    />
+                                )}
                             />
                         </div>
 
@@ -153,5 +162,28 @@ class UtenlandsoppholdBolk extends React.Component<
         );
     }
 }
+
+interface UtenlandsoppholdPeriodeListeElementProps {
+    periode: UtenlandsoppholdPeriode;
+}
+
+const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<
+    UtenlandsoppholdPeriodeListeElementProps
+> = ({ periode }) => (
+    <React.Fragment>
+        <div className="listeElement__land">
+            {countries.getName(periode.land, 'nb')}
+        </div>
+        <div className="listeElement__dato">
+            <FormattedMessage
+                id="tidsintervall"
+                values={{
+                    fom: ISODateToMaskedInput(periode.varighet.fom),
+                    tom: ISODateToMaskedInput(periode.varighet.tom)
+                }}
+            />
+        </div>
+    </React.Fragment>
+);
 
 export default UtenlandsoppholdBolk;
