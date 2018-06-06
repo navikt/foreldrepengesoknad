@@ -27,7 +27,7 @@ class ListeElement<T> extends React.Component<Props<T>> {
             <li className="listeElement">
                 <div className="listeElement__stay">
                     <LinkButton onClick={onEditClickHandler}>
-                        <div className="listeElement__navnOgDato">
+                        <div className="listeElement__data">
                             {renderElement(data)}
                         </div>
                     </LinkButton>
