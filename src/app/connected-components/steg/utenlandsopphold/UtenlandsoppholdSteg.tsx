@@ -4,7 +4,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import {
     default as Utenlandsopphold,
-    UtenlandsoppholdPeriode
+    UtenlandsoppholdPeriode,
+    UtenlandsoppholdPeriodeType
 } from '../../../types/søknad/Utenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
@@ -31,76 +32,17 @@ type Props = UtenlandsoppholdProps &
     DispatchProps &
     HistoryProps;
 
-type PeriodeArray = 'senerePerioder' | 'tidligerePerioder';
-
 class UtenlandsoppholdSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
-        this.addUtenlandsoppholdPeriode = this.addUtenlandsoppholdPeriode.bind(
-            this
-        );
-        this.editUtenlandsoppholdPeriode = this.editUtenlandsoppholdPeriode.bind(
-            this
-        );
-        this.deleteUtenlandsoppholdPeriode = this.deleteUtenlandsoppholdPeriode.bind(
-            this
-        );
         this.renderSkalBoINorgeNeste12MndSpørsmål = this.renderSkalBoINorgeNeste12MndSpørsmål.bind(
             this
         );
         this.renderHarBoddINorgeSiste12MndSpørsmål = this.renderHarBoddINorgeSiste12MndSpørsmål.bind(
             this
         );
-    }
-
-    addUtenlandsoppholdPeriode(
-        periode: UtenlandsoppholdPeriode,
-        arrayProp: PeriodeArray
-    ) {
-        const { søknad, dispatch } = this.props;
-        const { utenlandsopphold } = søknad;
-        dispatch(
-            søknadActions.updateUtenlandsopphold({
-                [arrayProp]: [...(utenlandsopphold[arrayProp] || []), periode]
-            })
-        );
-    }
-
-    editUtenlandsoppholdPeriode(
-        periode: UtenlandsoppholdPeriode,
-        arrayProp: PeriodeArray,
-        index: number
-    ) {
-        const { søknad, dispatch } = this.props;
-        const { utenlandsopphold } = søknad;
-        const periodeArray = utenlandsopphold[arrayProp];
-
-        if (periodeArray && index > -1) {
-            periodeArray[index] = periode;
-        }
-        dispatch(
-            søknadActions.updateUtenlandsopphold({
-                [arrayProp]: periodeArray
-            })
-        );
-    }
-
-    deleteUtenlandsoppholdPeriode(
-        periode: UtenlandsoppholdPeriode,
-        arrayProp: PeriodeArray
-    ) {
-        const { søknad, dispatch } = this.props;
-        const { utenlandsopphold } = søknad;
-        const periodeArray = utenlandsopphold[arrayProp];
-        if (periodeArray) {
-            periodeArray.splice(periodeArray.indexOf(periode), 1);
-            dispatch(
-                søknadActions.updateUtenlandsopphold({
-                    [arrayProp]: periodeArray
-                })
-            );
-        }
+        this.updateUtenlandsopphold = this.updateUtenlandsopphold.bind(this);
     }
 
     renderSkalBoINorgeNeste12MndSpørsmål() {
@@ -142,6 +84,16 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         );
     }
 
+    updateUtenlandsopphold(
+        perioder: UtenlandsoppholdPeriode[],
+        periodeType: UtenlandsoppholdPeriodeType
+    ) {
+        const { dispatch } = this.props;
+        dispatch(
+            søknadActions.updateUtenlandsopphold({ [periodeType]: perioder })
+        );
+    }
+
     render() {
         const { søknad, stegProps, språkkode, intl } = this.props;
         const { utenlandsopphold } = søknad;
@@ -159,37 +111,17 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                             }
                             oppfølgingsspørsmål={getMessage(
                                 intl,
-                                'utenlandsopphold.select.spørsmål.neste12mnd'
+                                'utenlandsopphold.select.spørsmål.senerePerioder'
                             )}
                             perioder={søknad.utenlandsopphold.senerePerioder}
-                            periodeType={'siste12mnd'}
+                            periodeType={'senerePerioder'}
                             språk={språkkode}
-                            onAddUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode
-                            ) =>
-                                this.addUtenlandsoppholdPeriode(
-                                    periode,
+                            onChange={(perioder: UtenlandsoppholdPeriode[]) =>
+                                this.updateUtenlandsopphold(
+                                    perioder,
                                     'senerePerioder'
                                 )
                             }
-                            onEditUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode,
-                                index: number
-                            ) => {
-                                this.editUtenlandsoppholdPeriode(
-                                    periode,
-                                    'senerePerioder',
-                                    index
-                                );
-                            }}
-                            onDeleteUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode
-                            ) => {
-                                this.deleteUtenlandsoppholdPeriode(
-                                    periode,
-                                    'senerePerioder'
-                                );
-                            }}
                         />
                     )}
                 />
@@ -206,37 +138,17 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                             }
                             oppfølgingsspørsmål={getMessage(
                                 intl,
-                                'utenlandsopphold.select.spørsmål.siste12mnd'
+                                'utenlandsopphold.select.spørsmål.tidligerePerioder'
                             )}
                             perioder={søknad.utenlandsopphold.tidligerePerioder}
-                            periodeType={'neste12mnd'}
+                            periodeType={'tidligerePerioder'}
                             språk={språkkode}
-                            onAddUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode
-                            ) =>
-                                this.addUtenlandsoppholdPeriode(
-                                    periode,
+                            onChange={(perioder: UtenlandsoppholdPeriode[]) =>
+                                this.updateUtenlandsopphold(
+                                    perioder,
                                     'tidligerePerioder'
                                 )
                             }
-                            onEditUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode,
-                                index: number
-                            ) => {
-                                this.editUtenlandsoppholdPeriode(
-                                    periode,
-                                    'tidligerePerioder',
-                                    index
-                                );
-                            }}
-                            onDeleteUtenlandsoppholdPeriode={(
-                                periode: UtenlandsoppholdPeriode
-                            ) => {
-                                this.deleteUtenlandsoppholdPeriode(
-                                    periode,
-                                    'tidligerePerioder'
-                                );
-                            }}
                         />
                     )}
                 />
