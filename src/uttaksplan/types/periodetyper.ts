@@ -7,7 +7,7 @@ export enum Periodetype {
     'TaptPeriode' = 'TAPT_PERIODE'
 }
 
-export enum StønadskontoTyre {
+export enum StønadskontoType {
     /** Kvote forbeholdt mor */
     'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
@@ -43,7 +43,7 @@ interface PeriodeBase {
 
 export interface Stønadsperiode extends PeriodeBase {
     type: Periodetype.Stønadsperiode;
-    konto: StønadskontoTyre;
+    konto: StønadskontoType;
     forelder: Forelder;
     låstPeriode?: boolean;
     låstForelder?: boolean;
