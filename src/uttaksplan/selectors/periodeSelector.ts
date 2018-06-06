@@ -16,7 +16,7 @@ const utsettelseSelector = (state: UttaksplanAppState) => {
 
 export const getStonadsperioder = (state: UttaksplanAppState) =>
     state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.Stonadsperiode
+        (p) => p.type === Periodetype.Stønadsperiode
     );
 
 export const getTaptePerioder = (state: UttaksplanAppState) =>

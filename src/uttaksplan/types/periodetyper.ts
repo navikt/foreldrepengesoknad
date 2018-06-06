@@ -1,7 +1,7 @@
 import { Tidsperiode, Forelder } from '../types';
 
 export enum Periodetype {
-    'Stonadsperiode' = 'STØNADSPERIODE',
+    'Stønadsperiode' = 'STØNADSPERIODE',
     'Utsettelse' = 'UTSETTELSE',
     'Opphold' = 'OPPHOLD',
     'TaptPeriode' = 'TAPT_PERIODE'
@@ -9,7 +9,7 @@ export enum Periodetype {
 
 export enum StønadskontoTyre {
     /** Kvote forbeholdt mor */
-    'Modrekvote' = 'MØDREKVOTE',
+    'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
     'Fedrekvote' = 'FEDREKVOTE',
     /** Felleskvote som kan fordeles mellom mor og medforelder */
@@ -42,7 +42,7 @@ interface PeriodeBase {
 }
 
 export interface Stønadsperiode extends PeriodeBase {
-    type: Periodetype.Stonadsperiode;
+    type: Periodetype.Stønadsperiode;
     konto: StønadskontoTyre;
     forelder: Forelder;
     låstPeriode?: boolean;

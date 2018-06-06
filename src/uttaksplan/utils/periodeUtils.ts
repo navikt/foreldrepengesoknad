@@ -35,7 +35,7 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
  */
 export function getStonadsperioder(perioder: Periode[]): Stønadsperiode[] {
     return perioder.filter(
-        (periode) => periode.type === Periodetype.Stonadsperiode
+        (periode) => periode.type === Periodetype.Stønadsperiode
     ) as Stønadsperiode[];
 }
 
