@@ -3,9 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import LinkButton, { LinkButtonProps } from '../link-button/LinkButton';
 import SlettKnapp from 'common/components/slett-knapp/SlettKnapp';
 
-import './listeElement.less';
-
-interface ListeElementProps<T> {
+interface InteractiveListElementProps<T> {
     data: T;
     onTrashClick?: (element: T) => void;
     onLinkClick: (element: T) => void;
@@ -13,9 +11,9 @@ interface ListeElementProps<T> {
     linkButtonProps?: LinkButtonProps;
 }
 
-type Props<T> = ListeElementProps<T> & InjectedIntlProps;
+type Props<T> = InteractiveListElementProps<T> & InjectedIntlProps;
 
-class ListeElement<T> extends React.Component<Props<T>> {
+class InteractiveListElement<T> extends React.Component<Props<T>> {
     render() {
         const {
             data,
@@ -26,18 +24,18 @@ class ListeElement<T> extends React.Component<Props<T>> {
         } = this.props;
 
         return (
-            <li className="listeElement">
-                <div className="listeElement__stay">
+            <li className="interactiveList__element">
+                <div className="interactiveList__element__stay">
                     <LinkButton
                         onClick={() => onLinkClick(data)}
                         {...linkButtonProps}>
-                        <div className="listeElement__data">
+                        <div className="interactiveList__element__data">
                             {renderElement(data)}
                         </div>
                     </LinkButton>
                 </div>
                 {onTrashClick && (
-                    <span className="listeElement__slettIkon">
+                    <span className="interactiveList__element__slettIkon">
                         <SlettKnapp
                             ariaLabel="Slett utenlandsopphold"
                             onClick={() => onTrashClick(data)}
@@ -49,4 +47,4 @@ class ListeElement<T> extends React.Component<Props<T>> {
     }
 }
 
-export default injectIntl(ListeElement);
+export default injectIntl(InteractiveListElement);

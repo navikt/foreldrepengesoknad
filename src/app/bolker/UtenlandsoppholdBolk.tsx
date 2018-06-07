@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import Liste from '../components/liste/Liste';
+import InteractiveList from '../components/interactive-list/InteractiveList';
 import {
     UtenlandsoppholdPeriodeType,
     UtenlandsoppholdPeriode
@@ -120,10 +120,10 @@ class UtenlandsoppholdBolk extends React.Component<
                         </div>
 
                         <div className="blokk-xs">
-                            <Liste
+                            <InteractiveList
                                 data={perioder}
-                                onPeriodeLinkClick={this.onPeriodeLinkClick}
-                                onPeriodeTrashClick={this.onDelete}
+                                onLinkClick={this.onPeriodeLinkClick}
+                                onTrashClick={this.onDelete}
                                 renderElement={(
                                     periode: UtenlandsoppholdPeriode
                                 ) => (
@@ -171,10 +171,10 @@ const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<
     UtenlandsoppholdPeriodeListeElementProps
 > = ({ periode }) => (
     <React.Fragment>
-        <div className="listeElement__land">
+        <div className="interactiveList__element__land">
             {countries.getName(periode.land, 'nb')}
         </div>
-        <div className="listeElement__dato">
+        <div className="interactiveList__element__dato">
             <FormattedMessage
                 id="tidsintervall"
                 values={{
