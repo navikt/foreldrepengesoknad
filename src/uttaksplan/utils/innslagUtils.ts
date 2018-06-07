@@ -60,7 +60,7 @@ export const getTimelineIconsFromInnslag = (
             if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
                 return ['arbeid'];
             }
-        } else if (periode.type === Periodetype.Stønadsperiode) {
+        } else if (periode.type === Periodetype.Uttaksperiode) {
             return ['uttak'];
         } else if (periode.type === Periodetype.Opphold) {
             return ['advarsel'];
@@ -75,8 +75,8 @@ export const mapInnslagToEvent = (
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
     const getTittel = () => {
-        if (periode.type === Periodetype.Stønadsperiode) {
-            return `Stønadsperiode (${intl
+        if (periode.type === Periodetype.Uttaksperiode) {
+            return `Uttaksperiode (${intl
                 .formatMessage({
                     id: `stønadskontotype.${periode.konto}`
                 })
@@ -91,7 +91,7 @@ export const mapInnslagToEvent = (
         return periode.type;
     };
     if (
-        innslag.periode.type === Periodetype.Stønadsperiode ||
+        innslag.periode.type === Periodetype.Uttaksperiode ||
         innslag.periode.type === Periodetype.Utsettelse
     ) {
         return {
