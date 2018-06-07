@@ -5,7 +5,7 @@ import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 
-interface OwnProps {
+interface NavnPåAnnenForelderSpørsmålProps {
     navn?: string;
     kanIkkeOppgis?: boolean;
     onChange: (
@@ -14,7 +14,7 @@ interface OwnProps {
     ) => void;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = NavnPåAnnenForelderSpørsmålProps & InjectedIntlProps;
 
 const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     const { kanIkkeOppgis, navn, onChange, intl } = props;

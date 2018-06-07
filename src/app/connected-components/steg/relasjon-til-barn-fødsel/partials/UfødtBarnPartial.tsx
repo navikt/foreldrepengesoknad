@@ -12,7 +12,7 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
-import Søker from '../../../../types/søknad/S\u00F8ker';
+import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 
 interface UfødtBarnPartialProps {

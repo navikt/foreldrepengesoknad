@@ -3,12 +3,12 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 
-export enum AnnenForelder {
+enum AnnenForelder {
     'HAR_RETT_PÅ_FORELDREPENGER' = 'harRettPåForeldrepenger',
     'HAR_IKKE_RETT_PÅ_FORELDREPENGER' = 'harIkkeRettPåForeldrepenger'
 }
 
-interface BarnFødtBolkProps {
+interface RettPåForeldrepengerSpørsmålProps {
     navn?: string;
     harAnnenForelderRettPåForeldrepenger?: boolean;
     onChange: (
@@ -17,8 +17,7 @@ interface BarnFødtBolkProps {
     ) => void;
 }
 
-type Props = BarnFødtBolkProps & InjectedIntlProps;
-
+type Props = RettPåForeldrepengerSpørsmålProps & InjectedIntlProps;
 const RettPåForeldrepengerSpørsmål = (props: Props) => {
     const {
         onChange,

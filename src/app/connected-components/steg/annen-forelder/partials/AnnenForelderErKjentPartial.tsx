@@ -2,7 +2,6 @@ import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
-import { Skjemadata } from '../../../../types/søknad/Søknad';
 import RettPåForeldrepengerSpørsmål from '../../../../spørsmål/RettPåForeldrepengerSpørsmål';
 import ErMorUførSpørsmål from '../../../../spørsmål/ErMorUførSpørsmål';
 
@@ -16,31 +15,41 @@ import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Bolk from '../../../../components/layout/Bolk';
-import { Attachment } from 'storage/attachment/types/Attachment';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 
-interface AnnenForelderKjentProps {
+interface AnnenForelderErKjentPartialProps {
     barn: ForeldreansvarBarn;
     annenForelder: AnnenForelderPartial;
+    dataOmAndreForelderen: any;
     erFarEllerMedmor: boolean;
-    søknad: Skjemadata;
+    visInformasjonVedOmsorgsovertakelse: boolean;
     søker: SøkerPartial;
-    attachments: Attachment[];
 }
 
-type Props = AnnenForelderKjentProps & InjectedIntlProps & DispatchProps;
+type Props = AnnenForelderErKjentPartialProps &
+    InjectedIntlProps &
+    DispatchProps;
 
-class KjentAndreForelderPartial extends React.Component<Props> {
+class AnnenForelderErKjentPartial extends React.Component<Props> {
     render() {
         const {
             barn,
             annenForelder,
             søker,
-            attachments,
             erFarEllerMedmor,
+            dataOmAndreForelderen,
+            visInformasjonVedOmsorgsovertakelse,
             dispatch,
             intl
         } = this.props;
+
+        const harDenAndreForelderenOpplystOmSinPågåendeSak =
+            dataOmAndreForelderen &&
+            dataOmAndreForelderen.harOpplystOmSinPågåendeSak;
+
+        const navn = dataOmAndreForelderen
+            ? dataOmAndreForelderen.navn
+            : annenForelder.navn;
 
         return (
             <React.Fragment>
@@ -71,12 +80,13 @@ class KjentAndreForelderPartial extends React.Component<Props> {
 
                 <Spørsmål
                     synlig={
-                        !søker.aleneOmOmsorg ||
-                        annenForelder.skalHaForeldrepenger === true
+                        annenForelder.skalHaForeldrepenger === true ||
+                        (!søker.aleneOmOmsorg &&
+                            !harDenAndreForelderenOpplystOmSinPågåendeSak)
                     }
                     render={() => (
                         <RettPåForeldrepengerSpørsmål
-                            navn={annenForelder.navn}
+                            navn={navn}
                             harAnnenForelderRettPåForeldrepenger={
                                 annenForelder.harRettPåForeldrepenger
                             }
@@ -98,8 +108,8 @@ class KjentAndreForelderPartial extends React.Component<Props> {
                     }
                     render={() => (
                         <ErMorUførSpørsmål
-                            navn={annenForelder.navn}
-                            erMorUfør={annenForelder.erUfør}
+                            navn={navn}
+                            erUfør={annenForelder.erUfør}
                             onChange={(erUfør: boolean) =>
                                 dispatch(
                                     søknadActions.updateAnnenForelder({
@@ -126,13 +136,16 @@ class KjentAndreForelderPartial extends React.Component<Props> {
 
                 <Spørsmål
                     synlig={
-                        søker.aleneOmOmsorg !== true &&
-                        annenForelder.harRettPåForeldrepenger === true
+                        (søker.aleneOmOmsorg === false &&
+                            annenForelder.harRettPåForeldrepenger === true) ||
+                        (søker.aleneOmOmsorg === false &&
+                            harDenAndreForelderenOpplystOmSinPågåendeSak &&
+                            erFarEllerMedmor)
                     }
                     render={() => (
                         <ErDenAndreForelderenInformertSpørsmål
-                            navn={annenForelder.navn}
-                            erInformertOmSøknaden={
+                            navn={navn}
+                            erDenAndreForelderenInformert={
                                 annenForelder.erInformertOmSøknaden
                             }
                             onChange={(erInformertOmSøknaden: boolean) =>
@@ -178,13 +191,7 @@ class KjentAndreForelderPartial extends React.Component<Props> {
                         />
 
                         <Bolk
-                            synlig={
-                                attachments.filter(
-                                    (attachment) =>
-                                        attachment.group ===
-                                        'omsorgsovertakelse'
-                                ).length > 0
-                            }
+                            synlig={visInformasjonVedOmsorgsovertakelse}
                             render={() => (
                                 <Veilederinfo>
                                     Du kan få 46/56 uker eller det som er igjen
@@ -199,4 +206,4 @@ class KjentAndreForelderPartial extends React.Component<Props> {
     }
 }
 
-export default injectIntl(KjentAndreForelderPartial);
+export default injectIntl(AnnenForelderErKjentPartial);

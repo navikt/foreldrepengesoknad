@@ -12,25 +12,44 @@ import { Språkkode } from 'common/intl/types';
 import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søker from '../../../../types/søknad/Søker';
+import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 
-interface AnnenForelderUkjentProps {
+interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
     annenForelder: AnnenForelderPartial;
+    dataOmAndreForelderen: any;
     erFarEllerMedmor: boolean;
     språk: Språkkode;
 }
 
-type Props = AnnenForelderUkjentProps & InjectedIntlProps & DispatchProps;
+type Props = AnnenForelderPersonaliaPartialProps &
+    InjectedIntlProps &
+    DispatchProps;
 
-class AnnenForelderUkjent extends React.Component<Props> {
+class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     render() {
-        const { søker, annenForelder, dispatch, intl, språk } = this.props;
+        const {
+            søker,
+            annenForelder,
+            dataOmAndreForelderen,
+            dispatch,
+            intl,
+            språk
+        } = this.props;
         const { kanIkkeOppgis, navn } = annenForelder;
 
         return (
-            // TODO vise info om den andre forelderen dersom info finnes.
             <React.Fragment>
                 <Bolk
+                    tittel="Informasjon om den andre forelderen"
+                    synlig={dataOmAndreForelderen !== undefined}
+                    render={() => (
+                        <PersonaliaBox personalia={dataOmAndreForelderen} />
+                    )}
+                />
+
+                <Bolk
+                    synlig={dataOmAndreForelderen === undefined}
                     render={() => (
                         <NavnPåAnnenForelderSpørsmål
                             navn={navn}
@@ -53,7 +72,7 @@ class AnnenForelderUkjent extends React.Component<Props> {
                     synlig={!kanIkkeOppgis}
                     render={() => (
                         <Checkbox
-                            checked={søker.aleneOmOmsorg || false}
+                            checked={søker.aleneOmOmsorg}
                             label={getMessage(
                                 intl,
                                 'annenForelder.aleneOmOmsorg'
@@ -95,4 +114,4 @@ class AnnenForelderUkjent extends React.Component<Props> {
     }
 }
 
-export default injectIntl(AnnenForelderUkjent);
+export default injectIntl(AnnenForelderPersonaliaPartial);

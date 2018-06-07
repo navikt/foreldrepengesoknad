@@ -5,12 +5,12 @@ import getMessage from 'common/util/i18nUtils';
 
 enum Mor {
     'ER_UFØR' = 'erUfør',
-    'IKKE_UFØR' = 'ikkeUfør'
+    'ER_IKKE_UFØR' = 'ikkeUfør'
 }
 
 interface ErMorUførProps {
     navn?: string;
-    erMorUfør?: boolean;
+    erUfør?: boolean;
     onChange: (
         erFrilanser: boolean,
         e: React.ChangeEvent<HTMLInputElement>
@@ -20,13 +20,13 @@ interface ErMorUførProps {
 type Props = ErMorUførProps & InjectedIntlProps;
 
 const ErMorUfør = (props: Props) => {
-    const { onChange, navn, intl, erMorUfør, ...otherProps } = props;
+    const { onChange, navn, intl, erUfør, ...otherProps } = props;
 
     let checked;
-    if (erMorUfør === true) {
+    if (erUfør === true) {
         checked = Mor.ER_UFØR;
-    } else if (erMorUfør === false) {
-        checked = Mor.IKKE_UFØR;
+    } else if (erUfør === false) {
+        checked = Mor.ER_IKKE_UFØR;
     }
 
     return (
@@ -40,7 +40,7 @@ const ErMorUfør = (props: Props) => {
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value: Mor.IKKE_UFØR
+                    value: Mor.ER_IKKE_UFØR
                 }
             ]}
             name="erMorUfør"

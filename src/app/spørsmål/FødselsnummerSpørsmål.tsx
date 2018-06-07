@@ -8,7 +8,7 @@ import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { Språkkode } from 'common/intl/types';
 
-interface OwnProps {
+interface FødselsnummerSpørsmålProps {
     annenForelder: AnnenForelderPartial;
     onChange: (
         annenForelder: AnnenForelderPartial,
@@ -17,12 +17,11 @@ interface OwnProps {
     språk: Språkkode;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
 const FødselsnummerSpørsmål = (props: Props) => {
     const { annenForelder, onChange, intl, språk } = props;
     const { kanIkkeOppgis, fnr, utenlandskFnr } = annenForelder;
-
     return (
         <React.Fragment>
             <Spørsmål

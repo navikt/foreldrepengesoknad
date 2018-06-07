@@ -10,9 +10,15 @@ interface PersonaliaBoxProps {
 const PersonaliaBox = (props: PersonaliaBoxProps) => {
     return (
         <div className="personaliaBox">
-            <Normaltekst>{props.personalia.fnr}</Normaltekst>
-            <Normaltekst>{props.personalia.alder}</Normaltekst>
-            <Element>{props.personalia.fornavn}</Element>
+            <Normaltekst className="personaliaBox__fnr">
+                {props.personalia.fnr}
+            </Normaltekst>
+            <Normaltekst className="personaliaBox__alder">
+                {props.personalia.alder}
+            </Normaltekst>
+            <Element className="personaliaBox__navn">
+                {props.personalia.navn}
+            </Element>
         </div>
     );
 };

@@ -3,20 +3,20 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 
-export enum Omsorgsfordeling {
+enum Omsorgsfordeling {
     'DELT_OMSORG' = 'deltOmsorg',
     'ALENEOMSORG' = 'aleneomsorg'
 }
 
-interface BarnFødtBolkProps {
+interface AleneOmOmsorgsSpørsmålProps {
     aleneOmOmsorg?: boolean;
     onChange: (
-        erBarnetFødt: boolean,
+        aleneomsorg: boolean,
         e: React.ChangeEvent<HTMLInputElement>
     ) => void;
 }
 
-type Props = BarnFødtBolkProps & InjectedIntlProps;
+type Props = AleneOmOmsorgsSpørsmålProps & InjectedIntlProps;
 
 const AleneOmOmsorgsSpørsmål = (props: Props) => {
     const { onChange, aleneOmOmsorg, intl, ...otherProps } = props;
@@ -42,7 +42,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
                     value: Omsorgsfordeling.DELT_OMSORG
                 }
             ]}
-            name="barnFødt"
+            name="omsorgsfordeling"
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: Omsorgsfordeling
