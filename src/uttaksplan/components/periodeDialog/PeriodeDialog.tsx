@@ -16,12 +16,12 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    Stønadsperiode
+    Uttaksperiode
 } from 'uttaksplan/types';
 
 import './periodeDialog.less';
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
-import StonadsperiodeSkjema from 'uttaksplan/skjema/stonadsperiodeSkjema/StonadsperiodeSkjema';
+import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 
 interface OwnProps {
     periodetype: Periodetype;
@@ -63,10 +63,10 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     termindato={props.termindato}
                 />
             );
-        } else if (periodetype === Periodetype.Stønadsperiode) {
+        } else if (periodetype === Periodetype.Uttaksperiode) {
             return (
-                <StonadsperiodeSkjema
-                    periode={periode as Stønadsperiode}
+                <UttaksperiodeSkjema
+                    periode={periode as Uttaksperiode}
                     onChange={(p) =>
                         props.dispatch(opprettEllerOppdaterPeriode(p))
                     }

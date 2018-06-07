@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import {
-    getStonadsperioderOgUtsettelser,
+    getUttaksperioderOgUtsettelser,
     getTaptePerioder
 } from './periodeSelector';
 import { isSameDay } from 'date-fns';
@@ -20,7 +20,7 @@ const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
 const FILTRER_PERIODER = false;
 
 export const tidslinjeFraPerioder = createSelector(
-    getStonadsperioderOgUtsettelser,
+    getUttaksperioderOgUtsettelser,
     getTaptePerioder,
     formSelector,
     (stønadsperioder, taptePerioder, form): Tidslinjeinnslag[] => {
