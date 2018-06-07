@@ -6,13 +6,11 @@ import FormatertDato from 'common/components/formatert-dato/FormatertDato';
 
 export interface Props {
     tidsperiode: Tidsperiode;
-    visVarighet?: boolean;
     visSluttdato?: boolean;
 }
 
 const TidsperiodeTekst: React.StatelessComponent<Props> = ({
     tidsperiode,
-    visVarighet,
     visSluttdato
 }) => {
     return (

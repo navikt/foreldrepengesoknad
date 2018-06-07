@@ -70,7 +70,7 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     onChange={(p) =>
                         props.dispatch(opprettEllerOppdaterPeriode(p))
                     }
-                    onFjern={(p) => null}
+                    onFjern={(p) => props.dispatch(slettPeriode(p))}
                 />
             );
         }

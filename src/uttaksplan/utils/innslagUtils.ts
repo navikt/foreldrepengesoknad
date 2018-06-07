@@ -31,21 +31,15 @@ export const getLabelsForInnslag = (
     innslag: InnslagPeriodetype
 ): TimelineLabel[] | undefined => {
     if (innslag.periode.type === Periodetype.Utsettelse) {
-        if (innslag.periode.årsak === UtsettelseÅrsakType.SykdomSkade) {
+        if (innslag.periode.årsak === UtsettelseÅrsakType.Sykdom) {
             return [
                 {
                     text: 'Krav på dokumentasjon',
                     type: 'fokus'
                 }
             ];
-        } else if (innslag.periode.årsak === UtsettelseÅrsakType.Ferie) {
-            return [
-                {
-                    text: 'Krever dokumentasjon',
-                    type: 'fokus'
-                }
-            ];
         }
+        return undefined;
     }
     return undefined;
 };
@@ -68,7 +62,7 @@ export const getTimelineIconsFromInnslag = (
             }
         } else if (periode.type === Periodetype.Uttaksperiode) {
             return ['uttak'];
-        } else if (periode.type === Periodetype.TaptPeriode) {
+        } else if (periode.type === Periodetype.Opphold) {
             return ['advarsel'];
         }
     }

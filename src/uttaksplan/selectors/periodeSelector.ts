@@ -1,48 +1,16 @@
 import { createSelector } from 'reselect';
-import {
-    Utsettelsesperiode,
-    Periode,
-    Uttaksperiode,
-    Periodetype
-} from '../types';
-import { leggUtsettelserTilUttaksperioder } from '../utils/periodeUtils';
+import { Periode, Periodetype } from '../types';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
-const utsettelseSelector = (state: UttaksplanAppState) => {
-    return state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.Utsettelse
-    );
-};
+export const getAllePerioder = (state: UttaksplanAppState) =>
+    state.uttaksplan.periode.perioder;
 
-export const getUttaksperioder = (state: UttaksplanAppState) =>
+export const getUttaksperioderOgUtsettelser = (state: UttaksplanAppState) =>
     state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.Uttaksperiode
+        (p) =>
+            p.type === Periodetype.Uttaksperiode ||
+            p.type === Periodetype.Utsettelse
     );
-
-export const getTaptePerioder = (state: UttaksplanAppState) =>
-    state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.TaptPeriode
-    );
-
-/**
- * Henter ut perioder og utsettelser fra state
- */
-export const getUttaksperioderOgUtsettelser = createSelector(
-    getUttaksperioder,
-    utsettelseSelector,
-    (
-        uttaksperioder: Uttaksperiode[],
-        utsettelser: Utsettelsesperiode[]
-    ): Periode[] => {
-        if (uttaksperioder.length > 0) {
-            return leggUtsettelserTilUttaksperioder(
-                uttaksperioder,
-                utsettelser
-            );
-        }
-        return [];
-    }
-);
 
 export const getSisteRegistrertePermisjonsdag = createSelector(
     getUttaksperioderOgUtsettelser,
