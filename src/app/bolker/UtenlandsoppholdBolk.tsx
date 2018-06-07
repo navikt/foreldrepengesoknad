@@ -131,6 +131,7 @@ class UtenlandsoppholdBolk extends React.Component<
                                         periode={periode}
                                     />
                                 )}
+                                slettKnappAriaLabel="Slett utenlandsopphold"
                             />
                         </div>
 
