@@ -1,7 +1,7 @@
 import { Tidsperiode, Forelder } from '../types';
 
 export enum Periodetype {
-    'Stønadsperiode' = 'STØNADSPERIODE',
+    'Stonadsperiode' = 'uttak',
     'Utsettelse' = 'UTSETTELSE',
     'Opphold' = 'OPPHOLD',
     'TaptPeriode' = 'TAPT_PERIODE'

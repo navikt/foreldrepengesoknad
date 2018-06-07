@@ -16,12 +16,7 @@ interface UtenlandsoppholdBolkProps {
     perioder: UtenlandsoppholdPeriode[];
     periodeType: UtenlandsoppholdPeriodeType;
     språk: Språkkode;
-    onAddUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
-    onEditUtenlandsoppholdPeriode: (
-        periode: UtenlandsoppholdPeriode,
-        index: number
-    ) => void;
-    onDeleteUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
+    onChange: (perioder: UtenlandsoppholdPeriode[]) => void;
 }
 
 interface UtenlandsoppholdBolkState {
@@ -43,6 +38,7 @@ class UtenlandsoppholdBolk extends React.Component<
         this.closeModal = this.closeModal.bind(this);
         this.onAdd = this.onAdd.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.onDelete = this.onDelete.bind(this);
         this.onPeriodeLinkClick = this.onPeriodeLinkClick.bind(this);
 
         this.state = {
@@ -51,22 +47,30 @@ class UtenlandsoppholdBolk extends React.Component<
     }
 
     onAdd(periode: UtenlandsoppholdPeriode) {
-        const { onAddUtenlandsoppholdPeriode } = this.props;
-        onAddUtenlandsoppholdPeriode(periode);
+        const { perioder, onChange } = this.props;
+        onChange([...perioder, periode]);
         this.closeModal();
     }
 
     onEdit(periode: UtenlandsoppholdPeriode) {
-        const { onEditUtenlandsoppholdPeriode } = this.props;
+        const { perioder, onChange } = this.props;
         const { periodeIndex } = this.state;
-        onEditUtenlandsoppholdPeriode(
-            periode,
-            periodeIndex === undefined ? -1 : periodeIndex
-        );
+        const editedPerioder = perioder.slice();
+        if (periodeIndex !== undefined && periodeIndex >= 0) {
+            editedPerioder[periodeIndex] = periode;
+            onChange(editedPerioder);
+        }
         this.closeModal({
             periodeToEdit: undefined,
             periodeIndex: undefined
         });
+    }
+
+    onDelete(periode: UtenlandsoppholdPeriode) {
+        const { perioder, onChange } = this.props;
+        const editedPerioder = perioder.slice();
+        editedPerioder.splice(editedPerioder.indexOf(periode), 1);
+        onChange(editedPerioder);
     }
 
     onPeriodeLinkClick(
@@ -97,7 +101,6 @@ class UtenlandsoppholdBolk extends React.Component<
         const {
             renderSpørsmål,
             showUtenlandsoppholdPeriodeContent,
-            onDeleteUtenlandsoppholdPeriode,
             oppfølgingsspørsmål,
             perioder,
             periodeType,
@@ -118,9 +121,7 @@ class UtenlandsoppholdBolk extends React.Component<
                             <UtenlandsoppholdPeriodeListe
                                 perioder={perioder}
                                 onPeriodeLinkClick={this.onPeriodeLinkClick}
-                                onPeriodeTrashClick={
-                                    onDeleteUtenlandsoppholdPeriode
-                                }
+                                onPeriodeTrashClick={this.onDelete}
                             />
                         </div>
 
