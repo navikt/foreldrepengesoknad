@@ -110,8 +110,7 @@ export function resetStønadsperiodeTidsperioder(
 
         forrigePeriode = {
             ...periode,
-            tidsperiode,
-            uttaksdager: getAntallUttaksdagerITidsperiode(tidsperiode)
+            tidsperiode
         };
         return {
             ...periode,
