@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdagUtil, uttakTidsperiode } from './uttaksdagerUtils';
+import { uttaksdagUtil, uttakTidsperiodeUtil } from './uttaksdagerUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -85,7 +85,7 @@ export const getAntallUttaksdagerForForelder = (
         (dager: number, periode: Periode) =>
             periode.type === Periodetype.Uttak && periode.forelder === forelder
                 ? dager +
-                  uttakTidsperiode(periode.tidsperiode).antallUttaksdager()
+                  uttakTidsperiodeUtil(periode.tidsperiode).antallUttaksdager()
                 : dager,
         0
     );
@@ -110,7 +110,7 @@ export const getAntallFeriedagerForForelder = (
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
                   dager +
-                  uttakTidsperiode(periode.tidsperiode).antallUttaksdager(),
+                  uttakTidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
               0
           );
 };
