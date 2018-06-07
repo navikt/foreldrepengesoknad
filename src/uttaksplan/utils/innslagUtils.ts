@@ -31,21 +31,15 @@ export const getLabelsForInnslag = (
     innslag: InnslagPeriodetype
 ): TimelineLabel[] | undefined => {
     if (innslag.periode.type === Periodetype.Utsettelse) {
-        if (innslag.periode.årsak === UtsettelseÅrsakType.SykdomSkade) {
+        if (innslag.periode.årsak === UtsettelseÅrsakType.Sykdom) {
             return [
                 {
                     text: 'Krav på dokumentasjon',
                     type: 'fokus'
                 }
             ];
-        } else if (innslag.periode.årsak === UtsettelseÅrsakType.Ferie) {
-            return [
-                {
-                    text: 'Krever dokumentasjon',
-                    type: 'fokus'
-                }
-            ];
         }
+        return undefined;
     }
     return undefined;
 };
@@ -66,9 +60,9 @@ export const getTimelineIconsFromInnslag = (
             if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
                 return ['arbeid'];
             }
-        } else if (periode.type === Periodetype.Stonadsperiode) {
+        } else if (periode.type === Periodetype.Stønadsperiode) {
             return ['uttak'];
-        } else if (periode.type === Periodetype.TaptPeriode) {
+        } else if (periode.type === Periodetype.Opphold) {
             return ['advarsel'];
         }
     }
@@ -81,7 +75,7 @@ export const mapInnslagToEvent = (
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
     const getTittel = () => {
-        if (periode.type === Periodetype.Stonadsperiode) {
+        if (periode.type === Periodetype.Stønadsperiode) {
             return `Stønadsperiode (${intl
                 .formatMessage({
                     id: `stønadskontotype.${periode.konto}`
@@ -97,7 +91,7 @@ export const mapInnslagToEvent = (
         return periode.type;
     };
     if (
-        innslag.periode.type === Periodetype.Stonadsperiode ||
+        innslag.periode.type === Periodetype.Stønadsperiode ||
         innslag.periode.type === Periodetype.Utsettelse
     ) {
         return {

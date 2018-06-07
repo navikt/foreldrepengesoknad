@@ -148,6 +148,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             intl
         } = this.props;
 
+        const utsettelser = utsettelse
+            ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
+            : registrerteUtsettelser;
         const tilTidsromStartdato = startdato ? startdato : tidsrom.startdato;
         const tilTidsrom: Tidsperiode = {
             startdato: tilTidsromStartdato,
@@ -155,14 +158,11 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 termindato,
                 permisjonsregler,
                 tilTidsromStartdato,
-                registrerteUtsettelser
+                utsettelser
             )
         };
 
-        const ugyldigeTidsrom = getUgyldigeTidsrom(
-            registrerteUtsettelser,
-            utsettelse
-        );
+        const ugyldigeTidsrom = getUgyldigeTidsrom(utsettelser, utsettelse);
 
         const antallFeriedager =
             this.state.årsak === UtsettelseÅrsakType.Ferie
@@ -171,7 +171,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                       forelder,
                       startdato,
                       sluttdato,
-                      registrerteUtsettelser,
+                      utsettelser,
                       utsettelse
                   )
                 : 0;
@@ -270,6 +270,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                             }}
                             ugyldigeTidsperioder={ugyldigeTidsrom}
                             tidsperiodeFeil={tidsperiodeFeil}
+                            helgedagerIkkeTillatt={true}
                         />
 
                         {visFerieinfo && (
