@@ -15,6 +15,9 @@ const getDefaultState = (): SøknadPartial => {
             tidligerePerioder: [],
             senerePerioder: []
         },
+        søker: {
+            aleneOmOmsorg: false
+        },
         harGodkjentVilkår: false
     };
 };
@@ -36,6 +39,14 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 utenlandsopphold: {
                     ...state.utenlandsopphold,
+                    ...action.payload
+                }
+            };
+        case SøknadActionKeys.UPDATE_SØKER:
+            return {
+                ...state,
+                søker: {
+                    ...state.søker,
                     ...action.payload
                 }
             };

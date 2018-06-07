@@ -9,6 +9,7 @@ export enum FarEllerMedmor {
 }
 
 interface BarnFødtBolkProps {
+    navn?: string;
     skalFarEllerMedmorHaForeldrepenger?: boolean;
     onChange: (
         harAnnenForelderRettPåForeldrepenger: boolean,
@@ -20,6 +21,7 @@ type Props = BarnFødtBolkProps & InjectedIntlProps;
 
 const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
     const {
+        navn,
         onChange,
         skalFarEllerMedmorHaForeldrepenger,
         intl,
@@ -38,7 +40,8 @@ const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
             checked={checked}
             legend={getMessage(
                 intl,
-                'skalFarEllerMedmorHaForeldrepenger.spørsmål'
+                'skalFarEllerMedmorHaForeldrepenger.spørsmål',
+                { navn }
             )}
             radios={[
                 {

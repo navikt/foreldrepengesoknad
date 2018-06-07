@@ -114,3 +114,10 @@ export function opprettPerioder(
         permisjonsregler
     };
 }
+
+export function dev(key: string): PlanleggerActionTypes {
+    return {
+        type: PlanleggerActionTypeKeys.DEV_ACTION,
+        key
+    };
+}

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import UtenlandsoppholdPeriodeListe from '../components/utenlandsopphold-periode-liste/UtenlandsoppholdPeriodeListe';
+import InteractiveList from '../components/interactive-list/InteractiveList';
 import {
     UtenlandsoppholdPeriodeType,
     UtenlandsoppholdPeriode
 } from '../types/søknad/Utenlandsopphold';
 import UtenlandsoppholdPeriodeModal from '../components/utenlandsopphold-periode-modal/UtenlandsoppholdPeriodeModal';
 import { Språkkode } from 'common/intl/types';
+import { ISODateToMaskedInput } from '../util/dates';
+import * as countries from 'i18n-iso-countries';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -16,12 +18,7 @@ interface UtenlandsoppholdBolkProps {
     perioder: UtenlandsoppholdPeriode[];
     periodeType: UtenlandsoppholdPeriodeType;
     språk: Språkkode;
-    onAddUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
-    onEditUtenlandsoppholdPeriode: (
-        periode: UtenlandsoppholdPeriode,
-        index: number
-    ) => void;
-    onDeleteUtenlandsoppholdPeriode: (periode: UtenlandsoppholdPeriode) => void;
+    onChange: (perioder: UtenlandsoppholdPeriode[]) => void;
 }
 
 interface UtenlandsoppholdBolkState {
@@ -43,6 +40,7 @@ class UtenlandsoppholdBolk extends React.Component<
         this.closeModal = this.closeModal.bind(this);
         this.onAdd = this.onAdd.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.onDelete = this.onDelete.bind(this);
         this.onPeriodeLinkClick = this.onPeriodeLinkClick.bind(this);
 
         this.state = {
@@ -51,22 +49,30 @@ class UtenlandsoppholdBolk extends React.Component<
     }
 
     onAdd(periode: UtenlandsoppholdPeriode) {
-        const { onAddUtenlandsoppholdPeriode } = this.props;
-        onAddUtenlandsoppholdPeriode(periode);
+        const { perioder, onChange } = this.props;
+        onChange([...perioder, periode]);
         this.closeModal();
     }
 
     onEdit(periode: UtenlandsoppholdPeriode) {
-        const { onEditUtenlandsoppholdPeriode } = this.props;
+        const { perioder, onChange } = this.props;
         const { periodeIndex } = this.state;
-        onEditUtenlandsoppholdPeriode(
-            periode,
-            periodeIndex === undefined ? -1 : periodeIndex
-        );
+        const editedPerioder = perioder.slice();
+        if (periodeIndex !== undefined && periodeIndex >= 0) {
+            editedPerioder[periodeIndex] = periode;
+            onChange(editedPerioder);
+        }
         this.closeModal({
             periodeToEdit: undefined,
             periodeIndex: undefined
         });
+    }
+
+    onDelete(periode: UtenlandsoppholdPeriode) {
+        const { perioder, onChange } = this.props;
+        const editedPerioder = perioder.slice();
+        editedPerioder.splice(editedPerioder.indexOf(periode), 1);
+        onChange(editedPerioder);
     }
 
     onPeriodeLinkClick(
@@ -97,7 +103,6 @@ class UtenlandsoppholdBolk extends React.Component<
         const {
             renderSpørsmål,
             showUtenlandsoppholdPeriodeContent,
-            onDeleteUtenlandsoppholdPeriode,
             oppfølgingsspørsmål,
             perioder,
             periodeType,
@@ -115,12 +120,18 @@ class UtenlandsoppholdBolk extends React.Component<
                         </div>
 
                         <div className="blokk-xs">
-                            <UtenlandsoppholdPeriodeListe
-                                perioder={perioder}
-                                onPeriodeLinkClick={this.onPeriodeLinkClick}
-                                onPeriodeTrashClick={
-                                    onDeleteUtenlandsoppholdPeriode
-                                }
+                            <InteractiveList
+                                data={perioder}
+                                onSelect={this.onPeriodeLinkClick}
+                                onDelete={this.onDelete}
+                                renderElement={(
+                                    periode: UtenlandsoppholdPeriode
+                                ) => (
+                                    <UtenlandsoppholdPeriodeListeElement
+                                        periode={periode}
+                                    />
+                                )}
+                                deleteAriaLabel="Slett utenlandsopphold"
                             />
                         </div>
 
@@ -152,5 +163,28 @@ class UtenlandsoppholdBolk extends React.Component<
         );
     }
 }
+
+interface UtenlandsoppholdPeriodeListeElementProps {
+    periode: UtenlandsoppholdPeriode;
+}
+
+const UtenlandsoppholdPeriodeListeElement: React.StatelessComponent<
+    UtenlandsoppholdPeriodeListeElementProps
+> = ({ periode }) => (
+    <React.Fragment>
+        <div className="interactiveList__element__land">
+            {countries.getName(periode.land, 'nb')}
+        </div>
+        <div className="interactiveList__element__dato">
+            <FormattedMessage
+                id="tidsintervall"
+                values={{
+                    fom: ISODateToMaskedInput(periode.varighet.fom),
+                    tom: ISODateToMaskedInput(periode.varighet.tom)
+                }}
+            />
+        </div>
+    </React.Fragment>
+);
 
 export default UtenlandsoppholdBolk;
