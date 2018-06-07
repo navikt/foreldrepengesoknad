@@ -7,9 +7,9 @@ export enum Periodetype {
     'TaptPeriode' = 'TAPT_PERIODE'
 }
 
-export enum StonadskontoType {
+export enum StønadskontoType {
     /** Kvote forbeholdt mor */
-    'Modrekvote' = 'MØDREKVOTE',
+    'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
     'Fedrekvote' = 'FEDREKVOTE',
     /** Felleskvote som kan fordeles mellom mor og medforelder */
@@ -41,9 +41,9 @@ interface PeriodeBase {
     tidsperiode: Tidsperiode;
 }
 
-export interface Stonadsperiode extends PeriodeBase {
-    type: Periodetype.Stonadsperiode;
-    konto: StonadskontoType;
+export interface Stønadsperiode extends PeriodeBase {
+    type: Periodetype.Stønadsperiode;
+    konto: StønadskontoType;
     forelder: Forelder;
     låstPeriode?: boolean;
     låstForelder?: boolean;
@@ -56,7 +56,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     helligdager?: Helligdag[];
 }
 
-export interface OppholdPeriode extends PeriodeBase {
+export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
 }
@@ -66,5 +66,5 @@ export interface TaptPeriode extends PeriodeBase {
     forelder: Forelder;
 }
 
-export type Periode = Stonadsperiode | Utsettelsesperiode | TaptPeriode;
+export type Periode = Stønadsperiode | Utsettelsesperiode | TaptPeriode;
 export type Perioder = Periode[];
