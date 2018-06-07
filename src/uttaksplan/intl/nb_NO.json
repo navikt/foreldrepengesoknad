@@ -162,7 +162,13 @@
     "stønadskontotype.FEDREKVOTE": "Fedrekvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
-    "stønadskontotype.ModrekvotePakrevd": "Mødrekvote",
+    "stønadskontotype.FORELDREPENGER_FØR_FOEDSEL": "Mødrekvote (før termin)",
+
+    "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
+    "utsettelsesårsak.ARBEID": "Arbeid",
+    "utsettelsesårsak.SYKDOM": "Sykdom",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
 
     "uttaksplan.startdato.sporsmal": "Startdato",
     "uttaksplan.sluttdato.sporsmal": "Sluttdato"
