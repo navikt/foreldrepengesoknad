@@ -10,7 +10,6 @@ import {
     Tidsperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { preventFormSubmit } from 'uttaksplan/utils';
 import { isBefore, isSameDay } from 'date-fns';
 import Ferieinfo from './Ferieinfo';
 import {
@@ -29,6 +28,7 @@ import { normaliserDato } from 'common/util/datoUtils';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
+import { preventFormSubmit } from 'common/util/eventUtils';
 
 interface OwnProps {
     termindato: Date;

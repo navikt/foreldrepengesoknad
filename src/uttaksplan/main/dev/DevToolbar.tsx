@@ -22,7 +22,7 @@ import {
 import { normaliserDato } from 'common/util/datoUtils';
 
 import './dev.less';
-import { getForsteUttaksdagEtterDato } from 'uttaksplan/utils/uttaksdagerUtils';
+import { uttaksdagUtil } from 'uttaksplan/utils/uttaksdagerUtils';
 
 export interface StateProps {
     appState: UttaksplanAppState;
@@ -105,9 +105,9 @@ class DevToolbar extends React.Component<Props, {}> {
                 ...periode,
                 tidsperiode: {
                     ...periode.tidsperiode,
-                    startdato: getForsteUttaksdagEtterDato(
+                    startdato: uttaksdagUtil(
                         periode.tidsperiode.startdato
-                    )
+                    ).neste()
                 }
             })
         );
