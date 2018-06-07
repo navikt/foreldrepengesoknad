@@ -9,7 +9,7 @@ export const getUkedag = (dato: Date) => getISODay(dato);
  * Wrapper en dato med uttaksdager-funksjonalitet
  * @param dato
  */
-export const uttaksdag = (dato: Date) => ({
+export const uttaksdagUtil = (dato: Date) => ({
     erUttaksdag: (): boolean => erUttaksdag(dato),
     forrige: (): Date => getUttaksdagFørDato(dato),
     neste: (): Date => getUttaksdagEtterDato(dato),

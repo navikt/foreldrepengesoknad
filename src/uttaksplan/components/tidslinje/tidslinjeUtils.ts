@@ -6,7 +6,7 @@ import {
     StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { getUttaksperioder } from '../../utils/periodeUtils';
+import { perioderUtil } from '../../utils/periodeUtils';
 import {
     getAntallUttaksdagerITidsperioder,
     uttakTidsperiode
@@ -51,11 +51,11 @@ export const oppsummerPerioder = (
             innslag.perioderekke[innslag.perioderekke.length - 1].tidsperiode
                 .sluttdato
     };
-    const uttakTidsperioder = getUttaksperioder(innslag.perioderekke).map(
-        (p) => p.tidsperiode
-    );
+    const uttakTidsperioder = perioderUtil(innslag.perioderekke)
+        .uttaksperioder()
+        .map((p) => p.tidsperiode);
     const ukerTotalt = getAntallUttaksdagerITidsperioder(uttakTidsperioder) / 5;
-    const stonadsperioder = getUttaksperioder(innslag.perioderekke);
+    const stonadsperioder = perioderUtil(innslag.perioderekke).uttaksperioder();
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);

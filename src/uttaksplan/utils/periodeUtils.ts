@@ -6,7 +6,27 @@ import {
     Tidsperiode,
     Periodetype
 } from '../types';
-import { uttaksdag, uttakTidsperiode } from './uttaksdagerUtils';
+import { uttaksdagUtil, uttakTidsperiode } from './uttaksdagerUtils';
+
+export const perioderUtil = (perioder: Periode[]) => ({
+    uttaksperioder: () => getUttaksperioder(perioder),
+    utsettelser: () => getUtsettelser(perioder),
+    uttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
+    finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
+    finnPerioderITidsrom: (tidsperiode: Tidsperiode) =>
+        finnPerioderITidsrom(perioder, tidsperiode),
+    forskyv: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
+    foregåendePerioder: (periode: Periode) =>
+        finnPerioderFørPeriode(perioder, periode),
+    påfølgendePerioder: (periode: Periode) =>
+        finnPerioderEtterPeriode(perioder, periode)
+});
+
+export const periodeUtil = (periode: Periode) => ({
+    erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
+    erSammenhengende: (periode2: Periode) =>
+        erPerioderSammenhengende(periode, periode2)
+});
 
 /**
  * Sorterer perioder ut fra startdato - asc
@@ -21,7 +41,7 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
  * Returnerer perioder som er uttaksperioder
  * @param perioder
  */
-export function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
+function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
     return perioder.filter(
         (periode) => periode.type === Periodetype.Uttak
     ) as Uttaksperiode[];
@@ -31,7 +51,7 @@ export function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
  * Returnerer perioder som er uttaksperioder
  * @param perioder
  */
-export function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
+function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
     return perioder.filter(
         (periode) => periode.type === Periodetype.Utsettelse
     ) as Utsettelsesperiode[];
@@ -41,7 +61,7 @@ export function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
  * Returnerer perioder som er uttaksperioder eller utsettelser
  * @param perioder
  */
-export function getUttakOgUtsettelser(
+function getUttakOgUtsettelser(
     perioder: Periode[]
 ): Array<Uttaksperiode | Utsettelsesperiode> {
     return perioder.filter(
@@ -56,7 +76,7 @@ export function getUttakOgUtsettelser(
  * @param perioder
  * @param dato dato som periode skal inneholde
  */
-export function finnPeriodeMedDato(
+function finnPeriodeMedDato(
     perioder: Periode[],
     dato: Date
 ): Periode | undefined {
@@ -74,7 +94,7 @@ export function finnPeriodeMedDato(
  * @param perioder Alle perioder
  * @param tidsperiode
  */
-export function finnPerioderITidsrom(
+function finnPerioderITidsrom(
     perioder: Periode[],
     tidsperiode: Tidsperiode
 ): Periode[] {
@@ -99,15 +119,15 @@ export function finnPerioderITidsrom(
  * @param periode
  * @param startdato
  */
-export function flyttPeriode(periode: Periode, dager: number): Periode {
+function flyttPeriode(periode: Periode, dager: number): Periode {
     const { tidsperiode } = periode;
     const uttaksdager = uttakTidsperiode(tidsperiode).antallUttaksdager();
-    const startdato = uttaksdag(tidsperiode.startdato).leggTil(dager);
+    const startdato = uttaksdagUtil(tidsperiode.startdato).leggTil(dager);
     return {
         ...periode,
         tidsperiode: {
             startdato,
-            sluttdato: uttaksdag(startdato).periodeslutt(uttaksdager)
+            sluttdato: uttaksdagUtil(startdato).periodeslutt(uttaksdager)
         }
     };
 }
@@ -117,10 +137,7 @@ export function flyttPeriode(periode: Periode, dager: number): Periode {
  * @param perioder
  * @param startdato
  */
-export function forskyvPerioder(
-    perioder: Periode[],
-    uttaksdager: number
-): Periode[] {
+function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
     return perioder.map((periode) => {
         if (periode.type === Periodetype.Utsettelse) {
             return periode;
@@ -135,7 +152,7 @@ export function forskyvPerioder(
  * @param periode
  */
 
-export function finnPerioderFørPeriode(
+function finnPerioderFørPeriode(
     perioder: Periode[],
     periode: Periode
 ): Periode[] {
@@ -150,7 +167,7 @@ export function finnPerioderFørPeriode(
  * @param periode
  */
 
-export function finnPerioderEtterPeriode(
+function finnPerioderEtterPeriode(
     perioder: Periode[],
     periode: Periode
 ): Periode[] {
@@ -164,7 +181,7 @@ export function finnPerioderEtterPeriode(
  * @param p1 periode 1
  * @param p2 periode 2
  */
-export function erPerioderLike(p1: Periode, p2: Periode) {
+function erPerioderLike(p1: Periode, p2: Periode) {
     if (p1.type !== Periodetype.Uttak || p2.type !== Periodetype.Uttak) {
         return false;
     }
@@ -183,8 +200,8 @@ export function erPerioderLike(p1: Periode, p2: Periode) {
  * @param p1
  * @param p2
  */
-export function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = uttaksdag(p1.tidsperiode.sluttdato).neste();
+function erPerioderSammenhengende(p1: Periode, p2: Periode) {
+    const p1NesteUttaksdato = uttaksdagUtil(p1.tidsperiode.sluttdato).neste();
     const p2Startdato = p2.tidsperiode.startdato;
     return isSameDay(p1NesteUttaksdato, p2Startdato);
 }
