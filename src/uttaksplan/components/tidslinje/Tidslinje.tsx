@@ -27,7 +27,7 @@ const erSisteInnslagForForelder = (
         (i) =>
             i.type === TidslinjeinnslagType.periode &&
             i.periode.forelder === innslag.periode.forelder &&
-            i.periode.type === Periodetype.Stønadsperiode
+            i.periode.type === Periodetype.Uttaksperiode
     );
     return (
         innslagForelder.findIndex((i) => i === innslag) ===
