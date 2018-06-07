@@ -5,11 +5,9 @@ import {
     Utsettelsesperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { validerDato } from 'uttaksplan/utils';
 import {
-    getUttaksdagerSomErFridager,
-    getAntallUttaksdagerITidsperiode,
-    getForsteUttaksdagFørDato
+    uttakTidsperiode,
+    uttaksdagUtil
 } from 'uttaksplan/utils/uttaksdagerUtils';
 import {
     getAntallFeriedagerForForelder,
@@ -20,6 +18,7 @@ import { isAfter, isBefore } from 'date-fns';
 import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/skjema/utsettelseSkjema/types';
+import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
 
 export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
     return utsettelse
@@ -176,10 +175,10 @@ export function validerUtsettelseskjema(
         årsak === UtsettelseÅrsakType.Ferie &&
         startdato &&
         sluttdato &&
-        getUttaksdagerSomErFridager({
+        uttakTidsperiode({
             startdato,
             sluttdato
-        }).length > 0
+        }).antallFridager() > 0
     ) {
         valideringsfeil.set('tidsperiode', {
             feilmelding: intl.formatMessage({
@@ -229,9 +228,9 @@ export function getTilTidsromSluttdato(
             isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
         );
         if (pafolgendeUtsettelser.length > 0) {
-            return getForsteUttaksdagFørDato(
+            return uttaksdagUtil(
                 pafolgendeUtsettelser[0].tidsperiode.startdato
-            );
+            ).forrige();
         }
     }
     return getSisteMuligePermisjonsdag(termindato, permisjonsregler);
@@ -272,14 +271,14 @@ export function getAntallFeriedager(
             startdato,
             sluttdato
         };
-        nyeFeriedager = getAntallUttaksdagerITidsperiode(tidsperiode);
-        fridager = getUttaksdagerSomErFridager(tidsperiode).length;
+        nyeFeriedager = uttakTidsperiode(tidsperiode).antallUttaksdager();
+        fridager = uttakTidsperiode(tidsperiode).antallFridager();
     }
 
     if (utsettelse) {
-        feriedagerDenneUtsettelsen = getAntallUttaksdagerITidsperiode(
+        feriedagerDenneUtsettelsen = uttakTidsperiode(
             utsettelse.tidsperiode
-        );
+        ).antallUttaksdager();
     }
 
     return (

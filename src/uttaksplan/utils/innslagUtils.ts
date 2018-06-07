@@ -14,9 +14,9 @@ import {
     TimelineItemType,
     TimelineGap
 } from 'uttaksplan/components/timeline/types';
-import { getAntallUttaksdagerITidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { InjectedIntl } from 'react-intl';
+import { uttakTidsperiode } from 'uttaksplan/utils/uttaksdagerUtils';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -60,7 +60,7 @@ export const getTimelineIconsFromInnslag = (
             if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
                 return ['arbeid'];
             }
-        } else if (periode.type === Periodetype.Uttaksperiode) {
+        } else if (periode.type === Periodetype.Uttak) {
             return ['uttak'];
         } else if (periode.type === Periodetype.Opphold) {
             return ['advarsel'];
@@ -75,7 +75,7 @@ export const mapInnslagToEvent = (
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
     const getTittel = () => {
-        if (periode.type === Periodetype.Uttaksperiode) {
+        if (periode.type === Periodetype.Uttak) {
             return `Uttaksperiode (${intl
                 .formatMessage({
                     id: `stønadskontotype.${periode.konto}`
@@ -91,7 +91,7 @@ export const mapInnslagToEvent = (
         return periode.type;
     };
     if (
-        innslag.periode.type === Periodetype.Uttaksperiode ||
+        innslag.periode.type === Periodetype.Uttak ||
         innslag.periode.type === Periodetype.Utsettelse
     ) {
         return {
@@ -100,7 +100,7 @@ export const mapInnslagToEvent = (
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
-            days: getAntallUttaksdagerITidsperiode(periode.tidsperiode),
+            days: uttakTidsperiode(periode.tidsperiode).antallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
             labels: getLabelsForInnslag(innslag),
             icons: getTimelineIconsFromInnslag(innslag),
@@ -112,7 +112,7 @@ export const mapInnslagToEvent = (
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
             title: 'Opphold',
-            days: getAntallUttaksdagerITidsperiode(periode.tidsperiode),
+            days: uttakTidsperiode(periode.tidsperiode).antallUttaksdager(),
             icons: getTimelineIconsFromInnslag(innslag),
             data: periode
         };
