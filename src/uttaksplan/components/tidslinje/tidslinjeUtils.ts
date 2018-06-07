@@ -9,7 +9,7 @@ import {
 import { perioderUtil } from '../../utils/periodeUtils';
 import {
     getAntallUttaksdagerITidsperioder,
-    uttakTidsperiode
+    uttakTidsperiodeUtil
 } from '../../utils/uttaksdagerUtils';
 import { CalloutBorderColor } from 'uttaksplan/components/callout/Callout';
 
@@ -60,7 +60,9 @@ export const oppsummerPerioder = (
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
         const eksisterendeDager = perioder.get(konto) || 0;
-        const nyeDager = uttakTidsperiode(p.tidsperiode).antallUttaksdager();
+        const nyeDager = uttakTidsperiodeUtil(
+            p.tidsperiode
+        ).antallUttaksdager();
         perioder.set(konto, eksisterendeDager + nyeDager);
     });
     perioder.forEach((value, key) => perioder.set(key, value / 5));

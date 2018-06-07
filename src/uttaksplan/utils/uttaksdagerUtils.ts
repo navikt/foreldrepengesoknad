@@ -32,7 +32,7 @@ export const uttaksdagUtil = (dato: Date) => ({
  * @param dato
  */
 
-export const uttakTidsperiode = (tidsperiode: Tidsperiode) => ({
+export const uttakTidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
     antallUttaksdager: (taBortFridager?: boolean) =>
         getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     antallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length
