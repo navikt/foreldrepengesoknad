@@ -6,7 +6,7 @@ import {
     Permisjonsregler
 } from 'uttaksplan/types';
 import {
-    uttakTidsperiode,
+    uttakTidsperiodeUtil,
     uttaksdagUtil
 } from 'uttaksplan/utils/uttaksdagerUtils';
 import {
@@ -175,7 +175,7 @@ export function validerUtsettelseskjema(
         årsak === UtsettelseÅrsakType.Ferie &&
         startdato &&
         sluttdato &&
-        uttakTidsperiode({
+        uttakTidsperiodeUtil({
             startdato,
             sluttdato
         }).antallFridager() > 0
@@ -271,12 +271,12 @@ export function getAntallFeriedager(
             startdato,
             sluttdato
         };
-        nyeFeriedager = uttakTidsperiode(tidsperiode).antallUttaksdager();
-        fridager = uttakTidsperiode(tidsperiode).antallFridager();
+        nyeFeriedager = uttakTidsperiodeUtil(tidsperiode).antallUttaksdager();
+        fridager = uttakTidsperiodeUtil(tidsperiode).antallFridager();
     }
 
     if (utsettelse) {
-        feriedagerDenneUtsettelsen = uttakTidsperiode(
+        feriedagerDenneUtsettelsen = uttakTidsperiodeUtil(
             utsettelse.tidsperiode
         ).antallUttaksdager();
     }

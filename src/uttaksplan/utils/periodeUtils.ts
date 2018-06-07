@@ -6,7 +6,7 @@ import {
     Tidsperiode,
     Periodetype
 } from '../types';
-import { uttaksdagUtil, uttakTidsperiode } from './uttaksdagerUtils';
+import { uttaksdagUtil, uttakTidsperiodeUtil } from './uttaksdagerUtils';
 
 export const perioderUtil = (perioder: Periode[]) => ({
     uttaksperioder: () => getUttaksperioder(perioder),
@@ -121,7 +121,7 @@ function finnPerioderITidsrom(
  */
 function flyttPeriode(periode: Periode, dager: number): Periode {
     const { tidsperiode } = periode;
-    const uttaksdager = uttakTidsperiode(tidsperiode).antallUttaksdager();
+    const uttaksdager = uttakTidsperiodeUtil(tidsperiode).antallUttaksdager();
     const startdato = uttaksdagUtil(tidsperiode.startdato).leggTil(dager);
     return {
         ...periode,
