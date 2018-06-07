@@ -3,7 +3,7 @@ import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
 import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
-import Søker, { SøkerPartial } from './S\u00F8ker';
+import Søker, { SøkerPartial } from './Søker';
 
 type Foreldrepenger = 'foreldrepenger';
 
