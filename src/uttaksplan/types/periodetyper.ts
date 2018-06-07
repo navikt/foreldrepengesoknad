@@ -44,7 +44,6 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
-    uttaksdager?: number;
 }
 
 export interface Stønadsperiode extends PeriodeBase {
