@@ -7,7 +7,7 @@ import { Periode } from '../../types';
 import { guid } from 'nav-frontend-js-utils';
 import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 import { opprettStønadsperioder } from 'uttaksplan/utils/permisjonUtils';
-import { finnOgLeggTilTapteUttak } from 'uttaksplan/utils/periodeUtils';
+import { refordelPerioder } from 'uttaksplan/utils/periodeUtils';
 
 const defaultState: PeriodeState = {
     dialogErApen: false,
@@ -15,28 +15,30 @@ const defaultState: PeriodeState = {
     perioder: mockUtsettelser
 };
 
+const oppdaterPeriode = (perioder: Periode[], periode: Periode) =>
+    perioder.map((p, idx) => (p.id === periode.id ? periode : p));
+
+const leggTilPeriode = (perioder: Periode[], periode: Periode) => [
+    ...perioder,
+    {
+        ...periode,
+        id: guid()
+    }
+];
+
 const opprettEllerOppdaterPeriode = (
-    state: PeriodeState,
+    perioder: Periode[],
     periode: Periode
-): PeriodeState => {
-    let perioder = state.perioder;
-    perioder = periode.id
-        ? state.perioder.map(
-              (u, idx) => (u.id === periode.id ? periode : state.perioder[idx])
-          )
-        : [
-              ...state.perioder,
-              {
-                  ...periode,
-                  id: guid()
-              }
-          ];
-    perioder = finnOgLeggTilTapteUttak(perioder);
-    return {
-        ...state,
-        perioder,
-        dialogErApen: false
-    };
+): Periode[] => {
+    return refordelPerioder(
+        periode.id
+            ? oppdaterPeriode(perioder, periode)
+            : leggTilPeriode(perioder, periode)
+    );
+};
+
+const slettPeriode = (perioder: Periode[], periode: Periode): Periode[] => {
+    return refordelPerioder(perioder.filter((p) => p.id !== periode.id));
 };
 
 const updateState = (
@@ -83,15 +85,24 @@ const PeriodeReducer = (
             });
 
         case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
-            return opprettEllerOppdaterPeriode(state, action.periode);
+            return updateState(state, {
+                perioder: opprettEllerOppdaterPeriode(
+                    state.perioder,
+                    action.periode
+                ),
+                dialogErApen: false
+            });
 
         case PlanleggerActionTypeKeys.PERIODE_SLETT:
             return updateState(state, {
-                perioder: state.perioder.filter(
-                    (u) => u.id !== action.periode.id
-                ),
+                perioder: slettPeriode(state.perioder, action.periode),
                 valgtPeriode: undefined,
                 dialogErApen: false
+            });
+
+        case PlanleggerActionTypeKeys.DEV_ACTION:
+            return updateState(state, {
+                perioder: refordelPerioder(state.perioder)
             });
 
         default:

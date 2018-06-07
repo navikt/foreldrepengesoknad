@@ -1,33 +1,38 @@
 import { Tidsperiode, Forelder } from '../types';
 
 export enum Periodetype {
-    'Stonadsperiode' = 'STØNADSPERIODE',
+    'Stønadsperiode' = 'STØNADSPERIODE',
     'Utsettelse' = 'UTSETTELSE',
-    'Opphold' = 'OPPHOLD',
-    'TaptPeriode' = 'TAPT_PERIODE'
+    'Opphold' = 'OPPHOLD'
 }
 
-export enum StonadskontoType {
+export enum StønadskontoType {
     /** Kvote forbeholdt mor */
-    'Modrekvote' = 'MØDREKVOTE',
+    'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
     'Fedrekvote' = 'FEDREKVOTE',
     /** Felleskvote som kan fordeles mellom mor og medforelder */
     'Fellesperiode' = 'FELLESPERIODE',
     /** Når det kun er en forsørger/forelder */
-    'Foreldrepenger' = 'FORELDREPENGER'
+    'Foreldrepenger' = 'FORELDREPENGER',
+    /** Når det kun er en forsørger/forelder */
+    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FOEDSEL',
+    /** Når det kun er en forsørger/forelder */
+    'SamtidigUttak' = 'SAMTIDIGUTTAK'
 }
 
 export enum UtsettelseÅrsakType {
-    'Ferie' = 'FERIE',
+    'Ferie' = 'LOVBESTEMT_FERIE',
     'Arbeid' = 'ARBEID',
-    'SykdomSkade' = 'SYKDOM_SKADE',
-    'InnlagtBarn' = 'INNLAGT_BARN'
+    'Sykdom' = 'SYKDOM',
+    'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
+    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
 export enum OppholdÅrsakType {
-    'VenterSøknadFraAnnenForelder' = 'VENTER_SØKNAD_FRA_ANNEN_FORELDRE',
-    'ManglendeSøktPeriode' = 'MANGLENDE_SØKT_PERIODE'
+    'VenterSøknadFraAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
+    'ManglendeSøktPeriode' = 'UTTAK_KVOTE_ANNEN_FORELDER',
+    'Ingen' = 'INGEN'
 }
 
 export interface Helligdag {
@@ -35,15 +40,16 @@ export interface Helligdag {
     navn: string;
 }
 
-interface PeriodeBase {
+export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
+    uttaksdager?: number;
 }
 
-export interface Stonadsperiode extends PeriodeBase {
-    type: Periodetype.Stonadsperiode;
-    konto: StonadskontoType;
+export interface Stønadsperiode extends PeriodeBase {
+    type: Periodetype.Stønadsperiode;
+    konto: StønadskontoType;
     forelder: Forelder;
     låstPeriode?: boolean;
     låstForelder?: boolean;
@@ -54,17 +60,15 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+    utsettelseAv?: StønadskontoType;
 }
 
-export interface OppholdPeriode extends PeriodeBase {
+export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
-}
-
-export interface TaptPeriode extends PeriodeBase {
-    type: Periodetype.TaptPeriode;
     forelder: Forelder;
 }
 
-export type Periode = Stonadsperiode | Utsettelsesperiode | TaptPeriode;
+export type Periode = Stønadsperiode | Utsettelsesperiode | Oppholdsperiode;
+
 export type Perioder = Periode[];

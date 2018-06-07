@@ -51,12 +51,12 @@ export function validerUtsettelseskjema(
         utsettelse,
         intl
     } = props;
+    const andreUtsettelser = utsettelse
+        ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
+        : registrerteUtsettelser;
     const { årsak, forelder, startdato, sluttdato } = state;
     const valideringsfeil: Valideringsfeil = new Map();
-    const ugyldigeTidsrom = getUgyldigeTidsrom(
-        registrerteUtsettelser,
-        utsettelse
-    );
+    const ugyldigeTidsrom = getUgyldigeTidsrom(andreUtsettelser, utsettelse);
 
     if (!startdato) {
         valideringsfeil.set('startdato', {
@@ -101,7 +101,7 @@ export function validerUtsettelseskjema(
                     termindato,
                     permisjonsregler,
                     startdato || tidsrom.startdato,
-                    registrerteUtsettelser
+                    andreUtsettelser
                 )
             },
             ugyldigeTidsrom
