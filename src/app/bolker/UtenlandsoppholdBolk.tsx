@@ -122,8 +122,8 @@ class UtenlandsoppholdBolk extends React.Component<
                         <div className="blokk-xs">
                             <InteractiveList
                                 data={perioder}
-                                onLinkClick={this.onPeriodeLinkClick}
-                                onTrashClick={this.onDelete}
+                                onSelect={this.onPeriodeLinkClick}
+                                onDelete={this.onDelete}
                                 renderElement={(
                                     periode: UtenlandsoppholdPeriode
                                 ) => (
