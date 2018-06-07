@@ -12,7 +12,7 @@ import {
 } from 'uttaksplan/types';
 import {
     uttaksdagUtil,
-    uttakTidsperiode
+    uttakTidsperiodeUtil
 } from 'uttaksplan/utils/uttaksdagerUtils';
 import {
     sorterPerioder,
@@ -202,7 +202,7 @@ const finnOppholdsperioder = (
             return;
         }
 
-        const uttaksdagerITidsperiode = uttakTidsperiode(
+        const uttaksdagerITidsperiode = uttakTidsperiodeUtil(
             tidsperiodeMellomPerioder
         ).antallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {
@@ -233,7 +233,7 @@ const resetUttaksperioder = (perioder: Uttaksperiode[]): Uttaksperiode[] => {
             forrigePeriode = periode;
             return periode;
         }
-        const uttaksdager = uttakTidsperiode(
+        const uttaksdager = uttakTidsperiodeUtil(
             periode.tidsperiode
         ).antallUttaksdager();
         const startdato = uttaksdagUtil(
@@ -330,7 +330,7 @@ const leggTilUtsettelseEtterPeriode = (
 ): Periode[] => {
     const perioderFør = perioderUtil(perioder).foregåendePerioder(periode);
     const perioderEtter = perioderUtil(perioder).påfølgendePerioder(periode);
-    const uttaksdagerIUtsettelse: number = uttakTidsperiode(
+    const uttaksdagerIUtsettelse: number = uttakTidsperiodeUtil(
         utsettelse.tidsperiode
     ).antallUttaksdager();
     return [
@@ -360,7 +360,7 @@ const leggTilUtsettelseIPeriode = (
         periode,
         utsettelse
     );
-    const uttaksdager = uttakTidsperiode(
+    const uttaksdager = uttakTidsperiodeUtil(
         utsettelse.tidsperiode
     ).antallUttaksdager();
     return [
@@ -380,10 +380,10 @@ const leggUtsettelseInnIPeriode = (
     periode: Periode,
     utsettelse: Utsettelsesperiode
 ): Periode[] => {
-    const dagerIPeriode = uttakTidsperiode(
+    const dagerIPeriode = uttakTidsperiodeUtil(
         periode.tidsperiode
     ).antallUttaksdager();
-    const dagerForsteDel = uttakTidsperiode({
+    const dagerForsteDel = uttakTidsperiodeUtil({
         startdato: periode.tidsperiode.startdato,
         sluttdato: addDays(utsettelse.tidsperiode.startdato, -1)
     }).antallUttaksdager();
