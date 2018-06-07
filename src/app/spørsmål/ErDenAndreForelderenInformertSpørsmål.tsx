@@ -10,9 +10,9 @@ enum AndreForelderen {
 
 interface ErDenAndreForelderenInformertSpørsmål {
     navn?: string;
-    erInformertOmSøknaden?: boolean;
+    erDenAndreForelderenInformert?: boolean;
     onChange: (
-        erFrilanser: boolean,
+        erDenAndreForelderenInformert: boolean,
         e: React.ChangeEvent<HTMLInputElement>
     ) => void;
 }
@@ -23,15 +23,15 @@ const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
     const {
         onChange,
         intl,
-        erInformertOmSøknaden,
+        erDenAndreForelderenInformert,
         navn,
         ...otherProps
     } = props;
 
     let checked;
-    if (erInformertOmSøknaden === true) {
+    if (erDenAndreForelderenInformert === true) {
         checked = AndreForelderen.ER_INFORMERT;
-    } else if (erInformertOmSøknaden === false) {
+    } else if (erDenAndreForelderenInformert === false) {
         checked = AndreForelderen.IKKE_INFORMERT;
     }
 
