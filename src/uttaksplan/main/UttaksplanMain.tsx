@@ -46,6 +46,7 @@ import UttaksplanIkon, {
 
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -95,9 +96,9 @@ class UttaksplanMain extends React.Component<Props> {
                 this.props.dispatch(
                     visPeriodeDialog(Periodetype.Utsettelse, periode)
                 );
-            } else if (periode.type === Periodetype.Stonadsperiode) {
+            } else if (periode.type === Periodetype.Stønadsperiode) {
                 this.props.dispatch(
-                    visPeriodeDialog(Periodetype.Stonadsperiode, periode)
+                    visPeriodeDialog(Periodetype.Stønadsperiode, periode)
                 );
             }
         }
@@ -202,7 +203,7 @@ class UttaksplanMain extends React.Component<Props> {
                                     onClick={() =>
                                         dispatch(
                                             visPeriodeDialog(
-                                                Periodetype.Stonadsperiode
+                                                Periodetype.Stønadsperiode
                                             )
                                         )
                                     }>
@@ -241,6 +242,13 @@ class UttaksplanMain extends React.Component<Props> {
                             )}
                     </div>
                 )}
+                <DevHelper
+                    termindato={termindato}
+                    dekningsgrad={form.dekningsgrad || '100%'}
+                    permisjonsregler={permisjonsregler}
+                    fellesperiodeukerForelder1={form.fellesperiodeukerForelder1}
+                    fellesperiodeukerForelder2={form.fellesperiodeukerForelder2}
+                />
             </React.Fragment>
         );
     }

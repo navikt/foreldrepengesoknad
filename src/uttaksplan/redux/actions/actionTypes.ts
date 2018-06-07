@@ -19,7 +19,8 @@ export enum PlanleggerActionTypeKeys {
     'INFO_VIS' = 'infoVis',
     'INFO_SKJUL' = 'infoSkjul',
     'VIS_TIDSLINJE' = 'visTidslinje',
-    'OPPRETT_PERIODER' = 'opprettPerioder'
+    'OPPRETT_PERIODER' = 'opprettPerioder',
+    'DEV_ACTION' = 'dev'
 }
 
 export type PlanleggerActionTypes =
@@ -36,7 +37,8 @@ export type PlanleggerActionTypes =
     | SkjulInfo
     | VisInfo
     | VisTidslinje
-    | OpprettPerioder;
+    | OpprettPerioder
+    | DevAction;
 
 export interface OpprettPerioder {
     type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
@@ -107,4 +109,8 @@ export interface VisInfo {
 export interface VisTidslinje {
     type: PlanleggerActionTypeKeys.VIS_TIDSLINJE;
     synlig: boolean;
+}
+export interface DevAction {
+    type: PlanleggerActionTypeKeys.DEV_ACTION;
+    key: string;
 }
