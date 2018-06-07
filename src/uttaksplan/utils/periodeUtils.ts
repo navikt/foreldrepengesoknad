@@ -2,7 +2,7 @@ import { addDays, isWithinRange, isSameDay, isBefore } from 'date-fns';
 // import groupBy from 'lodash.groupby';
 import {
     Periode,
-    Stønadsperiode,
+    Uttaksperiode,
     Utsettelsesperiode,
     Periodesplitt,
     Tidsperiode,
@@ -35,10 +35,10 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
  * Returnerer perioder som er stønadperioder
  * @param perioder
  */
-export function getStønadsperioder(perioder: Perioder): Stønadsperiode[] {
+export function getStønadsperioder(perioder: Periode[]): Uttaksperiode[] {
     return perioder.filter(
-        (periode) => periode.type === Periodetype.Stønadsperiode
-    ) as Stønadsperiode[];
+        (periode) => periode.type === Periodetype.Uttaksperiode
+    ) as Uttaksperiode[];
 }
 
 /**
@@ -74,7 +74,7 @@ export function refordelPerioder(perioder: Periode[]): Periode[] {
     let stønadperioder = getStønadsperioder(perioder).sort(sorterPerioder);
     const utsettelser = getUtsettelser(perioder).sort(sorterPerioder);
     stønadperioder = resetStønadsperiodeTidsperioder(stønadperioder);
-    const perioderMedUtsettelser = leggTilUtsettelser(
+    const perioderMedUtsettelser = leggUtsettelserTilUttaksperioder(
         stønadperioder,
         utsettelser
     ).sort(sorterPerioder);
@@ -86,12 +86,12 @@ export function refordelPerioder(perioder: Periode[]): Periode[] {
  * Resetter tidspunkt til stønadsperioder
  */
 export function resetStønadsperiodeTidsperioder(
-    perioder: Stønadsperiode[]
-): Stønadsperiode[] {
-    let forrigePeriode: Stønadsperiode;
+    perioder: Uttaksperiode[]
+): Uttaksperiode[] {
+    let forrigePeriode: Uttaksperiode;
     const sammenslåttePerioder = slåSammenLikePerioder(
         perioder
-    ) as Stønadsperiode[];
+    ) as Uttaksperiode[];
     const resattePerioder = sammenslåttePerioder.map((periode) => {
         if (forrigePeriode === undefined) {
             forrigePeriode = periode;
@@ -193,14 +193,14 @@ export function getPeriodeSluttdato(startdato: Date, dager: number): Date {
  * @param stønadsperioder
  * @param utsettelser
  */
-export function leggTilUtsettelser(
-    stønadsperioder: Stønadsperiode[],
+export function leggUtsettelserTilUttaksperioder(
+    uttaksperioder: Uttaksperiode[],
     utsettelser: Utsettelsesperiode[]
 ): Periode[] {
     if (utsettelser.length === 0) {
-        return stønadsperioder;
+        return uttaksperioder;
     }
-    let perioder: Periode[] = [...stønadsperioder];
+    let perioder: Periode[] = [...uttaksperioder];
     utsettelser.sort(sorterPerioder).forEach((utsettelse) => {
         perioder = leggTilUtsettelse(perioder, utsettelse);
     });
@@ -214,12 +214,12 @@ export function leggTilUtsettelser(
  */
 const kanPerioderSlåesSammen = (p1: Periode, p2: Periode) => {
     if (
-        p1.type !== Periodetype.Stønadsperiode ||
-        p2.type !== Periodetype.Stønadsperiode
+        p1.type !== Periodetype.Uttaksperiode ||
+        p2.type !== Periodetype.Uttaksperiode
     ) {
         return false;
     }
-    const getPeriodeFootprint = (periode: Stønadsperiode) =>
+    const getPeriodeFootprint = (periode: Uttaksperiode) =>
         `${periode.type}${periode.forelder}${periode.konto}${
             periode.låstPeriode
         }${periode.låstForelder}`;
@@ -425,8 +425,8 @@ const leggUtsettelseInnIPeriode = (
         sluttdato: addDays(utsettelse.tidsperiode.startdato, -1)
     });
     const dagerSisteDel = dagerIPeriode - dagerForsteDel;
-    const forste: Stønadsperiode = {
-        ...(periode as Stønadsperiode),
+    const forste: Uttaksperiode = {
+        ...(periode as Uttaksperiode),
         tidsperiode: {
             startdato: periode.tidsperiode.startdato,
             sluttdato: getForsteUttaksdagFørDato(
@@ -448,8 +448,8 @@ const leggUtsettelseInnIPeriode = (
     const startSisteDel: Date = getForsteUttaksdagEtterDato(
         midt.tidsperiode.sluttdato
     );
-    const siste: Stønadsperiode = {
-        ...(periode as Stønadsperiode),
+    const siste: Uttaksperiode = {
+        ...(periode as Uttaksperiode),
         tidsperiode: {
             startdato: startSisteDel,
             sluttdato: getPeriodeSluttdato(startSisteDel, dagerSisteDel)
