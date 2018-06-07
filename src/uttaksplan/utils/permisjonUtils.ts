@@ -13,7 +13,7 @@ import {
     Periode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Stønadsperiode,
+    Uttaksperiode,
     Periodetype,
     StønadskontoType
 } from '../types';
@@ -197,7 +197,7 @@ export function getAntallUkerFellesperiode(
  * @param forelder
  * @param perioder
  */
-export const getAntallStonadsdagerForForelder = (
+export const getAntallUttaksdagerForForelder = (
     forelder: Forelder,
     perioder: Periode[]
 ): number => {
@@ -234,18 +234,18 @@ export const getAntallFeriedagerForForelder = (
 };
 
 /** Oppretter default stønadsperioder ut fra termindato ++ */
-export function opprettStønadsperioder(
+export function opprettUttaksperioder(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
-): Stønadsperiode[] {
+): Uttaksperiode[] {
     termindato = normaliserDato(termindato);
-    const perioder: Stønadsperiode[] = [
+    const perioder: Uttaksperiode[] = [
         {
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
@@ -254,7 +254,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getPakrevdMødrekvoteEtterTermin(
@@ -266,7 +266,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getFrivilligMødrekvoteEtterTermin(
@@ -276,7 +276,7 @@ export function opprettStønadsperioder(
         },
         {
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder2',
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getFedrekvote(
@@ -290,7 +290,7 @@ export function opprettStønadsperioder(
     if (fellesukerForelder1 > 0) {
         perioder.push({
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder1',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder1(
@@ -303,7 +303,7 @@ export function opprettStønadsperioder(
     if (fellesukerForelder2 > 0) {
         perioder.push({
             id: guid(),
-            type: Periodetype.Stønadsperiode,
+            type: Periodetype.Uttaksperiode,
             forelder: 'forelder2',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder2(

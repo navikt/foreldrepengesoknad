@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Stønadsperiode,
+    Uttaksperiode,
     Periode,
     Forelder,
     StønadskontoType
@@ -16,7 +16,7 @@ import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/Ekspan
 import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface OwnProps {
-    periode: Stønadsperiode;
+    periode: Uttaksperiode;
     onChange: (periode: Periode) => void;
     onFjern: (periode: Periode) => void;
 }
@@ -29,7 +29,7 @@ export interface State {
 }
 
 export type Props = OwnProps & InjectedIntlProps;
-class StonadsperiodeSkjema extends React.Component<Props, State> {
+class UttaksperiodeSkjema extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -63,7 +63,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
         }
     }
 
-    getPeriodeFromSkjema(): Stønadsperiode | undefined {
+    getPeriodeFromSkjema(): Uttaksperiode | undefined {
         const { startdato, sluttdato, stønadskonto, forelder } = this.state;
         if (!startdato || !sluttdato || !stønadskonto || !forelder) {
             return undefined;
@@ -91,8 +91,8 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
     render() {
         const { periode, onFjern } = this.props;
         const tittelKey = periode
-            ? 'uttaksplan.stonadsperiodeskjema.endre.tittel'
-            : 'uttaksplan.stonadsperiodeskjema.tittel';
+            ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
+            : 'uttaksplan.uttaksperiodeskjema.tittel';
 
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
@@ -100,7 +100,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
             <form
                 action="#"
                 onSubmit={preventFormSubmit}
-                className="stonadsperiodeskjema dialogContent">
+                className="uttaksperiodeskjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
@@ -149,9 +149,9 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                         className="m-fullBredde"
                         disabled={lagreKnappTilgjengelig}>
                         {periode ? (
-                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.oppdater" />
+                            <FormattedMessage id="uttaksplan.uttaksperiodeskjema.knapp.oppdater" />
                         ) : (
-                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.leggtil" />
+                            <FormattedMessage id="uttaksplan.uttaksperiodeskjema.knapp.leggtil" />
                         )}
                     </Hovedknapp>
                     {periode && (
@@ -160,7 +160,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
                             data-ref="fjern-knapp"
                             onClick={() => onFjern(periode)}
                             className="m-fullBredde">
-                            <FormattedMessage id="uttaksplan.stonadsperiodeskjema.knapp.fjern" />
+                            <FormattedMessage id="uttaksplan.uttaksperiodeskjema.knapp.fjern" />
                         </Knapp>
                     )}
                 </Knapperad>
@@ -168,4 +168,4 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
         );
     }
 }
-export default injectIntl(StonadsperiodeSkjema);
+export default injectIntl(UttaksperiodeSkjema);

@@ -9,7 +9,7 @@ import { leggTilUtsettelse } from '../../utils/periodeUtils';
 import { tidslinjeFraPerioder } from '../../selectors/tidslinjeSelector';
 import { oppsummerPerioder } from './tidslinjeUtils';
 import { InnslagPeriodetype } from './types';
-import { opprettStønadsperioder } from '../../utils/permisjonUtils';
+import { opprettUttaksperioder } from '../../utils/permisjonUtils';
 
 const datoer = {
     termin: new Date(2018, 1, 14),
@@ -50,7 +50,7 @@ const formState = {
 };
 
 describe('tidslinjeUtils', () => {
-    const stonadsperioder = opprettStønadsperioder(
+    const uttaksperioder = opprettUttaksperioder(
         datoer.termin,
         '100%',
         13,
@@ -58,7 +58,7 @@ describe('tidslinjeUtils', () => {
         permisjonsregler
     );
     const innslagUtenUtsettelse = tidslinjeFraPerioder.resultFunc(
-        stonadsperioder,
+        uttaksperioder,
         [],
         formState
     );
@@ -69,10 +69,7 @@ describe('tidslinjeUtils', () => {
         expect(oppsummering.perioder.size).toBe(3);
     });
 
-    const perioderMedUtsettelse = leggTilUtsettelse(
-        stonadsperioder,
-        utsettelse
-    );
+    const perioderMedUtsettelse = leggTilUtsettelse(uttaksperioder, utsettelse);
     const innslagMedUtsettelse = tidslinjeFraPerioder.resultFunc(
         perioderMedUtsettelse,
         [],

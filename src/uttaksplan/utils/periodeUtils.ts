@@ -1,7 +1,7 @@
 import { addDays, isWithinRange, isSameDay, isBefore } from 'date-fns';
 import {
     Periode,
-    Stønadsperiode,
+    Uttaksperiode,
     Utsettelsesperiode,
     Periodesplitt,
     Tidsperiode,
@@ -33,10 +33,10 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
  * Returnerer perioder som er stønadperioder
  * @param perioder
  */
-export function getStonadsperioder(perioder: Periode[]): Stønadsperiode[] {
+export function getStonadsperioder(perioder: Periode[]): Uttaksperiode[] {
     return perioder.filter(
-        (periode) => periode.type === Periodetype.Stønadsperiode
-    ) as Stønadsperiode[];
+        (periode) => periode.type === Periodetype.Uttaksperiode
+    ) as Uttaksperiode[];
 }
 
 /**
@@ -148,8 +148,8 @@ export function getPeriodeSluttdato(startdato: Date, uker: number): Date {
  * @param stonadsperioder
  * @param utsettelser
  */
-export function leggUtsettelserTilStønadsperioder(
-    stonadsperioder: Stønadsperiode[],
+export function leggUtsettelserTilUttaksperioder(
+    stonadsperioder: Uttaksperiode[],
     utsettelser: Utsettelsesperiode[]
 ): Periode[] {
     if (utsettelser.length === 0) {
@@ -264,8 +264,8 @@ const leggUtsettelseInnIPeriode = (
         sluttdato: addDays(utsettelse.tidsperiode.startdato, -1)
     });
     const dagerSisteDel = dagerIPeriode - dagerForsteDel;
-    const forste: Stønadsperiode = {
-        ...(periode as Stønadsperiode),
+    const forste: Uttaksperiode = {
+        ...(periode as Uttaksperiode),
         tidsperiode: {
             startdato: periode.tidsperiode.startdato,
             sluttdato: getForsteUttaksdagFørDato(
@@ -287,8 +287,8 @@ const leggUtsettelseInnIPeriode = (
     const startSisteDel: Date = getForsteUttaksdagEtterDato(
         midt.tidsperiode.sluttdato
     );
-    const siste: Stønadsperiode = {
-        ...(periode as Stønadsperiode),
+    const siste: Uttaksperiode = {
+        ...(periode as Uttaksperiode),
         tidsperiode: {
             startdato: startSisteDel,
             sluttdato: utsettDatoUttaksdager(startSisteDel, dagerSisteDel)
