@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdag, uttakTidsperiode } from './uttaksdagerUtils';
+import { uttaksdagUtil, uttakTidsperiode } from './uttaksdagerUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -16,7 +16,7 @@ export function getPermisjonStartdato(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdag(
+    return uttaksdagUtil(
         termindato // Siste uttaksdag i denne perioden er dagen før termin
     ).leggTil(-1 * permisjonsregler.antallUkerForelder1FørFødsel * 5);
 }
@@ -25,7 +25,7 @@ export function getSisteMuligePermisjonsdag(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdag(
+    return uttaksdagUtil(
         addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
     ).denneEllerNeste();
 }
@@ -43,7 +43,7 @@ export function getGyldigTidsromForUtsettelse(
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {
     return {
-        startdato: uttaksdag(
+        startdato: uttaksdagUtil(
             getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler)
                 .sluttdato
         ).neste(),

@@ -5,7 +5,10 @@ import {
     Utsettelsesperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { uttakTidsperiode, uttaksdag } from 'uttaksplan/utils/uttaksdagerUtils';
+import {
+    uttakTidsperiode,
+    uttaksdagUtil
+} from 'uttaksplan/utils/uttaksdagerUtils';
 import {
     getAntallFeriedagerForForelder,
     getSisteMuligePermisjonsdag
@@ -225,7 +228,7 @@ export function getTilTidsromSluttdato(
             isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
         );
         if (pafolgendeUtsettelser.length > 0) {
-            return uttaksdag(
+            return uttaksdagUtil(
                 pafolgendeUtsettelser[0].tidsperiode.startdato
             ).forrige();
         }

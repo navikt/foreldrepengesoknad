@@ -8,7 +8,7 @@ import {
 import { Tidsperiode } from 'nav-datovelger';
 import { sorterPerioder } from 'uttaksplan/utils/periodeUtils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
-import { uttaksdag } from 'uttaksplan/utils/uttaksdagerUtils';
+import { uttaksdagUtil } from 'uttaksplan/utils/uttaksdagerUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 
@@ -21,7 +21,7 @@ function getMødrekvoteFørTermin(
     const startdato = getPermisjonStartdato(termindato, permisjonsregler);
     return {
         startdato,
-        sluttdato: uttaksdag(startdato).periodeslutt(
+        sluttdato: uttaksdagUtil(startdato).periodeslutt(
             permisjonsregler.antallUkerForelder1FørFødsel * UTTAKSDAGER_I_UKE
         )
     };
@@ -33,7 +33,7 @@ export function getPakrevdMødrekvoteEtterTermin(
 ): Tidsperiode {
     return {
         startdato: termindato,
-        sluttdato: uttaksdag(termindato).periodeslutt(
+        sluttdato: uttaksdagUtil(termindato).periodeslutt(
             permisjonsregler.antallUkerForelder1EtterFødsel * UTTAKSDAGER_I_UKE
         )
     };
@@ -43,12 +43,12 @@ function getFrivilligMødrekvoteEtterTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
-    const startdato = uttaksdag(
+    const startdato = uttaksdagUtil(
         getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
     ).neste();
     return {
         startdato,
-        sluttdato: uttaksdag(startdato).periodeslutt(
+        sluttdato: uttaksdagUtil(startdato).periodeslutt(
             (permisjonsregler.antallUkerMødrekvote -
                 permisjonsregler.antallUkerForelder1EtterFødsel) *
                 UTTAKSDAGER_I_UKE
@@ -61,13 +61,13 @@ function getFellesperiodeForelder1(
     permisjonsregler: Permisjonsregler,
     fellesukerForelder1: number
 ): Tidsperiode {
-    const startdato = uttaksdag(
+    const startdato = uttaksdagUtil(
         getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
             .sluttdato
     ).neste();
     return {
         startdato,
-        sluttdato: uttaksdag(startdato).periodeslutt(
+        sluttdato: uttaksdagUtil(startdato).periodeslutt(
             fellesukerForelder1 * UTTAKSDAGER_I_UKE
         )
     };
@@ -79,7 +79,7 @@ function getFellesperiodeForelder2(
     fellesukerForelder1: number,
     fellesukerForelder2: number
 ): Tidsperiode {
-    const startdato = uttaksdag(
+    const startdato = uttaksdagUtil(
         fellesukerForelder1 === 0
             ? getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
                   .sluttdato
@@ -91,7 +91,7 @@ function getFellesperiodeForelder2(
     ).neste();
     return {
         startdato,
-        sluttdato: uttaksdag(startdato).periodeslutt(
+        sluttdato: uttaksdagUtil(startdato).periodeslutt(
             fellesukerForelder2 * UTTAKSDAGER_I_UKE
         )
     };
@@ -103,7 +103,7 @@ function getFedrekvote(
     fellesukerForelder1: number,
     fellesukerForelder2: number
 ): Tidsperiode {
-    const startdato = uttaksdag(
+    const startdato = uttaksdagUtil(
         fellesukerForelder2 === 0
             ? getFellesperiodeForelder1(
                   termindato,
@@ -119,7 +119,7 @@ function getFedrekvote(
     ).neste();
     return {
         startdato,
-        sluttdato: uttaksdag(startdato).periodeslutt(
+        sluttdato: uttaksdagUtil(startdato).periodeslutt(
             permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE
         )
     };
