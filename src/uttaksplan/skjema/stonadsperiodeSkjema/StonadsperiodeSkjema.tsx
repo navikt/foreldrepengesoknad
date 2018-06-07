@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
-    Stonadsperiode,
+    Stønadsperiode,
     Periode,
     Forelder,
-    StonadskontoType
+    StønadskontoType
 } from 'uttaksplan/types';
 import { preventFormSubmit } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,7 +16,7 @@ import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/Ekspan
 import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface OwnProps {
-    periode: Stonadsperiode;
+    periode: Stønadsperiode;
     onChange: (periode: Periode) => void;
     onFjern: (periode: Periode) => void;
 }
@@ -25,7 +25,7 @@ export interface State {
     forelder?: Forelder;
     startdato?: Date;
     sluttdato?: Date;
-    stønadskonto?: StonadskontoType;
+    stønadskonto?: StønadskontoType;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -63,7 +63,7 @@ class StonadsperiodeSkjema extends React.Component<Props, State> {
         }
     }
 
-    getPeriodeFromSkjema(): Stonadsperiode | undefined {
+    getPeriodeFromSkjema(): Stønadsperiode | undefined {
         const { startdato, sluttdato, stønadskonto, forelder } = this.state;
         if (!startdato || !sluttdato || !stønadskonto || !forelder) {
             return undefined;

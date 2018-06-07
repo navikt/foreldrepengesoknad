@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import {
     Utsettelsesperiode,
     Periode,
-    Stonadsperiode,
+    Stønadsperiode,
     Periodetype
 } from '../types';
 import { leggUtsettelserTilStønadsperioder } from '../utils/periodeUtils';
@@ -16,7 +16,7 @@ const utsettelseSelector = (state: UttaksplanAppState) => {
 
 export const getStonadsperioder = (state: UttaksplanAppState) =>
     state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.Stonadsperiode
+        (p) => p.type === Periodetype.Stønadsperiode
     );
 
 export const getTaptePerioder = (state: UttaksplanAppState) =>
@@ -31,7 +31,7 @@ export const getStonadsperioderOgUtsettelser = createSelector(
     getStonadsperioder,
     utsettelseSelector,
     (
-        stonadsperioder: Stonadsperiode[],
+        stonadsperioder: Stønadsperiode[],
         utsettelser: Utsettelsesperiode[]
     ): Periode[] => {
         if (stonadsperioder.length > 0) {
