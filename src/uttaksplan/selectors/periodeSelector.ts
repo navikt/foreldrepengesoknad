@@ -2,10 +2,10 @@ import { createSelector } from 'reselect';
 import {
     Utsettelsesperiode,
     Periode,
-    Stønadsperiode,
+    Uttaksperiode,
     Periodetype
 } from '../types';
-import { leggUtsettelserTilStønadsperioder } from '../utils/periodeUtils';
+import { leggUtsettelserTilUttaksperioder } from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
 const utsettelseSelector = (state: UttaksplanAppState) => {
@@ -14,9 +14,9 @@ const utsettelseSelector = (state: UttaksplanAppState) => {
     );
 };
 
-export const getStonadsperioder = (state: UttaksplanAppState) =>
+export const getUttaksperioder = (state: UttaksplanAppState) =>
     state.uttaksplan.periode.perioder.filter(
-        (p) => p.type === Periodetype.Stønadsperiode
+        (p) => p.type === Periodetype.Uttaksperiode
     );
 
 export const getTaptePerioder = (state: UttaksplanAppState) =>
@@ -27,16 +27,16 @@ export const getTaptePerioder = (state: UttaksplanAppState) =>
 /**
  * Henter ut perioder og utsettelser fra state
  */
-export const getStonadsperioderOgUtsettelser = createSelector(
-    getStonadsperioder,
+export const getUttaksperioderOgUtsettelser = createSelector(
+    getUttaksperioder,
     utsettelseSelector,
     (
-        stonadsperioder: Stønadsperiode[],
+        uttaksperioder: Uttaksperiode[],
         utsettelser: Utsettelsesperiode[]
     ): Periode[] => {
-        if (stonadsperioder.length > 0) {
-            return leggUtsettelserTilStønadsperioder(
-                stonadsperioder,
+        if (uttaksperioder.length > 0) {
+            return leggUtsettelserTilUttaksperioder(
+                uttaksperioder,
                 utsettelser
             );
         }
@@ -45,7 +45,7 @@ export const getStonadsperioderOgUtsettelser = createSelector(
 );
 
 export const getSisteRegistrertePermisjonsdag = createSelector(
-    getStonadsperioderOgUtsettelser,
+    getUttaksperioderOgUtsettelser,
     (periode: Periode[]): Date | undefined => {
         return periode.length > 0
             ? periode[periode.length - 1].tidsperiode.sluttdato
