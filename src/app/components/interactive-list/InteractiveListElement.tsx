@@ -5,8 +5,8 @@ import SlettKnapp from 'common/components/slett-knapp/SlettKnapp';
 
 interface InteractiveListElementProps<T> {
     data: T;
-    onTrashClick?: (element: T) => void;
-    onLinkClick: (element: T) => void;
+    onDelete: (element: T) => void;
+    onSelect: (element: T) => void;
     renderElement: (element: T) => JSX.Element;
     linkButtonProps?: LinkButtonProps;
 }
@@ -18,8 +18,8 @@ class InteractiveListElement<T> extends React.Component<Props<T>> {
         const {
             data,
             renderElement,
-            onTrashClick,
-            onLinkClick,
+            onDelete,
+            onSelect,
             linkButtonProps
         } = this.props;
 
@@ -27,18 +27,18 @@ class InteractiveListElement<T> extends React.Component<Props<T>> {
             <li className="interactiveList__element">
                 <div className="interactiveList__element__stay">
                     <LinkButton
-                        onClick={() => onLinkClick(data)}
+                        onClick={() => onSelect(data)}
                         {...linkButtonProps}>
                         <div className="interactiveList__element__data">
                             {renderElement(data)}
                         </div>
                     </LinkButton>
                 </div>
-                {onTrashClick && (
+                {onDelete && (
                     <span className="interactiveList__element__slettIkon">
                         <SlettKnapp
                             ariaLabel="Slett utenlandsopphold"
-                            onClick={() => onTrashClick(data)}
+                            onClick={() => onDelete(data)}
                         />
                     </span>
                 )}
