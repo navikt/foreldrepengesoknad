@@ -6,10 +6,10 @@ import {
     StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { getStønadsperioder } from '../../utils/periodeUtils';
+import { getUttaksperioder } from '../../utils/periodeUtils';
 import {
-    getAntallUttaksdagerITidsperiode,
-    getAntallUttaksdagerIPerioder
+    getAntallUttaksdagerITidsperioder,
+    uttakTidsperiode
 } from '../../utils/uttaksdagerUtils';
 import { CalloutBorderColor } from 'uttaksplan/components/callout/Callout';
 
@@ -51,13 +51,16 @@ export const oppsummerPerioder = (
             innslag.perioderekke[innslag.perioderekke.length - 1].tidsperiode
                 .sluttdato
     };
-    const ukerTotalt = getAntallUttaksdagerIPerioder(innslag.perioderekke) / 5;
-    const stonadsperioder = getStønadsperioder(innslag.perioderekke);
+    const uttakTidsperioder = getUttaksperioder(innslag.perioderekke).map(
+        (p) => p.tidsperiode
+    );
+    const ukerTotalt = getAntallUttaksdagerITidsperioder(uttakTidsperioder) / 5;
+    const stonadsperioder = getUttaksperioder(innslag.perioderekke);
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
         const eksisterendeDager = perioder.get(konto) || 0;
-        const nyeDager = getAntallUttaksdagerITidsperiode(p.tidsperiode);
+        const nyeDager = uttakTidsperiode(p.tidsperiode).antallUttaksdager();
         perioder.set(konto, eksisterendeDager + nyeDager);
     });
     perioder.forEach((value, key) => perioder.set(key, value / 5));

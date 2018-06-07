@@ -96,9 +96,9 @@ class UttaksplanMain extends React.Component<Props> {
                 this.props.dispatch(
                     visPeriodeDialog(Periodetype.Utsettelse, periode)
                 );
-            } else if (periode.type === Periodetype.Uttaksperiode) {
+            } else if (periode.type === Periodetype.Uttak) {
                 this.props.dispatch(
-                    visPeriodeDialog(Periodetype.Uttaksperiode, periode)
+                    visPeriodeDialog(Periodetype.Uttak, periode)
                 );
             }
         }
@@ -202,9 +202,7 @@ class UttaksplanMain extends React.Component<Props> {
                                 <Knapp
                                     onClick={() =>
                                         dispatch(
-                                            visPeriodeDialog(
-                                                Periodetype.Uttaksperiode
-                                            )
+                                            visPeriodeDialog(Periodetype.Uttak)
                                         )
                                     }>
                                     Legg til uttak

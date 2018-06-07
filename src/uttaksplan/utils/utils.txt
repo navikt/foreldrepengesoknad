@@ -1,0 +1,24 @@
+
+Perioder
+- sett startdato
+- hent uttaksdager
+
+Uttaksplan
+- opprett initiell plan ut fra permisjonsregler
+- hent uttakstall for foreldre
+- hent feriedager for forelder
+- hent uttaksperioder
+- hent utsettelser
+- hent opphold
+- bygg opp uttaksplan gitt uttaksdager og utsettelser
+- oppdater enkeltperiode
+- slett periode
+- validere?
+
+Uttaksdager
+- Navigere i uttaksdager
+
+Permisjonsregler
+- Hent ut antall uker for ulike Perioder
+- Lag oppskrift for uttaksplan
+- 
