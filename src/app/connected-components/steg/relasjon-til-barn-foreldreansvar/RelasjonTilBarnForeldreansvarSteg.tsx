@@ -33,7 +33,7 @@ export type Props = DispatchProps &
     InjectedIntlProps &
     HistoryProps;
 
-class RelasjonTilBarnForeldreansvar extends React.Component<Props, {}> {
+class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
@@ -153,5 +153,5 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 };
 
 export default injectIntl(
-    connect(mapStateToProps)(RelasjonTilBarnForeldreansvar)
+    connect(mapStateToProps)(RelasjonTilBarnForeldreansvarSteg)
 );
