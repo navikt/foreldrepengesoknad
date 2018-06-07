@@ -3,10 +3,10 @@ import {
     Tidsperiode,
     Periodetype,
     Forelder,
-    StonadskontoType,
+    StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { getStonadsperioder } from '../../utils/periodeUtils';
+import { getStønadsperioder } from '../../utils/periodeUtils';
 import {
     getAntallUttaksdagerITidsperiode,
     getAntallUttaksdagerIPerioder
@@ -24,15 +24,14 @@ export interface SammenslattPeriodeOppsummering {
     perioder: Periodeoppsummering;
 }
 
-export type Periodeoppsummering = Map<StonadskontoType, number>;
+export type Periodeoppsummering = Map<StønadskontoType, number>;
 
 const normaliserStonadsperiodekonto = (
-    konto: StonadskontoType
-): StonadskontoType => {
+    konto: StønadskontoType
+): StønadskontoType => {
     switch (konto) {
-        case StonadskontoType.Modrekvote:
-        case StonadskontoType.ModrekvotePakrevd:
-            return StonadskontoType.Modrekvote;
+        case StønadskontoType.Mødrekvote:
+            return StønadskontoType.Mødrekvote;
         default:
             return konto;
     }
@@ -53,7 +52,7 @@ export const oppsummerPerioder = (
                 .sluttdato
     };
     const ukerTotalt = getAntallUttaksdagerIPerioder(innslag.perioderekke) / 5;
-    const stonadsperioder = getStonadsperioder(innslag.perioderekke);
+    const stonadsperioder = getStønadsperioder(innslag.perioderekke);
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
@@ -76,6 +75,9 @@ export const oppsummerPerioder = (
 export const getInnslagfarge = (
     innslag: InnslagPeriodetype
 ): CalloutBorderColor => {
+    if (innslag.periode.type === Periodetype.Opphold) {
+        return 'purple';
+    }
     if (innslag.periode.type === Periodetype.Utsettelse) {
         return 'green';
     }
@@ -104,16 +106,14 @@ export const getForelderNavn = (
     navnForelder2: string
 ): string => (forelder === 'forelder1' ? navnForelder1 : navnForelder2);
 
-export const getStondskontoTekstKey = (konto: StonadskontoType) => {
+export const getStondskontoTekstKey = (konto: StønadskontoType) => {
     switch (konto) {
-        case StonadskontoType.Fellesperiode:
+        case StønadskontoType.Fellesperiode:
             return 'uttaksplan.stonadskonto.fellesperiode';
-        case StonadskontoType.Fedrekvote:
+        case StønadskontoType.Fedrekvote:
             return 'uttaksplan.stonadskonto.fedrekvote';
-        case StonadskontoType.Modrekvote:
+        case StønadskontoType.Mødrekvote:
             return 'uttaksplan.stonadskonto.modrekvote';
-        case StonadskontoType.ModrekvotePakrevd:
-            return 'uttaksplan.stonadskonto.modrekvotePakrevd';
         default:
             return 'uttaksplan.stonadskonto.foreldrepenger';
     }

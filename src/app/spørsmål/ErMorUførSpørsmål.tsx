@@ -9,6 +9,7 @@ enum Mor {
 }
 
 interface ErMorUførProps {
+    navn?: string;
     erMorUfør?: boolean;
     onChange: (
         erFrilanser: boolean,
@@ -19,7 +20,7 @@ interface ErMorUførProps {
 type Props = ErMorUførProps & InjectedIntlProps;
 
 const ErMorUfør = (props: Props) => {
-    const { onChange, intl, erMorUfør, ...otherProps } = props;
+    const { onChange, navn, intl, erMorUfør, ...otherProps } = props;
 
     let checked;
     if (erMorUfør === true) {
@@ -31,7 +32,7 @@ const ErMorUfør = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'erMorUfør.spørsmål')}
+            legend={getMessage(intl, 'erMorUfør.spørsmål', { navn })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

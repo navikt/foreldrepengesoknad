@@ -7,7 +7,7 @@ import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
-import Uttaksplan from 'uttaksplan/components/uttaksplan/Uttaksplan';
+import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 
 export interface StateProps {
     form: {

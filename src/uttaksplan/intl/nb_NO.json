@@ -22,8 +22,6 @@
     "uttaksplan.planleggerinfo.lukk": "Lukk informasjon",
     "uttaksplan.planleggerinfo.apne": "Les om begrensninger i planleggeren",
     "uttaksplan.knapp.vispermisjonsplan": "Vis planen",
-    "uttaksplan.stonadskonto.modrekvotePakrevd": "mødrekvote",
-    "uttaksplan.stonadskonto.modrekvote": "mødrekvote",
     "uttaksplan.stonadskonto.fedrekvote": "fedrekvote",
     "uttaksplan.stonadskonto.fellesperiode": "fellesperiode",
     "uttaksplan.stonadskonto.foreldrepenger": "foreldrepenger",
@@ -32,13 +30,13 @@
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til opphold",
     "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
 
-    "uttaksplan.stonadsperiodeskjema.tittel": "Legg til periode",
-    "uttaksplan.stonadsperiodeskjema.endre.tittel": "Endre periode",
-    "uttaksplan.stonadsperiodeskjema.startdato.sporsmal": "Startdato",
-    "uttaksplan.stonadsperiodeskjema.sluttdato.sporsmal": "Sluttdato",
-    "uttaksplan.stonadsperiodeskjema.knapp.leggtil": "Legg til",
-    "uttaksplan.stonadsperiodeskjema.knapp.oppdater": "Oppdater",
-    "uttaksplan.stonadsperiodeskjema.knapp.fjern": "Fjern periode",
+    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til stønadsperiode",
+    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre stønadsperiode",
+    "uttaksplan.uttaksperiodeskjema.startdato.sporsmal": "Startdato",
+    "uttaksplan.uttaksperiodeskjema.sluttdato.sporsmal": "Sluttdato",
+    "uttaksplan.uttaksperiodeskjema.knapp.leggtil": "Legg til",
+    "uttaksplan.uttaksperiodeskjema.knapp.oppdater": "Oppdater",
+    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern stønadsperiode",
 
     "uttaksplan.utsettelseskjema.tittel": "Legg til opphold",
     "uttaksplan.utsettelseskjema.tittel.endre": "Opphold i foreldrepengene",
@@ -158,5 +156,20 @@
         "Foreldrepengeplanleggeren er under utvikling. Dere kan ikke bruke den for å planlegge:<ul><li>kombinasjon av delvis arbeid og foreldrepenger</li><li>opphold i foreldrepengene på grunn av sykdom</li><li>ekstrauker på grunn av flerbarnsfødsel</li><li>foreldrepenger på grunn av adopsjon</li><li>oppstart av foreldrepengene tidligere enn tre uker før termindato</li><li>ulønnet permisjon</li></ul>",
 
     "timeline.range.aria": "Fra {from} til {to}",
-    "timeline.range.visible": "{from} - {to}"
+    "timeline.range.visible": "{from} - {to}",
+
+    "stønadskontotype.MØDREKVOTE": "Mødrekvote",
+    "stønadskontotype.FEDREKVOTE": "Fedrekvote",
+    "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
+    "stønadskontotype.FELLESPERIODE": "Fellesperiode",
+    "stønadskontotype.FORELDREPENGER_FØR_FOEDSEL": "Mødrekvote (før termin)",
+
+    "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
+    "utsettelsesårsak.ARBEID": "Arbeid",
+    "utsettelsesårsak.SYKDOM": "Sykdom",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+
+    "uttaksplan.startdato.sporsmal": "Startdato",
+    "uttaksplan.sluttdato.sporsmal": "Sluttdato"
 }

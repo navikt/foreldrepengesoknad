@@ -9,6 +9,7 @@ export enum AnnenForelder {
 }
 
 interface BarnFødtBolkProps {
+    navn?: string;
     harAnnenForelderRettPåForeldrepenger?: boolean;
     onChange: (
         harAnnenForelderRettPåForeldrepenger: boolean,
@@ -22,6 +23,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
     const {
         onChange,
         harAnnenForelderRettPåForeldrepenger,
+        navn,
         intl,
         ...otherProps
     } = props;
@@ -38,7 +40,8 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
             checked={checked}
             legend={getMessage(
                 intl,
-                'andreForelderenRettPåForeldrepenger.spørsmål'
+                'andreForelderenRettPåForeldrepenger.spørsmål',
+                { navn }
             )}
             radios={[
                 {

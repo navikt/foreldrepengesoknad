@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import { AppState } from '../../../redux/reducers';
-import { AnnenForelderPartial } from '../../../types/s\u00F8knad/AnnenForelder';
-import Steg from '../../../components/layout/Steg';
+import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
+import Steg, { StegProps } from '../../../components/layout/Steg';
 import { StegID } from '../../../util/stegConfig';
 import { partials } from './partials';
 import { BarnPartial, ForeldreansvarBarn } from '../../../types/søknad/Barn';
@@ -12,15 +12,24 @@ import { BarnPartial, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { Attachment } from 'storage/attachment/types/Attachment';
+import { Språkkode } from 'common/intl/types';
+import { HistoryProps } from '../../../types/common';
+import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
+import Person from '../../../types/Person';
+import { erFarEllerMedmor } from '../../../util/personUtil';
 
 interface StateProps {
+    person: Person;
     barn: BarnPartial;
     søknad: Søknad;
+    søker: Søker;
     annenForelder: AnnenForelderPartial;
     attachments: Attachment[];
+    språk: Språkkode;
+    stegProps: StegProps;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -31,22 +40,29 @@ class AnnenForelderSteg extends React.Component<Props> {
         return annenForelder.navn && annenForelder.fnr;
     }
 
-    shouldRenderOmsorgPartial() {
-        const { søknad } = this.props;
-        return søknad.aleneOmOmsorg === true;
-    }
-
     renderPartials(): any[] {
-        const { barn, søknad, annenForelder, dispatch } = this.props;
+        const {
+            person,
+            barn,
+            søknad,
+            søker,
+            annenForelder,
+            attachments,
+            dispatch,
+            språk
+        } = this.props;
         const partialList = [] as any;
-        const erFarEllerMedmor = false;
 
         partialList.push(
             <partials.AnnenForelderPersonaliaPartial
-                søknad={søknad}
+                søker={søker}
                 annenForelder={annenForelder}
-                erFarEllerMedmor={erFarEllerMedmor}
+                erFarEllerMedmor={erFarEllerMedmor(
+                    person.kjønn,
+                    søker.søkerRolle
+                )}
                 dispatch={dispatch}
+                språk={språk}
             />
         );
 
@@ -55,8 +71,13 @@ class AnnenForelderSteg extends React.Component<Props> {
                 <partials.KjentAndreForelderPartial
                     barn={barn as ForeldreansvarBarn}
                     annenForelder={annenForelder}
-                    erFarEllerMedmor={erFarEllerMedmor}
+                    søker={søker}
+                    erFarEllerMedmor={erFarEllerMedmor(
+                        person.kjønn,
+                        søker.søkerRolle
+                    )}
                     søknad={søknad}
+                    attachments={attachments}
                     dispatch={dispatch}
                 />
             );
@@ -65,16 +86,74 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 
     render() {
-        return <Steg id={StegID.ANNEN_FORELDER}>{this.renderPartials()}</Steg>;
+        const { person, stegProps } = this.props;
+        if (person) {
+            return <Steg {...stegProps}>{this.renderPartials()}</Steg>;
+        }
+        return null;
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-    søknad: state.søknad,
-    barn: state.søknad.barn,
-    annenForelder: state.søknad.annenForelder,
-    attachments: state.attachments
-});
+const shouldRenderFortsettKnapp = (
+    annenForelder: AnnenForelderPartial,
+    søker: SøkerPartial,
+    attachments: Attachment[],
+    erSøkerFarEllerMedmor?: boolean
+) => {
+    const omsorgsovertakelseIsUploaded = attachments.length > 0;
+    const annenForelderHarIkkeRettTilFPOgSøkerErMor =
+        annenForelder.harRettPåForeldrepenger === false &&
+        !erSøkerFarEllerMedmor;
+    const morErUførSpårsmålErBesvart = annenForelder.erUfør !== undefined;
+    const erInformertOmSøknadenSpørsmålBesvart =
+        annenForelder.erInformertOmSøknaden !== undefined;
+    const medmorEllerFarSkalIkkeHaFP =
+        annenForelder.skalHaForeldrepenger === false;
+
+    return annenForelder.kanIkkeOppgis ||
+        omsorgsovertakelseIsUploaded ||
+        erInformertOmSøknadenSpørsmålBesvart ||
+        annenForelderHarIkkeRettTilFPOgSøkerErMor ||
+        morErUførSpårsmålErBesvart ||
+        medmorEllerFarSkalIkkeHaFP
+        ? true
+        : false;
+};
+
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const person = state.api.person as Person;
+    const søknad = state.søknad;
+    const barn = state.søknad.barn;
+    const søker = state.søknad.søker;
+    const annenForelder = state.søknad.annenForelder;
+    const attachments = state.attachments;
+    const språk = state.common.språkkode;
+
+    const stegProps = {
+        id: StegID.RELASJON_TIL_BARN_ADOPSJON,
+        renderFortsettKnapp:
+            person === undefined
+                ? false
+                : shouldRenderFortsettKnapp(
+                      annenForelder,
+                      søker,
+                      attachments,
+                      erFarEllerMedmor(person.kjønn, søker.søkerRolle)
+                  ),
+        history: props.history
+    };
+
+    return {
+        stegProps,
+        person,
+        søknad,
+        barn,
+        søker,
+        annenForelder,
+        attachments,
+        språk
+    };
+};
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(
     injectIntl(AnnenForelderSteg)

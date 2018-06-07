@@ -1,76 +1,68 @@
 import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { AnnenForelderPartial } from '../../../../types/s\u00F8knad/AnnenForelder';
-
-import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { Checkbox } from 'nav-frontend-skjema';
-import Søknad from '../../../../types/s\u00F8knad/S\u00F8knad';
+
+import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
+import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/sp\u00F8rsm\u00E5l/Sp\u00F8rsm\u00E5l';
-import FødselsnummerPåAnnenForelderSpørsmål from '../../../../sp\u00F8rsm\u00E5l/F\u00F8dselsnummerP\u00E5AnnenForelderSp\u00F8rsm\u00E5l';
-import NavnPåAnnenForelderSpørsmål from '../../../../sp\u00F8rsm\u00E5l/NavnP\u00E5AnnenForelderSp\u00F8rsm\u00E5l';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from '../../../../components/layout/Bolk';
-import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
+import { Språkkode } from 'common/intl/types';
+import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
+import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
+import Søker from '../../../../types/søknad/Søker';
 
 interface AnnenForelderUkjentProps {
-    søknad: Søknad;
+    søker: Søker;
     annenForelder: AnnenForelderPartial;
     erFarEllerMedmor: boolean;
+    språk: Språkkode;
 }
 
 type Props = AnnenForelderUkjentProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderUkjent extends React.Component<Props> {
     render() {
-        const { søknad, annenForelder, dispatch, intl } = this.props;
-        const { kanIkkeOppgis, navn, fnr, utenlandskFnr } = annenForelder;
-        const annenForelderPågåendeSaker = true;
+        const { søker, annenForelder, dispatch, intl, språk } = this.props;
+        const { kanIkkeOppgis, navn } = annenForelder;
 
         return (
+            // TODO vise info om den andre forelderen dersom info finnes.
             <React.Fragment>
-                {!annenForelderPågåendeSaker && (
-                    <Spørsmål
-                        render={() => (
-                            <NavnPåAnnenForelderSpørsmål
-                                navn={navn}
-                                kanIkkeOppgis={kanIkkeOppgis}
-                                onChange={(
-                                    annenForelderPartial: AnnenForelderPartial
-                                ) => {
-                                    dispatch(
-                                        søknadActions.updateAnnenForelder(
-                                            annenForelderPartial
-                                        )
-                                    );
-                                }}
-                            />
-                        )}
-                    />
-                )}
-
-                {annenForelderPågåendeSaker && (
-                    <Bolk
-                        render={() => (
-                            <PersonaliaBox personalia={{ test: 'test' }} />
-                        )}
-                    />
-                )}
+                <Bolk
+                    render={() => (
+                        <NavnPåAnnenForelderSpørsmål
+                            navn={navn}
+                            kanIkkeOppgis={kanIkkeOppgis}
+                            onChange={(
+                                annenForelderPartial: AnnenForelderPartial,
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(
+                                        annenForelderPartial
+                                    )
+                                )
+                            }
+                        />
+                    )}
+                />
 
                 <Spørsmål
                     synlig={!kanIkkeOppgis}
                     render={() => (
                         <Checkbox
-                            checked={søknad.aleneOmOmsorg || false}
+                            checked={søker.aleneOmOmsorg || false}
                             label={getMessage(
                                 intl,
-                                'annenForelder.label.aleneOmOmsorg'
+                                'annenForelder.aleneOmOmsorg'
                             )}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
                             ) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
+                                    søknadActions.updateSøker({
                                         aleneOmOmsorg: e.target.checked
                                     })
                                 )
@@ -79,22 +71,25 @@ class AnnenForelderUkjent extends React.Component<Props> {
                     )}
                 />
 
-                {
-                    <Spørsmål
-                        synlig={navn !== undefined && navn.length > 0}
-                        render={() => (
-                            <FødselsnummerPåAnnenForelderSpørsmål
-                                fnr={fnr}
-                                utenlandskFnr={utenlandskFnr}
-                                onChange={(test) =>
-                                    dispatch(
-                                        søknadActions.updateAnnenForelder(test)
+                <Spørsmål
+                    synlig={navn !== undefined}
+                    render={() => (
+                        <FødselsnummerSpørsmål
+                            annenForelder={annenForelder}
+                            onChange={(
+                                annenForelderPartial: AnnenForelderPartial,
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(
+                                        annenForelderPartial
                                     )
-                                }
-                            />
-                        )}
-                    />
-                }
+                                )
+                            }
+                            språk={språk}
+                        />
+                    )}
+                />
             </React.Fragment>
         );
     }

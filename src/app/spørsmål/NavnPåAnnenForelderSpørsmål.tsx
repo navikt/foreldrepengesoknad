@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Checkbox, Input } from 'nav-frontend-skjema';
-import { AnnenForelderPartial } from '../types/s\u00F8knad/AnnenForelder';
-import Labeltekst from 'common/components/labeltekst/Labeltekst';
+import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
-
-const MAKS_NAVN_LENGTH = 100;
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
 
 interface OwnProps {
     navn?: string;
@@ -22,39 +20,45 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     const { kanIkkeOppgis, navn, onChange, intl } = props;
 
     return (
-        <div>
-            <Input
-                id="js-annenForelder"
-                name="navnfelt"
-                label={
-                    <Labeltekst>
-                        {getMessage(intl, 'annenForelder.label.navn')}
-                    </Labeltekst>
-                }
-                placeholder={getMessage(intl, 'annenForelder.placeholder.navn')}
-                disabled={kanIkkeOppgis || false}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onChange({ navn: e.target.value }, e)
-                }
-                value={navn || ''}
-                maxLength={MAKS_NAVN_LENGTH}
+        <React.Fragment>
+            <Spørsmål
+                render={() => (
+                    <Input
+                        disabled={kanIkkeOppgis}
+                        label={getMessage(intl, 'annenForelder.spørsmål.navn')}
+                        name="navn"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onChange({ navn: e.target.value }, e)
+                        }
+                        value={navn === undefined ? '' : navn}
+                    />
+                )}
             />
-            <Checkbox
-                checked={kanIkkeOppgis || false}
-                label={getMessage(intl, 'annenForelder.label.kanIkkeOppgiNavn')}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onChange(
-                        {
-                            navn: undefined,
-                            fnr: undefined,
-                            utenlandskFnr: undefined,
-                            kanIkkeOppgis: e.target.checked
-                        },
-                        e
-                    )
-                }
+
+            <Spørsmål
+                render={() => (
+                    <Checkbox
+                        checked={kanIkkeOppgis}
+                        label={getMessage(
+                            intl,
+                            'annenForelder.spørsmål.kanOppgis'
+                        )}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onChange(
+                                {
+                                    navn: undefined,
+                                    fnr: undefined,
+                                    utenlandskFnr: undefined,
+                                    kanIkkeOppgis: e.target.checked,
+                                    harRettPåForeldrepenger: undefined
+                                },
+                                e
+                            )
+                        }
+                    />
+                )}
             />
-        </div>
+        </React.Fragment>
     );
 };
 

@@ -9,6 +9,7 @@ enum AndreForelderen {
 }
 
 interface ErDenAndreForelderenInformertSpørsmål {
+    navn?: string;
     erInformertOmSøknaden?: boolean;
     onChange: (
         erFrilanser: boolean,
@@ -19,7 +20,13 @@ interface ErDenAndreForelderenInformertSpørsmål {
 type Props = ErDenAndreForelderenInformertSpørsmål & InjectedIntlProps;
 
 const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
-    const { onChange, intl, erInformertOmSøknaden, ...otherProps } = props;
+    const {
+        onChange,
+        intl,
+        erInformertOmSøknaden,
+        navn,
+        ...otherProps
+    } = props;
 
     let checked;
     if (erInformertOmSøknaden === true) {
@@ -31,7 +38,9 @@ const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'erDenAndreForelderenInformert.spørsmål')}
+            legend={getMessage(intl, 'erDenAndreForelderenInformert.spørsmål', {
+                navn
+            })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

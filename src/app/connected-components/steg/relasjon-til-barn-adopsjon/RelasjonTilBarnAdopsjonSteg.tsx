@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-
 import { StegID } from '../../../util/stegConfig';
-
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
@@ -13,20 +11,21 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { FødtBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
-
 import utils from '../../../util/fødselsdato';
 import { AppState } from '../../../redux/reducers';
-import Steg from '../../../components/layout/Steg';
+import Steg, { StegProps } from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
 import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
+import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
     barn: FødtBarn;
     visSpørsmålOmAntallBarn: boolean;
+    stegProps: StegProps;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -47,10 +46,16 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const { visSpørsmålOmAntallBarn, barn, dispatch, intl } = this.props;
+        const {
+            visSpørsmålOmAntallBarn,
+            barn,
+            dispatch,
+            stegProps,
+            intl
+        } = this.props;
 
         return (
-            <Steg id={StegID.RELASJON_TIL_BARN_ADOPSJON}>
+            <Steg {...stegProps}>
                 <Spørsmål
                     render={() => (
                         <DatoInput
@@ -114,7 +119,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             adoptertIUtlandet={
                                 (barn as Adopsjonsbarn).adoptertIUtlandet
                             }
-                            onChange={(adoptertIUtlandet, e) =>
+                            onChange={(adoptertIUtlandet) =>
                                 dispatch(
                                     søknadActions.updateBarn({
                                         adoptertIUtlandet
@@ -129,11 +134,22 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-    barn: state.søknad.barn as FødtBarn,
-    visSpørsmålOmAntallBarn:
-        getSøknadsvedlegg('omsorgsovertakelse', state).length > 0
-});
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const barn = state.søknad.barn as Adopsjonsbarn;
+
+    const stegProps = {
+        id: StegID.RELASJON_TIL_BARN_ADOPSJON,
+        renderFortsettKnapp: barn.adoptertIUtlandet !== undefined,
+        history: props.history
+    };
+
+    return {
+        barn,
+        visSpørsmålOmAntallBarn:
+            getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
+        stegProps
+    };
+};
 
 export default connect<StateProps, {}, {}>(mapStateToProps)(
     injectIntl(RelasjonTilBarnAdopsjonSteg)

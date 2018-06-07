@@ -8,41 +8,36 @@ import Bolk from 'app/components/layout/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { SøknadPartial } from '../../../../types/søknad/Søknad';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
-import { søknadStegPath } from '../../StegRoutes';
-import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import { HistoryProps } from '../../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
+import Søker from '../../../../types/søknad/S\u00F8ker';
+import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
-    søknad: SøknadPartial;
+    søker: Søker;
+    annenForelder: AnnenForelderPartial;
     terminbekreftelseErLastetOpp: boolean;
     erFarEllerMedmor: boolean;
 }
 
-type Props = UfødtBarnPartialProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+type Props = UfødtBarnPartialProps & InjectedIntlProps & DispatchProps;
 
 class UfødtBarnPartial extends React.Component<Props> {
     render() {
         const {
-            intl,
-            dispatch,
             barn,
+            annenForelder,
             terminbekreftelseErLastetOpp,
-            søknad,
             erFarEllerMedmor,
-            history
+            dispatch,
+            intl
         } = this.props;
 
         const erMorEllerMorErForSyk =
-            !erFarEllerMedmor || søknad.erMorForSyk === true;
+            !erFarEllerMedmor || annenForelder.erForSyk === true;
 
         return (
             <React.Fragment>
@@ -50,11 +45,11 @@ class UfødtBarnPartial extends React.Component<Props> {
                     synlig={erFarEllerMedmor}
                     render={() => (
                         <MorForSykSpørsmål
-                            erMorForSyk={søknad.erMorForSyk}
-                            onChange={(erMorForSyk: boolean) => {
+                            erMorForSyk={annenForelder.erForSyk}
+                            onChange={(erForSyk: boolean) => {
                                 dispatch(
-                                    søknadActions.updateSøknad({
-                                        erMorForSyk
+                                    søknadActions.updateAnnenForelder({
+                                        erForSyk
                                     })
                                 );
                             }}
@@ -62,7 +57,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                     )}
                 />
 
-                {søknad.erMorForSyk === false && (
+                {annenForelder.erForSyk === false && (
                     <Veilederinfo type="feil">
                         {getMessage(intl, 'annenForelder.forelder1IkkeSyk')}
                     </Veilederinfo>
@@ -145,15 +140,6 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 />
                             )}
                         />
-
-                        {barn.terminbekreftelseDato &&
-                            terminbekreftelseErLastetOpp && (
-                                <FortsettKnapp
-                                    history={history}
-                                    location={søknadStegPath('annen-forelder')}>
-                                    {getMessage(intl, 'fortsettknapp.label')}
-                                </FortsettKnapp>
-                            )}
                     </React.Fragment>
                 )}
             </React.Fragment>

@@ -26,7 +26,9 @@ interface Utenlandsopphold {
     senerePerioder: UtenlandsoppholdPeriode[];
 }
 
-export type UtenlandsoppholdPeriodeType = 'neste12mnd' | 'siste12mnd';
+export type UtenlandsoppholdPeriodeType =
+    | 'senerePerioder'
+    | 'tidligerePerioder';
 
 export type UtenlandsoppholdPartial = Partial<Utenlandsopphold>;
 export type UtenlandsoppholdPeriodePartial = Partial<

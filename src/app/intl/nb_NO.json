@@ -50,6 +50,20 @@
     "erDuSelvstendigNæringsdrivende.spørsmål":
         "Er du selvstendig næringsdrivende?",
 
+    "andreForelderenRettPåForeldrepenger.spørsmål":
+        "Har {navn} rett på foreldrepenger?",
+
+    "erDenAndreForelderenInformert.spørsmål":
+        "Er {navn} informert om søknaden min?",
+
+    "skalFarEllerMedmorHaForeldrepenger.spørsmål":
+        "Skal {navn} ha foreldrepenger?",
+
+    "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
+
+    "annenForelder.aleneOmOmsorg": "Jeg skal ha aleneomsorg",
+    "annenForelder.bostedsland": "og bor i...",
+
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
     "annenForelder.label.navn": "Den andre forelderen heter...",
     "annenForelder.label.kanIkkeOppgiNavn":
@@ -60,8 +74,6 @@
     "annenForelder.label.bostedsland": "og bor i...",
     "annenForelder.placeholder.navn": "Navn",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
-    "annenForelder.hjelpetekst.dNummer":
-        "Du kan også skrive D-nummeret til den andre forelderen.",
     "annenForelder.ugyldigFødselsnummer":
         "Du må skrive et gyldig nummer (11 sifre)",
     "annenForelder.ugyldigEgetFødselsnummer":
@@ -121,8 +133,8 @@
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.datoinput.fra": "Fra og med",
     "utenlandsopphold.datoinput.til": "Til og med",
-    "utenlandsopphold.select.spørsmål.siste12mnd": "Jeg bodde i...",
-    "utenlandsopphold.select.spørsmål.neste12mnd": "Jeg skal bo i...",
+    "utenlandsopphold.select.spørsmål.tidligerePerioder": "Jeg bodde i...",
+    "utenlandsopphold.select.spørsmål.senerePerioder": "Jeg skal bo i...",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",

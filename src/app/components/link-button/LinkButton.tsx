@@ -1,13 +1,14 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface LinkButtonProps
+    extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
 }
 
 import './linkButton.less';
 
-const LinkButton: React.StatelessComponent<Props> = (props) => {
+const LinkButton: React.StatelessComponent<LinkButtonProps> = (props) => {
     const { className, ...rest } = props;
     return (
         <button
