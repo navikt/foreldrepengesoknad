@@ -122,19 +122,19 @@ export const leggUttaksdagerTilDato = (
 };
 
 /**
- * Legger til dager til en dato og returnerer ny dato
- * @param dato
+ * Finner siste uttaksdag gitt en startdato og antall uttaksdager
+ * @param startdato
  * @param uttaksdager
  */
-export const utsettDatoUttaksdager = (
-    dato: Date,
+export const getSisteUttaksdagIPeriode = (
+    startdato: Date,
     uttaksdager: number
 ): Date => {
-    let nyDato = dato;
+    let nyDato = startdato;
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller < uttaksdager) {
-        const tellerdato = addDays(dato, dagteller++);
+        const tellerdato = addDays(startdato, dagteller++);
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;

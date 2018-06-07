@@ -1,8 +1,7 @@
 import {
     Periodetype,
     UtsettelseÅrsakType,
-    Utsettelsesperiode,
-    TaptPeriode
+    Utsettelsesperiode
 } from 'uttaksplan/types';
 
 export const mockArbeid: Utsettelsesperiode = {
@@ -22,16 +21,6 @@ export const mockFerie: Utsettelsesperiode = {
     tidsperiode: {
         startdato: new Date('2018-08-05T22:00:00.000Z'),
         sluttdato: new Date('2018-08-10T22:00:00.000Z')
-    },
-    forelder: 'forelder1'
-};
-
-export const taptPeriodeMock: TaptPeriode = {
-    id: '047917579-30650-03820-6480-44252887821741',
-    type: Periodetype.TaptPeriode,
-    tidsperiode: {
-        startdato: new Date('2018-07-06T10:00:00.000Z'),
-        sluttdato: new Date('2018-07-08T22:00:00.000Z')
     },
     forelder: 'forelder1'
 };

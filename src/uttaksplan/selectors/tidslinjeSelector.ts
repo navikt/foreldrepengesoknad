@@ -1,14 +1,7 @@
 import { createSelector } from 'reselect';
-import {
-    getUttaksperioderOgUtsettelser,
-    getTaptePerioder
-} from './periodeSelector';
+import { getAllePerioder } from './periodeSelector';
 import { isSameDay } from 'date-fns';
 import { Periode, Periodetype } from '../types';
-import {
-    getSammenhengendePerioder,
-    sorterPerioder
-} from '../utils/periodeUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import {
     Tidslinjeinnslag,
@@ -17,16 +10,10 @@ import {
 
 const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
 
-const FILTRER_PERIODER = false;
-
 export const tidslinjeFraPerioder = createSelector(
-    getUttaksperioderOgUtsettelser,
-    getTaptePerioder,
+    getAllePerioder,
     formSelector,
-    (stønadsperioder, taptePerioder, form): Tidslinjeinnslag[] => {
-        const perioder = stønadsperioder
-            .concat(taptePerioder)
-            .sort(sorterPerioder);
+    (perioder, form): Tidslinjeinnslag[] => {
         if (!perioder || perioder.length === 0) {
             return [];
         }
@@ -57,11 +44,7 @@ export const tidslinjeFraPerioder = createSelector(
             }
         ];
 
-        return FILTRER_PERIODER
-            ? alleInnslag
-                  .sort(sorterTidslinjeinnslagEtterStartdato)
-                  .filter(filtrerOmInnslagSkalVises)
-            : alleInnslag.sort(sorterTidslinjeinnslagEtterStartdato);
+        return alleInnslag.sort(sorterTidslinjeinnslagEtterStartdato);
     }
 );
 
@@ -74,36 +57,8 @@ const mapPeriodeTilTidslinjeinnslag = (
     return {
         type: TidslinjeinnslagType.periode,
         periode,
-        perioderekke: getSammenhengendePerioder(periode, perioder)
+        perioderekke: [] // getSammenhengendePerioder(periode, perioder)
     };
-};
-
-export const filtrerOmInnslagSkalVises = (
-    innslag: Tidslinjeinnslag,
-    index: number,
-    alleInnslag: Tidslinjeinnslag[]
-) => {
-    if (
-        index === 0 ||
-        innslag.type === TidslinjeinnslagType.hendelse ||
-        innslag.periode.type === Periodetype.Utsettelse
-    ) {
-        return true;
-    }
-    const forrigeInnslag = alleInnslag[index - 1];
-
-    if (forrigeInnslag.type !== innslag.type) {
-        return true;
-    }
-    if (
-        forrigeInnslag.type === TidslinjeinnslagType.periode &&
-        forrigeInnslag.type === innslag.type &&
-        (forrigeInnslag.periode.forelder !== innslag.periode.forelder ||
-            forrigeInnslag.periode.type !== innslag.periode.type)
-    ) {
-        return true;
-    }
-    return false;
 };
 
 export const skjulForstePeriodeEtterTermin = (

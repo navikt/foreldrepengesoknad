@@ -6,7 +6,7 @@ import {
     StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { getStonadsperioder } from '../../utils/periodeUtils';
+import { getStønadsperioder } from '../../utils/periodeUtils';
 import {
     getAntallUttaksdagerITidsperiode,
     getAntallUttaksdagerIPerioder
@@ -52,7 +52,7 @@ export const oppsummerPerioder = (
                 .sluttdato
     };
     const ukerTotalt = getAntallUttaksdagerIPerioder(innslag.perioderekke) / 5;
-    const stonadsperioder = getStonadsperioder(innslag.perioderekke);
+    const stonadsperioder = getStønadsperioder(innslag.perioderekke);
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
@@ -75,6 +75,9 @@ export const oppsummerPerioder = (
 export const getInnslagfarge = (
     innslag: InnslagPeriodetype
 ): CalloutBorderColor => {
+    if (innslag.periode.type === Periodetype.Opphold) {
+        return 'purple';
+    }
     if (innslag.periode.type === Periodetype.Utsettelse) {
         return 'green';
     }

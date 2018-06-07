@@ -17,7 +17,7 @@ import {
     Periodetype,
     StønadskontoType
 } from '../types';
-import { getPeriodeSluttdato, sorterPerioder } from './periodeUtils';
+import { getPeriodeSluttdatoMedUker, sorterPerioder } from './periodeUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { normaliserDato } from 'common/util/datoUtils';
 
@@ -47,7 +47,7 @@ export function getMødrekvoteFørTermin(
     const startdato = getPermisjonStartdato(termindato, permisjonsregler);
     return {
         startdato,
-        sluttdato: getPeriodeSluttdato(
+        sluttdato: getPeriodeSluttdatoMedUker(
             startdato,
             permisjonsregler.antallUkerForelder1FørFødsel
         )
@@ -60,7 +60,7 @@ export function getPakrevdMødrekvoteEtterTermin(
 ): Tidsperiode {
     return {
         startdato: termindato,
-        sluttdato: getPeriodeSluttdato(
+        sluttdato: getPeriodeSluttdatoMedUker(
             termindato,
             permisjonsregler.antallUkerForelder1EtterFødsel
         )
@@ -76,7 +76,7 @@ export function getFrivilligMødrekvoteEtterTermin(
     );
     return {
         startdato,
-        sluttdato: getPeriodeSluttdato(
+        sluttdato: getPeriodeSluttdatoMedUker(
             startdato,
             permisjonsregler.antallUkerMødrekvote -
                 permisjonsregler.antallUkerForelder1EtterFødsel
@@ -95,7 +95,7 @@ export function getFellesperiodeForelder1(
     );
     return {
         startdato,
-        sluttdato: getPeriodeSluttdato(startdato, fellesukerForelder1)
+        sluttdato: getPeriodeSluttdatoMedUker(startdato, fellesukerForelder1)
     };
 }
 
@@ -117,7 +117,7 @@ export function getFellesperiodeForelder2(
     );
     return {
         startdato,
-        sluttdato: getPeriodeSluttdato(startdato, fellesukerForelder2)
+        sluttdato: getPeriodeSluttdatoMedUker(startdato, fellesukerForelder2)
     };
 }
 
@@ -143,7 +143,7 @@ export function getFedrekvote(
     );
     return {
         startdato,
-        sluttdato: getPeriodeSluttdato(
+        sluttdato: getPeriodeSluttdatoMedUker(
             startdato,
             permisjonsregler.antallUkerFedrekvote
         )
@@ -203,6 +203,7 @@ export const getAntallUttaksdagerForForelder = (
 ): number => {
     return perioder.reduce(
         (dager: number, periode: Periode) =>
+            periode.type === Periodetype.Uttaksperiode &&
             periode.forelder === forelder
                 ? dager + getAntallUttaksdagerITidsperiode(periode.tidsperiode)
                 : dager,
@@ -247,7 +248,7 @@ export function opprettUttaksperioder(
             id: guid(),
             type: Periodetype.Uttaksperiode,
             forelder: 'forelder1',
-            konto: StønadskontoType.Foreldrepenger,
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
             låstForelder: true,
             låstPeriode: true
