@@ -9,6 +9,7 @@ interface InteractiveListElementProps<T> {
     onSelect: (element: T) => void;
     renderElement: (element: T) => JSX.Element;
     linkButtonProps?: LinkButtonProps;
+    slettKnappAriaLabel: string;
 }
 
 type Props<T> = InteractiveListElementProps<T> & InjectedIntlProps;
@@ -20,7 +21,8 @@ class InteractiveListElement<T> extends React.Component<Props<T>> {
             renderElement,
             onDelete,
             onSelect,
-            linkButtonProps
+            linkButtonProps,
+            slettKnappAriaLabel
         } = this.props;
 
         return (
@@ -37,7 +39,7 @@ class InteractiveListElement<T> extends React.Component<Props<T>> {
                 {onDelete && (
                     <span className="interactiveList__element__slettIkon">
                         <SlettKnapp
-                            ariaLabel="Slett utenlandsopphold"
+                            ariaLabel={slettKnappAriaLabel}
                             onClick={() => onDelete(data)}
                         />
                     </span>
