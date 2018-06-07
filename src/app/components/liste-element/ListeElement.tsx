@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import LinkButton from '../link-button/LinkButton';
+import LinkButton, { LinkButtonProps } from '../link-button/LinkButton';
 import SlettKnapp from 'common/components/slett-knapp/SlettKnapp';
 
 import './listeElement.less';
@@ -8,25 +8,29 @@ import './listeElement.less';
 interface ListeElementProps<T> {
     data: T;
     onTrashClick?: (element: T) => void;
-    onLinkClick?: (element: T) => void;
+    onLinkClick: (element: T) => void;
     renderElement: (element: T) => JSX.Element;
+    linkButtonProps?: LinkButtonProps;
 }
 
 type Props<T> = ListeElementProps<T> & InjectedIntlProps;
 
 class ListeElement<T> extends React.Component<Props<T>> {
     render() {
-        const { data, renderElement, onTrashClick, onLinkClick } = this.props;
-        const onEditClickHandler = () => {
-            if (onLinkClick !== undefined) {
-                onLinkClick(data);
-            }
-        };
+        const {
+            data,
+            renderElement,
+            onTrashClick,
+            onLinkClick,
+            linkButtonProps
+        } = this.props;
 
         return (
             <li className="listeElement">
                 <div className="listeElement__stay">
-                    <LinkButton onClick={onEditClickHandler}>
+                    <LinkButton
+                        onClick={() => onLinkClick(data)}
+                        {...linkButtonProps}>
                         <div className="listeElement__data">
                             {renderElement(data)}
                         </div>
