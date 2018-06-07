@@ -1,5 +1,3 @@
-import { Periode } from './periodetyper';
-
 export * from './periodetyper';
 export * from '../../common/types';
 
@@ -26,11 +24,6 @@ export interface Permisjonsregler {
     maksFeriedagerEttÅr: number;
     /** Maks feriedager med overføring fra foregående år og forskudd fra nest år */
     maksFeriedagerMedOverføring: number;
-}
-
-export interface Periodesplitt {
-    perioderFor: Periode[];
-    perioderEtter: Periode[];
 }
 
 export interface FellesperiodeFordeling {
