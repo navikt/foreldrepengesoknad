@@ -203,7 +203,7 @@ export const getAntallUttaksdagerForForelder = (
 ): number => {
     return perioder.reduce(
         (dager: number, periode: Periode) =>
-            periode.type === Periodetype.Stønadsperiode &&
+            periode.type === Periodetype.Uttaksperiode &&
             periode.forelder === forelder
                 ? dager + getAntallUttaksdagerITidsperiode(periode.tidsperiode)
                 : dager,
