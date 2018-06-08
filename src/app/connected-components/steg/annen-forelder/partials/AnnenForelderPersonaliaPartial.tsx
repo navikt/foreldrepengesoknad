@@ -55,8 +55,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                             navn={navn}
                             kanIkkeOppgis={kanIkkeOppgis}
                             onChange={(
-                                annenForelderPartial: AnnenForelderPartial,
-                                e: React.ChangeEvent<HTMLInputElement>
+                                annenForelderPartial: AnnenForelderPartial
                             ) =>
                                 dispatch(
                                     søknadActions.updateAnnenForelder(
@@ -96,8 +95,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                         <FødselsnummerSpørsmål
                             annenForelder={annenForelder}
                             onChange={(
-                                annenForelderPartial: AnnenForelderPartial,
-                                e: React.ChangeEvent<HTMLInputElement>
+                                annenForelderPartial: AnnenForelderPartial
                             ) =>
                                 dispatch(
                                     søknadActions.updateAnnenForelder(

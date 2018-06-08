@@ -11,10 +11,7 @@ enum AndreForelderen {
 interface ErDenAndreForelderenInformertSpørsmål {
     navn?: string;
     erDenAndreForelderenInformert?: boolean;
-    onChange: (
-        erDenAndreForelderenInformert: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (erDenAndreForelderenInformert: boolean) => void;
 }
 
 type Props = ErDenAndreForelderenInformertSpørsmål & InjectedIntlProps;
@@ -55,7 +52,7 @@ const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: AndreForelderen
-            ) => onChange(v === AndreForelderen.ER_INFORMERT, e)}
+            ) => onChange(v === AndreForelderen.ER_INFORMERT)}
             {...otherProps}
         />
     );

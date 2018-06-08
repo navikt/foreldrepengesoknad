@@ -11,10 +11,7 @@ enum Mor {
 interface ErMorUførProps {
     navn?: string;
     erUfør?: boolean;
-    onChange: (
-        erFrilanser: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (erFrilanser: boolean) => void;
 }
 
 type Props = ErMorUførProps & InjectedIntlProps;
@@ -45,7 +42,7 @@ const ErMorUfør = (props: Props) => {
             ]}
             name="erMorUfør"
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Mor) =>
-                onChange(v === Mor.ER_UFØR, e)
+                onChange(v === Mor.ER_UFØR)
             }
         />
     );
