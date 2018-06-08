@@ -35,7 +35,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
             <Spørsmål
                 render={() => (
                     <Checkbox
-                        checked={kanIkkeOppgis}
+                        checked={kanIkkeOppgis || false}
                         label={getMessage(
                             intl,
                             'annenForelder.spørsmål.kanOppgis'
