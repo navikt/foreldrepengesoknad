@@ -25,7 +25,9 @@ export const Uttaksplan = (perioder: Periode[]) => {
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
 class UttaksplanBuilder {
-    public constructor(protected perioder: Periode[]) {}
+    public constructor(public perioder: Periode[]) {
+        this.perioder = perioder;
+    }
 
     /**
      * Legger til @periode og oppdaterer uttaksplanen
@@ -50,7 +52,7 @@ class UttaksplanBuilder {
     oppdaterPeriode(periode: Periode) {
         const prevPeriode = this.perioder.find((p) => p.id === periode.id);
         if (!prevPeriode) {
-            return;
+            return this;
         }
         const updatedPeriode = { ...periode };
         if (
