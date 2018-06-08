@@ -13,6 +13,7 @@ import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import getMessage from 'common/util/i18nUtils';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -59,11 +60,14 @@ class AndreInntekterSteg extends React.Component<Props, State> {
 
     render() {
         const { harHattAnnenInntekt } = this.state;
-        const { stegProps, søknad, dispatch } = this.props;
+        const { stegProps, søknad, dispatch, intl } = this.props;
         return (
             <Steg {...stegProps}>
                 <AndreInntekterBolk
-                    oppfølgingsspørsmål="Perioder med annen inntekt"
+                    oppfølgingsspørsmål={getMessage(
+                        intl,
+                        'annenInntekt.oppfølgingsspørsmål'
+                    )}
                     renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
                     showAndreInntekterPeriodeContent={
                         harHattAnnenInntekt ===

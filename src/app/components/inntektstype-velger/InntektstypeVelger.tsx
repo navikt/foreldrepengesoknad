@@ -4,6 +4,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
 import { Feil } from 'common/components/skjema-input-element/types';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
+import InjectedIntl = ReactIntl.InjectedIntl;
+import getMessage from 'common/util/i18nUtils';
 
 interface InntektstypeVelgerProps {
     defaultValue?: string;
@@ -21,25 +23,36 @@ interface InntektstypeOptions {
     [key: string]: string;
 }
 
-const options: InntektstypeOptions = {
-    [AnnenInntektType.JOBB_I_UTLANDET]: 'Jobb i utlandet',
-    [AnnenInntektType.MILITÆRET]: 'Militæret',
-    [AnnenInntektType.VIDEREUTDANNING]: 'Videreutdanning',
-    [AnnenInntektType.VENTELØNN]: 'Ventelønn',
-    [AnnenInntektType.SLUTTVEDERLAG]: 'Sluttvederlag'
-};
+const getOptions = (intl: InjectedIntl): InntektstypeOptions => ({
+    [AnnenInntektType.JOBB_I_UTLANDET]: getMessage(
+        intl,
+        'inntektstype.jobbIUtlandet'
+    ),
+    [AnnenInntektType.MILITÆRET]: getMessage(intl, 'inntektstype.militæret'),
+    [AnnenInntektType.VIDEREUTDANNING]: getMessage(
+        intl,
+        'inntektstype.videreutdanning'
+    ),
+    [AnnenInntektType.VENTELØNN]: getMessage(intl, 'inntektstype.ventelønn'),
+    [AnnenInntektType.SLUTTVEDERLAG]: getMessage(
+        intl,
+        'inntektstype.sluttvederlag'
+    )
+});
 
 class InntektstypeVelger extends React.Component<
     InntektstypeVelgerProps & InjectedIntlProps
 > {
     renderInntektstypeOptions() {
-        return Object.entries(options).map((value: string[]) => {
-            return (
-                <option key={value[0]} value={value[0]}>
-                    {value[1]}
-                </option>
-            );
-        });
+        return Object.entries(getOptions(this.props.intl)).map(
+            (value: string[]) => {
+                return (
+                    <option key={value[0]} value={value[0]}>
+                        {value[1]}
+                    </option>
+                );
+            }
+        );
     }
 
     render() {

@@ -82,16 +82,14 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                 {...modalProps}>
                 <form onSubmit={this.onSubmit}>
                     <Undertittel className="annenInntektPeriodeModal__title">
-                        <FormattedMessage id="annenInntekt.tittel" />
+                        <FormattedMessage id="annenInntekt.modal.tittel" />
                     </Undertittel>
 
                     <Spørsmål
                         render={() => (
                             <InntektstypeVelger
                                 label={
-                                    <Labeltekst
-                                        intlId={`annenInntekt.select.spørsmål`}
-                                    />
+                                    <Labeltekst intlId="annenInntekt.modal.select.spørsmål" />
                                 }
                                 onChange={(type: AnnenInntektType) =>
                                     this.updateAnnenInntekt({ type })
@@ -107,7 +105,7 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                 id="fraDatoInput"
                                 label={getMessage(
                                     intl,
-                                    `annenInntekt.datoinput.fra`
+                                    'annenInntekt.modal.fra.spørsmål'
                                 )}
                                 onChange={(fom: Date) => {
                                     this.updateAnnenInntekt({
@@ -125,7 +123,7 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                 id="tilDatoInput"
                                 label={getMessage(
                                     intl,
-                                    `annenInntekt.datoinput.til`
+                                    'annenInntekt.modal.til.spørsmål'
                                 )}
                                 onChange={(tom: Date) => {
                                     this.updateAnnenInntekt({

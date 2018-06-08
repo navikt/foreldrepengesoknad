@@ -9,6 +9,24 @@
     "annenForelder.spørsmål.fnr": "Fødselsnummer",
     "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
 
+    "annenInntekt.spørsmål": "De siste 10 månedene har jeg...",
+    "annenInntekt.alternativ.hatt": "hatt annen inntekt",
+    "annenInntekt.alternativ.ikkeHatt": "ikke hatt annen inntekt",
+    "annenInntekt.leggTilInntekt": "Legg til inntekt",
+    "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
+    "annenInntekt.modal.tittel": "Legg til inntekt",
+    "annenInntekt.modal.select.spørsmål":
+        "Jeg har hatt inntekt i forbindelse med...",
+    "annenInntekt.modal.fra.spørsmål": "Fra og med",
+    "annenInntekt.modal.til.spørsmål": "Til og med",
+    "inntektstype.jobbIUtlandet": "Jobb i utlandet",
+    "inntektstype.militæret":
+        "Militæret, sivilforsvar eller sivilforsvarstjeneste",
+    "inntektstype.videreutdanning":
+        "Lønn ved permisjon for videreutdanning eller etterutdanning",
+    "inntektstype.ventelønn": "Ventelønn",
+    "inntektstype.sluttvederlag": "Sluttvederlag, sluttpakke eller etterlønn",
+
     "antallBarn.spørsmål.fått": "Hvor mange barn har du fått?",
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
     "antallBarn.alternativ.ettbarn": "ett barn",
