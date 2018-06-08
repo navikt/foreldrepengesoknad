@@ -67,7 +67,7 @@ class AnnenForelderSteg extends React.Component<Props> {
         if (person) {
             const erSøkerFarEllerMedmor = erFarEllerMedmor(
                 person.kjønn,
-                søker.søkerRolle
+                søker.rolle
             );
 
             return (
@@ -144,7 +144,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const språk = state.common.språkkode;
 
     const stegProps = {
-        id: StegID.RELASJON_TIL_BARN_ADOPSJON,
+        id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp:
             person === undefined
                 ? false
@@ -152,7 +152,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
                       annenForelder,
                       søker,
                       getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
-                      erFarEllerMedmor(person.kjønn, søker.søkerRolle)
+                      erFarEllerMedmor(person.kjønn, søker.rolle)
                   ),
         history: props.history
     };

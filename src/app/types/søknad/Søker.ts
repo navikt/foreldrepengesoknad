@@ -1,7 +1,7 @@
 import { SøkerRolle } from './Søknad';
 
 export interface Søker {
-    søkerRolle: SøkerRolle;
+    rolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
     erAleneOmOmsorg: boolean;

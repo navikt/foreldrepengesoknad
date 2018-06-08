@@ -139,7 +139,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         (søker.erAleneOmOmsorg === false &&
                             annenForelder.harRettPåForeldrepenger === true) ||
                         (søker.erAleneOmOmsorg === false &&
-                            harDenAndreForelderenOpplystOmSinPågåendeSak &&
+                            harDenAndreForelderenOpplystOmSinPågåendeSak ===
+                                true &&
                             erFarEllerMedmor)
                     }
                     render={() => (

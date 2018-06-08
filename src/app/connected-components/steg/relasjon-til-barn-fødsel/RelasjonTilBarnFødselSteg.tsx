@@ -15,9 +15,9 @@ import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
 import { HistoryProps } from '../../../types/common';
 import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
-import Søker from '../../../types/s\u00F8knad/S\u00F8ker';
+import Søker from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/personUtil';
-import { AnnenForelderPartial } from '../../../types/s\u00F8knad/AnnenForelder';
+import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 
 interface StateProps {
     barn: BarnPartial;
@@ -73,7 +73,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
                             søker={søker}
                             erFarEllerMedmor={erFarEllerMedmor(
                                 person.kjønn,
-                                søker.søkerRolle
+                                søker.rolle
                             )}
                             terminbekreftelseErLastetOpp={
                                 terminbekreftelseErLastetOpp
