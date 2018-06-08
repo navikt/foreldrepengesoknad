@@ -3,11 +3,10 @@ import * as countries from 'i18n-iso-countries';
 import { Select } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
 import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
-import { Språkkode } from 'common/intl/types';
 
 interface StateProps {
     defaultValue?: string;
-    språk: Språkkode;
+    språk: string;
     label: React.ReactNode;
     feil?: Feil;
     validators?: any;

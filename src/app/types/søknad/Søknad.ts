@@ -29,7 +29,7 @@ interface Søknad {
     type: Foreldrepenger;
     harGodkjentVilkår: boolean;
     annenForelder: AnnenForelder;
-    annenInntekt: AnnenInntekt;
+    andreInntekterSiste10Mnd: AnnenInntekt[];
     situasjon: Søkersituasjon;
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
@@ -44,7 +44,7 @@ interface Søknad {
 export interface SøknadPartial {
     type?: Foreldrepenger;
     annenForelder: AnnenForelderPartial;
-    annenInntekt?: AnnenInntekt;
+    andreInntekterSiste10Mnd: AnnenInntekt[];
     situasjon?: Søkersituasjon;
     harGodkjentVilkår: boolean;
     barn: BarnPartial;
