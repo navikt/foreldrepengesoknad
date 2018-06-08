@@ -171,12 +171,12 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={situasjon !== undefined}
                     render={() => (
                         <SøkerrolleSpørsmål
-                            rolle={søker.søkerRolle}
+                            rolle={søker.rolle}
                             roller={roller}
                             onChange={(nyRolle: SøkerRolle) =>
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        søkerRolle: nyRolle
+                                        rolle: nyRolle
                                     })
                                 )
                             }
@@ -185,7 +185,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={søker.søkerRolle !== undefined}
+                    synlig={søker.rolle !== undefined}
                     render={() => (
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
