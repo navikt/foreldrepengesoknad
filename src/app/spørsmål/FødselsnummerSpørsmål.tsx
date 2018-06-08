@@ -33,7 +33,7 @@ const FødselsnummerSpørsmål = (props: Props) => {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             onChange({ fnr: e.target.value }, e)
                         }
-                        value={fnr}
+                        value={fnr || ''}
                     />
                 )}
             />
