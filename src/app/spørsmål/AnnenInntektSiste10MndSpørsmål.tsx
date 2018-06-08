@@ -1,6 +1,7 @@
 import * as React from 'react';
 import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 export enum AnnenInntekt {
     'HAR_HATT_ANNEN_INNTEKT' = 'harHattAnnenInntekt',
@@ -16,7 +17,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
     render() {
-        const { harHattAnnenInntekt, onChange } = this.props;
+        const { harHattAnnenInntekt, onChange, intl } = this.props;
 
         let checked;
         if (harHattAnnenInntekt === AnnenInntekt.HAR_HATT_ANNEN_INNTEKT) {
@@ -29,16 +30,19 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
 
         return (
             <RadioPanelGruppeResponsive
-                legend="De siste 10 månedene har jeg..."
+                legend={getMessage(intl, 'annenInntekt.spørsmål')}
                 name="annenInntekt"
                 checked={checked}
                 radios={[
                     {
-                        label: 'hatt annen inntekt',
+                        label: getMessage(intl, 'annenInntekt.alternativ.hatt'),
                         value: AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
                     },
                     {
-                        label: 'ikke hatt annen inntekt',
+                        label: getMessage(
+                            intl,
+                            'annenInntekt.alternativ.ikkeHatt'
+                        ),
                         value: AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT
                     }
                 ]}

@@ -121,13 +121,13 @@ class AndreInntekterBolk extends React.Component<
                                         annenInntekt={annenInntekt}
                                     />
                                 )}
-                                deleteAriaLabel="Slett annen inntektsperiode"
+                                deleteAriaLabel="Slett inntektsperiode"
                             />
                         </div>
 
                         <div className="blokk-s">
                             <Knapp onClick={() => this.openModal()}>
-                                <FormattedMessage id="andreInntekter.leggTilInntekt" />
+                                <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
                         </div>
                     </React.Fragment>
@@ -141,7 +141,7 @@ class AndreInntekterBolk extends React.Component<
                             annenInntektToEdit: undefined
                         })
                     }
-                    contentLabel={`Ny periode med annen inntekt`}
+                    contentLabel="Ny periode med annen inntekt"
                     children={null}
                     annenInntekt={annenInntektToEdit}
                     onAdd={this.onAdd}
