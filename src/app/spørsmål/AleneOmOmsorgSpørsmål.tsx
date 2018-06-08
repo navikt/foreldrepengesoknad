@@ -10,10 +10,7 @@ enum Omsorgsfordeling {
 
 interface AleneOmOmsorgsSpørsmålProps {
     aleneOmOmsorg?: boolean;
-    onChange: (
-        aleneomsorg: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (aleneomsorg: boolean) => void;
 }
 
 type Props = AleneOmOmsorgsSpørsmålProps & InjectedIntlProps;
@@ -46,7 +43,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: Omsorgsfordeling
-            ) => onChange(v === Omsorgsfordeling.ALENEOMSORG, e)}
+            ) => onChange(v === Omsorgsfordeling.ALENEOMSORG)}
         />
     );
 };

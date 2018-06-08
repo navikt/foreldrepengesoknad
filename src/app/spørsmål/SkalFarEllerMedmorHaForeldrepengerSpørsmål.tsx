@@ -11,10 +11,7 @@ enum FarEllerMedmor {
 interface SkalFarEllerMedmorHaForeldrepengerSpørsmålProps {
     navn?: string;
     skalFarEllerMedmorHaForeldrepenger?: boolean;
-    onChange: (
-        harAnnenForelderRettPåForeldrepenger: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (harAnnenForelderRettPåForeldrepenger: boolean) => void;
 }
 
 type Props = SkalFarEllerMedmorHaForeldrepengerSpørsmålProps &
@@ -52,7 +49,7 @@ const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: FarEllerMedmor
-            ) => onChange(v === FarEllerMedmor.SKAL_HA_FORELDREPENGER, e)}
+            ) => onChange(v === FarEllerMedmor.SKAL_HA_FORELDREPENGER)}
         />
     );
 };

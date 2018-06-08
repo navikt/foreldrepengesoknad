@@ -11,10 +11,7 @@ enum AnnenForelder {
 interface RettPåForeldrepengerSpørsmålProps {
     navn?: string;
     harAnnenForelderRettPåForeldrepenger?: boolean;
-    onChange: (
-        harAnnenForelderRettPåForeldrepenger: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (harAnnenForelderRettPåForeldrepenger: boolean) => void;
 }
 
 type Props = RettPåForeldrepengerSpørsmålProps & InjectedIntlProps;
@@ -55,7 +52,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: AnnenForelder
-            ) => onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER, e)}
+            ) => onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER)}
         />
     );
 };

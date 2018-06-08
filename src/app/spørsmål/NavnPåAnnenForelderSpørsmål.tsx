@@ -8,10 +8,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 interface NavnPåAnnenForelderSpørsmålProps {
     navn?: string;
     kanIkkeOppgis?: boolean;
-    onChange: (
-        annenForelder: AnnenForelderPartial,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (annenForelder: AnnenForelderPartial) => void;
 }
 
 type Props = NavnPåAnnenForelderSpørsmålProps & InjectedIntlProps;
@@ -28,7 +25,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         label={getMessage(intl, 'annenForelder.spørsmål.navn')}
                         name="navn"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            onChange({ navn: e.target.value }, e)
+                            onChange({ navn: e.target.value })
                         }
                         value={navn === undefined ? '' : navn}
                     />
@@ -44,16 +41,13 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                             'annenForelder.spørsmål.kanOppgis'
                         )}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            onChange(
-                                {
-                                    navn: undefined,
-                                    fnr: undefined,
-                                    utenlandskFnr: undefined,
-                                    kanIkkeOppgis: e.target.checked,
-                                    harRettPåForeldrepenger: undefined
-                                },
-                                e
-                            )
+                            onChange({
+                                navn: undefined,
+                                fnr: undefined,
+                                utenlandskFnr: undefined,
+                                kanIkkeOppgis: e.target.checked,
+                                harRettPåForeldrepenger: undefined
+                            })
                         }
                     />
                 )}
