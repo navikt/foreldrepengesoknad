@@ -3,10 +3,11 @@ import {
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
+import { DataOmAnnenForelder } from '../../types/s\u00F8knad/AnnenForelder';
 
 export interface ApiReducerState {
     person?: Person;
-    dataOmAnnenForelder?: any;
+    dataOmAnnenForelder?: DataOmAnnenForelder;
     isLoadingPerson: boolean;
     error: any;
 }
