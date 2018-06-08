@@ -4,14 +4,17 @@ import {
     Uttaksperiode,
     Utsettelsesperiode,
     Tidsperiode,
-    Periodetype
-} from '../types';
-import { uttaksdagUtil, uttakTidsperiode } from './uttaksdagerUtils';
+    Periodetype,
+    Oppholdsperiode,
+    OppholdÅrsakType
+} from '../../types';
+import { uttaksdagUtil, tidsperiodeUtil } from './';
 
 export const perioderUtil = (perioder: Periode[]) => ({
     uttaksperioder: () => getUttaksperioder(perioder),
     utsettelser: () => getUtsettelser(perioder),
     uttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
+    opphold: () => getOpphold(perioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnPerioderITidsrom: (tidsperiode: Tidsperiode) =>
         finnPerioderITidsrom(perioder, tidsperiode),
@@ -23,9 +26,14 @@ export const perioderUtil = (perioder: Periode[]) => ({
 });
 
 export const periodeUtil = (periode: Periode) => ({
+    setStartdato: (startdato: Date) => flyttPeriode(periode, startdato),
     erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
     erSammenhengende: (periode2: Periode) =>
-        erPerioderSammenhengende(periode, periode2)
+        erPerioderSammenhengende(periode, periode2),
+    antallUttaksdager: () =>
+        tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
+    oppholdsperioderVedEndretTidsperiode: (endretPeriode: Periode) =>
+        finnOppholdVedEndretTidsperiode(periode, endretPeriode)
 });
 
 /**
@@ -55,6 +63,16 @@ function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
     return perioder.filter(
         (periode) => periode.type === Periodetype.Utsettelse
     ) as Utsettelsesperiode[];
+}
+
+/**
+ * Returnerer perioder som er uttaksperioder
+ * @param perioder
+ */
+function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
+    return perioder.filter(
+        (periode) => periode.type === Periodetype.Opphold
+    ) as Oppholdsperiode[];
 }
 
 /**
@@ -114,14 +132,23 @@ function finnPerioderITidsrom(
     });
 }
 
+function flyttPeriode(periode: Periode, startdato: Date): Periode {
+    return {
+        ...periode,
+        tidsperiode: tidsperiodeUtil(periode.tidsperiode).setStartdato(
+            startdato
+        )
+    };
+}
+
 /**
- * Flytter en periode til ny startdato
+ * Forskyver en periode med uttaksdager
  * @param periode
  * @param startdato
  */
-function flyttPeriode(periode: Periode, dager: number): Periode {
+function forskyvPeriode(periode: Periode, dager: number): Periode {
     const { tidsperiode } = periode;
-    const uttaksdager = uttakTidsperiode(tidsperiode).antallUttaksdager();
+    const uttaksdager = tidsperiodeUtil(tidsperiode).antallUttaksdager();
     const startdato = uttaksdagUtil(tidsperiode.startdato).leggTil(dager);
     return {
         ...periode,
@@ -142,7 +169,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
         if (periode.type === Periodetype.Utsettelse) {
             return periode;
         }
-        return flyttPeriode(periode, uttaksdager);
+        return forskyvPeriode(periode, uttaksdager);
     });
 }
 
@@ -204,4 +231,29 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     const p1NesteUttaksdato = uttaksdagUtil(p1.tidsperiode.sluttdato).neste();
     const p2Startdato = p2.tidsperiode.startdato;
     return isSameDay(p1NesteUttaksdato, p2Startdato);
+}
+
+/**
+ * Finner oppholdsperioder mellom to perioder
+ */
+function finnOppholdVedEndretTidsperiode(
+    prevPeriode: Periode,
+    periode: Periode,
+    opprettetAvBruker: boolean = false
+): Oppholdsperiode[] {
+    const opphold: Oppholdsperiode[] = [];
+    const diffStartdato = uttaksdagUtil(
+        prevPeriode.tidsperiode.startdato
+    ).uttaksdagerFlyttet(periode.tidsperiode.startdato);
+    const tidsperiode: Tidsperiode = uttaksdagUtil(
+        prevPeriode.tidsperiode.startdato
+    ).tidsperiode(diffStartdato);
+    opphold.push({
+        type: Periodetype.Opphold,
+        årsak: OppholdÅrsakType.Ingen,
+        forelder: periode.forelder,
+        tidsperiode,
+        opprettetAvBruker
+    });
+    return opphold;
 }

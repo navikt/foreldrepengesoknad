@@ -6,11 +6,11 @@ import {
     StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { perioderUtil } from '../../utils/periodeUtils';
+import { perioderUtil } from '../../utils/dataUtils/periodeUtil';
 import {
     getAntallUttaksdagerITidsperioder,
-    uttakTidsperiode
-} from '../../utils/uttaksdagerUtils';
+    tidsperiodeUtil
+} from '../../utils/dataUtils';
 import { CalloutBorderColor } from 'uttaksplan/components/callout/Callout';
 
 /**
@@ -60,7 +60,7 @@ export const oppsummerPerioder = (
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
         const eksisterendeDager = perioder.get(konto) || 0;
-        const nyeDager = uttakTidsperiode(p.tidsperiode).antallUttaksdager();
+        const nyeDager = tidsperiodeUtil(p.tidsperiode).antallUttaksdager();
         perioder.set(konto, eksisterendeDager + nyeDager);
     });
     perioder.forEach((value, key) => perioder.set(key, value / 5));

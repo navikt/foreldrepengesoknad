@@ -7,18 +7,15 @@ import {
     Uttaksperiode,
     Utsettelsesperiode,
     Periode,
-    Tidsperiode,
-    UttakEllerUtsettelseperiode
+    Tidsperiode
 } from 'uttaksplan/types';
 import {
-    uttaksdagUtil,
-    uttakTidsperiode
-} from 'uttaksplan/utils/uttaksdagerUtils';
-import {
+    tidsperiodeUtil,
     sorterPerioder,
+    uttaksdagUtil,
     perioderUtil,
     periodeUtil
-} from 'uttaksplan/utils/periodeUtils';
+} from 'uttaksplan/utils/dataUtils';
 
 export const Uttaksplan = (perioder: Periode[]) => {
     return new UttaksplanBuilder(perioder);
@@ -28,10 +25,7 @@ export const Uttaksplan = (perioder: Periode[]) => {
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
 class UttaksplanBuilder {
-    public constructor(public perioder: Periode[]) {
-        this.perioder = perioder;
-        this.oppdaterUttaksplan();
-    }
+    public constructor(protected perioder: Periode[]) {}
 
     /**
      * Legger til @periode og oppdaterer uttaksplanen
@@ -54,8 +48,21 @@ class UttaksplanBuilder {
      * @param periode
      */
     oppdaterPeriode(periode: Periode) {
+        const prevPeriode = this.perioder.find((p) => p.id === periode.id);
+        if (!prevPeriode) {
+            return;
+        }
+        const updatedPeriode = { ...periode };
+        if (
+            !tidsperiodeUtil(prevPeriode.tidsperiode).erLik(periode.tidsperiode)
+        ) {
+            const opphold: Oppholdsperiode[] = periodeUtil(
+                prevPeriode
+            ).oppholdsperioderVedEndretTidsperiode(periode);
+            this.perioder = [...this.perioder, ...opphold];
+        }
         this.perioder = this.perioder.map(
-            (p, idx) => (p.id === periode.id ? periode : p)
+            (p, idx) => (p.id === periode.id ? updatedPeriode : p)
         );
         this.oppdaterUttaksplan();
         return this;
@@ -86,6 +93,8 @@ class UttaksplanBuilder {
      */
     private reset() {
         const utsettelser = perioderUtil(this.perioder).utsettelser();
+        // const opphold = perioderUtil(this.perioder).opphold();
+        // console.log(opphold);
         const uttaksperioder = resetUttaksperioder(
             perioderUtil(this.perioder)
                 .uttaksperioder()
@@ -123,38 +132,35 @@ class UttaksplanBuilder {
 }
 
 /**
- * Finner periode som er berørt av utsettelse, splitter den i to og
+ * Finner periode som er berørt av utsettelsens startdato, splitter den i to og
  * legger inn utsettelse mellom dem. Forskyver påfølgende uttaksperioder
  * @param perioder
- * @param utsettelse
+ * @param nyPeriode
  */
-const leggTilUtsettelse = (
-    perioder: Periode[],
-    utsettelse: Utsettelsesperiode
-): Periode[] => {
+const leggTilPeriode = (perioder: Periode[], nyPeriode: Periode): Periode[] => {
     const berørtePerioder = perioderUtil(perioder).finnPerioderITidsrom(
-        utsettelse.tidsperiode
+        nyPeriode.tidsperiode
     );
     const periode = perioderUtil(perioder).finnPeriodeMedDato(
-        utsettelse.tidsperiode.startdato
+        nyPeriode.tidsperiode.startdato
     );
     if (berørtePerioder.length === 0 && !periode) {
-        return [...perioder, utsettelse];
+        return [...perioder, nyPeriode];
     }
 
     if (!periode) {
         const foregåendePeriode = perioderUtil(perioder)
-            .foregåendePerioder(utsettelse)
+            .foregåendePerioder(nyPeriode)
             .pop();
         if (!foregåendePeriode) {
             throw new Error(
-                'Ugyldig plassering av utsettelse. Ingen perioder funnet før utsettelse.'
+                'Ugyldig plassering av periode. Ingen perioder funnet før denne perioden.'
             );
         }
-        return leggTilUtsettelseEtterPeriode(
+        return leggTilPeriodeEtterPeriode(
             perioder,
             foregåendePeriode,
-            utsettelse
+            nyPeriode
         );
     }
     if (periode.type === Periodetype.Utsettelse) {
@@ -163,12 +169,12 @@ const leggTilUtsettelse = (
     if (
         isSameDay(
             periode.tidsperiode.startdato,
-            utsettelse.tidsperiode.startdato
+            nyPeriode.tidsperiode.startdato
         )
     ) {
-        return leggTilUtsettelseEtterPeriode(perioder, periode, utsettelse);
+        return leggTilPeriodeEtterPeriode(perioder, periode, nyPeriode);
     } else {
-        return leggTilUtsettelseIPeriode(perioder, periode, utsettelse);
+        return leggTilPeriodeIPeriode(perioder, periode, nyPeriode);
     }
 };
 
@@ -202,7 +208,7 @@ const finnOppholdsperioder = (
             return;
         }
 
-        const uttaksdagerITidsperiode = uttakTidsperiode(
+        const uttaksdagerITidsperiode = tidsperiodeUtil(
             tidsperiodeMellomPerioder
         ).antallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {
@@ -233,7 +239,7 @@ const resetUttaksperioder = (perioder: Uttaksperiode[]): Uttaksperiode[] => {
             forrigePeriode = periode;
             return periode;
         }
-        const uttaksdager = uttakTidsperiode(
+        const uttaksdager = tidsperiodeUtil(
             periode.tidsperiode
         ).antallUttaksdager();
         const startdato = uttaksdagUtil(
@@ -301,41 +307,38 @@ const slåSammenLikePerioder = (perioder: Periode[]): Periode[] => {
  * @param utsettelser
  */
 const settInnUtsettelser = (
-    uttaksperioder: Uttaksperiode[],
+    perioder: Periode[],
     utsettelser: Utsettelsesperiode[]
-): UttakEllerUtsettelseperiode[] => {
+): Periode[] => {
     if (utsettelser.length === 0) {
-        return uttaksperioder;
+        return perioder;
     }
-    let perioder: UttakEllerUtsettelseperiode[] = [...uttaksperioder];
+    let nyePerioder: Periode[] = [...perioder];
     utsettelser.sort(sorterPerioder).forEach((utsettelse) => {
-        perioder = leggTilUtsettelse(
-            perioder,
-            utsettelse
-        ) as UttakEllerUtsettelseperiode[];
+        nyePerioder = leggTilPeriode(nyePerioder, utsettelse);
     });
-    return perioder;
+    return nyePerioder;
 };
 
 /**
- * Legger inn en utsettelse etter en periode, og forskyver påfølgende perioder
+ * Legger inn en periode etter en periode, og forskyver påfølgende perioder
  * @param perioder
  * @param periode
- * @param utsettelse
+ * @param nyPeriode
  */
-const leggTilUtsettelseEtterPeriode = (
+const leggTilPeriodeEtterPeriode = (
     perioder: Periode[],
     periode: Periode,
-    utsettelse: Utsettelsesperiode
+    nyPeriode: Periode
 ): Periode[] => {
     const perioderFør = perioderUtil(perioder).foregåendePerioder(periode);
     const perioderEtter = perioderUtil(perioder).påfølgendePerioder(periode);
-    const uttaksdagerIUtsettelse: number = uttakTidsperiode(
-        utsettelse.tidsperiode
+    const uttaksdagerIUtsettelse: number = tidsperiodeUtil(
+        nyPeriode.tidsperiode
     ).antallUttaksdager();
     return [
         ...perioderFør,
-        ...[utsettelse],
+        ...[nyPeriode],
         ...perioderUtil([periode, ...perioderEtter]).forskyv(
             uttaksdagerIUtsettelse
         )
@@ -343,74 +346,70 @@ const leggTilUtsettelseEtterPeriode = (
 };
 
 /**
- * Legger en utsettelse inn i en periode og forskyver påfølgende perioder
+ * Legger en periode inn i en periode og forskyver påfølgende perioder
  * @param perioder
  * @param periode
- * @param utsettelse
+ * @param nyPeriode
  */
-const leggTilUtsettelseIPeriode = (
+const leggTilPeriodeIPeriode = (
     perioder: Periode[],
     periode: Periode,
-    utsettelse: Utsettelsesperiode
+    nyPeriode: Periode
 ): Periode[] => {
     const perioderFør = perioderUtil(perioder).foregåendePerioder(periode);
     const perioderEtter = perioderUtil(perioder).påfølgendePerioder(periode);
-
-    const periodeSplittetMedUtsettelse = leggUtsettelseInnIPeriode(
-        periode,
-        utsettelse
-    );
-    const uttaksdager = uttakTidsperiode(
-        utsettelse.tidsperiode
+    const splittetPeriode = splittPeriodeMedPeriode(periode, nyPeriode);
+    const uttaksdager = tidsperiodeUtil(
+        nyPeriode.tidsperiode
     ).antallUttaksdager();
     return [
         ...perioderFør,
-        ...periodeSplittetMedUtsettelse,
+        ...splittetPeriode,
         ...perioderUtil(perioderEtter).forskyv(uttaksdager)
     ];
 };
 
 /**
- * Legger en utsettelse inn i en periode og forskyver sluttdatoen for perioden
- * tilsvarende utsettelsens varighet
+ * Legger en periode inn i en periode og forskyver sluttdatoen for perioden
+ * tilsvarende ny periodes varighet
  * @param periode
- * @param utsettelse
+ * @param nyPeriode
  */
-const leggUtsettelseInnIPeriode = (
+const splittPeriodeMedPeriode = (
     periode: Periode,
-    utsettelse: Utsettelsesperiode
+    nyPeriode: Periode
 ): Periode[] => {
-    const dagerIPeriode = uttakTidsperiode(
+    const dagerIPeriode = tidsperiodeUtil(
         periode.tidsperiode
     ).antallUttaksdager();
-    const dagerForsteDel = uttakTidsperiode({
+    const dagerForsteDel = tidsperiodeUtil({
         startdato: periode.tidsperiode.startdato,
-        sluttdato: addDays(utsettelse.tidsperiode.startdato, -1)
+        sluttdato: addDays(nyPeriode.tidsperiode.startdato, -1)
     }).antallUttaksdager();
     const dagerSisteDel = dagerIPeriode - dagerForsteDel;
-    const forste: Uttaksperiode = {
-        ...(periode as Uttaksperiode),
+    const forste: Periode = {
+        ...periode,
         tidsperiode: {
             startdato: periode.tidsperiode.startdato,
-            sluttdato: uttaksdagUtil(utsettelse.tidsperiode.startdato).forrige()
+            sluttdato: uttaksdagUtil(nyPeriode.tidsperiode.startdato).forrige()
         }
     };
-    const midt: Utsettelsesperiode = {
-        ...utsettelse,
+    const midt: Periode = {
+        ...nyPeriode,
         tidsperiode: {
             startdato: uttaksdagUtil(
-                utsettelse.tidsperiode.startdato
+                nyPeriode.tidsperiode.startdato
             ).denneEllerNeste(),
             sluttdato: uttaksdagUtil(
-                utsettelse.tidsperiode.sluttdato
+                nyPeriode.tidsperiode.sluttdato
             ).denneEllerNeste()
         }
     };
     const startSisteDel: Date = uttaksdagUtil(
         midt.tidsperiode.sluttdato
     ).neste();
-    const siste: Uttaksperiode = {
-        ...(periode as Uttaksperiode),
+    const siste: Periode = {
+        ...periode,
         tidsperiode: {
             startdato: startSisteDel,
             sluttdato: uttaksdagUtil(startSisteDel).periodeslutt(dagerSisteDel)

@@ -1,6 +1,6 @@
 import { Tidsperiode } from '../types';
 import { isWithinRange } from 'date-fns';
-import { uttaksdagUtil } from './uttaksdagerUtils';
+import { uttaksdagUtil } from './dataUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 
 export type DatoValideringsfeil =
