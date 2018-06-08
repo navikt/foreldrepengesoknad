@@ -21,13 +21,7 @@ type Props = SkalFarEllerMedmorHaForeldrepengerSpørsmålProps &
     InjectedIntlProps;
 
 const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
-    const {
-        navn,
-        onChange,
-        skalFarEllerMedmorHaForeldrepenger,
-        intl,
-        ...otherProps
-    } = props;
+    const { navn, onChange, skalFarEllerMedmorHaForeldrepenger, intl } = props;
 
     let checked;
     if (skalFarEllerMedmorHaForeldrepenger === true) {
@@ -59,7 +53,6 @@ const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: FarEllerMedmor
             ) => onChange(v === FarEllerMedmor.SKAL_HA_FORELDREPENGER, e)}
-            {...otherProps}
         />
     );
 };
