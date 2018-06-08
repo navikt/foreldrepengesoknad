@@ -1,45 +1,45 @@
 import * as React from 'react';
-import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
-import { InjectedIntlProps } from 'react-intl';
-import { AnnenInntektType } from '../types/søknad/AnnenInntekt';
+import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+
+export enum AnnenInntekt {
+    'HAR_HATT_ANNEN_INNTEKT' = 'harHattAnnenInntekt',
+    'HAR_IKKE_HATT_ANNEN_INNTEKT' = 'harIkkeHattAnnenInntekt'
+}
 
 export interface OwnProps {
-    andreInntekter: AnnenInntektType[];
+    harHattAnnenInntekt?: AnnenInntekt;
     onChange: (value?: string) => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
-export default class AnnenInntektSiste10MndSpørsmål extends React.Component<
-    Props
-> {
+class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
     render() {
-        const { andreInntekter, onChange } = this.props;
+        const { harHattAnnenInntekt, onChange } = this.props;
+
+        let checked;
+        if (harHattAnnenInntekt === AnnenInntekt.HAR_HATT_ANNEN_INNTEKT) {
+            checked = AnnenInntekt.HAR_HATT_ANNEN_INNTEKT;
+        } else if (
+            harHattAnnenInntekt === AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT
+        ) {
+            checked = AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT;
+        }
 
         return (
-            <CheckboksPanelGruppeResponsive
-                legend="Har du hatt inntekt gjennom noen av disse de siste 10 månedene?"
-                checkboxes={[
+            <RadioPanelGruppeResponsive
+                legend="De siste 10 månedene har jeg..."
+                name="annenInntekt"
+                checked={checked}
+                radios={[
                     {
-                        checked: andreInntekter.indexOf('sluttvederlag') >= 0,
-                        label: 'Sluttvederlag, sluttpakke eller etterlønn',
-                        value: 'sluttvederlag'
+                        label: 'hatt annen inntekt',
+                        value: AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
                     },
                     {
-                        checked: andreInntekter.indexOf('ventelønn') >= 0,
-                        label: 'Ventelønn',
-                        value: 'ventelønn'
-                    },
-                    {
-                        checked: andreInntekter.indexOf('militæret') >= 0,
-                        label:
-                            'Militæret, siviltjeneste eller sivilforsvarstjeneste',
-                        value: 'militæret'
-                    },
-                    {
-                        checked: andreInntekter.indexOf('videreutdanning') >= 0,
-                        label: 'Videreutdanning eller etterutdanning',
-                        value: 'videreutdanning'
+                        label: 'ikke hatt annen inntekt',
+                        value: AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT
                     }
                 ]}
                 onChange={(
@@ -50,3 +50,5 @@ export default class AnnenInntektSiste10MndSpørsmål extends React.Component<
         );
     }
 }
+
+export default injectIntl(AnnenInntektSiste10MndSpørsmål);
