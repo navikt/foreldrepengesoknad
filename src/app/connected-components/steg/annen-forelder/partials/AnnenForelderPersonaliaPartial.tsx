@@ -72,7 +72,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     synlig={!kanIkkeOppgis}
                     render={() => (
                         <Checkbox
-                            checked={søker.aleneOmOmsorg}
+                            checked={søker.erAleneOmOmsorg}
                             label={getMessage(
                                 intl,
                                 'annenForelder.aleneOmOmsorg'
@@ -82,7 +82,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                             ) =>
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        aleneOmOmsorg: e.target.checked
+                                        erAleneOmOmsorg: e.target.checked
                                     })
                                 )
                             }

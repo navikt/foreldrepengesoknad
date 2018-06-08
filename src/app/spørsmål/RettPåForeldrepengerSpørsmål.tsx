@@ -23,8 +23,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
         onChange,
         harAnnenForelderRettPåForeldrepenger,
         navn,
-        intl,
-        ...otherProps
+        intl
     } = props;
 
     let checked;
@@ -57,7 +56,6 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: AnnenForelder
             ) => onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER, e)}
-            {...otherProps}
         />
     );
 };

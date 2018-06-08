@@ -4,7 +4,7 @@ export interface Søker {
     søkerRolle: SøkerRolle;
     erSelvstendigNæringsdrivende: boolean;
     erFrilanser: boolean;
-    aleneOmOmsorg: boolean;
+    erAleneOmOmsorg: boolean;
 }
 
 export type SøkerPartial = Partial<Søker>;

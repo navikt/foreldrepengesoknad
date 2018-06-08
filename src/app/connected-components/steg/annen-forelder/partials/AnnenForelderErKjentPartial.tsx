@@ -54,7 +54,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
         return (
             <React.Fragment>
                 <Spørsmål
-                    synlig={!erFarEllerMedmor && søker.aleneOmOmsorg === true}
+                    synlig={!erFarEllerMedmor && søker.erAleneOmOmsorg === true}
                     render={() => (
                         <React.Fragment>
                             <Veilederinfo>
@@ -81,7 +81,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                 <Spørsmål
                     synlig={
                         annenForelder.skalHaForeldrepenger === true ||
-                        (!søker.aleneOmOmsorg &&
+                        (!søker.erAleneOmOmsorg &&
                             !harDenAndreForelderenOpplystOmSinPågåendeSak)
                     }
                     render={() => (
@@ -136,9 +136,9 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
 
                 <Spørsmål
                     synlig={
-                        (søker.aleneOmOmsorg === false &&
+                        (søker.erAleneOmOmsorg === false &&
                             annenForelder.harRettPåForeldrepenger === true) ||
-                        (søker.aleneOmOmsorg === false &&
+                        (søker.erAleneOmOmsorg === false &&
                             harDenAndreForelderenOpplystOmSinPågåendeSak &&
                             erFarEllerMedmor)
                     }
@@ -162,7 +162,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                 {erFarEllerMedmor && (
                     <React.Fragment>
                         <Spørsmål
-                            synlig={søker.aleneOmOmsorg === true}
+                            synlig={søker.erAleneOmOmsorg === true}
                             render={() => (
                                 <DatoInput
                                     id="omsorgsovertakelseDato"

@@ -20,7 +20,7 @@ interface ErMorUførProps {
 type Props = ErMorUførProps & InjectedIntlProps;
 
 const ErMorUfør = (props: Props) => {
-    const { onChange, navn, intl, erUfør, ...otherProps } = props;
+    const { onChange, navn, intl, erUfør } = props;
 
     let checked;
     if (erUfør === true) {
@@ -47,7 +47,6 @@ const ErMorUfør = (props: Props) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Mor) =>
                 onChange(v === Mor.ER_UFØR, e)
             }
-            {...otherProps}
         />
     );
 };
