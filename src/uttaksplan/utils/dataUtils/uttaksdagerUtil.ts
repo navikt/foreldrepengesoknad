@@ -1,7 +1,6 @@
-import { addDays, getISODay } from 'date-fns';
-import { Tidsperiode } from '../types';
-import { Holiday } from 'date-holidays';
-import { getOffentligeFridager } from 'common/util/fridagerUtils';
+import { addDays, getISODay, isAfter, isSameDay, isBefore } from 'date-fns';
+import { Tidsperiode } from 'common/types';
+import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
 
 export const getUkedag = (dato: Date) => getISODay(dato);
 
@@ -23,19 +22,13 @@ export const uttaksdagUtil = (dato: Date) => ({
         }
         return dato;
     },
+    tidsperiode: (uttaksdager: number) =>
+        getTidsperiodeGittStartdatoOgUttaksdager(dato, uttaksdager),
     periodeslutt: (uttaksdager: number) =>
-        getSisteUttaksdagIPeriode(dato, uttaksdager)
-});
-
-/**
- * Wrapper en Tidsperiode med uttaksdager-funksjonalitet
- * @param dato
- */
-
-export const uttakTidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
-    antallUttaksdager: (taBortFridager?: boolean) =>
-        getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
-    antallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length
+        getSisteUttaksdagIPeriode(dato, uttaksdager),
+    uttaksdagerFremTilDato: (tildato: Date) =>
+        getUttaksdagerMellomDatoer(dato, tildato),
+    uttaksdagerFlyttet: (nyDato: Date) => getUttaksdagerFlyttet(dato, nyDato)
 });
 
 /**
@@ -47,7 +40,7 @@ export const getAntallUttaksdagerITidsperioder = (
 ): number => {
     return tidsperioder.reduce(
         (dager: number, tidsperiode: Tidsperiode) =>
-            dager + getAntallUttaksdagerITidsperiode(tidsperiode),
+            dager + tidsperiodeUtil(tidsperiode).antallUttaksdager(),
         0
     );
 };
@@ -143,32 +136,6 @@ const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
 };
 
 /**
- * Summerer antall uttaksdager i angitt tidsperiode
- */
-const getAntallUttaksdagerITidsperiode = (
-    tidsperiode: Tidsperiode,
-    taBortFridager?: boolean
-): number => {
-    if (tidsperiode.startdato > tidsperiode.sluttdato) {
-        return -1;
-    }
-    const startdato = new Date(tidsperiode.startdato.getTime());
-    const sluttdato = new Date(tidsperiode.sluttdato.getTime());
-    let antall = 0;
-    let fridager = 0;
-    while (startdato <= sluttdato) {
-        if (erUttaksdag(startdato)) {
-            antall++;
-        }
-        startdato.setDate(startdato.getDate() + 1);
-    }
-    if (taBortFridager) {
-        fridager = getUttaksdagerSomErFridager(tidsperiode).length;
-    }
-    return antall - fridager;
-};
-
-/**
  * Finner siste uttaksdag gitt en startdato og antall uttaksdager
  * @param startdato
  * @param uttaksdager
@@ -182,7 +149,7 @@ const getSisteUttaksdagIPeriode = (
     let uttaksdageteller = 0;
     while (uttaksdageteller < uttaksdager) {
         const tellerdato = addDays(startdato, dagteller++);
-        if (erUttaksdag(tellerdato)) {
+        if (uttaksdagUtil(tellerdato).erUttaksdag()) {
             nyDato = tellerdato;
             uttaksdageteller++;
         }
@@ -191,10 +158,51 @@ const getSisteUttaksdagIPeriode = (
 };
 
 /**
- * Finner uttaksdager som er offentlig fridag
+ * Finner antall uttaksdager som er mellom to datoer
+ * @param fra
+ * @param til
  */
-const getUttaksdagerSomErFridager = (tidsperiode: Tidsperiode): Holiday[] => {
-    return getOffentligeFridager(tidsperiode).filter((dag) =>
-        erUttaksdag(dag.date)
-    );
+const getUttaksdagerMellomDatoer = (fra: Date, til: Date): number => {
+    const startdato: Date = uttaksdagUtil(fra).neste();
+    const sluttdato: Date = uttaksdagUtil(til).forrige();
+    if (isSameDay(startdato, sluttdato) || isAfter(startdato, sluttdato)) {
+        return 0;
+    }
+    return tidsperiodeUtil({ startdato, sluttdato }).antallUttaksdager();
+};
+
+/**
+ * Finner antall uttaksdager som en dato er flyttet
+ * @param fra
+ * @param til
+ */
+const getUttaksdagerFlyttet = (opprinnelig: Date, ny: Date): number => {
+    if (
+        !uttaksdagUtil(opprinnelig).erUttaksdag() ||
+        !uttaksdagUtil(ny).erUttaksdag()
+    ) {
+        throw new Error(
+            'En av datoene er ikke uttaksdag, kan ikke beregne antall dager flyttet.'
+        );
+    }
+    if (isSameDay(opprinnelig, ny)) {
+        return 0;
+    }
+    if (isBefore(opprinnelig, ny)) {
+        return getUttaksdagerMellomDatoer(opprinnelig, ny) + 1;
+    }
+    return -1 * (getUttaksdagerMellomDatoer(ny, opprinnelig) + 1);
+};
+
+const getTidsperiodeGittStartdatoOgUttaksdager = (
+    startdato: Date,
+    uttaksdager: number
+): Tidsperiode => {
+    if (!erUttaksdag(startdato)) {
+        throw new Error('Dato er ikke en uttaksdag');
+    }
+    return {
+        startdato,
+        sluttdato: leggUttaksdagerTilDato(startdato, uttaksdager - 1)
+    };
 };

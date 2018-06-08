@@ -6,9 +6,8 @@ import {
     Periodetype
 } from 'uttaksplan/types';
 import { Tidsperiode } from 'nav-datovelger';
-import { sorterPerioder } from 'uttaksplan/utils/periodeUtils';
+import { sorterPerioder, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
-import { uttaksdagUtil } from 'uttaksplan/utils/uttaksdagerUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 
