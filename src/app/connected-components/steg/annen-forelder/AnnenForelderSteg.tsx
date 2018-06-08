@@ -23,21 +23,12 @@ interface StateProps {
     person: Person;
     barn: BarnPartial;
     søker: Søker;
+    dataOmAndreForelderen: any;
     annenForelder: AnnenForelderPartial;
     visInformasjonVedOmsorgsovertakelse: boolean;
     språk: Språkkode;
     stegProps: StegProps;
 }
-
-// TODO hente reelle data fra API.
-const dataOmAndreForelderen = false
-    ? {
-          navn: 'pent navn',
-          fnr: '01010101010',
-          alder: '20',
-          harOpplystOmSinPågåendeSak: true
-      }
-    : undefined;
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class AnnenForelderSteg extends React.Component<Props> {
@@ -46,7 +37,7 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 
     shouldRenderAnnenForelderErKjentPartial() {
-        const { annenForelder } = this.props;
+        const { annenForelder, dataOmAndreForelderen } = this.props;
         return (
             (annenForelder.navn && annenForelder.fnr) || dataOmAndreForelderen
         );
@@ -58,6 +49,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             barn,
             søker,
             annenForelder,
+            dataOmAndreForelderen,
             visInformasjonVedOmsorgsovertakelse,
             dispatch,
             språk,
@@ -106,7 +98,8 @@ const shouldRenderFortsettKnapp = (
     annenForelder: AnnenForelderPartial,
     søker: SøkerPartial,
     omsorgsovertakelseErLastetOpp: boolean,
-    søkerErFarEllerMedmor: boolean
+    søkerErFarEllerMedmor: boolean,
+    dataOmAndreForelderen?: any
 ) => {
     const annenForelderHarIkkeRettTilFPOgSøkerErMor =
         annenForelder.harRettPåForeldrepenger === false &&
@@ -139,6 +132,7 @@ const shouldRenderFortsettKnapp = (
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const person = state.api.person as Person;
     const barn = state.søknad.barn;
+    const dataOmAndreForelderen = state.api.dataOmAnnenForelder;
     const søker = state.søknad.søker;
     const annenForelder = state.søknad.annenForelder;
     const språk = state.common.språkkode;
@@ -152,7 +146,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
                       annenForelder,
                       søker,
                       getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
-                      erFarEllerMedmor(person.kjønn, søker.rolle)
+                      erFarEllerMedmor(person.kjønn, søker.rolle),
+                      dataOmAndreForelderen
                   ),
         history: props.history
     };
@@ -160,6 +155,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         stegProps,
         person,
+        dataOmAndreForelderen,
         barn,
         søker,
         annenForelder,
