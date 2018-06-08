@@ -19,7 +19,7 @@ interface AleneOmOmsorgsSpørsmålProps {
 type Props = AleneOmOmsorgsSpørsmålProps & InjectedIntlProps;
 
 const AleneOmOmsorgsSpørsmål = (props: Props) => {
-    const { onChange, aleneOmOmsorg, intl, ...otherProps } = props;
+    const { onChange, aleneOmOmsorg, intl } = props;
 
     let checked;
     if (aleneOmOmsorg === true) {
@@ -47,7 +47,6 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: Omsorgsfordeling
             ) => onChange(v === Omsorgsfordeling.ALENEOMSORG, e)}
-            {...otherProps}
         />
     );
 };
