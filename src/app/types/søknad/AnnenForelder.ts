@@ -11,6 +11,13 @@ interface AnnenForelder {
     erUfør: boolean;
 }
 
+export interface DataOmAnnenForelder {
+    navn: string;
+    fnr: string;
+    alder: string;
+    harOpplystOmSinPågåendeSak: boolean;
+}
+
 export type AnnenForelderPartial = Partial<AnnenForelder>;
 
 export default AnnenForelder;

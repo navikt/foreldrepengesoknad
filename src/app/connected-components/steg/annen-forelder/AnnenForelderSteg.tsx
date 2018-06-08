@@ -9,7 +9,10 @@ import Steg, { StegProps } from '../../../components/layout/Steg';
 import { StegID } from '../../../util/stegConfig';
 
 import { AppState } from '../../../redux/reducers';
-import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
+import {
+    AnnenForelderPartial,
+    DataOmAnnenForelder
+} from '../../../types/søknad/AnnenForelder';
 import { BarnPartial, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
@@ -23,7 +26,7 @@ interface StateProps {
     person: Person;
     barn: BarnPartial;
     søker: Søker;
-    dataOmAndreForelderen: any;
+    dataOmAndreForelderen: DataOmAnnenForelder;
     annenForelder: AnnenForelderPartial;
     visInformasjonVedOmsorgsovertakelse: boolean;
     språk: Språkkode;
@@ -132,7 +135,8 @@ const shouldRenderFortsettKnapp = (
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const person = state.api.person as Person;
     const barn = state.søknad.barn;
-    const dataOmAndreForelderen = state.api.dataOmAnnenForelder;
+    const dataOmAndreForelderen = state.api
+        .dataOmAnnenForelder as DataOmAnnenForelder;
     const søker = state.søknad.søker;
     const annenForelder = state.søknad.annenForelder;
     const språk = state.common.språkkode;
