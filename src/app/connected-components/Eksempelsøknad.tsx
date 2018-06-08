@@ -41,6 +41,7 @@ import { AppState } from '../redux/reducers';
 import { mapAttachmentTilSøknadsvedlegginfo } from '../util/vedleggUtil';
 import { Attachment } from 'storage/attachment/types/Attachment';
 import UtenlandsoppholdBolk from '../bolker/UtenlandsoppholdBolk';
+import Søker from '../types/søknad/Søker';
 
 interface StateProps {
     annenForelder: AnnenForelderPartial;
@@ -50,6 +51,7 @@ interface StateProps {
     perioder: Periode[];
     roller?: SøkerRolle[];
     søknad: Søknad;
+    søker: Søker;
     attachments: Attachment[];
     uttaksplan: Periode[];
     språkkode: Språkkode;
@@ -135,6 +137,7 @@ class Eksempelsøknad extends React.Component<Props> {
         const {
             dispatch,
             søknad,
+            søker,
             barn,
             roller,
             situasjon,
@@ -168,12 +171,12 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={situasjon !== undefined}
                     render={() => (
                         <SøkerrolleSpørsmål
-                            rolle={søknad.søkerRolle}
+                            rolle={søker.rolle}
                             roller={roller}
                             onChange={(nyRolle: SøkerRolle) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
-                                        søkerRolle: nyRolle
+                                    søknadActions.updateSøker({
+                                        rolle: nyRolle
                                     })
                                 )
                             }
@@ -182,7 +185,7 @@ class Eksempelsøknad extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={søknad.søkerRolle !== undefined}
+                    synlig={søker.rolle !== undefined}
                     render={() => (
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -351,11 +354,11 @@ class Eksempelsøknad extends React.Component<Props> {
                     render={() => (
                         <ErDuSelvstendigNæringsdrivendeSpørsmål
                             erSelvstendigNæringsdrivende={
-                                søknad.erSelvstendigNæringsdrivende
+                                søker.erSelvstendigNæringsdrivende
                             }
                             onChange={(erSelvstendigNæringsdrivende) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
+                                    søknadActions.updateSøker({
                                         erSelvstendigNæringsdrivende
                                     })
                                 )
@@ -368,10 +371,10 @@ class Eksempelsøknad extends React.Component<Props> {
                     synlig={utenlandsopphold.fødselINorge !== undefined}
                     render={() => (
                         <ErDuFrilanserSpørsmål
-                            erFrilanser={søknad.erFrilanser}
+                            erFrilanser={søker.erFrilanser}
                             onChange={(erFrilanser) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
+                                    søknadActions.updateSøker({
                                         erFrilanser
                                     })
                                 )
@@ -422,6 +425,7 @@ export default connect<StateProps>((state: AppState) => {
 
     return {
         søknad: state.søknad,
+        søker: state.søknad.søker,
         annenForelder: state.søknad.annenForelder,
         barn: state.søknad.barn,
         utenlandsopphold: state.søknad.utenlandsopphold,
