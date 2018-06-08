@@ -66,6 +66,7 @@ export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
+    opprettetAvBruker?: boolean;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
