@@ -3,15 +3,25 @@ import {
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
+import { DataOmAnnenForelder } from '../../types/s\u00F8knad/AnnenForelder';
 
 export interface ApiReducerState {
-    isLoadingPerson: boolean;
     person?: Person;
+    dataOmAnnenForelder?: DataOmAnnenForelder;
+    isLoadingPerson: boolean;
     error: any;
 }
 
 const getDefaultState = (): ApiReducerState => ({
     person: undefined,
+    dataOmAnnenForelder: false
+        ? {
+              navn: 'pent navn',
+              fnr: '01010101010',
+              alder: '20',
+              harOpplystOmSinPågåendeSak: true
+          }
+        : undefined,
     isLoadingPerson: false,
     error: {
         networkError: false,
