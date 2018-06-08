@@ -15,6 +15,7 @@ const getDefaultState = (): SøknadPartial => {
             tidligerePerioder: [],
             senerePerioder: []
         },
+        andreInntekterSiste10Mnd: [],
         harGodkjentVilkår: false
     };
 };

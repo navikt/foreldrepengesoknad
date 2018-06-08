@@ -9,16 +9,24 @@ import { StegID } from '../../../util/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';
+import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
+import Søknad from '../../../types/søknad/Søknad';
+import { DispatchProps } from 'common/redux/types';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
+    søknad: Søknad;
 }
 
 interface State {
     harHattAnnenInntekt?: AnnenInntekt;
 }
 
-type Props = AndreInntekterStegProps & InjectedIntlProps & HistoryProps;
+type Props = AndreInntekterStegProps &
+    InjectedIntlProps &
+    HistoryProps &
+    DispatchProps;
 
 class AndreInntekterSteg extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -26,22 +34,49 @@ class AndreInntekterSteg extends React.Component<Props, State> {
         this.state = {
             harHattAnnenInntekt: undefined
         };
+        this.renderAnnenInntektSiste10MndSpørsmål = this.renderAnnenInntektSiste10MndSpørsmål.bind(
+            this
+        );
+    }
+
+    renderAnnenInntektSiste10MndSpørsmål() {
+        const { harHattAnnenInntekt } = this.state;
+        return (
+            <Spørsmål
+                render={() => (
+                    <AnnenInntektSiste10MndSpørsmål
+                        harHattAnnenInntekt={harHattAnnenInntekt}
+                        onChange={(value: AnnenInntekt) =>
+                            this.setState({
+                                harHattAnnenInntekt: value
+                            })
+                        }
+                    />
+                )}
+            />
+        );
     }
 
     render() {
         const { harHattAnnenInntekt } = this.state;
-        const { stegProps } = this.props;
+        const { stegProps, søknad, dispatch } = this.props;
         return (
             <Steg {...stegProps}>
-                <Spørsmål
-                    render={() => (
-                        <AnnenInntektSiste10MndSpørsmål
-                            harHattAnnenInntekt={harHattAnnenInntekt}
-                            onChange={(value: AnnenInntekt) =>
-                                this.setState({ harHattAnnenInntekt: value })
-                            }
-                        />
-                    )}
+                <AndreInntekterBolk
+                    oppfølgingsspørsmål="Perioder med annen inntekt"
+                    renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
+                    showAndreInntekterPeriodeContent={
+                        harHattAnnenInntekt ===
+                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                    }
+                    andreInntekterSiste10Mnd={søknad.andreInntekterSiste10Mnd}
+                    onChange={(andreInntekterSiste10Mnd) =>
+                        dispatch(
+                            søknadActions.updateSøknad({
+                                andreInntekterSiste10Mnd
+                            })
+                        )
+                    }
                 />
             </Steg>
         );
@@ -49,6 +84,7 @@ class AndreInntekterSteg extends React.Component<Props, State> {
 }
 export default injectIntl(
     connect((state: AppState, props: Props) => {
+        const { søknad } = state;
         const { history } = props;
 
         const stegProps: StegProps = {
@@ -58,6 +94,7 @@ export default injectIntl(
         };
 
         return {
+            søknad,
             stegProps,
             ...props
         };
