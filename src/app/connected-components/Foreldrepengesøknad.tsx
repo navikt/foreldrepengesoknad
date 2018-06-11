@@ -25,6 +25,7 @@ import DevSideoversikt from '../dev/DevSideoversikt';
 import Inngangsside from './sider/inngangsside/Inngangsside';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import VedleggSide from './sider/vedlegg/VedleggSide';
+import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 
 interface StateProps {
     person: Person;
@@ -88,6 +89,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
                 component={Inngangsside}
                 key="inngang"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}/søknad-sendt`}
+                component={SøknadSendtSide}
+                key="søknadsendt"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}/uttaksplan`}

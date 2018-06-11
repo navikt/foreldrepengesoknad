@@ -10,23 +10,50 @@ import { HistoryProps } from '../../../types/common';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { Periode } from 'uttaksplan/types';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { mapAttachmentTilSøknadsvedlegginfo } from '../../../util/vedleggUtil';
+import { Attachment } from 'storage/attachment/types/Attachment';
+import routeConfig from '../../../util/routeConfig';
 
 interface UttaksplanStegProps {
     stegProps: StegProps;
     søknad: Søknad;
     perioder: Periode[];
+    attachments: Attachment[];
 }
 
 type Props = UttaksplanStegProps & HistoryProps & DispatchProps;
 
 class UttaksplanSteg extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.sendSøknadAndRedirect = this.sendSøknadAndRedirect.bind(this);
+    }
+
+    sendSøknadAndRedirect() {
+        const { attachments, søknad, perioder, dispatch, history } = this.props;
+        const vedlegg = (attachments || []).map((a: Attachment) =>
+            mapAttachmentTilSøknadsvedlegginfo(a)
+        );
+        dispatch(
+            apiActionCreators.sendSøknad({
+                ...søknad,
+                uttaksplan: [...(perioder || [])],
+                vedlegg
+            })
+        );
+        history.push(`${routeConfig.APP_ROUTE_PREFIX}/søknad-sendt`);
+    }
+
     render() {
         const { søknad, perioder, stegProps, dispatch } = this.props;
         const { annenForelder } = søknad;
         const barn = søknad.barn as UfødtBarn;
 
         return (
-            <Steg {...stegProps}>
+            <Steg
+                {...stegProps}
+                onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     termindato={(barn as UfødtBarn).termindato}
                     navnForelder1="Mor"
@@ -50,7 +77,7 @@ class UttaksplanSteg extends React.Component<Props> {
 }
 
 export default connect((state: AppState, props: Props) => {
-    const { søknad } = state;
+    const { søknad, attachments, uttaksplan } = state;
     const { history } = props;
 
     const stegProps: StegProps = {
@@ -61,8 +88,9 @@ export default connect((state: AppState, props: Props) => {
 
     return {
         søknad,
+        attachments,
+        perioder: uttaksplan.periode.perioder,
         stegProps,
-        ...props,
-        perioder: søknad.uttaksplan
+        ...props
     };
 })(UttaksplanSteg);

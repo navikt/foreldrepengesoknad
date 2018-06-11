@@ -12,7 +12,8 @@ export interface StegConfig {
     [key: string]: {
         tittel: string;
         fortsettKnappLabel: string;
-        nesteSteg: StegID;
+        nesteSteg?: StegID;
+        sisteSteg?: boolean;
     };
 }
 
@@ -50,7 +51,7 @@ const stegConfig: StegConfig = {
     [StegID.UTTAKSPLAN]: {
         tittel: 'Velkommen til eksempel-uttaksplanen',
         fortsettKnappLabel: 'Send søknad',
-        nesteSteg: StegID.UTTAKSPLAN
+        sisteSteg: true
     }
 };
 
