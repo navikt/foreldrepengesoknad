@@ -3,15 +3,17 @@ export enum StegID {
     'RELASJON_TIL_BARN_ADOPSJON' = 'relasjon-til-barn-adopsjon',
     'RELASJON_TIL_BARN_STEBARNSADOPSJON' = 'relasjon-til-barn-stebarnsadopsjon',
     'RELASJON_TIL_BARN_FORELDREANSVAR' = 'relasjon-til-barn-foreldreansvar',
+    'UTENLANDSOPPHOLD' = 'utenlandsopphold',
     'ANNEN_FORELDER' = 'annen-forelder',
-    'UTENLANDSOPPHOLD' = 'utenlandsopphold'
+    'ANDRE_INNTEKTER' = 'andre-inntekter',
+    'UTTAKSPLAN' = 'uttaksplan'
 }
 
 export interface StegConfig {
     [key: string]: {
         tittel: string;
         fortsettKnappLabel: string;
-        nesteSteg: StegID;
+        nesteSteg?: StegID;
     };
 }
 
@@ -44,7 +46,16 @@ const stegConfig: StegConfig = {
     [StegID.UTENLANDSOPPHOLD]: {
         tittel: 'Utenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.UTENLANDSOPPHOLD // will change later
+        nesteSteg: StegID.ANDRE_INNTEKTER
+    },
+    [StegID.ANDRE_INNTEKTER]: {
+        tittel: 'Andre inntekter',
+        fortsettKnappLabel: 'Gå til uttaksplan',
+        nesteSteg: StegID.UTTAKSPLAN
+    },
+    [StegID.UTTAKSPLAN]: {
+        tittel: 'Velkommen til eksempel-uttaksplanen',
+        fortsettKnappLabel: 'Send søknad'
     }
 };
 
