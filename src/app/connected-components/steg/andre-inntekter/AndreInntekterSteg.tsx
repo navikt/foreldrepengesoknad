@@ -14,6 +14,8 @@ import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
+import ErDuFrilanserSpørsmål from '../../../spørsmål/ErDuFrilanserSpørsmål';
+import ErDuSelvstendigNæringsdrivendeSpørsmål from '../../../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -61,8 +63,17 @@ class AndreInntekterSteg extends React.Component<Props, State> {
     render() {
         const { harHattAnnenInntekt } = this.state;
         const { stegProps, søknad, dispatch, intl } = this.props;
+
         return (
-            <Steg {...stegProps}>
+            <Steg
+                {...stegProps}
+                renderFortsettKnapp={
+                    harHattAnnenInntekt ===
+                        AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT ||
+                    (harHattAnnenInntekt ===
+                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT &&
+                        søknad.andreInntekterSiste10Mnd.length > 0)
+                }>
                 <AndreInntekterBolk
                     oppfølgingsspørsmål={getMessage(
                         intl,
@@ -82,6 +93,46 @@ class AndreInntekterSteg extends React.Component<Props, State> {
                         )
                     }
                 />
+
+                <Spørsmål
+                    synlig={
+                        harHattAnnenInntekt ===
+                            AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT ||
+                        (harHattAnnenInntekt ===
+                            AnnenInntekt.HAR_HATT_ANNEN_INNTEKT &&
+                            søknad.andreInntekterSiste10Mnd.length > 0)
+                    }
+                    render={() => (
+                        <ErDuSelvstendigNæringsdrivendeSpørsmål
+                            erSelvstendigNæringsdrivende={
+                                søknad.erSelvstendigNæringsdrivende
+                            }
+                            onChange={(erSelvstendigNæringsdrivende) =>
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        erSelvstendigNæringsdrivende
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={søknad.erSelvstendigNæringsdrivende !== undefined}
+                    render={() => (
+                        <ErDuFrilanserSpørsmål
+                            erFrilanser={søknad.erFrilanser}
+                            onChange={(erFrilanser) =>
+                                dispatch(
+                                    søknadActions.updateSøknad({
+                                        erFrilanser
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
             </Steg>
         );
     }
@@ -93,7 +144,7 @@ export default injectIntl(
 
         const stegProps: StegProps = {
             id: StegID.ANDRE_INNTEKTER,
-            renderFortsettKnapp: true,
+            renderFortsettKnapp: søknad.erFrilanser !== undefined,
             history
         };
 
