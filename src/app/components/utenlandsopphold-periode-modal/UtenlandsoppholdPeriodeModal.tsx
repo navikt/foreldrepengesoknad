@@ -15,6 +15,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
+import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
     type: UtenlandsoppholdPeriodeType;
@@ -164,7 +165,7 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <div className="utenlandsoppholdPeriodeModal__buttonBar">
+                    <Knapperad>
                         <Knapp
                             type="standard"
                             onClick={onRequestClose}
@@ -174,7 +175,7 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                         <Hovedknapp>
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
-                    </div>
+                    </Knapperad>
                 </form>
             </Modal>
         );
