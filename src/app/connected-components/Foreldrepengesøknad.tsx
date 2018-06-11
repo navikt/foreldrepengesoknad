@@ -14,7 +14,6 @@ import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './sider/velkommen/Velkommen';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
-import Eksempelsøknad from './Eksempelsøknad';
 
 import Person from '../types/Person';
 
@@ -79,11 +78,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
                 component={StegRoutes}
                 key="steg"
-            />,
-            <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
-                component={Eksempelsøknad}
-                key="eksempelsøknad"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
