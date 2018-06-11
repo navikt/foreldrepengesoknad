@@ -1,10 +1,5 @@
 import { addYears } from 'date-fns';
-import {
-    trekkUttaksdagerFraDato,
-    getForsteUttaksdagPaEllerEtterDato,
-    getForsteUttaksdagEtterDato,
-    getAntallUttaksdagerITidsperiode
-} from './uttaksdagerUtils';
+import { uttaksdagUtil, tidsperiodeUtil } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -13,141 +8,26 @@ import {
     Periode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Uttaksperiode,
-    Periodetype,
-    StønadskontoType
+    Periodetype
 } from '../types';
-import { getPeriodeSluttdatoMedUker, sorterPerioder } from './periodeUtils';
-import { guid } from 'nav-frontend-js-utils';
-import { normaliserDato } from 'common/util/datoUtils';
+import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
 
 export function getPermisjonStartdato(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return trekkUttaksdagerFraDato(
-        termindato, // Siste uttaksdag i denne perioden er dagen før termin
-        -1 * (permisjonsregler.antallUkerForelder1FørFødsel * 5)
-    );
+    return uttaksdagUtil(
+        termindato // Siste uttaksdag i denne perioden er dagen før termin
+    ).leggTil(-1 * permisjonsregler.antallUkerForelder1FørFødsel * 5);
 }
 
 export function getSisteMuligePermisjonsdag(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return getForsteUttaksdagPaEllerEtterDato(
+    return uttaksdagUtil(
         addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
-    );
-}
-
-export function getMødrekvoteFørTermin(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
-    const startdato = getPermisjonStartdato(termindato, permisjonsregler);
-    return {
-        startdato,
-        sluttdato: getPeriodeSluttdatoMedUker(
-            startdato,
-            permisjonsregler.antallUkerForelder1FørFødsel
-        )
-    };
-}
-
-export function getPakrevdMødrekvoteEtterTermin(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
-    return {
-        startdato: termindato,
-        sluttdato: getPeriodeSluttdatoMedUker(
-            termindato,
-            permisjonsregler.antallUkerForelder1EtterFødsel
-        )
-    };
-}
-
-export function getFrivilligMødrekvoteEtterTermin(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
-    const startdato = getForsteUttaksdagEtterDato(
-        getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
-    );
-    return {
-        startdato,
-        sluttdato: getPeriodeSluttdatoMedUker(
-            startdato,
-            permisjonsregler.antallUkerMødrekvote -
-                permisjonsregler.antallUkerForelder1EtterFødsel
-        )
-    };
-}
-
-export function getFellesperiodeForelder1(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerForelder1: number
-): Tidsperiode {
-    const startdato = getForsteUttaksdagEtterDato(
-        getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
-            .sluttdato
-    );
-    return {
-        startdato,
-        sluttdato: getPeriodeSluttdatoMedUker(startdato, fellesukerForelder1)
-    };
-}
-
-export function getFellesperiodeForelder2(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerForelder1: number,
-    fellesukerForelder2: number
-): Tidsperiode {
-    const startdato = getForsteUttaksdagEtterDato(
-        fellesukerForelder1 === 0
-            ? getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
-                  .sluttdato
-            : getFellesperiodeForelder1(
-                  termindato,
-                  permisjonsregler,
-                  fellesukerForelder1
-              ).sluttdato
-    );
-    return {
-        startdato,
-        sluttdato: getPeriodeSluttdatoMedUker(startdato, fellesukerForelder2)
-    };
-}
-
-export function getFedrekvote(
-    termindato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerForelder1: number,
-    fellesukerForelder2: number
-): Tidsperiode {
-    const startdato = getForsteUttaksdagEtterDato(
-        fellesukerForelder2 === 0
-            ? getFellesperiodeForelder1(
-                  termindato,
-                  permisjonsregler,
-                  fellesukerForelder1
-              ).sluttdato
-            : getFellesperiodeForelder2(
-                  termindato,
-                  permisjonsregler,
-                  fellesukerForelder1,
-                  fellesukerForelder2
-              ).sluttdato
-    );
-    return {
-        startdato,
-        sluttdato: getPeriodeSluttdatoMedUker(
-            startdato,
-            permisjonsregler.antallUkerFedrekvote
-        )
-    };
+    ).denneEllerNeste();
 }
 
 /**
@@ -163,10 +43,10 @@ export function getGyldigTidsromForUtsettelse(
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {
     return {
-        startdato: getForsteUttaksdagEtterDato(
+        startdato: uttaksdagUtil(
             getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler)
                 .sluttdato
-        ),
+        ).neste(),
         sluttdato: sisteRegistrertePermisjonsdag
     };
 }
@@ -203,9 +83,9 @@ export const getAntallUttaksdagerForForelder = (
 ): number => {
     return perioder.reduce(
         (dager: number, periode: Periode) =>
-            periode.type === Periodetype.Uttaksperiode &&
-            periode.forelder === forelder
-                ? dager + getAntallUttaksdagerITidsperiode(periode.tidsperiode)
+            periode.type === Periodetype.Uttak && periode.forelder === forelder
+                ? dager +
+                  tidsperiodeUtil(periode.tidsperiode).antallUttaksdager()
                 : dager,
         0
     );
@@ -229,91 +109,8 @@ export const getAntallFeriedagerForForelder = (
         ? 0
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
-                  dager + getAntallUttaksdagerITidsperiode(periode.tidsperiode),
+                  dager +
+                  tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
               0
           );
 };
-
-/** Oppretter default stønadsperioder ut fra termindato ++ */
-export function opprettUttaksperioder(
-    termindato: Date,
-    dekningsgrad: Dekningsgrad,
-    fellesukerForelder1: number,
-    fellesukerForelder2: number,
-    permisjonsregler: Permisjonsregler
-): Uttaksperiode[] {
-    termindato = normaliserDato(termindato);
-    const perioder: Uttaksperiode[] = [
-        {
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder1',
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
-            låstForelder: true,
-            låstPeriode: true
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder1',
-            konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getPakrevdMødrekvoteEtterTermin(
-                termindato,
-                permisjonsregler
-            ),
-            låstForelder: true,
-            låstPeriode: true
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder1',
-            konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getFrivilligMødrekvoteEtterTermin(
-                termindato,
-                permisjonsregler
-            )
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder2',
-            konto: StønadskontoType.Fedrekvote,
-            tidsperiode: getFedrekvote(
-                termindato,
-                permisjonsregler,
-                fellesukerForelder1,
-                fellesukerForelder2
-            )
-        }
-    ];
-    if (fellesukerForelder1 > 0) {
-        perioder.push({
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder1',
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeForelder1(
-                termindato,
-                permisjonsregler,
-                fellesukerForelder1
-            )
-        });
-    }
-    if (fellesukerForelder2 > 0) {
-        perioder.push({
-            id: guid(),
-            type: Periodetype.Uttaksperiode,
-            forelder: 'forelder2',
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeForelder2(
-                termindato,
-                permisjonsregler,
-                fellesukerForelder1,
-                fellesukerForelder2
-            )
-        });
-    }
-    return perioder.sort(sorterPerioder);
-}

@@ -3,7 +3,8 @@ import {
     SøknadActionKeys,
     UpdateBarn,
     UpdateSøknad,
-    UpdateUtenlandsopphold
+    UpdateUtenlandsopphold,
+    UpdateSøker
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -13,6 +14,7 @@ import {
 } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
+import { SøkerPartial } from '../../../types/s\u00F8knad/S\u00F8ker';
 
 const updateBarn = (
     payload:
@@ -37,6 +39,11 @@ const updateUtenlandsopphold = (
     payload
 });
 
+const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
+    type: SøknadActionKeys.UPDATE_SØKER,
+    payload
+});
+
 const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
@@ -46,5 +53,6 @@ export default {
     updateAnnenForelder,
     updateBarn,
     updateUtenlandsopphold,
+    updateSøker,
     updateSøknad
 };

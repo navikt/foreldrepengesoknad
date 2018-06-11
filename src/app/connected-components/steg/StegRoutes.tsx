@@ -15,6 +15,7 @@ import RelasjonTilBarnForeldreansvarSteg from './relasjon-til-barn-foreldreansva
 import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
 import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
+import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
@@ -48,7 +49,11 @@ class Steg extends React.Component<RouteComponentProps<any>> {
                         component={RelasjonTilBarnFødselSteg}
                         key={StegID.RELASJON_TIL_BARN_FØDSEL}
                     />
-
+                    <Route
+                        path={søknadStegPath(StegID.ANNEN_FORELDER)}
+                        component={AnnenForelderSteg}
+                        key={StegID.ANNEN_FORELDER}
+                    />
                     <Route
                         path={søknadStegPath(StegID.UTENLANDSOPPHOLD)}
                         component={UtenlandsoppholdSteg}

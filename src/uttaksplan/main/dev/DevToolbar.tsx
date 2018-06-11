@@ -22,7 +22,7 @@ import {
 import { normaliserDato } from 'common/util/datoUtils';
 
 import './dev.less';
-import { getForsteUttaksdagEtterDato } from 'uttaksplan/utils/uttaksdagerUtils';
+import { uttaksdagUtil, tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
 
 export interface StateProps {
     appState: UttaksplanAppState;
@@ -100,15 +100,13 @@ class DevToolbar extends React.Component<Props, {}> {
 
     lagOpphold() {
         const periode = this.props.appState.uttaksplan.periode.perioder[2];
+        const tidsperiode = tidsperiodeUtil(periode.tidsperiode).setStartdato(
+            uttaksdagUtil(periode.tidsperiode.startdato).neste()
+        );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({
                 ...periode,
-                tidsperiode: {
-                    ...periode.tidsperiode,
-                    startdato: getForsteUttaksdagEtterDato(
-                        periode.tidsperiode.startdato
-                    )
-                }
+                tidsperiode
             })
         );
     }

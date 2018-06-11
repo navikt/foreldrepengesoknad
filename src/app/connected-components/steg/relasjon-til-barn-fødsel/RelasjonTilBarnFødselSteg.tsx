@@ -11,18 +11,21 @@ import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål
 import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { partials } from './partials';
-import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
-import { HistoryProps, Kjønn } from '../../../types/common';
+import { HistoryProps } from '../../../types/common';
 import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
+import Søker from '../../../types/søknad/Søker';
+import { erFarEllerMedmor } from '../../../util/personUtil';
+import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 
 interface StateProps {
     barn: BarnPartial;
-    søknad: Søknad;
+    søker: Søker;
+    annenForelder: AnnenForelderPartial;
+    person?: Person;
     fødselsattestLastetOpp: boolean;
     terminbekreftelseErLastetOpp: boolean;
-    person?: Person;
     stegProps: StegProps;
 }
 
@@ -31,19 +34,15 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
     render() {
         const {
             barn,
-            dispatch,
+            søker,
+            annenForelder,
             person,
-            søknad,
             terminbekreftelseErLastetOpp,
-            stegProps
+            stegProps,
+            dispatch
         } = this.props;
 
         if (person) {
-            const { søkerRolle } = søknad;
-            const { kjønn } = person;
-            const erFarEllerMedmor =
-                kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR;
-
             return (
                 <Steg {...stegProps}>
                     <Spørsmål
@@ -70,8 +69,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
                         <partials.UfødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as UfødtBarn}
-                            søknad={søknad}
-                            erFarEllerMedmor={erFarEllerMedmor}
+                            annenForelder={annenForelder}
+                            søker={søker}
+                            erFarEllerMedmor={erFarEllerMedmor(
+                                person.kjønn,
+                                søker.rolle
+                            )}
                             terminbekreftelseErLastetOpp={
                                 terminbekreftelseErLastetOpp
                             }
@@ -104,7 +107,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 
     return {
-        søknad: state.søknad,
+        søker: state.søknad.søker,
+        annenForelder: state.søknad.annenForelder,
         person: state.api.person,
         barn,
         fødselsattestLastetOpp,

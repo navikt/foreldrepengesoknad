@@ -63,6 +63,7 @@ class AndreInntekterSteg extends React.Component<Props, State> {
     render() {
         const { harHattAnnenInntekt } = this.state;
         const { stegProps, søknad, dispatch, intl } = this.props;
+        const { søker } = søknad;
 
         return (
             <Steg
@@ -105,11 +106,11 @@ class AndreInntekterSteg extends React.Component<Props, State> {
                     render={() => (
                         <ErDuSelvstendigNæringsdrivendeSpørsmål
                             erSelvstendigNæringsdrivende={
-                                søknad.erSelvstendigNæringsdrivende
+                                søker.erSelvstendigNæringsdrivende
                             }
                             onChange={(erSelvstendigNæringsdrivende) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
+                                    søknadActions.updateSøker({
                                         erSelvstendigNæringsdrivende
                                     })
                                 )
@@ -119,13 +120,13 @@ class AndreInntekterSteg extends React.Component<Props, State> {
                 />
 
                 <Spørsmål
-                    synlig={søknad.erSelvstendigNæringsdrivende !== undefined}
+                    synlig={søker.erSelvstendigNæringsdrivende !== undefined}
                     render={() => (
                         <ErDuFrilanserSpørsmål
-                            erFrilanser={søknad.erFrilanser}
+                            erFrilanser={søker.erFrilanser}
                             onChange={(erFrilanser) =>
                                 dispatch(
-                                    søknadActions.updateSøknad({
+                                    søknadActions.updateSøker({
                                         erFrilanser
                                     })
                                 )
@@ -141,10 +142,11 @@ export default injectIntl(
     connect((state: AppState, props: Props) => {
         const { søknad } = state;
         const { history } = props;
+        const { søker } = søknad;
 
         const stegProps: StegProps = {
             id: StegID.ANDRE_INNTEKTER,
-            renderFortsettKnapp: søknad.erFrilanser !== undefined,
+            renderFortsettKnapp: søker && søker.erFrilanser !== undefined,
             history
         };
 

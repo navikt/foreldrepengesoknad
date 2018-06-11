@@ -7,9 +7,7 @@ export const getAllePerioder = (state: UttaksplanAppState) =>
 
 export const getUttaksperioderOgUtsettelser = (state: UttaksplanAppState) =>
     state.uttaksplan.periode.perioder.filter(
-        (p) =>
-            p.type === Periodetype.Uttaksperiode ||
-            p.type === Periodetype.Utsettelse
+        (p) => p.type === Periodetype.Uttak || p.type === Periodetype.Utsettelse
     );
 
 export const getSisteRegistrertePermisjonsdag = createSelector(
