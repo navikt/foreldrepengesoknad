@@ -1,6 +1,6 @@
 import { Tidsperiode } from '../types';
 import { isWithinRange } from 'date-fns';
-import { erUttaksdag, getForsteUttaksdagFørDato } from './uttaksdagerUtils';
+import { uttaksdagUtil } from './dataUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 
 export type DatoValideringsfeil =
@@ -37,7 +37,7 @@ export const validerDato = (
         isWithinRange(
             normaliserDato(dato),
             normaliserDato(termindato),
-            normaliserDato(getForsteUttaksdagFørDato(tidsrom.startdato))
+            normaliserDato(uttaksdagUtil(tidsrom.startdato).forrige())
         )
     ) {
         return 'innenforForsteSeksUker';
@@ -51,7 +51,7 @@ export const validerDato = (
     ) {
         return 'utenforPerioder';
     }
-    if (!erUttaksdag(dato)) {
+    if (!uttaksdagUtil(dato).erUttaksdag()) {
         return 'ikkeUttaksdag';
     }
     let gyldig: DatoValideringsfeil;

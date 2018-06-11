@@ -5,7 +5,6 @@ import {
     Forelder,
     StønadskontoType
 } from 'uttaksplan/types';
-import { preventFormSubmit } from 'uttaksplan/utils';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
@@ -14,6 +13,7 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/
 import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
+import { preventFormSubmit } from 'common/util/eventUtils';
 
 export interface OwnProps {
     periode: Uttaksperiode;

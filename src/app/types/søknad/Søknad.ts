@@ -3,6 +3,7 @@ import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
 import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
+import Søker, { SøkerPartial } from './Søker';
 import { AnnenInntekt } from './AnnenInntekt';
 
 type Foreldrepenger = 'foreldrepenger';
@@ -34,11 +35,8 @@ interface Søknad {
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
     uttaksplan: Periode[];
-    søkerRolle: SøkerRolle;
-    erSelvstendigNæringsdrivende: boolean;
-    erFrilanser: boolean;
-    erMorForSyk: boolean;
     vedlegg: Søknadsvedlegginfo[];
+    søker: Søker;
 }
 
 export interface SøknadPartial {
@@ -50,10 +48,7 @@ export interface SøknadPartial {
     barn: BarnPartial;
     utenlandsopphold: UtenlandsoppholdPartial;
     uttaksplan?: Periode[];
-    søkerRolle?: SøkerRolle;
-    erSelvstendigNæringsdrivende?: boolean;
-    erFrilanser?: boolean;
-    erMorForSyk?: boolean;
+    søker: SøkerPartial;
 }
 
 export type Skjemadata = Partial<Søknad>;

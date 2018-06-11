@@ -1,7 +1,7 @@
 import { Tidsperiode, Forelder } from '../types';
 
 export enum Periodetype {
-    'Uttaksperiode' = 'uttak',
+    'Uttak' = 'uttak',
     'Utsettelse' = 'UTSETTELSE',
     'Opphold' = 'OPPHOLD'
 }
@@ -47,7 +47,7 @@ export interface PeriodeBase {
 }
 
 export interface Uttaksperiode extends PeriodeBase {
-    type: Periodetype.Uttaksperiode;
+    type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
     låstPeriode?: boolean;
@@ -66,8 +66,9 @@ export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
+    opprettetAvBruker?: boolean;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 
-export type Perioder = Periode[];
+export type UttakEllerUtsettelseperiode = Uttaksperiode | Utsettelsesperiode;
