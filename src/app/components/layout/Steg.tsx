@@ -8,11 +8,17 @@ export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
+    onFortsettKnappClick?: () => void;
 }
 
-class Steg extends React.Component<StegProps, {}> {
+class Steg extends React.Component<StegProps> {
     render() {
-        const { id, renderFortsettKnapp, history } = this.props;
+        const {
+            id,
+            renderFortsettKnapp,
+            history,
+            onFortsettKnappClick
+        } = this.props;
         return (
             <div className="steg">
                 <h1 className="steg__tittel">{stegConfig[id].tittel}</h1>
@@ -21,7 +27,12 @@ class Steg extends React.Component<StegProps, {}> {
                 {renderFortsettKnapp === true && (
                     <FortsettKnapp
                         history={history}
-                        location={søknadStegPath(stegConfig[id].nesteSteg)}>
+                        location={søknadStegPath(stegConfig[id].nesteSteg)}
+                        onClick={
+                            onFortsettKnappClick
+                                ? onFortsettKnappClick
+                                : undefined
+                        }>
                         {stegConfig[id].fortsettKnappLabel}
                     </FortsettKnapp>
                 )}
