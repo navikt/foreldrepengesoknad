@@ -9,14 +9,17 @@ interface FortsettKnappProps {
     history: History;
     location?: string;
     children?: JSX.Element | string;
+    onClick?: () => void;
 }
 
 const FortsettKnapp = (props: FortsettKnappProps & InjectedIntlProps) => {
-    const { history, location, intl, children } = props;
+    const { history, location, intl, children, onClick } = props;
     return (
         <Hovedknapp
             className="fortsettKnapp"
-            onClick={() => history.push(location as string)}>
+            onClick={() =>
+                onClick ? onClick() : history.push(location as string)
+            }>
             {children || getMessage(intl, 'fortsettknapp.label')}
         </Hovedknapp>
     );

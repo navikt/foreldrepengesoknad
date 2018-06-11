@@ -42,7 +42,7 @@ const FødselsnummerSpørsmål = (props: Props) => {
                 render={() => (
                     <Checkbox
                         disabled={kanIkkeOppgis}
-                        checked={utenlandskFnr}
+                        checked={utenlandskFnr || false}
                         label={getMessage(
                             intl,
                             'annenForelder.spørsmål.utenlandskFnr'

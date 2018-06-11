@@ -13,6 +13,8 @@ import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTi
 import RelasjonTilBarnStebarnsadopsjonSteg from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjonSteg';
 import RelasjonTilBarnForeldreansvarSteg from './relasjon-til-barn-foreldreansvar/RelasjonTilBarnForeldreansvarSteg';
 import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
+import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
+import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
 import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
 
 export const søknadStegPath = (stegPath?: string): string =>
@@ -56,6 +58,16 @@ class Steg extends React.Component<RouteComponentProps<any>> {
                         path={søknadStegPath(StegID.UTENLANDSOPPHOLD)}
                         component={UtenlandsoppholdSteg}
                         key={StegID.UTENLANDSOPPHOLD}
+                    />
+                    <Route
+                        path={søknadStegPath(StegID.ANDRE_INNTEKTER)}
+                        component={AndreInntekterSteg}
+                        key={StegID.ANDRE_INNTEKTER}
+                    />
+                    <Route
+                        path={søknadStegPath(StegID.UTTAKSPLAN)}
+                        component={UttaksplanSteg}
+                        key={StegID.UTTAKSPLAN}
                     />
                 </Switch>
             </Applikasjonsside>

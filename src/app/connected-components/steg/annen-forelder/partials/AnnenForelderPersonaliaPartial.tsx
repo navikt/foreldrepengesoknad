@@ -71,7 +71,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     synlig={!kanIkkeOppgis}
                     render={() => (
                         <Checkbox
-                            checked={søker.erAleneOmOmsorg}
+                            checked={søker.erAleneOmOmsorg || false}
                             label={getMessage(
                                 intl,
                                 'annenForelder.aleneOmOmsorg'

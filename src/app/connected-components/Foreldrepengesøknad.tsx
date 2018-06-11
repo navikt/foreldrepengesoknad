@@ -14,7 +14,6 @@ import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import Velkommen from './sider/velkommen/Velkommen';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
-import Eksempelsøknad from './Eksempelsøknad';
 
 import Person from '../types/Person';
 
@@ -25,6 +24,7 @@ import DevSideoversikt from '../dev/DevSideoversikt';
 import Inngangsside from './sider/inngangsside/Inngangsside';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import VedleggSide from './sider/vedlegg/VedleggSide';
+import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 
 interface StateProps {
     person: Person;
@@ -80,14 +80,14 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 key="steg"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
-                component={Eksempelsøknad}
-                key="eksempelsøknad"
-            />,
-            <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
                 component={Inngangsside}
                 key="inngang"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}/søknad-sendt`}
+                component={SøknadSendtSide}
+                key="søknadsendt"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}/uttaksplan`}
