@@ -4,7 +4,6 @@ import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
 import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
-import { AnnenInntekt } from './AnnenInntekt';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -30,7 +29,6 @@ interface Søknad {
     type: Foreldrepenger;
     harGodkjentVilkår: boolean;
     annenForelder: AnnenForelder;
-    andreInntekterSiste10Mnd: AnnenInntekt[];
     situasjon: Søkersituasjon;
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
@@ -42,7 +40,6 @@ interface Søknad {
 export interface SøknadPartial {
     type?: Foreldrepenger;
     annenForelder: AnnenForelderPartial;
-    andreInntekterSiste10Mnd: AnnenInntekt[];
     situasjon?: Søkersituasjon;
     harGodkjentVilkår: boolean;
     barn: BarnPartial;

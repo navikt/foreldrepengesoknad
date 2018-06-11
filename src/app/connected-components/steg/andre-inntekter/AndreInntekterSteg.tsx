@@ -10,20 +10,16 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
-import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
 import ErDuFrilanserSpørsmål from '../../../spørsmål/ErDuFrilanserSpørsmål';
 import ErDuSelvstendigNæringsdrivendeSpørsmål from '../../../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
+import Søker from '../../../types/søknad/Søker';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
-    søknad: Søknad;
-}
-
-interface State {
-    harHattAnnenInntekt?: AnnenInntekt;
+    søker: Søker;
 }
 
 type Props = AndreInntekterStegProps &
@@ -31,7 +27,7 @@ type Props = AndreInntekterStegProps &
     HistoryProps &
     DispatchProps;
 
-class AndreInntekterSteg extends React.Component<Props, State> {
+class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -43,16 +39,22 @@ class AndreInntekterSteg extends React.Component<Props, State> {
     }
 
     renderAnnenInntektSiste10MndSpørsmål() {
-        const { harHattAnnenInntekt } = this.state;
+        const { søker, dispatch } = this.props;
+        const { harHattAnnenInntektSiste10Mnd } = søker;
+
         return (
             <Spørsmål
                 render={() => (
                     <AnnenInntektSiste10MndSpørsmål
-                        harHattAnnenInntekt={harHattAnnenInntekt}
+                        harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
                         onChange={(value: AnnenInntekt) =>
-                            this.setState({
-                                harHattAnnenInntekt: value
-                            })
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    harHattAnnenInntektSiste10Mnd:
+                                        value ===
+                                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                                })
+                            )
                         }
                     />
                 )}
@@ -61,19 +63,16 @@ class AndreInntekterSteg extends React.Component<Props, State> {
     }
 
     render() {
-        const { harHattAnnenInntekt } = this.state;
-        const { stegProps, søknad, dispatch, intl } = this.props;
-        const { søker } = søknad;
+        const { stegProps, søker, dispatch, intl } = this.props;
+        const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
             <Steg
                 {...stegProps}
                 renderFortsettKnapp={
-                    harHattAnnenInntekt ===
-                        AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT ||
-                    (harHattAnnenInntekt ===
-                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT &&
-                        søknad.andreInntekterSiste10Mnd.length > 0)
+                    harHattAnnenInntektSiste10Mnd === false ||
+                    (harHattAnnenInntektSiste10Mnd === true &&
+                        søker.andreInntekterSiste10Mnd.length > 0)
                 }>
                 <AndreInntekterBolk
                     oppfølgingsspørsmål={getMessage(
@@ -82,13 +81,12 @@ class AndreInntekterSteg extends React.Component<Props, State> {
                     )}
                     renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
                     showAndreInntekterPeriodeContent={
-                        harHattAnnenInntekt ===
-                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                        harHattAnnenInntektSiste10Mnd
                     }
-                    andreInntekterSiste10Mnd={søknad.andreInntekterSiste10Mnd}
+                    andreInntekterSiste10Mnd={søker.andreInntekterSiste10Mnd}
                     onChange={(andreInntekterSiste10Mnd) =>
                         dispatch(
-                            søknadActions.updateSøknad({
+                            søknadActions.updateSøker({
                                 andreInntekterSiste10Mnd
                             })
                         )
@@ -97,11 +95,9 @@ class AndreInntekterSteg extends React.Component<Props, State> {
 
                 <Spørsmål
                     synlig={
-                        harHattAnnenInntekt ===
-                            AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT ||
-                        (harHattAnnenInntekt ===
-                            AnnenInntekt.HAR_HATT_ANNEN_INNTEKT &&
-                            søknad.andreInntekterSiste10Mnd.length > 0)
+                        harHattAnnenInntektSiste10Mnd === false ||
+                        (harHattAnnenInntektSiste10Mnd === true &&
+                            søker.andreInntekterSiste10Mnd.length > 0)
                     }
                     render={() => (
                         <ErDuSelvstendigNæringsdrivendeSpørsmål
@@ -151,7 +147,7 @@ export default injectIntl(
         };
 
         return {
-            søknad,
+            søker,
             stegProps,
             ...props
         };

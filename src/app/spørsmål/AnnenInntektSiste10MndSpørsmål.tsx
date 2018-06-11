@@ -9,7 +9,7 @@ export enum AnnenInntekt {
 }
 
 export interface OwnProps {
-    harHattAnnenInntekt?: AnnenInntekt;
+    harHattAnnenInntekt?: boolean;
     onChange: (value?: string) => void;
 }
 
@@ -20,11 +20,9 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
         const { harHattAnnenInntekt, onChange, intl } = this.props;
 
         let checked;
-        if (harHattAnnenInntekt === AnnenInntekt.HAR_HATT_ANNEN_INNTEKT) {
+        if (harHattAnnenInntekt === true) {
             checked = AnnenInntekt.HAR_HATT_ANNEN_INNTEKT;
-        } else if (
-            harHattAnnenInntekt === AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT
-        ) {
+        } else if (harHattAnnenInntekt === false) {
             checked = AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT;
         }
 
