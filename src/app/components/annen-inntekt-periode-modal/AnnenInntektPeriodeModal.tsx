@@ -14,6 +14,7 @@ import {
     AnnenInntektType
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
+import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface AnnenInntektPeriodeModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -135,7 +136,7 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <div className="annenInntektPeriodeModal__buttonBar">
+                    <Knapperad>
                         <Knapp
                             type="standard"
                             onClick={onRequestClose}
@@ -145,7 +146,7 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                         <Hovedknapp>
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
-                    </div>
+                    </Knapperad>
                 </form>
             </Modal>
         );

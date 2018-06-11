@@ -3,7 +3,7 @@ import { AnnenInntekt } from '../types/søknad/AnnenInntekt';
 import InteractiveList from '../components/interactive-list/InteractiveList';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import { default as AnnenInntektPeriodeModal } from '../components/annen-inntekt-periode-modal/AnnenInntektPeriodeModal';
+import AnnenInntektPeriodeModal from '../components/annen-inntekt-periode-modal/AnnenInntektPeriodeModal';
 import { ISODateToMaskedInput } from '../util/dates';
 
 interface AndreInntekterBolkProps {
@@ -34,7 +34,7 @@ class AndreInntekterBolk extends React.Component<
         this.onAdd = this.onAdd.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.onDelete = this.onDelete.bind(this);
-        this.onElementClick = this.onElementClick.bind(this);
+        this.onSelect = this.onSelect.bind(this);
 
         this.state = {
             modalIsOpen: false
@@ -68,10 +68,7 @@ class AndreInntekterBolk extends React.Component<
         onChange(editedInntekter);
     }
 
-    onElementClick(
-        annenInntektToEdit: AnnenInntekt,
-        annenInntektIndex: number
-    ) {
+    onSelect(annenInntektToEdit: AnnenInntekt, annenInntektIndex: number) {
         this.openModal({
             annenInntektToEdit,
             annenInntektIndex
@@ -114,7 +111,7 @@ class AndreInntekterBolk extends React.Component<
                         <div className="blokk-xs">
                             <InteractiveList
                                 data={andreInntekterSiste10Mnd}
-                                onSelect={this.onElementClick}
+                                onSelect={this.onSelect}
                                 onDelete={this.onDelete}
                                 renderElement={(annenInntekt: AnnenInntekt) => (
                                     <AndreInntekterListeElement
