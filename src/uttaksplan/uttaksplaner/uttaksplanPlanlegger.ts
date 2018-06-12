@@ -6,7 +6,11 @@ import {
     Periodetype
 } from 'uttaksplan/types';
 import { Tidsperiode } from 'nav-datovelger';
-import { sorterPerioder, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import {
+    sorterPerioder,
+    uttaksdagUtil,
+    getTidsperiode
+} from 'uttaksplan/utils/dataUtils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
@@ -17,25 +21,20 @@ function getMødrekvoteFørTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
-    const startdato = getPermisjonStartdato(termindato, permisjonsregler);
-    return {
-        startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(
-            permisjonsregler.antallUkerForelder1FørFødsel * UTTAKSDAGER_I_UKE
-        )
-    };
+    return getTidsperiode(
+        getPermisjonStartdato(termindato, permisjonsregler),
+        permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE
+    );
 }
 
 export function getPakrevdMødrekvoteEtterTermin(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
-    return {
-        startdato: termindato,
-        sluttdato: uttaksdagUtil(termindato).periodeslutt(
-            permisjonsregler.antallUkerForelder1EtterFødsel * UTTAKSDAGER_I_UKE
-        )
-    };
+    return getTidsperiode(
+        termindato,
+        permisjonsregler.antallUkerMødrekvoteEtterFødsel * UTTAKSDAGER_I_UKE
+    );
 }
 
 function getFrivilligMødrekvoteEtterTermin(
@@ -45,14 +44,12 @@ function getFrivilligMødrekvoteEtterTermin(
     const startdato = uttaksdagUtil(
         getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
     ).neste();
-    return {
+    return getTidsperiode(
         startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(
-            (permisjonsregler.antallUkerMødrekvote -
-                permisjonsregler.antallUkerForelder1EtterFødsel) *
-                UTTAKSDAGER_I_UKE
-        )
-    };
+        (permisjonsregler.antallUkerMødrekvote -
+            permisjonsregler.antallUkerMødrekvoteEtterFødsel) *
+            UTTAKSDAGER_I_UKE
+    );
 }
 
 function getFellesperiodeForelder1(
@@ -64,12 +61,7 @@ function getFellesperiodeForelder1(
         getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
             .sluttdato
     ).neste();
-    return {
-        startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(
-            fellesukerForelder1 * UTTAKSDAGER_I_UKE
-        )
-    };
+    return getTidsperiode(startdato, fellesukerForelder1 * UTTAKSDAGER_I_UKE);
 }
 
 function getFellesperiodeForelder2(
@@ -88,12 +80,7 @@ function getFellesperiodeForelder2(
                   fellesukerForelder1
               ).sluttdato
     ).neste();
-    return {
-        startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(
-            fellesukerForelder2 * UTTAKSDAGER_I_UKE
-        )
-    };
+    return getTidsperiode(startdato, fellesukerForelder2 * UTTAKSDAGER_I_UKE);
 }
 
 function getFedrekvote(
@@ -116,12 +103,10 @@ function getFedrekvote(
                   fellesukerForelder2
               ).sluttdato
     ).neste();
-    return {
+    return getTidsperiode(
         startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(
-            permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE
-        )
-    };
+        permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE
+    );
 }
 
 /** Oppretter default stønadsperioder ut fra termindato ++ */
@@ -140,8 +125,7 @@ export function opprettUttaksperioder(
             forelder: 'forelder1',
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
-            låstForelder: true,
-            låstPeriode: true
+            låstForelder: true
         },
         {
             id: guid(),
@@ -152,8 +136,7 @@ export function opprettUttaksperioder(
                 termindato,
                 permisjonsregler
             ),
-            låstForelder: true,
-            låstPeriode: true
+            låstForelder: true
         },
         {
             id: guid(),

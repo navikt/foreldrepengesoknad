@@ -50,7 +50,6 @@ export interface Uttaksperiode extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
-    låstPeriode?: boolean;
     låstForelder?: boolean;
 }
 
@@ -62,13 +61,17 @@ export interface Utsettelsesperiode extends PeriodeBase {
     utsettelseAv?: StønadskontoType;
 }
 
+export type OppholdOpphavType = 'periodeendring' | undefined;
+
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
-    opprettetAvBruker?: boolean;
+    opphav?: OppholdOpphavType;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 
 export type UttakEllerUtsettelseperiode = Uttaksperiode | Utsettelsesperiode;
+
+export type StønadskontoUttak = Map<StønadskontoType, number>;

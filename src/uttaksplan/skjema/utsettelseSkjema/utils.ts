@@ -28,7 +28,8 @@ export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
                   : undefined,
               sluttdato: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.sluttdato
-                  : undefined
+                  : undefined,
+              beholdVarighet: true
           }
         : {
               valideringsfeil: new Map()
@@ -41,7 +42,7 @@ export function validerUtsettelseskjema(
 ): Valideringsfeil {
     const {
         termindato,
-        tidsrom,
+        tidsperiode,
         permisjonsregler,
         registrerteUtsettelser,
         utsettelse,
@@ -63,7 +64,7 @@ export function validerUtsettelseskjema(
     } else {
         const datoValideringsfeil = validerDato(
             startdato,
-            tidsrom,
+            tidsperiode,
             ugyldigeTidsrom,
             termindato
         );
@@ -92,11 +93,11 @@ export function validerUtsettelseskjema(
         const datoValideringsfeil = validerDato(
             sluttdato,
             {
-                ...tidsrom,
+                ...tidsperiode,
                 sluttdato: getTilTidsromSluttdato(
                     termindato,
                     permisjonsregler,
-                    startdato || tidsrom.startdato,
+                    startdato || tidsperiode.startdato,
                     andreUtsettelser
                 )
             },
