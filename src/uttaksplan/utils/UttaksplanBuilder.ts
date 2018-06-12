@@ -34,13 +34,10 @@ class UttaksplanBuilder {
      * @param periode
      */
     leggTilPeriode(periode: Periode) {
-        this.perioder = [
-            ...this.perioder,
-            {
-                ...periode,
-                id: guid()
-            }
-        ];
+        this.perioder = settInnPeriode(this.perioder, {
+            ...periode,
+            id: guid()
+        });
         this.oppdaterUttaksplan();
         return this;
     }
