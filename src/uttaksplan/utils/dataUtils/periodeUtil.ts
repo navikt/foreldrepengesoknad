@@ -17,6 +17,8 @@ import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
 export const perioderUtil = (perioder: Periode[]) => ({
     getOpphold: () => getOpphold(perioder),
     getPeriode: (id: string) => getPeriode(perioder, id),
+    getPeriodeMedSammeStartdato: (periode: Periode) =>
+        getPeriodeMedSammeStartdatoSomPeriode(perioder, periode),
     getUttak: () => getUttaksperioder(perioder),
     getUttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
@@ -365,11 +367,40 @@ function fjernPerioder(perioder: Periode[], fjernes: Periode[]) {
     );
 }
 
+function getPeriodeMedSammeStartdatoSomPeriode(
+    perioder: Periode[],
+    periode: Periode
+) {
+    return perioder.find(
+        (p) =>
+            p.id !== periode.id &&
+            isSameDay(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+    );
+}
+
 /**
  * Erstatter periode i perioder
  * @param perioder
  * @param periode
  */
 function oppdaterPeriode(perioder: Periode[], periode: Periode) {
-    return perioder.map((p) => (p.id === periode.id ? periode : p));
+    // const a
+    // const annenPeriodePåSammeStartdato = perioder.find(
+    //     (p) =>
+    //         p.id !== periode.id &&
+    //         isSameDay(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+    // );
+    return perioder.map((p) => {
+        if (p.id === periode.id) {
+            return periode;
+        }
+        // if (
+        //     annenPeriodePåSammeStartdato &&
+        //     p.id === annenPeriodePåSammeStartdato.id
+        // ) {
+        //     /** Denne vil feile dersom flere har samme startdato */
+        //     return forskyvPeriode(annenPeriodePåSammeStartdato, 1);
+        // }
+        return p;
+    });
 }
