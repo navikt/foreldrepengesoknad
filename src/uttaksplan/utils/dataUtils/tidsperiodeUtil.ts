@@ -17,6 +17,35 @@ export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
         erTidsperioderLike(tidsperiode, tidsperiode2)
 });
 
+export const getTidsperiode = (
+    startdato: Date,
+    uttaksdager: number
+): Tidsperiode => {
+    if (!uttaksdagUtil(startdato).erUttaksdag()) {
+        throw new Error('Startdato er ikke en uttaksdag');
+    }
+    return {
+        startdato,
+        sluttdato: uttaksdagUtil(startdato).leggTil(uttaksdager - 1)
+    };
+};
+
+/**
+ * Summerer antall uttaksdager som er i en eller flere perioder
+ * @param tidsperioder
+ */
+export const getAntallUttaksdagerITidsperioder = (
+    tidsperioder: Tidsperiode[],
+    taBortFridager?: boolean
+): number => {
+    return tidsperioder.reduce(
+        (dager: number, tidsperiode: Tidsperiode) =>
+            dager +
+            getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
+        0
+    );
+};
+
 /**
  * Summerer antall uttaksdager i angitt tidsperiode
  */
@@ -57,10 +86,7 @@ const flyttTidsperiode = (
     startdato: Date
 ): Tidsperiode => {
     const uttaksdager = getAntallUttaksdagerITidsperiode(tidsperiode);
-    return {
-        startdato,
-        sluttdato: uttaksdagUtil(startdato).periodeslutt(uttaksdager)
-    };
+    return getTidsperiode(startdato, uttaksdager);
 };
 
 const erTidsperioderLike = (t1: Tidsperiode, t2: Tidsperiode) =>

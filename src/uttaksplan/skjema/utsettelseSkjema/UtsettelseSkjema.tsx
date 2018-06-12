@@ -29,10 +29,11 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
+import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
 
 interface OwnProps {
     termindato: Date;
-    tidsrom: Tidsperiode;
+    tidsperiode: Tidsperiode;
     utsettelse?: Utsettelsesperiode;
     registrerteUtsettelser: Utsettelsesperiode[];
     navnForelder1?: string;
@@ -51,6 +52,7 @@ export interface State {
     sluttdato?: Date;
     valideringsfeil: Valideringsfeil;
     visValideringsfeil?: boolean;
+    beholdVarighet?: boolean;
 }
 
 class UtsettelseSkjema extends React.Component<Props, State> {
@@ -76,15 +78,27 @@ class UtsettelseSkjema extends React.Component<Props, State> {
 
     setStartdato(dato: Date) {
         const startdato = normaliserDato(dato);
-        const sluttdato = this.state.sluttdato;
+
+        let sluttdato = this.state.sluttdato;
+        if (
+            this.state.beholdVarighet &&
+            sluttdato &&
+            this.state.startdato &&
+            (isBefore(startdato, sluttdato) || isSameDay(startdato, sluttdato))
+        ) {
+            sluttdato = tidsperiodeUtil({
+                startdato: this.state.startdato,
+                sluttdato
+            }).setStartdato(startdato).sluttdato;
+        } else if (
+            sluttdato &&
+            (isBefore(startdato, sluttdato) || isSameDay(startdato, sluttdato))
+        ) {
+            sluttdato = undefined;
+        }
         this.setState({
             startdato,
-            sluttdato: sluttdato
-                ? isBefore(startdato, sluttdato) ||
-                  isSameDay(startdato, sluttdato)
-                    ? sluttdato
-                    : undefined
-                : undefined
+            sluttdato
         });
         this.revaliderSkjema();
     }
@@ -136,12 +150,18 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     }
 
     render() {
-        const { årsak, startdato, sluttdato, forelder } = this.state;
+        const {
+            årsak,
+            startdato,
+            sluttdato,
+            forelder,
+            beholdVarighet
+        } = this.state;
         const {
             utsettelse,
             navnForelder1,
             navnForelder2,
-            tidsrom,
+            tidsperiode,
             permisjonsregler,
             termindato,
             registrerteUtsettelser,
@@ -151,8 +171,10 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const utsettelser = utsettelse
             ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
             : registrerteUtsettelser;
-        const tilTidsromStartdato = startdato ? startdato : tidsrom.startdato;
-        const tilTidsrom: Tidsperiode = {
+        const tilTidsromStartdato = startdato
+            ? startdato
+            : tidsperiode.startdato;
+        const tilTidsperiode: Tidsperiode = {
             startdato: tilTidsromStartdato,
             sluttdato: getTilTidsromSluttdato(
                 termindato,
@@ -252,7 +274,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                     id:
                                         'uttaksplan.utsettelseskjema.startdato.sporsmal'
                                 }),
-                                tidsperiode: tidsrom,
+                                tidsperiode,
                                 onChange: this.setStartdato,
                                 feil: startdatoFeil,
                                 visFeil: visStartdatofeil
@@ -263,11 +285,15 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                     id:
                                         'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
                                 }),
-                                tidsperiode: tilTidsrom,
+                                tidsperiode: tilTidsperiode,
                                 onChange: this.setSluttdato,
                                 feil: sluttdatoFeil,
                                 visFeil: visSluttdatofeil
                             }}
+                            beholdVarighet={beholdVarighet}
+                            onChangeBeholdVarighet={(behold) =>
+                                this.setState({ beholdVarighet: behold })
+                            }
                             ugyldigeTidsperioder={ugyldigeTidsrom}
                             tidsperiodeFeil={tidsperiodeFeil}
                             helgedagerIkkeTillatt={true}

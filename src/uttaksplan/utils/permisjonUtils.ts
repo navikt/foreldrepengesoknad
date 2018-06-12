@@ -18,7 +18,7 @@ export function getPermisjonStartdato(
 ): Date {
     return uttaksdagUtil(
         termindato // Siste uttaksdag i denne perioden er dagen før termin
-    ).leggTil(-1 * permisjonsregler.antallUkerForelder1FørFødsel * 5);
+    ).leggTil(-1 * permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
 }
 
 export function getSisteMuligePermisjonsdag(
@@ -68,8 +68,21 @@ export function getAntallUkerFellesperiode(
         totaltAntallUker -
         permisjonsregler.antallUkerMødrekvote -
         permisjonsregler.antallUkerFedrekvote -
-        permisjonsregler.antallUkerForelder1FørFødsel
+        permisjonsregler.antallUkerForeldrepengerFørFødsel
     );
+}
+/**
+ * Finner totalt antall uker tilgjengelig
+ * @param permisjonsregler
+ * @param dekningsgrad
+ */
+export function getAntallUkerTotalt(
+    permisjonsregler: Permisjonsregler,
+    dekningsgrad: Dekningsgrad
+) {
+    return dekningsgrad === '80%'
+        ? permisjonsregler.antallUkerTotalt80
+        : permisjonsregler.antallUkerTotalt100;
 }
 
 /**
