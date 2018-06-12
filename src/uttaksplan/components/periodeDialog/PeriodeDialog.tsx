@@ -55,7 +55,7 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     navnForelder1={props.navnForelder1}
                     navnForelder2={props.navnForelder2}
                     permisjonsregler={props.permisjonsregler}
-                    tidsrom={props.tidsrom}
+                    tidsperiode={props.tidsrom}
                     onChange={(u) =>
                         props.dispatch(opprettEllerOppdaterPeriode(u))
                     }

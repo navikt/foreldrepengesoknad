@@ -47,6 +47,7 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
+import FordelingUttaksplan from 'uttaksplan/connectedComponents/fordelingUttaksplan/FordelingUttaksplan';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -167,6 +168,9 @@ class UttaksplanMain extends React.Component<Props> {
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
+                        <div className="blokk-s">
+                            <FordelingUttaksplan />
+                        </div>
                         <div className="blokk-m">
                             <Timeline
                                 items={innslag.map((i) =>

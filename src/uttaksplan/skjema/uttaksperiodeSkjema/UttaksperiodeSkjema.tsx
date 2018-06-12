@@ -14,6 +14,7 @@ import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
+import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
 
 export interface OwnProps {
     periode: Uttaksperiode;
@@ -26,6 +27,7 @@ export interface State {
     startdato?: Date;
     sluttdato?: Date;
     stønadskonto?: StønadskontoType;
+    beholdVarighet?: boolean;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -43,12 +45,25 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             forelder: periode ? periode.forelder : undefined,
             stønadskonto: periode ? periode.konto : undefined,
             startdato: periode ? periode.tidsperiode.startdato : undefined,
-            sluttdato: periode ? periode.tidsperiode.sluttdato : undefined
+            sluttdato: periode ? periode.tidsperiode.sluttdato : undefined,
+            beholdVarighet: true
         };
     }
 
     setStartdato(startdato: Date) {
-        this.setState({ startdato: normaliserDato(startdato) });
+        let sluttdato = this.state.sluttdato;
+        if (this.state.beholdVarighet && sluttdato && this.state.startdato) {
+            sluttdato = tidsperiodeUtil({
+                startdato: this.state.startdato,
+                sluttdato
+            }).setStartdato(startdato).sluttdato;
+        }
+        this.setState({
+            startdato: normaliserDato(startdato),
+            sluttdato: sluttdato
+                ? normaliserDato(sluttdato)
+                : this.state.sluttdato
+        });
     }
 
     setSluttdato(sluttdato: Date) {
@@ -93,7 +108,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
-
+        const { beholdVarighet, startdato, sluttdato, forelder } = this.state;
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
         return (
@@ -107,25 +122,27 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 <div className="blokkPad-s">
                     <TidsperiodeSpørsmål
                         startdato={{
-                            dato: this.state.startdato,
+                            dato: startdato,
                             onChange: this.setStartdato
                         }}
                         sluttdato={{
-                            dato: this.state.sluttdato,
+                            dato: sluttdato,
                             onChange: this.setSluttdato
                         }}
+                        helgedagerIkkeTillatt={true}
+                        beholdVarighet={beholdVarighet}
+                        onChangeBeholdVarighet={(behold) =>
+                            this.setState({ beholdVarighet: behold })
+                        }
                     />
                 </div>
                 <EkspanderbartInnhold
-                    erApen={
-                        this.state.startdato !== undefined &&
-                        this.state.sluttdato !== undefined
-                    }>
+                    erApen={startdato !== undefined && sluttdato !== undefined}>
                     <div className="blokkPad-s">
                         <HvemGjelderPeriodenSpørsmål
                             spørsmål="Hvem gjelder perioden?"
-                            forelder={this.state.forelder}
-                            onChange={(forelder) => this.setState({ forelder })}
+                            forelder={forelder}
+                            onChange={(f) => this.setState({ forelder: f })}
                         />
                     </div>
                 </EkspanderbartInnhold>

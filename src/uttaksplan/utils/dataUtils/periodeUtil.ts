@@ -6,9 +6,13 @@ import {
     Tidsperiode,
     Periodetype,
     Oppholdsperiode,
-    OppholdÅrsakType
+    OppholdÅrsakType,
+    OppholdOpphavType,
+    StønadskontoType,
+    StønadskontoUttak
 } from '../../types';
 import { uttaksdagUtil, tidsperiodeUtil } from './';
+import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
 
 export const perioderUtil = (perioder: Periode[]) => ({
     uttaksperioder: () => getUttaksperioder(perioder),
@@ -16,13 +20,17 @@ export const perioderUtil = (perioder: Periode[]) => ({
     uttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
     opphold: () => getOpphold(perioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
-    finnPerioderITidsrom: (tidsperiode: Tidsperiode) =>
-        finnPerioderITidsrom(perioder, tidsperiode),
+    finnOverlappendePerioder: (tidsperiode: Tidsperiode) =>
+        finnOverlappendePerioder(perioder, tidsperiode),
     forskyv: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     foregåendePerioder: (periode: Periode) =>
         finnPerioderFørPeriode(perioder, periode),
     påfølgendePerioder: (periode: Periode) =>
-        finnPerioderEtterPeriode(perioder, periode)
+        finnPerioderEtterPeriode(perioder, periode),
+    antallUttaksdager: (konto?: StønadskontoType) =>
+        getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
+    antallUttaksdagerPerKonto: (): StønadskontoUttak =>
+        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder))
 });
 
 export const periodeUtil = (periode: Periode) => ({
@@ -33,7 +41,11 @@ export const periodeUtil = (periode: Periode) => ({
     antallUttaksdager: () =>
         tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
     oppholdsperioderVedEndretTidsperiode: (endretPeriode: Periode) =>
-        finnOppholdVedEndretTidsperiode(periode, endretPeriode)
+        finnOppholdVedEndretTidsperiode(
+            periode,
+            endretPeriode,
+            'periodeendring'
+        )
 });
 
 /**
@@ -112,21 +124,21 @@ function finnPeriodeMedDato(
  * @param perioder Alle perioder
  * @param tidsperiode
  */
-function finnPerioderITidsrom(
+function finnOverlappendePerioder(
     perioder: Periode[],
     tidsperiode: Tidsperiode
 ): Periode[] {
     return perioder.filter((periode) => {
         return (
             isWithinRange(
-                periode.tidsperiode.startdato,
                 tidsperiode.startdato,
-                tidsperiode.sluttdato
+                periode.tidsperiode.startdato,
+                periode.tidsperiode.sluttdato
             ) ||
             isWithinRange(
-                periode.tidsperiode.sluttdato,
-                tidsperiode.startdato,
-                tidsperiode.sluttdato
+                tidsperiode.sluttdato,
+                periode.tidsperiode.startdato,
+                periode.tidsperiode.sluttdato
             )
         );
     });
@@ -152,10 +164,7 @@ function forskyvPeriode(periode: Periode, dager: number): Periode {
     const startdato = uttaksdagUtil(tidsperiode.startdato).leggTil(dager);
     return {
         ...periode,
-        tidsperiode: {
-            startdato,
-            sluttdato: uttaksdagUtil(startdato).periodeslutt(uttaksdager)
-        }
+        tidsperiode: getTidsperiode(startdato, uttaksdager)
     };
 }
 
@@ -214,8 +223,8 @@ function erPerioderLike(p1: Periode, p2: Periode) {
     }
     const getPeriodeFootprint = (periode: Uttaksperiode) =>
         `${periode.type}${periode.forelder}${periode.konto}${
-            periode.låstPeriode
-        }${periode.låstForelder}`;
+            periode.låstForelder
+        }`;
     const k1 = getPeriodeFootprint(p1);
     const k2 = getPeriodeFootprint(p2);
     return k1 === k2;
@@ -239,21 +248,86 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
 function finnOppholdVedEndretTidsperiode(
     prevPeriode: Periode,
     periode: Periode,
-    opprettetAvBruker: boolean = false
+    opphav: OppholdOpphavType
 ): Oppholdsperiode[] {
     const opphold: Oppholdsperiode[] = [];
-    const diffStartdato = uttaksdagUtil(
-        prevPeriode.tidsperiode.startdato
-    ).uttaksdagerFlyttet(periode.tidsperiode.startdato);
-    const tidsperiode: Tidsperiode = uttaksdagUtil(
-        prevPeriode.tidsperiode.startdato
-    ).tidsperiode(diffStartdato);
+    const diffStartdato =
+        uttaksdagUtil(prevPeriode.tidsperiode.startdato).uttaksdagerFremTilDato(
+            periode.tidsperiode.startdato
+        ) + 1;
     opphold.push({
         type: Periodetype.Opphold,
         årsak: OppholdÅrsakType.Ingen,
         forelder: periode.forelder,
-        tidsperiode,
-        opprettetAvBruker
+        tidsperiode: getTidsperiode(
+            prevPeriode.tidsperiode.startdato,
+            diffStartdato
+        ),
+        opphav
     });
     return opphold;
+}
+
+function getAntallUttaksdagerIPerioderOgKonto(
+    perioder: Periode[],
+    konto?: StønadskontoType
+) {
+    const uttaksperioder = perioderUtil(perioder).uttaksperioder();
+    return uttaksperioder.reduce((dager: number, periode: Uttaksperiode) => {
+        if (konto === undefined || periode.konto === konto) {
+            return (
+                dager + tidsperiodeUtil(periode.tidsperiode).antallUttaksdager()
+            );
+        }
+        return dager;
+    }, 0);
+}
+
+function getAntallUttaksdagerPerKonto(
+    uttaksperioder: Uttaksperiode[]
+): StønadskontoUttak {
+    const fordeling: StønadskontoUttak = new Map();
+    fordeling.set(
+        StønadskontoType.ForeldrepengerFørFødsel,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.ForeldrepengerFørFødsel
+        )
+    );
+    fordeling.set(
+        StønadskontoType.Foreldrepenger,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.Foreldrepenger
+        )
+    );
+    fordeling.set(
+        StønadskontoType.Mødrekvote,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.Mødrekvote
+        )
+    );
+    fordeling.set(
+        StønadskontoType.Fedrekvote,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.Fedrekvote
+        )
+    );
+    fordeling.set(
+        StønadskontoType.Fellesperiode,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.Fellesperiode
+        )
+    );
+    fordeling.set(
+        StønadskontoType.SamtidigUttak,
+        getAntallUttaksdagerIPerioderOgKonto(
+            uttaksperioder,
+            StønadskontoType.SamtidigUttak
+        )
+    );
+    return fordeling;
 }
