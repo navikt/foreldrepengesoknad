@@ -175,11 +175,9 @@ const fjernOppholdsperioderIPeriodetidsrom = (
                     sluttdato: o.tidsperiode.sluttdato
                 }
             };
-            console.log(justertOpphold);
             oppholdSomMåBeholdes.push(justertOpphold);
         }
     });
-    console.log(oppholdSomMåBeholdes);
     nyePerioder = nyePerioder.filter(
         (p) =>
             oppholdSomKanFjernesHelt.findIndex((o) => p.id === o.id) >= 0
