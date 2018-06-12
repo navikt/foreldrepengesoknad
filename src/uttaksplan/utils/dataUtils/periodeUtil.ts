@@ -130,17 +130,12 @@ function finnOverlappendePerioder(
     tidsperiode: Tidsperiode
 ): Periode[] {
     return perioder.filter((periode) => {
+        const { startdato, sluttdato } = periode.tidsperiode;
         return (
-            isWithinRange(
-                tidsperiode.startdato,
-                periode.tidsperiode.startdato,
-                periode.tidsperiode.sluttdato
-            ) ||
-            isWithinRange(
-                tidsperiode.sluttdato,
-                periode.tidsperiode.startdato,
-                periode.tidsperiode.sluttdato
-            )
+            (isBefore(startdato, tidsperiode.sluttdato) ||
+                isSameDay(startdato, tidsperiode.sluttdato)) &&
+            (isAfter(sluttdato, tidsperiode.startdato) ||
+                isSameDay(sluttdato, tidsperiode.startdato))
         );
     });
 }
@@ -252,20 +247,21 @@ function finnOppholdVedEndretTidsperiode(
     opphav: OppholdOpphavType
 ): Oppholdsperiode[] {
     const opphold: Oppholdsperiode[] = [];
-    const diffStartdato =
-        uttaksdagUtil(prevPeriode.tidsperiode.startdato).uttaksdagerFremTilDato(
-            periode.tidsperiode.startdato
-        ) + 1;
-    opphold.push({
-        type: Periodetype.Opphold,
-        årsak: OppholdÅrsakType.Ingen,
-        forelder: periode.forelder,
-        tidsperiode: getTidsperiode(
-            prevPeriode.tidsperiode.startdato,
-            diffStartdato
-        ),
-        opphav
-    });
+    const diffStartdato = uttaksdagUtil(
+        prevPeriode.tidsperiode.startdato
+    ).uttaksdagerFremTilDato(periode.tidsperiode.startdato);
+    if (diffStartdato > 0) {
+        opphold.push({
+            type: Periodetype.Opphold,
+            årsak: OppholdÅrsakType.Ingen,
+            forelder: periode.forelder,
+            tidsperiode: getTidsperiode(
+                prevPeriode.tidsperiode.startdato,
+                diffStartdato
+            ),
+            opphav
+        });
+    }
     return opphold;
 }
 
