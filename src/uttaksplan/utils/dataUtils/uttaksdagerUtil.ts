@@ -1,4 +1,4 @@
-import { addDays, getISODay, isAfter, isSameDay, isBefore } from 'date-fns';
+import { addDays, getISODay, isSameDay, isBefore } from 'date-fns';
 import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
 
 export const getUkedag = (dato: Date) => getISODay(dato);
@@ -116,19 +116,28 @@ const trekkUttaksdagerFraDato = (dato: Date, uttaksdager: number): Date => {
 };
 
 /**
- * Finner antall uttaksdager som er mellom to datoer
+ * Finner antall uttaksdager som er mellom to datoer. Dvs.
  * @param fra
  * @param til
  */
-const getUttaksdagerFremTilDato = (fra: Date, til: Date): number => {
-    const startdato: Date = uttaksdagUtil(fra).neste();
-    const sluttdato: Date = uttaksdagUtil(til).forrige();
-
-    if (isSameDay(startdato, sluttdato) || isAfter(startdato, sluttdato)) {
+const getUttaksdagerFremTilDato = (
+    startdato: Date,
+    sluttdato: Date
+): number => {
+    if (isSameDay(startdato, sluttdato)) {
         return 0;
     }
     if (isBefore(startdato, sluttdato)) {
-        return tidsperiodeUtil({ startdato, sluttdato }).antallUttaksdager();
+        return (
+            tidsperiodeUtil({ startdato, sluttdato }).antallUttaksdager() - 1
+        );
     }
-    return tidsperiodeUtil({ sluttdato, startdato }).antallUttaksdager();
+    return (
+        -1 *
+        (tidsperiodeUtil({
+            startdato: sluttdato,
+            sluttdato: startdato
+        }).antallUttaksdager() -
+            1)
+    );
 };
