@@ -25,6 +25,7 @@ export interface OwnProps {
     tidsperiodeFeil?: Feil;
     ugyldigeTidsperioder?: Tidsperiode[];
     helgedagerIkkeTillatt?: boolean;
+    visBeholdVarighet?: boolean;
     beholdVarighet?: boolean;
     onChangeBeholdVarighet: (behold: boolean) => void;
 }
@@ -38,12 +39,12 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     ugyldigeTidsperioder,
     helgedagerIkkeTillatt,
     beholdVarighet,
+    visBeholdVarighet,
     onChangeBeholdVarighet,
     intl
 }) => {
-    const minSluttdato = startdato.tidsperiode
-        ? startdato.tidsperiode.sluttdato
-        : startdato.dato;
+    const minSluttdato = startdato.dato;
+    const tilDatoDisabled = visBeholdVarighet && beholdVarighet;
     return (
         <SkjemaGruppe
             feil={tidsperiodeFeil}
@@ -88,13 +89,15 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 }}
                             />
                         </div>
-                        <Checkbox
-                            checked={beholdVarighet}
-                            label="Behold varigheten"
-                            onChange={(evt) =>
-                                onChangeBeholdVarighet(evt.target.checked)
-                            }
-                        />
+                        {visBeholdVarighet && (
+                            <Checkbox
+                                checked={beholdVarighet}
+                                label="Behold varigheten"
+                                onChange={(evt) =>
+                                    onChangeBeholdVarighet(evt.target.checked)
+                                }
+                            />
+                        )}
                     </div>
                 </Column>
                 <Column xs="12" sm="6">
@@ -124,7 +127,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}
-                                disabled={beholdVarighet}
+                                disabled={tilDatoDisabled}
                             />
                         </div>
                         {startdato.dato &&
