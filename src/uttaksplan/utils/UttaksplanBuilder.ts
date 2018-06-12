@@ -6,8 +6,7 @@ import {
     OppholdÅrsakType,
     Uttaksperiode,
     Utsettelsesperiode,
-    Periode,
-    Tidsperiode
+    Periode
 } from 'uttaksplan/types';
 import {
     tidsperiodeUtil,
@@ -58,9 +57,9 @@ class UttaksplanBuilder {
             throw new Error('Periode for endring ikke funnet');
         }
 
-        this.perioder = fjernOppholdsperioderITidsrom(
+        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
             this.perioder,
-            periode.tidsperiode
+            periode
         );
 
         const opphold = periodeUtil(
@@ -139,16 +138,34 @@ class UttaksplanBuilder {
     }
 }
 
-const fjernOppholdsperioderITidsrom = (
+const fjernOppholdsperioderIPeriodetidsrom = (
     perioder: Periode[],
-    tidsperiode: Tidsperiode
+    periode: Periode
 ): Periode[] => {
-    const nyePerioder: Periode[] = [...perioder];
-    const berørtePerioder = perioderUtil(perioder).finnOverlappendePerioder(
-        tidsperiode
+    let nyePerioder: Periode[] = [...perioder];
+    const opphold = perioderUtil(perioder.filter((p) => p.id !== periode.id))
+        .finnOverlappendePerioder(periode.tidsperiode)
+        .filter((p) => p.type === Periodetype.Opphold) as Oppholdsperiode[];
+
+    // Fjern alle perioder som er helt omsluttet av periode
+    const oppholdSomMåBeholdes: Oppholdsperiode[] = [];
+    const oppholdSomKanFjernes: Oppholdsperiode[] = [];
+    opphold.forEach((o) => {
+        if (
+            !tidsperiodeUtil(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)
+        ) {
+            oppholdSomMåBeholdes.push(o);
+        } else {
+            oppholdSomKanFjernes.push(o);
+        }
+    });
+    nyePerioder = nyePerioder.filter(
+        (p) =>
+            oppholdSomKanFjernes.findIndex((o) => p.id === o.id) >= 0
+                ? false
+                : true
     );
-    console.log(berørtePerioder);
-    return nyePerioder;
+    return [...nyePerioder];
 };
 
 /**

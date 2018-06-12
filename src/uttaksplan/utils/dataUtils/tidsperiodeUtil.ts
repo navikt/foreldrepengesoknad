@@ -2,6 +2,7 @@ import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
 import { uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
+import { isSameDay, isAfter, isBefore } from 'date-fns';
 
 /**
  * Wrapper en Tidsperiode med uttaksdager-funksjonalitet
@@ -14,7 +15,9 @@ export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
         getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     antallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     erLik: (tidsperiode2: Tidsperiode) =>
-        erTidsperioderLike(tidsperiode, tidsperiode2)
+        erTidsperioderLike(tidsperiode, tidsperiode2),
+    erOmsluttetAv: (tidsperiode2: Tidsperiode) =>
+        erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2)
 });
 
 export const getTidsperiode = (
@@ -91,3 +94,25 @@ const flyttTidsperiode = (
 
 const erTidsperioderLike = (t1: Tidsperiode, t2: Tidsperiode) =>
     JSON.stringify(t1) === JSON.stringify(t2);
+
+const erTidsperiodeOmsluttetAvTidsperiode = (
+    tidsperiode1: Tidsperiode,
+    tidsperiode2: Tidsperiode
+): boolean => {
+    return (
+        erSammeEllerSenereDato(
+            tidsperiode1.startdato,
+            tidsperiode2.startdato
+        ) &&
+        erSammeEllerTidligereDato(
+            tidsperiode1.sluttdato,
+            tidsperiode2.sluttdato
+        )
+    );
+};
+
+export const erSammeEllerTidligereDato = (d1: Date, d2: Date) =>
+    isSameDay(d1, d2) || isBefore(d1, d2);
+
+export const erSammeEllerSenereDato = (d1: Date, d2: Date) =>
+    isSameDay(d1, d2) || isAfter(d1, d2);
