@@ -15,6 +15,7 @@ import { uttaksdagUtil, tidsperiodeUtil } from './';
 import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
 
 export const perioderUtil = (perioder: Periode[]) => ({
+    getPeriode: (id: string) => perioder.find((p) => p.id === id),
     uttaksperioder: () => getUttaksperioder(perioder),
     utsettelser: () => getUtsettelser(perioder),
     uttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
@@ -30,7 +31,9 @@ export const perioderUtil = (perioder: Periode[]) => ({
     antallUttaksdager: (konto?: StønadskontoType) =>
         getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
     antallUttaksdagerPerKonto: (): StønadskontoUttak =>
-        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder))
+        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
+    fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
+    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode)
 });
 
 export const periodeUtil = (periode: Periode) => ({
@@ -129,17 +132,12 @@ function finnOverlappendePerioder(
     tidsperiode: Tidsperiode
 ): Periode[] {
     return perioder.filter((periode) => {
+        const { startdato, sluttdato } = periode.tidsperiode;
         return (
-            isWithinRange(
-                tidsperiode.startdato,
-                periode.tidsperiode.startdato,
-                periode.tidsperiode.sluttdato
-            ) ||
-            isWithinRange(
-                tidsperiode.sluttdato,
-                periode.tidsperiode.startdato,
-                periode.tidsperiode.sluttdato
-            )
+            (isBefore(startdato, tidsperiode.sluttdato) ||
+                isSameDay(startdato, tidsperiode.sluttdato)) &&
+            (isAfter(sluttdato, tidsperiode.startdato) ||
+                isSameDay(sluttdato, tidsperiode.startdato))
         );
     });
 }
@@ -251,20 +249,21 @@ function finnOppholdVedEndretTidsperiode(
     opphav: OppholdOpphavType
 ): Oppholdsperiode[] {
     const opphold: Oppholdsperiode[] = [];
-    const diffStartdato =
-        uttaksdagUtil(prevPeriode.tidsperiode.startdato).uttaksdagerFremTilDato(
-            periode.tidsperiode.startdato
-        ) + 1;
-    opphold.push({
-        type: Periodetype.Opphold,
-        årsak: OppholdÅrsakType.Ingen,
-        forelder: periode.forelder,
-        tidsperiode: getTidsperiode(
-            prevPeriode.tidsperiode.startdato,
-            diffStartdato
-        ),
-        opphav
-    });
+    const diffStartdato = uttaksdagUtil(
+        prevPeriode.tidsperiode.startdato
+    ).uttaksdagerFremTilDato(periode.tidsperiode.startdato);
+    if (diffStartdato > 0) {
+        opphold.push({
+            type: Periodetype.Opphold,
+            årsak: OppholdÅrsakType.Ingen,
+            forelder: periode.forelder,
+            tidsperiode: getTidsperiode(
+                prevPeriode.tidsperiode.startdato,
+                diffStartdato
+            ),
+            opphav
+        });
+    }
     return opphold;
 }
 
@@ -330,4 +329,14 @@ function getAntallUttaksdagerPerKonto(
         )
     );
     return fordeling;
+}
+
+function fjernPerioder(perioder: Periode[], fjernes: Periode[]) {
+    return perioder.filter(
+        (p) => (fjernes.findIndex((f) => p.id === f.id) >= 0 ? false : true)
+    );
+}
+
+function oppdaterPeriode(perioder: Periode[], periode: Periode) {
+    return perioder.map((p) => (p.id === periode.id ? periode : p));
 }
