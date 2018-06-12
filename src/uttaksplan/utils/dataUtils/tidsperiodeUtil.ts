@@ -17,7 +17,9 @@ export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
     erLik: (tidsperiode2: Tidsperiode) =>
         erTidsperioderLike(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: Tidsperiode) =>
-        erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2)
+        erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
+    erUtenfor: (tidsperiode2: Tidsperiode) =>
+        erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2)
 });
 
 export const getTidsperiode = (
@@ -108,6 +110,16 @@ const erTidsperiodeOmsluttetAvTidsperiode = (
             tidsperiode1.sluttdato,
             tidsperiode2.sluttdato
         )
+    );
+};
+
+const erTidsperiodeUtenforTidsperiode = (
+    tidsperiode1: Tidsperiode,
+    tidsperiode2: Tidsperiode
+): boolean => {
+    return (
+        isAfter(tidsperiode1.startdato, tidsperiode2.sluttdato) ||
+        isBefore(tidsperiode1.sluttdato, tidsperiode2.startdato)
     );
 };
 

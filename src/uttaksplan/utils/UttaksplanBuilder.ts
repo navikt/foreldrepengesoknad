@@ -142,20 +142,21 @@ const fjernOppholdsperioderIPeriodetidsrom = (
     perioder: Periode[],
     periode: Periode
 ): Periode[] => {
-    let nyePerioder: Periode[] = [...perioder];
-    const opphold = perioderUtil(perioder.filter((p) => p.id !== periode.id))
-        .finnOverlappendePerioder(periode.tidsperiode)
-        .filter((p) => p.type === Periodetype.Opphold) as Oppholdsperiode[];
-
-    const oppholdSomMåBeholdes: Oppholdsperiode[] = [];
-    const oppholdSomKanFjernesHelt: Oppholdsperiode[] = []; // Helt omsluttet av periode
+    const nyePerioder: Periode[] = perioder.filter(
+        (p) => p.type !== Periodetype.Opphold
+    );
+    const opphold = perioder.filter((p) => p.type === Periodetype.Opphold);
     opphold.forEach((o) => {
         if (tidsperiodeUtil(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
-            oppholdSomKanFjernesHelt.push(o);
+            return;
+        } else if (
+            tidsperiodeUtil(o.tidsperiode).erUtenfor(periode.tidsperiode)
+        ) {
+            nyePerioder.push(o);
         } else if (
             isBefore(o.tidsperiode.startdato, periode.tidsperiode.startdato)
         ) {
-            const justertOpphold: Oppholdsperiode = {
+            nyePerioder.push({
                 ...o,
                 tidsperiode: {
                     startdato: o.tidsperiode.startdato,
@@ -163,10 +164,9 @@ const fjernOppholdsperioderIPeriodetidsrom = (
                         periode.tidsperiode.startdato
                     ).forrige()
                 }
-            };
-            oppholdSomMåBeholdes.push(justertOpphold);
+            });
         } else {
-            const justertOpphold: Oppholdsperiode = {
+            nyePerioder.push({
                 ...o,
                 tidsperiode: {
                     startdato: uttaksdagUtil(
@@ -174,20 +174,10 @@ const fjernOppholdsperioderIPeriodetidsrom = (
                     ).neste(),
                     sluttdato: o.tidsperiode.sluttdato
                 }
-            };
-            oppholdSomMåBeholdes.push(justertOpphold);
+            });
         }
     });
-    nyePerioder = nyePerioder.filter(
-        (p) =>
-            oppholdSomKanFjernesHelt.findIndex((o) => p.id === o.id) >= 0
-                ? false
-                : true
-    );
-    oppholdSomMåBeholdes.forEach((o) => {
-        nyePerioder = nyePerioder.map((p) => (p.id === o.id ? o : p));
-    });
-    return [...nyePerioder];
+    return nyePerioder;
 };
 
 /**

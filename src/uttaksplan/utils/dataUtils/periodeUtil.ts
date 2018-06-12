@@ -31,7 +31,9 @@ export const perioderUtil = (perioder: Periode[]) => ({
     antallUttaksdager: (konto?: StønadskontoType) =>
         getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
     antallUttaksdagerPerKonto: (): StønadskontoUttak =>
-        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder))
+        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
+    fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
+    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode)
 });
 
 export const periodeUtil = (periode: Periode) => ({
@@ -327,4 +329,14 @@ function getAntallUttaksdagerPerKonto(
         )
     );
     return fordeling;
+}
+
+function fjernPerioder(perioder: Periode[], fjernes: Periode[]) {
+    return perioder.filter(
+        (p) => (fjernes.findIndex((f) => p.id === f.id) >= 0 ? false : true)
+    );
+}
+
+function oppdaterPeriode(perioder: Periode[], periode: Periode) {
+    return perioder.map((p) => (p.id === periode.id ? periode : p));
 }
