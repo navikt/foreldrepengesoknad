@@ -6,7 +6,8 @@ import {
     OppholdÅrsakType,
     Uttaksperiode,
     Utsettelsesperiode,
-    Periode
+    Periode,
+    Tidsperiode
 } from 'uttaksplan/types';
 import {
     tidsperiodeUtil,
@@ -50,7 +51,22 @@ class UttaksplanBuilder {
      * @param periode
      */
     oppdaterPeriode(periode: Periode) {
-        this.perioder = this.perioder
+        const prevPeriode = periode.id
+            ? perioderUtil(this.perioder).getPeriode(periode.id)
+            : undefined;
+        if (!prevPeriode) {
+            throw new Error('Periode for endring ikke funnet');
+        }
+
+        this.perioder = fjernOppholdsperioderITidsrom(
+            this.perioder,
+            periode.tidsperiode
+        );
+
+        const opphold = periodeUtil(
+            prevPeriode
+        ).oppholdsperioderVedEndretTidsperiode(periode);
+        this.perioder = [...this.perioder, ...opphold]
             .map((p) => (p.id === periode.id ? periode : p))
             .sort(sorterPerioder);
         this.oppdaterUttaksplan();
@@ -84,11 +100,15 @@ class UttaksplanBuilder {
         let uttaksperioder = resetTidsperioder(
             perioderUtil(this.perioder).uttaksperioder()
         );
+        const opphold = perioderUtil(this.perioder).opphold();
         uttaksperioder = slåSammenLikePerioder(uttaksperioder);
         const utsettelser = perioderUtil(this.perioder)
             .utsettelser()
             .sort(sorterPerioder);
-        this.perioder = settInnPerioder(uttaksperioder, utsettelser);
+
+        this.perioder = uttaksperioder;
+        this.perioder = settInnPerioder(this.perioder, opphold);
+        this.perioder = settInnPerioder(this.perioder, utsettelser);
         this.sort();
         return this;
     }
@@ -118,6 +138,18 @@ class UttaksplanBuilder {
         return this;
     }
 }
+
+const fjernOppholdsperioderITidsrom = (
+    perioder: Periode[],
+    tidsperiode: Tidsperiode
+): Periode[] => {
+    const nyePerioder: Periode[] = [...perioder];
+    const berørtePerioder = perioderUtil(perioder).finnOverlappendePerioder(
+        tidsperiode
+    );
+    console.log(berørtePerioder);
+    return nyePerioder;
+};
 
 /**
  * Legger utsettelser inn i periodene og flytter perioder som er etter utsettelsene
