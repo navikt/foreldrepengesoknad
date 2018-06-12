@@ -6,7 +6,7 @@ import uttaksplan from 'uttaksplan/redux/reducers';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import attachments, {
     AttachmentReducerState
-} from 'storage/attachment/redux/attachmentReducer';
+} from 'common/storage/attachment/redux/attachmentReducer';
 
 interface MainState extends UttaksplanAppState {
     søknad: Søknad;
