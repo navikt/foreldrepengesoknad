@@ -3,9 +3,9 @@ import {
     SøknadsvedleggMetadata,
     Søknadsvedlegginfo
 } from '../types/søknad/Søknad';
-import { AttachmentAppState } from 'storage/attachment/redux/attachmentReducer';
-import { Attachment } from 'storage/attachment/types/Attachment';
-import { getAttachmentsInGroup } from 'storage/attachment/util/attachmentUtil';
+import { AttachmentAppState } from 'common/storage/attachment/redux/attachmentReducer';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { getAttachmentsInGroup } from 'common/storage/attachment/util/attachmentUtil';
 
 export const getSøknadsvedlegg = (
     type: SøknadsvedleggType,

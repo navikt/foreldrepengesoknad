@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
-import AttachmentUploader from 'storage/attachment/connected-components/attachment-uploader/AttachmentUploader';
+import AttachmentUploader from 'common/storage/attachment/connected-components/attachment-uploader/AttachmentUploader';
 
 class VedleggSide extends React.Component<{}, {}> {
     render() {

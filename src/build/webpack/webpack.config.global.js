@@ -18,7 +18,6 @@ const webpackConfig = {
         alias: {
             app: path.resolve(__dirname, './../../app'),
             uttaksplan: path.resolve(__dirname, './../../uttaksplan'),
-            storage: path.resolve(__dirname, './../../storage'),
             common: path.resolve(__dirname, './../../common')
         }
     },

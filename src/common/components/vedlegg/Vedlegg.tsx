@@ -8,7 +8,7 @@ import SlettKnapp from '../slett-knapp/SlettKnapp';
 import './vedlegg.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
-import { Attachment } from 'storage/attachment/types/Attachment';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { bytesString } from '../../util/filesize';
 
 interface OwnProps {
