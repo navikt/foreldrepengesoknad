@@ -3,7 +3,8 @@ import {
     Uttaksperiode,
     Periode,
     Forelder,
-    StønadskontoType
+    StønadskontoType,
+    Periodetype
 } from 'uttaksplan/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
@@ -83,8 +84,9 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         if (!startdato || !sluttdato || !stønadskonto || !forelder) {
             return undefined;
         }
-        return {
+        const periode: Uttaksperiode = {
             ...this.props.periode,
+            type: Periodetype.Uttak,
             tidsperiode: {
                 startdato,
                 sluttdato
@@ -92,6 +94,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             forelder,
             konto: stønadskonto
         };
+
+        return periode;
     }
 
     skjemaErGyldig() {
