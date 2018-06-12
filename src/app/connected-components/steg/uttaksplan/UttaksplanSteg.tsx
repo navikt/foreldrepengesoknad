@@ -12,7 +12,7 @@ import { DispatchProps } from 'common/redux/types';
 import { Periode } from 'uttaksplan/types';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { mapAttachmentTilSøknadsvedlegginfo } from '../../../util/vedleggUtil';
-import { Attachment } from 'storage/attachment/types/Attachment';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 import routeConfig from '../../../util/routeConfig';
 
 interface UttaksplanStegProps {

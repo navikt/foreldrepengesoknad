@@ -2,7 +2,7 @@ import * as React from 'react';
 import Vedlegg from './Vedlegg';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './vedlegg.less';
-import { Attachment } from 'storage/attachment/types/Attachment';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface Props {
     vedlegg: Attachment[];

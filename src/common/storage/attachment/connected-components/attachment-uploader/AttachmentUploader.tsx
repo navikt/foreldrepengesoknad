@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Attachment } from 'storage/attachment/types/Attachment';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 import {
     deleteAttachment,
     addAttachments,
     uploadAttachment
-} from 'storage/attachment/redux/attachmentActionCreators';
-import { DispatchProps } from 'common/redux/types';
+} from 'common/storage/attachment/redux/attachmentActionCreators';
+import { DispatchProps } from 'common/redux/types/index';
 import VedleggOversikt from 'common/components/vedlegg/VedleggOversikt';
 import { AttachmentAppState } from '../../redux/attachmentReducer';
 

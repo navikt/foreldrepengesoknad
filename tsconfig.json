@@ -21,7 +21,6 @@
         "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
             "uttaksplan/*": ["./uttaksplan/*"],
-            "storage/*": ["./storage/*"],
             "common/*": ["./common/*"]
         }
     },
