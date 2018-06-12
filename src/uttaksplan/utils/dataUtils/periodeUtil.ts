@@ -15,6 +15,7 @@ import { uttaksdagUtil, tidsperiodeUtil } from './';
 import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
 
 export const perioderUtil = (perioder: Periode[]) => ({
+    getPeriode: (id: string) => perioder.find((p) => p.id === id),
     uttaksperioder: () => getUttaksperioder(perioder),
     utsettelser: () => getUtsettelser(perioder),
     uttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
