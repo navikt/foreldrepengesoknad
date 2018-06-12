@@ -52,15 +52,15 @@ export const oppsummerPerioder = (
                 .sluttdato
     };
     const uttakTidsperioder = perioderUtil(innslag.perioderekke)
-        .uttaksperioder()
+        .getUttak()
         .map((p) => p.tidsperiode);
     const ukerTotalt = getAntallUttaksdagerITidsperioder(uttakTidsperioder) / 5;
-    const stonadsperioder = perioderUtil(innslag.perioderekke).uttaksperioder();
+    const stonadsperioder = perioderUtil(innslag.perioderekke).getUttak();
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
         const eksisterendeDager = perioder.get(konto) || 0;
-        const nyeDager = tidsperiodeUtil(p.tidsperiode).antallUttaksdager();
+        const nyeDager = tidsperiodeUtil(p.tidsperiode).getAntallUttaksdager();
         perioder.set(konto, eksisterendeDager + nyeDager);
     });
     perioder.forEach((value, key) => perioder.set(key, value / 5));
