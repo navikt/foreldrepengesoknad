@@ -124,8 +124,8 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
 }
 
 /**
- * Finner antall uttaksdager som er mellom to datoer. Dvs. fra og med @fra, og
- * frem til @til (ikke til og med)
+ * Finner antall uttaksdager som er mellom to datoer. Dvs. fra og med startdato, og
+ * frem til sluttdato (ikke til og med)
  * @param fra
  * @param til
  */

@@ -96,7 +96,7 @@ function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
 }
 
 /**
- * Returnerer Uttaksperioder eller Utsettelser fra @perioder
+ * Returnerer Uttaksperioder eller Utsettelser fra perioder
  * @param perioder
  */
 function getUttakOgUtsettelser(
@@ -162,7 +162,7 @@ function flyttPeriode(periode: Periode, startdato: Date): Periode {
 }
 
 /**
- * Forskyver en periode med @uttaksdager
+ * Forskyver en periode med uttaksdager
  * @param periode
  * @param uttaksdager
  */
@@ -174,7 +174,7 @@ function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
 }
 
 /**
- * Forskyver perioder med @uttaksdager
+ * Forskyver perioder med uttaksdager
  * @param perioder
  * @param uttaksdager
  */
@@ -188,7 +188,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 }
 
 /**
- * Finner alle perioder før @periode ut fra startdato
+ * Finner alle perioder før periode ut fra startdato
  * @param perioder
  * @param periode
  */
@@ -202,7 +202,7 @@ function finnPerioderFørPeriode(
 }
 
 /**
- * Finner alle @perioder etter @periode ut fra startdato
+ * Finner alle perioder etter periode ut fra startdato
  * @param perioder
  * @param periode
  */
@@ -238,7 +238,7 @@ function erPerioderLike(p1: Periode, p2: Periode) {
 
 /**
  * Sjekker om to perioder er sammenhengende/dvs. det er ingen
- * uttaksdager mellom @p1.sluttdato og @p2.startdato
+ * uttaksdager mellom p1.sluttdato og p2.startdato
  * @param p1
  * @param p2
  */
@@ -301,8 +301,8 @@ function getAntallUttaksdagerIPerioderOgKonto(
 }
 
 /**
- * Summerer antall uttaksdager i @uttaksperioder og
- * grupperer dem per @StønadstypeKonto
+ * Summerer antall uttaksdager i uttaksperioder og
+ * grupperer dem per StønadstypeKonto
  * @param uttaksperioder
  */
 function getAntallUttaksdagerPerKonto(
@@ -355,7 +355,7 @@ function getAntallUttaksdagerPerKonto(
 }
 
 /**
- * Fjerner @fjernes fra @perioder
+ * Fjerner fjernes fra perioder
  * @param perioder
  * @param fjernes
  */
@@ -366,7 +366,7 @@ function fjernPerioder(perioder: Periode[], fjernes: Periode[]) {
 }
 
 /**
- * Erstatter @periode i @perioder
+ * Erstatter periode i perioder
  * @param perioder
  * @param periode
  */

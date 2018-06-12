@@ -23,7 +23,7 @@ export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
 });
 
 /**
- * Returnerer ny Tidsperiode gitt @startdato og antall @uttaksdager
+ * Returnerer ny Tidsperiode gitt startdato og antall uttaksdager
  * @param startdato
  * @param uttaksdager
  */
@@ -123,7 +123,7 @@ function erTidsperioderLike(t1: Tidsperiode, t2: Tidsperiode) {
 }
 
 /**
- * Sjekker om @tidsperiode1 er inne i @tidsperiode2
+ * Sjekker om tidsperiode1 er inne i tidsperiode2
  * @param tidsperiode1
  * @param tidsperiode2
  */
@@ -144,7 +144,7 @@ function erTidsperiodeOmsluttetAvTidsperiode(
 }
 
 /**
- * Sjekker om @tidsperiode1 er helt utenfor @tidsperiode2
+ * Sjekker om tidsperiode1 er helt utenfor tidsperiode2
  * @param tidsperiode1
  * @param tidsperiode2
  */
