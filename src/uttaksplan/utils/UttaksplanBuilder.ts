@@ -54,6 +54,24 @@ class UttaksplanBuilder {
             throw new Error('Periode for endring ikke funnet');
         }
 
+        // Se om det er perioder som er i konflikt med evt. ny startdato
+        const periodeMedSammeStartdato = perioderUtil(
+            this.perioder
+        ).getPeriodeMedSammeStartdato(periode);
+        if (periodeMedSammeStartdato) {
+            if (periodeMedSammeStartdato.type === Periodetype.Utsettelse) {
+                // TODO - må også sjekke om ny periode er innenfor en utsettelse.
+                // Noe som ikke skal være mulig
+                throw new Error(
+                    'Kan ikke sette startdato i konflikt med eksisterende utsettelse'
+                );
+            } else if (periodeMedSammeStartdato.type === Periodetype.Uttak) {
+                // TODO: Denne perioden må prioriteres etter endret periode
+                // påfølgende perioder må også flyttes
+                console.log(periodeMedSammeStartdato);
+            }
+        }
+
         this.perioder = fjernOppholdsperioderIPeriodetidsrom(
             this.perioder,
             periode
@@ -62,8 +80,10 @@ class UttaksplanBuilder {
         const opphold = periodeUtil(
             prevPeriode
         ).finnOppholdsperioderVedEndretTidsperiode(periode);
-        this.perioder = [...this.perioder, ...opphold]
-            .map((p) => (p.id === periode.id ? periode : p))
+        this.perioder = [...this.perioder, ...opphold];
+
+        this.perioder = perioderUtil(this.perioder)
+            .oppdaterPeriode(periode)
             .sort(sorterPerioder);
         this.oppdaterUttaksplan();
         return this;
