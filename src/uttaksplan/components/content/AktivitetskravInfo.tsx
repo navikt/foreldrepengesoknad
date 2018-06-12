@@ -25,7 +25,7 @@ const AktivitetskravInfo: React.StatelessComponent<
                 id="uttaksplan.skjema.fordeling.veiledning"
                 values={{
                     pakrevdForelder1:
-                        permisjonsregler.antallUkerForelder1FørFødsel +
+                        permisjonsregler.antallUkerForeldrepengerFørFødsel +
                         permisjonsregler.antallUkerMødrekvote,
                     pakrevdForelder2: permisjonsregler.antallUkerFedrekvote,
                     navnForelder1:

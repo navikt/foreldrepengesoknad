@@ -46,8 +46,8 @@ const mockUtsettelse: Utsettelsesperiode = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Ferie,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 6, 18)),
-        sluttdato: normaliserDato(new Date(2018, 6, 20))
+        startdato: normaliserDato(new Date(2018, 7, 30)),
+        sluttdato: normaliserDato(new Date(2018, 7, 31))
     }
 };
 
@@ -55,8 +55,8 @@ const mockUtsettelse2: Utsettelsesperiode = {
     ...mockUtsettelse,
     årsak: UtsettelseÅrsakType.Arbeid,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 6, 25)),
-        sluttdato: normaliserDato(new Date(2018, 6, 27))
+        startdato: normaliserDato(new Date(2018, 9, 22)),
+        sluttdato: normaliserDato(new Date(2018, 9, 22))
     }
 };
 
