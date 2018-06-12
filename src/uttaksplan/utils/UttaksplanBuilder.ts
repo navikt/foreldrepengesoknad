@@ -149,22 +149,36 @@ const fjernOppholdsperioderIPeriodetidsrom = (
 
     // Fjern alle perioder som er helt omsluttet av periode
     const oppholdSomMåBeholdes: Oppholdsperiode[] = [];
-    const oppholdSomKanFjernes: Oppholdsperiode[] = [];
+    const oppholdSomKanFjernesHelp: Oppholdsperiode[] = [];
     opphold.forEach((o) => {
-        if (
-            !tidsperiodeUtil(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)
+        if (tidsperiodeUtil(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+            oppholdSomKanFjernesHelp.push(o);
+        } else if (
+            isBefore(o.tidsperiode.startdato, periode.tidsperiode.startdato)
         ) {
-            oppholdSomMåBeholdes.push(o);
+            const justertOpphold: Oppholdsperiode = {
+                ...o,
+                tidsperiode: {
+                    startdato: o.tidsperiode.startdato,
+                    sluttdato: uttaksdagUtil(
+                        periode.tidsperiode.startdato
+                    ).forrige()
+                }
+            };
+            oppholdSomMåBeholdes.push(justertOpphold);
         } else {
-            oppholdSomKanFjernes.push(o);
+            oppholdSomMåBeholdes.push(o);
         }
     });
     nyePerioder = nyePerioder.filter(
         (p) =>
-            oppholdSomKanFjernes.findIndex((o) => p.id === o.id) >= 0
+            oppholdSomKanFjernesHelp.findIndex((o) => p.id === o.id) >= 0
                 ? false
                 : true
     );
+    oppholdSomMåBeholdes.forEach((o) => {
+        nyePerioder = nyePerioder.map((p) => (p.id === o.id ? o : p));
+    });
     return [...nyePerioder];
 };
 
