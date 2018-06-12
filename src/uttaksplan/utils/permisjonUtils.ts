@@ -98,7 +98,7 @@ export const getAntallUttaksdagerForForelder = (
         (dager: number, periode: Periode) =>
             periode.type === Periodetype.Uttak && periode.forelder === forelder
                 ? dager +
-                  tidsperiodeUtil(periode.tidsperiode).antallUttaksdager()
+                  tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager()
                 : dager,
         0
     );
@@ -123,7 +123,7 @@ export const getAntallFeriedagerForForelder = (
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
                   dager +
-                  tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
+                  tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
               0
           );
 };

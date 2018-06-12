@@ -176,7 +176,7 @@ export function validerUtsettelseskjema(
         tidsperiodeUtil({
             startdato,
             sluttdato
-        }).antallFridager() > 0
+        }).getAntallFridager() > 0
     ) {
         valideringsfeil.set('tidsperiode', {
             feilmelding: intl.formatMessage({
@@ -269,14 +269,14 @@ export function getAntallFeriedager(
             startdato,
             sluttdato
         };
-        nyeFeriedager = tidsperiodeUtil(tidsperiode).antallUttaksdager();
-        fridager = tidsperiodeUtil(tidsperiode).antallFridager();
+        nyeFeriedager = tidsperiodeUtil(tidsperiode).getAntallUttaksdager();
+        fridager = tidsperiodeUtil(tidsperiode).getAntallFridager();
     }
 
     if (utsettelse) {
         feriedagerDenneUtsettelsen = tidsperiodeUtil(
             utsettelse.tidsperiode
-        ).antallUttaksdager();
+        ).getAntallUttaksdager();
     }
 
     return (

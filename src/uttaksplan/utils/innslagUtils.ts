@@ -100,7 +100,7 @@ export const mapInnslagToEvent = (
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
-            days: tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
+            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
             labels: getLabelsForInnslag(innslag),
             icons: getTimelineIconsFromInnslag(innslag),
@@ -112,7 +112,7 @@ export const mapInnslagToEvent = (
             from: periode.tidsperiode.startdato,
             to: periode.tidsperiode.sluttdato,
             title: 'Opphold',
-            days: tidsperiodeUtil(periode.tidsperiode).antallUttaksdager(),
+            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsFromInnslag(innslag),
             data: periode
         };
