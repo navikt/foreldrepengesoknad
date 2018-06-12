@@ -12,7 +12,6 @@ import Spinner from 'nav-frontend-spinner';
 
 import routeConfig from '../util/routeConfig';
 import StegRoutes from './steg/StegRoutes';
-import Velkommen from './sider/velkommen/Velkommen';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
 
 import Person from '../types/Person';
@@ -47,11 +46,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
             <Switch>
                 {routes}
                 <Route
-                    path={`${routeConfig.APP_ROUTE_PREFIX}/sideoversikt`}
+                    path={`${routeConfig.APP_ROUTE_PREFIX}sideoversikt`}
                     component={DevSideoversikt}
                     key="devSideoversikt"
                 />
-                <Redirect to={routeConfig.APP_ROUTE_PREFIX} />
+                <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}inngang`} />
             </Switch>
         );
     }
@@ -69,33 +68,27 @@ class Foreldrepengesøknad extends React.Component<Props> {
     renderSøknadRoutes() {
         return this.renderRoutes([
             <Route
-                exact={true}
-                path={routeConfig.APP_ROUTE_PREFIX}
-                component={Velkommen}
-                key="velkommen"
-            />,
-            <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
                 component={StegRoutes}
                 key="steg"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
+                path={`${routeConfig.APP_ROUTE_PREFIX}inngang`}
                 component={Inngangsside}
                 key="inngang"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/søknad-sendt`}
+                path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`}
                 component={SøknadSendtSide}
                 key="søknadsendt"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/uttaksplan`}
+                path={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`}
                 component={UttaksplanSide}
                 key="uttaksplan"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}/vedlegg`}
+                path={`${routeConfig.APP_ROUTE_PREFIX}vedlegg`}
                 component={VedleggSide}
                 key="vedlegg"
             />

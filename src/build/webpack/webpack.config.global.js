@@ -11,7 +11,7 @@ const webpackConfig = {
     output: {
         path: path.resolve(__dirname, './../../../dist'),
         filename: 'js/[name].js',
-        publicPath: '/foreldrepengesoknad/dist'
+        publicPath: '/dist'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
