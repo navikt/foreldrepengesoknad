@@ -86,7 +86,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             const uttaksdager = tidsperiodeUtil({
                 startdato: this.state.startdato,
                 sluttdato: this.state.sluttdato
-            }).antallUttaksdager();
+            }).getAntallUttaksdager();
             sluttdato = getTidsperiode(startdato, uttaksdager).sluttdato;
         }
         this.setState({

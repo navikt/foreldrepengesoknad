@@ -61,7 +61,7 @@ class UttaksplanBuilder {
 
         const opphold = periodeUtil(
             prevPeriode
-        ).oppholdsperioderVedEndretTidsperiode(periode);
+        ).finnOppholdsperioderVedEndretTidsperiode(periode);
         this.perioder = [...this.perioder, ...opphold]
             .map((p) => (p.id === periode.id ? periode : p))
             .sort(sorterPerioder);
@@ -94,12 +94,12 @@ class UttaksplanBuilder {
      */
     private reset() {
         let uttaksperioder = resetTidsperioder(
-            perioderUtil(this.perioder).uttaksperioder()
+            perioderUtil(this.perioder).getUttak()
         );
-        const opphold = perioderUtil(this.perioder).opphold();
+        const opphold = perioderUtil(this.perioder).getOpphold();
         uttaksperioder = slåSammenLikePerioder(uttaksperioder);
         const utsettelser = perioderUtil(this.perioder)
-            .utsettelser()
+            .getUtsettelser()
             .sort(sorterPerioder);
 
         this.perioder = uttaksperioder;
@@ -115,7 +115,7 @@ class UttaksplanBuilder {
     private finnOgSettInnOpphold() {
         const uttakOgUtsetteler = perioderUtil(
             this.perioder
-        ).uttakOgUtsettelser();
+        ).getUttakOgUtsettelser();
         const opphold = finnOppholdsperioder(uttakOgUtsetteler);
         this.perioder = [];
         this.perioder = this.perioder.concat(uttakOgUtsetteler, opphold);
@@ -215,7 +215,7 @@ const settInnPeriode = (perioder: Periode[], nyPeriode: Periode): Periode[] => {
 
     if (!periodeSomMåSplittes) {
         const foregåendePeriode = perioderUtil(perioder)
-            .foregåendePerioder(nyPeriode)
+            .finnForegåendePerioder(nyPeriode)
             .pop();
         if (!foregåendePeriode) {
             throw new Error(
@@ -283,7 +283,7 @@ const finnOppholdsperioder = (
 
         const uttaksdagerITidsperiode = tidsperiodeUtil(
             tidsperiodeMellomPerioder
-        ).antallUttaksdager();
+        ).getAntallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {
             opphold.push({
                 id: guid(),
@@ -317,7 +317,7 @@ export const resetTidsperioder = (perioder: Periode[]): Periode[] => {
             ...periode,
             tidsperiode: getTidsperiode(
                 uttaksdagUtil(forrigePeriode.tidsperiode.sluttdato).neste(),
-                tidsperiodeUtil(periode.tidsperiode).antallUttaksdager()
+                tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager()
             )
         };
         return {
@@ -378,15 +378,17 @@ const leggTilPeriodeEtterPeriode = (
     periode: Periode,
     nyPeriode: Periode
 ): Periode[] => {
-    const perioderFør = perioderUtil(perioder).foregåendePerioder(periode);
-    const perioderEtter = perioderUtil(perioder).påfølgendePerioder(periode);
+    const perioderFør = perioderUtil(perioder).finnForegåendePerioder(periode);
+    const perioderEtter = perioderUtil(perioder).finnPåfølgendePerioder(
+        periode
+    );
     const uttaksdagerIUtsettelse: number = tidsperiodeUtil(
         nyPeriode.tidsperiode
-    ).antallUttaksdager();
+    ).getAntallUttaksdager();
     return [
         ...perioderFør,
         ...[nyPeriode],
-        ...perioderUtil([periode, ...perioderEtter]).forskyv(
+        ...perioderUtil([periode, ...perioderEtter]).forskyvPerioder(
             uttaksdagerIUtsettelse
         )
     ];
@@ -403,16 +405,18 @@ const leggTilPeriodeIPeriode = (
     periode: Periode,
     nyPeriode: Periode
 ): Periode[] => {
-    const perioderFør = perioderUtil(perioder).foregåendePerioder(periode);
-    const perioderEtter = perioderUtil(perioder).påfølgendePerioder(periode);
+    const perioderFør = perioderUtil(perioder).finnForegåendePerioder(periode);
+    const perioderEtter = perioderUtil(perioder).finnPåfølgendePerioder(
+        periode
+    );
     const splittetPeriode = splittPeriodeMedPeriode(periode, nyPeriode);
     const uttaksdager = tidsperiodeUtil(
         nyPeriode.tidsperiode
-    ).antallUttaksdager();
+    ).getAntallUttaksdager();
     return [
         ...perioderFør,
         ...splittetPeriode,
-        ...perioderUtil(perioderEtter).forskyv(uttaksdager)
+        ...perioderUtil(perioderEtter).forskyvPerioder(uttaksdager)
     ];
 };
 
@@ -428,11 +432,11 @@ const splittPeriodeMedPeriode = (
 ): Periode[] => {
     const dagerIPeriode = tidsperiodeUtil(
         periode.tidsperiode
-    ).antallUttaksdager();
+    ).getAntallUttaksdager();
     const dagerForsteDel = tidsperiodeUtil({
         startdato: periode.tidsperiode.startdato,
         sluttdato: addDays(nyPeriode.tidsperiode.startdato, -1)
-    }).antallUttaksdager();
+    }).getAntallUttaksdager();
     const dagerSisteDel = dagerIPeriode - dagerForsteDel;
     const forste: Periode = {
         ...periode,

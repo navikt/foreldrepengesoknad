@@ -31,7 +31,7 @@ class FordelingUttaksplan extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     const { perioder } = state.uttaksplan.periode;
-    const fordeling = perioderUtil(perioder).antallUttaksdagerPerKonto();
+    const fordeling = perioderUtil(perioder).getAntallUttaksdagerPerKonto();
     return {
         fordeling
     };

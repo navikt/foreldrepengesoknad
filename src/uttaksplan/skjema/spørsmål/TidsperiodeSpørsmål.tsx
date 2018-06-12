@@ -136,7 +136,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     dager={tidsperiodeUtil({
                                         startdato: startdato.dato,
                                         sluttdato: sluttdato.dato
-                                    }).antallUttaksdager()}
+                                    }).getAntallUttaksdager()}
                                 />
                             )}
                     </div>
