@@ -4,6 +4,30 @@
     "avbryt": "Avbryt",
     "leggtil": "Legg til",
 
+    "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
+    "velkommen.ingress":
+        "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
+    "velkommen.bobletittel": "Hei, {name}!",
+    "velkommen.bobletekst":
+        "Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.",
+    "velkommen.startSøknadKnapp": "Begynn med søknaden",
+    "velkommen.samtykkeIntro":
+        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
+    "velkommen.dinePlikter": "dine plikter",
+    "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
+    "velkommen.lesMerOmPersonopplysninger":
+        "Les om hvordan NAV behandler personopplysningene dine",
+
+    "dinePersonopplysninger.sectionheading":
+        "Slik behandler NAV personopplysningene dine",
+
+    "dinePlikter.sectionheading": "Dine plikter",
+    "dinePlikter.listeElement.1":
+        "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
+    "dinePlikter.listeElement.2":
+        "Jeg har lest og forstått det som står på {link}",
+    "dinePlikter.listeElement.2.link": "nav.no/rettogplikt",
+
     "annenForelder.spørsmål.kanOppgis": "Kan ikke oppgis",
     "annenForelder.spørsmål.navn": "Navn",
     "annenForelder.spørsmål.fnr": "Fødselsnummer",

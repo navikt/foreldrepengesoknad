@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { default as InteractiveListElement } from './InteractiveListElement';
-import './interactiveList.less';
 import { LinkButtonProps } from '../link-button/LinkButton';
+import './interactiveList.less';
 
 interface InteractiveListProps<T> {
     data: T[];

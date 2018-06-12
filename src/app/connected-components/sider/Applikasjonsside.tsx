@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../redux/actions/common/commonActionCreators';
@@ -9,6 +10,7 @@ import Språkvelger from 'common/components/språkvelger/Språkvelger';
 export interface OwnProps {
     /** Om språkvelger skal vises eller ikke */
     visSpråkvelger?: boolean;
+    withoutMargin?: boolean;
 }
 
 interface StateProps {
@@ -22,7 +24,13 @@ class Sidemal extends React.Component<Props> {
         super(props);
     }
     render() {
-        const { visSpråkvelger, språkkode, children, dispatch } = this.props;
+        const {
+            visSpråkvelger,
+            språkkode,
+            children,
+            withoutMargin,
+            dispatch
+        } = this.props;
         return (
             <React.Fragment>
                 {visSpråkvelger && (
@@ -33,7 +41,12 @@ class Sidemal extends React.Component<Props> {
                         }
                     />
                 )}
-                <div className="content">{children}</div>
+                <div
+                    className={classnames('content', {
+                        content__withoutMargin: withoutMargin
+                    })}>
+                    {children}
+                </div>
             </React.Fragment>
         );
     }

@@ -104,18 +104,17 @@ class Foreldrepengesøknad extends React.Component<Props> {
 
     render() {
         const { error, isLoadingPerson, person } = this.props;
-
-        if (
+        if (person && !person.erMyndig) {
+            return this.renderErrorRoute(IkkeMyndig);
+        } else if (error.networkError || error.response !== undefined) {
+            return this.renderErrorRoute(GenerellFeil);
+        } else if (
             isLoadingPerson ||
+            person === undefined ||
             (error.response && error.response.status === 401)
         ) {
             return <Spinner type="XXL" />;
-        } else if (error.networkError || error.response !== undefined) {
-            return this.renderErrorRoute(GenerellFeil);
-        } else if (person && !person.erMyndig) {
-            return this.renderErrorRoute(IkkeMyndig);
         }
-
         return this.renderSøknadRoutes();
     }
 }
