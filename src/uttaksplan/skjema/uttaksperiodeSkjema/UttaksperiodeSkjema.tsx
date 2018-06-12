@@ -131,6 +131,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                         }}
                         helgedagerIkkeTillatt={true}
                         beholdVarighet={beholdVarighet}
+                        visBeholdVarighet={periode && periode.id !== undefined}
                         onChangeBeholdVarighet={(behold) =>
                             this.setState({ beholdVarighet: behold })
                         }
