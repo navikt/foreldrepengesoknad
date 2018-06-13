@@ -60,7 +60,21 @@ export const periodeUtil = (periode: Periode) => ({
  * @param p2
  */
 export function sorterPerioder(p1: Periode, p2: Periode) {
-    return p1.tidsperiode.startdato >= p2.tidsperiode.startdato ? 1 : -1;
+    if (isSameDay(p1.tidsperiode.startdato, p2.tidsperiode.startdato)) {
+        if (p1.endret && !p2.endret) {
+            return -1;
+        }
+        if (!p1.endret && p2.endret) {
+            return 1;
+        }
+        if (p1.endret && p2.endret) {
+            return isBefore(p1.endret, p2.endret) ? 1 : -1;
+        }
+        return 1;
+    }
+    return isBefore(p1.tidsperiode.startdato, p2.tidsperiode.startdato)
+        ? 1
+        : -1;
 }
 
 function getPeriode(perioder: Periode[], id: string): Periode | undefined {
@@ -384,23 +398,10 @@ function getPeriodeMedSammeStartdatoSomPeriode(
  * @param periode
  */
 function oppdaterPeriode(perioder: Periode[], periode: Periode) {
-    // const a
-    // const annenPeriodePåSammeStartdato = perioder.find(
-    //     (p) =>
-    //         p.id !== periode.id &&
-    //         isSameDay(p.tidsperiode.startdato, periode.tidsperiode.startdato)
-    // );
     return perioder.map((p) => {
         if (p.id === periode.id) {
             return periode;
         }
-        // if (
-        //     annenPeriodePåSammeStartdato &&
-        //     p.id === annenPeriodePåSammeStartdato.id
-        // ) {
-        //     /** Denne vil feile dersom flere har samme startdato */
-        //     return forskyvPeriode(annenPeriodePåSammeStartdato, 1);
-        // }
         return p;
     });
 }
