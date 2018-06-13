@@ -28,15 +28,15 @@
     "uttaksplan.tittel.introtekst":
         "Velkommen til foreldrepengenplanleggeren. Her kan dere planlegge hvordan dere vil ta ut perioden med foreldrepenger når dere venter barn.",
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til utsettelse",
-    "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
+    "uttaksplan.periodedialog.uttak.tittel": "Legg til periode",
 
-    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til stønadsperiode",
-    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre stønadsperiode",
+    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til uttaksperiode",
+    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre uttaksperiode",
     "uttaksplan.uttaksperiodeskjema.startdato.sporsmal": "Startdato",
     "uttaksplan.uttaksperiodeskjema.sluttdato.sporsmal": "Sluttdato",
     "uttaksplan.uttaksperiodeskjema.knapp.leggtil": "Legg til",
     "uttaksplan.uttaksperiodeskjema.knapp.oppdater": "Oppdater",
-    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern stønadsperiode",
+    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern uttaksperiode",
 
     "uttaksplan.utsettelseskjema.tittel": "Legg til utsettelse",
     "uttaksplan.utsettelseskjema.tittel.endre": "Utsettelse i foreldrepengene",

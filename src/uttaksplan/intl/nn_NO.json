@@ -29,7 +29,7 @@
     "uttaksplan.tittel.introtekst":
         "Velkommen til foreldrepengenplanleggjaren. Her kan de planleggje korleis de vil ta ut perioden med foreldrepengar når de ventar barn.",
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til utsetjing",
-    "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
+    "uttaksplan.periodedialog.uttak.tittel": "Legg til periode",
 
     "uttaksplan.uttaksperiodeskjema.tittel": "Legg til periode",
     "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre periode",
