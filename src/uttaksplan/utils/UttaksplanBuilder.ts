@@ -56,7 +56,7 @@ class UttaksplanBuilder {
         }
 
         // Se om det er perioder som har samme startdato, og som i så
-        // fall må prioriteres etter endring
+        // fall må prioriteres etter endret periode
         const periodeMedSammeStartdato = perioderUtil(
             this.perioder
         ).getPeriodeMedSammeStartdato(periode);
