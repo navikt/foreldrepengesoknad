@@ -10,7 +10,6 @@ import {
     Tidsperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { isBefore, isSameDay } from 'date-fns';
 import Ferieinfo from './Ferieinfo';
 import {
     validerUtsettelseskjema,
@@ -29,7 +28,7 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperiodeUtil, getTidsperiode } from 'uttaksplan/utils/dataUtils';
 
 interface OwnProps {
     termindato: Date;
@@ -78,23 +77,17 @@ class UtsettelseSkjema extends React.Component<Props, State> {
 
     setStartdato(dato: Date) {
         const startdato = normaliserDato(dato);
-
         let sluttdato = this.state.sluttdato;
         if (
             this.state.beholdVarighet &&
-            sluttdato &&
             this.state.startdato &&
-            (isBefore(startdato, sluttdato) || isSameDay(startdato, sluttdato))
+            this.state.sluttdato
         ) {
-            sluttdato = tidsperiodeUtil({
+            const uttaksdager = tidsperiodeUtil({
                 startdato: this.state.startdato,
-                sluttdato
-            }).setStartdato(startdato).sluttdato;
-        } else if (
-            sluttdato &&
-            (isBefore(startdato, sluttdato) || isSameDay(startdato, sluttdato))
-        ) {
-            sluttdato = undefined;
+                sluttdato: this.state.sluttdato
+            }).getAntallUttaksdager();
+            sluttdato = getTidsperiode(startdato, uttaksdager).sluttdato;
         }
         this.setState({
             startdato,
@@ -290,6 +283,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 feil: sluttdatoFeil,
                                 visFeil: visSluttdatofeil
                             }}
+                            visBeholdVarighet={
+                                utsettelse && utsettelse.id !== undefined
+                            }
                             beholdVarighet={beholdVarighet}
                             onChangeBeholdVarighet={(behold) =>
                                 this.setState({ beholdVarighet: behold })

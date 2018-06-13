@@ -17,9 +17,12 @@ import {
     UtsettelseÅrsakType,
     Periode,
     Dekningsgrad,
-    Permisjonsregler
+    Permisjonsregler,
+    Uttaksperiode,
+    StønadskontoType
 } from 'uttaksplan/types';
 import { normaliserDato } from 'common/util/datoUtils';
+import './devUtil';
 
 import './dev.less';
 import { uttaksdagUtil, tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
@@ -60,11 +63,22 @@ const mockUtsettelse2: Utsettelsesperiode = {
     }
 };
 
+const mockUttaksperiode: Uttaksperiode = {
+    forelder: 'forelder1',
+    konto: StønadskontoType.Foreldrepenger,
+    tidsperiode: {
+        startdato: normaliserDato(new Date(2018, 7, 26)),
+        sluttdato: normaliserDato(new Date(2018, 7, 29))
+    },
+    type: Periodetype.Uttak
+};
+
 class DevToolbar extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.leggTilUtsettelse = this.leggTilUtsettelse.bind(this);
         this.leggTilUtsettelse2 = this.leggTilUtsettelse2.bind(this);
+        this.leggTilPeriode = this.leggTilPeriode.bind(this);
         this.lagOpphold = this.lagOpphold.bind(this);
         this.reset = this.reset.bind(this);
     }
@@ -75,6 +89,10 @@ class DevToolbar extends React.Component<Props, {}> {
 
     leggTilUtsettelse2() {
         this.props.dispatch(opprettEllerOppdaterPeriode(mockUtsettelse2));
+    }
+
+    leggTilPeriode() {
+        this.props.dispatch(opprettEllerOppdaterPeriode(mockUttaksperiode));
     }
 
     reset() {
@@ -115,12 +133,9 @@ class DevToolbar extends React.Component<Props, {}> {
         return (
             <div className={BEM.element('toolbar')}>
                 <Knapperad>
-                    <Knapp onClick={this.leggTilUtsettelse}>
-                        + Utsettelse 1
-                    </Knapp>
-                    <Knapp onClick={this.leggTilUtsettelse2}>
-                        + Utsettelse 2
-                    </Knapp>
+                    <Knapp onClick={this.leggTilUtsettelse}>+ U1</Knapp>
+                    <Knapp onClick={this.leggTilUtsettelse2}>+ U2</Knapp>
+                    <Knapp onClick={this.leggTilPeriode}>+ P</Knapp>
                     <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>
                         Ref
                     </Knapp>
