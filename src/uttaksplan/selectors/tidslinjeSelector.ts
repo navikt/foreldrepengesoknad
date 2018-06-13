@@ -96,7 +96,13 @@ const sorterTidslinjeinnslagEtterStartdato = (
     const startdato2 = getStartdato(innslag2);
 
     if (isSameDay(startdato1, startdato2)) {
-        return erTerminHendelse(innslag1) ? -1 : 1;
+        if (erTerminHendelse(innslag1)) {
+            return -1;
+        }
+        if (erPermisjonssluttHendelse(innslag1)) {
+            return -1;
+        }
+        return 1;
     }
     return startdato1 >= startdato2 ? 1 : -1;
 };
@@ -109,6 +115,10 @@ export const getStartdato = (innslag: Tidslinjeinnslag): Date =>
 export const erTerminHendelse = (innslag: Tidslinjeinnslag): boolean =>
     innslag.type === TidslinjeinnslagType.hendelse &&
     innslag.hendelse === 'termin';
+
+export const erPermisjonssluttHendelse = (innslag: Tidslinjeinnslag): boolean =>
+    innslag.type === TidslinjeinnslagType.hendelse &&
+    innslag.hendelse === 'permisjonsslutt';
 
 export const getForrigeNeste = <T>(
     index: number,
