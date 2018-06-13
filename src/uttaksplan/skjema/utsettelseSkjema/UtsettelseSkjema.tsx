@@ -283,6 +283,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 feil: sluttdatoFeil,
                                 visFeil: visSluttdatofeil
                             }}
+                            visBeholdVarighet={
+                                utsettelse && utsettelse.id !== undefined
+                            }
                             beholdVarighet={beholdVarighet}
                             onChangeBeholdVarighet={(behold) =>
                                 this.setState({ beholdVarighet: behold })
