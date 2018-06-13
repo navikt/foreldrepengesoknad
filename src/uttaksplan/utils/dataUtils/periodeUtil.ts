@@ -73,8 +73,8 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         return 1;
     }
     return isBefore(p1.tidsperiode.startdato, p2.tidsperiode.startdato)
-        ? 1
-        : -1;
+        ? -1
+        : 1;
 }
 
 function getPeriode(perioder: Periode[], id: string): Periode | undefined {
