@@ -68,7 +68,7 @@ const mockUttaksperiode: Uttaksperiode = {
     konto: StønadskontoType.Foreldrepenger,
     tidsperiode: {
         startdato: normaliserDato(new Date(2018, 7, 26)),
-        sluttdato: normaliserDato(new Date(2018, 7, 29))
+        sluttdato: normaliserDato(new Date(2018, 7, 26))
     },
     type: Periodetype.Uttak
 };
@@ -80,6 +80,8 @@ class DevToolbar extends React.Component<Props, {}> {
         this.leggTilUtsettelse2 = this.leggTilUtsettelse2.bind(this);
         this.leggTilPeriode = this.leggTilPeriode.bind(this);
         this.lagOpphold = this.lagOpphold.bind(this);
+        this.flyttPeriode = this.flyttPeriode.bind(this);
+        this.play = this.play.bind(this);
         this.reset = this.reset.bind(this);
     }
 
@@ -117,7 +119,7 @@ class DevToolbar extends React.Component<Props, {}> {
     }
 
     lagOpphold() {
-        const periode = this.props.appState.uttaksplan.periode.perioder[2];
+        const periode = this.props.appState.uttaksplan.periode.perioder[3];
         const tidsperiode = tidsperiodeUtil(periode.tidsperiode).setStartdato(
             uttaksdagUtil(periode.tidsperiode.startdato).neste()
         );
@@ -128,6 +130,28 @@ class DevToolbar extends React.Component<Props, {}> {
             })
         );
     }
+    flyttPeriode() {
+        const periode = this.props.appState.uttaksplan.periode.perioder[4];
+        const tidsperiode = tidsperiodeUtil(periode.tidsperiode).setStartdato(
+            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(-2)
+        );
+        this.props.dispatch(
+            opprettEllerOppdaterPeriode({
+                ...periode,
+                tidsperiode
+            })
+        );
+    }
+
+    play() {
+        this.leggTilPeriode();
+        setTimeout(() => {
+            this.lagOpphold();
+            setTimeout(() => {
+                this.flyttPeriode();
+            }, 0);
+        }, 0);
+    }
 
     render() {
         return (
@@ -136,11 +160,13 @@ class DevToolbar extends React.Component<Props, {}> {
                     <Knapp onClick={this.leggTilUtsettelse}>+ U1</Knapp>
                     <Knapp onClick={this.leggTilUtsettelse2}>+ U2</Knapp>
                     <Knapp onClick={this.leggTilPeriode}>+ P</Knapp>
+                    <Knapp onClick={this.flyttPeriode}>+ F</Knapp>
+                    <Knapp onClick={this.lagOpphold}>+ O</Knapp>
+                    <Knapp onClick={this.play}>>></Knapp>
+                    <Knapp onClick={this.reset}>R</Knapp>
                     <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>
-                        Ref
+                        Rebuild
                     </Knapp>
-                    <Knapp onClick={this.lagOpphold}>+ Opphold</Knapp>
-                    <Knapp onClick={this.reset}>Reset</Knapp>
                 </Knapperad>
             </div>
         );
