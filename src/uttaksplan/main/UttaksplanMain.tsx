@@ -187,7 +187,10 @@ class UttaksplanMain extends React.Component<Props> {
                                     this.handleItemClick(item);
                                 }}
                                 durationRenderer={(dager: number) => (
-                                    <UkerOgDager dager={dager} />
+                                    <UkerOgDager
+                                        dager={dager}
+                                        visKunDager={true}
+                                    />
                                 )}
                                 rangeRenderer={(
                                     startdato: Date,

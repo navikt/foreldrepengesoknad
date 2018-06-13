@@ -1,5 +1,5 @@
 export enum StegID {
-    'RELASJON_TIL_BARN_FØDSEL' = 'relasjon-til-barn-fødsel',
+    'RELASJON_TIL_BARN_FØDSEL' = 'relasjon-til-barn-fodsel',
     'RELASJON_TIL_BARN_ADOPSJON' = 'relasjon-til-barn-adopsjon',
     'RELASJON_TIL_BARN_STEBARNSADOPSJON' = 'relasjon-til-barn-stebarnsadopsjon',
     'RELASJON_TIL_BARN_FORELDREANSVAR' = 'relasjon-til-barn-foreldreansvar',

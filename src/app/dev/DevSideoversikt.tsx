@@ -21,41 +21,26 @@ class DevSideoversikt extends React.Component<{}, {}> {
                     ulike stegene må en sjekke med utviklere.
                 </Veilederinfo>
 
-                <h2>Eksempelsøknad</h2>
-                <div className="blokk-l">
-                    <ul className="dev-sider">
-                        <li>
-                            <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}/eksempel`}
-                                className="lenke">
-                                Gå til eksempelskjemaet
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-
                 <h2>Frittstående sider</h2>
                 <div className="blokk-l">
                     <ul className="dev-sider">
                         <li>
                             <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}/inngang`}
+                                to={`${routeConfig.APP_ROUTE_PREFIX}inngang`}
                                 className="lenke">
                                 Inngangsside (valg av situasjon)
                             </Link>
                         </li>
                         <li>
                             <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}/velkommen`}
+                                to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
                                 className="lenke">
                                 Velkommen
                             </Link>
                         </li>
                         <li>
                             <Link
-                                to={`${
-                                    routeConfig.APP_ROUTE_PREFIX
-                                }/uttaksplan`}
+                                to={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`}
                                 className="lenke">
                                 Uttaksplan
                             </Link>
