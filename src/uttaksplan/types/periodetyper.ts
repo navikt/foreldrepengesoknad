@@ -44,6 +44,7 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
+    endret?: Date; // Timestamp for å kunne prioritere sist endret ved sortering
 }
 
 export interface Uttaksperiode extends PeriodeBase {
