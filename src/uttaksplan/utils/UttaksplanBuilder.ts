@@ -1,4 +1,4 @@
-import { isBefore, isSameDay, addDays } from 'date-fns';
+import { isBefore, isSameDay, addDays, isAfter } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils';
 import {
     Oppholdsperiode,
@@ -33,7 +33,7 @@ class UttaksplanBuilder {
      * Legger til periode og oppdaterer uttaksplanen
      * @param periode
      */
-    leggTilPeriode(periode: Periode) {
+    leggTilPeriodeOgOppdater(periode: Periode) {
         this.perioder = settInnPeriode(this.perioder, {
             ...periode,
             id: guid(),
@@ -47,41 +47,31 @@ class UttaksplanBuilder {
      * Oppdaterer periode og uttaksplanen
      * @param periode
      */
-    oppdaterPeriode(periode: Periode) {
+    oppdaterPeriodeOgOppdater(periode: Periode) {
         const prevPeriode = periode.id
             ? perioderUtil(this.perioder).getPeriode(periode.id)
             : undefined;
         if (!prevPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
+        this.oppdaterOppholdEtterPeriode(periode);
 
-        // Se om det er perioder som har samme startdato, og som i så
-        // fall må prioriteres etter endret periode
-        const periodeMedSammeStartdato = perioderUtil(
-            this.perioder
-        ).getPeriodeMedSammeStartdato(periode);
-        if (periodeMedSammeStartdato) {
-            if (periodeMedSammeStartdato.type === Periodetype.Utsettelse) {
-                // TODO - må også sjekke om ny periode er innenfor en utsettelse.
-                // Noe som ikke skal være mulig
-                throw new Error(
-                    'Kan ikke sette startdato i konflikt med eksisterende utsettelse'
-                );
-            }
-        }
+        // Ikke opprett opphold lenger enn neste periode
 
-        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
-            this.perioder,
-            periode
-        );
-        const opphold = periodeUtil(
-            prevPeriode
-        ).finnOppholdsperioderVedEndretTidsperiode(periode);
-        this.perioder = [...this.perioder, ...opphold];
-        this.perioder = perioderUtil(this.perioder)
-            .oppdaterPeriode({ ...periode, endret: new Date() })
-            .sort(sorterPerioder);
-        this.oppdaterUttaksplan();
+        this.fjernOppholdOmsluttetAvPeriode(periode)
+            .settInnOppholdVedEndretPeriode(prevPeriode, periode)
+            .erstattPeriode(periode)
+            .oppdaterUttaksplan();
+        return this;
+    }
+
+    /**
+     * Bygger opp hele uttaksplanen på nytt
+     */
+    oppdaterUttaksplan() {
+        this.reset()
+            .finnOgSettInnOpphold()
+            .normaliser();
         return this;
     }
 
@@ -89,19 +79,127 @@ class UttaksplanBuilder {
      * Sletter periode og oppdaterer uttaksplanen
      * @param periode
      */
-    slettPeriode(periode: Periode) {
-        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+    slettPeriodeOgOppdater(periode: Periode) {
+        this.slettPeriode(periode);
         this.oppdaterUttaksplan();
         return this;
     }
 
     /**
-     * Bygger opp hele uttaksplanen på nytt
+     * Fjerner en periode fra perioder
+     * @param periode
      */
-    private oppdaterUttaksplan() {
-        this.reset()
-            .finnOgSettInnOpphold()
-            .normaliser();
+    private slettPeriode(periode: Periode) {
+        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+        return this;
+    }
+
+    /** Setter inn periode i perioder */
+    private settInnPeriode(periode: Periode) {
+        this.perioder = settInnPeriode(this.perioder, periode);
+        return this;
+    }
+
+    /**
+     * Fjerner periode for deretter å sette den inn igjen,
+     * gjennbruker da logikk for å justere kolliderende
+     * perioder
+     * @param periode
+     */
+    private erstattPeriode(periode: Periode) {
+        this.slettPeriode(periode);
+        this.oppdaterUttaksplan();
+        this.settInnPeriode(periode);
+        return this;
+    }
+
+    /**
+     * Fjern alle opphold som ligger innenfor samme tidsrom som perioden
+     * @param periode
+     */
+    private fjernOppholdOmsluttetAvPeriode(periode: Periode) {
+        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
+            this.perioder,
+            periode
+        );
+        return this;
+    }
+
+    /**
+     * Finner alle opphold etter periodens startdato og
+     * fjerner oppholdsdager fra disse tilsvarende periodens
+     * varighet
+     * @param periode
+     */
+    private oppdaterOppholdEtterPeriode(periode: Periode) {
+        let uttaksdager = periodeUtil(periode).getAntallUttaksdager();
+        const senereOpphold: Oppholdsperiode[] = this.perioder.filter(
+            (p) =>
+                p.type === Periodetype.Opphold &&
+                isAfter(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+        ) as Oppholdsperiode[];
+
+        senereOpphold.forEach((opphold) => {
+            const oppholdDager = periodeUtil(opphold).getAntallUttaksdager();
+            if (oppholdDager <= uttaksdager) {
+                // Hele oppholdet kan fjernes
+                this.perioder = perioderUtil(this.perioder).fjernPerioder([
+                    opphold
+                ]);
+                uttaksdager -= oppholdDager;
+            } else {
+                // Kutt dager i starten av oppholdet
+                const kuttetOpphold: Oppholdsperiode = {
+                    ...opphold,
+                    tidsperiode: {
+                        ...opphold.tidsperiode,
+                        startdato: uttaksdagUtil(
+                            opphold.tidsperiode.startdato
+                        ).leggTil(uttaksdager)
+                    }
+                };
+                this.erstattPeriode(kuttetOpphold);
+                uttaksdager = 0;
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Finner opphold som oppstår når en setter startdato til
+     * et senere tidspunkt, og legger til dette oppholdet
+     * @param opprinneligPeriode
+     * @param endretPeriode
+     */
+    private settInnOppholdVedEndretPeriode(
+        opprinneligPeriode: Periode,
+        endretPeriode: Periode
+    ) {
+        const opphold = periodeUtil(
+            opprinneligPeriode
+        ).finnOppholdsperioderVedEndretTidsperiode(endretPeriode);
+
+        if (opphold) {
+            const påfølgendePeriode = perioderUtil(
+                this.perioder
+            ).finnPåfølgendePeriode(opprinneligPeriode);
+            if (påfølgendePeriode) {
+                /** Ikke lag oppholdet lenger enn til siste uttaksdag før påfølgende periode */
+                const uttaksdagFørPåfølgendePeriode = uttaksdagUtil(
+                    påfølgendePeriode.tidsperiode.startdato
+                ).forrige();
+                opphold.tidsperiode = {
+                    ...opphold.tidsperiode,
+                    sluttdato: isBefore(
+                        uttaksdagFørPåfølgendePeriode,
+                        opphold.tidsperiode.sluttdato
+                    )
+                        ? uttaksdagFørPåfølgendePeriode
+                        : opphold.tidsperiode.sluttdato
+                };
+            }
+            this.perioder = [...this.perioder, ...[opphold]];
+        }
         return this;
     }
 
