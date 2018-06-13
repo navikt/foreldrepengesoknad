@@ -1,4 +1,4 @@
-import { isBefore, isSameDay, addDays } from 'date-fns';
+import { isBefore, isSameDay, addDays, isAfter } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils';
 import {
     Oppholdsperiode,
@@ -33,7 +33,7 @@ class UttaksplanBuilder {
      * Legger til periode og oppdaterer uttaksplanen
      * @param periode
      */
-    leggTilPeriode(periode: Periode) {
+    leggTilPeriodeOgOppdater(periode: Periode) {
         this.perioder = settInnPeriode(this.perioder, {
             ...periode,
             id: guid(),
@@ -47,47 +47,64 @@ class UttaksplanBuilder {
      * Oppdaterer periode og uttaksplanen
      * @param periode
      */
-    oppdaterPeriode(periode: Periode) {
+    oppdaterPeriodeOgOppdater(periode: Periode) {
         const prevPeriode = periode.id
             ? perioderUtil(this.perioder).getPeriode(periode.id)
             : undefined;
         if (!prevPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
+        /**
+         * Finn hvor mye som skal forskyves pga endring: = periodens varighet?
+         * - finn alle perioder som har starttidspunkt etter sluttdato
+         * - finn opphold som har <= varighet enn endring, fjern/split disse
+         * : forutsetning -> perioder er riktig linet opp, så endring blir riktig
+         */
+        let uttaksdager = periodeUtil(periode).getAntallUttaksdager();
+        const senereOpphold: Oppholdsperiode[] = this.perioder.filter(
+            (p) =>
+                p.type === Periodetype.Opphold &&
+                isAfter(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+        ) as Oppholdsperiode[];
 
-        // Se om det er perioder som har samme startdato, og som i så
-        // fall må prioriteres etter endret periode
-        const periodeMedSammeStartdato = perioderUtil(
-            this.perioder
-        ).getPeriodeMedSammeStartdato(periode);
-        if (periodeMedSammeStartdato) {
-            if (periodeMedSammeStartdato.type === Periodetype.Utsettelse) {
-                // TODO - må også sjekke om ny periode er innenfor en utsettelse.
-                // Noe som ikke skal være mulig
-                throw new Error(
-                    'Kan ikke sette startdato i konflikt med eksisterende utsettelse'
-                );
+        senereOpphold.forEach((opphold) => {
+            const oppholdDager = periodeUtil(opphold).getAntallUttaksdager();
+            if (oppholdDager <= uttaksdager) {
+                // Hele oppholdet kan fjernes
+                this.perioder = perioderUtil(this.perioder).fjernPerioder([
+                    opphold
+                ]);
+                uttaksdager -= oppholdDager;
+            } else {
+                // Kutt dager i starten av oppholdet
+                const kuttetOpphold: Oppholdsperiode = {
+                    ...opphold,
+                    tidsperiode: {
+                        ...opphold.tidsperiode,
+                        startdato: uttaksdagUtil(
+                            opphold.tidsperiode.startdato
+                        ).leggTil(uttaksdager)
+                    }
+                };
+                this.erstattPeriode(kuttetOpphold);
+                uttaksdager = 0;
             }
-        }
+        });
 
-        /** Fjern alle opphold som ligger innenfor samme tidsrom som perioden */
-        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
-            this.perioder,
-            periode
-        );
-
-        /** Finn nye opphold som kommer på grunn av endringer i perioden */
-        const oppholdPåGrunnAvEndretTidsperiode = periodeUtil(
-            prevPeriode
-        ).finnOppholdsperioderVedEndretTidsperiode(periode);
-
-        this.perioder = [
-            ...this.perioder,
-            ...oppholdPåGrunnAvEndretTidsperiode
-        ];
-        this.erstattPeriode(periode)
-            .sort()
+        this.fjernOppholdOmsluttetAvPeriode(periode)
+            .settInnOppholdVedEndretPeriode(prevPeriode, periode)
+            .erstattPeriode(periode)
             .oppdaterUttaksplan();
+        return this;
+    }
+
+    /**
+     * Bygger opp hele uttaksplanen på nytt
+     */
+    oppdaterUttaksplan() {
+        this.reset()
+            .finnOgSettInnOpphold()
+            .normaliser();
         return this;
     }
 
@@ -95,29 +112,69 @@ class UttaksplanBuilder {
      * Sletter periode og oppdaterer uttaksplanen
      * @param periode
      */
-    slettPeriode(periode: Periode) {
-        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+    slettPeriodeOgOppdater(periode: Periode) {
+        this.slettPeriode(periode);
         this.oppdaterUttaksplan();
         return this;
     }
 
     /**
-     * Erstatter periode og oppdaterer uttaksplanen
+     * Fjerner en periode fra perioder
      * @param periode
      */
-    erstattPeriode(periode: Periode) {
+    private slettPeriode(periode: Periode) {
         this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+        return this;
+    }
+
+    /** Setter inn periode i perioder */
+    private settInnPeriode(periode: Periode) {
         this.perioder = settInnPeriode(this.perioder, periode);
         return this;
     }
 
     /**
-     * Bygger opp hele uttaksplanen på nytt
+     * Fjerner periode for deretter å sette den inn igjen,
+     * gjennbruker da logikk for å justere kolliderende
+     * perioder
+     * @param periode
      */
-    private oppdaterUttaksplan() {
-        this.reset()
-            .finnOgSettInnOpphold()
-            .normaliser();
+    private erstattPeriode(periode: Periode) {
+        this.slettPeriode(periode);
+        this.oppdaterUttaksplan();
+        this.settInnPeriode(periode);
+        return this;
+    }
+
+    /**
+     * Fjern alle opphold som ligger innenfor samme tidsrom som perioden
+     * @param periode
+     */
+    private fjernOppholdOmsluttetAvPeriode(periode: Periode) {
+        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
+            this.perioder,
+            periode
+        );
+        return this;
+    }
+
+    /**
+     * Finner opphold som oppstår når en setter startdato til
+     * et senere tidspunkt, og legger til dette oppholdet
+     * @param opprinneligPeriode
+     * @param endretPeriode
+     */
+    private settInnOppholdVedEndretPeriode(
+        opprinneligPeriode: Periode,
+        endretPeriode: Periode
+    ) {
+        const oppholdPåGrunnAvEndretTidsperiode = periodeUtil(
+            opprinneligPeriode
+        ).finnOppholdsperioderVedEndretTidsperiode(endretPeriode);
+        this.perioder = [
+            ...this.perioder,
+            ...oppholdPåGrunnAvEndretTidsperiode
+        ];
         return this;
     }
 
