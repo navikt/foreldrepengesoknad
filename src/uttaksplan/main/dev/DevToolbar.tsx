@@ -22,6 +22,7 @@ import {
     StønadskontoType
 } from 'uttaksplan/types';
 import { normaliserDato } from 'common/util/datoUtils';
+import './devUtil';
 
 import './dev.less';
 import { uttaksdagUtil, tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
