@@ -70,18 +70,24 @@ class UttaksplanBuilder {
             }
         }
 
+        /** Fjern alle opphold som ligger innenfor samme tidsrom som perioden */
         this.perioder = fjernOppholdsperioderIPeriodetidsrom(
             this.perioder,
             periode
         );
-        const opphold = periodeUtil(
+
+        /** Finn nye opphold som kommer på grunn av endringer i perioden */
+        const oppholdPåGrunnAvEndretTidsperiode = periodeUtil(
             prevPeriode
         ).finnOppholdsperioderVedEndretTidsperiode(periode);
-        this.perioder = [...this.perioder, ...opphold];
-        this.perioder = perioderUtil(this.perioder)
-            .oppdaterPeriode({ ...periode, endret: new Date() })
-            .sort(sorterPerioder);
-        this.oppdaterUttaksplan();
+
+        this.perioder = [
+            ...this.perioder,
+            ...oppholdPåGrunnAvEndretTidsperiode
+        ];
+        this.erstattPeriode(periode)
+            .sort()
+            .oppdaterUttaksplan();
         return this;
     }
 
@@ -92,6 +98,16 @@ class UttaksplanBuilder {
     slettPeriode(periode: Periode) {
         this.perioder = this.perioder.filter((p) => p.id !== periode.id);
         this.oppdaterUttaksplan();
+        return this;
+    }
+
+    /**
+     * Erstatter periode og oppdaterer uttaksplanen
+     * @param periode
+     */
+    erstattPeriode(periode: Periode) {
+        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+        this.perioder = settInnPeriode(this.perioder, periode);
         return this;
     }
 
