@@ -5,7 +5,6 @@ const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
-const fs = require('fs');
 const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 
 const server = express();
@@ -33,31 +32,22 @@ const renderApp = (decoratorFragments) =>
     });
 
 const startServer = (html) => {
+    server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
     server.use(
-        '/foreldrepengesoknad/dist/js',
-        express.static(path.resolve(__dirname, 'dist/js'))
-    );
-    server.use(
-        '/foreldrepengesoknad/dist/css',
+        '/dist/css',
         express.static(path.resolve(__dirname, 'dist/css'))
     );
 
-    server.get(
-        [
-            '/',
-            '/foreldrepengesoknad/?',
-            /^\/foreldrepengesoknad\/(?!.*dist).*$/
-        ],
-        (req, res) => {
-            res.send(html);
-        }
-    );
-    server.get(['/foreldrepengesoknad/dist/js/settings.js'], (req, res) => {
+    server.get(['/dist/js/settings.js'], (req, res) => {
         res.sendFile(path.resolve(`../../dist/js/settings.js`));
     });
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
+
+    server.get(/^\/(?!.*dist).*$/, (req, res) => {
+        res.send(html);
+    });
 
     const port = process.env.PORT || 8080;
     server.listen(port, () => {
