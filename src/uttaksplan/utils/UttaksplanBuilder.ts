@@ -54,42 +54,9 @@ class UttaksplanBuilder {
         if (!prevPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
-        /**
-         * Finn hvor mye som skal forskyves pga endring: = periodens varighet?
-         * - finn alle perioder som har starttidspunkt etter sluttdato
-         * - finn opphold som har <= varighet enn endring, fjern/split disse
-         * : forutsetning -> perioder er riktig linet opp, så endring blir riktig
-         */
-        let uttaksdager = periodeUtil(periode).getAntallUttaksdager();
-        const senereOpphold: Oppholdsperiode[] = this.perioder.filter(
-            (p) =>
-                p.type === Periodetype.Opphold &&
-                isAfter(p.tidsperiode.startdato, periode.tidsperiode.startdato)
-        ) as Oppholdsperiode[];
+        this.oppdaterOppholdEtterPeriode(periode);
 
-        senereOpphold.forEach((opphold) => {
-            const oppholdDager = periodeUtil(opphold).getAntallUttaksdager();
-            if (oppholdDager <= uttaksdager) {
-                // Hele oppholdet kan fjernes
-                this.perioder = perioderUtil(this.perioder).fjernPerioder([
-                    opphold
-                ]);
-                uttaksdager -= oppholdDager;
-            } else {
-                // Kutt dager i starten av oppholdet
-                const kuttetOpphold: Oppholdsperiode = {
-                    ...opphold,
-                    tidsperiode: {
-                        ...opphold.tidsperiode,
-                        startdato: uttaksdagUtil(
-                            opphold.tidsperiode.startdato
-                        ).leggTil(uttaksdager)
-                    }
-                };
-                this.erstattPeriode(kuttetOpphold);
-                uttaksdager = 0;
-            }
-        });
+        // Ikke opprett opphold lenger enn neste periode
 
         this.fjernOppholdOmsluttetAvPeriode(periode)
             .settInnOppholdVedEndretPeriode(prevPeriode, periode)
@@ -159,6 +126,46 @@ class UttaksplanBuilder {
     }
 
     /**
+     * Finner alle opphold etter periodens startdato og
+     * fjerner oppholdsdager fra disse tilsvarende periodens
+     * varighet
+     * @param periode
+     */
+    private oppdaterOppholdEtterPeriode(periode: Periode) {
+        let uttaksdager = periodeUtil(periode).getAntallUttaksdager();
+        const senereOpphold: Oppholdsperiode[] = this.perioder.filter(
+            (p) =>
+                p.type === Periodetype.Opphold &&
+                isAfter(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+        ) as Oppholdsperiode[];
+
+        senereOpphold.forEach((opphold) => {
+            const oppholdDager = periodeUtil(opphold).getAntallUttaksdager();
+            if (oppholdDager <= uttaksdager) {
+                // Hele oppholdet kan fjernes
+                this.perioder = perioderUtil(this.perioder).fjernPerioder([
+                    opphold
+                ]);
+                uttaksdager -= oppholdDager;
+            } else {
+                // Kutt dager i starten av oppholdet
+                const kuttetOpphold: Oppholdsperiode = {
+                    ...opphold,
+                    tidsperiode: {
+                        ...opphold.tidsperiode,
+                        startdato: uttaksdagUtil(
+                            opphold.tidsperiode.startdato
+                        ).leggTil(uttaksdager)
+                    }
+                };
+                this.erstattPeriode(kuttetOpphold);
+                uttaksdager = 0;
+            }
+        });
+        return this;
+    }
+
+    /**
      * Finner opphold som oppstår når en setter startdato til
      * et senere tidspunkt, og legger til dette oppholdet
      * @param opprinneligPeriode
@@ -168,13 +175,31 @@ class UttaksplanBuilder {
         opprinneligPeriode: Periode,
         endretPeriode: Periode
     ) {
-        const oppholdPåGrunnAvEndretTidsperiode = periodeUtil(
+        const opphold = periodeUtil(
             opprinneligPeriode
         ).finnOppholdsperioderVedEndretTidsperiode(endretPeriode);
-        this.perioder = [
-            ...this.perioder,
-            ...oppholdPåGrunnAvEndretTidsperiode
-        ];
+
+        if (opphold) {
+            const påfølgendePeriode = perioderUtil(
+                this.perioder
+            ).finnPåfølgendePeriode(opprinneligPeriode);
+            if (påfølgendePeriode) {
+                /** Ikke lag oppholdet lenger enn til siste uttaksdag før påfølgende periode */
+                const uttaksdagFørPåfølgendePeriode = uttaksdagUtil(
+                    påfølgendePeriode.tidsperiode.startdato
+                ).forrige();
+                opphold.tidsperiode = {
+                    ...opphold.tidsperiode,
+                    sluttdato: isBefore(
+                        uttaksdagFørPåfølgendePeriode,
+                        opphold.tidsperiode.sluttdato
+                    )
+                        ? uttaksdagFørPåfølgendePeriode
+                        : opphold.tidsperiode.sluttdato
+                };
+            }
+            this.perioder = [...this.perioder, ...[opphold]];
+        }
         return this;
     }
 
