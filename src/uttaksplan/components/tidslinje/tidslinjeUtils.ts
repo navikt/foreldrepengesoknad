@@ -125,8 +125,8 @@ export const getStondskontoTekstKey = (konto: StønadskontoType) => {
 export const getÅrsakTekstKey = (årsak: UtsettelseÅrsakType) => {
     switch (årsak) {
         case UtsettelseÅrsakType.Arbeid:
-            return 'uttaksplan.opphold.årsak.Arbeid';
+            return 'uttaksplan.utsettelse.årsak.Arbeid';
         default:
-            return 'uttaksplan.opphold.årsak.Ferie';
+            return 'uttaksplan.utsettelse.årsak.Ferie';
     }
 };

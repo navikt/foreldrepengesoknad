@@ -28,7 +28,7 @@
     "uttaksplan.stonadskonto.foreldrepenger": "foreldrepengar",
     "uttaksplan.tittel.introtekst":
         "Velkommen til foreldrepengenplanleggjaren. Her kan de planleggje korleis de vil ta ut perioden med foreldrepengar når de ventar barn.",
-    "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til opphald",
+    "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til utsetjing",
     "uttaksplan.periodedialog.STØNADSPERIODE.tittel": "Legg til periode",
 
     "uttaksplan.uttaksperiodeskjema.tittel": "Legg til periode",
@@ -39,22 +39,22 @@
     "uttaksplan.uttaksperiodeskjema.knapp.oppdater": "Oppdater",
     "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern periode",
 
-    "uttaksplan.utsettelseskjema.tittel": "Legg til opphald",
-    "uttaksplan.utsettelseskjema.tittel.endre": "Opphald i foreldrepengane",
+    "uttaksplan.utsettelseskjema.tittel": "Legg til utsetjing",
+    "uttaksplan.utsettelseskjema.tittel.endre": "Utsetjing i foreldrepengane",
     "uttaksplan.utsettelseskjema.årsak.sporsmal": "Kva skal {navn} gjere?",
     "uttaksplan.utsettelseskjema.årsak.ferie": "Ta ut ferie",
     "uttaksplan.utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på heilagdagar.",
     "uttaksplan.utsettelseskjema.årsak.arbeid": "Arbeide heiltid",
     "uttaksplan.utsettelseskjema.hvem.sporsmal":
-        "Kven skal ha opphald i foreldrepane?",
+        "Kven skal ha utsetjing i foreldrepane?",
     "uttaksplan.utsettelseskjema.hvem.sporsmal.ferie": "Kven skal ta ut ferie?",
     "uttaksplan.utsettelseskjema.hvem.sporsmal.arbeid": "Kven skal arbeide?",
     "uttaksplan.utsettelseskjema.startdato.sporsmal": "Startdato",
     "uttaksplan.utsettelseskjema.sluttdato.sporsmal": "Sluttdato",
     "uttaksplan.utsettelseskjema.knapp.leggtil": "Legg til",
     "uttaksplan.utsettelseskjema.knapp.oppdater": "Oppdater",
-    "uttaksplan.utsettelseskjema.knapp.fjern": "Fjern opphald",
+    "uttaksplan.utsettelseskjema.knapp.fjern": "Fjern utsetjing",
     "uttaksplan.utsettelseskjema.feil.ugyldigStartdato":
         "Startdato er ikkje ein gyldig dato",
     "uttaksplan.utsettelseskjema.feil.ugyldigSluttdato":
@@ -74,9 +74,9 @@
     "uttaksplan.utsettelseskjema.feil.helligdagIPeriode":
         "Du har lagt til ein periode med heilagdagar. Du må endre perioden.",
     "uttaksplan.utsettelseskjema.ferievarsel.ulovlig":
-        "Du har lagt inn {ukerOgDager}. Du kan ikkje ha opphald på grunn av ferie meir enn ti veker og to dagar.",
+        "Du har lagt inn {ukerOgDager}. Du kan ikkje ha utsetjing på grunn av ferie meir enn ti veker og to dagar.",
     "uttaksplan.utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn {ukerOgDager}. For å ha opphald meir enn fire veker og éin dag, må du ha overført ferie frå i fjor eller ta ut ferie frå neste år.",
+        "Du har lagt inn {ukerOgDager}. For å ha utsetjing meir enn fire veker og éin dag, må du ha overført ferie frå i fjor eller ta ut ferie frå neste år.",
     "uttaksplan.skjema.fordeling.reduser.tooltip":
         "Ei veke mindre fellesperiode til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal":
@@ -128,12 +128,12 @@
         "Når {navnForelder2} tek ut foreldrepengar i fellesperioden, blir det stilt krav til kva aktivitet {navnForelder1}s kan drive med.",
     "uttaksplan.tidslinje.visdetaljer": "Fleire detaljar",
     "uttaksplan.tidslinje.skjuldetaljer": "Skjul detaljar",
-    "uttaksplan.opphold.årsak.ferie": "ferie",
-    "uttaksplan.opphold.årsak.arbeid": "arbeid",
-    "uttaksplan.opphold.årsak.Ferie": "Ferie",
-    "uttaksplan.opphold.årsak.Arbeid": "Arbeid",
-    "uttaksplan.opphold.tittel": "Opphald i perioden med foreldrepengar?",
-    "uttaksplan.opphold.knapp.leggtil": "Legg til opphald",
+    "uttaksplan.utsettelse.årsak.ferie": "ferie",
+    "uttaksplan.utsettelse.årsak.arbeid": "arbeid",
+    "uttaksplan.utsettelse.årsak.Ferie": "Ferie",
+    "uttaksplan.utsettelse.årsak.Arbeid": "Arbeid",
+    "uttaksplan.utsettelse.tittel": "Utsetjing i perioden med foreldrepengar?",
+    "uttaksplan.utsettelse.knapp.leggtil": "Legg til utsetjing",
     "uttaksplan.skjermleser.skjema.tittel":
         "Fyll ut skjemaet og sjå foreldrepengeplanen dykkar",
     "uttaksplan.skjermleser.tidslinje.oppsummering.tittel":
@@ -143,7 +143,7 @@
     "uttaksplan.veileder.ulonnetpermisjon.tittel":
         "Ønskjer du ulønt permisjon?",
     "uttaksplan.veileder.ulonnetpermisjon.tekst1":
-        "Ulønt permisjon krev at den andre forelderen tek ut foreldrepengar eller registrerer opphald.",
+        "Ulønt permisjon krev at den andre forelderen tek ut foreldrepengar eller registrerer utsetjing.",
     "uttaksplan.veileder.ulonnetpermisjon.tekst2":
         "Ulønt permisjon må avtalas med arbeidsgivaren. Ulønt permisjon i meir enn 14 dager kan påverke retten til blant anna sjukepengar og pleiepengar.",
     "uttaksplan.veileder.ulonnetpermisjon.navlenketekst":
