@@ -8,37 +8,42 @@ import { Innholdstittel } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 import getMessage from 'common/util/i18nUtils';
-import { DispatchProps } from 'common/redux/types';
 import VeilederMedSnakkeboble from 'common/components/veileder-med-snakkeboble/VeilederMedSnakkeboble';
 
 import Applikasjonsside from '../Applikasjonsside';
+import DinePlikterModal from '../../../components/dine-plikter-modal/DinePlikterModal';
+import DinePersonopplysningerModal from '../../../components/dine-personopplysninger-modal/DinePersonopplysningerModal';
 
-import DinePlikterModal from './DinePlikterModal';
-import DinePersonopplysningerModal from './DinePersonopplysningerModal';
-
+import { AppState } from '../../../redux/reducers';
+import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
-
 import { HistoryProps } from '../../../types/common';
+
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 import './velkommen.less';
 
 interface StateProps {
-    person: Person;
+    person?: Person;
+    harGodkjentVilkår: boolean;
 }
 
 interface OwnProps {
     isDinePlikterModalOpen: boolean;
     isDinePersonopplysningerModalOpen: boolean;
-    harGodkjentVilkår: boolean;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps;
+type Props = StateProps &
+    DispatchProps &
+    InjectedIntlProps &
+    HistoryProps &
+    DispatchProps;
+
 class Velkommen extends React.Component<Props, OwnProps> {
     componentWillMount() {
         this.setState({
             isDinePlikterModalOpen: false,
-            isDinePersonopplysningerModalOpen: false,
-            harGodkjentVilkår: false
+            isDinePersonopplysningerModalOpen: false
         });
     }
 
@@ -51,11 +56,12 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         <a
                             className="lenke"
                             href="#"
-                            onClick={(e) =>
+                            onClick={(e) => {
+                                e.preventDefault();
                                 this.setState({
                                     isDinePlikterModalOpen: true
-                                })
-                            }>
+                                });
+                            }}>
                             <FormattedMessage id="velkommen.dinePlikter" />
                         </a>
                     )
@@ -65,11 +71,20 @@ class Velkommen extends React.Component<Props, OwnProps> {
     }
 
     render() {
-        const { harGodkjentVilkår } = this.state;
-        const { person, history, intl } = this.props;
+        const {
+            person,
+            harGodkjentVilkår,
+            history,
+            dispatch,
+            intl
+        } = this.props;
+
+        if (person === undefined) {
+            return null;
+        }
 
         return (
-            <Applikasjonsside visSpråkvelger={true} withoutMargin={true}>
+            <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title="Søknad om foreldrepenger" />
                 <VeilederMedSnakkeboble
                     dialog={{
@@ -88,9 +103,11 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         checked={harGodkjentVilkår}
                         label={getMessage(intl, 'velkommen.samtykke')}
                         onChange={() => {
-                            this.setState({
-                                harGodkjentVilkår: !harGodkjentVilkår
-                            });
+                            dispatch(
+                                søknadActions.updateSøknad({
+                                    harGodkjentVilkår: !harGodkjentVilkår
+                                })
+                            );
                         }}>
                         <span>
                             {this.getBekreftCheckboksPanelLabelHeader()}
@@ -98,10 +115,9 @@ class Velkommen extends React.Component<Props, OwnProps> {
                     </BekreftCheckboksPanel>
                     <Hovedknapp
                         className="velkommen__startSøknadKnapp blokk-m"
-                        disabled={!this.state.harGodkjentVilkår}
+                        disabled={!harGodkjentVilkår}
                         onClick={() =>
-                            harGodkjentVilkår &&
-                            history.push('/foreldrepengesoknad/sideoversikt')
+                            harGodkjentVilkår && history.push('soknad/inngang')
                         }>
                         {getMessage(intl, 'velkommen.startSøknadKnapp')}
                     </Hovedknapp>
@@ -109,11 +125,12 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         <a
                             className="lenke"
                             href="#"
-                            onClick={(e) =>
+                            onClick={(e) => {
+                                e.preventDefault();
                                 this.setState({
                                     isDinePersonopplysningerModalOpen: true
-                                })
-                            }>
+                                });
+                            }}>
                             <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                         </a>
                     </div>
@@ -138,8 +155,9 @@ class Velkommen extends React.Component<Props, OwnProps> {
     }
 }
 
-const mapStateToProps = (state: any) => ({
-    person: state.api.person
+const mapStateToProps = (state: AppState): StateProps => ({
+    person: state.api.person,
+    harGodkjentVilkår: state.søknad.harGodkjentVilkår
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

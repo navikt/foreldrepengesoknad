@@ -4,6 +4,7 @@ import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
+import lenker from '../../util/lenker';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;
@@ -37,7 +38,7 @@ const DinePlikterModal = (props: Props) => {
                                 values={{
                                     link: (
                                         <Lenke
-                                            href="https://nav.no/rettOgPlikt"
+                                            href={lenker.rettOgPlikt}
                                             target="_blank">
                                             <FormattedMessage id="dinePlikter.listeElement.2.link" />
                                         </Lenke>

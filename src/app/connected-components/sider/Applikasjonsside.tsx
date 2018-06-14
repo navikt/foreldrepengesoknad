@@ -6,11 +6,12 @@ import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
 import { Språkkode } from 'common/intl/types';
 import Språkvelger from 'common/components/språkvelger/Språkvelger';
+import BEMHelper from 'common/util/bem';
 
 export interface OwnProps {
     /** Om språkvelger skal vises eller ikke */
     visSpråkvelger?: boolean;
-    withoutMargin?: boolean;
+    margin?: boolean;
 }
 
 interface StateProps {
@@ -18,7 +19,6 @@ interface StateProps {
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
-
 class Sidemal extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -28,9 +28,15 @@ class Sidemal extends React.Component<Props> {
             visSpråkvelger,
             språkkode,
             children,
-            withoutMargin,
+            margin = true,
             dispatch
         } = this.props;
+
+        const BEM = BEMHelper('content');
+        const cls = classnames(BEM.className, {
+            [`${BEM.modifier('withoutMargin')}`]: margin === false
+        });
+
         return (
             <React.Fragment>
                 {visSpråkvelger && (
@@ -41,12 +47,7 @@ class Sidemal extends React.Component<Props> {
                         }
                     />
                 )}
-                <div
-                    className={classnames('content', {
-                        content__withoutMargin: withoutMargin
-                    })}>
-                    {children}
-                </div>
+                <div className={cls}>{children}</div>
             </React.Fragment>
         );
     }

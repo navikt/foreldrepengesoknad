@@ -24,6 +24,7 @@ import Inngangsside from './sider/inngangsside/Inngangsside';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import VedleggSide from './sider/vedlegg/VedleggSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
+import Velkommen from './sider/velkommen/Velkommen';
 
 interface StateProps {
     person: Person;
@@ -50,7 +51,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                     component={DevSideoversikt}
                     key="devSideoversikt"
                 />
-                <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}inngang`} />
+                <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} />
             </Switch>
         );
     }
@@ -71,6 +72,11 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
                 component={StegRoutes}
                 key="steg"
+            />,
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
+                component={Velkommen}
+                key="velkommen"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}inngang`}
@@ -97,16 +103,16 @@ class Foreldrepengesøknad extends React.Component<Props> {
 
     render() {
         const { error, isLoadingPerson, person } = this.props;
-        if (person && !person.erMyndig) {
-            return this.renderErrorRoute(IkkeMyndig);
-        } else if (error.networkError || error.response !== undefined) {
-            return this.renderErrorRoute(GenerellFeil);
-        } else if (
+
+        if (
             isLoadingPerson ||
-            person === undefined ||
             (error.response && error.response.status === 401)
         ) {
             return <Spinner type="XXL" />;
+        } else if (error.networkError || error.response !== undefined) {
+            return this.renderErrorRoute(GenerellFeil);
+        } else if (person && !person.erMyndig) {
+            return this.renderErrorRoute(IkkeMyndig);
         }
         return this.renderSøknadRoutes();
     }
