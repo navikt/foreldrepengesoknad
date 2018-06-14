@@ -90,6 +90,11 @@ const PeriodeReducer = (
                 dialogErApen: false
             });
 
+        case PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN:
+            return updateState(state, {
+                manuellOppdatering: action.manuellUttaksplan
+            });
+
         case PlanleggerActionTypeKeys.DEV_ACTION:
             return updateState(state, {
                 perioder: UttaksplanBuilder(state.perioder).perioder
