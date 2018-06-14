@@ -17,29 +17,52 @@ import {
     getTidsperiode
 } from 'uttaksplan/utils/dataUtils';
 
-export const Uttaksplan = (perioder: Periode[]) => {
-    return new UttaksplanBuilder(perioder);
+export const UttaksplanBuilder = (perioder: Periode[]) => {
+    return new UttaksplanAutoBuilder(perioder);
 };
 
 /**
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
-class UttaksplanBuilder {
+class UttaksplanAutoBuilder {
     public constructor(public perioder: Periode[]) {
         this.perioder = perioder;
+    }
+
+    /**
+     * Bygger opp hele uttaksplanen på nytt
+     */
+    buildUttaksplan() {
+        this.reset()
+            .finnOgSettInnOpphold()
+            .normaliser();
+        return this;
+    }
+
+    /**
+     * Proxy for om en skal oppdatere eller legge til ny
+     * @param periode
+     */
+    leggTilEllerOppdater(periode: Periode) {
+        if (periode.id) {
+            this.oppdaterPeriodeOgBuild(periode);
+            return this;
+        }
+        this.leggTilPeriodeOgBuild(periode);
+        return this;
     }
 
     /**
      * Legger til periode og oppdaterer uttaksplanen
      * @param periode
      */
-    leggTilPeriodeOgOppdater(periode: Periode) {
+    leggTilPeriodeOgBuild(periode: Periode) {
         this.perioder = settInnPeriode(this.perioder, {
             ...periode,
             id: guid(),
             endret: new Date()
         });
-        this.oppdaterUttaksplan();
+        this.buildUttaksplan();
         return this;
     }
 
@@ -47,7 +70,7 @@ class UttaksplanBuilder {
      * Oppdaterer periode og uttaksplanen
      * @param periode
      */
-    oppdaterPeriodeOgOppdater(periode: Periode) {
+    oppdaterPeriodeOgBuild(periode: Periode) {
         const prevPeriode = periode.id
             ? perioderUtil(this.perioder).getPeriode(periode.id)
             : undefined;
@@ -61,17 +84,7 @@ class UttaksplanBuilder {
         this.fjernOppholdOmsluttetAvPeriode(periode)
             .settInnOppholdVedEndretPeriode(prevPeriode, periode)
             .erstattPeriode(periode)
-            .oppdaterUttaksplan();
-        return this;
-    }
-
-    /**
-     * Bygger opp hele uttaksplanen på nytt
-     */
-    oppdaterUttaksplan() {
-        this.reset()
-            .finnOgSettInnOpphold()
-            .normaliser();
+            .buildUttaksplan();
         return this;
     }
 
@@ -79,9 +92,9 @@ class UttaksplanBuilder {
      * Sletter periode og oppdaterer uttaksplanen
      * @param periode
      */
-    slettPeriodeOgOppdater(periode: Periode) {
+    slettPeriodeOgBuild(periode: Periode) {
         this.slettPeriode(periode);
-        this.oppdaterUttaksplan();
+        this.buildUttaksplan();
         return this;
     }
 
@@ -108,7 +121,7 @@ class UttaksplanBuilder {
      */
     private erstattPeriode(periode: Periode) {
         this.slettPeriode(periode);
-        this.oppdaterUttaksplan();
+        this.buildUttaksplan();
         this.settInnPeriode(periode);
         return this;
     }
