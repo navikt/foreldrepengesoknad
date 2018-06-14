@@ -115,6 +115,15 @@ export function opprettPerioder(
     };
 }
 
+export function setManuellUttaksplan(
+    manuellUttaksplan: boolean
+): PlanleggerActionTypes {
+    return {
+        type: PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN,
+        manuellUttaksplan
+    };
+}
+
 export function dev(key: string): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.DEV_ACTION,
