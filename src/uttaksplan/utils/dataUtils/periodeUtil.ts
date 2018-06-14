@@ -33,6 +33,8 @@ export const perioderUtil = (perioder: Periode[]) => ({
         finnPerioderFørPeriode(perioder, periode),
     finnPåfølgendePerioder: (periode: Periode) =>
         finnPerioderEtterPeriode(perioder, periode),
+    finnPåfølgendePeriode: (periode: Periode) =>
+        finnPåfølgendePeriode(perioder, periode),
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
     forskyvPerioder: (uttaksdager: number) =>
         forskyvPerioder(perioder, uttaksdager),
@@ -233,6 +235,22 @@ function finnPerioderEtterPeriode(
 }
 
 /**
+ * Finner påfølgende enkelt-periode
+ * @param perioder
+ * @param periode
+ */
+function finnPåfølgendePeriode(
+    perioder: Periode[],
+    periode: Periode
+): Periode | undefined {
+    const påfølgendePerioder = finnPerioderEtterPeriode(perioder, periode);
+    if (påfølgendePerioder.length > 0) {
+        return påfølgendePerioder[0];
+    }
+    return undefined;
+}
+
+/**
  * Sjekker om to perioder er kan slåes sammen til en periode.
  * Dvs. de er like signaturer (type, forelder, konto etc.) og har
  * tidsperioder som er sammenhengende
@@ -275,13 +293,12 @@ function finnOppholdVedEndretTidsperiode(
     prevPeriode: Periode,
     periode: Periode,
     opphav: OppholdOpphavType
-): Oppholdsperiode[] {
-    const opphold: Oppholdsperiode[] = [];
+): Oppholdsperiode | undefined {
     const diffStartdato = uttaksdagUtil(
         prevPeriode.tidsperiode.startdato
     ).uttaksdagerFremTilDato(periode.tidsperiode.startdato);
     if (diffStartdato > 0) {
-        opphold.push({
+        return {
             type: Periodetype.Opphold,
             årsak: OppholdÅrsakType.Ingen,
             forelder: periode.forelder,
@@ -290,9 +307,9 @@ function finnOppholdVedEndretTidsperiode(
                 diffStartdato
             ),
             opphav
-        });
+        };
     }
-    return opphold;
+    return undefined;
 }
 
 /**
