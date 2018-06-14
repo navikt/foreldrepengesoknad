@@ -16,7 +16,7 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { InjectedIntl } from 'react-intl';
-import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperiodeUtil, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { isBefore, isSameDay } from 'date-fns';
 
 export const mapForelderTilInnslagfarge = (
@@ -147,26 +147,48 @@ export const getTimelineItemsFromInnslag = (
     innslag: Tidslinjeinnslag[],
     intl: InjectedIntl
 ) => {
-    const items = innslag
-        .map((i) => mapInnslagToTimelineItem(i, intl))
-        .map((item, idx, arr) => {
-            if (idx > 0 && item.type === TimelineItemType.event) {
-                const prevItem = arr[idx - 1];
-                if (prevItem.type === TimelineItemType.event) {
-                    if (
-                        isBefore(item.startDate, prevItem.endDate) ||
-                        isSameDay(item.startDate, prevItem.endDate)
-                    ) {
-                        return {
-                            ...item,
-                            error: {
-                                title: 'Datokonflikt'
-                            }
-                        };
-                    }
-                }
+    const mappedItems: TimelineItem[] = [];
+    const items = innslag.map((i) => mapInnslagToTimelineItem(i, intl));
+
+    items.forEach((item, idx, arr) => {
+        if (idx > 0 && item.type === TimelineItemType.event) {
+            const prevItem = arr[idx - 1];
+            const prevEndDate: Date =
+                prevItem.type === TimelineItemType.marker
+                    ? prevItem.startDate
+                    : prevItem.endDate;
+
+            const dager =
+                uttaksdagUtil(prevEndDate).uttaksdagerFremTilDato(
+                    item.startDate
+                ) - (prevItem.type === TimelineItemType.marker ? 0 : 1);
+            if (dager > 0) {
+                const gap: TimelineGap = {
+                    type: TimelineItemType.gap,
+                    startDate: uttaksdagUtil(prevEndDate).neste(),
+                    endDate: uttaksdagUtil(item.startDate).forrige(),
+                    days: dager,
+                    data: {},
+                    title: 'Opphold'
+                };
+                mappedItems.push(gap);
             }
-            return item;
-        });
-    return items;
+            if (
+                isBefore(item.startDate, prevEndDate) ||
+                (isSameDay(item.startDate, prevEndDate) &&
+                    prevItem.type !== TimelineItemType.marker)
+            ) {
+                mappedItems.push({
+                    ...item,
+                    error: {
+                        title: 'Datokonflikt'
+                    }
+                });
+                return;
+            }
+        }
+
+        mappedItems.push(item);
+    });
+    return mappedItems; // [...items, ...opphold].sort(sortItems);
 };
