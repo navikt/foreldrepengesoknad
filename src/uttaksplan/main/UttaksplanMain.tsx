@@ -29,7 +29,8 @@ import {
     visTidslinje,
     visPeriodeDialog,
     opprettPerioder,
-    setTermindato
+    setTermindato,
+    setManuellUttaksplan
 } from 'uttaksplan/redux/actions';
 
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
@@ -39,7 +40,7 @@ import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 
-import { mapInnslagToTimelineItem } from 'uttaksplan/utils/innslagUtils';
+import { getTimelineItemsFromInnslag } from 'uttaksplan/utils/innslagUtils';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
@@ -48,6 +49,7 @@ import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import FordelingUttaksplan from 'uttaksplan/connectedComponents/fordelingUttaksplan/FordelingUttaksplan';
+import { Checkbox } from 'nav-frontend-skjema';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -59,6 +61,7 @@ export interface StateProps {
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
     tidsromForUtsettelse?: Tidsperiode;
+    manuellUttaksplan?: boolean;
 }
 
 interface OwnProps {
@@ -136,6 +139,7 @@ class UttaksplanMain extends React.Component<Props> {
             permisjonsregler,
             ukerFellesperiode,
             visPermisjonsplan,
+            manuellUttaksplan,
             dispatch,
             intl,
             form
@@ -171,10 +175,22 @@ class UttaksplanMain extends React.Component<Props> {
                         <div className="blokk-s">
                             <FordelingUttaksplan />
                         </div>
+                        <div className="blokk-s">
+                            <Checkbox
+                                checked={manuellUttaksplan}
+                                label="Manuell oppdatering"
+                                onChange={(evt) =>
+                                    dispatch(
+                                        setManuellUttaksplan(evt.target.checked)
+                                    )
+                                }
+                            />
+                        </div>
                         <div className="blokk-m">
                             <Timeline
-                                items={innslag.map((i) =>
-                                    mapInnslagToTimelineItem(i, intl)
+                                items={getTimelineItemsFromInnslag(
+                                    innslag,
+                                    intl
                                 )}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}
@@ -294,6 +310,7 @@ const mapStateToProps = (
         permisjonsregler,
         ukerFellesperiode,
         dekningsgrad,
+        manuellUttaksplan: periode.manuellOppdatering,
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
