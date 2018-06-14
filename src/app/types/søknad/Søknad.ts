@@ -55,7 +55,8 @@ export type SøknadsvedleggType =
     | 'adopsjonsvedtak'
     | 'overtakelsedokumentasjon'
     | 'terminbekreftelse'
-    | 'fødselsattest';
+    | 'fødselsattest'
+    | 'annenInntektDokumentasjon';
 
 export interface Søknadsvedlegginfo {
     id: string;
