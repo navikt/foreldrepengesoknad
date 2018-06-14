@@ -32,13 +32,14 @@ const PeriodeReducer = (
         case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
             return {
                 ...state,
-                perioder: opprettUttaksperioder(
-                    action.termindato,
-                    action.dekningsgrad,
-                    action.fellesukerForelder1,
-                    action.fellesukerForelder2,
-                    action.permisjonsregler
-                )
+                perioder: Uttaksplan(
+                    opprettUttaksperioder(
+                        action.termindato,
+                        action.fellesukerForelder1,
+                        action.fellesukerForelder2,
+                        action.permisjonsregler
+                    )
+                ).oppdaterUttaksplan().perioder
             };
 
         case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
@@ -59,16 +60,18 @@ const PeriodeReducer = (
         case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
             return updateState(state, {
                 perioder: action.periode.id
-                    ? Uttaksplan(state.perioder).oppdaterPeriode(action.periode)
-                          .perioder
-                    : Uttaksplan(state.perioder).leggTilPeriode(action.periode)
-                          .perioder,
+                    ? Uttaksplan(state.perioder).oppdaterPeriodeOgOppdater(
+                          action.periode
+                      ).perioder
+                    : Uttaksplan(state.perioder).leggTilPeriodeOgOppdater(
+                          action.periode
+                      ).perioder,
                 dialogErApen: false
             });
 
         case PlanleggerActionTypeKeys.PERIODE_SLETT:
             return updateState(state, {
-                perioder: Uttaksplan(state.perioder).slettPeriode(
+                perioder: Uttaksplan(state.perioder).slettPeriodeOgOppdater(
                     action.periode
                 ).perioder,
                 valgtPeriode: undefined,

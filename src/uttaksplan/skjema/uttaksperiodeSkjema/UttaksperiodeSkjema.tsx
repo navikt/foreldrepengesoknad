@@ -16,9 +16,11 @@ import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/Ekspan
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { Tidsperiode } from 'nav-datovelger';
 
 export interface OwnProps {
     periode: Uttaksperiode;
+    ugyldigeTidsperioder?: Tidsperiode[];
     onChange: (periode: Periode) => void;
     onFjern: (periode: Periode) => void;
 }
@@ -108,7 +110,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, onFjern } = this.props;
+        const { periode, onFjern, ugyldigeTidsperioder } = this.props;
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
@@ -139,6 +141,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                         onChangeBeholdVarighet={(behold) =>
                             this.setState({ beholdVarighet: behold })
                         }
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
                     />
                 </div>
                 <EkspanderbartInnhold
