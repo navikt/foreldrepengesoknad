@@ -1,5 +1,6 @@
 import { Periode } from 'uttaksplan/types';
 import { sorterPerioder } from 'uttaksplan/utils/dataUtils';
+import { guid } from 'nav-frontend-js-utils';
 
 export const UttaksplanManuell = (perioder: Periode[]) =>
     new UttaksplanManuellBuilder(perioder);
@@ -12,7 +13,7 @@ class UttaksplanManuellBuilder {
             this.oppdaterPeriode(periode);
             return this;
         }
-        this.leggTilPeriode(periode);
+        this.leggTilPeriode({ ...periode, id: guid() });
         return this;
     }
 

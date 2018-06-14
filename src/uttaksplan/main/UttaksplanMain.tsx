@@ -40,7 +40,7 @@ import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 
-import { mapInnslagToTimelineItem } from 'uttaksplan/utils/innslagUtils';
+import { getTimelineItemsFromInnslag } from 'uttaksplan/utils/innslagUtils';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
@@ -188,8 +188,9 @@ class UttaksplanMain extends React.Component<Props> {
                         </div>
                         <div className="blokk-m">
                             <Timeline
-                                items={innslag.map((i) =>
-                                    mapInnslagToTimelineItem(i, intl)
+                                items={getTimelineItemsFromInnslag(
+                                    innslag,
+                                    intl
                                 )}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}

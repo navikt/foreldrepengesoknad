@@ -67,8 +67,8 @@ const mockUttaksperiode: Uttaksperiode = {
     forelder: 'forelder1',
     konto: StønadskontoType.Foreldrepenger,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 7, 26)),
-        sluttdato: normaliserDato(new Date(2018, 7, 26))
+        startdato: normaliserDato(new Date(2018, 7, 27)),
+        sluttdato: normaliserDato(new Date(2018, 7, 27))
     },
     type: Periodetype.Uttak
 };

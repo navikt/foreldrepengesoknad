@@ -17,6 +17,7 @@ import {
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { InjectedIntl } from 'react-intl';
 import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { isBefore, isSameDay } from 'date-fns';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -97,8 +98,8 @@ export const mapInnslagToEvent = (
         return {
             type: TimelineItemType.event,
             title: getTittel(),
-            from: periode.tidsperiode.startdato,
-            to: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.startdato,
+            endDate: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
             days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
@@ -109,8 +110,8 @@ export const mapInnslagToEvent = (
     } else {
         const gapItem: TimelineGap = {
             type: TimelineItemType.gap,
-            from: periode.tidsperiode.startdato,
-            to: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.startdato,
+            endDate: periode.tidsperiode.sluttdato,
             title: 'Opphold',
             days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsFromInnslag(innslag),
@@ -125,7 +126,7 @@ export const mapInnslagToMarker = (
 ): TimelineMarker => ({
     type: TimelineItemType.marker,
     title: innslag.hendelse,
-    date: innslag.dato,
+    startDate: innslag.dato,
     icons: getTimelineIconsFromInnslag(innslag),
     data: innslag
 });
@@ -140,4 +141,32 @@ export const mapInnslagToTimelineItem = (
         case TidslinjeinnslagType.periode:
             return mapInnslagToEvent(innslag, intl);
     }
+};
+
+export const getTimelineItemsFromInnslag = (
+    innslag: Tidslinjeinnslag[],
+    intl: InjectedIntl
+) => {
+    const items = innslag
+        .map((i) => mapInnslagToTimelineItem(i, intl))
+        .map((item, idx, arr) => {
+            if (idx > 0 && item.type === TimelineItemType.event) {
+                const prevItem = arr[idx - 1];
+                if (prevItem.type === TimelineItemType.event) {
+                    if (
+                        isBefore(item.startDate, prevItem.endDate) ||
+                        isSameDay(item.startDate, prevItem.endDate)
+                    ) {
+                        return {
+                            ...item,
+                            error: {
+                                title: 'Datokonflikt'
+                            }
+                        };
+                    }
+                }
+            }
+            return item;
+        });
+    return items;
 };

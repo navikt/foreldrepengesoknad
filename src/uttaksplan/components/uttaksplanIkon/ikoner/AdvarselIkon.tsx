@@ -2,6 +2,7 @@ import React, { SVGProps } from 'react';
 
 export interface OwnProps {
     type?: 'advarsel' | 'feil';
+    title?: string;
 }
 
 type Props = OwnProps & SVGProps<any>;
@@ -16,6 +17,7 @@ const AdvarselIkon = (props: Props) => {
             height={24}
             viewBox="0 0 24 24"
             {...props}>
+            <title>{props.title}</title>
             <defs>
                 <path
                     id="advarsel-a"
