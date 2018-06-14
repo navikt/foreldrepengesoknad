@@ -64,7 +64,8 @@ const PeriodeReducer = (
                 return updateState(state, {
                     perioder: UttaksplanManuell(
                         state.perioder
-                    ).leggTilEllerOppdater(action.periode).perioder
+                    ).leggTilEllerOppdater(action.periode).perioder,
+                    dialogErApen: false
                 });
             }
             return updateState(state, {
@@ -79,7 +80,8 @@ const PeriodeReducer = (
                 return updateState(state, {
                     perioder: UttaksplanManuell(state.perioder).slettPeriode(
                         action.periode
-                    ).perioder
+                    ).perioder,
+                    dialogErApen: false
                 });
             }
             return updateState(state, {

@@ -19,7 +19,7 @@ const MarkerItem: React.StatelessComponent<Props> = ({
         <TimelineIcons icons={item.icons} iconRenderer={iconRenderer} />
         <h1 className={BEM.element('title')}>{item.title}</h1>
         <div className={BEM.element('date')}>
-            <FormatertDato dato={item.date} />
+            <FormatertDato dato={item.startDate} />
         </div>
         <div className={BEM.element('comment')}> {item.comment}</div>
     </article>
