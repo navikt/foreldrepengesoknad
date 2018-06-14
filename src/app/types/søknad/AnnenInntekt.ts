@@ -9,7 +9,9 @@ export enum AnnenInntektType {
 export interface AnnenInntekt {
     type: AnnenInntektType;
     fom: Date;
-    tom: Date;
+    tom?: Date;
+    pågående: boolean;
+    vedleggIDer: string[];
 }
 
 export interface InntektVedJobbIUtlandet extends AnnenInntekt {

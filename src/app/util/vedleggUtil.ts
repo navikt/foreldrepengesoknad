@@ -41,6 +41,11 @@ export const getMetadataForSøknadsvedlegg = (
                 skjemanummer: 'skjema-terminbekreftelse',
                 beskrivelse: 'tom'
             };
+        case 'annenInntektDokumentasjon':
+            return {
+                skjemanummer: 'skjema-annenInntektDokumentasjon',
+                beskrivelse: 'tom'
+            };
     }
 };
 

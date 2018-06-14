@@ -12,6 +12,8 @@ import { AttachmentAppState } from '../../redux/attachmentReducer';
 
 export interface OwnProps {
     group: string;
+    onAfterFilesSelect?: (attachments: Attachment[]) => void;
+    onAfterFileDelete?: (attachment: Attachment) => void;
 }
 
 export interface StateProps {
@@ -39,12 +41,20 @@ class AttachmentsUploader extends React.Component<Props, {}> {
     }
 
     onFilesSelect(files: Attachment[]) {
-        this.props.dispatch(addAttachments(files, this.props.group));
+        const { group, dispatch, onAfterFilesSelect } = this.props;
+        dispatch(addAttachments(files, group));
         this.uploadNewFiles(files);
+        if (onAfterFilesSelect) {
+            onAfterFilesSelect(files);
+        }
     }
 
     onFileDelete(file: Attachment) {
-        this.props.dispatch(deleteAttachment(file));
+        const { dispatch, onAfterFileDelete } = this.props;
+        dispatch(deleteAttachment(file));
+        if (onAfterFileDelete) {
+            onAfterFileDelete(file);
+        }
     }
 
     uploadNewFiles(attachments: Attachment[]) {
