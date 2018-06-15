@@ -18,6 +18,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import utils from '../../../util/fødselsdato';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -79,7 +80,17 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                         <AttachmentsUploader
                             attachments={barn.adopsjonsvedtak}
                             attachmentType="adopsjonsvedtak"
-                            onFilesSelect={() => {}}
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
                             onFileDelete={() => {}}
                         />
                     )}

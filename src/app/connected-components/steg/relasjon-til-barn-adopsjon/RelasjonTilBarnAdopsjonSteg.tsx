@@ -17,6 +17,7 @@ import Steg, { StegProps } from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
     barn: FødtBarn;
@@ -83,7 +84,17 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 (barn as Adopsjonsbarn).omsorgsovertakelse
                             }
                             attachmentType="omsorgsovertakelse"
-                            onFilesSelect={() => {}}
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
                             onFileDelete={() => {}}
                         />
                     )}

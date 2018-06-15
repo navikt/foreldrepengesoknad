@@ -97,7 +97,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         renderFortsettKnapp:
-            (erBarnetFødt && fødselsattest.length > 0) ||
+            (erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
             (harTerminbekreftelseDato && terminbekreftelse.length > 0),
         history: props.history
     };

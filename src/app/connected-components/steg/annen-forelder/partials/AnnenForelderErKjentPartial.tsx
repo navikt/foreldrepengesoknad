@@ -194,10 +194,14 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                     onFilesSelect={(
                                         attachments: Attachment[]
                                     ) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                omsorgsovertakelse: attachments
-                                            })
+                                        attachments.forEach(
+                                            (attachment: Attachment) => {
+                                                dispatch(
+                                                    søknadActions.uploadAttachment(
+                                                        attachment
+                                                    )
+                                                );
+                                            }
                                         );
                                     }}
                                     onFileDelete={() => {}}

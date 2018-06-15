@@ -80,19 +80,20 @@ class FødtBarnPartial extends React.Component<Props> {
                             (fødselsdato: Date) => fødselsdato instanceof Date
                         )
                     }
-                    tittel={getMessage(
-                        intl,
-                        'attachments.tittel.fødselsattest'
-                    )}
+                    tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
                     render={() => (
                         <AttachmentsUploader
                             attachments={fødselsattest}
                             attachmentType="fødselsattest"
                             onFilesSelect={(attachments: Attachment[]) => {
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsattest: attachments
-                                    })
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
                                 );
                             }}
                             onFileDelete={(attachment: Attachment) => {}}

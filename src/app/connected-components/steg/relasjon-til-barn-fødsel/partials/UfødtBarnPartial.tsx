@@ -111,7 +111,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             synlig={barn.termindato !== undefined}
                             tittel={getMessage(
                                 intl,
-                                'attachments.tittel.terminbekreftelse'
+                                'vedlegg.tittel.terminbekreftelse'
                             )}
                             render={() => (
                                 <AttachmentsUploader

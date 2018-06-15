@@ -21,6 +21,7 @@ import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
 import { StegProps } from '../../../components/layout/Steg';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -86,7 +87,17 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         <AttachmentsUploader
                             attachments={barn.adopsjonsvedtak || []}
                             attachmentType="adopsjonsvedtak"
-                            onFilesSelect={() => {}}
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
                             onFileDelete={() => {}}
                         />
                     )}
