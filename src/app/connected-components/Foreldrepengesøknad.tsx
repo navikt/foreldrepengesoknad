@@ -20,10 +20,10 @@ import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevSideoversikt from '../dev/DevSideoversikt';
-import Inngangsside from './sider/inngangsside/Inngangsside';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import VedleggSide from './sider/vedlegg/VedleggSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
+import Velkommen from './sider/velkommen/Velkommen';
 
 interface StateProps {
     person: Person;
@@ -50,7 +50,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                     component={DevSideoversikt}
                     key="devSideoversikt"
                 />
-                <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}inngang`} />
+                <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} />
             </Switch>
         );
     }
@@ -73,9 +73,9 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 key="steg"
             />,
             <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}inngang`}
-                component={Inngangsside}
-                key="inngang"
+                path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
+                component={Velkommen}
+                key="velkommen"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`}
@@ -108,7 +108,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
         } else if (person && !person.erMyndig) {
             return this.renderErrorRoute(IkkeMyndig);
         }
-
         return this.renderSøknadRoutes();
     }
 }
