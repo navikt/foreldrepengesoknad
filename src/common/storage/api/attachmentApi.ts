@@ -10,6 +10,8 @@ function saveAttachment(attachment: Attachment) {
         }
     };
 
+    console.log('Sending attachment', attachment);
+
     const formData = new FormData();
     formData.set('id', attachment.id);
     formData.append('vedlegg', attachment.file, attachment.filename);

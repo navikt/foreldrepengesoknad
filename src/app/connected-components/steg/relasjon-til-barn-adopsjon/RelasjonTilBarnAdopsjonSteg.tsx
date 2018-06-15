@@ -15,9 +15,8 @@ import utils from '../../../util/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
-import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
-import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 import { HistoryProps } from '../../../types/common';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 
 interface StateProps {
     barn: FødtBarn;
@@ -76,9 +75,18 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Bolk
                     tittel={getMessage(
                         intl,
-                        'vedlegg.tittel.omsorgsovertakelse'
+                        'attachments.tittel.omsorgsovertakelse'
                     )}
-                    render={() => <Søknadsvedlegg type="omsorgsovertakelse" />}
+                    render={() => (
+                        <AttachmentsUploader
+                            attachments={
+                                (barn as Adopsjonsbarn).omsorgsovertakelse
+                            }
+                            attachmentType="omsorgsovertakelse"
+                            onFilesSelect={() => {}}
+                            onFileDelete={() => {}}
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -145,8 +153,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         barn,
-        visSpørsmålOmAntallBarn:
-            getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
+        visSpørsmålOmAntallBarn: barn.omsorgsovertakelse.length > 0,
         stegProps
     };
 };

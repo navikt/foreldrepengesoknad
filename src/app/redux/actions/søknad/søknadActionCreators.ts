@@ -4,7 +4,9 @@ import {
     UpdateBarn,
     UpdateSøknad,
     UpdateUtenlandsopphold,
-    UpdateSøker
+    UpdateSøker,
+    UploadAttachmentSuccess,
+    UploadAttachmentFailed
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -14,7 +16,8 @@ import {
 } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
-import { SøkerPartial } from '../../../types/s\u00F8knad/S\u00F8ker';
+import { SøkerPartial } from '../../../types/søknad/Søker';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 const updateBarn = (
     payload:
@@ -49,10 +52,36 @@ const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
     payload
 });
 
+const uploadAttachment = (payload: Attachment) => ({
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT,
+    payload
+});
+
+const uploadAttachmentSuccess = (
+    attachment: Attachment,
+    url: string
+): UploadAttachmentSuccess => ({
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS,
+    attachment,
+    url
+});
+
+const uploadAttachmentFailed = (
+    error: string,
+    attachment: Attachment
+): UploadAttachmentFailed => ({
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED,
+    error,
+    attachment
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
     updateUtenlandsopphold,
     updateSøker,
-    updateSøknad
+    updateSøknad,
+    uploadAttachment,
+    uploadAttachmentSuccess,
+    uploadAttachmentFailed
 };

@@ -3,13 +3,13 @@ import * as classnames from 'classnames';
 const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import SlettKnapp from '../slett-knapp/SlettKnapp';
+import SlettKnapp from '../../../components/slett-knapp/SlettKnapp';
 
-import './vedlegg.less';
+import './attachment.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { bytesString } from '../../util/filesize';
+import { bytesString } from 'common/util/filesize';
 
 interface OwnProps {
     attachment: Attachment;
@@ -19,7 +19,7 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const Vedlegg: React.StatelessComponent<Props> = ({
+const Attachment: React.StatelessComponent<Props> = ({
     attachment,
     visFilstørrelse,
     onDelete,
@@ -27,16 +27,16 @@ const Vedlegg: React.StatelessComponent<Props> = ({
 }) => {
     return (
         <div
-            className={classnames('vedlegg', {
-                'vedlegg--pending': attachment.pending
+            className={classnames('attachments', {
+                'attachment--pending': attachment.pending
             })}>
             {attachment.pending && (
-                <div className="vedlegg__spinner">
+                <div className="attachment__spinner">
                     <NavFrontendSpinner type="S" />
                 </div>
             )}
-            <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
-            <div className="vedlegg__filnavn">
+            <Icon className="attachment__ikon" kind="vedlegg" size={20} />
+            <div className="attachment__filnavn">
                 {attachment.url ? (
                     <Lenke href={attachment.url}>{attachment.filename}</Lenke>
                 ) : (
@@ -49,7 +49,7 @@ const Vedlegg: React.StatelessComponent<Props> = ({
             {onDelete &&
                 attachment.uploaded &&
                 !attachment.pending && (
-                    <span className="vedlegg__slett">
+                    <span className="attachment__slett">
                         <SlettKnapp
                             onClick={() => onDelete(attachment)}
                             ariaLabel={intl.formatMessage(
@@ -63,4 +63,4 @@ const Vedlegg: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(Vedlegg);
+export default injectIntl(Attachment);

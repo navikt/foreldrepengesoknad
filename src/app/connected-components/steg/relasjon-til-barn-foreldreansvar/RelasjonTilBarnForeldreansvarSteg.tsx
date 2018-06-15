@@ -19,8 +19,8 @@ import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
-import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { StegProps } from '../../../components/layout/Steg';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -82,7 +82,14 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 <Spørsmål
                     animert={true}
                     synlig={barn.foreldreansvarsdato !== undefined}
-                    render={() => <Søknadsvedlegg type="adopsjonsvedtak" />}
+                    render={() => (
+                        <AttachmentsUploader
+                            attachments={barn.adopsjonsvedtak || []}
+                            attachmentType="adopsjonsvedtak"
+                            onFilesSelect={() => {}}
+                            onFileDelete={() => {}}
+                        />
+                    )}
                 />
                 <Spørsmål
                     animert={false}

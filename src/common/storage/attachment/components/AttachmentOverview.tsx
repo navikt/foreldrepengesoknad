@@ -1,42 +1,47 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import VedleggInput from '../vedlegg/VedleggInput';
-import VedleggListe from '../vedlegg/VedleggListe';
-import LabelText from '../labeltekst/Labeltekst';
+import VedleggInput from './AttachmentInput';
+import AttachmentList from './AttachmentList';
+import LabelText from '../../../components/labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from 'common/util/filesize';
 import { mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from '../../../../app/types/søknad/Søknad';
 
-export interface VedleggOversiktProps {
-    vedlegg: Attachment[];
+export interface AttachmentOverviewProps {
+    attachments: Attachment[];
+    attachmentType: AttachmentType;
     inputId?: string;
-    visFilstørrelse?: boolean;
+    showFileSize?: boolean;
     onFilesSelect: (files: Attachment[]) => void;
     onFileDelete: (file: Attachment) => void;
 }
 
-class VedleggOversikt extends React.Component<VedleggOversiktProps> {
+class AttachmentOverview extends React.Component<AttachmentOverviewProps> {
     render() {
         const {
             inputId = guid(),
-            vedlegg,
-            visFilstørrelse,
+            attachments,
+            attachmentType,
+            showFileSize,
             onFileDelete,
             onFilesSelect
         } = this.props;
 
-        const showVedleggListe = vedlegg.length > 0;
+        const showAttachments = attachments.length > 0;
         return (
             <div>
-                <div className={showVedleggListe ? 'blokk-m' : undefined}>
+                <div className={showAttachments ? 'blokk-m' : undefined}>
                     <VedleggInput
                         id={inputId}
                         onFilesSelect={(files: File[]) => {
                             onFilesSelect(
-                                files.map((f) => mapFileToAttachment(f))
+                                files.map((f) =>
+                                    mapFileToAttachment(f, attachmentType)
+                                )
                             );
                         }}
                     />
@@ -44,10 +49,10 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                 <CSSTransition
                     classNames="transitionFade"
                     timeout={150}
-                    in={showVedleggListe}
+                    in={showAttachments}
                     unmountOnExit={true}>
                     <React.Fragment>
-                        {showVedleggListe && (
+                        {showAttachments && (
                             <div>
                                 <div className="blokk-xs">
                                     <LabelText>
@@ -56,7 +61,7 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                                             values={{
                                                 størrelse: bytesString(
                                                     getTotalFileSize(
-                                                        vedlegg.map(
+                                                        attachments.map(
                                                             (v) => v.file
                                                         )
                                                     )
@@ -65,9 +70,9 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
                                         />
                                     </LabelText>
                                 </div>
-                                <VedleggListe
-                                    vedlegg={vedlegg}
-                                    visFilstørrelse={visFilstørrelse}
+                                <AttachmentList
+                                    attachments={attachments}
+                                    showFileSize={showFileSize}
                                     onDelete={(file: Attachment) =>
                                         onFileDelete(file)
                                     }
@@ -80,4 +85,4 @@ class VedleggOversikt extends React.Component<VedleggOversiktProps> {
         );
     }
 }
-export default VedleggOversikt;
+export default AttachmentOverview;

@@ -16,8 +16,8 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
-import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { HistoryProps } from '../../../types/common';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -75,7 +75,14 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                 <Spørsmål
                     animert={true}
                     synlig={barn.adopsjonsdato !== undefined}
-                    render={() => <Søknadsvedlegg type="adopsjonsvedtak" />}
+                    render={() => (
+                        <AttachmentsUploader
+                            attachments={barn.adopsjonsvedtak}
+                            attachmentType="adopsjonsvedtak"
+                            onFilesSelect={() => {}}
+                            onFileDelete={() => {}}
+                        />
+                    )}
                 />
                 <Spørsmål
                     animert={false}

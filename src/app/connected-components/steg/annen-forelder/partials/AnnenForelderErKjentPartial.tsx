@@ -12,10 +12,11 @@ import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDe
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
-import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Bolk from '../../../../components/layout/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface AnnenForelderErKjentPartialProps {
     barn: ForeldreansvarBarn;
@@ -187,7 +188,20 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             animert={true}
                             synlig={barn.foreldreansvarsdato !== undefined}
                             render={() => (
-                                <Søknadsvedlegg type="omsorgsovertakelse" />
+                                <AttachmentsUploader
+                                    attachments={barn.omsorgsovertakelse}
+                                    attachmentType="omsorgsovertakelse"
+                                    onFilesSelect={(
+                                        attachments: Attachment[]
+                                    ) => {
+                                        dispatch(
+                                            søknadActions.updateBarn({
+                                                omsorgsovertakelse: attachments
+                                            })
+                                        );
+                                    }}
+                                    onFileDelete={() => {}}
+                                />
                             )}
                         />
 
