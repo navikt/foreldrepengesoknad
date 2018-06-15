@@ -13,7 +13,7 @@ interface Props {
 const AttachmentList: React.StatelessComponent<Props> = (props) => {
     const { attachments, showFileSize, onDelete } = props;
     return (
-        <ul className="vedleggListe">
+        <ul className="attachmentListe">
             <TransitionGroup>
                 {attachments.map((attachment, index) => (
                     <CSSTransition

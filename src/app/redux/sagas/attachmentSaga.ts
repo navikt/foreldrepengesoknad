@@ -1,10 +1,10 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
-import { default as søknadActions } from './../../../../app/redux/actions/søknad/søknadActionCreators';
-import AttachmentApi from '../../api/attachmentApi';
+import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
+import AttachmentApi from '../../../common/storage/api/attachmentApi';
 import {
     SøknadActionKeys,
     UploadAttachment
-} from '../../../../app/redux/actions/søknad/søknadActionDefinitions';
+} from '../actions/søknad/søknadActionDefinitions';
 
 function* uploadAttachment(action: UploadAttachment) {
     const attachment = action.payload;
