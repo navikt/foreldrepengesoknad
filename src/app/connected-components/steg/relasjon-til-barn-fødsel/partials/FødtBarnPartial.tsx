@@ -12,7 +12,7 @@ import utils from '../../../../util/fødselsdato';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 
 interface StateProps {
     barn: FødtBarn;
@@ -82,7 +82,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     }
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
                     render={() => (
-                        <AttachmentsUploader
+                        <AttachmentsUploaderPure
                             attachments={fødselsattest}
                             attachmentType="fødselsattest"
                             onFilesSelect={(attachments: Attachment[]) => {

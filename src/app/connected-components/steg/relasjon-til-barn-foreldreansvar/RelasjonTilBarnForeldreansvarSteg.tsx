@@ -20,7 +20,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
 import { StegProps } from '../../../components/layout/Steg';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface StateProps {
@@ -84,7 +84,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     animert={true}
                     synlig={barn.foreldreansvarsdato !== undefined}
                     render={() => (
-                        <AttachmentsUploader
+                        <AttachmentsUploaderPure
                             attachments={barn.adopsjonsvedtak || []}
                             attachmentType="adopsjonsvedtak"
                             onFilesSelect={(attachments: Attachment[]) => {

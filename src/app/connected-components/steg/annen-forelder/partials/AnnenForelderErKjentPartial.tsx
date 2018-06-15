@@ -15,7 +15,7 @@ import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Bolk from '../../../../components/layout/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface AnnenForelderErKjentPartialProps {
@@ -188,7 +188,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             animert={true}
                             synlig={barn.foreldreansvarsdato !== undefined}
                             render={() => (
-                                <AttachmentsUploader
+                                <AttachmentsUploaderPure
                                     attachments={barn.omsorgsovertakelse}
                                     attachmentType="omsorgsovertakelse"
                                     onFilesSelect={(

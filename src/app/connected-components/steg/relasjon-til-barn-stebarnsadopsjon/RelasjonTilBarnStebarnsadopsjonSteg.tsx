@@ -17,7 +17,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
 import utils from '../../../util/fødselsdato';
 import { HistoryProps } from '../../../types/common';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface StateProps {
@@ -77,7 +77,7 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                     animert={true}
                     synlig={barn.adopsjonsdato !== undefined}
                     render={() => (
-                        <AttachmentsUploader
+                        <AttachmentsUploaderPure
                             attachments={barn.adopsjonsvedtak}
                             attachmentType="adopsjonsvedtak"
                             onFilesSelect={(attachments: Attachment[]) => {

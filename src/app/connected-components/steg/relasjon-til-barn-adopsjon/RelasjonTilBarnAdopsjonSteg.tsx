@@ -16,7 +16,7 @@ import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
 import { HistoryProps } from '../../../types/common';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
@@ -79,7 +79,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         'attachments.tittel.omsorgsovertakelse'
                     )}
                     render={() => (
-                        <AttachmentsUploader
+                        <AttachmentsUploaderPure
                             attachments={
                                 (barn as Adopsjonsbarn).omsorgsovertakelse
                             }

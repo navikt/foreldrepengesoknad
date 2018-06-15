@@ -13,7 +13,7 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface UfødtBarnPartialProps {
@@ -114,7 +114,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 'vedlegg.tittel.terminbekreftelse'
                             )}
                             render={() => (
-                                <AttachmentsUploader
+                                <AttachmentsUploaderPure
                                     attachments={terminbekreftelse}
                                     attachmentType="terminbekreftelse"
                                     onFilesSelect={(

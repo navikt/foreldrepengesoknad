@@ -17,6 +17,7 @@ import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface AnnenInntektPeriodeModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -170,8 +171,28 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                         render={() => (
                             <AttachmentsUploader
                                 attachments={annenInntekt.vedlegg || []}
-                                onFilesSelect={() => {}}
-                                onFileDelete={() => {}}
+                                onFileUploadStart={(attachment: Attachment) => {
+                                    this.updateAnnenInntekt({
+                                        vedlegg: [
+                                            ...(annenInntekt.vedlegg || []),
+                                            attachment
+                                        ]
+                                    });
+                                }}
+                                onFileUploadFinish={(
+                                    attachment: Attachment
+                                ) => {
+                                    this.updateAnnenInntekt({
+                                        vedlegg: [
+                                            ...(
+                                                annenInntekt.vedlegg || []
+                                            ).filter(
+                                                (a) => a.id !== attachment.id
+                                            ),
+                                            attachment
+                                        ]
+                                    });
+                                }}
                                 attachmentType="anneninntektdokumentasjon"
                             />
                         )}
