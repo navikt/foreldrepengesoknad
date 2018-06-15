@@ -1,3 +1,5 @@
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+
 export enum AnnenInntektType {
     'SLUTTVEDERLAG' = 'sluttvederlag',
     'MILITÆRET' = 'militæret',
@@ -11,7 +13,7 @@ export interface AnnenInntekt {
     fom: Date;
     tom?: Date;
     pågående: boolean;
-    vedleggIDer: string[];
+    vedlegg: Attachment[];
 }
 
 export interface InntektVedJobbIUtlandet extends AnnenInntekt {

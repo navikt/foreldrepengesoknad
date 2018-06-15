@@ -16,8 +16,7 @@ import {
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox } from 'nav-frontend-skjema';
-import Søknadsvedlegg from '../søknadsvedlegg/Søknadsvedlegg';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 
 export interface AnnenInntektPeriodeModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -169,21 +168,11 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
 
                     <Spørsmål
                         render={() => (
-                            <Søknadsvedlegg
-                                type="annenInntektDokumentasjon"
-                                onAfterFilesSelect={(
-                                    attachments: Attachment[]
-                                ) => {
-                                    this.updateAnnenInntekt({
-                                        vedleggIDer: [
-                                            ...(annenInntekt.vedleggIDer || []),
-                                            ...attachments.map(
-                                                (attachment: Attachment) =>
-                                                    attachment.id
-                                            )
-                                        ]
-                                    });
-                                }}
+                            <AttachmentsUploader
+                                attachments={annenInntekt.vedlegg || []}
+                                onFilesSelect={() => {}}
+                                onFileDelete={() => {}}
+                                attachmentType="anneninntektdokumentasjon"
                             />
                         )}
                     />
