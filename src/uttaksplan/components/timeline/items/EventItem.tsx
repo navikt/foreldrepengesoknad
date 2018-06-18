@@ -15,6 +15,7 @@ import {
     DurationRenderer
 } from 'uttaksplan/components/timeline/Timeline';
 import BEMHelper from 'common/util/bem';
+import AdvarselIkon from 'uttaksplan/components/uttaksplanIkon/ikoner/AdvarselIkon';
 
 export interface Props extends TimelineItemProps {
     item: TimelineEvent;
@@ -35,13 +36,14 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
     } = props;
     const {
         title,
-        from,
-        to,
+        startDate,
+        endDate,
         personName,
         labels,
         days,
         color = 'blue',
-        icons
+        icons,
+        error
     } = item;
 
     const itemId = guid();
@@ -70,7 +72,15 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                 </div>
             </h1>
             <div className={BEM.element('timespan')}>
-                {rangeRenderer(from, to)}
+                {rangeRenderer(startDate, endDate)}
+                {error ? (
+                    <span
+                        className={BEM.element('timespan__error')}
+                        aria-label={error.title}
+                        title={error.title}>
+                        <AdvarselIkon type="feil" title={error.title} />
+                    </span>
+                ) : null}
             </div>
             {labels &&
                 labels.length > 0 && (

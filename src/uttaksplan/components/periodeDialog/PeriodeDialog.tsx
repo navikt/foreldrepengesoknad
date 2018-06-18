@@ -22,6 +22,7 @@ import {
 import './periodeDialog.less';
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
+import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 
 interface OwnProps {
     periodetype: Periodetype;
@@ -39,7 +40,17 @@ type Props = OwnProps & DispatchProps & InjectedIntlProps;
 
 const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const renderDialogContent = () => {
-        const { periode, periodetype } = props;
+        const {
+            termindato,
+            periode,
+            perioder,
+            navnForelder1,
+            navnForelder2,
+            periodetype,
+            permisjonsregler,
+            tidsrom,
+            dispatch
+        } = props;
         if (periodetype === Periodetype.Utsettelse) {
             const utsettelse = periode
                 ? (periode as Utsettelsesperiode)
@@ -52,15 +63,13 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                         ) as Utsettelsesperiode[]
                     }
                     utsettelse={utsettelse}
-                    navnForelder1={props.navnForelder1}
-                    navnForelder2={props.navnForelder2}
-                    permisjonsregler={props.permisjonsregler}
-                    tidsperiode={props.tidsrom}
-                    onChange={(u) =>
-                        props.dispatch(opprettEllerOppdaterPeriode(u))
-                    }
-                    onFjern={(u) => props.dispatch(slettPeriode(u))}
-                    termindato={props.termindato}
+                    navnForelder1={navnForelder1}
+                    navnForelder2={navnForelder2}
+                    permisjonsregler={permisjonsregler}
+                    tidsperiode={tidsrom}
+                    onChange={(u) => dispatch(opprettEllerOppdaterPeriode(u))}
+                    onFjern={(u) => dispatch(slettPeriode(u))}
+                    termindato={termindato}
                 />
             );
         } else if (periodetype === Periodetype.Uttak) {
@@ -71,6 +80,9 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                         props.dispatch(opprettEllerOppdaterPeriode(p))
                     }
                     onFjern={(p) => props.dispatch(slettPeriode(p))}
+                    ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(
+                        perioder
+                    )}
                 />
             );
         }

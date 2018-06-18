@@ -28,7 +28,7 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { tidsperiodeUtil, getTidsperiode } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden, getTidsperiode } from 'uttaksplan/utils/dataUtils';
 
 interface OwnProps {
     termindato: Date;
@@ -83,7 +83,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             this.state.startdato &&
             this.state.sluttdato
         ) {
-            const uttaksdager = tidsperiodeUtil({
+            const uttaksdager = tidsperioden({
                 startdato: this.state.startdato,
                 sluttdato: this.state.sluttdato
             }).getAntallUttaksdager();
@@ -283,6 +283,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 feil: sluttdatoFeil,
                                 visFeil: visSluttdatofeil
                             }}
+                            visBeholdVarighet={
+                                utsettelse && utsettelse.id !== undefined
+                            }
                             beholdVarighet={beholdVarighet}
                             onChangeBeholdVarighet={(behold) =>
                                 this.setState({ beholdVarighet: behold })

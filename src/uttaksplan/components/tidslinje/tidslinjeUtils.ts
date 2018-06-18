@@ -2,14 +2,13 @@ import { InnslagPeriodetype } from './types';
 import {
     Tidsperiode,
     Periodetype,
-    Forelder,
     StønadskontoType,
     UtsettelseÅrsakType
 } from '../../types';
-import { perioderUtil } from '../../utils/dataUtils/periodeUtil';
+import { periodene } from '../../utils/dataUtils/periodeUtil';
 import {
     getAntallUttaksdagerITidsperioder,
-    tidsperiodeUtil
+    tidsperioden
 } from '../../utils/dataUtils';
 import { CalloutBorderColor } from 'uttaksplan/components/callout/Callout';
 
@@ -51,16 +50,16 @@ export const oppsummerPerioder = (
             innslag.perioderekke[innslag.perioderekke.length - 1].tidsperiode
                 .sluttdato
     };
-    const uttakTidsperioder = perioderUtil(innslag.perioderekke)
+    const uttakTidsperioder = periodene(innslag.perioderekke)
         .getUttak()
         .map((p) => p.tidsperiode);
     const ukerTotalt = getAntallUttaksdagerITidsperioder(uttakTidsperioder) / 5;
-    const stonadsperioder = perioderUtil(innslag.perioderekke).getUttak();
+    const stonadsperioder = periodene(innslag.perioderekke).getUttak();
     const perioder: Periodeoppsummering = new Map();
     stonadsperioder.forEach((p) => {
         const konto = normaliserStonadsperiodekonto(p.konto);
         const eksisterendeDager = perioder.get(konto) || 0;
-        const nyeDager = tidsperiodeUtil(p.tidsperiode).getAntallUttaksdager();
+        const nyeDager = tidsperioden(p.tidsperiode).getAntallUttaksdager();
         perioder.set(konto, eksisterendeDager + nyeDager);
     });
     perioder.forEach((value, key) => perioder.set(key, value / 5));
@@ -103,12 +102,6 @@ export const innslagFortsetter = (innslag: InnslagPeriodetype): boolean =>
     innslag.perioderekke.findIndex((p) => p === innslag.periode) <
         innslag.perioderekke.length - 1;
 
-export const getForelderNavn = (
-    forelder: Forelder,
-    navnForelder1: string,
-    navnForelder2: string
-): string => (forelder === 'forelder1' ? navnForelder1 : navnForelder2);
-
 export const getStondskontoTekstKey = (konto: StønadskontoType) => {
     switch (konto) {
         case StønadskontoType.Fellesperiode:
@@ -125,8 +118,8 @@ export const getStondskontoTekstKey = (konto: StønadskontoType) => {
 export const getÅrsakTekstKey = (årsak: UtsettelseÅrsakType) => {
     switch (årsak) {
         case UtsettelseÅrsakType.Arbeid:
-            return 'uttaksplan.opphold.årsak.Arbeid';
+            return 'uttaksplan.utsettelse.årsak.Arbeid';
         default:
-            return 'uttaksplan.opphold.årsak.Ferie';
+            return 'uttaksplan.utsettelse.årsak.Ferie';
     }
 };

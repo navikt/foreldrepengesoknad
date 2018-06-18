@@ -1,4 +1,5 @@
 export enum StegID {
+    'INNGANG' = 'inngang',
     'RELASJON_TIL_BARN_FØDSEL' = 'relasjon-til-barn-fodsel',
     'RELASJON_TIL_BARN_ADOPSJON' = 'relasjon-til-barn-adopsjon',
     'RELASJON_TIL_BARN_STEBARNSADOPSJON' = 'relasjon-til-barn-stebarnsadopsjon',
@@ -18,6 +19,10 @@ export interface StegConfig {
 }
 
 const stegConfig: StegConfig = {
+    [StegID.INNGANG]: {
+        tittel: 'Inngang',
+        fortsettKnappLabel: 'Fortsett'
+    },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
         tittel: 'Relasjon til barn (adopsjon) header',
         fortsettKnappLabel: 'Fortsett',

@@ -39,7 +39,7 @@ import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 
-import { mapInnslagToTimelineItem } from 'uttaksplan/utils/innslagUtils';
+import { getTimelineItemsFromInnslag } from 'uttaksplan/utils/innslagUtils';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
@@ -47,7 +47,6 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
-import FordelingUttaksplan from 'uttaksplan/connectedComponents/fordelingUttaksplan/FordelingUttaksplan';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -59,6 +58,7 @@ export interface StateProps {
     visPermisjonsplan: boolean;
     sisteRegistrertePermisjonsdag?: Date;
     tidsromForUtsettelse?: Tidsperiode;
+    manuellUttaksplan?: boolean;
 }
 
 interface OwnProps {
@@ -168,13 +168,11 @@ class UttaksplanMain extends React.Component<Props> {
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
-                        <div className="blokk-s">
-                            <FordelingUttaksplan />
-                        </div>
                         <div className="blokk-m">
                             <Timeline
-                                items={innslag.map((i) =>
-                                    mapInnslagToTimelineItem(i, intl)
+                                items={getTimelineItemsFromInnslag(
+                                    innslag,
+                                    intl
                                 )}
                                 navnForelder1={navnForelder1}
                                 navnForelder2={navnForelder2}
@@ -187,7 +185,10 @@ class UttaksplanMain extends React.Component<Props> {
                                     this.handleItemClick(item);
                                 }}
                                 durationRenderer={(dager: number) => (
-                                    <UkerOgDager dager={dager} />
+                                    <UkerOgDager
+                                        dager={dager}
+                                        visKunDager={true}
+                                    />
                                 )}
                                 rangeRenderer={(
                                     startdato: Date,
@@ -291,6 +292,7 @@ const mapStateToProps = (
         permisjonsregler,
         ukerFellesperiode,
         dekningsgrad,
+        manuellUttaksplan: periode.manuellOppdatering,
         visPermisjonsplan:
             innslag &&
             innslag.length > 0 &&
