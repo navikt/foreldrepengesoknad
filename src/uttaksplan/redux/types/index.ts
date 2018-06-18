@@ -8,10 +8,6 @@ import {
 export type SynligInfoMap = Map<string, boolean>;
 
 export interface UttaksplanFormState {
-    navnForelder1: string | undefined;
-    navnForelder2: string | undefined;
-    termindato?: Date;
-    termindatoErUgyldig?: boolean;
     dekningsgrad?: Dekningsgrad;
     fellesperiodeukerForelder1: number;
     fellesperiodeukerForelder2: number;

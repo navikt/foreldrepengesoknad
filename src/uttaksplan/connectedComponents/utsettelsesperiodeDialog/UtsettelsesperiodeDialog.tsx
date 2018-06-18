@@ -19,7 +19,6 @@ import {
 } from 'uttaksplan/types';
 
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
@@ -29,13 +28,16 @@ interface StateProps {
     utsettelse?: Utsettelsesperiode;
     tidsromForUtsettelse: Tidsperiode;
     perioder: Periode[];
+}
+
+interface OwnProps {
+    termindato: Date;
     permisjonsregler: Permisjonsregler;
     navnForelder1?: string;
     navnForelder2?: string;
-    termindato: Date;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps;
+type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
 
 const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
     props: Props
@@ -83,9 +85,13 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
     );
 };
 
-const mapStateToProps = (state: UttaksplanAppState): StateProps | undefined => {
+const mapStateToProps = (
+    state: UttaksplanAppState,
+    props: OwnProps
+): StateProps | undefined => {
     const { form, periode } = state.uttaksplan;
-    const { termindato, dekningsgrad } = form;
+    const { termindato } = props;
+    const { dekningsgrad } = form;
     const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
         state
     );
@@ -100,23 +106,18 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps | undefined => {
         return undefined;
     }
 
-    const permisjonsregler = getPermisjonsregler(termindato);
     const tidsromForUtsettelse = getGyldigTidsromForUtsettelse(
         termindato,
         dekningsgrad,
-        permisjonsregler,
+        props.permisjonsregler,
         sisteRegistrertePermisjonsdag
     );
 
     return {
         isOpen: true,
         utsettelse: periode.valgtPeriode.periode as Utsettelsesperiode,
-        termindato,
         perioder: periode.perioder,
-        tidsromForUtsettelse,
-        permisjonsregler,
-        navnForelder1: form.navnForelder1,
-        navnForelder2: form.navnForelder2
+        tidsromForUtsettelse
     };
 };
 

@@ -5,7 +5,7 @@ import {
     PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
+import { getTidslinjeFraPerioder } from 'uttaksplan/utils/tidslinjeUtils';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
@@ -220,8 +220,18 @@ class UttaksplanMain extends React.Component<Props> {
                             </Knapperad>
                         </div>
 
-                        <UttaksperiodeDialog />
-                        <UtsettelsesperiodeDialog />
+                        <UttaksperiodeDialog
+                            navnForelder1={navnForelder1}
+                            navnForelder2={navnForelder2}
+                            termindato={termindato}
+                            permisjonsregler={permisjonsregler}
+                        />
+                        <UtsettelsesperiodeDialog
+                            navnForelder1={navnForelder1}
+                            navnForelder2={navnForelder2}
+                            termindato={termindato}
+                            permisjonsregler={permisjonsregler}
+                        />
                     </div>
                 )}
                 <DevHelper
@@ -252,7 +262,11 @@ const mapStateToProps = (
         permisjonsregler,
         dekningsgrad
     );
-    const innslag: Tidslinjeinnslag[] = tidslinjeFraPerioder(appState);
+    const innslag: Tidslinjeinnslag[] = getTidslinjeFraPerioder(
+        appState.uttaksplan.periode.perioder,
+        props.termindato,
+        dekningsgrad
+    );
     return {
         innslag,
         form,

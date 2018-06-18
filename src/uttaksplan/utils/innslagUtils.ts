@@ -174,9 +174,10 @@ export const getTimelineItemsFromInnslag = (
                 mappedItems.push(gap);
             }
             if (
-                isBefore(item.startDate, prevEndDate) ||
-                (isSameDay(item.startDate, prevEndDate) &&
-                    prevItem.type !== TimelineItemType.marker)
+                (isBefore(item.startDate, prevEndDate) ||
+                    (isSameDay(item.startDate, prevEndDate) &&
+                        prevItem.type !== TimelineItemType.marker)) &&
+                prevItem.type !== TimelineItemType.marker
             ) {
                 mappedItems.push({
                     ...item,
