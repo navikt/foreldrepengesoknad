@@ -22,7 +22,7 @@ import {
 import './periodeDialog.less';
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
-import { perioderUtil } from 'uttaksplan/utils/dataUtils';
+import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 
 interface OwnProps {
     periodetype: Periodetype;
@@ -80,9 +80,9 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                         props.dispatch(opprettEllerOppdaterPeriode(p))
                     }
                     onFjern={(p) => props.dispatch(slettPeriode(p))}
-                    ugyldigeTidsperioder={perioderUtil(perioder)
-                        .getUtsettelser()
-                        .map((p) => p.tidsperiode)}
+                    ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(
+                        perioder
+                    )}
                 />
             );
         }

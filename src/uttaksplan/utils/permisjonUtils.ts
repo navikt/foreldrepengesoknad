@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdagUtil, tidsperiodeUtil } from './dataUtils';
+import { uttaksdagUtil, tidsperioden } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -42,11 +42,13 @@ export function getGyldigTidsromForUtsettelse(
     permisjonsregler: Permisjonsregler,
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {
+    const mødrekvoteEtterTermin = getPakrevdMødrekvoteEtterTermin(
+        termindato,
+        permisjonsregler
+    );
+    const startdato = uttaksdagUtil(mødrekvoteEtterTermin.sluttdato).neste();
     return {
-        startdato: uttaksdagUtil(
-            getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler)
-                .sluttdato
-        ).neste(),
+        startdato,
         sluttdato: sisteRegistrertePermisjonsdag
     };
 }
@@ -98,7 +100,7 @@ export const getAntallUttaksdagerForForelder = (
         (dager: number, periode: Periode) =>
             periode.type === Periodetype.Uttak && periode.forelder === forelder
                 ? dager +
-                  tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager()
+                  tidsperioden(periode.tidsperiode).getAntallUttaksdager()
                 : dager,
         0
     );
@@ -123,7 +125,7 @@ export const getAntallFeriedagerForForelder = (
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
                   dager +
-                  tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
+                  tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
               0
           );
 };

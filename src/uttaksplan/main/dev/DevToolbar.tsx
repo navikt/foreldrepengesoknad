@@ -9,7 +9,8 @@ import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import {
     opprettEllerOppdaterPeriode,
     opprettPerioder,
-    dev
+    dev,
+    setManuellUttaksplan
 } from 'uttaksplan/redux/actions';
 import {
     Periodetype,
@@ -25,7 +26,8 @@ import { normaliserDato } from 'common/util/datoUtils';
 import './devUtil';
 
 import './dev.less';
-import { uttaksdagUtil, tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { uttaksdagUtil, tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { Checkbox } from 'nav-frontend-skjema';
 
 export interface StateProps {
     appState: UttaksplanAppState;
@@ -63,12 +65,22 @@ const mockUtsettelse2: Utsettelsesperiode = {
     }
 };
 
-const mockUttaksperiode: Uttaksperiode = {
+export const mockUttaksperiode: Uttaksperiode = {
     forelder: 'forelder1',
     konto: StønadskontoType.Foreldrepenger,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 7, 27)),
-        sluttdato: normaliserDato(new Date(2018, 7, 27))
+        startdato: normaliserDato(new Date(2018, 9, 3)),
+        sluttdato: normaliserDato(new Date(2018, 9, 4))
+    },
+    type: Periodetype.Uttak
+};
+
+const mockUttaksperiodeOverUtsettelse: Uttaksperiode = {
+    forelder: 'forelder2',
+    konto: StønadskontoType.Foreldrepenger,
+    tidsperiode: {
+        startdato: normaliserDato(new Date(2018, 7, 28)),
+        sluttdato: normaliserDato(new Date(2018, 8, 3))
     },
     type: Periodetype.Uttak
 };
@@ -94,7 +106,9 @@ class DevToolbar extends React.Component<Props, {}> {
     }
 
     leggTilPeriode() {
-        this.props.dispatch(opprettEllerOppdaterPeriode(mockUttaksperiode));
+        this.props.dispatch(
+            opprettEllerOppdaterPeriode(mockUttaksperiodeOverUtsettelse)
+        );
     }
 
     reset() {
@@ -119,9 +133,12 @@ class DevToolbar extends React.Component<Props, {}> {
     }
 
     lagOpphold() {
-        const periode = this.props.appState.uttaksplan.periode.perioder[3];
-        const tidsperiode = tidsperiodeUtil(periode.tidsperiode).setStartdato(
-            uttaksdagUtil(periode.tidsperiode.startdato).neste()
+        const periode = this.props.appState.uttaksplan.periode.perioder[2];
+        if (periode.type === Periodetype.Utsettelse) {
+            return;
+        }
+        const tidsperiode = tidsperioden(periode.tidsperiode).setStartdato(
+            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(10)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({
@@ -130,10 +147,10 @@ class DevToolbar extends React.Component<Props, {}> {
             })
         );
     }
-    flyttPeriode() {
-        const periode = this.props.appState.uttaksplan.periode.perioder[4];
-        const tidsperiode = tidsperiodeUtil(periode.tidsperiode).setStartdato(
-            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(-2)
+    flyttPeriode(dager: number = 1, idx: number = 3) {
+        const periode = this.props.appState.uttaksplan.periode.perioder[idx];
+        const tidsperiode = tidsperioden(periode.tidsperiode).setStartdato(
+            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(dager)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({
@@ -148,7 +165,7 @@ class DevToolbar extends React.Component<Props, {}> {
         setTimeout(() => {
             this.lagOpphold();
             setTimeout(() => {
-                this.flyttPeriode();
+                this.flyttPeriode(1);
             }, 0);
         }, 0);
     }
@@ -160,13 +177,26 @@ class DevToolbar extends React.Component<Props, {}> {
                     <Knapp onClick={this.leggTilUtsettelse}>+ U1</Knapp>
                     <Knapp onClick={this.leggTilUtsettelse2}>+ U2</Knapp>
                     <Knapp onClick={this.leggTilPeriode}>+ P</Knapp>
-                    <Knapp onClick={this.flyttPeriode}>+ F</Knapp>
+                    <Knapp onClick={() => this.flyttPeriode(1, 3)}>+ F</Knapp>
+                    <Knapp onClick={() => this.flyttPeriode(-1, 3)}>- F</Knapp>
                     <Knapp onClick={this.lagOpphold}>+ O</Knapp>
                     <Knapp onClick={this.play}>>></Knapp>
                     <Knapp onClick={this.reset}>R</Knapp>
                     <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>
                         Rebuild
                     </Knapp>
+                    <Checkbox
+                        checked={
+                            this.props.appState.uttaksplan.periode
+                                .manuellOppdatering
+                        }
+                        label="Manuell oppdatering"
+                        onChange={(evt) =>
+                            this.props.dispatch(
+                                setManuellUttaksplan(evt.target.checked)
+                            )
+                        }
+                    />
                 </Knapperad>
             </div>
         );

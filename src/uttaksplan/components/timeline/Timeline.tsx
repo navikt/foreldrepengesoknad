@@ -72,7 +72,9 @@ class Timeline extends React.Component<Props, {}> {
         return (
             <ol className="timeline">
                 {items.map((item, idx) => (
-                    <li className="timeline__itemWrapper" key={idx}>
+                    <li
+                        className="timeline__itemWrapper"
+                        key={`${item.startDate.toDateString()}${idx}`}>
                         {this.renderItem(item)}
                     </li>
                 ))}

@@ -8,7 +8,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { renderDag } from 'common/util/renderUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
-import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 
 interface TidsperiodeDatoProps {
     label?: string;
@@ -45,6 +45,8 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
 }) => {
     const minSluttdato = startdato.dato;
     const tilDatoDisabled = visBeholdVarighet && beholdVarighet;
+    const tidsperiodeStartdato = startdato.tidsperiode;
+    const tidsperiodeSluttdato = sluttdato.tidsperiode;
     return (
         <SkjemaGruppe
             feil={tidsperiodeFeil}
@@ -74,11 +76,11 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     startdato.onChange(dato)
                                 }
                                 avgrensninger={{
-                                    minDato: startdato.tidsperiode
-                                        ? startdato.tidsperiode.startdato
+                                    minDato: tidsperiodeStartdato
+                                        ? tidsperiodeStartdato.startdato
                                         : undefined,
-                                    maksDato: startdato.tidsperiode
-                                        ? startdato.tidsperiode.sluttdato
+                                    maksDato: tidsperiodeStartdato
+                                        ? tidsperiodeStartdato.sluttdato
                                         : undefined,
                                     helgedagerIkkeTillatt,
                                     ugyldigeTidsperioder
@@ -118,7 +120,14 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                         : undefined
                                 }
                                 avgrensninger={{
-                                    minDato: minSluttdato,
+                                    minDato:
+                                        minSluttdato ||
+                                        (tidsperiodeSluttdato
+                                            ? tidsperiodeSluttdato.startdato
+                                            : undefined),
+                                    maksDato: tidsperiodeSluttdato
+                                        ? tidsperiodeSluttdato.sluttdato
+                                        : undefined,
                                     ugyldigeTidsperioder,
                                     helgedagerIkkeTillatt
                                 }}
@@ -131,9 +140,11 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                             />
                         </div>
                         {startdato.dato &&
-                            sluttdato.dato && (
+                            sluttdato.dato &&
+                            visBeholdVarighet && (
                                 <UkerOgDager
-                                    dager={tidsperiodeUtil({
+                                    visKunDager={true}
+                                    dager={tidsperioden({
                                         startdato: startdato.dato,
                                         sluttdato: sluttdato.dato
                                     }).getAntallUttaksdager()}
