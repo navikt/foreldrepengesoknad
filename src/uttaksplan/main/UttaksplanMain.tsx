@@ -48,7 +48,6 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
-import FordelingUttaksplan from 'uttaksplan/connectedComponents/fordelingUttaksplan/FordelingUttaksplan';
 import { Checkbox } from 'nav-frontend-skjema';
 
 export interface StateProps {
@@ -172,9 +171,6 @@ class UttaksplanMain extends React.Component<Props> {
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
-                        <div className="blokk-s">
-                            <FordelingUttaksplan />
-                        </div>
                         <div className="blokk-s">
                             <Checkbox
                                 checked={manuellUttaksplan}

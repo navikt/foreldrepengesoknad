@@ -16,6 +16,7 @@ export interface OwnProps {
 export type Props = OwnProps & InjectedIntlProps;
 
 const tilgjengeligeValg = [
+    StønadskontoType.ForeldrepengerFørFødsel,
     StønadskontoType.Mødrekvote,
     StønadskontoType.Fedrekvote,
     StønadskontoType.Foreldrepenger,

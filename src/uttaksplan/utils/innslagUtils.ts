@@ -16,7 +16,7 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { InjectedIntl } from 'react-intl';
-import { tidsperiodeUtil, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { isBefore, isSameDay } from 'date-fns';
 
 export const mapForelderTilInnslagfarge = (
@@ -101,7 +101,7 @@ export const mapInnslagToEvent = (
             startDate: periode.tidsperiode.startdato,
             endDate: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
-            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
+            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
             labels: getLabelsForInnslag(innslag),
             icons: getTimelineIconsFromInnslag(innslag),
@@ -113,7 +113,7 @@ export const mapInnslagToEvent = (
             startDate: periode.tidsperiode.startdato,
             endDate: periode.tidsperiode.sluttdato,
             title: 'Opphold',
-            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
+            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsFromInnslag(innslag),
             data: periode
         };
