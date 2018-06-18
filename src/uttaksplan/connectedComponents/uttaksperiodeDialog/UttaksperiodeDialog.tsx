@@ -21,20 +21,22 @@ import {
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
 interface StateProps {
     isOpen: boolean;
-    termindato: Date;
     periode?: Uttaksperiode;
     perioder: Periode[];
     dekningsgrad: Dekningsgrad;
+}
+
+interface OwnProps {
+    termindato: Date;
     permisjonsregler: Permisjonsregler;
     navnForelder1?: string;
     navnForelder2?: string;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps;
+type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
 
 const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
@@ -76,11 +78,14 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: UttaksplanAppState): StateProps | undefined => {
+const mapStateToProps = (
+    state: UttaksplanAppState,
+    props: OwnProps
+): StateProps | undefined => {
     const { form, periode } = state.uttaksplan;
-    const { termindato, dekningsgrad } = form;
+    const { dekningsgrad } = form;
     if (
-        !termindato ||
+        !props.termindato ||
         !dekningsgrad ||
         !periode.dialogErApen ||
         periode.valgtPeriode === undefined ||
@@ -92,11 +97,7 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps | undefined => {
         isOpen: true,
         periode: periode.valgtPeriode.periode as Uttaksperiode,
         perioder: periode.perioder,
-        termindato,
-        dekningsgrad,
-        permisjonsregler: getPermisjonsregler(termindato),
-        navnForelder1: form.navnForelder1,
-        navnForelder2: form.navnForelder2
+        dekningsgrad
     };
 };
 
