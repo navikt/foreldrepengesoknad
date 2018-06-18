@@ -9,37 +9,84 @@ import {
     Periode
 } from 'uttaksplan/types';
 import {
-    tidsperiodeUtil,
+    tidsperioden,
     sorterPerioder,
     uttaksdagUtil,
-    perioderUtil,
-    periodeUtil,
+    periodene,
+    perioden,
     getTidsperiode
 } from 'uttaksplan/utils/dataUtils';
 
-export const Uttaksplan = (perioder: Periode[]) => {
-    return new UttaksplanBuilder(perioder);
+/**
+ *
+ * TODO: når en periode legges over en utsettelse så splittes ikke denne
+ *
+ */
+
+export const UttaksplanBuilder = (perioder: Periode[]) => {
+    return new UttaksplanAutoBuilder(perioder);
 };
 
 /**
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
-class UttaksplanBuilder {
+class UttaksplanAutoBuilder {
     public constructor(public perioder: Periode[]) {
         this.perioder = perioder;
+    }
+
+    /**
+     * Bygger opp hele uttaksplanen på nytt
+     */
+    buildUttaksplan(reset = false) {
+        if (reset) {
+            this.reset()
+                .finnOgSettInnOpphold()
+                .slåSammenLikePerioder();
+        } else {
+            this.finnOgSettInnOpphold().slåSammenLikePerioder();
+        }
+        return this;
+    }
+
+    /**
+     * Proxy for om en skal oppdatere eller legge til ny
+     * @param periode
+     */
+    leggTilEllerOppdater(periode: Periode) {
+        if (periode.id) {
+            this.oppdaterPeriodeOgBuild(periode);
+        } else {
+            this.leggTilPeriodeOgBuild(periode);
+        }
+        return this;
     }
 
     /**
      * Legger til periode og oppdaterer uttaksplanen
      * @param periode
      */
-    leggTilPeriode(periode: Periode) {
+    leggTilPeriodeOgBuild(periode: Periode) {
+        const overlappendeUtsettelser = periodene(
+            periodene(this.perioder).getUtsettelser()
+        ).finnOverlappendePerioder(periode);
+        /** Todo - perioder forskyves for mye i og med utsettelser blir også telt med */
+        this.perioder = periodene(this.perioder).fjernPerioder(
+            overlappendeUtsettelser
+        );
+        this.finnOgSettInnOpphold();
+        this.slåSammenLikePerioder();
+        this.fjernEllerTilpassOppholdOmsluttetAvPeriode(periode);
+        this.finnOgSettInnOpphold();
         this.perioder = settInnPeriode(this.perioder, {
             ...periode,
             id: guid(),
             endret: new Date()
         });
-        this.oppdaterUttaksplan();
+        overlappendeUtsettelser.forEach(
+            (u) => (this.perioder = settInnPeriode(this.perioder, u))
+        );
+        this.buildUttaksplan();
         return this;
     }
 
@@ -47,41 +94,19 @@ class UttaksplanBuilder {
      * Oppdaterer periode og uttaksplanen
      * @param periode
      */
-    oppdaterPeriode(periode: Periode) {
-        const prevPeriode = periode.id
-            ? perioderUtil(this.perioder).getPeriode(periode.id)
+    oppdaterPeriodeOgBuild(periode: Periode, skip = false) {
+        const oldPeriode = periode.id
+            ? periodene(this.perioder).getPeriode(periode.id)
             : undefined;
-        if (!prevPeriode) {
+
+        if (!oldPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
 
-        // Se om det er perioder som har samme startdato, og som i så
-        // fall må prioriteres etter endret periode
-        const periodeMedSammeStartdato = perioderUtil(
-            this.perioder
-        ).getPeriodeMedSammeStartdato(periode);
-        if (periodeMedSammeStartdato) {
-            if (periodeMedSammeStartdato.type === Periodetype.Utsettelse) {
-                // TODO - må også sjekke om ny periode er innenfor en utsettelse.
-                // Noe som ikke skal være mulig
-                throw new Error(
-                    'Kan ikke sette startdato i konflikt med eksisterende utsettelse'
-                );
-            }
-        }
+        this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode)
+            .erstattPeriode(periode)
+            .buildUttaksplan();
 
-        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
-            this.perioder,
-            periode
-        );
-        const opphold = periodeUtil(
-            prevPeriode
-        ).finnOppholdsperioderVedEndretTidsperiode(periode);
-        this.perioder = [...this.perioder, ...opphold];
-        this.perioder = perioderUtil(this.perioder)
-            .oppdaterPeriode({ ...periode, endret: new Date() })
-            .sort(sorterPerioder);
-        this.oppdaterUttaksplan();
         return this;
     }
 
@@ -89,19 +114,59 @@ class UttaksplanBuilder {
      * Sletter periode og oppdaterer uttaksplanen
      * @param periode
      */
-    slettPeriode(periode: Periode) {
-        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
-        this.oppdaterUttaksplan();
+    slettPeriodeOgBuild(periode: Periode) {
+        this.slettPeriode(periode);
+        this.buildUttaksplan();
         return this;
     }
 
     /**
-     * Bygger opp hele uttaksplanen på nytt
+     * Fjerner en periode fra perioder
+     * @param periode
      */
-    private oppdaterUttaksplan() {
-        this.reset()
-            .finnOgSettInnOpphold()
-            .normaliser();
+    private slettPeriode(periode: Periode) {
+        this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+        return this;
+    }
+
+    /**
+     * Fjerner periode for deretter å sette den inn igjen,
+     * gjennbruker da logikk for å justere kolliderende
+     * perioder
+     * @param periode
+     */
+    private erstattPeriode(periode: Periode) {
+        this.perioder = this.perioder.map(
+            (p) => (p.id === periode.id ? periode : p)
+        );
+        return this;
+    }
+
+    /**
+     * Oppdaterer andre perioder ut fra om tidsperiode er endret eller ikke
+     * @param periode
+     * @param oldPeriode
+     */
+    private oppdaterPerioderVedEndretPeriode(
+        periode: Periode,
+        oldPeriode: Periode
+    ) {
+        if (tidsperioden(periode.tidsperiode).erLik(oldPeriode.tidsperiode)) {
+            return this;
+        }
+        this.fjernEllerTilpassOppholdOmsluttetAvPeriode(periode);
+        return this;
+    }
+
+    /**
+     * Fjern alle opphold som ligger innenfor samme tidsrom som perioden
+     * @param periode
+     */
+    private fjernEllerTilpassOppholdOmsluttetAvPeriode(periode: Periode) {
+        this.perioder = fjernOppholdsperioderIPeriodetidsrom(
+            this.perioder,
+            periode
+        );
         return this;
     }
 
@@ -110,11 +175,11 @@ class UttaksplanBuilder {
      */
     private reset() {
         let uttaksperioder = resetTidsperioder(
-            perioderUtil(this.perioder).getUttak()
+            periodene(this.perioder).getUttak()
         );
-        const opphold = perioderUtil(this.perioder).getOpphold();
+        const opphold = periodene(this.perioder).getOpphold();
         uttaksperioder = slåSammenLikePerioder(uttaksperioder);
-        const utsettelser = perioderUtil(this.perioder)
+        const utsettelser = periodene(this.perioder)
             .getUtsettelser()
             .sort(sorterPerioder);
 
@@ -129,7 +194,7 @@ class UttaksplanBuilder {
      * Lokaliserer og setter inn oppholdsperioder
      */
     private finnOgSettInnOpphold() {
-        const uttakOgUtsetteler = perioderUtil(
+        const uttakOgUtsetteler = periodene(
             this.perioder
         ).getUttakOgUtsettelser();
         const opphold = finnOppholdsperioder(uttakOgUtsetteler);
@@ -140,7 +205,7 @@ class UttaksplanBuilder {
     }
 
     /** Slår sammen perioder som er like og er sammenhengende */
-    private normaliser() {
+    private slåSammenLikePerioder() {
         this.perioder = slåSammenLikePerioder(this.perioder);
         return this;
     }
@@ -168,11 +233,9 @@ function fjernOppholdsperioderIPeriodetidsrom(
     );
     const opphold = perioder.filter((p) => p.type === Periodetype.Opphold);
     opphold.forEach((o) => {
-        if (tidsperiodeUtil(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+        if (tidsperioden(o.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
-        } else if (
-            tidsperiodeUtil(o.tidsperiode).erUtenfor(periode.tidsperiode)
-        ) {
+        } else if (tidsperioden(o.tidsperiode).erUtenfor(periode.tidsperiode)) {
             nyePerioder.push(o);
         } else if (
             isBefore(o.tidsperiode.startdato, periode.tidsperiode.startdato)
@@ -224,10 +287,13 @@ function settInnPerioder(perioder: Periode[], perioder2: Periode[]): Periode[] {
  * @param nyPeriode
  */
 function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
-    const berørtePerioder = perioderUtil(perioder).finnOverlappendePerioder(
-        nyPeriode.tidsperiode
+    if (perioder.length === 0) {
+        return [nyPeriode];
+    }
+    const berørtePerioder = periodene(perioder).finnOverlappendePerioder(
+        nyPeriode
     );
-    const periodeSomMåSplittes = perioderUtil(perioder).finnPeriodeMedDato(
+    const periodeSomMåSplittes = periodene(perioder).finnPeriodeMedDato(
         nyPeriode.tidsperiode.startdato
     );
     if (berørtePerioder.length === 0 && !periodeSomMåSplittes) {
@@ -235,21 +301,20 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 
     if (!periodeSomMåSplittes) {
-        const foregåendePeriode = perioderUtil(perioder)
+        const foregåendePeriode = periodene(perioder)
             .finnForegåendePerioder(nyPeriode)
             .pop();
-        if (!foregåendePeriode) {
-            throw new Error(
-                'Ugyldig plassering av periode. Ingen perioder funnet før denne perioden.'
+        if (foregåendePeriode) {
+            return leggTilPeriodeEtterPeriode(
+                perioder,
+                foregåendePeriode,
+                nyPeriode
             );
         }
-        return leggTilPeriodeEtterPeriode(
-            perioder,
-            foregåendePeriode,
-            nyPeriode
-        );
+        return leggTilPeriodeFørPeriode(perioder, perioder[0], nyPeriode);
     }
-    if (periodeSomMåSplittes.type === Periodetype.Utsettelse) {
+
+    if (perioden(periodeSomMåSplittes).erUtsettelse()) {
         throw new Error('Kan ikke dele opp en utsettelse');
     }
     if (
@@ -303,7 +368,7 @@ function finnOppholdsperioder(
             return;
         }
 
-        const uttaksdagerITidsperiode = tidsperiodeUtil(
+        const uttaksdagerITidsperiode = tidsperioden(
             tidsperiodeMellomPerioder
         ).getAntallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {
@@ -339,7 +404,7 @@ function resetTidsperioder(perioder: Periode[]): Periode[] {
             ...periode,
             tidsperiode: getTidsperiode(
                 uttaksdagUtil(forrigePeriode.tidsperiode.sluttdato).neste(),
-                tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager()
+                tidsperioden(periode.tidsperiode).getAntallUttaksdager()
             )
         };
         return {
@@ -372,8 +437,8 @@ function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
             return;
         }
         if (
-            periodeUtil(forrigePeriode).erLik(periode) &&
-            periodeUtil(forrigePeriode).erSammenhengende(periode)
+            perioden(forrigePeriode).erLik(periode) &&
+            perioden(forrigePeriode).erSammenhengende(periode)
         ) {
             forrigePeriode.tidsperiode.sluttdato =
                 periode.tidsperiode.sluttdato;
@@ -400,22 +465,42 @@ function leggTilPeriodeEtterPeriode(
     periode: Periode,
     nyPeriode: Periode
 ): Periode[] {
-    const perioderFør = perioderUtil(perioder).finnForegåendePerioder(periode);
-    const perioderEtter = perioderUtil(perioder).finnPåfølgendePerioder(
-        periode
-    );
-    const uttaksdagerIUtsettelse: number = tidsperiodeUtil(
+    const perioderFør = periodene(perioder).finnForegåendePerioder(periode);
+    const perioderEtter = periodene(perioder).finnPåfølgendePerioder(periode);
+    const uttaksdagerIUtsettelse: number = tidsperioden(
         nyPeriode.tidsperiode
     ).getAntallUttaksdager();
     return [
         ...perioderFør,
         ...[nyPeriode],
-        ...perioderUtil([periode, ...perioderEtter]).forskyvPerioder(
+        ...periodene([periode, ...perioderEtter]).forskyvPerioder(
             uttaksdagerIUtsettelse
         )
     ];
 }
 
+/**
+ * Legger inn nyPeriode og forskyver periode og påfølgende perioder
+ * @param perioder
+ * @param periode
+ * @param nyPeriode
+ */
+function leggTilPeriodeFørPeriode(
+    perioder: Periode[],
+    periode: Periode,
+    nyPeriode: Periode
+): Periode[] {
+    const perioderEtter = periodene(perioder).finnPåfølgendePerioder(periode);
+    const uttaksdagerIUtsettelse: number = tidsperioden(
+        nyPeriode.tidsperiode
+    ).getAntallUttaksdager();
+    return [
+        ...[nyPeriode],
+        ...periodene([periode, ...perioderEtter]).forskyvPerioder(
+            uttaksdagerIUtsettelse
+        )
+    ];
+}
 /**
  * Legger en periode inn i en periode og forskyver påfølgende perioder
  * @param perioder
@@ -427,18 +512,19 @@ function leggTilPeriodeIPeriode(
     periode: Periode,
     nyPeriode: Periode
 ): Periode[] {
-    const perioderFør = perioderUtil(perioder).finnForegåendePerioder(periode);
-    const perioderEtter = perioderUtil(perioder).finnPåfølgendePerioder(
-        periode
-    );
+    const perioderFør = periodene(perioder).finnForegåendePerioder(periode);
+    const perioderEtter = periodene(perioder).finnPåfølgendePerioder(periode);
     const splittetPeriode = splittPeriodeMedPeriode(periode, nyPeriode);
-    const uttaksdager = tidsperiodeUtil(
-        nyPeriode.tidsperiode
-    ).getAntallUttaksdager();
+    const opprinneligVarighet = perioden(periode).getAntallUttaksdager();
+    const nyVarighet = tidsperioden({
+        startdato: splittetPeriode[0].tidsperiode.startdato,
+        sluttdato: splittetPeriode[2].tidsperiode.sluttdato // Ta høyde for at split inneholdt opphold
+    }).getAntallUttaksdager();
+    const uttaksdager = nyVarighet - opprinneligVarighet;
     return [
         ...perioderFør,
         ...splittetPeriode,
-        ...perioderUtil(perioderEtter).forskyvPerioder(uttaksdager)
+        ...periodene(perioderEtter).forskyvPerioder(uttaksdager)
     ];
 }
 
@@ -452,14 +538,14 @@ function splittPeriodeMedPeriode(
     periode: Periode,
     nyPeriode: Periode
 ): Periode[] {
-    const dagerIPeriode = tidsperiodeUtil(
+    const dagerIPeriode = tidsperioden(
         periode.tidsperiode
     ).getAntallUttaksdager();
-    const dagerForsteDel = tidsperiodeUtil({
+    const dagerForsteDel = tidsperioden({
         startdato: periode.tidsperiode.startdato,
         sluttdato: addDays(nyPeriode.tidsperiode.startdato, -1)
     }).getAntallUttaksdager();
-    const dagerSisteDel = dagerIPeriode - dagerForsteDel;
+    let dagerSisteDel = dagerIPeriode - dagerForsteDel;
     const forste: Periode = {
         ...periode,
         tidsperiode: {
@@ -481,6 +567,11 @@ function splittPeriodeMedPeriode(
     const startSisteDel: Date = uttaksdagUtil(
         midt.tidsperiode.sluttdato
     ).neste();
+
+    if (perioden(periode).erOpphold()) {
+        dagerSisteDel = dagerSisteDel - perioden(midt).getAntallUttaksdager();
+    }
+
     const siste: Periode = {
         ...periode,
         id: guid(),

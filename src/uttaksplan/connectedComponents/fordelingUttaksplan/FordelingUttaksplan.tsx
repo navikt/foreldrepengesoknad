@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { perioderUtil } from 'uttaksplan/utils/dataUtils';
+import { periodene } from 'uttaksplan/utils/dataUtils';
 import { StønadskontoUttak } from 'uttaksplan/types';
 
 export interface StateProps {
@@ -31,7 +31,7 @@ class FordelingUttaksplan extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     const { perioder } = state.uttaksplan.periode;
-    const fordeling = perioderUtil(perioder).getAntallUttaksdagerPerKonto();
+    const fordeling = periodene(perioder).getAntallUttaksdagerPerKonto();
     return {
         fordeling
     };

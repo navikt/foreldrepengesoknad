@@ -1,7 +1,6 @@
 import {
     Permisjonsregler,
     Uttaksperiode,
-    Dekningsgrad,
     StønadskontoType,
     Periodetype
 } from 'uttaksplan/types';
@@ -32,7 +31,7 @@ export function getPakrevdMødrekvoteEtterTermin(
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     return getTidsperiode(
-        termindato,
+        uttaksdagUtil(termindato).denneEllerNeste(),
         permisjonsregler.antallUkerMødrekvoteEtterFødsel * UTTAKSDAGER_I_UKE
     );
 }
@@ -112,7 +111,7 @@ function getFedrekvote(
 /** Oppretter default stønadsperioder ut fra termindato ++ */
 export function opprettUttaksperioder(
     termindato: Date,
-    dekningsgrad: Dekningsgrad,
+    // dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
@@ -135,8 +134,7 @@ export function opprettUttaksperioder(
             tidsperiode: getPakrevdMødrekvoteEtterTermin(
                 termindato,
                 permisjonsregler
-            ),
-            låstForelder: true
+            )
         },
         {
             id: guid(),

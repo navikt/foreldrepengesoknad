@@ -16,7 +16,8 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { InjectedIntl } from 'react-intl';
-import { tidsperiodeUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { isBefore, isSameDay } from 'date-fns';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -97,10 +98,10 @@ export const mapInnslagToEvent = (
         return {
             type: TimelineItemType.event,
             title: getTittel(),
-            from: periode.tidsperiode.startdato,
-            to: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.startdato,
+            endDate: periode.tidsperiode.sluttdato,
             personName: periode.forelder,
-            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
+            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
             labels: getLabelsForInnslag(innslag),
             icons: getTimelineIconsFromInnslag(innslag),
@@ -109,10 +110,10 @@ export const mapInnslagToEvent = (
     } else {
         const gapItem: TimelineGap = {
             type: TimelineItemType.gap,
-            from: periode.tidsperiode.startdato,
-            to: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.startdato,
+            endDate: periode.tidsperiode.sluttdato,
             title: 'Opphold',
-            days: tidsperiodeUtil(periode.tidsperiode).getAntallUttaksdager(),
+            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsFromInnslag(innslag),
             data: periode
         };
@@ -125,7 +126,7 @@ export const mapInnslagToMarker = (
 ): TimelineMarker => ({
     type: TimelineItemType.marker,
     title: innslag.hendelse,
-    date: innslag.dato,
+    startDate: innslag.dato,
     icons: getTimelineIconsFromInnslag(innslag),
     data: innslag
 });
@@ -140,4 +141,54 @@ export const mapInnslagToTimelineItem = (
         case TidslinjeinnslagType.periode:
             return mapInnslagToEvent(innslag, intl);
     }
+};
+
+export const getTimelineItemsFromInnslag = (
+    innslag: Tidslinjeinnslag[],
+    intl: InjectedIntl
+) => {
+    const mappedItems: TimelineItem[] = [];
+    const items = innslag.map((i) => mapInnslagToTimelineItem(i, intl));
+
+    items.forEach((item, idx, arr) => {
+        if (idx > 0 && item.type === TimelineItemType.event) {
+            const prevItem = arr[idx - 1];
+            const prevEndDate: Date =
+                prevItem.type === TimelineItemType.marker
+                    ? prevItem.startDate
+                    : prevItem.endDate;
+
+            const dager =
+                uttaksdagUtil(prevEndDate).uttaksdagerFremTilDato(
+                    item.startDate
+                ) - (prevItem.type === TimelineItemType.marker ? 0 : 1);
+            if (dager > 0) {
+                const gap: TimelineGap = {
+                    type: TimelineItemType.gap,
+                    startDate: uttaksdagUtil(prevEndDate).neste(),
+                    endDate: uttaksdagUtil(item.startDate).forrige(),
+                    days: dager,
+                    data: {},
+                    title: 'Opphold'
+                };
+                mappedItems.push(gap);
+            }
+            if (
+                isBefore(item.startDate, prevEndDate) ||
+                (isSameDay(item.startDate, prevEndDate) &&
+                    prevItem.type !== TimelineItemType.marker)
+            ) {
+                mappedItems.push({
+                    ...item,
+                    error: {
+                        title: 'Datokonflikt'
+                    }
+                });
+                return;
+            }
+        }
+
+        mappedItems.push(item);
+    });
+    return mappedItems; // [...items, ...opphold].sort(sortItems);
 };

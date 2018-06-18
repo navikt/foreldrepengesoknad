@@ -9,12 +9,19 @@ export type TimelineIcon = string;
 
 export type TimelineIconRenderer = (icon: TimelineIcon) => React.ReactNode;
 
+interface TimelineItemInfo {
+    title: string;
+    description?: string;
+}
+
 interface TimelineBaseItem {
     type: TimelineItemType;
     title: string;
     color?: 'blue' | 'purple' | 'green';
     icons?: TimelineIcon[];
     data?: any;
+    startDate: Date;
+    error?: TimelineItemInfo;
 }
 
 export enum TimelineItemType {
@@ -25,26 +32,23 @@ export enum TimelineItemType {
 export interface TimelineEvent extends TimelineBaseItem {
     type: TimelineItemType.event;
     personName: string;
-    from: Date;
-    to: Date;
+    endDate: Date;
     days: number;
     labels?: TimelineLabel[];
     data: any;
 }
 
-export interface TimelineMarker extends TimelineBaseItem {
-    type: TimelineItemType.marker;
-    date: Date;
-    comment?: React.ReactNode;
-}
-
 export interface TimelineGap extends TimelineBaseItem {
     type: TimelineItemType.gap;
-    from: Date;
-    to: Date;
+    endDate: Date;
     days: number;
     data: any;
     comment?: string;
+}
+
+export interface TimelineMarker extends TimelineBaseItem {
+    type: TimelineItemType.marker;
+    comment?: React.ReactNode;
 }
 
 export type TimelineItem = TimelineEvent | TimelineGap | TimelineMarker;

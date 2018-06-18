@@ -23,6 +23,7 @@ export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 export interface PeriodeState {
     dialogErApen: boolean;
     perioder: Periode[];
+    manuellOppdatering: boolean;
     valgtPeriode?: {
         periodetype: Periodetype;
         periode?: Periode;
