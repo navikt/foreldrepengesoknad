@@ -1,4 +1,4 @@
-import { Barn, BarnType } from '../types/søknad/Barn';
+import { Barn, UfødtBarn, FødtBarn } from '../types/søknad/Barn';
 
 const getSisteFødselsdato = (fødselsdatoer: Date[]): Date | undefined => {
     if (fødselsdatoer && fødselsdatoer.length >= 1) {
@@ -8,10 +8,9 @@ const getSisteFødselsdato = (fødselsdatoer: Date[]): Date | undefined => {
 };
 
 export function getFamiliehendelsesdato(barn: Barn): Date | undefined {
-    switch (barn.type) {
-        case BarnType.UfødtBarn:
-            return barn.termindato;
-        default:
-            return getSisteFødselsdato(barn.fødselsdatoer);
+    if (!barn.erBarnetFødt) {
+        return (barn as UfødtBarn).termindato;
+    } else {
+        return getSisteFødselsdato((barn as FødtBarn).fødselsdatoer);
     }
 }
