@@ -8,7 +8,7 @@ import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import { FødtBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import utils from '../../../util/fødselsdato';
@@ -20,7 +20,7 @@ import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
-    barn: FødtBarn;
+    barn: Adopsjonsbarn;
     visSpørsmålOmAntallBarn: boolean;
     stegProps: StegProps;
 }
@@ -68,7 +68,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     })
                                 );
                             }}
-                            dato={(barn as Adopsjonsbarn).adopsjonsdato}
+                            dato={barn.adopsjonsdato}
                         />
                     )}
                 />
@@ -113,12 +113,10 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 />
 
                 <Spørsmål
-                    synlig={(barn as FødtBarn).fødselsdatoer.length > 0}
+                    synlig={barn.fødselsdatoer.length > 0}
                     render={() => (
                         <AdoptertIUtlandetSpørsmål
-                            adoptertIUtlandet={
-                                (barn as Adopsjonsbarn).adoptertIUtlandet
-                            }
+                            adoptertIUtlandet={barn.adoptertIUtlandet}
                             onChange={(adoptertIUtlandet) =>
                                 dispatch(
                                     søknadActions.updateBarn({
