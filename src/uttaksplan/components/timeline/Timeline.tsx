@@ -23,8 +23,6 @@ export interface TimelineItemProps {
 
 export interface Props extends TimelineItemProps {
     items: TimelineItem[];
-    navnForelder1: string;
-    navnForelder2: string;
     rangeRenderer: RangeRenderer;
     durationRenderer: DurationRenderer;
 }
