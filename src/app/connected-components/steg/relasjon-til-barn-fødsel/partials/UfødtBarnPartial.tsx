@@ -130,7 +130,13 @@ class UfødtBarnPartial extends React.Component<Props> {
                                             }
                                         );
                                     }}
-                                    onFileDelete={(atachment: Attachment) => {}}
+                                    onFileDelete={(attachment: Attachment) =>
+                                        dispatch(
+                                            søknadActions.deleteAttachment(
+                                                attachment
+                                            )
+                                        )
+                                    }
                                 />
                             )}
                         />

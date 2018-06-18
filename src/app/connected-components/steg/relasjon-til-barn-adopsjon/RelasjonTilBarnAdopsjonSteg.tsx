@@ -95,7 +95,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     }
                                 );
                             }}
-                            onFileDelete={() => {}}
+                            onFileDelete={(attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
                         />
                     )}
                 />

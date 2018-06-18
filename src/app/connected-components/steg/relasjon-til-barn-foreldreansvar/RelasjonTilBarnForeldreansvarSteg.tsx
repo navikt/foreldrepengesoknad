@@ -98,7 +98,11 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                                     }
                                 );
                             }}
-                            onFileDelete={() => {}}
+                            onFileDelete={(attachment: Attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
                         />
                     )}
                 />

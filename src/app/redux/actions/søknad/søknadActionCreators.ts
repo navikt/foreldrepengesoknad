@@ -6,7 +6,10 @@ import {
     UpdateUtenlandsopphold,
     UpdateSøker,
     UploadAttachmentSuccess,
-    UploadAttachmentFailed
+    UploadAttachmentFailed,
+    DeleteAttachment,
+    DeleteAttachmentFailed,
+    DeleteAttachmentSuccess
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -75,6 +78,27 @@ const uploadAttachmentFailed = (
     attachment
 });
 
+const deleteAttachment = (attachment: Attachment): DeleteAttachment => ({
+    type: SøknadActionKeys.DELETE_ATTACHMENT,
+    attachment
+});
+
+const deleteAttachmentSuccess = (
+    attachment: Attachment
+): DeleteAttachmentSuccess => ({
+    type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS,
+    attachment
+});
+
+const deleteAttachmentFailed = (
+    error: any,
+    attachment: Attachment
+): DeleteAttachmentFailed => ({
+    type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED,
+    error,
+    attachment
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -83,5 +107,8 @@ export default {
     updateSøknad,
     uploadAttachment,
     uploadAttachmentSuccess,
-    uploadAttachmentFailed
+    uploadAttachmentFailed,
+    deleteAttachment,
+    deleteAttachmentSuccess,
+    deleteAttachmentFailed
 };

@@ -96,7 +96,11 @@ class FødtBarnPartial extends React.Component<Props> {
                                     }
                                 );
                             }}
-                            onFileDelete={(attachment: Attachment) => {}}
+                            onFileDelete={(attachment: Attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
                         />
                     )}
                 />

@@ -52,7 +52,6 @@ export type Skjemadata = Partial<Søknad>;
 export type AttachmentType =
     | 'omsorgsovertakelse'
     | 'adopsjonsvedtak'
-    | 'overtakelsedokumentasjon'
     | 'terminbekreftelse'
     | 'fødselsattest'
     | 'anneninntektdokumentasjon';
