@@ -6,31 +6,26 @@ export enum BarnType {
 }
 
 abstract class BarnBase {
-    type: BarnType;
     antallBarn?: number;
     erBarnetFødt: boolean;
 }
 
 export interface UfødtBarn extends BarnBase {
-    type: BarnType.UfødtBarn;
     termindato: Date;
     terminbekreftelseDato: Date;
 }
 
 export interface FødtBarn extends BarnBase {
-    type: BarnType.FødtBarn;
     fødselsdatoer: Date[];
 }
 
 export interface Adopsjonsbarn extends BarnBase {
-    type: BarnType.Adopsjonsbarn;
     fødselsdatoer: Date[];
     adopsjonsdato: Date;
     adoptertIUtlandet: boolean;
 }
 
 export interface ForeldreansvarBarn extends BarnBase {
-    type: BarnType.ForeldreansvarBarn;
     fødselsdatoer: Date[];
     foreldreansvarsdato: Date;
 }
