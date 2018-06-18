@@ -12,7 +12,7 @@ const defaultState: PeriodeState = {
     dialogErApen: false,
     valgtPeriode: undefined,
     perioder: mockUtsettelser,
-    manuellOppdatering: false
+    manuellOppdatering: true
 };
 
 const updateState = (
