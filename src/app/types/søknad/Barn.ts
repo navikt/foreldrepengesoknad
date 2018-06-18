@@ -2,7 +2,7 @@ export enum BarnType {
     'FødtBarn' = 'fødtBarn',
     'UfødtBarn' = 'ufødtBarn',
     'Adopsjonsbarn' = 'adopsjonsbarn',
-    'ForeldreansvarBarn' = 'omsorgspovertakelseBarn'
+    'ForeldreansvarBarn' = 'omsorgsovertakelseBarn'
 }
 
 abstract class BarnBase {
