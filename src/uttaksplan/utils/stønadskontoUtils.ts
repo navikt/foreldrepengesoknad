@@ -5,6 +5,11 @@ import {
 } from 'uttaksplan/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
+import Person from 'app/types/Person';
+import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import { Kjønn } from 'app/types/common';
+import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
+import { erFarEllerMedmor } from 'app/util/personUtil';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
 export const getStønadskontoerMedUttaksdager = (
@@ -36,4 +41,27 @@ export const getStønadskontoerMedUttaksdager = (
     );
 
     return dager;
+};
+
+export const getTilgjengeligeStønadskontoer = (
+    bruker: Person,
+    søker: Søker,
+    annenForelder?: AnnenForelder
+): StønadskontoType[] => {
+    if (bruker.kjønn === Kjønn.KVINNE && søker.erAleneOmOmsorg) {
+        return [
+            // StønadskontoType.ForeldrepengerFørFødsel,
+            StønadskontoType.Foreldrepenger
+        ];
+    }
+    if (erFarEllerMedmor(bruker.kjønn, søker.rolle)) {
+        return [StønadskontoType.Foreldrepenger];
+    }
+    return [
+        StønadskontoType.ForeldrepengerFørFødsel,
+        StønadskontoType.Mødrekvote,
+        StønadskontoType.Fedrekvote,
+        StønadskontoType.Foreldrepenger,
+        StønadskontoType.Fellesperiode
+    ];
 };

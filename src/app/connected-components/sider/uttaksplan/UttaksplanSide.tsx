@@ -9,6 +9,7 @@ import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import { Kjønn } from '../../../types/common';
+import { SøkerRolle } from '../../../types/s\u00F8knad/S\u00F8knad';
 
 export interface StateProps {
     form: {
@@ -39,7 +40,7 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
                 <Uttaksplan
-                    forelder1={{
+                    bruker={{
                         fornavn: 'Amalie',
                         erMyndig: true,
                         fnr: '1234123412',
@@ -61,6 +62,14 @@ class UttaksplanSide extends React.Component<Props, State> {
                         harRettPåForeldrepenger: true,
                         skalHaForeldrepenger: true,
                         kanIkkeOppgis: false
+                    }}
+                    søker={{
+                        andreInntekterSiste10Mnd: [],
+                        erFrilanser: false,
+                        erAleneOmOmsorg: true,
+                        harHattAnnenInntektSiste10Mnd: false,
+                        rolle: SøkerRolle.MOR,
+                        erSelvstendigNæringsdrivende: false
                     }}
                     termindato={new Date()}
                     perioder={this.state.perioder}

@@ -23,11 +23,16 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 
 import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
+import Person from 'app/types/Person';
+import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
+import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
-    navnForelder1?: string;
-    navnForelder2?: string;
+    bruker: Person;
+    søker: Søker;
+    annenForelder?: AnnenForelder;
     permisjonsregler: Permisjonsregler;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
@@ -42,6 +47,8 @@ export interface State {
     sluttdato?: Date;
     stønadskonto?: StønadskontoType;
     beholdVarighet?: boolean;
+    visStønadskontoSpørsmål: boolean;
+    tilgjengeligeStønadskontoer: StønadskontoType[];
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -56,12 +63,26 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
 
         const { periode } = props;
+
+        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
+            props.bruker,
+            props.søker,
+            props.annenForelder
+        );
+
+        const singelStønadskonto =
+            tilgjengeligeStønadskontoer.length === 1
+                ? tilgjengeligeStønadskontoer[0]
+                : undefined;
+
         this.state = {
             forelder: periode ? periode.forelder : undefined,
-            stønadskonto: periode ? periode.konto : undefined,
+            stønadskonto: periode ? periode.konto : singelStønadskonto,
             startdato: periode ? periode.tidsperiode.startdato : undefined,
             sluttdato: periode ? periode.tidsperiode.sluttdato : undefined,
-            beholdVarighet: true
+            beholdVarighet: true,
+            tilgjengeligeStønadskontoer,
+            visStønadskontoSpørsmål: tilgjengeligeStønadskontoer.length > 1
         };
     }
 
@@ -125,8 +146,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const {
             periode,
             onFjern,
-            navnForelder1,
-            navnForelder2,
+            bruker,
+            annenForelder,
             ugyldigeTidsperioder,
             termindato,
             dekningsgrad,
@@ -140,9 +161,14 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             startdato,
             sluttdato,
             forelder,
-            stønadskonto
+            stønadskonto,
+            visStønadskontoSpørsmål,
+            tilgjengeligeStønadskontoer
         } = this.state;
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
+
+        const navnForelder1 = bruker.fornavn;
+        const navnForelder2 = annenForelder ? annenForelder.navn : 'forelder 2';
 
         const regler = stønadskonto
             ? getStønadskontoRegler(
@@ -152,6 +178,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                   permisjonsregler
               )
             : undefined;
+
         const tidsperiode: Tidsperiode | undefined = regler
             ? {
                   startdato: regler.tidligsteUttaksdato,
@@ -168,15 +195,18 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                     <FormattedMessage id={tittelKey} />
                 </h1>
 
-                <div className="blokkPad-s">
-                    <StønadskontoSpørsmål
-                        spørsmål="Hvilket uttak ønsker du å legge til?"
-                        stønadskonto={stønadskonto}
-                        onChange={(konto) =>
-                            this.setState({ stønadskonto: konto })
-                        }
-                    />
-                </div>
+                {visStønadskontoSpørsmål && (
+                    <div className="blokkPad-s">
+                        <StønadskontoSpørsmål
+                            spørsmål="Stønadskonto?"
+                            stønadskonto={stønadskonto}
+                            tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
+                            onChange={(konto) =>
+                                this.setState({ stønadskonto: konto })
+                            }
+                        />
+                    </div>
+                )}
 
                 <EkspanderbartInnhold erApen={stønadskonto !== undefined}>
                     <div className="blokkPad-s">

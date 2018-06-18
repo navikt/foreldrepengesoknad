@@ -9,28 +9,22 @@ import { Feil } from 'common/components/skjema-input-element/types';
 export interface OwnProps {
     spørsmål: string;
     stønadskonto?: StønadskontoType;
+    tilgjengeligeKontoer: StønadskontoType[];
     feil?: Feil;
     onChange: (type: StønadskontoType) => void;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
 
-const tilgjengeligeValg = [
-    StønadskontoType.ForeldrepengerFørFødsel,
-    StønadskontoType.Mødrekvote,
-    StønadskontoType.Fedrekvote,
-    StønadskontoType.Foreldrepenger,
-    StønadskontoType.Fellesperiode
-];
-
 const StønadskontoSpørsmål: React.StatelessComponent<Props> = ({
     feil,
     spørsmål,
     stønadskonto,
+    tilgjengeligeKontoer,
     onChange,
     intl
 }) => {
-    const valg: RadiolisteValg[] = tilgjengeligeValg.map((konto) => ({
+    const valg: RadiolisteValg[] = tilgjengeligeKontoer.map((konto) => ({
         tittel: intl.formatMessage({
             id: `stønadskontotype.${konto}`
         }),

@@ -58,8 +58,9 @@ class UttaksplanSteg extends React.Component<Props> {
                 onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     termindato={(barn as UfødtBarn).termindato}
-                    forelder1={person}
+                    bruker={person}
                     annenForelder={annenForelder}
+                    søker={søknad.søker}
                     perioder={perioder}
                     onChange={(p) =>
                         dispatch(
