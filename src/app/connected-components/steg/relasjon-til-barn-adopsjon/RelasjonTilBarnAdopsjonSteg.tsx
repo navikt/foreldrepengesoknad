@@ -81,7 +81,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     render={() => (
                         <AttachmentsUploaderPure
                             attachments={
-                                (barn as Adopsjonsbarn).omsorgsovertakelse
+                                (barn as Adopsjonsbarn).omsorgsovertakelse || []
                             }
                             attachmentType="omsorgsovertakelse"
                             onFilesSelect={(attachments: Attachment[]) => {
@@ -168,7 +168,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         barn,
-        visSpørsmålOmAntallBarn: barn.omsorgsovertakelse.length > 0,
+        visSpørsmålOmAntallBarn:
+            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0,
         stegProps
     };
 };

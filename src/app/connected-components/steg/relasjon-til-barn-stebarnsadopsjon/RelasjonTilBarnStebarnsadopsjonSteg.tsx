@@ -78,7 +78,7 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                     synlig={barn.adopsjonsdato !== undefined}
                     render={() => (
                         <AttachmentsUploaderPure
-                            attachments={barn.adopsjonsvedtak}
+                            attachments={barn.adopsjonsvedtak || []}
                             attachmentType="adopsjonsvedtak"
                             onFilesSelect={(attachments: Attachment[]) => {
                                 attachments.forEach(

@@ -87,7 +87,6 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { annenInntekt } = this.state;
-
         return (
             <Modal
                 className="annenInntektPeriodeModal"
@@ -171,11 +170,13 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                         render={() => (
                             <AttachmentsUploader
                                 attachments={annenInntekt.vedlegg || []}
-                                onFileUploadStart={(attachment: Attachment) => {
+                                onFilesUploadStart={(
+                                    attachments: Attachment[]
+                                ) => {
                                     this.updateAnnenInntekt({
                                         vedlegg: [
                                             ...(annenInntekt.vedlegg || []),
-                                            attachment
+                                            ...attachments
                                         ]
                                     });
                                 }}
@@ -183,17 +184,45 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                     attachment: Attachment
                                 ) => {
                                     this.updateAnnenInntekt({
-                                        vedlegg: [
-                                            ...(
-                                                annenInntekt.vedlegg || []
-                                            ).filter(
-                                                (a) => a.id !== attachment.id
-                                            ),
-                                            attachment
-                                        ]
+                                        vedlegg: (
+                                            this.state.annenInntekt.vedlegg || [
+                                                attachment
+                                            ]
+                                        ).map(
+                                            (currentAttachment: Attachment) => {
+                                                if (
+                                                    attachment.id ===
+                                                    currentAttachment.id
+                                                ) {
+                                                    return attachment;
+                                                }
+                                                return currentAttachment;
+                                            }
+                                        )
                                     });
                                 }}
-                                onFileDelete={(attachment: Attachment) => {
+                                onFileDeleteStart={(attachment: Attachment) => {
+                                    if (annenInntekt && annenInntekt.vedlegg) {
+                                        this.updateAnnenInntekt({
+                                            vedlegg: annenInntekt.vedlegg.map(
+                                                (
+                                                    currentAttachment: Attachment
+                                                ) => {
+                                                    if (
+                                                        attachment.id ===
+                                                        currentAttachment.id
+                                                    ) {
+                                                        return attachment;
+                                                    }
+                                                    return currentAttachment;
+                                                }
+                                            )
+                                        });
+                                    }
+                                }}
+                                onFileDeleteFinish={(
+                                    attachment: Attachment
+                                ) => {
                                     if (annenInntekt && annenInntekt.vedlegg) {
                                         const vedlegg = annenInntekt.vedlegg;
                                         vedlegg.splice(
