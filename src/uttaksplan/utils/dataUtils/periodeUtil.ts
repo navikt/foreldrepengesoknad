@@ -234,7 +234,7 @@ function finnPerioderEtterPeriode(
 
 /**
  * Sjekker om to perioder er kan slåes sammen til en periode.
- * Dvs. de er like signaturer (attachments, forelder, konto etc.) og har
+ * Dvs. de er like signaturer (type, forelder, konto etc.) og har
  * tidsperioder som er sammenhengende
  * @param p1 periode 1
  * @param p2 periode 2
