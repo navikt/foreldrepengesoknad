@@ -70,6 +70,30 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
         });
     }
 
+    updateVedleggList(vedlegg: Attachment[]) {
+        const { annenInntekt } = this.state;
+        this.setState({
+            annenInntekt: {
+                ...annenInntekt,
+                vedlegg
+            }
+        });
+    }
+
+    updateVedleggItem(vedlegg: Attachment) {
+        const { annenInntekt } = this.state;
+        if (annenInntekt && annenInntekt.vedlegg) {
+            const index = annenInntekt.vedlegg.indexOf(vedlegg);
+            annenInntekt.vedlegg[index] = vedlegg;
+            this.setState({
+                annenInntekt: {
+                    ...annenInntekt,
+                    vedlegg: annenInntekt.vedlegg
+                }
+            });
+        }
+    }
+
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         event.stopPropagation();
@@ -173,66 +197,23 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                 onFilesUploadStart={(
                                     attachments: Attachment[]
                                 ) => {
-                                    this.updateAnnenInntekt({
-                                        vedlegg: [
-                                            ...(annenInntekt.vedlegg || []),
-                                            ...attachments
-                                        ]
-                                    });
+                                    this.updateVedleggList([
+                                        ...(annenInntekt.vedlegg || []),
+                                        ...attachments
+                                    ]);
                                 }}
-                                onFileUploadFinish={(
-                                    attachment: Attachment
-                                ) => {
-                                    this.updateAnnenInntekt({
-                                        vedlegg: (
-                                            this.state.annenInntekt.vedlegg || [
-                                                attachment
-                                            ]
-                                        ).map(
-                                            (currentAttachment: Attachment) => {
-                                                if (
-                                                    attachment.id ===
-                                                    currentAttachment.id
-                                                ) {
-                                                    return attachment;
-                                                }
-                                                return currentAttachment;
-                                            }
-                                        )
-                                    });
+                                onFileUploadFinish={(vedlegg: Attachment) =>
+                                    this.updateVedleggItem(vedlegg)
+                                }
+                                onFileDeleteStart={(vedlegg: Attachment) => {
+                                    this.updateVedleggItem(vedlegg);
                                 }}
-                                onFileDeleteStart={(attachment: Attachment) => {
-                                    if (annenInntekt && annenInntekt.vedlegg) {
-                                        this.updateAnnenInntekt({
-                                            vedlegg: annenInntekt.vedlegg.map(
-                                                (
-                                                    currentAttachment: Attachment
-                                                ) => {
-                                                    if (
-                                                        attachment.id ===
-                                                        currentAttachment.id
-                                                    ) {
-                                                        return attachment;
-                                                    }
-                                                    return currentAttachment;
-                                                }
-                                            )
-                                        });
-                                    }
-                                }}
-                                onFileDeleteFinish={(
-                                    attachment: Attachment
-                                ) => {
-                                    if (annenInntekt && annenInntekt.vedlegg) {
-                                        const vedlegg = annenInntekt.vedlegg;
-                                        vedlegg.splice(
-                                            vedlegg.indexOf(attachment),
-                                            1
-                                        );
-                                        this.updateAnnenInntekt({
-                                            vedlegg
-                                        });
-                                    }
+                                onFileDeleteFinish={(vedlegg: Attachment) => {
+                                    const vedleggList =
+                                        annenInntekt.vedlegg || [];
+                                    const index = vedleggList.indexOf(vedlegg);
+                                    vedleggList.splice(index, 1);
+                                    this.updateVedleggList(vedleggList);
                                 }}
                                 attachmentType="anneninntektdokumentasjon"
                             />
