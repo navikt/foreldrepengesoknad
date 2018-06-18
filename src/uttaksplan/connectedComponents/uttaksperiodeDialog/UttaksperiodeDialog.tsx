@@ -21,6 +21,9 @@ import {
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import Person from 'app/types/Person';
+import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
 
 interface StateProps {
     isOpen: boolean;
@@ -32,8 +35,9 @@ interface StateProps {
 interface OwnProps {
     termindato: Date;
     permisjonsregler: Permisjonsregler;
-    navnForelder1?: string;
-    navnForelder2?: string;
+    bruker: Person;
+    annenForelder?: AnnenForelder;
+    søker: Søker;
 }
 
 type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
@@ -45,8 +49,9 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
         periode,
         perioder,
         permisjonsregler,
-        navnForelder1,
-        navnForelder2,
+        bruker,
+        annenForelder,
+        søker,
         dekningsgrad,
         termindato
     } = props;
@@ -69,8 +74,9 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                 termindato={termindato}
                 dekningsgrad={dekningsgrad}
                 permisjonsregler={permisjonsregler}
-                navnForelder1={navnForelder1}
-                navnForelder2={navnForelder2}
+                bruker={bruker}
+                annenForelder={annenForelder}
+                søker={søker}
                 onChange={(p) => props.dispatch(opprettEllerOppdaterPeriode(p))}
                 onFjern={(p) => props.dispatch(slettPeriode(p))}
             />

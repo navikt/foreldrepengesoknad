@@ -47,6 +47,7 @@ import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDia
 import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
 import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
 import Person from 'app/types/Person';
+import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -63,7 +64,8 @@ export interface StateProps {
 
 interface OwnProps {
     termindato: Date;
-    forelder1: Person;
+    bruker: Person;
+    søker: Søker;
     annenForelder: AnnenForelder;
     perioder?: Periode[];
     initialDekningsgrad?: Dekningsgrad;
@@ -128,7 +130,8 @@ class UttaksplanMain extends React.Component<Props> {
         const {
             innslag,
             termindato,
-            forelder1,
+            bruker,
+            søker,
             annenForelder,
             permisjonsregler,
             ukerFellesperiode,
@@ -146,7 +149,7 @@ class UttaksplanMain extends React.Component<Props> {
                         fellesperiodeukerForelder1={
                             form.fellesperiodeukerForelder1
                         }
-                        navnForelder1={forelder1.fornavn}
+                        navnForelder1={bruker.fornavn}
                         navnForelder2={annenForelder.navn}
                         permisjonsregler={permisjonsregler}
                         ukerFellesperiode={ukerFellesperiode}
@@ -170,7 +173,8 @@ class UttaksplanMain extends React.Component<Props> {
                                 items={getTimelineItemsFromInnslag(
                                     innslag,
                                     intl,
-                                    forelder1,
+                                    søker.erAleneOmOmsorg,
+                                    bruker,
                                     annenForelder
                                 )}
                                 iconRenderer={(icon) => (
@@ -223,14 +227,15 @@ class UttaksplanMain extends React.Component<Props> {
                         </div>
 
                         <UttaksperiodeDialog
-                            navnForelder1={forelder1.fornavn}
-                            navnForelder2={annenForelder.navn}
+                            bruker={bruker}
+                            annenForelder={annenForelder}
+                            søker={søker}
                             termindato={termindato}
                             permisjonsregler={permisjonsregler}
                         />
 
                         <UtsettelsesperiodeDialog
-                            navnForelder1={forelder1.fornavn}
+                            navnForelder1={bruker.fornavn}
                             navnForelder2={annenForelder.navn}
                             termindato={termindato}
                             permisjonsregler={permisjonsregler}
