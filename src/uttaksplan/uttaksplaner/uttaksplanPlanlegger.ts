@@ -31,7 +31,7 @@ export function getPakrevdMødrekvoteEtterTermin(
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     return getTidsperiode(
-        termindato,
+        uttaksdagUtil(termindato).denneEllerNeste(),
         permisjonsregler.antallUkerMødrekvoteEtterFødsel * UTTAKSDAGER_I_UKE
     );
 }

@@ -9,8 +9,10 @@ import { isSameDay, isAfter, isBefore } from 'date-fns';
  * @param dato
  */
 
-export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
+export const tidsperioden = (tidsperiode: Tidsperiode) => ({
     setStartdato: (startdato: Date) => flyttTidsperiode(tidsperiode, startdato),
+    setUttaksdager: (uttaksdager: number) =>
+        getTidsperiode(tidsperiode.startdato, uttaksdager),
     getAntallUttaksdager: (taBortFridager?: boolean) =>
         getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
@@ -23,7 +25,7 @@ export const tidsperiodeUtil = (tidsperiode: Tidsperiode) => ({
 });
 
 /**
- * Returnerer ny Tidsperiode gitt startdato og antall uttaksdager
+ * Returnerer ny Tidsperiode gitt gyldig uttaksdag-startdato og antall uttaksdager
  * @param startdato
  * @param uttaksdager
  */
