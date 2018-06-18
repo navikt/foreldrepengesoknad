@@ -193,6 +193,18 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                         ]
                                     });
                                 }}
+                                onFileDelete={(attachment: Attachment) => {
+                                    if (annenInntekt && annenInntekt.vedlegg) {
+                                        const vedlegg = annenInntekt.vedlegg;
+                                        vedlegg.splice(
+                                            vedlegg.indexOf(attachment),
+                                            1
+                                        );
+                                        this.updateAnnenInntekt({
+                                            vedlegg
+                                        });
+                                    }
+                                }}
                                 attachmentType="anneninntektdokumentasjon"
                             />
                         )}

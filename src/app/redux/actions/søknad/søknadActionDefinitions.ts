@@ -11,6 +11,9 @@ export enum SøknadActionKeys {
     'UPLOAD_ATTACHMENT' = 'uploadAttachment',
     'UPLOAD_ATTACHMENT_SUCCESS' = 'uploadAttachmentSuccess',
     'UPLOAD_ATTACHMENT_FAILED' = 'uploadAttachmentFailed',
+    'DELETE_ATTACHMENT' = 'deleteAttachment',
+    'DELETE_ATTACHMENT_SUCCESS' = 'deleteAttachmentSuccess',
+    'DELETE_ATTACHMENT_FAILED' = 'deleteAttachmentFailed',
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKNAD' = 'updateSøknad'
@@ -58,6 +61,22 @@ export interface UploadAttachmentFailed {
     error: string;
 }
 
+export interface DeleteAttachment {
+    type: SøknadActionKeys.DELETE_ATTACHMENT;
+    attachment: Attachment;
+}
+
+export interface DeleteAttachmentSuccess {
+    type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS;
+    attachment: Attachment;
+}
+
+export interface DeleteAttachmentFailed {
+    type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED;
+    error: any;
+    attachment: Attachment;
+}
+
 export type SøknadAction =
     | UpdateBarn
     | UpdateAnnenForelder
@@ -66,4 +85,7 @@ export type SøknadAction =
     | UpdateSøknad
     | UploadAttachment
     | UploadAttachmentSuccess
-    | UploadAttachmentFailed;
+    | UploadAttachmentFailed
+    | DeleteAttachment
+    | DeleteAttachmentSuccess
+    | DeleteAttachmentFailed;

@@ -10,8 +10,6 @@ function saveAttachment(attachment: Attachment) {
         }
     };
 
-    console.log('Sending attachment', attachment);
-
     const formData = new FormData();
     formData.set('id', attachment.id);
     formData.append('vedlegg', attachment.file, attachment.filename);
@@ -24,7 +22,7 @@ function deleteAttachment(attachment: Attachment) {
     const config = {
         withCredentials: true
     };
-    const url = `${Environment.REST_API_URL}/storage/vedlegg/${attachment.url}`;
+    const url = `${Environment.REST_API_URL}/storage/vedlegg/${attachment.id}`;
     return axios.delete(url, config);
 }
 

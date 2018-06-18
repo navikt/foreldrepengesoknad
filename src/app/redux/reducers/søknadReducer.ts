@@ -3,7 +3,11 @@ import {
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import {
+    addAttachmentToState,
+    editAttachmentInState,
+    removeAttachmentFromState
+} from '../util/attachmentStateUpdates';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -22,34 +26,6 @@ const getDefaultState = (): SøknadPartial => {
         },
         harGodkjentVilkår: false
     };
-};
-
-const buildStateWithAttachment = (
-    attachment: Attachment,
-    state: SøknadPartial
-) => {
-    const { type } = attachment;
-    if (
-        type === 'terminbekreftelse' ||
-        type === 'fødselsattest' ||
-        type === 'omsorgsovertakelse' ||
-        type === 'adopsjonsvedtak'
-    ) {
-        const attachmentList = [
-            ...(state.barn[type] ? state.barn[type] : [])
-        ].filter(
-            (currentAttachment: Attachment) =>
-                currentAttachment.id !== attachment.id
-        );
-        return {
-            ...state,
-            barn: {
-                ...state.barn,
-                [type]: [...attachmentList, attachment]
-            }
-        };
-    }
-    return state;
 };
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
@@ -89,7 +65,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;
-            return buildStateWithAttachment(pendingAttachment, state);
+            return addAttachmentToState(pendingAttachment, state);
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS:
             const uploadedAttachment = action.attachment;
@@ -98,12 +74,26 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
             uploadedAttachment.url = url;
             uploadedAttachment.pending = false;
             uploadedAttachment.uploaded = true;
-            return buildStateWithAttachment(uploadedAttachment, state);
+            return editAttachmentInState(uploadedAttachment, state);
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED:
             const failedAttachment = action.attachment;
             failedAttachment.pending = false;
-            return buildStateWithAttachment(failedAttachment, state);
+            return editAttachmentInState(failedAttachment, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT:
+            const attachmentToDelete = action.attachment;
+            attachmentToDelete.pending = true;
+            return editAttachmentInState(attachmentToDelete, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS:
+            const deletedAttachment = action.attachment;
+            return removeAttachmentFromState(deletedAttachment, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
+            const attachmentFailedToDelete = action.attachment;
+            attachmentFailedToDelete.pending = false;
+            return editAttachmentInState(attachmentFailedToDelete, state);
     }
     return state;
 };
