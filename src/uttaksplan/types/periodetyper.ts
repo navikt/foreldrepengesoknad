@@ -59,7 +59,6 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
-    utsettelseAv?: StønadskontoType;
 }
 
 export type OppholdOpphavType = 'periodeendring' | undefined;

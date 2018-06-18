@@ -30,13 +30,13 @@
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til utsettelse",
     "uttaksplan.periodedialog.uttak.tittel": "Legg til periode",
 
-    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til uttaksperiode",
-    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre uttaksperiode",
+    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til uttak",
+    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre uttak",
     "uttaksplan.uttaksperiodeskjema.startdato.sporsmal": "Startdato",
     "uttaksplan.uttaksperiodeskjema.sluttdato.sporsmal": "Sluttdato",
     "uttaksplan.uttaksperiodeskjema.knapp.leggtil": "Legg til",
     "uttaksplan.uttaksperiodeskjema.knapp.oppdater": "Oppdater",
-    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern uttaksperiode",
+    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern uttak",
 
     "uttaksplan.utsettelseskjema.tittel": "Legg til utsettelse",
     "uttaksplan.utsettelseskjema.tittel.endre": "Utsettelse i foreldrepengene",
@@ -162,7 +162,7 @@
     "stønadskontotype.FEDREKVOTE": "Fedrekvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
-    "stønadskontotype.FORELDREPENGER_FØR_FOEDSEL": "Mødrekvote (før termin)",
+    "stønadskontotype.FORELDREPENGER_FØR_FOEDSEL": "Foreldrepenger før termin",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "utsettelsesårsak.ARBEID": "Arbeid",
