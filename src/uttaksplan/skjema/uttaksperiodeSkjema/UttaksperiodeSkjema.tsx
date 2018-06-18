@@ -20,26 +20,20 @@ import { preventFormSubmit } from 'common/util/eventUtils';
 import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { AppState } from 'app/redux/reducers';
-import { connect } from 'react-redux';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 
 import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
 
 export interface OwnProps {
-    periode: Uttaksperiode;
-    ugyldigeTidsperioder?: Tidsperiode[];
-    onChange: (periode: Periode) => void;
-    onFjern: (periode: Periode) => void;
-}
-
-export interface StateProps {
+    periode?: Uttaksperiode;
     navnForelder1?: string;
     navnForelder2?: string;
     permisjonsregler: Permisjonsregler;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
+    ugyldigeTidsperioder?: Tidsperiode[];
+    onChange: (periode: Periode) => void;
+    onFjern: (periode: Periode) => void;
 }
 
 export interface State {
@@ -50,7 +44,7 @@ export interface State {
     beholdVarighet?: boolean;
 }
 
-export type Props = OwnProps & StateProps & InjectedIntlProps;
+export type Props = OwnProps & InjectedIntlProps;
 
 class UttaksperiodeSkjema extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -270,22 +264,4 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState,
-    props: OwnProps
-): StateProps | undefined => {
-    const { form } = state.uttaksplan;
-    const { termindato, dekningsgrad } = form;
-    if (!termindato || !dekningsgrad) {
-        return undefined;
-    }
-    return {
-        termindato,
-        dekningsgrad,
-        permisjonsregler: getPermisjonsregler(termindato),
-        navnForelder1: form.navnForelder1,
-        navnForelder2: form.navnForelder2
-    };
-};
-
-export default connect(mapStateToProps)(injectIntl(UttaksperiodeSkjema));
+export default injectIntl(UttaksperiodeSkjema);

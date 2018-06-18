@@ -8,10 +8,7 @@ import {
 import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
-import {
-    getGyldigTidsromForUtsettelse,
-    getAntallUkerFellesperiode
-} from 'uttaksplan/utils/permisjonUtils';
+import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'common/redux/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -32,7 +29,6 @@ import {
     setTermindato
 } from 'uttaksplan/redux/actions';
 
-import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
 import { Dekningsgrad } from 'common/types';
 import { Tidsperiode } from 'nav-datovelger';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
@@ -47,6 +43,8 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
+import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
+import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -66,7 +64,6 @@ interface OwnProps {
     navnForelder1: string;
     navnForelder2: string;
     perioder?: Periode[];
-    /** Default 100% */
     initialDekningsgrad?: Dekningsgrad;
     onChange: (perioder: Periode[]) => void;
 }
@@ -127,10 +124,8 @@ class UttaksplanMain extends React.Component<Props> {
     }
     render() {
         const {
-            periode,
             innslag,
             termindato,
-            tidsromForUtsettelse,
             navnForelder1,
             navnForelder2,
             permisjonsregler,
@@ -225,24 +220,8 @@ class UttaksplanMain extends React.Component<Props> {
                             </Knapperad>
                         </div>
 
-                        {visPermisjonsplan &&
-                            tidsromForUtsettelse &&
-                            termindato &&
-                            periode.valgtPeriode && (
-                                <PeriodeDialog
-                                    periodetype={
-                                        periode.valgtPeriode.periodetype
-                                    }
-                                    isOpen={periode.dialogErApen}
-                                    navnForelder1={navnForelder1}
-                                    navnForelder2={navnForelder2}
-                                    perioder={periode.perioder}
-                                    periode={periode.valgtPeriode.periode}
-                                    tidsrom={tidsromForUtsettelse}
-                                    permisjonsregler={permisjonsregler}
-                                    termindato={termindato}
-                                />
-                            )}
+                        <UttaksperiodeDialog />
+                        <UtsettelsesperiodeDialog />
                     </div>
                 )}
                 <DevHelper
@@ -273,22 +252,12 @@ const mapStateToProps = (
         permisjonsregler,
         dekningsgrad
     );
-    const tidsromForUtsettelse =
-        termindato && dekningsgrad && sisteRegistrertePermisjonsdag
-            ? getGyldigTidsromForUtsettelse(
-                  termindato,
-                  dekningsgrad,
-                  permisjonsregler,
-                  sisteRegistrertePermisjonsdag
-              )
-            : undefined;
     const innslag: Tidslinjeinnslag[] = tidslinjeFraPerioder(appState);
     return {
         innslag,
         form,
         periode,
         sisteRegistrertePermisjonsdag,
-        tidsromForUtsettelse,
         permisjonsregler,
         ukerFellesperiode,
         dekningsgrad,
