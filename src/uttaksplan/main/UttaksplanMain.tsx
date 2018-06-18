@@ -29,8 +29,7 @@ import {
     visTidslinje,
     visPeriodeDialog,
     opprettPerioder,
-    setTermindato,
-    setManuellUttaksplan
+    setTermindato
 } from 'uttaksplan/redux/actions';
 
 import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
@@ -48,7 +47,6 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
-import { Checkbox } from 'nav-frontend-skjema';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -138,7 +136,6 @@ class UttaksplanMain extends React.Component<Props> {
             permisjonsregler,
             ukerFellesperiode,
             visPermisjonsplan,
-            manuellUttaksplan,
             dispatch,
             intl,
             form
@@ -171,17 +168,6 @@ class UttaksplanMain extends React.Component<Props> {
                 </div>
                 {visPermisjonsplan && (
                     <div className="tidsplan">
-                        <div className="blokk-s">
-                            <Checkbox
-                                checked={manuellUttaksplan}
-                                label="Manuell oppdatering"
-                                onChange={(evt) =>
-                                    dispatch(
-                                        setManuellUttaksplan(evt.target.checked)
-                                    )
-                                }
-                            />
-                        </div>
                         <div className="blokk-m">
                             <Timeline
                                 items={getTimelineItemsFromInnslag(

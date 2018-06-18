@@ -9,7 +9,8 @@ import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import {
     opprettEllerOppdaterPeriode,
     opprettPerioder,
-    dev
+    dev,
+    setManuellUttaksplan
 } from 'uttaksplan/redux/actions';
 import {
     Periodetype,
@@ -26,6 +27,7 @@ import './devUtil';
 
 import './dev.less';
 import { uttaksdagUtil, tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { Checkbox } from 'nav-frontend-skjema';
 
 export interface StateProps {
     appState: UttaksplanAppState;
@@ -133,7 +135,6 @@ class DevToolbar extends React.Component<Props, {}> {
     lagOpphold() {
         const periode = this.props.appState.uttaksplan.periode.perioder[2];
         if (periode.type === Periodetype.Utsettelse) {
-            console.log('kan ikke flytte utsettelse');
             return;
         }
         const tidsperiode = tidsperioden(periode.tidsperiode).setStartdato(
@@ -184,6 +185,18 @@ class DevToolbar extends React.Component<Props, {}> {
                     <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>
                         Rebuild
                     </Knapp>
+                    <Checkbox
+                        checked={
+                            this.props.appState.uttaksplan.periode
+                                .manuellOppdatering
+                        }
+                        label="Manuell oppdatering"
+                        onChange={(evt) =>
+                            this.props.dispatch(
+                                setManuellUttaksplan(evt.target.checked)
+                            )
+                        }
+                    />
                 </Knapperad>
             </div>
         );
