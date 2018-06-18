@@ -27,7 +27,7 @@ const Attachment: React.StatelessComponent<Props> = ({
 }) => {
     return (
         <div
-            className={classnames('attachments', {
+            className={classnames('attachment', {
                 'attachment--pending': attachment.pending
             })}>
             {attachment.pending && (

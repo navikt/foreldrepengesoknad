@@ -23,6 +23,72 @@ export const addAttachmentToState = (
     return updateAttachmentState(attachment, state, Operation.ADD);
 };
 
+const updateAttachmentList = (
+    attachments: Attachment[],
+    attachment: Attachment,
+    operation: Operation
+): Attachment[] => {
+    if (operation === Operation.ADD) {
+        attachments.push(attachment);
+    } else if (operation === Operation.EDIT) {
+        attachments[attachments.indexOf(attachment)] = attachment;
+    } else if (operation === Operation.DELETE) {
+        attachments.splice(attachments.indexOf(attachment), 1);
+    }
+    return attachments;
+};
+
+const stateWithUpdatedBarnAttachments = (
+    attachment: Attachment,
+    state: SøknadPartial,
+    operation: Operation
+): SøknadPartial => {
+    const attachments = state.barn[attachment.type] || [];
+    const updatedAttachments = updateAttachmentList(
+        attachments,
+        attachment,
+        operation
+    );
+    return {
+        ...state,
+        barn: { ...state.barn, [attachment.type]: updatedAttachments }
+    };
+};
+
+const stateWithUpdatedAndreInntekterAttachments = (
+    attachment: Attachment,
+    state: SøknadPartial,
+    operation: Operation
+): SøknadPartial => {
+    const andreInntekter = state.søker.andreInntekterSiste10Mnd;
+    if (andreInntekter) {
+        const annenInntekt = andreInntekter.find(
+            (currentAnnenInntekt) =>
+                currentAnnenInntekt.vedlegg.find(
+                    (currentVedlegg) => currentVedlegg.id === attachment.id
+                ) !== undefined
+        );
+        if (annenInntekt) {
+            const attachments = annenInntekt.vedlegg;
+            const annenInntektIndex = andreInntekter.indexOf(annenInntekt);
+            annenInntekt.vedlegg = updateAttachmentList(
+                attachments,
+                attachment,
+                operation
+            );
+            andreInntekter[annenInntektIndex] = annenInntekt;
+            return {
+                ...state,
+                søker: {
+                    ...state.søker,
+                    andreInntekterSiste10Mnd: andreInntekter
+                }
+            };
+        }
+    }
+    return state;
+};
+
 const updateAttachmentState = (
     attachment: Attachment,
     state: SøknadPartial,
@@ -36,24 +102,15 @@ const updateAttachmentState = (
         type === 'adopsjonsvedtak';
     const isAttachmentForAnnenInntekt = type === 'anneninntektdokumentasjon';
 
-    let attachmentList = [];
     if (isAttachmentForBarn) {
-        attachmentList = state.barn[type] || [];
+        return stateWithUpdatedBarnAttachments(attachment, state, operation);
     } else if (isAttachmentForAnnenInntekt) {
+        return stateWithUpdatedAndreInntekterAttachments(
+            attachment,
+            state,
+            operation
+        );
     }
 
-    if (operation === Operation.ADD) {
-        attachmentList.push(attachment);
-    } else if (operation === Operation.EDIT) {
-        attachmentList[attachmentList.indexOf(attachment)] = attachment;
-    } else if (operation === Operation.DELETE) {
-        attachmentList.splice(attachmentList.indexOf(attachment), 1);
-    }
-
-    return {
-        ...state,
-        barn: isAttachmentForBarn
-            ? { ...state.barn, [type]: attachmentList }
-            : state.barn
-    };
+    return state;
 };
