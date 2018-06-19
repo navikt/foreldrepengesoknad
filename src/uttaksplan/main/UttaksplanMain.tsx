@@ -77,7 +77,7 @@ class UttaksplanMain extends React.Component<Props> {
     }
 
     componentDidMount() {
-        this.opprettPerioder();
+        // this.opprettPerioder();
     }
 
     handleItemClick(item: TimelineItem) {
