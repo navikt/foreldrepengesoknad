@@ -26,7 +26,8 @@ import {
     visTidslinje,
     visPeriodeDialog,
     opprettPerioder,
-    setTermindato
+    setTermindato,
+    setUttaksgrunnlag
 } from 'uttaksplan/redux/actions';
 
 import { Dekningsgrad } from 'common/types';
@@ -45,15 +46,16 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
 import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
-import { Søker } from 'app/types/søknad/Søker';
+import {
+    Uttaksgrunnlag,
+    SøkerGrunnlag,
+    AnnenForelderGrunnlag
+} from 'uttaksplan/types/uttaksgrunnlag';
+import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 export interface StateProps {
-    dekningsgrad: Dekningsgrad;
+    uttaksgrunnlag: Uttaksgrunnlag;
     ukerFellesperiode: number;
-    permisjonsregler: Permisjonsregler;
-    form: UttaksplanFormState;
     innslag: Tidslinjeinnslag[];
     periode: PeriodeState;
     visPermisjonsplan: boolean;
@@ -64,11 +66,10 @@ export interface StateProps {
 
 interface OwnProps {
     termindato: Date;
-    bruker: Person;
-    søker: Søker;
-    annenForelder: AnnenForelder;
+    søker: SøkerGrunnlag;
+    annenForelder: AnnenForelderGrunnlag;
+    antallBarn: number;
     perioder?: Periode[];
-    initialDekningsgrad?: Dekningsgrad;
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -82,10 +83,15 @@ class UttaksplanMain extends React.Component<Props> {
     }
 
     componentDidMount() {
-        this.props.dispatch(setTermindato(this.props.termindato));
         this.props.dispatch(
-            setDekningsgrad(
-                this.props.dekningsgrad || this.props.initialDekningsgrad
+            setUttaksgrunnlag(
+                getUttaksgrunnlag(
+                    this.props.termindato,
+                    this.props.dekningsgrad,
+                    this.props.søker,
+                    this.props.annenForelder,
+                    this.props.antallBarn
+                )
             )
         );
         this.opprettPerioder();
@@ -106,24 +112,13 @@ class UttaksplanMain extends React.Component<Props> {
         }
     }
     opprettPerioder() {
-        const {
-            dispatch,
-            termindato,
-            permisjonsregler,
-            dekningsgrad,
-            form,
-            bruker,
-            søker,
-            annenForelder
-        } = this.props;
+        const { dispatch, uttaksgrunnlag } = this.props;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
         dispatch(
             opprettPerioder(
                 termindato,
                 dekningsgrad,
-                bruker,
-                søker,
                 annenForelder,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2,
@@ -233,13 +228,7 @@ class UttaksplanMain extends React.Component<Props> {
                             </Knapperad>
                         </div>
 
-                        <UttaksperiodeDialog
-                            bruker={bruker}
-                            annenForelder={annenForelder}
-                            søker={søker}
-                            termindato={termindato}
-                            permisjonsregler={permisjonsregler}
-                        />
+                        <UttaksperiodeDialog />
 
                         <UtsettelsesperiodeDialog
                             navnForelder1={bruker.fornavn}
@@ -269,10 +258,10 @@ const mapStateToProps = (
         appState
     );
     const { termindato } = props;
-    const { form, periode, view } = appState.uttaksplan;
-    const dekningsgrad: Dekningsgrad =
-        form.dekningsgrad || props.initialDekningsgrad || '100%';
-    const permisjonsregler = getPermisjonsregler(props.termindato);
+    const { uttaksgrunnlag, periode, view } = appState.uttaksplan;
+    // const dekningsgrad: Dekningsgrad =
+    //     form.dekningsgrad || props.initialDekningsgrad || '100%';
+    // const permisjonsregler = getPermisjonsregler(props.termindato);
     const ukerFellesperiode = getAntallUkerFellesperiode(
         permisjonsregler,
         dekningsgrad
@@ -282,14 +271,13 @@ const mapStateToProps = (
         props.termindato,
         dekningsgrad
     );
+
     return {
+        uttaksgrunnlag,
         innslag,
-        form,
         periode,
         sisteRegistrertePermisjonsdag,
-        permisjonsregler,
         ukerFellesperiode,
-        dekningsgrad,
         manuellUttaksplan: periode.manuellOppdatering,
         visPermisjonsplan:
             innslag &&

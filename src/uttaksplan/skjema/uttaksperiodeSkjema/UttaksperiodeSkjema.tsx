@@ -4,9 +4,7 @@ import {
     Periode,
     Forelder,
     StønadskontoType,
-    Periodetype,
-    Permisjonsregler,
-    Dekningsgrad
+    Periodetype
 } from 'uttaksplan/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
@@ -23,19 +21,11 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 
 import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
-import Person from 'app/types/Person';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import { Søker } from 'app/types/søknad/Søker';
-import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/stønadskontoUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
-    bruker: Person;
-    søker: Søker;
-    annenForelder?: AnnenForelder;
-    permisjonsregler: Permisjonsregler;
-    termindato: Date;
-    dekningsgrad: Dekningsgrad;
+    uttaksgrunnlag: Uttaksgrunnlag;
     ugyldigeTidsperioder?: Tidsperiode[];
     onChange: (periode: Periode) => void;
     onFjern: (periode: Periode) => void;
@@ -62,13 +52,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
         this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
 
-        const { periode } = props;
-
-        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
-            props.bruker,
-            props.søker,
-            props.annenForelder
-        );
+        const { periode, uttaksgrunnlag } = props;
+        const { tilgjengeligeStønadskontoer } = uttaksgrunnlag;
 
         const singelStønadskonto =
             tilgjengeligeStønadskontoer.length === 1
@@ -146,12 +131,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const {
             periode,
             onFjern,
-            bruker,
-            annenForelder,
-            ugyldigeTidsperioder,
-            termindato,
-            dekningsgrad,
-            permisjonsregler
+            uttaksgrunnlag,
+            ugyldigeTidsperioder
         } = this.props;
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
@@ -167,8 +148,18 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         } = this.state;
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
-        const navnForelder1 = bruker.fornavn;
-        const navnForelder2 = annenForelder ? annenForelder.navn : 'forelder 2';
+        const {
+            termindato,
+            dekningsgrad,
+            permisjonsregler,
+            søker,
+            annenForelder
+        } = uttaksgrunnlag;
+
+        const navnForelder1 = søker.fornavn;
+        const navnForelder2 = annenForelder
+            ? annenForelder.fornavn
+            : 'forelder 2';
 
         const regler = stønadskonto
             ? getStønadskontoRegler(
