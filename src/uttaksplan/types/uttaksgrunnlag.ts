@@ -1,4 +1,7 @@
-import { StønadskontoType } from 'uttaksplan/types/periodetyper';
+import {
+    StønadskontoType,
+    StønadskontoUttak
+} from 'uttaksplan/types/periodetyper';
 import { Permisjonsregler } from 'uttaksplan/types';
 import { SøkerRolle, Søkersituasjon } from 'app/types/s\u00F8knad/S\u00F8knad';
 import { Kjønn } from 'app/types/common';
@@ -15,7 +18,6 @@ export interface SøkerGrunnlag {
 export interface AnnenForelderGrunnlag {
     fornavn: string;
     etternavn: string;
-    skalHaForeldrepenger: boolean;
 }
 
 export interface Uttaksgrunnlag {
@@ -24,4 +26,5 @@ export interface Uttaksgrunnlag {
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
     tilgjengeligeStønadskontoer: StønadskontoType[];
+    tilgjengeligUttak: StønadskontoUttak[];
 }

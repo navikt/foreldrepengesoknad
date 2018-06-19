@@ -17,6 +17,5 @@ export const mockUttaksplanSøker: SøkerGrunnlag = {
 };
 export const mockUttasksplanAnnenForelder: AnnenForelderGrunnlag = {
     fornavn: 'Henrik',
-    etternavn: 'Ibsen',
-    skalHaForeldrepenger: true
+    etternavn: 'Ibsen'
 };
