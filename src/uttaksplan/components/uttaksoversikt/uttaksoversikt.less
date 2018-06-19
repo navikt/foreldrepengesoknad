@@ -1,0 +1,24 @@
+@import '../../styles/variabler.less';
+
+.uttaksoversikt {
+    display: flex;
+    flex-flow: row;
+    justify-content: stretch;
+    &__konto {
+        width: 100% / 3;
+        text-align: center;
+        &--overforbruk {
+            color: @redError;
+        }
+    }
+    &__navn {
+        font-size: 1rem;
+        font-weight: normal;
+        margin: 0;
+    }
+    &__dager {
+        padding: 0.5rem 0;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}

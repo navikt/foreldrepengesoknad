@@ -1,41 +1,38 @@
 import {
     StønadskontoUttak,
     Dekningsgrad,
-    StønadskontoType
+    StønadskontoType,
+    Permisjonsregler
 } from 'uttaksplan/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { Kjønn } from 'app/types/common';
 import { erFarEllerMedmor } from 'app/util/personUtil';
 import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
-export const getStønadskontoerMedUttaksdager = (
-    termindato: Date,
+export const getTilgjengeligUttak = (
+    permisjonsregler: Permisjonsregler,
     dekningsgrad: Dekningsgrad
-): StønadskontoUttak => {
-    const permisjonsregler = getPermisjonsregler(termindato);
-
-    const dager: StønadskontoUttak = new Map();
-    dager.set(
-        StønadskontoType.ForeldrepengerFørFødsel,
-        permisjonsregler.antallUkerForeldrepengerFørFødsel
-    );
-    dager.set(
-        StønadskontoType.Mødrekvote,
-        permisjonsregler.antallUkerMødrekvote +
-            permisjonsregler.antallUkerMødrekvoteEtterFødsel
-    );
-    dager.set(
-        StønadskontoType.Fedrekvote,
-        permisjonsregler.antallUkerFedrekvote
-    );
-    dager.set(
-        StønadskontoType.Fellesperiode,
-        getAntallUkerFellesperiode(permisjonsregler, dekningsgrad)
-    );
-
-    return dager;
+): StønadskontoUttak[] => {
+    return [
+        {
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            dager: permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+        },
+        {
+            konto: StønadskontoType.Mødrekvote,
+            dager: permisjonsregler.antallUkerMødrekvote * 5
+        },
+        {
+            konto: StønadskontoType.Fedrekvote,
+            dager: permisjonsregler.antallUkerFedrekvote * 5
+        },
+        {
+            konto: StønadskontoType.Fellesperiode,
+            dager:
+                getAntallUkerFellesperiode(permisjonsregler, dekningsgrad) * 5
+        }
+    ];
 };
 
 export const getTilgjengeligeStønadskontoer = (

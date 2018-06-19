@@ -5,14 +5,17 @@ import {
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
-import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+import {
+    getTilgjengeligeStønadskontoer,
+    getTilgjengeligUttak
+} from 'uttaksplan/utils/st\u00F8nadskontoUtils';
 
 export function getUttaksgrunnlag(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     søker: SøkerGrunnlag,
-    annenForelder: AnnenForelderGrunnlag,
-    antallBarn: number
+    antallBarn: number,
+    annenForelder?: AnnenForelderGrunnlag
 ): Uttaksgrunnlag {
     const permisjonsregler = getPermisjonsregler(termindato);
 
@@ -21,6 +24,7 @@ export function getUttaksgrunnlag(
         annenForelder,
         antallBarn,
         permisjonsregler,
-        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(søker)
+        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(søker),
+        tilgjengeligUttak: getTilgjengeligUttak(permisjonsregler, dekningsgrad)
     };
 }
