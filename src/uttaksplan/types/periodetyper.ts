@@ -74,4 +74,7 @@ export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 
 export type UttakEllerUtsettelseperiode = Uttaksperiode | Utsettelsesperiode;
 
-export type StønadskontoUttak = Map<StønadskontoType, number>;
+export interface StønadskontoUttak {
+    konto: StønadskontoType;
+    dager: number;
+}

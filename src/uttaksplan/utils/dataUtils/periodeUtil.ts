@@ -24,7 +24,7 @@ export const periodene = (perioder: Periode[]) => ({
     getUtsettelser: () => getUtsettelser(perioder),
     getAntallUttaksdager: (konto?: StønadskontoType) =>
         getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
-    getAntallUttaksdagerPerKonto: (): StønadskontoUttak =>
+    getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
         getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnPerioderEtterDato: (dato: Date, ignorerPeriode?: Periode) =>
@@ -406,51 +406,51 @@ function getAntallUttaksdagerIPerioderOgKonto(
  */
 function getAntallUttaksdagerPerKonto(
     uttaksperioder: Uttaksperiode[]
-): StønadskontoUttak {
-    const fordeling: StønadskontoUttak = new Map();
-    fordeling.set(
-        StønadskontoType.ForeldrepengerFørFødsel,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.ForeldrepengerFørFødsel
-        )
-    );
-    fordeling.set(
-        StønadskontoType.Foreldrepenger,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.Foreldrepenger
-        )
-    );
-    fordeling.set(
-        StønadskontoType.Mødrekvote,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.Mødrekvote
-        )
-    );
-    fordeling.set(
-        StønadskontoType.Fedrekvote,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.Fedrekvote
-        )
-    );
-    fordeling.set(
-        StønadskontoType.Fellesperiode,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.Fellesperiode
-        )
-    );
-    fordeling.set(
-        StønadskontoType.SamtidigUttak,
-        getAntallUttaksdagerIPerioderOgKonto(
-            uttaksperioder,
-            StønadskontoType.SamtidigUttak
-        )
-    );
-    return fordeling;
+): StønadskontoUttak[] {
+    return [
+        {
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.ForeldrepengerFørFødsel
+            )
+        },
+        {
+            konto: StønadskontoType.Foreldrepenger,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.Foreldrepenger
+            )
+        },
+        {
+            konto: StønadskontoType.Mødrekvote,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.Mødrekvote
+            )
+        },
+        {
+            konto: StønadskontoType.Fedrekvote,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.Fedrekvote
+            )
+        },
+        {
+            konto: StønadskontoType.Fellesperiode,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.Fellesperiode
+            )
+        },
+        {
+            konto: StønadskontoType.SamtidigUttak,
+            dager: getAntallUttaksdagerIPerioderOgKonto(
+                uttaksperioder,
+                StønadskontoType.SamtidigUttak
+            )
+        }
+    ];
 }
 
 /**
