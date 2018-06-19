@@ -45,7 +45,8 @@ import {
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
-import Uttak from 'uttaksplan/components/uttak/Uttak';
+import Uttaksoversikt from 'uttaksplan/components/uttaksoversikt/Uttaksoversikt';
+import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
 export interface StateProps {
     form: UttaksplanFormState;
@@ -63,7 +64,7 @@ interface OwnProps {
     søker: SøkerGrunnlag;
     annenForelder: AnnenForelderGrunnlag;
     antallBarn: number;
-    perioder?: Periode[];
+    // perioder?: Periode[];
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -122,9 +123,9 @@ class UttaksplanMain extends React.Component<Props> {
             termindato,
             dekningsgrad,
             innslag,
+            periode,
             ukerFellesperiode,
             visPermisjonsplan,
-            perioder,
             dispatch,
             intl,
             form
@@ -165,7 +166,7 @@ class UttaksplanMain extends React.Component<Props> {
                     </div>
                 </div>
                 {visPermisjonsplan &&
-                    perioder && (
+                    periode.perioder && (
                         <div className="tidsplan">
                             <div className="blokk-m">
                                 <Timeline
@@ -204,9 +205,11 @@ class UttaksplanMain extends React.Component<Props> {
                             </div>
 
                             <div className="blokk-m">
-                                <Uttak
-                                    uttaksgrunnlag={uttaksgrunnlag}
-                                    perioder={perioder}
+                                <Uttaksoversikt
+                                    uttak={beregnAlleUttak(
+                                        periode.perioder,
+                                        uttaksgrunnlag
+                                    )}
                                 />
                             </div>
 

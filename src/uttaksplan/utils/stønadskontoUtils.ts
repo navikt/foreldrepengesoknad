@@ -17,21 +17,20 @@ export const getTilgjengeligUttak = (
     return [
         {
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            dager: permisjonsregler.antallUkerForeldrepengerFørFødsel
+            dager: permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
         },
         {
             konto: StønadskontoType.Mødrekvote,
-            dager:
-                permisjonsregler.antallUkerMødrekvote +
-                permisjonsregler.antallUkerMødrekvoteEtterFødsel
+            dager: permisjonsregler.antallUkerMødrekvote * 5
         },
         {
             konto: StønadskontoType.Fedrekvote,
-            dager: permisjonsregler.antallUkerFedrekvote
+            dager: permisjonsregler.antallUkerFedrekvote * 5
         },
         {
             konto: StønadskontoType.Fellesperiode,
-            dager: getAntallUkerFellesperiode(permisjonsregler, dekningsgrad)
+            dager:
+                getAntallUkerFellesperiode(permisjonsregler, dekningsgrad) * 5
         }
     ];
 };
