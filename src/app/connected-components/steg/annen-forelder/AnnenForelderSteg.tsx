@@ -20,7 +20,6 @@ import Person from '../../../types/Person';
 import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
 import { Språkkode } from 'common/intl/types';
 import { erFarEllerMedmor } from '../../../util/personUtil';
-import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 
 interface StateProps {
     person: Person;
@@ -134,7 +133,7 @@ const shouldRenderFortsettKnapp = (
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const person = state.api.person as Person;
-    const barn = state.søknad.barn;
+    const barn = state.søknad.barn as ForeldreansvarBarn;
     const dataOmAndreForelderen = state.api
         .dataOmAnnenForelder as DataOmAnnenForelder;
     const søker = state.søknad.søker;
@@ -149,7 +148,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
                 : shouldRenderFortsettKnapp(
                       annenForelder,
                       søker,
-                      getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
+                      barn.omsorgsovertakelse &&
+                          barn.omsorgsovertakelse.length > 0,
                       erFarEllerMedmor(person.kjønn, søker.rolle),
                       dataOmAndreForelderen
                   ),
@@ -164,7 +164,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søker,
         annenForelder,
         visInformasjonVedOmsorgsovertakelse:
-            getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
+            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0,
         språk
     };
 };

@@ -19,8 +19,9 @@ import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
-import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
 import { StegProps } from '../../../components/layout/Steg';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -82,7 +83,28 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 <Spørsmål
                     animert={true}
                     synlig={barn.foreldreansvarsdato !== undefined}
-                    render={() => <Søknadsvedlegg type="adopsjonsvedtak" />}
+                    render={() => (
+                        <AttachmentsUploaderPure
+                            attachments={barn.adopsjonsvedtak || []}
+                            attachmentType="adopsjonsvedtak"
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
+                            onFileDelete={(attachment: Attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
+                        />
+                    )}
                 />
                 <Spørsmål
                     animert={false}

@@ -11,15 +11,16 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
-import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
-    terminbekreftelseErLastetOpp: boolean;
+    terminbekreftelse: Attachment[];
     erFarEllerMedmor: boolean;
 }
 
@@ -30,7 +31,7 @@ class UfødtBarnPartial extends React.Component<Props> {
         const {
             barn,
             annenForelder,
-            terminbekreftelseErLastetOpp,
+            terminbekreftelse,
             erFarEllerMedmor,
             dispatch,
             intl
@@ -113,13 +114,36 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 'vedlegg.tittel.terminbekreftelse'
                             )}
                             render={() => (
-                                <Søknadsvedlegg type="terminbekreftelse" />
+                                <AttachmentsUploaderPure
+                                    attachments={terminbekreftelse}
+                                    attachmentType="terminbekreftelse"
+                                    onFilesSelect={(
+                                        attachments: Attachment[]
+                                    ) => {
+                                        attachments.forEach(
+                                            (attachment: Attachment) => {
+                                                dispatch(
+                                                    søknadActions.uploadAttachment(
+                                                        attachment
+                                                    )
+                                                );
+                                            }
+                                        );
+                                    }}
+                                    onFileDelete={(attachment: Attachment) =>
+                                        dispatch(
+                                            søknadActions.deleteAttachment(
+                                                attachment
+                                            )
+                                        )
+                                    }
+                                />
                             )}
                         />
 
                         <Spørsmål
                             synlig={
-                                terminbekreftelseErLastetOpp &&
+                                terminbekreftelse.length > 0 &&
                                 barn.termindato !== undefined
                             }
                             render={() => (

@@ -143,6 +143,7 @@ class AndreInntekterBolk extends React.Component<
                     annenInntekt={annenInntektToEdit}
                     onAdd={this.onAdd}
                     onEdit={this.onEdit}
+                    editMode={annenInntektToEdit !== undefined}
                 />
             </React.Fragment>
         );
@@ -165,7 +166,9 @@ const AndreInntekterListeElement: React.StatelessComponent<
                 id="tidsintervall"
                 values={{
                     fom: ISODateToMaskedInput(annenInntekt.fom),
-                    tom: ISODateToMaskedInput(annenInntekt.tom)
+                    tom: annenInntekt.pågående
+                        ? 'pågående'
+                        : ISODateToMaskedInput(annenInntekt.tom)
                 }}
             />
         </div>

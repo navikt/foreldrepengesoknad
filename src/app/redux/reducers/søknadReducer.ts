@@ -3,6 +3,11 @@ import {
     SøknadActionKeys
 } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
+import {
+    addAttachmentToState,
+    editAttachmentInState,
+    removeAttachmentFromState
+} from '../util/attachmentStateUpdates';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -56,6 +61,39 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 ...action.payload
             };
+
+        case SøknadActionKeys.UPLOAD_ATTACHMENT:
+            const pendingAttachment = action.payload;
+            pendingAttachment.pending = true;
+            return addAttachmentToState(pendingAttachment, state);
+
+        case SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS:
+            const uploadedAttachment = action.attachment;
+            const url = action.url;
+
+            uploadedAttachment.url = url;
+            uploadedAttachment.pending = false;
+            uploadedAttachment.uploaded = true;
+            return editAttachmentInState(uploadedAttachment, state);
+
+        case SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED:
+            const failedAttachment = action.attachment;
+            failedAttachment.pending = false;
+            return editAttachmentInState(failedAttachment, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT:
+            const attachmentToDelete = action.attachment;
+            attachmentToDelete.pending = true;
+            return editAttachmentInState(attachmentToDelete, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS:
+            const deletedAttachment = action.attachment;
+            return removeAttachmentFromState(deletedAttachment, state);
+
+        case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
+            const attachmentFailedToDelete = action.attachment;
+            attachmentFailedToDelete.pending = false;
+            return editAttachmentInState(attachmentFailedToDelete, state);
     }
     return state;
 };

@@ -33,7 +33,6 @@ interface Søknad {
     barn: Barn;
     utenlandsopphold: Utenlandsopphold;
     uttaksplan: Periode[];
-    vedlegg: Søknadsvedlegginfo[];
     søker: Søker;
 }
 
@@ -50,18 +49,18 @@ export interface SøknadPartial {
 
 export type Skjemadata = Partial<Søknad>;
 
-export type SøknadsvedleggType =
+export type AttachmentType =
     | 'omsorgsovertakelse'
     | 'adopsjonsvedtak'
-    | 'overtakelsedokumentasjon'
     | 'terminbekreftelse'
-    | 'fødselsattest';
+    | 'fødselsattest'
+    | 'anneninntektdokumentasjon';
 
 export interface Søknadsvedlegginfo {
     id: string;
     url: string;
     filnavn: string;
-    type: SøknadsvedleggType;
+    type: AttachmentType;
     filstørrelse: number;
     metadata: SøknadsvedleggMetadata;
 }

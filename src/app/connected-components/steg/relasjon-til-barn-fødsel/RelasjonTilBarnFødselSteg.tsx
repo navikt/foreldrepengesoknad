@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
-
 import { StegID } from '../../../util/stegConfig';
 import Steg, { StegProps } from 'app/components/layout/Steg';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
@@ -14,18 +12,18 @@ import { partials } from './partials';
 import { AppState } from '../../../redux/reducers';
 import Person from '../../../types/Person';
 import { HistoryProps } from '../../../types/common';
-import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 import Søker from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/personUtil';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
     barn: BarnPartial;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
     person?: Person;
-    fødselsattestLastetOpp: boolean;
-    terminbekreftelseErLastetOpp: boolean;
+    terminbekreftelse: Attachment[];
+    fødselsattest: Attachment[];
     stegProps: StegProps;
 }
 
@@ -37,7 +35,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
             søker,
             annenForelder,
             person,
-            terminbekreftelseErLastetOpp,
+            fødselsattest,
+            terminbekreftelse,
             stegProps,
             dispatch
         } = this.props;
@@ -64,6 +63,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
                         <partials.FødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
+                            fødselsattest={fødselsattest || []}
                         />
                     ) : (
                         <partials.UfødtBarnPartial
@@ -75,9 +75,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, StateProps> {
                                 person.kjønn,
                                 søker.rolle
                             )}
-                            terminbekreftelseErLastetOpp={
-                                terminbekreftelseErLastetOpp
-                            }
+                            terminbekreftelse={terminbekreftelse || []}
                         />
                     )}
                 </Steg>
@@ -93,16 +91,14 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const erBarnetFødt = barn && barn.erBarnetFødt === true;
     const harTerminbekreftelseDato =
         (barn as UfødtBarn).terminbekreftelseDato !== undefined;
-    const fødselsattestLastetOpp =
-        getSøknadsvedlegg('fødselsattest', state).length > 0;
-    const terminbekreftelseErLastetOpp =
-        getSøknadsvedlegg('terminbekreftelse', state).length > 0;
+    const fødselsattest = (barn as FødtBarn).fødselsattest;
+    const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         renderFortsettKnapp:
-            (erBarnetFødt && fødselsattestLastetOpp) ||
-            (harTerminbekreftelseDato && terminbekreftelseErLastetOpp),
+            (erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
+            (harTerminbekreftelseDato && terminbekreftelse.length > 0),
         history: props.history
     };
 
@@ -111,8 +107,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         annenForelder: state.søknad.annenForelder,
         person: state.api.person,
         barn,
-        fødselsattestLastetOpp,
-        terminbekreftelseErLastetOpp,
+        terminbekreftelse,
+        fødselsattest,
         stegProps
     };
 };

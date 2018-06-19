@@ -15,9 +15,9 @@ import utils from '../../../util/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/layout/Steg';
 import Bolk from '../../../components/layout/Bolk';
-import Søknadsvedlegg from '../../../components/søknadsvedlegg/Søknadsvedlegg';
-import { getSøknadsvedlegg } from '../../../util/vedleggUtil';
 import { HistoryProps } from '../../../types/common';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -76,9 +76,32 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Bolk
                     tittel={getMessage(
                         intl,
-                        'vedlegg.tittel.omsorgsovertakelse'
+                        'attachments.tittel.omsorgsovertakelse'
                     )}
-                    render={() => <Søknadsvedlegg type="omsorgsovertakelse" />}
+                    render={() => (
+                        <AttachmentsUploaderPure
+                            attachments={
+                                (barn as Adopsjonsbarn).omsorgsovertakelse || []
+                            }
+                            attachmentType="omsorgsovertakelse"
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
+                            onFileDelete={(attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
+                        />
+                    )}
                 />
 
                 <Spørsmål
@@ -144,7 +167,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         barn,
         visSpørsmålOmAntallBarn:
-            getSøknadsvedlegg('omsorgsovertakelse', state).length > 0,
+            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0,
         stegProps
     };
 };
