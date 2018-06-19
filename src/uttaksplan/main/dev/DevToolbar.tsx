@@ -133,8 +133,8 @@ class DevToolbar extends React.Component<Props, {}> {
                     termindato,
                     dekningsgrad,
                     mockUttaksplanSøker,
-                    mockUttasksplanAnnenForelder,
-                    1
+                    1,
+                    mockUttasksplanAnnenForelder
                 ),
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2

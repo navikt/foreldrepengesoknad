@@ -62,7 +62,7 @@ export interface StateProps {
 interface OwnProps {
     termindato: Date;
     søker: SøkerGrunnlag;
-    annenForelder: AnnenForelderGrunnlag;
+    annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
     onChange: (perioder: Periode[]) => void;
 }
@@ -281,8 +281,8 @@ const mapStateToProps = (
         termindato,
         dekningsgrad,
         props.søker,
-        props.annenForelder,
-        props.antallBarn
+        props.antallBarn,
+        props.annenForelder
     );
 
     const ukerFellesperiode = getAntallUkerFellesperiode(
