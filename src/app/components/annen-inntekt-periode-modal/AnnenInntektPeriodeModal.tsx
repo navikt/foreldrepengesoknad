@@ -15,9 +15,13 @@ import {
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
+import { Checkbox } from 'nav-frontend-skjema';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export interface AnnenInntektPeriodeModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
+    editMode: boolean;
     onAdd: (annenInntekt: AnnenInntekt) => void;
     onEdit: (annenInntekt: AnnenInntekt) => void;
 }
@@ -26,20 +30,28 @@ type Props = AnnenInntektPeriodeModalProps & InjectedIntlProps;
 
 interface State {
     annenInntekt: AnnenInntektPartial;
-    editMode: boolean;
 }
 
 class AnnenInntektPeriodeModal extends React.Component<Props, State> {
-    static getDerivedStateFromProps(props: Props) {
-        return AnnenInntektPeriodeModal.buildStateFromProps(props);
+    static getDerivedStateFromProps(props: Props, state: State) {
+        return AnnenInntektPeriodeModal.buildStateFromProps(props, state);
     }
 
-    static buildStateFromProps(props: Props) {
-        const { annenInntekt } = props;
-        return {
-            annenInntekt: annenInntekt ? { ...annenInntekt } : {},
-            editMode: annenInntekt !== undefined
-        };
+    static buildStateFromProps(props: Props, state?: State) {
+        const { isOpen } = props;
+
+        if (!isOpen) {
+            return { annenInntekt: props.annenInntekt || {} };
+        } else {
+            return {
+                annenInntekt:
+                    state &&
+                    state.annenInntekt &&
+                    Object.keys(state.annenInntekt).length > 0
+                        ? state.annenInntekt
+                        : props.annenInntekt || {}
+            };
+        }
     }
 
     constructor(props: Props) {
@@ -58,12 +70,36 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
         });
     }
 
+    updateVedleggList(vedlegg: Attachment[]) {
+        const { annenInntekt } = this.state;
+        this.setState({
+            annenInntekt: {
+                ...annenInntekt,
+                vedlegg
+            }
+        });
+    }
+
+    updateVedleggItem(vedlegg: Attachment) {
+        const { annenInntekt } = this.state;
+        if (annenInntekt && annenInntekt.vedlegg) {
+            const index = annenInntekt.vedlegg.indexOf(vedlegg);
+            annenInntekt.vedlegg[index] = vedlegg;
+            this.setState({
+                annenInntekt: {
+                    ...annenInntekt,
+                    vedlegg: annenInntekt.vedlegg
+                }
+            });
+        }
+    }
+
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         event.stopPropagation();
 
-        const { onAdd, onEdit } = this.props;
-        const { annenInntekt, editMode } = this.state;
+        const { onAdd, onEdit, editMode } = this.props;
+        const { annenInntekt } = this.state;
 
         if (editMode) {
             onEdit(annenInntekt as AnnenInntekt);
@@ -75,7 +111,6 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { annenInntekt } = this.state;
-
         return (
             <Modal
                 className="annenInntektPeriodeModal"
@@ -132,6 +167,55 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                     });
                                 }}
                                 dato={annenInntekt.tom}
+                                disabled={annenInntekt.pågående}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        render={() => (
+                            <Checkbox
+                                checked={annenInntekt.pågående || false}
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.modal.pågående'
+                                )}
+                                onChange={() => {
+                                    this.updateAnnenInntekt({
+                                        pågående: !annenInntekt.pågående,
+                                        tom: undefined
+                                    });
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        render={() => (
+                            <AttachmentsUploader
+                                attachments={annenInntekt.vedlegg || []}
+                                onFilesUploadStart={(
+                                    attachments: Attachment[]
+                                ) => {
+                                    this.updateVedleggList([
+                                        ...(annenInntekt.vedlegg || []),
+                                        ...attachments
+                                    ]);
+                                }}
+                                onFileUploadFinish={(vedlegg: Attachment) =>
+                                    this.updateVedleggItem(vedlegg)
+                                }
+                                onFileDeleteStart={(vedlegg: Attachment) => {
+                                    this.updateVedleggItem(vedlegg);
+                                }}
+                                onFileDeleteFinish={(vedlegg: Attachment) => {
+                                    const vedleggList =
+                                        annenInntekt.vedlegg || [];
+                                    const index = vedleggList.indexOf(vedlegg);
+                                    vedleggList.splice(index, 1);
+                                    this.updateVedleggList(vedleggList);
+                                }}
+                                attachmentType="anneninntektdokumentasjon"
                             />
                         )}
                     />

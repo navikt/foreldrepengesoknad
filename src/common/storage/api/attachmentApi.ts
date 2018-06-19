@@ -22,7 +22,7 @@ function deleteAttachment(attachment: Attachment) {
     const config = {
         withCredentials: true
     };
-    const url = `${Environment.REST_API_URL}/storage/vedlegg/${attachment.url}`;
+    const url = `${Environment.REST_API_URL}/storage/vedlegg/${attachment.id}`;
     return axios.delete(url, config);
 }
 

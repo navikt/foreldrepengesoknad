@@ -17,7 +17,7 @@ const TimelineIcons: React.StatelessComponent<Props> = ({
 }) =>
     icons && iconRenderer ? (
         <div className={BEM.className}>
-            {icons.map((icon, idx) => (
+            {icons.map((icon) => (
                 <span key={icon} className={BEM.element('icon')}>
                     {iconRenderer(icon)}
                 </span>

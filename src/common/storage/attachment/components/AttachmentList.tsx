@@ -1,30 +1,30 @@
 import * as React from 'react';
-import Vedlegg from './Vedlegg';
+import AttachmentComponent from './Attachment';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import './vedlegg.less';
+import './attachment.less';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface Props {
-    vedlegg: Attachment[];
-    visFilstørrelse?: boolean;
+    attachments: Attachment[];
+    showFileSize?: boolean;
     onDelete?: (file: Attachment) => void;
 }
 
-const VedleggListe: React.StatelessComponent<Props> = (props) => {
-    const { vedlegg, visFilstørrelse, onDelete } = props;
+const AttachmentList: React.StatelessComponent<Props> = (props) => {
+    const { attachments, showFileSize, onDelete } = props;
     return (
-        <ul className="vedleggListe">
+        <ul className="attachmentList">
             <TransitionGroup>
-                {vedlegg.map((attachment, index) => (
+                {attachments.map((attachment, index) => (
                     <CSSTransition
                         classNames="transitionFade"
                         timeout={500}
                         key={index}>
                         <li>
-                            <Vedlegg
+                            <AttachmentComponent
                                 attachment={attachment}
                                 onDelete={onDelete}
-                                visFilstørrelse={visFilstørrelse}
+                                showFileSize={showFileSize}
                             />
                         </li>
                     </CSSTransition>
@@ -33,4 +33,4 @@ const VedleggListe: React.StatelessComponent<Props> = (props) => {
         </ul>
     );
 };
-export default VedleggListe;
+export default AttachmentList;
