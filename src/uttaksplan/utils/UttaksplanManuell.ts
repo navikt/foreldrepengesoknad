@@ -6,6 +6,7 @@ import {
 } from 'uttaksplan/utils/dataUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { isBefore, isAfter, isSameDay } from 'date-fns';
+import { slåSammenLikePerioder } from 'uttaksplan/utils/UttaksplanBuilder';
 
 export const UttaksplanManuell = (perioder: Periode[]) =>
     new UttaksplanManuellBuilder(perioder);
@@ -23,10 +24,10 @@ class UttaksplanManuellBuilder {
     }
 
     public leggTilPeriode(periode: Periode) {
-        // Fjern og juster dager i tidsrom til ny periode
         this.perioder = fjernUttaksdagerFraPerioder(this.perioder, periode);
         this.perioder = [...this.perioder, ...[periode]];
         this.sort();
+        this.perioder = slåSammenLikePerioder(this.perioder);
         return this;
     }
 
