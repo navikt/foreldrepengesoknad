@@ -14,8 +14,8 @@ export function getUttaksgrunnlag(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     søker: SøkerGrunnlag,
-    annenForelder: AnnenForelderGrunnlag,
-    antallBarn: number
+    antallBarn: number,
+    annenForelder?: AnnenForelderGrunnlag
 ): Uttaksgrunnlag {
     const permisjonsregler = getPermisjonsregler(termindato);
 
