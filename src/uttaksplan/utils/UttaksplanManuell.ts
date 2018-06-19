@@ -1,6 +1,11 @@
-import { Periode } from 'uttaksplan/types';
-import { sorterPerioder } from 'uttaksplan/utils/dataUtils';
+import { Periode, Tidsperiode } from 'uttaksplan/types';
+import {
+    sorterPerioder,
+    tidsperioden,
+    uttaksdagUtil
+} from 'uttaksplan/utils/dataUtils';
 import { guid } from 'nav-frontend-js-utils';
+import { isBefore, isAfter, isSameDay } from 'date-fns';
 
 export const UttaksplanManuell = (perioder: Periode[]) =>
     new UttaksplanManuellBuilder(perioder);
@@ -18,6 +23,8 @@ class UttaksplanManuellBuilder {
     }
 
     public leggTilPeriode(periode: Periode) {
+        // Fjern og juster dager i tidsrom til ny periode
+        this.perioder = fjernUttaksdagerFraPerioder(this.perioder, periode);
         this.perioder = [...this.perioder, ...[periode]];
         this.sort();
         return this;
@@ -39,3 +46,176 @@ class UttaksplanManuellBuilder {
         this.perioder.sort(sorterPerioder);
     }
 }
+
+/**
+ * Finner alle Oppholdsperioder som er innenfor tidsrommet
+ * til periode. Opphold som ligger innefor periode fjernes,
+ * mens de som delvis overlapper får justert tidsrom.
+ * @param perioder
+ * @param periode
+ * @returns Modifisert periodeliste med justert/fjernet opphold
+ */
+function fjernUttaksdagerFraPerioder(
+    perioder: Periode[],
+    periode: Periode
+): Periode[] {
+    const nyePerioder: Periode[] = [];
+    perioder.forEach((p) => {
+        if (tidsperioden(p.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+            return;
+        } else if (tidsperioden(p.tidsperiode).erUtenfor(periode.tidsperiode)) {
+            nyePerioder.push(p);
+        } else if (
+            tidsperioden(periode.tidsperiode).erOmsluttetAv(p.tidsperiode)
+        ) {
+            fjernTidsperiodeFraPeriode(p, periode.tidsperiode).forEach((p2) =>
+                nyePerioder.push(p2)
+            );
+        } else if (
+            isBefore(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+        ) {
+            nyePerioder.push({
+                ...p,
+                tidsperiode: {
+                    startdato: p.tidsperiode.startdato,
+                    sluttdato: uttaksdagUtil(
+                        periode.tidsperiode.startdato
+                    ).forrige()
+                }
+            });
+        } else {
+            nyePerioder.push({
+                ...p,
+                tidsperiode: {
+                    startdato: uttaksdagUtil(
+                        periode.tidsperiode.sluttdato
+                    ).neste(),
+                    sluttdato: p.tidsperiode.sluttdato
+                }
+            });
+        }
+    });
+    return nyePerioder;
+}
+
+/**
+ * Fjern dager
+ * @param periode
+ * @param periode2
+ */
+function fjernTidsperiodeFraPeriode(
+    periode: Periode,
+    tidsperiode: Tidsperiode
+): Periode[] {
+    const t1 = periode.tidsperiode;
+
+    // Dersom de ikke overlapper
+    if (
+        isBefore(t1.sluttdato, tidsperiode.startdato) ||
+        isAfter(t1.startdato, tidsperiode.sluttdato)
+    ) {
+        return [periode];
+    }
+
+    // Total overlapp
+    if (
+        isSameDay(t1.startdato, tidsperiode.startdato) &&
+        isSameDay(t1.sluttdato, tidsperiode.sluttdato)
+    ) {
+        return [];
+    }
+
+    if (isSameDay(t1.startdato, tidsperiode.startdato)) {
+        // Samme startdato -> dvs. startdato må flyttes, mens sluttdato er samme
+        return [
+            {
+                ...periode,
+                tidsperiode: {
+                    ...periode.tidsperiode,
+                    startdato: uttaksdagUtil(tidsperiode.startdato).forrige()
+                }
+            }
+        ];
+    } else if (isSameDay(t1.sluttdato, tidsperiode.sluttdato)) {
+        // Sluttdato er samme, dvs. sluttdato må flyttes, startdato er samme
+        return [
+            {
+                ...periode,
+                tidsperiode: {
+                    ...periode.tidsperiode,
+                    sluttdato: uttaksdagUtil(tidsperiode.sluttdato).neste()
+                }
+            }
+        ];
+    }
+    // Perioden er helt inne i periode
+    return [
+        {
+            ...periode,
+            tidsperiode: {
+                ...periode.tidsperiode,
+                sluttdato: uttaksdagUtil(tidsperiode.startdato).forrige()
+            }
+        },
+        {
+            ...periode,
+            id: guid(),
+            tidsperiode: {
+                ...periode.tidsperiode,
+                startdato: uttaksdagUtil(tidsperiode.sluttdato).neste()
+            }
+        }
+    ];
+}
+
+// /**
+//  * Legger en periode inn i en periode og forskyver sluttdatoen for perioden
+//  * tilsvarende ny periodes varighet
+//  * @param periode
+//  * @param nyPeriode
+//  */
+// function splittPeriodeMedPeriode(
+//     periode: Periode,
+//     nyPeriode: Periode
+// ): Periode[] {
+//     const dagerIPeriode = tidsperioden(
+//         periode.tidsperiode
+//     ).getAntallUttaksdager();
+//     const dagerForsteDel = tidsperioden({
+//         startdato: periode.tidsperiode.startdato,
+//         sluttdato: addDays(nyPeriode.tidsperiode.startdato, -1)
+//     }).getAntallUttaksdager();
+//     let dagerSisteDel = dagerIPeriode - dagerForsteDel;
+//     const forste: Periode = {
+//         ...periode,
+//         tidsperiode: {
+//             startdato: periode.tidsperiode.startdato,
+//             sluttdato: uttaksdagUtil(nyPeriode.tidsperiode.startdato).forrige()
+//         }
+//     };
+//     const midt: Periode = {
+//         ...nyPeriode,
+//         tidsperiode: {
+//             startdato: uttaksdagUtil(
+//                 nyPeriode.tidsperiode.startdato
+//             ).denneEllerNeste(),
+//             sluttdato: uttaksdagUtil(
+//                 nyPeriode.tidsperiode.sluttdato
+//             ).denneEllerNeste()
+//         }
+//     };
+//     const startSisteDel: Date = uttaksdagUtil(
+//         midt.tidsperiode.sluttdato
+//     ).neste();
+
+//     if (perioden(periode).erOpphold()) {
+//         dagerSisteDel = dagerSisteDel - perioden(midt).getAntallUttaksdager();
+//     }
+
+//     const siste: Periode = {
+//         ...periode,
+//         id: guid(),
+//         tidsperiode: getTidsperiode(startSisteDel, dagerSisteDel)
+//     };
+//     return [forste, midt, siste];
+// }
