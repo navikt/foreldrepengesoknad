@@ -1,3 +1,10 @@
+export enum BarnType {
+    'FødtBarn' = 'fødtBarn',
+    'UfødtBarn' = 'ufødtBarn',
+    'Adopsjonsbarn' = 'adopsjonsbarn',
+    'ForeldreansvarBarn' = 'omsorgsovertakelseBarn'
+}
+
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 abstract class BarnBase {
@@ -16,14 +23,16 @@ export interface FødtBarn extends BarnBase {
     fødselsattest: Attachment[];
 }
 
-export interface Adopsjonsbarn extends FødtBarn {
+export interface Adopsjonsbarn extends BarnBase {
+    fødselsdatoer: Date[];
     adopsjonsdato: Date;
     adoptertIUtlandet: boolean;
     omsorgsovertakelse: Attachment[];
     adopsjonsvedtak: Attachment[];
 }
 
-export interface ForeldreansvarBarn extends FødtBarn {
+export interface ForeldreansvarBarn extends BarnBase {
+    fødselsdatoer: Date[];
     foreldreansvarsdato: Date;
     omsorgsovertakelse: Attachment[];
     adopsjonsvedtak: Attachment[];

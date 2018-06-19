@@ -28,6 +28,7 @@ import './devUtil';
 import './dev.less';
 import { uttaksdagUtil, tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { Checkbox } from 'nav-frontend-skjema';
+import { mockBruker, mockSøker, mockAnnenForelder } from 'app/dev/mock';
 
 export interface StateProps {
     appState: UttaksplanAppState;
@@ -125,6 +126,9 @@ class DevToolbar extends React.Component<Props, {}> {
             opprettPerioder(
                 termindato,
                 dekningsgrad,
+                mockBruker,
+                mockSøker,
+                mockAnnenForelder,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2,
                 permisjonsregler

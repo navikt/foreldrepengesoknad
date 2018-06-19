@@ -4,6 +4,9 @@ import {
     Periodetype,
     Permisjonsregler
 } from '../../types';
+import { Søker } from 'app/types/søknad/Søker';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import Person from 'app/types/Person';
 
 export enum PlanleggerActionTypeKeys {
     'SET_NAVN_FORELDER1' = 'setNavnForelder1',
@@ -46,6 +49,9 @@ export interface OpprettPerioder {
     type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
+    bruker: Person;
+    søker: Søker;
+    annenForelder?: AnnenForelder;
     fellesukerForelder1: number;
     fellesukerForelder2: number;
     permisjonsregler: Permisjonsregler;

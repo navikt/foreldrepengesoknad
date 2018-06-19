@@ -1,68 +1,50 @@
-import { createSelector } from 'reselect';
-import { getAllePerioder } from './periodeSelector';
 import { isSameDay } from 'date-fns';
-import { Periode, Periodetype } from '../types';
-import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import { Periode, Periodetype, Dekningsgrad } from '../types';
 import {
     Tidslinjeinnslag,
     TidslinjeinnslagType
 } from 'uttaksplan/components/tidslinje/types';
 
-const formSelector = (state: UttaksplanAppState) => state.uttaksplan.form;
-
-export const tidslinjeFraPerioder = createSelector(
-    getAllePerioder,
-    formSelector,
-    (perioder, form): Tidslinjeinnslag[] => {
-        if (!perioder || perioder.length === 0) {
-            return [];
-        }
-        const { dekningsgrad, termindato } = form;
-        if (!termindato || !dekningsgrad) {
-            return [];
-        }
-        const antallPerioder = perioder.length;
-        const sluttperiode = perioder[antallPerioder - 1];
-        const alleInnslag: Tidslinjeinnslag[] = [
-            ...perioder.map((periode: Periode, index: number) =>
-                mapPeriodeTilTidslinjeinnslag(
-                    periode,
-                    index,
-                    perioder,
-                    antallPerioder
-                )
-            ),
-            {
-                type: TidslinjeinnslagType.hendelse,
-                hendelse: 'termin',
-                dato: termindato
-            },
-            {
-                type: TidslinjeinnslagType.hendelse,
-                hendelse: 'permisjonsslutt',
-                dato: sluttperiode.tidsperiode.sluttdato
-            }
-        ];
-
-        return alleInnslag.sort(sorterTidslinjeinnslagEtterStartdato);
-    }
-);
-
-const mapPeriodeTilTidslinjeinnslag = (
-    periode: Periode,
-    index: number,
+export function getTidslinjeFraPerioder(
     perioder: Periode[],
-    antallPerioder: number
-): Tidslinjeinnslag => {
+    termindato: Date,
+    dekningsgrad: Dekningsgrad
+): Tidslinjeinnslag[] {
+    if (!perioder || perioder.length === 0) {
+        return [];
+    }
+    if (!termindato || !dekningsgrad) {
+        return [];
+    }
+    const antallPerioder = perioder.length;
+    const sluttperiode = perioder[antallPerioder - 1];
+    const alleInnslag: Tidslinjeinnslag[] = [
+        ...perioder.map((periode: Periode, index: number) =>
+            mapPeriodeTilTidslinjeinnslag(periode)
+        ),
+        {
+            type: TidslinjeinnslagType.hendelse,
+            hendelse: 'termin',
+            dato: termindato
+        },
+        {
+            type: TidslinjeinnslagType.hendelse,
+            hendelse: 'permisjonsslutt',
+            dato: sluttperiode.tidsperiode.sluttdato
+        }
+    ];
+    return alleInnslag.sort(sorterTidslinjeinnslagEtterStartdato);
+}
+
+const mapPeriodeTilTidslinjeinnslag = (periode: Periode): Tidslinjeinnslag => {
     return {
         type: TidslinjeinnslagType.periode,
         periode,
-        perioderekke: [] // getSammenhengendePerioder(periode, perioder)
+        perioderekke: []
     };
 };
 
 export const skjulForstePeriodeEtterTermin = (
-    innslag: Tidslinjeinnslag,
     index: number,
     alleInnslag: Tidslinjeinnslag[]
 ) => {
