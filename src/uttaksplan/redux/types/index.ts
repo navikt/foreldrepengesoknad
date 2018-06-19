@@ -1,9 +1,4 @@
-import {
-    Dekningsgrad,
-    Permisjonsregler,
-    Periode,
-    Periodetype
-} from '../../types';
+import { Dekningsgrad, Periode, Periodetype } from '../../types';
 
 export type SynligInfoMap = Map<string, boolean>;
 
@@ -12,7 +7,6 @@ export interface UttaksplanFormState {
     fellesperiodeukerForelder1: number;
     fellesperiodeukerForelder2: number;
     ukerFellesperiode: number;
-    permisjonsregler: Permisjonsregler;
 }
 export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 

@@ -28,18 +28,16 @@ const PeriodeReducer = (
     action: PlanleggerActionTypes
 ): PeriodeState => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.SET_TERMINDATO:
-            return defaultState;
-
         case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
             return {
                 ...state,
                 perioder: UttaksplanBuilder(
                     opprettUttaksperioder(
                         action.termindato,
+                        action.dekningsgrad,
                         action.fellesukerForelder1,
                         action.fellesukerForelder2,
-                        action.permisjonsregler
+                        action.uttaksgrunnlag.permisjonsregler
                     )
                 ).buildUttaksplan().perioder
             };

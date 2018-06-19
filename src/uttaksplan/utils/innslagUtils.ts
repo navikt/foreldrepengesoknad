@@ -22,8 +22,7 @@ import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/Uttaksp
 import { InjectedIntl } from 'react-intl';
 import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { isBefore, isSameDay } from 'date-fns';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export const mapForelderTilInnslagfarge = (
     innslag: InnslagPeriodetype
@@ -79,15 +78,14 @@ export const getTimelineIconsFromInnslag = (
 export const mapInnslagToEvent = (
     innslag: InnslagPeriodetype,
     intl: InjectedIntl,
-    erAleneOmOmsorg: boolean,
-    forelder1: Person,
-    annenForelder?: AnnenForelder
+    uttaksgrunnlag: Uttaksgrunnlag
 ): TimelineEvent | TimelineGap => {
     const { periode } = innslag;
+    const { søker, annenForelder } = uttaksgrunnlag;
     const getTittel = () => {
         if (periode.type === Periodetype.Uttak) {
             if (periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
-                if (erAleneOmOmsorg) {
+                if (søker.erAleneOmOmsorg) {
                     return intl.formatMessage({
                         id: `stønadskontotype.${
                             StønadskontoType.Foreldrepenger
@@ -127,8 +125,8 @@ export const mapInnslagToEvent = (
             endDate: periode.tidsperiode.sluttdato,
             personName:
                 periode.forelder === 'forelder2' && annenForelder
-                    ? annenForelder.navn
-                    : forelder1.fornavn,
+                    ? annenForelder.fornavn
+                    : søker.fornavn,
             days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: mapForelderTilInnslagfarge(innslag),
             labels: getLabelsForInnslag(innslag),
@@ -153,7 +151,7 @@ export const mapInnslagToMarker = (
     innslag: InnslagHendelsetype
 ): TimelineMarker => ({
     type: TimelineItemType.marker,
-    title: innslag.hendelse,
+    title: innslag.hendelse === 'termin' ? 'Termin' : 'Siste permisjonsdag',
     startDate: innslag.dato,
     icons: getTimelineIconsFromInnslag(innslag),
     data: innslag
@@ -162,40 +160,24 @@ export const mapInnslagToMarker = (
 export const mapInnslagToTimelineItem = (
     innslag: Tidslinjeinnslag,
     intl: InjectedIntl,
-    erAleneOmOmsorg: boolean,
-    forelder1: Person,
-    annenForelder?: AnnenForelder
+    uttaksgrunnlag: Uttaksgrunnlag
 ): TimelineItem => {
     switch (innslag.type) {
         case TidslinjeinnslagType.hendelse:
             return mapInnslagToMarker(innslag);
         case TidslinjeinnslagType.periode:
-            return mapInnslagToEvent(
-                innslag,
-                intl,
-                erAleneOmOmsorg,
-                forelder1,
-                annenForelder
-            );
+            return mapInnslagToEvent(innslag, intl, uttaksgrunnlag);
     }
 };
 
 export const getTimelineItemsFromInnslag = (
     innslag: Tidslinjeinnslag[],
     intl: InjectedIntl,
-    erAleneOmOmsorg: boolean,
-    forelder1: Person,
-    annenForelder?: AnnenForelder
+    uttaksgrunnlag: Uttaksgrunnlag
 ) => {
     const mappedItems: TimelineItem[] = [];
     const items = innslag.map((i) =>
-        mapInnslagToTimelineItem(
-            i,
-            intl,
-            erAleneOmOmsorg,
-            forelder1,
-            annenForelder
-        )
+        mapInnslagToTimelineItem(i, intl, uttaksgrunnlag)
     );
 
     items.forEach((item, idx, arr) => {

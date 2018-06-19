@@ -422,7 +422,7 @@ function resetTidsperioder(perioder: Periode[]): Periode[] {
  * dette er tilfelle
  * @param perioder Alle perioder som sjekkes
  */
-function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
+export function slåSammenLikePerioder(perioder: Periode[]): Periode[] {
     if (perioder.length <= 1) {
         return perioder;
     }

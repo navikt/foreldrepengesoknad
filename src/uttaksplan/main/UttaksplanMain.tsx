@@ -7,11 +7,9 @@ import {
 } from 'uttaksplan/redux/types';
 import { getTidslinjeFraPerioder } from 'uttaksplan/utils/tidslinjeUtils';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
-import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
+import { Periode, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
-import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'common/redux/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 
 import { Knapp } from 'nav-frontend-knapper';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
@@ -25,12 +23,8 @@ import {
     setFellesperiodeukerMor,
     visTidslinje,
     visPeriodeDialog,
-    opprettPerioder,
-    setTermindato
+    opprettPerioder
 } from 'uttaksplan/redux/actions';
-
-import { Dekningsgrad } from 'common/types';
-import { Tidsperiode } from 'nav-datovelger';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
@@ -45,30 +39,30 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
 import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
-import { Søker } from 'app/types/søknad/Søker';
+import {
+    Uttaksgrunnlag,
+    SøkerGrunnlag,
+    AnnenForelderGrunnlag
+} from 'uttaksplan/types/uttaksgrunnlag';
+import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 export interface StateProps {
-    dekningsgrad: Dekningsgrad;
-    ukerFellesperiode: number;
-    permisjonsregler: Permisjonsregler;
     form: UttaksplanFormState;
+    dekningsgrad: Dekningsgrad;
+    uttaksgrunnlag: Uttaksgrunnlag;
+    ukerFellesperiode: number;
     innslag: Tidslinjeinnslag[];
     periode: PeriodeState;
     visPermisjonsplan: boolean;
-    sisteRegistrertePermisjonsdag?: Date;
-    tidsromForUtsettelse?: Tidsperiode;
     manuellUttaksplan?: boolean;
 }
 
 interface OwnProps {
     termindato: Date;
-    bruker: Person;
-    søker: Søker;
-    annenForelder: AnnenForelder;
+    søker: SøkerGrunnlag;
+    annenForelder: AnnenForelderGrunnlag;
+    antallBarn: number;
     perioder?: Periode[];
-    initialDekningsgrad?: Dekningsgrad;
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -82,12 +76,6 @@ class UttaksplanMain extends React.Component<Props> {
     }
 
     componentDidMount() {
-        this.props.dispatch(setTermindato(this.props.termindato));
-        this.props.dispatch(
-            setDekningsgrad(
-                this.props.dekningsgrad || this.props.initialDekningsgrad
-            )
-        );
         this.opprettPerioder();
     }
 
@@ -107,14 +95,11 @@ class UttaksplanMain extends React.Component<Props> {
     }
     opprettPerioder() {
         const {
-            dispatch,
             termindato,
-            permisjonsregler,
             dekningsgrad,
-            form,
-            bruker,
-            søker,
-            annenForelder
+            dispatch,
+            uttaksgrunnlag,
+            form
         } = this.props;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
@@ -122,12 +107,9 @@ class UttaksplanMain extends React.Component<Props> {
             opprettPerioder(
                 termindato,
                 dekningsgrad,
-                bruker,
-                søker,
-                annenForelder,
+                uttaksgrunnlag,
                 fellesperiodeukerForelder1,
-                fellesperiodeukerForelder2,
-                permisjonsregler
+                fellesperiodeukerForelder2
             )
         );
 
@@ -135,12 +117,10 @@ class UttaksplanMain extends React.Component<Props> {
     }
     render() {
         const {
-            innslag,
+            uttaksgrunnlag,
             termindato,
-            bruker,
-            søker,
-            annenForelder,
-            permisjonsregler,
+            dekningsgrad,
+            innslag,
             ukerFellesperiode,
             visPermisjonsplan,
             dispatch,
@@ -156,12 +136,21 @@ class UttaksplanMain extends React.Component<Props> {
                         fellesperiodeukerForelder1={
                             form.fellesperiodeukerForelder1
                         }
-                        navnForelder1={bruker.fornavn}
-                        navnForelder2={annenForelder.navn}
-                        permisjonsregler={permisjonsregler}
+                        navnForelder1={uttaksgrunnlag.søker.fornavn}
+                        navnForelder2={
+                            uttaksgrunnlag.annenForelder
+                                ? uttaksgrunnlag.annenForelder.fornavn
+                                : 'Forelder 2'
+                        }
+                        permisjonsregler={uttaksgrunnlag.permisjonsregler}
                         ukerFellesperiode={ukerFellesperiode}
                         onChangeDekningsgrad={(dg) =>
-                            dispatch(setDekningsgrad(dg))
+                            dispatch(
+                                setDekningsgrad(
+                                    dg,
+                                    uttaksgrunnlag.permisjonsregler
+                                )
+                            )
                         }
                         onChangeFordeling={(uker) =>
                             dispatch(setFellesperiodeukerMor(uker))
@@ -180,9 +169,7 @@ class UttaksplanMain extends React.Component<Props> {
                                 items={getTimelineItemsFromInnslag(
                                     innslag,
                                     intl,
-                                    søker.erAleneOmOmsorg,
-                                    bruker,
-                                    annenForelder
+                                    uttaksgrunnlag
                                 )}
                                 iconRenderer={(icon) => (
                                     <UttaksplanIkon
@@ -234,25 +221,27 @@ class UttaksplanMain extends React.Component<Props> {
                         </div>
 
                         <UttaksperiodeDialog
-                            bruker={bruker}
-                            annenForelder={annenForelder}
-                            søker={søker}
+                            uttaksgrunnlag={uttaksgrunnlag}
                             termindato={termindato}
-                            permisjonsregler={permisjonsregler}
+                            dekningsgrad={dekningsgrad}
                         />
 
                         <UtsettelsesperiodeDialog
-                            navnForelder1={bruker.fornavn}
-                            navnForelder2={annenForelder.navn}
+                            navnForelder1={uttaksgrunnlag.søker.fornavn}
+                            navnForelder2={
+                                uttaksgrunnlag.annenForelder
+                                    ? uttaksgrunnlag.annenForelder.fornavn
+                                    : 'Forelder 2'
+                            }
                             termindato={termindato}
-                            permisjonsregler={permisjonsregler}
+                            permisjonsregler={uttaksgrunnlag.permisjonsregler}
                         />
                     </div>
                 )}
                 <DevHelper
                     termindato={termindato}
-                    dekningsgrad={form.dekningsgrad || '100%'}
-                    permisjonsregler={permisjonsregler}
+                    dekningsgrad={dekningsgrad}
+                    permisjonsregler={uttaksgrunnlag.permisjonsregler}
                     fellesperiodeukerForelder1={form.fellesperiodeukerForelder1}
                     fellesperiodeukerForelder2={form.fellesperiodeukerForelder2}
                 />
@@ -265,38 +254,45 @@ const mapStateToProps = (
     appState: UttaksplanAppState,
     props: OwnProps
 ): StateProps => {
-    const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
-        appState
-    );
     const { termindato } = props;
-    const { form, periode, view } = appState.uttaksplan;
-    const dekningsgrad: Dekningsgrad =
-        form.dekningsgrad || props.initialDekningsgrad || '100%';
-    const permisjonsregler = getPermisjonsregler(props.termindato);
+    const { periode, view, form } = appState.uttaksplan;
+    const dekningsgrad = form.dekningsgrad || '100%';
+
+    const uttaksgrunnlag = getUttaksgrunnlag(
+        termindato,
+        dekningsgrad,
+        props.søker,
+        props.annenForelder,
+        props.antallBarn
+    );
+
     const ukerFellesperiode = getAntallUkerFellesperiode(
-        permisjonsregler,
+        uttaksgrunnlag.permisjonsregler,
         dekningsgrad
     );
+
     const innslag: Tidslinjeinnslag[] = getTidslinjeFraPerioder(
         appState.uttaksplan.periode.perioder,
-        props.termindato,
+        termindato,
         dekningsgrad
     );
+
+    const visPermisjonsplan =
+        innslag &&
+        innslag.length > 0 &&
+        dekningsgrad !== undefined &&
+        termindato !== undefined &&
+        view.visTidslinje === true;
+
     return {
-        innslag,
         form,
-        periode,
-        sisteRegistrertePermisjonsdag,
-        permisjonsregler,
-        ukerFellesperiode,
         dekningsgrad,
+        uttaksgrunnlag,
+        innslag,
+        periode,
+        ukerFellesperiode,
         manuellUttaksplan: periode.manuellOppdatering,
-        visPermisjonsplan:
-            innslag &&
-            innslag.length > 0 &&
-            dekningsgrad !== undefined &&
-            termindato !== undefined &&
-            view.visTidslinje === true
+        visPermisjonsplan
     };
 };
 

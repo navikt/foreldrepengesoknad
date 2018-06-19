@@ -4,32 +4,8 @@ import {
     Periode,
     Permisjonsregler
 } from '../../types';
-
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
-import { Søker } from 'app/types/søknad/Søker';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
-
-export function setNavnForelder1(navn: string): PlanleggerActionTypes {
-    return {
-        type: PlanleggerActionTypeKeys.SET_NAVN_FORELDER1,
-        navn
-    };
-}
-
-export function setNavnForelder2(navn: string): PlanleggerActionTypes {
-    return {
-        type: PlanleggerActionTypeKeys.SET_NAVN_FORELDER2,
-        navn
-    };
-}
-
-export function setTermindato(termindato: Date): PlanleggerActionTypes {
-    return {
-        type: PlanleggerActionTypeKeys.SET_TERMINDATO,
-        termindato
-    };
-}
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export function setFellesperiodeukerMor(uker: number): PlanleggerActionTypes {
     return {
@@ -39,11 +15,13 @@ export function setFellesperiodeukerMor(uker: number): PlanleggerActionTypes {
 }
 
 export function setDekningsgrad(
-    dekningsgrad: Dekningsgrad | undefined
+    dekningsgrad: Dekningsgrad | undefined,
+    permisjonsregler: Permisjonsregler
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.SET_DEKNINGSGRAD,
-        dekningsgrad
+        dekningsgrad,
+        permisjonsregler
     };
 }
 
@@ -104,23 +82,17 @@ export function visTidslinje(synlig: boolean): PlanleggerActionTypes {
 export function opprettPerioder(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
-    bruker: Person,
-    søker: Søker,
-    annenForelder: AnnenForelder,
+    uttaksgrunnlag: Uttaksgrunnlag,
     fellesukerForelder1: number,
-    fellesukerForelder2: number,
-    permisjonsregler: Permisjonsregler
+    fellesukerForelder2: number
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
-        termindato,
         dekningsgrad,
-        bruker,
-        søker,
-        annenForelder,
+        termindato,
+        uttaksgrunnlag,
         fellesukerForelder1,
-        fellesukerForelder2,
-        permisjonsregler
+        fellesukerForelder2
     };
 }
 
@@ -130,6 +102,15 @@ export function setManuellUttaksplan(
     return {
         type: PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN,
         manuellUttaksplan
+    };
+}
+
+export function setUttaksgrunnlag(
+    uttaksgrunnlag: Uttaksgrunnlag
+): PlanleggerActionTypes {
+    return {
+        type: PlanleggerActionTypeKeys.SET_UTTAKSGRUNNLAG,
+        uttaksgrunnlag
     };
 }
 

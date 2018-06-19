@@ -41,8 +41,7 @@ const getInitialState = (): UttaksplanFormState => {
         dekningsgrad: '100%',
         ukerFellesperiode,
         fellesperiodeukerForelder1: ukerForelder1,
-        fellesperiodeukerForelder2: ukerForelder2,
-        permisjonsregler
+        fellesperiodeukerForelder2: ukerForelder2
     };
 };
 
@@ -89,7 +88,7 @@ const FormReducer = (
                 state.ukerFellesperiode *
                 state.fellesperiodeukerForelder1;
             const ukerFellesperiode = getAntallUkerFellesperiode(
-                state.permisjonsregler,
+                action.permisjonsregler,
                 action.dekningsgrad
             );
             const fellesperiodeukerForelder1 = Math.round(

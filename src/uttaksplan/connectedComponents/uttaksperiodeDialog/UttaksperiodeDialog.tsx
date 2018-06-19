@@ -11,7 +11,6 @@ import {
     slettPeriode
 } from 'uttaksplan/redux/actions';
 import {
-    Permisjonsregler,
     Periodetype,
     Uttaksperiode,
     Periode,
@@ -21,43 +20,35 @@ import {
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
-import { Søker } from 'app/types/søknad/Søker';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 interface StateProps {
     isOpen: boolean;
-    periode?: Uttaksperiode;
     perioder?: Periode[];
-    dekningsgrad?: Dekningsgrad;
+    valgtPeriode?: Uttaksperiode;
 }
 
 interface OwnProps {
+    uttaksgrunnlag: Uttaksgrunnlag;
     termindato: Date;
-    permisjonsregler: Permisjonsregler;
-    bruker: Person;
-    annenForelder?: AnnenForelder;
-    søker: Søker;
+    dekningsgrad: Dekningsgrad;
 }
 
-type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
+type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 
 const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
-        isOpen,
-        periode,
-        perioder,
-        permisjonsregler,
-        bruker,
-        annenForelder,
-        søker,
-        dekningsgrad,
         termindato,
+        dekningsgrad,
+        isOpen,
+        valgtPeriode,
+        perioder,
+        uttaksgrunnlag,
         dispatch,
         intl
     } = props;
-    if (!isOpen || !perioder || !dekningsgrad) {
+    if (!isOpen || !perioder || !uttaksgrunnlag) {
         return null;
     }
     return (
@@ -69,16 +60,13 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UttaksperiodeSkjema
-                periode={periode}
+                termindato={termindato}
+                dekningsgrad={dekningsgrad}
+                periode={valgtPeriode}
                 ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(
                     perioder
                 )}
-                termindato={termindato}
-                dekningsgrad={dekningsgrad}
-                permisjonsregler={permisjonsregler}
-                bruker={bruker}
-                annenForelder={annenForelder}
-                søker={søker}
+                uttaksgrunnlag={uttaksgrunnlag}
                 onChange={(p) => dispatch(opprettEllerOppdaterPeriode(p))}
                 onFjern={(p) => dispatch(slettPeriode(p))}
             />
@@ -86,26 +74,21 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     );
 };
 
-const mapStateToProps = (
-    state: UttaksplanAppState,
-    props: OwnProps
-): StateProps | undefined => {
-    const { form, periode } = state.uttaksplan;
-    const { dekningsgrad } = form;
+const mapStateToProps = (state: UttaksplanAppState): StateProps => {
+    const { periode } = state.uttaksplan;
     if (
-        !props.termindato ||
-        !dekningsgrad ||
         !periode.dialogErApen ||
-        periode.valgtPeriode === undefined ||
-        periode.valgtPeriode.periodetype !== Periodetype.Uttak
+        (periode.valgtPeriode &&
+            periode.valgtPeriode.periodetype !== Periodetype.Uttak)
     ) {
         return { isOpen: false };
     }
     return {
         isOpen: true,
-        periode: periode.valgtPeriode.periode as Uttaksperiode,
-        perioder: periode.perioder,
-        dekningsgrad
+        valgtPeriode: periode.valgtPeriode
+            ? (periode.valgtPeriode.periode as Uttaksperiode)
+            : undefined,
+        perioder: periode.perioder
     };
 };
 
