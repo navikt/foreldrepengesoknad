@@ -1,17 +1,7 @@
-import {
-    Dekningsgrad,
-    Periode,
-    Periodetype,
-    Permisjonsregler
-} from '../../types';
-import { Søker } from 'app/types/søknad/Søker';
-import AnnenForelder from 'app/types/søknad/AnnenForelder';
-import Person from 'app/types/Person';
+import { Dekningsgrad, Periode, Periodetype } from '../../types';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export enum PlanleggerActionTypeKeys {
-    'SET_NAVN_FORELDER1' = 'setNavnForelder1',
-    'SET_NAVN_FORELDER2' = 'setNavnForelder2',
-    'SET_TERMINDATO' = 'setTermindato',
     'SET_UKER_FORELDER1' = 'setUkerForelder1',
     'SET_UKER_FORELDER2' = 'setUkerForelder2',
     'SET_DEKNINGSGRAD' = 'setDekningsgrad',
@@ -24,13 +14,11 @@ export enum PlanleggerActionTypeKeys {
     'VIS_TIDSLINJE' = 'visTidslinje',
     'OPPRETT_PERIODER' = 'opprettPerioder',
     'SET_MANUELL_UTTAKSPLAN' = 'manuellUttaksplan',
+    'SET_UTTAKSGRUNNLAG' = 'setUttaksgrunnlag',
     'DEV_ACTION' = 'dev'
 }
 
 export type PlanleggerActionTypes =
-    | SetNavnForelder1
-    | SetNavnForelder2
-    | SetTermindato
     | SetUkerForelder2
     | SetUkerForelder1
     | SetDekningsgrad
@@ -43,32 +31,14 @@ export type PlanleggerActionTypes =
     | VisTidslinje
     | OpprettPerioder
     | ManuellUttaksplanAction
+    | SetUttaksgrunnlag
     | DevAction;
 
 export interface OpprettPerioder {
     type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
-    termindato: Date;
-    dekningsgrad: Dekningsgrad;
-    bruker: Person;
-    søker: Søker;
-    annenForelder?: AnnenForelder;
+    uttaksgrunnlag: Uttaksgrunnlag;
     fellesukerForelder1: number;
     fellesukerForelder2: number;
-    permisjonsregler: Permisjonsregler;
-}
-export interface SetNavnForelder1 {
-    type: PlanleggerActionTypeKeys.SET_NAVN_FORELDER1;
-    navn: string;
-}
-
-export interface SetNavnForelder2 {
-    type: PlanleggerActionTypeKeys.SET_NAVN_FORELDER2;
-    navn: string;
-}
-
-export interface SetTermindato {
-    type: PlanleggerActionTypeKeys.SET_TERMINDATO;
-    termindato: Date;
 }
 
 export interface SetUkerForelder1 {
@@ -125,4 +95,9 @@ export interface DevAction {
 export interface ManuellUttaksplanAction {
     type: PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN;
     manuellUttaksplan: boolean;
+}
+
+export interface SetUttaksgrunnlag {
+    type: PlanleggerActionTypeKeys.SET_UTTAKSGRUNNLAG;
+    uttaksgrunnlag: Uttaksgrunnlag;
 }
