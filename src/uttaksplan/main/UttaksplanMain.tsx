@@ -45,9 +45,9 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
 import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
-import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import Person from 'app/types/Person';
-import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
+import { Søker } from 'app/types/søknad/Søker';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -111,7 +111,10 @@ class UttaksplanMain extends React.Component<Props> {
             termindato,
             permisjonsregler,
             dekningsgrad,
-            form
+            form,
+            bruker,
+            søker,
+            annenForelder
         } = this.props;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
@@ -119,11 +122,15 @@ class UttaksplanMain extends React.Component<Props> {
             opprettPerioder(
                 termindato,
                 dekningsgrad,
+                bruker,
+                søker,
+                annenForelder,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2,
                 permisjonsregler
             )
         );
+
         dispatch(visTidslinje(true));
     }
     render() {

@@ -2,7 +2,7 @@ import { Skjemadata } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
-import { SøkerPartial } from '../../../types/s\u00F8knad/S\u00F8ker';
+import { SøkerPartial } from '../../../types/søknad/Søker';
 
 export enum SøknadActionKeys {
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',

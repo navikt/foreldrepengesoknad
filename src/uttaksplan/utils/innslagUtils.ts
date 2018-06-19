@@ -22,7 +22,7 @@ import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/Uttaksp
 import { InjectedIntl } from 'react-intl';
 import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { isBefore, isSameDay } from 'date-fns';
-import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import Person from 'app/types/Person';
 
 export const mapForelderTilInnslagfarge = (
@@ -79,7 +79,7 @@ export const getTimelineIconsFromInnslag = (
 export const mapInnslagToEvent = (
     innslag: InnslagPeriodetype,
     intl: InjectedIntl,
-    aleneomsorg: boolean,
+    erAleneOmOmsorg: boolean,
     forelder1: Person,
     annenForelder?: AnnenForelder
 ): TimelineEvent | TimelineGap => {
@@ -87,7 +87,7 @@ export const mapInnslagToEvent = (
     const getTittel = () => {
         if (periode.type === Periodetype.Uttak) {
             if (periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
-                if (aleneomsorg) {
+                if (erAleneOmOmsorg) {
                     return intl.formatMessage({
                         id: `stønadskontotype.${
                             StønadskontoType.Foreldrepenger
@@ -162,7 +162,7 @@ export const mapInnslagToMarker = (
 export const mapInnslagToTimelineItem = (
     innslag: Tidslinjeinnslag,
     intl: InjectedIntl,
-    aleneomsorg: boolean,
+    erAleneOmOmsorg: boolean,
     forelder1: Person,
     annenForelder?: AnnenForelder
 ): TimelineItem => {
@@ -173,7 +173,7 @@ export const mapInnslagToTimelineItem = (
             return mapInnslagToEvent(
                 innslag,
                 intl,
-                aleneomsorg,
+                erAleneOmOmsorg,
                 forelder1,
                 annenForelder
             );
@@ -183,13 +183,19 @@ export const mapInnslagToTimelineItem = (
 export const getTimelineItemsFromInnslag = (
     innslag: Tidslinjeinnslag[],
     intl: InjectedIntl,
-    aleneomsorg: boolean,
+    erAleneOmOmsorg: boolean,
     forelder1: Person,
     annenForelder?: AnnenForelder
 ) => {
     const mappedItems: TimelineItem[] = [];
     const items = innslag.map((i) =>
-        mapInnslagToTimelineItem(i, intl, aleneomsorg, forelder1, annenForelder)
+        mapInnslagToTimelineItem(
+            i,
+            intl,
+            erAleneOmOmsorg,
+            forelder1,
+            annenForelder
+        )
     );
 
     items.forEach((item, idx, arr) => {

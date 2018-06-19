@@ -21,15 +21,15 @@ import {
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import Person from 'app/types/Person';
-import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
+import { Søker } from 'app/types/søknad/Søker';
 
 interface StateProps {
     isOpen: boolean;
     periode?: Uttaksperiode;
-    perioder: Periode[];
-    dekningsgrad: Dekningsgrad;
+    perioder?: Periode[];
+    dekningsgrad?: Dekningsgrad;
 }
 
 interface OwnProps {
@@ -42,7 +42,7 @@ interface OwnProps {
 
 type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
 
-const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
+const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
         isOpen,
@@ -53,18 +53,20 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
         annenForelder,
         søker,
         dekningsgrad,
-        termindato
+        termindato,
+        dispatch,
+        intl
     } = props;
-    if (!isOpen) {
+    if (!isOpen || !perioder || !dekningsgrad) {
         return null;
     }
     return (
         <Modal
-            isOpen={props.isOpen}
-            contentLabel={props.intl.formatMessage({
+            isOpen={isOpen}
+            contentLabel={intl.formatMessage({
                 id: `uttaksplan.periodedialog.${periodetype}.tittel`
             })}
-            onRequestClose={() => props.dispatch(lukkPeriodeDialog())}
+            onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UttaksperiodeSkjema
                 periode={periode}
@@ -77,8 +79,8 @@ const PeriodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                 bruker={bruker}
                 annenForelder={annenForelder}
                 søker={søker}
-                onChange={(p) => props.dispatch(opprettEllerOppdaterPeriode(p))}
-                onFjern={(p) => props.dispatch(slettPeriode(p))}
+                onChange={(p) => dispatch(opprettEllerOppdaterPeriode(p))}
+                onFjern={(p) => dispatch(slettPeriode(p))}
             />
         </Modal>
     );
@@ -97,7 +99,7 @@ const mapStateToProps = (
         periode.valgtPeriode === undefined ||
         periode.valgtPeriode.periodetype !== Periodetype.Uttak
     ) {
-        return undefined;
+        return { isOpen: false };
     }
     return {
         isOpen: true,
@@ -107,4 +109,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(PeriodeDialog));
+export default connect(mapStateToProps)(injectIntl(UttaksperiodeDialog));

@@ -8,8 +8,7 @@ import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
-import { Kjønn } from '../../../types/common';
-import { SøkerRolle } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { mockSøker, mockBruker, mockAnnenForelder } from '../../../dev/mock';
 
 export interface StateProps {
     form: {
@@ -40,37 +39,9 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
                 <Uttaksplan
-                    bruker={{
-                        fornavn: 'Amalie',
-                        erMyndig: true,
-                        fnr: '1234123412',
-                        mellomnavn: '',
-                        etternavn: 'Skraam',
-                        adresse: 'Drammensveien 2',
-                        kjønn: Kjønn.KVINNE,
-                        fødselsdato: new Date(1998, 1, 16).toDateString(),
-                        ikkeNordiskEøsLand: false
-                    }}
-                    annenForelder={{
-                        fnr: '1234123433',
-                        navn: 'Henrik Ibsen',
-                        utenlandskFnr: false,
-                        bostedsland: 'NO',
-                        erForSyk: false,
-                        erInformertOmSøknaden: false,
-                        erUfør: false,
-                        harRettPåForeldrepenger: true,
-                        skalHaForeldrepenger: true,
-                        kanIkkeOppgis: false
-                    }}
-                    søker={{
-                        andreInntekterSiste10Mnd: [],
-                        erFrilanser: false,
-                        erAleneOmOmsorg: true,
-                        harHattAnnenInntektSiste10Mnd: false,
-                        rolle: SøkerRolle.MOR,
-                        erSelvstendigNæringsdrivende: false
-                    }}
+                    søker={mockSøker}
+                    bruker={mockBruker}
+                    annenForelder={mockAnnenForelder}
                     termindato={new Date()}
                     perioder={this.state.perioder}
                     onChange={(perioder) => this.setState({ perioder })}

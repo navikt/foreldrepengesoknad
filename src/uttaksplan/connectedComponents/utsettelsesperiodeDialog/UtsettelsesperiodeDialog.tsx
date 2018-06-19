@@ -26,8 +26,8 @@ import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
 interface StateProps {
     isOpen: boolean;
     utsettelse?: Utsettelsesperiode;
-    tidsromForUtsettelse: Tidsperiode;
-    perioder: Periode[];
+    tidsromForUtsettelse?: Tidsperiode;
+    perioder?: Periode[];
 }
 
 interface OwnProps {
@@ -46,29 +46,31 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
     const {
         isOpen,
         utsettelse,
+        perioder,
         permisjonsregler,
         navnForelder1,
         navnForelder2,
         tidsromForUtsettelse,
         termindato,
-        dispatch
+        dispatch,
+        intl
     } = props;
 
-    if (!isOpen) {
+    if (!isOpen || !perioder || !tidsromForUtsettelse) {
         return null;
     }
 
     return (
         <Modal
-            isOpen={props.isOpen}
-            contentLabel={props.intl.formatMessage({
+            isOpen={isOpen}
+            contentLabel={intl.formatMessage({
                 id: `uttaksplan.periodedialog.${periodetype}.tittel`
             })}
-            onRequestClose={() => props.dispatch(lukkPeriodeDialog())}
+            onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UtsettelseSkjema
                 registrerteUtsettelser={
-                    props.perioder.filter(
+                    perioder.filter(
                         (p) => p.type === Periodetype.Utsettelse
                     ) as Utsettelsesperiode[]
                 }
@@ -103,7 +105,9 @@ const mapStateToProps = (
         periode.valgtPeriode === undefined ||
         periode.valgtPeriode.periodetype !== Periodetype.Utsettelse
     ) {
-        return undefined;
+        return {
+            isOpen: false
+        };
     }
 
     const tidsromForUtsettelse = getGyldigTidsromForUtsettelse(

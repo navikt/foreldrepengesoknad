@@ -6,9 +6,9 @@ import {
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import Person from 'app/types/Person';
-import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import { Kjønn } from 'app/types/common';
-import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
+import { Søker } from 'app/types/søknad/Søker';
 import { erFarEllerMedmor } from 'app/util/personUtil';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
@@ -16,7 +16,7 @@ export const getStønadskontoerMedUttaksdager = (
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     fødsel: boolean = true,
-    aleneomsorg: boolean = false,
+    erAleneOmOmsorg: boolean = false,
     antallBarn: number = 1
 ): StønadskontoUttak => {
     const permisjonsregler = getPermisjonsregler(termindato);
@@ -49,19 +49,14 @@ export const getTilgjengeligeStønadskontoer = (
     annenForelder?: AnnenForelder
 ): StønadskontoType[] => {
     if (bruker.kjønn === Kjønn.KVINNE && søker.erAleneOmOmsorg) {
-        return [
-            // StønadskontoType.ForeldrepengerFørFødsel,
-            StønadskontoType.Foreldrepenger
-        ];
+        return [StønadskontoType.Foreldrepenger];
     }
     if (erFarEllerMedmor(bruker.kjønn, søker.rolle)) {
         return [StønadskontoType.Foreldrepenger];
     }
     return [
-        StønadskontoType.ForeldrepengerFørFødsel,
         StønadskontoType.Mødrekvote,
         StønadskontoType.Fedrekvote,
-        StønadskontoType.Foreldrepenger,
         StønadskontoType.Fellesperiode
     ];
 };
