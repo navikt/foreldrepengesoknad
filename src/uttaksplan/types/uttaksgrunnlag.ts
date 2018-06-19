@@ -18,7 +18,6 @@ export interface SøkerGrunnlag {
 export interface AnnenForelderGrunnlag {
     fornavn: string;
     etternavn: string;
-    skalHaForeldrepenger: boolean;
 }
 
 export interface Uttaksgrunnlag {
