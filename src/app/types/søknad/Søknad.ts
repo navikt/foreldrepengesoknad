@@ -19,10 +19,10 @@ export enum SøkerRolle {
 }
 
 export enum Søkersituasjon {
-    FØDSEL = 'FØDSEL',
-    ADOPSJON = 'ADOPSJON',
-    STEBARN = 'STEBARN',
-    FORELDREANSVAR = 'FORELDREANSVAR'
+    FØDSEL = 'fødsel',
+    ADOPSJON = 'adopsjon',
+    STEBARN = 'stebarn',
+    FORELDREANSVAR = 'foreldreansvar'
 }
 
 interface Søknad {
