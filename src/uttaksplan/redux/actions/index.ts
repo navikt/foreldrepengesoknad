@@ -6,6 +6,9 @@ import {
 } from '../../types';
 
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
+import { Søker } from 'app/types/søknad/Søker';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import Person from 'app/types/Person';
 
 export function setNavnForelder1(navn: string): PlanleggerActionTypes {
     return {
@@ -101,6 +104,9 @@ export function visTidslinje(synlig: boolean): PlanleggerActionTypes {
 export function opprettPerioder(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
+    bruker: Person,
+    søker: Søker,
+    annenForelder: AnnenForelder,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
@@ -109,6 +115,9 @@ export function opprettPerioder(
         type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
         termindato,
         dekningsgrad,
+        bruker,
+        søker,
+        annenForelder,
         fellesukerForelder1,
         fellesukerForelder2,
         permisjonsregler

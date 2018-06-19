@@ -11,9 +11,9 @@ import {
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
-import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
+import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/TidsperiodeSpørsm\u00E5l';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/HvemGjelderPeriodenSpørsm\u00E5l';
+import StønadskontoSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/StønadskontoSpørsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
@@ -24,9 +24,9 @@ import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperi
 
 import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
 import Person from 'app/types/Person';
-import AnnenForelder from 'app/types/s\u00F8knad/AnnenForelder';
-import { Søker } from 'app/types/s\u00F8knad/S\u00F8ker';
-import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import { Søker } from 'app/types/søknad/Søker';
+import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/stønadskontoUtils';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
@@ -198,7 +198,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 {visStønadskontoSpørsmål && (
                     <div className="blokkPad-s">
                         <StønadskontoSpørsmål
-                            spørsmål="Stønadskonto?"
+                            spørsmål="Hvilken type uttak gjelder det?"
                             stønadskonto={stønadskonto}
                             tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
                             onChange={(konto) =>
