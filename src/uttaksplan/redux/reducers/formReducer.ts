@@ -4,34 +4,29 @@ import {
 } from '../actions/actionTypes';
 import { getPermisjonsregler } from '../../data/permisjonsregler';
 import { UttaksplanFormState, UttaksplanFormStatePartial } from '../types';
-import { FellesperiodeFordeling, Dekningsgrad } from '../../types';
+import { FellesperiodeFordeling } from '../../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
-import { addYears, isWithinRange } from 'date-fns';
-import { normaliserDato } from 'common/util/datoUtils';
 
-const getDefaultState = (
-    dato: Date,
-    dekningsgrad: Dekningsgrad
-): UttaksplanFormState => {
-    const permisjonsregler = getPermisjonsregler(dato);
-    const ukerFellesperiode = getAntallUkerFellesperiode(
-        permisjonsregler,
-        dekningsgrad
-    );
-    const ukerForelder1 = Math.round(ukerFellesperiode / 2);
-    const ukerForelder2 = ukerFellesperiode - ukerForelder1;
+// const getDefaultState = (
+//     dato: Date,
+//     dekningsgrad: Dekningsgrad
+// ): UttaksplanFormState => {
+//     const permisjonsregler = getPermisjonsregler(dato);
+//     const ukerFellesperiode = getAntallUkerFellesperiode(
+//         permisjonsregler,
+//         dekningsgrad
+//     );
+//     const ukerForelder1 = Math.round(ukerFellesperiode / 2);
+//     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
 
-    return {
-        termindato: dato,
-        navnForelder1: undefined,
-        navnForelder2: undefined,
-        dekningsgrad: undefined,
-        ukerFellesperiode,
-        fellesperiodeukerForelder1: ukerForelder1,
-        fellesperiodeukerForelder2: ukerForelder2,
-        permisjonsregler
-    };
-};
+//     return {
+//         dekningsgrad: undefined,
+//         ukerFellesperiode,
+//         fellesperiodeukerForelder1: ukerForelder1,
+//         fellesperiodeukerForelder2: ukerForelder2,
+//         permisjonsregler
+//     };
+// };
 
 const getInitialState = (): UttaksplanFormState => {
     const permisjonsregler = getPermisjonsregler(new Date());
@@ -43,9 +38,6 @@ const getInitialState = (): UttaksplanFormState => {
     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
 
     return {
-        termindato: new Date(),
-        navnForelder1: undefined,
-        navnForelder2: undefined,
         dekningsgrad: '100%',
         ukerFellesperiode,
         fellesperiodeukerForelder1: ukerForelder1,
@@ -75,17 +67,6 @@ export const refordelFellesperiode = (
     };
 };
 
-const validerTermindato = (termindato: Date) => {
-    return (
-        termindato &&
-        isWithinRange(
-            termindato,
-            addYears(new Date(), -1),
-            addYears(new Date(), 2)
-        )
-    );
-};
-
 const updateFormState = (
     state: UttaksplanFormState,
     data: UttaksplanFormStatePartial
@@ -99,31 +80,6 @@ const FormReducer = (
     action: PlanleggerActionTypes
 ): UttaksplanFormState => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.SET_NAVN_FORELDER1:
-            return updateFormState(state, {
-                navnForelder1: action.navn
-            });
-        case PlanleggerActionTypeKeys.SET_NAVN_FORELDER2:
-            return updateFormState(state, {
-                navnForelder2: action.navn
-            });
-        case PlanleggerActionTypeKeys.SET_TERMINDATO:
-            const dato = normaliserDato(action.termindato);
-            const permisjonsregler = getPermisjonsregler(dato);
-            const erGyldigTermindato = validerTermindato(dato);
-            if (erGyldigTermindato) {
-                return updateFormState(
-                    getDefaultState(dato, state.dekningsgrad || '100%'),
-                    {
-                        navnForelder1: state.navnForelder1,
-                        navnForelder2: state.navnForelder2,
-                        termindato: dato,
-                        permisjonsregler
-                    }
-                );
-            } else {
-                return updateFormState(state, { termindatoErUgyldig: true });
-            }
         case PlanleggerActionTypeKeys.SET_DEKNINGSGRAD:
             if (!action.dekningsgrad) {
                 return state;
