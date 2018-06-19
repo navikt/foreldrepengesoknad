@@ -64,7 +64,6 @@ interface OwnProps {
     søker: SøkerGrunnlag;
     annenForelder: AnnenForelderGrunnlag;
     antallBarn: number;
-    // perioder?: Periode[];
     onChange: (perioder: Periode[]) => void;
 }
 

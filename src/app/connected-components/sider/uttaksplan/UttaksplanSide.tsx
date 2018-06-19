@@ -45,7 +45,6 @@ class UttaksplanSide extends React.Component<Props, State> {
                     søker={mockUttaksplanSøker}
                     annenForelder={mockUttasksplanAnnenForelder}
                     termindato={new Date()}
-                    perioder={this.state.perioder}
                     antallBarn={1}
                     onChange={(perioder) => this.setState({ perioder })}
                 />

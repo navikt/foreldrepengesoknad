@@ -53,7 +53,7 @@ export function beregnAlleUttak(
 ): BeregnetUttak[] {
     const uttak: BeregnetUttak[] = [];
     const { søker, annenForelder, tilgjengeligUttak } = uttaksgrunnlag;
-    if (annenForelder && annenForelder.skalHaForeldrepenger) {
+    if (annenForelder) {
         uttak.push(
             getBeregnetUttak(
                 søker.fornavn,

@@ -41,7 +41,7 @@ class UttaksplanSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, perioder, stegProps, person, dispatch } = this.props;
+        const { søknad, stegProps, person, dispatch } = this.props;
         const { annenForelder } = søknad;
         const barn = søknad.barn as UfødtBarn;
         const { søker } = søknad;
@@ -55,7 +55,9 @@ class UttaksplanSteg extends React.Component<Props> {
                     annenForelder={{
                         etternavn: '',
                         fornavn: annenForelder.navn,
-                        skalHaForeldrepenger: annenForelder.skalHaForeldrepenger
+                        skalHaForeldrepenger:
+                            annenForelder.skalHaForeldrepenger ||
+                            annenForelder.harRettPåForeldrepenger
                     }}
                     søker={{
                         erAleneOmOmsorg: søker.erAleneOmOmsorg,
@@ -67,7 +69,6 @@ class UttaksplanSteg extends React.Component<Props> {
                         situasjon: søknad.situasjon
                     }}
                     antallBarn={søknad.barn.antallBarn || 0}
-                    perioder={perioder}
                     onChange={(p) =>
                         dispatch(
                             søknadActions.updateSøknad({
