@@ -20,7 +20,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
-    barn: FødtBarn;
+    barn: Adopsjonsbarn;
     visSpørsmålOmAntallBarn: boolean;
     stegProps: StegProps;
 }

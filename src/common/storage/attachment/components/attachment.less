@@ -1,6 +1,6 @@
 @import '../../../styles/variables.less';
 
-.attachmentKnapp {
+.attachmentButton {
     display: flex;
     height: 4rem;
     border: 2px dashed #c6c2bf;
@@ -9,7 +9,7 @@
     align-items: center;
     padding-left: 0;
 
-    &__ikon {
+    &__icon {
         display: inline-block;
         margin-right: 0.5rem;
     }
@@ -30,7 +30,7 @@
     }
 }
 
-.attachmentListe {
+.attachmentList {
     margin: 0;
     padding: 0;
 
@@ -52,7 +52,7 @@
         left: 0;
         top: 0;
     }
-    &__ikon {
+    &__icon {
         position: absolute;
         left: 0;
         top: 0;
@@ -60,20 +60,20 @@
             fill: @navMorkGra;
         }
     }
-    &__filnavn {
+    &__filename {
         margin-left: 1rem;
         margin-right: 3rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    &__slett {
+    &__deleteButton {
         position: absolute;
         right: 0;
         top: -0.5rem;
     }
     &--pending {
-        .attachment__ikon {
+        .attachment__icon {
             display: none;
         }
     }
