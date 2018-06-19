@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 import CustomSVG from 'common/components/custom-svg/CustomSVG';
+import BEMHelper from 'common/util/bem';
 
 const uploadIcon = require('./upload.svg').default;
 
@@ -76,6 +77,9 @@ class AttachmentInput extends React.Component<Props> {
     render() {
         const { id, intl } = this.props;
         const inputId = `${id}-input`;
+
+        const BEM = BEMHelper('attachmentButton');
+
         return (
             <label
                 role="button"
@@ -85,14 +89,14 @@ class AttachmentInput extends React.Component<Props> {
                 id={id}
                 tabIndex={0}
                 htmlFor={inputId}
-                className="attachmentKnapp"
+                className={BEM.className}
                 onDragOver={(e) => this.onFileDragOverHandler(e)}
                 onDrop={(e) => this.onFileDropHandler(e)}
                 onKeyPress={(e) => this.onKeyPress(e)}>
-                <div className="attachmentKnapp__ikon">
+                <div className={BEM.element('icon')}>
                     <CustomSVG iconRef={uploadIcon} size={22} />
                 </div>
-                <Element className="attachmentKnapp__label">
+                <Element className={BEM.element('label')}>
                     <FormattedMessage id="vedlegg.lastoppknapp.label" />
                 </Element>
                 <input
