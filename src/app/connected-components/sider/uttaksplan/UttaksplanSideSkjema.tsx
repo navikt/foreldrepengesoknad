@@ -41,7 +41,7 @@ const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                     inputnavn="søkersituasjon"
                     tittel="Søkersituasjon"
                     valg={søkersituasjoner}
-                    valgtVerdi={skjemadata.søkersituasjon}
+                    valgtVerdi={skjemadata.søkersituasjon.toUpperCase()}
                     onChange={(søkersituasjon: Søkersituasjon) =>
                         onChange({
                             ...props.skjemadata,
