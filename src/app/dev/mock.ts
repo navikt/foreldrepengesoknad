@@ -11,7 +11,7 @@ export const mockUttaksplanSøker: SøkerGrunnlag = {
     mellomnavn: '',
     etternavn: 'Skraam',
     kjønn: Kjønn.KVINNE,
-    erAleneOmOmsorg: true,
+    erAleneOmOmsorg: false,
     rolle: SøkerRolle.MOR,
     situasjon: Søkersituasjon.FØDSEL
 };
