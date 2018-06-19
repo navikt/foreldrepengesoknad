@@ -1,3 +1,5 @@
+import { AttachmentType } from '../../../../app/types/søknad/Søknad';
+
 export interface Attachment {
     id: string;
     filename: string;
@@ -6,5 +8,5 @@ export interface Attachment {
     url?: string;
     pending: boolean;
     uploaded: boolean;
-    group?: string;
+    type: AttachmentType;
 }

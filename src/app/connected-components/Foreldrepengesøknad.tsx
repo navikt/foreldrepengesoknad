@@ -21,7 +21,6 @@ import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
 import DevSideoversikt from '../dev/DevSideoversikt';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
-import VedleggSide from './sider/vedlegg/VedleggSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 
@@ -86,11 +85,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 path={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`}
                 component={UttaksplanSide}
                 key="uttaksplan"
-            />,
-            <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}vedlegg`}
-                component={VedleggSide}
-                key="vedlegg"
             />
         ]);
     }

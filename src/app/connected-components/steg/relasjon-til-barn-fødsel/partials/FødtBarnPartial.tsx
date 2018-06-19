@@ -11,10 +11,12 @@ import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpør
 import utils from '../../../../util/fødselsdato';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
-import Søknadsvedlegg from '../../../../components/søknadsvedlegg/Søknadsvedlegg';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 
 interface StateProps {
     barn: FødtBarn;
+    fødselsattest: Attachment[];
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -39,7 +41,7 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn } = this.props;
+        const { intl, dispatch, barn, fødselsattest } = this.props;
         return (
             <React.Fragment>
                 <Spørsmål
@@ -79,7 +81,28 @@ class FødtBarnPartial extends React.Component<Props> {
                         )
                     }
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
-                    render={() => <Søknadsvedlegg type="fødselsattest" />}
+                    render={() => (
+                        <AttachmentsUploaderPure
+                            attachments={fødselsattest}
+                            attachmentType="fødselsattest"
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
+                            onFileDelete={(attachment: Attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
+                        />
+                    )}
                 />
             </React.Fragment>
         );

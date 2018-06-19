@@ -1,6 +1,6 @@
-@import '../../styles/variables.less';
+@import '../../../styles/variables.less';
 
-.vedleggKnapp {
+.attachmentButton {
     display: flex;
     height: 4rem;
     border: 2px dashed #c6c2bf;
@@ -8,7 +8,8 @@
     justify-content: center;
     align-items: center;
     padding-left: 0;
-    &__ikon {
+
+    &__icon {
         display: inline-block;
         margin-right: 0.5rem;
     }
@@ -29,9 +30,10 @@
     }
 }
 
-.vedleggListe {
+.attachmentList {
     margin: 0;
     padding: 0;
+
     li {
         padding: 0;
         margin: 0 0 1.5rem 0;
@@ -42,7 +44,7 @@
     }
 }
 
-.vedlegg {
+.attachment {
     position: relative;
     padding-left: 1rem;
     &__spinner {
@@ -50,7 +52,7 @@
         left: 0;
         top: 0;
     }
-    &__ikon {
+    &__icon {
         position: absolute;
         left: 0;
         top: 0;
@@ -58,20 +60,20 @@
             fill: @navMorkGra;
         }
     }
-    &__filnavn {
+    &__filename {
         margin-left: 1rem;
         margin-right: 3rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    &__slett {
+    &__deleteButton {
         position: absolute;
         right: 0;
         top: -0.5rem;
     }
     &--pending {
-        .vedlegg__ikon {
+        .attachment__icon {
             display: none;
         }
     }

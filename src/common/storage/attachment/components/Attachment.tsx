@@ -3,53 +3,54 @@ import * as classnames from 'classnames';
 const Icon = require('nav-frontend-ikoner-assets').default;
 
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import SlettKnapp from '../slett-knapp/SlettKnapp';
+import SlettKnapp from '../../../components/slett-knapp/SlettKnapp';
 
-import './vedlegg.less';
+import './attachment.less';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { bytesString } from '../../util/filesize';
+import { bytesString } from 'common/util/filesize';
+import BEMHelper from 'common/util/bem';
 
 interface OwnProps {
     attachment: Attachment;
-    visFilstørrelse?: boolean;
+    showFileSize?: boolean;
     onDelete?: (file: Attachment) => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
-const Vedlegg: React.StatelessComponent<Props> = ({
+const Attachment: React.StatelessComponent<Props> = ({
     attachment,
-    visFilstørrelse,
+    showFileSize,
     onDelete,
     intl
 }) => {
+    const BEM = BEMHelper('attachment');
+    const cls = classnames(BEM.className, {
+        [BEM.modifier('pending')]: attachment.pending
+    });
+
     return (
-        <div
-            className={classnames('vedlegg', {
-                'vedlegg--pending': attachment.pending
-            })}>
+        <div className={cls}>
             {attachment.pending && (
-                <div className="vedlegg__spinner">
+                <div className={BEM.element('spinner')}>
                     <NavFrontendSpinner type="S" />
                 </div>
             )}
-            <Icon className="vedlegg__ikon" kind="vedlegg" size={20} />
-            <div className="vedlegg__filnavn">
+            <Icon className={BEM.element('icon')} kind="vedlegg" size={20} />
+            <div className={BEM.element('filename')}>
                 {attachment.url ? (
                     <Lenke href={attachment.url}>{attachment.filename}</Lenke>
                 ) : (
                     <React.Fragment>{attachment.filename}</React.Fragment>
                 )}
-                {visFilstørrelse && (
-                    <div>{bytesString(attachment.filesize)}</div>
-                )}
+                {showFileSize && <div>{bytesString(attachment.filesize)}</div>}
             </div>
             {onDelete &&
                 attachment.uploaded &&
                 !attachment.pending && (
-                    <span className="vedlegg__slett">
+                    <span className={BEM.element('deleteButton')}>
                         <SlettKnapp
                             onClick={() => onDelete(attachment)}
                             ariaLabel={intl.formatMessage(
@@ -63,4 +64,4 @@ const Vedlegg: React.StatelessComponent<Props> = ({
     );
 };
 
-export default injectIntl(Vedlegg);
+export default injectIntl(Attachment);
