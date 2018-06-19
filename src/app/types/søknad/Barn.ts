@@ -1,3 +1,10 @@
+export enum BarnType {
+    'FødtBarn' = 'fødtBarn',
+    'UfødtBarn' = 'ufødtBarn',
+    'Adopsjonsbarn' = 'adopsjonsbarn',
+    'ForeldreansvarBarn' = 'omsorgsovertakelseBarn'
+}
+
 abstract class BarnBase {
     antallBarn?: number;
     erBarnetFødt: boolean;
@@ -12,12 +19,14 @@ export interface FødtBarn extends BarnBase {
     fødselsdatoer: Date[];
 }
 
-export interface Adopsjonsbarn extends FødtBarn {
+export interface Adopsjonsbarn extends BarnBase {
+    fødselsdatoer: Date[];
     adopsjonsdato: Date;
     adoptertIUtlandet: boolean;
 }
 
-export interface ForeldreansvarBarn extends FødtBarn {
+export interface ForeldreansvarBarn extends BarnBase {
+    fødselsdatoer: Date[];
     foreldreansvarsdato: Date;
 }
 

@@ -14,10 +14,12 @@ import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { mapAttachmentTilSøknadsvedlegginfo } from '../../../util/vedleggUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import routeConfig from '../../../util/routeConfig';
+import Person from '../../../types/Person';
 
 interface UttaksplanStegProps {
     stegProps: StegProps;
     søknad: Søknad;
+    person: Person;
     perioder: Periode[];
     attachments: Attachment[];
 }
@@ -46,7 +48,7 @@ class UttaksplanSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, perioder, stegProps, dispatch } = this.props;
+        const { søknad, perioder, stegProps, person, dispatch } = this.props;
         const { annenForelder } = søknad;
         const barn = søknad.barn as UfødtBarn;
 
@@ -56,12 +58,9 @@ class UttaksplanSteg extends React.Component<Props> {
                 onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     termindato={(barn as UfødtBarn).termindato}
-                    navnForelder1="Mor"
-                    navnForelder2={
-                        annenForelder && annenForelder.navn
-                            ? annenForelder.navn
-                            : 'Forelder 2'
-                    }
+                    bruker={person}
+                    annenForelder={annenForelder}
+                    søker={søknad.søker}
                     perioder={perioder}
                     onChange={(p) =>
                         dispatch(
@@ -88,6 +87,7 @@ export default connect((state: AppState, props: Props) => {
 
     return {
         søknad,
+        person: state.api.person,
         attachments,
         perioder: uttaksplan.periode.perioder,
         stegProps,
