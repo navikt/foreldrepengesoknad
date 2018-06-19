@@ -10,7 +10,12 @@ import {
     opprettEllerOppdaterPeriode,
     slettPeriode
 } from 'uttaksplan/redux/actions';
-import { Periodetype, Uttaksperiode, Periode } from 'uttaksplan/types';
+import {
+    Periodetype,
+    Uttaksperiode,
+    Periode,
+    Dekningsgrad
+} from 'uttaksplan/types';
 
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
@@ -21,14 +26,21 @@ interface StateProps {
     isOpen: boolean;
     perioder?: Periode[];
     valgtPeriode?: Uttaksperiode;
-    uttaksgrunnlag?: Uttaksgrunnlag;
 }
 
-type Props = StateProps & DispatchProps & InjectedIntlProps;
+interface OwnProps {
+    uttaksgrunnlag: Uttaksgrunnlag;
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
+}
+
+type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 
 const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
+        termindato,
+        dekningsgrad,
         isOpen,
         valgtPeriode,
         perioder,
@@ -48,6 +60,8 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UttaksperiodeSkjema
+                termindato={termindato}
+                dekningsgrad={dekningsgrad}
                 periode={valgtPeriode}
                 ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(
                     perioder
@@ -61,7 +75,7 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
-    const { periode, uttaksgrunnlag } = state.uttaksplan;
+    const { periode } = state.uttaksplan;
     if (
         !periode.dialogErApen ||
         (periode.valgtPeriode &&
@@ -74,8 +88,7 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
         valgtPeriode: periode.valgtPeriode
             ? (periode.valgtPeriode.periode as Uttaksperiode)
             : undefined,
-        perioder: periode.perioder,
-        uttaksgrunnlag
+        perioder: periode.perioder
     };
 };
 

@@ -51,6 +51,7 @@ class UttaksplanSteg extends React.Component<Props> {
         const { søknad, perioder, stegProps, person, dispatch } = this.props;
         const { annenForelder } = søknad;
         const barn = søknad.barn as UfødtBarn;
+        const { søker } = søknad;
 
         return (
             <Steg
@@ -58,9 +59,21 @@ class UttaksplanSteg extends React.Component<Props> {
                 onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     termindato={(barn as UfødtBarn).termindato}
-                    bruker={person}
-                    annenForelder={annenForelder}
-                    søker={søknad.søker}
+                    annenForelder={{
+                        etternavn: '',
+                        fornavn: annenForelder.navn,
+                        skalHaForeldrepenger: annenForelder.skalHaForeldrepenger
+                    }}
+                    søker={{
+                        erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                        etternavn: person.etternavn,
+                        fornavn: person.fornavn,
+                        mellomnavn: person.mellomnavn,
+                        kjønn: person.kjønn,
+                        rolle: søker.rolle,
+                        situasjon: søknad.situasjon
+                    }}
+                    antallBarn={søknad.barn.antallBarn || 0}
                     perioder={perioder}
                     onChange={(p) =>
                         dispatch(

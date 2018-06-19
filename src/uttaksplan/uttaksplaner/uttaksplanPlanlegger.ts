@@ -2,7 +2,8 @@ import {
     Permisjonsregler,
     Uttaksperiode,
     StønadskontoType,
-    Periodetype
+    Periodetype,
+    Dekningsgrad
 } from 'uttaksplan/types';
 import { Tidsperiode } from 'nav-datovelger';
 import {
@@ -111,7 +112,7 @@ function getFedrekvote(
 /** Oppretter default stønadsperioder ut fra termindato ++ */
 export function opprettUttaksperioder(
     termindato: Date,
-    // dekningsgrad: Dekningsgrad,
+    dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler

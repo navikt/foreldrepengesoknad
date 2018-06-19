@@ -1,4 +1,9 @@
-import { Dekningsgrad, Periode, Periodetype } from '../../types';
+import {
+    Dekningsgrad,
+    Periode,
+    Periodetype,
+    Permisjonsregler
+} from '../../types';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export enum PlanleggerActionTypeKeys {
@@ -36,6 +41,8 @@ export type PlanleggerActionTypes =
 
 export interface OpprettPerioder {
     type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     fellesukerForelder1: number;
     fellesukerForelder2: number;
@@ -54,6 +61,7 @@ export interface SetUkerForelder2 {
 export interface SetDekningsgrad {
     type: PlanleggerActionTypeKeys.SET_DEKNINGSGRAD;
     dekningsgrad: Dekningsgrad | undefined;
+    permisjonsregler: Permisjonsregler;
 }
 
 export interface PeriodeVisDialog {

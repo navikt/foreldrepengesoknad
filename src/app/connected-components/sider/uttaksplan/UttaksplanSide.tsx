@@ -8,7 +8,10 @@ import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
-import { mockSøker, mockBruker, mockAnnenForelder } from '../../../dev/mock';
+import {
+    mockUttaksplanSøker,
+    mockUttasksplanAnnenForelder
+} from '../../../dev/mock';
 
 export interface StateProps {
     form: {
@@ -39,11 +42,11 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
                 <Uttaksplan
-                    søker={mockSøker}
-                    bruker={mockBruker}
-                    annenForelder={mockAnnenForelder}
+                    søker={mockUttaksplanSøker}
+                    annenForelder={mockUttasksplanAnnenForelder}
                     termindato={new Date()}
                     perioder={this.state.perioder}
+                    antallBarn={1}
                     onChange={(perioder) => this.setState({ perioder })}
                 />
             </Applikasjonsside>

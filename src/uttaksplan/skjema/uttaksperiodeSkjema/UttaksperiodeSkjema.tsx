@@ -4,7 +4,8 @@ import {
     Periode,
     Forelder,
     StønadskontoType,
-    Periodetype
+    Periodetype,
+    Dekningsgrad
 } from 'uttaksplan/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
@@ -25,6 +26,8 @@ import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     ugyldigeTidsperioder?: Tidsperiode[];
     onChange: (periode: Periode) => void;
@@ -148,13 +151,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         } = this.state;
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
-        const {
-            termindato,
-            dekningsgrad,
-            permisjonsregler,
-            søker,
-            annenForelder
-        } = uttaksgrunnlag;
+        const { permisjonsregler, søker, annenForelder } = uttaksgrunnlag;
 
         const navnForelder1 = søker.fornavn;
         const navnForelder2 = annenForelder
@@ -164,8 +161,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const regler = stønadskonto
             ? getStønadskontoRegler(
                   stønadskonto,
-                  termindato,
-                  dekningsgrad,
+                  this.props.termindato,
+                  this.props.dekningsgrad,
                   permisjonsregler
               )
             : undefined;
