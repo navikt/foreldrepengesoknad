@@ -3,11 +3,17 @@ import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export enum SøknadActionKeys {
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
-    'UPDATE_VEDLEGG' = 'updateVedlegg',
+    'UPLOAD_ATTACHMENT' = 'uploadAttachment',
+    'UPLOAD_ATTACHMENT_SUCCESS' = 'uploadAttachmentSuccess',
+    'UPLOAD_ATTACHMENT_FAILED' = 'uploadAttachmentFailed',
+    'DELETE_ATTACHMENT' = 'deleteAttachment',
+    'DELETE_ATTACHMENT_SUCCESS' = 'deleteAttachmentSuccess',
+    'DELETE_ATTACHMENT_FAILED' = 'deleteAttachmentFailed',
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKNAD' = 'updateSøknad'
@@ -38,9 +44,48 @@ export interface UpdateSøknad {
     payload: Skjemadata;
 }
 
+export interface UploadAttachment {
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT;
+    payload: Attachment;
+}
+
+export interface UploadAttachmentSuccess {
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS;
+    attachment: Attachment;
+    url: string;
+}
+
+export interface UploadAttachmentFailed {
+    type: SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED;
+    attachment: Attachment;
+    error: string;
+}
+
+export interface DeleteAttachment {
+    type: SøknadActionKeys.DELETE_ATTACHMENT;
+    attachment: Attachment;
+}
+
+export interface DeleteAttachmentSuccess {
+    type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS;
+    attachment: Attachment;
+}
+
+export interface DeleteAttachmentFailed {
+    type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED;
+    error: any;
+    attachment: Attachment;
+}
+
 export type SøknadAction =
     | UpdateBarn
     | UpdateAnnenForelder
     | UpdateUtenlandsopphold
     | UpdateSøker
-    | UpdateSøknad;
+    | UpdateSøknad
+    | UploadAttachment
+    | UploadAttachmentSuccess
+    | UploadAttachmentFailed
+    | DeleteAttachment
+    | DeleteAttachmentSuccess
+    | DeleteAttachmentFailed;
