@@ -122,7 +122,7 @@ export function opprettUttaksperioder(
             id: guid(),
             type: Periodetype.Uttak,
             forelder: 'forelder1',
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: StønadskontoType.Fellesperiode,
             tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
             låstForelder: true
         },

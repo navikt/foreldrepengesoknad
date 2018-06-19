@@ -3,7 +3,7 @@ import {
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
-import { DataOmAnnenForelder } from '../../types/s\u00F8knad/AnnenForelder';
+import { DataOmAnnenForelder } from '../../types/søknad/AnnenForelder';
 
 export interface ApiReducerState {
     person?: Person;

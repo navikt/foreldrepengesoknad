@@ -5,13 +5,10 @@ import {
     PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { tidslinjeFraPerioder } from 'uttaksplan/selectors/tidslinjeSelector';
+import { getTidslinjeFraPerioder } from 'uttaksplan/utils/tidslinjeUtils';
 import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { Periode, Permisjonsregler, Periodetype } from 'uttaksplan/types';
-import {
-    getGyldigTidsromForUtsettelse,
-    getAntallUkerFellesperiode
-} from 'uttaksplan/utils/permisjonUtils';
+import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { DispatchProps } from 'common/redux/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -32,7 +29,6 @@ import {
     setTermindato
 } from 'uttaksplan/redux/actions';
 
-import PeriodeDialog from 'uttaksplan/components/periodeDialog/PeriodeDialog';
 import { Dekningsgrad } from 'common/types';
 import { Tidsperiode } from 'nav-datovelger';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
@@ -47,6 +43,11 @@ import UttaksplanIkon, {
 import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
+import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
+import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import Person from 'app/types/Person';
+import { Søker } from 'app/types/søknad/Søker';
 
 export interface StateProps {
     dekningsgrad: Dekningsgrad;
@@ -63,10 +64,10 @@ export interface StateProps {
 
 interface OwnProps {
     termindato: Date;
-    navnForelder1: string;
-    navnForelder2: string;
+    bruker: Person;
+    søker: Søker;
+    annenForelder: AnnenForelder;
     perioder?: Periode[];
-    /** Default 100% */
     initialDekningsgrad?: Dekningsgrad;
     onChange: (perioder: Periode[]) => void;
 }
@@ -110,7 +111,10 @@ class UttaksplanMain extends React.Component<Props> {
             termindato,
             permisjonsregler,
             dekningsgrad,
-            form
+            form,
+            bruker,
+            søker,
+            annenForelder
         } = this.props;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
@@ -118,21 +122,24 @@ class UttaksplanMain extends React.Component<Props> {
             opprettPerioder(
                 termindato,
                 dekningsgrad,
+                bruker,
+                søker,
+                annenForelder,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2,
                 permisjonsregler
             )
         );
+
         dispatch(visTidslinje(true));
     }
     render() {
         const {
-            periode,
             innslag,
             termindato,
-            tidsromForUtsettelse,
-            navnForelder1,
-            navnForelder2,
+            bruker,
+            søker,
+            annenForelder,
             permisjonsregler,
             ukerFellesperiode,
             visPermisjonsplan,
@@ -149,8 +156,8 @@ class UttaksplanMain extends React.Component<Props> {
                         fellesperiodeukerForelder1={
                             form.fellesperiodeukerForelder1
                         }
-                        navnForelder1={navnForelder1}
-                        navnForelder2={navnForelder2}
+                        navnForelder1={bruker.fornavn}
+                        navnForelder2={annenForelder.navn}
                         permisjonsregler={permisjonsregler}
                         ukerFellesperiode={ukerFellesperiode}
                         onChangeDekningsgrad={(dg) =>
@@ -172,10 +179,11 @@ class UttaksplanMain extends React.Component<Props> {
                             <Timeline
                                 items={getTimelineItemsFromInnslag(
                                     innslag,
-                                    intl
+                                    intl,
+                                    søker.erAleneOmOmsorg,
+                                    bruker,
+                                    annenForelder
                                 )}
-                                navnForelder1={navnForelder1}
-                                navnForelder2={navnForelder2}
                                 iconRenderer={(icon) => (
                                     <UttaksplanIkon
                                         ikon={icon as UttaksplanIkonKeys}
@@ -225,24 +233,20 @@ class UttaksplanMain extends React.Component<Props> {
                             </Knapperad>
                         </div>
 
-                        {visPermisjonsplan &&
-                            tidsromForUtsettelse &&
-                            termindato &&
-                            periode.valgtPeriode && (
-                                <PeriodeDialog
-                                    periodetype={
-                                        periode.valgtPeriode.periodetype
-                                    }
-                                    isOpen={periode.dialogErApen}
-                                    navnForelder1={navnForelder1}
-                                    navnForelder2={navnForelder2}
-                                    perioder={periode.perioder}
-                                    periode={periode.valgtPeriode.periode}
-                                    tidsrom={tidsromForUtsettelse}
-                                    permisjonsregler={permisjonsregler}
-                                    termindato={termindato}
-                                />
-                            )}
+                        <UttaksperiodeDialog
+                            bruker={bruker}
+                            annenForelder={annenForelder}
+                            søker={søker}
+                            termindato={termindato}
+                            permisjonsregler={permisjonsregler}
+                        />
+
+                        <UtsettelsesperiodeDialog
+                            navnForelder1={bruker.fornavn}
+                            navnForelder2={annenForelder.navn}
+                            termindato={termindato}
+                            permisjonsregler={permisjonsregler}
+                        />
                     </div>
                 )}
                 <DevHelper
@@ -273,22 +277,16 @@ const mapStateToProps = (
         permisjonsregler,
         dekningsgrad
     );
-    const tidsromForUtsettelse =
-        termindato && dekningsgrad && sisteRegistrertePermisjonsdag
-            ? getGyldigTidsromForUtsettelse(
-                  termindato,
-                  dekningsgrad,
-                  permisjonsregler,
-                  sisteRegistrertePermisjonsdag
-              )
-            : undefined;
-    const innslag: Tidslinjeinnslag[] = tidslinjeFraPerioder(appState);
+    const innslag: Tidslinjeinnslag[] = getTidslinjeFraPerioder(
+        appState.uttaksplan.periode.perioder,
+        props.termindato,
+        dekningsgrad
+    );
     return {
         innslag,
         form,
         periode,
         sisteRegistrertePermisjonsdag,
-        tidsromForUtsettelse,
         permisjonsregler,
         ukerFellesperiode,
         dekningsgrad,

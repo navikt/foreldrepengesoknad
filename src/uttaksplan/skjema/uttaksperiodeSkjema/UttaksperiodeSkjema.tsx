@@ -11,35 +11,34 @@ import {
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
-import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
+import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/TidsperiodeSpørsm\u00E5l';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/HvemGjelderPeriodenSpørsm\u00E5l';
+import StønadskontoSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/StønadskontoSpørsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { AppState } from 'app/redux/reducers';
-import { connect } from 'react-redux';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 
 import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
+import Person from 'app/types/Person';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
+import { Søker } from 'app/types/søknad/Søker';
+import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/stønadskontoUtils';
 
 export interface OwnProps {
-    periode: Uttaksperiode;
-    ugyldigeTidsperioder?: Tidsperiode[];
-    onChange: (periode: Periode) => void;
-    onFjern: (periode: Periode) => void;
-}
-
-export interface StateProps {
-    navnForelder1?: string;
-    navnForelder2?: string;
+    periode?: Uttaksperiode;
+    bruker: Person;
+    søker: Søker;
+    annenForelder?: AnnenForelder;
     permisjonsregler: Permisjonsregler;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
+    ugyldigeTidsperioder?: Tidsperiode[];
+    onChange: (periode: Periode) => void;
+    onFjern: (periode: Periode) => void;
 }
 
 export interface State {
@@ -48,9 +47,11 @@ export interface State {
     sluttdato?: Date;
     stønadskonto?: StønadskontoType;
     beholdVarighet?: boolean;
+    visStønadskontoSpørsmål: boolean;
+    tilgjengeligeStønadskontoer: StønadskontoType[];
 }
 
-export type Props = OwnProps & StateProps & InjectedIntlProps;
+export type Props = OwnProps & InjectedIntlProps;
 
 class UttaksperiodeSkjema extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -62,12 +63,26 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
 
         const { periode } = props;
+
+        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
+            props.bruker,
+            props.søker,
+            props.annenForelder
+        );
+
+        const singelStønadskonto =
+            tilgjengeligeStønadskontoer.length === 1
+                ? tilgjengeligeStønadskontoer[0]
+                : undefined;
+
         this.state = {
             forelder: periode ? periode.forelder : undefined,
-            stønadskonto: periode ? periode.konto : undefined,
+            stønadskonto: periode ? periode.konto : singelStønadskonto,
             startdato: periode ? periode.tidsperiode.startdato : undefined,
             sluttdato: periode ? periode.tidsperiode.sluttdato : undefined,
-            beholdVarighet: true
+            beholdVarighet: true,
+            tilgjengeligeStønadskontoer,
+            visStønadskontoSpørsmål: tilgjengeligeStønadskontoer.length > 1
         };
     }
 
@@ -131,8 +146,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const {
             periode,
             onFjern,
-            navnForelder1,
-            navnForelder2,
+            bruker,
+            annenForelder,
             ugyldigeTidsperioder,
             termindato,
             dekningsgrad,
@@ -146,9 +161,14 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             startdato,
             sluttdato,
             forelder,
-            stønadskonto
+            stønadskonto,
+            visStønadskontoSpørsmål,
+            tilgjengeligeStønadskontoer
         } = this.state;
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
+
+        const navnForelder1 = bruker.fornavn;
+        const navnForelder2 = annenForelder ? annenForelder.navn : 'forelder 2';
 
         const regler = stønadskonto
             ? getStønadskontoRegler(
@@ -158,6 +178,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                   permisjonsregler
               )
             : undefined;
+
         const tidsperiode: Tidsperiode | undefined = regler
             ? {
                   startdato: regler.tidligsteUttaksdato,
@@ -174,15 +195,18 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                     <FormattedMessage id={tittelKey} />
                 </h1>
 
-                <div className="blokkPad-s">
-                    <StønadskontoSpørsmål
-                        spørsmål="Hvilket uttak ønsker du å legge til?"
-                        stønadskonto={stønadskonto}
-                        onChange={(konto) =>
-                            this.setState({ stønadskonto: konto })
-                        }
-                    />
-                </div>
+                {visStønadskontoSpørsmål && (
+                    <div className="blokkPad-s">
+                        <StønadskontoSpørsmål
+                            spørsmål="Hvilken type uttak gjelder det?"
+                            stønadskonto={stønadskonto}
+                            tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
+                            onChange={(konto) =>
+                                this.setState({ stønadskonto: konto })
+                            }
+                        />
+                    </div>
+                )}
 
                 <EkspanderbartInnhold erApen={stønadskonto !== undefined}>
                     <div className="blokkPad-s">
@@ -270,22 +294,4 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState,
-    props: OwnProps
-): StateProps | undefined => {
-    const { form } = state.uttaksplan;
-    const { termindato, dekningsgrad } = form;
-    if (!termindato || !dekningsgrad) {
-        return undefined;
-    }
-    return {
-        termindato,
-        dekningsgrad,
-        permisjonsregler: getPermisjonsregler(termindato),
-        navnForelder1: form.navnForelder1,
-        navnForelder2: form.navnForelder2
-    };
-};
-
-export default connect(mapStateToProps)(injectIntl(UttaksperiodeSkjema));
+export default injectIntl(UttaksperiodeSkjema);
