@@ -1,4 +1,9 @@
-import { Dekningsgrad, Periodetype, Periode } from '../../types';
+import {
+    Dekningsgrad,
+    Periodetype,
+    Periode,
+    Permisjonsregler
+} from '../../types';
 import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
@@ -10,11 +15,13 @@ export function setFellesperiodeukerMor(uker: number): PlanleggerActionTypes {
 }
 
 export function setDekningsgrad(
-    dekningsgrad: Dekningsgrad | undefined
+    dekningsgrad: Dekningsgrad | undefined,
+    permisjonsregler: Permisjonsregler
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.SET_DEKNINGSGRAD,
-        dekningsgrad
+        dekningsgrad,
+        permisjonsregler
     };
 }
 
@@ -73,12 +80,16 @@ export function visTidslinje(synlig: boolean): PlanleggerActionTypes {
 }
 
 export function opprettPerioder(
+    termindato: Date,
+    dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag,
     fellesukerForelder1: number,
     fellesukerForelder2: number
 ): PlanleggerActionTypes {
     return {
         type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
+        dekningsgrad,
+        termindato,
         uttaksgrunnlag,
         fellesukerForelder1,
         fellesukerForelder2

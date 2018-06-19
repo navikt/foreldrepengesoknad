@@ -7,7 +7,7 @@ import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { Kjønn } from 'app/types/common';
 import { erFarEllerMedmor } from 'app/util/personUtil';
-import { Uttaksgrunnlag, SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
 export const getStønadskontoerMedUttaksdager = (
