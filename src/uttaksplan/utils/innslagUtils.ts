@@ -151,7 +151,7 @@ export const mapInnslagToMarker = (
     innslag: InnslagHendelsetype
 ): TimelineMarker => ({
     type: TimelineItemType.marker,
-    title: innslag.hendelse,
+    title: innslag.hendelse === 'termin' ? 'Termin' : 'Siste permisjonsdag',
     startDate: innslag.dato,
     icons: getTimelineIconsFromInnslag(innslag),
     data: innslag
