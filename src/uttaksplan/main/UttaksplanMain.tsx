@@ -166,9 +166,10 @@ class UttaksplanMain extends React.Component<Props> {
                                     utsettelser.
                                 </p>
                                 <PeriodeTimeline
+                                    termindato={termindato}
+                                    dekningsgrad={dekningsgrad}
                                     perioder={periode.perioder}
                                     uttaksgrunnlag={uttaksgrunnlag}
-                                    termindato={termindato}
                                     erBarnetFødt={erBarnetFødt}
                                     onPeriodeClick={this.handlePeriodeClick}
                                 />

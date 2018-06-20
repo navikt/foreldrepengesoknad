@@ -143,6 +143,17 @@ export function getTerminMarker(
     };
 }
 
+export function getSistePermisjonsdagMarker(
+    sistePermisjonsdag: Date
+): TimelineMarker {
+    return {
+        type: TimelineItemType.marker,
+        icons: [],
+        title: 'Permisjonsslutt',
+        startDate: sistePermisjonsdag
+    };
+}
+
 export const sortTimelineItems = (item1: TimelineItem, item2: TimelineItem) => {
     if (isSameDay(item1.startDate, item2.startDate)) {
         if (item1.data === 'termin') {
