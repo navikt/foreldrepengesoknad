@@ -67,13 +67,15 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                <UttaksplanSideSkjema
-                    erSynlig={true}
-                    onChange={(skjemadata: UttaksplamTestSkjemadata) =>
-                        this.setState({ skjemadata })
-                    }
-                    skjemadata={this.state.skjemadata}
-                />
+                <div className="dev-only">
+                    <UttaksplanSideSkjema
+                        erSynlig={true}
+                        onChange={(skjemadata: UttaksplamTestSkjemadata) =>
+                            this.setState({ skjemadata })
+                        }
+                        skjemadata={this.state.skjemadata}
+                    />
+                </div>
                 <Uttaksplan
                     søker={mockUttaksplanSøker}
                     annenForelder={
