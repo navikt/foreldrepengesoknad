@@ -44,20 +44,11 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
         super(props);
         const { person, barn } = props;
         this.state = {
-            annetBarn: RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person)
+            annetBarn: this.harValgtAnnetBarn(barn, person)
         };
     }
 
-    // tslint:disable-next-line:member-ordering
-    static harValgtSøkersBarn(person?: Person): boolean {
-        if (person === undefined) {
-            return false;
-        }
-        return person.barn.some((barn: SøkersBarn) => barn.checked);
-    }
-
-    // tslint:disable-next-line:member-ordering
-    static harValgtAnnetBarn(barn: BarnPartial, person?: Person): boolean {
+    harValgtAnnetBarn(barn: BarnPartial, person?: Person): boolean {
         if (person === undefined) {
             return false;
         }
@@ -232,7 +223,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp:
             (erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
             (harTerminbekreftelseDato && terminbekreftelse.length > 0) ||
-            RelasjonTilBarnFødselSteg.harValgtSøkersBarn(person),
+            (person &&
+                person.barn.some(
+                    (søkersBarn: SøkersBarn) => søkersBarn.checked
+                )),
         history: props.history
     };
 
