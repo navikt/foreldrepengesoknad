@@ -44,6 +44,14 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
                 error: action.error,
                 isLoadingPerson: false
             };
+        case ApiActionKeys.UPDATE_PERSON:
+            return {
+                ...state,
+                person: {
+                    ...state.person,
+                    ...action.payload
+                }
+            };
     }
     return state;
 };
