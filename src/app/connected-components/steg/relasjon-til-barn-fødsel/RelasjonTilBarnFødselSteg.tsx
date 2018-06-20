@@ -103,7 +103,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
     toggleAnnetBarn(person: Person): void {
         this.setState({ annetBarn: !this.state.annetBarn }, () => {
             if (this.state.annetBarn === true) {
-                person.barn.forEach((barn: any) => (barn.checked = false));
+                person.barn.forEach(
+                    (barn: SøkersBarn) => (barn.checked = false)
+                );
                 this.nullstillRelasjonerTilBarn();
             }
         });
