@@ -14,6 +14,12 @@ interface TimelineItemInfo {
     description?: string;
 }
 
+export enum TimelineItemType {
+    'event' = 'event',
+    'marker' = 'marker',
+    'gap' = 'gap'
+}
+
 interface TimelineBaseItem {
     type: TimelineItemType;
     title: string;
@@ -24,11 +30,6 @@ interface TimelineBaseItem {
     error?: TimelineItemInfo;
 }
 
-export enum TimelineItemType {
-    'event' = 'event',
-    'marker' = 'marker',
-    'gap' = 'gap'
-}
 export interface TimelineEvent extends TimelineBaseItem {
     type: TimelineItemType.event;
     personName: string;

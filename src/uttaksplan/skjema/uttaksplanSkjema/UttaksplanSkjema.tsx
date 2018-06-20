@@ -44,9 +44,7 @@ class UttaksplanSkjema extends React.Component<Props, {}> {
                     />
                 </div>
 
-                <EkspanderbartInnhold
-                    animert={false}
-                    erApen={dekningsgrad !== undefined}>
+                <EkspanderbartInnhold erApen={dekningsgrad !== undefined}>
                     <div className="blokk-s">
                         <FordelingFellesperiodeSpørsmål
                             navnForelder1={navnForelder1}
