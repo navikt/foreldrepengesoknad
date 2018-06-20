@@ -27,7 +27,9 @@ export const periodene = (perioder: Periode[]) => ({
     getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
         getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
-    finnPerioderEtterDato: (dato: Date, ignorerPeriode?: Periode) =>
+    finnPerioderFørDato: (dato: Date, ignorerPeriode?: Periode) =>
+        finnPerioderFørDato(perioder, dato, ignorerPeriode),
+    finnPerioderPåEllerEtterDato: (dato: Date, ignorerPeriode?: Periode) =>
         finnPerioderPåEllerEtterDato(perioder, dato, ignorerPeriode),
     finnOverlappendePerioder: (periode: Periode) =>
         finnOverlappendePerioder(perioder, periode.tidsperiode),
@@ -176,6 +178,25 @@ function finnPerioderPåEllerEtterDato(
             isAfter(periode.tidsperiode.startdato, dato) ||
             isSameDay(periode.tidsperiode.startdato, dato)
         );
+    });
+}
+
+/**
+ * Finner periode som inneholder angitt dato
+ * @param perioder
+ * @param dato dato som periode skal inneholde
+ * @param ignorerPeriode periode som skal ekskluderes fra resultatet
+ */
+function finnPerioderFørDato(
+    perioder: Periode[],
+    dato: Date,
+    ignorerPeriode?: Periode
+): Periode[] {
+    return perioder.filter((periode) => {
+        if (ignorerPeriode && periode.id === ignorerPeriode.id) {
+            return false;
+        }
+        return isBefore(periode.tidsperiode.sluttdato, dato);
     });
 }
 
