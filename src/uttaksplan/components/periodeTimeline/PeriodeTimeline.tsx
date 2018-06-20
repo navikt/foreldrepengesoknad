@@ -15,7 +15,8 @@ import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
     getTerminMarker,
-    getSistePermisjonsdagMarker
+    getSistePermisjonsdagMarker,
+    getGaps
 } from './periodeTimelineUtils';
 
 import './periodeTimeline.less';
@@ -85,10 +86,9 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
         if (sistePermisjonsdag) {
             items.push(getSistePermisjonsdagMarker(sistePermisjonsdag));
         }
-
         return (
             <Timeline
-                items={items}
+                items={getGaps(items)}
                 iconRenderer={(icon) => (
                     <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
                 )}
