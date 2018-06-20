@@ -10,8 +10,14 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 }
+.dev-only {
+    display: none;
+}
 body.devToolbar--active {
     .dev__toolbar {
+        display: block;
+    }
+    .dev-only {
         display: block;
     }
 }
