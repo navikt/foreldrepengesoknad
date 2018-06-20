@@ -5,19 +5,15 @@ import {
     PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { getTidslinjeFraPerioder } from 'uttaksplan/utils/tidslinjeUtils';
-import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { Periode, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
-import Timeline from 'uttaksplan/components/timeline/Timeline';
 import {
     TimelineItem,
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
-import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import {
     setDekningsgrad,
     setFellesperiodeukerMor,
@@ -25,16 +21,8 @@ import {
     visPeriodeDialog,
     opprettPerioder
 } from 'uttaksplan/redux/actions';
-import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
-
-import { getTimelineItemsFromInnslag } from 'uttaksplan/utils/innslagUtils';
-import UttaksplanIkon, {
-    UttaksplanIkonKeys
-} from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-
-import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
@@ -48,12 +36,14 @@ import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 import Uttaksoversikt from 'uttaksplan/components/uttaksoversikt/Uttaksoversikt';
 import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
+import '../styles/uttaksplan.less';
+import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
+
 export interface StateProps {
     form: UttaksplanFormState;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     ukerFellesperiode: number;
-    innslag: Tidslinjeinnslag[];
     periode: PeriodeState;
     visPermisjonsplan: boolean;
     manuellUttaksplan?: boolean;
@@ -64,6 +54,7 @@ interface OwnProps {
     søker: SøkerGrunnlag;
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
+    erBarnetFødt: boolean;
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -74,10 +65,11 @@ class UttaksplanMain extends React.Component<Props> {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
         this.opprettPerioder = this.opprettPerioder.bind(this);
+        this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
     componentDidMount() {
-        // this.opprettPerioder();
+        this.opprettPerioder();
     }
 
     handleItemClick(item: TimelineItem) {
@@ -92,6 +84,15 @@ class UttaksplanMain extends React.Component<Props> {
                     visPeriodeDialog(Periodetype.Uttak, periode)
                 );
             }
+        }
+    }
+    handlePeriodeClick(periode: Periode) {
+        if (periode.type === Periodetype.Utsettelse) {
+            this.props.dispatch(
+                visPeriodeDialog(Periodetype.Utsettelse, periode)
+            );
+        } else if (periode.type === Periodetype.Uttak) {
+            this.props.dispatch(visPeriodeDialog(Periodetype.Uttak, periode));
         }
     }
     opprettPerioder() {
@@ -120,13 +121,12 @@ class UttaksplanMain extends React.Component<Props> {
         const {
             uttaksgrunnlag,
             termindato,
+            erBarnetFødt,
             dekningsgrad,
-            innslag,
             periode,
             ukerFellesperiode,
             visPermisjonsplan,
             dispatch,
-            intl,
             form
         } = this.props;
 
@@ -168,38 +168,12 @@ class UttaksplanMain extends React.Component<Props> {
                     periode.perioder && (
                         <div className="tidsplan">
                             <div className="blokk-m">
-                                <Timeline
-                                    items={getTimelineItemsFromInnslag(
-                                        innslag,
-                                        intl,
-                                        uttaksgrunnlag
-                                    )}
-                                    iconRenderer={(icon) => (
-                                        <UttaksplanIkon
-                                            ikon={icon as UttaksplanIkonKeys}
-                                        />
-                                    )}
-                                    onItemClick={(item: TimelineItem) => {
-                                        this.handleItemClick(item);
-                                    }}
-                                    durationRenderer={(dager: number) => (
-                                        <UkerOgDager
-                                            dager={dager}
-                                            visKunDager={true}
-                                        />
-                                    )}
-                                    rangeRenderer={(
-                                        startdato: Date,
-                                        sluttdato: Date
-                                    ) => (
-                                        <TidsperiodeTekst
-                                            tidsperiode={{
-                                                startdato,
-                                                sluttdato
-                                            }}
-                                            visSluttdato={true}
-                                        />
-                                    )}
+                                <PeriodeTimeline
+                                    perioder={periode.perioder}
+                                    uttaksgrunnlag={uttaksgrunnlag}
+                                    termindato={termindato}
+                                    erBarnetFødt={erBarnetFødt}
+                                    onPeriodeClick={this.handlePeriodeClick}
                                 />
                             </div>
 
@@ -290,15 +264,9 @@ const mapStateToProps = (
         dekningsgrad
     );
 
-    const innslag: Tidslinjeinnslag[] = getTidslinjeFraPerioder(
-        appState.uttaksplan.periode.perioder,
-        termindato,
-        dekningsgrad
-    );
-
     const visPermisjonsplan =
-        innslag &&
-        innslag.length > 0 &&
+        periode.perioder &&
+        periode.perioder.length > 0 &&
         dekningsgrad !== undefined &&
         termindato !== undefined &&
         view.visTidslinje === true;
@@ -307,7 +275,6 @@ const mapStateToProps = (
         form,
         dekningsgrad,
         uttaksgrunnlag,
-        innslag,
         periode,
         ukerFellesperiode,
         manuellUttaksplan: periode.manuellOppdatering,
