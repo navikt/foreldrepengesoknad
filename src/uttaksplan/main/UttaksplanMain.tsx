@@ -44,7 +44,6 @@ export interface StateProps {
     form: UttaksplanFormState;
     uttaksgrunnlag: Uttaksgrunnlag;
     periode: PeriodeState;
-    visPermisjonsplan: boolean;
     manuellUttaksplan?: boolean;
 }
 
@@ -119,7 +118,6 @@ class UttaksplanMain extends React.Component<Props> {
             termindato,
             erBarnetFødt,
             periode,
-            visPermisjonsplan,
             dispatch,
             form
         } = this.props;
@@ -194,8 +192,8 @@ class UttaksplanMain extends React.Component<Props> {
                             </div>
                         )}
 
-                        {visPermisjonsplan &&
-                            periode.perioder && (
+                        {dekningsgrad !== undefined &&
+                            perioderOpprettet && (
                                 <div>
                                     <div className="m-textCenter">
                                         <Knapperad>
@@ -261,7 +259,7 @@ const mapStateToProps = (
     props: OwnProps
 ): StateProps => {
     const { termindato } = props;
-    const { periode, view, form } = appState.uttaksplan;
+    const { periode, form } = appState.uttaksplan;
     const dekningsgrad = form.dekningsgrad;
 
     const uttaksgrunnlag = getUttaksgrunnlag(
@@ -272,19 +270,11 @@ const mapStateToProps = (
         props.annenForelder
     );
 
-    const visPermisjonsplan =
-        periode.perioder &&
-        periode.perioder.length > 0 &&
-        dekningsgrad !== undefined &&
-        termindato !== undefined &&
-        view.visTidslinje === true;
-
     return {
         form,
         uttaksgrunnlag,
         periode,
-        manuellUttaksplan: periode.manuellOppdatering,
-        visPermisjonsplan
+        manuellUttaksplan: periode.manuellOppdatering
     };
 };
 
