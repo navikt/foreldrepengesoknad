@@ -41,7 +41,6 @@ export function getSistePermisjonsdag(
         return undefined;
     }
     const uttaksperioder = periodene(perioder).getUttak();
-    const utsettelser = periodene(perioder).getUtsettelser();
     const uttaksdagerBruktTotalt = periodene(
         uttaksperioder
     ).getAntallUttaksdager();
@@ -50,7 +49,6 @@ export function getSistePermisjonsdag(
         getAntallUkerTotalt(uttaksgrunnlag.permisjonsregler, dekningsgrad) * 5;
     const registrerteUttak = periodene(perioder).getAntallUttaksdager();
     const gjenståendeUttaksdager = totaltTilgjengeligUttak - registrerteUttak;
-    console.log(gjenståendeUttaksdager, utsettelser);
     return uttaksdagUtil(termindato).leggTil(
         uttaksdagerBruktTotalt -
             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
