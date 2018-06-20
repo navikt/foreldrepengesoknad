@@ -1,4 +1,4 @@
-import Person from '../../../types/Person';
+import Person, { PersonPartial } from '../../../types/Person';
 import Søknad from '../../../types/søknad/Søknad';
 
 export enum ApiActionKeys {
@@ -44,7 +44,7 @@ interface SendSøknadFailed {
 
 interface UpdatePerson {
     type: ApiActionKeys.UPDATE_PERSON;
-    payload: any;
+    payload: PersonPartial;
 }
 
 export type ApiActionTypes =

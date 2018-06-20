@@ -1,5 +1,6 @@
 import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
 import Søknad from '../../../types/søknad/Søknad';
+import { PersonPartial } from '../../../types/Person';
 
 export function getPerson(): ApiActionTypes {
     return {
@@ -14,7 +15,7 @@ export function sendSøknad(søknad: Søknad): ApiActionTypes {
     };
 }
 
-export function updatePerson(payload: any): ApiActionTypes {
+export function updatePerson(payload: PersonPartial): ApiActionTypes {
     return {
         type: ApiActionKeys.UPDATE_PERSON,
         payload
