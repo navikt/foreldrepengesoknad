@@ -61,14 +61,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
     constructor(props: Props) {
         super(props);
         const { person, barn } = props;
-        if (person && person.barn !== undefined) {
-            this.state = {
-                annetBarn: RelasjonTilBarnFødselSteg.harValgtAnnetBarn(
-                    barn,
-                    person
-                )
-            };
-        }
+        this.state = {
+            annetBarn:
+                person && person.barn
+                    ? RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person)
+                    : false
+        };
     }
 
     genererRelasjonTilBarn(søkersBarn: SøkersBarn, barn: FødtBarn): void {
@@ -195,48 +193,48 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
                     )}
                 />
 
-                {(this.state && this.state.annetBarn) ||
-                    (person.barn === undefined && (
-                        <React.Fragment>
-                            <Spørsmål
-                                synlig={
-                                    (this.state && this.state.annetBarn) || true
-                                }
-                                render={() => (
-                                    <ErBarnetFødtSpørsmål
-                                        erBarnetFødt={barn.erBarnetFødt}
-                                        onChange={(erBarnetFødt: boolean) =>
-                                            dispatch(
-                                                søknadActions.updateBarn({
-                                                    erBarnetFødt
-                                                })
-                                            )
-                                        }
-                                    />
-                                )}
+                {(this.state.annetBarn || person.barn === undefined) && (
+                    <React.Fragment>
+                        <Spørsmål
+                            synlig={
+                                this.state.annetBarn ||
+                                person.barn === undefined
+                            }
+                            render={() => (
+                                <ErBarnetFødtSpørsmål
+                                    erBarnetFødt={barn.erBarnetFødt}
+                                    onChange={(erBarnetFødt: boolean) =>
+                                        dispatch(
+                                            søknadActions.updateBarn({
+                                                erBarnetFødt
+                                            })
+                                        )
+                                    }
+                                />
+                            )}
+                        />
+                        {barn.erBarnetFødt === true && (
+                            <FødtBarnPartial
+                                dispatch={dispatch}
+                                barn={barn as FødtBarn}
+                                fødselsattest={fødselsattest || []}
                             />
-                            {barn.erBarnetFødt === true && (
-                                <FødtBarnPartial
-                                    dispatch={dispatch}
-                                    barn={barn as FødtBarn}
-                                    fødselsattest={fødselsattest || []}
-                                />
-                            )}
-                            {barn.erBarnetFødt === false && (
-                                <UfødtBarnPartial
-                                    dispatch={dispatch}
-                                    barn={barn as UfødtBarn}
-                                    annenForelder={annenForelder}
-                                    søker={søker}
-                                    erFarEllerMedmor={erFarEllerMedmor(
-                                        person.kjønn,
-                                        søker.rolle
-                                    )}
-                                    terminbekreftelse={terminbekreftelse || []}
-                                />
-                            )}
-                        </React.Fragment>
-                    ))}
+                        )}
+                        {barn.erBarnetFødt === false && (
+                            <UfødtBarnPartial
+                                dispatch={dispatch}
+                                barn={barn as UfødtBarn}
+                                annenForelder={annenForelder}
+                                søker={søker}
+                                erFarEllerMedmor={erFarEllerMedmor(
+                                    person.kjønn,
+                                    søker.rolle
+                                )}
+                                terminbekreftelse={terminbekreftelse || []}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
             </Steg>
         );
     }
