@@ -1,6 +1,8 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
-import Utenlandsopphold, { UtenlandsoppholdPartial } from './Utenlandsopphold';
+import InformasjonOmUtenlandsopphold, {
+    InformasjonOmUtenlandsoppholdPartial
+} from './InformasjonOmUtenlandsopphold';
 import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
@@ -31,7 +33,7 @@ interface Søknad {
     annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
     barn: Barn;
-    utenlandsopphold: Utenlandsopphold;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     uttaksplan: Periode[];
     søker: Søker;
 }
@@ -42,7 +44,7 @@ export interface SøknadPartial {
     situasjon?: Søkersituasjon;
     harGodkjentVilkår: boolean;
     barn: BarnPartial;
-    utenlandsopphold: UtenlandsoppholdPartial;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdPartial;
     uttaksplan?: Periode[];
     søker: SøkerPartial;
 }
