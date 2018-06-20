@@ -45,19 +45,19 @@ export function getSistePermisjonsdag(
     const uttaksdagerBruktTotalt = periodene(
         uttaksperioder
     ).getAntallUttaksdager();
-    const utsettelserRegistrert = periodene(utsettelser).getAntallUttaksdager();
-
+    const utsatteDager = periodene(perioder).getAntallUtsatteDager();
     const totaltTilgjengeligUttak =
         getAntallUkerTotalt(uttaksgrunnlag.permisjonsregler, dekningsgrad) * 5;
     const registrerteUttak = periodene(perioder).getAntallUttaksdager();
     const gjenståendeUttaksdager = totaltTilgjengeligUttak - registrerteUttak;
+    console.log(gjenståendeUttaksdager, utsettelser);
     return uttaksdagUtil(termindato).leggTil(
         uttaksdagerBruktTotalt -
-            utsettelserRegistrert -
             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
                 5 -
             1 +
-            gjenståendeUttaksdager
+            gjenståendeUttaksdager +
+            utsatteDager
     );
 }
 
