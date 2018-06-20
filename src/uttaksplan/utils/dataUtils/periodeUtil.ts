@@ -44,7 +44,8 @@ export const periodene = (perioder: Periode[]) => ({
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
     forskyvPerioder: (uttaksdager: number) =>
         forskyvPerioder(perioder, uttaksdager),
-    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode)
+    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode),
+    sort: () => perioder.sort(sorterPerioder)
 });
 
 export const perioden = (periode: Periode) => ({

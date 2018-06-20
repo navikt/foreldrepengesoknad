@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
-import { Periode } from 'uttaksplan/types';
+import { Periode, Dekningsgrad } from 'uttaksplan/types';
 import {
     TimelineItem,
     TimelineItemType
@@ -14,16 +14,19 @@ import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
-    getTerminMarker
+    getTerminMarker,
+    getSistePermisjonsdagMarker
 } from './periodeTimelineUtils';
 
 import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
+import { getSistePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 
 export interface OwnProps {
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
-    termindato: Date;
     erBarnetFødt: boolean;
     onPeriodeClick: (periode: Periode) => void;
 }
@@ -46,6 +49,7 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
     render() {
         const {
             termindato,
+            dekningsgrad,
             erBarnetFødt,
             perioder,
             uttaksgrunnlag,
@@ -72,6 +76,15 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
             }
             return item;
         });
+        const sistePermisjonsdag = getSistePermisjonsdag(
+            termindato,
+            dekningsgrad,
+            perioder,
+            uttaksgrunnlag
+        );
+        if (sistePermisjonsdag) {
+            items.push(getSistePermisjonsdagMarker(sistePermisjonsdag));
+        }
 
         return (
             <Timeline
