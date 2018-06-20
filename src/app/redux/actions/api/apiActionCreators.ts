@@ -14,4 +14,11 @@ export function sendSøknad(søknad: Søknad): ApiActionTypes {
     };
 }
 
-export default { getPerson, sendSøknad };
+export function updatePerson(payload: any): ApiActionTypes {
+    return {
+        type: ApiActionKeys.UPDATE_PERSON,
+        payload
+    };
+}
+
+export default { getPerson, sendSøknad, updatePerson };
