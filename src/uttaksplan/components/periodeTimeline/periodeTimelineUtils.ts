@@ -197,20 +197,20 @@ export function getGaps(items: TimelineItem[]) {
                 };
                 mappedItems.push(gap);
             }
-            // if (
-            //     (isBefore(item.startDate, prevEndDate) ||
-            //         (isSameDay(item.startDate, prevEndDate) &&
-            //             prevItem.type !== TimelineItemType.marker)) &&
-            //     prevItem.type !== TimelineItemType.marker
-            // ) {
-            //     mappedItems.push({
-            //         ...item,
-            //         error: {
-            //             title: 'Datokonflikt'
-            //         }
-            //     });
-            //     return;
-            // }
+            if (
+                (isBefore(item.startDate, prevEndDate) ||
+                    (isSameDay(item.startDate, prevEndDate) &&
+                        prevItem.type !== TimelineItemType.marker)) &&
+                prevItem.type !== TimelineItemType.marker
+            ) {
+                mappedItems.push({
+                    ...item,
+                    error: {
+                        title: 'Datokonflikt'
+                    }
+                });
+                return;
+            }
         }
 
         mappedItems.push(item);
