@@ -1,7 +1,7 @@
 import { Skjemadata } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
-import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
+import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
@@ -31,7 +31,7 @@ export interface UpdateAnnenForelder {
 
 export interface UpdateUtenlandsopphold {
     type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD;
-    payload: UtenlandsoppholdPartial;
+    payload: InformasjonOmUtenlandsoppholdPartial;
 }
 
 export interface UpdateSøker {

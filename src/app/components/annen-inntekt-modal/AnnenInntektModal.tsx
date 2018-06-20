@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
-import './annenInntektPeriodeModal.less';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -18,23 +17,25 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import BEMHelper from 'common/util/bem';
+import './annenInntektModal.less';
 
-export interface AnnenInntektPeriodeModalProps extends ModalProps {
+export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
     editMode: boolean;
     onAdd: (annenInntekt: AnnenInntekt) => void;
     onEdit: (annenInntekt: AnnenInntekt) => void;
 }
 
-type Props = AnnenInntektPeriodeModalProps & InjectedIntlProps;
+type Props = AnnenInntektModalProps & InjectedIntlProps;
 
 interface State {
     annenInntekt: AnnenInntektPartial;
 }
 
-class AnnenInntektPeriodeModal extends React.Component<Props, State> {
+class AnnenInntektModal extends React.Component<Props, State> {
     static getDerivedStateFromProps(props: Props, state: State) {
-        return AnnenInntektPeriodeModal.buildStateFromProps(props, state);
+        return AnnenInntektModal.buildStateFromProps(props, state);
     }
 
     static buildStateFromProps(props: Props, state?: State) {
@@ -57,7 +58,7 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.state = AnnenInntektPeriodeModal.buildStateFromProps(props);
+        this.state = AnnenInntektModal.buildStateFromProps(props);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -111,13 +112,15 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { annenInntekt } = this.state;
+
+        const cls = BEMHelper('annenInntektModal');
         return (
             <Modal
-                className="annenInntektPeriodeModal"
+                className={cls.className}
                 onRequestClose={onRequestClose}
                 {...modalProps}>
                 <form onSubmit={this.onSubmit}>
-                    <Undertittel className="annenInntektPeriodeModal__title">
+                    <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="annenInntekt.modal.tittel" />
                     </Undertittel>
 
@@ -143,12 +146,19 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                     intl,
                                     'annenInntekt.modal.fra.spørsmål'
                                 )}
-                                onChange={(fom: Date) => {
+                                onChange={(startdato: Date) => {
                                     this.updateAnnenInntekt({
-                                        fom
+                                        tidsperiode: {
+                                            ...this.state.annenInntekt
+                                                .tidsperiode,
+                                            startdato
+                                        }
                                     });
                                 }}
-                                dato={annenInntekt.fom}
+                                dato={
+                                    annenInntekt.tidsperiode &&
+                                    annenInntekt.tidsperiode.startdato
+                                }
                             />
                         )}
                     />
@@ -161,12 +171,19 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                     intl,
                                     'annenInntekt.modal.til.spørsmål'
                                 )}
-                                onChange={(tom: Date) => {
+                                onChange={(sluttdato: Date) => {
                                     this.updateAnnenInntekt({
-                                        tom
+                                        tidsperiode: {
+                                            ...this.state.annenInntekt
+                                                .tidsperiode,
+                                            sluttdato
+                                        }
                                     });
                                 }}
-                                dato={annenInntekt.tom}
+                                dato={
+                                    annenInntekt.tidsperiode &&
+                                    annenInntekt.tidsperiode.sluttdato
+                                }
                                 disabled={annenInntekt.pågående}
                             />
                         )}
@@ -183,7 +200,10 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
                                 onChange={() => {
                                     this.updateAnnenInntekt({
                                         pågående: !annenInntekt.pågående,
-                                        tom: undefined
+                                        tidsperiode: {
+                                            ...annenInntekt.tidsperiode,
+                                            sluttdato: undefined
+                                        }
                                     });
                                 }}
                             />
@@ -237,4 +257,4 @@ class AnnenInntektPeriodeModal extends React.Component<Props, State> {
     }
 }
 
-export default injectIntl(AnnenInntektPeriodeModal);
+export default injectIntl(AnnenInntektModal);

@@ -49,7 +49,7 @@ const stegConfig: StegConfig = {
         nesteSteg: StegID.UTENLANDSOPPHOLD
     },
     [StegID.UTENLANDSOPPHOLD]: {
-        tittel: 'Utenlandsopphold',
+        tittel: 'InformasjonOmUtenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANDRE_INNTEKTER
     },

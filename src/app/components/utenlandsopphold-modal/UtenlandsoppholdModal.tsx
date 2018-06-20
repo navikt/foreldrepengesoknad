@@ -1,62 +1,63 @@
 import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import Landvelger from '../landvelger/Landvelger';
-import './utenlandsoppholdPeriodeModal.less';
+import './utenlandsoppholdModal.less';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import {
-    UtenlandsoppholdPeriodeType,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdPeriodePartial
-} from '../../types/søknad/Utenlandsopphold';
+    UtenlandsoppholdType,
+    Utenlandsopphold,
+    UtenlandsoppholdSkjemadataPartial
+} from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import { Språkkode } from 'common/intl/types';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
+import BEMHelper from 'common/util/bem';
 
-export interface UtenlandsoppholdPeriodeModalProps extends ModalProps {
-    type: UtenlandsoppholdPeriodeType;
-    periode?: UtenlandsoppholdPeriode;
+export interface UtenlandsoppholdModalProps extends ModalProps {
+    type: UtenlandsoppholdType;
+    opphold?: Utenlandsopphold;
     språk: Språkkode;
-    onAdd: (periode: UtenlandsoppholdPeriode) => void;
-    onEdit: (periode: UtenlandsoppholdPeriode) => void;
+    onAdd: (opphold: Utenlandsopphold) => void;
+    onEdit: (opphold: Utenlandsopphold) => void;
 }
 
-type Props = UtenlandsoppholdPeriodeModalProps & InjectedIntlProps;
+type Props = UtenlandsoppholdModalProps & InjectedIntlProps;
 
 interface State {
-    periode: UtenlandsoppholdPeriodePartial;
+    opphold: UtenlandsoppholdSkjemadataPartial;
     editMode: boolean;
 }
 
-class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
+class UtenlandsoppholdModal extends React.Component<Props, State> {
     static getDerivedStateFromProps(props: Props) {
-        return UtenlandsoppholdPeriodeModal.buildStateFromProps(props);
+        return UtenlandsoppholdModal.buildStateFromProps(props);
     }
 
     static buildStateFromProps(props: Props) {
-        const { periode } = props;
+        const { opphold } = props;
         return {
-            periode: periode ? { ...periode } : { varighet: {} },
-            editMode: props.periode !== undefined
+            opphold: opphold ? { ...opphold } : { tidsperiode: {} },
+            editMode: props.opphold !== undefined
         };
     }
 
     constructor(props: Props) {
         super(props);
 
-        this.state = UtenlandsoppholdPeriodeModal.buildStateFromProps(props);
+        this.state = UtenlandsoppholdModal.buildStateFromProps(props);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    updatePeriode(periodeProperties: UtenlandsoppholdPeriodePartial) {
+    updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
         this.setState({
-            periode: {
-                ...this.state.periode,
-                ...periodeProperties
+            opphold: {
+                ...this.state.opphold,
+                ...oppholdProperties
             }
         });
     }
@@ -66,26 +67,26 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
         event.stopPropagation();
 
         const { onAdd, onEdit } = this.props;
-        const { periode, editMode } = this.state;
+        const { opphold, editMode } = this.state;
 
         if (editMode) {
-            onEdit(periode as UtenlandsoppholdPeriode);
+            onEdit(opphold as Utenlandsopphold);
         } else {
-            onAdd(periode as UtenlandsoppholdPeriode);
+            onAdd(opphold as Utenlandsopphold);
         }
     }
 
-    getVarighet() {
-        const { periode } = this.state;
-        if (periode.varighet) {
-            return periode.varighet;
+    getTidsperiode() {
+        const { opphold } = this.state;
+        if (opphold.tidsperiode) {
+            return opphold.tidsperiode;
         }
         return {};
     }
 
-    getVarighetDate(property: 'fom' | 'tom') {
-        const { periode } = this.state;
-        const dateValue = periode.varighet && periode.varighet[property];
+    getTidsperiodeDate(property: 'startdato' | 'sluttdato') {
+        const { opphold } = this.state;
+        const dateValue = opphold.tidsperiode && opphold.tidsperiode[property];
         if (dateValue) {
             return new Date(dateValue);
         }
@@ -94,15 +95,16 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
 
     render() {
         const { type, språk, intl, onRequestClose, ...modalProps } = this.props;
-        const { periode } = this.state;
+        const { opphold } = this.state;
 
+        const cls = BEMHelper('utenlandsoppholdModal');
         return (
             <Modal
-                className="utenlandsoppholdPeriodeModal"
+                className={cls.className}
                 onRequestClose={onRequestClose}
                 {...modalProps}>
                 <form onSubmit={this.onSubmit}>
-                    <Undertittel className="utenlandsoppholdPeriodeModal__title">
+                    <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>
 
@@ -115,10 +117,10 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                     />
                                 }
                                 onChange={(land: string) =>
-                                    this.updatePeriode({ land })
+                                    this.updateOpphold({ land })
                                 }
                                 språk={språk}
-                                defaultValue={periode.land}
+                                defaultValue={opphold.land}
                             />
                         )}
                     />
@@ -131,15 +133,15 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                     intl,
                                     `utenlandsopphold.datoinput.fra`
                                 )}
-                                onChange={(fom: Date) => {
-                                    this.updatePeriode({
-                                        varighet: {
-                                            ...this.getVarighet(),
-                                            fom
+                                onChange={(startdato: Date) => {
+                                    this.updateOpphold({
+                                        tidsperiode: {
+                                            ...this.getTidsperiode(),
+                                            startdato
                                         }
                                     });
                                 }}
-                                dato={this.getVarighetDate('fom')}
+                                dato={this.getTidsperiodeDate('startdato')}
                             />
                         )}
                     />
@@ -152,15 +154,15 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
                                     intl,
                                     `utenlandsopphold.datoinput.til`
                                 )}
-                                onChange={(tom: Date) => {
-                                    this.updatePeriode({
-                                        varighet: {
-                                            ...this.getVarighet(),
-                                            tom
+                                onChange={(sluttdato: Date) => {
+                                    this.updateOpphold({
+                                        tidsperiode: {
+                                            ...this.getTidsperiode(),
+                                            sluttdato
                                         }
                                     });
                                 }}
-                                dato={this.getVarighetDate('tom')}
+                                dato={this.getTidsperiodeDate('sluttdato')}
                             />
                         )}
                     />
@@ -182,4 +184,4 @@ class UtenlandsoppholdPeriodeModal extends React.Component<Props, State> {
     }
 }
 
-export default injectIntl(UtenlandsoppholdPeriodeModal);
+export default injectIntl(UtenlandsoppholdModal);

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import {
-    default as Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdPeriodeType
-} from '../../../types/søknad/Utenlandsopphold';
+    default as InformasjonOmUtenlandsopphold,
+    Utenlandsopphold,
+    UtenlandsoppholdType
+} from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
 import Bolk from '../../../components/layout/Bolk';
@@ -47,10 +47,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
     renderSkalBoINorgeNeste12MndSpørsmål() {
         const { søknad, dispatch } = this.props;
-        const { utenlandsopphold } = søknad;
+        const { informasjonOmUtenlandsopphold } = søknad;
         return (
             <SkalBoINorgeNeste12MndSpørsmål
-                iNorgeNeste12={utenlandsopphold.iNorgeNeste12Mnd}
+                iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
                 onChange={(iNorgeNeste12Mnd: boolean) =>
                     dispatch(
                         søknadActions.updateUtenlandsopphold({
@@ -64,13 +64,17 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
     renderHarBoddINorgeSiste12MndSpørsmål() {
         const { søknad, dispatch } = this.props;
-        const { utenlandsopphold } = søknad;
+        const { informasjonOmUtenlandsopphold } = søknad;
         return (
             <Spørsmål
-                synlig={utenlandsopphold.iNorgeNeste12Mnd !== undefined}
+                synlig={
+                    informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined
+                }
                 render={() => (
                     <BoddINorgeSiste12MndSpørsmål
-                        iNorgeSiste12={utenlandsopphold.iNorgeSiste12Mnd}
+                        iNorgeSiste12={
+                            informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
+                        }
                         onChange={(iNorgeSiste12Mnd: boolean) =>
                             dispatch(
                                 søknadActions.updateUtenlandsopphold({
@@ -85,18 +89,18 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     updateUtenlandsopphold(
-        perioder: UtenlandsoppholdPeriode[],
-        periodeType: UtenlandsoppholdPeriodeType
+        opphold: Utenlandsopphold[],
+        oppholdType: UtenlandsoppholdType
     ) {
         const { dispatch } = this.props;
         dispatch(
-            søknadActions.updateUtenlandsopphold({ [periodeType]: perioder })
+            søknadActions.updateUtenlandsopphold({ [oppholdType]: opphold })
         );
     }
 
     render() {
         const { søknad, stegProps, språkkode, intl } = this.props;
-        const { utenlandsopphold } = søknad;
+        const { informasjonOmUtenlandsopphold } = søknad;
 
         return (
             <Steg {...stegProps}>
@@ -106,20 +110,24 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                             renderSpørsmål={
                                 this.renderSkalBoINorgeNeste12MndSpørsmål
                             }
-                            showUtenlandsoppholdPeriodeContent={
-                                utenlandsopphold.iNorgeNeste12Mnd === false
+                            showUtenlandsoppholdContent={
+                                informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ===
+                                false
                             }
                             oppfølgingsspørsmål={getMessage(
                                 intl,
-                                'utenlandsopphold.select.spørsmål.senerePerioder'
+                                'utenlandsopphold.select.spørsmål.senereOpphold'
                             )}
-                            perioder={søknad.utenlandsopphold.senerePerioder}
-                            periodeType={'senerePerioder'}
+                            opphold={
+                                søknad.informasjonOmUtenlandsopphold
+                                    .senereOpphold
+                            }
+                            oppholdType={'senereOpphold'}
                             språk={språkkode}
-                            onChange={(perioder: UtenlandsoppholdPeriode[]) =>
+                            onChange={(opphold: Utenlandsopphold[]) =>
                                 this.updateUtenlandsopphold(
-                                    perioder,
-                                    'senerePerioder'
+                                    opphold,
+                                    'senereOpphold'
                                 )
                             }
                         />
@@ -127,26 +135,33 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                 />
 
                 <Bolk
-                    synlig={utenlandsopphold.iNorgeNeste12Mnd !== undefined}
+                    synlig={
+                        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !==
+                        undefined
+                    }
                     render={() => (
                         <UtenlandsoppholdBolk
                             renderSpørsmål={
                                 this.renderHarBoddINorgeSiste12MndSpørsmål
                             }
-                            showUtenlandsoppholdPeriodeContent={
-                                utenlandsopphold.iNorgeSiste12Mnd === false
+                            showUtenlandsoppholdContent={
+                                informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ===
+                                false
                             }
                             oppfølgingsspørsmål={getMessage(
                                 intl,
-                                'utenlandsopphold.select.spørsmål.tidligerePerioder'
+                                'utenlandsopphold.select.spørsmål.tidligereOpphold'
                             )}
-                            perioder={søknad.utenlandsopphold.tidligerePerioder}
-                            periodeType={'tidligerePerioder'}
+                            opphold={
+                                søknad.informasjonOmUtenlandsopphold
+                                    .tidligereOpphold
+                            }
+                            oppholdType={'tidligereOpphold'}
                             språk={språkkode}
-                            onChange={(perioder: UtenlandsoppholdPeriode[]) =>
+                            onChange={(opphold: Utenlandsopphold[]) =>
                                 this.updateUtenlandsopphold(
-                                    perioder,
-                                    'tidligerePerioder'
+                                    opphold,
+                                    'tidligereOpphold'
                                 )
                             }
                         />
@@ -157,23 +172,23 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 }
 
-const utenlandsoppholdHasValues = (utenlandsopphold: Utenlandsopphold) =>
-    utenlandsopphold.iNorgeSiste12Mnd === true ||
-    (utenlandsopphold.iNorgeSiste12Mnd === false &&
-        utenlandsopphold.tidligerePerioder.length > 0) ||
-    (utenlandsopphold.iNorgeNeste12Mnd === true ||
-        (utenlandsopphold.iNorgeNeste12Mnd === false &&
-            utenlandsopphold.senerePerioder.length > 0));
+const utenlandsoppholdHasValues = (info: InformasjonOmUtenlandsopphold) =>
+    info.iNorgeSiste12Mnd === true ||
+    (info.iNorgeSiste12Mnd === false && info.tidligereOpphold.length > 0) ||
+    (info.iNorgeNeste12Mnd === true ||
+        (info.iNorgeNeste12Mnd === false && info.senereOpphold.length > 0));
 
 export default injectIntl(
     connect((state: AppState, props: Props) => {
         const { søknad } = state;
-        const { utenlandsopphold } = søknad;
+        const { informasjonOmUtenlandsopphold } = søknad;
         const { history } = props;
 
         const stegProps: StegProps = {
             id: StegID.UTENLANDSOPPHOLD,
-            renderFortsettKnapp: utenlandsoppholdHasValues(utenlandsopphold),
+            renderFortsettKnapp: utenlandsoppholdHasValues(
+                informasjonOmUtenlandsopphold
+            ),
             history
         };
 
