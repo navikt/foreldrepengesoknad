@@ -1,4 +1,8 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import {
+    TidsperiodeMedValgfriSluttdato,
+    TidsperiodeMedValgfriSluttdatoPartial
+} from 'common/types';
 
 export enum AnnenInntektType {
     'SLUTTVEDERLAG' = 'sluttvederlag',
@@ -10,16 +14,16 @@ export enum AnnenInntektType {
 
 export interface AnnenInntekt {
     type: AnnenInntektType;
-    fom: Date;
-    tom?: Date;
+    tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
     vedlegg: Attachment[];
 }
 
-export interface InntektVedJobbIUtlandet extends AnnenInntekt {
-    navnPåArbeidsgiver: string;
-    land: string;
-    erDuOgArbeidsgiverNæreVennerEllerFamilie: boolean;
+export interface AnnenInntektPartialInterface {
+    type: AnnenInntektType;
+    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    pågående: boolean;
+    vedlegg: Attachment[];
 }
 
-export type AnnenInntektPartial = Partial<AnnenInntekt>;
+export type AnnenInntektPartial = Partial<AnnenInntektPartialInterface>;

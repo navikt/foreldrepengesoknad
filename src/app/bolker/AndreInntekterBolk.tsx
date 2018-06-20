@@ -3,7 +3,7 @@ import { AnnenInntekt } from '../types/søknad/AnnenInntekt';
 import InteractiveList from '../components/interactive-list/InteractiveList';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import AnnenInntektPeriodeModal from '../components/annen-inntekt-periode-modal/AnnenInntektPeriodeModal';
+import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
 import { ISODateToMaskedInput } from '../util/dates';
 
 interface AndreInntekterBolkProps {
@@ -130,7 +130,7 @@ class AndreInntekterBolk extends React.Component<
                     </React.Fragment>
                 )}
 
-                <AnnenInntektPeriodeModal
+                <AnnenInntektModal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={() =>
                         this.closeModal({
@@ -165,10 +165,14 @@ const AndreInntekterListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToMaskedInput(annenInntekt.fom),
+                    fom: ISODateToMaskedInput(
+                        annenInntekt.tidsperiode.startdato
+                    ),
                     tom: annenInntekt.pågående
                         ? 'pågående'
-                        : ISODateToMaskedInput(annenInntekt.tom)
+                        : ISODateToMaskedInput(
+                              annenInntekt.tidsperiode.sluttdato
+                          )
                 }}
             />
         </div>

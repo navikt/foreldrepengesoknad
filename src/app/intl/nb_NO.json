@@ -174,8 +174,8 @@
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.datoinput.fra": "Fra og med",
     "utenlandsopphold.datoinput.til": "Til og med",
-    "utenlandsopphold.select.spørsmål.tidligerePerioder": "Jeg bodde i...",
-    "utenlandsopphold.select.spørsmål.senerePerioder": "Jeg skal bo i...",
+    "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
+    "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
