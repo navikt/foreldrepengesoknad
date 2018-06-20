@@ -12,6 +12,7 @@ import {
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
 import { guid } from 'nav-frontend-js-utils';
 import BEMHelper from 'common/util/bem';
+import { EtikettLiten } from 'nav-frontend-typografi';
 
 export interface Props extends TimelineItemProps {
     item: TimelineGap;
@@ -32,9 +33,11 @@ const GapItem: React.StatelessComponent<Props> = ({
     return (
         <article className={BEM.className}>
             <TimelineIcons icons={item.icons} iconRenderer={iconRenderer} />
-            <h1 className={BEM.element('title')}>{item.title}</h1>
-            <div className={BEM.element('duration')}>
-                {durationRenderer(item.days)}
+            <div className={BEM.element('titleAndDuration')}>
+                <h1 className={BEM.element('title')}>{item.title}</h1>
+                <EtikettLiten tag="div" className={BEM.element('duration')}>
+                    {durationRenderer(item.days)}
+                </EtikettLiten>
             </div>
             <div className={BEM.element('comment')}> {item.comment}</div>
             {onClick && (
