@@ -14,7 +14,7 @@
     "velkommen.samtykkeIntro":
         "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
     "velkommen.dinePlikter": "dine plikter",
-    "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
+    "velkommen.samtykke": "Eg stadfestar at eg har lese og forstått",
     "velkommen.lesMerOmPersonopplysninger":
         "Les om hvordan NAV behandler personopplysningene dine",
 
@@ -60,15 +60,15 @@
     "antallBarn.select.tekst": "Antall barn...",
     "antallBarn.select.velg": "Velg",
 
-    "fødselsdatoer.flere.1": "Første barnet ble født den...",
-    "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
-    "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
-    "fødselsdatoer.flere.4": "Det fjerde barnet ble født den...",
-    "fødselsdatoer.flere.5": "Det femte barnet ble født den...",
-    "fødselsdatoer.flere.6": "Det sjette barnet ble født den...",
-    "fødselsdatoer.flere.7": "Det syvende barnet ble født den...",
-    "fødselsdatoer.flere.8": "Det åttende barnet ble født den...",
-    "fødselsdatoer.flere.9": "Det niende barnet ble født den...",
+    "fødselsdatoer.flere.1": "Første barnet blei født den...",
+    "fødselsdatoer.flere.2": "Det andre barnet blei født den...",
+    "fødselsdatoer.flere.3": "Det tredje barnet blei født den...",
+    "fødselsdatoer.flere.4": "Det fjerde barnet blei født den...",
+    "fødselsdatoer.flere.5": "Det femte barnet blei født den...",
+    "fødselsdatoer.flere.6": "Det sjette barnet blei født den...",
+    "fødselsdatoer.flere.7": "Det syvende barnet blei født den...",
+    "fødselsdatoer.flere.8": "Det åttende barnet blei født den...",
+    "fødselsdatoer.flere.9": "Det niende barnet blei født den...",
 
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Antall barn",
@@ -130,12 +130,12 @@
     "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
-        "bodd i utlandet helt eller delvis",
+        "budd i utlandet helt eller delvis",
 
-    "iNorgeNeste12Mnd.spørsmål": "De neste 12 månedene skal jeg...",
-    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
+    "iNorgeNeste12Mnd.spørsmål": "Dei neste 12 månadene skal eg...",
+    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bu i Noreg",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet":
-        "bo i utlandet helt eller delvis",
+        "bu i utlandet helt eller delvis",
 
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
