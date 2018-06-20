@@ -22,21 +22,21 @@
     "uttaksplan.planleggerinfo.lukk": "Lukk informasjon",
     "uttaksplan.planleggerinfo.apne": "Les om begrensninger i planleggeren",
     "uttaksplan.knapp.vispermisjonsplan": "Vis planen",
-    "uttaksplan.stonadskonto.fedrekvote": "fedrekvote",
-    "uttaksplan.stonadskonto.fellesperiode": "fellesperiode",
+    "uttaksplan.stonadskonto.fedrekvote": "fars del",
+    "uttaksplan.stonadskonto.fellesperiode": "fellesdel",
     "uttaksplan.stonadskonto.foreldrepenger": "foreldrepenger",
     "uttaksplan.tittel.introtekst":
         "Velkommen til foreldrepengenplanleggeren. Her kan dere planlegge hvordan dere vil ta ut perioden med foreldrepenger når dere venter barn.",
     "uttaksplan.periodedialog.UTSETTELSE.tittel": "Legg til utsettelse",
     "uttaksplan.periodedialog.uttak.tittel": "Legg til periode",
 
-    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til uttak",
-    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre uttak",
+    "uttaksplan.uttaksperiodeskjema.tittel": "Legg til periode",
+    "uttaksplan.uttaksperiodeskjema.endre.tittel": "Endre periode",
     "uttaksplan.uttaksperiodeskjema.startdato.sporsmal": "Startdato",
     "uttaksplan.uttaksperiodeskjema.sluttdato.sporsmal": "Sluttdato",
     "uttaksplan.uttaksperiodeskjema.knapp.leggtil": "Legg til",
     "uttaksplan.uttaksperiodeskjema.knapp.oppdater": "Oppdater",
-    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern uttak",
+    "uttaksplan.uttaksperiodeskjema.knapp.fjern": "Fjern periode",
 
     "uttaksplan.utsettelseskjema.tittel": "Legg til utsettelse",
     "uttaksplan.utsettelseskjema.tittel.endre": "Utsettelse i foreldrepengene",
@@ -46,7 +46,7 @@
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
     "uttaksplan.utsettelseskjema.årsak.arbeid": "Arbeide heltid",
     "uttaksplan.utsettelseskjema.hvem.sporsmal":
-        "Hvem skal ha utsettelse i foreldrepengene?",
+        "Hvem skal utsette foreldrepengene?",
     "uttaksplan.utsettelseskjema.hvem.sporsmal.ferie": "Hvem skal ta ut ferie?",
     "uttaksplan.utsettelseskjema.hvem.sporsmal.arbeid": "Hvem skal arbeide?",
     "uttaksplan.utsettelseskjema.startdato.sporsmal": "Startdato",
@@ -78,11 +78,10 @@
         "Du har lagt inn {ukerOgDager}. For å ha utsettelse lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år.",
 
     "uttaksplan.skjema.fordeling.reduser.tooltip":
-        "En uke mindre fellesperiode til {navn}",
-    "uttaksplan.skjema.fordeling.sporsmal":
-        "Hvordan vil dere dele fellesperioden?",
+        "En uke mindre fellesdel til {navn}",
+    "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
     "uttaksplan.skjema.fordeling.aria.fordeling":
-        "Hvor mange uker av fellesperioden skal {navnForelder1} ha av totalt {ukerFellesperiode} uker?",
+        "Hvor mange uker av fellesdelen skal {navnForelder1} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.label.forelder1": "Mor",
     "uttaksplan.skjema.label.forelder2": "Far eller medmor",
     "uttaksplan.skjema.label.termindato": "Termindato",
@@ -99,7 +98,7 @@
     "uttaksplan.skjema.veiledning.sats":
         "Valget av antall uker gjelder dere begge. Den totale utbetalingen blir høyere ved å velge 100 prosent.",
     "uttaksplan.skjema.fordeling.veiledning":
-        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} har fellesperiode er det aktivitetskrav til {navnForelder1}.",
+        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnForelder1}.",
     "uttaksplan.skjema.fordeling.veiledning.lenketekst":
         "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.uker":
@@ -125,7 +124,7 @@
         "Siste dag med foreldrepenger",
     "uttaksplan.tidslinje.innslag.foreldrepenger": "Foreldrepenger {navn}",
     "uttaksplan.tidslinje.aktivitetskrav":
-        "Når {navnForelder2} tar ut foreldrepenger i fellesperioden, stilles det krav til {navnForelder1}s aktivitet.",
+        "Når {navnForelder2} tar ut foreldrepenger fra fellesdelen, stilles det krav til {navnForelder1}s aktivitet.",
     "uttaksplan.tidslinje.visdetaljer": "Flere detaljer",
     "uttaksplan.tidslinje.skjuldetaljer": "Skjul detaljer",
     "uttaksplan.utsettelse.årsak.ferie": "ferie",
@@ -158,10 +157,10 @@
     "timeline.range.aria": "Fra {from} til {to}",
     "timeline.range.visible": "{from} - {to}",
 
-    "stønadskontotype.MØDREKVOTE": "Mødrekvote",
-    "stønadskontotype.FEDREKVOTE": "Fedrekvote",
+    "stønadskontotype.MØDREKVOTE": "Mors del",
+    "stønadskontotype.FEDREKVOTE": "Fars del",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
-    "stønadskontotype.FELLESPERIODE": "Fellesperiode",
+    "stønadskontotype.FELLESPERIODE": "Felles del",
     "stønadskontotype.FORELDREPENGER_FØR_FOEDSEL": "Foreldrepenger før fødsel",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",

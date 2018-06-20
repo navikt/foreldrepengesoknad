@@ -32,12 +32,7 @@ const UtsettelsesårsakSpørsmål: React.StatelessComponent<Props> = ({
                 values={{
                     navn:
                         forelder === 'forelder1'
-                            ? navnForelder1 ||
-                              intl
-                                  .formatMessage({
-                                      id: 'uttaksplan.forelder1'
-                                  })
-                                  .toLowerCase()
+                            ? 'du'
                             : navnForelder2 ||
                               intl
                                   .formatMessage({

@@ -38,6 +38,7 @@ import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
 import '../styles/uttaksplan.less';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface StateProps {
     form: UttaksplanFormState;
@@ -64,12 +65,12 @@ class UttaksplanMain extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
-        this.opprettPerioder = this.opprettPerioder.bind(this);
+        // this.opprettPerioder = this.opprettPerioder.bind(this);
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
     componentDidMount() {
-        this.opprettPerioder();
+        // this.opprettPerioder();
     }
 
     handleItemClick(item: TimelineItem) {
@@ -132,6 +133,12 @@ class UttaksplanMain extends React.Component<Props> {
 
         return (
             <React.Fragment>
+                <div className="blokk-m">
+                    <Veilederinfo type="info">
+                        Her setter du opp hvordan dere ønsker å ta ut
+                        foreldrepengene. Henrik må sende inn egen søknad.
+                    </Veilederinfo>
+                </div>
                 <div className="blokk-m no-print">
                     <UttaksplanSkjema
                         dekningsgrad={form.dekningsgrad}
@@ -160,7 +167,7 @@ class UttaksplanMain extends React.Component<Props> {
                     />
                     <div className="m-textCenter">
                         <Knapp onClick={() => this.opprettPerioder()}>
-                            Opprett perioder
+                            Lag forslag til tidsplan
                         </Knapp>
                     </div>
                 </div>
@@ -168,6 +175,12 @@ class UttaksplanMain extends React.Component<Props> {
                     periode.perioder && (
                         <div className="tidsplan">
                             <div className="blokk-m">
+                                <h2>Planen</h2>
+                                <p>
+                                    Dere kan endre periodene ved å velge dem,
+                                    eller legge til nye perioder eller
+                                    utsettelser.
+                                </p>
                                 <PeriodeTimeline
                                     perioder={periode.perioder}
                                     uttaksgrunnlag={uttaksgrunnlag}
@@ -196,7 +209,7 @@ class UttaksplanMain extends React.Component<Props> {
                                                 )
                                             )
                                         }>
-                                        Legg til uttak
+                                        Legg til periode
                                     </Knapp>
                                     <Knapp
                                         onClick={() =>
