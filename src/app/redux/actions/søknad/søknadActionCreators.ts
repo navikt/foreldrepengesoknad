@@ -18,7 +18,7 @@ import {
     ForeldreansvarBarnPartial
 } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
-import { UtenlandsoppholdPartial } from '../../../types/søknad/Utenlandsopphold';
+import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
@@ -39,7 +39,7 @@ const updateAnnenForelder = (payload: AnnenForelderPartial) => ({
 });
 
 const updateUtenlandsopphold = (
-    payload: UtenlandsoppholdPartial
+    payload: InformasjonOmUtenlandsoppholdPartial
 ): UpdateUtenlandsopphold => ({
     type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
     payload

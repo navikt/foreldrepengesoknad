@@ -16,9 +16,9 @@ const getDefaultState = (): SøknadPartial => {
         barn: {
             fødselsdatoer: []
         },
-        utenlandsopphold: {
-            tidligerePerioder: [],
-            senerePerioder: []
+        informasjonOmUtenlandsopphold: {
+            tidligereOpphold: [],
+            senereOpphold: []
         },
         søker: {
             erAleneOmOmsorg: false,
@@ -43,8 +43,8 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
         case SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD:
             return {
                 ...state,
-                utenlandsopphold: {
-                    ...state.utenlandsopphold,
+                informasjonOmUtenlandsopphold: {
+                    ...state.informasjonOmUtenlandsopphold,
                     ...action.payload
                 }
             };

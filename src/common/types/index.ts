@@ -8,3 +8,13 @@ export interface Tidsperiode {
     startdato: Date;
     sluttdato: Date;
 }
+
+export interface TidsperiodeMedValgfriSluttdato {
+    startdato: Date;
+    sluttdato?: Date;
+}
+
+export type TidsperiodePartial = Partial<Tidsperiode>;
+export type TidsperiodeMedValgfriSluttdatoPartial = Partial<
+    TidsperiodeMedValgfriSluttdato
+>;
