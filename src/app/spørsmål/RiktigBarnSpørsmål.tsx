@@ -14,7 +14,7 @@ interface RiktigBarnSpørsmålProps {
 
 type Props = RiktigBarnSpørsmålProps & InjectedIntlProps;
 
-const RiktigBarnSpørmål = (props: Props) => {
+const RiktigBarnSpørmål: React.StatelessComponent = (props: Props) => {
     const { onChange, søkersBarn, intl } = props;
     const createBarnOptions = () => {
         const barnRadioProps = søkersBarn.map((barn: SøkersBarn) => {
