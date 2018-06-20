@@ -94,7 +94,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                         {visBeholdVarighet && (
                             <Checkbox
                                 checked={beholdVarighet}
-                                label="Behold varigheten"
+                                label="Behold  antall dager"
                                 onChange={(evt) =>
                                     onChangeBeholdVarighet(evt.target.checked)
                                 }

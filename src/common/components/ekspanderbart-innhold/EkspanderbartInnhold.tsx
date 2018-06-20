@@ -15,6 +15,8 @@ export interface OwnProps {
     animert?: boolean;
     /** Om noe av innholdet er ekspandertbart */
     harEkspanderbartInnhold?: boolean;
+    /** unngå kutt på sidene ved animasjon */
+    bredBakgrunn?: boolean;
 }
 
 const EkspanderbartInnhold: React.StatelessComponent<OwnProps> = ({
@@ -22,6 +24,7 @@ const EkspanderbartInnhold: React.StatelessComponent<OwnProps> = ({
     animert = true,
     harEkspanderbartInnhold = false,
     erApen = false,
+    bredBakgrunn = false,
     ariaLive = 'off'
 }) => {
     const content = (
@@ -37,7 +40,8 @@ const EkspanderbartInnhold: React.StatelessComponent<OwnProps> = ({
             isOpened={erApen}
             springConfig={{ stiffness: 250, damping: 30 }}
             className={classnames('ekspanderbartInnhold', {
-                'ekspanderbartInnhold--apen': erApen
+                'ekspanderbartInnhold--apen': erApen,
+                'ekspanderbartInnhold--bredBakgrunn': bredBakgrunn
             })}
             hasNestedCollapse={harEkspanderbartInnhold}>
             {content}
