@@ -8,7 +8,9 @@ export enum ApiActionKeys {
 
     'SEND_SØKNAD_REQUEST' = 'sendSøknadRequest',
     'SEND_SØKNAD_SUCCESS' = 'sendSøknadSuccess',
-    'SEND_SØKNAD_FAILED' = 'sendSøknadFailed'
+    'SEND_SØKNAD_FAILED' = 'sendSøknadFailed',
+
+    'UPDATE_PERSON' = 'updatePerson'
 }
 
 interface GetPersonRequest {
@@ -40,10 +42,16 @@ interface SendSøknadFailed {
     error: any;
 }
 
+interface UpdatePerson {
+    type: ApiActionKeys.UPDATE_PERSON;
+    payload: any;
+}
+
 export type ApiActionTypes =
     | GetPersonRequest
     | GetPersonSuccess
     | GetPersonFailed
     | SendSøknadRequest
     | SendSøknadSuccess
-    | SendSøknadFailed;
+    | SendSøknadFailed
+    | UpdatePerson;
