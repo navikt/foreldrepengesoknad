@@ -38,7 +38,6 @@ const getInitialState = (): UttaksplanFormState => {
     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
 
     return {
-        dekningsgrad: '100%',
         ukerFellesperiode,
         fellesperiodeukerForelder1: ukerForelder1,
         fellesperiodeukerForelder2: ukerForelder2
