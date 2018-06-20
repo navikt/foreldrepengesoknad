@@ -40,15 +40,7 @@ interface OwnProps {
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
-    constructor(props: Props) {
-        super(props);
-        const { person, barn } = props;
-        this.state = {
-            annetBarn: this.harValgtAnnetBarn(barn, person)
-        };
-    }
-
-    harValgtAnnetBarn(barn: BarnPartial, person?: Person): boolean {
+    static harValgtAnnetBarn(barn: BarnPartial, person?: Person): boolean {
         if (person === undefined) {
             return false;
         }
@@ -57,6 +49,21 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
                 (søkersBarn: SøkersBarn) => !søkersBarn.checked
             ) && barn.erBarnetFødt !== undefined
         );
+    }
+
+    static harValgtSøkersBarn(person?: Person): boolean {
+        if (person === undefined) {
+            return false;
+        }
+        return person.barn.some((barn: SøkersBarn) => barn.checked);
+    }
+
+    constructor(props: Props) {
+        super(props);
+        const { person, barn } = props;
+        this.state = {
+            annetBarn: RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person)
+        };
     }
 
     genererRelasjonTilBarn(søkersBarn: SøkersBarn, barn: FødtBarn): void {
@@ -86,23 +93,40 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
             søknadActions.updateBarn({
                 fødselsdatoer: [],
                 antallBarn: 0,
-                erBarnetFødt: undefined
+                erBarnetFødt: undefined,
+                termindato: undefined,
+                terminbekreftelse: undefined,
+                fødselsattest: undefined
             })
         );
     }
 
     toggleAnnetBarn(person: Person): void {
+        const { dispatch } = this.props;
+        if (RelasjonTilBarnFødselSteg.harValgtSøkersBarn(person)) {
+            this.nullstillRelasjonerTilBarn();
+        }
+
         this.setState({ annetBarn: !this.state.annetBarn }, () => {
             if (this.state.annetBarn === true) {
                 person.barn.forEach(
                     (barn: SøkersBarn) => (barn.checked = false)
                 );
-                this.nullstillRelasjonerTilBarn();
+
+                dispatch(
+                    apiActionCreators.updatePerson({
+                        barn: person.barn
+                    })
+                );
             }
         });
     }
 
     toggleSøkersBarn(søkersBarn: SøkersBarn, person: Person): void {
+        if (this.state.annetBarn) {
+            this.nullstillRelasjonerTilBarn();
+        }
+
         this.setState({ annetBarn: false }, () => {
             const barn = this.props.barn as FødtBarn;
             const index = person.barn.indexOf(søkersBarn);
@@ -221,8 +245,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         renderFortsettKnapp:
-            (erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
-            (harTerminbekreftelseDato && terminbekreftelse.length > 0) ||
+            (RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person) &&
+                ((erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
+                    (harTerminbekreftelseDato &&
+                        terminbekreftelse.length > 0))) ||
             (person &&
                 person.barn.some(
                     (søkersBarn: SøkersBarn) => søkersBarn.checked
