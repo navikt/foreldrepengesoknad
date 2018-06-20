@@ -4,6 +4,9 @@
     "avbryt": "Avbryt",
     "leggtil": "Legg til",
 
+    "fraogmed": "Fra og med",
+    "tilogmed": "Til og med",
+
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
     "velkommen.ingress":
         "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
@@ -42,8 +45,6 @@
     "annenInntekt.modal.tittel": "Legg til inntekt",
     "annenInntekt.modal.select.spørsmål":
         "Jeg har hatt inntekt i forbindelse med...",
-    "annenInntekt.modal.fra.spørsmål": "Fra og med",
-    "annenInntekt.modal.til.spørsmål": "Til og med",
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
@@ -172,8 +173,6 @@
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
-    "utenlandsopphold.datoinput.fra": "Fra og med",
-    "utenlandsopphold.datoinput.til": "Til og med",
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
     "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
 
