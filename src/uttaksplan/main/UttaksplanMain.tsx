@@ -5,19 +5,15 @@ import {
     PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { getTidslinjeFraPerioder } from 'uttaksplan/utils/tidslinjeUtils';
-import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { Periode, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
-import Timeline from 'uttaksplan/components/timeline/Timeline';
 import {
     TimelineItem,
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
-import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import {
     setDekningsgrad,
     setFellesperiodeukerMor,
@@ -25,16 +21,8 @@ import {
     visPeriodeDialog,
     opprettPerioder
 } from 'uttaksplan/redux/actions';
-import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
-
-import { getTimelineItemsFromInnslag } from 'uttaksplan/utils/innslagUtils';
-import UttaksplanIkon, {
-    UttaksplanIkonKeys
-} from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-
-import '../styles/uttaksplan.less';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
@@ -48,12 +36,16 @@ import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 import Uttaksoversikt from 'uttaksplan/components/uttaksoversikt/Uttaksoversikt';
 import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
+import '../styles/uttaksplan.less';
+import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+
 export interface StateProps {
     form: UttaksplanFormState;
-    dekningsgrad: Dekningsgrad;
+    dekningsgrad?: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     ukerFellesperiode: number;
-    innslag: Tidslinjeinnslag[];
     periode: PeriodeState;
     visPermisjonsplan: boolean;
     manuellUttaksplan?: boolean;
@@ -64,6 +56,7 @@ interface OwnProps {
     søker: SøkerGrunnlag;
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
+    erBarnetFødt: boolean;
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -73,7 +66,8 @@ class UttaksplanMain extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
-        this.opprettPerioder = this.opprettPerioder.bind(this);
+        // this.opprettPerioder = this.opprettPerioder.bind(this);
+        this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
     componentDidMount() {
@@ -94,6 +88,15 @@ class UttaksplanMain extends React.Component<Props> {
             }
         }
     }
+    handlePeriodeClick(periode: Periode) {
+        if (periode.type === Periodetype.Utsettelse) {
+            this.props.dispatch(
+                visPeriodeDialog(Periodetype.Utsettelse, periode)
+            );
+        } else if (periode.type === Periodetype.Uttak) {
+            this.props.dispatch(visPeriodeDialog(Periodetype.Uttak, periode));
+        }
+    }
     opprettPerioder() {
         const {
             termindato,
@@ -104,162 +107,165 @@ class UttaksplanMain extends React.Component<Props> {
         } = this.props;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
-        dispatch(
-            opprettPerioder(
-                termindato,
-                dekningsgrad,
-                uttaksgrunnlag,
-                fellesperiodeukerForelder1,
-                fellesperiodeukerForelder2
-            )
-        );
+        if (dekningsgrad) {
+            dispatch(
+                opprettPerioder(
+                    termindato,
+                    dekningsgrad,
+                    uttaksgrunnlag,
+                    fellesperiodeukerForelder1,
+                    fellesperiodeukerForelder2
+                )
+            );
 
-        dispatch(visTidslinje(true));
+            dispatch(visTidslinje(true));
+        }
     }
     render() {
         const {
             uttaksgrunnlag,
             termindato,
+            erBarnetFødt,
             dekningsgrad,
-            innslag,
             periode,
             ukerFellesperiode,
             visPermisjonsplan,
             dispatch,
-            intl,
             form
         } = this.props;
 
+        const perioderOpprettet = periode.perioder.length > 0;
+
         return (
             <React.Fragment>
+                <div className="blokk-m">
+                    <Veilederinfo type="info">
+                        Her setter du opp hvordan dere ønsker å ta ut
+                        foreldrepengene. Henrik må sende inn egen søknad.
+                    </Veilederinfo>
+                </div>
                 <div className="blokk-m no-print">
-                    <UttaksplanSkjema
-                        dekningsgrad={form.dekningsgrad}
-                        fellesperiodeukerForelder1={
-                            form.fellesperiodeukerForelder1
-                        }
-                        navnForelder1={uttaksgrunnlag.søker.fornavn}
-                        navnForelder2={
-                            uttaksgrunnlag.annenForelder
-                                ? uttaksgrunnlag.annenForelder.fornavn
-                                : 'Forelder 2'
-                        }
-                        permisjonsregler={uttaksgrunnlag.permisjonsregler}
-                        ukerFellesperiode={ukerFellesperiode}
-                        onChangeDekningsgrad={(dg) =>
-                            dispatch(
-                                setDekningsgrad(
-                                    dg,
-                                    uttaksgrunnlag.permisjonsregler
+                    <div className="blokk-l">
+                        <UttaksplanSkjema
+                            dekningsgrad={form.dekningsgrad}
+                            fellesperiodeukerForelder1={
+                                form.fellesperiodeukerForelder1
+                            }
+                            navnForelder1={uttaksgrunnlag.søker.fornavn}
+                            navnForelder2={
+                                uttaksgrunnlag.annenForelder
+                                    ? uttaksgrunnlag.annenForelder.fornavn
+                                    : 'Forelder 2'
+                            }
+                            permisjonsregler={uttaksgrunnlag.permisjonsregler}
+                            ukerFellesperiode={ukerFellesperiode}
+                            onChangeDekningsgrad={(dg) =>
+                                dispatch(
+                                    setDekningsgrad(
+                                        dg,
+                                        uttaksgrunnlag.permisjonsregler
+                                    )
                                 )
-                            )
-                        }
-                        onChangeFordeling={(uker) =>
-                            dispatch(setFellesperiodeukerMor(uker))
-                        }
-                    />
-                    <div className="m-textCenter">
-                        <Knapp onClick={() => this.opprettPerioder()}>
-                            Opprett perioder
-                        </Knapp>
+                            }
+                            onChangeFordeling={(uker) =>
+                                dispatch(setFellesperiodeukerMor(uker))
+                            }
+                        />
                     </div>
                 </div>
-                {visPermisjonsplan &&
-                    periode.perioder && (
-                        <div className="tidsplan">
-                            <div className="blokk-m">
-                                <Timeline
-                                    items={getTimelineItemsFromInnslag(
-                                        innslag,
-                                        intl,
-                                        uttaksgrunnlag
-                                    )}
-                                    iconRenderer={(icon) => (
-                                        <UttaksplanIkon
-                                            ikon={icon as UttaksplanIkonKeys}
-                                        />
-                                    )}
-                                    onItemClick={(item: TimelineItem) => {
-                                        this.handleItemClick(item);
-                                    }}
-                                    durationRenderer={(dager: number) => (
-                                        <UkerOgDager
-                                            dager={dager}
-                                            visKunDager={true}
-                                        />
-                                    )}
-                                    rangeRenderer={(
-                                        startdato: Date,
-                                        sluttdato: Date
-                                    ) => (
-                                        <TidsperiodeTekst
-                                            tidsperiode={{
-                                                startdato,
-                                                sluttdato
-                                            }}
-                                            visSluttdato={true}
-                                        />
-                                    )}
+
+                {dekningsgrad && (
+                    <div className="tidsplan">
+                        <EkspanderbartInnhold
+                            erApen={perioderOpprettet}
+                            bredBakgrunn={true}>
+                            <div className="blokkPad-m">
+                                <h2 className="blokkPad-xxs">Planen</h2>
+                                <p className="blokkPad-m">
+                                    Du kan endre periodene ved å velge dem,
+                                    eller legge til nye perioder og/eller
+                                    utsettelser.
+                                </p>
+                                <PeriodeTimeline
+                                    perioder={periode.perioder}
+                                    uttaksgrunnlag={uttaksgrunnlag}
+                                    termindato={termindato}
+                                    erBarnetFødt={erBarnetFødt}
+                                    onPeriodeClick={this.handlePeriodeClick}
                                 />
                             </div>
+                        </EkspanderbartInnhold>
 
-                            <div className="blokk-m">
-                                <Uttaksoversikt
-                                    uttak={beregnAlleUttak(
-                                        periode.perioder,
-                                        uttaksgrunnlag
-                                    )}
-                                />
-                            </div>
-
-                            <div className="m-textCenter">
-                                <Knapperad>
-                                    <Knapp
-                                        onClick={() =>
-                                            dispatch(
-                                                visPeriodeDialog(
-                                                    Periodetype.Uttak
-                                                )
-                                            )
-                                        }>
-                                        Legg til uttak
-                                    </Knapp>
-                                    <Knapp
-                                        onClick={() =>
-                                            dispatch(
-                                                visPeriodeDialog(
-                                                    Periodetype.Utsettelse
-                                                )
-                                            )
-                                        }>
-                                        Legg til utsettelse
-                                    </Knapp>
-                                </Knapperad>
-                            </div>
-
-                            <UttaksperiodeDialog
-                                uttaksgrunnlag={uttaksgrunnlag}
-                                termindato={termindato}
-                                dekningsgrad={dekningsgrad}
-                            />
-
-                            <UtsettelsesperiodeDialog
-                                navnForelder1={uttaksgrunnlag.søker.fornavn}
-                                navnForelder2={
-                                    uttaksgrunnlag.annenForelder
-                                        ? uttaksgrunnlag.annenForelder.fornavn
-                                        : 'Forelder 2'
-                                }
-                                termindato={termindato}
-                                permisjonsregler={
-                                    uttaksgrunnlag.permisjonsregler
-                                }
+                        <div className="blokkPad-m">
+                            <Uttaksoversikt
+                                uttak={beregnAlleUttak(
+                                    periode.perioder,
+                                    uttaksgrunnlag
+                                )}
                             />
                         </div>
-                    )}
+
+                        {!perioderOpprettet && (
+                            <div className="m-textCenter">
+                                <Knapp onClick={() => this.opprettPerioder()}>
+                                    Lag forslag til tidsplan
+                                </Knapp>
+                            </div>
+                        )}
+
+                        {visPermisjonsplan &&
+                            periode.perioder && (
+                                <div>
+                                    <div className="m-textCenter">
+                                        <Knapperad>
+                                            <Knapp
+                                                onClick={() =>
+                                                    dispatch(
+                                                        visPeriodeDialog(
+                                                            Periodetype.Uttak
+                                                        )
+                                                    )
+                                                }>
+                                                Legg til periode
+                                            </Knapp>
+                                            <Knapp
+                                                onClick={() =>
+                                                    dispatch(
+                                                        visPeriodeDialog(
+                                                            Periodetype.Utsettelse
+                                                        )
+                                                    )
+                                                }>
+                                                Legg til utsettelse
+                                            </Knapp>
+                                        </Knapperad>
+                                    </div>
+                                </div>
+                            )}
+                    </div>
+                )}
+
+                {dekningsgrad && (
+                    <UttaksperiodeDialog
+                        uttaksgrunnlag={uttaksgrunnlag}
+                        termindato={termindato}
+                        dekningsgrad={dekningsgrad}
+                    />
+                )}
+
+                <UtsettelsesperiodeDialog
+                    navnForelder1={uttaksgrunnlag.søker.fornavn}
+                    navnForelder2={
+                        uttaksgrunnlag.annenForelder
+                            ? uttaksgrunnlag.annenForelder.fornavn
+                            : 'Forelder 2'
+                    }
+                    termindato={termindato}
+                    permisjonsregler={uttaksgrunnlag.permisjonsregler}
+                />
                 <DevHelper
                     termindato={termindato}
-                    dekningsgrad={dekningsgrad}
+                    dekningsgrad={dekningsgrad || '100%'}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                     fellesperiodeukerForelder1={form.fellesperiodeukerForelder1}
                     fellesperiodeukerForelder2={form.fellesperiodeukerForelder2}
@@ -275,11 +281,11 @@ const mapStateToProps = (
 ): StateProps => {
     const { termindato } = props;
     const { periode, view, form } = appState.uttaksplan;
-    const dekningsgrad = form.dekningsgrad || '100%';
+    const dekningsgrad = form.dekningsgrad;
 
     const uttaksgrunnlag = getUttaksgrunnlag(
         termindato,
-        dekningsgrad,
+        dekningsgrad || '100%',
         props.søker,
         props.antallBarn,
         props.annenForelder
@@ -287,18 +293,12 @@ const mapStateToProps = (
 
     const ukerFellesperiode = getAntallUkerFellesperiode(
         uttaksgrunnlag.permisjonsregler,
-        dekningsgrad
-    );
-
-    const innslag: Tidslinjeinnslag[] = getTidslinjeFraPerioder(
-        appState.uttaksplan.periode.perioder,
-        termindato,
-        dekningsgrad
+        dekningsgrad || '100%'
     );
 
     const visPermisjonsplan =
-        innslag &&
-        innslag.length > 0 &&
+        periode.perioder &&
+        periode.perioder.length > 0 &&
         dekningsgrad !== undefined &&
         termindato !== undefined &&
         view.visTidslinje === true;
@@ -307,7 +307,6 @@ const mapStateToProps = (
         form,
         dekningsgrad,
         uttaksgrunnlag,
-        innslag,
         periode,
         ukerFellesperiode,
         manuellUttaksplan: periode.manuellOppdatering,

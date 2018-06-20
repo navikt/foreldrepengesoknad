@@ -52,6 +52,7 @@ class UttaksplanSteg extends React.Component<Props> {
                 onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     termindato={(barn as UfødtBarn).termindato}
+                    erBarnetFødt={barn.erBarnetFødt}
                     annenForelder={
                         annenForelder.skalHaForeldrepenger ||
                         annenForelder.harRettPåForeldrepenger

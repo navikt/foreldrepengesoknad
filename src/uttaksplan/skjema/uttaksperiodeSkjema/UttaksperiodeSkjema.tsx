@@ -186,7 +186,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 {visStønadskontoSpørsmål && (
                     <div className="blokkPad-s">
                         <StønadskontoSpørsmål
-                            spørsmål="Hvilken type uttak gjelder det?"
+                            spørsmål="Hvilken del av foreldrepengene skal brukes?"
                             stønadskonto={stønadskonto}
                             tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
                             onChange={(konto) =>
@@ -201,7 +201,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                         <HvemGjelderPeriodenSpørsmål
                             navnForelder1={navnForelder1}
                             navnForelder2={navnForelder2}
-                            spørsmål="Hvem gjelder perioden?"
+                            spørsmål="Hvem skal ha perioden?"
                             forelder={forelder}
                             onChange={(f) => this.setState({ forelder: f })}
                         />

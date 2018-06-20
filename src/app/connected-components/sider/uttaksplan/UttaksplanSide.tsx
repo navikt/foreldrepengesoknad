@@ -85,6 +85,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                     }
                     termindato={skjema.dato}
                     antallBarn={parseInt(skjema.antallBarn, 10)}
+                    erBarnetFødt={false}
                     onChange={(perioder) => this.setState({ perioder })}
                 />
             </Applikasjonsside>

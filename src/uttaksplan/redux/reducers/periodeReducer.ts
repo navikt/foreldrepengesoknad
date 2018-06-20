@@ -3,7 +3,6 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { PeriodeState, PeriodeStatePartial } from '../types';
-import { mockUtsettelser } from 'uttaksplan/redux/reducers/mockdata';
 import { opprettUttaksperioder } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
@@ -11,7 +10,7 @@ import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
 const defaultState: PeriodeState = {
     dialogErApen: false,
     valgtPeriode: undefined,
-    perioder: mockUtsettelser,
+    perioder: [],
     manuellOppdatering: true
 };
 

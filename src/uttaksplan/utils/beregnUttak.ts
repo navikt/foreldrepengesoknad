@@ -75,7 +75,7 @@ export function beregnAlleUttak(
         );
         uttak.push(
             getBeregnetUttak(
-                'fellesdel',
+                'Fellesdel',
                 perioder,
                 [StønadskontoType.Fellesperiode],
                 uttaksgrunnlag.tilgjengeligUttak
