@@ -7,27 +7,6 @@ import { UttaksplanFormState, UttaksplanFormStatePartial } from '../types';
 import { FellesperiodeFordeling } from '../../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
 
-// const getDefaultState = (
-//     dato: Date,
-//     dekningsgrad: Dekningsgrad
-// ): UttaksplanFormState => {
-//     const permisjonsregler = getPermisjonsregler(dato);
-//     const ukerFellesperiode = getAntallUkerFellesperiode(
-//         permisjonsregler,
-//         dekningsgrad
-//     );
-//     const ukerForelder1 = Math.round(ukerFellesperiode / 2);
-//     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
-
-//     return {
-//         dekningsgrad: undefined,
-//         ukerFellesperiode,
-//         fellesperiodeukerForelder1: ukerForelder1,
-//         fellesperiodeukerForelder2: ukerForelder2,
-//         permisjonsregler
-//     };
-// };
-
 const getInitialState = (): UttaksplanFormState => {
     const permisjonsregler = getPermisjonsregler(new Date());
     const ukerFellesperiode = getAntallUkerFellesperiode(
@@ -38,6 +17,7 @@ const getInitialState = (): UttaksplanFormState => {
     const ukerForelder2 = ukerFellesperiode - ukerForelder1;
 
     return {
+        dekningsgrad: '100%',
         ukerFellesperiode,
         fellesperiodeukerForelder1: ukerForelder1,
         fellesperiodeukerForelder2: ukerForelder2

@@ -208,14 +208,20 @@
         left: calc(-1rem - 8px);
     }
 
+    &__titleAndDuration {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: stretch;
+    }
     &__title {
-        display: inline-block;
         font-size: 1rem;
-        margin: 0;
-        padding-right: 0.5rem;
+        margin: 0.3rem 0;
+        flex-grow: 2;
     }
     &__duration {
-        display: inline-block;
+        position: absolute;
+        right: 0.85rem;
+        top: 0.1rem;
     }
     .timelineIcons {
         position: absolute;
