@@ -1,35 +1,41 @@
 import * as React from 'react';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
-import { Dekningsgrad, Permisjonsregler } from 'uttaksplan/types';
+import { Dekningsgrad } from 'uttaksplan/types';
 import AktivitetskravInfo from 'uttaksplan/components/content/AktivitetskravInfo';
 import DekningsgradSpørsmål from '../spørsmål/DekningsgradSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../spørsmål/FordelingFellesperiodeSpørsmål';
 
 export interface Props {
-    navnForelder1: string;
-    navnForelder2: string;
-    ukerFellesperiode: number;
-    fellesperiodeukerForelder1: number;
-    dekningsgrad?: Dekningsgrad;
-    permisjonsregler: Permisjonsregler;
+    form: UttaksplanFormState;
+    uttaksgrunnlag: Uttaksgrunnlag;
     onChangeDekningsgrad: (dekningsgrad: Dekningsgrad) => void;
     onChangeFordeling: (uker: number) => void;
 }
 
 import './uttaksplanSkjema.less';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { UttaksplanFormState } from 'uttaksplan/redux/types';
 
 class UttaksplanSkjema extends React.Component<Props, {}> {
     render() {
         const {
-            navnForelder1,
-            navnForelder2,
-            dekningsgrad,
-            ukerFellesperiode,
-            fellesperiodeukerForelder1,
+            form,
+            uttaksgrunnlag,
             onChangeDekningsgrad,
-            permisjonsregler,
             onChangeFordeling
         } = this.props;
+
+        const {
+            dekningsgrad,
+            ukerFellesperiode,
+            fellesperiodeukerForelder1
+        } = form;
+        const { permisjonsregler } = uttaksgrunnlag;
+        const navnForelder1 = uttaksgrunnlag.søker.fornavn;
+        const navnForelder2 = uttaksgrunnlag.annenForelder
+            ? uttaksgrunnlag.annenForelder.fornavn
+            : 'Forelder 2';
+
         return (
             <React.Fragment>
                 <div className="blokk-m">
