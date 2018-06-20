@@ -13,10 +13,10 @@ import {
 import { Språkkode } from 'common/intl/types';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import DatoInput from 'common/components/dato-input/DatoInput';
-import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
+import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 
 export interface UtenlandsoppholdModalProps extends ModalProps {
     type: UtenlandsoppholdType;
@@ -125,46 +125,11 @@ class UtenlandsoppholdModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        render={() => (
-                            <DatoInput
-                                id="fraDatoInput"
-                                label={getMessage(
-                                    intl,
-                                    `utenlandsopphold.datoinput.fra`
-                                )}
-                                onChange={(startdato: Date) => {
-                                    this.updateOpphold({
-                                        tidsperiode: {
-                                            ...this.getTidsperiode(),
-                                            startdato
-                                        }
-                                    });
-                                }}
-                                dato={this.getTidsperiodeDate('startdato')}
-                            />
-                        )}
-                    />
-
-                    <Spørsmål
-                        render={() => (
-                            <DatoInput
-                                id="tilDatoInput"
-                                label={getMessage(
-                                    intl,
-                                    `utenlandsopphold.datoinput.til`
-                                )}
-                                onChange={(sluttdato: Date) => {
-                                    this.updateOpphold({
-                                        tidsperiode: {
-                                            ...this.getTidsperiode(),
-                                            sluttdato
-                                        }
-                                    });
-                                }}
-                                dato={this.getTidsperiodeDate('sluttdato')}
-                            />
-                        )}
+                    <TidsperiodeBolk
+                        tidsperiode={opphold.tidsperiode || {}}
+                        onChange={(
+                            tidsperiode: TidsperiodeMedValgfriSluttdato
+                        ) => this.updateOpphold({ tidsperiode })}
                     />
 
                     <Knapperad>

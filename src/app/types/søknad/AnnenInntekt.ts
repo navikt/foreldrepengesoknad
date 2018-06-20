@@ -26,4 +26,16 @@ export interface AnnenInntektPartialInterface {
     vedlegg: Attachment[];
 }
 
+interface Arbeidsforhold {
+    navnPåArbeidsgiver: string;
+    tidsperiode: TidsperiodeMedValgfriSluttdato;
+}
+
+export interface FrilansInntekt extends AnnenInntekt {
+    driverFosterhjem: boolean;
+    harJobbetForNærVennEllerFamilieSiste12Mnd: boolean;
+    nærVennEllerFamilieArbeidsforholdSiste12Mnd: Arbeidsforhold[];
+}
+
 export type AnnenInntektPartial = Partial<AnnenInntektPartialInterface>;
+export type FrilansInntektPartial = Partial<FrilansInntekt>;
