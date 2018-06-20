@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdagUtil, tidsperioden } from './dataUtils';
+import { uttaksdagUtil, tidsperioden, periodene } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -11,6 +11,7 @@ import {
     Periodetype
 } from '../types';
 import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export function getPermisjonStartdato(
     termindato: Date,
@@ -28,6 +29,36 @@ export function getSisteMuligePermisjonsdag(
     return uttaksdagUtil(
         addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
     ).denneEllerNeste();
+}
+
+export function getSistePermisjonsdag(
+    termindato: Date,
+    dekningsgrad: Dekningsgrad,
+    perioder: Periode[],
+    uttaksgrunnlag: Uttaksgrunnlag
+): Date | undefined {
+    if (perioder.length === 0) {
+        return undefined;
+    }
+    const uttaksperioder = periodene(perioder).getUttak();
+    const utsettelser = periodene(perioder).getUtsettelser();
+    const uttaksdagerBruktTotalt = periodene(
+        uttaksperioder
+    ).getAntallUttaksdager();
+    const utsatteDager = periodene(perioder).getAntallUtsatteDager();
+    const totaltTilgjengeligUttak =
+        getAntallUkerTotalt(uttaksgrunnlag.permisjonsregler, dekningsgrad) * 5;
+    const registrerteUttak = periodene(perioder).getAntallUttaksdager();
+    const gjenståendeUttaksdager = totaltTilgjengeligUttak - registrerteUttak;
+    console.log(gjenståendeUttaksdager, utsettelser);
+    return uttaksdagUtil(termindato).leggTil(
+        uttaksdagerBruktTotalt -
+            uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
+                5 -
+            1 +
+            gjenståendeUttaksdager +
+            utsatteDager
+    );
 }
 
 /**

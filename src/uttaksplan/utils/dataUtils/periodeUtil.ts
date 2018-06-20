@@ -24,6 +24,7 @@ export const periodene = (perioder: Periode[]) => ({
     getUtsettelser: () => getUtsettelser(perioder),
     getAntallUttaksdager: (konto?: StønadskontoType) =>
         getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
+    getAntallUtsatteDager: () => getAntallUtsatteDager(perioder),
     getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
         getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -44,7 +45,8 @@ export const periodene = (perioder: Periode[]) => ({
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
     forskyvPerioder: (uttaksdager: number) =>
         forskyvPerioder(perioder, uttaksdager),
-    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode)
+    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode),
+    sort: () => perioder.sort(sorterPerioder)
 });
 
 export const perioden = (periode: Periode) => ({
@@ -418,6 +420,22 @@ function getAntallUttaksdagerIPerioderOgKonto(
         }
         return dager;
     }, 0);
+}
+
+/**
+ * Summerer opp antall uttaksdager i perioder, og evt. for gitt StønadstypeKonto
+ * @param perioder
+ * @param konto
+ */
+function getAntallUtsatteDager(perioder: Periode[]): number {
+    return getUtsettelser(perioder).reduce(
+        (dager: number, periode: Utsettelsesperiode) => {
+            return (
+                dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+            );
+        },
+        0
+    );
 }
 
 /**

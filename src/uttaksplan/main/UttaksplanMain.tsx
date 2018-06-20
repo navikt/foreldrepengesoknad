@@ -5,8 +5,7 @@ import {
     PeriodeState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { Periode, Periodetype, Dekningsgrad } from 'uttaksplan/types';
-import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
+import { Periode, Periodetype } from 'uttaksplan/types';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
@@ -43,11 +42,8 @@ import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/Ekspan
 
 export interface StateProps {
     form: UttaksplanFormState;
-    dekningsgrad?: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
-    ukerFellesperiode: number;
     periode: PeriodeState;
-    visPermisjonsplan: boolean;
     manuellUttaksplan?: boolean;
 }
 
@@ -66,13 +62,13 @@ class UttaksplanMain extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleItemClick = this.handleItemClick.bind(this);
-        // this.opprettPerioder = this.opprettPerioder.bind(this);
+        this.opprettPerioder = this.opprettPerioder.bind(this);
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
-    componentDidMount() {
-        // this.opprettPerioder();
-    }
+    // componentDidMount() {
+    //     this.opprettPerioder();
+    // }
 
     handleItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
@@ -98,13 +94,8 @@ class UttaksplanMain extends React.Component<Props> {
         }
     }
     opprettPerioder() {
-        const {
-            termindato,
-            dekningsgrad,
-            dispatch,
-            uttaksgrunnlag,
-            form
-        } = this.props;
+        const { termindato, dispatch, uttaksgrunnlag, form } = this.props;
+        const { dekningsgrad } = form;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
         if (dekningsgrad) {
@@ -126,15 +117,13 @@ class UttaksplanMain extends React.Component<Props> {
             uttaksgrunnlag,
             termindato,
             erBarnetFødt,
-            dekningsgrad,
             periode,
-            ukerFellesperiode,
-            visPermisjonsplan,
             dispatch,
             form
         } = this.props;
 
         const perioderOpprettet = periode.perioder.length > 0;
+        const dekningsgrad = form.dekningsgrad;
 
         return (
             <React.Fragment>
@@ -147,18 +136,8 @@ class UttaksplanMain extends React.Component<Props> {
                 <div className="blokk-m no-print">
                     <div className="blokk-l">
                         <UttaksplanSkjema
-                            dekningsgrad={form.dekningsgrad}
-                            fellesperiodeukerForelder1={
-                                form.fellesperiodeukerForelder1
-                            }
-                            navnForelder1={uttaksgrunnlag.søker.fornavn}
-                            navnForelder2={
-                                uttaksgrunnlag.annenForelder
-                                    ? uttaksgrunnlag.annenForelder.fornavn
-                                    : 'Forelder 2'
-                            }
-                            permisjonsregler={uttaksgrunnlag.permisjonsregler}
-                            ukerFellesperiode={ukerFellesperiode}
+                            form={form}
+                            uttaksgrunnlag={uttaksgrunnlag}
                             onChangeDekningsgrad={(dg) =>
                                 dispatch(
                                     setDekningsgrad(
@@ -180,16 +159,17 @@ class UttaksplanMain extends React.Component<Props> {
                             erApen={perioderOpprettet}
                             bredBakgrunn={true}>
                             <div className="blokkPad-m">
-                                <h2 className="blokkPad-xxs">Planen</h2>
-                                <p className="blokkPad-m">
+                                <h2 className="tidsplan__tittel">Planen</h2>
+                                <p className="blokkPad-s">
                                     Du kan endre periodene ved å velge dem,
                                     eller legge til nye perioder og/eller
                                     utsettelser.
                                 </p>
                                 <PeriodeTimeline
+                                    termindato={termindato}
+                                    dekningsgrad={dekningsgrad}
                                     perioder={periode.perioder}
                                     uttaksgrunnlag={uttaksgrunnlag}
-                                    termindato={termindato}
                                     erBarnetFødt={erBarnetFødt}
                                     onPeriodeClick={this.handlePeriodeClick}
                                 />
@@ -213,8 +193,8 @@ class UttaksplanMain extends React.Component<Props> {
                             </div>
                         )}
 
-                        {visPermisjonsplan &&
-                            periode.perioder && (
+                        {dekningsgrad !== undefined &&
+                            perioderOpprettet && (
                                 <div>
                                     <div className="m-textCenter">
                                         <Knapperad>
@@ -280,7 +260,7 @@ const mapStateToProps = (
     props: OwnProps
 ): StateProps => {
     const { termindato } = props;
-    const { periode, view, form } = appState.uttaksplan;
+    const { periode, form } = appState.uttaksplan;
     const dekningsgrad = form.dekningsgrad;
 
     const uttaksgrunnlag = getUttaksgrunnlag(
@@ -291,26 +271,11 @@ const mapStateToProps = (
         props.annenForelder
     );
 
-    const ukerFellesperiode = getAntallUkerFellesperiode(
-        uttaksgrunnlag.permisjonsregler,
-        dekningsgrad || '100%'
-    );
-
-    const visPermisjonsplan =
-        periode.perioder &&
-        periode.perioder.length > 0 &&
-        dekningsgrad !== undefined &&
-        termindato !== undefined &&
-        view.visTidslinje === true;
-
     return {
         form,
-        dekningsgrad,
         uttaksgrunnlag,
         periode,
-        ukerFellesperiode,
-        manuellUttaksplan: periode.manuellOppdatering,
-        visPermisjonsplan
+        manuellUttaksplan: periode.manuellOppdatering
     };
 };
 
