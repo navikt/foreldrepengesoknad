@@ -26,13 +26,13 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
             onChange
         } = this.props;
 
-        const cls = classnames('checkboksPanelWrapper', {
-            'checkboksPanelWrapper--twoColumns': twoColumns === true
-        });
-
         if (checkboxes === undefined) {
             return null;
         }
+
+        const cls = classnames('checkboksPanelWrapper', {
+            'checkboksPanelWrapper--twoColumns': twoColumns === true
+        });
 
         return (
             <div className="checkboksPanelGruppe">
