@@ -1,5 +1,5 @@
 interface Arbeidsforhold {
-    navn: string;
+    arbeidsgiverNavn: string;
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;
     fom: Date;
