@@ -13,9 +13,10 @@ import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
-import Søker, { FrilansInformasjon } from '../../../types/søknad/Søker';
+import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
 import Bolk from '../../../components/layout/Bolk';
+import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;

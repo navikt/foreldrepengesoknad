@@ -1,5 +1,6 @@
 import { SøkerRolle } from './Søknad';
 import { AnnenInntekt } from './AnnenInntekt';
+import { FrilansInformasjon } from './FrilansInformasjon';
 
 export interface Søker {
     rolle: SøkerRolle;
@@ -11,13 +12,6 @@ export interface Søker {
     andreInntekterSiste10Mnd: AnnenInntekt[];
 }
 
-export interface FrilansInformasjon {
-    jobberFremdelesSomFrilans: boolean;
-    driverFosterhjem: boolean;
-    harJobbetForNærVennEllerFamilieSiste10Mnd: boolean;
-}
-
 export type SøkerPartial = Partial<Søker>;
-export type FrilansInformasjonPartial = Partial<FrilansInformasjon>;
 
 export default Søker;

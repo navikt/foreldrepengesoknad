@@ -93,7 +93,10 @@
         "Har du jobbet som frilanser de siste 10 månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
         "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
+    "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
+        "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
+    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
 
     "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",

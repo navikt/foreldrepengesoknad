@@ -4,12 +4,10 @@ import Bolk from '../components/layout/Bolk';
 import DriverDuFosterhjemSpørsmål from '../spørsmål/DriverDuFosterhjemSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
-import {
-    default as Søker,
-    FrilansInformasjonPartial,
-    SøkerPartial
-} from '../types/søknad/Søker';
+import Søker, { SøkerPartial } from '../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
+import { FrilansInformasjonPartial } from '../types/søknad/FrilansInformasjon';
+import FrilansOppdragBolk from './FrilansOppdragBolk';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -22,6 +20,9 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
         super(props);
         this.handleSøkerOnChange = this.handleSøkerOnChange.bind(this);
         this.handleFrilansinformasjonOnChange = this.handleFrilansinformasjonOnChange.bind(
+            this
+        );
+        this.renderOppdragSiste10MndSpørsmål = this.renderOppdragSiste10MndSpørsmål.bind(
             this
         );
     }
@@ -37,6 +38,32 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
         onChangeFrilansinformasjon({ ...frilansInformasjon, ...changedProps });
     }
 
+    renderOppdragSiste10MndSpørsmål() {
+        const { søker } = this.props;
+        const { frilansInformasjon } = søker;
+        const harJobbetForNærVennEllerFamilieSiste10Mnd =
+            frilansInformasjon &&
+            frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
+
+        return (
+            <Spørsmål
+                synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                render={() => (
+                    <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
+                        onChange={(v: boolean) =>
+                            this.handleFrilansinformasjonOnChange({
+                                harJobbetForNærVennEllerFamilieSiste10Mnd: v
+                            })
+                        }
+                        harJobbetForNærVennEllerFamilieSiste10Mnd={
+                            harJobbetForNærVennEllerFamilieSiste10Mnd
+                        }
+                    />
+                )}
+            />
+        );
+    }
+
     render() {
         const { søker } = this.props;
         const { frilansInformasjon } = søker;
@@ -48,6 +75,9 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
             frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
         const jobberFremdelesSomFrilans =
             frilansInformasjon && frilansInformasjon.jobberFremdelesSomFrilans;
+        const oppdragForNæreVennerEllerFamilieSiste10Mnd =
+            frilansInformasjon &&
+            frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd;
 
         return (
             <React.Fragment>
@@ -84,7 +114,10 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
                     />
 
                     <Spørsmål
-                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                        synlig={
+                            søker.harJobbetSomFrilansSiste10Mnd === true &&
+                            jobberFremdelesSomFrilans === true
+                        }
                         render={() => (
                             <DriverDuFosterhjemSpørsmål
                                 onChange={(v: boolean) =>
@@ -97,25 +130,25 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
-                        render={() => (
-                            <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
-                                onChange={(v: boolean) =>
-                                    this.handleFrilansinformasjonOnChange({
-                                        harJobbetForNærVennEllerFamilieSiste10Mnd: v
-                                    })
-                                }
-                                harJobbetForNærVennEllerFamilieSiste10Mnd={
-                                    harJobbetForNærVennEllerFamilieSiste10Mnd
-                                }
-                            />
-                        )}
-                    />
-
                     <Bolk
                         synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
-                        render={() => 1}
+                        render={() => (
+                            <FrilansOppdragBolk
+                                renderSpørsmål={
+                                    this.renderOppdragSiste10MndSpørsmål
+                                }
+                                showOppdragsPerioderContent={
+                                    harJobbetForNærVennEllerFamilieSiste10Mnd ===
+                                    true
+                                }
+                                oppfølgingsspørsmål="test"
+                                oppdrag={
+                                    oppdragForNæreVennerEllerFamilieSiste10Mnd ||
+                                    []
+                                }
+                                onChange={() => {}}
+                            />
+                        )}
                     />
                 </div>
             </React.Fragment>
