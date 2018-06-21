@@ -4,7 +4,7 @@ import Environment from '../../app/Environment';
 
 function getPerson() {
     const endpoint = Environment.REST_API_URL;
-    return axios.get(`${endpoint}/personinfo`, {
+    return axios.get(`${endpoint}/sokerinfo`, {
         timeout: 15 * 1000,
         withCredentials: true
     });
