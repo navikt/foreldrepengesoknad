@@ -9,21 +9,9 @@ export enum AnnenInntektType {
     'MILITÆRET' = 'militæret',
     'VIDEREUTDANNING' = 'videreutdanning',
     'VENTELØNN' = 'ventelønn',
-    'JOBB_I_UTLANDET' = 'jobbiutlandet'
-}
-
-export interface AnnenInntekt {
-    type: AnnenInntektType;
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
-    pågående: boolean;
-    vedlegg: Attachment[];
-}
-
-export interface AnnenInntektPartialInterface {
-    type: AnnenInntektType;
-    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
-    pågående: boolean;
-    vedlegg: Attachment[];
+    'JOBB_I_UTLANDET' = 'jobbiutlandet',
+    'FRILANS' = 'frilans',
+    'SELVSTENDIG_NÆRINGSDRIVENDE' = 'selvstendigNæringsdrivende'
 }
 
 interface Arbeidsforhold {
@@ -31,10 +19,26 @@ interface Arbeidsforhold {
     tidsperiode: TidsperiodeMedValgfriSluttdato;
 }
 
-export interface FrilansInntekt extends AnnenInntekt {
+abstract class AnnenInntektBase {
+    type: AnnenInntektType;
+    tidsperiode: TidsperiodeMedValgfriSluttdato;
+    pågående: boolean;
+    vedlegg: Attachment[];
+}
+
+export interface FrilansInntekt extends AnnenInntektBase {
     driverFosterhjem: boolean;
     harJobbetForNærVennEllerFamilieSiste12Mnd: boolean;
     nærVennEllerFamilieArbeidsforholdSiste12Mnd: Arbeidsforhold[];
+}
+
+export type AnnenInntekt = FrilansInntekt;
+
+export interface AnnenInntektPartialInterface {
+    type: AnnenInntektType;
+    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    pågående: boolean;
+    vedlegg: Attachment[];
 }
 
 export type AnnenInntektPartial = Partial<AnnenInntektPartialInterface>;

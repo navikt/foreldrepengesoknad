@@ -2,7 +2,7 @@ import * as React from 'react';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import Landvelger from '../landvelger/Landvelger';
 import './utenlandsoppholdModal.less';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import {
@@ -17,6 +17,7 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import Bolk from '../layout/Bolk';
 
 export interface UtenlandsoppholdModalProps extends ModalProps {
     type: UtenlandsoppholdType;
@@ -26,19 +27,20 @@ export interface UtenlandsoppholdModalProps extends ModalProps {
     onEdit: (opphold: Utenlandsopphold) => void;
 }
 
-type Props = UtenlandsoppholdModalProps & InjectedIntlProps;
-
 interface State {
     opphold: UtenlandsoppholdSkjemadataPartial;
     editMode: boolean;
 }
 
-class UtenlandsoppholdModal extends React.Component<Props, State> {
-    static getDerivedStateFromProps(props: Props) {
+export default class UtenlandsoppholdModal extends React.Component<
+    UtenlandsoppholdModalProps,
+    State
+> {
+    static getDerivedStateFromProps(props: UtenlandsoppholdModalProps) {
         return UtenlandsoppholdModal.buildStateFromProps(props);
     }
 
-    static buildStateFromProps(props: Props) {
+    static buildStateFromProps(props: UtenlandsoppholdModalProps) {
         const { opphold } = props;
         return {
             opphold: opphold ? { ...opphold } : { tidsperiode: {} },
@@ -46,7 +48,7 @@ class UtenlandsoppholdModal extends React.Component<Props, State> {
         };
     }
 
-    constructor(props: Props) {
+    constructor(props: UtenlandsoppholdModalProps) {
         super(props);
 
         this.state = UtenlandsoppholdModal.buildStateFromProps(props);
@@ -76,25 +78,8 @@ class UtenlandsoppholdModal extends React.Component<Props, State> {
         }
     }
 
-    getTidsperiode() {
-        const { opphold } = this.state;
-        if (opphold.tidsperiode) {
-            return opphold.tidsperiode;
-        }
-        return {};
-    }
-
-    getTidsperiodeDate(property: 'startdato' | 'sluttdato') {
-        const { opphold } = this.state;
-        const dateValue = opphold.tidsperiode && opphold.tidsperiode[property];
-        if (dateValue) {
-            return new Date(dateValue);
-        }
-        return undefined;
-    }
-
     render() {
-        const { type, språk, intl, onRequestClose, ...modalProps } = this.props;
+        const { type, språk, onRequestClose, ...modalProps } = this.props;
         const { opphold } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
@@ -125,11 +110,15 @@ class UtenlandsoppholdModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <TidsperiodeBolk
-                        tidsperiode={opphold.tidsperiode || {}}
-                        onChange={(
-                            tidsperiode: TidsperiodeMedValgfriSluttdato
-                        ) => this.updateOpphold({ tidsperiode })}
+                    <Bolk
+                        render={() => (
+                            <TidsperiodeBolk
+                                tidsperiode={opphold.tidsperiode || {}}
+                                onChange={(
+                                    tidsperiode: TidsperiodeMedValgfriSluttdato
+                                ) => this.updateOpphold({ tidsperiode })}
+                            />
+                        )}
                     />
 
                     <Knapperad>
@@ -148,5 +137,3 @@ class UtenlandsoppholdModal extends React.Component<Props, State> {
         );
     }
 }
-
-export default injectIntl(UtenlandsoppholdModal);

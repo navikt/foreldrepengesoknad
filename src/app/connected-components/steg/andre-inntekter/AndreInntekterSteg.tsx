@@ -13,9 +13,9 @@ import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
-import ErDuFrilanserSpørsmål from '../../../spørsmål/ErDuFrilanserSpørsmål';
-import ErDuSelvstendigNæringsdrivendeSpørsmål from '../../../spørsmål/ErDuSelvstendigNæringsdrivendeSpørsmål';
-import Søker from '../../../types/søknad/Søker';
+import Søker, { FrilansInformasjon } from '../../../types/søknad/Søker';
+import FrilanserBolk from '../../../bolker/FrilanserBolk';
+import Bolk from '../../../components/layout/Bolk';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -74,40 +74,21 @@ class AndreInntekterSteg extends React.Component<Props> {
                     (harHattAnnenInntektSiste10Mnd === true &&
                         søker.andreInntekterSiste10Mnd.length > 0)
                 }>
-                <AndreInntekterBolk
-                    oppfølgingsspørsmål={getMessage(
-                        intl,
-                        'annenInntekt.oppfølgingsspørsmål'
-                    )}
-                    renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
-                    showAndreInntekterPeriodeContent={
-                        harHattAnnenInntektSiste10Mnd
-                    }
-                    andreInntekterSiste10Mnd={søker.andreInntekterSiste10Mnd}
-                    onChange={(andreInntekterSiste10Mnd) =>
-                        dispatch(
-                            søknadActions.updateSøker({
-                                andreInntekterSiste10Mnd
-                            })
-                        )
-                    }
-                />
-
-                <Spørsmål
-                    synlig={
-                        harHattAnnenInntektSiste10Mnd === false ||
-                        (harHattAnnenInntektSiste10Mnd === true &&
-                            søker.andreInntekterSiste10Mnd.length > 0)
-                    }
+                <Bolk
                     render={() => (
-                        <ErDuSelvstendigNæringsdrivendeSpørsmål
-                            erSelvstendigNæringsdrivende={
-                                søker.erSelvstendigNæringsdrivende
+                        <FrilanserBolk
+                            søker={søker}
+                            onChangeSøker={(søkerProperties: Søker) =>
+                                dispatch(
+                                    søknadActions.updateSøker(søkerProperties)
+                                )
                             }
-                            onChange={(erSelvstendigNæringsdrivende) =>
+                            onChangeFrilansinformasjon={(
+                                frilansInformasjon: FrilansInformasjon
+                            ) =>
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        erSelvstendigNæringsdrivende
+                                        frilansInformasjon
                                     })
                                 )
                             }
@@ -115,15 +96,27 @@ class AndreInntekterSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={søker.erSelvstendigNæringsdrivende !== undefined}
+                <Bolk
+                    synlig={søker.harJobbetSomFrilansSiste10Mnd !== undefined}
                     render={() => (
-                        <ErDuFrilanserSpørsmål
-                            erFrilanser={søker.erFrilanser}
-                            onChange={(erFrilanser) =>
+                        <AndreInntekterBolk
+                            oppfølgingsspørsmål={getMessage(
+                                intl,
+                                'annenInntekt.oppfølgingsspørsmål'
+                            )}
+                            renderSpørsmål={
+                                this.renderAnnenInntektSiste10MndSpørsmål
+                            }
+                            showAndreInntekterPeriodeContent={
+                                harHattAnnenInntektSiste10Mnd
+                            }
+                            andreInntekterSiste10Mnd={
+                                søker.andreInntekterSiste10Mnd
+                            }
+                            onChange={(andreInntekterSiste10Mnd) =>
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        erFrilanser
+                                        andreInntekterSiste10Mnd
                                     })
                                 )
                             }
@@ -142,7 +135,8 @@ export default injectIntl(
 
         const stegProps: StegProps = {
             id: StegID.ANDRE_INNTEKTER,
-            renderFortsettKnapp: søker && søker.erFrilanser !== undefined,
+            renderFortsettKnapp:
+                søker && søker.harJobbetSomFrilansSiste10Mnd !== undefined,
             history
         };
 

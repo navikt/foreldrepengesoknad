@@ -20,6 +20,7 @@ import BEMHelper from 'common/util/bem';
 import './annenInntektModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import Bolk from '../layout/Bolk';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -145,12 +146,16 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <TidsperiodeBolk
-                        tidsperiode={annenInntekt.tidsperiode || {}}
-                        onChange={(
-                            tidsperiode: TidsperiodeMedValgfriSluttdato
-                        ) => this.updateAnnenInntekt({ tidsperiode })}
-                        sluttdatoDisabled={annenInntekt.pågående}
+                    <Bolk
+                        render={() => (
+                            <TidsperiodeBolk
+                                tidsperiode={annenInntekt.tidsperiode || {}}
+                                onChange={(
+                                    tidsperiode: TidsperiodeMedValgfriSluttdato
+                                ) => this.updateAnnenInntekt({ tidsperiode })}
+                                sluttdatoDisabled={annenInntekt.pågående}
+                            />
+                        )}
                     />
 
                     <Spørsmål

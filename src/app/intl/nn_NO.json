@@ -52,6 +52,8 @@
         "Lønn ved permisjon for videreutdanning eller etterutdanning",
     "inntektstype.ventelønn": "Ventelønn",
     "inntektstype.sluttvederlag": "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.frilans": "Frilans",
+    "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
     "antallBarn.spørsmål.fått": "Hvor mange barn har du fått?",
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
@@ -86,6 +88,12 @@
 
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
+
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
+        "Har du jobbet som frilanser de siste 10 månedene?",
+    "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
+        "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
+    "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
     "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",
@@ -154,5 +162,9 @@
     "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
     "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
 
-    "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født."
+    "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
+
+    "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
+        "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
+    "driverFosterhjem.spørsmål": "Driver du fosterhjem?"
 }
