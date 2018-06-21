@@ -13,6 +13,7 @@ import {
 import FrilansOppdragBolk from './FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import DatoInput from 'common/components/dato-input/DatoInput';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -85,6 +86,7 @@ class FrilanserBolk extends React.Component<Props> {
         const oppdragForNæreVennerEllerFamilieSiste10Mnd =
             frilansInformasjon &&
             frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd;
+        const oppstartsdato = frilansInformasjon && frilansInformasjon.oppstart;
 
         return (
             <React.Fragment>
@@ -100,6 +102,23 @@ class FrilanserBolk extends React.Component<Props> {
                                 harJobbetSomFrilansSiste10Mnd={
                                     søker.harJobbetSomFrilansSiste10Mnd
                                 }
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        animert={false}
+                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                        render={() => (
+                            <DatoInput
+                                id="frilansStartDato"
+                                label={getMessage(intl, 'frilans.oppstart')}
+                                onChange={(oppstart: Date) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        oppstart
+                                    })
+                                }
+                                dato={oppstartsdato}
                             />
                         )}
                     />
