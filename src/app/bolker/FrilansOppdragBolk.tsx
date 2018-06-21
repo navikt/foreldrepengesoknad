@@ -4,34 +4,101 @@ import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import InteractiveList from '../components/interactive-list/InteractiveList';
 import { ISODateToMaskedInput } from '../util/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
+import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
 
 interface FrilansOppdragBolkProps {
     renderSpørsmål: () => JSX.Element;
     oppfølgingsspørsmål: string;
     showOppdragsPerioderContent: boolean;
-    oppdrag: FrilansOppdrag[];
+    oppdragListe: FrilansOppdrag[];
     onChange: (oppdrag: FrilansOppdrag[]) => void;
 }
 
+interface FrilansOppdragBolkState {
+    modalIsOpen: boolean;
+    oppdragToEdit?: FrilansOppdrag;
+    oppdragIndex?: number;
+}
+
+type FrilansOppdragBolkStatePartial = Partial<FrilansOppdragBolkState>;
+
 export default class FrilansOppdragBolk extends React.Component<
-    FrilansOppdragBolkProps
+    FrilansOppdragBolkProps,
+    FrilansOppdragBolkState
 > {
     constructor(props: FrilansOppdragBolkProps) {
         super(props);
-        this.onSelect = this.onSelect.bind(this);
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.onAdd = this.onAdd.bind(this);
+        this.onEdit = this.onEdit.bind(this);
         this.onDelete = this.onDelete.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+
+        this.state = {
+            modalIsOpen: false
+        };
     }
 
-    onSelect() {}
-    onDelete() {}
+    onAdd(oppdrag: FrilansOppdrag) {
+        const { oppdragListe, onChange } = this.props;
+        onChange([...oppdragListe, oppdrag]);
+        this.closeModal();
+    }
+
+    onEdit(oppdrag: FrilansOppdrag) {
+        const { oppdragListe, onChange } = this.props;
+        const { oppdragIndex } = this.state;
+        const editedOppdragListe = oppdragListe.slice();
+        if (oppdragIndex !== undefined && oppdragIndex >= 0) {
+            editedOppdragListe[oppdragIndex] = oppdrag;
+            onChange(editedOppdragListe);
+        }
+        this.closeModal({
+            oppdragIndex: undefined,
+            oppdragToEdit: undefined
+        });
+    }
+
+    onSelect(oppdragToEdit: FrilansOppdrag, oppdragIndex: number) {
+        this.openModal({
+            oppdragToEdit,
+            oppdragIndex
+        });
+    }
+
+    onDelete(oppdrag: FrilansOppdrag) {
+        const { oppdragListe, onChange } = this.props;
+        const editedOppdragListe = oppdragListe.slice();
+        editedOppdragListe.splice(editedOppdragListe.indexOf(oppdrag), 1);
+        onChange(editedOppdragListe);
+    }
+
+    openModal(otherState: FrilansOppdragBolkStatePartial = {}) {
+        this.setState({
+            ...otherState,
+            modalIsOpen: true
+        });
+    }
+
+    closeModal(otherState: FrilansOppdragBolkStatePartial = {}) {
+        this.setState({
+            ...otherState,
+            modalIsOpen: false
+        });
+    }
 
     render() {
         const {
-            oppdrag,
+            oppdragListe,
             oppfølgingsspørsmål,
             renderSpørsmål,
             showOppdragsPerioderContent
         } = this.props;
+
+        const { oppdragToEdit } = this.state;
+
         return (
             <React.Fragment>
                 {renderSpørsmål()}
@@ -43,7 +110,7 @@ export default class FrilansOppdragBolk extends React.Component<
 
                         <div className="blokk-xs">
                             <InteractiveList
-                                data={oppdrag}
+                                data={oppdragListe}
                                 onSelect={this.onSelect}
                                 onDelete={this.onDelete}
                                 renderElement={(
@@ -58,12 +125,28 @@ export default class FrilansOppdragBolk extends React.Component<
                         </div>
 
                         <div className="blokk-s">
-                            <Knapp onClick={() => {}}>
+                            <Knapp onClick={() => this.openModal()}>
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </div>
                     </React.Fragment>
                 )}
+
+                <FrilansOppdragModal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={() =>
+                        this.closeModal({
+                            oppdragIndex: undefined,
+                            oppdragToEdit: undefined
+                        })
+                    }
+                    contentLabel="Periode med frilansoppdrag for nær venn eller familie siste 10 måneder"
+                    children={null}
+                    oppdrag={oppdragToEdit}
+                    onAdd={this.onAdd}
+                    onEdit={this.onEdit}
+                    editMode={oppdragToEdit !== undefined}
+                />
             </React.Fragment>
         );
     }
