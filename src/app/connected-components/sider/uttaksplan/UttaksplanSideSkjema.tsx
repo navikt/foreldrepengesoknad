@@ -8,8 +8,9 @@ import {
     Søkersituasjon
 } from '../../../types/s\u00F8knad/S\u00F8knad';
 import DatoInput from 'common/components/dato-input/DatoInput';
-import { Checkbox } from 'nav-frontend-skjema';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import { Row, Column } from 'nav-frontend-grid';
+import { guid } from 'nav-frontend-js-utils';
 
 export interface Props {
     erSynlig: boolean;
@@ -25,16 +26,66 @@ const søkersituasjoner: RadiolisteValg[] = Object.keys(Søkersituasjon).map(
     (situasjon): RadiolisteValg => ({ tittel: situasjon, verdi: situasjon })
 );
 
-const antallBarnValg: RadiolisteValg[] = ['1', '2', '3', '4'].map(
+const antallBarnValg: RadiolisteValg[] = ['1', '2'].map(
     (antall): RadiolisteValg => ({
         tittel: antall,
         verdi: antall
     })
 );
+
+const getHendelsesdatoLabel = (data: UttaksplamTestSkjemadata): string => {
+    if (data.søkersituasjon === Søkersituasjon.FØDSEL) {
+        return data.erBarnetFødt ? 'Fødselsdato' : 'Termindato';
+    }
+    return 'Dato';
+};
+
+interface JaNeiProps {
+    spørsmål: string;
+    checked: boolean | undefined;
+    onChange: (checked: boolean) => void;
+    synlig?: boolean;
+}
+
+const JaNeiSpørsmål: React.StatelessComponent<JaNeiProps> = ({
+    synlig = true,
+    spørsmål,
+    checked,
+    onChange
+}) => (
+    <EkspanderbartInnhold erApen={synlig === true} animert={false}>
+        <div className="blokkPad-s">
+            <Radioliste
+                kolonner="2"
+                inputnavn={guid()}
+                tittel={spørsmål}
+                valg={[
+                    {
+                        tittel: 'Ja',
+                        verdi: 'ja'
+                    },
+                    {
+                        tittel: 'Nei',
+                        verdi: 'nei'
+                    }
+                ]}
+                valgtVerdi={
+                    checked === undefined
+                        ? undefined
+                        : checked === true
+                            ? 'ja'
+                            : 'nei'
+                }
+                onChange={(v) => onChange(v === 'ja')}
+            />
+        </div>
+    </EkspanderbartInnhold>
+);
+
 const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
     const { erSynlig, skjemadata, onChange } = props;
     return (
-        <EkspanderbartInnhold erApen={erSynlig}>
+        <EkspanderbartInnhold erApen={erSynlig} animert={false}>
             <div className="blokk-m">
                 <Radioliste
                     kolonner="2"
@@ -81,25 +132,103 @@ const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                 />
             </div>
             <div className="blokk-m">
-                <DatoInput
-                    id="hendelsesdato"
-                    label="Familiehendelsesdato"
-                    dato={skjemadata.dato}
-                    onChange={(dato) => onChange({ ...skjemadata, dato })}
-                />
-            </div>
-            <div className="blokk-m">
-                <Checkbox
-                    id="annenForelderSkalHaPermisjon"
-                    label="Annen forelder skal ha permisjon"
-                    checked={skjemadata.annenForelderSkalHaPermisjon === true}
-                    onChange={(evt) =>
-                        onChange({
-                            ...skjemadata,
-                            annenForelderSkalHaPermisjon: evt.target.checked
-                        })
-                    }
-                />
+                <Row>
+                    <Column xs="12" sm="6">
+                        <h3>
+                            {skjemadata.antallBarn === '1' ? 'Barnet' : 'Barna'}
+                        </h3>
+                        <JaNeiSpørsmål
+                            spørsmål={`Er ${
+                                skjemadata.antallBarn === '1'
+                                    ? 'barnet'
+                                    : 'barna'
+                            } født`}
+                            checked={skjemadata.erBarnetFødt}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    erBarnetFødt: checked
+                                })
+                            }
+                        />
+
+                        <DatoInput
+                            id="hendelsesdato"
+                            label={getHendelsesdatoLabel(skjemadata)}
+                            dato={skjemadata.dato}
+                            onChange={(dato) =>
+                                onChange({ ...skjemadata, dato })
+                            }
+                        />
+                    </Column>
+                    <Column xs="12" sm="6">
+                        <h3>Familiesituasjon</h3>
+                        <JaNeiSpørsmål
+                            spørsmål="Er fars fødselsnummer er oppgitt"
+                            checked={skjemadata.fnrFarOppgitt}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    fnrFarOppgitt: checked
+                                })
+                            }
+                        />
+                        <JaNeiSpørsmål
+                            synlig={skjemadata.fnrFarOppgitt === true}
+                            spørsmål="Far har rett"
+                            checked={skjemadata.farHarRett}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    farHarRett: checked
+                                })
+                            }
+                        />
+                        <JaNeiSpørsmål
+                            synlig={
+                                skjemadata.fnrFarOppgitt === true &&
+                                skjemadata.farHarRett === true
+                            }
+                            spørsmål="Bor sammen"
+                            checked={skjemadata.borSammen}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    borSammen: checked
+                                })
+                            }
+                        />
+                        <JaNeiSpørsmål
+                            synlig={
+                                skjemadata.fnrFarOppgitt === true &&
+                                skjemadata.borSammen === false
+                            }
+                            spørsmål="Aleneomsorg"
+                            checked={skjemadata.aleneomsorg}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    aleneomsorg: checked
+                                })
+                            }
+                        />
+                        <JaNeiSpørsmål
+                            synlig={
+                                skjemadata.fnrFarOppgitt === true &&
+                                skjemadata.borSammen === false &&
+                                skjemadata.aleneomsorg === true
+                            }
+                            spørsmål="Mor skal ha alt"
+                            checked={skjemadata.skalMorHaAlt}
+                            onChange={(checked) =>
+                                onChange({
+                                    ...skjemadata,
+                                    skalMorHaAlt: checked
+                                })
+                            }
+                        />
+                    </Column>
+                </Row>
             </div>
         </EkspanderbartInnhold>
     );

@@ -50,7 +50,11 @@ class UttaksplanSkjema extends React.Component<Props, {}> {
                     />
                 </div>
 
-                <EkspanderbartInnhold erApen={dekningsgrad !== undefined}>
+                <EkspanderbartInnhold
+                    erApen={
+                        dekningsgrad &&
+                        uttaksgrunnlag.annenForelder !== undefined
+                    }>
                     <div className="blokk-s">
                         <FordelingFellesperiodeSpørsmål
                             navnForelder1={navnForelder1}

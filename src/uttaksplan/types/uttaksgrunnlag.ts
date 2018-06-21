@@ -28,3 +28,30 @@ export interface Uttaksgrunnlag {
     tilgjengeligeStønadskontoer: StønadskontoType[];
     tilgjengeligUttak: StønadskontoUttak[];
 }
+
+export interface Uttaksdatoer {
+    /** Første mulige uttaksdag gitt fødsel/termin */
+    førsteMuligeUttaksdag: Date;
+    /** Siste mulige uttaksdag gitt fødsel/termin */
+    sisteMuligeUttaksdag: Date;
+    /** Siste uttaksdag som er før fødsel/termin */
+    sisteUttaksdagFørFødsel: Date;
+    /** Første uttaksdag etter fødsel/termin */
+    førsteUttaksdagEtterFødsel: Date;
+}
+
+export interface Uttaksinfo {
+    /** Første dag som er registrert som uttak/utsettelse */
+    førsteRegistrerteUttaksdag: Date;
+    /** Siste uttaksdag som er registrert */
+    sisteRegistrerteUttaksdag: Date;
+    /** Dato når permisjonen avsluttes gitt fødsel/termin og utsettelser  */
+    sistePermisjonsdag: Date;
+    /** Antall dager som er registrert som uttak */
+    antallDagerUttak: number;
+    /** Antall uttaksdagerdager som er registrert som utsettelser */
+    antallDagerUtsettelser: number;
+    /** Antall uttaksdager som ikke er registrert som uttak eller utsettelse i permisjonsperioden */
+    antallDagerOpphold: number;
+    /** Uttak per forelder */
+}

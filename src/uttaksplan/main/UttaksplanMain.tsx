@@ -66,9 +66,9 @@ class UttaksplanMain extends React.Component<Props> {
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
-    // componentDidMount() {
-    //     this.opprettPerioder();
-    // }
+    componentDidMount() {
+        this.opprettPerioder();
+    }
 
     handleItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
