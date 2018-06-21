@@ -1,35 +1,30 @@
-import moment from 'moment';
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/login';
-import Person from '../../types/Person';
+import { erMyndig } from '../../util/personUtil';
 
-const erMyndig = (person: Person) => {
-    const now = moment();
-    const fødselsdato = moment(person.fødselsdato);
-    return now.diff(fødselsdato, 'years') >= 18;
-};
-
-function* getPerson(action: any) {
+function* getSøkerinfo(action: any) {
     try {
         const response = yield call(Api.getPerson, action.params);
-        const person = response.data;
+        const person = response.data.søker;
+        const arbeidsforhold = response.data.arbeidsforhold;
         yield put({
-            type: ApiActionKeys.GET_PERSON_SUCCESS,
-            person: { ...person, erMyndig: erMyndig(person) }
+            type: ApiActionKeys.GET_SØKERINFO_SUCCESS,
+            person: { ...person, erMyndig: erMyndig(person) },
+            arbeidsforhold
         });
     } catch (error) {
         if (error.response) {
             error.response.status === 401
                 ? redirectToLogin()
                 : yield put({
-                      type: ApiActionKeys.GET_PERSON_FAILED,
+                      type: ApiActionKeys.GET_SØKERINFO_FAILED,
                       error
                   });
         } else {
             yield put({
-                type: ApiActionKeys.GET_PERSON_FAILED,
+                type: ApiActionKeys.GET_SØKERINFO_FAILED,
                 error: {
                     networkError: true
                 }
@@ -39,5 +34,5 @@ function* getPerson(action: any) {
 }
 
 export default function* personSaga() {
-    yield all([takeLatest(ApiActionKeys.GET_PERSON_REQUEST, getPerson)]);
+    yield all([takeLatest(ApiActionKeys.GET_SØKERINFO_REQUEST, getSøkerinfo)]);
 }

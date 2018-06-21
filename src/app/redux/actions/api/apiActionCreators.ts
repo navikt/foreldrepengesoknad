@@ -2,9 +2,9 @@ import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
 import Søknad from '../../../types/søknad/Søknad';
 import { PersonPartial } from '../../../types/Person';
 
-export function getPerson(): ApiActionTypes {
+export function getSøkerinfo(): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_PERSON_REQUEST
+        type: ApiActionKeys.GET_SØKERINFO_REQUEST
     };
 }
 
@@ -22,4 +22,4 @@ export function updatePerson(payload: PersonPartial): ApiActionTypes {
     };
 }
 
-export default { getPerson, sendSøknad, updatePerson };
+export default { getSøkerinfo, sendSøknad, updatePerson };
