@@ -6,8 +6,13 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
 import Søker, { SøkerPartial } from '../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
-import { FrilansInformasjonPartial } from '../types/søknad/FrilansInformasjon';
+import {
+    FrilansInformasjonPartial,
+    FrilansOppdrag
+} from '../types/søknad/FrilansInformasjon';
 import FrilansOppdragBolk from './FrilansOppdragBolk';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -15,8 +20,10 @@ interface FrilanserBolkProps {
     onChangeFrilansinformasjon: (v: FrilansInformasjonPartial) => void;
 }
 
-class FrilanserBolk extends React.Component<FrilanserBolkProps> {
-    constructor(props: FrilanserBolkProps) {
+type Props = FrilanserBolkProps & InjectedIntlProps;
+
+class FrilanserBolk extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
         this.handleSøkerOnChange = this.handleSøkerOnChange.bind(this);
         this.handleFrilansinformasjonOnChange = this.handleFrilansinformasjonOnChange.bind(
@@ -65,7 +72,7 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
     }
 
     render() {
-        const { søker } = this.props;
+        const { søker, intl } = this.props;
         const { frilansInformasjon } = søker;
 
         const driverFosterhjem =
@@ -141,12 +148,19 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
                                     harJobbetForNærVennEllerFamilieSiste10Mnd ===
                                     true
                                 }
-                                oppfølgingsspørsmål="test"
-                                oppdrag={
+                                oppfølgingsspørsmål={getMessage(
+                                    intl,
+                                    'frilansOppdrag.oppfølgingsspørsmål'
+                                )}
+                                oppdragListe={
                                     oppdragForNæreVennerEllerFamilieSiste10Mnd ||
                                     []
                                 }
-                                onChange={() => {}}
+                                onChange={(oppdragListe: FrilansOppdrag[]) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe
+                                    })
+                                }
                             />
                         )}
                     />
@@ -156,4 +170,4 @@ class FrilanserBolk extends React.Component<FrilanserBolkProps> {
     }
 }
 
-export default FrilanserBolk;
+export default injectIntl(FrilanserBolk);

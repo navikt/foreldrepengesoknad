@@ -99,6 +99,11 @@
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
+    "frilansOppdrag.modal.tittel": "Frilansoppdrag",
+    "frilansOppdrag.modal.pågående": "Pågående oppdrag",
+    "frilansOppdrag.oppfølgingsspørsmål":
+        "Oppdrag for nære venner eller familie siste 10 måneder",
+    "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
