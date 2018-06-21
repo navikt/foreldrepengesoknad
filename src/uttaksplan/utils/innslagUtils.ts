@@ -55,21 +55,21 @@ export const getTimelineIconsFromInnslag = (
 ): UttaksplanIkonKeys[] | undefined => {
     if (innslag.type === 'hendelse') {
         if (innslag.hendelse === 'termin') {
-            return ['termin'];
+            return [UttaksplanIkonKeys.termin];
         }
     } else if (innslag.type === 'periode') {
         const { periode } = innslag;
         if (periode.type === Periodetype.Utsettelse) {
             if (periode.årsak === UtsettelseÅrsakType.Ferie) {
-                return ['ferie'];
+                return [UttaksplanIkonKeys.ferie];
             }
             if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
-                return ['arbeid'];
+                return [UttaksplanIkonKeys.arbeid];
             }
         } else if (periode.type === Periodetype.Uttak) {
-            return ['uttak'];
+            return [UttaksplanIkonKeys.uttak];
         } else if (periode.type === Periodetype.Opphold) {
-            return ['advarsel'];
+            return [UttaksplanIkonKeys.advarsel];
         }
     }
     return undefined;

@@ -117,15 +117,15 @@ export const getTimelineIconsForPeriode = (
 ): UttaksplanIkonKeys[] | undefined => {
     if (periode.type === Periodetype.Utsettelse) {
         if (periode.årsak === UtsettelseÅrsakType.Ferie) {
-            return ['ferie'];
+            return [UttaksplanIkonKeys.ferie];
         }
         if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
-            return ['arbeid'];
+            return [UttaksplanIkonKeys.arbeid];
         }
     } else if (periode.type === Periodetype.Uttak) {
-        return ['uttak'];
+        return [UttaksplanIkonKeys.uttak];
     } else if (periode.type === Periodetype.Opphold) {
-        return ['advarsel'];
+        return [UttaksplanIkonKeys.advarsel];
     }
     return undefined;
 };

@@ -11,7 +11,7 @@ const defaultState: PeriodeState = {
     dialogErApen: false,
     valgtPeriode: undefined,
     perioder: [],
-    manuellOppdatering: true
+    manuellOppdatering: false
 };
 
 const updateState = (

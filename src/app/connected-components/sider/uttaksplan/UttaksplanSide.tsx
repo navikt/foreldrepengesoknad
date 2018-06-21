@@ -18,6 +18,7 @@ import {
 } from '../../../types/s\u00F8knad/S\u00F8knad';
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
+import TimePlanner from 'uttaksplan/timePlanner/TimePlanner';
 
 export interface StateProps {
     form: {
@@ -87,27 +88,29 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                {/* <div className="dev-only"> */}
-                <UttaksplanSideSkjema
-                    erSynlig={true}
-                    onChange={(skjemadata: UttaksplamTestSkjemadata) =>
-                        this.setState({ skjemadata })
-                    }
-                    skjemadata={this.state.skjemadata}
-                />
-                {/* </div> */}
-                <Uttaksplan
-                    søker={mockUttaksplanSøker}
-                    annenForelder={
-                        skalAnnenPersonHaPermisjon(skjema)
-                            ? mockUttasksplanAnnenForelder
-                            : undefined
-                    }
-                    termindato={skjema.dato}
-                    antallBarn={parseInt(skjema.antallBarn, 10)}
-                    erBarnetFødt={false}
-                    onChange={(perioder) => this.setState({ perioder })}
-                />
+                <TimePlanner />
+
+                <div className="dev-only">
+                    <UttaksplanSideSkjema
+                        erSynlig={true}
+                        onChange={(skjemadata: UttaksplamTestSkjemadata) =>
+                            this.setState({ skjemadata })
+                        }
+                        skjemadata={this.state.skjemadata}
+                    />
+                    <Uttaksplan
+                        søker={mockUttaksplanSøker}
+                        annenForelder={
+                            skalAnnenPersonHaPermisjon(skjema)
+                                ? mockUttasksplanAnnenForelder
+                                : undefined
+                        }
+                        termindato={skjema.dato}
+                        antallBarn={parseInt(skjema.antallBarn, 10)}
+                        erBarnetFødt={false}
+                        onChange={(perioder) => this.setState({ perioder })}
+                    />
+                </div>
             </Applikasjonsside>
         );
     }

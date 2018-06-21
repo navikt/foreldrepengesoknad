@@ -32,10 +32,10 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
         rangeRenderer,
         durationRenderer,
         item,
-        onClick
+        onClick,
+        mode
     } = props;
     const {
-        title,
         startDate,
         endDate,
         personName,
@@ -59,11 +59,6 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
             <h1 className={BEM.element('headerAndTitle')}>
                 <strong className={BEM.element('title')}>{personName}</strong>
                 <div className={BEM.element('header')}>
-                    <EtikettLiten
-                        className={BEM.element('header__personName')}
-                        tag="div">
-                        {title}
-                    </EtikettLiten>
                     <EtikettLiten
                         tag="div"
                         className={BEM.element('header__duration')}>
@@ -97,6 +92,7 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                     onClick={() => onClick(item)}
                 />
             )}
+            {mode === 'edit' && <div>Whoooo</div>}
         </article>
     );
 };

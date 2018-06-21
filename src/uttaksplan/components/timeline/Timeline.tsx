@@ -15,16 +15,20 @@ import './timeline.less';
 
 export type RangeRenderer = (from: Date, to: Date) => React.ReactNode;
 export type DurationRenderer = (days: number) => React.ReactNode;
+export type FormRenderer = (item: TimelineItem) => React.ReactNode;
 
 export interface TimelineItemProps {
     iconRenderer: TimelineIconRenderer;
     onItemClick?: (item: TimelineItem) => void;
+    mode?: 'view' | 'edit';
 }
 
 export interface Props extends TimelineItemProps {
     items: TimelineItem[];
     rangeRenderer: RangeRenderer;
     durationRenderer: DurationRenderer;
+    formRenderer?: FormRenderer;
+    editItem?: TimelineItem;
 }
 
 class Timeline extends React.Component<Props, {}> {
@@ -42,6 +46,7 @@ class Timeline extends React.Component<Props, {}> {
                         onClick={this.props.onItemClick}
                         durationRenderer={this.props.durationRenderer}
                         rangeRenderer={this.props.rangeRenderer}
+                        mode={this.props.editItem === item ? 'edit' : 'view'}
                     />
                 );
             case 'marker':

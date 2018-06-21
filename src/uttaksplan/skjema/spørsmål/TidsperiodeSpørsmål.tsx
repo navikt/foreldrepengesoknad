@@ -27,7 +27,7 @@ export interface OwnProps {
     helgedagerIkkeTillatt?: boolean;
     visBeholdVarighet?: boolean;
     beholdVarighet?: boolean;
-    onChangeBeholdVarighet: (behold: boolean) => void;
+    onChangeBeholdVarighet?: (behold: boolean) => void;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -91,15 +91,18 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 }}
                             />
                         </div>
-                        {visBeholdVarighet && (
-                            <Checkbox
-                                checked={beholdVarighet}
-                                label="Behold  antall dager"
-                                onChange={(evt) =>
-                                    onChangeBeholdVarighet(evt.target.checked)
-                                }
-                            />
-                        )}
+                        {visBeholdVarighet &&
+                            onChangeBeholdVarighet && (
+                                <Checkbox
+                                    checked={beholdVarighet}
+                                    label="Behold  antall dager"
+                                    onChange={(evt) =>
+                                        onChangeBeholdVarighet(
+                                            evt.target.checked
+                                        )
+                                    }
+                                />
+                            )}
                     </div>
                 </Column>
                 <Column xs="12" sm="6">

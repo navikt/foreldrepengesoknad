@@ -334,9 +334,7 @@ function getPeriodeFootprint(periode: Periode) {
         case Periodetype.Utsettelse:
             return `${periode.type}${periode.forelder}${periode.årsak}`;
         case Periodetype.Uttak:
-            return `${periode.type}${periode.forelder}${periode.konto}${
-                periode.låstForelder
-            }`;
+            return `${periode.type}${periode.forelder}${periode.låstForelder}`;
     }
 }
 
