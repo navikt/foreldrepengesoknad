@@ -20,15 +20,15 @@ export type FormRenderer = (item: TimelineItem) => React.ReactNode;
 export interface TimelineItemProps {
     iconRenderer: TimelineIconRenderer;
     onItemClick?: (item: TimelineItem) => void;
-    mode?: 'view' | 'edit';
+    formRenderer?: FormRenderer;
+    mode?: 'view' | 'edit' | 'disabled';
 }
 
 export interface Props extends TimelineItemProps {
     items: TimelineItem[];
     rangeRenderer: RangeRenderer;
     durationRenderer: DurationRenderer;
-    formRenderer?: FormRenderer;
-    editItem?: TimelineItem;
+    editItem?: any;
 }
 
 class Timeline extends React.Component<Props, {}> {
@@ -46,7 +46,14 @@ class Timeline extends React.Component<Props, {}> {
                         onClick={this.props.onItemClick}
                         durationRenderer={this.props.durationRenderer}
                         rangeRenderer={this.props.rangeRenderer}
-                        mode={this.props.editItem === item ? 'edit' : 'view'}
+                        formRenderer={this.props.formRenderer}
+                        mode={
+                            !this.props.editItem
+                                ? 'view'
+                                : this.props.editItem === item.data
+                                    ? 'edit'
+                                    : 'disabled'
+                        }
                     />
                 );
             case 'marker':

@@ -5,7 +5,6 @@ import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
-import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
@@ -29,7 +28,6 @@ export interface StateProps {
         fellesperiodeukerForelder2: number;
         dato: Date;
     };
-    innslag: Tidslinjeinnslag[];
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -126,8 +124,7 @@ const mapStateToProps = (state: any): StateProps => {
             fellesperiodeukerForelder2: 12,
             permisjonsregler: getPermisjonsregler(new Date()),
             dato
-        },
-        innslag: []
+        }
     };
 };
 

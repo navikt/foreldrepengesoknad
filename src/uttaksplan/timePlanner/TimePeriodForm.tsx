@@ -10,10 +10,15 @@ import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { Systemtittel } from 'nav-frontend-typografi';
+import Lukknapp from 'nav-frontend-lukknapp';
+
+import './timePeriodForm.less';
 
 export interface Props {
     period?: Suspension | Gap | Withdrawal;
     onSave: (period: Suspension | Gap | Withdrawal) => void;
+    onCancel: () => void;
 }
 
 interface State {
@@ -27,7 +32,13 @@ class TimePeriodForm extends React.Component<Props, State> {
         super(props);
         this.updateState = this.updateState.bind(this);
         this.save = this.save.bind(this);
-        this.state = {};
+        this.state = props.period
+            ? {
+                  type: props.period.type,
+                  startDate: props.period.startDate,
+                  endDate: props.period.endDate
+              }
+            : {};
     }
 
     updateState(period: Partial<State>) {
@@ -40,11 +51,18 @@ class TimePeriodForm extends React.Component<Props, State> {
         const { type, startDate, endDate } = this.state;
         const { onSave } = this.props;
         if (type && startDate && endDate) {
+            const id = this.props.period ? this.props.period.id : undefined;
             if (type === PeriodType.Gap) {
-                const gap: Gap = { type, startDate, endDate };
+                const gap: Gap = {
+                    id,
+                    type,
+                    startDate,
+                    endDate
+                };
                 onSave(gap);
             } else if (type === PeriodType.Suspension) {
                 const susp: Suspension = {
+                    id,
                     type,
                     startDate,
                     endDate
@@ -52,6 +70,7 @@ class TimePeriodForm extends React.Component<Props, State> {
                 onSave(susp);
             } else if (type === PeriodType.Withdrawal) {
                 const withdrawal: Withdrawal = {
+                    id,
                     type,
                     startDate,
                     endDate
@@ -65,12 +84,19 @@ class TimePeriodForm extends React.Component<Props, State> {
         const { startDate, endDate, type } = this.state;
         return (
             <form
+                onClick={(evt) => evt.stopPropagation()}
                 action="#"
-                onSubmit={preventFormSubmit}
-                className="utsettelseSkjema dialogContent">
-                <h1 className="typo-undertittel m-textCenter blokk-s">
-                    TimePeriod
-                </h1>
+                onSubmit={(evt) => preventFormSubmit(evt)}
+                className="timePeriodForm">
+                <div className="timePeriodForm__header">
+                    <Systemtittel className="blokk-s">Edit period</Systemtittel>
+                    <div className="timePeriodForm__cancel">
+                        <Lukknapp
+                            onClick={() => this.props.onCancel()}
+                            ariaLabel="Lukk skjema"
+                        />
+                    </div>
+                </div>
                 <div className="blokk-m">
                     <Radioliste
                         kolonner="2"
@@ -111,7 +137,9 @@ class TimePeriodForm extends React.Component<Props, State> {
                     helgedagerIkkeTillatt={true}
                 />
                 <Knapperad>
-                    <Hovedknapp onClick={() => this.save()}>Save</Hovedknapp>
+                    <Hovedknapp htmlType="button" onClick={() => this.save()}>
+                        Save
+                    </Hovedknapp>
                 </Knapperad>
             </form>
         );

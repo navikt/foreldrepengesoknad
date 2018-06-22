@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Period } from 'uttaksplan/timePlanner/types';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
-import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import { mapPeriodsToTimelineItems } from 'uttaksplan/timePlanner/timePlannerUtils';
+import {
+    mapPeriodsToTimelineItems,
+    sortPeriods
+} from 'uttaksplan/timePlanner/timePlannerUtils';
 import { Knapp } from 'nav-frontend-knapper';
 import Modal from 'nav-frontend-modal';
 import TimePeriodForm from 'uttaksplan/timePlanner/TimePeriodForm';
@@ -16,45 +18,72 @@ import {
     TimelineItem,
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
+import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
 
 export interface Props {}
 
 export interface State {
     periods: Period[];
     dialogVisible: boolean;
-    formPeriod?: Period;
+    selectedPeriod?: Period;
 }
 
 class TimePlanner extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        this.onSave = this.onSave.bind(this);
+        this.onCancelEdit = this.onCancelEdit.bind(this);
+        this.onItemClick = this.onItemClick.bind(this);
         this.state = {
             periods: mockPeriods,
             dialogVisible: false
         };
     }
     onSave(period: Period) {
-        const periods: Period[] = this.state.periods;
+        let periods: Period[] = this.state.periods;
         if (period.id) {
-            periods.map((p) => (p.id === period.id ? period : p));
+            periods = periods.map((p) => (p.id === period.id ? period : p));
         } else {
             periods.push({ ...period, id: guid() });
         }
-        this.setState({ periods });
+        periods.sort(sortPeriods);
+        this.setState({
+            periods,
+            dialogVisible: false,
+            selectedPeriod: undefined
+        });
+    }
+    onCancelEdit() {
+        this.setState({
+            selectedPeriod: undefined,
+            dialogVisible: false
+        });
     }
     onItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
             const period = item.data as Period;
-            this.setState({ formPeriod: period });
+            if (this.state.selectedPeriod === period) {
+                this.setState({
+                    selectedPeriod: undefined
+                });
+                return;
+            }
+            this.setState({ selectedPeriod: period });
         }
     }
+    add1() {
+        console.log('a');
+    }
     render() {
-        const { dialogVisible, periods, formPeriod } = this.state;
+        const { dialogVisible, periods, selectedPeriod } = this.state;
         return (
             <div className="tidsplan">
                 <div className="blokk-l">
                     <Timeline
-                        items={mapPeriodsToTimelineItems(periods)}
+                        items={mapPeriodsToTimelineItems(
+                            periods,
+                            selectedPeriod
+                        )}
                         durationRenderer={(days) => (
                             <UkerOgDager dager={days} />
                         )}
@@ -72,15 +101,23 @@ class TimePlanner extends React.Component<Props, State> {
                             />
                         )}
                         onItemClick={(item) => this.onItemClick(item)}
-                        formRenderer={(item) => <div>EditForm</div>}
+                        formRenderer={(item) => (
+                            <TimePeriodForm
+                                period={item.data as Period}
+                                onSave={(period: Period) => this.onSave(period)}
+                                onCancel={() => this.onCancelEdit()}
+                            />
+                        )}
+                        editItem={selectedPeriod}
                     />
                 </div>
                 <Knapp
                     onClick={() =>
-                        this.setState({ dialogVisible: true, formPeriod })
+                        this.setState({ dialogVisible: true, selectedPeriod })
                     }>
                     Add
                 </Knapp>
+                <Knapp onClick={() => this.add1()}>+U</Knapp>
                 <hr />
                 <Modal
                     isOpen={dialogVisible}
@@ -91,8 +128,9 @@ class TimePlanner extends React.Component<Props, State> {
                     className="periodeSkjemaDialog">
                     {dialogVisible && (
                         <TimePeriodForm
-                            period={formPeriod}
+                            period={selectedPeriod}
                             onSave={(period: Period) => this.onSave(period)}
+                            onCancel={() => this.onCancelEdit()}
                         />
                     )}
                 </Modal>

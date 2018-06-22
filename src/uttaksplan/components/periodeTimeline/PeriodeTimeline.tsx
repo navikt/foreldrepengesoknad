@@ -9,7 +9,6 @@ import {
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
@@ -23,6 +22,7 @@ import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
 import { getSistePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
+import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
 
 export interface OwnProps {
     termindato: Date;

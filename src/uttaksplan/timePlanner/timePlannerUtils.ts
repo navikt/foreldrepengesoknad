@@ -7,8 +7,12 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
+import { isBefore } from 'date-fns';
 
-const mapWithdrawalToTimelineItem = (period: Period): TimelineEvent => ({
+const mapWithdrawalToTimelineItem = (
+    period: Period,
+    selected?: boolean
+): TimelineEvent => ({
     title: 'Withdrawal',
     type: TimelineItemType.event,
     startDate: period.startDate,
@@ -19,10 +23,14 @@ const mapWithdrawalToTimelineItem = (period: Period): TimelineEvent => ({
         sluttdato: period.endDate
     }).getAntallUttaksdager(),
     personName: 'Withdrawal',
-    data: period
+    data: period,
+    selected
 });
 
-const mapSuspensionToTimelineItem = (period: Period): TimelineEvent => ({
+const mapSuspensionToTimelineItem = (
+    period: Period,
+    selected?: boolean
+): TimelineEvent => ({
     title: 'Suspension',
     type: TimelineItemType.event,
     startDate: period.startDate,
@@ -33,10 +41,14 @@ const mapSuspensionToTimelineItem = (period: Period): TimelineEvent => ({
         sluttdato: period.endDate
     }).getAntallUttaksdager(),
     personName: 'Suspension',
-    data: period
+    data: period,
+    selected
 });
 
-const mapGapToTimelineItem = (period: Period): TimelineGap => ({
+const mapGapToTimelineItem = (
+    period: Period,
+    selected?: boolean
+): TimelineGap => ({
     type: TimelineItemType.gap,
     title: 'Gap',
     startDate: period.startDate,
@@ -45,16 +57,24 @@ const mapGapToTimelineItem = (period: Period): TimelineGap => ({
         startdato: period.startDate,
         sluttdato: period.endDate
     }).getAntallUttaksdager(),
-    data: period
+    data: period,
+    selected
 });
-export const mapPeriodsToTimelineItems = (periods: Period[]): TimelineItem[] =>
+export const mapPeriodsToTimelineItems = (
+    periods: Period[],
+    selectedPeriod?: Period
+): TimelineItem[] =>
     periods.map((period) => {
+        const selected = selectedPeriod && selectedPeriod.id === period.id;
         switch (period.type) {
             case PeriodType.Withdrawal:
-                return mapWithdrawalToTimelineItem(period);
+                return mapWithdrawalToTimelineItem(period, selected);
             case PeriodType.Suspension:
-                return mapSuspensionToTimelineItem(period);
+                return mapSuspensionToTimelineItem(period, selected);
             case PeriodType.Gap:
-                return mapGapToTimelineItem(period);
+                return mapGapToTimelineItem(period, selected);
         }
     });
+
+export const sortPeriods = (p1: Period, p2: Period) =>
+    isBefore(p1.startDate, p2.startDate) ? 1 : -1;
