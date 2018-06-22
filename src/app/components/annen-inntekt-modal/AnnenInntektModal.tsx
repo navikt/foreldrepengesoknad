@@ -5,7 +5,6 @@ import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import {
     AnnenInntekt,
@@ -19,6 +18,9 @@ import AttachmentsUploader from 'common/storage/attachment/components/Attachment
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import BEMHelper from 'common/util/bem';
 import './annenInntektModal.less';
+import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import Bolk from '../layout/Bolk';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -112,6 +114,12 @@ class AnnenInntektModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { annenInntekt } = this.state;
+        const inntektstype = annenInntekt.type;
+        const trengerDokumentasjon =
+            inntektstype === AnnenInntektType.SLUTTVEDERLAG ||
+            inntektstype === AnnenInntektType.VENTELØNN ||
+            inntektstype === AnnenInntektType.MILITÆRET ||
+            inntektstype === AnnenInntektType.VIDEREUTDANNING;
 
         const cls = BEMHelper('annenInntektModal');
         return (
@@ -138,53 +146,14 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
+                    <Bolk
                         render={() => (
-                            <DatoInput
-                                id="fraDatoInput"
-                                label={getMessage(
-                                    intl,
-                                    'annenInntekt.modal.fra.spørsmål'
-                                )}
-                                onChange={(startdato: Date) => {
-                                    this.updateAnnenInntekt({
-                                        tidsperiode: {
-                                            ...this.state.annenInntekt
-                                                .tidsperiode,
-                                            startdato
-                                        }
-                                    });
-                                }}
-                                dato={
-                                    annenInntekt.tidsperiode &&
-                                    annenInntekt.tidsperiode.startdato
-                                }
-                            />
-                        )}
-                    />
-
-                    <Spørsmål
-                        render={() => (
-                            <DatoInput
-                                id="tilDatoInput"
-                                label={getMessage(
-                                    intl,
-                                    'annenInntekt.modal.til.spørsmål'
-                                )}
-                                onChange={(sluttdato: Date) => {
-                                    this.updateAnnenInntekt({
-                                        tidsperiode: {
-                                            ...this.state.annenInntekt
-                                                .tidsperiode,
-                                            sluttdato
-                                        }
-                                    });
-                                }}
-                                dato={
-                                    annenInntekt.tidsperiode &&
-                                    annenInntekt.tidsperiode.sluttdato
-                                }
-                                disabled={annenInntekt.pågående}
+                            <TidsperiodeBolk
+                                tidsperiode={annenInntekt.tidsperiode || {}}
+                                onChange={(
+                                    tidsperiode: TidsperiodeMedValgfriSluttdato
+                                ) => this.updateAnnenInntekt({ tidsperiode })}
+                                sluttdatoDisabled={annenInntekt.pågående}
                             />
                         )}
                     />
@@ -211,6 +180,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
 
                     <Spørsmål
+                        synlig={trengerDokumentasjon}
                         render={() => (
                             <AttachmentsUploader
                                 attachments={annenInntekt.vedlegg || []}
