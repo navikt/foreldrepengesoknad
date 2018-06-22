@@ -5,14 +5,14 @@ import {
 } from 'uttaksplan/timePlanner/types';
 
 export const mockPeriods: Period[] = [
-    {
-        id: '1',
-        range: {
-            start: new Date(2018, 6, 30),
-            end: new Date(2018, 7, 31)
-        },
-        type: PeriodType.Withdrawal
-    },
+    // {
+    //     id: '1',
+    //     range: {
+    //         start: new Date(2018, 6, 30),
+    //         end: new Date(2018, 7, 31)
+    //     },
+    //     type: PeriodType.Withdrawal
+    // },
     {
         id: '2',
         range: {
