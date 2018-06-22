@@ -20,6 +20,7 @@ import {
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
+import { uttaksdagUtil, getTidsperiode } from 'uttaksplan/utils/dataUtils';
 
 export interface Props {}
 
@@ -35,6 +36,7 @@ class TimePlanner extends React.Component<Props, State> {
         this.onSave = this.onSave.bind(this);
         this.onCancelEdit = this.onCancelEdit.bind(this);
         this.onItemClick = this.onItemClick.bind(this);
+        this.addPeriod = this.addPeriod.bind(this);
         this.state = {
             periods: mockPeriods,
             dialogVisible: false
@@ -88,6 +90,30 @@ class TimePlanner extends React.Component<Props, State> {
         this.setState({ periods });
     }
 
+    addPeriod() {
+        const len = this.state.periods.length;
+        const start = uttaksdagUtil(
+            this.state.periods[len - 1].range.end
+        ).neste();
+        const tidsperiode = getTidsperiode(start, 10);
+        const period: Period = {
+            id: guid(),
+            type: PeriodType.Withdrawal,
+            range: {
+                start: tidsperiode.startdato,
+                end: tidsperiode.sluttdato
+            }
+        };
+        const periods = insertPeriod(period, this.state.periods);
+        this.setState({ periods });
+    }
+
+    reset() {
+        this.setState({
+            periods: mockPeriods
+        });
+    }
+
     render() {
         const { dialogVisible, periods, selectedPeriod } = this.state;
         return (
@@ -132,6 +158,8 @@ class TimePlanner extends React.Component<Props, State> {
                     Add
                 </Knapp>
                 <Knapp onClick={() => this.addSuspension()}>+U</Knapp>
+                <Knapp onClick={() => this.addPeriod()}>+P</Knapp>
+                <Knapp onClick={() => this.reset()}>R</Knapp>
                 <hr />
                 <Modal
                     isOpen={dialogVisible}

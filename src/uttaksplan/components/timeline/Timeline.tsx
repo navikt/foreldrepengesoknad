@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import FlipMove from 'react-flip-move';
 import {
     TimelineEvent,
     TimelineMarker,
@@ -81,13 +81,21 @@ class Timeline extends React.Component<Props, {}> {
         const { items } = this.props;
         return (
             <ol className="timeline">
-                {items.map((item, idx) => (
-                    <li
-                        className="timeline__itemWrapper"
-                        key={`${item.startDate.toDateString()}${idx}`}>
-                        {this.renderItem(item)}
-                    </li>
-                ))}
+                <FlipMove
+                    typeName={null}
+                    // staggerDurationBy={30}
+                    duration={350}
+                    enterAnimation="accordionVertical"
+                    leaveAnimation="accordionVertical"
+                    maintainContainerHeight={false}>
+                    {items.map((item, idx) => (
+                        <li
+                            className="timeline__itemWrapper"
+                            key={`${item.id || idx}`}>
+                            {this.renderItem(item)}
+                        </li>
+                    ))}
+                </FlipMove>
             </ol>
         );
     }

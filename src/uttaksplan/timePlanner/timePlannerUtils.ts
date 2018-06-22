@@ -24,6 +24,7 @@ const mapWithdrawalToTimelineItem = (
     period: Period,
     selected?: boolean
 ): TimelineEvent => ({
+    id: period.id || guid(),
     title: 'Withdrawal',
     type: TimelineItemType.event,
     startDate: period.range.start,
@@ -42,6 +43,7 @@ const mapSuspensionToTimelineItem = (
     period: Period,
     selected?: boolean
 ): TimelineEvent => ({
+    id: period.id || guid(),
     title: 'Suspension',
     type: TimelineItemType.event,
     startDate: period.range.start,
@@ -60,6 +62,7 @@ const mapGapToTimelineItem = (
     period: Period,
     selected?: boolean
 ): TimelineGap => ({
+    id: period.id || guid(),
     type: TimelineItemType.gap,
     title: 'Gap',
     startDate: period.range.start,
@@ -138,7 +141,13 @@ export const instertPeriodIntoPeriod = (
     periodToInsert: Period
 ): Period[] => {
     if (isSameDay(periodToSplit.range.start, periodToInsert.range.start)) {
-        return [periodToInsert, periodToSplit];
+        return [
+            periodToInsert,
+            movePeriod(
+                periodToSplit,
+                uttaksdagUtil(periodToInsert.range.end).neste()
+            )
+        ];
     }
     const spSplit = tidsperioden({
         startdato: periodToSplit.range.start,
@@ -183,6 +192,9 @@ export const shiftPeriods = (
     // const withdrawals = resetPeriodDates(
     //     periods.filter((p) => p.type === PeriodType.Withdrawal)
     // );
+    if (periods.length === 0) {
+        return [];
+    }
     const startDate = uttaksdagUtil(periods[0].range.start).leggTil(
         uttaksdager
     );
@@ -228,6 +240,20 @@ export const resetPeriodDatesFromDate = (
     });
 
     return resetPeriods;
+};
+
+const movePeriod = (period: Period, start: Date) => {
+    const tidsperiode = getTidsperiode(
+        uttaksdagUtil(start).neste(),
+        tidsperioden(getTidsperiodeFromPeriod(period)).getAntallUttaksdager()
+    );
+    return {
+        ...period,
+        range: {
+            start,
+            end: tidsperiode.sluttdato
+        }
+    };
 };
 
 const getTidsperiodeFromPeriod = (period: Period): Tidsperiode => ({
