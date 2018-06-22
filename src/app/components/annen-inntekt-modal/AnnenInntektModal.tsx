@@ -116,10 +116,10 @@ class AnnenInntektModal extends React.Component<Props, State> {
         const { annenInntekt } = this.state;
         const inntektstype = annenInntekt.type;
         const trengerDokumentasjon =
-            inntektstype === AnnenInntektType.SLUTTVEDERLAG ||
+            inntektstype === AnnenInntektType.SLUTTPAKKE ||
             inntektstype === AnnenInntektType.VENTELØNN ||
-            inntektstype === AnnenInntektType.MILITÆRET ||
-            inntektstype === AnnenInntektType.VIDEREUTDANNING;
+            inntektstype === AnnenInntektType.MILITÆRTJENESTE ||
+            inntektstype === AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
 
         const cls = BEMHelper('annenInntektModal');
         return (

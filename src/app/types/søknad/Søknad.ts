@@ -58,19 +58,4 @@ export type AttachmentType =
     | 'fødselsattest'
     | 'anneninntektdokumentasjon';
 
-export interface Søknadsvedlegginfo {
-    id: string;
-    url: string;
-    filnavn: string;
-    type: AttachmentType;
-    filstørrelse: number;
-    metadata: SøknadsvedleggMetadata;
-}
-
-export interface SøknadsvedleggMetadata {
-    skjemanummer: string;
-    type?: string;
-    beskrivelse?: string;
-}
-
 export default Søknad;
