@@ -35,8 +35,8 @@ class TimePeriodForm extends React.Component<Props, State> {
         this.state = props.period
             ? {
                   type: props.period.type,
-                  startDate: props.period.startDate,
-                  endDate: props.period.endDate
+                  startDate: props.period.range.end,
+                  endDate: props.period.range.end
               }
             : {};
     }
@@ -56,24 +56,30 @@ class TimePeriodForm extends React.Component<Props, State> {
                 const gap: Gap = {
                     id,
                     type,
-                    startDate,
-                    endDate
+                    range: {
+                        start: startDate,
+                        end: endDate
+                    }
                 };
                 onSave(gap);
             } else if (type === PeriodType.Suspension) {
                 const susp: Suspension = {
                     id,
                     type,
-                    startDate,
-                    endDate
+                    range: {
+                        start: startDate,
+                        end: endDate
+                    }
                 };
                 onSave(susp);
             } else if (type === PeriodType.Withdrawal) {
                 const withdrawal: Withdrawal = {
                     id,
                     type,
-                    startDate,
-                    endDate
+                    range: {
+                        start: startDate,
+                        end: endDate
+                    }
                 };
                 onSave(withdrawal);
             }

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { Period } from 'uttaksplan/timePlanner/types';
+import { Period, PeriodType, Suspension } from 'uttaksplan/timePlanner/types';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import {
     mapPeriodsToTimelineItems,
-    sortPeriods
+    sortPeriods,
+    insertPeriod
 } from 'uttaksplan/timePlanner/timePlannerUtils';
 import { Knapp } from 'nav-frontend-knapper';
 import Modal from 'nav-frontend-modal';
@@ -53,12 +54,14 @@ class TimePlanner extends React.Component<Props, State> {
             selectedPeriod: undefined
         });
     }
+
     onCancelEdit() {
         this.setState({
             selectedPeriod: undefined,
             dialogVisible: false
         });
     }
+
     onItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
             const period = item.data as Period;
@@ -71,9 +74,20 @@ class TimePlanner extends React.Component<Props, State> {
             this.setState({ selectedPeriod: period });
         }
     }
-    add1() {
-        console.log('a');
+
+    addSuspension() {
+        const susp: Suspension = {
+            id: guid(),
+            type: PeriodType.Suspension,
+            range: {
+                start: new Date(2018, 8, 10),
+                end: new Date(2018, 8, 10)
+            }
+        };
+        const periods = insertPeriod(susp, this.state.periods);
+        this.setState({ periods });
     }
+
     render() {
         const { dialogVisible, periods, selectedPeriod } = this.state;
         return (
@@ -97,7 +111,7 @@ class TimePlanner extends React.Component<Props, State> {
                                     sluttdato: endDate
                                 }}
                                 visSluttdato={true}
-                                visUkedag={false}
+                                visUkedag={true}
                             />
                         )}
                         onItemClick={(item) => this.onItemClick(item)}
@@ -117,7 +131,7 @@ class TimePlanner extends React.Component<Props, State> {
                     }>
                     Add
                 </Knapp>
-                <Knapp onClick={() => this.add1()}>+U</Knapp>
+                <Knapp onClick={() => this.addSuspension()}>+U</Knapp>
                 <hr />
                 <Modal
                     isOpen={dialogVisible}

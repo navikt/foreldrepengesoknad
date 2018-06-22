@@ -7,27 +7,35 @@ import {
 export const mockPeriods: Period[] = [
     {
         id: '1',
-        startDate: new Date(2018, 7, 2),
-        endDate: new Date(2018, 7, 28),
+        range: {
+            start: new Date(2018, 6, 30),
+            end: new Date(2018, 7, 31)
+        },
         type: PeriodType.Withdrawal
     },
     {
         id: '2',
-        startDate: new Date(2018, 7, 30),
-        endDate: new Date(2018, 8, 17),
+        range: {
+            start: new Date(2018, 8, 3),
+            end: new Date(2018, 8, 14)
+        },
         type: PeriodType.Withdrawal
     },
     {
         id: '3',
-        startDate: new Date(2018, 8, 20),
-        endDate: new Date(2018, 8, 24),
+        range: {
+            start: new Date(2018, 8, 17),
+            end: new Date(2018, 8, 28)
+        },
         type: PeriodType.Suspension,
         suspenstionType: SuspensionType.Holiday
     },
     {
         id: '4',
-        startDate: new Date(2018, 8, 27),
-        endDate: new Date(2018, 9, 28),
+        range: {
+            start: new Date(2018, 9, 1),
+            end: new Date(2018, 9, 26)
+        },
         type: PeriodType.Withdrawal
     }
 ];

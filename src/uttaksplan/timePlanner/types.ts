@@ -20,12 +20,15 @@ export enum PersonType {
     'SecondParent' = 'secondParent'
 }
 
+export interface Range {
+    start: Date;
+    end: Date;
+}
+
 export interface BasePeriod {
     id?: string;
     type: PeriodType;
-    startDate: Date;
-    endDate: Date;
-    duration?: number;
+    range: Range;
 }
 
 export interface Withdrawal extends BasePeriod {

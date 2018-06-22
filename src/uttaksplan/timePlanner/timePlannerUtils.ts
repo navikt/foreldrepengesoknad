@@ -15,12 +15,12 @@ const mapWithdrawalToTimelineItem = (
 ): TimelineEvent => ({
     title: 'Withdrawal',
     type: TimelineItemType.event,
-    startDate: period.startDate,
-    endDate: period.endDate,
+    startDate: period.range.start,
+    endDate: period.range.end,
     icons: [UttaksplanIkonKeys.uttak],
     days: tidsperioden({
-        startdato: period.startDate,
-        sluttdato: period.endDate
+        startdato: period.range.start,
+        sluttdato: period.range.end
     }).getAntallUttaksdager(),
     personName: 'Withdrawal',
     data: period,
@@ -33,12 +33,12 @@ const mapSuspensionToTimelineItem = (
 ): TimelineEvent => ({
     title: 'Suspension',
     type: TimelineItemType.event,
-    startDate: period.startDate,
-    endDate: period.endDate,
+    startDate: period.range.start,
+    endDate: period.range.end,
     icons: [UttaksplanIkonKeys.ferie],
     days: tidsperioden({
-        startdato: period.startDate,
-        sluttdato: period.endDate
+        startdato: period.range.start,
+        sluttdato: period.range.end
     }).getAntallUttaksdager(),
     personName: 'Suspension',
     data: period,
@@ -51,11 +51,11 @@ const mapGapToTimelineItem = (
 ): TimelineGap => ({
     type: TimelineItemType.gap,
     title: 'Gap',
-    startDate: period.startDate,
-    endDate: period.endDate,
+    startDate: period.range.start,
+    endDate: period.range.end,
     days: tidsperioden({
-        startdato: period.startDate,
-        sluttdato: period.endDate
+        startdato: period.range.start,
+        sluttdato: period.range.end
     }).getAntallUttaksdager(),
     data: period,
     selected
@@ -77,4 +77,9 @@ export const mapPeriodsToTimelineItems = (
     });
 
 export const sortPeriods = (p1: Period, p2: Period) =>
-    isBefore(p1.startDate, p2.startDate) ? 1 : -1;
+    isBefore(p1.range.start, p2.range.start) ? -1 : 1;
+
+export const insertPeriod = (period: Period, periods: Period[]): Period[] => {
+    // const periodsContainer
+    return periods;
+};
