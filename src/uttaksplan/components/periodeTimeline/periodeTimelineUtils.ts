@@ -15,7 +15,7 @@ import {
     TimelineMarker,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
-import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden, uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils/lib';
@@ -181,7 +181,7 @@ export function getGaps(items: TimelineItem[]) {
                     : prevItem.endDate;
 
             const dager =
-                uttaksdagUtil(prevEndDate).uttaksdagerFremTilDato(
+                uttaksdagen(prevEndDate).uttaksdagerFremTilDato(
                     item.startDate
                 ) -
                 (prevItem.type === TimelineItemType.marker ||
@@ -190,19 +190,19 @@ export function getGaps(items: TimelineItem[]) {
                     : 1);
 
             if (dager > 0) {
-                const id = `${uttaksdagUtil(prevEndDate)
+                const id = `${uttaksdagen(prevEndDate)
                     .neste()
-                    .toDateString()}${uttaksdagUtil(item.startDate).forrige()}`;
+                    .toDateString()}${uttaksdagen(item.startDate).forrige()}`;
                 const gap: TimelineGap = {
                     id,
                     type: TimelineItemType.gap,
-                    startDate: uttaksdagUtil(prevEndDate).neste(),
-                    endDate: uttaksdagUtil(item.startDate).forrige(),
+                    startDate: uttaksdagen(prevEndDate).neste(),
+                    endDate: uttaksdagen(item.startDate).forrige(),
                     days:
                         dager +
                         (prevItem.type === TimelineItemType.marker ? 1 : 0),
                     data: {},
-                    title: 'Opphold'
+                    title: 'Ubrukte uttaksdager'
                 };
                 mappedItems.push(gap);
             }

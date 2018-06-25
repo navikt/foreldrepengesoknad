@@ -5,7 +5,7 @@ import {
     Utsettelsesperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { tidsperioden, uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import {
     getAntallFeriedagerForForelder,
     getSisteMuligePermisjonsdag
@@ -28,8 +28,7 @@ export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
                   : undefined,
               sluttdato: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.sluttdato
-                  : undefined,
-              beholdVarighet: true
+                  : undefined
           }
         : {
               valideringsfeil: new Map()
@@ -226,7 +225,7 @@ export function getTilTidsromSluttdato(
             isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
         );
         if (pafolgendeUtsettelser.length > 0) {
-            return uttaksdagUtil(
+            return uttaksdagen(
                 pafolgendeUtsettelser[0].tidsperiode.startdato
             ).forrige();
         }

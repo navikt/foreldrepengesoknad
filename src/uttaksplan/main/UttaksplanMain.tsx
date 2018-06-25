@@ -32,8 +32,6 @@ import {
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
-// import Uttaksoversikt from 'uttaksplan/components/uttaksoversikt/Uttaksoversikt';
-// import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
 import '../styles/uttaksplan.less';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
@@ -175,15 +173,6 @@ class UttaksplanMain extends React.Component<Props> {
                                 />
                             </div>
                         </EkspanderbartInnhold>
-
-                        {/* <div className="blokkPad-m">
-                            <Uttaksoversikt
-                                uttak={beregnAlleUttak(
-                                    periode.perioder,
-                                    uttaksgrunnlag
-                                )}
-                            />
-                        </div> */}
 
                         {!perioderOpprettet && (
                             <div className="m-textCenter">

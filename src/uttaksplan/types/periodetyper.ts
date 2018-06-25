@@ -7,6 +7,12 @@ export enum Periodetype {
 }
 
 export enum StønadskontoType {
+    /** Mors del før termin */
+    'MorsDelFørTermin' = 'MORS_DEL_FØR_TERMIN',
+    /** Mors del */
+    'MorsDel' = 'MORS_DEL',
+    /** Mors del */
+    'FarsDel' = 'FARS_DEL',
     /** Kvote forbeholdt mor */
     'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
@@ -63,13 +69,14 @@ export interface Utsettelsesperiode extends PeriodeBase {
 
 export enum OppholdType {
     'bevisst' = 'bevisst',
+    'periodeSlettet' = 'periodeSlettet',
     'midlertidig' = 'midlertidig'
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    årsak: OppholdÅrsakType;
-    forelder: Forelder;
+    forelder?: Forelder;
+    årsak?: OppholdÅrsakType;
     opphav?: OppholdType;
 }
 

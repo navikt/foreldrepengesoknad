@@ -26,7 +26,7 @@ import { normaliserDato } from 'common/util/datoUtils';
 import './devUtil';
 
 import './dev.less';
-import { uttaksdagUtil, tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { uttaksdagen, tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { Checkbox } from 'nav-frontend-skjema';
 import {
     mockUttaksplanSøker,
@@ -148,7 +148,7 @@ class DevToolbar extends React.Component<Props, {}> {
             return;
         }
         const tidsperiode = tidsperioden(periode.tidsperiode).setStartdato(
-            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(10)
+            uttaksdagen(periode.tidsperiode.startdato).leggTil(10)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({
@@ -160,7 +160,7 @@ class DevToolbar extends React.Component<Props, {}> {
     flyttPeriode(dager: number = 1, idx: number = 3) {
         const periode = this.props.appState.uttaksplan.periode.perioder[idx];
         const tidsperiode = tidsperioden(periode.tidsperiode).setStartdato(
-            uttaksdagUtil(periode.tidsperiode.startdato).leggTil(dager)
+            uttaksdagen(periode.tidsperiode.startdato).leggTil(dager)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({

@@ -58,10 +58,7 @@ export function beregnAlleUttak(
             getBeregnetUttak(
                 søker.fornavn,
                 perioder,
-                [
-                    StønadskontoType.ForeldrepengerFørFødsel,
-                    StønadskontoType.Mødrekvote
-                ],
+                [StønadskontoType.MorsDelFørTermin, StønadskontoType.MorsDel],
                 tilgjengeligUttak
             )
         );
@@ -69,7 +66,7 @@ export function beregnAlleUttak(
             getBeregnetUttak(
                 annenForelder.fornavn,
                 perioder,
-                [StønadskontoType.Fedrekvote],
+                [StønadskontoType.FarsDel],
                 tilgjengeligUttak
             )
         );

@@ -11,8 +11,9 @@ import {
     StønadskontoType,
     StønadskontoUttak
 } from '../../types';
-import { uttaksdagUtil, tidsperioden } from './';
+import { uttaksdagen, tidsperioden } from './';
 import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
+import { guid } from 'nav-frontend-js-utils/lib';
 
 export const periodene = (perioder: Periode[]) => ({
     getOpphold: () => getOpphold(perioder),
@@ -46,6 +47,7 @@ export const periodene = (perioder: Periode[]) => ({
     forskyvPerioder: (uttaksdager: number) =>
         forskyvPerioder(perioder, uttaksdager),
     oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode),
+    finnOppholdIPerioder: (): Periode[] => finnOppholdMellomPerioder(perioder),
     sort: () => perioder.sort(sorterPerioder)
 });
 
@@ -242,7 +244,7 @@ function flyttPeriode(periode: Periode, startdato: Date): Periode {
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
     return flyttPeriode(
         periode,
-        uttaksdagUtil(periode.tidsperiode.startdato).leggTil(uttaksdager)
+        uttaksdagen(periode.tidsperiode.startdato).leggTil(uttaksdager)
     );
 }
 
@@ -334,7 +336,9 @@ function getPeriodeFootprint(periode: Periode) {
         case Periodetype.Utsettelse:
             return `${periode.type}${periode.forelder}${periode.årsak}`;
         case Periodetype.Uttak:
-            return `${periode.type}${periode.forelder}${periode.låstForelder}`;
+            return `${periode.type}${periode.forelder}${periode.konto}${
+                periode.låstForelder
+            }`;
     }
 }
 
@@ -365,7 +369,7 @@ function erPerioderLike(p1: Periode, p2: Periode) {
  * @param p2
  */
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = uttaksdagUtil(p1.tidsperiode.sluttdato).neste();
+    const p1NesteUttaksdato = uttaksdagen(p1.tidsperiode.sluttdato).neste();
     const p2Startdato = p2.tidsperiode.startdato;
     return isSameDay(p1NesteUttaksdato, p2Startdato);
 }
@@ -381,12 +385,13 @@ function finnOppholdVedEndretTidsperiode(
     prevPeriode: Periode,
     periode: Periode,
     opphav: OppholdType
-): Oppholdsperiode | undefined {
-    const diffStartdato = uttaksdagUtil(
+): Oppholdsperiode[] | undefined {
+    const opphold: Oppholdsperiode[] = [];
+    const diffStartdato = uttaksdagen(
         prevPeriode.tidsperiode.startdato
     ).uttaksdagerFremTilDato(periode.tidsperiode.startdato);
     if (diffStartdato > 0) {
-        return {
+        opphold.push({
             type: Periodetype.Opphold,
             årsak: OppholdÅrsakType.Ingen,
             forelder: periode.forelder,
@@ -395,9 +400,24 @@ function finnOppholdVedEndretTidsperiode(
                 diffStartdato
             ),
             opphav
-        };
+        });
     }
-    return undefined;
+    const diffSluttdato = uttaksdagen(
+        prevPeriode.tidsperiode.sluttdato
+    ).uttaksdagerFremTilDato(periode.tidsperiode.sluttdato);
+    if (diffSluttdato < 0) {
+        opphold.push({
+            type: Periodetype.Opphold,
+            årsak: OppholdÅrsakType.Ingen,
+            forelder: periode.forelder,
+            tidsperiode: {
+                startdato: uttaksdagen(periode.tidsperiode.sluttdato).neste(),
+                sluttdato: prevPeriode.tidsperiode.sluttdato
+            },
+            opphav
+        });
+    }
+    return opphold.length > 0 ? opphold : undefined;
 }
 
 /**
@@ -536,4 +556,47 @@ function erUtsettelse(periode: Periode): boolean {
 
 function erUttak(periode: Periode): boolean {
     return periode.type === Periodetype.Uttak;
+}
+
+/**
+ * Går gjennom alle perioder og finner uttaksdager som
+ * ikke tilhører en periode. Oppretter Opphold for disse
+ * @param perioder
+ */
+function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
+    const opphold: Oppholdsperiode[] = [];
+    const len = perioder.length;
+    perioder.forEach((periode, idx) => {
+        if (idx === len - 1) {
+            return;
+        }
+        const nestePeriode = perioder[idx + 1];
+
+        const tidsperiodeMellomPerioder = {
+            startdato: uttaksdagen(periode.tidsperiode.sluttdato).neste(),
+            sluttdato: uttaksdagen(nestePeriode.tidsperiode.startdato).forrige()
+        };
+        if (
+            isBefore(
+                tidsperiodeMellomPerioder.sluttdato,
+                tidsperiodeMellomPerioder.startdato
+            )
+        ) {
+            return;
+        }
+
+        const uttaksdagerITidsperiode = tidsperioden(
+            tidsperiodeMellomPerioder
+        ).getAntallUttaksdager();
+        if (uttaksdagerITidsperiode > 0) {
+            opphold.push({
+                id: guid(),
+                type: Periodetype.Opphold,
+                tidsperiode: tidsperiodeMellomPerioder,
+                årsak: OppholdÅrsakType.ManglendeSøktPeriode,
+                forelder: 'forelder1' // TODO ikke hardkodet
+            });
+        }
+    });
+    return opphold;
 }

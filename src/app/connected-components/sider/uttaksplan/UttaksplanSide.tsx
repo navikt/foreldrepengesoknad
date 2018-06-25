@@ -17,7 +17,8 @@ import {
 } from '../../../types/s\u00F8knad/S\u00F8knad';
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
-import TimePlanner from 'uttaksplan/timePlanner/TimePlanner';
+import { UttaksplanAppState } from 'uttaksplan/redux/types';
+// import TimePlanner from 'uttaksplan/timePlanner/TimePlanner';
 
 export interface StateProps {
     form: {
@@ -86,16 +87,17 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                <TimePlanner />
+                {/* <TimePlanner /> */}
 
-                {/* <div className="dev-only"> */}
-                <UttaksplanSideSkjema
-                    erSynlig={true}
-                    onChange={(skjemadata: UttaksplamTestSkjemadata) =>
-                        this.setState({ skjemadata })
-                    }
-                    skjemadata={this.state.skjemadata}
-                />
+                <div className="dev-only" style={{ display: 'none' }}>
+                    <UttaksplanSideSkjema
+                        erSynlig={true}
+                        onChange={(skjemadata: UttaksplamTestSkjemadata) =>
+                            this.setState({ skjemadata })
+                        }
+                        skjemadata={this.state.skjemadata}
+                    />
+                </div>
                 <Uttaksplan
                     søker={mockUttaksplanSøker}
                     annenForelder={
@@ -108,20 +110,21 @@ class UttaksplanSide extends React.Component<Props, State> {
                     erBarnetFødt={false}
                     onChange={(perioder) => this.setState({ perioder })}
                 />
-                {/* </div> */}
             </Applikasjonsside>
         );
     }
 }
 
-const mapStateToProps = (state: any): StateProps => {
+const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     const dato = addDays(new Date(), 20);
     return {
         form: {
             navnForelder1: 'Kari',
             navnForelder2: 'Ola',
-            fellesperiodeukerForelder1: 12,
-            fellesperiodeukerForelder2: 12,
+            fellesperiodeukerForelder1:
+                state.uttaksplan.form.fellesperiodeukerForelder1,
+            fellesperiodeukerForelder2:
+                state.uttaksplan.form.fellesperiodeukerForelder2,
             permisjonsregler: getPermisjonsregler(new Date()),
             dato
         }

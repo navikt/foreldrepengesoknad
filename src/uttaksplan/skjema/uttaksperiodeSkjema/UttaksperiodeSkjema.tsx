@@ -12,17 +12,13 @@ import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/TidsperiodeSpørsm\u00E5l';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/HvemGjelderPeriodenSpørsm\u00E5l';
-import StønadskontoSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/StønadskontoSpørsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 import { Tidsperiode } from 'nav-datovelger';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
-
-import Foreldernavn from 'uttaksplan/components/foreldernavn/Foreldernavn';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
@@ -39,7 +35,6 @@ export interface State {
     startdato?: Date;
     sluttdato?: Date;
     stønadskonto?: StønadskontoType;
-    beholdVarighet?: boolean;
     visStønadskontoSpørsmål: boolean;
     tilgjengeligeStønadskontoer: StønadskontoType[];
 }
@@ -68,25 +63,14 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             stønadskonto: periode ? periode.konto : singelStønadskonto,
             startdato: periode ? periode.tidsperiode.startdato : undefined,
             sluttdato: periode ? periode.tidsperiode.sluttdato : undefined,
-            beholdVarighet: true,
             tilgjengeligeStønadskontoer,
             visStønadskontoSpørsmål: tilgjengeligeStønadskontoer.length > 1
         };
     }
 
     setStartdato(startdato: Date) {
-        let sluttdato = this.state.sluttdato;
-        if (this.state.beholdVarighet && sluttdato && this.state.startdato) {
-            sluttdato = tidsperioden({
-                startdato: this.state.startdato,
-                sluttdato
-            }).setStartdato(startdato).sluttdato;
-        }
         this.setState({
-            startdato: normaliserDato(startdato),
-            sluttdato: sluttdato
-                ? normaliserDato(sluttdato)
-                : this.state.sluttdato
+            startdato: normaliserDato(startdato)
         });
     }
 
@@ -141,16 +125,13 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const {
-            beholdVarighet,
             startdato,
             sluttdato,
             forelder,
-            stønadskonto,
-            visStønadskontoSpørsmål,
-            tilgjengeligeStønadskontoer
+            stønadskonto = StønadskontoType.FarsDel
         } = this.state;
-        const lagreKnappTilgjengelig = !this.skjemaErGyldig();
 
+        const lagreKnappTilgjengelig = !this.skjemaErGyldig();
         const { permisjonsregler, søker, annenForelder } = uttaksgrunnlag;
 
         const navnForelder1 = søker.fornavn;
@@ -172,7 +153,13 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                   startdato: regler.tidligsteUttaksdato,
                   sluttdato: regler.sisteUttaksdato
               }
-            : undefined;
+            : {
+                  startdato: this.props.termindato,
+                  sluttdato: getSisteMuligePermisjonsdag(
+                      this.props.termindato,
+                      permisjonsregler
+                  )
+              };
 
         return (
             <form
@@ -183,53 +170,23 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                     <FormattedMessage id={tittelKey} />
                 </h1>
 
-                {visStønadskontoSpørsmål && (
-                    <div className="blokkPad-s">
-                        <StønadskontoSpørsmål
-                            spørsmål="Hvilken del av foreldrepengene skal brukes?"
-                            stønadskonto={stønadskonto}
-                            tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
-                            onChange={(konto) =>
-                                this.setState({ stønadskonto: konto })
-                            }
-                        />
-                    </div>
-                )}
-
-                <EkspanderbartInnhold erApen={stønadskonto !== undefined}>
-                    <div className="blokkPad-s">
-                        <HvemGjelderPeriodenSpørsmål
-                            navnForelder1={navnForelder1}
-                            navnForelder2={navnForelder2}
-                            spørsmål="Hvem skal ha perioden?"
-                            forelder={forelder}
-                            onChange={(f) => this.setState({ forelder: f })}
-                        />
-                    </div>
-                    {stønadskonto === StønadskontoType.Mødrekvote &&
-                        forelder === 'forelder2' && (
-                            <div className="blokkPad-s">
-                                <Veilederinfo type="info">
-                                    For at{' '}
-                                    <Foreldernavn
-                                        forelder="forelder1"
-                                        navn={navnForelder1}
-                                    />{' '}
-                                    skal ta ut mødrekvote, må perioden overføres
-                                    fra{' '}
-                                    <Foreldernavn
-                                        forelder="forelder1"
-                                        navn={navnForelder1}
-                                    />{' '}
-                                    til{' '}
-                                    <Foreldernavn
-                                        forelder="forelder2"
-                                        navn={navnForelder2}
-                                    />.
-                                </Veilederinfo>
-                            </div>
-                        )}
-                </EkspanderbartInnhold>
+                <div className="blokkPad-s">
+                    <HvemGjelderPeriodenSpørsmål
+                        navnForelder1={navnForelder1}
+                        navnForelder2={navnForelder2}
+                        spørsmål="Hvem skal ha perioden?"
+                        forelder={forelder}
+                        onChange={(f) =>
+                            this.setState({
+                                forelder: f,
+                                stønadskonto:
+                                    f === 'forelder1'
+                                        ? StønadskontoType.MorsDel
+                                        : StønadskontoType.FarsDel
+                            })
+                        }
+                    />
+                </div>
 
                 <EkspanderbartInnhold erApen={forelder !== undefined}>
                     <TidsperiodeSpørsmål
@@ -244,11 +201,6 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                             tidsperiode
                         }}
                         helgedagerIkkeTillatt={true}
-                        beholdVarighet={beholdVarighet}
-                        visBeholdVarighet={periode && periode.id !== undefined}
-                        onChangeBeholdVarighet={(behold) =>
-                            this.setState({ beholdVarighet: behold })
-                        }
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                     />
                 </EkspanderbartInnhold>

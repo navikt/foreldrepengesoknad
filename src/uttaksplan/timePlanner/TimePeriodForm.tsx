@@ -139,7 +139,6 @@ class TimePeriodForm extends React.Component<Props, State> {
 
                         onChange: (date) => this.updateState({ endDate: date })
                     }}
-                    visBeholdVarighet={false}
                     helgedagerIkkeTillatt={true}
                 />
                 <Knapperad>

@@ -51,7 +51,6 @@ export interface State {
     sluttdato?: Date;
     valideringsfeil: Valideringsfeil;
     visValideringsfeil?: boolean;
-    beholdVarighet?: boolean;
 }
 
 class UtsettelseSkjema extends React.Component<Props, State> {
@@ -78,11 +77,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     setStartdato(dato: Date) {
         const startdato = normaliserDato(dato);
         let sluttdato = this.state.sluttdato;
-        if (
-            this.state.beholdVarighet &&
-            this.state.startdato &&
-            this.state.sluttdato
-        ) {
+        if (this.state.startdato && this.state.sluttdato) {
             const uttaksdager = tidsperioden({
                 startdato: this.state.startdato,
                 sluttdato: this.state.sluttdato
@@ -143,13 +138,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            årsak,
-            startdato,
-            sluttdato,
-            forelder,
-            beholdVarighet
-        } = this.state;
+        const { årsak, startdato, sluttdato, forelder } = this.state;
         const {
             utsettelse,
             navnForelder1,
@@ -283,13 +272,6 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 feil: sluttdatoFeil,
                                 visFeil: visSluttdatofeil
                             }}
-                            visBeholdVarighet={
-                                utsettelse && utsettelse.id !== undefined
-                            }
-                            beholdVarighet={beholdVarighet}
-                            onChangeBeholdVarighet={(behold) =>
-                                this.setState({ beholdVarighet: behold })
-                            }
                             ugyldigeTidsperioder={ugyldigeTidsrom}
                             tidsperiodeFeil={tidsperiodeFeil}
                             helgedagerIkkeTillatt={true}

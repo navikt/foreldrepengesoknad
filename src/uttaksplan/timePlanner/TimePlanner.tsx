@@ -20,7 +20,7 @@ import {
     TimelineItemType
 } from 'uttaksplan/components/timeline/types';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
-import { uttaksdagUtil, getTidsperiode } from 'uttaksplan/utils/dataUtils';
+import { uttaksdagen, getTidsperiode } from 'uttaksplan/utils/dataUtils';
 
 export interface Props {}
 
@@ -92,7 +92,7 @@ class TimePlanner extends React.Component<Props, State> {
 
     addPeriod() {
         const len = this.state.periods.length;
-        const start = uttaksdagUtil(
+        const start = uttaksdagen(
             this.state.periods[len - 1].range.end
         ).neste();
         const tidsperiode = getTidsperiode(start, 10);

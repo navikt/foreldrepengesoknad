@@ -7,7 +7,7 @@ import {
 } from 'uttaksplan/components/timeline/types';
 import {
     tidsperioden,
-    uttaksdagUtil,
+    uttaksdagen,
     getTidsperiode
 } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
@@ -145,7 +145,7 @@ export const instertPeriodIntoPeriod = (
             periodToInsert,
             movePeriod(
                 periodToSplit,
-                uttaksdagUtil(periodToInsert.range.end).neste()
+                uttaksdagen(periodToInsert.range.end).neste()
             )
         ];
     }
@@ -156,16 +156,16 @@ export const instertPeriodIntoPeriod = (
     const uttaksdagerSplit = spSplit.getAntallUttaksdager();
     const r1: Range = {
         start: periodToSplit.range.start,
-        end: uttaksdagUtil(periodToInsert.range.start).forrige()
+        end: uttaksdagen(periodToInsert.range.start).forrige()
     };
     const r1Uttak = tidsperioden({
         startdato: r1.start,
         sluttdato: r1.end
     }).getAntallUttaksdager();
-    const startR3 = uttaksdagUtil(periodToInsert.range.end).neste();
+    const startR3 = uttaksdagen(periodToInsert.range.end).neste();
     const r3: Range = {
         start: startR3,
-        end: uttaksdagUtil(startR3).leggTil(uttaksdagerSplit - r1Uttak - 1)
+        end: uttaksdagen(startR3).leggTil(uttaksdagerSplit - r1Uttak - 1)
     };
 
     const periods: Period[] = [
@@ -188,16 +188,10 @@ export const shiftPeriods = (
     periods: Period[],
     uttaksdager: number
 ): Period[] => {
-    // const suspensions = periods.filter((p) => p.type === PeriodType.Suspension);
-    // const withdrawals = resetPeriodDates(
-    //     periods.filter((p) => p.type === PeriodType.Withdrawal)
-    // );
     if (periods.length === 0) {
         return [];
     }
-    const startDate = uttaksdagUtil(periods[0].range.start).leggTil(
-        uttaksdager
-    );
+    const startDate = uttaksdagen(periods[0].range.start).leggTil(uttaksdager);
     return resetPeriodDatesFromDate(periods, startDate);
 };
 
@@ -222,7 +216,7 @@ export const resetPeriodDatesFromDate = (
             };
         } else {
             const tidsperiode = getTidsperiode(
-                uttaksdagUtil(lastEndDate).neste(),
+                uttaksdagen(lastEndDate).neste(),
                 tidsperioden(
                     getTidsperiodeFromPeriod(period)
                 ).getAntallUttaksdager()
@@ -244,7 +238,7 @@ export const resetPeriodDatesFromDate = (
 
 const movePeriod = (period: Period, start: Date) => {
     const tidsperiode = getTidsperiode(
-        uttaksdagUtil(start).neste(),
+        uttaksdagen(start).neste(),
         tidsperioden(getTidsperiodeFromPeriod(period)).getAntallUttaksdager()
     );
     return {

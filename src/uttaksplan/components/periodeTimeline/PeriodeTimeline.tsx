@@ -117,7 +117,7 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
                             sluttdato
                         }}
                         visSluttdato={true}
-                        visUkedag={false}
+                        visUkedag={true}
                     />
                 )}
             />

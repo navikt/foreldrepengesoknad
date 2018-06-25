@@ -5,7 +5,7 @@ import { tidsperioden } from 'uttaksplan/utils/dataUtils';
  * Wrapper en dato med uttaksdager-funksjonalitet
  * @param dato
  */
-export const uttaksdagUtil = (dato: Date) => ({
+export const uttaksdagen = (dato: Date) => ({
     erUttaksdag: (): boolean => erUttaksdag(dato),
     forrige: (): Date => getUttaksdagFørDato(dato),
     neste: (): Date => getUttaksdagEtterDato(dato),

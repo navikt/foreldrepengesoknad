@@ -1,6 +1,6 @@
 import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
-import { uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { isSameDay, isAfter, isBefore } from 'date-fns';
 
@@ -33,12 +33,12 @@ export function getTidsperiode(
     startdato: Date,
     uttaksdager: number
 ): Tidsperiode {
-    if (!uttaksdagUtil(startdato).erUttaksdag()) {
+    if (!uttaksdagen(startdato).erUttaksdag()) {
         throw new Error('Startdato er ikke en uttaksdag');
     }
     return {
         startdato,
-        sluttdato: uttaksdagUtil(startdato).leggTil(uttaksdager - 1)
+        sluttdato: uttaksdagen(startdato).leggTil(uttaksdager - 1)
     };
 }
 
@@ -81,7 +81,7 @@ function getAntallUttaksdagerITidsperiode(
     let antall = 0;
     let fridager = 0;
     while (startdato <= sluttdato) {
-        if (uttaksdagUtil(startdato).erUttaksdag()) {
+        if (uttaksdagen(startdato).erUttaksdag()) {
             antall++;
         }
         startdato.setDate(startdato.getDate() + 1);
@@ -97,7 +97,7 @@ function getAntallUttaksdagerITidsperiode(
  */
 function getUttaksdagerSomErFridager(tidsperiode: Tidsperiode): Holiday[] {
     return getOffentligeFridager(tidsperiode).filter((dag) =>
-        uttaksdagUtil(dag.date).erUttaksdag()
+        uttaksdagen(dag.date).erUttaksdag()
     );
 }
 
