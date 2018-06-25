@@ -34,9 +34,9 @@ import {
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
-import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 
 export interface StateProps {
     form: UttaksplanFormState;

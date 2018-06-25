@@ -18,7 +18,6 @@ import {
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-// import TimePlanner from 'uttaksplan/timePlanner/TimePlanner';
 
 export interface StateProps {
     form: {
@@ -86,8 +85,6 @@ class UttaksplanSide extends React.Component<Props, State> {
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
-
-                {/* <TimePlanner /> */}
 
                 <div className="dev-only" style={{ display: 'none' }}>
                     <UttaksplanSideSkjema
