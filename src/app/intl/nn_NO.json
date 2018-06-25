@@ -103,6 +103,7 @@
         "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.modal.navn": "Navn på næringen",
     "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
+    "selvstendigNæringsdrivende.modal.tittel": "Legg til næring",
 
     "frilans.oppstart": "Når begynte du som frilans?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",

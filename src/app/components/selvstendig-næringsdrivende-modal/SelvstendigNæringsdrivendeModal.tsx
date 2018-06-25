@@ -118,7 +118,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 {...modalProps}>
                 <form onSubmit={this.onSubmit}>
                     <Undertittel className={cls.element('title')}>
-                        <FormattedMessage id="SelvstendigNæringsdrivende.modal.tittel" />
+                        <FormattedMessage id="selvstendigNæringsdrivende.modal.tittel" />
                     </Undertittel>
 
                     <Spørsmål
