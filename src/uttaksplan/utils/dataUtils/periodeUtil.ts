@@ -7,7 +7,7 @@ import {
     Periodetype,
     Oppholdsperiode,
     OppholdÅrsakType,
-    OppholdOpphavType,
+    OppholdType,
     StønadskontoType,
     StønadskontoUttak
 } from '../../types';
@@ -68,7 +68,7 @@ export const perioden = (periode: Periode) => ({
         finnOppholdVedEndretTidsperiode(
             periode,
             endretPeriode,
-            'periodeendring'
+            OppholdType.midlertidig
         )
 });
 
@@ -380,7 +380,7 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
 function finnOppholdVedEndretTidsperiode(
     prevPeriode: Periode,
     periode: Periode,
-    opphav: OppholdOpphavType
+    opphav: OppholdType
 ): Oppholdsperiode | undefined {
     const diffStartdato = uttaksdagUtil(
         prevPeriode.tidsperiode.startdato

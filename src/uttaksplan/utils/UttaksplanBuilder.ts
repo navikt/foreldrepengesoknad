@@ -501,6 +501,7 @@ function leggTilPeriodeFørPeriode(
         )
     ];
 }
+
 /**
  * Legger en periode inn i en periode og forskyver påfølgende perioder
  * @param perioder

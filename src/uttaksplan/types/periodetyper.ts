@@ -61,13 +61,16 @@ export interface Utsettelsesperiode extends PeriodeBase {
     helligdager?: Helligdag[];
 }
 
-export type OppholdOpphavType = 'periodeendring' | undefined;
+export enum OppholdType {
+    'bevisst' = 'bevisst',
+    'midlertidig' = 'midlertidig'
+}
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
     forelder: Forelder;
-    opphav?: OppholdOpphavType;
+    opphav?: OppholdType;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;

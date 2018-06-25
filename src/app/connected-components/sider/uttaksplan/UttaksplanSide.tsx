@@ -88,27 +88,27 @@ class UttaksplanSide extends React.Component<Props, State> {
 
                 <TimePlanner />
 
-                <div className="dev-only">
-                    <UttaksplanSideSkjema
-                        erSynlig={true}
-                        onChange={(skjemadata: UttaksplamTestSkjemadata) =>
-                            this.setState({ skjemadata })
-                        }
-                        skjemadata={this.state.skjemadata}
-                    />
-                    <Uttaksplan
-                        søker={mockUttaksplanSøker}
-                        annenForelder={
-                            skalAnnenPersonHaPermisjon(skjema)
-                                ? mockUttasksplanAnnenForelder
-                                : undefined
-                        }
-                        termindato={skjema.dato}
-                        antallBarn={parseInt(skjema.antallBarn, 10)}
-                        erBarnetFødt={false}
-                        onChange={(perioder) => this.setState({ perioder })}
-                    />
-                </div>
+                {/* <div className="dev-only"> */}
+                <UttaksplanSideSkjema
+                    erSynlig={true}
+                    onChange={(skjemadata: UttaksplamTestSkjemadata) =>
+                        this.setState({ skjemadata })
+                    }
+                    skjemadata={this.state.skjemadata}
+                />
+                <Uttaksplan
+                    søker={mockUttaksplanSøker}
+                    annenForelder={
+                        skalAnnenPersonHaPermisjon(skjema)
+                            ? mockUttasksplanAnnenForelder
+                            : undefined
+                    }
+                    termindato={skjema.dato}
+                    antallBarn={parseInt(skjema.antallBarn, 10)}
+                    erBarnetFødt={false}
+                    onChange={(perioder) => this.setState({ perioder })}
+                />
+                {/* </div> */}
             </Applikasjonsside>
         );
     }

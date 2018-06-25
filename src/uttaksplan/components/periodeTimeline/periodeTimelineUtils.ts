@@ -18,6 +18,7 @@ import {
 import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
+import { guid } from 'nav-frontend-js-utils/lib';
 
 export const mapPeriodeToTimelineEvent = (
     periode: Periode,
@@ -62,6 +63,7 @@ export const mapPeriodeToTimelineEvent = (
         periode.type === Periodetype.Utsettelse
     ) {
         return {
+            id: periode.id || guid(),
             type: TimelineItemType.event,
             title: getTittel(),
             startDate: periode.tidsperiode.startdato,
@@ -78,10 +80,11 @@ export const mapPeriodeToTimelineEvent = (
         };
     } else {
         const gapItem: TimelineGap = {
+            id: periode.tidsperiode.startdato.toDateString(),
             type: TimelineItemType.gap,
             startDate: periode.tidsperiode.startdato,
             endDate: periode.tidsperiode.sluttdato,
-            title: 'Opphold',
+            title: 'Opphold/tapte dager',
             days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsForPeriode(periode),
             data: periode
@@ -135,6 +138,7 @@ export function getTerminMarker(
     erBarnetFødt: boolean
 ): TimelineMarker {
     return {
+        id: 'termin',
         type: TimelineItemType.marker,
         icons: ['termin'],
         title: erBarnetFødt ? 'Fødsel' : 'Termin',
@@ -147,6 +151,7 @@ export function getSistePermisjonsdagMarker(
     sistePermisjonsdag: Date
 ): TimelineMarker {
     return {
+        id: 'sistePermisjonsdag',
         type: TimelineItemType.marker,
         icons: [],
         title: 'Permisjonsslutt',
@@ -185,7 +190,11 @@ export function getGaps(items: TimelineItem[]) {
                     : 1);
 
             if (dager > 0) {
+                const id = `${uttaksdagUtil(prevEndDate)
+                    .neste()
+                    .toDateString()}${uttaksdagUtil(item.startDate).forrige()}`;
                 const gap: TimelineGap = {
+                    id,
                     type: TimelineItemType.gap,
                     startDate: uttaksdagUtil(prevEndDate).neste(),
                     endDate: uttaksdagUtil(item.startDate).forrige(),
