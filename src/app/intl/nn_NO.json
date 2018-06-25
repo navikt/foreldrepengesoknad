@@ -97,7 +97,12 @@
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
-    "næringstype.spørsmål": "Hvilke typer næring(-er) er det du har drevet?",
+    "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
+
+    "selvstendigNæringsdrivende.oppfølgingsspørsmål":
+        "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.modal.navn": "Navn på næringen",
+    "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
 
     "frilans.oppstart": "Når begynte du som frilans?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
@@ -112,7 +117,7 @@
 
     "erDuFrilanser.spørsmål": "Er du frilanser?",
     "erDuSelvstendigNæringsdrivende.spørsmål":
-        "Er du selvstendig næringsdrivende?",
+        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
     "andreForelderenRettPåForeldrepenger.spørsmål":
         "Har {navn} rett på foreldrepenger?",

@@ -16,7 +16,6 @@ import BEMHelper from 'common/util/bem';
 import './annenInntektModal.less';
 import Bolk from '../layout/Bolk';
 import GenerellAnnenInntektBolk from '../../bolker/GenerellAnnenInntektBolk';
-import SelvstendigNæringsdrivendeBolk from '../../bolker/SelvstendigNæringsdrivendeBolk';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -130,14 +129,6 @@ class AnnenInntektModal extends React.Component<AnnenInntektModalProps, State> {
                                 onChange={this.updateAnnenInntekt}
                             />
                         )}
-                    />
-
-                    <Bolk
-                        synlig={
-                            inntektstype ===
-                            AnnenInntektType.SELVSTENDIG_NÆRINGSDRIVENDE
-                        }
-                        render={() => <SelvstendigNæringsdrivendeBolk />}
                     />
 
                     <Knapperad>

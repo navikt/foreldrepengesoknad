@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import getMessage from 'common/util/i18nUtils';
 import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
-import { Næringstype } from '../types/søknad/AnnenInntekt';
+import { Næringstype } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 
 interface NæringstypeSpørsmålProps {
     næringstyper: Næringstype[];
@@ -12,14 +12,21 @@ interface NæringstypeSpørsmålProps {
 
 type Props = NæringstypeSpørsmålProps & InjectedIntlProps;
 
+const næringstypeValues = [
+    Næringstype.DAGMAMMA,
+    Næringstype.FISKER,
+    Næringstype.JORDBRUK,
+    Næringstype.ANNET
+];
+
 const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) => {
     const { onChange, næringstyper, intl } = props;
     const createNæringstypeOptions = () => {
-        return næringstyper.map((næringstype: Næringstype) => {
+        return næringstypeValues.map((næringstype: Næringstype) => {
             return {
                 label: næringstype,
                 value: næringstype,
-                checked: næringstype.indexOf(næringstype) >= 0
+                checked: næringstyper.indexOf(næringstype) >= 0
             };
         });
     };
