@@ -19,6 +19,8 @@ import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import Bolk from '../layout/Bolk';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
+import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
+import Landvelger from '../landvelger/Landvelger';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -62,6 +64,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         super(props);
 
         this.state = SelvstendigNæringsdrivendeModal.buildStateFromProps(props);
+
         this.onSubmit = this.onSubmit.bind(this);
         this.updateNæring = this.updateNæring.bind(this);
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
@@ -107,7 +110,16 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { næring } = this.state;
-        const { navnPåNæringen, næringstyper, tidsperiode, pågående } = næring;
+        const {
+            navnPåNæringen,
+            næringstyper,
+            tidsperiode,
+            pågående,
+            organisasjonsnummer,
+            registrertINorge,
+            registrertILand,
+            stillingsprosent
+        } = næring;
 
         const cls = BEMHelper('selvstendigNæringsdrivendeModal');
 
@@ -178,6 +190,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                         navnPåNæringen: e.target.value
                                     })
                                 }
+                                value={navnPåNæringen || ''}
                             />
                         )}
                     />
@@ -197,9 +210,64 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                         organisasjonsnummer: e.target.value
                                     })
                                 }
+                                value={organisasjonsnummer || ''}
                             />
                         )}
                     />
+
+                    <Spørsmål
+                        synlig={organisasjonsnummer !== undefined}
+                        render={() => (
+                            <ErNæringenRegistrertINorgeSpørsmål
+                                registrertINorge={registrertINorge}
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({ registrertINorge: v })
+                                }
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={registrertINorge === false}
+                        render={() => (
+                            <Landvelger
+                                onChange={(v: string) =>
+                                    this.updateNæring({ registrertILand: v })
+                                }
+                                label={getMessage(
+                                    intl,
+                                    'selvstendigNæringsdrivende.modal.registrertILand'
+                                )}
+                                defaultValue={registrertILand}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            registrertINorge === true ||
+                            (registrertINorge === false &&
+                                registrertILand !== undefined)
+                        }
+                        render={() => (
+                            <Input
+                                bredde="XS"
+                                label={getMessage(
+                                    intl,
+                                    'selvstendigNæringsdrivende.modal.stillingsprosent'
+                                )}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    this.updateNæring({
+                                        stillingsprosent: e.target.value
+                                    })
+                                }
+                                value={stillingsprosent || ''}
+                            />
+                        )}
+                    />
+
                     <Knapperad>
                         <Knapp
                             type="standard"

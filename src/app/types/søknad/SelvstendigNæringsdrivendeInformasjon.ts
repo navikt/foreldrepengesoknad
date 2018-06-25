@@ -15,7 +15,7 @@ export class Næring {
     organisasjonsnummer: string;
     registrertINorge: boolean;
     registrertILand: string;
-    stillingsprosent: number;
+    stillingsprosent: string;
 }
 
 export type NæringPartial = Partial<Næring>;
