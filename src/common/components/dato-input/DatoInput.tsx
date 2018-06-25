@@ -4,12 +4,12 @@ import { Feil } from '../skjema-input-element/types';
 import Datovelger, { Props as DatovelgerProps } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-export interface OwnProps extends DatovelgerProps {
+export interface DatoInputProps extends DatovelgerProps {
     label: string | React.ReactNode;
     feil?: Feil;
 }
 
-export type Props = OwnProps & InjectedIntlProps;
+export type Props = DatoInputProps & InjectedIntlProps;
 
 class DatoInput extends React.Component<Props, {}> {
     render() {

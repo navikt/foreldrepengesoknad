@@ -1,10 +1,11 @@
 import Person, { PersonPartial } from '../../../types/Person';
 import Søknad from '../../../types/søknad/Søknad';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
 
 export enum ApiActionKeys {
-    'GET_PERSON_REQUEST' = 'getPersonRequest',
-    'GET_PERSON_SUCCESS' = 'getPersonSuccess',
-    'GET_PERSON_FAILED' = 'getPersonFailed',
+    'GET_SØKERINFO_REQUEST' = 'getSøkerinfoRequest',
+    'GET_SØKERINFO_SUCCESS' = 'getSøkerinfoSuccess',
+    'GET_SØKERINFO_FAILED' = 'getSøkerinfoFailed',
 
     'SEND_SØKNAD_REQUEST' = 'sendSøknadRequest',
     'SEND_SØKNAD_SUCCESS' = 'sendSøknadSuccess',
@@ -13,17 +14,18 @@ export enum ApiActionKeys {
     'UPDATE_PERSON' = 'updatePerson'
 }
 
-interface GetPersonRequest {
-    type: ApiActionKeys.GET_PERSON_REQUEST;
+interface GetSøkerinfoRequest {
+    type: ApiActionKeys.GET_SØKERINFO_REQUEST;
 }
 
-interface GetPersonSuccess {
-    type: ApiActionKeys.GET_PERSON_SUCCESS;
+interface GetSøkerinfoSuccess {
+    type: ApiActionKeys.GET_SØKERINFO_SUCCESS;
     person: Person;
+    arbeidsforhold: Arbeidsforhold;
 }
 
-interface GetPersonFailed {
-    type: ApiActionKeys.GET_PERSON_FAILED;
+interface GetSøkerinfoFailed {
+    type: ApiActionKeys.GET_SØKERINFO_FAILED;
     error: any;
 }
 
@@ -48,9 +50,9 @@ interface UpdatePerson {
 }
 
 export type ApiActionTypes =
-    | GetPersonRequest
-    | GetPersonSuccess
-    | GetPersonFailed
+    | GetSøkerinfoRequest
+    | GetSøkerinfoSuccess
+    | GetSøkerinfoFailed
     | SendSøknadRequest
     | SendSøknadSuccess
     | SendSøknadFailed

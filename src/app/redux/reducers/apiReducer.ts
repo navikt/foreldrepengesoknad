@@ -4,9 +4,11 @@ import {
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
 import { DataOmAnnenForelder } from '../../types/søknad/AnnenForelder';
+import Arbeidsforhold from '../../types/Arbeidsforhold';
 
 export interface ApiReducerState {
     person?: Person;
+    arbeidsforhold?: Arbeidsforhold[];
     dataOmAnnenForelder?: DataOmAnnenForelder;
     isLoadingPerson: boolean;
     error: any;
@@ -14,6 +16,7 @@ export interface ApiReducerState {
 
 const getDefaultState = (): ApiReducerState => ({
     person: undefined,
+    arbeidsforhold: undefined,
     dataOmAnnenForelder: false
         ? {
               navn: 'pent navn',
@@ -31,14 +34,19 @@ const getDefaultState = (): ApiReducerState => ({
 
 const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
     switch (action.type) {
-        case ApiActionKeys.GET_PERSON_REQUEST:
+        case ApiActionKeys.GET_SØKERINFO_REQUEST:
             return {
                 ...state,
                 isLoadingPerson: true
             };
-        case ApiActionKeys.GET_PERSON_SUCCESS:
-            return { ...state, person: action.person, isLoadingPerson: false };
-        case ApiActionKeys.GET_PERSON_FAILED:
+        case ApiActionKeys.GET_SØKERINFO_SUCCESS:
+            return {
+                ...state,
+                person: action.person,
+                arbeidsforhold: action.arbeidsforhold,
+                isLoadingPerson: false
+            };
+        case ApiActionKeys.GET_SØKERINFO_FAILED:
             return {
                 ...state,
                 error: action.error,
