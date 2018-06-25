@@ -37,10 +37,6 @@ const getOptions = (intl: InjectedIntl): InntektstypeOptions => ({
         'inntektstype.videreutdanning'
     ),
     [AnnenInntektType.VENTELØNN]: getMessage(intl, 'inntektstype.ventelønn'),
-    [AnnenInntektType.SELVSTENDIG_NÆRINGSDRIVENDE]: getMessage(
-        intl,
-        'inntektstype.selvstendigNæringsdrivende'
-    ),
     [AnnenInntektType.SLUTTPAKKE]: getMessage(
         intl,
         'inntektstype.sluttvederlag'
