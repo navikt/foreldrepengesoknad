@@ -8,7 +8,6 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from '../../../../components/layout/Bolk';
-import { Språkkode } from 'common/intl/types';
 import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søker from '../../../../types/søknad/Søker';
@@ -19,7 +18,6 @@ interface AnnenForelderPersonaliaPartialProps {
     annenForelder: AnnenForelderPartial;
     dataOmAndreForelderen: any;
     erFarEllerMedmor: boolean;
-    språk: Språkkode;
 }
 
 type Props = AnnenForelderPersonaliaPartialProps &
@@ -33,8 +31,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             annenForelder,
             dataOmAndreForelderen,
             dispatch,
-            intl,
-            språk
+            intl
         } = this.props;
         const { kanIkkeOppgis, navn } = annenForelder;
 
@@ -103,7 +100,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                                     )
                                 )
                             }
-                            språk={språk}
                         />
                     )}
                 />

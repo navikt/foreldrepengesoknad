@@ -115,9 +115,14 @@
     "selvstendigNæringsdrivende.modal.navn": "Navn på næringen",
     "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
     "selvstendigNæringsdrivende.modal.tittel": "Legg til næring",
+    "selvstendigNæringsdrivende.modal.registrertILand":
+        "Hvilket land er næringen registrert i?",
+    "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
 
     "erDuSelvstendigNæringsdrivende.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
+
+    "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
     "andreForelderenRettPåForeldrepenger.spørsmål":
         "Har {navn} rett på foreldrepenger?",

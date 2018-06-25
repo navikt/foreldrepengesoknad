@@ -14,7 +14,6 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
-import { Språkkode } from 'common/intl/types';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/layout/Steg';
@@ -23,7 +22,6 @@ import { HistoryProps } from '../../../types/common';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
-    språkkode: Språkkode;
     stegProps: StegProps;
 }
 
@@ -99,7 +97,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, språkkode, intl } = this.props;
+        const { søknad, stegProps, intl } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
 
         return (
@@ -123,7 +121,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                     .senereOpphold
                             }
                             oppholdType={'senereOpphold'}
-                            språk={språkkode}
                             onChange={(opphold: Utenlandsopphold[]) =>
                                 this.updateUtenlandsopphold(
                                     opphold,
@@ -157,7 +154,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                     .tidligereOpphold
                             }
                             oppholdType={'tidligereOpphold'}
-                            språk={språkkode}
                             onChange={(opphold: Utenlandsopphold[]) =>
                                 this.updateUtenlandsopphold(
                                     opphold,
@@ -193,7 +189,6 @@ export default injectIntl(
         };
 
         return {
-            språkkode: state.common.språkkode,
             søknad,
             stegProps,
             ...props

@@ -6,7 +6,6 @@ import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { Språkkode } from 'common/intl/types';
 
 interface FødselsnummerSpørsmålProps {
     annenForelder: AnnenForelderPartial;
@@ -14,13 +13,12 @@ interface FødselsnummerSpørsmålProps {
         annenForelder: AnnenForelderPartial,
         e: React.ChangeEvent<any>
     ) => void;
-    språk: Språkkode;
 }
 
 type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
 const FødselsnummerSpørsmål = (props: Props) => {
-    const { annenForelder, onChange, intl, språk } = props;
+    const { annenForelder, onChange, intl } = props;
     const { kanIkkeOppgis, fnr, utenlandskFnr } = annenForelder;
     return (
         <React.Fragment>
@@ -65,7 +63,6 @@ const FødselsnummerSpørsmål = (props: Props) => {
                             bostedsland: string,
                             e: React.ChangeEvent<HTMLSelectElement>
                         ) => onChange({ bostedsland }, e)}
-                        språk={språk}
                         defaultValue={annenForelder.bostedsland}
                     />
                 )}
