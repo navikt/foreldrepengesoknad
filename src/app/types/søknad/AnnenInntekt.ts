@@ -13,6 +13,8 @@ export enum AnnenInntektType {
     'SELVSTENDIG_NÆRINGSDRIVENDE' = 'selvstendigNæringsdrivende'
 }
 
+export type Næringstype = 'FISKER' | 'JORDBRUK' | 'DAGMAMMA' | 'ANNET';
+
 abstract class AnnenInntektBase {
     tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
@@ -21,6 +23,7 @@ abstract class AnnenInntektBase {
 
 export class SelvstendigNæringsdrivendeInntekt extends AnnenInntektBase {
     type: AnnenInntektType.SELVSTENDIG_NÆRINGSDRIVENDE;
+    næringstyper: Næringstype[];
 }
 
 export class SluttpakkeInntekt extends AnnenInntektBase {
