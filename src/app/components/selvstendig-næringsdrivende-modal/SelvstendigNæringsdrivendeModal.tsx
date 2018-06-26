@@ -101,7 +101,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     toggleNæringstype(næringstype: Næringstype) {
-        const { næring } = this.props;
+        const { næring } = this.state;
         const newNæringstyper = ((næring && næring.næringstyper) || []).slice();
         const indexOfNæringstype = newNæringstyper.indexOf(næringstype);
 
