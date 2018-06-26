@@ -10,7 +10,6 @@ import {
     Utenlandsopphold,
     UtenlandsoppholdSkjemadataPartial
 } from '../../types/søknad/InformasjonOmUtenlandsopphold';
-import { Språkkode } from 'common/intl/types';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -22,7 +21,6 @@ import Bolk from '../layout/Bolk';
 export interface UtenlandsoppholdModalProps extends ModalProps {
     type: UtenlandsoppholdType;
     opphold?: Utenlandsopphold;
-    språk: Språkkode;
     onAdd: (opphold: Utenlandsopphold) => void;
     onEdit: (opphold: Utenlandsopphold) => void;
 }
@@ -79,7 +77,7 @@ export default class UtenlandsoppholdModal extends React.Component<
     }
 
     render() {
-        const { type, språk, onRequestClose, ...modalProps } = this.props;
+        const { type, onRequestClose, ...modalProps } = this.props;
         const { opphold } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
@@ -104,7 +102,6 @@ export default class UtenlandsoppholdModal extends React.Component<
                                 onChange={(land: string) =>
                                     this.updateOpphold({ land })
                                 }
-                                språk={språk}
                                 defaultValue={opphold.land}
                             />
                         )}

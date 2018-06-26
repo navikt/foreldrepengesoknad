@@ -5,34 +5,47 @@ import {
 } from 'common/types';
 
 export enum AnnenInntektType {
-    'SLUTTVEDERLAG' = 'sluttvederlag',
-    'MILITÆRET' = 'militæret',
-    'VIDEREUTDANNING' = 'videreutdanning',
+    'SLUTTPAKKE' = 'sluttpakke',
+    'MILITÆRTJENESTE' = 'militærtjeneste',
+    'LØNN_VED_VIDEREUTDANNING' = 'lønnVedVidereutdanning',
     'VENTELØNN' = 'ventelønn',
-    'JOBB_I_UTLANDET' = 'jobbiutlandet',
-    'FRILANS' = 'frilans',
-    'SELVSTENDIG_NÆRINGSDRIVENDE' = 'selvstendigNæringsdrivende'
-}
-
-interface Arbeidsforhold {
-    navnPåArbeidsgiver: string;
-    tidsperiode: TidsperiodeMedValgfriSluttdato;
+    'JOBB_I_UTLANDET' = 'jobbiutlandet'
 }
 
 abstract class AnnenInntektBase {
-    type: AnnenInntektType;
     tidsperiode: TidsperiodeMedValgfriSluttdato;
     pågående: boolean;
     vedlegg: Attachment[];
 }
 
-export interface FrilansInntekt extends AnnenInntektBase {
-    driverFosterhjem: boolean;
-    harJobbetForNærVennEllerFamilieSiste12Mnd: boolean;
-    nærVennEllerFamilieArbeidsforholdSiste12Mnd: Arbeidsforhold[];
+export class SluttpakkeInntekt extends AnnenInntektBase {
+    type: AnnenInntektType.SLUTTPAKKE;
 }
 
-export type AnnenInntekt = FrilansInntekt;
+export class MilitærtjenesteInntekt extends AnnenInntektBase {
+    type: AnnenInntektType.MILITÆRTJENESTE;
+}
+
+export class LønnVedVidereutdanningInntekt extends AnnenInntektBase {
+    type: AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
+}
+
+export class JobbIUtlandetInntekt extends AnnenInntektBase {
+    type: AnnenInntektType.JOBB_I_UTLANDET;
+    land: string;
+    erNærVennEllerFamilieMedArbeidsgiver: boolean;
+}
+
+export class VentelønnInntekt extends AnnenInntektBase {
+    type: AnnenInntektType.VENTELØNN;
+}
+
+export type AnnenInntekt =
+    | SluttpakkeInntekt
+    | MilitærtjenesteInntekt
+    | LønnVedVidereutdanningInntekt
+    | JobbIUtlandetInntekt
+    | VentelønnInntekt;
 
 export interface AnnenInntektPartialInterface {
     type: AnnenInntektType;
@@ -42,4 +55,4 @@ export interface AnnenInntektPartialInterface {
 }
 
 export type AnnenInntektPartial = Partial<AnnenInntektPartialInterface>;
-export type FrilansInntektPartial = Partial<FrilansInntekt>;
+export type JobbIUtlandetInntektPartial = Partial<JobbIUtlandetInntekt>;

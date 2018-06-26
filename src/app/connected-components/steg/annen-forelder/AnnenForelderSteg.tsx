@@ -18,7 +18,6 @@ import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
 import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
-import { Språkkode } from 'common/intl/types';
 import { erFarEllerMedmor } from '../../../util/personUtil';
 
 interface StateProps {
@@ -28,7 +27,6 @@ interface StateProps {
     dataOmAndreForelderen: DataOmAnnenForelder;
     annenForelder: AnnenForelderPartial;
     visInformasjonVedOmsorgsovertakelse: boolean;
-    språk: Språkkode;
     stegProps: StegProps;
 }
 
@@ -54,7 +52,6 @@ class AnnenForelderSteg extends React.Component<Props> {
             dataOmAndreForelderen,
             visInformasjonVedOmsorgsovertakelse,
             dispatch,
-            språk,
             stegProps
         } = this.props;
 
@@ -73,7 +70,6 @@ class AnnenForelderSteg extends React.Component<Props> {
                             dataOmAndreForelderen={dataOmAndreForelderen}
                             erFarEllerMedmor={erSøkerFarEllerMedmor}
                             dispatch={dispatch}
-                            språk={språk}
                         />
                         {this.shouldRenderAnnenForelderErKjentPartial() && (
                             <AnnenForelderErKjentPartial
@@ -138,7 +134,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         .dataOmAnnenForelder as DataOmAnnenForelder;
     const søker = state.søknad.søker;
     const annenForelder = state.søknad.annenForelder;
-    const språk = state.common.språkkode;
 
     const stegProps = {
         id: StegID.ANNEN_FORELDER,
@@ -164,8 +159,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søker,
         annenForelder,
         visInformasjonVedOmsorgsovertakelse:
-            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0,
-        språk
+            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0
     };
 };
 

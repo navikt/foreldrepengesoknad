@@ -17,6 +17,9 @@ import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
 import Bolk from '../../../components/layout/Bolk';
 import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
+import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
+import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
+import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -37,6 +40,9 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.renderAnnenInntektSiste10MndSpørsmål = this.renderAnnenInntektSiste10MndSpørsmål.bind(
             this
         );
+        this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål = this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål.bind(
+            this
+        );
     }
 
     renderAnnenInntektSiste10MndSpørsmål() {
@@ -54,6 +60,30 @@ class AndreInntekterSteg extends React.Component<Props> {
                                     harHattAnnenInntektSiste10Mnd:
                                         value ===
                                         AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                                })
+                            )
+                        }
+                    />
+                )}
+            />
+        );
+    }
+
+    renderSelvstendigNæringsdrivendeSiste10MndSpørsmål() {
+        const { søker, dispatch } = this.props;
+        const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
+
+        return (
+            <Spørsmål
+                render={() => (
+                    <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                        }
+                        onChange={(value: boolean) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: value
                                 })
                             )
                         }
@@ -98,7 +128,40 @@ class AndreInntekterSteg extends React.Component<Props> {
                 />
 
                 <Bolk
-                    synlig={søker.harJobbetSomFrilansSiste10Mnd !== undefined}
+                    render={() => (
+                        <SelvstendigNæringsdrivendeBolk
+                            oppfølgingsspørsmål={getMessage(
+                                intl,
+                                'selvstendigNæringsdrivende.oppfølgingsspørsmål'
+                            )}
+                            renderSpørsmål={
+                                this
+                                    .renderSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                            }
+                            showNæringsPerioderContent={
+                                søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
+                                true
+                            }
+                            næringListe={
+                                søker.selvstendigNæringsdrivendeInformasjon ||
+                                []
+                            }
+                            onChange={(updatedNæringer: Næring[]) =>
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                                    })
+                                )
+                            }
+                        />
+                    )}
+                />
+
+                <Bolk
+                    synlig={
+                        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd !==
+                        undefined
+                    }
                     render={() => (
                         <AndreInntekterBolk
                             oppfølgingsspørsmål={getMessage(
