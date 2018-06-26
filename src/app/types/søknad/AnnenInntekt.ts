@@ -32,6 +32,8 @@ export class LønnVedVidereutdanningInntekt extends AnnenInntektBase {
 
 export class JobbIUtlandetInntekt extends AnnenInntektBase {
     type: AnnenInntektType.JOBB_I_UTLANDET;
+    land: string;
+    erNærVennEllerFamilieMedArbeidsgiver: boolean;
 }
 
 export class VentelønnInntekt extends AnnenInntektBase {
@@ -53,3 +55,4 @@ export interface AnnenInntektPartialInterface {
 }
 
 export type AnnenInntektPartial = Partial<AnnenInntektPartialInterface>;
+export type JobbIUtlandetInntektPartial = Partial<JobbIUtlandetInntekt>;

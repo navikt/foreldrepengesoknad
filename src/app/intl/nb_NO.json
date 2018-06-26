@@ -45,6 +45,8 @@
     "annenInntekt.modal.tittel": "Legg til inntekt",
     "annenInntekt.modal.select.spørsmål":
         "Jeg har hatt inntekt i forbindelse med...",
+    "annenInntekt.modal.land": "Hvilket land gjelder det?",
+
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
@@ -149,6 +151,8 @@
         "Skal {navn} ha foreldrepenger?",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
+    "erArbeidsgiverNærVennEllerFamilie.spørsmål":
+        "Er arbeidsgiver nær venn eller familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
 
