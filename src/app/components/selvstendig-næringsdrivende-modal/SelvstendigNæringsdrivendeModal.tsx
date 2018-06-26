@@ -11,6 +11,8 @@ import { Checkbox, Input } from 'nav-frontend-skjema';
 import {
     Næring,
     NæringPartial,
+    Næringsrelasjon,
+    NæringsrelasjonPartial,
     Næringstype
 } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import NæringstypeSpørsmål from '../../spørsmål/NæringstypeSpørsmål';
@@ -23,6 +25,9 @@ import Landvelger from '../landvelger/Landvelger';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/næringer';
 import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';
 import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
+import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
+import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
+import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -121,7 +126,11 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             registrertINorge,
             registrertILand,
             stillingsprosent,
-            nyIArbeidslivet
+            nyIArbeidslivet,
+            harRegnskapsfører,
+            harRevisor,
+            regnskapsfører,
+            revisor
         } = næring;
 
         const cls = BEMHelper('selvstendigNæringsdrivendeModal');
@@ -308,6 +317,58 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 næring={næring as Næring}
                                 onChange={(changedProps: NæringPartial) =>
                                     this.updateNæring(changedProps)
+                                }
+                            />
+                        )}
+                    />
+
+                    <Bolk
+                        synlig={stillingsprosent !== undefined}
+                        render={() => (
+                            <NæringsrelasjonBolk
+                                renderSpørsmål={() => (
+                                    <HarDuRegnskapsførerSpørsmål
+                                        harRegnskapsfører={harRegnskapsfører}
+                                        onChange={(v: boolean) =>
+                                            this.updateNæring({
+                                                harRegnskapsfører: v
+                                            })
+                                        }
+                                    />
+                                )}
+                                oppfølgingsspørsmålSynlig={
+                                    harRegnskapsfører === true
+                                }
+                                næringsrelasjon={regnskapsfører || {}}
+                                onChange={(v: NæringsrelasjonPartial) =>
+                                    this.updateNæring({
+                                        regnskapsfører: v as Næringsrelasjon
+                                    })
+                                }
+                            />
+                        )}
+                    />
+
+                    <Bolk
+                        synlig={stillingsprosent !== undefined}
+                        render={() => (
+                            <NæringsrelasjonBolk
+                                renderSpørsmål={() => (
+                                    <HarDuRevisorSpørsmål
+                                        harRevisor={harRevisor}
+                                        onChange={(v: boolean) =>
+                                            this.updateNæring({
+                                                harRevisor: v
+                                            })
+                                        }
+                                    />
+                                )}
+                                oppfølgingsspørsmålSynlig={harRevisor === true}
+                                næringsrelasjon={revisor || {}}
+                                onChange={(v: NæringsrelasjonPartial) =>
+                                    this.updateNæring({
+                                        revisor: v as Næringsrelasjon
+                                    })
                                 }
                             />
                         )}
