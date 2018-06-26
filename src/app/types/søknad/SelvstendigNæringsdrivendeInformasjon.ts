@@ -16,6 +16,15 @@ export class Næring {
     registrertINorge: boolean;
     registrertILand: string;
     stillingsprosent: string;
+    nyIArbeidslivet?: boolean;
+    hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
+    endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
+}
+
+export class EndringAvNæringsinntektInformasjon {
+    dato: Date;
+    næringsinntektEtterEndring: string;
+    forklaring: string;
 }
 
 export type NæringPartial = Partial<Næring>;
