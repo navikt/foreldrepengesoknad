@@ -28,7 +28,7 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { tidsperioden, getTidsperiode } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, getTidsperiode } from 'uttaksplan/utils/dataUtils';
 
 interface OwnProps {
     termindato: Date;
@@ -78,7 +78,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const startdato = normaliserDato(dato);
         let sluttdato = this.state.sluttdato;
         if (this.state.startdato && this.state.sluttdato) {
-            const uttaksdager = tidsperioden({
+            const uttaksdager = Tidsperioden({
                 startdato: this.state.startdato,
                 sluttdato: this.state.sluttdato
             }).getAntallUttaksdager();

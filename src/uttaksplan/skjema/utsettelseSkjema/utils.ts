@@ -5,7 +5,7 @@ import {
     Utsettelsesperiode,
     Permisjonsregler
 } from 'uttaksplan/types';
-import { tidsperioden, uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import {
     getAntallFeriedagerForForelder,
     getSisteMuligePermisjonsdag
@@ -172,7 +172,7 @@ export function validerUtsettelseskjema(
         årsak === UtsettelseÅrsakType.Ferie &&
         startdato &&
         sluttdato &&
-        tidsperioden({
+        Tidsperioden({
             startdato,
             sluttdato
         }).getAntallFridager() > 0
@@ -225,7 +225,7 @@ export function getTilTidsromSluttdato(
             isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
         );
         if (pafolgendeUtsettelser.length > 0) {
-            return uttaksdagen(
+            return Uttaksdagen(
                 pafolgendeUtsettelser[0].tidsperiode.startdato
             ).forrige();
         }
@@ -268,12 +268,12 @@ export function getAntallFeriedager(
             startdato,
             sluttdato
         };
-        nyeFeriedager = tidsperioden(tidsperiode).getAntallUttaksdager();
-        fridager = tidsperioden(tidsperiode).getAntallFridager();
+        nyeFeriedager = Tidsperioden(tidsperiode).getAntallUttaksdager();
+        fridager = Tidsperioden(tidsperiode).getAntallFridager();
     }
 
     if (utsettelse) {
-        feriedagerDenneUtsettelsen = tidsperioden(
+        feriedagerDenneUtsettelsen = Tidsperioden(
             utsettelse.tidsperiode
         ).getAntallUttaksdager();
     }

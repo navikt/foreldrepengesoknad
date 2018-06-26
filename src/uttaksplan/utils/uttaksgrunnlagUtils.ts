@@ -2,8 +2,7 @@ import {
     Uttaksgrunnlag,
     SøkerGrunnlag,
     AnnenForelderGrunnlag,
-    Uttaksdatoer,
-    Uttaksinfo
+    Uttaksdatoer
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -16,8 +15,7 @@ import {
     getSisteMuligePermisjonsdag,
     getPermisjonStartdato
 } from 'uttaksplan/utils/permisjonUtils';
-import { uttaksdagen, perioden, periodene } from 'uttaksplan/utils/dataUtils';
-import { Periode } from 'uttaksplan/types';
+import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 
 export function getUttaksgrunnlag(
     termindato: Date,
@@ -55,17 +53,17 @@ export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
             termindato,
             permisjonsregler
         ),
-        sisteUttaksdagFørFødsel: uttaksdagen(termindato).forrige(),
-        førsteUttaksdagEtterFødsel: uttaksdagen(termindato).denneEllerNeste()
+        sisteUttaksdagFørFødsel: Uttaksdagen(termindato).forrige(),
+        førsteUttaksdagEtterFødsel: Uttaksdagen(termindato).denneEllerNeste()
     };
 }
 
-export function getUttaksinfo(perioder: Periode[]): Uttaksinfo {
-    // const periodene = Periodene(perioder);
-    return {
-        førsteRegistrerteUttaksdag: undefined,
-        antallDagerUtsettelser: undefined,
-        antallDagerOpphold: periodene(perioder).getAntallDagerOpphold(),
-        antallDagerUttak: periodene
-    };
-}
+// export function getUttaksinfo(perioder: Periode[]): Uttaksinfo {
+//     // const periodene = Periodene(perioder);
+//     return {
+//         førsteRegistrerteUttaksdag: undefined,
+//         antallDagerUtsettelser: undefined,
+//         antallDagerOpphold: Periodene(perioder).getAntallDagerOpphold(),
+//         antallDagerUttak: Periodene
+//     };
+// }

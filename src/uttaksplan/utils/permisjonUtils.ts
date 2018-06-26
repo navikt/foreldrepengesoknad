@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdagen, tidsperioden, periodene } from './dataUtils';
+import { Uttaksdagen, Tidsperioden, Periodene } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -21,7 +21,7 @@ export function getPermisjonStartdato(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdagen(
+    return Uttaksdagen(
         termindato // Siste uttaksdag i denne perioden er dagen før termin
     ).leggTil(-1 * permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
 }
@@ -35,7 +35,7 @@ export function getSisteMuligePermisjonsdag(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdagen(
+    return Uttaksdagen(
         addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
     ).denneEllerNeste();
 }
@@ -56,15 +56,15 @@ export function getSistePermisjonsdag(
     if (perioder.length === 0) {
         return undefined;
     }
-    const uttaksperioder = periodene(perioder).getUttak();
-    const uttaksdagerBruktTotalt = periodene(
+    const uttaksperioder = Periodene(perioder).getUttak();
+    const uttaksdagerBruktTotalt = Periodene(
         uttaksperioder
     ).getAntallDagerUttak();
-    const utsatteDager = periodene(perioder).getAntallDagerUtsatt();
-    const registrerteUttak = periodene(perioder).getAntallDagerUttak();
+    const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
+    const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
     const gjenståendeUttaksdager =
         uttaksgrunnlag.tilgjengeligeUttaksdager - registrerteUttak;
-    return uttaksdagen(termindato).leggTil(
+    return Uttaksdagen(termindato).leggTil(
         uttaksdagerBruktTotalt -
             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
                 5 -
@@ -90,7 +90,7 @@ export function getGyldigTidsromForUtsettelse(
         termindato,
         permisjonsregler
     );
-    const startdato = uttaksdagen(mødrekvoteEtterTermin.sluttdato).neste();
+    const startdato = Uttaksdagen(mødrekvoteEtterTermin.sluttdato).neste();
     return {
         startdato,
         sluttdato: sisteRegistrertePermisjonsdag
@@ -169,7 +169,7 @@ export const getAntallFeriedagerForForelder = (
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
                   dager +
-                  tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+                  Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
               0
           );
 };

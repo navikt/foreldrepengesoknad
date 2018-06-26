@@ -3,7 +3,7 @@ import {
     Permisjonsregler,
     Dekningsgrad
 } from 'uttaksplan/types';
-import { uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 
 export interface StønadskontoRegler {
     stønadskontotype: StønadskontoType;
@@ -19,8 +19,8 @@ export const getForeldrepengerFørFødselRegler = (
     const uttaksdager = permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
     return {
         stønadskontotype: StønadskontoType.ForeldrepengerFørFødsel,
-        tidligsteUttaksdato: uttaksdagen(termindato).leggTil(-uttaksdager),
-        sisteUttaksdato: uttaksdagen(termindato).forrige(),
+        tidligsteUttaksdato: Uttaksdagen(termindato).leggTil(-uttaksdager),
+        sisteUttaksdato: Uttaksdagen(termindato).forrige(),
         maksUttaksdager: uttaksdager
     };
 };

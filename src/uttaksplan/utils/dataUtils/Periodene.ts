@@ -9,18 +9,17 @@ import {
     StønadskontoType,
     StønadskontoUttak
 } from '../../types';
-import { uttaksdagen, tidsperioden } from './';
-import { getTidsperiode } from 'uttaksplan/utils/dataUtils/tidsperiodeUtil';
+import { Uttaksdagen, Tidsperioden } from './';
 import { guid } from 'nav-frontend-js-utils/lib';
+import { Perioden } from 'uttaksplan/utils/dataUtils/Perioden';
 
-export const periodene = (perioder: Periode[]) => ({
-    getOpphold: () => getOpphold(perioder),
+export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
+    getOpphold: () => getOpphold(perioder),
+    getUttak: () => getUttaksperioder(perioder),
+    getUtsettelser: () => getUtsettelser(perioder),
     getPeriodeMedSammeStartdato: (periode: Periode) =>
         getPeriodeMedSammeStartdatoSomPeriode(perioder, periode),
-    getUttak: () => getUttaksperioder(perioder),
-    getUttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
-    getUtsettelser: () => getUtsettelser(perioder),
     getAntallDagerUttak: (konto?: StønadskontoType) =>
         getAntallDagerUttak(perioder, konto),
     getAntallDagerUtsatt: () => getAntallDagerUtsatt(perioder),
@@ -34,39 +33,19 @@ export const periodene = (perioder: Periode[]) => ({
         finnPerioderPåEllerEtterDato(perioder, dato, ignorerPeriode),
     finnOverlappendePerioder: (periode: Periode) =>
         finnOverlappendePerioder(perioder, periode.tidsperiode),
-    finnForegåendePerioder: (periode: Periode) =>
+    finnAlleForegåendePerioder: (periode: Periode) =>
         finnPerioderFørPeriode(perioder, periode),
-    finnForegåendePeriodeFor: (periode: Periode) =>
-        finnForrigePeriode(perioder, periode),
-    finnPåfølgendePerioder: (periode: Periode) =>
+    finnAllePåfølgendePerioder: (periode: Periode) =>
         finnPerioderEtterPeriode(perioder, periode),
+    finnDenForegåendePerioden: (periode: Periode) =>
+        finnForrigePeriode(perioder, periode),
     finnPåfølgendePeriode: (periode: Periode) =>
         finnPåfølgendePeriode(perioder, periode),
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
     forskyvPerioder: (uttaksdager: number) =>
         forskyvPerioder(perioder, uttaksdager),
-    oppdaterPeriode: (periode: Periode) => oppdaterPeriode(perioder, periode),
     finnOppholdIPerioder: (): Periode[] => finnOppholdMellomPerioder(perioder),
     sort: () => perioder.sort(sorterPerioder)
-});
-
-export const perioden = (periode: Periode) => ({
-    erUttak: () => erUttak(periode),
-    erUtsettelse: () => erUtsettelse(periode),
-    erOpphold: () => erOpphold(periode),
-    setStartdato: (startdato: Date) => flyttPeriode(periode, startdato),
-    setUttaksdager: (uttaksdager: number) =>
-        (periode.tidsperiode = getTidsperiode(
-            periode.tidsperiode.startdato,
-            uttaksdager
-        )),
-    erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
-    erSammenhengende: (periode2: Periode) =>
-        erPerioderSammenhengende(periode, periode2),
-    getAntallUttaksdager: () =>
-        tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
-    finnOppholdsperioderVedEndretTidsperiode: (endretPeriode: Periode) =>
-        finnOppholdVedEndretTidsperiode(periode, endretPeriode)
 });
 
 /**
@@ -124,20 +103,6 @@ function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
     return perioder.filter(
         (periode) => periode.type === Periodetype.Opphold
     ) as Oppholdsperiode[];
-}
-
-/**
- * Returnerer Uttaksperioder eller Utsettelser fra perioder
- * @param perioder
- */
-function getUttakOgUtsettelser(
-    perioder: Periode[]
-): Array<Uttaksperiode | Utsettelsesperiode> {
-    return perioder.filter(
-        (periode) =>
-            periode.type === Periodetype.Utsettelse ||
-            periode.type === Periodetype.Uttak
-    ) as Utsettelsesperiode[];
 }
 
 /**
@@ -220,26 +185,13 @@ function finnOverlappendePerioder(
 }
 
 /**
- * Flytter periode til ny startdato, beholder samme antall uttaksdager
- * @param periode
- * @param startdato
- */
-function flyttPeriode(periode: Periode, startdato: Date): Periode {
-    return {
-        ...periode,
-        tidsperiode: tidsperioden(periode.tidsperiode).setStartdato(startdato)
-    };
-}
-
-/**
  * Forskyver en periode med uttaksdager
  * @param periode
  * @param uttaksdager
  */
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
-    return flyttPeriode(
-        periode,
-        uttaksdagen(periode.tidsperiode.startdato).leggTil(uttaksdager)
+    return Perioden(periode).setStartdato(
+        Uttaksdagen(periode.tidsperiode.startdato).leggTil(uttaksdager)
     );
 }
 
@@ -320,95 +272,6 @@ function finnPåfølgendePeriode(
 }
 
 /**
- * Lager et grunnlag for å sammenligne perioder med tanke
- * på å slå dem sammen til en periode
- * @param periode
- */
-function getPeriodeFootprint(periode: Periode) {
-    switch (periode.type) {
-        case Periodetype.Opphold:
-            return `${periode.type}`;
-        case Periodetype.Utsettelse:
-            return `${periode.type}${periode.forelder}${periode.årsak}`;
-        case Periodetype.Uttak:
-            return `${periode.type}${periode.forelder}${periode.konto}${
-                periode.låstForelder
-            }`;
-    }
-}
-
-/**
- * Sjekker om to perioder er kan slåes sammen til en periode.
- * Dvs. de er like signaturer (type, forelder, konto etc.) og har
- * tidsperioder som er sammenhengende
- * @param p1 periode 1
- * @param p2 periode 2
- */
-function erPerioderLike(p1: Periode, p2: Periode) {
-    if (
-        p1.type !== p2.type ||
-        p1.type === Periodetype.Utsettelse ||
-        p2.type === Periodetype.Utsettelse
-    ) {
-        return false;
-    }
-    const k1 = getPeriodeFootprint(p1);
-    const k2 = getPeriodeFootprint(p2);
-    return k1 === k2;
-}
-
-/**
- * Sjekker om to perioder er sammenhengende/dvs. det er ingen
- * uttaksdager mellom p1.sluttdato og p2.startdato
- * @param p1
- * @param p2
- */
-function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = uttaksdagen(p1.tidsperiode.sluttdato).neste();
-    const p2Startdato = p2.tidsperiode.startdato;
-    return isSameDay(p1NesteUttaksdato, p2Startdato);
-}
-
-/**
- * Finner oppholdsperioder før og etter periode når tidsperiode
- * for en periode endres
- * @param prevPeriode Opprinnelig periode
- * @param periode Endret periode
- * @param opphav Hvor endringen kommer fra - settes på oppholdet
- */
-function finnOppholdVedEndretTidsperiode(
-    prevPeriode: Periode,
-    periode: Periode
-): Oppholdsperiode[] | undefined {
-    const opphold: Oppholdsperiode[] = [];
-    const diffStartdato = uttaksdagen(
-        prevPeriode.tidsperiode.startdato
-    ).uttaksdagerFremTilDato(periode.tidsperiode.startdato);
-    if (diffStartdato > 0) {
-        opphold.push({
-            type: Periodetype.Opphold,
-            tidsperiode: getTidsperiode(
-                prevPeriode.tidsperiode.startdato,
-                diffStartdato
-            )
-        });
-    }
-    const diffSluttdato = uttaksdagen(
-        prevPeriode.tidsperiode.sluttdato
-    ).uttaksdagerFremTilDato(periode.tidsperiode.sluttdato);
-    if (diffSluttdato < 0) {
-        opphold.push({
-            type: Periodetype.Opphold,
-            tidsperiode: {
-                startdato: uttaksdagen(periode.tidsperiode.sluttdato).neste(),
-                sluttdato: prevPeriode.tidsperiode.sluttdato
-            }
-        });
-    }
-    return opphold.length > 0 ? opphold : undefined;
-}
-
-/**
  * Summerer opp antall uttaksdager i perioder, og evt. for gitt StønadstypeKonto
  * @param perioder
  * @param konto
@@ -417,11 +280,11 @@ function getAntallDagerUttak(
     perioder: Periode[],
     konto?: StønadskontoType
 ): number {
-    const uttaksperioder = periodene(perioder).getUttak();
+    const uttaksperioder = Periodene(perioder).getUttak();
     return uttaksperioder.reduce((dager: number, periode: Uttaksperiode) => {
         if (konto === undefined || periode.konto === konto) {
             return (
-                dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
             );
         }
         return dager;
@@ -437,7 +300,7 @@ function getAntallDagerUtsatt(perioder: Periode[]): number {
     return getUtsettelser(perioder).reduce(
         (dager: number, periode: Utsettelsesperiode) => {
             return (
-                dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
             );
         },
         0
@@ -453,7 +316,7 @@ function getAntallDagerOpphold(perioder: Periode[]): number {
     return getOpphold(perioder).reduce(
         (dager: number, periode: Oppholdsperiode) => {
             return (
-                dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
             );
         },
         0
@@ -537,32 +400,6 @@ function getPeriodeMedSammeStartdatoSomPeriode(
 }
 
 /**
- * Erstatter periode i perioder
- * @param perioder
- * @param periode
- */
-function oppdaterPeriode(perioder: Periode[], periode: Periode) {
-    return perioder.map((p) => {
-        if (p.id === periode.id) {
-            return periode;
-        }
-        return p;
-    });
-}
-
-function erOpphold(periode: Periode): boolean {
-    return periode.type === Periodetype.Opphold;
-}
-
-function erUtsettelse(periode: Periode): boolean {
-    return periode.type === Periodetype.Utsettelse;
-}
-
-function erUttak(periode: Periode): boolean {
-    return periode.type === Periodetype.Uttak;
-}
-
-/**
  * Går gjennom alle perioder og finner uttaksdager som
  * ikke tilhører en periode. Oppretter Opphold for disse
  * @param perioder
@@ -577,8 +414,8 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
         const nestePeriode = perioder[idx + 1];
 
         const tidsperiodeMellomPerioder = {
-            startdato: uttaksdagen(periode.tidsperiode.sluttdato).neste(),
-            sluttdato: uttaksdagen(nestePeriode.tidsperiode.startdato).forrige()
+            startdato: Uttaksdagen(periode.tidsperiode.sluttdato).neste(),
+            sluttdato: Uttaksdagen(nestePeriode.tidsperiode.startdato).forrige()
         };
         if (
             isBefore(
@@ -589,7 +426,7 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
             return;
         }
 
-        const uttaksdagerITidsperiode = tidsperioden(
+        const uttaksdagerITidsperiode = Tidsperioden(
             tidsperiodeMellomPerioder
         ).getAntallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {

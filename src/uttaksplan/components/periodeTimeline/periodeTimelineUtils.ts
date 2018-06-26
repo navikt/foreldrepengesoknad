@@ -15,7 +15,7 @@ import {
     TimelineMarker,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
-import { tidsperioden, uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils/lib';
@@ -72,7 +72,7 @@ export const mapPeriodeToTimelineEvent = (
                 periode.forelder === 'forelder2' && annenForelder
                     ? annenForelder.fornavn
                     : søker.fornavn,
-            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+            days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: getColorsForPeriode(periode),
             labels: getLabelsForPeriode(periode),
             icons: getTimelineIconsForPeriode(periode),
@@ -85,7 +85,7 @@ export const mapPeriodeToTimelineEvent = (
             startDate: periode.tidsperiode.startdato,
             endDate: periode.tidsperiode.sluttdato,
             title: 'Opphold/tapte dager',
-            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+            days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsForPeriode(periode),
             data: periode
         };
@@ -184,7 +184,7 @@ export function getGaps(items: TimelineItem[]) {
                     : prevItem.endDate;
 
             const dager =
-                uttaksdagen(prevEndDate).uttaksdagerFremTilDato(
+                Uttaksdagen(prevEndDate).getUttaksdagerFremTilDato(
                     item.startDate
                 ) -
                 (prevItem.type === TimelineItemType.marker ||
@@ -193,14 +193,14 @@ export function getGaps(items: TimelineItem[]) {
                     : 1);
 
             if (dager > 0) {
-                const id = `${uttaksdagen(prevEndDate)
+                const id = `${Uttaksdagen(prevEndDate)
                     .neste()
-                    .toDateString()}${uttaksdagen(item.startDate).forrige()}`;
+                    .toDateString()}${Uttaksdagen(item.startDate).forrige()}`;
                 const gap: TimelineGap = {
                     id,
                     type: TimelineItemType.gap,
-                    startDate: uttaksdagen(prevEndDate).neste(),
-                    endDate: uttaksdagen(item.startDate).forrige(),
+                    startDate: Uttaksdagen(prevEndDate).neste(),
+                    endDate: Uttaksdagen(item.startDate).forrige(),
                     days:
                         dager +
                         (prevItem.type === TimelineItemType.marker ? 1 : 0),

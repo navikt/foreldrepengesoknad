@@ -1,8 +1,8 @@
 import { Periode, Tidsperiode } from 'uttaksplan/types';
 import {
     sorterPerioder,
-    tidsperioden,
-    uttaksdagen
+    Tidsperioden,
+    Uttaksdagen
 } from 'uttaksplan/utils/dataUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { isBefore, isAfter, isSameDay } from 'date-fns';
@@ -62,12 +62,12 @@ function fjernUttaksdagerFraPerioder(
 ): Periode[] {
     const nyePerioder: Periode[] = [];
     perioder.forEach((p) => {
-        if (tidsperioden(p.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
+        if (Tidsperioden(p.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
-        } else if (tidsperioden(p.tidsperiode).erUtenfor(periode.tidsperiode)) {
+        } else if (Tidsperioden(p.tidsperiode).erUtenfor(periode.tidsperiode)) {
             nyePerioder.push(p);
         } else if (
-            tidsperioden(periode.tidsperiode).erOmsluttetAv(p.tidsperiode)
+            Tidsperioden(periode.tidsperiode).erOmsluttetAv(p.tidsperiode)
         ) {
             fjernTidsperiodeFraPeriode(p, periode.tidsperiode).forEach((p2) =>
                 nyePerioder.push(p2)
@@ -79,7 +79,7 @@ function fjernUttaksdagerFraPerioder(
                 ...p,
                 tidsperiode: {
                     startdato: p.tidsperiode.startdato,
-                    sluttdato: uttaksdagen(
+                    sluttdato: Uttaksdagen(
                         periode.tidsperiode.startdato
                     ).forrige()
                 }
@@ -88,7 +88,7 @@ function fjernUttaksdagerFraPerioder(
             nyePerioder.push({
                 ...p,
                 tidsperiode: {
-                    startdato: uttaksdagen(
+                    startdato: Uttaksdagen(
                         periode.tidsperiode.sluttdato
                     ).neste(),
                     sluttdato: p.tidsperiode.sluttdato
@@ -133,7 +133,7 @@ function fjernTidsperiodeFraPeriode(
                 ...periode,
                 tidsperiode: {
                     ...periode.tidsperiode,
-                    startdato: uttaksdagen(tidsperiode.startdato).forrige()
+                    startdato: Uttaksdagen(tidsperiode.startdato).forrige()
                 }
             }
         ];
@@ -144,7 +144,7 @@ function fjernTidsperiodeFraPeriode(
                 ...periode,
                 tidsperiode: {
                     ...periode.tidsperiode,
-                    sluttdato: uttaksdagen(tidsperiode.sluttdato).neste()
+                    sluttdato: Uttaksdagen(tidsperiode.sluttdato).neste()
                 }
             }
         ];
@@ -155,7 +155,7 @@ function fjernTidsperiodeFraPeriode(
             ...periode,
             tidsperiode: {
                 ...periode.tidsperiode,
-                sluttdato: uttaksdagen(tidsperiode.startdato).forrige()
+                sluttdato: Uttaksdagen(tidsperiode.startdato).forrige()
             }
         },
         {
@@ -163,7 +163,7 @@ function fjernTidsperiodeFraPeriode(
             id: guid(),
             tidsperiode: {
                 ...periode.tidsperiode,
-                startdato: uttaksdagen(tidsperiode.sluttdato).neste()
+                startdato: Uttaksdagen(tidsperiode.sluttdato).neste()
             }
         }
     ];

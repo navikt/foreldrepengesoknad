@@ -8,7 +8,7 @@ import {
 import {
     sorterPerioder,
     getTidsperiode,
-    uttaksdagen
+    Uttaksdagen
 } from 'uttaksplan/utils/dataUtils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
@@ -49,7 +49,7 @@ export function opprettUttaksperioderEnkel(
         forelder: 'forelder1',
         konto: StønadskontoType.MorsDel,
         tidsperiode: getTidsperiode(
-            uttaksdagen(termindato).denneEllerNeste(),
+            Uttaksdagen(termindato).denneEllerNeste(),
             ukerMorsDel * UTTAKSDAGER_I_UKE
         )
     };
@@ -59,7 +59,7 @@ export function opprettUttaksperioderEnkel(
         forelder: 'forelder2',
         konto: StønadskontoType.FarsDel,
         tidsperiode: getTidsperiode(
-            uttaksdagen(morsDelEtterTermin.tidsperiode.sluttdato).neste(),
+            Uttaksdagen(morsDelEtterTermin.tidsperiode.sluttdato).neste(),
             ukerFarsDel * UTTAKSDAGER_I_UKE
         )
     };

@@ -7,7 +7,7 @@ import {
 } from 'uttaksplan/types';
 import {
     sorterPerioder,
-    uttaksdagen,
+    Uttaksdagen,
     getTidsperiode
 } from 'uttaksplan/utils/dataUtils';
 import {
@@ -49,7 +49,7 @@ export function opprettUttaksperioderAleneomsorgMor(
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(
-                uttaksdagen(termindato).denneEllerNeste(),
+                Uttaksdagen(termindato).denneEllerNeste(),
                 dagerEtterTermin
             )
         }
