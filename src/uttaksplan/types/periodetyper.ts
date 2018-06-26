@@ -35,12 +35,6 @@ export enum UtsettelseÅrsakType {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
-export enum OppholdÅrsakType {
-    'VenterSøknadFraAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
-    'ManglendeSøktPeriode' = 'UTTAK_KVOTE_ANNEN_FORELDER',
-    'Ingen' = 'INGEN'
-}
-
 export interface Helligdag {
     dato: Date;
     navn: string;
@@ -67,17 +61,8 @@ export interface Utsettelsesperiode extends PeriodeBase {
     helligdager?: Helligdag[];
 }
 
-export enum OppholdType {
-    'bevisst' = 'bevisst',
-    'periodeSlettet' = 'periodeSlettet',
-    'midlertidig' = 'midlertidig'
-}
-
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    forelder?: Forelder;
-    årsak?: OppholdÅrsakType;
-    opphav?: OppholdType;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;

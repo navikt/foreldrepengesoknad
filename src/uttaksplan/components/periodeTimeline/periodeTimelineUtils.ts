@@ -97,6 +97,9 @@ const getColorsForPeriode = (periode: Periode): TimelineItemColor => {
     if (periode.type === Periodetype.Utsettelse) {
         return 'green';
     }
+    if (periode.type === Periodetype.Opphold) {
+        return 'blue';
+    }
     return periode.forelder === 'forelder1' ? 'blue' : 'purple';
 };
 

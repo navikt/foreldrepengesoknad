@@ -6,8 +6,6 @@ import {
     Tidsperiode,
     Periodetype,
     Oppholdsperiode,
-    OppholdÅrsakType,
-    OppholdType,
     StønadskontoType,
     StønadskontoUttak
 } from '../../types';
@@ -67,11 +65,7 @@ export const perioden = (periode: Periode) => ({
     getAntallUttaksdager: () =>
         tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
     finnOppholdsperioderVedEndretTidsperiode: (endretPeriode: Periode) =>
-        finnOppholdVedEndretTidsperiode(
-            periode,
-            endretPeriode,
-            OppholdType.midlertidig
-        )
+        finnOppholdVedEndretTidsperiode(periode, endretPeriode)
 });
 
 /**
@@ -332,7 +326,7 @@ function finnPåfølgendePeriode(
 function getPeriodeFootprint(periode: Periode) {
     switch (periode.type) {
         case Periodetype.Opphold:
-            return `${periode.type}${periode.forelder}${periode.årsak}`;
+            return `${periode.type}`;
         case Periodetype.Utsettelse:
             return `${periode.type}${periode.forelder}${periode.årsak}`;
         case Periodetype.Uttak:
@@ -383,8 +377,7 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
  */
 function finnOppholdVedEndretTidsperiode(
     prevPeriode: Periode,
-    periode: Periode,
-    opphav: OppholdType
+    periode: Periode
 ): Oppholdsperiode[] | undefined {
     const opphold: Oppholdsperiode[] = [];
     const diffStartdato = uttaksdagen(
@@ -393,13 +386,10 @@ function finnOppholdVedEndretTidsperiode(
     if (diffStartdato > 0) {
         opphold.push({
             type: Periodetype.Opphold,
-            årsak: OppholdÅrsakType.Ingen,
-            forelder: periode.forelder,
             tidsperiode: getTidsperiode(
                 prevPeriode.tidsperiode.startdato,
                 diffStartdato
-            ),
-            opphav
+            )
         });
     }
     const diffSluttdato = uttaksdagen(
@@ -408,13 +398,10 @@ function finnOppholdVedEndretTidsperiode(
     if (diffSluttdato < 0) {
         opphold.push({
             type: Periodetype.Opphold,
-            årsak: OppholdÅrsakType.Ingen,
-            forelder: periode.forelder,
             tidsperiode: {
                 startdato: uttaksdagen(periode.tidsperiode.sluttdato).neste(),
                 sluttdato: prevPeriode.tidsperiode.sluttdato
-            },
-            opphav
+            }
         });
     }
     return opphold.length > 0 ? opphold : undefined;
@@ -592,9 +579,7 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
             opphold.push({
                 id: guid(),
                 type: Periodetype.Opphold,
-                tidsperiode: tidsperiodeMellomPerioder,
-                årsak: OppholdÅrsakType.ManglendeSøktPeriode,
-                forelder: 'forelder1' // TODO ikke hardkodet
+                tidsperiode: tidsperiodeMellomPerioder
             });
         }
     });

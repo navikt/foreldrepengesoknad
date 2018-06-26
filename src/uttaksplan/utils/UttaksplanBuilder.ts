@@ -1,14 +1,6 @@
 import { isBefore, isSameDay, addDays } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils';
-import {
-    Oppholdsperiode,
-    Periodetype,
-    OppholdÅrsakType,
-    // Uttaksperiode,
-    // Utsettelsesperiode,
-    Periode,
-    OppholdType
-} from 'uttaksplan/types';
+import { Oppholdsperiode, Periodetype, Periode } from 'uttaksplan/types';
 import {
     tidsperioden,
     sorterPerioder,
@@ -103,10 +95,7 @@ class UttaksplanAutoBuilder {
             const opphold: Oppholdsperiode = {
                 id: guid(),
                 type: Periodetype.Opphold,
-                forelder: periode.forelder,
-                tidsperiode: { ...periode.tidsperiode },
-                opphav: OppholdType.bevisst,
-                årsak: OppholdÅrsakType.Ingen
+                tidsperiode: { ...periode.tidsperiode }
             };
             this.perioder.push(opphold);
         }
