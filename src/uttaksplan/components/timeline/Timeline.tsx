@@ -82,6 +82,7 @@ class Timeline extends React.Component<Props, {}> {
         return (
             <ol className="timeline">
                 <FlipMove
+                    disableAllAnimations={true}
                     staggerDurationBy={20}
                     duration={350}
                     enterAnimation="accordionVertical"

@@ -68,7 +68,7 @@ const PeriodeReducer = (
             return updateState(state, {
                 perioder: UttaksplanBuilder(
                     state.perioder
-                ).leggTilEllerOppdater(action.periode).perioder,
+                ).leggTilEllerOppdaterPeriode(action.periode).perioder,
                 dialogErApen: false
             });
 

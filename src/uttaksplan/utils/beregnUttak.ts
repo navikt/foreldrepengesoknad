@@ -52,14 +52,14 @@ export function beregnAlleUttak(
     uttaksgrunnlag: Uttaksgrunnlag
 ): BeregnetUttak[] {
     const uttak: BeregnetUttak[] = [];
-    const { søker, annenForelder, tilgjengeligUttak } = uttaksgrunnlag;
+    const { søker, annenForelder, tilgjengeligeUttak } = uttaksgrunnlag;
     if (annenForelder) {
         uttak.push(
             getBeregnetUttak(
                 søker.fornavn,
                 perioder,
                 [StønadskontoType.MorsDelFørTermin, StønadskontoType.MorsDel],
-                tilgjengeligUttak
+                tilgjengeligeUttak
             )
         );
         uttak.push(
@@ -67,7 +67,7 @@ export function beregnAlleUttak(
                 annenForelder.fornavn,
                 perioder,
                 [StønadskontoType.FarsDel],
-                tilgjengeligUttak
+                tilgjengeligeUttak
             )
         );
         uttak.push(
@@ -75,7 +75,7 @@ export function beregnAlleUttak(
                 'Fellesdel',
                 perioder,
                 [StønadskontoType.Fellesperiode],
-                uttaksgrunnlag.tilgjengeligUttak
+                uttaksgrunnlag.tilgjengeligeUttak
             )
         );
     } else {

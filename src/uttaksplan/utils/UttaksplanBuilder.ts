@@ -1,6 +1,6 @@
 import { isBefore, isSameDay, addDays } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils';
-import { Oppholdsperiode, Periodetype, Periode } from 'uttaksplan/types';
+import { Periodetype, Periode } from 'uttaksplan/types';
 import {
     tidsperioden,
     sorterPerioder,
@@ -31,8 +31,19 @@ class UttaksplanAutoBuilder {
     /**
      * Bygger opp hele uttaksplanen på nytt
      */
-    buildUttaksplan(reset = false) {
-        this.reset();
+    buildUttaksplan() {
+        const utsettelser = periodene(this.perioder).getUtsettelser();
+        const opphold = periodene(this.perioder).getOpphold();
+        const uttaksperioder = periodene(this.perioder).getUttak();
+        this.perioder = resetTidsperioder(uttaksperioder);
+        /** Perioder med faste tidsperioder */
+        const fastePerioder: Periode[] = [...opphold, ...utsettelser].sort(
+            sorterPerioder
+        );
+
+        this.perioder = settInnPerioder(this.perioder, fastePerioder);
+        this.slåSammenLikePerioder();
+        this.sort();
         return this;
     }
 
@@ -40,7 +51,7 @@ class UttaksplanAutoBuilder {
      * Proxy for om en skal oppdatere eller legge til ny
      * @param periode
      */
-    leggTilEllerOppdater(periode: Periode) {
+    leggTilEllerOppdaterPeriode(periode: Periode) {
         if (periode.id) {
             this.oppdaterPeriodeOgBuild(periode);
         } else {
@@ -90,16 +101,10 @@ class UttaksplanAutoBuilder {
      * @param periode
      */
     slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode);
-        if (periode.type === Periodetype.Uttak) {
-            const opphold: Oppholdsperiode = {
-                id: guid(),
-                type: Periodetype.Opphold,
-                tidsperiode: { ...periode.tidsperiode }
-            };
-            this.perioder.push(opphold);
-        }
-        this.buildUttaksplan();
+        this.slettPeriode(
+            periode,
+            periode.type === Periodetype.Uttak
+        ).buildUttaksplan();
         return this;
     }
 
@@ -107,8 +112,15 @@ class UttaksplanAutoBuilder {
      * Fjerner en periode fra perioder
      * @param periode
      */
-    private slettPeriode(periode: Periode) {
+    private slettPeriode(periode: Periode, erstattMedOpphold?: boolean) {
         this.perioder = this.perioder.filter((p) => p.id !== periode.id);
+        if (erstattMedOpphold) {
+            this.perioder.push({
+                id: guid(),
+                type: Periodetype.Opphold,
+                tidsperiode: { ...periode.tidsperiode }
+            });
+        }
         return this;
     }
 
@@ -157,26 +169,6 @@ class UttaksplanAutoBuilder {
             this.perioder,
             periode
         );
-        return this;
-    }
-
-    /**
-     * Nullstiller uttaksperioder og legger utsettelser inn på nytt
-     */
-    private reset() {
-        const utsettelser = periodene(this.perioder).getUtsettelser();
-        const opphold = periodene(this.perioder).getOpphold();
-        const uttaksperioder = periodene(this.perioder).getUttak();
-        this.perioder = resetTidsperioder(uttaksperioder);
-
-        const fastePerioder: Periode[] = [...opphold, ...utsettelser].sort(
-            sorterPerioder
-        );
-
-        this.perioder = settInnPerioder(this.perioder, fastePerioder);
-        // this.perioder = settInnPerioder(this.perioder, utsettelser);
-        this.slåSammenLikePerioder();
-        this.sort();
         return this;
     }
 

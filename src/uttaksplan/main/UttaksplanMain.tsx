@@ -31,7 +31,11 @@ import {
     SøkerGrunnlag,
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
-import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import {
+    getUttaksgrunnlag,
+    getUttaksdatoer,
+    getUttaksinfo
+} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -250,15 +254,21 @@ const mapStateToProps = (
 ): StateProps => {
     const { termindato } = props;
     const { periode, form } = appState.uttaksplan;
-    const dekningsgrad = form.dekningsgrad;
+    const dekningsgrad = form.dekningsgrad || '100%';
 
     const uttaksgrunnlag = getUttaksgrunnlag(
         termindato,
-        dekningsgrad || '100%',
+        dekningsgrad,
         props.søker,
         props.antallBarn,
         props.annenForelder
     );
+
+    const uttaksdatoer = getUttaksdatoer(termindato);
+    console.log(uttaksdatoer);
+
+    const uttaksinfo = getUttaksinfo(periode.perioder);
+    console.log(uttaksinfo);
 
     return {
         form,

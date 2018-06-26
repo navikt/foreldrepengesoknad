@@ -26,17 +26,20 @@ export interface Uttaksgrunnlag {
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
     tilgjengeligeStønadskontoer: StønadskontoType[];
-    tilgjengeligUttak: StønadskontoUttak[];
+    tilgjengeligeUttak: StønadskontoUttak[];
+    tilgjengeligeUttaksdager: number;
 }
 
 export interface Uttaksdatoer {
+    /** Termindato */
+    termindato: Date;
     /** Første mulige uttaksdag gitt fødsel/termin */
     førsteMuligeUttaksdag: Date;
     /** Siste mulige uttaksdag gitt fødsel/termin */
     sisteMuligeUttaksdag: Date;
     /** Siste uttaksdag som er før fødsel/termin */
     sisteUttaksdagFørFødsel: Date;
-    /** Første uttaksdag etter fødsel/termin */
+    /** Første uttaksdag på/etter fødsel/termin */
     førsteUttaksdagEtterFødsel: Date;
 }
 

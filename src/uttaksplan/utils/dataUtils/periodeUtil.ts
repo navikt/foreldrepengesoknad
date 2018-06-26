@@ -21,9 +21,10 @@ export const periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getUttakOgUtsettelser: () => getUttakOgUtsettelser(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
-    getAntallUttaksdager: (konto?: StønadskontoType) =>
-        getAntallUttaksdagerIPerioderOgKonto(perioder, konto),
-    getAntallUtsatteDager: () => getAntallUtsatteDager(perioder),
+    getAntallDagerUttak: (konto?: StønadskontoType) =>
+        getAntallDagerUttak(perioder, konto),
+    getAntallDagerUtsatt: () => getAntallDagerUtsatt(perioder),
+    getAntallDagerOpphold: () => getAntallDagerOpphold(perioder),
     getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
         getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -412,7 +413,7 @@ function finnOppholdVedEndretTidsperiode(
  * @param perioder
  * @param konto
  */
-function getAntallUttaksdagerIPerioderOgKonto(
+function getAntallDagerUttak(
     perioder: Periode[],
     konto?: StønadskontoType
 ): number {
@@ -432,9 +433,25 @@ function getAntallUttaksdagerIPerioderOgKonto(
  * @param perioder
  * @param konto
  */
-function getAntallUtsatteDager(perioder: Periode[]): number {
+function getAntallDagerUtsatt(perioder: Periode[]): number {
     return getUtsettelser(perioder).reduce(
         (dager: number, periode: Utsettelsesperiode) => {
+            return (
+                dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+            );
+        },
+        0
+    );
+}
+
+/**
+ * Summerer opp antall uttaksdager i perioder, og evt. for gitt StønadstypeKonto
+ * @param perioder
+ * @param konto
+ */
+function getAntallDagerOpphold(perioder: Periode[]): number {
+    return getOpphold(perioder).reduce(
+        (dager: number, periode: Oppholdsperiode) => {
             return (
                 dager + tidsperioden(periode.tidsperiode).getAntallUttaksdager()
             );
@@ -454,42 +471,42 @@ function getAntallUttaksdagerPerKonto(
     return [
         {
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.ForeldrepengerFørFødsel
             )
         },
         {
             konto: StønadskontoType.Foreldrepenger,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.Foreldrepenger
             )
         },
         {
             konto: StønadskontoType.Mødrekvote,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.Mødrekvote
             )
         },
         {
             konto: StønadskontoType.Fedrekvote,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.Fedrekvote
             )
         },
         {
             konto: StønadskontoType.Fellesperiode,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.Fellesperiode
             )
         },
         {
             konto: StønadskontoType.SamtidigUttak,
-            dager: getAntallUttaksdagerIPerioderOgKonto(
+            dager: getAntallDagerUttak(
                 uttaksperioder,
                 StønadskontoType.SamtidigUttak
             )
