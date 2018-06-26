@@ -11,12 +11,15 @@ const multer = require('multer');
 require('dotenv').config();
 
 const mockResponse = {
-    fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
-    kjønn: 'K',
-    fødselsdato: '1979-01-28',
-    ikkeNordiskEøsLand: true
+    søker: {
+        fnr: '11111111111',
+        fornavn: 'Henrikke',
+        etternavn: 'Ibsen',
+        kjønn: 'K',
+        fødselsdato: '1979-01-28',
+        ikkeNordiskEøsLand: true
+    },
+    arbeidsforhold: {}
 };
 
 const allowCrossDomain = function(req, res, next) {
@@ -43,6 +46,10 @@ app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 
 router.get(['/rest/personinfo'], (req, res) => {
+    res.send(mockResponse);
+});
+
+router.get(['/rest/sokerinfo'], (req, res) => {
     res.send(mockResponse);
 });
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
 import { Periode, Dekningsgrad } from 'uttaksplan/types';
 import {
@@ -9,7 +9,6 @@ import {
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import TidsperiodeTekst from 'uttaksplan/components/tidslinje/elementer/TidsperiodeTekst';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
@@ -22,6 +21,8 @@ import {
 import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
 import { getSistePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
+import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
+import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
 
 export interface OwnProps {
     termindato: Date;
@@ -96,17 +97,18 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
                     this.handleItemClick(item);
                 }}
                 durationRenderer={(dager: number) => (
-                    <div className="periodeTidslinjeVarighet">
-                        <span className="periodeTidslinjeVarighet__wrapper">
-                            <span className="periodeTidslinjeVarighet__dager">
-                                {dager}
-                            </span>{' '}
-                            <FormattedMessage
-                                id={dager === 1 ? 'common.dag' : 'common.dager'}
-                                values={{ dager }}
-                            />
-                        </span>
-                    </div>
+                    <UkerOgDager dager={dager} />
+                    // <div className="periodeTidslinjeVarighet">
+                    //     <span className="periodeTidslinjeVarighet__wrapper">
+                    //         <span className="periodeTidslinjeVarighet__dager">
+                    //             {dager}
+                    //         </span>{' '}
+                    //         <FormattedMessage
+                    //             id={dager === 1 ? 'common.dag' : 'common.dager'}
+                    //             values={{ dager }}
+                    //         />
+                    //     </span>
+                    // </div>
                 )}
                 rangeRenderer={(startdato: Date, sluttdato: Date) => (
                     <TidsperiodeTekst
@@ -115,7 +117,7 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
                             sluttdato
                         }}
                         visSluttdato={true}
-                        visUkedag={false}
+                        visUkedag={true}
                     />
                 )}
             />

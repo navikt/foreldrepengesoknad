@@ -3,15 +3,15 @@ import {
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
 import { PeriodeState, PeriodeStatePartial } from '../types';
-import { opprettUttaksperioder } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
+import { opprettUttaksperioderEnkel } from 'uttaksplan/uttaksplaner/uttaksplanDeler';
 
 const defaultState: PeriodeState = {
     dialogErApen: false,
     valgtPeriode: undefined,
     perioder: [],
-    manuellOppdatering: true
+    manuellOppdatering: false
 };
 
 const updateState = (
@@ -31,7 +31,7 @@ const PeriodeReducer = (
             return {
                 ...state,
                 perioder: UttaksplanBuilder(
-                    opprettUttaksperioder(
+                    opprettUttaksperioderEnkel(
                         action.termindato,
                         action.dekningsgrad,
                         action.fellesukerForelder1,
@@ -68,7 +68,7 @@ const PeriodeReducer = (
             return updateState(state, {
                 perioder: UttaksplanBuilder(
                     state.perioder
-                ).leggTilEllerOppdater(action.periode).perioder,
+                ).leggTilEllerOppdaterPeriode(action.periode).perioder,
                 dialogErApen: false
             });
 

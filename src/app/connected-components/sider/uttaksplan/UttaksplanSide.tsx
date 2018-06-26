@@ -5,7 +5,6 @@ import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
-import { Tidslinjeinnslag } from 'uttaksplan/components/tidslinje/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
@@ -18,6 +17,7 @@ import {
 } from '../../../types/s\u00F8knad/S\u00F8knad';
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
+import { UttaksplanAppState } from 'uttaksplan/redux/types';
 
 export interface StateProps {
     form: {
@@ -28,7 +28,6 @@ export interface StateProps {
         fellesperiodeukerForelder2: number;
         dato: Date;
     };
-    innslag: Tidslinjeinnslag[];
 }
 
 export type Props = DispatchProps & StateProps & InjectedIntlProps;
@@ -40,11 +39,28 @@ export interface UttaksplamTestSkjemadata {
     annenForelderSkalHaPermisjon: boolean;
     erBarnetFødt: boolean;
     dato: Date;
+    fnrFarOppgitt?: boolean;
+    farHarRett?: boolean;
+    borSammen?: boolean;
+    aleneomsorg?: boolean;
+    skalMorHaAlt?: boolean;
 }
 export interface State {
     perioder: Periode[];
     skjemadata: UttaksplamTestSkjemadata;
 }
+
+const skalAnnenPersonHaPermisjon = (
+    skjema: UttaksplamTestSkjemadata
+): boolean => {
+    if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
+        return false;
+    }
+    if (skjema.borSammen === false && skjema.skalMorHaAlt) {
+        return false;
+    }
+    return true;
+};
 
 class UttaksplanSide extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -57,7 +73,10 @@ class UttaksplanSide extends React.Component<Props, State> {
                 annenForelderSkalHaPermisjon: true,
                 søkersituasjon: Søkersituasjon.FØDSEL,
                 erBarnetFødt: false,
-                dato: addDays(new Date(), 30)
+                dato: addDays(new Date(), 30),
+                fnrFarOppgitt: true,
+                farHarRett: true,
+                borSammen: true
             }
         };
     }
@@ -67,7 +86,7 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                <div className="dev-only">
+                <div className="dev-only" style={{ display: 'none' }}>
                     <UttaksplanSideSkjema
                         erSynlig={true}
                         onChange={(skjemadata: UttaksplamTestSkjemadata) =>
@@ -79,7 +98,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                 <Uttaksplan
                     søker={mockUttaksplanSøker}
                     annenForelder={
-                        skjema.annenForelderSkalHaPermisjon
+                        skalAnnenPersonHaPermisjon(skjema)
                             ? mockUttasksplanAnnenForelder
                             : undefined
                     }
@@ -93,18 +112,19 @@ class UttaksplanSide extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state: any): StateProps => {
+const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     const dato = addDays(new Date(), 20);
     return {
         form: {
             navnForelder1: 'Kari',
             navnForelder2: 'Ola',
-            fellesperiodeukerForelder1: 12,
-            fellesperiodeukerForelder2: 12,
+            fellesperiodeukerForelder1:
+                state.uttaksplan.form.fellesperiodeukerForelder1,
+            fellesperiodeukerForelder2:
+                state.uttaksplan.form.fellesperiodeukerForelder2,
             permisjonsregler: getPermisjonsregler(new Date()),
             dato
-        },
-        innslag: []
+        }
     };
 };
 
