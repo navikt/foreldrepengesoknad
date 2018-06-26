@@ -9,7 +9,9 @@ import getMessage from 'common/util/i18nUtils';
 import {
     AnnenInntekt,
     AnnenInntektPartial,
-    AnnenInntektType
+    AnnenInntektType,
+    JobbIUtlandetInntekt,
+    JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -21,6 +23,8 @@ import './annenInntektModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Bolk from '../layout/Bolk';
+import Landvelger from '../landvelger/Landvelger';
+import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilie';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -114,12 +118,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { annenInntekt } = this.state;
-        const inntektstype = annenInntekt.type;
-        const trengerDokumentasjon =
-            inntektstype === AnnenInntektType.SLUTTPAKKE ||
-            inntektstype === AnnenInntektType.VENTELØNN ||
-            inntektstype === AnnenInntektType.MILITÆRTJENESTE ||
-            inntektstype === AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
+        const gjelderJobbIUtlandet =
+            annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
 
         const cls = BEMHelper('annenInntektModal');
         return (
@@ -142,6 +142,27 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     this.updateAnnenInntekt({ type })
                                 }
                                 defaultValue={annenInntekt.type}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={gjelderJobbIUtlandet}
+                        render={() => (
+                            <Landvelger
+                                defaultValue={
+                                    (annenInntekt as JobbIUtlandetInntekt).land
+                                }
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.modal.land'
+                                )}
+                                onChange={(v: string) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        land: v
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
                             />
                         )}
                     />
@@ -180,7 +201,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
 
                     <Spørsmål
-                        synlig={trengerDokumentasjon}
                         render={() => (
                             <AttachmentsUploader
                                 attachments={annenInntekt.vedlegg || []}
@@ -206,6 +226,24 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     this.updateVedleggList(vedleggList);
                                 }}
                                 attachmentType="anneninntektdokumentasjon"
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={gjelderJobbIUtlandet}
+                        render={() => (
+                            <ErArbeidsgiverNærVennEllerFamilie
+                                erArbeidsgiverNærVennEllerFamilie={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .erNærVennEllerFamilieMedArbeidsgiver
+                                }
+                                onChange={(v: boolean) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        erNærVennEllerFamilieMedArbeidsgiver: v
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
                             />
                         )}
                     />
