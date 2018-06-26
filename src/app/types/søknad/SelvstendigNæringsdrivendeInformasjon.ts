@@ -34,10 +34,11 @@ export class EndringAvNæringsinntektInformasjon {
 export class Næringsrelasjon {
     navn: string;
     telefonnummer: string;
-    harGittSamtykkeTilÅHenteOpplysninger?: boolean;
+    erNærVennEllerFamilie: boolean;
 }
 
 export type NæringPartial = Partial<Næring>;
 export type EndringAvNæringsinntektInformasjonPartial = Partial<
     EndringAvNæringsinntektInformasjon
 >;
+export type NæringsrelasjonPartial = Partial<Næringsrelasjon>;

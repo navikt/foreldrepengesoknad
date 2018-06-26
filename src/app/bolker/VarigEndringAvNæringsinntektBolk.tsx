@@ -13,6 +13,7 @@ import getMessage from 'common/util/i18nUtils';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
 import Input from 'nav-frontend-skjema/lib/input';
 import DatoInput from 'common/components/dato-input/DatoInput';
+import { InputChangeEvent, TextareaChangeEvent } from '../types/dom/Events';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
@@ -95,11 +96,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                                 info.næringsinntektEtterEndring) ||
                                             ''
                                         }
-                                        onChange={(
-                                            e: React.ChangeEvent<
-                                                HTMLInputElement
-                                            >
-                                        ) =>
+                                        onChange={(e: InputChangeEvent) =>
                                             this.updateEndringAvNæringsinntektInformasjon(
                                                 {
                                                     næringsinntektEtterEndring:
@@ -118,11 +115,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                             'varigEndringAvNæringsinntekt.forklaring.label'
                                         )}
                                         value={(info && info.forklaring) || ''}
-                                        onChange={(
-                                            e: React.ChangeEvent<
-                                                HTMLTextAreaElement
-                                            >
-                                        ) => {
+                                        onChange={(e: TextareaChangeEvent) => {
                                             this.updateEndringAvNæringsinntektInformasjon(
                                                 {
                                                     forklaring: e.target.value

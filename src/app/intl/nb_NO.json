@@ -130,6 +130,13 @@
     "erDuSelvstendigNæringsdrivende.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
+    "harRevisor.spørsmål": "Har du revisor?",
+    "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
+    "næringsrelasjon.navn": "Navn på personen",
+    "næringsrelasjon.tlfnr": "Telefonnummer til personen",
+    "næringsrelasjon.nærVennEllerFamilie":
+        "Er du en nær venn eller familie av denne personen?",
+
     "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
     "andreForelderenRettPåForeldrepenger.spørsmål":

@@ -111,6 +111,13 @@
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
 
+    "harRevisor.spørsmål": "Har du revisor?",
+    "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
+    "næringsrelasjon.navn": "Navn på personen",
+    "næringsrelasjon.tlfnr": "Telefonnummer til personen",
+    "næringsrelasjon.nærVennEllerFamilie":
+        "Er du en nær venn eller familie av denne personen?",
+
     "frilans.oppstart": "Når begynte du som frilans?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
