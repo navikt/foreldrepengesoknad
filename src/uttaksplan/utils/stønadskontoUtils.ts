@@ -16,15 +16,15 @@ export const getTilgjengeligUttak = (
 ): StønadskontoUttak[] => {
     return [
         {
-            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            konto: StønadskontoType.MorsDelFørTermin,
             dager: permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
         },
         {
-            konto: StønadskontoType.Mødrekvote,
+            konto: StønadskontoType.MorsDel,
             dager: permisjonsregler.antallUkerMødrekvote * 5
         },
         {
-            konto: StønadskontoType.Fedrekvote,
+            konto: StønadskontoType.FarsDel,
             dager: permisjonsregler.antallUkerFedrekvote * 5
         },
         {
@@ -45,8 +45,9 @@ export const getTilgjengeligeStønadskontoer = (
         return [StønadskontoType.Foreldrepenger];
     }
     return [
-        StønadskontoType.Mødrekvote,
-        StønadskontoType.Fedrekvote,
+        StønadskontoType.MorsDelFørTermin,
+        StønadskontoType.MorsDel,
+        StønadskontoType.FarsDel,
         StønadskontoType.Fellesperiode
     ];
 };

@@ -15,9 +15,10 @@ import {
     TimelineMarker,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
-import { tidsperioden, uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
+import { guid } from 'nav-frontend-js-utils/lib';
 
 export const mapPeriodeToTimelineEvent = (
     periode: Periode,
@@ -62,6 +63,7 @@ export const mapPeriodeToTimelineEvent = (
         periode.type === Periodetype.Utsettelse
     ) {
         return {
+            id: periode.id || guid(),
             type: TimelineItemType.event,
             title: getTittel(),
             startDate: periode.tidsperiode.startdato,
@@ -70,7 +72,7 @@ export const mapPeriodeToTimelineEvent = (
                 periode.forelder === 'forelder2' && annenForelder
                     ? annenForelder.fornavn
                     : søker.fornavn,
-            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+            days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: getColorsForPeriode(periode),
             labels: getLabelsForPeriode(periode),
             icons: getTimelineIconsForPeriode(periode),
@@ -78,11 +80,12 @@ export const mapPeriodeToTimelineEvent = (
         };
     } else {
         const gapItem: TimelineGap = {
+            id: periode.tidsperiode.startdato.toDateString(),
             type: TimelineItemType.gap,
             startDate: periode.tidsperiode.startdato,
             endDate: periode.tidsperiode.sluttdato,
-            title: 'Opphold',
-            days: tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+            title: 'Opphold/tapte dager',
+            days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsForPeriode(periode),
             data: periode
         };
@@ -93,6 +96,9 @@ export const mapPeriodeToTimelineEvent = (
 const getColorsForPeriode = (periode: Periode): TimelineItemColor => {
     if (periode.type === Periodetype.Utsettelse) {
         return 'green';
+    }
+    if (periode.type === Periodetype.Opphold) {
+        return 'blue';
     }
     return periode.forelder === 'forelder1' ? 'blue' : 'purple';
 };
@@ -117,15 +123,15 @@ export const getTimelineIconsForPeriode = (
 ): UttaksplanIkonKeys[] | undefined => {
     if (periode.type === Periodetype.Utsettelse) {
         if (periode.årsak === UtsettelseÅrsakType.Ferie) {
-            return ['ferie'];
+            return [UttaksplanIkonKeys.ferie];
         }
         if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
-            return ['arbeid'];
+            return [UttaksplanIkonKeys.arbeid];
         }
     } else if (periode.type === Periodetype.Uttak) {
-        return ['uttak'];
+        return [UttaksplanIkonKeys.uttak];
     } else if (periode.type === Periodetype.Opphold) {
-        return ['advarsel'];
+        return [UttaksplanIkonKeys.advarsel];
     }
     return undefined;
 };
@@ -135,6 +141,7 @@ export function getTerminMarker(
     erBarnetFødt: boolean
 ): TimelineMarker {
     return {
+        id: 'termin',
         type: TimelineItemType.marker,
         icons: ['termin'],
         title: erBarnetFødt ? 'Fødsel' : 'Termin',
@@ -147,6 +154,7 @@ export function getSistePermisjonsdagMarker(
     sistePermisjonsdag: Date
 ): TimelineMarker {
     return {
+        id: 'sistePermisjonsdag',
         type: TimelineItemType.marker,
         icons: [],
         title: 'Permisjonsslutt',
@@ -176,7 +184,7 @@ export function getGaps(items: TimelineItem[]) {
                     : prevItem.endDate;
 
             const dager =
-                uttaksdagUtil(prevEndDate).uttaksdagerFremTilDato(
+                Uttaksdagen(prevEndDate).getUttaksdagerFremTilDato(
                     item.startDate
                 ) -
                 (prevItem.type === TimelineItemType.marker ||
@@ -185,15 +193,19 @@ export function getGaps(items: TimelineItem[]) {
                     : 1);
 
             if (dager > 0) {
+                const id = `${Uttaksdagen(prevEndDate)
+                    .neste()
+                    .toDateString()}${Uttaksdagen(item.startDate).forrige()}`;
                 const gap: TimelineGap = {
+                    id,
                     type: TimelineItemType.gap,
-                    startDate: uttaksdagUtil(prevEndDate).neste(),
-                    endDate: uttaksdagUtil(item.startDate).forrige(),
+                    startDate: Uttaksdagen(prevEndDate).neste(),
+                    endDate: Uttaksdagen(item.startDate).forrige(),
                     days:
                         dager +
                         (prevItem.type === TimelineItemType.marker ? 1 : 0),
                     data: {},
-                    title: 'Opphold'
+                    title: 'Ubrukte uttaksdager'
                 };
                 mappedItems.push(gap);
             }

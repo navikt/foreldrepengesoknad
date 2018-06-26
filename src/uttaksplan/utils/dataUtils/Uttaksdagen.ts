@@ -1,16 +1,18 @@
 import { addDays, getISODay, isSameDay, isBefore } from 'date-fns';
-import { tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden } from 'uttaksplan/utils/dataUtils';
 
 /**
  * Wrapper en dato med uttaksdager-funksjonalitet
  * @param dato
  */
-export const uttaksdagUtil = (dato: Date) => ({
+export const Uttaksdagen = (dato: Date) => ({
     erUttaksdag: (): boolean => erUttaksdag(dato),
     forrige: (): Date => getUttaksdagFørDato(dato),
     neste: (): Date => getUttaksdagEtterDato(dato),
     denneEllerNeste: (): Date => getUttaksdagFraOgMedDato(dato),
     denneEllerForrige: (): Date => getUttaksdagTilOgMedDato(dato),
+    getUttaksdagerFremTilDato: (tildato: Date) =>
+        getUttaksdagerFremTilDato(dato, tildato),
     leggTil: (uttaksdager: number): Date => {
         if (uttaksdager < 0) {
             return trekkUttaksdagerFraDato(dato, uttaksdager);
@@ -20,9 +22,7 @@ export const uttaksdagUtil = (dato: Date) => ({
         return dato;
     },
     trekkFra: (uttaksdager: number): Date =>
-        trekkUttaksdagerFraDato(dato, uttaksdager),
-    uttaksdagerFremTilDato: (tildato: Date) =>
-        getUttaksdagerFremTilDato(dato, tildato)
+        trekkUttaksdagerFraDato(dato, uttaksdager)
 });
 
 /**
@@ -137,12 +137,12 @@ function getUttaksdagerFremTilDato(startdato: Date, sluttdato: Date): number {
     }
     if (isBefore(startdato, sluttdato)) {
         return (
-            tidsperioden({ startdato, sluttdato }).getAntallUttaksdager() - 1
+            Tidsperioden({ startdato, sluttdato }).getAntallUttaksdager() - 1
         );
     }
     return (
         -1 *
-        (tidsperioden({
+        (Tidsperioden({
             startdato: sluttdato,
             sluttdato: startdato
         }).getAntallUttaksdager() -
