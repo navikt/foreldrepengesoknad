@@ -107,6 +107,9 @@
     "selvstendigNæringsdrivende.modal.registrertILand":
         "Hvilket land er næringen registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
+    "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
+    "varigEndringAvNæringsinntekt.spørsmål":
+        "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
 
     "frilans.oppstart": "Når begynte du som frilans?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
@@ -115,6 +118,11 @@
     "frilansOppdrag.oppfølgingsspørsmål":
         "Oppdrag for nære venner eller familie siste 10 måneder",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
+
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
 
     "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",

@@ -106,6 +106,11 @@
         "Oppdrag for nære venner eller familie siste 10 måneder",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
+
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
     "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
@@ -118,6 +123,9 @@
     "selvstendigNæringsdrivende.modal.registrertILand":
         "Hvilket land er næringen registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
+    "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
+    "varigEndringAvNæringsinntekt.spørsmål":
+        "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
 
     "erDuSelvstendigNæringsdrivende.spørsmål":
         "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
