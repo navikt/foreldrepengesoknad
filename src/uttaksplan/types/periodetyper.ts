@@ -16,7 +16,7 @@ export enum StønadskontoType {
     /** Når det kun er en forsørger/forelder */
     'Foreldrepenger' = 'FORELDREPENGER',
     /** Når det kun er en forsørger/forelder */
-    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FOEDSEL',
+    'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
     /** Når det kun er en forsørger/forelder */
     'SamtidigUttak' = 'SAMTIDIGUTTAK'
 }
