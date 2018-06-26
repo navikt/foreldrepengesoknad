@@ -64,10 +64,6 @@ class UttaksplanMain extends React.Component<Props> {
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
 
-    componentDidMount() {
-        this.opprettPerioder();
-    }
-
     handleItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
             const periode = item.data as Periode;
@@ -259,12 +255,6 @@ const mapStateToProps = (
         props.antallBarn,
         props.annenForelder
     );
-
-    // const uttaksdatoer = getUttaksdatoer(termindato);
-    // console.log(uttaksdatoer);
-
-    // const uttaksinfo = getUttaksinfo(periode.perioder);
-    // console.log(uttaksinfo);
 
     return {
         form,

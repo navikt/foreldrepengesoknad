@@ -131,25 +131,6 @@ export function getAntallUkerTotalt(
         : permisjonsregler.antallUkerTotalt100;
 }
 
-// /**
-//  * Summerer opp antall uttaksdager en forelder har i gitte perioder
-//  * @param forelder
-//  * @param perioder
-//  */
-// export const getAntallUttaksdagerForForelder = (
-//     forelder: Forelder,
-//     perioder: Periode[]
-// ): number => {
-//     return perioder.reduce(
-//         (dager: number, periode: Periode) =>
-//             periode.type === Periodetype.Uttak && periode.forelder === forelder
-//                 ? dager +
-//                   tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-//                 : dager,
-//         0
-//     );
-// };
-
 /**
  * Summerer antall uttaksdager som er registrert som ferie for en forelder
  * @param utsettelser

@@ -57,13 +57,3 @@ export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
         førsteUttaksdagEtterFødsel: Uttaksdagen(termindato).denneEllerNeste()
     };
 }
-
-// export function getUttaksinfo(perioder: Periode[]): Uttaksinfo {
-//     // const periodene = Periodene(perioder);
-//     return {
-//         førsteRegistrerteUttaksdag: undefined,
-//         antallDagerUtsettelser: undefined,
-//         antallDagerOpphold: Periodene(perioder).getAntallDagerOpphold(),
-//         antallDagerUttak: Periodene
-//     };
-// }

@@ -98,17 +98,6 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
                 }}
                 durationRenderer={(dager: number) => (
                     <UkerOgDager dager={dager} />
-                    // <div className="periodeTidslinjeVarighet">
-                    //     <span className="periodeTidslinjeVarighet__wrapper">
-                    //         <span className="periodeTidslinjeVarighet__dager">
-                    //             {dager}
-                    //         </span>{' '}
-                    //         <FormattedMessage
-                    //             id={dager === 1 ? 'common.dag' : 'common.dager'}
-                    //             values={{ dager }}
-                    //         />
-                    //     </span>
-                    // </div>
                 )}
                 rangeRenderer={(startdato: Date, sluttdato: Date) => (
                     <TidsperiodeTekst
