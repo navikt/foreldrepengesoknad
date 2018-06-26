@@ -21,6 +21,7 @@ export enum TimelineItemType {
 }
 
 interface TimelineBaseItem {
+    id: string;
     type: TimelineItemType;
     title: string;
     color?: 'blue' | 'purple' | 'green';
@@ -28,6 +29,7 @@ interface TimelineBaseItem {
     data?: any;
     startDate: Date;
     error?: TimelineItemInfo;
+    selected?: boolean;
 }
 
 export interface TimelineEvent extends TimelineBaseItem {

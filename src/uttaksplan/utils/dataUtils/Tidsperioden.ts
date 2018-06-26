@@ -1,6 +1,6 @@
 import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
-import { uttaksdagUtil } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { isSameDay, isAfter, isBefore } from 'date-fns';
 
@@ -9,19 +9,19 @@ import { isSameDay, isAfter, isBefore } from 'date-fns';
  * @param dato
  */
 
-export const tidsperioden = (tidsperiode: Tidsperiode) => ({
-    setStartdato: (startdato: Date) => flyttTidsperiode(tidsperiode, startdato),
-    setUttaksdager: (uttaksdager: number) =>
-        getTidsperiode(tidsperiode.startdato, uttaksdager),
-    getAntallUttaksdager: (taBortFridager?: boolean) =>
-        getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
-    getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
+export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     erLik: (tidsperiode2: Tidsperiode) =>
         erTidsperioderLike(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: Tidsperiode) =>
         erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
     erUtenfor: (tidsperiode2: Tidsperiode) =>
-        erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2)
+        erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
+    getAntallUttaksdager: (taBortFridager?: boolean) =>
+        getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
+    getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
+    setStartdato: (startdato: Date) => flyttTidsperiode(tidsperiode, startdato),
+    setUttaksdager: (uttaksdager: number) =>
+        getTidsperiode(tidsperiode.startdato, uttaksdager)
 });
 
 /**
@@ -33,12 +33,12 @@ export function getTidsperiode(
     startdato: Date,
     uttaksdager: number
 ): Tidsperiode {
-    if (!uttaksdagUtil(startdato).erUttaksdag()) {
+    if (!Uttaksdagen(startdato).erUttaksdag()) {
         throw new Error('Startdato er ikke en uttaksdag');
     }
     return {
         startdato,
-        sluttdato: uttaksdagUtil(startdato).leggTil(uttaksdager - 1)
+        sluttdato: Uttaksdagen(startdato).leggTil(uttaksdager - 1)
     };
 }
 
@@ -81,7 +81,7 @@ function getAntallUttaksdagerITidsperiode(
     let antall = 0;
     let fridager = 0;
     while (startdato <= sluttdato) {
-        if (uttaksdagUtil(startdato).erUttaksdag()) {
+        if (Uttaksdagen(startdato).erUttaksdag()) {
             antall++;
         }
         startdato.setDate(startdato.getDate() + 1);
@@ -97,7 +97,7 @@ function getAntallUttaksdagerITidsperiode(
  */
 function getUttaksdagerSomErFridager(tidsperiode: Tidsperiode): Holiday[] {
     return getOffentligeFridager(tidsperiode).filter((dag) =>
-        uttaksdagUtil(dag.date).erUttaksdag()
+        Uttaksdagen(dag.date).erUttaksdag()
     );
 }
 

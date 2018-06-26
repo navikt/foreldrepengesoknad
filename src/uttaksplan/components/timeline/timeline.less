@@ -86,9 +86,7 @@
 
     &__headerAndTitle {
         display: flex;
-        flex-flow: column-reverse;
         width: 100%;
-        flex-wrap: wrap;
         margin: 0;
         padding: 0;
         > * {
@@ -151,6 +149,15 @@
         position: absolute;
         left: 1rem;
         top: 1.25rem;
+    }
+    &__formContainer {
+        margin-top: 1rem;
+        margin-left: calc(-4rem + @timeline-border-left-width);
+        margin-right: -1rem;
+        border-top: 2px solid #e2e0dd;
+        margin-bottom: -1rem;
+        z-index: 2;
+        position: relative;
     }
 }
 
@@ -219,9 +226,7 @@
         flex-grow: 2;
     }
     &__duration {
-        position: absolute;
-        right: 0.85rem;
-        top: 0.1rem;
+        padding-top: 0.25rem;
     }
     .timelineIcons {
         position: absolute;
