@@ -7,7 +7,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
-import { Textarea, Checkbox, Input } from 'nav-frontend-skjema';
+import { Checkbox, Input } from 'nav-frontend-skjema';
 import {
     Næring,
     NæringPartial,
@@ -22,8 +22,7 @@ import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenR
 import Landvelger from '../landvelger/Landvelger';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/næringer';
 import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';
-import VarigEndringAvNæringsinntektSpørsmål from '../../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -122,9 +121,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             registrertINorge,
             registrertILand,
             stillingsprosent,
-            nyIArbeidslivet,
-            hattVarigEndringAvNæringsinntektSiste4Kalenderår,
-            endringAvNæringsinntektInformasjon
+            nyIArbeidslivet
         } = næring;
 
         const cls = BEMHelper('selvstendigNæringsdrivendeModal');
@@ -307,133 +304,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             !erMindreEnn4ÅrSidenOppstart(næring as Næring)
                         }
                         render={() => (
-                            <React.Fragment>
-                                <Spørsmål
-                                    render={() => (
-                                        <VarigEndringAvNæringsinntektSpørsmål
-                                            varigEndringAvNæringsinntekt={
-                                                hattVarigEndringAvNæringsinntektSiste4Kalenderår
-                                            }
-                                            onChange={(v: boolean) =>
-                                                this.updateNæring({
-                                                    hattVarigEndringAvNæringsinntektSiste4Kalenderår: v
-                                                })
-                                            }
-                                        />
-                                    )}
-                                />
-
-                                <Bolk
-                                    synlig={
-                                        hattVarigEndringAvNæringsinntektSiste4Kalenderår ===
-                                        true
-                                    }
-                                    render={() => {
-                                        const næringsinntektEtterEndring =
-                                            endringAvNæringsinntektInformasjon &&
-                                            endringAvNæringsinntektInformasjon.næringsinntektEtterEndring;
-                                        const dato =
-                                            endringAvNæringsinntektInformasjon &&
-                                            endringAvNæringsinntektInformasjon.dato;
-                                        const forklaring =
-                                            endringAvNæringsinntektInformasjon &&
-                                            endringAvNæringsinntektInformasjon.forklaring;
-
-                                        return (
-                                            <React.Fragment>
-                                                <Spørsmål
-                                                    render={() => (
-                                                        <DatoInput
-                                                            id="datoForEndring"
-                                                            label={getMessage(
-                                                                intl,
-                                                                'varigEndringAvNæringsinntekt.dato.label'
-                                                            )}
-                                                            onChange={(
-                                                                v: Date
-                                                            ) => {
-                                                                this.updateNæring(
-                                                                    {
-                                                                        endringAvNæringsinntektInformasjon: {
-                                                                            dato: v,
-                                                                            forklaring,
-                                                                            næringsinntektEtterEndring
-                                                                        }
-                                                                    } as Næring
-                                                                );
-                                                            }}
-                                                            dato={dato}
-                                                        />
-                                                    )}
-                                                />
-                                                <Spørsmål
-                                                    render={() => (
-                                                        <Input
-                                                            label={getMessage(
-                                                                intl,
-                                                                'varigEndringAvNæringsinntekt.inntektEtterEndring.label'
-                                                            )}
-                                                            value={
-                                                                næringsinntektEtterEndring ||
-                                                                ''
-                                                            }
-                                                            onChange={(
-                                                                e: React.ChangeEvent<
-                                                                    HTMLInputElement
-                                                                >
-                                                            ) =>
-                                                                this.updateNæring(
-                                                                    {
-                                                                        endringAvNæringsinntektInformasjon: {
-                                                                            dato,
-                                                                            forklaring,
-                                                                            næringsinntektEtterEndring:
-                                                                                e
-                                                                                    .target
-                                                                                    .value
-                                                                        }
-                                                                    } as Næring
-                                                                )
-                                                            }
-                                                        />
-                                                    )}
-                                                />
-                                                <Spørsmål
-                                                    render={() => (
-                                                        <Textarea
-                                                            label={getMessage(
-                                                                intl,
-                                                                'varigEndringAvNæringsinntekt.forklaring.label'
-                                                            )}
-                                                            value={
-                                                                forklaring || ''
-                                                            }
-                                                            onChange={(
-                                                                e: React.ChangeEvent<
-                                                                    HTMLTextAreaElement
-                                                                >
-                                                            ) => {
-                                                                this.updateNæring(
-                                                                    {
-                                                                        endringAvNæringsinntektInformasjon: {
-                                                                            dato,
-                                                                            næringsinntektEtterEndring,
-                                                                            forklaring:
-                                                                                e
-                                                                                    .target
-                                                                                    .value
-                                                                        }
-                                                                    } as Næring
-                                                                );
-                                                            }}
-                                                        />
-                                                    )}
-                                                />
-                                            </React.Fragment>
-                                        );
-                                    }}
-                                />
-                            </React.Fragment>
+                            <VarigEndringAvNæringsinntektBolk
+                                næring={næring as Næring}
+                                onChange={(changedProps: NæringPartial) =>
+                                    this.updateNæring(changedProps)
+                                }
+                            />
                         )}
                     />
 
