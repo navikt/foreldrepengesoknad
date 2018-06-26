@@ -1,14 +1,12 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import { SkjemaGruppe, Checkbox } from 'nav-frontend-skjema';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
 import { Row, Column } from 'nav-frontend-grid';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { renderDag } from 'common/util/renderUtils';
 import { Tidsperiode } from 'nav-datovelger';
-import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
-import { tidsperioden } from 'uttaksplan/utils/dataUtils';
 
 interface TidsperiodeDatoProps {
     label?: string;
@@ -25,9 +23,6 @@ export interface OwnProps {
     tidsperiodeFeil?: Feil;
     ugyldigeTidsperioder?: Tidsperiode[];
     helgedagerIkkeTillatt?: boolean;
-    visBeholdVarighet?: boolean;
-    beholdVarighet?: boolean;
-    onChangeBeholdVarighet: (behold: boolean) => void;
 }
 
 export type Props = OwnProps & InjectedIntlProps;
@@ -38,13 +33,9 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
     tidsperiodeFeil,
     ugyldigeTidsperioder,
     helgedagerIkkeTillatt,
-    beholdVarighet,
-    visBeholdVarighet,
-    onChangeBeholdVarighet,
     intl
 }) => {
     const minSluttdato = startdato.dato;
-    const tilDatoDisabled = visBeholdVarighet && beholdVarighet;
     const tidsperiodeStartdato = startdato.tidsperiode;
     const tidsperiodeSluttdato = sluttdato.tidsperiode;
     return (
@@ -91,15 +82,6 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 }}
                             />
                         </div>
-                        {visBeholdVarighet && (
-                            <Checkbox
-                                checked={beholdVarighet}
-                                label="Behold  antall dager"
-                                onChange={(evt) =>
-                                    onChangeBeholdVarighet(evt.target.checked)
-                                }
-                            />
-                        )}
                     </div>
                 </Column>
                 <Column xs="12" sm="6">
@@ -136,20 +118,8 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}
-                                disabled={tilDatoDisabled}
                             />
                         </div>
-                        {startdato.dato &&
-                            sluttdato.dato &&
-                            visBeholdVarighet && (
-                                <UkerOgDager
-                                    visKunDager={true}
-                                    dager={tidsperioden({
-                                        startdato: startdato.dato,
-                                        sluttdato: sluttdato.dato
-                                    }).getAntallUttaksdager()}
-                                />
-                            )}
                     </div>
                 </Column>
             </Row>

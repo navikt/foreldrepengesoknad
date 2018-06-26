@@ -18,9 +18,9 @@ import {
 } from 'uttaksplan/types';
 
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
-import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/utils/periodeskjemaUtils';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
 
 interface StateProps {
     isOpen: boolean;

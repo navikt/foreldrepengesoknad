@@ -31,11 +31,12 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
         iconRenderer,
         rangeRenderer,
         durationRenderer,
+        formRenderer,
         item,
-        onClick
+        onClick,
+        mode
     } = props;
     const {
-        title,
         startDate,
         endDate,
         personName,
@@ -53,17 +54,12 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
         <article
             id={itemId}
             className={classnames(BEM.className, BEM.modifier(color), {
-                [BEM.modifier('interactive')]: isInteractive
+                [BEM.modifier('interactive')]: isInteractive && mode !== 'edit'
             })}>
             <TimelineIcons icons={icons} iconRenderer={iconRenderer} />
             <h1 className={BEM.element('headerAndTitle')}>
                 <strong className={BEM.element('title')}>{personName}</strong>
                 <div className={BEM.element('header')}>
-                    <EtikettLiten
-                        className={BEM.element('header__personName')}
-                        tag="div">
-                        {title}
-                    </EtikettLiten>
                     <EtikettLiten
                         tag="div"
                         className={BEM.element('header__duration')}>
@@ -97,6 +93,12 @@ const EventItem: React.StatelessComponent<Props> = (props) => {
                     onClick={() => onClick(item)}
                 />
             )}
+            {mode === 'edit' &&
+                formRenderer && (
+                    <div className="timelineEventItem__formContainer">
+                        {formRenderer(item)}
+                    </div>
+                )}
         </article>
     );
 };
