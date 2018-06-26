@@ -19,7 +19,16 @@ const mockResponse = {
         fødselsdato: '1979-01-28',
         ikkeNordiskEøsLand: true
     },
-    arbeidsforhold: {}
+    arbeidsforhold: {},
+    barn: [
+        {
+            fnr: '12345123451',
+            fornavn: 'Sjura',
+            etternavn: 'Gucci',
+            kjønn: 'K',
+            fødselsdato: '2017-01-01'
+        }
+    ]
 };
 
 const allowCrossDomain = function(req, res, next) {
@@ -45,7 +54,7 @@ const delayAllResponses = function(millis) {
 app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
 
-router.get(['/rest/personinfo'], (req, res) => {
+router.get(['/rest/sokerinfo'], (req, res) => {
     res.send(mockResponse);
 });
 
