@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import FlipMove from 'react-flip-move';
 import {
     TimelineEvent,
     TimelineMarker,
@@ -15,16 +15,20 @@ import './timeline.less';
 
 export type RangeRenderer = (from: Date, to: Date) => React.ReactNode;
 export type DurationRenderer = (days: number) => React.ReactNode;
+export type FormRenderer = (item: TimelineItem) => React.ReactNode;
 
 export interface TimelineItemProps {
     iconRenderer: TimelineIconRenderer;
     onItemClick?: (item: TimelineItem) => void;
+    formRenderer?: FormRenderer;
+    mode?: 'view' | 'edit' | 'disabled';
 }
 
 export interface Props extends TimelineItemProps {
     items: TimelineItem[];
     rangeRenderer: RangeRenderer;
     durationRenderer: DurationRenderer;
+    editItem?: any;
 }
 
 class Timeline extends React.Component<Props, {}> {
@@ -42,6 +46,14 @@ class Timeline extends React.Component<Props, {}> {
                         onClick={this.props.onItemClick}
                         durationRenderer={this.props.durationRenderer}
                         rangeRenderer={this.props.rangeRenderer}
+                        formRenderer={this.props.formRenderer}
+                        mode={
+                            !this.props.editItem
+                                ? 'view'
+                                : this.props.editItem === item.data
+                                    ? 'edit'
+                                    : 'disabled'
+                        }
                     />
                 );
             case 'marker':
@@ -69,13 +81,21 @@ class Timeline extends React.Component<Props, {}> {
         const { items } = this.props;
         return (
             <ol className="timeline">
-                {items.map((item, idx) => (
-                    <li
-                        className="timeline__itemWrapper"
-                        key={`${item.startDate.toDateString()}${idx}`}>
-                        {this.renderItem(item)}
-                    </li>
-                ))}
+                <FlipMove
+                    disableAllAnimations={true}
+                    staggerDurationBy={20}
+                    duration={350}
+                    enterAnimation="accordionVertical"
+                    leaveAnimation="accordionVertical"
+                    maintainContainerHeight={false}>
+                    {items.map((item, idx) => (
+                        <li
+                            className="timeline__itemWrapper"
+                            key={`${item.id || idx}`}>
+                            {this.renderItem(item)}
+                        </li>
+                    ))}
+                </FlipMove>
             </ol>
         );
     }

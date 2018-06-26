@@ -8,15 +8,16 @@ import TerminIkon from './ikoner/TerminIkon';
 import ArbeidIkon from './ikoner/ArbeidIkon';
 import AdvarselIkon from './ikoner/AdvarselIkon';
 
-export type UttaksplanIkonKeys =
-    | 'arbeid'
-    | 'ferie'
-    | 'gradert'
-    | 'sykehus'
-    | 'sykdom'
-    | 'termin'
-    | 'uttak'
-    | 'advarsel';
+export enum UttaksplanIkonKeys {
+    'arbeid' = 'arbeid',
+    'ferie' = 'ferie',
+    'gradert' = 'gradert',
+    'sykehus' = 'sykehus',
+    'sykdom' = 'sykdom',
+    'termin' = 'termin',
+    'uttak' = 'uttak',
+    'advarsel' = 'advarsel'
+}
 
 export interface Props {
     ikon: UttaksplanIkonKeys;

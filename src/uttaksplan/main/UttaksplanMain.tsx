@@ -32,13 +32,11 @@ import {
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
-import Uttaksoversikt from 'uttaksplan/components/uttaksoversikt/Uttaksoversikt';
-import { beregnAlleUttak } from 'uttaksplan/utils/beregnUttak';
 
 import '../styles/uttaksplan.less';
-import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 
 export interface StateProps {
     form: UttaksplanFormState;
@@ -65,10 +63,6 @@ class UttaksplanMain extends React.Component<Props> {
         this.opprettPerioder = this.opprettPerioder.bind(this);
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
     }
-
-    // componentDidMount() {
-    //     this.opprettPerioder();
-    // }
 
     handleItemClick(item: TimelineItem) {
         if (item.type === TimelineItemType.event) {
@@ -176,15 +170,6 @@ class UttaksplanMain extends React.Component<Props> {
                             </div>
                         </EkspanderbartInnhold>
 
-                        <div className="blokkPad-m">
-                            <Uttaksoversikt
-                                uttak={beregnAlleUttak(
-                                    periode.perioder,
-                                    uttaksgrunnlag
-                                )}
-                            />
-                        </div>
-
                         {!perioderOpprettet && (
                             <div className="m-textCenter">
                                 <Knapp onClick={() => this.opprettPerioder()}>
@@ -261,11 +246,11 @@ const mapStateToProps = (
 ): StateProps => {
     const { termindato } = props;
     const { periode, form } = appState.uttaksplan;
-    const dekningsgrad = form.dekningsgrad;
+    const dekningsgrad = form.dekningsgrad || '100%';
 
     const uttaksgrunnlag = getUttaksgrunnlag(
         termindato,
-        dekningsgrad || '100%',
+        dekningsgrad,
         props.søker,
         props.antallBarn,
         props.annenForelder

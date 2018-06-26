@@ -1,7 +1,8 @@
 import {
     Uttaksgrunnlag,
     SøkerGrunnlag,
-    AnnenForelderGrunnlag
+    AnnenForelderGrunnlag,
+    Uttaksdatoer
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -9,6 +10,12 @@ import {
     getTilgjengeligeStønadskontoer,
     getTilgjengeligUttak
 } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+import {
+    getAntallUkerTotalt,
+    getSisteMuligePermisjonsdag,
+    getPermisjonStartdato
+} from 'uttaksplan/utils/permisjonUtils';
+import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 
 export function getUttaksgrunnlag(
     termindato: Date,
@@ -25,6 +32,28 @@ export function getUttaksgrunnlag(
         antallBarn,
         permisjonsregler,
         tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(søker),
-        tilgjengeligUttak: getTilgjengeligUttak(permisjonsregler, dekningsgrad)
+        tilgjengeligeUttak: getTilgjengeligUttak(
+            permisjonsregler,
+            dekningsgrad
+        ),
+        tilgjengeligeUttaksdager:
+            getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5
+    };
+}
+
+export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
+    const permisjonsregler = getPermisjonsregler(termindato);
+    return {
+        termindato,
+        førsteMuligeUttaksdag: getPermisjonStartdato(
+            termindato,
+            permisjonsregler
+        ),
+        sisteMuligeUttaksdag: getSisteMuligePermisjonsdag(
+            termindato,
+            permisjonsregler
+        ),
+        sisteUttaksdagFørFødsel: Uttaksdagen(termindato).forrige(),
+        førsteUttaksdagEtterFødsel: Uttaksdagen(termindato).denneEllerNeste()
     };
 }

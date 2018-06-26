@@ -1,5 +1,5 @@
 import { addYears } from 'date-fns';
-import { uttaksdagUtil, tidsperioden, periodene } from './dataUtils';
+import { Uttaksdagen, Tidsperioden, Periodene } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -7,30 +7,46 @@ import {
     Forelder,
     Periode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
-    Periodetype
+    UtsettelseÅrsakType
 } from '../types';
 import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
+/**
+ * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
+ * @param termindato
+ * @param permisjonsregler
+ */
 export function getPermisjonStartdato(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdagUtil(
+    return Uttaksdagen(
         termindato // Siste uttaksdag i denne perioden er dagen før termin
     ).leggTil(-1 * permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
 }
 
+/**
+ * Finner absolutt siste permisjonsdag
+ * @param termindato
+ * @param permisjonsregler
+ */
 export function getSisteMuligePermisjonsdag(
     termindato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
-    return uttaksdagUtil(
+    return Uttaksdagen(
         addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
     ).denneEllerNeste();
 }
 
+/**
+ * Finner siste permisjonsdag gitt registrerte perioder
+ * @param termindato
+ * @param dekningsgrad
+ * @param perioder
+ * @param uttaksgrunnlag
+ */
 export function getSistePermisjonsdag(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
@@ -40,16 +56,15 @@ export function getSistePermisjonsdag(
     if (perioder.length === 0) {
         return undefined;
     }
-    const uttaksperioder = periodene(perioder).getUttak();
-    const uttaksdagerBruktTotalt = periodene(
+    const uttaksperioder = Periodene(perioder).getUttak();
+    const uttaksdagerBruktTotalt = Periodene(
         uttaksperioder
-    ).getAntallUttaksdager();
-    const utsatteDager = periodene(perioder).getAntallUtsatteDager();
-    const totaltTilgjengeligUttak =
-        getAntallUkerTotalt(uttaksgrunnlag.permisjonsregler, dekningsgrad) * 5;
-    const registrerteUttak = periodene(perioder).getAntallUttaksdager();
-    const gjenståendeUttaksdager = totaltTilgjengeligUttak - registrerteUttak;
-    return uttaksdagUtil(termindato).leggTil(
+    ).getAntallDagerUttak();
+    const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
+    const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
+    const gjenståendeUttaksdager =
+        uttaksgrunnlag.tilgjengeligeUttaksdager - registrerteUttak;
+    return Uttaksdagen(termindato).leggTil(
         uttaksdagerBruktTotalt -
             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
                 5 -
@@ -75,7 +90,7 @@ export function getGyldigTidsromForUtsettelse(
         termindato,
         permisjonsregler
     );
-    const startdato = uttaksdagUtil(mødrekvoteEtterTermin.sluttdato).neste();
+    const startdato = Uttaksdagen(mødrekvoteEtterTermin.sluttdato).neste();
     return {
         startdato,
         sluttdato: sisteRegistrertePermisjonsdag
@@ -117,25 +132,6 @@ export function getAntallUkerTotalt(
 }
 
 /**
- * Summerer opp antall uttaksdager en forelder har i gitte perioder
- * @param forelder
- * @param perioder
- */
-export const getAntallUttaksdagerForForelder = (
-    forelder: Forelder,
-    perioder: Periode[]
-): number => {
-    return perioder.reduce(
-        (dager: number, periode: Periode) =>
-            periode.type === Periodetype.Uttak && periode.forelder === forelder
-                ? dager +
-                  tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-                : dager,
-        0
-    );
-};
-
-/**
  * Summerer antall uttaksdager som er registrert som ferie for en forelder
  * @param utsettelser
  * @param forelder
@@ -154,7 +150,7 @@ export const getAntallFeriedagerForForelder = (
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
                   dager +
-                  tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+                  Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
               0
           );
 };

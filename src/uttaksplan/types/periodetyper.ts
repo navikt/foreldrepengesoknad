@@ -7,6 +7,12 @@ export enum Periodetype {
 }
 
 export enum StønadskontoType {
+    /** Mors del før termin */
+    'MorsDelFørTermin' = 'MORS_DEL_FØR_TERMIN',
+    /** Mors del */
+    'MorsDel' = 'MORS_DEL',
+    /** Mors del */
+    'FarsDel' = 'FARS_DEL',
     /** Kvote forbeholdt mor */
     'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
@@ -27,12 +33,6 @@ export enum UtsettelseÅrsakType {
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
-}
-
-export enum OppholdÅrsakType {
-    'VenterSøknadFraAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
-    'ManglendeSøktPeriode' = 'UTTAK_KVOTE_ANNEN_FORELDER',
-    'Ingen' = 'INGEN'
 }
 
 export interface Helligdag {
@@ -61,13 +61,8 @@ export interface Utsettelsesperiode extends PeriodeBase {
     helligdager?: Helligdag[];
 }
 
-export type OppholdOpphavType = 'periodeendring' | undefined;
-
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
-    årsak: OppholdÅrsakType;
-    forelder: Forelder;
-    opphav?: OppholdOpphavType;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
