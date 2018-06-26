@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import Bolk from 'app/components/layout/Bolk';
+import Bolk from 'common/components/bolk/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';

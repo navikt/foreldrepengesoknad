@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { StegID } from '../../../util/stegConfig';
-import Steg from 'app/components/layout/Steg';
+import Steg from 'app/components/steg/Steg';
 
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
@@ -19,7 +19,7 @@ import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato, HistoryProps } from '../../../types/common';
 import { getAlderFraDato } from '../../../util/dates';
-import { StegProps } from '../../../components/layout/Steg';
+import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 

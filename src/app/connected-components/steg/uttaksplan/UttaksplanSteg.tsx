@@ -4,7 +4,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import { UfødtBarn } from '../../../types/søknad/Barn';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import { StegID } from '../../../util/stegConfig';
-import { default as Steg, StegProps } from '../../../components/layout/Steg';
+import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';
 import Søknad from '../../../types/søknad/Søknad';

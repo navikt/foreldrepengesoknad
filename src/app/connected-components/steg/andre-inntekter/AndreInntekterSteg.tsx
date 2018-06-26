@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as Steg, StegProps } from '../../../components/layout/Steg';
+import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AnnenInntektSiste10MndSpørsmål, {
     AnnenInntekt
@@ -15,7 +15,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
-import Bolk from '../../../components/layout/Bolk';
+import Bolk from '../../../../common/components/bolk/Bolk';
 import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';

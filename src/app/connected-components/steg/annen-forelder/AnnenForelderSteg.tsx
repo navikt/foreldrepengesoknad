@@ -5,7 +5,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPartial';
 import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial';
 
-import Steg, { StegProps } from '../../../components/layout/Steg';
+import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/stegConfig';
 
 import { AppState } from '../../../redux/reducers';

@@ -13,7 +13,7 @@ import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål
 import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import Bolk from '../../../../components/layout/Bolk';
+import Bolk from '../../../../../common/components/bolk/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
