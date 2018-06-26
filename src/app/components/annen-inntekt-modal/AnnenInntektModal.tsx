@@ -24,7 +24,7 @@ import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Bolk from '../layout/Bolk';
 import Landvelger from '../landvelger/Landvelger';
-import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilie';
+import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
