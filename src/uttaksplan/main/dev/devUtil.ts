@@ -25,5 +25,4 @@ export const registerDevUtils = () => {
     }
 };
 
-toggleDevToolbar();
 registerDevUtils();
