@@ -16,7 +16,7 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
-import Bolk from '../layout/Bolk';
+import Bolk from '../../../common/components/bolk/Bolk';
 
 export interface UtenlandsoppholdModalProps extends ModalProps {
     type: UtenlandsoppholdType;

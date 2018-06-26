@@ -8,7 +8,7 @@ import {
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import VarigEndringAvNæringsinntektSpørsmål from '../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import Bolk from '../components/layout/Bolk';
+import Bolk from '../../common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
 import Input from 'nav-frontend-skjema/lib/input';

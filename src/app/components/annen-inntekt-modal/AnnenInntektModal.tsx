@@ -22,7 +22,7 @@ import BEMHelper from 'common/util/bem';
 import './annenInntektModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Bolk from '../layout/Bolk';
+import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 
