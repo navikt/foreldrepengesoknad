@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Collapse } from 'react-collapse';
-import * as classNames from 'classnames';
+const classNames = require('classnames');
 
 export type BottomMargin = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
-export interface Props {
+export interface SpørsmålProps {
     /** Default true */
     synlig?: boolean;
     /** Default true */
@@ -17,7 +17,7 @@ export interface Props {
 import './spørsmål.less';
 import { collapseSpringConfig } from 'common/util/animationUtils';
 
-const Spørsmål: React.StatelessComponent<Props> = ({
+const Spørsmål: React.StatelessComponent<SpørsmålProps> = ({
     synlig = true,
     animert = true,
     margin = 'm',
