@@ -19,6 +19,10 @@ export class Næring {
     nyIArbeidslivet?: boolean;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
+    harRegnskapsfører: boolean;
+    regnskapsfører: Næringsrelasjon;
+    harRevisor: boolean;
+    revisor: Næringsrelasjon;
 }
 
 export class EndringAvNæringsinntektInformasjon {
@@ -27,4 +31,13 @@ export class EndringAvNæringsinntektInformasjon {
     forklaring: string;
 }
 
+export class Næringsrelasjon {
+    navn: string;
+    telefonnummer: string;
+    harGittSamtykkeTilÅHenteOpplysninger?: boolean;
+}
+
 export type NæringPartial = Partial<Næring>;
+export type EndringAvNæringsinntektInformasjonPartial = Partial<
+    EndringAvNæringsinntektInformasjon
+>;
