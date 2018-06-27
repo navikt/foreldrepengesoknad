@@ -33,7 +33,7 @@ export interface Uttaksgrunnlag {
 export interface Uttaksdatoer {
     /** Termindato */
     termindato: Date;
-    /** Første mulige uttaksdag gitt fødsel/termin */
+    /** Siste mulige uttaksdag gitt fødsel/termin */
     førsteMuligeUttaksdag: Date;
     /** Siste mulige uttaksdag gitt fødsel/termin */
     sisteMuligeUttaksdag: Date;

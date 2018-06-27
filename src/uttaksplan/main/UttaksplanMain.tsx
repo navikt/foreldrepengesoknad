@@ -29,19 +29,25 @@ import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelses
 import {
     Uttaksgrunnlag,
     SøkerGrunnlag,
-    AnnenForelderGrunnlag
+    AnnenForelderGrunnlag,
+    Uttaksdatoer
 } from 'uttaksplan/types/uttaksgrunnlag';
-import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import {
+    getUttaksgrunnlag,
+    getUttaksdatoer
+} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
+import DevBeregning from 'uttaksplan/main/dev/DevBeregning';
 
 export interface StateProps {
     form: UttaksplanFormState;
     uttaksgrunnlag: Uttaksgrunnlag;
     uttaksplan: UttaksplanState;
+    uttaksdatoer: Uttaksdatoer;
     manuellUttaksplan?: boolean;
 }
 
@@ -122,6 +128,7 @@ class UttaksplanMain extends React.Component<Props> {
     render() {
         const {
             uttaksgrunnlag,
+            uttaksdatoer,
             termindato,
             erBarnetFødt,
             uttaksplan,
@@ -241,6 +248,7 @@ class UttaksplanMain extends React.Component<Props> {
                     termindato={termindato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                 />
+                <DevBeregning uttaksdatoer={uttaksdatoer} />
                 <DevHelper
                     termindato={termindato}
                     dekningsgrad={dekningsgrad || '100%'}
@@ -269,9 +277,12 @@ const mapStateToProps = (
         props.annenForelder
     );
 
+    const uttaksdatoer = getUttaksdatoer(termindato);
+
     return {
         form,
         uttaksgrunnlag,
+        uttaksdatoer,
         uttaksplan,
         manuellUttaksplan: uttaksplan.manuellOppdatering
     };
