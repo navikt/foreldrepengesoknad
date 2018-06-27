@@ -3,7 +3,7 @@ import {
     StønadskontoUttak
 } from 'uttaksplan/types/periodetyper';
 import { Permisjonsregler } from 'uttaksplan/types';
-import { SøkerRolle, Søkersituasjon } from 'app/types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from 'app/types/søknad/Søknad';
 import { Kjønn } from 'app/types/common';
 import { Dekningsgrad } from 'common/types';
 

@@ -8,7 +8,7 @@ import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import {
     getTilgjengeligeStønadskontoer,
     getTilgjengeligUttak
-} from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+} from 'uttaksplan/utils/stønadskontoUtils';
 import {
     getAntallUkerTotalt,
     getSisteMuligePermisjonsdag,
