@@ -7,6 +7,9 @@ export interface Permisjonsregler {
     /** Totalt antall uker ved 100% */
     antallUkerTotalt100: number;
     /** Antall uker som er forbeholdt mor før fødsel */
+    maksAntallUkerForeldrepengerFørFødsel: number;
+    /** Antall uker som er forbeholdt mor etter fødsel */
+    /** Antall uker som er forbeholdt mor før fødsel */
     antallUkerForeldrepengerFørFødsel: number;
     /** Antall uker som er forbeholdt mor etter fødsel */
     antallUkerMødrekvoteEtterFødsel: number;

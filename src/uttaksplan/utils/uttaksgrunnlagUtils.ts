@@ -13,7 +13,7 @@ import {
 import {
     getAntallUkerTotalt,
     getSisteMuligePermisjonsdag,
-    getPermisjonStartdato
+    getFørsteMuligePermisjonsdag
 } from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 
@@ -45,7 +45,7 @@ export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
     const permisjonsregler = getPermisjonsregler(termindato);
     return {
         termindato,
-        førsteMuligeUttaksdag: getPermisjonStartdato(
+        førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(
             termindato,
             permisjonsregler
         ),

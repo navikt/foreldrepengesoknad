@@ -9,6 +9,7 @@ const reglerFomJuli2018: Permisjonsregler = {
     antallUkerMødrekvoteEtterFødsel: 6,
     antallUkerFedrekvote: 15,
     antallUkerMødrekvote: 15,
+    maksAntallUkerForeldrepengerFørFødsel: 12,
     maksPermisjonslengdeIÅr: 3,
     maksFeriedagerEttÅr: 21,
     maksFeriedagerMedOverføring: 52
