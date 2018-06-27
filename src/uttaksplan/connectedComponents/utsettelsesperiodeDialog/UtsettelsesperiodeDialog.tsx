@@ -22,12 +22,14 @@ import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjem
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 interface StateProps {
     isOpen: boolean;
     utsettelse?: Utsettelsesperiode;
     tidsromForUtsettelse?: Tidsperiode;
     perioder?: Periode[];
+    uttaksgrunnlag?: Uttaksgrunnlag;
 }
 
 interface OwnProps {
@@ -52,11 +54,12 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
         navnForelder2,
         tidsromForUtsettelse,
         termindato,
+        uttaksgrunnlag,
         dispatch,
         intl
     } = props;
 
-    if (!isOpen || !perioder || !tidsromForUtsettelse) {
+    if (!isOpen || !perioder || !tidsromForUtsettelse || !uttaksgrunnlag) {
         return null;
     }
 
@@ -69,6 +72,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UtsettelseSkjema
+                søker={uttaksgrunnlag.søker}
                 registrerteUtsettelser={
                     perioder.filter(
                         (p) => p.type === Periodetype.Utsettelse
@@ -127,7 +131,8 @@ const mapStateToProps = (
         isOpen: true,
         utsettelse: view.valgtPeriode.periode as Utsettelsesperiode,
         perioder: uttaksplan.perioder,
-        tidsromForUtsettelse
+        tidsromForUtsettelse,
+        uttaksgrunnlag: state.uttaksplan.uttaksplan.uttaksgrunnlag
     };
 };
 

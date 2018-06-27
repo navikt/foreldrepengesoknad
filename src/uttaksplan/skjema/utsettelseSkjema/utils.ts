@@ -16,13 +16,20 @@ import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
+import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
-export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
+export function getDefaultState(
+    søker: SøkerGrunnlag,
+    utsettelse?: Utsettelsesperiode
+): SkjemaState {
     return utsettelse
         ? {
               valideringsfeil: new Map(),
               årsak: utsettelse.årsak,
-              forelder: utsettelse.forelder,
+              forelder:
+                  utsettelse.forelder || søker.erAleneOmOmsorg
+                      ? 'forelder1'
+                      : undefined,
               startdato: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.startdato
                   : undefined,
@@ -31,7 +38,8 @@ export function getDefaultState(utsettelse?: Utsettelsesperiode): SkjemaState {
                   : undefined
           }
         : {
-              valideringsfeil: new Map()
+              valideringsfeil: new Map(),
+              forelder: søker.erAleneOmOmsorg ? 'forelder1' : undefined
           };
 }
 
