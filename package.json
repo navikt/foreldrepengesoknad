@@ -102,7 +102,6 @@
     "dependencies": {
         "@types/bytes": "3.0.0",
         "@types/react-document-title": "2.0.2",
-        "@types/react-flip-move": "2.9.12",
         "@types/react-intl": "2.3.8",
         "axios": "0.18.0",
         "bytes": "3.0.0",
@@ -138,7 +137,6 @@
         "react-collapse": "4.0.3",
         "react-document-title": "2.0.3",
         "react-dom": "16.3.2",
-        "react-flip-move": "3.0.2",
         "react-intl": "2.4.0",
         "react-modal": "3.4.4",
         "react-motion": "0.5.2",
