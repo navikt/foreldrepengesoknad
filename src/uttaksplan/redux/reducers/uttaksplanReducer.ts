@@ -2,30 +2,28 @@ import {
     PlanleggerActionTypes,
     PlanleggerActionTypeKeys
 } from '../actions/actionTypes';
-import { PeriodeState, PeriodeStatePartial } from '../types';
+import { UttaksplanState, UttaksplanStatePartial } from '../types';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
 import { opprettUttaksperioderEnkel } from 'uttaksplan/uttaksplaner/uttaksplanDeler';
 
-const defaultState: PeriodeState = {
-    dialogErApen: false,
-    valgtPeriode: undefined,
+const defaultState: UttaksplanState = {
     perioder: [],
     manuellOppdatering: false
 };
 
 const updateState = (
-    state: PeriodeState,
-    newState: PeriodeStatePartial
-): PeriodeState => ({
+    state: UttaksplanState,
+    newState: UttaksplanStatePartial
+): UttaksplanState => ({
     ...state,
     ...newState
 });
 
-const PeriodeReducer = (
+const UttaksplanReducer = (
     state = defaultState,
     action: PlanleggerActionTypes
-): PeriodeState => {
+): UttaksplanState => {
     switch (action.type) {
         case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
             return {
@@ -41,35 +39,18 @@ const PeriodeReducer = (
                 ).buildUttaksplan().perioder
             };
 
-        case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
-            return updateState(state, {
-                dialogErApen: true,
-                valgtPeriode: {
-                    periodetype: action.periodetype,
-                    periode: action.periode
-                }
-            });
-
-        case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
-            return updateState(state, {
-                dialogErApen: false,
-                valgtPeriode: undefined
-            });
-
         case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
             if (state.manuellOppdatering) {
                 return updateState(state, {
                     perioder: UttaksplanManuell(
                         state.perioder
-                    ).leggTilEllerOppdater(action.periode).perioder,
-                    dialogErApen: false
+                    ).leggTilEllerOppdater(action.periode).perioder
                 });
             }
             return updateState(state, {
                 perioder: UttaksplanBuilder(
                     state.perioder
-                ).leggTilEllerOppdaterPeriode(action.periode).perioder,
-                dialogErApen: false
+                ).leggTilEllerOppdaterPeriode(action.periode).perioder
             });
 
         case PlanleggerActionTypeKeys.PERIODE_SLETT:
@@ -77,16 +58,13 @@ const PeriodeReducer = (
                 return updateState(state, {
                     perioder: UttaksplanManuell(state.perioder).slettPeriode(
                         action.periode
-                    ).perioder,
-                    dialogErApen: false
+                    ).perioder
                 });
             }
             return updateState(state, {
                 perioder: UttaksplanBuilder(state.perioder).slettPeriodeOgBuild(
                     action.periode
-                ).perioder,
-                valgtPeriode: undefined,
-                dialogErApen: false
+                ).perioder
             });
 
         case PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN:
@@ -104,4 +82,4 @@ const PeriodeReducer = (
     }
 };
 
-export default PeriodeReducer;
+export default UttaksplanReducer;

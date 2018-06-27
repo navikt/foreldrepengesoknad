@@ -98,7 +98,7 @@ export default connect((state: AppState, props: Props) => {
     return {
         søknad,
         person: state.api.person,
-        perioder: uttaksplan.periode.perioder,
+        perioder: uttaksplan.uttaksplan.perioder,
         stegProps,
         ...props
     };

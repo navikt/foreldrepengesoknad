@@ -143,7 +143,7 @@ class DevToolbar extends React.Component<Props, {}> {
     }
 
     lagOpphold() {
-        const periode = this.props.appState.uttaksplan.periode.perioder[2];
+        const periode = this.props.appState.uttaksplan.uttaksplan.perioder[2];
         if (periode.type === Periodetype.Utsettelse) {
             return;
         }
@@ -158,7 +158,7 @@ class DevToolbar extends React.Component<Props, {}> {
         );
     }
     flyttPeriode(dager: number = 1, idx: number = 3) {
-        const periode = this.props.appState.uttaksplan.periode.perioder[idx];
+        const periode = this.props.appState.uttaksplan.uttaksplan.perioder[idx];
         const tidsperiode = Tidsperioden(periode.tidsperiode).setStartdato(
             Uttaksdagen(periode.tidsperiode.startdato).leggTil(dager)
         );
@@ -197,7 +197,7 @@ class DevToolbar extends React.Component<Props, {}> {
                     </Knapp>
                     <Checkbox
                         checked={
-                            this.props.appState.uttaksplan.periode
+                            this.props.appState.uttaksplan.uttaksplan
                                 .manuellOppdatering
                         }
                         label="Manuell oppdatering"
@@ -216,7 +216,7 @@ class DevToolbar extends React.Component<Props, {}> {
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     return {
         appState: state,
-        perioder: state.uttaksplan.periode.perioder
+        perioder: state.uttaksplan.uttaksplan.perioder
     };
 };
 
