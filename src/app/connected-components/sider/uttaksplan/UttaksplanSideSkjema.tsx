@@ -3,16 +3,11 @@ import Radioliste, {
     RadiolisteValg
 } from 'uttaksplan/components/radioliste/Radioliste';
 import { UttaksplamTestSkjemadata } from './UttaksplanSide';
-import {
-    SøkerRolle,
-    Søkersituasjon
-} from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { Checkbox } from 'nav-frontend-skjema';
-import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 
 export interface Props {
-    erSynlig: boolean;
     skjemadata: UttaksplamTestSkjemadata;
     onChange: (skjemadata: UttaksplamTestSkjemadata) => void;
 }
@@ -32,9 +27,9 @@ const antallBarnValg: RadiolisteValg[] = ['1', '2', '3', '4'].map(
     })
 );
 const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
-    const { erSynlig, skjemadata, onChange } = props;
+    const { skjemadata, onChange } = props;
     return (
-        <EkspanderbartInnhold erApen={erSynlig}>
+        <div>
             <div className="blokk-m">
                 <Radioliste
                     kolonner="2"
@@ -101,7 +96,7 @@ const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                     }
                 />
             </div>
-        </EkspanderbartInnhold>
+        </div>
     );
 };
 

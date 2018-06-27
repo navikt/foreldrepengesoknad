@@ -11,10 +11,7 @@ import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
 } from '../../../dev/mock';
-import {
-    SøkerRolle,
-    Søkersituasjon
-} from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
@@ -53,13 +50,7 @@ export interface State {
 const skalAnnenPersonHaPermisjon = (
     skjema: UttaksplamTestSkjemadata
 ): boolean => {
-    if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
-        return false;
-    }
-    if (skjema.borSammen === false && skjema.skalMorHaAlt) {
-        return false;
-    }
-    return true;
+    return skjema.annenForelderSkalHaPermisjon;
 };
 
 class UttaksplanSide extends React.Component<Props, State> {
@@ -86,9 +77,8 @@ class UttaksplanSide extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                <div className="dev-only" style={{ display: 'none' }}>
+                <div className="dev-only">
                     <UttaksplanSideSkjema
-                        erSynlig={true}
                         onChange={(skjemadata: UttaksplamTestSkjemadata) =>
                             this.setState({ skjemadata })
                         }
@@ -96,15 +86,15 @@ class UttaksplanSide extends React.Component<Props, State> {
                     />
                 </div>
                 <Uttaksplan
-                    søker={mockUttaksplanSøker}
-                    annenForelder={
-                        skalAnnenPersonHaPermisjon(skjema)
+                    grunnlag={{
+                        søker: mockUttaksplanSøker,
+                        annenForelder: skalAnnenPersonHaPermisjon(skjema)
                             ? mockUttasksplanAnnenForelder
-                            : undefined
-                    }
-                    termindato={skjema.dato}
-                    antallBarn={parseInt(skjema.antallBarn, 10)}
-                    erBarnetFødt={false}
+                            : undefined,
+                        termindato: skjema.dato,
+                        antallBarn: parseInt(skjema.antallBarn, 10),
+                        erBarnetFødt: false
+                    }}
                     onChange={(perioder) => this.setState({ perioder })}
                 />
             </Applikasjonsside>
