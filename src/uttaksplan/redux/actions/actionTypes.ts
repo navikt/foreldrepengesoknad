@@ -6,7 +6,7 @@ import {
 } from '../../types';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
-export enum PlanleggerActionTypeKeys {
+export enum UttaksplanActionTypeKeys {
     'SET_UKER_FORELDER1' = 'setUkerForelder1',
     'SET_UKER_FORELDER2' = 'setUkerForelder2',
     'SET_DEKNINGSGRAD' = 'setDekningsgrad',
@@ -23,7 +23,7 @@ export enum PlanleggerActionTypeKeys {
     'DEV_ACTION' = 'dev'
 }
 
-export type PlanleggerActionTypes =
+export type UttaksplanActionTypes =
     | SetUkerForelder2
     | SetUkerForelder1
     | SetDekningsgrad
@@ -40,7 +40,7 @@ export type PlanleggerActionTypes =
     | DevAction;
 
 export interface OpprettPerioder {
-    type: PlanleggerActionTypeKeys.OPPRETT_PERIODER;
+    type: UttaksplanActionTypeKeys.OPPRETT_PERIODER;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
@@ -49,63 +49,63 @@ export interface OpprettPerioder {
 }
 
 export interface SetUkerForelder1 {
-    type: PlanleggerActionTypeKeys.SET_UKER_FORELDER1;
+    type: UttaksplanActionTypeKeys.SET_UKER_FORELDER1;
     uker: number;
 }
 
 export interface SetUkerForelder2 {
-    type: PlanleggerActionTypeKeys.SET_UKER_FORELDER2;
+    type: UttaksplanActionTypeKeys.SET_UKER_FORELDER2;
     uker: number;
 }
 
 export interface SetDekningsgrad {
-    type: PlanleggerActionTypeKeys.SET_DEKNINGSGRAD;
+    type: UttaksplanActionTypeKeys.SET_DEKNINGSGRAD;
     dekningsgrad: Dekningsgrad | undefined;
     permisjonsregler: Permisjonsregler;
 }
 
 export interface PeriodeVisDialog {
-    type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG;
+    type: UttaksplanActionTypeKeys.PERIODE_VIS_DIALOG;
     periodetype: Periodetype;
     periode?: Periode;
 }
 
 export interface PeriodeLukkDialog {
-    type: PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG;
+    type: UttaksplanActionTypeKeys.PERIODE_LUKK_DIALOG;
 }
 
 export interface OpprettEllerOppdaterPeriode {
-    type: PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER;
+    type: UttaksplanActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER;
     periode: Periode;
 }
 
 export interface SlettPeriode {
-    type: PlanleggerActionTypeKeys.PERIODE_SLETT;
+    type: UttaksplanActionTypeKeys.PERIODE_SLETT;
     periode: Periode;
 }
 
 export interface SkjulInfo {
-    type: PlanleggerActionTypeKeys.INFO_SKJUL;
+    type: UttaksplanActionTypeKeys.INFO_SKJUL;
     id: string;
 }
 export interface VisInfo {
-    type: PlanleggerActionTypeKeys.INFO_VIS;
+    type: UttaksplanActionTypeKeys.INFO_VIS;
     id: string;
 }
 export interface VisTidslinje {
-    type: PlanleggerActionTypeKeys.VIS_TIDSLINJE;
+    type: UttaksplanActionTypeKeys.VIS_TIDSLINJE;
     synlig: boolean;
 }
 export interface DevAction {
-    type: PlanleggerActionTypeKeys.DEV_ACTION;
+    type: UttaksplanActionTypeKeys.DEV_ACTION;
     key: string;
 }
 export interface ManuellUttaksplanAction {
-    type: PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN;
+    type: UttaksplanActionTypeKeys.SET_MANUELL_UTTAKSPLAN;
     manuellUttaksplan: boolean;
 }
 
 export interface SetUttaksgrunnlag {
-    type: PlanleggerActionTypeKeys.SET_UTTAKSGRUNNLAG;
+    type: UttaksplanActionTypeKeys.SET_UTTAKSGRUNNLAG;
     uttaksgrunnlag: Uttaksgrunnlag;
 }
