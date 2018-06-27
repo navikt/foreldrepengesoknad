@@ -34,7 +34,6 @@ describe('Fødselsdato validation', () => {
     });
 
     it('should return false if date is later than today', () => {
-        console.log('TOMORROW:', tomorrow.toDate());
         expect(callIdagEllerTidligere(tomorrow.toDate())).toEqual(false);
     });
 
