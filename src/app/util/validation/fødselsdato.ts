@@ -1,7 +1,9 @@
 import moment from 'moment';
+import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types';
 import { Fødselsdato } from '../../types/common';
+import getMessage from 'common/util/i18nUtils';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: moment()
@@ -13,7 +15,10 @@ export const fødselsdatoAvgrensninger: Avgrensninger = {
         .toDate()
 };
 
-export const getFødselsdatoRegler = (fødselsdato: Fødselsdato): Validator[] => {
+export const getFødselsdatoRegler = (
+    fødselsdato: Fødselsdato,
+    intl: InjectedIntl
+): Validator[] => {
     const date = moment(fødselsdato);
     const tomorrow = moment().add(1, 'days');
     const date3YearsAgo = moment()
@@ -23,15 +28,21 @@ export const getFødselsdatoRegler = (fødselsdato: Fødselsdato): Validator[] =
     return [
         {
             test: () => fødselsdato !== undefined,
-            failText: 'Du må oppgi en fødselsdato'
+            failText: getMessage(intl, 'valideringsfeil.fodselsdato.duMåOppgi')
         },
         {
             test: () => date.isBefore(tomorrow),
-            failText: 'Fødselsdato må være i dag eller tidligere'
+            failText: getMessage(
+                intl,
+                'valideringsfeil.fodselsdato.måVæreIdagEllerTidligere'
+            )
         },
         {
             test: () => date.isSameOrAfter(date3YearsAgo),
-            failText: 'Kan ikke være født for mer enn 3 år siden'
+            failText: getMessage(
+                intl,
+                'valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake'
+            )
         }
     ];
 };
