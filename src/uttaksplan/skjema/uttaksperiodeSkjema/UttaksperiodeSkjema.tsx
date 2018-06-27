@@ -137,8 +137,6 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             uttaksgrunnlag.søker
         );
 
-        console.log(tilgjengeligeStønadskontoer);
-
         // Hvilke spørsmål skal vises
         const visSpørsmålOmHvem = erToForeldre;
         const visSpørsmålOmStønadskonto =
