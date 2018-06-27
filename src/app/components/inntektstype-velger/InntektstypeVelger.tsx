@@ -28,17 +28,16 @@ const getOptions = (intl: InjectedIntl): InntektstypeOptions => ({
         intl,
         'inntektstype.jobbIUtlandet'
     ),
-    [AnnenInntektType.MILITÆRET]: getMessage(intl, 'inntektstype.militæret'),
-    [AnnenInntektType.VIDEREUTDANNING]: getMessage(
+    [AnnenInntektType.MILITÆRTJENESTE]: getMessage(
+        intl,
+        'inntektstype.militæret'
+    ),
+    [AnnenInntektType.LØNN_VED_VIDEREUTDANNING]: getMessage(
         intl,
         'inntektstype.videreutdanning'
     ),
     [AnnenInntektType.VENTELØNN]: getMessage(intl, 'inntektstype.ventelønn'),
-    [AnnenInntektType.SELVSTENDIG_NÆRINGSDRIVENDE]: getMessage(
-        intl,
-        'inntektstype.selvstendigNæringsdrivende'
-    ),
-    [AnnenInntektType.SLUTTVEDERLAG]: getMessage(
+    [AnnenInntektType.SLUTTPAKKE]: getMessage(
         intl,
         'inntektstype.sluttvederlag'
     )

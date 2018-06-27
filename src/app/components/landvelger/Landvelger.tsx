@@ -3,11 +3,10 @@ import * as countries from 'i18n-iso-countries';
 import { Select } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
 import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
-import { Språkkode } from 'common/intl/types';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface StateProps {
     defaultValue?: string;
-    språk: Språkkode;
     label: React.ReactNode;
     feil?: Feil;
     validators?: any;
@@ -18,9 +17,17 @@ interface StateProps {
     ) => void;
 }
 
-export default class Landvelger extends React.Component<StateProps> {
+type Props = StateProps & InjectedIntlProps;
+
+class Landvelger extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.renderCountryOptions = this.renderCountryOptions.bind(this);
+    }
+
     renderCountryOptions() {
-        const { språk } = this.props;
+        const { intl } = this.props;
+        const språk = intl.locale;
         const isoCodeIndex = 0;
         const countryNameIndex = 1;
         return Object.entries(countries.getNames(språk))
@@ -55,3 +62,5 @@ export default class Landvelger extends React.Component<StateProps> {
         );
     }
 }
+
+export default injectIntl(Landvelger);
