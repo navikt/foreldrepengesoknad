@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {
     UttaksplanAppState,
-    PeriodeState,
+    UttaksplanState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
 import { Periode, Periodetype } from 'uttaksplan/types';
@@ -31,7 +31,10 @@ import {
     SøkerGrunnlag,
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
-import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import {
+    getUttaksgrunnlag,
+    getUttaksdatoer
+} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -41,7 +44,7 @@ import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeli
 export interface StateProps {
     form: UttaksplanFormState;
     uttaksgrunnlag: Uttaksgrunnlag;
-    periode: PeriodeState;
+    uttaksplan: UttaksplanState;
     manuellUttaksplan?: boolean;
 }
 
@@ -62,6 +65,19 @@ class UttaksplanMain extends React.Component<Props> {
         this.handleItemClick = this.handleItemClick.bind(this);
         this.opprettPerioder = this.opprettPerioder.bind(this);
         this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
+    }
+
+    componentDidMount() {
+        this.opprettPerioder();
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        if (
+            nextProps.form.fellesperiodeukerForelder1 !==
+            this.props.form.fellesperiodeukerForelder1
+        ) {
+            this.opprettPerioder();
+        }
     }
 
     handleItemClick(item: TimelineItem) {
@@ -111,12 +127,12 @@ class UttaksplanMain extends React.Component<Props> {
             uttaksgrunnlag,
             termindato,
             erBarnetFødt,
-            periode,
+            uttaksplan,
             dispatch,
             form
         } = this.props;
 
-        const perioderOpprettet = periode.perioder.length > 0;
+        const perioderOpprettet = uttaksplan.perioder.length > 0;
         const dekningsgrad = form.dekningsgrad;
 
         return (
@@ -162,7 +178,7 @@ class UttaksplanMain extends React.Component<Props> {
                                 <PeriodeTimeline
                                     termindato={termindato}
                                     dekningsgrad={dekningsgrad}
-                                    perioder={periode.perioder}
+                                    perioder={uttaksplan.perioder}
                                     uttaksgrunnlag={uttaksgrunnlag}
                                     erBarnetFødt={erBarnetFødt}
                                     onPeriodeClick={this.handlePeriodeClick}
@@ -245,7 +261,7 @@ const mapStateToProps = (
     props: OwnProps
 ): StateProps => {
     const { termindato } = props;
-    const { periode, form } = appState.uttaksplan;
+    const { uttaksplan, form } = appState.uttaksplan;
     const dekningsgrad = form.dekningsgrad || '100%';
 
     const uttaksgrunnlag = getUttaksgrunnlag(
@@ -256,11 +272,14 @@ const mapStateToProps = (
         props.annenForelder
     );
 
+    const uttaksdatoer = getUttaksdatoer(termindato);
+    console.log(uttaksdatoer);
+
     return {
         form,
         uttaksgrunnlag,
-        periode,
-        manuellUttaksplan: periode.manuellOppdatering
+        uttaksplan,
+        manuellUttaksplan: uttaksplan.manuellOppdatering
     };
 };
 

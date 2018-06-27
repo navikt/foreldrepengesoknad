@@ -79,8 +79,14 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
                 navnForelder2={navnForelder2}
                 permisjonsregler={permisjonsregler}
                 tidsperiode={tidsromForUtsettelse}
-                onChange={(u) => dispatch(opprettEllerOppdaterPeriode(u))}
-                onFjern={(u) => dispatch(slettPeriode(u))}
+                onChange={(p) => {
+                    dispatch(opprettEllerOppdaterPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
+                onFjern={(p) => {
+                    dispatch(slettPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
                 termindato={termindato}
             />
         </Modal>
@@ -91,7 +97,7 @@ const mapStateToProps = (
     state: UttaksplanAppState,
     props: OwnProps
 ): StateProps | undefined => {
-    const { form, periode } = state.uttaksplan;
+    const { form, uttaksplan, view } = state.uttaksplan;
     const { termindato } = props;
     const { dekningsgrad } = form;
     const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
@@ -101,9 +107,9 @@ const mapStateToProps = (
         !termindato ||
         !dekningsgrad ||
         !sisteRegistrertePermisjonsdag ||
-        !periode.dialogErApen ||
-        periode.valgtPeriode === undefined ||
-        periode.valgtPeriode.periodetype !== Periodetype.Utsettelse
+        !view.dialogErApen ||
+        view.valgtPeriode === undefined ||
+        view.valgtPeriode.periodetype !== Periodetype.Utsettelse
     ) {
         return {
             isOpen: false
@@ -119,8 +125,8 @@ const mapStateToProps = (
 
     return {
         isOpen: true,
-        utsettelse: periode.valgtPeriode.periode as Utsettelsesperiode,
-        perioder: periode.perioder,
+        utsettelse: view.valgtPeriode.periode as Utsettelsesperiode,
+        perioder: uttaksplan.perioder,
         tidsromForUtsettelse
     };
 };

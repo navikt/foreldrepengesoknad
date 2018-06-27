@@ -16,7 +16,9 @@ export enum Infotekster {
 
 const defaultState: UttaksplanViewState = {
     synligInfo: new Map(),
-    visTidslinje: false
+    visTidslinje: false,
+    dialogErApen: false,
+    valgtPeriode: undefined
 };
 
 const leggTilInfo = (infoMap: SynligInfoMap, id: string): SynligInfoMap => {
@@ -43,6 +45,21 @@ const updateState = (
 
 const ViewReducer = (state = defaultState, action: PlanleggerActionTypes) => {
     switch (action.type) {
+        case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
+            return updateState(state, {
+                dialogErApen: true,
+                valgtPeriode: {
+                    periodetype: action.periodetype,
+                    periode: action.periode
+                }
+            });
+
+        case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
+            return updateState(state, {
+                dialogErApen: false,
+                valgtPeriode: undefined
+            });
+
         case PlanleggerActionTypeKeys.INFO_VIS:
             return updateState(state, {
                 synligInfo: leggTilInfo(state.synligInfo, action.id)
