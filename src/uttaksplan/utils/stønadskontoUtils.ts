@@ -45,9 +45,16 @@ export const getTilgjengeligeStønadskontoer = (
         return [StønadskontoType.Foreldrepenger];
     }
     return [
-        StønadskontoType.MorsDelFørTermin,
-        StønadskontoType.MorsDel,
-        StønadskontoType.FarsDel,
+        StønadskontoType.ForeldrepengerFørFødsel,
+        StønadskontoType.Mødrekvote,
+        StønadskontoType.Fedrekvote,
         StønadskontoType.Fellesperiode
     ];
+    // Deler
+    // return [
+    //     StønadskontoType.MorsDelFørTermin,
+    //     StønadskontoType.MorsDel,
+    //     StønadskontoType.FarsDel,
+    //     StønadskontoType.Fellesperiode
+    // ];
 };
