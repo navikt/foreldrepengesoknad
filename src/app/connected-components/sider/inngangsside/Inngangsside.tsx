@@ -14,7 +14,7 @@ import { HistoryProps } from '../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import Steg, { StegProps } from '../../../components/layout/Steg';
+import Steg, { StegProps } from '../../../components/steg/Steg';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;

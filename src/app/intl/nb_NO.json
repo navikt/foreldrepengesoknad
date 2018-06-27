@@ -45,6 +45,8 @@
     "annenInntekt.modal.tittel": "Legg til inntekt",
     "annenInntekt.modal.select.spørsmål":
         "Jeg har hatt inntekt i forbindelse med...",
+    "annenInntekt.modal.land": "Hvilket land gjelder det?",
+
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
@@ -106,10 +108,38 @@
         "Oppdrag for nære venner eller familie siste 10 måneder",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
+
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
+    "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
+
+    "selvstendigNæringsdrivende.oppfølgingsspørsmål":
+        "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.modal.navn": "Navn på næringen",
+    "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
+    "selvstendigNæringsdrivende.modal.tittel": "Legg til næring",
+    "selvstendigNæringsdrivende.modal.registrertILand":
+        "Hvilket land er næringen registrert i?",
+    "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
+    "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
+    "varigEndringAvNæringsinntekt.spørsmål":
+        "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
+
     "erDuSelvstendigNæringsdrivende.spørsmål":
-        "Er du selvstendig næringsdrivende?",
+        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
+
+    "harRevisor.spørsmål": "Har du revisor?",
+    "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
+    "næringsrelasjon.navn": "Navn på personen",
+    "næringsrelasjon.tlfnr": "Telefonnummer til personen",
+    "næringsrelasjon.nærVennEllerFamilie":
+        "Er du en nær venn eller familie av denne personen?",
+
+    "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
     "andreForelderenRettPåForeldrepenger.spørsmål":
         "Har {navn} rett på foreldrepenger?",
@@ -121,6 +151,8 @@
         "Skal {navn} ha foreldrepenger?",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
+    "erArbeidsgiverNærVennEllerFamilie.spørsmål":
+        "Er arbeidsgiver nær venn eller familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
 

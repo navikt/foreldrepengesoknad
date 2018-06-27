@@ -11,7 +11,7 @@ import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Bolk from '../layout/Bolk';
+import Bolk from '../../../common/components/bolk/Bolk';
 import {
     FrilansOppdrag,
     FrilansOppdragPartial

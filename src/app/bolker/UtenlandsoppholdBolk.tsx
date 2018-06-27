@@ -7,7 +7,6 @@ import {
     Utenlandsopphold
 } from '../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
-import { Språkkode } from 'common/intl/types';
 import { ISODateToMaskedInput } from '../util/dates';
 import * as countries from 'i18n-iso-countries';
 
@@ -17,7 +16,6 @@ interface UtenlandsoppholdBolkProps {
     oppfølgingsspørsmål: string;
     opphold: Utenlandsopphold[];
     oppholdType: UtenlandsoppholdType;
-    språk: Språkkode;
     onChange: (perioder: Utenlandsopphold[]) => void;
 }
 
@@ -102,8 +100,7 @@ class UtenlandsoppholdBolk extends React.Component<
             showUtenlandsoppholdContent,
             oppfølgingsspørsmål,
             opphold,
-            oppholdType,
-            språk
+            oppholdType
         } = this.props;
         const { oppholdToEdit } = this.state;
 
@@ -151,7 +148,6 @@ class UtenlandsoppholdBolk extends React.Component<
                     }
                     contentLabel={`Landvelger for ${oppholdType}`}
                     children={null}
-                    språk={språk}
                     opphold={oppholdToEdit}
                     onAdd={this.onAdd}
                     onEdit={this.onEdit}

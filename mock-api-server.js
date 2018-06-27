@@ -1,8 +1,5 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const guid = require('nav-frontend-js-utils').guid;
-const server = express();
 const router = express.Router();
 const contextPath = '/foreldrepengesoknad-api';
 

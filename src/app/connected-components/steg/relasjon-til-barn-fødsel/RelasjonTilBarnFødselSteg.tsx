@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
-import Steg, { StegProps } from 'app/components/layout/Steg';
+import Steg, { StegProps } from 'app/components/steg/Steg';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
