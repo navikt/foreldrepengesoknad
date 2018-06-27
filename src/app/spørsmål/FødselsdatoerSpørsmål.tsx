@@ -4,7 +4,7 @@ import { Fødselsdato } from '../types/common';
 import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
 import {
     fødselsdatoAvgrensninger,
-    fødselsdatoRegler
+    getFødselsdatoRegler
 } from '../util/validation/fødselsdato';
 
 export interface Props {
@@ -34,6 +34,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                     <div className="blokk-m" key={getKey(idx)}>
                         <DatoInputWithValidation
                             id={getKey(idx)}
+                            name={getKey(idx)}
                             dato={fødselsdatoer[idx]}
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
                             label={
@@ -42,7 +43,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                                 />
                             }
                             avgrensninger={fødselsdatoAvgrensninger}
-                            validators={fødselsdatoRegler}
+                            validators={getFødselsdatoRegler(dato)}
                         />
                     </div>
                 ))}

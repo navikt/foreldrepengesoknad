@@ -242,5 +242,11 @@
 
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
-    "driverFosterhjem.spørsmål": "Driver du fosterhjem?"
+    "driverFosterhjem.spørsmål": "Driver du fosterhjem?",
+
+    "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
+    "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere":
+        "Fødselsdato må være idag eller tidligere",
+    "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
+        "Du kan ikke søke om engangsstønad for barn som er eldre enn tre år."
 }
