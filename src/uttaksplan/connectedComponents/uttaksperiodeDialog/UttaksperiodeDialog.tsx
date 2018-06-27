@@ -67,28 +67,34 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                     perioder
                 )}
                 uttaksgrunnlag={uttaksgrunnlag}
-                onChange={(p) => dispatch(opprettEllerOppdaterPeriode(p))}
-                onFjern={(p) => dispatch(slettPeriode(p))}
+                onChange={(p) => {
+                    dispatch(opprettEllerOppdaterPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
+                onFjern={(p) => {
+                    dispatch(slettPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
             />
         </Modal>
     );
 };
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
-    const { periode } = state.uttaksplan;
+    const { uttaksplan, view } = state.uttaksplan;
     if (
-        !periode.dialogErApen ||
-        (periode.valgtPeriode &&
-            periode.valgtPeriode.periodetype !== Periodetype.Uttak)
+        !view.dialogErApen ||
+        (view.valgtPeriode &&
+            view.valgtPeriode.periodetype !== Periodetype.Uttak)
     ) {
         return { isOpen: false };
     }
     return {
         isOpen: true,
-        valgtPeriode: periode.valgtPeriode
-            ? (periode.valgtPeriode.periode as Uttaksperiode)
+        valgtPeriode: view.valgtPeriode
+            ? (view.valgtPeriode.periode as Uttaksperiode)
             : undefined,
-        perioder: periode.perioder
+        perioder: uttaksplan.perioder
     };
 };
 

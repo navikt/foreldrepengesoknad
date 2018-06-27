@@ -19,6 +19,8 @@ import { Tidsperiode } from 'nav-datovelger';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
+import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
+import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
@@ -49,6 +51,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.setStartdato = this.setStartdato.bind(this);
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
         this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
+        this.erAleneomsorg = this.erAleneomsorg.bind(this);
 
         const { periode, uttaksgrunnlag } = props;
         const { tilgjengeligeStønadskontoer } = uttaksgrunnlag;
@@ -105,6 +108,10 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         return periode;
     }
 
+    erAleneomsorg() {
+        return this.props.uttaksgrunnlag.annenForelder !== undefined;
+    }
+
     skjemaErGyldig() {
         return (
             this.state.forelder !== undefined &&
@@ -124,12 +131,18 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
-        const {
-            startdato,
-            sluttdato,
-            forelder,
-            stønadskonto = StønadskontoType.FarsDel
-        } = this.state;
+        const { startdato, sluttdato, forelder, stønadskonto } = this.state;
+        const erToForeldre = this.erAleneomsorg();
+        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
+            uttaksgrunnlag.søker
+        );
+
+        // Hvilke spørsmål skal vises
+        const visSpørsmålOmHvem = erToForeldre;
+        const visSpørsmålOmStønadskonto =
+            tilgjengeligeStønadskontoer.length > 1;
+        const visSpørsmålOmTidsrom =
+            !erToForeldre || stønadskonto ? true : false;
 
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
         const { permisjonsregler, søker, annenForelder } = uttaksgrunnlag;
@@ -169,26 +182,40 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
+                {visSpørsmålOmHvem && (
+                    <div className="blokkPad-s">
+                        <HvemGjelderPeriodenSpørsmål
+                            navnForelder1={navnForelder1}
+                            navnForelder2={navnForelder2}
+                            spørsmål="Hvem skal ha perioden?"
+                            forelder={forelder}
+                            onChange={(f) =>
+                                this.setState({
+                                    forelder: f
+                                })
+                            }
+                        />
+                    </div>
+                )}
 
-                <div className="blokkPad-s">
-                    <HvemGjelderPeriodenSpørsmål
-                        navnForelder1={navnForelder1}
-                        navnForelder2={navnForelder2}
-                        spørsmål="Hvem skal ha perioden?"
-                        forelder={forelder}
-                        onChange={(f) =>
-                            this.setState({
-                                forelder: f,
-                                stønadskonto:
-                                    f === 'forelder1'
-                                        ? StønadskontoType.MorsDel
-                                        : StønadskontoType.FarsDel
-                            })
-                        }
-                    />
-                </div>
+                {visSpørsmålOmStønadskonto && (
+                    <EkspanderbartInnhold erApen={visSpørsmålOmStønadskonto}>
+                        <div className="blokkPad-s">
+                            <StønadskontoSpørsmål
+                                spørsmål="Hvilken stønadskonto skal brukes?"
+                                stønadskonto={this.state.stønadskonto}
+                                tilgjengeligeKontoer={
+                                    tilgjengeligeStønadskontoer
+                                }
+                                onChange={(sk: StønadskontoType) =>
+                                    this.setState({ stønadskonto: sk })
+                                }
+                            />
+                        </div>
+                    </EkspanderbartInnhold>
+                )}
 
-                <EkspanderbartInnhold erApen={forelder !== undefined}>
+                <EkspanderbartInnhold erApen={visSpørsmålOmTidsrom}>
                     <TidsperiodeSpørsmål
                         startdato={{
                             dato: startdato,

@@ -4,22 +4,36 @@ import {
     Periode,
     Permisjonsregler
 } from '../../types';
-import { PlanleggerActionTypes, PlanleggerActionTypeKeys } from './actionTypes';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from './actionTypes';
+import {
+    Uttaksgrunnlag,
+    UttaksplanAppProps
+} from 'uttaksplan/types/uttaksgrunnlag';
 
-export function setFellesperiodeukerMor(uker: number): PlanleggerActionTypes {
+export function setFellesperiodeukerMor(uker: number): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.SET_UKER_FORELDER1,
+        type: UttaksplanActionTypeKeys.SET_UKER_FORELDER1,
         uker
+    };
+}
+
+export function initUttaksplan(
+    props: UttaksplanAppProps,
+    dekningsgrad: Dekningsgrad
+): UttaksplanActionTypes {
+    return {
+        type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN,
+        props,
+        dekningsgrad
     };
 }
 
 export function setDekningsgrad(
     dekningsgrad: Dekningsgrad | undefined,
     permisjonsregler: Permisjonsregler
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.SET_DEKNINGSGRAD,
+        type: UttaksplanActionTypeKeys.SET_DEKNINGSGRAD,
         dekningsgrad,
         permisjonsregler
     };
@@ -28,66 +42,66 @@ export function setDekningsgrad(
 export function visPeriodeDialog(
     periodetype: Periodetype,
     periode?: Periode
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG,
+        type: UttaksplanActionTypeKeys.PERIODE_VIS_DIALOG,
         periode,
         periodetype
     };
 }
 
-export function lukkPeriodeDialog(): PlanleggerActionTypes {
+export function lukkPeriodeDialog(): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG
+        type: UttaksplanActionTypeKeys.PERIODE_LUKK_DIALOG
     };
 }
 
 export function opprettEllerOppdaterPeriode(
     periode: Periode
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER,
+        type: UttaksplanActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER,
         periode
     };
 }
 
-export function slettPeriode(periode: Periode): PlanleggerActionTypes {
+export function slettPeriode(periode: Periode): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.PERIODE_SLETT,
+        type: UttaksplanActionTypeKeys.PERIODE_SLETT,
         periode
     };
 }
 
-export function visInfo(id: string): PlanleggerActionTypes {
+export function visInfo(id: string): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.INFO_VIS,
+        type: UttaksplanActionTypeKeys.INFO_VIS,
         id
     };
 }
 
-export function skjulInfo(id: string): PlanleggerActionTypes {
+export function skjulInfo(id: string): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.INFO_SKJUL,
+        type: UttaksplanActionTypeKeys.INFO_SKJUL,
         id
     };
 }
 
-export function visTidslinje(synlig: boolean): PlanleggerActionTypes {
+export function visTidslinje(synlig: boolean): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.VIS_TIDSLINJE,
+        type: UttaksplanActionTypeKeys.VIS_TIDSLINJE,
         synlig
     };
 }
 
-export function opprettPerioder(
+export function opprettPerioderForToForeldre(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag,
     fellesukerForelder1: number,
     fellesukerForelder2: number
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.OPPRETT_PERIODER,
+        type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE,
         dekningsgrad,
         termindato,
         uttaksgrunnlag,
@@ -95,28 +109,40 @@ export function opprettPerioder(
         fellesukerForelder2
     };
 }
+export function opprettPerioderAleneomsorg(
+    termindato: Date,
+    dekningsgrad: Dekningsgrad,
+    uttaksgrunnlag: Uttaksgrunnlag
+): UttaksplanActionTypes {
+    return {
+        type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG,
+        dekningsgrad,
+        termindato,
+        uttaksgrunnlag
+    };
+}
 
 export function setManuellUttaksplan(
     manuellUttaksplan: boolean
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN,
+        type: UttaksplanActionTypeKeys.SET_MANUELL_UTTAKSPLAN,
         manuellUttaksplan
     };
 }
 
 export function setUttaksgrunnlag(
     uttaksgrunnlag: Uttaksgrunnlag
-): PlanleggerActionTypes {
+): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.SET_UTTAKSGRUNNLAG,
+        type: UttaksplanActionTypeKeys.SET_UTTAKSGRUNNLAG,
         uttaksgrunnlag
     };
 }
 
-export function dev(key: string): PlanleggerActionTypes {
+export function dev(key: string): UttaksplanActionTypes {
     return {
-        type: PlanleggerActionTypeKeys.DEV_ACTION,
+        type: UttaksplanActionTypeKeys.DEV_ACTION,
         key
     };
 }

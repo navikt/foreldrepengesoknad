@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
 import formReducer from './formReducer';
-import periodeReducer from './periodeReducer';
+import uttaksplanReducer from './uttaksplanReducer';
 import viewReducer from './viewReducer';
 
 const UttaksplanReducer = combineReducers({
     form: formReducer,
-    periode: periodeReducer,
+    uttaksplan: uttaksplanReducer,
     view: viewReducer
 });
 

@@ -1,0 +1,101 @@
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { DispatchProps } from 'common/redux/types';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Periode, Periodetype } from 'uttaksplan/types';
+import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
+import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
+import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
+import { visPeriodeDialog } from 'uttaksplan/redux/actions';
+import Knapperad from 'common/components/knapperad/Knapperad';
+import { Knapp } from 'nav-frontend-knapper';
+
+export interface StateProps {
+    perioder: Periode[];
+    uttaksgrunnlag: Uttaksgrunnlag;
+    synlig: boolean;
+}
+
+export type Props = DispatchProps & StateProps & InjectedIntlProps;
+
+class Periodeplanlegger extends React.Component<Props, {}> {
+    constructor(props: Props) {
+        super(props);
+        this.handlePeriodeClick = this.handlePeriodeClick.bind(this);
+    }
+
+    handlePeriodeClick(periode: Periode) {
+        if (periode.type === Periodetype.Utsettelse) {
+            this.props.dispatch(
+                visPeriodeDialog(Periodetype.Utsettelse, periode)
+            );
+        } else if (periode.type === Periodetype.Uttak) {
+            this.props.dispatch(visPeriodeDialog(Periodetype.Uttak, periode));
+        }
+    }
+
+    render() {
+        const { dispatch, uttaksgrunnlag, perioder } = this.props;
+        const { termindato, dekningsgrad } = uttaksgrunnlag;
+        return (
+            <div>
+                <div className="blokkPad-m">
+                    <h2 className="tidsplan__tittel">Planen</h2>
+                    <p className="blokkPad-s">
+                        Du kan endre periodene ved å velge dem, eller legge til
+                        nye perioder og/eller utsettelser.
+                    </p>
+                    <PeriodeTimeline
+                        termindato={termindato}
+                        dekningsgrad={dekningsgrad}
+                        perioder={perioder}
+                        uttaksgrunnlag={uttaksgrunnlag}
+                        onPeriodeClick={this.handlePeriodeClick}
+                    />
+                </div>
+                <div>
+                    <div className="m-textCenter">
+                        <Knapperad>
+                            <Knapp
+                                onClick={() =>
+                                    dispatch(
+                                        visPeriodeDialog(Periodetype.Uttak)
+                                    )
+                                }>
+                                Legg til periode
+                            </Knapp>
+                            <Knapp
+                                onClick={() =>
+                                    dispatch(
+                                        visPeriodeDialog(Periodetype.Utsettelse)
+                                    )
+                                }>
+                                Legg til utsettelse
+                            </Knapp>
+                        </Knapperad>
+                    </div>
+                </div>
+
+                <UttaksperiodeDialog
+                    uttaksgrunnlag={uttaksgrunnlag}
+                    termindato={termindato}
+                    dekningsgrad={dekningsgrad}
+                />
+
+                <UtsettelsesperiodeDialog
+                    navnForelder1={uttaksgrunnlag.søker.fornavn}
+                    navnForelder2={
+                        uttaksgrunnlag.annenForelder
+                            ? uttaksgrunnlag.annenForelder.fornavn
+                            : 'Forelder 2'
+                    }
+                    termindato={termindato}
+                    permisjonsregler={uttaksgrunnlag.permisjonsregler}
+                />
+            </div>
+        );
+    }
+}
+
+export default connect()(injectIntl(Periodeplanlegger));

@@ -9,9 +9,9 @@ export enum Periodetype {
 export enum StønadskontoType {
     /** Mors del før termin */
     'MorsDelFørTermin' = 'MORS_DEL_FØR_TERMIN',
-    /** Mors del */
+    // /** Mors del */
     'MorsDel' = 'MORS_DEL',
-    /** Mors del */
+    // /** Mors del */
     'FarsDel' = 'FARS_DEL',
     /** Kvote forbeholdt mor */
     'Mødrekvote' = 'MØDREKVOTE',

@@ -1,4 +1,5 @@
 import { Dekningsgrad, Periode, Periodetype } from '../../types';
+import { Uttaksgrunnlag, Uttaksdatoer } from 'uttaksplan/types/uttaksgrunnlag';
 
 export type SynligInfoMap = Map<string, boolean>;
 
@@ -10,29 +11,29 @@ export interface UttaksplanFormState {
 }
 export type UttaksplanFormStatePartial = Partial<UttaksplanFormState>;
 
-export interface PeriodeState {
-    dialogErApen: boolean;
+export interface UttaksplanState {
     perioder: Periode[];
     manuellOppdatering: boolean;
+    uttaksgrunnlag?: Uttaksgrunnlag;
+    uttaksdatoer?: Uttaksdatoer;
+}
+export type UttaksplanStatePartial = Partial<UttaksplanState>;
+
+export interface UttaksplanViewState {
+    synligInfo: SynligInfoMap;
+    visTidslinje: boolean;
+    dialogErApen?: boolean;
     valgtPeriode?: {
         periodetype: Periodetype;
         periode?: Periode;
     };
 }
-export type PeriodeStatePartial = Partial<PeriodeState>;
-
-export interface UttaksplanViewState {
-    synligInfo: SynligInfoMap;
-    visTidslinje: boolean;
-}
 export type UttaksplanViewStatePartial = Partial<UttaksplanViewState>;
 
-export interface UttaksplanState {
-    form: UttaksplanFormState;
-    periode: PeriodeState;
-    view: UttaksplanViewState;
-}
-
 export interface UttaksplanAppState {
-    uttaksplan: UttaksplanState;
+    uttaksplan: {
+        form: UttaksplanFormState;
+        uttaksplan: UttaksplanState;
+        view: UttaksplanViewState;
+    };
 }
