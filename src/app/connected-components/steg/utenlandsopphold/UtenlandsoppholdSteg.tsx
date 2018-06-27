@@ -9,14 +9,14 @@ import {
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
-import Bolk from '../../../components/layout/Bolk';
+import Bolk from '../../../../common/components/bolk/Bolk';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
-import Steg, { StegProps } from '../../../components/layout/Steg';
+import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/stegConfig';
 import { HistoryProps } from '../../../types/common';
 

@@ -7,7 +7,7 @@ import søknadActions from '../../../../redux/actions/søknad/søknadActionCreat
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import Bolk from '../../../../components/layout/Bolk';
+import Bolk from '../../../../../common/components/bolk/Bolk';
 import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søker from '../../../../types/søknad/Søker';

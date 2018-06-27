@@ -1,6 +1,6 @@
 import * as React from 'react';
 import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
-import Bolk from '../components/layout/Bolk';
+import Bolk from '../../common/components/bolk/Bolk';
 import DriverDuFosterhjemSpørsmål from '../spørsmål/DriverDuFosterhjemSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';

@@ -4,7 +4,7 @@ import { UfødtBarn } from '../../../../types/søknad/Barn';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import DatoInput from 'common/components/dato-input/DatoInput';
-import Bolk from 'app/components/layout/Bolk';
+import Bolk from 'common/components/bolk/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
