@@ -22,12 +22,14 @@ import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjem
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 interface StateProps {
     isOpen: boolean;
     utsettelse?: Utsettelsesperiode;
     tidsromForUtsettelse?: Tidsperiode;
     perioder?: Periode[];
+    uttaksgrunnlag?: Uttaksgrunnlag;
 }
 
 interface OwnProps {
@@ -52,11 +54,12 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
         navnForelder2,
         tidsromForUtsettelse,
         termindato,
+        uttaksgrunnlag,
         dispatch,
         intl
     } = props;
 
-    if (!isOpen || !perioder || !tidsromForUtsettelse) {
+    if (!isOpen || !perioder || !tidsromForUtsettelse || !uttaksgrunnlag) {
         return null;
     }
 
@@ -69,6 +72,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UtsettelseSkjema
+                søker={uttaksgrunnlag.søker}
                 registrerteUtsettelser={
                     perioder.filter(
                         (p) => p.type === Periodetype.Utsettelse
@@ -79,8 +83,14 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
                 navnForelder2={navnForelder2}
                 permisjonsregler={permisjonsregler}
                 tidsperiode={tidsromForUtsettelse}
-                onChange={(u) => dispatch(opprettEllerOppdaterPeriode(u))}
-                onFjern={(u) => dispatch(slettPeriode(u))}
+                onChange={(p) => {
+                    dispatch(opprettEllerOppdaterPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
+                onFjern={(p) => {
+                    dispatch(slettPeriode(p));
+                    dispatch(lukkPeriodeDialog());
+                }}
                 termindato={termindato}
             />
         </Modal>
@@ -91,7 +101,7 @@ const mapStateToProps = (
     state: UttaksplanAppState,
     props: OwnProps
 ): StateProps | undefined => {
-    const { form, periode } = state.uttaksplan;
+    const { form, uttaksplan, view } = state.uttaksplan;
     const { termindato } = props;
     const { dekningsgrad } = form;
     const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
@@ -101,9 +111,9 @@ const mapStateToProps = (
         !termindato ||
         !dekningsgrad ||
         !sisteRegistrertePermisjonsdag ||
-        !periode.dialogErApen ||
-        periode.valgtPeriode === undefined ||
-        periode.valgtPeriode.periodetype !== Periodetype.Utsettelse
+        !view.dialogErApen ||
+        view.valgtPeriode === undefined ||
+        view.valgtPeriode.periodetype !== Periodetype.Utsettelse
     ) {
         return {
             isOpen: false
@@ -119,9 +129,10 @@ const mapStateToProps = (
 
     return {
         isOpen: true,
-        utsettelse: periode.valgtPeriode.periode as Utsettelsesperiode,
-        perioder: periode.perioder,
-        tidsromForUtsettelse
+        utsettelse: view.valgtPeriode.periode as Utsettelsesperiode,
+        perioder: uttaksplan.perioder,
+        tidsromForUtsettelse,
+        uttaksgrunnlag: state.uttaksplan.uttaksplan.uttaksgrunnlag
     };
 };
 

@@ -3,8 +3,9 @@ import {
     StønadskontoUttak
 } from 'uttaksplan/types/periodetyper';
 import { Permisjonsregler } from 'uttaksplan/types';
-import { SøkerRolle, Søkersituasjon } from 'app/types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from 'app/types/søknad/Søknad';
 import { Kjønn } from 'app/types/common';
+import { Dekningsgrad } from 'common/types';
 
 export interface SøkerGrunnlag {
     fornavn: string;
@@ -20,20 +21,24 @@ export interface AnnenForelderGrunnlag {
     etternavn: string;
 }
 
-export interface Uttaksgrunnlag {
-    permisjonsregler: Permisjonsregler;
+export interface UttaksplanAppProps {
+    termindato: Date;
     søker: SøkerGrunnlag;
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
+    erBarnetFødt: boolean;
+}
+
+export interface Uttaksgrunnlag extends UttaksplanAppProps {
+    dekningsgrad: Dekningsgrad;
+    permisjonsregler: Permisjonsregler;
     tilgjengeligeStønadskontoer: StønadskontoType[];
     tilgjengeligeUttak: StønadskontoUttak[];
     tilgjengeligeUttaksdager: number;
 }
 
 export interface Uttaksdatoer {
-    /** Termindato */
-    termindato: Date;
-    /** Første mulige uttaksdag gitt fødsel/termin */
+    /** Siste mulige uttaksdag gitt fødsel/termin */
     førsteMuligeUttaksdag: Date;
     /** Siste mulige uttaksdag gitt fødsel/termin */
     sisteMuligeUttaksdag: Date;

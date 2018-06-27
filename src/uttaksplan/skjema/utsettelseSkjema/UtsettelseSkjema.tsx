@@ -28,10 +28,11 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { Tidsperioden, getTidsperiode } from 'uttaksplan/utils/dataUtils';
+import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 interface OwnProps {
     termindato: Date;
+    søker: SøkerGrunnlag;
     tidsperiode: Tidsperiode;
     utsettelse?: Utsettelsesperiode;
     registrerteUtsettelser: Utsettelsesperiode[];
@@ -66,7 +67,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         this.validerSkjema = this.validerSkjema.bind(this);
         this.revaliderSkjema = this.revaliderSkjema.bind(this);
         this.state = {
-            ...getDefaultState(this.props.utsettelse)
+            ...getDefaultState(this.props.søker, this.props.utsettelse)
         };
     }
 
@@ -76,17 +77,8 @@ class UtsettelseSkjema extends React.Component<Props, State> {
 
     setStartdato(dato: Date) {
         const startdato = normaliserDato(dato);
-        let sluttdato = this.state.sluttdato;
-        if (this.state.startdato && this.state.sluttdato) {
-            const uttaksdager = Tidsperioden({
-                startdato: this.state.startdato,
-                sluttdato: this.state.sluttdato
-            }).getAntallUttaksdager();
-            sluttdato = getTidsperiode(startdato, uttaksdager).sluttdato;
-        }
         this.setState({
-            startdato,
-            sluttdato
+            startdato
         });
         this.revaliderSkjema();
     }
@@ -146,6 +138,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             tidsperiode,
             permisjonsregler,
             termindato,
+            søker,
             registrerteUtsettelser,
             intl
         } = this.props;
@@ -201,6 +194,8 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             !visStartdatofeil && !visSluttdatofeil
                 ? this.getSkjemaelementFeil('tidsperiode')
                 : undefined;
+
+        const visSpørsmålOmHvem = !søker.erAleneOmOmsorg;
         return (
             <form
                 action="#"
@@ -209,21 +204,23 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id="uttaksplan.utsettelseskjema.tittel" />
                 </h1>
-                <div className="blokkPad-s">
-                    <HvemGjelderPeriodenSpørsmål
-                        spørsmål={intl.formatMessage({
-                            id: 'uttaksplan.utsettelseskjema.hvem.sporsmal'
-                        })}
-                        forelder={forelder}
-                        navnForelder1={navnForelder1}
-                        navnForelder2={navnForelder2}
-                        feil={this.getSkjemaelementFeil('forelder')}
-                        onChange={(value) => {
-                            this.setState({ forelder: value as Forelder });
-                            this.revaliderSkjema();
-                        }}
-                    />
-                </div>
+                {visSpørsmålOmHvem && (
+                    <div className="blokkPad-s">
+                        <HvemGjelderPeriodenSpørsmål
+                            spørsmål={intl.formatMessage({
+                                id: 'uttaksplan.utsettelseskjema.hvem.sporsmal'
+                            })}
+                            forelder={forelder}
+                            navnForelder1={navnForelder1}
+                            navnForelder2={navnForelder2}
+                            feil={this.getSkjemaelementFeil('forelder')}
+                            onChange={(value) => {
+                                this.setState({ forelder: value as Forelder });
+                                this.revaliderSkjema();
+                            }}
+                        />
+                    </div>
+                )}
 
                 <EkspanderbartInnhold
                     erApen={forelder !== undefined}

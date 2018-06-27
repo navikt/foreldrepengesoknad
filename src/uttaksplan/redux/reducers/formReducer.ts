@@ -1,10 +1,9 @@
 import {
-    PlanleggerActionTypes,
-    PlanleggerActionTypeKeys
+    UttaksplanActionTypes,
+    UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
 import { getPermisjonsregler } from '../../data/permisjonsregler';
-import { UttaksplanFormState, UttaksplanFormStatePartial } from '../types';
-import { FellesperiodeFordeling } from '../../types';
+import { UttaksplanFormState } from '../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
 
 const getInitialState = (): UttaksplanFormState => {
@@ -29,36 +28,12 @@ const beregnUkerForelder2 = (
     ukerForelder1: number | undefined
 ): number => (ukerFellesperiode ? ukerFellesperiode - (ukerForelder1 || 0) : 0);
 
-export const refordelFellesperiode = (
-    ukerFellesperiode: number,
-    nesteUkerFellesperiode: number,
-    ukerForelder1: number
-): FellesperiodeFordeling => {
-    const diff = (nesteUkerFellesperiode - (ukerFellesperiode || 0)) / 2;
-    const nyUkerForelder1 = Math.max(ukerForelder1 + diff, 0);
-    return {
-        ukerForelder1: nyUkerForelder1,
-        ukerForelder2: beregnUkerForelder2(
-            nesteUkerFellesperiode,
-            nyUkerForelder1
-        )
-    };
-};
-
-const updateFormState = (
-    state: UttaksplanFormState,
-    data: UttaksplanFormStatePartial
-): UttaksplanFormState => ({
-    ...state,
-    ...data
-});
-
 const FormReducer = (
     state = getInitialState(),
-    action: PlanleggerActionTypes
+    action: UttaksplanActionTypes
 ): UttaksplanFormState => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.SET_DEKNINGSGRAD:
+        case UttaksplanActionTypeKeys.SET_DEKNINGSGRAD:
             if (!action.dekningsgrad) {
                 return state;
             }
@@ -75,20 +50,22 @@ const FormReducer = (
             );
             const fellesperiodeukerForelder2 =
                 ukerFellesperiode - fellesperiodeukerForelder1;
-            return updateFormState(state, {
+            return {
+                ...state,
                 dekningsgrad: action.dekningsgrad,
                 ukerFellesperiode,
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2
-            });
-        case PlanleggerActionTypeKeys.SET_UKER_FORELDER1:
-            return updateFormState(state, {
+            };
+        case UttaksplanActionTypeKeys.SET_UKER_FORELDER1:
+            return {
+                ...state,
                 fellesperiodeukerForelder1: action.uker,
                 fellesperiodeukerForelder2: beregnUkerForelder2(
                     state.ukerFellesperiode,
                     action.uker
                 )
-            });
+            };
         default:
             return state;
     }

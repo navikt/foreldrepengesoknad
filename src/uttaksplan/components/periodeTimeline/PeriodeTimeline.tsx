@@ -29,7 +29,6 @@ export interface OwnProps {
     dekningsgrad: Dekningsgrad;
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
-    erBarnetFødt: boolean;
     onPeriodeClick: (periode: Periode) => void;
 }
 
@@ -52,7 +51,6 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
         const {
             termindato,
             dekningsgrad,
-            erBarnetFødt,
             perioder,
             uttaksgrunnlag,
             intl
@@ -60,7 +58,7 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
         const items = perioder.map((periode) =>
             mapPeriodeToTimelineEvent(periode, intl, uttaksgrunnlag)
         );
-        items.push(getTerminMarker(termindato, erBarnetFødt));
+        items.push(getTerminMarker(termindato, uttaksgrunnlag.erBarnetFødt));
         items.sort(sortTimelineItems).map((item, idx, arr) => {
             if (idx > 0) {
                 const prevItem = arr[idx];

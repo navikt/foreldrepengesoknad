@@ -11,10 +11,7 @@ import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
 } from '../../../dev/mock';
-import {
-    SøkerRolle,
-    Søkersituasjon
-} from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import UttaksplanSideSkjema from './UttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
@@ -36,7 +33,6 @@ export interface UttaksplamTestSkjemadata {
     antallBarn: string;
     søkerrolle: SøkerRolle;
     søkersituasjon: Søkersituasjon;
-    annenForelderSkalHaPermisjon: boolean;
     erBarnetFødt: boolean;
     dato: Date;
     fnrFarOppgitt?: boolean;
@@ -70,7 +66,6 @@ class UttaksplanSide extends React.Component<Props, State> {
             skjemadata: {
                 antallBarn: '1',
                 søkerrolle: SøkerRolle.MOR,
-                annenForelderSkalHaPermisjon: true,
                 søkersituasjon: Søkersituasjon.FØDSEL,
                 erBarnetFødt: false,
                 dato: addDays(new Date(), 30),
@@ -82,13 +77,16 @@ class UttaksplanSide extends React.Component<Props, State> {
     }
     render() {
         const skjema = this.state.skjemadata;
+        const annenForelder =
+            false && skalAnnenPersonHaPermisjon(skjema)
+                ? mockUttasksplanAnnenForelder
+                : undefined;
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
-                <div className="dev-only" style={{ display: 'none' }}>
+                <div className="dev-only">
                     <UttaksplanSideSkjema
-                        erSynlig={true}
                         onChange={(skjemadata: UttaksplamTestSkjemadata) =>
                             this.setState({ skjemadata })
                         }
@@ -96,15 +94,13 @@ class UttaksplanSide extends React.Component<Props, State> {
                     />
                 </div>
                 <Uttaksplan
-                    søker={mockUttaksplanSøker}
-                    annenForelder={
-                        skalAnnenPersonHaPermisjon(skjema)
-                            ? mockUttasksplanAnnenForelder
-                            : undefined
-                    }
-                    termindato={skjema.dato}
-                    antallBarn={parseInt(skjema.antallBarn, 10)}
-                    erBarnetFødt={false}
+                    grunnlag={{
+                        søker: mockUttaksplanSøker,
+                        annenForelder,
+                        termindato: skjema.dato,
+                        antallBarn: parseInt(skjema.antallBarn, 10),
+                        erBarnetFødt: false
+                    }}
                     onChange={(perioder) => this.setState({ perioder })}
                 />
             </Applikasjonsside>

@@ -51,27 +51,28 @@ class UttaksplanSteg extends React.Component<Props> {
                 {...stegProps}
                 onFortsettKnappClick={this.sendSøknadAndRedirect}>
                 <Uttaksplan
-                    termindato={(barn as UfødtBarn).termindato}
-                    erBarnetFødt={barn.erBarnetFødt}
-                    annenForelder={
-                        annenForelder.skalHaForeldrepenger ||
-                        annenForelder.harRettPåForeldrepenger
-                            ? {
-                                  etternavn: '',
-                                  fornavn: annenForelder.navn
-                              }
-                            : undefined
-                    }
-                    søker={{
-                        erAleneOmOmsorg: søker.erAleneOmOmsorg,
-                        etternavn: person.etternavn,
-                        fornavn: person.fornavn,
-                        mellomnavn: person.mellomnavn,
-                        kjønn: person.kjønn,
-                        rolle: søker.rolle,
-                        situasjon: søknad.situasjon
+                    grunnlag={{
+                        termindato: (barn as UfødtBarn).termindato,
+                        erBarnetFødt: barn.erBarnetFødt,
+                        annenForelder:
+                            annenForelder.skalHaForeldrepenger ||
+                            annenForelder.harRettPåForeldrepenger
+                                ? {
+                                      etternavn: '',
+                                      fornavn: annenForelder.navn
+                                  }
+                                : undefined,
+                        søker: {
+                            erAleneOmOmsorg: søker.erAleneOmOmsorg,
+                            etternavn: person.etternavn,
+                            fornavn: person.fornavn,
+                            mellomnavn: person.mellomnavn,
+                            kjønn: person.kjønn,
+                            rolle: søker.rolle,
+                            situasjon: søknad.situasjon
+                        },
+                        antallBarn: søknad.barn.antallBarn || 0
                     }}
-                    antallBarn={søknad.barn.antallBarn || 0}
                     onChange={(p) =>
                         dispatch(
                             søknadActions.updateSøknad({
@@ -98,7 +99,7 @@ export default connect((state: AppState, props: Props) => {
     return {
         søknad,
         person: state.api.person,
-        perioder: uttaksplan.periode.perioder,
+        perioder: uttaksplan.uttaksplan.perioder,
         stegProps,
         ...props
     };

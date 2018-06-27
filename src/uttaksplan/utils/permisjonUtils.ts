@@ -23,7 +23,21 @@ export function getPermisjonStartdato(
 ): Date {
     return Uttaksdagen(
         termindato // Siste uttaksdag i denne perioden er dagen før termin
-    ).leggTil(-1 * permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
+    ).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
+}
+
+/**
+ * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
+ * @param termindato
+ * @param permisjonsregler
+ */
+export function getFørsteMuligePermisjonsdag(
+    termindato: Date,
+    permisjonsregler: Permisjonsregler
+): Date {
+    return Uttaksdagen(
+        termindato // Siste uttaksdag i denne perioden er dagen før termin
+    ).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
 }
 
 /**
