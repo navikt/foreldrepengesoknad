@@ -20,29 +20,26 @@ export const getFødselsdatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const date = moment(fødselsdato);
-    const tomorrow = moment().add(1, 'days');
+    const tomorrow = moment()
+        .add(1, 'days')
+        .startOf('day');
     const date3YearsAgo = moment()
         .subtract(3, 'years')
         .startOf('day');
+    const intlKey = 'valideringsfeil.fodselsdato';
 
     return [
         {
             test: () => fødselsdato !== undefined,
-            failText: getMessage(intl, 'valideringsfeil.fodselsdato.duMåOppgi')
+            failText: getMessage(intl, `${intlKey}.duMåOppgi`)
         },
         {
             test: () => date.isBefore(tomorrow),
-            failText: getMessage(
-                intl,
-                'valideringsfeil.fodselsdato.måVæreIdagEllerTidligere'
-            )
+            failText: getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)
         },
         {
             test: () => date.isSameOrAfter(date3YearsAgo),
-            failText: getMessage(
-                intl,
-                'valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake'
-            )
+            failText: getMessage(intl, `${intlKey}.ikkeMerEnn3ÅrTilbake`)
         }
     ];
 };

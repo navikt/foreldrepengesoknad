@@ -8,7 +8,7 @@ export interface InputProps {
 }
 
 export interface Validator {
-    test: (value: any) => boolean;
+    test: (value?: any) => boolean;
     failText: string;
 }
 
