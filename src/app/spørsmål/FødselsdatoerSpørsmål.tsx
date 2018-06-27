@@ -1,7 +1,11 @@
 import * as React from 'react';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import { Fødselsdato } from '../types/common';
+import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import {
+    fødselsdatoAvgrensninger,
+    fødselsdatoRegler
+} from '../util/validation/fødselsdato';
 
 export interface Props {
     fødselsdatoer: Fødselsdato[];
@@ -28,7 +32,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
             <React.Fragment>
                 {fødselsdatoer.map((dato: Fødselsdato, idx: number) => (
                     <div className="blokk-m" key={getKey(idx)}>
-                        <DatoInput
+                        <DatoInputWithValidation
                             id={getKey(idx)}
                             dato={fødselsdatoer[idx]}
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
@@ -37,6 +41,8 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                                     intlId={`fødselsdatoer.flere.${idx + 1}`}
                                 />
                             }
+                            avgrensninger={fødselsdatoAvgrensninger}
+                            validators={fødselsdatoRegler}
                         />
                     </div>
                 ))}

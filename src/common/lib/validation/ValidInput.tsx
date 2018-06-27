@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Input } from 'nav-frontend-skjema';
-import ValidBase, { ValidBaseProps } from './';
 import { InputProps } from './types';
+import {
+    default as ValidBase,
+    ValidBaseProps
+} from 'common/lib/validation/index';
 
 class ValidInput extends Component<ValidBaseProps & InputProps> {
     render() {

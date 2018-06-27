@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { Select } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
-import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
+import ValidSelect from 'common/lib/validation/ValidSelect';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface StateProps {

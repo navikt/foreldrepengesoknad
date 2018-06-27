@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToMaskedInput } from '../util/dates';
+import { ISODateToMaskedInput } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';

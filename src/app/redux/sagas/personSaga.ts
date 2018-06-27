@@ -1,8 +1,8 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
-import { redirectToLogin } from '../../util/login';
-import { erMyndig } from '../../util/personUtil';
+import { redirectToLogin } from '../../util/routing/login';
+import { erMyndig } from '../../util/domain/personUtil';
 
 function* getSøkerinfo(action: any) {
     try {
@@ -11,7 +11,11 @@ function* getSøkerinfo(action: any) {
         const arbeidsforhold = response.data.arbeidsforhold;
         yield put({
             type: ApiActionKeys.GET_SØKERINFO_SUCCESS,
-            person: { ...person, erMyndig: erMyndig(person) },
+            person: {
+                ...person,
+                erMyndig: erMyndig(person),
+                barn: response.data.barn
+            },
             arbeidsforhold
         });
     } catch (error) {
