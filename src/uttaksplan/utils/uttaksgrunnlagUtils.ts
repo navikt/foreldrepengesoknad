@@ -7,7 +7,7 @@ import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
 import {
     getTilgjengeligeStønadskontoer,
-    getTilgjengeligUttak
+    getTilgjengeligUttakEnkel
 } from 'uttaksplan/utils/stønadskontoUtils';
 import {
     getAntallUkerTotalt,
@@ -28,7 +28,7 @@ export function getUttaksgrunnlag(
         tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(
             props.søker
         ),
-        tilgjengeligeUttak: getTilgjengeligUttak(
+        tilgjengeligeUttak: getTilgjengeligUttakEnkel(
             permisjonsregler,
             dekningsgrad
         ),

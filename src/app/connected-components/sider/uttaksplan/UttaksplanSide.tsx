@@ -77,9 +77,10 @@ class UttaksplanSide extends React.Component<Props, State> {
     }
     render() {
         const skjema = this.state.skjemadata;
-        const annenForelder = skalAnnenPersonHaPermisjon(skjema)
-            ? mockUttasksplanAnnenForelder
-            : undefined;
+        const annenForelder =
+            false && skalAnnenPersonHaPermisjon(skjema)
+                ? mockUttasksplanAnnenForelder
+                : undefined;
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />

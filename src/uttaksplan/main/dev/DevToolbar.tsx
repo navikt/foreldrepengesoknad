@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import {
     opprettEllerOppdaterPeriode,
-    opprettPerioder,
+    opprettPerioderForToForeldre,
     dev,
     setManuellUttaksplan
 } from 'uttaksplan/redux/actions';
@@ -126,7 +126,7 @@ class DevToolbar extends React.Component<Props, {}> {
         } = this.props;
 
         dispatch(
-            opprettPerioder(
+            opprettPerioderForToForeldre(
                 termindato,
                 dekningsgrad,
                 getUttaksgrunnlag(

@@ -21,7 +21,8 @@ export enum UttaksplanActionTypeKeys {
     'INFO_VIS' = 'infoVis',
     'INFO_SKJUL' = 'infoSkjul',
     'VIS_TIDSLINJE' = 'visTidslinje',
-    'OPPRETT_PERIODER' = 'opprettPerioder',
+    'OPPRETT_PERIODER_TO_FORELDRE' = 'opprettPerioderToForeldre',
+    'OPPRETT_PERIODER_ALENEOMSORG' = 'opprettPerioderAleneomsorg',
     'SET_MANUELL_UTTAKSPLAN' = 'manuellUttaksplan',
     'SET_UTTAKSGRUNNLAG' = 'setUttaksgrunnlag',
     'DEV_ACTION' = 'dev'
@@ -39,7 +40,8 @@ export type UttaksplanActionTypes =
     | SkjulInfo
     | VisInfo
     | VisTidslinje
-    | OpprettPerioder
+    | OpprettPerioderToForeldre
+    | OpprettPerioderAleneomsorg
     | ManuellUttaksplanAction
     | SetUttaksgrunnlag
     | DevAction;
@@ -49,13 +51,20 @@ export interface InitUttaksplan {
     props: UttaksplanAppProps;
     dekningsgrad: Dekningsgrad;
 }
-export interface OpprettPerioder {
-    type: UttaksplanActionTypeKeys.OPPRETT_PERIODER;
+export interface OpprettPerioderToForeldre {
+    type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE;
     termindato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     fellesukerForelder1: number;
     fellesukerForelder2: number;
+}
+
+export interface OpprettPerioderAleneomsorg {
+    type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG;
+    termindato: Date;
+    dekningsgrad: Dekningsgrad;
+    uttaksgrunnlag: Uttaksgrunnlag;
 }
 
 export interface SetUkerForelder1 {

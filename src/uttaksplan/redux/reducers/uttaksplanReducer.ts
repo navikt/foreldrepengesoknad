@@ -10,6 +10,7 @@ import {
     getUttaksgrunnlag
 } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
+import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/uttaksplaner/uttaksplanAleneomsorgMor';
 
 const defaultState: UttaksplanState = {
     perioder: [],
@@ -31,7 +32,7 @@ const UttaksplanReducer = (
                     action.dekningsgrad
                 )
             };
-        case UttaksplanActionTypeKeys.OPPRETT_PERIODER:
+        case UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE:
             return {
                 ...state,
                 perioder: UttaksplanBuilder(
@@ -40,6 +41,17 @@ const UttaksplanReducer = (
                         action.dekningsgrad,
                         action.fellesukerForelder1,
                         action.fellesukerForelder2,
+                        action.uttaksgrunnlag.permisjonsregler
+                    )
+                ).buildUttaksplan().perioder
+            };
+        case UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG:
+            return {
+                ...state,
+                perioder: UttaksplanBuilder(
+                    opprettUttaksperioderAleneomsorgMor(
+                        action.termindato,
+                        action.dekningsgrad,
                         action.uttaksgrunnlag.permisjonsregler
                     )
                 ).buildUttaksplan().perioder
