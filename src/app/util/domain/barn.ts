@@ -1,4 +1,4 @@
-import { Barn, UfødtBarn, FødtBarn } from '../types/søknad/Barn';
+import { Barn, UfødtBarn, FødtBarn } from '../../types/søknad/Barn';
 
 const getSisteFødselsdato = (fødselsdatoer: Date[]): Date | undefined => {
     if (fødselsdatoer && fødselsdatoer.length >= 1) {

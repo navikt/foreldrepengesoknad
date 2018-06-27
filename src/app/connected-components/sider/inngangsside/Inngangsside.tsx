@@ -5,9 +5,8 @@ import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
-import { getSøkerrollerForBruker } from '../../../util/søkerrollerUtils';
-import { StegID } from '../../../util/stegConfig';
-import { søknadStegPath } from '../../steg/StegRoutes';
+import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
+import { StegID } from '../../../util/routing/stegConfig';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { HistoryProps } from '../../../types/common';
@@ -36,10 +35,8 @@ class Inngangsside extends React.Component<Props, {}> {
             roller,
             situasjon,
             rolle,
-            history,
             visSpørsmålOmSøkerrolle,
             dispatch,
-            nesteStegRoute,
             intl,
             stegProps
         } = this.props;
@@ -82,9 +79,7 @@ class Inngangsside extends React.Component<Props, {}> {
                 />
 
                 {rolle !== undefined && (
-                    <FortsettKnapp
-                        history={history}
-                        location={søknadStegPath(nesteStegRoute)}>
+                    <FortsettKnapp>
                         {getMessage(intl, 'fortsettknapp.label')}
                     </FortsettKnapp>
                 )}

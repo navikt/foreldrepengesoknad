@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import getMessage from 'common/util/i18nUtils';
-import { formaterNavn } from '../util/personUtil';
+import { formaterNavn } from '../util/domain/personUtil';
 import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { SøkersBarn } from '../types/Person';
 

@@ -6,7 +6,7 @@ import {
 } from 'uttaksplan/types';
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { Kjønn } from 'app/types/common';
-import { erFarEllerMedmor } from 'app/util/personUtil';
+import { erFarEllerMedmor } from 'app/util/domain/personUtil';
 import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import ValidBase, { ValidBaseProps } from './';
+import {
+    default as ValidBase,
+    ValidBaseProps
+} from 'common/lib/validation/index';
 
 class ValidGroup extends Component<ValidBaseProps> {
     render() {

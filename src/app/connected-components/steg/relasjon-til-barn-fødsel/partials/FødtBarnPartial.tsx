@@ -8,7 +8,7 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
-import utils from '../../../../util/fødselsdato';
+import utils from '../../../../util/domain/fødselsdato';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
