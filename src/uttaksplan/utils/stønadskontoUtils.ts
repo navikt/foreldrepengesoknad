@@ -10,7 +10,7 @@ import { erFarEllerMedmor } from 'app/util/personUtil';
 import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
-export const getTilgjengeligUttak = (
+export const getTilgjengeligUttakEnkel = (
     permisjonsregler: Permisjonsregler,
     dekningsgrad: Dekningsgrad
 ): StønadskontoUttak[] => {
@@ -50,11 +50,4 @@ export const getTilgjengeligeStønadskontoer = (
         StønadskontoType.Fedrekvote,
         StønadskontoType.Fellesperiode
     ];
-    // Deler
-    // return [
-    //     StønadskontoType.MorsDelFørTermin,
-    //     StønadskontoType.MorsDel,
-    //     StønadskontoType.FarsDel,
-    //     StønadskontoType.Fellesperiode
-    // ];
 };

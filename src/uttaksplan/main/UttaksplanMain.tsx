@@ -12,8 +12,9 @@ import {
     setDekningsgrad,
     setFellesperiodeukerMor,
     visTidslinje,
-    opprettPerioder,
-    initUttaksplan
+    opprettPerioderForToForeldre,
+    initUttaksplan,
+    opprettPerioderAleneomsorg
 } from 'uttaksplan/redux/actions';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -76,15 +77,25 @@ class UttaksplanMain extends React.Component<Props> {
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
         if (dekningsgrad && uttaksgrunnlag) {
-            dispatch(
-                opprettPerioder(
-                    grunnlag.termindato,
-                    dekningsgrad,
-                    uttaksgrunnlag,
-                    fellesperiodeukerForelder1,
-                    fellesperiodeukerForelder2
-                )
-            );
+            if (uttaksgrunnlag.annenForelder) {
+                dispatch(
+                    opprettPerioderForToForeldre(
+                        grunnlag.termindato,
+                        dekningsgrad,
+                        uttaksgrunnlag,
+                        fellesperiodeukerForelder1,
+                        fellesperiodeukerForelder2
+                    )
+                );
+            } else {
+                dispatch(
+                    opprettPerioderAleneomsorg(
+                        grunnlag.termindato,
+                        dekningsgrad,
+                        uttaksgrunnlag
+                    )
+                );
+            }
 
             dispatch(visTidslinje(true));
         }

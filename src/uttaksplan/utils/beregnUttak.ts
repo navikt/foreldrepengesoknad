@@ -47,7 +47,7 @@ function getBeregnetUttak(
     };
 }
 
-export function beregnAlleUttak(
+export function beregnAlleUttakEnkel(
     perioder: Periode[],
     uttaksgrunnlag: Uttaksgrunnlag
 ): BeregnetUttak[] {
