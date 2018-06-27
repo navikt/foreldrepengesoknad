@@ -54,7 +54,7 @@ class UttaksplanMain extends React.Component<Props> {
     }
 
     componentDidMount() {
-        this.resetUttaksplan();
+        this.resetUttaksplan(this.props.grunnlag, this.props.dekningsgrad);
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -62,14 +62,12 @@ class UttaksplanMain extends React.Component<Props> {
             JSON.stringify(this.props.grunnlag) !==
             JSON.stringify(nextProps.grunnlag)
         ) {
-            this.resetUttaksplan();
+            this.resetUttaksplan(nextProps.grunnlag, nextProps.dekningsgrad);
         }
     }
 
-    resetUttaksplan() {
-        this.props.dispatch(
-            initUttaksplan(this.props.grunnlag, this.props.dekningsgrad)
-        );
+    resetUttaksplan(grunnlag: UttaksplanAppProps, dekningsgrad: Dekningsgrad) {
+        this.props.dispatch(initUttaksplan(grunnlag, dekningsgrad));
     }
 
     opprettPerioder() {
@@ -116,29 +114,42 @@ class UttaksplanMain extends React.Component<Props> {
                         foreldrepengene. Henrik må sende inn egen søknad.
                     </Veilederinfo>
                 </div>
-                <div className="blokk-m no-print">
-                    <div className="blokk-l">
-                        <UttaksplanSkjema
-                            form={form}
-                            uttaksgrunnlag={uttaksgrunnlag}
-                            onChangeDekningsgrad={(dg) =>
-                                dispatch(
-                                    setDekningsgrad(
-                                        dg,
-                                        uttaksgrunnlag.permisjonsregler
-                                    )
-                                )
-                            }
-                            onChangeFordeling={(uker) =>
-                                dispatch(setFellesperiodeukerMor(uker))
-                            }
-                        />
-                    </div>
-                </div>
                 {!perioderOpprettet && (
-                    <div className="m-textCenter">
-                        <Knapp onClick={() => this.opprettPerioder()}>
-                            Lag forslag til tidsplan
+                    <div className="blokk-m no-print">
+                        <div className="blokk-l">
+                            <UttaksplanSkjema
+                                form={form}
+                                uttaksgrunnlag={uttaksgrunnlag}
+                                onChangeDekningsgrad={(dg) =>
+                                    dispatch(
+                                        setDekningsgrad(
+                                            dg,
+                                            uttaksgrunnlag.permisjonsregler
+                                        )
+                                    )
+                                }
+                                onChangeFordeling={(uker) =>
+                                    dispatch(setFellesperiodeukerMor(uker))
+                                }
+                            />
+                        </div>
+                        <div className="m-textCenter">
+                            <Knapp onClick={() => this.opprettPerioder()}>
+                                Lag forslag til tidsplan
+                            </Knapp>
+                        </div>
+                    </div>
+                )}
+                {perioderOpprettet && (
+                    <div className="m-textCenter blokk-l">
+                        <Knapp
+                            onClick={() =>
+                                this.resetUttaksplan(
+                                    this.props.grunnlag,
+                                    this.props.dekningsgrad
+                                )
+                            }>
+                            Lag ny plan
                         </Knapp>
                     </div>
                 )}

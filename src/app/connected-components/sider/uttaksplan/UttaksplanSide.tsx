@@ -33,7 +33,6 @@ export interface UttaksplamTestSkjemadata {
     antallBarn: string;
     søkerrolle: SøkerRolle;
     søkersituasjon: Søkersituasjon;
-    annenForelderSkalHaPermisjon: boolean;
     erBarnetFødt: boolean;
     dato: Date;
     fnrFarOppgitt?: boolean;
@@ -50,7 +49,13 @@ export interface State {
 const skalAnnenPersonHaPermisjon = (
     skjema: UttaksplamTestSkjemadata
 ): boolean => {
-    return skjema.annenForelderSkalHaPermisjon;
+    if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
+        return false;
+    }
+    if (skjema.borSammen === false && skjema.skalMorHaAlt) {
+        return false;
+    }
+    return true;
 };
 
 class UttaksplanSide extends React.Component<Props, State> {
@@ -61,7 +66,6 @@ class UttaksplanSide extends React.Component<Props, State> {
             skjemadata: {
                 antallBarn: '1',
                 søkerrolle: SøkerRolle.MOR,
-                annenForelderSkalHaPermisjon: true,
                 søkersituasjon: Søkersituasjon.FØDSEL,
                 erBarnetFødt: false,
                 dato: addDays(new Date(), 30),
@@ -73,6 +77,9 @@ class UttaksplanSide extends React.Component<Props, State> {
     }
     render() {
         const skjema = this.state.skjemadata;
+        const annenForelder = skalAnnenPersonHaPermisjon(skjema)
+            ? mockUttasksplanAnnenForelder
+            : undefined;
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
@@ -88,9 +95,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                 <Uttaksplan
                     grunnlag={{
                         søker: mockUttaksplanSøker,
-                        annenForelder: skalAnnenPersonHaPermisjon(skjema)
-                            ? mockUttasksplanAnnenForelder
-                            : undefined,
+                        annenForelder,
                         termindato: skjema.dato,
                         antallBarn: parseInt(skjema.antallBarn, 10),
                         erBarnetFødt: false
