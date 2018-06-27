@@ -130,11 +130,15 @@ class DevToolbar extends React.Component<Props, {}> {
                 termindato,
                 dekningsgrad,
                 getUttaksgrunnlag(
-                    termindato,
-                    dekningsgrad,
-                    mockUttaksplanSøker,
-                    1,
-                    mockUttasksplanAnnenForelder
+                    {
+                        termindato,
+
+                        søker: mockUttaksplanSøker,
+                        antallBarn: 1,
+                        annenForelder: mockUttasksplanAnnenForelder,
+                        erBarnetFødt: false
+                    },
+                    dekningsgrad
                 ),
                 fellesperiodeukerForelder1,
                 fellesperiodeukerForelder2

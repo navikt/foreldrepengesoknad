@@ -1,8 +1,7 @@
 import {
     Uttaksgrunnlag,
-    SøkerGrunnlag,
-    AnnenForelderGrunnlag,
-    Uttaksdatoer
+    Uttaksdatoer,
+    UttaksplanAppProps
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -18,20 +17,17 @@ import {
 import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 
 export function getUttaksgrunnlag(
-    termindato: Date,
-    dekningsgrad: Dekningsgrad,
-    søker: SøkerGrunnlag,
-    antallBarn: number,
-    annenForelder?: AnnenForelderGrunnlag
+    props: UttaksplanAppProps,
+    dekningsgrad: Dekningsgrad
 ): Uttaksgrunnlag {
-    const permisjonsregler = getPermisjonsregler(termindato);
-
+    const permisjonsregler = getPermisjonsregler(props.termindato);
     return {
-        søker,
-        annenForelder,
-        antallBarn,
+        ...props,
+        dekningsgrad,
         permisjonsregler,
-        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(søker),
+        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(
+            props.søker
+        ),
         tilgjengeligeUttak: getTilgjengeligUttak(
             permisjonsregler,
             dekningsgrad
@@ -44,7 +40,6 @@ export function getUttaksgrunnlag(
 export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
     const permisjonsregler = getPermisjonsregler(termindato);
     return {
-        termindato,
         førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(
             termindato,
             permisjonsregler

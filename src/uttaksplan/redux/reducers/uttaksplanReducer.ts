@@ -6,6 +6,10 @@ import { UttaksplanState } from '../types';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
 import { opprettUttaksperioderEnkel } from 'uttaksplan/uttaksplaner/uttaksplanDeler';
+import {
+    getUttaksdatoer,
+    getUttaksgrunnlag
+} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 const defaultState: UttaksplanState = {
     perioder: [],
@@ -17,6 +21,16 @@ const UttaksplanReducer = (
     action: UttaksplanActionTypes
 ): UttaksplanState => {
     switch (action.type) {
+        case UttaksplanActionTypeKeys.INIT_UTTAKSPLAN:
+            return {
+                manuellOppdatering: false,
+                perioder: [],
+                uttaksdatoer: getUttaksdatoer(action.props.termindato),
+                uttaksgrunnlag: getUttaksgrunnlag(
+                    action.props,
+                    action.dekningsgrad
+                )
+            };
         case UttaksplanActionTypeKeys.OPPRETT_PERIODER:
             return {
                 ...state,

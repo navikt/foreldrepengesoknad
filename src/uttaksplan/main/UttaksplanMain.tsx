@@ -2,10 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {
     UttaksplanAppState,
-    UttaksplanState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { Periode, Periodetype } from 'uttaksplan/types';
+import { Periode, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
@@ -18,7 +17,8 @@ import {
     setFellesperiodeukerMor,
     visTidslinje,
     visPeriodeDialog,
-    opprettPerioder
+    opprettPerioder,
+    initUttaksplan
 } from 'uttaksplan/redux/actions';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
@@ -28,14 +28,9 @@ import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDia
 import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelsesperiodeDialog/UtsettelsesperiodeDialog';
 import {
     Uttaksgrunnlag,
-    SøkerGrunnlag,
-    AnnenForelderGrunnlag,
-    Uttaksdatoer
+    Uttaksdatoer,
+    UttaksplanAppProps
 } from 'uttaksplan/types/uttaksgrunnlag';
-import {
-    getUttaksgrunnlag,
-    getUttaksdatoer
-} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -45,18 +40,14 @@ import DevBeregning from 'uttaksplan/main/dev/DevBeregning';
 
 export interface StateProps {
     form: UttaksplanFormState;
-    uttaksgrunnlag: Uttaksgrunnlag;
-    uttaksplan: UttaksplanState;
-    uttaksdatoer: Uttaksdatoer;
+    dekningsgrad: Dekningsgrad;
+    uttaksgrunnlag?: Uttaksgrunnlag;
+    uttaksdatoer?: Uttaksdatoer;
+    perioder: Periode[];
     manuellUttaksplan?: boolean;
 }
 
-interface OwnProps {
-    termindato: Date;
-    søker: SøkerGrunnlag;
-    annenForelder?: AnnenForelderGrunnlag;
-    antallBarn: number;
-    erBarnetFødt: boolean;
+interface OwnProps extends UttaksplanAppProps {
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -71,16 +62,19 @@ class UttaksplanMain extends React.Component<Props> {
     }
 
     componentDidMount() {
-        this.opprettPerioder();
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        if (
-            nextProps.form.fellesperiodeukerForelder1 !==
-            this.props.form.fellesperiodeukerForelder1
-        ) {
-            this.opprettPerioder();
-        }
+        this.props.dispatch(
+            initUttaksplan(
+                {
+                    termindato: this.props.termindato,
+                    søker: this.props.søker,
+                    annenForelder: this.props.annenForelder,
+                    antallBarn: this.props.antallBarn,
+                    erBarnetFødt: this.props.erBarnetFødt
+                },
+                this.props.dekningsgrad
+            )
+        );
+        // this.opprettPerioder();
     }
 
     handleItemClick(item: TimelineItem) {
@@ -111,7 +105,7 @@ class UttaksplanMain extends React.Component<Props> {
         const { dekningsgrad } = form;
         const { fellesperiodeukerForelder1, fellesperiodeukerForelder2 } = form;
 
-        if (dekningsgrad) {
+        if (dekningsgrad && uttaksgrunnlag) {
             dispatch(
                 opprettPerioder(
                     termindato,
@@ -127,17 +121,21 @@ class UttaksplanMain extends React.Component<Props> {
     }
     render() {
         const {
-            uttaksgrunnlag,
+            perioder,
             uttaksdatoer,
+            uttaksgrunnlag,
             termindato,
-            erBarnetFødt,
-            uttaksplan,
+            // erBarnetFødt,
             dispatch,
             form
         } = this.props;
 
-        const perioderOpprettet = uttaksplan.perioder.length > 0;
+        const perioderOpprettet = perioder.length > 0;
         const dekningsgrad = form.dekningsgrad;
+
+        if (!uttaksgrunnlag) {
+            return <div>Noop</div>;
+        }
 
         return (
             <React.Fragment>
@@ -182,9 +180,8 @@ class UttaksplanMain extends React.Component<Props> {
                                 <PeriodeTimeline
                                     termindato={termindato}
                                     dekningsgrad={dekningsgrad}
-                                    perioder={uttaksplan.perioder}
+                                    perioder={perioder}
                                     uttaksgrunnlag={uttaksgrunnlag}
-                                    erBarnetFødt={erBarnetFødt}
                                     onPeriodeClick={this.handlePeriodeClick}
                                 />
                             </div>
@@ -248,7 +245,10 @@ class UttaksplanMain extends React.Component<Props> {
                     termindato={termindato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                 />
-                <DevBeregning uttaksdatoer={uttaksdatoer} />
+                <DevBeregning
+                    uttaksdatoer={uttaksdatoer}
+                    uttaksgrunnlag={uttaksgrunnlag}
+                />
                 <DevHelper
                     termindato={termindato}
                     dekningsgrad={dekningsgrad || '100%'}
@@ -261,30 +261,16 @@ class UttaksplanMain extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (
-    appState: UttaksplanAppState,
-    props: OwnProps
-): StateProps => {
-    const { termindato } = props;
+const mapStateToProps = (appState: UttaksplanAppState): StateProps => {
     const { uttaksplan, form } = appState.uttaksplan;
     const dekningsgrad = form.dekningsgrad || '100%';
 
-    const uttaksgrunnlag = getUttaksgrunnlag(
-        termindato,
-        dekningsgrad,
-        props.søker,
-        props.antallBarn,
-        props.annenForelder
-    );
-
-    const uttaksdatoer = getUttaksdatoer(termindato);
-
     return {
         form,
-        uttaksgrunnlag,
-        uttaksdatoer,
-        uttaksplan,
-        manuellUttaksplan: uttaksplan.manuellOppdatering
+        dekningsgrad,
+        uttaksgrunnlag: uttaksplan.uttaksgrunnlag,
+        uttaksdatoer: uttaksplan.uttaksdatoer,
+        perioder: uttaksplan.perioder
     };
 };
 

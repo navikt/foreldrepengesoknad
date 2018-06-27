@@ -4,9 +4,13 @@ import {
     Periodetype,
     Permisjonsregler
 } from '../../types';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import {
+    Uttaksgrunnlag,
+    UttaksplanAppProps
+} from 'uttaksplan/types/uttaksgrunnlag';
 
 export enum UttaksplanActionTypeKeys {
+    'INIT_UTTAKSPLAN' = 'initUttaksplan',
     'SET_UKER_FORELDER1' = 'setUkerForelder1',
     'SET_UKER_FORELDER2' = 'setUkerForelder2',
     'SET_DEKNINGSGRAD' = 'setDekningsgrad',
@@ -24,6 +28,7 @@ export enum UttaksplanActionTypeKeys {
 }
 
 export type UttaksplanActionTypes =
+    | InitUttaksplan
     | SetUkerForelder2
     | SetUkerForelder1
     | SetDekningsgrad
@@ -39,6 +44,11 @@ export type UttaksplanActionTypes =
     | SetUttaksgrunnlag
     | DevAction;
 
+export interface InitUttaksplan {
+    type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN;
+    props: UttaksplanAppProps;
+    dekningsgrad: Dekningsgrad;
+}
 export interface OpprettPerioder {
     type: UttaksplanActionTypeKeys.OPPRETT_PERIODER;
     termindato: Date;

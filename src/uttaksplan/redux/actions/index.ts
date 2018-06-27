@@ -5,12 +5,26 @@ import {
     Permisjonsregler
 } from '../../types';
 import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from './actionTypes';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import {
+    Uttaksgrunnlag,
+    UttaksplanAppProps
+} from 'uttaksplan/types/uttaksgrunnlag';
 
 export function setFellesperiodeukerMor(uker: number): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.SET_UKER_FORELDER1,
         uker
+    };
+}
+
+export function initUttaksplan(
+    props: UttaksplanAppProps,
+    dekningsgrad: Dekningsgrad
+): UttaksplanActionTypes {
+    return {
+        type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN,
+        props,
+        dekningsgrad
     };
 }
 
