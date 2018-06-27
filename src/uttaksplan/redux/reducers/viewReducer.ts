@@ -1,12 +1,8 @@
 import {
-    PlanleggerActionTypes,
-    PlanleggerActionTypeKeys
+    UttaksplanActionTypes,
+    UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
-import {
-    UttaksplanViewState,
-    SynligInfoMap,
-    UttaksplanViewStatePartial
-} from 'uttaksplan/redux/types';
+import { UttaksplanViewState, SynligInfoMap } from 'uttaksplan/redux/types';
 
 export enum Infotekster {
     sats = 'sats',
@@ -33,45 +29,40 @@ const fjernInfo = (infoMap: SynligInfoMap, id: string): SynligInfoMap => {
     return map;
 };
 
-const updateState = (
-    state: UttaksplanViewState,
-    viewState: UttaksplanViewStatePartial
-): UttaksplanViewState => {
-    return {
-        ...state,
-        ...viewState
-    };
-};
-
-const ViewReducer = (state = defaultState, action: PlanleggerActionTypes) => {
+const ViewReducer = (state = defaultState, action: UttaksplanActionTypes) => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.PERIODE_VIS_DIALOG:
-            return updateState(state, {
+        case UttaksplanActionTypeKeys.PERIODE_VIS_DIALOG:
+            return {
+                ...state,
                 dialogErApen: true,
                 valgtPeriode: {
                     periodetype: action.periodetype,
                     periode: action.periode
                 }
-            });
+            };
 
-        case PlanleggerActionTypeKeys.PERIODE_LUKK_DIALOG:
-            return updateState(state, {
+        case UttaksplanActionTypeKeys.PERIODE_LUKK_DIALOG:
+            return {
+                ...state,
                 dialogErApen: false,
                 valgtPeriode: undefined
-            });
+            };
 
-        case PlanleggerActionTypeKeys.INFO_VIS:
-            return updateState(state, {
+        case UttaksplanActionTypeKeys.INFO_VIS:
+            return {
+                ...state,
                 synligInfo: leggTilInfo(state.synligInfo, action.id)
-            });
-        case PlanleggerActionTypeKeys.INFO_SKJUL:
-            return updateState(state, {
+            };
+        case UttaksplanActionTypeKeys.INFO_SKJUL:
+            return {
+                ...state,
                 synligInfo: fjernInfo(state.synligInfo, action.id)
-            });
-        case PlanleggerActionTypeKeys.VIS_TIDSLINJE:
-            return updateState(state, {
+            };
+        case UttaksplanActionTypeKeys.VIS_TIDSLINJE:
+            return {
+                ...state,
                 visTidslinje: action.synlig
-            });
+            };
         default:
             return state;
     }

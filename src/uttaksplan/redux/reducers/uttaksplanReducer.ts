@@ -1,8 +1,8 @@
 import {
-    PlanleggerActionTypes,
-    PlanleggerActionTypeKeys
+    UttaksplanActionTypes,
+    UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
-import { UttaksplanState, UttaksplanStatePartial } from '../types';
+import { UttaksplanState } from '../types';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
 import { opprettUttaksperioderEnkel } from 'uttaksplan/uttaksplaner/uttaksplanDeler';
@@ -12,20 +12,12 @@ const defaultState: UttaksplanState = {
     manuellOppdatering: false
 };
 
-const updateState = (
-    state: UttaksplanState,
-    newState: UttaksplanStatePartial
-): UttaksplanState => ({
-    ...state,
-    ...newState
-});
-
 const UttaksplanReducer = (
     state = defaultState,
-    action: PlanleggerActionTypes
+    action: UttaksplanActionTypes
 ): UttaksplanState => {
     switch (action.type) {
-        case PlanleggerActionTypeKeys.OPPRETT_PERIODER:
+        case UttaksplanActionTypeKeys.OPPRETT_PERIODER:
             return {
                 ...state,
                 perioder: UttaksplanBuilder(
@@ -39,43 +31,49 @@ const UttaksplanReducer = (
                 ).buildUttaksplan().perioder
             };
 
-        case PlanleggerActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
+        case UttaksplanActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER:
             if (state.manuellOppdatering) {
-                return updateState(state, {
+                return {
+                    ...state,
                     perioder: UttaksplanManuell(
                         state.perioder
                     ).leggTilEllerOppdater(action.periode).perioder
-                });
+                };
             }
-            return updateState(state, {
+            return {
+                ...state,
                 perioder: UttaksplanBuilder(
                     state.perioder
                 ).leggTilEllerOppdaterPeriode(action.periode).perioder
-            });
+            };
 
-        case PlanleggerActionTypeKeys.PERIODE_SLETT:
+        case UttaksplanActionTypeKeys.PERIODE_SLETT:
             if (state.manuellOppdatering) {
-                return updateState(state, {
+                return {
+                    ...state,
                     perioder: UttaksplanManuell(state.perioder).slettPeriode(
                         action.periode
                     ).perioder
-                });
+                };
             }
-            return updateState(state, {
+            return {
+                ...state,
                 perioder: UttaksplanBuilder(state.perioder).slettPeriodeOgBuild(
                     action.periode
                 ).perioder
-            });
+            };
 
-        case PlanleggerActionTypeKeys.SET_MANUELL_UTTAKSPLAN:
-            return updateState(state, {
+        case UttaksplanActionTypeKeys.SET_MANUELL_UTTAKSPLAN:
+            return {
+                ...state,
                 manuellOppdatering: action.manuellUttaksplan
-            });
+            };
 
-        case PlanleggerActionTypeKeys.DEV_ACTION:
-            return updateState(state, {
+        case UttaksplanActionTypeKeys.DEV_ACTION:
+            return {
+                ...state,
                 perioder: UttaksplanBuilder(state.perioder).perioder
-            });
+            };
 
         default:
             return state;

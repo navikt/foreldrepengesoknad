@@ -31,10 +31,7 @@ import {
     SøkerGrunnlag,
     AnnenForelderGrunnlag
 } from 'uttaksplan/types/uttaksgrunnlag';
-import {
-    getUttaksgrunnlag,
-    getUttaksdatoer
-} from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -271,9 +268,6 @@ const mapStateToProps = (
         props.antallBarn,
         props.annenForelder
     );
-
-    const uttaksdatoer = getUttaksdatoer(termindato);
-    console.log(uttaksdatoer);
 
     return {
         form,
