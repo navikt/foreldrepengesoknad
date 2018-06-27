@@ -110,7 +110,7 @@ function getFedrekvote(
 }
 
 /** Oppretter default stønadsperioder ut fra termindato ++ */
-export function opprettUttaksperioder(
+export function opprettUttaksperioderToForeldreEttBarn(
     termindato: Date,
     dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
