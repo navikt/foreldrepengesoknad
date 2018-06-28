@@ -4,23 +4,11 @@ import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types';
 import { Fødselsdato } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
-
-export const tomorrow = moment()
-    .add(1, 'days')
-    .startOf('day');
-
-export const date3YearsAgo = moment()
-    .subtract(3, 'years')
-    .startOf('day');
+import { date3YearsAgo, today, tomorrow } from './values';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
-    minDato: moment()
-        .subtract(3, 'years')
-        .startOf('day')
-        .toDate(),
-    maksDato: moment()
-        .endOf('day')
-        .toDate()
+    minDato: date3YearsAgo.toDate(),
+    maksDato: today.toDate()
 };
 
 export const getFødselsdatoRegler = (
