@@ -59,6 +59,7 @@ class FødtBarnPartial extends React.Component<Props> {
                 />
 
                 <Spørsmål
+                    animert={false}
                     render={() => (
                         <FødselsdatoerSpørsmål
                             fødselsdatoer={barn.fødselsdatoer}
