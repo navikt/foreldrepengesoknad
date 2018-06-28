@@ -127,19 +127,17 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const { startdato, sluttdato, forelder, stønadskonto } = this.state;
-        const erToForeldre =
-            this.props.uttaksgrunnlag.annenForelder !== undefined;
         const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
             uttaksgrunnlag.søker,
             uttaksgrunnlag.erDeltPermisjon
         );
 
         // Hvilke spørsmål skal vises
-        const visSpørsmålOmHvem = erToForeldre;
+        const visSpørsmålOmHvem = uttaksgrunnlag.erDeltPermisjon;
         const visSpørsmålOmStønadskonto =
             tilgjengeligeStønadskontoer.length > 1;
         const visSpørsmålOmTidsrom =
-            !erToForeldre || stønadskonto ? true : false;
+            !uttaksgrunnlag.erDeltPermisjon || stønadskonto ? true : false;
 
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
         const { permisjonsregler, søker, annenForelder } = uttaksgrunnlag;
