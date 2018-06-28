@@ -15,6 +15,11 @@ import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import {
+    getTermindatoRegler,
+    termindatoAvgrensninger
+} from '../../../../util/validation/termindato';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -89,7 +94,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         <Spørsmål
                             synlig={barn.antallBarn !== undefined}
                             render={() => (
-                                <DatoInput
+                                <DatoInputWithValidation
                                     id="termindato"
                                     label={getMessage(
                                         intl,
@@ -103,6 +108,11 @@ class UfødtBarnPartial extends React.Component<Props> {
                                         );
                                     }}
                                     dato={barn.termindato}
+                                    avgrensninger={termindatoAvgrensninger}
+                                    validators={getTermindatoRegler(
+                                        barn.termindato,
+                                        intl
+                                    )}
                                 />
                             )}
                         />

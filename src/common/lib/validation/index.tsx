@@ -30,11 +30,12 @@ export interface State {
 }
 
 class ValidBase extends React.Component<Props, State> {
-    element: any;
-    context: any;
     static contextTypes = {
         validForm: PT.object
     };
+
+    element: any;
+    context: any;
 
     constructor(props: Props) {
         super(props);

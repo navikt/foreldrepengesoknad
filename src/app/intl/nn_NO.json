@@ -249,5 +249,11 @@
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere":
         "Fødselsdato må vere i dag eller tidlegare",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikkje søke om eingongsstønad for barn som er eldre enn tre år."
+        "Du kan ikkje søke om eingongsstønad for barn som er eldre enn tre år.",
+
+    "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindato",
+    "valideringsfeil.termindato.duMåVæreIUke26":
+        "Du kan tidlegast søkje når du er i 26. svangerskapsveke",
+    "valideringsfeil.termindato.termindatoForTidlig":
+        "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag"
 }
