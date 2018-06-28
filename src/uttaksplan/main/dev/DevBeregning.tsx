@@ -32,8 +32,12 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                             {uttaksinfo.registrertTidsperiode.sluttdato.toDateString()}
                         </li>
                         <li>
+                            Siste registrerte uttaksdag (inkludert opphold):{' '}
+                            {uttaksinfo.registrertTidsperiodeInkludertOpphold.sluttdato.toDateString()}
+                        </li>
+                        <li>
                             Siste beregnet uttaksdag:{' '}
-                            {uttaksinfo.beregnetSistePermisjonsdag.toDateString()}
+                            {uttaksinfo.sluttdatoGittUttaksdager.toDateString()}
                         </li>
                         <li>
                             Antall dager uttak: {uttaksinfo.antallDagerUttak}

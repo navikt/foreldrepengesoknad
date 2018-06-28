@@ -56,7 +56,7 @@ export interface Uttaksinfo {
     /** Tidsperiode ut fra første og siste registrerte uttak, utsettelse eller opphold */
     registrertTidsperiodeInkludertOpphold: Tidsperiode;
     /** Siste permisjonsdag ut fra registrerte perioder  */
-    beregnetSistePermisjonsdag: Date;
+    sluttdatoGittUttaksdager: Date;
     /** Antall dager som er registrert som uttak */
     antallDagerUttak: number;
     /** Antall uttaksdagerdager som er registrert som utsettelser */

@@ -1,16 +1,14 @@
 import { addYears } from 'date-fns';
-import { Uttaksdagen, Tidsperioden, Periodene } from './dataUtils';
+import { Uttaksdagen, Tidsperioden } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
     Dekningsgrad,
     Forelder,
-    Periode,
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../types';
 import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 /**
  * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
@@ -54,39 +52,39 @@ export function getSisteMuligePermisjonsdag(
     ).denneEllerNeste();
 }
 
-/**
- * Finner siste permisjonsdag gitt registrerte perioder
- * @param termindato
- * @param dekningsgrad
- * @param perioder
- * @param uttaksgrunnlag
- */
-export function getSistePermisjonsdag(
-    termindato: Date,
-    dekningsgrad: Dekningsgrad,
-    perioder: Periode[],
-    uttaksgrunnlag: Uttaksgrunnlag
-): Date | undefined {
-    if (perioder.length === 0) {
-        return undefined;
-    }
-    const uttaksperioder = Periodene(perioder).getUttak();
-    const uttaksdagerBruktTotalt = Periodene(
-        uttaksperioder
-    ).getAntallDagerUttak();
-    const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
-    const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
-    const gjenståendeUttaksdager =
-        uttaksgrunnlag.antallUttaksdagerTilgjengelig - registrerteUttak;
-    return Uttaksdagen(termindato).leggTil(
-        uttaksdagerBruktTotalt -
-            uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
-                5 -
-            1 +
-            gjenståendeUttaksdager +
-            utsatteDager
-    );
-}
+// /**
+//  * Finner siste permisjonsdag gitt registrerte perioder
+//  * @param termindato
+//  * @param dekningsgrad
+//  * @param perioder
+//  * @param uttaksgrunnlag
+//  */
+// export function getSistePermisjonsdag(
+//     termindato: Date,
+//     dekningsgrad: Dekningsgrad,
+//     perioder: Periode[],
+//     uttaksgrunnlag: Uttaksgrunnlag
+// ): Date | undefined {
+//     if (perioder.length === 0) {
+//         return undefined;
+//     }
+//     const uttaksperioder = Periodene(perioder).getUttak();
+//     const uttaksdagerBruktTotalt = Periodene(
+//         uttaksperioder
+//     ).getAntallDagerUttak();
+//     const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
+//     const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
+//     const gjenståendeUttaksdager =
+//         uttaksgrunnlag.antallUttaksdagerTilgjengelig - registrerteUttak;
+//     return Uttaksdagen(termindato).leggTil(
+//         uttaksdagerBruktTotalt -
+//             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
+//                 5 -
+//             1 +
+//             gjenståendeUttaksdager +
+//             utsatteDager
+//     );
+// }
 
 /**
  * Henter ut gyldig tidsrom å legge inn en utsettelse

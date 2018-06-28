@@ -9,7 +9,7 @@ import {
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
@@ -20,7 +20,6 @@ import {
 
 import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
-import { getSistePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
 
@@ -29,6 +28,7 @@ export interface OwnProps {
     dekningsgrad: Dekningsgrad;
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
+    uttaksinfo: Uttaksinfo;
     onPeriodeClick: (periode: Periode) => void;
 }
 
@@ -50,9 +50,9 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
     render() {
         const {
             termindato,
-            dekningsgrad,
             perioder,
             uttaksgrunnlag,
+            uttaksinfo,
             intl
         } = this.props;
         const items = perioder.map((periode) =>
@@ -76,12 +76,8 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
             }
             return item;
         });
-        const sistePermisjonsdag = getSistePermisjonsdag(
-            termindato,
-            dekningsgrad,
-            perioder,
-            uttaksgrunnlag
-        );
+
+        const sistePermisjonsdag = uttaksinfo.sluttdatoGittUttaksdager;
         if (sistePermisjonsdag) {
             items.push(getSistePermisjonsdagMarker(sistePermisjonsdag));
         }
