@@ -3,6 +3,9 @@ import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { fjortenUkerPluss3, getTermindatoRegler } from '../termindato';
 
+const date21DaysAgo = moment()
+    .subtract(21, 'days')
+    .startOf('day');
 const date22DaysAgo = moment()
     .subtract(22, 'days')
     .startOf('day');
@@ -35,6 +38,8 @@ describe('Termindato validation', () => {
     });
 
     it('should return true if date is valid', () => {
+        expect(callMåOppgis(moment().toDate())).toEqual(true);
+        expect(callIkkeMerEnn3UkerSiden(date21DaysAgo.toDate())).toEqual(true);
         expect(callIUke26Pluss3(fjortenUkerPluss3M.toDate())).toEqual(true);
     });
 });
