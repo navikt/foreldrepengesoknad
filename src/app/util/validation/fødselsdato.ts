@@ -5,6 +5,14 @@ import { Validator } from 'common/lib/validation/types';
 import { Fødselsdato } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
 
+export const tomorrow = moment()
+    .add(1, 'days')
+    .startOf('day');
+
+export const date3YearsAgo = moment()
+    .subtract(3, 'years')
+    .startOf('day');
+
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: moment()
         .subtract(3, 'years')
@@ -20,12 +28,6 @@ export const getFødselsdatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const date = moment(fødselsdato);
-    const tomorrow = moment()
-        .add(1, 'days')
-        .startOf('day');
-    const date3YearsAgo = moment()
-        .subtract(3, 'years')
-        .startOf('day');
     const intlKey = 'valideringsfeil.fodselsdato';
 
     return [
