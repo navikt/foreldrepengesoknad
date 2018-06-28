@@ -94,6 +94,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                     }
                     termindato={termindato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
+                    uttaksinfo={uttaksinfo}
                 />
             </div>
         );
