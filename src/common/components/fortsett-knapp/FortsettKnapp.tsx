@@ -3,16 +3,21 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import getMessage from 'common/util/i18nUtils';
 import './fortsettKnapp.less';
+import { SubmitEvent } from '../../../app/types/dom/Events';
 
 interface FortsettKnappProps {
     location?: string;
     children?: JSX.Element | string;
+    onClick?: (e: SubmitEvent) => void;
 }
 
 const FortsettKnapp = (props: FortsettKnappProps & InjectedIntlProps) => {
-    const { intl, children } = props;
+    const { intl, children, onClick } = props;
     return (
-        <Hovedknapp className="fortsettKnapp" htmlType="submit">
+        <Hovedknapp
+            className="fortsettKnapp"
+            htmlType="submit"
+            onClick={onClick}>
             {children || getMessage(intl, 'fortsettknapp.label')}
         </Hovedknapp>
     );
