@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import Steg, { StegProps } from 'app/components/steg/Steg';
 
 import { DispatchProps } from 'common/redux/types';
@@ -15,7 +15,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
-import utils from '../../../util/fødselsdato';
+import utils from '../../../util/domain/fødselsdato';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';

@@ -5,7 +5,7 @@ import AnnenInntektSiste10MndSpørsmål, {
     AnnenInntekt
 } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToMaskedInput } from '../util/dates';
+import { ISODateToMaskedInput } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
 

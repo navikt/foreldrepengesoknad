@@ -1,7 +1,7 @@
-import { Kjønn } from '../types/common';
-import { SøkerRolle } from '../types/søknad/Søknad';
+import { Kjønn } from '../../types/common';
+import { SøkerRolle } from '../../types/søknad/Søknad';
 import moment from 'moment';
-import Person from '../types/Person';
+import Person from '../../types/Person';
 
 export const erFarEllerMedmor = (
     kjønn: Kjønn,

@@ -1,12 +1,19 @@
 import * as React from 'react';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import { Fødselsdato } from '../types/common';
+import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import {
+    fødselsdatoAvgrensninger,
+    getFødselsdatoRegler
+} from '../util/validation/fødselsdato';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-export interface Props {
+export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: Fødselsdato[];
     onChange: (fødselsdatoer: Fødselsdato[]) => void;
 }
+
+type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
 
 const getKey = (idx: number) => `fødselsdatoer.flere.${idx}`;
 
@@ -23,13 +30,14 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     }
 
     render() {
-        const { fødselsdatoer } = this.props;
+        const { fødselsdatoer, intl } = this.props;
         return (
             <React.Fragment>
                 {fødselsdatoer.map((dato: Fødselsdato, idx: number) => (
                     <div className="blokk-m" key={getKey(idx)}>
-                        <DatoInput
+                        <DatoInputWithValidation
                             id={getKey(idx)}
+                            name={getKey(idx)}
                             dato={fødselsdatoer[idx]}
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
                             label={
@@ -37,6 +45,8 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                                     intlId={`fødselsdatoer.flere.${idx + 1}`}
                                 />
                             }
+                            avgrensninger={fødselsdatoAvgrensninger}
+                            validators={getFødselsdatoRegler(dato, intl)}
                         />
                     </div>
                 ))}
@@ -45,4 +55,4 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     }
 }
 
-export default FødselsdatoerSpørsmål;
+export default injectIntl(FødselsdatoerSpørsmål);
