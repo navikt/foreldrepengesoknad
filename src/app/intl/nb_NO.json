@@ -253,6 +253,13 @@
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke26":
         "Du kan tidligst søke når du er i 26. svangerskapsuke",
-    "valideringsfeil.termindato.termindatoForTidlig":
-        "Termindatoen kan ikke være tidligere enn 3 uker fra i dag"
+    "valideringsfeil.termindato.forTidlig":
+        "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
+
+    "valideringsfeil.terminbekreftelseDato.duMåOppgi":
+        "Du må oppgi når terminbekreftelsen er datert",
+    "valideringsfeil.terminbekreftelseDato.forSen":
+        "Datoen på terminbekreftelsen kan ikke være frem i tid.",
+    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
+        "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere"
 }

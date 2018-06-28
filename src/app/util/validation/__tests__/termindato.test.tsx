@@ -1,16 +1,13 @@
 import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { fjortenUkerPluss3, getTermindatoRegler } from '../termindato';
-
-const date21DaysAgo = moment()
-    .subtract(21, 'days')
-    .startOf('day');
-const date22DaysAgo = moment()
-    .subtract(22, 'days')
-    .startOf('day');
-const fjortenUkerPluss3M = moment().add(fjortenUkerPluss3, 'days');
-const fjortenUkerPluss4 = moment().add(fjortenUkerPluss3 + 1, 'days');
+import { getTermindatoRegler } from '../termindato';
+import {
+    date21DaysAgo,
+    date22DaysAgo,
+    fjortenUkerPluss3,
+    fjortenUkerPluss4
+} from '../values';
 
 const intl = {} as InjectedIntl;
 const callMåOppgis = (termindato: Date | undefined) =>
@@ -40,6 +37,6 @@ describe('Termindato validation', () => {
     it('should return true if date is valid', () => {
         expect(callMåOppgis(moment().toDate())).toEqual(true);
         expect(callIkkeMerEnn3UkerSiden(date21DaysAgo.toDate())).toEqual(true);
-        expect(callIUke26Pluss3(fjortenUkerPluss3M.toDate())).toEqual(true);
+        expect(callIUke26Pluss3(fjortenUkerPluss3.toDate())).toEqual(true);
     });
 });

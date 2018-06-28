@@ -1,14 +1,13 @@
-import moment from 'moment';
-import { date3YearsAgo, getFødselsdatoRegler, tomorrow } from '../fødselsdato';
+import { getFødselsdatoRegler } from '../fødselsdato';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { Fødselsdato } from '../../../types/common';
-
-const today = moment();
-const dateMoreThan3YearsAgo = moment()
-    .subtract(3, 'years')
-    .subtract(1, 'days')
-    .startOf('day');
+import {
+    date3YearsAgo,
+    dateMoreThan3YearsAgo,
+    today,
+    tomorrow
+} from '../values';
 
 const intl = {} as InjectedIntl;
 const callMåOppgis = (fødselsdato: Fødselsdato) =>

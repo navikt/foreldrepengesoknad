@@ -254,6 +254,13 @@
     "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindato",
     "valideringsfeil.termindato.duMåVæreIUke26":
         "Du kan tidlegast søkje når du er i 26. svangerskapsveke",
-    "valideringsfeil.termindato.termindatoForTidlig":
-        "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag"
+    "valideringsfeil.termindato.forTidlig":
+        "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag",
+
+    "valideringsfeil.terminbekreftelseDato.duMåOppgi":
+        "Du må gi opp når stadfestinga av termin er datert",
+    "valideringsfeil.terminbekreftelseDato.forSen":
+        "Datoen på stadfestinga av termin kan ikkje vere fram i tid.",
+    "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
+        "Stadfestinga på termin må vise at du er i 26. svangerskapsveke eller seinare"
 }
