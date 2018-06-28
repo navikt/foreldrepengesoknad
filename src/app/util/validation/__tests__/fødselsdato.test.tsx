@@ -1,16 +1,10 @@
 import moment from 'moment';
-import { getFødselsdatoRegler } from '../fødselsdato';
+import { date3YearsAgo, getFødselsdatoRegler, tomorrow } from '../fødselsdato';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { Fødselsdato } from '../../../types/common';
 
 const today = moment();
-const tomorrow = moment()
-    .add(1, 'days')
-    .startOf('day');
-const date3YearsAgo = moment()
-    .subtract(3, 'years')
-    .startOf('day');
 const dateMoreThan3YearsAgo = moment()
     .subtract(3, 'years')
     .subtract(1, 'days')

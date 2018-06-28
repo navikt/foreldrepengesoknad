@@ -4,7 +4,7 @@ import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 
-const fjortenUkerPluss3 = 14 * 7 + 3;
+export const fjortenUkerPluss3 = 14 * 7 + 3;
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: moment()
@@ -23,7 +23,7 @@ const date3WeeksAgo = moment()
     .startOf('day');
 
 export const getTermindatoRegler = (
-    dato: Date,
+    dato: Date | undefined,
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.termindato';
