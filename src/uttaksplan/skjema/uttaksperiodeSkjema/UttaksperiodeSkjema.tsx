@@ -134,8 +134,9 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
 
         // Hvilke spørsmål skal vises
         const visSpørsmålOmHvem = uttaksgrunnlag.erDeltPermisjon;
-        const visSpørsmålOmStønadskonto =
-            tilgjengeligeStønadskontoer.length > 1;
+        const visSpørsmålOmStønadskonto = visSpørsmålOmHvem
+            ? forelder !== undefined
+            : tilgjengeligeStønadskontoer.length > 1;
         const visSpørsmålOmTidsrom =
             !uttaksgrunnlag.erDeltPermisjon || stønadskonto ? true : false;
 
