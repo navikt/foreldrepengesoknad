@@ -81,7 +81,7 @@ const JaNeiSpørsmål: React.StatelessComponent<JaNeiProps> = ({
     </EkspanderbartInnhold>
 );
 
-const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
+const DevUttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
     const { skjemadata, onChange } = props;
     return (
         <div>
@@ -233,4 +233,4 @@ const UttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
     );
 };
 
-export default UttaksplanSideSkjema;
+export default DevUttaksplanSideSkjema;

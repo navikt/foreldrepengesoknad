@@ -51,7 +51,6 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.setStartdato = this.setStartdato.bind(this);
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
         this.skjemaErGyldig = this.skjemaErGyldig.bind(this);
-        this.erAleneomsorg = this.erAleneomsorg.bind(this);
 
         const { periode, uttaksgrunnlag } = props;
         const { tilgjengeligeStønadskontoer } = uttaksgrunnlag;
@@ -108,10 +107,6 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         return periode;
     }
 
-    erAleneomsorg() {
-        return this.props.uttaksgrunnlag.annenForelder !== undefined;
-    }
-
     skjemaErGyldig() {
         return (
             this.state.forelder !== undefined &&
@@ -132,7 +127,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const { startdato, sluttdato, forelder, stønadskonto } = this.state;
-        const erToForeldre = this.erAleneomsorg();
+        const erToForeldre =
+            this.props.uttaksgrunnlag.annenForelder !== undefined;
         const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
             uttaksgrunnlag.søker
         );
