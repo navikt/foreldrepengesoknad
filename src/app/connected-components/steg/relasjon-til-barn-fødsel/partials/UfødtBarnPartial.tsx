@@ -94,6 +94,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Spørsmål
+                            animert={false}
                             synlig={barn.antallBarn !== undefined}
                             render={() => (
                                 <DatoInputWithValidation
@@ -154,6 +155,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Spørsmål
+                            animert={false}
                             synlig={
                                 terminbekreftelse.length > 0 &&
                                 barn.termindato !== undefined
