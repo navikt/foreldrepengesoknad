@@ -135,7 +135,8 @@ class DevToolbar extends React.Component<Props, {}> {
                         søker: mockUttaksplanSøker,
                         antallBarn: 1,
                         annenForelder: mockUttasksplanAnnenForelder,
-                        erBarnetFødt: false
+                        erBarnetFødt: false,
+                        erDeltPermisjon: true
                     },
                     dekningsgrad
                 ),
