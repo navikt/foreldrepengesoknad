@@ -1,7 +1,8 @@
 import {
     Uttaksgrunnlag,
     Uttaksdatoer,
-    UttaksplanAppProps
+    UttaksplanAppProps,
+    Uttaksinfo
 } from 'uttaksplan/types/uttaksgrunnlag';
 import { Dekningsgrad } from 'common/types';
 import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
@@ -14,7 +15,13 @@ import {
     getSisteMuligePermisjonsdag,
     getFørsteMuligePermisjonsdag
 } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import {
+    Uttaksdagen,
+    Periodene,
+    getTidsperiode
+} from 'uttaksplan/utils/dataUtils';
+import { Periode } from 'uttaksplan/types';
+import { Tidsperiode } from 'nav-datovelger';
 
 export function getUttaksgrunnlag(
     props: UttaksplanAppProps,
@@ -32,7 +39,7 @@ export function getUttaksgrunnlag(
             permisjonsregler,
             dekningsgrad
         ),
-        tilgjengeligeUttaksdager:
+        antallUttaksdagerTilgjengelig:
             getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5
     };
 }
@@ -52,3 +59,32 @@ export function getUttaksdatoer(termindato: Date): Uttaksdatoer {
         førsteUttaksdagEtterFødsel: Uttaksdagen(termindato).denneEllerNeste()
     };
 }
+
+export const getUttaksinfo = (perioder: Periode[]): Uttaksinfo | undefined => {
+    if (perioder.length === 0) {
+        return undefined;
+    }
+    const periodene = Periodene(perioder);
+    const antallDagerOpphold = periodene.getAntallDagerOpphold();
+    const antallDagerUtsettelser = periodene.getAntallDagerUtsatt();
+    const antallDagerUttak = periodene.getAntallDagerUttak();
+    const antallDagerTotalt =
+        antallDagerOpphold + antallDagerUtsettelser + antallDagerUttak;
+    const registrertTidsperiode = periodene.getFørsteOgSisteRegistrerteUttaksdager() as Tidsperiode;
+    const registrertTidsperiodeInkludertOpphold = periodene.getFørsteOgSisteRegistrerteUttaksdager(
+        true
+    ) as Tidsperiode;
+    const beregnetSistePermisjonsdag = getTidsperiode(
+        registrertTidsperiode.startdato,
+        antallDagerTotalt
+    ).sluttdato;
+    return {
+        antallDagerTotalt,
+        antallDagerOpphold,
+        antallDagerUtsettelser,
+        antallDagerUttak,
+        registrertTidsperiode,
+        registrertTidsperiodeInkludertOpphold,
+        beregnetSistePermisjonsdag
+    };
+};

@@ -6,6 +6,7 @@ import { Permisjonsregler } from 'uttaksplan/types';
 import { SøkerRolle, Søkersituasjon } from 'app/types/søknad/Søknad';
 import { Kjønn } from 'app/types/common';
 import { Dekningsgrad } from 'common/types';
+import { Tidsperiode } from 'nav-datovelger';
 
 export interface SøkerGrunnlag {
     fornavn: string;
@@ -34,7 +35,7 @@ export interface Uttaksgrunnlag extends UttaksplanAppProps {
     permisjonsregler: Permisjonsregler;
     tilgjengeligeStønadskontoer: StønadskontoType[];
     tilgjengeligeUttak: StønadskontoUttak[];
-    tilgjengeligeUttaksdager: number;
+    antallUttaksdagerTilgjengelig: number;
 }
 
 export interface Uttaksdatoer {
@@ -49,17 +50,18 @@ export interface Uttaksdatoer {
 }
 
 export interface Uttaksinfo {
-    /** Første dag som er registrert som uttak/utsettelse */
-    førsteRegistrerteUttaksdag: Date;
-    /** Siste uttaksdag som er registrert */
-    sisteRegistrerteUttaksdag: Date;
-    /** Dato når permisjonen avsluttes gitt fødsel/termin og utsettelser  */
-    sistePermisjonsdag: Date;
+    /** Tidsperiode ut fra første og siste registrerte uttak eller utsettelse */
+    registrertTidsperiode: Tidsperiode;
+    /** Tidsperiode ut fra første og siste registrerte uttak, utsettelse eller opphold */
+    registrertTidsperiodeInkludertOpphold: Tidsperiode;
+    /** Siste permisjonsdag ut fra registrerte perioder  */
+    beregnetSistePermisjonsdag: Date;
     /** Antall dager som er registrert som uttak */
     antallDagerUttak: number;
     /** Antall uttaksdagerdager som er registrert som utsettelser */
     antallDagerUtsettelser: number;
     /** Antall uttaksdager som ikke er registrert som uttak eller utsettelse i permisjonsperioden */
     antallDagerOpphold: number;
-    /** Uttak per forelder */
+    /** Antall dager som er registrert som uttak, utsettelse eller opphold */
+    antallDagerTotalt: number;
 }

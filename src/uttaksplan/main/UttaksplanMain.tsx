@@ -178,6 +178,7 @@ class UttaksplanMain extends React.Component<Props> {
                     )}
                 </EkspanderbartInnhold>
                 <DevBeregning
+                    perioder={perioder}
                     uttaksdatoer={uttaksdatoer}
                     uttaksgrunnlag={uttaksgrunnlag}
                 />
