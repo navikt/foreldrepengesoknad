@@ -10,11 +10,12 @@ import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
-} from '../../../dev/mock';
+} from '../../../dev/uttaksplanMock';
 import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
-import UttaksplanSideSkjema from './UttaksplanSideSkjema';
+import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
+import { AnnenForelderGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 
 export interface StateProps {
     form: {
@@ -46,16 +47,16 @@ export interface State {
     skjemadata: UttaksplamTestSkjemadata;
 }
 
-const skalAnnenPersonHaPermisjon = (
+const getAnnenForelder = (
     skjema: UttaksplamTestSkjemadata
-): boolean => {
+): AnnenForelderGrunnlag | undefined => {
     if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
-        return false;
+        return undefined;
     }
     if (skjema.borSammen === false && skjema.skalMorHaAlt) {
-        return false;
+        return undefined;
     }
-    return true;
+    return mockUttasksplanAnnenForelder;
 };
 
 class UttaksplanSide extends React.Component<Props, State> {
@@ -71,22 +72,20 @@ class UttaksplanSide extends React.Component<Props, State> {
                 dato: addDays(new Date(), 30),
                 fnrFarOppgitt: true,
                 farHarRett: true,
-                borSammen: true
+                borSammen: true,
+                aleneomsorg: mockUttaksplanSøker.erAleneOmOmsorg
             }
         };
     }
     render() {
         const skjema = this.state.skjemadata;
-        const annenForelder =
-            false && skalAnnenPersonHaPermisjon(skjema)
-                ? mockUttasksplanAnnenForelder
-                : undefined;
+        const annenForelder = getAnnenForelder(skjema);
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
 
                 <div className="dev-only">
-                    <UttaksplanSideSkjema
+                    <DevUttaksplanSideSkjema
                         onChange={(skjemadata: UttaksplamTestSkjemadata) =>
                             this.setState({ skjemadata })
                         }
@@ -95,7 +94,10 @@ class UttaksplanSide extends React.Component<Props, State> {
                 </div>
                 <Uttaksplan
                     grunnlag={{
-                        søker: mockUttaksplanSøker,
+                        søker: {
+                            ...mockUttaksplanSøker
+                        },
+                        erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
                         termindato: skjema.dato,
                         antallBarn: parseInt(skjema.antallBarn, 10),

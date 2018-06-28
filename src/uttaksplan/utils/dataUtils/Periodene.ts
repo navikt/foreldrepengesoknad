@@ -24,6 +24,9 @@ export const Periodene = (perioder: Periode[]) => ({
         getAntallDagerUttak(perioder, konto),
     getAntallDagerUtsatt: () => getAntallDagerUtsatt(perioder),
     getAntallDagerOpphold: () => getAntallDagerOpphold(perioder),
+    getFørsteOgSisteRegistrerteUttaksdager: (
+        inkludertOpphold: boolean = false
+    ) => getFørsteOgSisteUttaksdag(perioder, inkludertOpphold),
     getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
         getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -438,4 +441,33 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
         }
     });
     return opphold;
+}
+
+function getFørsteOgSisteUttaksdag(
+    perioder: Periode[],
+    inkludertOpphold: boolean
+): Tidsperiode | undefined {
+    const filtrertePerioder = inkludertOpphold
+        ? perioder
+        : perioder.filter((p2) => p2.type !== Periodetype.Opphold);
+
+    if (filtrertePerioder.length === 0) {
+        return undefined;
+    }
+    let startdato: Date = filtrertePerioder[0].tidsperiode.startdato;
+    let sluttdato: Date = filtrertePerioder[1].tidsperiode.sluttdato;
+
+    filtrertePerioder.forEach((p) => {
+        if (isBefore(p.tidsperiode.startdato, startdato)) {
+            startdato = p.tidsperiode.startdato;
+        }
+        if (isAfter(p.tidsperiode.sluttdato, sluttdato)) {
+            sluttdato = p.tidsperiode.sluttdato;
+        }
+    });
+
+    return {
+        startdato,
+        sluttdato
+    };
 }

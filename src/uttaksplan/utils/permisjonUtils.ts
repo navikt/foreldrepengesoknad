@@ -77,7 +77,7 @@ export function getSistePermisjonsdag(
     const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
     const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
     const gjenståendeUttaksdager =
-        uttaksgrunnlag.tilgjengeligeUttaksdager - registrerteUttak;
+        uttaksgrunnlag.antallUttaksdagerTilgjengelig - registrerteUttak;
     return Uttaksdagen(termindato).leggTil(
         uttaksdagerBruktTotalt -
             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
