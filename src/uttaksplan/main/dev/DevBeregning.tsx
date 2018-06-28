@@ -1,17 +1,57 @@
 import * as React from 'react';
 import { Uttaksdatoer, Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Periode } from 'uttaksplan/types';
+import { getUttaksinfo } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 export interface Props {
     uttaksdatoer?: Uttaksdatoer;
     uttaksgrunnlag?: Uttaksgrunnlag;
+    perioder: Periode[];
 }
 
 const DevBeregning: React.StatelessComponent<Props> = ({
     uttaksdatoer,
-    uttaksgrunnlag
+    uttaksgrunnlag,
+    perioder
 }) => {
+    const uttaksinfo = getUttaksinfo(perioder);
     return (
         <div className="dev-only blokk-xl">
+            {}
+
+            {uttaksinfo && (
+                <div className="panel">
+                    <h3>Uttaksinfo</h3>
+                    <ul>
+                        <li>
+                            Første registrerte uttaksdag:{' '}
+                            {uttaksinfo.registrertTidsperiode.startdato.toDateString()}
+                        </li>
+                        <li>
+                            Siste registrerte uttaksdag:{' '}
+                            {uttaksinfo.registrertTidsperiode.sluttdato.toDateString()}
+                        </li>
+                        <li>
+                            Siste beregnet uttaksdag:{' '}
+                            {uttaksinfo.beregnetSistePermisjonsdag.toDateString()}
+                        </li>
+                        <li>
+                            Antall dager uttak: {uttaksinfo.antallDagerUttak}
+                        </li>
+                        <li>
+                            Antall dager opphold:{' '}
+                            {uttaksinfo.antallDagerOpphold}
+                        </li>
+                        <li>
+                            Antall dager utsettelser:{' '}
+                            {uttaksinfo.antallDagerUtsettelser}
+                        </li>
+                        <li>
+                            Antall dager totalt: {uttaksinfo.antallDagerTotalt}
+                        </li>
+                    </ul>
+                </div>
+            )}
             {uttaksdatoer && (
                 <div className="panel">
                     <h3>Uttaksdatoer</h3>
@@ -36,6 +76,16 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                             {uttaksgrunnlag.termindato.toDateString()}
                         </li>
                         <li>Dekningsgrad: {uttaksgrunnlag.dekningsgrad}</li>
+                        <li>
+                            To foreldre:{' '}
+                            {uttaksgrunnlag.annenForelder !== undefined
+                                ? 'Ja'
+                                : 'Nei'}
+                        </li>
+                        <li>
+                            Antall uttaksdager tilgjengelig:{' '}
+                            {uttaksgrunnlag.antallUttaksdagerTilgjengelig}
+                        </li>
                         <li>Antall barn: {uttaksgrunnlag.antallBarn}</li>
                         <li>
                             Er barnet født:{' '}

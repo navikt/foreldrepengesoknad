@@ -61,7 +61,8 @@ class UttaksplanMain extends React.Component<Props> {
     componentWillReceiveProps(nextProps: Props) {
         if (
             JSON.stringify(this.props.grunnlag) !==
-            JSON.stringify(nextProps.grunnlag)
+                JSON.stringify(nextProps.grunnlag) ||
+            nextProps.dekningsgrad !== this.props.dekningsgrad
         ) {
             this.resetUttaksplan(nextProps.grunnlag, nextProps.dekningsgrad);
         }
@@ -178,6 +179,7 @@ class UttaksplanMain extends React.Component<Props> {
                     )}
                 </EkspanderbartInnhold>
                 <DevBeregning
+                    perioder={perioder}
                     uttaksdatoer={uttaksdatoer}
                     uttaksgrunnlag={uttaksgrunnlag}
                 />

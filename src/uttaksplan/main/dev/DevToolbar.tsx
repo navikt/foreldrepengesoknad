@@ -31,7 +31,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
-} from 'app/dev/mock';
+} from 'app/dev/uttaksplanMock';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 export interface StateProps {
@@ -132,11 +132,11 @@ class DevToolbar extends React.Component<Props, {}> {
                 getUttaksgrunnlag(
                     {
                         termindato,
-
                         søker: mockUttaksplanSøker,
                         antallBarn: 1,
                         annenForelder: mockUttasksplanAnnenForelder,
-                        erBarnetFødt: false
+                        erBarnetFødt: false,
+                        erDeltPermisjon: true
                     },
                     dekningsgrad
                 ),

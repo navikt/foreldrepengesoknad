@@ -36,12 +36,17 @@ export const getTilgjengeligUttakEnkel = (
 };
 
 export const getTilgjengeligeStønadskontoer = (
-    søker: SøkerGrunnlag
+    søker: SøkerGrunnlag,
+    erDeltPermisjon: boolean
 ): StønadskontoType[] => {
-    if (søker.kjønn === Kjønn.KVINNE && søker.erAleneOmOmsorg) {
+    if (
+        søker.kjønn === Kjønn.KVINNE &&
+        søker.erAleneOmOmsorg &&
+        !erDeltPermisjon
+    ) {
         return [StønadskontoType.Foreldrepenger];
     }
-    if (erFarEllerMedmor(søker.kjønn, søker.rolle)) {
+    if (erFarEllerMedmor(søker.kjønn, søker.rolle) && !erDeltPermisjon) {
         return [StønadskontoType.Foreldrepenger];
     }
     return [
