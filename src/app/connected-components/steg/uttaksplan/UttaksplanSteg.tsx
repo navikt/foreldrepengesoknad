@@ -42,7 +42,15 @@ class UttaksplanSteg extends React.Component<Props> {
 
     render() {
         const { søknad, stegProps, person, dispatch } = this.props;
-        const { annenForelder } = søknad;
+        const annenForelder =
+            søknad.annenForelder.skalHaForeldrepenger ||
+            søknad.annenForelder.harRettPåForeldrepenger
+                ? {
+                      etternavn: '',
+                      fornavn: søknad.annenForelder.navn
+                  }
+                : undefined;
+
         const barn = søknad.barn as UfødtBarn;
         const { søker } = søknad;
 
@@ -54,14 +62,8 @@ class UttaksplanSteg extends React.Component<Props> {
                     grunnlag={{
                         termindato: (barn as UfødtBarn).termindato,
                         erBarnetFødt: barn.erBarnetFødt,
-                        annenForelder:
-                            annenForelder.skalHaForeldrepenger ||
-                            annenForelder.harRettPåForeldrepenger
-                                ? {
-                                      etternavn: '',
-                                      fornavn: annenForelder.navn
-                                  }
-                                : undefined,
+                        erDeltPermisjon: annenForelder !== undefined,
+                        annenForelder,
                         søker: {
                             erAleneOmOmsorg: søker.erAleneOmOmsorg,
                             etternavn: person.etternavn,
