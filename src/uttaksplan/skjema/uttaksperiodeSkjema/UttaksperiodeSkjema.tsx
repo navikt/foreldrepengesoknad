@@ -130,7 +130,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const erToForeldre =
             this.props.uttaksgrunnlag.annenForelder !== undefined;
         const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
-            uttaksgrunnlag.søker
+            uttaksgrunnlag.søker,
+            uttaksgrunnlag.erDeltPermisjon
         );
 
         // Hvilke spørsmål skal vises
