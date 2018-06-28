@@ -3,9 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import Bolk from 'common/components/bolk/Bolk';
-
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
@@ -15,6 +13,15 @@ import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import {
+    getTermindatoRegler,
+    termindatoAvgrensninger
+} from '../../../../util/validation/termindato';
+import {
+    getTerminbekreftelsedatoAvgrensninger,
+    getTerminbekreftelseDatoRegler
+} from '../../../../util/validation/terminbekreftelsedato';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -87,10 +94,12 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Spørsmål
+                            animert={false}
                             synlig={barn.antallBarn !== undefined}
                             render={() => (
-                                <DatoInput
+                                <DatoInputWithValidation
                                     id="termindato"
+                                    name="termindato"
                                     label={getMessage(
                                         intl,
                                         'termindato.spørsmål'
@@ -103,6 +112,11 @@ class UfødtBarnPartial extends React.Component<Props> {
                                         );
                                     }}
                                     dato={barn.termindato}
+                                    avgrensninger={termindatoAvgrensninger}
+                                    validators={getTermindatoRegler(
+                                        barn.termindato,
+                                        intl
+                                    )}
                                 />
                             )}
                         />
@@ -142,13 +156,15 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Spørsmål
+                            animert={false}
                             synlig={
                                 terminbekreftelse.length > 0 &&
                                 barn.termindato !== undefined
                             }
                             render={() => (
-                                <DatoInput
+                                <DatoInputWithValidation
                                     id="terminbekreftelseDato"
+                                    name="terminbekreftelseDato"
                                     label={getMessage(
                                         intl,
                                         'terminbekreftelseDato.spørsmål'
@@ -161,6 +177,14 @@ class UfødtBarnPartial extends React.Component<Props> {
                                         );
                                     }}
                                     dato={barn.terminbekreftelseDato}
+                                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(
+                                        barn.termindato
+                                    )}
+                                    validators={getTerminbekreftelseDatoRegler(
+                                        barn.terminbekreftelseDato,
+                                        barn.termindato,
+                                        intl
+                                    )}
                                 />
                             )}
                         />

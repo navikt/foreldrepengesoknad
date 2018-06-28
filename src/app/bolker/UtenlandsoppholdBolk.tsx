@@ -7,7 +7,7 @@ import {
     Utenlandsopphold
 } from '../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
-import { ISODateToMaskedInput } from '../util/dates';
+import { ISODateToMaskedInput } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
 
 interface UtenlandsoppholdBolkProps {

@@ -10,7 +10,7 @@ import {
 
 import Spinner from 'nav-frontend-spinner';
 
-import routeConfig from '../util/routeConfig';
+import routeConfig from '../util/routing/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
 

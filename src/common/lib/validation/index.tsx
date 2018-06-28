@@ -1,7 +1,9 @@
 import React from 'react';
 import { Input, Textarea, Select } from 'nav-frontend-skjema';
 import { Validator } from './types';
+import PT from 'prop-types';
 import SkjemaelementFeilmelding from './SkjemaelementFeilmelding';
+import DatoInput from 'common/components/dato-input/DatoInput';
 
 export interface ValidBaseProps {
     id?: string;
@@ -28,7 +30,12 @@ export interface State {
 }
 
 class ValidBase extends React.Component<Props, State> {
+    static contextTypes = {
+        validForm: PT.object
+    };
+
     element: any;
+    context: any;
 
     constructor(props: Props) {
         super(props);
@@ -167,6 +174,10 @@ class ValidBase extends React.Component<Props, State> {
                     this.element = node;
                 };
                 break;
+            case DatoInput:
+                elementRef.datoinputRef = (node: any) => {
+                    this.element = node;
+                };
         }
 
         return (

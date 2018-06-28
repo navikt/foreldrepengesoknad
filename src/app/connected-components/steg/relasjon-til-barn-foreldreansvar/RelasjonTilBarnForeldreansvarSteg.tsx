@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import Steg from 'app/components/steg/Steg';
 
 import { DispatchProps } from 'common/redux/types';
@@ -14,11 +14,11 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 
-import utils from '../../../util/fødselsdato';
+import utils from '../../../util/domain/fødselsdato';
 import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Fødselsdato, HistoryProps } from '../../../types/common';
-import { getAlderFraDato } from '../../../util/dates';
+import { getAlderFraDato } from '../../../util/dates/dates';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';

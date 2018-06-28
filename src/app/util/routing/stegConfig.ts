@@ -21,7 +21,8 @@ export interface StegConfig {
 const stegConfig: StegConfig = {
     [StegID.INNGANG]: {
         tittel: 'Inngang',
-        fortsettKnappLabel: 'Fortsett'
+        fortsettKnappLabel: 'Fortsett',
+        nesteSteg: StegID.RELASJON_TIL_BARN_FØDSEL
     },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
         tittel: 'Relasjon til barn (adopsjon) header',

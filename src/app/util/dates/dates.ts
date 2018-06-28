@@ -1,4 +1,4 @@
-import { Alder } from '../types/common';
+import { Alder } from '../../types/common';
 import * as moment from 'moment';
 
 export const getDateFromString = (dato?: string) => {

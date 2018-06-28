@@ -1,5 +1,5 @@
-import { getDateFromString } from './dates';
-import { Fødselsdato } from '../types/common';
+import { getDateFromString } from '../dates/dates';
+import { Fødselsdato } from '../../types/common';
 
 const fødselsdatoerToString = (datoer: Fødselsdato[]): string[] => {
     return datoer.map((dato) => (dato !== undefined ? dato.toISOString() : ''));
