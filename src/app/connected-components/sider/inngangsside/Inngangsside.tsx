@@ -14,6 +14,8 @@ import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import Steg, { StegProps } from '../../../components/steg/Steg';
+import { søknadStegPath } from '../../steg/StegRoutes';
+import { SubmitEvent } from '../../../types/dom/Events';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
@@ -30,6 +32,20 @@ export type Props = DispatchProps &
     InjectedIntlProps;
 
 class Inngangsside extends React.Component<Props, {}> {
+    constructor(props: Props) {
+        super(props);
+        this.navigateToNext = this.navigateToNext.bind(this);
+    }
+
+    navigateToNext(e: SubmitEvent) {
+        const { nesteStegRoute, history } = this.props;
+        if (nesteStegRoute) {
+            e.preventDefault();
+            e.stopPropagation();
+            history.push(søknadStegPath(nesteStegRoute));
+        }
+    }
+
     render() {
         const {
             roller,
@@ -79,7 +95,7 @@ class Inngangsside extends React.Component<Props, {}> {
                 />
 
                 {rolle !== undefined && (
-                    <FortsettKnapp>
+                    <FortsettKnapp onClick={this.navigateToNext}>
                         {getMessage(intl, 'fortsettknapp.label')}
                     </FortsettKnapp>
                 )}
