@@ -20,9 +20,8 @@ import {
 
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
 
 interface StateProps {
     isOpen: boolean;
@@ -37,6 +36,7 @@ interface OwnProps {
     permisjonsregler: Permisjonsregler;
     navnForelder1?: string;
     navnForelder2?: string;
+    uttaksinfo: Uttaksinfo;
 }
 
 type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
@@ -55,6 +55,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
         tidsromForUtsettelse,
         termindato,
         uttaksgrunnlag,
+
         dispatch,
         intl
     } = props;
@@ -104,9 +105,8 @@ const mapStateToProps = (
     const { form, uttaksplan, view } = state.uttaksplan;
     const { termindato } = props;
     const { dekningsgrad } = form;
-    const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
-        state
-    );
+    const sisteRegistrertePermisjonsdag =
+        props.uttaksinfo.registrertTidsperiode.sluttdato;
     if (
         !termindato ||
         !dekningsgrad ||
