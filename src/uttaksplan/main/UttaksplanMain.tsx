@@ -22,7 +22,8 @@ import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 import {
     Uttaksgrunnlag,
     Uttaksdatoer,
-    UttaksplanAppProps
+    UttaksplanAppProps,
+    Uttaksinfo
 } from 'uttaksplan/types/uttaksgrunnlag';
 
 import '../styles/uttaksplan.less';
@@ -30,12 +31,14 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import DevBeregning from 'uttaksplan/main/dev/DevBeregning';
 import Periodeplanlegger from 'uttaksplan/main/Periodeplanlegger';
+import { getUttaksinfo } from 'uttaksplan/utils/uttaksgrunnlagUtils';
 
 export interface StateProps {
     form: UttaksplanFormState;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag?: Uttaksgrunnlag;
     uttaksdatoer?: Uttaksdatoer;
+    uttaksinfo?: Uttaksinfo;
     perioder: Periode[];
     manuellUttaksplan?: boolean;
 }
@@ -107,6 +110,7 @@ class UttaksplanMain extends React.Component<Props> {
             perioder,
             uttaksdatoer,
             uttaksgrunnlag,
+            uttaksinfo,
             dispatch,
             form
         } = this.props;
@@ -167,16 +171,18 @@ class UttaksplanMain extends React.Component<Props> {
                 )}
                 <EkspanderbartInnhold
                     bredBakgrunn={true}
-                    erApen={perioderOpprettet}>
-                    {perioderOpprettet && (
-                        <div className="tidsplan">
-                            <Periodeplanlegger
-                                perioder={perioder}
-                                uttaksgrunnlag={uttaksgrunnlag}
-                                synlig={perioderOpprettet}
-                            />
-                        </div>
-                    )}
+                    erApen={perioderOpprettet && uttaksinfo !== undefined}>
+                    {perioderOpprettet &&
+                        uttaksinfo && (
+                            <div className="tidsplan">
+                                <Periodeplanlegger
+                                    perioder={perioder}
+                                    uttaksgrunnlag={uttaksgrunnlag}
+                                    uttaksinfo={uttaksinfo}
+                                    synlig={perioderOpprettet}
+                                />
+                            </div>
+                        )}
                 </EkspanderbartInnhold>
                 <DevBeregning
                     perioder={perioder}
@@ -198,12 +204,13 @@ class UttaksplanMain extends React.Component<Props> {
 const mapStateToProps = (appState: UttaksplanAppState): StateProps => {
     const { uttaksplan, form } = appState.uttaksplan;
     const dekningsgrad = form.dekningsgrad || '100%';
-
+    const uttaksinfo = getUttaksinfo(uttaksplan.perioder);
     return {
         form,
         dekningsgrad,
         uttaksgrunnlag: uttaksplan.uttaksgrunnlag,
         uttaksdatoer: uttaksplan.uttaksdatoer,
+        uttaksinfo,
         perioder: uttaksplan.perioder
     };
 };

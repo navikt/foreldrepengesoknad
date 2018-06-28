@@ -83,7 +83,7 @@ export const getUttaksinfo = (perioder: Periode[]): Uttaksinfo | undefined => {
     const registrertTidsperiodeInkludertOpphold = periodene.getFørsteOgSisteRegistrerteUttaksdager(
         true
     ) as Tidsperiode;
-    const beregnetSistePermisjonsdag = getTidsperiode(
+    const sluttdatoGittUttaksdager = getTidsperiode(
         registrertTidsperiode.startdato,
         antallDagerTotalt
     ).sluttdato;
@@ -94,6 +94,6 @@ export const getUttaksinfo = (perioder: Periode[]): Uttaksinfo | undefined => {
         antallDagerUttak,
         registrertTidsperiode,
         registrertTidsperiodeInkludertOpphold,
-        beregnetSistePermisjonsdag
+        sluttdatoGittUttaksdager
     };
 };

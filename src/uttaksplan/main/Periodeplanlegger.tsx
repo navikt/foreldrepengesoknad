@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
 import { Periode, Periodetype } from 'uttaksplan/types';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
@@ -14,6 +14,7 @@ import { Knapp } from 'nav-frontend-knapper';
 export interface StateProps {
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
+    uttaksinfo: Uttaksinfo;
     synlig: boolean;
 }
 
@@ -36,7 +37,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
     }
 
     render() {
-        const { dispatch, uttaksgrunnlag, perioder } = this.props;
+        const { dispatch, uttaksgrunnlag, uttaksinfo, perioder } = this.props;
         const { termindato, dekningsgrad } = uttaksgrunnlag;
         return (
             <div>
@@ -51,6 +52,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                         dekningsgrad={dekningsgrad}
                         perioder={perioder}
                         uttaksgrunnlag={uttaksgrunnlag}
+                        uttaksinfo={uttaksinfo}
                         onPeriodeClick={this.handlePeriodeClick}
                     />
                 </div>
