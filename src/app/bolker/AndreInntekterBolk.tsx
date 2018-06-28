@@ -4,7 +4,7 @@ import InteractiveList from '../components/interactive-list/InteractiveList';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
-import { ISODateToMaskedInput } from '../util/dates';
+import { ISODateToMaskedInput } from '../util/dates/dates';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
