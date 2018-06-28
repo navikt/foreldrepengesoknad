@@ -23,6 +23,13 @@ import {
 import { Periode } from 'uttaksplan/types';
 import { Tidsperiode } from 'nav-datovelger';
 
+export function getErDeltPermisjon(props: UttaksplanAppProps): boolean {
+    if (!props.annenForelder) {
+        return false;
+    }
+    return true;
+}
+
 export function getUttaksgrunnlag(
     props: UttaksplanAppProps,
     dekningsgrad: Dekningsgrad
@@ -32,8 +39,10 @@ export function getUttaksgrunnlag(
         ...props,
         dekningsgrad,
         permisjonsregler,
+        erDeltPermisjon: getErDeltPermisjon(props),
         tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(
-            props.søker
+            props.søker,
+            props.erDeltPermisjon
         ),
         tilgjengeligeUttak: getTilgjengeligUttakEnkel(
             permisjonsregler,

@@ -28,6 +28,7 @@ export interface UttaksplanAppProps {
     annenForelder?: AnnenForelderGrunnlag;
     antallBarn: number;
     erBarnetFødt: boolean;
+    erDeltPermisjon: boolean;
 }
 
 export interface Uttaksgrunnlag extends UttaksplanAppProps {

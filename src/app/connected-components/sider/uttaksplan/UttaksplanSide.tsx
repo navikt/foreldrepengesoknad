@@ -79,6 +79,7 @@ class UttaksplanSide extends React.Component<Props, State> {
     }
     render() {
         const skjema = this.state.skjemadata;
+        const annenForelder = getAnnenForelder(skjema);
         return (
             <Applikasjonsside visSpråkvelger={true}>
                 <DocumentTitle title="Uttaksplan" />
@@ -96,7 +97,8 @@ class UttaksplanSide extends React.Component<Props, State> {
                         søker: {
                             ...mockUttaksplanSøker
                         },
-                        annenForelder: getAnnenForelder(skjema),
+                        erDeltPermisjon: annenForelder !== undefined,
+                        annenForelder,
                         termindato: skjema.dato,
                         antallBarn: parseInt(skjema.antallBarn, 10),
                         erBarnetFødt: false
