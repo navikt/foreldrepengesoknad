@@ -99,6 +99,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             render={() => (
                                 <DatoInputWithValidation
                                     id="termindato"
+                                    name="termindato"
                                     label={getMessage(
                                         intl,
                                         'termindato.spørsmål'
@@ -163,6 +164,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             render={() => (
                                 <DatoInputWithValidation
                                     id="terminbekreftelseDato"
+                                    name="terminbekreftelseDato"
                                     label={getMessage(
                                         intl,
                                         'terminbekreftelseDato.spørsmål'
