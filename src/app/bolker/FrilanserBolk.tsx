@@ -139,23 +139,6 @@ class FrilanserBolk extends React.Component<Props> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={
-                            søker.harJobbetSomFrilansSiste10Mnd === true &&
-                            jobberFremdelesSomFrilans === true
-                        }
-                        render={() => (
-                            <DriverDuFosterhjemSpørsmål
-                                onChange={(v: boolean) =>
-                                    this.handleFrilansinformasjonOnChange({
-                                        driverFosterhjem: v
-                                    })
-                                }
-                                driverFosterhjem={driverFosterhjem}
-                            />
-                        )}
-                    />
-
                     <Bolk
                         synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
                         render={() => (
@@ -180,6 +163,29 @@ class FrilanserBolk extends React.Component<Props> {
                                         oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe
                                     })
                                 }
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            søker.harJobbetSomFrilansSiste10Mnd === true &&
+                            jobberFremdelesSomFrilans === true &&
+                            ((oppdragForNæreVennerEllerFamilieSiste10Mnd !==
+                                undefined &&
+                                oppdragForNæreVennerEllerFamilieSiste10Mnd.length >
+                                    0) ||
+                                harJobbetForNærVennEllerFamilieSiste10Mnd ===
+                                    false)
+                        }
+                        render={() => (
+                            <DriverDuFosterhjemSpørsmål
+                                onChange={(v: boolean) =>
+                                    this.handleFrilansinformasjonOnChange({
+                                        driverFosterhjem: v
+                                    })
+                                }
+                                driverFosterhjem={driverFosterhjem}
                             />
                         )}
                     />

@@ -158,10 +158,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                 />
 
                 <Bolk
-                    synlig={
-                        søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd !==
-                        undefined
-                    }
                     render={() => (
                         <AndreInntekterBolk
                             oppfølgingsspørsmål={getMessage(
