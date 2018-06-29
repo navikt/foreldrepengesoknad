@@ -88,7 +88,7 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                         </li>
                         <li>
                             Antall uttaksdager tilgjengelig:{' '}
-                            {uttaksgrunnlag.antallUttaksdagerTilgjengelig}
+                            {uttaksgrunnlag.antallUttaksdagerTotalt}
                         </li>
                         <li>Antall barn: {uttaksgrunnlag.antallBarn}</li>
                         <li>

@@ -7,20 +7,18 @@ import {
 import { Dekningsgrad } from 'common/types';
 
 import { getPermisjonsregler } from '../regler/permisjonsregler';
-import {
-    getAntallUkerTotalt,
-    getFørsteMuligePermisjonsdag,
-    getSisteMuligePermisjonsdag
-} from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksdagen } from 'uttaksplan/utils';
 import { Kjønn } from 'app/types/common';
 import { erFarEllerMedmor } from 'app/util/domain/personUtil';
+import { addYears } from 'date-fns';
+import { getAntallUkerTotalt } from 'uttaksplan/utils/permisjonUtils';
 
 export interface Uttaksgrunnlag extends UttaksplanRequiredProps {
     dekningsgrad: Dekningsgrad;
     permisjonsregler: Permisjonsregler;
     tilgjengeligeStønadskontoer: StønadskontoType[];
-    antallUttaksdagerTilgjengelig: number;
+    antallUttaksdagerTotalt: number;
+    antallUkerTotalt: number;
     datoer: {
         /** Siste mulige uttaksdag gitt fødsel/termin */
         førsteMuligeUttaksdag: Date;
@@ -47,8 +45,9 @@ export function getUttaksgrunnlag(
             props.søker,
             props.erDeltPermisjon
         ),
-        antallUttaksdagerTilgjengelig:
+        antallUttaksdagerTotalt:
             getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5,
+        antallUkerTotalt: getAntallUkerTotalt(permisjonsregler, dekningsgrad),
         datoer: {
             førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(
                 props.familiehendelsedato,
@@ -89,3 +88,31 @@ const getTilgjengeligeStønadskontoer = (
         StønadskontoType.Fellesperiode
     ];
 };
+
+/**
+ * Finner absolutt siste permisjonsdag
+ * @param familiehendelsedato
+ * @param permisjonsregler
+ */
+function getSisteMuligePermisjonsdag(
+    familiehendelsedato: Date,
+    permisjonsregler: Permisjonsregler
+): Date {
+    return Uttaksdagen(
+        addYears(familiehendelsedato, permisjonsregler.maksPermisjonslengdeIÅr)
+    ).denneEllerNeste();
+}
+
+/**
+ * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
+ * @param familiehendelsedato
+ * @param permisjonsregler
+ */
+function getFørsteMuligePermisjonsdag(
+    familiehendelsedato: Date,
+    permisjonsregler: Permisjonsregler
+): Date {
+    return Uttaksdagen(
+        familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
+    ).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
+}

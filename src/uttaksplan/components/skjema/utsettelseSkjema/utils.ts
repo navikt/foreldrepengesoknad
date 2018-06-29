@@ -3,20 +3,17 @@ import {
     Forelder,
     Tidsperiode,
     Utsettelsesperiode,
-    Permisjonsregler,
     UttaksplanSøker
 } from 'uttaksplan/types';
 import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
-import {
-    getAntallFeriedagerForForelder,
-    getSisteMuligePermisjonsdag
-} from 'uttaksplan/utils/permisjonUtils';
+import { getAntallFeriedagerForForelder } from 'uttaksplan/utils/permisjonUtils';
 import { isAfter, isBefore } from 'date-fns';
 
 import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/components/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export function getDefaultState(
     søker: UttaksplanSøker,
@@ -45,7 +42,8 @@ export function getDefaultState(
 
 export function validerUtsettelseskjema(
     state: SkjemaState,
-    props: SkjemaProps
+    props: SkjemaProps,
+    uttaksgrunnlag: Uttaksgrunnlag
 ): Valideringsfeil {
     const {
         familiehendelsedato,
@@ -102,10 +100,9 @@ export function validerUtsettelseskjema(
             {
                 ...tidsperiode,
                 sluttdato: getTilTidsromSluttdato(
-                    familiehendelsedato,
-                    permisjonsregler,
                     startdato || tidsperiode.startdato,
-                    andreUtsettelser
+                    andreUtsettelser,
+                    uttaksgrunnlag
                 )
             },
             ugyldigeTidsrom
@@ -223,10 +220,9 @@ export function getUgyldigeTidsrom(
  * @param registrerteUtsettelser
  */
 export function getTilTidsromSluttdato(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler,
     tilTidsromStartdato: Date,
-    registrerteUtsettelser: Utsettelsesperiode[]
+    registrerteUtsettelser: Utsettelsesperiode[],
+    uttaksgrunnlag: Uttaksgrunnlag
 ) {
     if (registrerteUtsettelser.length > 0) {
         const pafolgendeUtsettelser = registrerteUtsettelser.filter((u) =>
@@ -238,7 +234,7 @@ export function getTilTidsromSluttdato(
             ).forrige();
         }
     }
-    return getSisteMuligePermisjonsdag(familiehendelsedato, permisjonsregler);
+    return uttaksgrunnlag.datoer.sisteMuligeUttaksdag;
 }
 
 /**

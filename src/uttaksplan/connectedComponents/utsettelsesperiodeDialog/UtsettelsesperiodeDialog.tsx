@@ -74,6 +74,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UtsettelseSkjema
+                uttaksgrunnlag={uttaksgrunnlag}
                 søker={uttaksgrunnlag.søker}
                 registrerteUtsettelser={
                     perioder.filter(
