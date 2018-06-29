@@ -33,7 +33,7 @@ const UttaksplanReducer = (
                 ...state,
                 perioder: UttaksplanBuilder(
                     opprettUttaksperioderToForeldreEttBarn(
-                        action.termindato,
+                        action.familiehendelsedato,
                         action.dekningsgrad,
                         action.fellesukerForelder1,
                         action.fellesukerForelder2,
@@ -46,7 +46,7 @@ const UttaksplanReducer = (
                 ...state,
                 perioder: UttaksplanBuilder(
                     opprettUttaksperioderAleneomsorgMor(
-                        action.termindato,
+                        action.familiehendelsedato,
                         action.dekningsgrad,
                         action.uttaksgrunnlag.permisjonsregler
                     )

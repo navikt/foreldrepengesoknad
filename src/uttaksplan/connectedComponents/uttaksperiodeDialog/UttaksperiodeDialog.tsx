@@ -30,7 +30,7 @@ interface StateProps {
 
 interface OwnProps {
     uttaksgrunnlag: Uttaksgrunnlag;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
 }
 
@@ -39,7 +39,7 @@ type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
-        termindato,
+        familiehendelsedato,
         dekningsgrad,
         isOpen,
         valgtPeriode,
@@ -60,7 +60,7 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UttaksperiodeSkjema
-                termindato={termindato}
+                familiehendelsedato={familiehendelsedato}
                 dekningsgrad={dekningsgrad}
                 periode={valgtPeriode}
                 ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(

@@ -92,7 +92,7 @@ export function visTidslinje(synlig: boolean): UttaksplanActionTypes {
 }
 
 export function opprettPerioderForToForeldre(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag,
     fellesukerForelder1: number,
@@ -101,21 +101,21 @@ export function opprettPerioderForToForeldre(
     return {
         type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE,
         dekningsgrad,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag,
         fellesukerForelder1,
         fellesukerForelder2
     };
 }
 export function opprettPerioderAleneomsorg(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag
 ): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG,
         dekningsgrad,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag
     };
 }

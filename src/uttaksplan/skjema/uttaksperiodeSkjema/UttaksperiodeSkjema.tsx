@@ -23,7 +23,7 @@ import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     ugyldigeTidsperioder?: Tidsperiode[];
@@ -148,7 +148,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const regler = stønadskonto
             ? getStønadskontoRegler(
                   stønadskonto,
-                  this.props.termindato,
+                  this.props.familiehendelsedato,
                   this.props.dekningsgrad,
                   permisjonsregler
               )
@@ -160,9 +160,9 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                   sluttdato: regler.sisteUttaksdato
               }
             : {
-                  startdato: this.props.termindato,
+                  startdato: this.props.familiehendelsedato,
                   sluttdato: getSisteMuligePermisjonsdag(
-                      this.props.termindato,
+                      this.props.familiehendelsedato,
                       permisjonsregler
                   )
               };

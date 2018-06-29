@@ -35,7 +35,7 @@ export function getUttaksgrunnlag(
     props: UttaksplanRequiredProps,
     dekningsgrad: Dekningsgrad
 ): Uttaksgrunnlag {
-    const permisjonsregler = getPermisjonsregler(props.termindato);
+    const permisjonsregler = getPermisjonsregler();
     return {
         ...props,
         dekningsgrad,
@@ -49,16 +49,18 @@ export function getUttaksgrunnlag(
             getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5,
         datoer: {
             førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(
-                props.termindato,
+                props.familiehendelsedato,
                 permisjonsregler
             ),
             sisteMuligeUttaksdag: getSisteMuligePermisjonsdag(
-                props.termindato,
+                props.familiehendelsedato,
                 permisjonsregler
             ),
-            sisteUttaksdagFørFødsel: Uttaksdagen(props.termindato).forrige(),
+            sisteUttaksdagFørFødsel: Uttaksdagen(
+                props.familiehendelsedato
+            ).forrige(),
             førsteUttaksdagEtterFødsel: Uttaksdagen(
-                props.termindato
+                props.familiehendelsedato
             ).denneEllerNeste()
         }
     };

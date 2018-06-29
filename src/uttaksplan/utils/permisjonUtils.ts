@@ -12,59 +12,59 @@ import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaks
 
 /**
  * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
- * @param termindato
+ * @param familiehendelsedato
  * @param permisjonsregler
  */
 export function getPermisjonStartdato(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
     return Uttaksdagen(
-        termindato // Siste uttaksdag i denne perioden er dagen før termin
+        familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
 }
 
 /**
  * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
- * @param termindato
+ * @param familiehendelsedato
  * @param permisjonsregler
  */
 export function getFørsteMuligePermisjonsdag(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
     return Uttaksdagen(
-        termindato // Siste uttaksdag i denne perioden er dagen før termin
+        familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
 }
 
 /**
  * Finner absolutt siste permisjonsdag
- * @param termindato
+ * @param familiehendelsedato
  * @param permisjonsregler
  */
 export function getSisteMuligePermisjonsdag(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Date {
     return Uttaksdagen(
-        addYears(termindato, permisjonsregler.maksPermisjonslengdeIÅr)
+        addYears(familiehendelsedato, permisjonsregler.maksPermisjonslengdeIÅr)
     ).denneEllerNeste();
 }
 
 /**
  * Henter ut gyldig tidsrom å legge inn en utsettelse
- * @param termindato
+ * @param familiehendelsedato
  * @param dekningsgrad
  * @param permisjonsregler
  */
 export function getGyldigTidsromForUtsettelse(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler,
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {
     const mødrekvoteEtterTermin = getPakrevdMødrekvoteEtterTermin(
-        termindato,
+        familiehendelsedato,
         permisjonsregler
     );
     const startdato = Uttaksdagen(mødrekvoteEtterTermin.sluttdato).neste();

@@ -19,13 +19,13 @@ import { guid } from 'nav-frontend-js-utils';
 
 const UTTAKSDAGER_I_UKE = 5;
 
-/** Oppretter default stønadsperioder ut fra termindato ++ */
+/** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderAleneomsorgMor(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     permisjonsregler: Permisjonsregler
 ): Uttaksperiode[] {
-    termindato = normaliserDato(termindato);
+    familiehendelsedato = normaliserDato(familiehendelsedato);
     const dagerTotalt =
         getAntallUkerTotalt(permisjonsregler, dekningsgrad) * UTTAKSDAGER_I_UKE;
     const dagerFørTermin =
@@ -38,7 +38,7 @@ export function opprettUttaksperioderAleneomsorgMor(
             forelder: 'forelder1',
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getTidsperiode(
-                getPermisjonStartdato(termindato, permisjonsregler),
+                getPermisjonStartdato(familiehendelsedato, permisjonsregler),
                 dagerFørTermin
             ),
             låstForelder: true
@@ -49,7 +49,7 @@ export function opprettUttaksperioderAleneomsorgMor(
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(
-                Uttaksdagen(termindato).denneEllerNeste(),
+                Uttaksdagen(familiehendelsedato).denneEllerNeste(),
                 dagerEtterTermin
             )
         }

@@ -48,7 +48,7 @@ export function validerUtsettelseskjema(
     props: SkjemaProps
 ): Valideringsfeil {
     const {
-        termindato,
+        familiehendelsedato,
         tidsperiode,
         permisjonsregler,
         registrerteUtsettelser,
@@ -73,7 +73,7 @@ export function validerUtsettelseskjema(
             startdato,
             tidsperiode,
             ugyldigeTidsrom,
-            termindato
+            familiehendelsedato
         );
         if (datoValideringsfeil) {
             valideringsfeil.set('startdato', {
@@ -102,7 +102,7 @@ export function validerUtsettelseskjema(
             {
                 ...tidsperiode,
                 sluttdato: getTilTidsromSluttdato(
-                    termindato,
+                    familiehendelsedato,
                     permisjonsregler,
                     startdato || tidsperiode.startdato,
                     andreUtsettelser
@@ -217,13 +217,13 @@ export function getUgyldigeTidsrom(
 
 /**
  * Finner siste gyldige sluttdato for en utsettelse
- * @param termindato
+ * @param familiehendelsedato
  * @param permisjonsregler
  * @param tilTidsromStartdato
  * @param registrerteUtsettelser
  */
 export function getTilTidsromSluttdato(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler,
     tilTidsromStartdato: Date,
     registrerteUtsettelser: Utsettelsesperiode[]
@@ -238,7 +238,7 @@ export function getTilTidsromSluttdato(
             ).forrige();
         }
     }
-    return getSisteMuligePermisjonsdag(termindato, permisjonsregler);
+    return getSisteMuligePermisjonsdag(familiehendelsedato, permisjonsregler);
 }
 
 /**

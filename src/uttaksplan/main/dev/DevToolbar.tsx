@@ -40,7 +40,7 @@ export interface StateProps {
 }
 
 export interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     permisjonsregler: Permisjonsregler;
     fellesperiodeukerForelder1: number;
@@ -119,7 +119,7 @@ class DevToolbar extends React.Component<Props, {}> {
     reset() {
         const {
             dispatch,
-            termindato,
+            familiehendelsedato,
             dekningsgrad,
             fellesperiodeukerForelder1,
             fellesperiodeukerForelder2
@@ -127,11 +127,11 @@ class DevToolbar extends React.Component<Props, {}> {
 
         dispatch(
             opprettPerioderForToForeldre(
-                termindato,
+                familiehendelsedato,
                 dekningsgrad,
                 getUttaksgrunnlag(
                     {
-                        termindato,
+                        familiehendelsedato,
                         søker: mockUttaksplanSøker,
                         antallBarn: 1,
                         annenForelder: mockUttasksplanAnnenForelder,

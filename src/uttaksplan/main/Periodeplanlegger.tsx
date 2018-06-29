@@ -39,7 +39,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
 
     render() {
         const { dispatch, uttaksgrunnlag, uttaksinfo, perioder } = this.props;
-        const { termindato, dekningsgrad } = uttaksgrunnlag;
+        const { familiehendelsedato, dekningsgrad } = uttaksgrunnlag;
         return (
             <div>
                 <div className="blokkPad-m">
@@ -49,7 +49,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                         nye perioder og/eller utsettelser.
                     </p>
                     <PeriodeTimeline
-                        termindato={termindato}
+                        familiehendelsedato={familiehendelsedato}
                         dekningsgrad={dekningsgrad}
                         perioder={perioder}
                         uttaksgrunnlag={uttaksgrunnlag}
@@ -82,7 +82,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
 
                 <UttaksperiodeDialog
                     uttaksgrunnlag={uttaksgrunnlag}
-                    termindato={termindato}
+                    familiehendelsedato={familiehendelsedato}
                     dekningsgrad={dekningsgrad}
                 />
 
@@ -93,7 +93,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                             ? uttaksgrunnlag.annenForelder.fornavn
                             : 'Forelder 2'
                     }
-                    termindato={termindato}
+                    familiehendelsedato={familiehendelsedato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                     uttaksinfo={uttaksinfo}
                 />

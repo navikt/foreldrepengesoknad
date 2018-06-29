@@ -51,7 +51,7 @@ export interface InitUttaksplan {
 }
 export interface OpprettPerioderToForeldre {
     type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     fellesukerForelder1: number;
@@ -60,7 +60,7 @@ export interface OpprettPerioderToForeldre {
 
 export interface OpprettPerioderAleneomsorg {
     type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
 }

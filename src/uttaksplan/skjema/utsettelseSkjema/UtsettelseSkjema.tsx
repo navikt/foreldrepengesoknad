@@ -31,7 +31,7 @@ import { preventFormSubmit } from 'common/util/eventUtils';
 import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
 interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     søker: UttaksplanSøker;
     tidsperiode: Tidsperiode;
     utsettelse?: Utsettelsesperiode;
@@ -137,7 +137,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             navnForelder2,
             tidsperiode,
             permisjonsregler,
-            termindato,
+            familiehendelsedato,
             søker,
             registrerteUtsettelser,
             intl
@@ -152,7 +152,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const tilTidsperiode: Tidsperiode = {
             startdato: tilTidsromStartdato,
             sluttdato: getTilTidsromSluttdato(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler,
                 tilTidsromStartdato,
                 utsettelser
