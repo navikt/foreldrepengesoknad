@@ -2,7 +2,7 @@ import {
     UttaksplanActionTypes,
     UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
-import { getPermisjonsregler } from '../../data/permisjonsregler';
+import { getPermisjonsregler } from '../../uttak/permisjonsregler';
 import { UttaksplanFormState } from '../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
 

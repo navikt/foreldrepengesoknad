@@ -5,8 +5,7 @@ import {
     StønadskontoType,
     StønadskontoUttak
 } from 'uttaksplan/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
-import { getErDeltPermisjon } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { getPermisjonsregler } from './permisjonsregler';
 import {
     getTilgjengeligeStønadskontoer,
     getTilgjengeligUttakEnkel
@@ -45,7 +44,7 @@ export function getUttaksgrunnlag(
         ...props,
         dekningsgrad,
         permisjonsregler,
-        erDeltPermisjon: getErDeltPermisjon(props),
+        erDeltPermisjon: props.annenForelder !== undefined,
         tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(
             props.søker,
             props.erDeltPermisjon
