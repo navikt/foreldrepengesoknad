@@ -15,7 +15,6 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import { getStønadskontoRegler } from 'uttaksplan/utils/regler/uttaksperioderegler';
-import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
 import StønadskontoSpørsmål from 'uttaksplan/components/skjema/spørsmål/StønadskontoSpørsmål';
@@ -161,10 +160,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
               }
             : {
                   startdato: this.props.familiehendelsedato,
-                  sluttdato: getSisteMuligePermisjonsdag(
-                      this.props.familiehendelsedato,
-                      permisjonsregler
-                  )
+                  sluttdato: uttaksgrunnlag.datoer.sisteMuligeUttaksdag
               };
 
         return (

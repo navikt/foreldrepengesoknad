@@ -4,7 +4,6 @@
  *
  */
 
-import { addYears } from 'date-fns';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -29,34 +28,6 @@ export function getPermisjonStartdato(
     return Uttaksdagen(
         familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
-}
-
-/**
- * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
- * @param familiehendelsedato
- * @param permisjonsregler
- */
-export function getFørsteMuligePermisjonsdag(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Date {
-    return Uttaksdagen(
-        familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
-    ).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
-}
-
-/**
- * Finner absolutt siste permisjonsdag
- * @param familiehendelsedato
- * @param permisjonsregler
- */
-export function getSisteMuligePermisjonsdag(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Date {
-    return Uttaksdagen(
-        addYears(familiehendelsedato, permisjonsregler.maksPermisjonslengdeIÅr)
-    ).denneEllerNeste();
 }
 
 /**
@@ -101,19 +72,6 @@ export function getAntallUkerFellesperiode(
         permisjonsregler.antallUkerForeldrepengerFørFødsel
     );
 }
-/**
- * Finner totalt antall uker tilgjengelig
- * @param permisjonsregler
- * @param dekningsgrad
- */
-export function getAntallUkerTotalt(
-    permisjonsregler: Permisjonsregler,
-    dekningsgrad: Dekningsgrad
-) {
-    return dekningsgrad === '80%'
-        ? permisjonsregler.antallUkerTotalt80
-        : permisjonsregler.antallUkerTotalt100;
-}
 
 /**
  * Summerer antall uttaksdager som er registrert som ferie for en forelder
@@ -138,3 +96,17 @@ export const getAntallFeriedagerForForelder = (
               0
           );
 };
+
+/**
+ * Finner totalt antall uker tilgjengelig
+ * @param permisjonsregler
+ * @param dekningsgrad
+ */
+export function getAntallUkerTotalt(
+    permisjonsregler: Permisjonsregler,
+    dekningsgrad: Dekningsgrad
+) {
+    return dekningsgrad === '80%'
+        ? permisjonsregler.antallUkerTotalt80
+        : permisjonsregler.antallUkerTotalt100;
+}
