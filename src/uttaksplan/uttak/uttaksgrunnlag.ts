@@ -1,27 +1,23 @@
-import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
+import {
+    UttaksplanRequiredProps,
+    UttaksplanSøker
+} from 'uttaksplan/uttak/types';
 import { Dekningsgrad } from 'common/types';
-import {
-    Permisjonsregler,
-    StønadskontoType,
-    StønadskontoUttak
-} from 'uttaksplan/types';
+import { Permisjonsregler, StønadskontoType } from 'uttaksplan/types';
 import { getPermisjonsregler } from './permisjonsregler';
-import {
-    getTilgjengeligeStønadskontoer,
-    getTilgjengeligUttakEnkel
-} from 'uttaksplan/utils/st\u00F8nadskontoUtils';
 import {
     getAntallUkerTotalt,
     getFørsteMuligePermisjonsdag,
     getSisteMuligePermisjonsdag
 } from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Kjønn } from 'app/types/common';
+import { erFarEllerMedmor } from 'app/util/personUtil';
 
 export interface Uttaksgrunnlag extends UttaksplanRequiredProps {
     dekningsgrad: Dekningsgrad;
     permisjonsregler: Permisjonsregler;
     tilgjengeligeStønadskontoer: StønadskontoType[];
-    tilgjengeligeUttak: StønadskontoUttak[];
     antallUttaksdagerTilgjengelig: number;
     datoer: {
         /** Siste mulige uttaksdag gitt fødsel/termin */
@@ -49,10 +45,6 @@ export function getUttaksgrunnlag(
             props.søker,
             props.erDeltPermisjon
         ),
-        tilgjengeligeUttak: getTilgjengeligUttakEnkel(
-            permisjonsregler,
-            dekningsgrad
-        ),
         antallUttaksdagerTilgjengelig:
             getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5,
         datoer: {
@@ -71,3 +63,25 @@ export function getUttaksgrunnlag(
         }
     };
 }
+
+const getTilgjengeligeStønadskontoer = (
+    søker: UttaksplanSøker,
+    erDeltPermisjon: boolean
+): StønadskontoType[] => {
+    if (
+        søker.kjønn === Kjønn.KVINNE &&
+        søker.erAleneOmOmsorg &&
+        !erDeltPermisjon
+    ) {
+        return [StønadskontoType.Foreldrepenger];
+    }
+    if (erFarEllerMedmor(søker.kjønn, søker.rolle) && !erDeltPermisjon) {
+        return [StønadskontoType.Foreldrepenger];
+    }
+    return [
+        StønadskontoType.ForeldrepengerFørFødsel,
+        StønadskontoType.Mødrekvote,
+        StønadskontoType.Fedrekvote,
+        StønadskontoType.Fellesperiode
+    ];
+};

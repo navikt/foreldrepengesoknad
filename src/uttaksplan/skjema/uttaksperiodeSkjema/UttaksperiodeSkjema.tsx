@@ -19,7 +19,6 @@ import { Tidsperiode } from 'nav-datovelger';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
-import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
 import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 export interface OwnProps {
@@ -127,10 +126,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const { startdato, sluttdato, forelder, stønadskonto } = this.state;
-        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
-            uttaksgrunnlag.søker,
-            uttaksgrunnlag.erDeltPermisjon
-        );
+        const tilgjengeligeStønadskontoer =
+            uttaksgrunnlag.tilgjengeligeStønadskontoer;
 
         // Hvilke spørsmål skal vises
         const visSpørsmålOmHvem = uttaksgrunnlag.erDeltPermisjon;
