@@ -5,11 +5,7 @@ import {
     Periodetype,
     Dekningsgrad
 } from 'uttaksplan/types';
-import {
-    sorterPerioder,
-    getTidsperiode,
-    Uttaksdagen
-} from 'uttaksplan/utils/dataUtils';
+import { sorterPerioder, getTidsperiode, Uttaksdagen } from 'uttaksplan/utils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';

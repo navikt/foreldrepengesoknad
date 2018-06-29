@@ -4,7 +4,11 @@ import {
     UttaksplanAppState,
     UttaksplanFormState
 } from 'uttaksplan/redux/types';
-import { Periode, Dekningsgrad } from 'uttaksplan/types';
+import {
+    Periode,
+    Dekningsgrad,
+    UttaksplanRequiredProps
+} from 'uttaksplan/types';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
@@ -24,10 +28,9 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import DevBeregning from 'uttaksplan/main/dev/DevBeregning';
 import Periodeplanlegger from 'uttaksplan/main/Periodeplanlegger';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { Uttaksinfo, getUttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
-import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
 import UttaksplanSkjema from 'uttaksplan/components/skjema/uttaksplanSkjema/UttaksplanSkjema';
+import { getUttaksinfo, Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export interface StateProps {
     form: UttaksplanFormState;

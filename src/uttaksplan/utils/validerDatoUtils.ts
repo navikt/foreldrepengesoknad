@@ -1,7 +1,7 @@
 import { Tidsperiode } from '../types';
 import { isWithinRange } from 'date-fns';
-import { Uttaksdagen } from './dataUtils';
 import { normaliserDato } from 'common/util/datoUtils';
+import { Uttaksdagen } from 'uttaksplan/utils/Uttaksdagen';
 
 export type DatoValideringsfeil =
     | 'ikkeUttaksdag'

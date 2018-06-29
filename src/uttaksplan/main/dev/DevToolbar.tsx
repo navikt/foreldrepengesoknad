@@ -26,13 +26,13 @@ import { normaliserDato } from 'common/util/datoUtils';
 import './devUtil';
 
 import './dev.less';
-import { Uttaksdagen, Tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen, Tidsperioden } from 'uttaksplan/utils';
 import { Checkbox } from 'nav-frontend-skjema';
 import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
 } from 'app/dev/uttaksplanMock';
-import { getUttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { getUttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export interface StateProps {
     appState: UttaksplanAppState;

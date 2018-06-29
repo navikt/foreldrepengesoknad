@@ -5,7 +5,6 @@
  */
 
 import { addYears } from 'date-fns';
-import { Uttaksdagen, Tidsperioden } from './dataUtils';
 import {
     Permisjonsregler,
     Tidsperiode,
@@ -14,7 +13,9 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../types';
-import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/oppsett/toForeldreEttBarn';
+import { Uttaksdagen } from 'uttaksplan/utils/Uttaksdagen';
+import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/utils/planer/oppsett/toForeldreEttBarn';
+import { Tidsperioden } from 'uttaksplan/utils/Tidsperioden';
 
 /**
  * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)

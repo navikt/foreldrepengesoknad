@@ -8,7 +8,8 @@ import {
     Forelder,
     Periodetype,
     Tidsperiode,
-    Permisjonsregler
+    Permisjonsregler,
+    UttaksplanSøker
 } from 'uttaksplan/types';
 import Ferieinfo from './Ferieinfo';
 import {
@@ -28,7 +29,6 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsm�
 import UtsettelsesårsakSpørsmål from 'uttaksplan/components/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
 interface OwnProps {
     familiehendelsedato: Date;

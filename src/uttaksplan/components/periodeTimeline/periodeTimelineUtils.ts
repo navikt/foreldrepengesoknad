@@ -14,11 +14,11 @@ import {
     TimelineMarker,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
-import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils/lib';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export const mapPeriodeToTimelineEvent = (
     periode: Periode,

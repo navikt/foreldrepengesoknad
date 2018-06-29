@@ -4,8 +4,8 @@ import {
     Periodetype,
     Permisjonsregler
 } from '../../types';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { UttaksplanRequiredProps } from 'uttaksplan/types';
 
 export enum UttaksplanActionTypeKeys {
     'INIT_UTTAKSPLAN' = 'initUttaksplan',

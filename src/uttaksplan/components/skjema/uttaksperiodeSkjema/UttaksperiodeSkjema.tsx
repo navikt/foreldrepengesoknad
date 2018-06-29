@@ -14,12 +14,12 @@ import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/Ekspan
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { Tidsperiode } from 'nav-datovelger';
-import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
+import { getStønadskontoRegler } from 'uttaksplan/utils/regler/uttaksperioderegler';
 import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
-import StønadskontoSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
-import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import StønadskontoSpørsmål from 'uttaksplan/components/skjema/spørsmål/StønadskontoSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/spørsmål/TidsperiodeSpørsmål';
 
 export interface OwnProps {
     periode?: Uttaksperiode;

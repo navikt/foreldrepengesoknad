@@ -1,6 +1,6 @@
 import { Dekningsgrad, Periode, Periodetype } from '../../types';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export type SynligInfoMap = Map<string, boolean>;
 

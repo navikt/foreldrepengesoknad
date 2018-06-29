@@ -3,9 +3,10 @@ import {
     Forelder,
     Tidsperiode,
     Utsettelsesperiode,
-    Permisjonsregler
+    Permisjonsregler,
+    UttaksplanSøker
 } from 'uttaksplan/types';
-import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
 import {
     getAntallFeriedagerForForelder,
     getSisteMuligePermisjonsdag
@@ -16,7 +17,6 @@ import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/components/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
-import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
 export function getDefaultState(
     søker: UttaksplanSøker,

@@ -3,7 +3,7 @@ import {
     Permisjonsregler,
     Dekningsgrad
 } from 'uttaksplan/types';
-import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen } from 'uttaksplan/utils';
 
 export interface StønadskontoRegler {
     stønadskontotype: StønadskontoType;

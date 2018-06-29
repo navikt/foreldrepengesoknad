@@ -1,9 +1,6 @@
 import { SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
 import { Kjønn } from '../types/common';
-import {
-    UttaksplanAnnenForelder,
-    UttaksplanSøker
-} from 'uttaksplan/uttak/types';
+import { UttaksplanAnnenForelder, UttaksplanSøker } from 'uttaksplan/types';
 
 export const mockUttaksplanSøker: UttaksplanSøker = {
     fornavn: 'Amalie',

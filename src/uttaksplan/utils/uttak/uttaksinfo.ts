@@ -1,5 +1,5 @@
 import { Tidsperiode } from 'nav-datovelger';
-import { getTidsperiode, Periodene } from 'uttaksplan/utils/dataUtils';
+import { getTidsperiode, Periodene } from 'uttaksplan/utils';
 import { Periode } from 'uttaksplan/types';
 
 export interface Uttaksinfo {

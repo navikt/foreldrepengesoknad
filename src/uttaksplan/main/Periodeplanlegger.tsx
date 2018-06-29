@@ -9,8 +9,8 @@ import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelses
 import { visPeriodeDialog } from 'uttaksplan/redux/actions';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface StateProps {
     perioder: Periode[];
