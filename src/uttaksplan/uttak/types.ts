@@ -1,7 +1,7 @@
 import { SøkerRolle, Søkersituasjon } from 'app/types/søknad/Søknad';
 import { Kjønn } from 'app/types/common';
 
-export interface SøkerGrunnlag {
+export interface UttaksplanSøker {
     fornavn: string;
     mellomnavn: string;
     etternavn: string;
@@ -10,15 +10,15 @@ export interface SøkerGrunnlag {
     rolle: SøkerRolle;
     situasjon: Søkersituasjon;
 }
-export interface AnnenForelderGrunnlag {
+export interface UttaksplanAnnenForelder {
     fornavn: string;
     etternavn: string;
 }
 
 export interface UttaksplanRequiredProps {
     termindato: Date;
-    søker: SøkerGrunnlag;
-    annenForelder?: AnnenForelderGrunnlag;
+    søker: UttaksplanSøker;
+    annenForelder?: UttaksplanAnnenForelder;
     antallBarn: number;
     erBarnetFødt: boolean;
     erDeltPermisjon: boolean;

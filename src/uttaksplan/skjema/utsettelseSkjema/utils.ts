@@ -16,10 +16,10 @@ import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
-import { SøkerGrunnlag } from 'uttaksplan/uttak/types';
+import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
 export function getDefaultState(
-    søker: SøkerGrunnlag,
+    søker: UttaksplanSøker,
     utsettelse?: Utsettelsesperiode
 ): SkjemaState {
     return utsettelse
