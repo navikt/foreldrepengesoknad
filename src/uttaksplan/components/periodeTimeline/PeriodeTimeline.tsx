@@ -9,7 +9,6 @@ import {
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
@@ -22,6 +21,8 @@ import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 
 export interface OwnProps {
     termindato: Date;

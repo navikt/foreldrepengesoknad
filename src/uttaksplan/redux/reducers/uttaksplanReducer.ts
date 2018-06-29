@@ -5,12 +5,9 @@ import {
 import { UttaksplanState } from '../types';
 import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
 import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
-import {
-    getUttaksdatoer,
-    getUttaksgrunnlag
-} from 'uttaksplan/utils/uttaksgrunnlagUtils';
 import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
 import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/uttaksplaner/uttaksplanAleneomsorgMor';
+import { getUttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 const defaultState: UttaksplanState = {
     perioder: [],
@@ -26,7 +23,6 @@ const UttaksplanReducer = (
             return {
                 manuellOppdatering: false,
                 perioder: [],
-                uttaksdatoer: getUttaksdatoer(action.props.termindato),
                 uttaksgrunnlag: getUttaksgrunnlag(
                     action.props,
                     action.dekningsgrad

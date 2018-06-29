@@ -28,7 +28,7 @@ import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjel
 import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
 import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { SøkerGrunnlag } from 'uttaksplan/uttak/types';
 
 interface OwnProps {
     termindato: Date;

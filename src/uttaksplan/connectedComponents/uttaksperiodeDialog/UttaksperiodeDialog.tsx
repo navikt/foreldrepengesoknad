@@ -19,7 +19,7 @@ import {
 
 import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
 
 interface StateProps {

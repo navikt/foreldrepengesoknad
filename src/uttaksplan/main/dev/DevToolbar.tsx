@@ -32,7 +32,7 @@ import {
     mockUttaksplanSøker,
     mockUttasksplanAnnenForelder
 } from 'app/dev/uttaksplanMock';
-import { getUttaksgrunnlag } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { getUttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 export interface StateProps {
     appState: UttaksplanAppState;

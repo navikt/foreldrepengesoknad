@@ -4,10 +4,8 @@ import {
     Periodetype,
     Permisjonsregler
 } from '../../types';
-import {
-    Uttaksgrunnlag,
-    UttaksplanAppProps
-} from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
 
 export enum UttaksplanActionTypeKeys {
     'INIT_UTTAKSPLAN' = 'initUttaksplan',
@@ -48,7 +46,7 @@ export type UttaksplanActionTypes =
 
 export interface InitUttaksplan {
     type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN;
-    props: UttaksplanAppProps;
+    props: UttaksplanRequiredProps;
     dekningsgrad: Dekningsgrad;
 }
 export interface OpprettPerioderToForeldre {

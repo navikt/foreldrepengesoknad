@@ -17,10 +17,10 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
 import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 export interface OwnProps {
     periode?: Uttaksperiode;

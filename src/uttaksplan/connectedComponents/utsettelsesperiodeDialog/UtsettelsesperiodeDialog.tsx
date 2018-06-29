@@ -21,7 +21,8 @@ import {
 import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 interface StateProps {
     isOpen: boolean;
@@ -122,7 +123,6 @@ const mapStateToProps = (
 
     const tidsromForUtsettelse = getGyldigTidsromForUtsettelse(
         termindato,
-        dekningsgrad,
         props.permisjonsregler,
         sisteRegistrertePermisjonsdag
     );
