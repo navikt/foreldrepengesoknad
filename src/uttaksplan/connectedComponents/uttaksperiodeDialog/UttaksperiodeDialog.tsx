@@ -17,10 +17,10 @@ import {
     Dekningsgrad
 } from 'uttaksplan/types';
 
-import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
+import UttaksperiodeSkjema from 'uttaksplan/components/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
+import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/components/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
 
 interface StateProps {
     isOpen: boolean;

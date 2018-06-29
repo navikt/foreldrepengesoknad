@@ -10,16 +10,16 @@ import {
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/TidsperiodeSpørsm\u00E5l';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/HvemGjelderPeriodenSpørsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
 import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
-import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
 import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/HvemGjelderPeriodenSp\u00F8rsm\u00E5l';
+import StønadskontoSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
+import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/sp\u00F8rsm\u00E5l/TidsperiodeSp\u00F8rsm\u00E5l';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
