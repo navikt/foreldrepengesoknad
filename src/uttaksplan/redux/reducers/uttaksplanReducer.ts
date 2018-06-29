@@ -3,11 +3,11 @@ import {
     UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
 import { UttaksplanState } from '../types';
-import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
-import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
-import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
-import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/uttaksplaner/uttaksplanAleneomsorgMor';
 import { getUttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { UttaksplanBuilder } from 'uttaksplan/uttaksplaner/UttaksplanBuilder';
+import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/uttaksplaner/oppsett/aleneomsorgMor';
+import { UttaksplanManuell } from 'uttaksplan/uttaksplaner/UttaksplanManuell';
+import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/uttaksplaner/oppsett/toForeldreEttBarn';
 
 const defaultState: UttaksplanState = {
     perioder: [],
