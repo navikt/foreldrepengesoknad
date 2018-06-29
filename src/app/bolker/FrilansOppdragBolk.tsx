@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToMaskedInput } from '../util/dates';
+import { ISODateToMaskedInput } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
 
@@ -125,7 +125,9 @@ export default class FrilansOppdragBolk extends React.Component<
                         </div>
 
                         <div className="blokk-s">
-                            <Knapp onClick={() => this.openModal()}>
+                            <Knapp
+                                onClick={() => this.openModal()}
+                                htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </div>

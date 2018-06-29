@@ -1,5 +1,5 @@
-import { Kjønn } from '../types/common';
-import { Søkersituasjon, SøkerRolle } from '../types/søknad/Søknad';
+import { Kjønn } from '../../types/common';
+import { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 
 export const getSøkerrollerForBruker = (
     kjønn: Kjønn,
