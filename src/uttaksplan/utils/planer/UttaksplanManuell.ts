@@ -1,12 +1,8 @@
 import { Periode, Tidsperiode } from 'uttaksplan/types';
-import {
-    sorterPerioder,
-    Tidsperioden,
-    Uttaksdagen
-} from 'uttaksplan/utils/dataUtils';
+import { sorterPerioder, Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
 import { guid } from 'nav-frontend-js-utils';
 import { isBefore, isAfter, isSameDay } from 'date-fns';
-import { slåSammenLikePerioder } from 'uttaksplan/utils/UttaksplanBuilder';
+import { slåSammenLikePerioder } from 'uttaksplan/utils/planer/UttaksplanBuilder';
 
 export const UttaksplanManuell = (perioder: Periode[]) =>
     new UttaksplanManuellBuilder(perioder);

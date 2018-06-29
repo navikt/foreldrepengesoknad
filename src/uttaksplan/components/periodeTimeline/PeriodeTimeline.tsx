@@ -9,26 +9,27 @@ import {
 import UttaksplanIkon, {
     UttaksplanIkonKeys
 } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
-    getTerminMarker,
+    getFamiliehendelseMarker,
     getSistePermisjonsdagMarker,
     getGaps
 } from './periodeTimelineUtils';
 
 import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
-import { getSistePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
+    uttaksinfo: Uttaksinfo;
     onPeriodeClick: (periode: Periode) => void;
 }
 
@@ -49,16 +50,21 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
 
     render() {
         const {
-            termindato,
-            dekningsgrad,
+            familiehendelsedato,
             perioder,
             uttaksgrunnlag,
+            uttaksinfo,
             intl
         } = this.props;
         const items = perioder.map((periode) =>
             mapPeriodeToTimelineEvent(periode, intl, uttaksgrunnlag)
         );
-        items.push(getTerminMarker(termindato, uttaksgrunnlag.erBarnetFødt));
+        items.push(
+            getFamiliehendelseMarker(
+                familiehendelsedato,
+                uttaksgrunnlag.erBarnetFødt
+            )
+        );
         items.sort(sortTimelineItems).map((item, idx, arr) => {
             if (idx > 0) {
                 const prevItem = arr[idx];
@@ -76,12 +82,8 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
             }
             return item;
         });
-        const sistePermisjonsdag = getSistePermisjonsdag(
-            termindato,
-            dekningsgrad,
-            perioder,
-            uttaksgrunnlag
-        );
+
+        const sistePermisjonsdag = uttaksinfo.sluttdatoGittUttaksdager;
         if (sistePermisjonsdag) {
             items.push(getSistePermisjonsdagMarker(sistePermisjonsdag));
         }

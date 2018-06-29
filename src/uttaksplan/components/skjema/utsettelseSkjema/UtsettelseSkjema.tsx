@@ -8,7 +8,8 @@ import {
     Forelder,
     Periodetype,
     Tidsperiode,
-    Permisjonsregler
+    Permisjonsregler,
+    UttaksplanSøker
 } from 'uttaksplan/types';
 import Ferieinfo from './Ferieinfo';
 import {
@@ -24,15 +25,16 @@ import { Valideringsfeil, Skjemaelement } from './types';
 import { Feil } from 'common/components/skjema-input-element/types';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { normaliserDato } from 'common/util/datoUtils';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
-import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import UtsettelsesårsakSpørsmål from 'uttaksplan/components/skjema/spørsmål/UtsettelsesårsakSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 interface OwnProps {
-    termindato: Date;
-    søker: SøkerGrunnlag;
+    familiehendelsedato: Date;
+    uttaksgrunnlag: Uttaksgrunnlag;
+    søker: UttaksplanSøker;
     tidsperiode: Tidsperiode;
     utsettelse?: Utsettelsesperiode;
     registrerteUtsettelser: Utsettelsesperiode[];
@@ -99,7 +101,11 @@ class UtsettelseSkjema extends React.Component<Props, State> {
 
     validerSkjema(): Valideringsfeil {
         this.skalValidere = false;
-        const valideringsfeil = validerUtsettelseskjema(this.state, this.props);
+        const valideringsfeil = validerUtsettelseskjema(
+            this.state,
+            this.props,
+            this.props.uttaksgrunnlag
+        );
         this.setState({ valideringsfeil });
         return valideringsfeil;
     }
@@ -137,7 +143,6 @@ class UtsettelseSkjema extends React.Component<Props, State> {
             navnForelder2,
             tidsperiode,
             permisjonsregler,
-            termindato,
             søker,
             registrerteUtsettelser,
             intl
@@ -152,10 +157,9 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const tilTidsperiode: Tidsperiode = {
             startdato: tilTidsromStartdato,
             sluttdato: getTilTidsromSluttdato(
-                termindato,
-                permisjonsregler,
                 tilTidsromStartdato,
-                utsettelser
+                utsettelser,
+                this.props.uttaksgrunnlag
             )
         };
 

@@ -13,7 +13,7 @@ export interface Props {
 }
 
 import './uttaksplanSkjema.less';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import { UttaksplanFormState } from 'uttaksplan/redux/types';
 
 class UttaksplanSkjema extends React.Component<Props, {}> {

@@ -2,12 +2,12 @@ import {
     UttaksplanActionTypes,
     UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
-import { getPermisjonsregler } from '../../data/permisjonsregler';
 import { UttaksplanFormState } from '../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
+import { getPermisjonsregler } from 'uttaksplan/utils/regler/permisjonsregler';
 
 const getInitialState = (): UttaksplanFormState => {
-    const permisjonsregler = getPermisjonsregler(new Date());
+    const permisjonsregler = getPermisjonsregler();
     const ukerFellesperiode = getAntallUkerFellesperiode(
         permisjonsregler,
         '100%'

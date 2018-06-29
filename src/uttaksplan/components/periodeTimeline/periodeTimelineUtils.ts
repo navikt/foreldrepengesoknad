@@ -5,7 +5,6 @@ import {
     UtsettelseÅrsakType
 } from 'uttaksplan/types';
 import { InjectedIntl } from 'react-intl';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     TimelineEvent,
     TimelineGap,
@@ -15,10 +14,11 @@ import {
     TimelineMarker,
     TimelineItem
 } from 'uttaksplan/components/timeline/types';
-import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils/lib';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export const mapPeriodeToTimelineEvent = (
     periode: Periode,
@@ -136,8 +136,8 @@ export const getTimelineIconsForPeriode = (
     return undefined;
 };
 
-export function getTerminMarker(
-    termindato: Date,
+export function getFamiliehendelseMarker(
+    familiehendelsedato: Date,
     erBarnetFødt: boolean
 ): TimelineMarker {
     return {
@@ -145,7 +145,7 @@ export function getTerminMarker(
         type: TimelineItemType.marker,
         icons: ['termin'],
         title: erBarnetFødt ? 'Fødsel' : 'Termin',
-        startDate: termindato,
+        startDate: familiehendelsedato,
         data: 'termin'
     };
 }

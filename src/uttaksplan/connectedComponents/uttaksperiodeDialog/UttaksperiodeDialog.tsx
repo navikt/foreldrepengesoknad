@@ -17,10 +17,10 @@ import {
     Dekningsgrad
 } from 'uttaksplan/types';
 
-import UttaksperiodeSkjema from 'uttaksplan/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
-import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import UttaksperiodeSkjema from 'uttaksplan/components/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
+import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/components/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
 
 interface StateProps {
     isOpen: boolean;
@@ -30,7 +30,7 @@ interface StateProps {
 
 interface OwnProps {
     uttaksgrunnlag: Uttaksgrunnlag;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
 }
 
@@ -39,7 +39,7 @@ type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
-        termindato,
+        familiehendelsedato,
         dekningsgrad,
         isOpen,
         valgtPeriode,
@@ -60,7 +60,7 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UttaksperiodeSkjema
-                termindato={termindato}
+                familiehendelsedato={familiehendelsedato}
                 dekningsgrad={dekningsgrad}
                 periode={valgtPeriode}
                 ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(

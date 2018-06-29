@@ -1,5 +1,5 @@
 import { addDays, getISODay, isSameDay, isBefore } from 'date-fns';
-import { Tidsperioden } from 'uttaksplan/utils/dataUtils';
+import { Tidsperioden } from 'uttaksplan/utils';
 
 /**
  * Wrapper en dato med uttaksdager-funksjonalitet

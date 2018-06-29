@@ -3,14 +3,11 @@ import {
     UttaksplanActionTypeKeys
 } from '../actions/actionTypes';
 import { UttaksplanState } from '../types';
-import { UttaksplanBuilder } from 'uttaksplan/utils/UttaksplanBuilder';
-import { UttaksplanManuell } from 'uttaksplan/utils/UttaksplanManuell';
-import {
-    getUttaksdatoer,
-    getUttaksgrunnlag
-} from 'uttaksplan/utils/uttaksgrunnlagUtils';
-import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
-import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/uttaksplaner/uttaksplanAleneomsorgMor';
+import { getUttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { UttaksplanBuilder } from 'uttaksplan/utils/planer/UttaksplanBuilder';
+import { opprettUttaksperioderToForeldreEttBarn } from 'uttaksplan/utils/planer/oppsett/toForeldreEttBarn';
+import { opprettUttaksperioderAleneomsorgMor } from 'uttaksplan/utils/planer/oppsett/aleneomsorgMor';
+import { UttaksplanManuell } from 'uttaksplan/utils/planer/UttaksplanManuell';
 
 const defaultState: UttaksplanState = {
     perioder: [],
@@ -26,7 +23,6 @@ const UttaksplanReducer = (
             return {
                 manuellOppdatering: false,
                 perioder: [],
-                uttaksdatoer: getUttaksdatoer(action.props.termindato),
                 uttaksgrunnlag: getUttaksgrunnlag(
                     action.props,
                     action.dekningsgrad
@@ -37,7 +33,7 @@ const UttaksplanReducer = (
                 ...state,
                 perioder: UttaksplanBuilder(
                     opprettUttaksperioderToForeldreEttBarn(
-                        action.termindato,
+                        action.familiehendelsedato,
                         action.dekningsgrad,
                         action.fellesukerForelder1,
                         action.fellesukerForelder2,
@@ -50,7 +46,7 @@ const UttaksplanReducer = (
                 ...state,
                 perioder: UttaksplanBuilder(
                     opprettUttaksperioderAleneomsorgMor(
-                        action.termindato,
+                        action.familiehendelsedato,
                         action.dekningsgrad,
                         action.uttaksgrunnlag.permisjonsregler
                     )

@@ -5,10 +5,8 @@ import {
     Permisjonsregler
 } from '../../types';
 import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from './actionTypes';
-import {
-    Uttaksgrunnlag,
-    UttaksplanAppProps
-} from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { UttaksplanRequiredProps } from 'uttaksplan/types';
 
 export function setFellesperiodeukerMor(uker: number): UttaksplanActionTypes {
     return {
@@ -18,7 +16,7 @@ export function setFellesperiodeukerMor(uker: number): UttaksplanActionTypes {
 }
 
 export function initUttaksplan(
-    props: UttaksplanAppProps,
+    props: UttaksplanRequiredProps,
     dekningsgrad: Dekningsgrad
 ): UttaksplanActionTypes {
     return {
@@ -94,7 +92,7 @@ export function visTidslinje(synlig: boolean): UttaksplanActionTypes {
 }
 
 export function opprettPerioderForToForeldre(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag,
     fellesukerForelder1: number,
@@ -103,21 +101,21 @@ export function opprettPerioderForToForeldre(
     return {
         type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE,
         dekningsgrad,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag,
         fellesukerForelder1,
         fellesukerForelder2
     };
 }
 export function opprettPerioderAleneomsorg(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     uttaksgrunnlag: Uttaksgrunnlag
 ): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG,
         dekningsgrad,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag
     };
 }

@@ -18,11 +18,11 @@ import {
     Utsettelsesperiode
 } from 'uttaksplan/types';
 
-import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { getSisteRegistrertePermisjonsdag } from 'uttaksplan/selectors/periodeSelector';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import UtsettelseSkjema from 'uttaksplan/components/skjema/utsettelseSkjema/UtsettelseSkjema';
 
 interface StateProps {
     isOpen: boolean;
@@ -33,10 +33,11 @@ interface StateProps {
 }
 
 interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     permisjonsregler: Permisjonsregler;
     navnForelder1?: string;
     navnForelder2?: string;
+    uttaksinfo: Uttaksinfo;
 }
 
 type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
@@ -53,8 +54,9 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
         navnForelder1,
         navnForelder2,
         tidsromForUtsettelse,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag,
+
         dispatch,
         intl
     } = props;
@@ -72,6 +74,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
             onRequestClose={() => dispatch(lukkPeriodeDialog())}
             className="periodeSkjemaDialog">
             <UtsettelseSkjema
+                uttaksgrunnlag={uttaksgrunnlag}
                 søker={uttaksgrunnlag.søker}
                 registrerteUtsettelser={
                     perioder.filter(
@@ -91,7 +94,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
                     dispatch(slettPeriode(p));
                     dispatch(lukkPeriodeDialog());
                 }}
-                termindato={termindato}
+                familiehendelsedato={familiehendelsedato}
             />
         </Modal>
     );
@@ -102,13 +105,12 @@ const mapStateToProps = (
     props: OwnProps
 ): StateProps | undefined => {
     const { form, uttaksplan, view } = state.uttaksplan;
-    const { termindato } = props;
+    const { familiehendelsedato } = props;
     const { dekningsgrad } = form;
-    const sisteRegistrertePermisjonsdag = getSisteRegistrertePermisjonsdag(
-        state
-    );
+    const sisteRegistrertePermisjonsdag =
+        props.uttaksinfo.registrertTidsperiode.sluttdato;
     if (
-        !termindato ||
+        !familiehendelsedato ||
         !dekningsgrad ||
         !sisteRegistrertePermisjonsdag ||
         !view.dialogErApen ||
@@ -121,8 +123,7 @@ const mapStateToProps = (
     }
 
     const tidsromForUtsettelse = getGyldigTidsromForUtsettelse(
-        termindato,
-        dekningsgrad,
+        familiehendelsedato,
         props.permisjonsregler,
         sisteRegistrertePermisjonsdag
     );

@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { Uttaksdatoer, Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import { Periode } from 'uttaksplan/types';
-import { getUttaksinfo } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { getUttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface Props {
-    uttaksdatoer?: Uttaksdatoer;
     uttaksgrunnlag?: Uttaksgrunnlag;
     perioder: Periode[];
 }
 
 const DevBeregning: React.StatelessComponent<Props> = ({
-    uttaksdatoer,
     uttaksgrunnlag,
     perioder
 }) => {
@@ -32,8 +30,12 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                             {uttaksinfo.registrertTidsperiode.sluttdato.toDateString()}
                         </li>
                         <li>
+                            Siste registrerte uttaksdag (inkludert opphold):{' '}
+                            {uttaksinfo.registrertTidsperiodeInkludertOpphold.sluttdato.toDateString()}
+                        </li>
+                        <li>
                             Siste beregnet uttaksdag:{' '}
-                            {uttaksinfo.beregnetSistePermisjonsdag.toDateString()}
+                            {uttaksinfo.sluttdatoGittUttaksdager.toDateString()}
                         </li>
                         <li>
                             Antall dager uttak: {uttaksinfo.antallDagerUttak}
@@ -52,15 +54,17 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                     </ul>
                 </div>
             )}
-            {uttaksdatoer && (
+            {uttaksgrunnlag && (
                 <div className="panel">
                     <h3>Uttaksdatoer</h3>
                     <ul>
-                        {Object.keys(uttaksdatoer).map((d, idx) => (
+                        {Object.keys(uttaksgrunnlag.datoer).map((d, idx) => (
                             <React.Fragment key={idx}>
                                 <li>
                                     {d}:{' '}
-                                    {(uttaksdatoer[d] as Date).toDateString()}
+                                    {(uttaksgrunnlag.datoer[
+                                        d
+                                    ] as Date).toDateString()}
                                 </li>
                             </React.Fragment>
                         ))}
@@ -72,8 +76,8 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                     <h3>Uttaksgrunnlag</h3>
                     <ul>
                         <li>
-                            Familiehendelsesdato:{' '}
-                            {uttaksgrunnlag.termindato.toDateString()}
+                            familiehendelsedato:{' '}
+                            {uttaksgrunnlag.familiehendelsedato.toDateString()}
                         </li>
                         <li>Dekningsgrad: {uttaksgrunnlag.dekningsgrad}</li>
                         <li>
@@ -84,7 +88,7 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                         </li>
                         <li>
                             Antall uttaksdager tilgjengelig:{' '}
-                            {uttaksgrunnlag.antallUttaksdagerTilgjengelig}
+                            {uttaksgrunnlag.antallUttaksdagerTotalt}
                         </li>
                         <li>Antall barn: {uttaksgrunnlag.antallBarn}</li>
                         <li>
