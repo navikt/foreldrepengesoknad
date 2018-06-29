@@ -14,7 +14,7 @@ import {
 } from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksdagen } from 'uttaksplan/utils';
 import { Kjønn } from 'app/types/common';
-import { erFarEllerMedmor } from 'app/util/personUtil';
+import { erFarEllerMedmor } from 'app/util/domain/personUtil';
 
 export interface Uttaksgrunnlag extends UttaksplanRequiredProps {
     dekningsgrad: Dekningsgrad;
