@@ -125,7 +125,9 @@ export default class FrilansOppdragBolk extends React.Component<
                         </div>
 
                         <div className="blokk-s">
-                            <Knapp onClick={() => this.openModal()}>
+                            <Knapp
+                                onClick={() => this.openModal()}
+                                htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </div>
