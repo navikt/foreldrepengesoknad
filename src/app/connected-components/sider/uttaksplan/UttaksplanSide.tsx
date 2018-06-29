@@ -15,7 +15,7 @@ import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { AnnenForelderGrunnlag } from 'uttaksplan/uttak/types';
+import { UttaksplanAnnenForelder } from 'uttaksplan/uttak/types';
 
 export interface StateProps {
     form: {
@@ -49,7 +49,7 @@ export interface State {
 
 const getAnnenForelder = (
     skjema: UttaksplamTestSkjemadata
-): AnnenForelderGrunnlag | undefined => {
+): UttaksplanAnnenForelder | undefined => {
     if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
         return undefined;
     }

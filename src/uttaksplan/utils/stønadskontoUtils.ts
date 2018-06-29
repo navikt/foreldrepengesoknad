@@ -7,7 +7,7 @@ import {
 import { getAntallUkerFellesperiode } from 'uttaksplan/utils/permisjonUtils';
 import { Kjønn } from 'app/types/common';
 import { erFarEllerMedmor } from 'app/util/personUtil';
-import { SøkerGrunnlag } from 'uttaksplan/uttak/types';
+import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
 /** Forutsetter nå kun default som fødsel, ett barn og to foreldre */
 export const getTilgjengeligUttakEnkel = (
@@ -36,7 +36,7 @@ export const getTilgjengeligUttakEnkel = (
 };
 
 export const getTilgjengeligeStønadskontoer = (
-    søker: SøkerGrunnlag,
+    søker: UttaksplanSøker,
     erDeltPermisjon: boolean
 ): StønadskontoType[] => {
     if (
