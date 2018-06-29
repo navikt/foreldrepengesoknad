@@ -1,5 +1,5 @@
 import { Periode, Tidsperiode } from 'uttaksplan/types';
-import { Periodene } from 'uttaksplan/utils/dataUtils';
+import { Periodene } from 'uttaksplan/utils';
 
 export function getUgyldigeTidsperioderForUttaksperiode(
     perioder: Periode[]

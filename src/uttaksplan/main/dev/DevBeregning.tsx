@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Periode } from 'uttaksplan/types';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { getUttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { getUttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface Props {
     uttaksgrunnlag?: Uttaksgrunnlag;

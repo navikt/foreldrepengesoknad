@@ -5,7 +5,7 @@ import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
-import { getPermisjonsregler } from 'uttaksplan/uttak/permisjonsregler';
+import { getPermisjonsregler } from 'uttaksplan/utils/regler/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
     mockUttaksplanSøker,
@@ -15,7 +15,7 @@ import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { UttaksplanAnnenForelder } from 'uttaksplan/uttak/types';
+import { UttaksplanAnnenForelder } from 'uttaksplan/types';
 
 export interface StateProps {
     form: {

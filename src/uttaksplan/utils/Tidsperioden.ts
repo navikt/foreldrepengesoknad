@@ -1,6 +1,6 @@
 import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
-import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen } from 'uttaksplan/utils';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { isSameDay, isAfter, isBefore } from 'date-fns';
 

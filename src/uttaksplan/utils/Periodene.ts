@@ -8,10 +8,10 @@ import {
     Oppholdsperiode,
     StønadskontoType,
     StønadskontoUttak
-} from '../../types';
+} from '../types';
 import { Uttaksdagen, Tidsperioden } from './';
 import { guid } from 'nav-frontend-js-utils/lib';
-import { Perioden } from 'uttaksplan/utils/dataUtils/Perioden';
+import { Perioden } from 'uttaksplan/utils/Perioden';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),

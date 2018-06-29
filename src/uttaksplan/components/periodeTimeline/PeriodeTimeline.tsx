@@ -21,8 +21,8 @@ import './periodeTimeline.less';
 import { isSameDay, isBefore } from 'date-fns';
 import UkerOgDager from 'common/components/uker-og-dager/UkerOgDager';
 import TidsperiodeTekst from 'uttaksplan/components/tidsperiodeTekst/TidsperiodeTekst';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
-import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface OwnProps {
     familiehendelsedato: Date;

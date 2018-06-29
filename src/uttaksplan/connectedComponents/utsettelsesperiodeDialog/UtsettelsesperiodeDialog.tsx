@@ -20,8 +20,8 @@ import {
 
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import UtsettelseSkjema from 'uttaksplan/components/skjema/utsettelseSkjema/UtsettelseSkjema';
 
 interface StateProps {

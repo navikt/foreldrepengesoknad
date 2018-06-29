@@ -18,7 +18,7 @@ import {
 } from 'uttaksplan/types';
 
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import UttaksperiodeSkjema from 'uttaksplan/components/skjema/uttaksperiodeSkjema/UttaksperiodeSkjema';
 import { getUgyldigeTidsperioderForUttaksperiode } from 'uttaksplan/components/skjema/uttaksperiodeSkjema/uttaksperiodeskjemaUtils';
 

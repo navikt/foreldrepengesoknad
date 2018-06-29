@@ -1,16 +1,18 @@
 import {
     UttaksplanRequiredProps,
-    UttaksplanSøker
-} from 'uttaksplan/uttak/types';
+    UttaksplanSøker,
+    Permisjonsregler,
+    StønadskontoType
+} from 'uttaksplan/types';
 import { Dekningsgrad } from 'common/types';
-import { Permisjonsregler, StønadskontoType } from 'uttaksplan/types';
-import { getPermisjonsregler } from './permisjonsregler';
+
+import { getPermisjonsregler } from '../regler/permisjonsregler';
 import {
     getAntallUkerTotalt,
     getFørsteMuligePermisjonsdag,
     getSisteMuligePermisjonsdag
 } from 'uttaksplan/utils/permisjonUtils';
-import { Uttaksdagen } from 'uttaksplan/utils/dataUtils';
+import { Uttaksdagen } from 'uttaksplan/utils';
 import { Kjønn } from 'app/types/common';
 import { erFarEllerMedmor } from 'app/util/personUtil';
 

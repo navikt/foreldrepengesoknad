@@ -4,17 +4,11 @@ import {
     Periode,
     StønadskontoType
 } from 'uttaksplan/types';
-import { Periodene, Perioden } from 'uttaksplan/utils/dataUtils';
+import { Perioden, Periodene } from 'uttaksplan/utils';
 
 const summerDager = (a: number, b: StønadskontoUttak) => a + b.dager;
 const summerUttaksdager = (a: number, b: Uttaksperiode) =>
     a + Perioden(b).getAntallUttaksdager();
-
-export interface BeregnetUttak {
-    navn: string;
-    dager: number;
-    overforbruk?: boolean;
-}
 
 export function beregnUttak(
     perioder: Periode[],

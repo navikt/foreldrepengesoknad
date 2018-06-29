@@ -1,4 +1,4 @@
-import { Permisjonsregler } from '../types';
+import { Permisjonsregler } from '../../types';
 
 const reglerFomJuli2018: Permisjonsregler = {
     antallUkerTotalt100: 49,

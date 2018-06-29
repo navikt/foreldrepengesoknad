@@ -8,7 +8,7 @@ import {
     Periodene,
     Perioden,
     getTidsperiode
-} from 'uttaksplan/utils/dataUtils';
+} from 'uttaksplan/utils';
 
 /**
  *
