@@ -5,7 +5,7 @@ import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
+import { getPermisjonsregler } from 'uttaksplan/utils/regler/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
     mockUttaksplanSøker,
@@ -15,7 +15,7 @@ import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { AnnenForelderGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { UttaksplanAnnenForelder } from 'uttaksplan/types';
 
 export interface StateProps {
     form: {
@@ -24,7 +24,7 @@ export interface StateProps {
         permisjonsregler: Permisjonsregler;
         fellesperiodeukerForelder1: number;
         fellesperiodeukerForelder2: number;
-        dato: Date;
+        familiehendelsedato: Date;
     };
 }
 
@@ -49,7 +49,7 @@ export interface State {
 
 const getAnnenForelder = (
     skjema: UttaksplamTestSkjemadata
-): AnnenForelderGrunnlag | undefined => {
+): UttaksplanAnnenForelder | undefined => {
     if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
         return undefined;
     }
@@ -99,7 +99,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                         },
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
-                        termindato: skjema.dato,
+                        familiehendelsedato: skjema.dato,
                         antallBarn: parseInt(skjema.antallBarn, 10),
                         erBarnetFødt: false
                     }}
@@ -111,7 +111,7 @@ class UttaksplanSide extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
-    const dato = addDays(new Date(), 20);
+    const familiehendelsedato = addDays(new Date(), 20);
     return {
         form: {
             navnForelder1: 'Kari',
@@ -120,8 +120,8 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
                 state.uttaksplan.form.fellesperiodeukerForelder1,
             fellesperiodeukerForelder2:
                 state.uttaksplan.form.fellesperiodeukerForelder2,
-            permisjonsregler: getPermisjonsregler(new Date()),
-            dato
+            permisjonsregler: getPermisjonsregler(),
+            familiehendelsedato
         }
     };
 };

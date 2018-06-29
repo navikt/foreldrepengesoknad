@@ -58,7 +58,7 @@ class UttaksplanSteg extends React.Component<Props> {
             <Steg {...stegProps} onSubmit={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     grunnlag={{
-                        termindato: (barn as UfødtBarn).termindato,
+                        familiehendelsedato: (barn as UfødtBarn).termindato,
                         erBarnetFødt: barn.erBarnetFødt,
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,

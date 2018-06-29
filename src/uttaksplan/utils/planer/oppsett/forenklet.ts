@@ -5,26 +5,22 @@ import {
     Periodetype,
     Dekningsgrad
 } from 'uttaksplan/types';
-import {
-    sorterPerioder,
-    getTidsperiode,
-    Uttaksdagen
-} from 'uttaksplan/utils/dataUtils';
+import { sorterPerioder, getTidsperiode, Uttaksdagen } from 'uttaksplan/utils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 
 const UTTAKSDAGER_I_UKE = 5;
 
-/** Oppretter default stønadsperioder ut fra termindato ++ */
+/** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderEnkel(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
 ): Uttaksperiode[] {
-    termindato = normaliserDato(termindato);
+    familiehendelsedato = normaliserDato(familiehendelsedato);
 
     const ukerMorFørTermin = permisjonsregler.antallUkerForeldrepengerFørFødsel;
     const ukerMorsDel =
@@ -39,7 +35,7 @@ export function opprettUttaksperioderEnkel(
         forelder: 'forelder1',
         konto: StønadskontoType.MorsDelFørTermin,
         tidsperiode: getTidsperiode(
-            getPermisjonStartdato(termindato, permisjonsregler),
+            getPermisjonStartdato(familiehendelsedato, permisjonsregler),
             ukerMorFørTermin * UTTAKSDAGER_I_UKE
         )
     };
@@ -49,7 +45,7 @@ export function opprettUttaksperioderEnkel(
         forelder: 'forelder1',
         konto: StønadskontoType.MorsDel,
         tidsperiode: getTidsperiode(
-            Uttaksdagen(termindato).denneEllerNeste(),
+            Uttaksdagen(familiehendelsedato).denneEllerNeste(),
             ukerMorsDel * UTTAKSDAGER_I_UKE
         )
     };

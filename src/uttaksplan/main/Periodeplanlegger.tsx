@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import { Periode, Periodetype } from 'uttaksplan/types';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
@@ -10,10 +9,13 @@ import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelses
 import { visPeriodeDialog } from 'uttaksplan/redux/actions';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
 export interface StateProps {
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
+    uttaksinfo: Uttaksinfo;
     synlig: boolean;
 }
 
@@ -36,8 +38,8 @@ class Periodeplanlegger extends React.Component<Props, {}> {
     }
 
     render() {
-        const { dispatch, uttaksgrunnlag, perioder } = this.props;
-        const { termindato, dekningsgrad } = uttaksgrunnlag;
+        const { dispatch, uttaksgrunnlag, uttaksinfo, perioder } = this.props;
+        const { familiehendelsedato, dekningsgrad } = uttaksgrunnlag;
         return (
             <div>
                 <div className="blokkPad-m">
@@ -47,10 +49,11 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                         nye perioder og/eller utsettelser.
                     </p>
                     <PeriodeTimeline
-                        termindato={termindato}
+                        familiehendelsedato={familiehendelsedato}
                         dekningsgrad={dekningsgrad}
                         perioder={perioder}
                         uttaksgrunnlag={uttaksgrunnlag}
+                        uttaksinfo={uttaksinfo}
                         onPeriodeClick={this.handlePeriodeClick}
                     />
                 </div>
@@ -79,7 +82,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
 
                 <UttaksperiodeDialog
                     uttaksgrunnlag={uttaksgrunnlag}
-                    termindato={termindato}
+                    familiehendelsedato={familiehendelsedato}
                     dekningsgrad={dekningsgrad}
                 />
 
@@ -90,8 +93,9 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                             ? uttaksgrunnlag.annenForelder.fornavn
                             : 'Forelder 2'
                     }
-                    termindato={termindato}
+                    familiehendelsedato={familiehendelsedato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
+                    uttaksinfo={uttaksinfo}
                 />
             </div>
         );

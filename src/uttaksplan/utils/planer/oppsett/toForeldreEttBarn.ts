@@ -6,11 +6,7 @@ import {
     Dekningsgrad
 } from 'uttaksplan/types';
 import { Tidsperiode } from 'nav-datovelger';
-import {
-    sorterPerioder,
-    Uttaksdagen,
-    getTidsperiode
-} from 'uttaksplan/utils/dataUtils';
+import { sorterPerioder, Uttaksdagen, getTidsperiode } from 'uttaksplan/utils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
@@ -18,31 +14,32 @@ import { guid } from 'nav-frontend-js-utils';
 const UTTAKSDAGER_I_UKE = 5;
 
 function getMødrekvoteFørTermin(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     return getTidsperiode(
-        getPermisjonStartdato(termindato, permisjonsregler),
+        getPermisjonStartdato(familiehendelsedato, permisjonsregler),
         permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE
     );
 }
 
 export function getPakrevdMødrekvoteEtterTermin(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     return getTidsperiode(
-        Uttaksdagen(termindato).denneEllerNeste(),
+        Uttaksdagen(familiehendelsedato).denneEllerNeste(),
         permisjonsregler.antallUkerMødrekvoteEtterFødsel * UTTAKSDAGER_I_UKE
     );
 }
 
 function getFrivilligMødrekvoteEtterTermin(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): Tidsperiode {
     const startdato = Uttaksdagen(
-        getPakrevdMødrekvoteEtterTermin(termindato, permisjonsregler).sluttdato
+        getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
+            .sluttdato
     ).neste();
     return getTidsperiode(
         startdato,
@@ -53,29 +50,31 @@ function getFrivilligMødrekvoteEtterTermin(
 }
 
 function getFellesperiodeForelder1(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler,
     fellesukerForelder1: number
 ): Tidsperiode {
     const startdato = Uttaksdagen(
-        getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
+        getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
             .sluttdato
     ).neste();
     return getTidsperiode(startdato, fellesukerForelder1 * UTTAKSDAGER_I_UKE);
 }
 
 function getFellesperiodeForelder2(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler,
     fellesukerForelder1: number,
     fellesukerForelder2: number
 ): Tidsperiode {
     const startdato = Uttaksdagen(
         fellesukerForelder1 === 0
-            ? getFrivilligMødrekvoteEtterTermin(termindato, permisjonsregler)
-                  .sluttdato
+            ? getFrivilligMødrekvoteEtterTermin(
+                  familiehendelsedato,
+                  permisjonsregler
+              ).sluttdato
             : getFellesperiodeForelder1(
-                  termindato,
+                  familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1
               ).sluttdato
@@ -84,7 +83,7 @@ function getFellesperiodeForelder2(
 }
 
 function getFedrekvote(
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler,
     fellesukerForelder1: number,
     fellesukerForelder2: number
@@ -92,12 +91,12 @@ function getFedrekvote(
     const startdato = Uttaksdagen(
         fellesukerForelder2 === 0
             ? getFellesperiodeForelder1(
-                  termindato,
+                  familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1
               ).sluttdato
             : getFellesperiodeForelder2(
-                  termindato,
+                  familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1,
                   fellesukerForelder2
@@ -109,22 +108,25 @@ function getFedrekvote(
     );
 }
 
-/** Oppretter default stønadsperioder ut fra termindato ++ */
+/** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderToForeldreEttBarn(
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
 ): Uttaksperiode[] {
-    termindato = normaliserDato(termindato);
+    familiehendelsedato = normaliserDato(familiehendelsedato);
     const perioder: Uttaksperiode[] = [
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getMødrekvoteFørTermin(termindato, permisjonsregler),
+            tidsperiode: getMødrekvoteFørTermin(
+                familiehendelsedato,
+                permisjonsregler
+            ),
             låstForelder: true
         },
         {
@@ -133,7 +135,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getPakrevdMødrekvoteEtterTermin(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler
             )
         },
@@ -143,7 +145,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getFrivilligMødrekvoteEtterTermin(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler
             )
         },
@@ -153,7 +155,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             forelder: 'forelder2',
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getFedrekvote(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler,
                 fellesukerForelder1,
                 fellesukerForelder2
@@ -167,7 +169,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             forelder: 'forelder1',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder1(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler,
                 fellesukerForelder1
             )
@@ -180,7 +182,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             forelder: 'forelder2',
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder2(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler,
                 fellesukerForelder1,
                 fellesukerForelder2

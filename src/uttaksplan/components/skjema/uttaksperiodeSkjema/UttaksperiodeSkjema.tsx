@@ -10,21 +10,19 @@ import {
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/TidsperiodeSpørsm\u00E5l';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsm\u00E5l/HvemGjelderPeriodenSpørsm\u00E5l';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { Tidsperiode } from 'nav-datovelger';
-import { getStønadskontoRegler } from 'uttaksplan/utils/uttaksregler/uttaksperioderegler';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
-import { getSisteMuligePermisjonsdag } from 'uttaksplan/utils/permisjonUtils';
-import StønadskontoSpørsmål from 'uttaksplan/skjema/sp\u00F8rsm\u00E5l/St\u00F8nadskontoSp\u00F8rsm\u00E5l';
-import { getTilgjengeligeStønadskontoer } from 'uttaksplan/utils/st\u00F8nadskontoUtils';
+import { getStønadskontoRegler } from 'uttaksplan/utils/regler/uttaksperioderegler';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import StønadskontoSpørsmål from 'uttaksplan/components/skjema/spørsmål/StønadskontoSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/spørsmål/TidsperiodeSpørsmål';
 
 export interface OwnProps {
     periode?: Uttaksperiode;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     ugyldigeTidsperioder?: Tidsperiode[];
@@ -127,10 +125,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const { startdato, sluttdato, forelder, stønadskonto } = this.state;
-        const tilgjengeligeStønadskontoer = getTilgjengeligeStønadskontoer(
-            uttaksgrunnlag.søker,
-            uttaksgrunnlag.erDeltPermisjon
-        );
+        const tilgjengeligeStønadskontoer =
+            uttaksgrunnlag.tilgjengeligeStønadskontoer;
 
         // Hvilke spørsmål skal vises
         const visSpørsmålOmHvem = uttaksgrunnlag.erDeltPermisjon;
@@ -151,7 +147,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const regler = stønadskonto
             ? getStønadskontoRegler(
                   stønadskonto,
-                  this.props.termindato,
+                  this.props.familiehendelsedato,
                   this.props.dekningsgrad,
                   permisjonsregler
               )
@@ -163,11 +159,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                   sluttdato: regler.sisteUttaksdato
               }
             : {
-                  startdato: this.props.termindato,
-                  sluttdato: getSisteMuligePermisjonsdag(
-                      this.props.termindato,
-                      permisjonsregler
-                  )
+                  startdato: this.props.familiehendelsedato,
+                  sluttdato: uttaksgrunnlag.datoer.sisteMuligeUttaksdag
               };
 
         return (

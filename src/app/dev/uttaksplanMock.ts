@@ -1,12 +1,8 @@
 import { SøkerRolle, Søkersituasjon } from '../types/søknad/Søknad';
 import { Kjønn } from '../types/common';
+import { UttaksplanAnnenForelder, UttaksplanSøker } from 'uttaksplan/types';
 
-import {
-    AnnenForelderGrunnlag,
-    SøkerGrunnlag
-} from 'uttaksplan/types/uttaksgrunnlag';
-
-export const mockUttaksplanSøker: SøkerGrunnlag = {
+export const mockUttaksplanSøker: UttaksplanSøker = {
     fornavn: 'Amalie',
     mellomnavn: '',
     etternavn: 'Skraam',
@@ -15,7 +11,7 @@ export const mockUttaksplanSøker: SøkerGrunnlag = {
     rolle: SøkerRolle.MOR,
     situasjon: Søkersituasjon.FØDSEL
 };
-export const mockUttasksplanAnnenForelder: AnnenForelderGrunnlag = {
+export const mockUttasksplanAnnenForelder: UttaksplanAnnenForelder = {
     fornavn: 'Henrik',
     etternavn: 'Ibsen'
 };

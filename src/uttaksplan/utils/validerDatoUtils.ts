@@ -1,7 +1,7 @@
 import { Tidsperiode } from '../types';
 import { isWithinRange } from 'date-fns';
-import { Uttaksdagen } from './dataUtils';
 import { normaliserDato } from 'common/util/datoUtils';
+import { Uttaksdagen } from 'uttaksplan/utils/Uttaksdagen';
 
 export type DatoValideringsfeil =
     | 'ikkeUttaksdag'
@@ -27,16 +27,16 @@ export const validerDato = (
     dato: Date,
     tidsrom: Tidsperiode,
     ugyldigePerioder: Tidsperiode[] = [],
-    termindato?: Date
+    familiehendelsedato?: Date
 ): DatoValideringsfeil => {
     if (!dato) {
         return 'ugyldigDato';
     }
     if (
-        termindato &&
+        familiehendelsedato &&
         isWithinRange(
             normaliserDato(dato),
-            normaliserDato(termindato),
+            normaliserDato(familiehendelsedato),
             normaliserDato(Uttaksdagen(tidsrom.startdato).forrige())
         )
     ) {

@@ -4,10 +4,8 @@ import {
     Periodetype,
     Permisjonsregler
 } from '../../types';
-import {
-    Uttaksgrunnlag,
-    UttaksplanAppProps
-} from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import { UttaksplanRequiredProps } from 'uttaksplan/types';
 
 export enum UttaksplanActionTypeKeys {
     'INIT_UTTAKSPLAN' = 'initUttaksplan',
@@ -48,12 +46,12 @@ export type UttaksplanActionTypes =
 
 export interface InitUttaksplan {
     type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN;
-    props: UttaksplanAppProps;
+    props: UttaksplanRequiredProps;
     dekningsgrad: Dekningsgrad;
 }
 export interface OpprettPerioderToForeldre {
     type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
     fellesukerForelder1: number;
@@ -62,7 +60,7 @@ export interface OpprettPerioderToForeldre {
 
 export interface OpprettPerioderAleneomsorg {
     type: UttaksplanActionTypeKeys.OPPRETT_PERIODER_ALENEOMSORG;
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag: Uttaksgrunnlag;
 }
