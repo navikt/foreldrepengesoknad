@@ -82,7 +82,7 @@ class UttaksplanMain extends React.Component<Props> {
             if (uttaksgrunnlag.annenForelder) {
                 dispatch(
                     opprettPerioderForToForeldre(
-                        grunnlag.termindato,
+                        grunnlag.familiehendelsedato,
                         dekningsgrad,
                         uttaksgrunnlag,
                         fellesperiodeukerForelder1,
@@ -92,7 +92,7 @@ class UttaksplanMain extends React.Component<Props> {
             } else {
                 dispatch(
                     opprettPerioderAleneomsorg(
-                        grunnlag.termindato,
+                        grunnlag.familiehendelsedato,
                         dekningsgrad,
                         uttaksgrunnlag
                     )
@@ -186,7 +186,7 @@ class UttaksplanMain extends React.Component<Props> {
                     uttaksgrunnlag={uttaksgrunnlag}
                 />
                 <DevHelper
-                    termindato={grunnlag.termindato}
+                    familiehendelsedato={grunnlag.familiehendelsedato}
                     dekningsgrad={dekningsgrad || '100%'}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                     fellesperiodeukerForelder1={form.fellesperiodeukerForelder1}

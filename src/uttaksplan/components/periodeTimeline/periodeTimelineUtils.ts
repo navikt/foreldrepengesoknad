@@ -136,8 +136,8 @@ export const getTimelineIconsForPeriode = (
     return undefined;
 };
 
-export function getTerminMarker(
-    termindato: Date,
+export function getFamiliehendelseMarker(
+    familiehendelsedato: Date,
     erBarnetFødt: boolean
 ): TimelineMarker {
     return {
@@ -145,7 +145,7 @@ export function getTerminMarker(
         type: TimelineItemType.marker,
         icons: ['termin'],
         title: erBarnetFødt ? 'Fødsel' : 'Termin',
-        startDate: termindato,
+        startDate: familiehendelsedato,
         data: 'termin'
     };
 }

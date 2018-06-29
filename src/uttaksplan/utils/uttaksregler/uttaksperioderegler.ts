@@ -13,28 +13,30 @@ export interface StønadskontoRegler {
 }
 
 export const getForeldrepengerFørFødselRegler = (
-    termindato: Date,
+    familiehendelsedato: Date,
     permisjonsregler: Permisjonsregler
 ): StønadskontoRegler => {
     const uttaksdager = permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
     return {
         stønadskontotype: StønadskontoType.ForeldrepengerFørFødsel,
-        tidligsteUttaksdato: Uttaksdagen(termindato).leggTil(-uttaksdager),
-        sisteUttaksdato: Uttaksdagen(termindato).forrige(),
+        tidligsteUttaksdato: Uttaksdagen(familiehendelsedato).leggTil(
+            -uttaksdager
+        ),
+        sisteUttaksdato: Uttaksdagen(familiehendelsedato).forrige(),
         maksUttaksdager: uttaksdager
     };
 };
 
 export const getStønadskontoRegler = (
     konto: StønadskontoType,
-    termindato: Date,
+    familiehendelsedato: Date,
     dekningsgrad: Dekningsgrad,
     permisjonsregler: Permisjonsregler
 ): StønadskontoRegler | undefined => {
     switch (konto) {
         case StønadskontoType.ForeldrepengerFørFødsel:
             return getForeldrepengerFørFødselRegler(
-                termindato,
+                familiehendelsedato,
                 permisjonsregler
             );
         default:

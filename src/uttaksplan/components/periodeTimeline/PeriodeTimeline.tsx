@@ -12,7 +12,7 @@ import UttaksplanIkon, {
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
-    getTerminMarker,
+    getFamiliehendelseMarker,
     getSistePermisjonsdagMarker,
     getGaps
 } from './periodeTimelineUtils';
@@ -25,7 +25,7 @@ import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 
 export interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     dekningsgrad: Dekningsgrad;
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
@@ -50,7 +50,7 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
 
     render() {
         const {
-            termindato,
+            familiehendelsedato,
             perioder,
             uttaksgrunnlag,
             uttaksinfo,
@@ -59,7 +59,12 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
         const items = perioder.map((periode) =>
             mapPeriodeToTimelineEvent(periode, intl, uttaksgrunnlag)
         );
-        items.push(getTerminMarker(termindato, uttaksgrunnlag.erBarnetFødt));
+        items.push(
+            getFamiliehendelseMarker(
+                familiehendelsedato,
+                uttaksgrunnlag.erBarnetFødt
+            )
+        );
         items.sort(sortTimelineItems).map((item, idx, arr) => {
             if (idx > 0) {
                 const prevItem = arr[idx];

@@ -24,7 +24,7 @@ export interface StateProps {
         permisjonsregler: Permisjonsregler;
         fellesperiodeukerForelder1: number;
         fellesperiodeukerForelder2: number;
-        dato: Date;
+        familiehendelsedato: Date;
     };
 }
 
@@ -99,7 +99,7 @@ class UttaksplanSide extends React.Component<Props, State> {
                         },
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
-                        termindato: skjema.dato,
+                        familiehendelsedato: skjema.dato,
                         antallBarn: parseInt(skjema.antallBarn, 10),
                         erBarnetFødt: false
                     }}
@@ -111,7 +111,7 @@ class UttaksplanSide extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
-    const dato = addDays(new Date(), 20);
+    const familiehendelsedato = addDays(new Date(), 20);
     return {
         form: {
             navnForelder1: 'Kari',
@@ -120,8 +120,8 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
                 state.uttaksplan.form.fellesperiodeukerForelder1,
             fellesperiodeukerForelder2:
                 state.uttaksplan.form.fellesperiodeukerForelder2,
-            permisjonsregler: getPermisjonsregler(new Date()),
-            dato
+            permisjonsregler: getPermisjonsregler(),
+            familiehendelsedato
         }
     };
 };

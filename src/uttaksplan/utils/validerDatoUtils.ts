@@ -27,16 +27,16 @@ export const validerDato = (
     dato: Date,
     tidsrom: Tidsperiode,
     ugyldigePerioder: Tidsperiode[] = [],
-    termindato?: Date
+    familiehendelsedato?: Date
 ): DatoValideringsfeil => {
     if (!dato) {
         return 'ugyldigDato';
     }
     if (
-        termindato &&
+        familiehendelsedato &&
         isWithinRange(
             normaliserDato(dato),
-            normaliserDato(termindato),
+            normaliserDato(familiehendelsedato),
             normaliserDato(Uttaksdagen(tidsrom.startdato).forrige())
         )
     ) {

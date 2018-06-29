@@ -7,7 +7,7 @@ import { UttaksplanFormState } from '../types';
 import { getAntallUkerFellesperiode } from '../../utils/permisjonUtils';
 
 const getInitialState = (): UttaksplanFormState => {
-    const permisjonsregler = getPermisjonsregler(new Date());
+    const permisjonsregler = getPermisjonsregler();
     const ukerFellesperiode = getAntallUkerFellesperiode(
         permisjonsregler,
         '100%'

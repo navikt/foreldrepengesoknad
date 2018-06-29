@@ -33,7 +33,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     permisjonsregler: Permisjonsregler;
     navnForelder1?: string;
     navnForelder2?: string;
@@ -54,7 +54,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
         navnForelder1,
         navnForelder2,
         tidsromForUtsettelse,
-        termindato,
+        familiehendelsedato,
         uttaksgrunnlag,
 
         dispatch,
@@ -93,7 +93,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
                     dispatch(slettPeriode(p));
                     dispatch(lukkPeriodeDialog());
                 }}
-                termindato={termindato}
+                familiehendelsedato={familiehendelsedato}
             />
         </Modal>
     );
@@ -104,12 +104,12 @@ const mapStateToProps = (
     props: OwnProps
 ): StateProps | undefined => {
     const { form, uttaksplan, view } = state.uttaksplan;
-    const { termindato } = props;
+    const { familiehendelsedato } = props;
     const { dekningsgrad } = form;
     const sisteRegistrertePermisjonsdag =
         props.uttaksinfo.registrertTidsperiode.sluttdato;
     if (
-        !termindato ||
+        !familiehendelsedato ||
         !dekningsgrad ||
         !sisteRegistrertePermisjonsdag ||
         !view.dialogErApen ||
@@ -122,7 +122,7 @@ const mapStateToProps = (
     }
 
     const tidsromForUtsettelse = getGyldigTidsromForUtsettelse(
-        termindato,
+        familiehendelsedato,
         props.permisjonsregler,
         sisteRegistrertePermisjonsdag
     );

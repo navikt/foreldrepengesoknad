@@ -15,6 +15,6 @@ const reglerFomJuli2018: Permisjonsregler = {
     maksFeriedagerMedOverføring: 52
 };
 
-export const getPermisjonsregler = (termindato: Date): Permisjonsregler => {
+export const getPermisjonsregler = (): Permisjonsregler => {
     return reglerFomJuli2018;
 };

@@ -16,7 +16,7 @@ export interface UttaksplanAnnenForelder {
 }
 
 export interface UttaksplanRequiredProps {
-    termindato: Date;
+    familiehendelsedato: Date;
     søker: UttaksplanSøker;
     annenForelder?: UttaksplanAnnenForelder;
     antallBarn: number;

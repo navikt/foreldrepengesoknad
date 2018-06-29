@@ -76,8 +76,8 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                     <h3>Uttaksgrunnlag</h3>
                     <ul>
                         <li>
-                            Familiehendelsesdato:{' '}
-                            {uttaksgrunnlag.termindato.toDateString()}
+                            familiehendelsedato:{' '}
+                            {uttaksgrunnlag.familiehendelsedato.toDateString()}
                         </li>
                         <li>Dekningsgrad: {uttaksgrunnlag.dekningsgrad}</li>
                         <li>
