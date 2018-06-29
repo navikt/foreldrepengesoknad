@@ -5,7 +5,7 @@ import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../Applikasjonsside';
 import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
-import { getPermisjonsregler } from 'uttaksplan/data/permisjonsregler';
+import { getPermisjonsregler } from 'uttaksplan/uttak/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import {
     mockUttaksplanSøker,
