@@ -19,32 +19,27 @@ import {
 import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
-import {
-    Uttaksgrunnlag,
-    Uttaksdatoer,
-    UttaksplanAppProps,
-    Uttaksinfo
-} from 'uttaksplan/types/uttaksgrunnlag';
 
 import '../styles/uttaksplan.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import DevBeregning from 'uttaksplan/main/dev/DevBeregning';
 import Periodeplanlegger from 'uttaksplan/main/Periodeplanlegger';
-import { getUttaksinfo } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksinfo, getUttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
+import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
 
 export interface StateProps {
     form: UttaksplanFormState;
     dekningsgrad: Dekningsgrad;
     uttaksgrunnlag?: Uttaksgrunnlag;
-    uttaksdatoer?: Uttaksdatoer;
     uttaksinfo?: Uttaksinfo;
     perioder: Periode[];
     manuellUttaksplan?: boolean;
 }
 
 interface OwnProps {
-    grunnlag: UttaksplanAppProps;
+    grunnlag: UttaksplanRequiredProps;
     onChange: (perioder: Periode[]) => void;
 }
 
@@ -71,7 +66,10 @@ class UttaksplanMain extends React.Component<Props> {
         }
     }
 
-    resetUttaksplan(grunnlag: UttaksplanAppProps, dekningsgrad: Dekningsgrad) {
+    resetUttaksplan(
+        grunnlag: UttaksplanRequiredProps,
+        dekningsgrad: Dekningsgrad
+    ) {
         this.props.dispatch(initUttaksplan(grunnlag, dekningsgrad));
     }
 
@@ -108,7 +106,6 @@ class UttaksplanMain extends React.Component<Props> {
         const {
             grunnlag,
             perioder,
-            uttaksdatoer,
             uttaksgrunnlag,
             uttaksinfo,
             dispatch,
@@ -186,7 +183,6 @@ class UttaksplanMain extends React.Component<Props> {
                 </EkspanderbartInnhold>
                 <DevBeregning
                     perioder={perioder}
-                    uttaksdatoer={uttaksdatoer}
                     uttaksgrunnlag={uttaksgrunnlag}
                 />
                 <DevHelper
@@ -209,7 +205,6 @@ const mapStateToProps = (appState: UttaksplanAppState): StateProps => {
         form,
         dekningsgrad,
         uttaksgrunnlag: uttaksplan.uttaksgrunnlag,
-        uttaksdatoer: uttaksplan.uttaksdatoer,
         uttaksinfo,
         perioder: uttaksplan.perioder
     };

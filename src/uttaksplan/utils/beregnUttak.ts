@@ -5,7 +5,7 @@ import {
     StønadskontoType
 } from 'uttaksplan/types';
 import { Periodene, Perioden } from 'uttaksplan/utils/dataUtils';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 const summerDager = (a: number, b: StønadskontoUttak) => a + b.dager;
 const summerUttaksdager = (a: number, b: Uttaksperiode) =>

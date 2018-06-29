@@ -16,7 +16,7 @@ import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
 import { Valideringsfeil } from 'uttaksplan/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
-import { SøkerGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { SøkerGrunnlag } from 'uttaksplan/uttak/types';
 
 export function getDefaultState(
     søker: SøkerGrunnlag,

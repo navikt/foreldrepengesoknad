@@ -52,40 +52,6 @@ export function getSisteMuligePermisjonsdag(
     ).denneEllerNeste();
 }
 
-// /**
-//  * Finner siste permisjonsdag gitt registrerte perioder
-//  * @param termindato
-//  * @param dekningsgrad
-//  * @param perioder
-//  * @param uttaksgrunnlag
-//  */
-// export function getSistePermisjonsdag(
-//     termindato: Date,
-//     dekningsgrad: Dekningsgrad,
-//     perioder: Periode[],
-//     uttaksgrunnlag: Uttaksgrunnlag
-// ): Date | undefined {
-//     if (perioder.length === 0) {
-//         return undefined;
-//     }
-//     const uttaksperioder = Periodene(perioder).getUttak();
-//     const uttaksdagerBruktTotalt = Periodene(
-//         uttaksperioder
-//     ).getAntallDagerUttak();
-//     const utsatteDager = Periodene(perioder).getAntallDagerUtsatt();
-//     const registrerteUttak = Periodene(perioder).getAntallDagerUttak();
-//     const gjenståendeUttaksdager =
-//         uttaksgrunnlag.antallUttaksdagerTilgjengelig - registrerteUttak;
-//     return Uttaksdagen(termindato).leggTil(
-//         uttaksdagerBruktTotalt -
-//             uttaksgrunnlag.permisjonsregler.antallUkerForeldrepengerFørFødsel *
-//                 5 -
-//             1 +
-//             gjenståendeUttaksdager +
-//             utsatteDager
-//     );
-// }
-
 /**
  * Henter ut gyldig tidsrom å legge inn en utsettelse
  * @param termindato
@@ -94,7 +60,6 @@ export function getSisteMuligePermisjonsdag(
  */
 export function getGyldigTidsromForUtsettelse(
     termindato: Date,
-    dekningsgrad: Dekningsgrad,
     permisjonsregler: Permisjonsregler,
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {

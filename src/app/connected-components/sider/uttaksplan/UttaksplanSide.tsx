@@ -15,7 +15,7 @@ import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import { AnnenForelderGrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
+import { AnnenForelderGrunnlag } from 'uttaksplan/uttak/types';
 
 export interface StateProps {
     form: {

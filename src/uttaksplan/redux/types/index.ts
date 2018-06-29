@@ -1,5 +1,6 @@
 import { Dekningsgrad, Periode, Periodetype } from '../../types';
-import { Uttaksgrunnlag, Uttaksdatoer } from 'uttaksplan/types/uttaksgrunnlag';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 
 export type SynligInfoMap = Map<string, boolean>;
 
@@ -15,7 +16,7 @@ export interface UttaksplanState {
     perioder: Periode[];
     manuellOppdatering: boolean;
     uttaksgrunnlag?: Uttaksgrunnlag;
-    uttaksdatoer?: Uttaksdatoer;
+    uttaksinfo?: Uttaksinfo;
 }
 export type UttaksplanStatePartial = Partial<UttaksplanState>;
 

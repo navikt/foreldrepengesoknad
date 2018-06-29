@@ -5,7 +5,6 @@ import {
     UtsettelseÅrsakType
 } from 'uttaksplan/types';
 import { InjectedIntl } from 'react-intl';
-import { Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import {
     TimelineEvent,
     TimelineGap,
@@ -19,6 +18,7 @@ import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils/dataUtils';
 import { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import { isBefore, isSameDay } from 'date-fns';
 import { guid } from 'nav-frontend-js-utils/lib';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 
 export const mapPeriodeToTimelineEvent = (
     periode: Periode,

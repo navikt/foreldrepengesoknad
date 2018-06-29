@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { Uttaksdatoer, Uttaksgrunnlag } from 'uttaksplan/types/uttaksgrunnlag';
 import { Periode } from 'uttaksplan/types';
-import { getUttaksinfo } from 'uttaksplan/utils/uttaksgrunnlagUtils';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { getUttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 
 export interface Props {
-    uttaksdatoer?: Uttaksdatoer;
     uttaksgrunnlag?: Uttaksgrunnlag;
     perioder: Periode[];
 }
 
 const DevBeregning: React.StatelessComponent<Props> = ({
-    uttaksdatoer,
     uttaksgrunnlag,
     perioder
 }) => {
@@ -56,15 +54,17 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                     </ul>
                 </div>
             )}
-            {uttaksdatoer && (
+            {uttaksgrunnlag && (
                 <div className="panel">
                     <h3>Uttaksdatoer</h3>
                     <ul>
-                        {Object.keys(uttaksdatoer).map((d, idx) => (
+                        {Object.keys(uttaksgrunnlag.datoer).map((d, idx) => (
                             <React.Fragment key={idx}>
                                 <li>
                                     {d}:{' '}
-                                    {(uttaksdatoer[d] as Date).toDateString()}
+                                    {(uttaksgrunnlag.datoer[
+                                        d
+                                    ] as Date).toDateString()}
                                 </li>
                             </React.Fragment>
                         ))}

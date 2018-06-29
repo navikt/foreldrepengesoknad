@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { DispatchProps } from 'common/redux/types';
-import { Uttaksgrunnlag, Uttaksinfo } from 'uttaksplan/types/uttaksgrunnlag';
 import { Periode, Periodetype } from 'uttaksplan/types';
 import PeriodeTimeline from 'uttaksplan/components/periodeTimeline/PeriodeTimeline';
 import UttaksperiodeDialog from 'uttaksplan/connectedComponents/uttaksperiodeDialog/UttaksperiodeDialog';
@@ -10,6 +9,8 @@ import UtsettelsesperiodeDialog from 'uttaksplan/connectedComponents/utsettelses
 import { visPeriodeDialog } from 'uttaksplan/redux/actions';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
+import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 
 export interface StateProps {
     perioder: Periode[];
