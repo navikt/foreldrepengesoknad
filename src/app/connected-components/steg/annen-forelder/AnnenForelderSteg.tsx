@@ -6,7 +6,7 @@ import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPa
 import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 
 import { AppState } from '../../../redux/reducers';
 import {
@@ -18,7 +18,7 @@ import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
 import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
-import { erFarEllerMedmor } from '../../../util/personUtil';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     person: Person;

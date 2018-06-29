@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import { UfødtBarn } from '../../../types/søknad/Barn';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';
@@ -11,7 +11,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { Periode } from 'uttaksplan/types';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import routeConfig from '../../../util/routeConfig';
+import routeConfig from '../../../util/routing/routeConfig';
 import Person from '../../../types/Person';
 
 interface UttaksplanStegProps {
@@ -55,9 +55,7 @@ class UttaksplanSteg extends React.Component<Props> {
         const { søker } = søknad;
 
         return (
-            <Steg
-                {...stegProps}
-                onFortsettKnappClick={this.sendSøknadAndRedirect}>
+            <Steg {...stegProps} onSubmit={this.sendSøknadAndRedirect}>
                 <Uttaksplan
                     grunnlag={{
                         familiehendelsedato: (barn as UfødtBarn).termindato,

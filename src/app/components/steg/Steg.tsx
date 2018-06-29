@@ -1,44 +1,54 @@
 import * as React from 'react';
-import stegConfig, { StegID } from '../../util/stegConfig';
-import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import stegConfig, { StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
+import ValidForm from 'common/lib/validation/ValidForm';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
+import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
-    onFortsettKnappClick?: () => void;
+    onSubmit?: () => void;
 }
 
-class Steg extends React.Component<StegProps> {
+type Props = StegProps & InjectedIntlProps;
+
+class Steg extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    }
+
+    handleOnSubmit() {
+        const { id, history } = this.props;
+        history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
+    }
+
     render() {
-        const {
-            id,
-            renderFortsettKnapp,
-            history,
-            onFortsettKnappClick
-        } = this.props;
+        const { id, renderFortsettKnapp, intl } = this.props;
+
+        const formProps = {
+            className: 'steg',
+            summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
+            onSubmit: this.handleOnSubmit
+        };
+
         return (
-            <div className="steg">
+            <ValidForm {...formProps}>
                 <h1 className="steg__tittel">{stegConfig[id].tittel}</h1>
                 {this.props.children}
-
                 {renderFortsettKnapp === true && (
-                    <FortsettKnapp
-                        history={history}
-                        location={søknadStegPath(stegConfig[id].nesteSteg)}
-                        onClick={
-                            onFortsettKnappClick
-                                ? onFortsettKnappClick
-                                : undefined
-                        }>
+                    <FortsettKnapp>
                         {stegConfig[id].fortsettKnappLabel}
                     </FortsettKnapp>
                 )}
-            </div>
+            </ValidForm>
         );
     }
 }
 
-export default Steg;
+export default injectIntl(Steg);

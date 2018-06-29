@@ -5,8 +5,8 @@ import {
     Switch,
     withRouter
 } from 'react-router-dom';
-import routeConfig from './../../util/routeConfig';
-import { StegID } from '../../util/stegConfig';
+import routeConfig from '../../util/routing/routeConfig';
+import { StegID } from '../../util/routing/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
 import RelasjonTilBarnFødselSteg from './relasjon-til-barn-fødsel/RelasjonTilBarnFødselSteg';
 import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTilBarnAdopsjonSteg';

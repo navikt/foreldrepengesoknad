@@ -22,7 +22,7 @@ import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import Bolk from '../../../common/components/bolk/Bolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import Landvelger from '../landvelger/Landvelger';
-import { erMindreEnn4ÅrSidenOppstart } from '../../util/næringer';
+import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
 import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';
 import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
 import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';

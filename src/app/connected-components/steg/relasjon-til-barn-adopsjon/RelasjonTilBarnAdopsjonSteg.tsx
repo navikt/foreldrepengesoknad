@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { StegID } from '../../../util/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
@@ -11,7 +11,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
-import utils from '../../../util/fødselsdato';
+import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import Bolk from '../../../../common/components/bolk/Bolk';

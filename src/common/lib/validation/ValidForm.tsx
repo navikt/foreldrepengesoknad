@@ -1,11 +1,11 @@
 import * as React from 'react';
 import PT from 'prop-types';
 import { ValidationResult, SummaryError } from './types';
-import { Feiloppsummering } from '.';
+import Feiloppsummering from 'common/lib/validation/Feiloppsummering';
 
 type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
-export interface Props {
+export interface ValidFormProps {
     onSubmit?: (evt: FormSubmitEvent) => void;
     children: React.ReactNode;
     summaryTitle: string;
@@ -18,13 +18,13 @@ interface State {
     failedSubmit: boolean;
 }
 
-class ValidForm extends React.Component<Props, State> {
+class ValidForm extends React.Component<ValidFormProps, State> {
     static childContextTypes = {
         validForm: PT.object
     };
     components: any[];
 
-    constructor(props: Props) {
+    constructor(props: ValidFormProps) {
         super(props);
 
         this.state = {

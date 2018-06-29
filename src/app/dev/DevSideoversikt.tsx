@@ -3,12 +3,12 @@ import * as React from 'react';
 import Applikasjonsside from '../connected-components/sider/Applikasjonsside';
 import { Link } from 'react-router-dom';
 
-import stegConfig from '../util/stegConfig';
+import stegConfig from '../util/routing/stegConfig';
 import { søknadStegPath } from '../connected-components/steg/StegRoutes';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 import './dev.less';
-import routeConfig from '../util/routeConfig';
+import routeConfig from '../util/routing/routeConfig';
 
 class DevSideoversikt extends React.Component<{}, {}> {
     render() {

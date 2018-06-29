@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Select } from 'nav-frontend-skjema';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import ValidSelect from 'common/nav-frontend-validform/ValidSelect';
+import ValidSelect from 'common/lib/validation/ValidSelect';
 import { Feil } from 'common/components/skjema-input-element/types';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
 import InjectedIntl = ReactIntl.InjectedIntl;

@@ -1,4 +1,4 @@
-import Environment from '../../app/Environment';
+import Environment from '../../Environment';
 
 export const redirectToLogin = () => {
     window.location.href =

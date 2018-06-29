@@ -20,8 +20,8 @@ import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn'
 import { HistoryProps } from '../../../types/common';
 import Søker from '../../../types/søknad/Søker';
 
-import { StegID } from '../../../util/stegConfig';
-import { erFarEllerMedmor } from '../../../util/personUtil';
+import { StegID } from '../../../util/routing/stegConfig';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
