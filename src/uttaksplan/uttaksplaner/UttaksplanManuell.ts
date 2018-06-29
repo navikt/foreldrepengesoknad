@@ -6,7 +6,7 @@ import {
 } from 'uttaksplan/utils/dataUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { isBefore, isAfter, isSameDay } from 'date-fns';
-import { slåSammenLikePerioder } from 'uttaksplan/utils/UttaksplanBuilder';
+import { slåSammenLikePerioder } from '../uttaksplaner/UttaksplanBuilder';
 
 export const UttaksplanManuell = (perioder: Periode[]) =>
     new UttaksplanManuellBuilder(perioder);

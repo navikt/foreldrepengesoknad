@@ -1,3 +1,9 @@
+/**
+ *
+ * Denne må nok modifiseres noe når de ulike søkertypene/rollene tas i bruk
+ *
+ */
+
 import { addYears } from 'date-fns';
 import { Uttaksdagen, Tidsperioden } from './dataUtils';
 import {
@@ -8,7 +14,7 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../types';
-import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/uttaksplanPlanlegger';
+import { getPakrevdMødrekvoteEtterTermin } from 'uttaksplan/uttaksplaner/oppsett/toForeldreEttBarn';
 
 /**
  * Finner default startdato før termin (antallUkerForeldrepengerFørFødsel)
