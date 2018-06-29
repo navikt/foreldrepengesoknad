@@ -24,9 +24,9 @@ import { Valideringsfeil, Skjemaelement } from './types';
 import { Feil } from 'common/components/skjema-input-element/types';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { normaliserDato } from 'common/util/datoUtils';
-import HvemGjelderPeriodenSpørsmål from 'uttaksplan/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
-import UtsettelsesårsakSpørsmål from 'uttaksplan/skjema/spørsmål/UtsettelsesårsakSpørsmål';
-import TidsperiodeSpørsmål from 'uttaksplan/skjema/spørsmål/TidsperiodeSpørsmål';
+import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
+import UtsettelsesårsakSpørsmål from 'uttaksplan/components/skjema/spørsmål/UtsettelsesårsakSpørsmål';
+import TidsperiodeSpørsmål from 'uttaksplan/components/skjema/spørsmål/TidsperiodeSpørsmål';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 

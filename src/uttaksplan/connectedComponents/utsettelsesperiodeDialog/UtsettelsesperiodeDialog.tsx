@@ -18,11 +18,11 @@ import {
     Utsettelsesperiode
 } from 'uttaksplan/types';
 
-import UtsettelseSkjema from 'uttaksplan/skjema/utsettelseSkjema/UtsettelseSkjema';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
 import { Uttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
+import UtsettelseSkjema from 'uttaksplan/components/skjema/utsettelseSkjema/UtsettelseSkjema';
 
 interface StateProps {
     isOpen: boolean;

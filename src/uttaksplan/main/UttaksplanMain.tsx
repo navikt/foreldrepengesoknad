@@ -16,7 +16,6 @@ import {
     initUttaksplan,
     opprettPerioderAleneomsorg
 } from 'uttaksplan/redux/actions';
-import UttaksplanSkjema from 'uttaksplan/skjema/uttaksplanSkjema/UttaksplanSkjema';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DevHelper from 'uttaksplan/main/dev/DevToolbar';
 
@@ -28,6 +27,7 @@ import Periodeplanlegger from 'uttaksplan/main/Periodeplanlegger';
 import { Uttaksgrunnlag } from 'uttaksplan/uttak/uttaksgrunnlag';
 import { Uttaksinfo, getUttaksinfo } from 'uttaksplan/uttak/uttaksinfo';
 import { UttaksplanRequiredProps } from 'uttaksplan/uttak/types';
+import UttaksplanSkjema from 'uttaksplan/components/skjema/uttaksplanSkjema/UttaksplanSkjema';
 
 export interface StateProps {
     form: UttaksplanFormState;

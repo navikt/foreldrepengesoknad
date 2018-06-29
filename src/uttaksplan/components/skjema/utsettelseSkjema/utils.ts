@@ -14,7 +14,7 @@ import { isAfter, isBefore } from 'date-fns';
 
 import { State as SkjemaState, Props as SkjemaProps } from './UtsettelseSkjema';
 import { erFridag } from 'common/util/fridagerUtils';
-import { Valideringsfeil } from 'uttaksplan/skjema/utsettelseSkjema/types';
+import { Valideringsfeil } from 'uttaksplan/components/skjema/utsettelseSkjema/types';
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
 import { UttaksplanSøker } from 'uttaksplan/uttak/types';
 
