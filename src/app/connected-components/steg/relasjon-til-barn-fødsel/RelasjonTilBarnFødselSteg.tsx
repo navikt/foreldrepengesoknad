@@ -251,18 +251,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
-        renderFortsettKnapp:
-            (person &&
-                person.barn &&
-                RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person) &&
-                ((erBarnetFødt && fødselsattest && fødselsattest.length > 0) ||
-                    (harTerminbekreftelseDato &&
-                        terminbekreftelse.length > 0))) ||
-            (person &&
-                person.barn &&
-                person.barn.some(
-                    (søkersBarn: SøkersBarn) => søkersBarn.checked
-                )),
+        renderFortsettKnapp: true,
         history: props.history
     };
 
