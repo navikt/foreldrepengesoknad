@@ -37,7 +37,7 @@ class UttaksplanSteg extends React.Component<Props> {
                 uttaksplan: [...(perioder || [])]
             })
         );
-        history.push(`${routeConfig.APP_ROUTE_PREFIX}/søknad-sendt`);
+        history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
     }
 
     render() {

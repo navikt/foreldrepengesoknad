@@ -25,7 +25,9 @@ class Steg extends React.Component<Props> {
 
     handleOnSubmit() {
         const { id, history } = this.props;
-        history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
+        this.props.onSubmit
+            ? this.props.onSubmit()
+            : history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
     }
 
     render() {
