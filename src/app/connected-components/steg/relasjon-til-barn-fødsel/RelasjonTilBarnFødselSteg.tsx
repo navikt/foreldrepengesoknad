@@ -243,9 +243,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn;
     const person = state.api.person;
-    const erBarnetFødt = barn && barn.erBarnetFødt === true;
-    const harTerminbekreftelseDato =
-        (barn as UfødtBarn).terminbekreftelseDato !== undefined;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
 
