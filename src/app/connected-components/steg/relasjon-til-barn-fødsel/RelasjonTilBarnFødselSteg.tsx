@@ -193,7 +193,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
         return (
             <Steg {...stegProps}>
                 <Spørsmål
-                    synlig={person.barn !== undefined}
+                    synlig={person.barn !== undefined && person.barn.length > 0}
                     render={() => (
                         <RiktigBarnSpørsmål
                             onChange={(fødselsnummer: string) =>
