@@ -11,6 +11,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: Fødselsdato[];
     onChange: (fødselsdatoer: Fødselsdato[]) => void;
+    collapsed?: boolean;
 }
 
 type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
@@ -29,7 +30,22 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         this.props.onChange(datoer);
     }
 
-    render() {
+    renderCollapsedFødselsdatoSpørsmål() {
+        const { fødselsdatoer, intl } = this.props;
+        return (
+            <DatoInputWithValidation
+                id="fødselsdatoe"
+                name="fødsesdato"
+                dato={fødselsdatoer[0]}
+                onChange={(d: Date) => this.onDatoChange(d, 0)}
+                label={<Labeltekst intlId="fødselsdatoer.fødsel" />}
+                avgrensninger={fødselsdatoAvgrensninger}
+                validators={getFødselsdatoRegler(fødselsdatoer[0], intl)}
+            />
+        );
+    }
+
+    renderExpandedFødselsdatoSpørsmål() {
         const { fødselsdatoer, intl } = this.props;
         return (
             <React.Fragment>
@@ -52,6 +68,13 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                 ))}
             </React.Fragment>
         );
+    }
+
+    render() {
+        const { collapsed } = this.props;
+        return collapsed
+            ? this.renderCollapsedFødselsdatoSpørsmål()
+            : this.renderExpandedFødselsdatoSpørsmål();
     }
 }
 
