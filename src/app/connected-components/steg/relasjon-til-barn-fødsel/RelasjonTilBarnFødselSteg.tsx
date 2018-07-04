@@ -16,7 +16,11 @@ import { AppState } from '../../../redux/reducers';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { DispatchProps } from 'common/redux/types';
 import Person, { SøkersBarn } from '../../../types/Person';
-import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
+import Barn, {
+    BarnPartial,
+    FødtBarn,
+    UfødtBarn
+} from '../../../types/søknad/Barn';
 import { HistoryProps } from '../../../types/common';
 import Søker from '../../../types/søknad/Søker';
 
@@ -25,10 +29,10 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
-    barn: BarnPartial;
+    person: Person;
+    barn: Barn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
-    person?: Person;
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
@@ -40,10 +44,7 @@ interface OwnProps {
 
 type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
-    static harValgtAnnetBarn(barn: BarnPartial, person?: Person): boolean {
-        if (person === undefined) {
-            return false;
-        }
+    static harValgtAnnetBarn(barn: BarnPartial, person: Person): boolean {
         return (
             person.barn.every(
                 (søkersBarn: SøkersBarn) => !søkersBarn.checked
@@ -51,10 +52,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
         );
     }
 
-    static harValgtSøkersBarn(person?: Person): boolean {
-        if (person === undefined) {
-            return false;
-        }
+    static harValgtSøkersBarn(person: Person): boolean {
         return person.barn.some((barn: SøkersBarn) => barn.checked);
     }
 
@@ -69,23 +67,49 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
         };
     }
 
-    genererRelasjonTilBarn(søkersBarn: SøkersBarn, barn: FødtBarn): void {
-        barn.fødselsdatoer.push(new Date(søkersBarn.fødselsdato));
+    genererRelasjonTilBarn(checkedSøkersBarn: SøkersBarn): void {
+        const barn = this.props.barn as FødtBarn;
+        const fødselsdato = new Date(checkedSøkersBarn.fødselsdato);
+        if (
+            barn.fødselsdatoer.length === 0 ||
+            barn.fødselsdatoer[0] < fødselsdato
+        ) {
+            barn.fødselsdatoer[0] = fødselsdato;
+        }
+
         this.props.dispatch(
             søknadActions.updateBarn({
                 erBarnetFødt: true,
                 fødselsdatoer: barn.fødselsdatoer,
-                antallBarn: barn.fødselsdatoer.length
+                antallBarn: this.props.person.barn.filter(
+                    (søkersBarn) => søkersBarn.checked
+                ).length
             })
         );
     }
 
-    slettRelasjonTilBarn(index: number, barn: FødtBarn): void {
-        barn.fødselsdatoer.splice(index, 1);
+    slettRelasjonTilBarn(): void {
+        const barn = this.props.barn as FødtBarn;
+        const person = this.props.person;
+        const valgteBarn = person.barn.filter(
+            (søkersBarn) => søkersBarn.checked
+        );
+
+        if (valgteBarn.length > 0) {
+            barn.fødselsdatoer[0] = new Date(
+                valgteBarn
+                    .map((e) => e.fødselsdato)
+                    .sort()
+                    .reverse()[0]
+            );
+        } else {
+            barn.fødselsdatoer.splice(0, 1);
+        }
+
         this.props.dispatch(
             søknadActions.updateBarn({
                 fødselsdatoer: barn.fødselsdatoer,
-                antallBarn: barn.fødselsdatoer.length,
+                antallBarn: valgteBarn.length,
                 erBarnetFødt: barn.fødselsdatoer.length === 0 ? undefined : true
             })
         );
@@ -115,7 +139,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
                 person.barn.forEach(
                     (barn: SøkersBarn) => (barn.checked = false)
                 );
-
                 dispatch(
                     apiActionCreators.updatePerson({
                         barn: person.barn
@@ -131,35 +154,24 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
         }
 
         this.setState({ annetBarn: false }, () => {
-            const barn = this.props.barn as FødtBarn;
             const index = person.barn.indexOf(søkersBarn);
             person.barn[index].checked =
                 person.barn[index].checked === true ? false : true;
 
             søkersBarn.checked === true
-                ? this.genererRelasjonTilBarn(søkersBarn, barn)
-                : this.slettRelasjonTilBarn(index, barn);
+                ? this.genererRelasjonTilBarn(søkersBarn)
+                : this.slettRelasjonTilBarn();
         });
     }
 
     handleSøkersBarnClick(fødselsnummer: string): void {
-        const { person, dispatch } = this.props;
-        if (person === undefined) {
-            return;
-        }
-
+        const { person } = this.props;
         const søkersBarn = person.barn.find(
             (barn) => barn.fnr === fødselsnummer
         );
         søkersBarn === undefined
             ? this.toggleAnnetBarn(person)
             : this.toggleSøkersBarn(søkersBarn, person);
-
-        dispatch(
-            apiActionCreators.updatePerson({
-                barn: person.barn
-            })
-        );
     }
 
     render() {
@@ -241,8 +253,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const person = state.api.person as Person;
     const barn = state.søknad.barn;
-    const person = state.api.person;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
 

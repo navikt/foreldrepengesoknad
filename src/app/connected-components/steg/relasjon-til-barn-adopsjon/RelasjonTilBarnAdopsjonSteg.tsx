@@ -30,6 +30,17 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+
+        if (props.barn.antallBarn) {
+            props.dispatch(
+                søknadActions.updateBarn({
+                    fødselsdatoer: utils.trimFødselsdatoer(
+                        props.barn.antallBarn,
+                        this.props.barn.fødselsdatoer
+                    )
+                })
+            );
+        }
     }
 
     oppdaterAntallBarn(antall: number) {

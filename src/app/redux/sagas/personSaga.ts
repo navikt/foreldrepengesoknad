@@ -14,7 +14,7 @@ function* getSøkerinfo(action: any) {
             person: {
                 ...person,
                 erMyndig: erMyndig(person),
-                barn: response.data.barn
+                barn: response.data.søker.barn
             },
             arbeidsforhold
         });

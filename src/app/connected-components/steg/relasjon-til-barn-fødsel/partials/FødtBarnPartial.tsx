@@ -8,7 +8,6 @@ import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
-import utils from '../../../../util/domain/fødselsdato';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -25,6 +24,11 @@ class FødtBarnPartial extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        props.dispatch(
+            søknadActions.updateBarn({
+                fødselsdatoer: [props.barn.fødselsdatoer[0]]
+            })
+        );
     }
 
     oppdaterAntallBarn(antall: number) {
@@ -32,10 +36,7 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...this.props.barn,
                 antallBarn: antall,
-                fødselsdatoer: utils.trimFødselsdatoer(
-                    antall,
-                    this.props.barn.fødselsdatoer
-                )
+                fødselsdatoer: [this.props.barn.fødselsdatoer[0]]
             })
         );
     }
@@ -62,6 +63,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     animert={false}
                     render={() => (
                         <FødselsdatoerSpørsmål
+                            collapsed={true}
                             fødselsdatoer={barn.fødselsdatoer}
                             onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
