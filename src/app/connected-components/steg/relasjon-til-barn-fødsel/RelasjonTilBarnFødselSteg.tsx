@@ -205,12 +205,11 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
                     )}
                 />
 
-                {(this.state.annetBarn || person.barn === undefined) && (
+                {(this.state.annetBarn || person.barn.length === 0) && (
                     <React.Fragment>
                         <Spørsmål
                             synlig={
-                                this.state.annetBarn ||
-                                person.barn === undefined
+                                this.state.annetBarn || person.barn.length === 0
                             }
                             render={() => (
                                 <ErBarnetFødtSpørsmål
