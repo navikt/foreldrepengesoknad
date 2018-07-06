@@ -12,7 +12,6 @@ import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpør
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søker from '../../../../types/søknad/Søker';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
-import { Z_DEFAULT_STRATEGY } from 'zlib';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
