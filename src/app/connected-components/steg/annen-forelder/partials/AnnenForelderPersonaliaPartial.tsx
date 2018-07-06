@@ -12,6 +12,7 @@ import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpør
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import Søker from '../../../../types/søknad/Søker';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
+import { Z_DEFAULT_STRATEGY } from 'zlib';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
@@ -25,6 +26,28 @@ type Props = AnnenForelderPersonaliaPartialProps &
     DispatchProps;
 
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
+    onKanIkkeOppgis() {
+        const { dispatch } = this.props;
+        const kanIkkeOppgis = this.props.annenForelder.kanIkkeOppgis
+            ? false
+            : true;
+
+        dispatch(
+            søknadActions.updateAnnenForelder({
+                navn: undefined,
+                fnr: undefined,
+                utenlandskFnr: undefined,
+                kanIkkeOppgis,
+                harRettPåForeldrepenger: undefined
+            })
+        );
+        dispatch(
+            søknadActions.updateSøker({
+                erAleneOmOmsorg: kanIkkeOppgis
+            })
+        );
+    }
+
     render() {
         const {
             søker,
@@ -60,6 +83,21 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                                     )
                                 )
                             }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    render={() => (
+                        <Checkbox
+                            checked={kanIkkeOppgis || false}
+                            label={getMessage(
+                                intl,
+                                'annenForelder.spørsmål.kanOppgis'
+                            )}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => this.onKanIkkeOppgis()}
                         />
                     )}
                 />

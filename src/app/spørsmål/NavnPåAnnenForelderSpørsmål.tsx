@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
@@ -28,27 +28,6 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                             onChange({ navn: e.target.value })
                         }
                         value={navn === undefined ? '' : navn}
-                    />
-                )}
-            />
-
-            <Spørsmål
-                render={() => (
-                    <Checkbox
-                        checked={kanIkkeOppgis || false}
-                        label={getMessage(
-                            intl,
-                            'annenForelder.spørsmål.kanOppgis'
-                        )}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            onChange({
-                                navn: undefined,
-                                fnr: undefined,
-                                utenlandskFnr: undefined,
-                                kanIkkeOppgis: e.target.checked,
-                                harRettPåForeldrepenger: undefined
-                            })
-                        }
                     />
                 )}
             />
