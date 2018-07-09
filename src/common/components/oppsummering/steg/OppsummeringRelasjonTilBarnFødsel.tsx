@@ -2,7 +2,7 @@ import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { ISODateToMaskedInput } from '../../../../app/util/dates/dates';
+import { ISODateToPrettyDateFormat } from '../../../../app/util/dates/dates';
 import {
     FødtBarn,
     BarnPartial,
@@ -23,7 +23,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
             <React.Fragment>
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.fødselsdato')}
-                    text={ISODateToMaskedInput(fødselsdatoer[0]) || ''}
+                    text={ISODateToPrettyDateFormat(fødselsdatoer[0]) || ''}
                 />
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.terminbekreftelse')}
@@ -49,7 +49,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
             <React.Fragment>
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.termindato')}
-                    text={ISODateToMaskedInput(termindato) || ''}
+                    text={ISODateToPrettyDateFormat(termindato) || ''}
                 />
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.terminbekreftelse')}
@@ -60,7 +60,9 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                         intl,
                         'oppsummering.terminbekreftelseDato'
                     )}
-                    text={ISODateToMaskedInput(terminbekreftelseDato) || ''}
+                    text={
+                        ISODateToPrettyDateFormat(terminbekreftelseDato) || ''
+                    }
                 />
             </React.Fragment>
         );

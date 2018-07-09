@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToMaskedInput } from '../util/dates/dates';
+import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
@@ -169,10 +169,14 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = 
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToMaskedInput(næring.tidsperiode.startdato),
+                    fom: ISODateToPrettyDateFormat(
+                        næring.tidsperiode.startdato
+                    ),
                     tom: næring.pågående
                         ? 'pågående'
-                        : ISODateToMaskedInput(næring.tidsperiode.sluttdato)
+                        : ISODateToPrettyDateFormat(
+                              næring.tidsperiode.sluttdato
+                          )
                 }}
             />
         </div>

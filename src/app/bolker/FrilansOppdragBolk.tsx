@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToMaskedInput } from '../util/dates/dates';
+import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
 
@@ -169,10 +169,14 @@ const FrilansOppdragListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToMaskedInput(oppdrag.tidsperiode.startdato),
+                    fom: ISODateToPrettyDateFormat(
+                        oppdrag.tidsperiode.startdato
+                    ),
                     tom: oppdrag.pågående
                         ? 'pågående'
-                        : ISODateToMaskedInput(oppdrag.tidsperiode.sluttdato)
+                        : ISODateToPrettyDateFormat(
+                              oppdrag.tidsperiode.sluttdato
+                          )
                 }}
             />
         </div>
