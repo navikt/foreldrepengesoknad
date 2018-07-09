@@ -7,7 +7,7 @@ const renderSpørsmål = (props: SpørsmålProps): ShallowWrapper =>
 
 describe('Spørsmål component', () => {
     let shallowSpørsmål: ShallowWrapper;
-    let children: JSX.Element = <p>Test Content</p>;
+    const children: JSX.Element = <p>Test Content</p>;
 
     it('should be defined', () => {
         expect(Spørsmål).toBeDefined();

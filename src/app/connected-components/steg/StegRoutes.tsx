@@ -17,11 +17,12 @@ import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
 import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
 import Inngangsside from '../sider/inngangsside/Inngangsside';
+import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-class Steg extends React.Component<RouteComponentProps<any>> {
+class StegRoutes extends React.Component<RouteComponentProps<any>> {
     render() {
         return (
             <Applikasjonsside visSpråkvelger={false}>
@@ -75,10 +76,15 @@ class Steg extends React.Component<RouteComponentProps<any>> {
                         component={UttaksplanSteg}
                         key={StegID.UTTAKSPLAN}
                     />
+                    <Route
+                        path={søknadStegPath(StegID.OPPSUMMERING)}
+                        component={OppsummeringSteg}
+                        key={StegID.OPPSUMMERING}
+                    />
                 </Switch>
             </Applikasjonsside>
         );
     }
 }
 
-export default withRouter(Steg);
+export default withRouter(StegRoutes);

@@ -263,5 +263,24 @@
     "valideringsfeil.terminbekreftelseDato.forSen":
         "Datoen på stadfestinga av termin kan ikkje vere fram i tid.",
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
-        "Stadfestinga på termin må vise at du er i 26. svangerskapsveke eller seinare"
+        "Stadfestinga på termin må vise at du er i 26. svangerskapsveke eller seinare",
+
+    "oppsummering.veileder":
+        "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.termindato": "med termindato den",
+    "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
+    "oppsummering.terminbekreftelseDato": "Som er datert den",
+    "oppsummering.samtykke":
+        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+    "oppsummering.antallBarn.label": "Søknaden gjelder",
+    "oppsummering.ettBarn": "ett barn",
+    "oppsummering.tvillinger": "tvillinger",
+    "oppsummering.antallBarn.flere": "{ antall } barn",
+    "oppsummering.antallBarn.3": "Tre",
+    "oppsummering.antallBarn.4": "Fire",
+    "oppsummering.antallBarn.5": "Fem",
+    "oppsummering.antallBarn.6": "Seks",
+    "oppsummering.antallBarn.7": "Syv",
+    "oppsummering.antallBarn.8": "Åtte",
+    "oppsummering.antallBarn.9": "Ni"
 }

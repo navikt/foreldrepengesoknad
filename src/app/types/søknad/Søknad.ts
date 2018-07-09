@@ -30,6 +30,7 @@ export enum Søkersituasjon {
 interface Søknad {
     type: Foreldrepenger;
     harGodkjentVilkår: boolean;
+    harGodkjentOppsummering: boolean;
     annenForelder: AnnenForelder;
     situasjon: Søkersituasjon;
     barn: Barn;
@@ -43,6 +44,7 @@ export interface SøknadPartial {
     annenForelder: AnnenForelderPartial;
     situasjon?: Søkersituasjon;
     harGodkjentVilkår: boolean;
+    harGodkjentOppsummering: boolean;
     barn: BarnPartial;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdPartial;
     uttaksplan?: Periode[];

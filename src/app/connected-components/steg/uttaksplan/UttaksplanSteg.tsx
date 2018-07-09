@@ -10,8 +10,6 @@ import { HistoryProps } from '../../../types/common';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { Periode } from 'uttaksplan/types';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import routeConfig from '../../../util/routing/routeConfig';
 import Person from '../../../types/Person';
 
 interface UttaksplanStegProps {
@@ -26,18 +24,6 @@ type Props = UttaksplanStegProps & HistoryProps & DispatchProps;
 class UttaksplanSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.sendSøknadAndRedirect = this.sendSøknadAndRedirect.bind(this);
-    }
-
-    sendSøknadAndRedirect() {
-        const { søknad, perioder, dispatch, history } = this.props;
-        dispatch(
-            apiActionCreators.sendSøknad({
-                ...søknad,
-                uttaksplan: [...(perioder || [])]
-            })
-        );
-        history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
     }
 
     render() {
@@ -55,7 +41,7 @@ class UttaksplanSteg extends React.Component<Props> {
         const { søker } = søknad;
 
         return (
-            <Steg {...stegProps} onSubmit={this.sendSøknadAndRedirect}>
+            <Steg {...stegProps}>
                 <Uttaksplan
                     grunnlag={{
                         familiehendelsedato: (barn as UfødtBarn).termindato,

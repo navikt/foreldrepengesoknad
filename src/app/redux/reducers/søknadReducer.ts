@@ -24,7 +24,8 @@ const getDefaultState = (): SøknadPartial => {
             erAleneOmOmsorg: false,
             andreInntekterSiste10Mnd: []
         },
-        harGodkjentVilkår: false
+        harGodkjentVilkår: false,
+        harGodkjentOppsummering: false
     };
 };
 

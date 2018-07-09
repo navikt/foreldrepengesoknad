@@ -7,7 +7,8 @@ export enum StegID {
     'UTENLANDSOPPHOLD' = 'utenlandsopphold',
     'ANNEN_FORELDER' = 'annen-forelder',
     'ANDRE_INNTEKTER' = 'andre-inntekter',
-    'UTTAKSPLAN' = 'uttaksplan'
+    'UTTAKSPLAN' = 'uttaksplan',
+    'OPPSUMMERING' = 'oppsummering'
 }
 
 export interface StegConfig {
@@ -61,6 +62,11 @@ const stegConfig: StegConfig = {
     },
     [StegID.UTTAKSPLAN]: {
         tittel: 'Velkommen til eksempel-uttaksplanen',
+        fortsettKnappLabel: 'Gå til oppsummering',
+        nesteSteg: StegID.OPPSUMMERING
+    },
+    [StegID.OPPSUMMERING]: {
+        tittel: 'Oppsummering',
         fortsettKnappLabel: 'Send søknad'
     }
 };
