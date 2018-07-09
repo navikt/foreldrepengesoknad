@@ -35,7 +35,10 @@ node {
     }
 
     stage("Build & publish") {
-        withEnv(['HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088', 'HTTP_PROXY=http://webproxy-utvikler.nav.no:8088', 'NO_PROXY=localhost,127.0.0.1', 'NODE_TLS_REJECT_UNAUTHORIZED=0', 'PORT=8081', 'CYPRESS_SKIP_BINARY_INSTALL=1']) {
+        withEnv(['HTTPS_PROXY=http://webproxy-internett.nav.no:8088',
+                 'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
+                 'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
+        ]) {
             System.setProperty("java.net.useSystemProxies", "true")
             System.setProperty("http.nonProxyHosts", "*.adeo.no")
             sh "npm install"
