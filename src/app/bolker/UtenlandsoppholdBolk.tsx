@@ -7,7 +7,7 @@ import {
     Utenlandsopphold
 } from '../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
-import { ISODateToMaskedInput } from '../util/dates/dates';
+import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
 
 interface UtenlandsoppholdBolkProps {
@@ -174,8 +174,12 @@ const OppholdListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToMaskedInput(opphold.tidsperiode.startdato),
-                    tom: ISODateToMaskedInput(opphold.tidsperiode.sluttdato)
+                    fom: ISODateToPrettyDateFormat(
+                        opphold.tidsperiode.startdato
+                    ),
+                    tom: ISODateToPrettyDateFormat(
+                        opphold.tidsperiode.sluttdato
+                    )
                 }}
             />
         </div>

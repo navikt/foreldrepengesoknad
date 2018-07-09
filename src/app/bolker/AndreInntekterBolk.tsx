@@ -4,7 +4,7 @@ import InteractiveList from '../components/interactive-list/InteractiveList';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
-import { ISODateToMaskedInput } from '../util/dates/dates';
+import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -167,12 +167,12 @@ const AndreInntekterListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToMaskedInput(
+                    fom: ISODateToPrettyDateFormat(
                         annenInntekt.tidsperiode.startdato
                     ),
                     tom: annenInntekt.pågående
                         ? 'pågående'
-                        : ISODateToMaskedInput(
+                        : ISODateToPrettyDateFormat(
                               annenInntekt.tidsperiode.sluttdato
                           )
                 }}
