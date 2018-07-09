@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import { UfødtBarn } from '../../../types/søknad/Barn';
+import { UfødtBarn, FødtBarn } from '../../../types/søknad/Barn';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
@@ -37,14 +37,16 @@ class UttaksplanSteg extends React.Component<Props> {
                   }
                 : undefined;
 
-        const barn = søknad.barn as UfødtBarn;
+        const barn = søknad.barn;
         const { søker } = søknad;
 
         return (
             <Steg {...stegProps}>
                 <Uttaksplan
                     grunnlag={{
-                        familiehendelsedato: (barn as UfødtBarn).termindato,
+                        familiehendelsedato:
+                            (barn as UfødtBarn).termindato ||
+                            (barn as FødtBarn).fødselsdatoer[0],
                         erBarnetFødt: barn.erBarnetFødt,
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
