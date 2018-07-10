@@ -11,7 +11,7 @@ enum INorgeVedFødsel {
 interface VæreINorgeVedFødselSpørsmålProps {
     fødselINorge?: boolean;
     onChange: (
-        erMedmor: boolean,
+        fødselINorge: boolean,
         e: React.ChangeEvent<HTMLInputElement>
     ) => void;
 }
