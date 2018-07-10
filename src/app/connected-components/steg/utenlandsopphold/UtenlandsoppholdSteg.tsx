@@ -9,7 +9,7 @@ import {
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
-import Bolk from '../../../../common/components/bolk/Bolk';
+import Bolk from 'common/components/bolk/Bolk';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste12MndSpørsmål';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
@@ -19,6 +19,7 @@ import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
+import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -97,7 +98,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, intl } = this.props;
+        const { søknad, stegProps, dispatch, intl } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
 
         return (
@@ -160,6 +161,28 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                     'tidligereOpphold'
                                 )
                             }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={
+                        informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
+                            undefined && søknad.barn.erBarnetFødt === false
+                    }
+                    render={() => (
+                        <VæreINorgeVedFødselSpørsmål
+                            fødselINorge={
+                                søknad.informasjonOmUtenlandsopphold
+                                    .fødselINorge
+                            }
+                            onChange={(fødselINorge: boolean) => {
+                                dispatch(
+                                    søknadActions.updateUtenlandsopphold({
+                                        fødselINorge
+                                    })
+                                );
+                            }}
                         />
                     )}
                 />
