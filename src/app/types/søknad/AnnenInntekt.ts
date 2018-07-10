@@ -5,10 +5,10 @@ import {
 } from 'common/types';
 
 export enum AnnenInntektType {
-    'SLUTTPAKKE' = 'sluttpakke',
-    'MILITÆRTJENESTE' = 'militærtjeneste',
-    'LØNN_VED_VIDEREUTDANNING' = 'lønnVedVidereutdanning',
-    'VENTELØNN' = 'ventelønn',
+    'SLUTTPAKKE' = 'ETTERLØNN_ARBEIDSGIVER',
+    'MILITÆRTJENESTE' = 'MILITÆR_ELLER_SIVILTJENESTE',
+    'LØNN_VED_VIDEREUTDANNING' = 'LØNN_UNDER_UTDANNING',
+    'VENTELØNN' = 'VENTELØNN',
     'JOBB_I_UTLANDET' = 'jobbiutlandet'
 }
 
