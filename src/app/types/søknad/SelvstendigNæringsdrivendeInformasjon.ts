@@ -1,10 +1,10 @@
 import { TidsperiodeMedValgfriSluttdatoPartial } from 'common/types';
 
 export enum Næringstype {
-    'FISKER' = 'fisker',
-    'JORDBRUK' = 'jordbruk',
-    'DAGMAMMA' = 'dagmamma',
-    'ANNET' = 'annet'
+    'FISKER' = 'FISKE',
+    'JORDBRUK' = 'JORDBRUK_SKOGBRUK',
+    'DAGMAMMA' = 'DAGMAMMA',
+    'ANNET' = 'ANNEN'
 }
 
 export class Næring {
