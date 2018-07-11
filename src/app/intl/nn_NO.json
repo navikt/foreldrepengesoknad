@@ -282,5 +282,28 @@
     "oppsummering.antallBarn.6": "Seks",
     "oppsummering.antallBarn.7": "Syv",
     "oppsummering.antallBarn.8": "Åtte",
-    "oppsummering.antallBarn.9": "Ni"
+    "oppsummering.antallBarn.9": "Ni",
+
+    "oppsummering.denAndreForelderen": "Den andre forelderen",
+    "oppsummering.annenForelder.aleneOmOmsorg.label":
+        "{personligPronomen} har...",
+    "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
+    "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
+    "oppsummering.annenForelder.kanIkkeOppgis":
+        "Jeg kan ikke oppgi den andre forelderen",
+    "oppsummering.annenForelder.navn.label": "Den andre forelderen heter...",
+    "oppsummering.annenForelder.fødselsnummer.label":
+        "og har fødselsnummer eller D-nummer...",
+    "oppsummering.annenForelder.utenlandskFødselsnummer.label":
+        "Utenlandsk fødselsnummer",
+    "oppsummering.annenForelder.bostedsland.label": "og bor i...",
+    "oppsummering.annenForelder.harRettPåForeldrepenger.label":
+        "Har {navn} rett på foreldrepenger?",
+    "oppsummering.annenForelder.skalHaForeldrepenger.label":
+        "Skal {navn} ha foreldrepenger?",
+    "oppsummering.annenForelder.erInformertOmSøknaden.label":
+        "Er {navn} informert om søknaden?",
+    "oppsummering.annenForelder.erForSyk.label":
+        "Er { navn } for syk til å ta seg av barnet eller innlagt?",
+    "oppsummering.annenForelder.erUfør.label": "Den andre forelderen"
 }
