@@ -7,15 +7,22 @@ import {
     TidsperiodeMedValgfriSluttdatoPartial,
     TidsperiodePartial
 } from 'common/types';
+import { Avgrensninger } from 'nav-datovelger';
 
 type TidsperiodeType =
     | TidsperiodePartial
     | TidsperiodeMedValgfriSluttdatoPartial;
 
+export interface DatoAvgrensninger {
+    fra?: Avgrensninger;
+    til?: Avgrensninger;
+}
+
 interface TidsperiodeBolkProps {
     tidsperiode: TidsperiodeType;
     onChange: (tidsperiode: TidsperiodeType) => void;
     sluttdatoDisabled?: boolean;
+    datoAvgrensninger?: DatoAvgrensninger;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -32,7 +39,12 @@ class TidsperiodeBolk extends React.Component<Props> {
     }
 
     render() {
-        const { tidsperiode, intl, sluttdatoDisabled } = this.props;
+        const {
+            tidsperiode,
+            datoAvgrensninger,
+            intl,
+            sluttdatoDisabled
+        } = this.props;
 
         return (
             <React.Fragment>
@@ -48,6 +60,9 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 });
                             }}
                             dato={tidsperiode.startdato}
+                            avgrensninger={
+                                datoAvgrensninger && datoAvgrensninger.fra
+                            }
                         />
                     )}
                 />
@@ -65,6 +80,9 @@ class TidsperiodeBolk extends React.Component<Props> {
                             }}
                             dato={tidsperiode.sluttdato}
                             disabled={false || sluttdatoDisabled}
+                            avgrensninger={
+                                datoAvgrensninger && datoAvgrensninger.til
+                            }
                         />
                     )}
                 />

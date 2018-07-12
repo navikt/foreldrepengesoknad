@@ -6,7 +6,9 @@ import {
     UtenlandsoppholdType,
     Utenlandsopphold
 } from '../types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdModal from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
+import UtenlandsoppholdModal, {
+    UtenlandsoppholdModalPropsPartial
+} from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
 import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
 
@@ -17,6 +19,7 @@ interface UtenlandsoppholdBolkProps {
     opphold: Utenlandsopphold[];
     oppholdType: UtenlandsoppholdType;
     onChange: (perioder: Utenlandsopphold[]) => void;
+    utenlandsoppholdModalProps?: UtenlandsoppholdModalPropsPartial;
 }
 
 interface UtenlandsoppholdBolkState {
@@ -100,7 +103,8 @@ class UtenlandsoppholdBolk extends React.Component<
             showUtenlandsoppholdContent,
             oppfølgingsspørsmål,
             opphold,
-            oppholdType
+            oppholdType,
+            utenlandsoppholdModalProps
         } = this.props;
         const { oppholdToEdit } = this.state;
 
@@ -153,6 +157,7 @@ class UtenlandsoppholdBolk extends React.Component<
                     opphold={oppholdToEdit}
                     onAdd={this.onAdd}
                     onEdit={this.onEdit}
+                    {...utenlandsoppholdModalProps || {}}
                 />
             </React.Fragment>
         );

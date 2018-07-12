@@ -15,15 +15,28 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk, {
+    DatoAvgrensninger
+} from '../../bolker/TidsperiodeBolk';
 import Bolk from '../../../common/components/bolk/Bolk';
+import { Avgrensninger } from 'nav-datovelger';
+
+export interface AvgrensningGetters {
+    getFraAvgrensning?: (date?: Date) => Avgrensninger;
+    getTilAvgrensning?: (date?: Date) => Avgrensninger;
+}
 
 export interface UtenlandsoppholdModalProps extends ModalProps {
     type: UtenlandsoppholdType;
     opphold?: Utenlandsopphold;
     onAdd: (opphold: Utenlandsopphold) => void;
     onEdit: (opphold: Utenlandsopphold) => void;
+    avgrensningGetters?: AvgrensningGetters;
 }
+
+export type UtenlandsoppholdModalPropsPartial = Partial<
+    UtenlandsoppholdModalProps
+>;
 
 interface State {
     opphold: UtenlandsoppholdSkjemadataPartial;
@@ -51,6 +64,7 @@ export default class UtenlandsoppholdModal extends React.Component<
 
         this.state = UtenlandsoppholdModal.buildStateFromProps(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.getAvgrensninger = this.getAvgrensninger.bind(this);
     }
 
     updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
@@ -74,6 +88,26 @@ export default class UtenlandsoppholdModal extends React.Component<
         } else {
             onAdd(opphold as Utenlandsopphold);
         }
+    }
+
+    getAvgrensninger(): DatoAvgrensninger {
+        const { avgrensningGetters } = this.props;
+        const { opphold } = this.state;
+        const tidsperiode = opphold && opphold.tidsperiode;
+
+        if (avgrensningGetters) {
+            const { getFraAvgrensning, getTilAvgrensning } = avgrensningGetters;
+            return {
+                fra:
+                    getFraAvgrensning &&
+                    getFraAvgrensning(tidsperiode && tidsperiode.sluttdato),
+                til:
+                    getTilAvgrensning &&
+                    getTilAvgrensning(tidsperiode && tidsperiode.startdato)
+            };
+        }
+
+        return {};
     }
 
     render() {
@@ -110,6 +144,7 @@ export default class UtenlandsoppholdModal extends React.Component<
                     <Bolk
                         render={() => (
                             <TidsperiodeBolk
+                                datoAvgrensninger={this.getAvgrensninger()}
                                 tidsperiode={opphold.tidsperiode || {}}
                                 onChange={(
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
