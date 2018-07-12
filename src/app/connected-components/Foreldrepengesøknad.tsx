@@ -37,6 +37,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         const { dispatch, person } = this.props;
         if (!person) {
             dispatch(api.getSøkerinfo());
+            dispatch(api.getAppState());
         }
     }
 

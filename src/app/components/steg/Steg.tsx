@@ -19,7 +19,6 @@ type Props = StegProps & InjectedIntlProps;
 class Steg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
