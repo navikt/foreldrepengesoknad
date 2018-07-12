@@ -1,13 +1,8 @@
-import moment from 'moment';
 import { Avgrensninger } from 'nav-datovelger';
 import { date1YearAgo, today } from './values';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
-    const til = moment(tilDate);
-    let maksDato = today.toDate();
-    if (tilDate && til.isBetween(date1YearAgo, today)) {
-        maksDato = tilDate;
-    }
+    let maksDato = tilDate || today.toDate();
     return {
         minDato: date1YearAgo.toDate(),
         maksDato
@@ -15,11 +10,7 @@ export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
 };
 
 export const getTilAvgrensninger = (fraDate?: Date): Avgrensninger => {
-    const fra = moment(fraDate);
-    let minDato = today.toDate();
-    if (fraDate && fra.isBetween(date1YearAgo, today)) {
-        minDato = fraDate;
-    }
+    const minDato = fraDate || today.toDate();
     return {
         minDato,
         maksDato: today.toDate()
