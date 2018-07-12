@@ -1,56 +1,31 @@
-import Person, { PersonPartial } from '../../../types/Person';
+import { PersonPartial } from '../../../types/Person';
 import Søknad from '../../../types/søknad/Søknad';
-import Arbeidsforhold from '../../../types/Arbeidsforhold';
-import { AppState } from '../../reducers';
+import { ApiStatePartial } from '../../reducers/apiReducer';
 
 export enum ApiActionKeys {
-    'GET_SØKERINFO_REQUEST' = 'getSøkerinfoRequest',
-    'GET_SØKERINFO_SUCCESS' = 'getSøkerinfoSuccess',
-    'GET_SØKERINFO_FAILED' = 'getSøkerinfoFailed',
-
-    'SEND_SØKNAD_REQUEST' = 'sendSøknadRequest',
-    'SEND_SØKNAD_SUCCESS' = 'sendSøknadSuccess',
-    'SEND_SØKNAD_FAILED' = 'sendSøknadFailed',
+    'GET_APP_STATE' = 'getAppState',
+    'GET_SØKERINFO' = 'getSøkerinfo',
 
     'SAVE_APP_STATE' = 'saveAppState',
-    'SAVE_APP_STATE_SUCCESS' = 'saveAppStateSuccess',
-    'SAVE_APP_STATE_FAILED' = 'saveAppStateFailed',
+    'SEND_SØKNAD' = 'sendSøknad',
 
-    'GET_APP_STATE' = 'getAppState',
-    'GET_APP_STATE_SUCCESS' = 'getAppStateSuccess',
-    'GET_APP_STATE_FAILED' = 'getAppStateFailed',
+    'UPDATE_PERSON' = 'updatePerson',
 
-    'UPDATE_PERSON' = 'updatePerson'
+    'UPDATE_API' = 'updateApi'
 }
 
-interface GetSøkerinfoRequest {
-    type: ApiActionKeys.GET_SØKERINFO_REQUEST;
+interface UpdateApi {
+    type: ApiActionKeys.UPDATE_API;
+    payload: ApiStatePartial;
 }
 
-interface GetSøkerinfoSuccess {
-    type: ApiActionKeys.GET_SØKERINFO_SUCCESS;
-    person: Person;
-    arbeidsforhold: Arbeidsforhold;
+interface GetSøkerinfo {
+    type: ApiActionKeys.GET_SØKERINFO;
 }
 
-interface GetSøkerinfoFailed {
-    type: ApiActionKeys.GET_SØKERINFO_FAILED;
-    error: any;
-}
-
-export interface SendSøknadRequest {
-    type: ApiActionKeys.SEND_SØKNAD_REQUEST;
+export interface SendSøknad {
+    type: ApiActionKeys.SEND_SØKNAD;
     søknad: Søknad;
-}
-
-interface SendSøknadSuccess {
-    type: ApiActionKeys.SEND_SØKNAD_SUCCESS;
-    response: any;
-}
-
-interface SendSøknadFailed {
-    type: ApiActionKeys.SEND_SØKNAD_FAILED;
-    error: any;
 }
 
 interface UpdatePerson {
@@ -62,42 +37,14 @@ export interface SaveAppState {
     type: ApiActionKeys.SAVE_APP_STATE;
 }
 
-interface SaveAppStateSuccess {
-    type: ApiActionKeys.SAVE_APP_STATE_SUCCESS;
-}
-
-interface SaveAppStateFailed {
-    type: ApiActionKeys.SAVE_APP_STATE_FAILED;
-    // tslint:disable-next-line:no-any
-    error: any;
-}
-
 export interface GetAppState {
     type: ApiActionKeys.GET_APP_STATE;
 }
 
-export interface GetAppStateSuccess {
-    type: ApiActionKeys.GET_APP_STATE_SUCCESS;
-    appState: AppState;
-}
-
-interface GetAppStateFailed {
-    type: ApiActionKeys.GET_APP_STATE_FAILED;
-    // tslint:disable-next-line:no-any
-    error: any;
-}
-
 export type ApiActionTypes =
-    | GetSøkerinfoRequest
-    | GetSøkerinfoSuccess
-    | GetSøkerinfoFailed
-    | SendSøknadRequest
-    | SendSøknadSuccess
-    | SendSøknadFailed
+    | GetSøkerinfo
+    | SendSøknad
     | UpdatePerson
     | SaveAppState
-    | SaveAppStateSuccess
-    | SaveAppStateFailed
     | GetAppState
-    | GetAppStateSuccess
-    | GetAppStateFailed;
+    | UpdateApi;
