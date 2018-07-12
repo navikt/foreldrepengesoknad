@@ -20,6 +20,14 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
+import {
+    getFraAvgrensninger as fraAvgrensningerTidligerePerioder,
+    getTilAvgrensninger as tilAvgrensningerTidligerePerioder
+} from '../../../util/validation/tidligereUtenlandsopphold';
+import {
+    getFraAvgrensninger as fraAvgrensningerSenerePerioder,
+    getTilAvgrensninger as tilAvgrensningerSenerePerioder
+} from '../../../util/validation/senereUtenlandsopphold';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -128,6 +136,12 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                     'senereOpphold'
                                 )
                             }
+                            utenlandsoppholdModalProps={{
+                                avgrensningGetters: {
+                                    getFraAvgrensning: fraAvgrensningerTidligerePerioder,
+                                    getTilAvgrensning: tilAvgrensningerTidligerePerioder
+                                }
+                            }}
                         />
                     )}
                 />
@@ -161,6 +175,12 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                     'tidligereOpphold'
                                 )
                             }
+                            utenlandsoppholdModalProps={{
+                                avgrensningGetters: {
+                                    getFraAvgrensning: fraAvgrensningerSenerePerioder,
+                                    getTilAvgrensning: tilAvgrensningerSenerePerioder
+                                }
+                            }}
                         />
                     )}
                 />

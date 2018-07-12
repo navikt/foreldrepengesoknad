@@ -14,18 +14,18 @@ const mockResponse = {
         etternavn: 'Ibsen',
         kjønn: 'K',
         fødselsdato: '1979-01-28',
-        ikkeNordiskEøsLand: true
+        ikkeNordiskEøsLand: true,
+        barn: [
+            {
+                fnr: '12345123451',
+                fornavn: 'Sjura',
+                etternavn: 'Gucci',
+                kjønn: 'K',
+                fødselsdato: '2017-01-01'
+            }
+        ]
     },
-    arbeidsforhold: {},
-    barn: [
-        {
-            fnr: '12345123451',
-            fornavn: 'Sjura',
-            etternavn: 'Gucci',
-            kjønn: 'K',
-            fødselsdato: '2017-01-01'
-        }
-    ]
+    arbeidsforhold: {}
 };
 
 const allowCrossDomain = function(req, res, next) {
