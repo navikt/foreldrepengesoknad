@@ -19,6 +19,7 @@ import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
 import summaryActionCreators from '../../../redux/actions/summary/summaryActionCreators';
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
+import { cleanupSøknad } from '../../../util/søknad/cleanup';
 
 interface StateProps {
     person: Person;
@@ -39,7 +40,7 @@ class OppsummeringSteg extends React.Component<Props> {
         const { søknad, perioder, dispatch, history } = this.props;
         dispatch(
             apiActionCreators.sendSøknad({
-                ...søknad,
+                ...cleanupSøknad(søknad),
                 uttaksplan: [...(perioder || [])]
             })
         );
