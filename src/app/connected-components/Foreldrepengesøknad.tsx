@@ -98,7 +98,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
             (error.response && error.response.status === 401)
         ) {
             return <Spinner type="XXL" />;
-        } else if (error.networkError || error.response !== undefined) {
+        } else if (!person && !isLoadingPerson) {
             return this.renderErrorRoute(GenerellFeil);
         } else if (person && !person.erMyndig) {
             return this.renderErrorRoute(IkkeMyndig);
