@@ -22,7 +22,7 @@ export enum Søkersituasjon {
     FØDSEL = 'fødsel',
     ADOPSJON = 'adopsjon',
     STEBARN = 'stebarn',
-    FORELDREANSVAR = 'foreldreansvar'
+    FORELDREANSVAR = 'omsorgsovertakelse'
 }
 
 interface Søknad {
