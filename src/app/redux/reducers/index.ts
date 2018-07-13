@@ -4,13 +4,13 @@ import common, { CommonState } from './commonReducer';
 import api, { ApiState } from './apiReducer';
 import uttaksplan from 'uttaksplan/redux/reducers';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
-import summary, { SummaryReducerState } from './summaryReducer';
+import summary, { SummaryState } from './summaryReducer';
 
 interface MainState extends UttaksplanAppState {
     søknad: Søknad;
     common: CommonState;
     api: ApiState;
-    summary: SummaryReducerState;
+    summary: SummaryState;
 }
 
 export type AppState = MainState & UttaksplanAppState;

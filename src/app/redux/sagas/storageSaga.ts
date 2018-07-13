@@ -2,6 +2,10 @@ import { takeEvery, all, call, put, select } from 'redux-saga/effects';
 import Api from '../../api/api';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
+import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
+import { default as commonActions } from '../actions/common/commonActionCreators';
+import { AppState } from '../reducers';
+import summaryActionCreators from '../actions/summary/summaryActionCreators';
 
 function* saveAppState() {
     try {
@@ -13,17 +17,23 @@ function* saveAppState() {
     }
 }
 
+function* applyStoredStateToApp(state: AppState) {
+    yield put(
+        apiActions.updateApi({
+            isLoadingAppState: false,
+            mellomlagretSøknad: true
+        })
+    );
+    yield put(søknadActions.updateSøknad(state.søknad));
+    yield put(commonActions.setSpråk(state.common.språkkode));
+    yield put(summaryActionCreators.updateSummary(state.summary));
+}
+
 function* getAppState(action: any) {
     try {
         const response = yield call(Api.getStoredAppState, action.params);
-        const storedAppState = response.data;
-        yield put(
-            apiActions.updateApi({
-                ...storedAppState,
-                isLoadingAppState: false,
-                mellomlagretSøknad: true
-            })
-        );
+        const state: AppState = response.data;
+        yield applyStoredStateToApp(state);
     } catch (error) {
         yield put(
             apiActions.updateApi({
