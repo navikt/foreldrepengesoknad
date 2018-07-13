@@ -38,7 +38,7 @@ class OppsummeringWrapper extends React.Component<Props> {
                 <Veilederinfo>
                     {getMessage(intl, 'oppsummering.veileder')}
                 </Veilederinfo>
-                <div className="oppsummering">
+                <div className="oppsummeringWrapper">
                     <SøkerPersonalia
                         navn={formaterNavn(
                             person.fornavn,
