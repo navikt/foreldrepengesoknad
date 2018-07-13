@@ -4,6 +4,9 @@
     "avbryt": "Avbryt",
     "leggtil": "Legg til",
 
+    "jeg": "jeg",
+    "vi": "vi",
+
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
@@ -19,7 +22,7 @@
     "velkommen.samtykkeIntro":
         "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
     "velkommen.dinePlikter": "dine plikter",
-    "velkommen.samtykke": "Eg stadfestar at eg har lese og forstått",
+    "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger":
         "Les om hvordan NAV behandler personopplysningene dine",
 
@@ -67,16 +70,16 @@
     "antallBarn.select.tekst": "Antall barn...",
     "antallBarn.select.velg": "Velg",
 
-    "fødselsdatoer.fødsel": "Det eldste barnet blei født den...",
-    "fødselsdatoer.flere.1": "Det første barnet blei født den...",
-    "fødselsdatoer.flere.2": "Det andre barnet blei født den...",
-    "fødselsdatoer.flere.3": "Det tredje barnet blei født den...",
-    "fødselsdatoer.flere.4": "Det fjerde barnet blei født den...",
-    "fødselsdatoer.flere.5": "Det femte barnet blei født den...",
-    "fødselsdatoer.flere.6": "Det sjette barnet blei født den...",
-    "fødselsdatoer.flere.7": "Det sjuande barnet blei født den...",
-    "fødselsdatoer.flere.8": "Det åttande barnet blei født den...",
-    "fødselsdatoer.flere.9": "Det niande barnet blei født den...",
+    "fødselsdatoer.fødsel": "Det eldste barnet ble født den...",
+    "fødselsdatoer.flere.1": "Første barnet ble født den...",
+    "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
+    "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
+    "fødselsdatoer.flere.4": "Det fjerde barnet ble født den...",
+    "fødselsdatoer.flere.5": "Det femte barnet ble født den...",
+    "fødselsdatoer.flere.6": "Det sjette barnet ble født den...",
+    "fødselsdatoer.flere.7": "Det syvende barnet ble født den...",
+    "fødselsdatoer.flere.8": "Det åttende barnet ble født den...",
+    "fødselsdatoer.flere.9": "Det niende barnet ble født den...",
 
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Antall barn",
@@ -94,12 +97,28 @@
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
+    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+        "Er du selvstendig næringsdrivende eller frilanser?",
+
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
         "Har du jobbet som frilanser de siste 10 månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
         "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
+    "frilans.oppstart": "Når begynte du som frilans?",
+    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
+    "frilansOppdrag.modal.tittel": "Frilansoppdrag",
+    "frilansOppdrag.modal.pågående": "Pågående oppdrag",
+    "frilansOppdrag.oppfølgingsspørsmål":
+        "Oppdrag for nære venner eller familie siste 10 måneder",
+    "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
+
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
+
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
     "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
@@ -116,32 +135,15 @@
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
 
+    "erDuSelvstendigNæringsdrivende.spørsmål":
+        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
+
     "harRevisor.spørsmål": "Har du revisor?",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "næringsrelasjon.navn": "Navn på personen",
     "næringsrelasjon.tlfnr": "Telefonnummer til personen",
     "næringsrelasjon.nærVennEllerFamilie":
         "Er du en nær venn eller familie av denne personen?",
-
-    "frilans.oppstart": "Når begynte du som frilans?",
-    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
-    "frilansOppdrag.modal.tittel": "Frilansoppdrag",
-    "frilansOppdrag.modal.pågående": "Pågående oppdrag",
-    "frilansOppdrag.oppfølgingsspørsmål":
-        "Oppdrag for nære venner eller familie siste 10 måneder",
-    "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
-
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Næringsinntekt etter endring",
-    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
-    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
-
-    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
-        "Er du selvstendig næringsdrivende eller frilanser?",
-
-    "erDuFrilanser.spørsmål": "Er du frilanser?",
-    "erDuSelvstendigNæringsdrivende.spørsmål":
-        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
     "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
@@ -184,12 +186,12 @@
     "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
-        "budd i utlandet helt eller delvis",
+        "bodd i utlandet helt eller delvis",
 
-    "iNorgeNeste12Mnd.spørsmål": "Dei neste 12 månadene skal eg...",
-    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bu i Noreg",
+    "iNorgeNeste12Mnd.spørsmål": "De neste 12 månedene skal jeg...",
+    "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet":
-        "bu i utlandet helt eller delvis",
+        "bo i utlandet helt eller delvis",
 
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
@@ -227,8 +229,8 @@
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
-    "utenlandsopphold.select.spørsmål.tidligerePerioder": "Jeg bodde i...",
-    "utenlandsopphold.select.spørsmål.senerePerioder": "Jeg skal bo i...",
+    "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
+    "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
@@ -245,32 +247,40 @@
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
     "driverFosterhjem.spørsmål": "Driver du fosterhjem?",
 
-    "valideringsfeil.fodselsdato.duMåOppgi": "Du må gi opp fødselsdato",
+    "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere":
-        "Fødselsdato må vere i dag eller tidlegare",
+        "Fødselsdato må være idag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikkje søke om eingongsstønad for barn som er eldre enn tre år.",
+        "Du kan ikke søke om engangsstønad for barn som er eldre enn tre år.",
 
-    "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindato",
+    "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke26":
-        "Du kan tidlegast søkje når du er i 26. svangerskapsveke",
+        "Du kan tidligst søke når du er i 26. svangerskapsuke",
     "valideringsfeil.termindato.forTidlig":
-        "Termindatoen kan ikkje vere tidlegare enn tre veker frå i dag",
+        "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
 
     "valideringsfeil.terminbekreftelseDato.duMåOppgi":
-        "Du må gi opp når stadfestinga av termin er datert",
+        "Du må oppgi når terminbekreftelsen er datert",
     "valideringsfeil.terminbekreftelseDato.forSen":
-        "Datoen på stadfestinga av termin kan ikkje vere fram i tid.",
+        "Datoen på terminbekreftelsen kan ikke være frem i tid.",
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
-        "Stadfestinga på termin må vise at du er i 26. svangerskapsveke eller seinare",
+        "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere",
+
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer":
+        "Du kan ikke oppgi ditt eget fødselsnummer",
+
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
+        "Du må skrive et gyldig nummer (11 sifre)",
 
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.samtykke":
+        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+
+    "oppsummering.relasjonTilBarn": "Relasjon til barn",
     "oppsummering.termindato": "med termindato den",
     "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato": "Som er datert den",
-    "oppsummering.samtykke":
-        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.tvillinger": "tvillinger",
@@ -304,5 +314,5 @@
         "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label":
         "Er { navn } for syk til å ta seg av barnet eller innlagt?",
-    "oppsummering.annenForelder.erUfør.label": "Den andre forelderen"
+    "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? "
 }

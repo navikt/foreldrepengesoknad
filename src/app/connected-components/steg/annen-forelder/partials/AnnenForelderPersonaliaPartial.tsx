@@ -1,8 +1,11 @@
 import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { connect } from 'react-redux';
 import { Checkbox } from 'nav-frontend-skjema';
 
-import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
+import AnnenForelder, {
+    AnnenForelderPartial
+} from '../../../../types/søknad/AnnenForelder';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
@@ -10,19 +13,20 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from '../../../../../common/components/bolk/Bolk';
 import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
-import Søker from '../../../../types/søknad/Søker';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
+import { AppState } from '../../../../redux/reducers';
+import Søker from '../../../../types/søknad/Søker';
+import Person from '../../../../types/Person';
 
-interface AnnenForelderPersonaliaPartialProps {
+interface StateProps {
     søker: Søker;
-    annenForelder: AnnenForelderPartial;
+    søkersFødselsnummer: string;
+    annenForelder: AnnenForelder;
     dataOmAndreForelderen: any;
     erFarEllerMedmor: boolean;
 }
 
-type Props = AnnenForelderPersonaliaPartialProps &
-    InjectedIntlProps &
-    DispatchProps;
+type Props = StateProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     onKanIkkeOppgis() {
@@ -50,6 +54,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     render() {
         const {
             søker,
+            søkersFødselsnummer,
             annenForelder,
             dataOmAndreForelderen,
             dispatch,
@@ -127,7 +132,11 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     synlig={navn !== undefined}
                     render={() => (
                         <FødselsnummerSpørsmål
-                            annenForelder={annenForelder}
+                            kanIkkeOppgis={kanIkkeOppgis}
+                            søkersFødselsnummer={søkersFødselsnummer}
+                            fnr={annenForelder.fnr}
+                            utenlandskFnr={annenForelder.utenlandskFnr}
+                            bostedsland={annenForelder.bostedsland}
                             onChange={(
                                 annenForelderPartial: AnnenForelderPartial
                             ) =>
@@ -145,4 +154,14 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     }
 }
 
-export default injectIntl(AnnenForelderPersonaliaPartial);
+const mapStateToProps = (state: AppState): StateProps => ({
+    søker: state.søknad.søker,
+    søkersFødselsnummer: (state.api.person as Person).fnr,
+    annenForelder: state.søknad.annenForelder,
+    dataOmAndreForelderen: undefined,
+    erFarEllerMedmor: true
+});
+
+export default connect<StateProps, {}, {}>(mapStateToProps)(
+    injectIntl(AnnenForelderPersonaliaPartial)
+);

@@ -9,7 +9,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 
 import { AppState } from '../../../redux/reducers';
-import {
+import AnnenForelder, {
     AnnenForelderPartial,
     DataOmAnnenForelder
 } from '../../../types/søknad/AnnenForelder';
@@ -25,7 +25,7 @@ interface StateProps {
     barn: BarnPartial;
     søker: Søker;
     dataOmAndreForelderen: DataOmAnnenForelder;
-    annenForelder: AnnenForelderPartial;
+    annenForelder: AnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
     stegProps: StegProps;
 }
@@ -64,13 +64,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             return (
                 <Steg {...stegProps}>
                     <React.Fragment>
-                        <AnnenForelderPersonaliaPartial
-                            søker={søker}
-                            annenForelder={annenForelder}
-                            dataOmAndreForelderen={dataOmAndreForelderen}
-                            erFarEllerMedmor={erSøkerFarEllerMedmor}
-                            dispatch={dispatch}
-                        />
+                        <AnnenForelderPersonaliaPartial />
                         {this.shouldRenderAnnenForelderErKjentPartial() && (
                             <AnnenForelderErKjentPartial
                                 barn={barn as ForeldreansvarBarn}
