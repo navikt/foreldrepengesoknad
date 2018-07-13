@@ -32,7 +32,7 @@ class StegRoutes extends React.Component<Props> {
         const { history, dispatch } = props;
         history.listen((location) => {
             if (location.pathname !== '/søknad-sendt') {
-                dispatch(apiActionCreators.saveAppState());
+                dispatch(apiActionCreators.storeAppState());
             }
         });
     }

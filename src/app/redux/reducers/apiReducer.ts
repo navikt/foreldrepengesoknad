@@ -58,7 +58,7 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
                     ...action.payload
                 }
             };
-        case ApiActionKeys.GET_APP_STATE:
+        case ApiActionKeys.GET_STORED_APP_STATE:
             return {
                 ...state,
                 isLoadingAppState: true

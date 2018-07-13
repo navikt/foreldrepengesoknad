@@ -30,21 +30,26 @@ function sendSøknad(søknad: Søknad) {
     });
 }
 
-function getAppState() {
+function getStoredAppState() {
     const url = `${apiBaseUrl}/storage`;
     return axios.get(url, { withCredentials: true });
 }
 
-function saveAppState(state: AppState) {
+function storeAppState(state: AppState) {
     const url = `${apiBaseUrl}/storage`;
-    return axios.post(url, state, { withCredentials: true });
+    const { søknad, common, summary } = state;
+    return axios.post(
+        url,
+        { søknad, common, summary },
+        { withCredentials: true }
+    );
 }
 
 const Api = {
     getPerson,
     sendSøknad,
-    getAppState,
-    saveAppState
+    getStoredAppState,
+    storeAppState
 };
 
 export default Api;

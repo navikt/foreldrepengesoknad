@@ -3,10 +3,10 @@ import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 
 export enum ApiActionKeys {
-    'GET_APP_STATE' = 'getAppState',
+    'GET_STORED_APP_STATE' = 'getStoredAppState',
     'GET_SØKERINFO' = 'getSøkerinfo',
 
-    'SAVE_APP_STATE' = 'saveAppState',
+    'STORE_APP_STATE' = 'storeAppState',
     'SEND_SØKNAD' = 'sendSøknad',
 
     'UPDATE_PERSON' = 'updatePerson',
@@ -33,18 +33,18 @@ interface UpdatePerson {
     payload: PersonPartial;
 }
 
-export interface SaveAppState {
-    type: ApiActionKeys.SAVE_APP_STATE;
+export interface GetStoredAppState {
+    type: ApiActionKeys.GET_STORED_APP_STATE;
 }
 
-export interface GetAppState {
-    type: ApiActionKeys.GET_APP_STATE;
+export interface StoreAppState {
+    type: ApiActionKeys.STORE_APP_STATE;
 }
 
 export type ApiActionTypes =
     | GetSøkerinfo
     | SendSøknad
     | UpdatePerson
-    | SaveAppState
-    | GetAppState
+    | StoreAppState
+    | GetStoredAppState
     | UpdateApi;
