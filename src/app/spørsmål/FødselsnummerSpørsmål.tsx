@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Checkbox, Input } from 'nav-frontend-skjema';
-import AnnenForelder, {
-    AnnenForelderPartial
-} from '../types/søknad/AnnenForelder';
+import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Landvelger from '../components/landvelger/Landvelger';

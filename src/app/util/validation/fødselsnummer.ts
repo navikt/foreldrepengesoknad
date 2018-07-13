@@ -30,11 +30,11 @@ export const getFødselsnummerRegler = (
                 }
                 return result;
             },
-            failText: getMessage(intl, 'annenForelder.ugyldigFødselsnummer')
+            failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`)
         },
         {
             test: () => søkersFødselsnummer !== annenForelder.fnr,
-            failText: getMessage(intl, 'annenForelder.ugyldigEgetFødselsnummer')
+            failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
         }
     ];
 };
