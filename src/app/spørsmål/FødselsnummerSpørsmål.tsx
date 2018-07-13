@@ -10,8 +10,11 @@ import { ValidInput } from 'common/lib/validation';
 import { getFødselsnummerRegler } from '../util/validation/fødselsnummer';
 
 interface FødselsnummerSpørsmålProps {
+    kanIkkeOppgis: boolean;
     søkersFødselsnummer: string;
-    annenForelder: AnnenForelderPartial;
+    fnr: string;
+    utenlandskFnr: boolean;
+    bostedsland: string;
     onChange: (
         annenForelder: AnnenForelderPartial,
         e: React.ChangeEvent<any>
@@ -21,16 +24,23 @@ interface FødselsnummerSpørsmålProps {
 type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
 const FødselsnummerSpørsmål = (props: Props) => {
-    const { søkersFødselsnummer, annenForelder, onChange, intl } = props;
-    const { kanIkkeOppgis, fnr, utenlandskFnr } = annenForelder;
-    const FnrComponent = annenForelder.utenlandskFnr ? Input : ValidInput;
+    const {
+        kanIkkeOppgis,
+        fnr,
+        utenlandskFnr,
+        søkersFødselsnummer,
+        bostedsland,
+        onChange,
+        intl
+    } = props;
+    const FnrComponent = utenlandskFnr ? Input : ValidInput;
 
     return (
         <React.Fragment>
             <Spørsmål
                 render={() => (
                     <FnrComponent
-                        disabled={kanIkkeOppgis ? true : false}
+                        disabled={kanIkkeOppgis || false}
                         label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
                         name="fødselsnummer"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -38,7 +48,8 @@ const FødselsnummerSpørsmål = (props: Props) => {
                         }
                         value={fnr || ''}
                         validators={getFødselsnummerRegler(
-                            annenForelder,
+                            fnr,
+                            utenlandskFnr,
                             søkersFødselsnummer,
                             intl
                         )}
@@ -63,17 +74,17 @@ const FødselsnummerSpørsmål = (props: Props) => {
             />
 
             <Spørsmål
-                synlig={annenForelder.utenlandskFnr === true}
+                synlig={utenlandskFnr === true}
                 render={() => (
                     <Landvelger
                         label={
                             <Labeltekst intlId={'annenForelder.bostedsland'} />
                         }
                         onChange={(
-                            bostedsland: string,
+                            land: string,
                             e: React.ChangeEvent<HTMLSelectElement>
-                        ) => onChange({ bostedsland }, e)}
-                        defaultValue={annenForelder.bostedsland}
+                        ) => onChange({ bostedsland: land }, e)}
+                        defaultValue={bostedsland}
                     />
                 )}
             />
