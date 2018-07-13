@@ -267,6 +267,12 @@
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
         "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere",
 
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer":
+        "Du kan ikke oppgi ditt eget fødselsnummer",
+
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
+        "Du må skrive et gyldig nummer (11 sifre)",
+
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":

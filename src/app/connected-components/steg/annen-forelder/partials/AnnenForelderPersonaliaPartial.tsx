@@ -15,6 +15,7 @@ import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
+    søkersFødselsnummer: string;
     annenForelder: AnnenForelderPartial;
     dataOmAndreForelderen: any;
     erFarEllerMedmor: boolean;
@@ -50,6 +51,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     render() {
         const {
             søker,
+            søkersFødselsnummer,
             annenForelder,
             dataOmAndreForelderen,
             dispatch,
@@ -127,6 +129,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     synlig={navn !== undefined}
                     render={() => (
                         <FødselsnummerSpørsmål
+                            søkersFødselsnummer={søkersFødselsnummer}
                             annenForelder={annenForelder}
                             onChange={(
                                 annenForelderPartial: AnnenForelderPartial

@@ -65,6 +65,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                 <Steg {...stegProps}>
                     <React.Fragment>
                         <AnnenForelderPersonaliaPartial
+                            søkersFødselsnummer={person.fnr}
                             søker={søker}
                             annenForelder={annenForelder}
                             dataOmAndreForelderen={dataOmAndreForelderen}
