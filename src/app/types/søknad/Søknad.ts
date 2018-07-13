@@ -11,11 +11,9 @@ type Foreldrepenger = 'foreldrepenger';
 
 export enum SøkerRolle {
     MOR = 'MOR',
-    MOR2 = 'MOR2',
     FAR = 'FAR',
     FAR2 = 'FAR2',
     MEDMOR = 'MEDMOR',
-    MEDFAR = 'MEDFAR',
     FORESATT = 'FORESATT',
     FORESATT2 = 'FORESATT2'
 }
