@@ -23,15 +23,15 @@ export function updatePerson(payload: PersonPartial): ApiActionTypes {
     };
 }
 
-export function saveAppState(): ApiActionTypes {
+export function getStoredAppState(): ApiActionTypes {
     return {
-        type: ApiActionKeys.SAVE_APP_STATE
+        type: ApiActionKeys.GET_STORED_APP_STATE
     };
 }
 
-export function getAppState(): ApiActionTypes {
+export function storeAppState(): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_APP_STATE
+        type: ApiActionKeys.STORE_APP_STATE
     };
 }
 
@@ -46,7 +46,7 @@ export default {
     getSøkerinfo,
     sendSøknad,
     updatePerson,
-    getAppState,
-    updateApi,
-    saveAppState
+    getStoredAppState,
+    storeAppState,
+    updateApi
 };

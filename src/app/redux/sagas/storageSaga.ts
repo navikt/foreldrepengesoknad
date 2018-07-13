@@ -7,7 +7,7 @@ function* saveAppState() {
     try {
         const stateSelector = (state: any) => state;
         const appState = yield select(stateSelector);
-        yield call(Api.saveAppState, appState);
+        yield call(Api.storeAppState, appState);
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
     }
@@ -15,7 +15,7 @@ function* saveAppState() {
 
 function* getAppState(action: any) {
     try {
-        const response = yield call(Api.getAppState, action.params);
+        const response = yield call(Api.getStoredAppState, action.params);
         const storedAppState = response.data;
         yield put(
             apiActions.updateApi({
@@ -35,7 +35,7 @@ function* getAppState(action: any) {
 }
 export default function* storageSaga() {
     yield all([
-        takeEvery(ApiActionKeys.SAVE_APP_STATE, saveAppState),
-        takeEvery(ApiActionKeys.GET_APP_STATE, getAppState)
+        takeEvery(ApiActionKeys.STORE_APP_STATE, saveAppState),
+        takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState)
     ]);
 }
