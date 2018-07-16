@@ -208,6 +208,10 @@
     "søkersituasjon.alternativ.stebarn": "Stebarn",
     "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
 
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål":
+        "Gjelder foreldrepengesøknaden noen av disse barna?",
+    "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
+
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
         "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
