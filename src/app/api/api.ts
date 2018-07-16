@@ -45,11 +45,17 @@ function storeAppState(state: AppState) {
     );
 }
 
+function deleteStoredAppState() {
+    const url = `${apiBaseUrl}/storage`;
+    return axios.delete(url, { withCredentials: true });
+}
+
 const Api = {
     getPerson,
     sendSøknad,
     getStoredAppState,
-    storeAppState
+    storeAppState,
+    deleteStoredAppState
 };
 
 export default Api;

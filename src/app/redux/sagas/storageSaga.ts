@@ -43,9 +43,29 @@ function* getAppState(action: any) {
         );
     }
 }
+
+function* deleteStoredAppState() {
+    try {
+        yield call(Api.deleteStoredAppState);
+        yield put(
+            apiActions.updateApi({
+                isLoadingAppState: false
+            })
+        );
+    } catch (error) {
+        yield put(
+            apiActions.updateApi({
+                error,
+                isLoadingAppState: false
+            })
+        );
+    }
+}
+
 export default function* storageSaga() {
     yield all([
         takeEvery(ApiActionKeys.STORE_APP_STATE, saveAppState),
-        takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState)
+        takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
+        takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState)
     ]);
 }

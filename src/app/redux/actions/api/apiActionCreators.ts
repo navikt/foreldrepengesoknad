@@ -29,6 +29,12 @@ export function getStoredAppState(): ApiActionTypes {
     };
 }
 
+export function deleteStoredAppState(): ApiActionTypes {
+    return {
+        type: ApiActionKeys.DELETE_STORED_APP_STATE
+    };
+}
+
 export function storeAppState(): ApiActionTypes {
     return {
         type: ApiActionKeys.STORE_APP_STATE
@@ -47,6 +53,7 @@ export default {
     sendSøknad,
     updatePerson,
     getStoredAppState,
+    deleteStoredAppState,
     storeAppState,
     updateApi
 };

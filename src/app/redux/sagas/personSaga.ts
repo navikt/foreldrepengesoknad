@@ -4,23 +4,36 @@ import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { erMyndig } from '../../util/domain/personUtil';
 import { default as apiActions } from '../actions/api/apiActionCreators';
+import { ApiStatePartial } from '../reducers/apiReducer';
+
+function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
+    const { person } = apiState;
+    if (person) {
+        return !person.registrerteBarn || person.registrerteBarn.length <= 0;
+    }
+    return true;
+}
 
 function* getSøkerinfo(action: any) {
     try {
         const response = yield call(Api.getPerson, action.params);
         const person = response.data.søker;
         const arbeidsforhold = response.data.arbeidsforhold;
-        yield put(
-            apiActions.updateApi({
-                person: {
-                    ...person,
-                    erMyndig: erMyndig(person),
-                    registrerteBarn: response.data.søker.barn
-                },
-                isLoadingPerson: false,
-                arbeidsforhold
-            })
-        );
+        const nextApiState: ApiStatePartial = {
+            person: {
+                ...person,
+                erMyndig: erMyndig(person),
+                registrerteBarn: response.data.søker.barn
+            },
+            isLoadingPerson: false,
+            arbeidsforhold
+        };
+        yield put(apiActions.updateApi(nextApiState));
+        if (shouldUseStoredDataIfTheyExist(nextApiState)) {
+            yield put(apiActions.getStoredAppState());
+        } else {
+            yield put(apiActions.deleteStoredAppState());
+        }
     } catch (error) {
         if (error.response) {
             error.response.status === 401
