@@ -3,10 +3,12 @@ import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 
 export enum ApiActionKeys {
-    'GET_STORED_APP_STATE' = 'getStoredAppState',
     'GET_SØKERINFO' = 'getSøkerinfo',
 
+    'GET_STORED_APP_STATE' = 'getStoredAppState',
+    'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
     'STORE_APP_STATE' = 'storeAppState',
+
     'SEND_SØKNAD' = 'sendSøknad',
 
     'UPDATE_PERSON' = 'updatePerson',
@@ -37,6 +39,10 @@ export interface GetStoredAppState {
     type: ApiActionKeys.GET_STORED_APP_STATE;
 }
 
+export interface DeleteStoredAppState {
+    type: ApiActionKeys.DELETE_STORED_APP_STATE;
+}
+
 export interface StoreAppState {
     type: ApiActionKeys.STORE_APP_STATE;
 }
@@ -47,4 +53,5 @@ export type ApiActionTypes =
     | UpdatePerson
     | StoreAppState
     | GetStoredAppState
+    | DeleteStoredAppState
     | UpdateApi;

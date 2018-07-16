@@ -63,6 +63,11 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
                 ...state,
                 isLoadingAppState: true
             };
+        case ApiActionKeys.DELETE_STORED_APP_STATE:
+            return {
+                ...state,
+                isLoadingAppState: true
+            };
     }
     return state;
 };
