@@ -19,6 +19,7 @@ import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
 import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import isAvailable from '../../../util/routing/isAvailable';
 
 interface StateProps {
     person: Person;
@@ -148,7 +149,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
                       erFarEllerMedmor(person.kjønn, søker.rolle),
                       dataOmAndreForelderen
                   ),
-        history: props.history
+        history: props.history,
+        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad)
     };
 
     return {

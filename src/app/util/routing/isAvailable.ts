@@ -6,6 +6,7 @@ import {
     søknadGjelderFødsel,
     søknadGjelderStebarn
 } from '../validation/situasjon';
+import { barnErGyldig } from '../validation/barn';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
@@ -24,6 +25,13 @@ const isAvailable = (stegId: StegID, søknad: Søknad): boolean => {
             return (
                 harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad)
             );
+
+        case StegID.ANNEN_FORELDER:
+            return (
+                harGodkjentVilkår(søknad) &&
+                barnErGyldig(søknad.barn, søknad.situasjon)
+            );
+
         default:
             return false;
     }
