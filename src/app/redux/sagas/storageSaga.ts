@@ -18,15 +18,14 @@ function* saveAppState() {
 }
 
 function* applyStoredStateToApp(state: AppState) {
-    yield put(
-        apiActions.updateApi({
-            isLoadingAppState: false,
-            mellomlagretSøknad: true
-        })
-    );
     yield put(søknadActions.updateSøknad(state.søknad));
     yield put(commonActions.setSpråk(state.common.språkkode));
     yield put(summaryActionCreators.updateSummary(state.summary));
+    yield put(
+        apiActions.updateApi({
+            isLoadingAppState: false
+        })
+    );
 }
 
 function* getAppState(action: any) {
