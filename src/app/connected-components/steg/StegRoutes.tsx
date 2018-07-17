@@ -16,8 +16,7 @@ import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
 import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
 import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
-import Inngangsside from '../sider/inngangsside/Inngangsside';
-import { apiActionCreators } from '../../redux/actions';
+import InngangSteg from './inngang/InngangSteg';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
@@ -27,23 +26,13 @@ export const søknadStegPath = (stegPath?: string): string =>
 
 type Props = RouteComponentProps<any> & DispatchProps;
 class StegRoutes extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-        const { history, dispatch } = props;
-        history.listen((location) => {
-            if (location.pathname !== '/søknad-sendt') {
-                dispatch(apiActionCreators.storeAppState());
-            }
-        });
-    }
-
     render() {
         return (
             <Applikasjonsside visSpråkvelger={false}>
                 <Switch>
                     <Route
                         path={søknadStegPath(StegID.INNGANG)}
-                        component={Inngangsside}
+                        component={InngangSteg}
                         key={StegID.INNGANG}
                     />
                     <Route

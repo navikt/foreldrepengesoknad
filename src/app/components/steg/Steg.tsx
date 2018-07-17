@@ -6,12 +6,14 @@ import ValidForm from 'common/lib/validation/ValidForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import routeConfig from '../../util/routing/routeConfig';
 
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
     onSubmit?: () => void;
+    isAvailable?: boolean;
 }
 
 type Props = StegProps & InjectedIntlProps;
@@ -19,6 +21,12 @@ type Props = StegProps & InjectedIntlProps;
 class Steg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+
+        const { isAvailable, history } = props;
+        if (isAvailable === false) {
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
+
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 

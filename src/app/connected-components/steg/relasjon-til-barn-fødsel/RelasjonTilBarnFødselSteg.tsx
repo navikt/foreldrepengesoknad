@@ -28,6 +28,7 @@ import Bolk from 'common/components/bolk/Bolk';
 import BarnBolk from '../../../bolker/BarnBolk';
 import { guid } from 'nav-frontend-js-utils';
 import { findDateMostDistantInPast } from '../../../util/dates/dates';
+import isAvailable from '../../../util/routing/isAvailable';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -254,7 +255,8 @@ const mapStateToProps = (
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         renderFortsettKnapp: true,
-        history: props.history
+        history: props.history,
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad)
     };
 
     return {

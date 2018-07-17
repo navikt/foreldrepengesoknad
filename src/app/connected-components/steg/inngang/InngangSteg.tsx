@@ -16,6 +16,8 @@ import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { søknadStegPath } from '../../steg/StegRoutes';
 import { SubmitEvent } from '../../../types/dom/Events';
+import isAvailable from '../../../util/routing/isAvailable';
+import { default as apiActions } from '../../../redux/actions/api/apiActionCreators';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
@@ -31,17 +33,18 @@ export type Props = DispatchProps &
     HistoryProps &
     InjectedIntlProps;
 
-class Inngangsside extends React.Component<Props, {}> {
+class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.navigateToNext = this.navigateToNext.bind(this);
     }
 
     navigateToNext(e: SubmitEvent) {
-        const { nesteStegRoute, history } = this.props;
+        const { nesteStegRoute, history, dispatch } = this.props;
         if (nesteStegRoute) {
             e.preventDefault();
             e.stopPropagation();
+            dispatch(apiActions.storeAppState());
             history.push(søknadStegPath(nesteStegRoute));
         }
     }
@@ -129,7 +132,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps = {
         id: StegID.INNGANG,
         renderFortsettKnapp: false,
-        history: props.history
+        history: props.history,
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad)
     };
 
     return {
@@ -142,4 +146,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps>(mapStateToProps)(injectIntl(Inngangsside));
+export default connect<StateProps>(mapStateToProps)(injectIntl(InngangSteg));

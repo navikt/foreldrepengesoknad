@@ -28,6 +28,7 @@ interface StateProps {
     person: Person;
     error: any;
     isLoadingPerson: boolean;
+    isLoadingAppState: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -90,9 +91,15 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     render() {
-        const { error, isLoadingPerson, person } = this.props;
+        const {
+            error,
+            isLoadingAppState,
+            isLoadingPerson,
+            person
+        } = this.props;
 
         if (
+            isLoadingAppState ||
             isLoadingPerson ||
             (error.response && error.response.status === 401)
         ) {
@@ -109,7 +116,8 @@ class Foreldrepengesøknad extends React.Component<Props> {
 const mapStateToProps = (state: any) => ({
     person: state.api.person,
     error: state.api.error,
-    isLoadingPerson: state.api.isLoadingPerson
+    isLoadingPerson: state.api.isLoadingPerson,
+    isLoadingAppState: state.api.isLoadingAppState
 });
 
 export default withRouter(

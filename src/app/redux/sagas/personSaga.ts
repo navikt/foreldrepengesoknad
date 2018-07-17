@@ -26,6 +26,7 @@ function* getSøkerinfo(action: any) {
                 registrerteBarn: response.data.søker.barn
             },
             isLoadingPerson: false,
+            isLoadingAppState: true,
             arbeidsforhold
         };
         yield put(apiActions.updateApi(nextApiState));

@@ -12,7 +12,6 @@ export interface ApiState {
     dataOmAnnenForelder?: DataOmAnnenForelder;
     isLoadingPerson: boolean;
     isLoadingAppState: boolean;
-    mellomlagretSøknad: boolean;
     error: any;
 }
 
@@ -30,8 +29,7 @@ const getDefaultState = (): ApiState => ({
           }
         : undefined,
     isLoadingPerson: false,
-    isLoadingAppState: false,
-    mellomlagretSøknad: false,
+    isLoadingAppState: true,
     error: {
         networkError: false,
         response: undefined
