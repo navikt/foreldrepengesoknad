@@ -7,7 +7,12 @@ import Barn, {
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
-    return barn.fødselsdatoer.length > 0 && barn.fødselsattest.length > 0;
+    return (
+        barn.fødselsdatoer !== undefined &&
+        barn.fødselsdatoer.length > 0 &&
+        barn.fødselsattest !== undefined &&
+        barn.fødselsattest.length > 0
+    );
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {

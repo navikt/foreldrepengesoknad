@@ -30,6 +30,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { findDateMostDistantInPast } from '../../../util/dates/dates';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -39,6 +40,7 @@ interface RelasjonTilBarnFødselStegProps {
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
+    situasjon: Søkersituasjon;
 }
 
 interface RelasjonTilBarnFødselStegState {
@@ -96,6 +98,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<
         this.findBarnInState = this.findBarnInState.bind(this);
         this.updateBarnInState = this.updateBarnInState.bind(this);
         this.updateGjelderAnnetBarnInState = this.updateGjelderAnnetBarnInState.bind(
+            this
+        );
+        this.hasCheckedRegistrertBarn = this.hasCheckedRegistrertBarn.bind(
             this
         );
     }
@@ -159,6 +164,13 @@ class RelasjonTilBarnFødselSteg extends React.Component<
         );
     }
 
+    hasCheckedRegistrertBarn() {
+        const { registrerteBarn } = this.state;
+        return registrerteBarn.some(
+            (barn: VelgbartRegistrertBarn) => barn.checked === true
+        );
+    }
+
     render() {
         const {
             barn,
@@ -167,6 +179,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
             person,
             fødselsattest,
             terminbekreftelse,
+            situasjon,
             stegProps,
             dispatch
         } = this.props;
@@ -178,7 +191,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<
         const { registrerteBarn, gjelderAnnetBarn } = this.state;
 
         return (
-            <Steg {...stegProps}>
+            <Steg
+                {...stegProps}
+                renderFortsettKnapp={
+                    this.hasCheckedRegistrertBarn() ||
+                    barnErGyldig(barn, situasjon)
+                }>
                 <Bolk
                     synlig={registrerteBarn.length > 0}
                     render={() => (
@@ -255,13 +273,13 @@ const mapStateToProps = (
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
-        renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,
         isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state)
     };
 
     return {
         søker: state.søknad.søker,
+        situasjon: state.søknad.situasjon,
         annenForelder: state.søknad.annenForelder,
         person,
         barn,
