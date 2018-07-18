@@ -4,6 +4,9 @@
     "avbryt": "Avbryt",
     "leggtil": "Legg til",
 
+    "jeg": "jeg",
+    "vi": "vi",
+
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
@@ -94,12 +97,28 @@
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
+    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+        "Er du selvstendig næringsdrivende eller frilanser?",
+
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
         "Har du jobbet som frilanser de siste 10 månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
         "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
+    "frilans.oppstart": "Når begynte du som frilans?",
+    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
+    "frilansOppdrag.modal.tittel": "Frilansoppdrag",
+    "frilansOppdrag.modal.pågående": "Pågående oppdrag",
+    "frilansOppdrag.oppfølgingsspørsmål":
+        "Oppdrag for nære venner eller familie siste 10 måneder",
+    "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
+
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
+    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
+
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
     "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
@@ -115,6 +134,9 @@
     "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
+
+    "erDuSelvstendigNæringsdrivende.spørsmål":
+        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
     "harRevisor.spørsmål": "Har du revisor?",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
@@ -231,8 +253,8 @@
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
-    "utenlandsopphold.select.spørsmål.tidligerePerioder": "Jeg bodde i...",
-    "utenlandsopphold.select.spørsmål.senerePerioder": "Jeg skal bo i...",
+    "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
+    "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
@@ -266,15 +288,23 @@
     "valideringsfeil.terminbekreftelseDato.forSen":
         "Datoen på stadfestinga av termin kan ikkje vere fram i tid.",
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
-        "Stadfestinga på termin må vise at du er i 26. svangerskapsveke eller seinare",
+        "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere",
+
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer":
+        "Du kan ikke oppgi ditt eget fødselsnummer",
+
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
+        "Du må skrive et gyldig nummer (11 sifre)",
 
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.samtykke":
+        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+
+    "oppsummering.relasjonTilBarn": "Relasjon til barn",
     "oppsummering.termindato": "med termindato den",
     "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato": "Som er datert den",
-    "oppsummering.samtykke":
-        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.tvillinger": "tvillinger",
@@ -308,5 +338,5 @@
         "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label":
         "Er { navn } for syk til å ta seg av barnet eller innlagt?",
-    "oppsummering.annenForelder.erUfør.label": "Den andre forelderen"
+    "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? "
 }
