@@ -169,10 +169,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             state.søknad.situasjon
         ),
         history: props.history,
-        isAvailable: isAvailable(
-            StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
-            state.søknad
-        )
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state)
     };
 
     return {

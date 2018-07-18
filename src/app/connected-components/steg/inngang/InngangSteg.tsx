@@ -110,7 +110,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.INNGANG,
         renderFortsettKnapp: state.søknad.søker.rolle !== undefined,
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state.søknad)
+        isAvailable: isAvailable(StegID.INNGANG, state)
     };
 
     return {

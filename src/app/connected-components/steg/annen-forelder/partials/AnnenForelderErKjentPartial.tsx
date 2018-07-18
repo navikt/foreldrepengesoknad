@@ -21,7 +21,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 interface AnnenForelderErKjentPartialProps {
     barn: ForeldreansvarBarn;
     annenForelder: AnnenForelderPartial;
-    dataOmAndreForelderen: any;
+    registrertAnnenForelder: any;
     erFarEllerMedmor: boolean;
     visInformasjonVedOmsorgsovertakelse: boolean;
     søker: SøkerPartial;
@@ -38,18 +38,18 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
             annenForelder,
             søker,
             erFarEllerMedmor,
-            dataOmAndreForelderen,
+            registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             dispatch,
             intl
         } = this.props;
 
         const harDenAndreForelderenOpplystOmSinPågåendeSak =
-            dataOmAndreForelderen &&
-            dataOmAndreForelderen.harOpplystOmSinPågåendeSak;
+            registrertAnnenForelder &&
+            registrertAnnenForelder.harOpplystOmSinPågåendeSak;
 
-        const navn = dataOmAndreForelderen
-            ? dataOmAndreForelderen.navn
+        const navn = registrertAnnenForelder
+            ? registrertAnnenForelder.navn
             : annenForelder.navn;
 
         return (

@@ -16,7 +16,7 @@ import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
     annenForelder: AnnenForelderPartial;
-    dataOmAndreForelderen: any;
+    registrertAnnenForelder: any;
     erFarEllerMedmor: boolean;
 }
 
@@ -51,7 +51,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
         const {
             søker,
             annenForelder,
-            dataOmAndreForelderen,
+            registrertAnnenForelder,
             dispatch,
             intl
         } = this.props;
@@ -61,14 +61,14 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             <React.Fragment>
                 <Bolk
                     tittel="Informasjon om den andre forelderen"
-                    synlig={dataOmAndreForelderen !== undefined}
+                    synlig={registrertAnnenForelder !== undefined}
                     render={() => (
-                        <PersonaliaBox personalia={dataOmAndreForelderen} />
+                        <PersonaliaBox personalia={registrertAnnenForelder} />
                     )}
                 />
 
                 <Bolk
-                    synlig={dataOmAndreForelderen === undefined}
+                    synlig={registrertAnnenForelder === undefined}
                     render={() => (
                         <NavnPåAnnenForelderSpørsmål
                             navn={navn}

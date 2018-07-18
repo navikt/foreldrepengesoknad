@@ -20,6 +20,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
+import isAvailable from '../../../util/routing/isAvailable';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -208,7 +209,8 @@ export default injectIntl(
             renderFortsettKnapp: utenlandsoppholdHasValues(
                 informasjonOmUtenlandsopphold
             ),
-            history
+            history,
+            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state)
         };
 
         return {

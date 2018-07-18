@@ -7,10 +7,17 @@ import {
     søknadGjelderStebarn
 } from '../validation/situasjon';
 import { barnErGyldig } from '../validation/barn';
+import { AppState } from '../../redux/reducers';
+import { annenForelderErGyldig } from '../validation/annenForelder';
+import Person from '../../types/Person';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
-const isAvailable = (stegId: StegID, søknad: Søknad): boolean => {
+const isAvailable = (stegId: StegID, state: AppState): boolean => {
+    const { søknad, api } = state;
+    const { barn, situasjon } = søknad;
+    const { person, registrertAnnenForelder } = api;
+
     switch (stegId) {
         case StegID.INNGANG:
             return harGodkjentVilkår(søknad);
@@ -27,9 +34,17 @@ const isAvailable = (stegId: StegID, søknad: Søknad): boolean => {
             );
 
         case StegID.ANNEN_FORELDER:
+            return harGodkjentVilkår(søknad) && barnErGyldig(barn, situasjon);
+
+        case StegID.UTENLANDSOPPHOLD:
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(søknad.barn, søknad.situasjon)
+                barnErGyldig(barn, situasjon) &&
+                annenForelderErGyldig(
+                    søknad,
+                    person as Person,
+                    registrertAnnenForelder
+                )
             );
 
         default:

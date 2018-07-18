@@ -257,7 +257,7 @@ const mapStateToProps = (
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad)
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state)
     };
 
     return {

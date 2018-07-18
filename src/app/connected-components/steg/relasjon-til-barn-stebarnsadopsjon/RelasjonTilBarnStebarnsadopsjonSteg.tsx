@@ -149,7 +149,7 @@ const mapStateToProps = (
         history: props.history,
         isAvailable: isAvailable(
             StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
-            state.søknad
+            state
         )
     };
 
