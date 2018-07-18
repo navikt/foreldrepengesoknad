@@ -3,13 +3,13 @@ import {
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
-import { DataOmAnnenForelder } from '../../types/søknad/AnnenForelder';
+import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 
 export interface ApiState {
     person?: Person;
     arbeidsforhold?: Arbeidsforhold[];
-    dataOmAnnenForelder?: DataOmAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     isLoadingPerson: boolean;
     isLoadingAppState: boolean;
     error: any;
@@ -20,14 +20,7 @@ export type ApiStatePartial = Partial<ApiState>;
 const getDefaultState = (): ApiState => ({
     person: undefined,
     arbeidsforhold: undefined,
-    dataOmAnnenForelder: false
-        ? {
-              navn: 'pent navn',
-              fnr: '01010101010',
-              alder: '20',
-              harOpplystOmSinPågåendeSak: true
-          }
-        : undefined,
+    registrertAnnenForelder: undefined,
     isLoadingPerson: false,
     isLoadingAppState: true,
     error: {
