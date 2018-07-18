@@ -11,7 +11,6 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
 import StegHeader from '../steg-header/StegHeader';
-import './steg.less';
 
 export interface StegProps {
     id: StegID;
