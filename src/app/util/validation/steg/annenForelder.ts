@@ -1,7 +1,7 @@
-import Søknad from '../../types/søknad/Søknad';
-import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
-import Person from '../../types/Person';
-import { erFarEllerMedmor } from '../domain/personUtil';
+import Søknad from '../../../types/søknad/Søknad';
+import { RegistrertAnnenForelder } from '../../../types/søknad/AnnenForelder';
+import Person from '../../../types/Person';
+import { erFarEllerMedmor } from '../../domain/personUtil';
 
 export const annenForelderErGyldig = (
     søknad: Søknad,

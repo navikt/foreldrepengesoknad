@@ -19,8 +19,8 @@ import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
 import Søker from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
-import isAvailable from '../../../util/routing/isAvailable';
-import { annenForelderErGyldig } from '../../../util/validation/annenForelder';
+import isAvailable from '../isAvailable';
+import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 
 interface StateProps {
     person: Person;

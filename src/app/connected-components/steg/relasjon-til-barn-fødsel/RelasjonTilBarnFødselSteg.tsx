@@ -28,8 +28,8 @@ import Bolk from 'common/components/bolk/Bolk';
 import BarnBolk from '../../../bolker/BarnBolk';
 import { guid } from 'nav-frontend-js-utils';
 import { findDateMostDistantInPast } from '../../../util/dates/dates';
-import isAvailable from '../../../util/routing/isAvailable';
-import { barnErGyldig } from '../../../util/validation/barn';
+import isAvailable from '../isAvailable';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;

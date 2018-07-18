@@ -12,7 +12,7 @@ import { HistoryProps } from '../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import isAvailable from '../../../util/routing/isAvailable';
+import isAvailable from '../isAvailable';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;

@@ -20,6 +20,7 @@ import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import isAvailable from '../isAvailable';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -197,7 +198,8 @@ export default injectIntl(
             id: StegID.ANDRE_INNTEKTER,
             renderFortsettKnapp:
                 søker && søker.harJobbetSomFrilansSiste10Mnd !== undefined,
-            history
+            history,
+            isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state)
         };
 
         return {

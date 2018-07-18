@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { fjortenUkerPluss3Number, tomorrow } from '../values';
+import { fjortenUkerPluss3Number, tomorrow } from '../../values';
 import { getTerminbekreftelseDatoRegler } from '../terminbekreftelsedato';
 
 const intl = {} as InjectedIntl;

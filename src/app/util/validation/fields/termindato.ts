@@ -8,7 +8,7 @@ import {
     fjortenUkerPluss3,
     fjortenUkerPluss3Number,
     today
-} from './values';
+} from '../values';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),

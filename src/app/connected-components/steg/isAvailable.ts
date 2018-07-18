@@ -1,15 +1,16 @@
-import { StegID } from './stegConfig';
+import { StegID } from '../../util/routing/stegConfig';
 import Søknad from '../../types/søknad/Søknad';
 import {
     søknadGjelderAdopsjon,
     søknadGjelderForeldreansvar,
     søknadGjelderFødsel,
     søknadGjelderStebarn
-} from '../validation/situasjon';
-import { barnErGyldig } from '../validation/barn';
-import { AppState } from '../../redux/reducers';
-import { annenForelderErGyldig } from '../validation/annenForelder';
+} from '../../util/validation/fields/situasjon';
+import { barnErGyldig } from '../../util/validation/steg/barn';
+import { AppState } from '../../redux/reducers/index';
+import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
 import Person from '../../types/Person';
+import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
@@ -45,6 +46,18 @@ const isAvailable = (stegId: StegID, state: AppState): boolean => {
                     person as Person,
                     registrertAnnenForelder
                 )
+            );
+
+        case StegID.ANDRE_INNTEKTER:
+            return (
+                harGodkjentVilkår(søknad) &&
+                barnErGyldig(barn, situasjon) &&
+                annenForelderErGyldig(
+                    søknad,
+                    person as Person,
+                    registrertAnnenForelder
+                ) &&
+                utenlandsoppholdErGyldig(søknad)
             );
 
         default:

@@ -1,4 +1,4 @@
-import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 export const søknadGjelderFødsel = (søknad: Søknad): boolean =>
     søknad !== undefined && søknad.situasjon === Søkersituasjon.FØDSEL;

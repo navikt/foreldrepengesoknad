@@ -3,8 +3,8 @@ import Barn, {
     ForeldreansvarBarn,
     FødtBarn,
     UfødtBarn
-} from '../../types/søknad/Barn';
-import { Søkersituasjon } from '../../types/søknad/Søknad';
+} from '../../../types/søknad/Barn';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return barn.fødselsdatoer.length > 0 && barn.fødselsattest.length > 0;

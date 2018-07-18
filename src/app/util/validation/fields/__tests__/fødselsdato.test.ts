@@ -1,13 +1,13 @@
 import { getFødselsdatoRegler } from '../fødselsdato';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { Fødselsdato } from '../../../types/common';
+import { Fødselsdato } from '../../../../types/common';
 import {
     date3YearsAgo,
     dateMoreThan3YearsAgo,
     today,
     tomorrow
-} from '../values';
+} from '../../values';
 
 const intl = {} as InjectedIntl;
 const callMåOppgis = (fødselsdato: Fødselsdato) =>

@@ -2,9 +2,9 @@ import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types';
-import { Fødselsdato } from '../../types/common';
+import { Fødselsdato } from '../../../types/common';
 import getMessage from 'common/util/i18nUtils';
-import { date3YearsAgo, today, tomorrow } from './values';
+import { date3YearsAgo, today, tomorrow } from '../values';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),

@@ -19,8 +19,8 @@ import utils from '../../../util/domain/fødselsdato';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import isAvailable from '../../../util/routing/isAvailable';
-import { barnErGyldig } from '../../../util/validation/barn';
+import isAvailable from '../isAvailable';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
 
 export interface StateProps {
     barn: Adopsjonsbarn;

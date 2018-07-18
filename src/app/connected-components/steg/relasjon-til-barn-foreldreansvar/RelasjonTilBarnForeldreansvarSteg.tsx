@@ -22,8 +22,8 @@ import { getAlderFraDato } from '../../../util/dates/dates';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import isAvailable from '../../../util/routing/isAvailable';
-import { barnErGyldig } from '../../../util/validation/barn';
+import isAvailable from '../isAvailable';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
