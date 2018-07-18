@@ -6,6 +6,7 @@ import ValidForm from 'common/lib/validation/ValidForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import Stegindikator from '../stegindikator/Stegindikator';
 import routeConfig from '../../util/routing/routeConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
@@ -58,9 +59,10 @@ class Steg extends React.Component<Props & DispatchProps> {
 
         return (
             <ValidForm {...formProps}>
-                <h1 className={bem.element('tittel')}>
-                    {stegConfig[id].tittel}
-                </h1>
+                <div className="blokk-m">
+                    <Stegindikator id={id} />
+                </div>
+
                 {this.props.children}
                 {renderFortsettKnapp === true && (
                     <FortsettKnapp>
