@@ -11,7 +11,7 @@ export enum HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd {
 interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
     onChange: (
-        erSelvstendigNæringsdrivende: boolean,
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean,
         e: React.ChangeEvent<HTMLInputElement>
     ) => void;
 }
@@ -41,7 +41,10 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'erDuSelvstendigNæringsdrivende.spørsmål')}
+            legend={getMessage(
+                intl,
+                'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål'
+            )}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -54,7 +57,7 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
                         HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.HAR_IKKE_VÆRT_SELVSTENDIG_NÆRINGSDRIVENDE_SISTE_10_MND
                 }
             ]}
-            name="erSelvstendigNæringsdrivende"
+            name="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
