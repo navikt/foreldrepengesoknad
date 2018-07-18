@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
 import stegConfig, {
-    StegIDConfig,
+    StegConfigValues,
     StegID,
     StegConfig
 } from '../../util/routing/stegConfig';
@@ -22,7 +22,7 @@ class StepIndicator extends React.Component<Props> {
 
     buildStegindikatorSteg(config: StegConfig) {
         return Object.values(config)
-            .reduce((x: StegIDConfig[], y: StegIDConfig) => {
+            .reduce((x: StegConfigValues[], y: StegConfigValues) => {
                 if (!x.find((j) => j.index === y.index)) {
                     x.push(y);
                 }
