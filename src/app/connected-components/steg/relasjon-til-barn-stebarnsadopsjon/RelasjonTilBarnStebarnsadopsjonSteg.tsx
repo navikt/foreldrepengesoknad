@@ -20,6 +20,7 @@ import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../../../util/routing/isAvailable';
+import { barnErGyldig } from '../../../util/validation/barn';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -144,8 +145,7 @@ const mapStateToProps = (
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
-        renderFortsettKnapp:
-            barn.fødselsdatoer && barn.fødselsdatoer.length > 0,
+        renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,
         isAvailable: isAvailable(
             StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,

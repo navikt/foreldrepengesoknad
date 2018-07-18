@@ -23,6 +23,7 @@ import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../../../util/routing/isAvailable';
+import { barnErGyldig } from '../../../util/validation/barn';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -163,8 +164,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
-        renderFortsettKnapp:
-            barn.fødselsdatoer && barn.fødselsdatoer.length > 0,
+        renderFortsettKnapp: barnErGyldig(
+            state.søknad.barn,
+            state.søknad.situasjon
+        ),
         history: props.history,
         isAvailable: isAvailable(
             StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
