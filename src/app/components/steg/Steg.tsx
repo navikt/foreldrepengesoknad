@@ -1,7 +1,7 @@
 import * as React from 'react';
 import stegConfig, {
     StegID,
-    StegIDConfig,
+    StegConfigValues,
     StegConfig
 } from '../../util/routing/stegConfig';
 import { History } from 'history';
@@ -37,7 +37,7 @@ class Steg extends React.Component<Props> {
 
     buildStegindikatorSteg(config: StegConfig) {
         const ret = Object.values(config)
-            .reduce((x: StegIDConfig[], y: StegIDConfig) => {
+            .reduce((x: StegConfigValues[], y: StegConfigValues) => {
                 if (!x.find((j) => j.index === y.index)) {
                     x.push(y);
                 }
