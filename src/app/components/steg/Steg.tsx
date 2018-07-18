@@ -35,21 +35,6 @@ class Steg extends React.Component<Props> {
             : history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
     }
 
-    buildStegindikatorSteg(config: StegConfig) {
-        const ret = Object.values(config)
-            .reduce((x: StegConfigValues[], y: StegConfigValues) => {
-                if (!x.find((j) => j.index === y.index)) {
-                    x.push(y);
-                }
-                return x;
-            }, [])
-            .map((stegConfigItem) => ({
-                label: stegConfigItem.tittel,
-                index: stegConfigItem.index
-            }));
-        return ret;
-    }
-
     render() {
         const { id, renderFortsettKnapp, intl } = this.props;
 
