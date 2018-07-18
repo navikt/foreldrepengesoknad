@@ -1,3 +1,5 @@
+import Søknad from '../../types/søknad/Søknad';
+
 export enum StegID {
     'INNGANG' = 'inngang',
     'RELASJON_TIL_BARN_FØDSEL' = 'relasjon-til-barn-fodsel',
@@ -19,6 +21,7 @@ export interface StegConfigItem {
     tittel: string;
     fortsettKnappLabel: string;
     nesteSteg?: StegID;
+    isAvilable?: (søknad: Søknad) => boolean;
     index: number;
 }
 
