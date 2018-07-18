@@ -1,9 +1,5 @@
 import * as React from 'react';
-import stegConfig, {
-    StegID,
-    StegConfigValues,
-    StegConfig
-} from '../../util/routing/stegConfig';
+import stegConfig, { StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import ValidForm from 'common/lib/validation/ValidForm';
