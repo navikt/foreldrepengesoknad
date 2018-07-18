@@ -163,7 +163,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
 
     const stegProps: StegProps = {
-        id: StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON,
+        id: StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
         renderFortsettKnapp: barnErGyldig(
             state.søknad.barn,
             state.søknad.situasjon
