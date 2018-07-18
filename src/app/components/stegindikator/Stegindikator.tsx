@@ -5,7 +5,7 @@ import stegConfig, {
     StegID,
     StegConfig
 } from '../../util/routing/stegConfig';
-import './stepIndicator.less';
+import './stegindikator.less';
 import BEMHelper from 'common/util/bem';
 
 interface Props {
@@ -57,7 +57,7 @@ class Stegindikator extends React.Component<Props> {
                 aria-valuenow={aktivtSteg}
                 aria-valuemin={1}
                 aria-valuemax={steg.length}>
-                <h1 className={bem.element('title')}>
+                <h1 className={`typo-systemtittel ${bem.element('title')}`}>
                     <span
                         className="m_no-focusOutline"
                         ref={(c) => (this.title = c)}
