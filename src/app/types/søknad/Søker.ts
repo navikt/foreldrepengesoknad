@@ -5,7 +5,6 @@ import { Næring } from './SelvstendigNæringsdrivendeInformasjon';
 
 export interface Søker {
     rolle: SøkerRolle;
-    erSelvstendigNæringsdrivende: boolean;
     harJobbetSomFrilansSiste10Mnd: boolean;
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
     selvstendigNæringsdrivendeInformasjon?: Næring[];

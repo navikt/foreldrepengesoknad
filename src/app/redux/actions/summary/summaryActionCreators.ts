@@ -3,6 +3,7 @@ import {
     SummaryActionTypes
 } from './summaryActionDefinitions';
 import { StegID } from '../../../util/routing/stegConfig';
+import { SummaryState } from '../../reducers/summaryReducer';
 
 export function approveSteg(stegID: StegID): SummaryActionTypes {
     return {
@@ -11,6 +12,14 @@ export function approveSteg(stegID: StegID): SummaryActionTypes {
     };
 }
 
+export function updateSummary(payload: SummaryState): SummaryActionTypes {
+    return {
+        type: SummaryActionKeys.UPDATE_SUMMARY,
+        payload
+    };
+}
+
 export default {
-    approveSteg
+    approveSteg,
+    updateSummary
 };

@@ -1,10 +1,12 @@
 import axios from 'axios';
 import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
+import { AppState } from '../redux/reducers';
+
+const apiBaseUrl = Environment.REST_API_URL;
 
 function getPerson() {
-    const endpoint = Environment.REST_API_URL;
-    return axios.get(`${endpoint}/sokerinfo`, {
+    return axios.get(`${apiBaseUrl}/sokerinfo`, {
         timeout: 15 * 1000,
         withCredentials: true
     });
@@ -19,7 +21,7 @@ function sendSøknad(søknad: Søknad) {
         })
     );
 
-    const url = `${Environment.REST_API_URL}/soknad`;
+    const url = `${apiBaseUrl}/soknad`;
     return axios.post(url, formData, {
         withCredentials: true,
         headers: {
@@ -28,6 +30,32 @@ function sendSøknad(søknad: Søknad) {
     });
 }
 
-const Api = { getPerson, sendSøknad };
+function getStoredAppState() {
+    const url = `${apiBaseUrl}/storage`;
+    return axios.get(url, { withCredentials: true });
+}
+
+function storeAppState(state: AppState) {
+    const url = `${apiBaseUrl}/storage`;
+    const { søknad, common, summary } = state;
+    return axios.post(
+        url,
+        { søknad, common, summary },
+        { withCredentials: true }
+    );
+}
+
+function deleteStoredAppState() {
+    const url = `${apiBaseUrl}/storage`;
+    return axios.delete(url, { withCredentials: true });
+}
+
+const Api = {
+    getPerson,
+    sendSøknad,
+    getStoredAppState,
+    storeAppState,
+    deleteStoredAppState
+};
 
 export default Api;
