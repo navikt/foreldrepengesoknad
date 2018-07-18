@@ -12,10 +12,10 @@ export enum StegID {
 }
 
 export interface StegConfig {
-    [key: string]: StegConfigValues;
+    [key: string]: StegConfigItem;
 }
 
-export interface StegConfigValues {
+export interface StegConfigItem {
     tittel: string;
     fortsettKnappLabel: string;
     nesteSteg?: StegID;

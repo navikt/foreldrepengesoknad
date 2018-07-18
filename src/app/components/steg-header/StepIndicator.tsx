@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Stegindikator from 'nav-frontend-stegindikator';
 import stegConfig, {
-    StegConfigValues,
+    StegConfigItem,
     StegID,
     StegConfig
 } from '../../util/routing/stegConfig';
-import { StegindikatorStegProps } from '../../../../node_modules/nav-frontend-stegindikator/lib/stegindikator-steg';
-import './stegHeader.less';
+import './stepIndicator.less';
 
 interface Props {
     id: StegID;
@@ -22,23 +21,27 @@ class StepIndicator extends React.Component<Props> {
 
     buildStegindikatorSteg(config: StegConfig) {
         return Object.values(config)
-            .reduce((x: StegConfigValues[], y: StegConfigValues) => {
-                if (!x.find((j) => j.index === y.index)) {
-                    x.push(y);
-                }
-                return x;
-            }, [])
+            .reduce(
+                (
+                    stegConfigList: StegConfigItem[],
+                    stegConfigItem: StegConfigItem
+                ) => {
+                    if (
+                        !stegConfigList.some(
+                            (stegListElement) =>
+                                stegListElement.index === stegConfigItem.index
+                        )
+                    ) {
+                        stegConfigList.push(stegConfigItem);
+                    }
+                    return stegConfigList;
+                },
+                []
+            )
             .map((stegConfigItem) => ({
                 label: stegConfigItem.tittel,
                 index: stegConfigItem.index
             }));
-    }
-
-    getStegindikatorProps(): StegindikatorStegProps[] {
-        return Object.values(stegConfig).map((config, index) => ({
-            label: config[0].tittel,
-            index: config.index
-        }));
     }
 
     render() {

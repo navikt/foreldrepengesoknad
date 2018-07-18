@@ -6,7 +6,7 @@ import ValidForm from 'common/lib/validation/ValidForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
-import StegHeader from '../steg-header/StegHeader';
+import StepIndicator from '../steg-header/StepIndicator';
 
 export interface StegProps {
     id: StegID;
@@ -42,7 +42,7 @@ class Steg extends React.Component<Props> {
         return (
             <ValidForm {...formProps}>
                 <div className="blokk-m">
-                    <StegHeader id={id} />
+                    <StepIndicator id={id} />
                 </div>
 
                 {this.props.children}
