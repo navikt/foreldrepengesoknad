@@ -34,3 +34,12 @@ export const ISODateToPrettyDateFormat = (dato?: Date | string) => {
     }
     return dato;
 };
+
+export const findDateMostDistantInPast = (
+    dateArray: Date[]
+): Date | undefined => {
+    if (dateArray.length > 0) {
+        return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
+    }
+    return undefined;
+};

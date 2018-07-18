@@ -97,7 +97,7 @@
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
-    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",
 
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
@@ -207,6 +207,10 @@
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
     "søkersituasjon.alternativ.stebarn": "Stebarn",
     "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
+
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål":
+        "Gjelder foreldrepengesøknaden noen av disse barna?",
+    "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":

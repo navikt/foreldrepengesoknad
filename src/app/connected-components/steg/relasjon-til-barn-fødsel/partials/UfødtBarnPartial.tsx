@@ -17,11 +17,11 @@ import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidati
 import {
     getTermindatoRegler,
     termindatoAvgrensninger
-} from '../../../../util/validation/termindato';
+} from '../../../../util/validation/fields/termindato';
 import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler
-} from '../../../../util/validation/terminbekreftelsedato';
+} from '../../../../util/validation/fields/terminbekreftelsedato';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;

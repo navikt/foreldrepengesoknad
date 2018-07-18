@@ -18,6 +18,8 @@ import Bolk from '../../../../common/components/bolk/Bolk';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import isAvailable from '../isAvailable';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -171,8 +173,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps = {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
-        renderFortsettKnapp: barn.adoptertIUtlandet !== undefined,
-        history: props.history
+        renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
+        history: props.history,
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state)
     };
 
     return {

@@ -9,14 +9,22 @@ interface PersonBase {
     fødselsdato: string;
 }
 
-export interface SøkersBarn extends PersonBase {
-    checked: boolean;
-}
-
 interface Person extends PersonBase {
     ikkeNordiskEøsLand: boolean;
     erMyndig: boolean;
-    barn: SøkersBarn[];
+    registrerteBarn: RegistrertBarn[];
+}
+
+export interface RegistrertBarn {
+    fornavn: string;
+    mellomnavn: string;
+    etternavn: string;
+    fødselsdato: Date;
+}
+
+export interface VelgbartRegistrertBarn extends RegistrertBarn {
+    checked?: boolean;
+    id: string;
 }
 
 export type PersonPartial = Partial<Person>;

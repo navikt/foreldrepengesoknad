@@ -1,10 +1,3 @@
-export enum BarnType {
-    'FødtBarn' = 'fødtBarn',
-    'UfødtBarn' = 'ufødtBarn',
-    'Adopsjonsbarn' = 'adopsjonsbarn',
-    'ForeldreansvarBarn' = 'omsorgsovertakelseBarn'
-}
-
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 abstract class BarnBase {

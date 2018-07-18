@@ -60,7 +60,7 @@ const stegConfig: StegConfig = {
         index: 2
     },
     [StegID.UTENLANDSOPPHOLD]: {
-        tittel: 'InformasjonOmUtenlandsopphold',
+        tittel: 'Informasjon om utenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANDRE_INNTEKTER,
         index: 3

@@ -1,17 +1,18 @@
 import * as React from 'react';
-import Stegindikator from 'nav-frontend-stegindikator';
+import { default as NavStegindikator } from 'nav-frontend-stegindikator';
 import stegConfig, {
     StegConfigItem,
     StegID,
     StegConfig
 } from '../../util/routing/stegConfig';
 import './stepIndicator.less';
+import BEMHelper from 'common/util/bem';
 
 interface Props {
     id: StegID;
 }
 
-class StepIndicator extends React.Component<Props> {
+class Stegindikator extends React.Component<Props> {
     title: HTMLElement | null;
     componentDidMount() {
         if (this.title != null) {
@@ -48,14 +49,15 @@ class StepIndicator extends React.Component<Props> {
         const { id } = this.props;
         const steg = this.buildStegindikatorSteg(stegConfig);
         const aktivtSteg = stegConfig[id].index;
+        const bem = BEMHelper('stegindikator');
         return (
             <div
-                className="stepindicator"
+                className={bem.className}
                 role="progressbar"
                 aria-valuenow={aktivtSteg}
                 aria-valuemin={1}
                 aria-valuemax={steg.length}>
-                <h1 className="typo-systemtittel stepindicator__title">
+                <h1 className={bem.element('title')}>
                     <span
                         className="m_no-focusOutline"
                         ref={(c) => (this.title = c)}
@@ -63,7 +65,7 @@ class StepIndicator extends React.Component<Props> {
                         {stegConfig[id].tittel}
                     </span>
                 </h1>
-                <Stegindikator
+                <NavStegindikator
                     visLabel={false}
                     kompakt={true}
                     autoResponsiv={true}
@@ -75,4 +77,4 @@ class StepIndicator extends React.Component<Props> {
     }
 }
 
-export default StepIndicator;
+export default Stegindikator;

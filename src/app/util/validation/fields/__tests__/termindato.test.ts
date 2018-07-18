@@ -7,7 +7,7 @@ import {
     date22DaysAgo,
     fjortenUkerPluss3,
     fjortenUkerPluss4
-} from '../values';
+} from '../../values';
 
 const intl = {} as InjectedIntl;
 const callMåOppgis = (termindato: Date | undefined) =>

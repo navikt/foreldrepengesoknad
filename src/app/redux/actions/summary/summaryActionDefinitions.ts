@@ -1,9 +1,11 @@
 import { StegID } from '../../../util/routing/stegConfig';
+import { SummaryState } from '../../reducers/summaryReducer';
 
 export enum SummaryActionKeys {
     'EXPAND_SUMMARY' = 'expandSummary',
     'APPROVE_STEP' = 'approveStep',
-    'FLAG_STEP' = 'flagStep'
+    'FLAG_STEP' = 'flagStep',
+    'UPDATE_SUMMARY' = 'updateSummary'
 }
 
 interface ApproveSummary {
@@ -15,4 +17,9 @@ interface FlagSummary {
     type: SummaryActionKeys.FLAG_STEP;
 }
 
-export type SummaryActionTypes = ApproveSummary | FlagSummary;
+interface UpdateSummary {
+    type: SummaryActionKeys.UPDATE_SUMMARY;
+    payload: SummaryState;
+}
+
+export type SummaryActionTypes = ApproveSummary | FlagSummary | UpdateSummary;

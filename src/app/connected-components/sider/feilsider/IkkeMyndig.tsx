@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
-import { ApiReducerState } from '../../../redux/reducers/apiReducer';
+import { ApiState } from '../../../redux/reducers/apiReducer';
 import DocumentTitle from 'react-document-title';
 import Applikasjonsside from '../Applikasjonsside';
 import Person from '../../../types/Person';
@@ -35,7 +35,7 @@ const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
     return null;
 };
 
-const mapStateToProps = (state: { api: ApiReducerState }) => ({
+const mapStateToProps = (state: { api: ApiState }) => ({
     person: state.api.person
 });
 

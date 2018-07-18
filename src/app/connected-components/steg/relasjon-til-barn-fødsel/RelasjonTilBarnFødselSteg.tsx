@@ -8,27 +8,31 @@ import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 
-import RiktigBarnSpørsmål from '../../../spørsmål/RiktigBarnSpørsmål';
 import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
-import { apiActionCreators } from '../../../redux/actions';
 
 import { AppState } from '../../../redux/reducers';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { DispatchProps } from 'common/redux/types';
-import Person, { SøkersBarn } from '../../../types/Person';
-import Barn, {
-    BarnPartial,
-    FødtBarn,
-    UfødtBarn
-} from '../../../types/søknad/Barn';
+import Person, {
+    RegistrertBarn,
+    VelgbartRegistrertBarn
+} from '../../../types/Person';
+import Barn, { FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import { HistoryProps } from '../../../types/common';
 import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import Bolk from 'common/components/bolk/Bolk';
+import BarnBolk from '../../../bolker/BarnBolk';
+import { guid } from 'nav-frontend-js-utils';
+import { findDateMostDistantInPast } from '../../../util/dates/dates';
+import isAvailable from '../isAvailable';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
-interface StateProps {
+interface RelasjonTilBarnFødselStegProps {
     person: Person;
     barn: Barn;
     søker: Søker;
@@ -36,142 +40,135 @@ interface StateProps {
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
+    situasjon: Søkersituasjon;
 }
 
-interface OwnProps {
-    annetBarn: boolean;
+interface RelasjonTilBarnFødselStegState {
+    gjelderAnnetBarn: boolean;
+    registrerteBarn: VelgbartRegistrertBarn[];
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
-class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
-    static harValgtAnnetBarn(barn: BarnPartial, person: Person): boolean {
-        return (
-            person.barn.every(
-                (søkersBarn: SøkersBarn) => !søkersBarn.checked
-            ) && barn.erBarnetFødt !== undefined
-        );
+type Props = RelasjonTilBarnFødselStegProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
+
+class RelasjonTilBarnFødselSteg extends React.Component<
+    Props,
+    RelasjonTilBarnFødselStegState
+> {
+    static getDerivedStateFromProps(
+        props: Props,
+        state: RelasjonTilBarnFødselStegState
+    ) {
+        return RelasjonTilBarnFødselSteg.buildStateFromProps(props, state);
     }
 
-    static harValgtSøkersBarn(person: Person): boolean {
-        return person.barn.some((barn: SøkersBarn) => barn.checked);
+    static buildStateFromProps(
+        props: Props,
+        state: RelasjonTilBarnFødselStegState
+    ) {
+        const harRegistrerteBarn =
+            state && state.registrerteBarn && state.registrerteBarn.length > 0;
+        if (harRegistrerteBarn) {
+            return state;
+        }
+
+        const { person } = props;
+        return {
+            gjelderAnnetBarn: (state && state.gjelderAnnetBarn) || false,
+            registrerteBarn: (person.registrerteBarn || []).map(
+                (registrertBarn: RegistrertBarn) => {
+                    const velgbartBarn = registrertBarn as VelgbartRegistrertBarn;
+                    velgbartBarn.id = guid();
+                    return velgbartBarn;
+                }
+            )
+        };
     }
 
     constructor(props: Props) {
         super(props);
-        const { person, barn } = props;
-        this.state = {
-            annetBarn:
-                person && person.barn
-                    ? RelasjonTilBarnFødselSteg.harValgtAnnetBarn(barn, person)
-                    : false
-        };
-    }
 
-    genererRelasjonTilBarn(checkedSøkersBarn: SøkersBarn): void {
-        const barn = this.props.barn as FødtBarn;
-        const fødselsdato = new Date(checkedSøkersBarn.fødselsdato);
-        if (
-            barn.fødselsdatoer.length === 0 ||
-            barn.fødselsdatoer[0] < fødselsdato
-        ) {
-            barn.fødselsdatoer[0] = fødselsdato;
-        }
+        this.state = RelasjonTilBarnFødselSteg.buildStateFromProps(props, {
+            gjelderAnnetBarn: false,
+            registrerteBarn: []
+        });
 
-        this.props.dispatch(
-            søknadActions.updateBarn({
-                erBarnetFødt: true,
-                fødselsdatoer: barn.fødselsdatoer,
-                antallBarn: this.props.person.barn.filter(
-                    (søkersBarn) => søkersBarn.checked
-                ).length
-            })
+        this.findBarnInState = this.findBarnInState.bind(this);
+        this.updateBarnInState = this.updateBarnInState.bind(this);
+        this.updateGjelderAnnetBarnInState = this.updateGjelderAnnetBarnInState.bind(
+            this
+        );
+        this.hasCheckedRegistrertBarn = this.hasCheckedRegistrertBarn.bind(
+            this
         );
     }
 
-    slettRelasjonTilBarn(): void {
-        const barn = this.props.barn as FødtBarn;
-        const person = this.props.person;
-        const valgteBarn = person.barn.filter(
-            (søkersBarn) => søkersBarn.checked
-        );
-
-        if (valgteBarn.length > 0) {
-            barn.fødselsdatoer[0] = new Date(
-                valgteBarn
-                    .map((e) => e.fødselsdato)
-                    .sort()
-                    .reverse()[0]
-            );
-        } else {
-            barn.fødselsdatoer.splice(0, 1);
-        }
-
-        this.props.dispatch(
-            søknadActions.updateBarn({
-                fødselsdatoer: barn.fødselsdatoer,
-                antallBarn: valgteBarn.length,
-                erBarnetFødt: barn.fødselsdatoer.length === 0 ? undefined : true
-            })
+    findBarnInState(id: string): VelgbartRegistrertBarn | undefined {
+        const { registrerteBarn } = this.state;
+        return registrerteBarn.find(
+            (registrertBarn: VelgbartRegistrertBarn) => id === registrertBarn.id
         );
     }
 
-    nullstillRelasjonerTilBarn(): void {
-        this.props.dispatch(
-            søknadActions.updateBarn({
-                fødselsdatoer: [],
-                antallBarn: 0,
-                erBarnetFødt: undefined,
-                termindato: undefined,
-                terminbekreftelse: undefined,
-                fødselsattest: undefined
-            })
-        );
-    }
-
-    toggleAnnetBarn(person: Person): void {
+    updateFødselsdatoInReduxState() {
         const { dispatch } = this.props;
-        if (RelasjonTilBarnFødselSteg.harValgtSøkersBarn(person)) {
-            this.nullstillRelasjonerTilBarn();
-        }
+        const { registrerteBarn } = this.state;
 
-        this.setState({ annetBarn: !this.state.annetBarn }, () => {
-            if (this.state.annetBarn === true) {
-                person.barn.forEach(
-                    (barn: SøkersBarn) => (barn.checked = false)
-                );
-                dispatch(
-                    apiActionCreators.updatePerson({
-                        barn: person.barn
-                    })
-                );
-            }
-        });
-    }
-
-    toggleSøkersBarn(søkersBarn: SøkersBarn, person: Person): void {
-        if (this.state.annetBarn) {
-            this.nullstillRelasjonerTilBarn();
-        }
-
-        this.setState({ annetBarn: false }, () => {
-            const index = person.barn.indexOf(søkersBarn);
-            person.barn[index].checked =
-                person.barn[index].checked === true ? false : true;
-
-            søkersBarn.checked === true
-                ? this.genererRelasjonTilBarn(søkersBarn)
-                : this.slettRelasjonTilBarn();
-        });
-    }
-
-    handleSøkersBarnClick(fødselsnummer: string): void {
-        const { person } = this.props;
-        const søkersBarn = person.barn.find(
-            (barn) => barn.fnr === fødselsnummer
+        const valgteBarn = registrerteBarn.filter((b) => b.checked);
+        const fødselsdatoMostDistantInPast = findDateMostDistantInPast(
+            valgteBarn.map((b) => b.fødselsdato)
         );
-        søkersBarn === undefined
-            ? this.toggleAnnetBarn(person)
-            : this.toggleSøkersBarn(søkersBarn, person);
+
+        dispatch(
+            søknadActions.updateBarn({
+                antallBarn:
+                    valgteBarn.length > 0 ? valgteBarn.length : undefined,
+                erBarnetFødt: valgteBarn.length > 0 ? true : undefined,
+                fødselsdatoer: fødselsdatoMostDistantInPast
+                    ? [fødselsdatoMostDistantInPast]
+                    : []
+            })
+        );
+    }
+
+    updateBarnInState(id: string) {
+        const registrertBarn = this.findBarnInState(id);
+        if (registrertBarn) {
+            const { registrerteBarn } = this.state;
+            const index = registrerteBarn.indexOf(registrertBarn);
+            registrerteBarn[index].checked = !registrerteBarn[index].checked;
+            this.setState(
+                {
+                    registrerteBarn
+                },
+                this.updateFødselsdatoInReduxState
+            );
+        }
+    }
+
+    updateGjelderAnnetBarnInState() {
+        const { gjelderAnnetBarn, registrerteBarn } = this.state;
+        this.setState(
+            {
+                gjelderAnnetBarn: !gjelderAnnetBarn,
+                registrerteBarn: registrerteBarn.map(
+                    (barn: VelgbartRegistrertBarn) => ({
+                        ...barn,
+                        checked: false
+                    })
+                )
+            },
+            this.updateFødselsdatoInReduxState
+        );
+    }
+
+    hasCheckedRegistrertBarn() {
+        const { registrerteBarn } = this.state;
+        return registrerteBarn.some(
+            (barn: VelgbartRegistrertBarn) => barn.checked === true
+        );
     }
 
     render() {
@@ -182,6 +179,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
             person,
             fødselsattest,
             terminbekreftelse,
+            situasjon,
             stegProps,
             dispatch
         } = this.props;
@@ -190,68 +188,84 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props, OwnProps> {
             return null;
         }
 
+        const { registrerteBarn, gjelderAnnetBarn } = this.state;
+
         return (
-            <Steg {...stegProps}>
-                <Spørsmål
-                    synlig={person.barn !== undefined && person.barn.length > 0}
+            <Steg
+                {...stegProps}
+                renderFortsettKnapp={
+                    this.hasCheckedRegistrertBarn() ||
+                    barnErGyldig(barn, situasjon)
+                }>
+                <Bolk
+                    synlig={registrerteBarn.length > 0}
                     render={() => (
-                        <RiktigBarnSpørsmål
-                            onChange={(fødselsnummer: string) =>
-                                this.handleSøkersBarnClick(fødselsnummer)
+                        <BarnBolk
+                            gjelderAnnetBarn={gjelderAnnetBarn}
+                            registrerteBarn={registrerteBarn}
+                            onRegistrertBarnChange={(id: string) =>
+                                this.updateBarnInState(id)
                             }
-                            søkersBarn={person.barn}
-                            annetBarn={this.state.annetBarn}
+                            onAnnetBarnChange={
+                                this.updateGjelderAnnetBarnInState
+                            }
                         />
                     )}
                 />
 
-                {(this.state.annetBarn || person.barn.length === 0) && (
-                    <React.Fragment>
-                        <Spørsmål
-                            synlig={
-                                this.state.annetBarn || person.barn.length === 0
-                            }
-                            render={() => (
-                                <ErBarnetFødtSpørsmål
-                                    erBarnetFødt={barn.erBarnetFødt}
-                                    onChange={(erBarnetFødt: boolean) =>
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                erBarnetFødt
-                                            })
-                                        )
-                                    }
+                {(gjelderAnnetBarn || registrerteBarn.length === 0) && (
+                    <Bolk
+                        render={() => (
+                            <React.Fragment>
+                                <Spørsmål
+                                    render={() => (
+                                        <ErBarnetFødtSpørsmål
+                                            erBarnetFødt={barn.erBarnetFødt}
+                                            onChange={(erBarnetFødt: boolean) =>
+                                                dispatch(
+                                                    søknadActions.updateBarn({
+                                                        erBarnetFødt
+                                                    })
+                                                )
+                                            }
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                        {barn.erBarnetFødt === true && (
-                            <FødtBarnPartial
-                                dispatch={dispatch}
-                                barn={barn as FødtBarn}
-                                fødselsattest={fødselsattest || []}
-                            />
-                        )}
-                        {barn.erBarnetFødt === false && (
-                            <UfødtBarnPartial
-                                dispatch={dispatch}
-                                barn={barn as UfødtBarn}
-                                annenForelder={annenForelder}
-                                søker={søker}
-                                erFarEllerMedmor={erFarEllerMedmor(
-                                    person.kjønn,
-                                    søker.rolle
+                                {barn.erBarnetFødt === true && (
+                                    <FødtBarnPartial
+                                        dispatch={dispatch}
+                                        barn={barn as FødtBarn}
+                                        fødselsattest={fødselsattest || []}
+                                    />
                                 )}
-                                terminbekreftelse={terminbekreftelse || []}
-                            />
+                                {barn.erBarnetFødt === false && (
+                                    <UfødtBarnPartial
+                                        dispatch={dispatch}
+                                        barn={barn as UfødtBarn}
+                                        annenForelder={annenForelder}
+                                        søker={søker}
+                                        erFarEllerMedmor={erFarEllerMedmor(
+                                            person.kjønn,
+                                            søker.rolle
+                                        )}
+                                        terminbekreftelse={
+                                            terminbekreftelse || []
+                                        }
+                                    />
+                                )}
+                            </React.Fragment>
                         )}
-                    </React.Fragment>
+                    />
                 )}
             </Steg>
         );
     }
 }
 
-const mapStateToProps = (state: AppState, props: Props): StateProps => {
+const mapStateToProps = (
+    state: AppState,
+    props: Props
+): RelasjonTilBarnFødselStegProps => {
     const person = state.api.person as Person;
     const barn = state.søknad.barn;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
@@ -259,12 +273,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
-        renderFortsettKnapp: true,
-        history: props.history
+        history: props.history,
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state)
     };
 
     return {
         søker: state.søknad.søker,
+        situasjon: state.søknad.situasjon,
         annenForelder: state.søknad.annenForelder,
         person,
         barn,
@@ -274,6 +289,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
+export default connect<RelasjonTilBarnFødselStegProps, {}, {}>(mapStateToProps)(
     injectIntl(RelasjonTilBarnFødselSteg)
 );

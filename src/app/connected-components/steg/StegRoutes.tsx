@@ -16,20 +16,23 @@ import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
 import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
 import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
-import Inngangsside from '../sider/inngangsside/Inngangsside';
+import InngangSteg from './inngang/InngangSteg';
+import { connect } from 'react-redux';
+import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-class StegRoutes extends React.Component<RouteComponentProps<any>> {
+type Props = RouteComponentProps<any> & DispatchProps;
+class StegRoutes extends React.Component<Props> {
     render() {
         return (
             <Applikasjonsside visSpråkvelger={false}>
                 <Switch>
                     <Route
                         path={søknadStegPath(StegID.INNGANG)}
-                        component={Inngangsside}
+                        component={InngangSteg}
                         key={StegID.INNGANG}
                     />
                     <Route
@@ -87,4 +90,4 @@ class StegRoutes extends React.Component<RouteComponentProps<any>> {
     }
 }
 
-export default withRouter(StegRoutes);
+export default connect()(withRouter(StegRoutes));

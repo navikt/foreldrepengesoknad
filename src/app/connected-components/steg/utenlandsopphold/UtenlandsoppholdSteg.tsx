@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import {
-    default as InformasjonOmUtenlandsopphold,
     Utenlandsopphold,
     UtenlandsoppholdType
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -20,6 +19,8 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
+import isAvailable from '../isAvailable';
+import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -191,24 +192,16 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 }
 
-const utenlandsoppholdHasValues = (info: InformasjonOmUtenlandsopphold) =>
-    info.iNorgeSiste12Mnd === true ||
-    (info.iNorgeSiste12Mnd === false && info.tidligereOpphold.length > 0) ||
-    (info.iNorgeNeste12Mnd === true ||
-        (info.iNorgeNeste12Mnd === false && info.senereOpphold.length > 0));
-
 export default injectIntl(
     connect((state: AppState, props: Props) => {
         const { søknad } = state;
-        const { informasjonOmUtenlandsopphold } = søknad;
         const { history } = props;
 
         const stegProps: StegProps = {
             id: StegID.UTENLANDSOPPHOLD,
-            renderFortsettKnapp: utenlandsoppholdHasValues(
-                informasjonOmUtenlandsopphold
-            ),
-            history
+            renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
+            history,
+            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state)
         };
 
         return {
