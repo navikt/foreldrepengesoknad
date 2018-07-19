@@ -11,7 +11,7 @@ function* flagStep(action: any) {
     const approvedSteg = yield select(
         (state: AppState) => state.summary.godkjenteSteg
     );
-    if (approvedSteg[action.stegID] || true) {
+    if (approvedSteg[action.stegID]) {
         yield put({ type: SummaryActionKeys.FLAG_STEP, action });
     }
 }
