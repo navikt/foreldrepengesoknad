@@ -14,7 +14,7 @@ export const cleanupBarn = (
                 ? (_.pick(barn, [
                       ...barnBaseInterfaceKeys,
                       'fødeslsattest',
-                      'fødeslsdato'
+                      'fødselsdatoer'
                   ]) as FødtBarn)
                 : (_.pick(barn, [
                       ...barnBaseInterfaceKeys,

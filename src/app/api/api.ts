@@ -2,6 +2,7 @@ import axios from 'axios';
 import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
+import { storageParser } from '../util/storage/parser';
 
 const apiBaseUrl = Environment.REST_API_URL;
 
@@ -32,7 +33,10 @@ function sendSøknad(søknad: Søknad) {
 
 function getStoredAppState() {
     const url = `${apiBaseUrl}/storage`;
-    return axios.get(url, { withCredentials: true });
+    return axios.get(url, {
+        withCredentials: true,
+        transformResponse: storageParser
+    });
 }
 
 function storeAppState(state: AppState) {
