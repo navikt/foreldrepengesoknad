@@ -25,13 +25,15 @@ const cleanUpBarn = (barn: Barn, søkersituasjon: Søkersituasjon): Barn => {
 };
 
 const isArrayOfAttachments = (object: object) => {
-    return Array.isArray(object) && object.some((element) => element.filname);
+    return Array.isArray(object) && object.some((element) => element.filename);
 };
+
 const fetchAndCleanUpAttachments = (object: object): Attachment[] => {
     const foundAttachments = [] as Attachment[];
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
+                console.log(object[key]);
                 foundAttachments.push(...object[key]);
                 delete object[key];
             } else {
@@ -48,5 +50,6 @@ export const cleanUpSøknad = (søknad: Søknad): Søknad => {
     const { barn } = søknad;
     søknad.barn = cleanUpBarn(barn, søknad.situasjon);
     søknad.vedlegg = fetchAndCleanUpAttachments(søknad);
+    console.log(søknad);
     return søknad;
 };
