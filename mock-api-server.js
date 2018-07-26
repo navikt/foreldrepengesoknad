@@ -10,8 +10,8 @@ require('dotenv').config();
 const mockResponse = {
     søker: {
         fnr: '11111111111',
-        fornavn: 'Henrikke',
-        etternavn: 'Ibsen',
+        fornavn: 'HENRIKKE',
+        etternavn: 'IBSEN',
         kjønn: 'K',
         fødselsdato: '1979-01-28',
         ikkeNordiskEøsLand: true
@@ -20,8 +20,8 @@ const mockResponse = {
     barn: [
         {
             fnr: '12345123451',
-            fornavn: 'Sjura',
-            etternavn: 'Gucci',
+            fornavn: 'EMMA',
+            etternavn: 'BERG',
             kjønn: 'K',
             fødselsdato: '2017-01-01'
         }
