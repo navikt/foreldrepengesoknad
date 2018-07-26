@@ -1,4 +1,5 @@
 import { Kjønn } from './common';
+import Bankkonto from './Bankkonto';
 
 interface PersonBase {
     fornavn: string;
@@ -13,6 +14,7 @@ interface Person extends PersonBase {
     ikkeNordiskEøsLand: boolean;
     erMyndig: boolean;
     registrerteBarn: RegistrertBarn[];
+    bankkonto?: Bankkonto;
 }
 
 export interface RegistrertBarn {

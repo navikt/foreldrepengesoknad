@@ -28,7 +28,7 @@ type Props = RouteComponentProps<any> & DispatchProps;
 class StegRoutes extends React.Component<Props> {
     render() {
         return (
-            <Applikasjonsside visSpråkvelger={false}>
+            <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
                 <Switch>
                     <Route
                         path={søknadStegPath(StegID.INNGANG)}

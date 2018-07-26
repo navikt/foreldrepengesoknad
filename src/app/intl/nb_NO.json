@@ -2,6 +2,7 @@
     "ja": "Ja",
     "nei": "Nei",
     "avbryt": "Avbryt",
+    "avslutt": "Avslutt",
     "leggtil": "Legg til",
 
     "jeg": "jeg",
@@ -11,6 +12,8 @@
     "tilogmed": "Til og med",
 
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
+
+    "søknad.pageheading": "Søknad om foreldrepenger",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
     "velkommen.ingress":
@@ -318,5 +321,15 @@
         "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label":
         "Er { navn } for syk til å ta seg av barnet eller innlagt?",
-    "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? "
+    "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
+
+    "kvittering.sectionheading": "Søknad mottatt",
+    "kvittering.headline": "Takk for søknaden",
+    "kvittering.referansenummer":
+        "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",
+    "kvittering.dittNav": "Du kan følge med på søknaden på {dittNavLink}.",
+    "kvittering.dittNavLink": "Ditt NAV",
+    "kvittering.kontonummer":
+        " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
+    "kvittering.dinProfilLink": "Din profil"
 }
