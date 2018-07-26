@@ -5,6 +5,7 @@ import {
 import Person from '../../types/Person';
 import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
+import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
 export interface ApiState {
     person?: Person;
@@ -12,6 +13,8 @@ export interface ApiState {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     isLoadingPerson: boolean;
     isLoadingAppState: boolean;
+    søknadSendingInProgress: boolean;
+    kvittering?: ForeldrepengesøknadResponse;
     error: any;
 }
 
@@ -23,6 +26,8 @@ const getDefaultState = (): ApiState => ({
     registrertAnnenForelder: undefined,
     isLoadingPerson: false,
     isLoadingAppState: true,
+    søknadSendingInProgress: false,
+    kvittering: undefined,
     error: {
         networkError: false,
         response: undefined
