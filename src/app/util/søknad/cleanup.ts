@@ -33,7 +33,6 @@ const fetchAndCleanUpAttachments = (object: object): Attachment[] => {
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
-                console.log(object[key]);
                 foundAttachments.push(...object[key]);
                 delete object[key];
             } else {
@@ -50,6 +49,5 @@ export const cleanUpSøknad = (søknad: Søknad): Søknad => {
     const { barn } = søknad;
     søknad.barn = cleanUpBarn(barn, søknad.situasjon);
     søknad.vedlegg = fetchAndCleanUpAttachments(søknad);
-    console.log(søknad);
     return søknad;
 };
