@@ -63,12 +63,6 @@ describe('Fødselsnummer validation', () => {
         expect(callFødselsnummerValidator('', true, SØKER_FNR)).toEqual(false);
     });
 
-    it('should return false if norwegian fødselsnummer larger than 11 digits', () => {
-        expect(
-            callFødselsnummerValidator('123451234511', false, SØKER_FNR)
-        ).toEqual(false);
-    });
-
     it('should return false for fødselsnummer matching applicants fødselsnummer', () => {
         expect(
             callMatchingApplicantsFødselsnummerValidator(
