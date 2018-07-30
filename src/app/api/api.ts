@@ -14,19 +14,12 @@ function getPerson() {
 }
 
 function sendSøknad(søknad: Søknad) {
-    const formData = new FormData();
-    formData.append(
-        'soknad',
-        new Blob([JSON.stringify(søknad)], {
-            type: 'application/json'
-        })
-    );
-
     const url = `${apiBaseUrl}/soknad`;
-    return axios.post(url, formData, {
+
+    return axios.post(url, søknad, {
         withCredentials: true,
         headers: {
-            'content-type': 'multipart/form-data;'
+            'content-type': 'application/json;'
         }
     });
 }
