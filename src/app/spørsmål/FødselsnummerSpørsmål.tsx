@@ -7,7 +7,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { ValidInput } from 'common/lib/validation';
-import { getFødselsnummerRegler } from '../util/validation/fødselsnummer';
+import { getFødselsnummerRegler } from '../util/validation/fields/fødselsnummer';
 
 interface FødselsnummerSpørsmålProps {
     kanIkkeOppgis: boolean;
