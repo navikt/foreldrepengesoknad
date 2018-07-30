@@ -39,10 +39,10 @@ class Steg extends React.Component<Props & DispatchProps> {
     handleOnSubmit() {
         const { id, history, onSubmit, dispatch } = this.props;
 
-        dispatch(apiActionCreators.storeAppState());
         if (onSubmit) {
             onSubmit();
         } else {
+            dispatch(apiActionCreators.storeAppState());
             history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
         }
     }
