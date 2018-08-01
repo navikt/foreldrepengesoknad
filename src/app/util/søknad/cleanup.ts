@@ -34,7 +34,9 @@ const fetchAndCleanUpAttachments = (object: object): Attachment[] => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
                 foundAttachments.push(...object[key]);
-                delete object[key];
+                object[key] = (object[key] as Attachment[]).map(
+                    (attachment: Attachment) => attachment.id
+                );
             } else {
                 foundAttachments.push(
                     ...fetchAndCleanUpAttachments(object[key])
