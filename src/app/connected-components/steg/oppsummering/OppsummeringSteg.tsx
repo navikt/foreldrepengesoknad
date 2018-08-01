@@ -103,7 +103,7 @@ class OppsummeringSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søknad = state.søknad;
     const person = state.api.person as Person;
-    const stegProps = {
+    const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering, // TODO check if all steps is approved.
         history: props.history

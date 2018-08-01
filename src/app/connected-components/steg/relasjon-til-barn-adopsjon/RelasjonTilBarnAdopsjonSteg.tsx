@@ -171,7 +171,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as Adopsjonsbarn;
 
-    const stegProps = {
+    const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
         renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,

@@ -105,7 +105,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             ? getSøkerrollerForBruker(kjønn, situasjon)
             : undefined;
 
-    const stegProps = {
+    const stegProps: StegProps = {
         id: StegID.INNGANG,
         renderFortsettKnapp: state.søknad.søker.rolle !== undefined,
         history: props.history,
