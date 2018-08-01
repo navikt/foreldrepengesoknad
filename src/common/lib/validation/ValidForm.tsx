@@ -8,7 +8,7 @@ type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 export interface ValidFormProps {
     onSubmit?: (evt: FormSubmitEvent) => void;
     children: React.ReactNode;
-    summaryTitle: string;
+    summaryTitle?: string;
     noSummary?: boolean;
 }
 
@@ -151,7 +151,7 @@ class ValidForm extends React.Component<ValidFormProps, State> {
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (
                 <Feiloppsummering
-                    title={summaryTitle}
+                    title={summaryTitle || ''}
                     show={true}
                     errors={this.mapResultsToErrorSummary()}
                 />

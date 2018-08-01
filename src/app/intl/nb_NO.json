@@ -279,6 +279,19 @@
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
         "Du må skrive et gyldig nummer (11 sifre)",
 
+    "valideringsfeil.utenlandsopphold.tidligere":
+        "Du må legge inn en dato som er innenfor de siste tolv månedene.",
+    "valideringsfeil.utenlandsopphold.senere":
+        "Du må legge inn en dato som er innenfor de neste tolv månedene.",
+    "valideringsfeil.utenlandsopphold.dagensEllerSenere":
+        "Du må legge inn dagens dato eller senere.",
+    "valideringsfeil.utenlandsopphold.førTilDato":
+        "Du må legge inn en dato som er før til-datoen.",
+    "valideringsfeil.utenlandsopphold.etterFraDato":
+        "Du må legge inn en dato som er etter fra-datoen",
+    "valideringsfeil.utenlandsopphold.overlapp":
+        "Du har allerede lagt inn utenlandsopphold i denne perioden",
+
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":

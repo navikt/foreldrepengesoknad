@@ -23,7 +23,9 @@ import isAvailable from '../isAvailable';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerTidligerePerioder,
-    getTilAvgrensninger as tilAvgrensningerTidligerePerioder
+    getTilAvgrensninger as tilAvgrensningerTidligerePerioder,
+    getTidligereUtenlandsoppholdFradatoRegler as fraReglerTidligerePerioder,
+    getTidligereUtenlandsoppholdTildatoRegler as tilReglerTidligerePerioder
 } from '../../../util/validation/fields/tidligereUtenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerSenerePerioder,
@@ -141,6 +143,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                 avgrensningGetters: {
                                     getFraAvgrensning: fraAvgrensningerTidligerePerioder,
                                     getTilAvgrensning: tilAvgrensningerTidligerePerioder
+                                },
+                                tidsperiodeValidators: {
+                                    getFraRegler: fraReglerTidligerePerioder,
+                                    getTilRegler: tilReglerTidligerePerioder
                                 }
                             }}
                         />
@@ -221,7 +227,8 @@ export default injectIntl(
             id: StegID.UTENLANDSOPPHOLD,
             renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
             history,
-            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state)
+            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state),
+            onSubmit: () => {}
         };
 
         return {
