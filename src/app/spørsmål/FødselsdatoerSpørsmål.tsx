@@ -5,7 +5,7 @@ import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidati
 import {
     fødselsdatoAvgrensninger,
     getFødselsdatoRegler
-} from '../util/validation/fødselsdato';
+} from '../util/validation/fields/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface FødselsdatoerSpørsmålProps {

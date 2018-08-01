@@ -12,6 +12,7 @@ import { CheckboksProps } from 'nav-frontend-skjema/lib/checkboks-panel';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
+    disabled?: boolean;
 }
 
 type Props = CheckboksPanelGruppeProps & ResponsiveProps;
@@ -21,6 +22,7 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
         const {
             feil,
             twoColumns = false,
+            disabled = false,
             legend,
             checkboxes,
             onChange
@@ -51,6 +53,7 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
                                                 checked={
                                                     checkboks.checked || false
                                                 }
+                                                disabled={disabled || false}
                                                 onChange={(event: any) =>
                                                     onChange(
                                                         event,

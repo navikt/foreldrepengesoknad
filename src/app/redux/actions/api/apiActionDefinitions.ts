@@ -1,47 +1,33 @@
-import Person, { PersonPartial } from '../../../types/Person';
+import { PersonPartial } from '../../../types/Person';
 import Søknad from '../../../types/søknad/Søknad';
-import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import { ApiStatePartial } from '../../reducers/apiReducer';
 
 export enum ApiActionKeys {
-    'GET_SØKERINFO_REQUEST' = 'getSøkerinfoRequest',
-    'GET_SØKERINFO_SUCCESS' = 'getSøkerinfoSuccess',
-    'GET_SØKERINFO_FAILED' = 'getSøkerinfoFailed',
+    'GET_SØKERINFO' = 'getSøkerinfo',
 
-    'SEND_SØKNAD_REQUEST' = 'sendSøknadRequest',
-    'SEND_SØKNAD_SUCCESS' = 'sendSøknadSuccess',
-    'SEND_SØKNAD_FAILED' = 'sendSøknadFailed',
+    'GET_STORED_APP_STATE' = 'getStoredAppState',
+    'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
+    'STORE_APP_STATE' = 'storeAppState',
 
-    'UPDATE_PERSON' = 'updatePerson'
+    'SEND_SØKNAD' = 'sendSøknad',
+
+    'UPDATE_PERSON' = 'updatePerson',
+
+    'UPDATE_API' = 'updateApi'
 }
 
-interface GetSøkerinfoRequest {
-    type: ApiActionKeys.GET_SØKERINFO_REQUEST;
+interface UpdateApi {
+    type: ApiActionKeys.UPDATE_API;
+    payload: ApiStatePartial;
 }
 
-interface GetSøkerinfoSuccess {
-    type: ApiActionKeys.GET_SØKERINFO_SUCCESS;
-    person: Person;
-    arbeidsforhold: Arbeidsforhold;
+interface GetSøkerinfo {
+    type: ApiActionKeys.GET_SØKERINFO;
 }
 
-interface GetSøkerinfoFailed {
-    type: ApiActionKeys.GET_SØKERINFO_FAILED;
-    error: any;
-}
-
-export interface SendSøknadRequest {
-    type: ApiActionKeys.SEND_SØKNAD_REQUEST;
+export interface SendSøknad {
+    type: ApiActionKeys.SEND_SØKNAD;
     søknad: Søknad;
-}
-
-interface SendSøknadSuccess {
-    type: ApiActionKeys.SEND_SØKNAD_SUCCESS;
-    response: any;
-}
-
-interface SendSøknadFailed {
-    type: ApiActionKeys.SEND_SØKNAD_FAILED;
-    error: any;
 }
 
 interface UpdatePerson {
@@ -49,11 +35,23 @@ interface UpdatePerson {
     payload: PersonPartial;
 }
 
+export interface GetStoredAppState {
+    type: ApiActionKeys.GET_STORED_APP_STATE;
+}
+
+export interface DeleteStoredAppState {
+    type: ApiActionKeys.DELETE_STORED_APP_STATE;
+}
+
+export interface StoreAppState {
+    type: ApiActionKeys.STORE_APP_STATE;
+}
+
 export type ApiActionTypes =
-    | GetSøkerinfoRequest
-    | GetSøkerinfoSuccess
-    | GetSøkerinfoFailed
-    | SendSøknadRequest
-    | SendSøknadSuccess
-    | SendSøknadFailed
-    | UpdatePerson;
+    | GetSøkerinfo
+    | SendSøknad
+    | UpdatePerson
+    | StoreAppState
+    | GetStoredAppState
+    | DeleteStoredAppState
+    | UpdateApi;

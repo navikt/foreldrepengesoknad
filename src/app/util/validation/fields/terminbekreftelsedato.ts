@@ -8,7 +8,7 @@ import {
     fjortenUkerPluss3Number,
     today,
     tomorrow
-} from './values';
+} from '../values';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 

@@ -4,6 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { Næringstype } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { InputChangeEvent } from '../types/dom/Events';
 
 interface NæringstypeSpørsmålProps {
     næringstyper: Næringstype[];
@@ -35,7 +36,7 @@ const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) =
         <CheckboksPanelGruppeResponsive
             legend={getMessage(intl, 'næringstype.spørsmål')}
             checkboxes={createNæringstypeOptions()}
-            onChange={(e: React.ChangeEvent<any>, næringstype: Næringstype) => {
+            onChange={(e: InputChangeEvent, næringstype: Næringstype) => {
                 onChange(næringstype);
             }}
         />
