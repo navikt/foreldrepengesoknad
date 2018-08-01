@@ -20,6 +20,7 @@ export interface StegProps {
     history: History;
     onSubmit?: () => void;
     isAvailable?: boolean;
+    nesteStegRoute?: StegID;
 }
 
 type Props = StegProps & InjectedIntlProps;
@@ -37,14 +38,24 @@ class Steg extends React.Component<Props & DispatchProps> {
     }
 
     handleOnSubmit() {
-        const { id, history, onSubmit, dispatch } = this.props;
+        const { onSubmit, dispatch } = this.props;
 
         if (onSubmit) {
             onSubmit();
         } else {
             dispatch(apiActionCreators.storeAppState());
-            history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
+            this.navigateToNextStep();
         }
+    }
+
+    navigateToNextStep() {
+        const { id, nesteStegRoute } = this.props;
+
+        const nextStepPathname = nesteStegRoute
+            ? nesteStegRoute
+            : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
+
+        this.props.history.push(nextStepPathname);
     }
 
     render() {

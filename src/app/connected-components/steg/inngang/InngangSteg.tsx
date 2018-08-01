@@ -19,7 +19,6 @@ export interface StateProps {
     visSpørsmålOmSøkerrolle?: boolean;
     rolle?: SøkerRolle;
     roller?: SøkerRolle[];
-    nesteStegRoute?: StegID;
     stegProps: StegProps;
 }
 
@@ -110,13 +109,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.INNGANG,
         renderFortsettKnapp: state.søknad.søker.rolle !== undefined,
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state)
+        isAvailable: isAvailable(StegID.INNGANG, state),
+        nesteStegRoute: resolveNesteSteg(state)
     };
 
     return {
         visSpørsmålOmSøkerrolle: roller !== undefined,
         rolle: state.søknad.søker.rolle,
-        nesteStegRoute: resolveNesteSteg(state),
         situasjon,
         roller,
         stegProps
