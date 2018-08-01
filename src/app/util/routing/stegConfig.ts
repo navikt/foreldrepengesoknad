@@ -29,7 +29,6 @@ const stegConfig: StegConfig = {
     [StegID.INNGANG]: {
         tittel: 'Inngang',
         fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.RELASJON_TIL_BARN_FØDSEL,
         index: 0
     },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
