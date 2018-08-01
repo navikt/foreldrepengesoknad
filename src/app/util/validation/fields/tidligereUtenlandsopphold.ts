@@ -1,5 +1,5 @@
 import { Avgrensninger } from 'nav-datovelger';
-import { date1YearAgo, today } from './values';
+import { date1YearAgo, today } from '../values';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || today.toDate();

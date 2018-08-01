@@ -24,11 +24,11 @@ import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenland
 import {
     getFraAvgrensninger as fraAvgrensningerTidligerePerioder,
     getTilAvgrensninger as tilAvgrensningerTidligerePerioder
-} from '../../../util/validation/tidligereUtenlandsopphold';
+} from '../../../util/validation/fields/tidligereUtenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerSenerePerioder,
     getTilAvgrensninger as tilAvgrensningerSenerePerioder
-} from '../../../util/validation/senereUtenlandsopphold';
+} from '../../../util/validation/fields/senereUtenlandsopphold';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
