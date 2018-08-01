@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { date1YearAgo, today } from '../values';
 import {
     getFraAvgrensninger,
     getTilAvgrensninger
-} from '../fields/tidligereUtenlandsopphold';
+} from '../tidligereUtenlandsopphold';
+import { date1YearAgo, today } from '../../values';
 
 describe('Tidligere utenlandsopphold-avgrensninger', () => {
     describe('getFraAvgrensninger', () => {
