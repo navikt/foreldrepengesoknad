@@ -20,6 +20,8 @@ import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import isAvailable from '../isAvailable';
+import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -98,13 +100,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Steg
-                {...stegProps}
-                renderFortsettKnapp={
-                    harHattAnnenInntektSiste10Mnd === false ||
-                    (harHattAnnenInntektSiste10Mnd === true &&
-                        søker.andreInntekterSiste10Mnd.length > 0)
-                }>
+            <Steg {...stegProps}>
                 <Bolk
                     render={() => (
                         <FrilanserBolk
@@ -195,9 +191,9 @@ export default injectIntl(
 
         const stegProps: StegProps = {
             id: StegID.ANDRE_INNTEKTER,
-            renderFortsettKnapp:
-                søker && søker.harJobbetSomFrilansSiste10Mnd !== undefined,
-            history
+            renderFortsettKnapp: annenInntektErGyldig(søker),
+            history,
+            isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state)
         };
 
         return {

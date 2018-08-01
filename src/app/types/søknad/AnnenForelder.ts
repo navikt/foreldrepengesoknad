@@ -11,7 +11,7 @@ interface AnnenForelder {
     erUfør: boolean;
 }
 
-export interface DataOmAnnenForelder {
+export interface RegistrertAnnenForelder {
     navn: string;
     fnr: string;
     alder: string;

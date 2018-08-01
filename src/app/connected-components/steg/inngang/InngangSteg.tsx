@@ -7,15 +7,12 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
 import { StegID } from '../../../util/routing/stegConfig';
-import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { HistoryProps } from '../../../types/common';
 import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { søknadStegPath } from '../../steg/StegRoutes';
-import { SubmitEvent } from '../../../types/dom/Events';
+import isAvailable from '../isAvailable';
 
 export interface StateProps {
     situasjon?: Søkersituasjon;
@@ -31,19 +28,9 @@ export type Props = DispatchProps &
     HistoryProps &
     InjectedIntlProps;
 
-class Inngangsside extends React.Component<Props, {}> {
+class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
-        this.navigateToNext = this.navigateToNext.bind(this);
-    }
-
-    navigateToNext(e: SubmitEvent) {
-        const { nesteStegRoute, history } = this.props;
-        if (nesteStegRoute) {
-            e.preventDefault();
-            e.stopPropagation();
-            history.push(søknadStegPath(nesteStegRoute));
-        }
     }
 
     render() {
@@ -53,7 +40,6 @@ class Inngangsside extends React.Component<Props, {}> {
             rolle,
             visSpørsmålOmSøkerrolle,
             dispatch,
-            intl,
             stegProps
         } = this.props;
 
@@ -93,12 +79,6 @@ class Inngangsside extends React.Component<Props, {}> {
                         )
                     }
                 />
-
-                {rolle !== undefined && (
-                    <FortsettKnapp onClick={this.navigateToNext}>
-                        {getMessage(intl, 'fortsettknapp.label')}
-                    </FortsettKnapp>
-                )}
             </Steg>
         );
     }
@@ -128,8 +108,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: false,
-        history: props.history
+        renderFortsettKnapp: state.søknad.søker.rolle !== undefined,
+        history: props.history,
+        isAvailable: isAvailable(StegID.INNGANG, state)
     };
 
     return {
@@ -142,4 +123,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps>(mapStateToProps)(injectIntl(Inngangsside));
+export default connect<StateProps>(mapStateToProps)(injectIntl(InngangSteg));

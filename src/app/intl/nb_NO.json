@@ -2,12 +2,18 @@
     "ja": "Ja",
     "nei": "Nei",
     "avbryt": "Avbryt",
+    "avslutt": "Avslutt",
     "leggtil": "Legg til",
+
+    "jeg": "jeg",
+    "vi": "vi",
 
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
+
+    "søknad.pageheading": "Søknad om foreldrepenger",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
     "velkommen.ingress":
@@ -94,7 +100,7 @@
     "morForSykSpørsmål.spørsmål":
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
-    "erDuSelvstendigNæringsdrivendeEllerFrilanser.spørsmål":
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
         "Er du selvstendig næringsdrivende eller frilanser?",
 
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
@@ -192,7 +198,6 @@
 
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
-    "søkerrolle.rolle.MOR2": "Mor 2",
     "søkerrolle.rolle.FAR": "Far",
     "søkerrolle.rolle.FAR2": "Far 2",
     "søkerrolle.rolle.MEDMOR": "Medmor",
@@ -204,7 +209,11 @@
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
     "søkersituasjon.alternativ.stebarn": "Stebarn",
-    "søkersituasjon.alternativ.foreldreansvar": "Foreldreansvar",
+    "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
+
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål":
+        "Gjelder foreldrepengesøknaden noen av disse barna?",
+    "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
@@ -264,14 +273,21 @@
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
         "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere",
 
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer":
+        "Du kan ikke oppgi ditt eget fødselsnummer",
+
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
+        "Du må skrive et gyldig nummer (11 sifre)",
+
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
+    "oppsummering.samtykke":
+        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+
     "oppsummering.relasjonTilBarn": "Relasjon til barn",
     "oppsummering.termindato": "med termindato den",
     "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato": "Som er datert den",
-    "oppsummering.samtykke":
-        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.tvillinger": "tvillinger",
@@ -282,5 +298,38 @@
     "oppsummering.antallBarn.6": "Seks",
     "oppsummering.antallBarn.7": "Syv",
     "oppsummering.antallBarn.8": "Åtte",
-    "oppsummering.antallBarn.9": "Ni"
+    "oppsummering.antallBarn.9": "Ni",
+
+    "oppsummering.denAndreForelderen": "Den andre forelderen",
+    "oppsummering.annenForelder.aleneOmOmsorg.label":
+        "{personligPronomen} har...",
+    "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
+    "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
+    "oppsummering.annenForelder.kanIkkeOppgis":
+        "Jeg kan ikke oppgi den andre forelderen",
+    "oppsummering.annenForelder.navn.label": "Den andre forelderen heter...",
+    "oppsummering.annenForelder.fødselsnummer.label":
+        "og har fødselsnummer eller D-nummer...",
+    "oppsummering.annenForelder.utenlandskFødselsnummer.label":
+        "Utenlandsk fødselsnummer",
+    "oppsummering.annenForelder.bostedsland.label": "og bor i...",
+    "oppsummering.annenForelder.harRettPåForeldrepenger.label":
+        "Har {navn} rett på foreldrepenger?",
+    "oppsummering.annenForelder.skalHaForeldrepenger.label":
+        "Skal {navn} ha foreldrepenger?",
+    "oppsummering.annenForelder.erInformertOmSøknaden.label":
+        "Er {navn} informert om søknaden?",
+    "oppsummering.annenForelder.erForSyk.label":
+        "Er { navn } for syk til å ta seg av barnet eller innlagt?",
+    "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
+
+    "kvittering.sectionheading": "Søknad mottatt",
+    "kvittering.headline": "Takk for søknaden",
+    "kvittering.referansenummer":
+        "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",
+    "kvittering.dittNav": "Du kan følge med på søknaden på {dittNavLink}.",
+    "kvittering.dittNavLink": "Ditt NAV",
+    "kvittering.kontonummer":
+        " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
+    "kvittering.dinProfilLink": "Din profil"
 }

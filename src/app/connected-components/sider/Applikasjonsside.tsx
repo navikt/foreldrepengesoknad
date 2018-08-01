@@ -1,15 +1,19 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { connect } from 'react-redux';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+
 import { DispatchProps } from 'common/redux/types';
 import { setSpråk } from '../../redux/actions/common/commonActionCreators';
 import { AppState } from '../../redux/reducers';
 import { Språkkode } from 'common/intl/types';
 import Språkvelger from 'common/components/språkvelger/Språkvelger';
 import BEMHelper from 'common/util/bem';
+import getMessage from 'common/util/i18nUtils';
+import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
 
 export interface OwnProps {
-    /** Om språkvelger skal vises eller ikke */
+    visSøknadstittel?: boolean;
     visSpråkvelger?: boolean;
     margin?: boolean;
 }
@@ -18,7 +22,7 @@ interface StateProps {
     språkkode: Språkkode;
 }
 
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 class Sidemal extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -26,6 +30,7 @@ class Sidemal extends React.Component<Props> {
     render() {
         const {
             visSpråkvelger,
+            visSøknadstittel,
             språkkode,
             children,
             margin = true,
@@ -47,6 +52,11 @@ class Sidemal extends React.Component<Props> {
                         }
                     />
                 )}
+                {visSøknadstittel && (
+                    <Søknadstittel>
+                        {getMessage(this.props.intl, 'søknad.pageheading')}
+                    </Søknadstittel>
+                )}
                 <div className={cls}>{children}</div>
             </React.Fragment>
         );
@@ -57,4 +67,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
     språkkode: state.common.språkkode
 });
 
-export default connect(mapStateToProps)(Sidemal);
+export default connect(mapStateToProps)(injectIntl(Sidemal));

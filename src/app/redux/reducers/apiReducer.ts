@@ -3,29 +3,31 @@ import {
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
 import Person from '../../types/Person';
-import { DataOmAnnenForelder } from '../../types/søknad/AnnenForelder';
+import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
+import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
-export interface ApiReducerState {
+export interface ApiState {
     person?: Person;
     arbeidsforhold?: Arbeidsforhold[];
-    dataOmAnnenForelder?: DataOmAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     isLoadingPerson: boolean;
+    isLoadingAppState: boolean;
+    søknadSendingInProgress: boolean;
+    kvittering?: ForeldrepengesøknadResponse;
     error: any;
 }
 
-const getDefaultState = (): ApiReducerState => ({
+export type ApiStatePartial = Partial<ApiState>;
+
+const getDefaultState = (): ApiState => ({
     person: undefined,
     arbeidsforhold: undefined,
-    dataOmAnnenForelder: false
-        ? {
-              navn: 'pent navn',
-              fnr: '01010101010',
-              alder: '20',
-              harOpplystOmSinPågåendeSak: true
-          }
-        : undefined,
+    registrertAnnenForelder: undefined,
     isLoadingPerson: false,
+    isLoadingAppState: true,
+    søknadSendingInProgress: false,
+    kvittering: undefined,
     error: {
         networkError: false,
         response: undefined
@@ -34,23 +36,15 @@ const getDefaultState = (): ApiReducerState => ({
 
 const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
     switch (action.type) {
-        case ApiActionKeys.GET_SØKERINFO_REQUEST:
+        case ApiActionKeys.UPDATE_API:
+            return {
+                ...state,
+                ...action.payload
+            };
+        case ApiActionKeys.GET_SØKERINFO:
             return {
                 ...state,
                 isLoadingPerson: true
-            };
-        case ApiActionKeys.GET_SØKERINFO_SUCCESS:
-            return {
-                ...state,
-                person: action.person,
-                arbeidsforhold: action.arbeidsforhold,
-                isLoadingPerson: false
-            };
-        case ApiActionKeys.GET_SØKERINFO_FAILED:
-            return {
-                ...state,
-                error: action.error,
-                isLoadingPerson: false
             };
         case ApiActionKeys.UPDATE_PERSON:
             return {
@@ -59,6 +53,16 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
                     ...state.person,
                     ...action.payload
                 }
+            };
+        case ApiActionKeys.GET_STORED_APP_STATE:
+            return {
+                ...state,
+                isLoadingAppState: true
+            };
+        case ApiActionKeys.DELETE_STORED_APP_STATE:
+            return {
+                ...state,
+                isLoadingAppState: true
             };
     }
     return state;

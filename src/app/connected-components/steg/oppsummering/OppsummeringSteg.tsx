@@ -19,10 +19,13 @@ import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
 import summaryActionCreators from '../../../redux/actions/summary/summaryActionCreators';
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
+import { cleanUpSøknad } from '../../../util/søknad/cleanup';
+import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 
 interface StateProps {
     person: Person;
     søknad: Søknad;
+    kvittering?: ForeldrepengesøknadResponse;
     godkjenteSteg: {};
     stegProps: StegProps;
     perioder: Periode[];
@@ -32,18 +35,25 @@ type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.sendSøknadAndRedirect = this.sendSøknadAndRedirect.bind(this);
+        this.sendSøknad = this.sendSøknad.bind(this);
     }
 
-    sendSøknadAndRedirect() {
-        const { søknad, perioder, dispatch, history } = this.props;
+    componentDidUpdate(previousProps: Props, newProps: Props) {
+        if (this.props.kvittering) {
+            this.props.history.push(
+                `${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`
+            );
+        }
+    }
+
+    sendSøknad() {
+        const { søknad, perioder, dispatch } = this.props;
         dispatch(
             apiActionCreators.sendSøknad({
-                ...søknad,
+                ...cleanUpSøknad(søknad),
                 uttaksplan: [...(perioder || [])]
             })
         );
-        history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
     }
 
     confirmSteg(stegID: StegID) {
@@ -65,7 +75,7 @@ class OppsummeringSteg extends React.Component<Props> {
         }
 
         return (
-            <Steg {...stegProps} onSubmit={this.sendSøknadAndRedirect}>
+            <Steg {...stegProps} onSubmit={this.sendSøknad}>
                 <OppsummeringWrapper
                     className="blokk-m"
                     person={person}
@@ -104,6 +114,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søknad,
         godkjenteSteg: state.summary.godkjenteSteg,
         perioder: state.uttaksplan.uttaksplan.perioder,
+        kvittering: state.api.kvittering,
         stegProps
     };
 };

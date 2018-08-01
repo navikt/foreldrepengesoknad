@@ -1,19 +1,22 @@
 import Api from '../../api/api';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
-import {
-    ApiActionKeys,
-    SendSøknadRequest
-} from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys, SendSøknad } from '../actions/api/apiActionDefinitions';
+import { default as apiActions } from '../actions/api/apiActionCreators';
+import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
-function* sendSøknad(action: SendSøknadRequest) {
+function* sendSøknad(action: SendSøknad) {
     try {
+        yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const response = yield call(Api.sendSøknad, action.søknad);
-        yield put({ type: ApiActionKeys.SEND_SØKNAD_SUCCESS, response });
+        const kvittering: ForeldrepengesøknadResponse = response.data;
+        yield put(
+            apiActions.updateApi({ kvittering, søknadSendingInProgress: false })
+        );
     } catch (error) {
-        yield put({ type: ApiActionKeys.SEND_SØKNAD_FAILED, error });
+        yield put(apiActions.updateApi({ error }));
     }
 }
 
 export default function* innsendingSaga() {
-    yield all([takeLatest(ApiActionKeys.SEND_SØKNAD_REQUEST, sendSøknad)]);
+    yield all([takeLatest(ApiActionKeys.SEND_SØKNAD, sendSøknad)]);
 }

@@ -25,10 +25,15 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                     label={getMessage(intl, 'oppsummering.fødselsdato')}
                     text={ISODateToPrettyDateFormat(fødselsdatoer[0]) || ''}
                 />
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.terminbekreftelse')}
-                    text={fødselsattest.map((vedlegg) => vedlegg.filename)}
-                />
+                {fødselsattest && (
+                    <DisplayTextWithLabel
+                        label={getMessage(
+                            intl,
+                            'oppsummering.terminbekreftelse'
+                        )}
+                        text={fødselsattest.map((vedlegg) => vedlegg.filename)}
+                    />
+                )}
             </React.Fragment>
         );
     }
@@ -51,10 +56,17 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                     label={getMessage(intl, 'oppsummering.termindato')}
                     text={ISODateToPrettyDateFormat(termindato) || ''}
                 />
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.terminbekreftelse')}
-                    text={terminbekreftelse.map((vedlegg) => vedlegg.filename)}
-                />
+                {terminbekreftelse && (
+                    <DisplayTextWithLabel
+                        label={getMessage(
+                            intl,
+                            'oppsummering.terminbekreftelse'
+                        )}
+                        text={terminbekreftelse.map(
+                            (vedlegg) => vedlegg.filename
+                        )}
+                    />
+                )}
                 <DisplayTextWithLabel
                     label={getMessage(
                         intl,

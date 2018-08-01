@@ -9,23 +9,24 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { StegID } from '../../../util/routing/stegConfig';
 
 import { AppState } from '../../../redux/reducers';
-import {
-    AnnenForelderPartial,
-    DataOmAnnenForelder
+import AnnenForelder, {
+    RegistrertAnnenForelder
 } from '../../../types/søknad/AnnenForelder';
 import { BarnPartial, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
-import Søker, { SøkerPartial } from '../../../types/søknad/Søker';
+import Søker from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import isAvailable from '../isAvailable';
+import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 
 interface StateProps {
     person: Person;
     barn: BarnPartial;
     søker: Søker;
-    dataOmAndreForelderen: DataOmAnnenForelder;
-    annenForelder: AnnenForelderPartial;
+    registrertAnnenForelder: RegistrertAnnenForelder;
+    annenForelder: AnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
     stegProps: StegProps;
 }
@@ -37,9 +38,9 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 
     shouldRenderAnnenForelderErKjentPartial() {
-        const { annenForelder, dataOmAndreForelderen } = this.props;
+        const { annenForelder, registrertAnnenForelder } = this.props;
         return (
-            (annenForelder.navn && annenForelder.fnr) || dataOmAndreForelderen
+            (annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder
         );
     }
 
@@ -49,7 +50,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             barn,
             søker,
             annenForelder,
-            dataOmAndreForelderen,
+            registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             dispatch,
             stegProps
@@ -64,19 +65,15 @@ class AnnenForelderSteg extends React.Component<Props> {
             return (
                 <Steg {...stegProps}>
                     <React.Fragment>
-                        <AnnenForelderPersonaliaPartial
-                            søker={søker}
-                            annenForelder={annenForelder}
-                            dataOmAndreForelderen={dataOmAndreForelderen}
-                            erFarEllerMedmor={erSøkerFarEllerMedmor}
-                            dispatch={dispatch}
-                        />
+                        <AnnenForelderPersonaliaPartial />
                         {this.shouldRenderAnnenForelderErKjentPartial() && (
                             <AnnenForelderErKjentPartial
                                 barn={barn as ForeldreansvarBarn}
                                 annenForelder={annenForelder}
                                 søker={søker}
-                                dataOmAndreForelderen={dataOmAndreForelderen}
+                                registrertAnnenForelder={
+                                    registrertAnnenForelder
+                                }
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                                 visInformasjonVedOmsorgsovertakelse={
                                     visInformasjonVedOmsorgsovertakelse
@@ -92,69 +89,29 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 }
 
-const shouldRenderFortsettKnapp = (
-    annenForelder: AnnenForelderPartial,
-    søker: SøkerPartial,
-    omsorgsovertakelseErLastetOpp: boolean,
-    søkerErFarEllerMedmor: boolean,
-    dataOmAndreForelderen?: any
-) => {
-    const annenForelderHarIkkeRettTilFPOgSøkerErMor =
-        annenForelder.harRettPåForeldrepenger === false &&
-        !søkerErFarEllerMedmor;
-    const morErUførSpårsmålErBesvart = annenForelder.erUfør !== undefined;
-    const erInformertOmSøknadenSpørsmålBesvart =
-        annenForelder.erInformertOmSøknaden !== undefined;
-    const medmorEllerFarSkalIkkeHaFP =
-        annenForelder.skalHaForeldrepenger === false;
-    const medmorEllerFarSkalHaFP = annenForelder.skalHaForeldrepenger === true;
-    const harDenAndreForelderenRettPåFPSpørsmålBesvart =
-        annenForelder.harRettPåForeldrepenger !== undefined;
-    const denAndreForelderenHarOpplystOmSinPågåendeSak =
-        dataOmAndreForelderen &&
-        dataOmAndreForelderen.harOpplystOmSinPågåendeSak;
-
-    return annenForelder.kanIkkeOppgis ||
-        omsorgsovertakelseErLastetOpp ||
-        erInformertOmSøknadenSpørsmålBesvart ||
-        annenForelderHarIkkeRettTilFPOgSøkerErMor ||
-        morErUførSpårsmålErBesvart ||
-        medmorEllerFarSkalIkkeHaFP ||
-        (medmorEllerFarSkalHaFP &&
-            harDenAndreForelderenRettPåFPSpørsmålBesvart) ||
-        (denAndreForelderenHarOpplystOmSinPågåendeSak && !søkerErFarEllerMedmor)
-        ? true
-        : false;
-};
-
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const person = state.api.person as Person;
+    const registrertAnnenForelder = state.api
+        .registrertAnnenForelder as RegistrertAnnenForelder;
     const barn = state.søknad.barn as ForeldreansvarBarn;
-    const dataOmAndreForelderen = state.api
-        .dataOmAnnenForelder as DataOmAnnenForelder;
     const søker = state.søknad.søker;
     const annenForelder = state.søknad.annenForelder;
 
     const stegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp:
-            person === undefined
-                ? false
-                : shouldRenderFortsettKnapp(
-                      annenForelder,
-                      søker,
-                      barn.omsorgsovertakelse &&
-                          barn.omsorgsovertakelse.length > 0,
-                      erFarEllerMedmor(person.kjønn, søker.rolle),
-                      dataOmAndreForelderen
-                  ),
-        history: props.history
+        renderFortsettKnapp: annenForelderErGyldig(
+            state.søknad,
+            person,
+            registrertAnnenForelder
+        ),
+        history: props.history,
+        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state)
     };
 
     return {
         stegProps,
         person,
-        dataOmAndreForelderen,
+        registrertAnnenForelder,
         barn,
         søker,
         annenForelder,

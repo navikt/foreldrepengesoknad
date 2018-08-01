@@ -3,11 +3,11 @@ import {
     SummaryActionKeys
 } from '../actions/summary/summaryActionDefinitions';
 
-export interface SummaryReducerState {
+export interface SummaryState {
     godkjenteSteg: {};
 }
 
-const getDefaultState = (): SummaryReducerState => ({
+const getDefaultState = (): SummaryState => ({
     godkjenteSteg: {}
 });
 
@@ -33,6 +33,11 @@ const summaryReducer = (
                     ...state.godkjenteSteg,
                     [stegID]: false
                 }
+            };
+        case SummaryActionKeys.UPDATE_SUMMARY:
+            return {
+                ...state,
+                ...action.payload
             };
     }
     return state;

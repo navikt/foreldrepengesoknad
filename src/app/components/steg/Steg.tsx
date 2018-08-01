@@ -6,42 +6,63 @@ import ValidForm from 'common/lib/validation/ValidForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import Stegindikator from '../stegindikator/Stegindikator';
+import routeConfig from '../../util/routing/routeConfig';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/reducers';
+import { DispatchProps } from 'common/redux/types';
+import BEMHelper from 'common/util/bem';
+import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
     onSubmit?: () => void;
+    isAvailable?: boolean;
 }
 
 type Props = StegProps & InjectedIntlProps;
 
-class Steg extends React.Component<Props> {
-    constructor(props: Props) {
+class Steg extends React.Component<Props & DispatchProps> {
+    constructor(props: Props & DispatchProps) {
         super(props);
+
+        const { isAvailable, history } = props;
+        if (isAvailable === false) {
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        }
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
     handleOnSubmit() {
-        const { id, history } = this.props;
-        this.props.onSubmit
-            ? this.props.onSubmit()
-            : history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
+        const { id, history, onSubmit, dispatch } = this.props;
+
+        if (onSubmit) {
+            onSubmit();
+        } else {
+            dispatch(apiActionCreators.storeAppState());
+            history.push(`${søknadStegPath(stegConfig[id].nesteSteg)}`);
+        }
     }
 
     render() {
         const { id, renderFortsettKnapp, intl } = this.props;
 
+        const bem = BEMHelper('steg');
         const formProps = {
-            className: 'steg',
+            className: bem.className,
             summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
             onSubmit: this.handleOnSubmit
         };
 
         return (
             <ValidForm {...formProps}>
-                <h1 className="steg__tittel">{stegConfig[id].tittel}</h1>
+                <div className="blokk-m">
+                    <Stegindikator id={id} />
+                </div>
+
                 {this.props.children}
                 {renderFortsettKnapp === true && (
                     <FortsettKnapp>
@@ -53,4 +74,5 @@ class Steg extends React.Component<Props> {
     }
 }
 
-export default injectIntl(Steg);
+const mapStateToProps = (state: AppState, props: Props) => props;
+export default injectIntl(connect(mapStateToProps)(Steg));
