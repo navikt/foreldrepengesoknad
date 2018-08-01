@@ -1,8 +1,8 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import Landvelger from '../landvelger/Landvelger';
 import './utenlandsoppholdModal.less';
-import { FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import {
@@ -16,23 +16,48 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk, {
-    DatoAvgrensninger
+    DatoAvgrensninger,
+    DatoValidatorer
 } from '../../bolker/TidsperiodeBolk';
 import Bolk from '../../../common/components/bolk/Bolk';
 import { Avgrensninger } from 'nav-datovelger';
+import { Validator } from 'common/lib/validation/types';
+import {
+    InjectedIntl,
+    InjectedIntlProps,
+    injectIntl,
+    FormattedMessage
+} from 'react-intl';
+import ValidForm from 'common/lib/validation/ValidForm';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;
     getTilAvgrensning?: (date?: Date) => Avgrensninger;
 }
 
-export interface UtenlandsoppholdModalProps extends ModalProps {
+export interface ValidatorGetters {
+    getFraRegler?: (
+        d1: Date | undefined,
+        d2: Date | undefined,
+        intl: InjectedIntl
+    ) => Validator[];
+    getTilRegler?: (
+        d1: Date | undefined,
+        d2: Date | undefined,
+        intl: InjectedIntl
+    ) => Validator[];
+}
+
+interface Props extends ModalProps {
     type: UtenlandsoppholdType;
     opphold?: Utenlandsopphold;
     onAdd: (opphold: Utenlandsopphold) => void;
     onEdit: (opphold: Utenlandsopphold) => void;
     avgrensningGetters?: AvgrensningGetters;
+    tidsperiodeValidators?: ValidatorGetters;
 }
+
+export type UtenlandsoppholdModalProps = Props & InjectedIntlProps;
 
 export type UtenlandsoppholdModalPropsPartial = Partial<
     UtenlandsoppholdModalProps
@@ -43,16 +68,24 @@ interface State {
     editMode: boolean;
 }
 
-export default class UtenlandsoppholdModal extends React.Component<
+const modalRoot = document.getElementById('modalContent');
+const el = document.createElement('div');
+
+class UtenlandsoppholdModal extends React.Component<
     UtenlandsoppholdModalProps,
     State
 > {
-    static getDerivedStateFromProps(props: UtenlandsoppholdModalProps) {
-        return UtenlandsoppholdModal.buildStateFromProps(props);
-    }
+    static getDerivedStateFromProps(
+        props: UtenlandsoppholdModalProps,
+        state: State
+    ) {
+        let opphold;
+        if (props.opphold) {
+            opphold = props.opphold;
+        } else {
+            opphold = state && state.opphold;
+        }
 
-    static buildStateFromProps(props: UtenlandsoppholdModalProps) {
-        const { opphold } = props;
         return {
             opphold: opphold ? { ...opphold } : { tidsperiode: {} },
             editMode: props.opphold !== undefined
@@ -62,9 +95,18 @@ export default class UtenlandsoppholdModal extends React.Component<
     constructor(props: UtenlandsoppholdModalProps) {
         super(props);
 
-        this.state = UtenlandsoppholdModal.buildStateFromProps(props);
+        if (modalRoot) {
+            modalRoot.appendChild(el);
+        }
+
         this.onSubmit = this.onSubmit.bind(this);
-        this.getAvgrensninger = this.getAvgrensninger.bind(this);
+        this.onRequestClose = this.onRequestClose.bind(this);
+    }
+
+    componentWillUnmount() {
+        if (modalRoot) {
+            modalRoot.removeChild(el);
+        }
     }
 
     updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
@@ -76,10 +118,7 @@ export default class UtenlandsoppholdModal extends React.Component<
         });
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        event.stopPropagation();
-
+    onSubmit() {
         const { onAdd, onEdit } = this.props;
         const { opphold, editMode } = this.state;
 
@@ -90,7 +129,7 @@ export default class UtenlandsoppholdModal extends React.Component<
         }
     }
 
-    getAvgrensninger(): DatoAvgrensninger {
+    getTidsperiodeAvgrensninger(): DatoAvgrensninger {
         const { avgrensningGetters } = this.props;
         const { opphold } = this.state;
         const tidsperiode = opphold && opphold.tidsperiode;
@@ -110,17 +149,44 @@ export default class UtenlandsoppholdModal extends React.Component<
         return {};
     }
 
+    getTidsperiodeValidatorer(): DatoValidatorer {
+        const { tidsperiodeValidators, intl } = this.props;
+        const { opphold } = this.state;
+
+        const tidsperiode = opphold && opphold.tidsperiode;
+        const startdato = tidsperiode && tidsperiode.startdato;
+        const sluttdato = tidsperiode && tidsperiode.sluttdato;
+
+        if (tidsperiodeValidators) {
+            const { getFraRegler, getTilRegler } = tidsperiodeValidators;
+            return {
+                fra: getFraRegler && getFraRegler(startdato, sluttdato, intl),
+                til: getTilRegler && getTilRegler(sluttdato, startdato, intl)
+            };
+        }
+
+        return {};
+    }
+
+    onRequestClose() {
+        const { onRequestClose } = this.props;
+        this.setState({
+            opphold: {}
+        });
+        onRequestClose();
+    }
+
     render() {
         const { type, onRequestClose, ...modalProps } = this.props;
         const { opphold } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
-        return (
+        return ReactDOM.createPortal(
             <Modal
                 className={cls.className}
-                onRequestClose={onRequestClose}
+                onRequestClose={this.onRequestClose}
                 {...modalProps}>
-                <form onSubmit={this.onSubmit}>
+                <ValidForm onSubmit={this.onSubmit} noSummary={true}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>
@@ -144,7 +210,8 @@ export default class UtenlandsoppholdModal extends React.Component<
                     <Bolk
                         render={() => (
                             <TidsperiodeBolk
-                                datoAvgrensninger={this.getAvgrensninger()}
+                                datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
+                                datoValidatorer={this.getTidsperiodeValidatorer()}
                                 tidsperiode={opphold.tidsperiode || {}}
                                 onChange={(
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
@@ -156,7 +223,7 @@ export default class UtenlandsoppholdModal extends React.Component<
                     <Knapperad>
                         <Knapp
                             type="standard"
-                            onClick={onRequestClose}
+                            onClick={this.onRequestClose}
                             htmlType="button">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
@@ -164,8 +231,11 @@ export default class UtenlandsoppholdModal extends React.Component<
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
                     </Knapperad>
-                </form>
-            </Modal>
+                </ValidForm>
+            </Modal>,
+            el
         );
     }
 }
+
+export default injectIntl(UtenlandsoppholdModal);
