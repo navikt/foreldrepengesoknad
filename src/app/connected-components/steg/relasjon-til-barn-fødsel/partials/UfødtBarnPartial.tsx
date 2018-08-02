@@ -22,6 +22,7 @@ import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler
 } from '../../../../util/validation/fields/terminbekreftelsedato';
+import { AttachmentType } from '../../../../types/søknad/Søknad';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -130,7 +131,9 @@ class UfødtBarnPartial extends React.Component<Props> {
                             render={() => (
                                 <AttachmentsUploaderPure
                                     attachments={terminbekreftelse}
-                                    attachmentType="terminbekreftelse"
+                                    attachmentType={
+                                        AttachmentType.TERMINBEKREFTELSE
+                                    }
                                     onFilesSelect={(
                                         attachments: Attachment[]
                                     ) => {

@@ -17,6 +17,7 @@ import Bolk from '../../../../../common/components/bolk/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from '../../../../types/søknad/Søknad';
 
 interface AnnenForelderErKjentPartialProps {
     barn: ForeldreansvarBarn;
@@ -190,7 +191,9 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             render={() => (
                                 <AttachmentsUploaderPure
                                     attachments={barn.omsorgsovertakelse}
-                                    attachmentType="omsorgsovertakelse"
+                                    attachmentType={
+                                        AttachmentType.OMSROGSOVERTAKELSE
+                                    }
                                     onFilesSelect={(
                                         attachments: Attachment[]
                                     ) => {

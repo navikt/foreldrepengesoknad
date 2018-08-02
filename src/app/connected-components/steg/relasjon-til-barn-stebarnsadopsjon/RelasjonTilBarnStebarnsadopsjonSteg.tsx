@@ -21,6 +21,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { AttachmentType } from '../../../types/søknad/Søknad';
 
 export interface StateProps {
     barn: Adopsjonsbarn;
@@ -81,7 +82,7 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                     render={() => (
                         <AttachmentsUploaderPure
                             attachments={barn.adopsjonsvedtak || []}
-                            attachmentType="adopsjonsvedtak"
+                            attachmentType={AttachmentType.ADOPSJONSVEDTAK}
                             onFilesSelect={(attachments: Attachment[]) => {
                                 attachments.forEach(
                                     (attachment: Attachment) => {
