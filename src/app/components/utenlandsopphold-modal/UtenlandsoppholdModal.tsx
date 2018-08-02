@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import Landvelger from '../landvelger/Landvelger';
 import './utenlandsoppholdModal.less';
@@ -68,9 +67,6 @@ interface State {
     editMode: boolean;
 }
 
-const modalRoot = document.getElementById('modalContent');
-const el = document.createElement('div');
-
 class UtenlandsoppholdModal extends React.Component<
     UtenlandsoppholdModalProps,
     State
@@ -79,13 +75,7 @@ class UtenlandsoppholdModal extends React.Component<
         props: UtenlandsoppholdModalProps,
         state: State
     ) {
-        let opphold;
-        if (props.opphold) {
-            opphold = props.opphold;
-        } else {
-            opphold = state && state.opphold;
-        }
-
+        const opphold = props.opphold ? props.opphold : state && state.opphold;
         return {
             opphold: opphold ? { ...opphold } : { tidsperiode: {} },
             editMode: props.opphold !== undefined
@@ -95,18 +85,8 @@ class UtenlandsoppholdModal extends React.Component<
     constructor(props: UtenlandsoppholdModalProps) {
         super(props);
 
-        if (modalRoot) {
-            modalRoot.appendChild(el);
-        }
-
         this.onSubmit = this.onSubmit.bind(this);
         this.onRequestClose = this.onRequestClose.bind(this);
-    }
-
-    componentWillUnmount() {
-        if (modalRoot) {
-            modalRoot.removeChild(el);
-        }
     }
 
     updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
@@ -177,11 +157,11 @@ class UtenlandsoppholdModal extends React.Component<
     }
 
     render() {
-        const { type, onRequestClose, ...modalProps } = this.props;
+        const { type, ...modalProps } = this.props;
         const { opphold } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
-        return ReactDOM.createPortal(
+        return (
             <Modal
                 className={cls.className}
                 onRequestClose={this.onRequestClose}
@@ -232,8 +212,7 @@ class UtenlandsoppholdModal extends React.Component<
                         </Hovedknapp>
                     </Knapperad>
                 </ValidForm>
-            </Modal>,
-            el
+            </Modal>
         );
     }
 }
