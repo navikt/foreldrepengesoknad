@@ -3,7 +3,7 @@ import PT from 'prop-types';
 import { ValidationResult, SummaryError } from './types';
 import Feiloppsummering from 'common/lib/validation/Feiloppsummering';
 
-type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
+export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
 export interface ValidFormProps {
     onSubmit?: (evt: FormSubmitEvent) => void;

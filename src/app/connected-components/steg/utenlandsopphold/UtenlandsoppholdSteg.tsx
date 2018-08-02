@@ -16,7 +16,10 @@ import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNe
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { StegID } from '../../../util/routing/stegConfig';
+import {
+    default as stegConfig,
+    StegID
+} from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
 import isAvailable from '../isAvailable';
@@ -31,6 +34,8 @@ import {
     getFraAvgrensninger as fraAvgrensningerSenerePerioder,
     getTilAvgrensninger as tilAvgrensningerSenerePerioder
 } from '../../../util/validation/fields/senereUtenlandsopphold';
+import { FormSubmitEvent } from 'common/lib/validation/ValidForm';
+import { søknadStegPath } from '../StegRoutes';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -228,7 +233,15 @@ export default injectIntl(
             renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
             history,
             isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state),
-            onSubmit: () => {}
+            onSubmit: (event: FormSubmitEvent, stegForm: Element) => {
+                if (event.target === stegForm) {
+                    history.push(
+                        `${søknadStegPath(
+                            stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg
+                        )}`
+                    );
+                }
+            }
         };
 
         return {
