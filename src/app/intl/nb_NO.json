@@ -39,10 +39,11 @@
         "Jeg har lest og forstått det som står på {link}",
     "dinePlikter.listeElement.2.link": "nav.no/rettogplikt",
 
-    "annenForelder.spørsmål.kanOppgis": "Kan ikke oppgis",
+    "annenForelder.spørsmål.kanOppgis":
+        "Jeg kan ikke oppgi den andre forelderen",
     "annenForelder.spørsmål.adoptererAlene": "Jeg adopterer alene",
-    "annenForelder.spørsmål.navn": "Navn",
-    "annenForelder.spørsmål.fnr": "Fødselsnummer",
+    "annenForelder.spørsmål.navn": "Den andre forelderen heter...",
+    "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
     "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
 
     "annenInntekt.modal.pågående": "Pågående periode",
