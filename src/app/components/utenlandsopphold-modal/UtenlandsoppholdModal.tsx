@@ -76,24 +76,14 @@ class UtenlandsoppholdModal extends React.Component<
         state: State
     ) {
         const { isOpen } = props;
-        if (isOpen) {
-            if (state.opphold !== undefined) {
-                return {
-                    opphold: state.opphold,
-                    editMode: props.opphold !== undefined
-                };
-            } else {
-                return {
-                    opphold: props.opphold,
-                    editMode: props.opphold !== undefined
-                };
-            }
-        } else {
-            return {
-                opphold: props.opphold,
-                editMode: props.opphold !== undefined
-            };
-        }
+        const opphold =
+            state.opphold !== undefined && isOpen
+                ? state.opphold
+                : props.opphold;
+        return {
+            opphold,
+            editMode: props.opphold !== undefined
+        };
     }
 
     constructor(props: UtenlandsoppholdModalProps) {
