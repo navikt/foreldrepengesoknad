@@ -147,7 +147,8 @@ class UtenlandsoppholdBolk extends React.Component<
                     onRequestClose={() => this.closeModal()}
                     contentLabel={`Landvelger for ${oppholdType}`}
                     children={null}
-                    opphold={oppholdToEdit}
+                    oppholdToEdit={oppholdToEdit}
+                    oppholdList={opphold}
                     onAdd={this.onAdd}
                     onEdit={this.onEdit}
                     {...utenlandsoppholdModalProps || {}}

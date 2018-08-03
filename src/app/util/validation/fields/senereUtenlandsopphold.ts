@@ -4,6 +4,8 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
 import * as moment from 'moment';
+import { Tidsperiode } from 'common/types';
+import { harTidsperiodeOverlapp } from '../common/dateIntervals';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || date1YearAhead.toDate();
@@ -22,17 +24,18 @@ export const getTilAvgrensninger = (fraDate?: Date): Avgrensninger => {
 };
 
 export const getSenereUtenlandsoppholdFradatoRegler = (
-    fraDate: Date | undefined,
-    tilDate: Date | undefined,
+    startdato: Date | undefined,
+    sluttdato: Date | undefined,
+    ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const fradatoM = moment(fraDate);
-    const tildatoM = moment(tilDate);
+    const fradatoM = moment(startdato);
+    const tildatoM = moment(sluttdato);
 
     return [
         {
-            test: () => fraDate !== undefined,
+            test: () => startdato !== undefined,
             failText: getMessage(intl, `${intlKey}.senere`)
         },
         {
@@ -41,36 +44,57 @@ export const getSenereUtenlandsoppholdFradatoRegler = (
         },
         {
             test: () =>
-                tilDate
+                sluttdato
                     ? fradatoM.startOf('day').isSameOrBefore(tildatoM)
                     : true,
             failText: getMessage(intl, `${intlKey}.førTilDato`)
+        },
+        {
+            test: () =>
+                startdato && sluttdato
+                    ? !harTidsperiodeOverlapp(
+                          { startdato, sluttdato },
+                          ugyldigePerioder
+                      )
+                    : true,
+            failText: getMessage(intl, `${intlKey}.overlapp`)
         }
     ];
 };
 
 export const getSenereUtenlandsoppholdTildatoRegler = (
-    tilDate: Date | undefined,
-    fraDate: Date | undefined,
+    startdato: Date | undefined,
+    sluttdato: Date | undefined,
+    ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const fradatoM = moment(fraDate);
-    const tildatoM = moment(tilDate);
+    const startM = moment(sluttdato);
+    const sluttM = moment(startdato);
 
     return [
         {
-            test: () => tilDate !== undefined,
+            test: () => startdato !== undefined,
             failText: getMessage(intl, `${intlKey}.senere`)
         },
         {
-            test: () => tildatoM.isBetween(today, date1YearAhead.endOf('day')),
+            test: () => sluttM.isBetween(today, date1YearAhead.endOf('day')),
             failText: getMessage(intl, `${intlKey}.senere`)
         },
         {
             test: () =>
-                fraDate ? tildatoM.endOf('day').isSameOrAfter(fradatoM) : true,
+                sluttdato ? sluttM.endOf('day').isSameOrAfter(startM) : true,
             failText: getMessage(intl, `${intlKey}.etterFraDato`)
+        },
+        {
+            test: () =>
+                startdato && sluttdato
+                    ? !harTidsperiodeOverlapp(
+                          { startdato, sluttdato },
+                          ugyldigePerioder
+                      )
+                    : true,
+            failText: getMessage(intl, `${intlKey}.overlapp`)
         }
     ];
 };
