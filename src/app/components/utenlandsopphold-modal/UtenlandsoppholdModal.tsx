@@ -13,7 +13,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
-import { TidsperiodeMedValgfriSluttdato } from 'common/types';
+import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk, {
     DatoAvgrensninger,
     DatoValidatorer
@@ -38,18 +38,21 @@ export interface ValidatorGetters {
     getFraRegler?: (
         d1: Date | undefined,
         d2: Date | undefined,
+        list: Tidsperiode[],
         intl: InjectedIntl
     ) => Validator[];
     getTilRegler?: (
         d1: Date | undefined,
         d2: Date | undefined,
+        list: Tidsperiode[],
         intl: InjectedIntl
     ) => Validator[];
 }
 
 interface Props extends ModalProps {
     type: UtenlandsoppholdType;
-    opphold?: Utenlandsopphold;
+    oppholdToEdit?: Utenlandsopphold;
+    oppholdList: Utenlandsopphold[];
     onAdd: (opphold: Utenlandsopphold) => void;
     onEdit: (opphold: Utenlandsopphold) => void;
     avgrensningGetters?: AvgrensningGetters;
@@ -63,7 +66,7 @@ export type UtenlandsoppholdModalPropsPartial = Partial<
 >;
 
 interface State {
-    opphold: UtenlandsoppholdSkjemadataPartial | undefined;
+    oppholdToEdit: UtenlandsoppholdSkjemadataPartial | undefined;
     editMode: boolean;
 }
 
@@ -76,13 +79,13 @@ class UtenlandsoppholdModal extends React.Component<
         state: State
     ) {
         const { isOpen } = props;
-        const opphold =
-            state.opphold !== undefined && isOpen
-                ? state.opphold
-                : props.opphold;
+        const oppholdToEdit =
+            state.oppholdToEdit !== undefined && isOpen
+                ? state.oppholdToEdit
+                : props.oppholdToEdit;
         return {
-            opphold,
-            editMode: props.opphold !== undefined
+            oppholdToEdit,
+            editMode: props.oppholdToEdit !== undefined
         };
     }
 
@@ -94,15 +97,15 @@ class UtenlandsoppholdModal extends React.Component<
         this.initializeEmptyState = this.initializeEmptyState.bind(this);
 
         this.state = {
-            opphold: {},
+            oppholdToEdit: {},
             editMode: false
         };
     }
 
     updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
         this.setState({
-            opphold: {
-                ...this.state.opphold,
+            oppholdToEdit: {
+                ...this.state.oppholdToEdit,
                 ...oppholdProperties
             }
         });
@@ -110,37 +113,39 @@ class UtenlandsoppholdModal extends React.Component<
 
     initializeEmptyState() {
         this.setState({
-            opphold: undefined
+            oppholdToEdit: undefined
         });
     }
 
     onSubmit() {
         const { onAdd, onEdit } = this.props;
-        const { opphold, editMode } = this.state;
+        const { oppholdToEdit, editMode } = this.state;
 
         if (editMode) {
-            onEdit(opphold as Utenlandsopphold);
+            onEdit(oppholdToEdit as Utenlandsopphold);
         } else {
-            onAdd(opphold as Utenlandsopphold);
+            onAdd(oppholdToEdit as Utenlandsopphold);
         }
 
         this.initializeEmptyState();
     }
 
     getTidsperiodeAvgrensninger(): DatoAvgrensninger {
-        const { avgrensningGetters } = this.props;
-        const { opphold } = this.state;
-        const tidsperiode = opphold && opphold.tidsperiode;
+        const { avgrensningGetters, oppholdList } = this.props;
+        const { oppholdToEdit } = this.state;
+        const tidsperiode = oppholdToEdit && oppholdToEdit.tidsperiode;
 
         if (avgrensningGetters) {
             const { getFraAvgrensning, getTilAvgrensning } = avgrensningGetters;
             return {
-                fra:
-                    getFraAvgrensning &&
-                    getFraAvgrensning(tidsperiode && tidsperiode.sluttdato),
-                til:
-                    getTilAvgrensning &&
-                    getTilAvgrensning(tidsperiode && tidsperiode.startdato)
+                fra: getFraAvgrensning && {
+                    ...getFraAvgrensning(tidsperiode && tidsperiode.sluttdato),
+                    ugyldigeTidsperioder: this.getTidsperioder(oppholdList)
+                },
+                til: getTilAvgrensning && {
+                    ...getTilAvgrensning(tidsperiode && tidsperiode.startdato),
+                    ugyldigeTidsperioder: this.getTidsperioder(oppholdList)
+                }
             };
         }
 
@@ -148,22 +153,41 @@ class UtenlandsoppholdModal extends React.Component<
     }
 
     getTidsperiodeValidatorer(): DatoValidatorer {
-        const { tidsperiodeValidators, intl } = this.props;
-        const { opphold } = this.state;
+        const { oppholdList, tidsperiodeValidators, intl } = this.props;
+        const { oppholdToEdit } = this.state;
 
-        const tidsperiode = opphold && opphold.tidsperiode;
+        const tidsperiode = oppholdToEdit && oppholdToEdit.tidsperiode;
+        const ugyldigeTidsperioder = this.getTidsperioder(oppholdList);
         const startdato = tidsperiode && tidsperiode.startdato;
         const sluttdato = tidsperiode && tidsperiode.sluttdato;
 
         if (tidsperiodeValidators) {
             const { getFraRegler, getTilRegler } = tidsperiodeValidators;
             return {
-                fra: getFraRegler && getFraRegler(startdato, sluttdato, intl),
-                til: getTilRegler && getTilRegler(sluttdato, startdato, intl)
+                fra:
+                    getFraRegler &&
+                    getFraRegler(
+                        startdato,
+                        sluttdato,
+                        ugyldigeTidsperioder,
+                        intl
+                    ),
+                til:
+                    getTilRegler &&
+                    getTilRegler(
+                        sluttdato,
+                        startdato,
+                        ugyldigeTidsperioder,
+                        intl
+                    )
             };
         }
 
         return {};
+    }
+
+    getTidsperioder(opphold: Utenlandsopphold[]): Tidsperiode[] {
+        return opphold.map((currentOpphold) => currentOpphold.tidsperiode);
     }
 
     onRequestClose() {
@@ -174,7 +198,7 @@ class UtenlandsoppholdModal extends React.Component<
 
     render() {
         const { type, ...modalProps } = this.props;
-        const { opphold } = this.state;
+        const { oppholdToEdit } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
 
@@ -199,7 +223,9 @@ class UtenlandsoppholdModal extends React.Component<
                                 onChange={(land: string) =>
                                     this.updateOpphold({ land })
                                 }
-                                defaultValue={opphold && opphold.land}
+                                defaultValue={
+                                    oppholdToEdit && oppholdToEdit.land
+                                }
                             />
                         )}
                     />
@@ -210,7 +236,9 @@ class UtenlandsoppholdModal extends React.Component<
                                 datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
                                 datoValidatorer={this.getTidsperiodeValidatorer()}
                                 tidsperiode={
-                                    (opphold && opphold.tidsperiode) || {}
+                                    (oppholdToEdit &&
+                                        oppholdToEdit.tidsperiode) ||
+                                    {}
                                 }
                                 onChange={(
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
