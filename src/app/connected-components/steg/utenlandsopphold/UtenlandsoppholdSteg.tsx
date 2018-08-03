@@ -32,7 +32,9 @@ import {
 } from '../../../util/validation/fields/tidligereUtenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerSenerePerioder,
-    getTilAvgrensninger as tilAvgrensningerSenerePerioder
+    getTilAvgrensninger as tilAvgrensningerSenerePerioder,
+    getSenereUtenlandsoppholdFradatoRegler as fraReglerSenerePerioder,
+    getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
 } from '../../../util/validation/fields/senereUtenlandsopphold';
 import { FormSubmitEvent } from 'common/lib/validation/ValidForm';
 import { søknadStegPath } from '../StegRoutes';
@@ -191,6 +193,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                 avgrensningGetters: {
                                     getFraAvgrensning: fraAvgrensningerSenerePerioder,
                                     getTilAvgrensning: tilAvgrensningerSenerePerioder
+                                },
+                                tidsperiodeValidators: {
+                                    getFraRegler: fraReglerSenerePerioder,
+                                    getTilRegler: tilReglerSenerePerioder
                                 }
                             }}
                         />
