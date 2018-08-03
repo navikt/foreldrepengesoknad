@@ -3,6 +3,7 @@ import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
+import { cleanUpSøknad } from '../util/søknad/cleanup';
 
 const apiBaseUrl = Environment.REST_API_URL;
 
@@ -16,7 +17,7 @@ function getPerson() {
 function sendSøknad(søknad: Søknad) {
     const url = `${apiBaseUrl}/soknad`;
 
-    return axios.post(url, søknad, {
+    return axios.post(url, cleanUpSøknad(søknad), {
         withCredentials: true,
         headers: {
             'content-type': 'application/json;'

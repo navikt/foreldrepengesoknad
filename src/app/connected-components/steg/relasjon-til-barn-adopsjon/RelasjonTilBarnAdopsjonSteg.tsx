@@ -20,6 +20,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { AttachmentType } from '../../../types/søknad/Søknad';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -96,7 +97,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             attachments={
                                 (barn as Adopsjonsbarn).omsorgsovertakelse || []
                             }
-                            attachmentType="omsorgsovertakelse"
+                            attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
                             onFilesSelect={(attachments: Attachment[]) => {
                                 attachments.forEach(
                                     (attachment: Attachment) => {
@@ -171,7 +172,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as Adopsjonsbarn;
 
-    const stegProps = {
+    const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
         renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,

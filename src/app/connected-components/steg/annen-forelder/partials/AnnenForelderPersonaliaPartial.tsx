@@ -17,6 +17,7 @@ import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
 import Person from '../../../../types/Person';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
@@ -24,6 +25,7 @@ interface AnnenForelderPersonaliaPartialProps {
     registrertAnnenForelder: any;
     søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
+    situasjon: Søkersituasjon;
 }
 
 type Props = AnnenForelderPersonaliaPartialProps &
@@ -33,9 +35,7 @@ type Props = AnnenForelderPersonaliaPartialProps &
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     onKanIkkeOppgis() {
         const { dispatch } = this.props;
-        const kanIkkeOppgis = this.props.annenForelder.kanIkkeOppgis
-            ? false
-            : true;
+        const kanIkkeOppgis = !this.props.annenForelder.kanIkkeOppgis;
 
         dispatch(
             søknadActions.updateAnnenForelder({
@@ -59,6 +59,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             søkersFødselsnummer,
             annenForelder,
             registrertAnnenForelder,
+            situasjon,
             dispatch,
             intl
         } = this.props;
@@ -97,13 +98,18 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     render={() => (
                         <Checkbox
                             checked={kanIkkeOppgis || false}
-                            label={getMessage(
-                                intl,
-                                'annenForelder.spørsmål.kanOppgis'
-                            )}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => this.onKanIkkeOppgis()}
+                            label={
+                                situasjon === Søkersituasjon.ADOPSJON
+                                    ? getMessage(
+                                          intl,
+                                          'annenForelder.spørsmål.adoptererAlene'
+                                      )
+                                    : getMessage(
+                                          intl,
+                                          'annenForelder.spørsmål.kanOppgis'
+                                      )
+                            }
+                            onChange={() => this.onKanIkkeOppgis()}
                         />
                     )}
                 />
@@ -163,7 +169,8 @@ const mapStateToProps = (
     søkersFødselsnummer: (state.api.person as Person).fnr,
     annenForelder: state.søknad.annenForelder,
     registrertAnnenForelder: undefined,
-    erFarEllerMedmor: true
+    erFarEllerMedmor: true,
+    situasjon: state.søknad.situasjon
 });
 
 export default connect<AnnenForelderPersonaliaPartialProps, {}, {}>(

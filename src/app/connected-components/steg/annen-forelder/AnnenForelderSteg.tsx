@@ -97,7 +97,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søker = state.søknad.søker;
     const annenForelder = state.søknad.annenForelder;
 
-    const stegProps = {
+    const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: annenForelderErGyldig(
             state.søknad,

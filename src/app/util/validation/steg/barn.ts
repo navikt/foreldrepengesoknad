@@ -7,52 +7,34 @@ import Barn, {
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
-    return (
-        barn.fødselsdatoer !== undefined &&
-        barn.fødselsdatoer.length > 0 &&
-        barn.fødselsattest !== undefined &&
-        barn.fødselsattest.length > 0
-    );
+    return barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0;
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
-    const {
-        fødselsdatoer,
-        adopsjonsdato,
-        adoptertIUtlandet,
-        omsorgsovertakelse,
-        adopsjonsvedtak
-    } = barn;
+    const { fødselsdatoer, adopsjonsdato, adoptertIUtlandet } = barn;
 
     return (
         fødselsdatoer.length > 0 &&
         adopsjonsdato &&
-        adoptertIUtlandet !== undefined &&
-        omsorgsovertakelse.length > 0 &&
-        adopsjonsvedtak.length > 0
+        adoptertIUtlandet !== undefined
     );
+};
+
+const stebarnsadopsjonsbarnErGyldig = (barn: Adopsjonsbarn): boolean => {
+    const { fødselsdatoer, adopsjonsdato } = barn;
+    return fødselsdatoer.length > 0 && adopsjonsdato !== undefined;
 };
 
 const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
-    const {
-        fødselsdatoer,
-        foreldreansvarsdato,
-        omsorgsovertakelse,
-        adopsjonsvedtak
-    } = barn;
+    const { fødselsdatoer, foreldreansvarsdato } = barn;
 
-    return (
-        fødselsdatoer.length > 0 &&
-        foreldreansvarsdato &&
-        omsorgsovertakelse.length > 0 &&
-        adopsjonsvedtak.length > 0
-    );
+    return foreldreansvarsdato && fødselsdatoer.length > 0;
 };
 
 const ufødtBarnErGyldig = (barn: UfødtBarn) => {
-    const { termindato, terminbekreftelseDato, terminbekreftelse } = barn;
+    const { termindato, terminbekreftelseDato } = barn;
 
-    return termindato && terminbekreftelseDato && terminbekreftelse.length > 0;
+    return termindato !== undefined && terminbekreftelseDato !== undefined;
 };
 
 export const barnErGyldig = (
@@ -68,7 +50,7 @@ export const barnErGyldig = (
         case Søkersituasjon.ADOPSJON:
             return adopsjonsbarnErGyldig(barn as Adopsjonsbarn);
         case Søkersituasjon.STEBARN:
-            return adopsjonsbarnErGyldig(barn as Adopsjonsbarn);
+            return stebarnsadopsjonsbarnErGyldig(barn as Adopsjonsbarn);
         case Søkersituasjon.FORELDREANSVAR:
             return foreldreansvarBarnErGyldig(barn as ForeldreansvarBarn);
         default:
