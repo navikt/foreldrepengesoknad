@@ -131,7 +131,7 @@ class UtenlandsoppholdModal extends React.Component<
     }
 
     getTidsperiodeAvgrensninger(): DatoAvgrensninger {
-        const { avgrensningGetters, oppholdList } = this.props;
+        const { avgrensningGetters } = this.props;
         const { oppholdToEdit } = this.state;
         const tidsperiode = oppholdToEdit && oppholdToEdit.tidsperiode;
 
@@ -140,11 +140,11 @@ class UtenlandsoppholdModal extends React.Component<
             return {
                 fra: getFraAvgrensning && {
                     ...getFraAvgrensning(tidsperiode && tidsperiode.sluttdato),
-                    ugyldigeTidsperioder: this.getTidsperioder(oppholdList)
+                    ugyldigeTidsperioder: this.getTidsperioder()
                 },
                 til: getTilAvgrensning && {
                     ...getTilAvgrensning(tidsperiode && tidsperiode.startdato),
-                    ugyldigeTidsperioder: this.getTidsperioder(oppholdList)
+                    ugyldigeTidsperioder: this.getTidsperioder()
                 }
             };
         }
@@ -153,11 +153,11 @@ class UtenlandsoppholdModal extends React.Component<
     }
 
     getTidsperiodeValidatorer(): DatoValidatorer {
-        const { oppholdList, tidsperiodeValidators, intl } = this.props;
+        const { tidsperiodeValidators, intl } = this.props;
         const { oppholdToEdit } = this.state;
 
         const tidsperiode = oppholdToEdit && oppholdToEdit.tidsperiode;
-        const ugyldigeTidsperioder = this.getTidsperioder(oppholdList);
+        const ugyldigeTidsperioder = this.getTidsperioder();
         const startdato = tidsperiode && tidsperiode.startdato;
         const sluttdato = tidsperiode && tidsperiode.sluttdato;
 
@@ -186,8 +186,11 @@ class UtenlandsoppholdModal extends React.Component<
         return {};
     }
 
-    getTidsperioder(opphold: Utenlandsopphold[]): Tidsperiode[] {
-        return opphold.map((currentOpphold) => currentOpphold.tidsperiode);
+    getTidsperioder(): Tidsperiode[] {
+        const { oppholdToEdit, oppholdList } = this.props;
+        return oppholdList
+            .filter((opphold) => opphold !== oppholdToEdit)
+            .map((opphold) => opphold.tidsperiode);
     }
 
     onRequestClose() {
