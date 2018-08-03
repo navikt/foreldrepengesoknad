@@ -86,9 +86,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
             <Spørsmål
-                synlig={
-                    informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined
-                }
                 render={() => (
                     <BoddINorgeSiste12MndSpørsmål
                         iNorgeSiste12={
@@ -139,49 +136,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     render={() => (
                         <UtenlandsoppholdBolk
                             renderSpørsmål={
-                                this.renderSkalBoINorgeNeste12MndSpørsmål
-                            }
-                            showUtenlandsoppholdContent={
-                                informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ===
-                                false
-                            }
-                            oppfølgingsspørsmål={getMessage(
-                                intl,
-                                'utenlandsopphold.select.spørsmål.senereOpphold'
-                            )}
-                            opphold={
-                                søknad.informasjonOmUtenlandsopphold
-                                    .senereOpphold
-                            }
-                            oppholdType={'senereOpphold'}
-                            onChange={(opphold: Utenlandsopphold[]) =>
-                                this.updateUtenlandsopphold(
-                                    opphold,
-                                    'senereOpphold'
-                                )
-                            }
-                            utenlandsoppholdModalProps={{
-                                avgrensningGetters: {
-                                    getFraAvgrensning: fraAvgrensningerTidligerePerioder,
-                                    getTilAvgrensning: tilAvgrensningerTidligerePerioder
-                                },
-                                tidsperiodeValidators: {
-                                    getFraRegler: fraReglerTidligerePerioder,
-                                    getTilRegler: tilReglerTidligerePerioder
-                                }
-                            }}
-                        />
-                    )}
-                />
-
-                <Bolk
-                    synlig={
-                        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !==
-                        undefined
-                    }
-                    render={() => (
-                        <UtenlandsoppholdBolk
-                            renderSpørsmål={
                                 this.renderHarBoddINorgeSiste12MndSpørsmål
                             }
                             showUtenlandsoppholdContent={
@@ -201,6 +155,49 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                                 this.updateUtenlandsopphold(
                                     opphold,
                                     'tidligereOpphold'
+                                )
+                            }
+                            utenlandsoppholdModalProps={{
+                                avgrensningGetters: {
+                                    getFraAvgrensning: fraAvgrensningerTidligerePerioder,
+                                    getTilAvgrensning: tilAvgrensningerTidligerePerioder
+                                },
+                                tidsperiodeValidators: {
+                                    getFraRegler: fraReglerTidligerePerioder,
+                                    getTilRegler: tilReglerTidligerePerioder
+                                }
+                            }}
+                        />
+                    )}
+                />
+
+                <Bolk
+                    synlig={
+                        informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
+                        undefined
+                    }
+                    render={() => (
+                        <UtenlandsoppholdBolk
+                            renderSpørsmål={
+                                this.renderSkalBoINorgeNeste12MndSpørsmål
+                            }
+                            showUtenlandsoppholdContent={
+                                informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ===
+                                false
+                            }
+                            oppfølgingsspørsmål={getMessage(
+                                intl,
+                                'utenlandsopphold.select.spørsmål.senereOpphold'
+                            )}
+                            opphold={
+                                søknad.informasjonOmUtenlandsopphold
+                                    .senereOpphold
+                            }
+                            oppholdType={'senereOpphold'}
+                            onChange={(opphold: Utenlandsopphold[]) =>
+                                this.updateUtenlandsopphold(
+                                    opphold,
+                                    'senereOpphold'
                                 )
                             }
                             utenlandsoppholdModalProps={{
