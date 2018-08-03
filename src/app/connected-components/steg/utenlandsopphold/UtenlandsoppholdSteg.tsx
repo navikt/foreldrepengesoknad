@@ -38,6 +38,7 @@ import {
 } from '../../../util/validation/fields/senereUtenlandsopphold';
 import { FormSubmitEvent } from 'common/lib/validation/ValidForm';
 import { søknadStegPath } from '../StegRoutes';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 
 interface UtenlandsoppholdProps {
     søknad: Søknad;
@@ -60,6 +61,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
             this
         );
         this.updateUtenlandsopphold = this.updateUtenlandsopphold.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
     renderSkalBoINorgeNeste12MndSpørsmål() {
@@ -115,12 +117,24 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         );
     }
 
+    handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
+        const { dispatch, history } = this.props;
+        if (event.target === stegForm) {
+            dispatch(apiActionCreators.storeAppState());
+            history.push(
+                `${søknadStegPath(
+                    stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg
+                )}`
+            );
+        }
+    }
+
     render() {
         const { søknad, stegProps, dispatch, intl } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
 
         return (
-            <Steg {...stegProps}>
+            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Bolk
                     render={() => (
                         <UtenlandsoppholdBolk
@@ -238,16 +252,7 @@ export default injectIntl(
             id: StegID.UTENLANDSOPPHOLD,
             renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
             history,
-            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state),
-            onSubmit: (event: FormSubmitEvent, stegForm: Element) => {
-                if (event.target === stegForm) {
-                    history.push(
-                        `${søknadStegPath(
-                            stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg
-                        )}`
-                    );
-                }
-            }
+            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state)
         };
 
         return {
