@@ -107,7 +107,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: state.søknad.søker.rolle !== undefined,
+        renderFortsettKnapp:
+            state.søknad.søker.rolle !== undefined ||
+            situasjon === Søkersituasjon.STEBARN,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state),
         nesteStegRoute: resolveNesteSteg(state)
