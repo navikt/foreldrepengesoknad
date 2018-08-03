@@ -63,10 +63,7 @@ class UtenlandsoppholdBolk extends React.Component<
             editedOppholdList[oppholdIndex] = oppholdToEdit;
             onChange(editedOppholdList);
         }
-        this.closeModal({
-            oppholdToEdit: undefined,
-            oppholdIndex: undefined
-        });
+        this.closeModal();
     }
 
     onOppholdDelete(oppholdToDelete: Utenlandsopphold) {
@@ -90,9 +87,10 @@ class UtenlandsoppholdBolk extends React.Component<
         });
     }
 
-    closeModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
+    closeModal() {
         this.setState({
-            ...otherState,
+            oppholdToEdit: undefined,
+            oppholdIndex: undefined,
             modalIsOpen: false
         });
     }
@@ -146,12 +144,7 @@ class UtenlandsoppholdBolk extends React.Component<
                 <UtenlandsoppholdModal
                     type={oppholdType}
                     isOpen={this.state.modalIsOpen}
-                    onRequestClose={() =>
-                        this.closeModal({
-                            oppholdIndex: undefined,
-                            oppholdToEdit: undefined
-                        })
-                    }
+                    onRequestClose={() => this.closeModal()}
                     contentLabel={`Landvelger for ${oppholdType}`}
                     children={null}
                     opphold={oppholdToEdit}

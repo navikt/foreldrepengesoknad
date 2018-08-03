@@ -63,7 +63,7 @@ export type UtenlandsoppholdModalPropsPartial = Partial<
 >;
 
 interface State {
-    opphold: UtenlandsoppholdSkjemadataPartial;
+    opphold: UtenlandsoppholdSkjemadataPartial | undefined;
     editMode: boolean;
 }
 
@@ -75,11 +75,25 @@ class UtenlandsoppholdModal extends React.Component<
         props: UtenlandsoppholdModalProps,
         state: State
     ) {
-        const opphold = props.opphold ? props.opphold : state && state.opphold;
-        return {
-            opphold: opphold ? { ...opphold } : { tidsperiode: {} },
-            editMode: props.opphold !== undefined
-        };
+        const { isOpen } = props;
+        if (isOpen) {
+            if (state.opphold !== undefined) {
+                return {
+                    opphold: state.opphold,
+                    editMode: props.opphold !== undefined
+                };
+            } else {
+                return {
+                    opphold: props.opphold,
+                    editMode: props.opphold !== undefined
+                };
+            }
+        } else {
+            return {
+                opphold: props.opphold,
+                editMode: props.opphold !== undefined
+            };
+        }
     }
 
     constructor(props: UtenlandsoppholdModalProps) {
@@ -87,6 +101,12 @@ class UtenlandsoppholdModal extends React.Component<
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onRequestClose = this.onRequestClose.bind(this);
+        this.initializeEmptyState = this.initializeEmptyState.bind(this);
+
+        this.state = {
+            opphold: {},
+            editMode: false
+        };
     }
 
     updateOpphold(oppholdProperties: UtenlandsoppholdSkjemadataPartial) {
@@ -95,6 +115,12 @@ class UtenlandsoppholdModal extends React.Component<
                 ...this.state.opphold,
                 ...oppholdProperties
             }
+        });
+    }
+
+    initializeEmptyState() {
+        this.setState({
+            opphold: undefined
         });
     }
 
@@ -107,6 +133,8 @@ class UtenlandsoppholdModal extends React.Component<
         } else {
             onAdd(opphold as Utenlandsopphold);
         }
+
+        this.initializeEmptyState();
     }
 
     getTidsperiodeAvgrensninger(): DatoAvgrensninger {
@@ -150,9 +178,7 @@ class UtenlandsoppholdModal extends React.Component<
 
     onRequestClose() {
         const { onRequestClose } = this.props;
-        this.setState({
-            opphold: {}
-        });
+        this.initializeEmptyState();
         onRequestClose();
     }
 
@@ -161,6 +187,7 @@ class UtenlandsoppholdModal extends React.Component<
         const { opphold } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
+
         return (
             <Modal
                 className={cls.className}
@@ -182,7 +209,7 @@ class UtenlandsoppholdModal extends React.Component<
                                 onChange={(land: string) =>
                                     this.updateOpphold({ land })
                                 }
-                                defaultValue={opphold.land}
+                                defaultValue={opphold && opphold.land}
                             />
                         )}
                     />
@@ -192,7 +219,9 @@ class UtenlandsoppholdModal extends React.Component<
                             <TidsperiodeBolk
                                 datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
                                 datoValidatorer={this.getTidsperiodeValidatorer()}
-                                tidsperiode={opphold.tidsperiode || {}}
+                                tidsperiode={
+                                    (opphold && opphold.tidsperiode) || {}
+                                }
                                 onChange={(
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
                                 ) => this.updateOpphold({ tidsperiode })}
