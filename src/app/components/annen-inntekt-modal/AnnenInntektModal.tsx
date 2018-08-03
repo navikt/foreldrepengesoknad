@@ -25,6 +25,7 @@ import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
+import { AttachmentType } from '../../types/søknad/Søknad';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -225,7 +226,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     vedleggList.splice(index, 1);
                                     this.updateVedleggList(vedleggList);
                                 }}
-                                attachmentType="anneninntektdokumentasjon"
+                                attachmentType={
+                                    AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
+                                }
                             />
                         )}
                     />
