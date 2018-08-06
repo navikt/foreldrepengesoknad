@@ -15,7 +15,7 @@ import {
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { Checkbox } from 'nav-frontend-skjema';
+import { Checkbox, Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import BEMHelper from 'common/util/bem';
@@ -164,6 +164,33 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     };
                                     this.updateAnnenInntekt(utlandInntekt);
                                 }}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            (annenInntekt as JobbIUtlandetInntekt).land !==
+                            undefined
+                        }
+                        render={() => (
+                            <Input
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.spørsmål.arbeidsgiver'
+                                )}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        arbeidsgiverNavn: e.target.value
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
+                                value={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .arbeidsgiverNavn || ''
+                                }
                             />
                         )}
                     />
