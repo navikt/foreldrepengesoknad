@@ -75,10 +75,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                         : undefined,
                                     helgedagerIkkeTillatt,
                                     ugyldigeTidsperioder: ugyldigeTidsperioder
-                                        ? ugyldigeTidsperioder.map((p) => ({
-                                              startdato: p.fom,
-                                              sluttdato: p.tom
-                                          }))
+                                        ? ugyldigeTidsperioder
                                         : undefined
                                 }}
                                 kalender={{
@@ -119,10 +116,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                         : undefined,
                                     helgedagerIkkeTillatt,
                                     ugyldigeTidsperioder: ugyldigeTidsperioder
-                                        ? ugyldigeTidsperioder.map((p) => ({
-                                              startdato: p.fom,
-                                              sluttdato: p.tom
-                                          }))
+                                        ? ugyldigeTidsperioder
                                         : undefined
                                 }}
                                 onChange={(date) => sluttdato.onChange(date)}

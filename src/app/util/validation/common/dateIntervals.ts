@@ -6,15 +6,13 @@ export const harTidsperiodeOverlapp = (
     andreTidsperioder: Tidsperiode[]
 ) =>
     andreTidsperioder.some((t: Tidsperiode) => {
-        const startdato = moment(tidsperiode.startdato).startOf('day');
-        const sluttdato = moment(tidsperiode.sluttdato).endOf('day');
+        const fom = moment(tidsperiode.fom).startOf('day');
+        const tom = moment(tidsperiode.tom).endOf('day');
 
         return (
-            startdato.isBetween(t.startdato, t.sluttdato) ||
-            sluttdato.isBetween(t.startdato, t.sluttdato) ||
-            (startdato.isBefore(t.startdato) &&
-                sluttdato.isSameOrAfter(t.startdato)) ||
-            (sluttdato.isAfter(t.sluttdato) &&
-                startdato.isSameOrBefore(t.sluttdato))
+            fom.isBetween(t.fom, t.tom) ||
+            tom.isBetween(t.fom, t.tom) ||
+            (fom.isBefore(t.fom) && tom.isSameOrAfter(t.fom)) ||
+            (tom.isAfter(t.tom) && fom.isSameOrBefore(t.tom))
         );
     });
