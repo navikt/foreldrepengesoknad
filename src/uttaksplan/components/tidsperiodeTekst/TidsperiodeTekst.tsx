@@ -18,16 +18,13 @@ const TidsperiodeTekst: React.StatelessComponent<Props> = ({
     return (
         <div className="tidsperiodeTekst">
             <span className="tidsperiodeTekst__periode">
-                <FormatertDato
-                    dato={tidsperiode.startdato}
-                    visUkedag={visUkedag}
-                />
+                <FormatertDato dato={tidsperiode.fom} visUkedag={visUkedag} />
                 {visSluttdato && (
                     <span>
                         {' '}
                         -{' '}
                         <FormatertDato
-                            dato={tidsperiode.sluttdato}
+                            dato={tidsperiode.tom}
                             visUkedag={visUkedag}
                         />
                     </span>

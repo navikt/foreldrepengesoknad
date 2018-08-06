@@ -68,13 +68,18 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 }
                                 avgrensninger={{
                                     minDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.startdato
+                                        ? tidsperiodeStartdato.fom
                                         : undefined,
                                     maksDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.sluttdato
+                                        ? tidsperiodeStartdato.tom
                                         : undefined,
                                     helgedagerIkkeTillatt,
-                                    ugyldigeTidsperioder
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder
+                                        ? ugyldigeTidsperioder.map((p) => ({
+                                              startdato: p.fom,
+                                              sluttdato: p.tom
+                                          }))
+                                        : undefined
                                 }}
                                 kalender={{
                                     plassering: 'fullskjerm'
@@ -107,13 +112,18 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     minDato:
                                         minSluttdato ||
                                         (tidsperiodeSluttdato
-                                            ? tidsperiodeSluttdato.startdato
+                                            ? tidsperiodeSluttdato.fom
                                             : undefined),
                                     maksDato: tidsperiodeSluttdato
-                                        ? tidsperiodeSluttdato.sluttdato
+                                        ? tidsperiodeSluttdato.tom
                                         : undefined,
-                                    ugyldigeTidsperioder,
-                                    helgedagerIkkeTillatt
+                                    helgedagerIkkeTillatt,
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder
+                                        ? ugyldigeTidsperioder.map((p) => ({
+                                              startdato: p.fom,
+                                              sluttdato: p.tom
+                                          }))
+                                        : undefined
                                 }}
                                 onChange={(date) => sluttdato.onChange(date)}
                                 kalender={{ plassering: 'fullskjerm' }}

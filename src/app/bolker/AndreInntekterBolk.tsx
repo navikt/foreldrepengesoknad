@@ -168,12 +168,12 @@ const AndreInntekterListeElement: React.StatelessComponent<
                 id="tidsintervall"
                 values={{
                     fom: ISODateToPrettyDateFormat(
-                        annenInntekt.tidsperiode.startdato
+                        annenInntekt.tidsperiode.fom
                     ),
                     tom: annenInntekt.pågående
                         ? 'pågående'
                         : ISODateToPrettyDateFormat(
-                              annenInntekt.tidsperiode.sluttdato
+                              annenInntekt.tidsperiode.tom
                           )
                 }}
             />

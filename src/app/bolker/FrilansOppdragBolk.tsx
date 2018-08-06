@@ -169,14 +169,10 @@ const FrilansOppdragListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToPrettyDateFormat(
-                        oppdrag.tidsperiode.startdato
-                    ),
+                    fom: ISODateToPrettyDateFormat(oppdrag.tidsperiode.fom),
                     tom: oppdrag.pågående
                         ? 'pågående'
-                        : ISODateToPrettyDateFormat(
-                              oppdrag.tidsperiode.sluttdato
-                          )
+                        : ISODateToPrettyDateFormat(oppdrag.tidsperiode.tom)
                 }}
             />
         </div>

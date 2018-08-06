@@ -32,8 +32,8 @@ export interface OwnProps {
 
 export interface State {
     forelder?: Forelder;
-    startdato?: Date;
-    sluttdato?: Date;
+    fom?: Date;
+    tom?: Date;
     stønadskonto?: StønadskontoType;
     visStønadskontoSpørsmål: boolean;
     tilgjengeligeStønadskontoer: StønadskontoType[];
@@ -61,21 +61,21 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         this.state = {
             forelder: periode ? periode.forelder : undefined,
             stønadskonto: periode ? periode.konto : singelStønadskonto,
-            startdato: periode ? periode.tidsperiode.startdato : undefined,
-            sluttdato: periode ? periode.tidsperiode.sluttdato : undefined,
+            fom: periode ? periode.tidsperiode.fom : undefined,
+            tom: periode ? periode.tidsperiode.tom : undefined,
             tilgjengeligeStønadskontoer,
             visStønadskontoSpørsmål: tilgjengeligeStønadskontoer.length > 1
         };
     }
 
-    setStartdato(startdato: Date) {
+    setStartdato(fom: Date) {
         this.setState({
-            startdato: normaliserDato(startdato)
+            fom: normaliserDato(fom)
         });
     }
 
-    setSluttdato(sluttdato: Date) {
-        this.setState({ sluttdato: normaliserDato(sluttdato) });
+    setSluttdato(tom: Date) {
+        this.setState({ tom: normaliserDato(tom) });
     }
 
     handleSubmitClick(evt: React.MouseEvent<HTMLButtonElement>) {
@@ -87,16 +87,16 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
     }
 
     getPeriodeFromSkjema(): Uttaksperiode | undefined {
-        const { startdato, sluttdato, stønadskonto, forelder } = this.state;
-        if (!startdato || !sluttdato || !stønadskonto || !forelder) {
+        const { fom, tom, stønadskonto, forelder } = this.state;
+        if (!fom || !tom || !stønadskonto || !forelder) {
             return undefined;
         }
         const periode: Uttaksperiode = {
             ...this.props.periode,
             type: Periodetype.Uttak,
             tidsperiode: {
-                startdato,
-                sluttdato
+                fom,
+                tom
             },
             forelder,
             konto: stønadskonto
@@ -109,8 +109,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         return (
             this.state.forelder !== undefined &&
             this.state.stønadskonto !== undefined &&
-            this.state.startdato !== undefined &&
-            this.state.sluttdato !== undefined
+            this.state.fom !== undefined &&
+            this.state.tom !== undefined
         );
     }
 
@@ -124,7 +124,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
-        const { startdato, sluttdato, forelder, stønadskonto } = this.state;
+        const { fom, tom, forelder, stønadskonto } = this.state;
         const tilgjengeligeStønadskontoer =
             uttaksgrunnlag.tilgjengeligeStønadskontoer;
 
@@ -155,12 +155,12 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
 
         const tidsperiode: Tidsperiode | undefined = regler
             ? {
-                  startdato: regler.tidligsteUttaksdato,
-                  sluttdato: regler.sisteUttaksdato
+                  fom: regler.tidligsteUttaksdato,
+                  tom: regler.sisteUttaksdato
               }
             : {
-                  startdato: this.props.familiehendelsedato,
-                  sluttdato: uttaksgrunnlag.datoer.sisteMuligeUttaksdag
+                  fom: this.props.familiehendelsedato,
+                  tom: uttaksgrunnlag.datoer.sisteMuligeUttaksdag
               };
 
         return (
@@ -207,12 +207,12 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 <EkspanderbartInnhold erApen={visSpørsmålOmTidsrom}>
                     <TidsperiodeSpørsmål
                         startdato={{
-                            dato: startdato,
+                            dato: fom,
                             onChange: this.setStartdato,
                             tidsperiode
                         }}
                         sluttdato={{
-                            dato: sluttdato,
+                            dato: tom,
                             onChange: this.setSluttdato,
                             tidsperiode
                         }}
@@ -222,7 +222,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                 </EkspanderbartInnhold>
 
                 <EkspanderbartInnhold
-                    erApen={startdato !== undefined && sluttdato !== undefined}>
+                    erApen={fom !== undefined && tom !== undefined}>
                     <Knapperad>
                         <Hovedknapp
                             onClick={this.handleSubmitClick}

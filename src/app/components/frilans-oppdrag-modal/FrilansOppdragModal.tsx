@@ -140,7 +140,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                                         pågående: !oppdrag.pågående,
                                         tidsperiode: {
                                             ...oppdrag.tidsperiode,
-                                            sluttdato: undefined
+                                            tom: undefined
                                         }
                                     });
                                 }}

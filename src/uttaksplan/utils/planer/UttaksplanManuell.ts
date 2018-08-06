@@ -68,26 +68,20 @@ function fjernUttaksdagerFraPerioder(
             fjernTidsperiodeFraPeriode(p, periode.tidsperiode).forEach((p2) =>
                 nyePerioder.push(p2)
             );
-        } else if (
-            isBefore(p.tidsperiode.startdato, periode.tidsperiode.startdato)
-        ) {
+        } else if (isBefore(p.tidsperiode.fom, periode.tidsperiode.fom)) {
             nyePerioder.push({
                 ...p,
                 tidsperiode: {
-                    startdato: p.tidsperiode.startdato,
-                    sluttdato: Uttaksdagen(
-                        periode.tidsperiode.startdato
-                    ).forrige()
+                    fom: p.tidsperiode.fom,
+                    tom: Uttaksdagen(periode.tidsperiode.fom).forrige()
                 }
             });
         } else {
             nyePerioder.push({
                 ...p,
                 tidsperiode: {
-                    startdato: Uttaksdagen(
-                        periode.tidsperiode.sluttdato
-                    ).neste(),
-                    sluttdato: p.tidsperiode.sluttdato
+                    fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+                    tom: p.tidsperiode.tom
                 }
             });
         }
@@ -107,40 +101,37 @@ function fjernTidsperiodeFraPeriode(
     const t1 = periode.tidsperiode;
 
     // Dersom de ikke overlapper
-    if (
-        isBefore(t1.sluttdato, tidsperiode.startdato) ||
-        isAfter(t1.startdato, tidsperiode.sluttdato)
-    ) {
+    if (isBefore(t1.tom, tidsperiode.fom) || isAfter(t1.fom, tidsperiode.tom)) {
         return [periode];
     }
 
     // Total overlapp
     if (
-        isSameDay(t1.startdato, tidsperiode.startdato) &&
-        isSameDay(t1.sluttdato, tidsperiode.sluttdato)
+        isSameDay(t1.fom, tidsperiode.fom) &&
+        isSameDay(t1.tom, tidsperiode.tom)
     ) {
         return [];
     }
 
-    if (isSameDay(t1.startdato, tidsperiode.startdato)) {
+    if (isSameDay(t1.fom, tidsperiode.fom)) {
         // Samme startdato -> dvs. startdato må flyttes, mens sluttdato er samme
         return [
             {
                 ...periode,
                 tidsperiode: {
                     ...periode.tidsperiode,
-                    startdato: Uttaksdagen(tidsperiode.startdato).forrige()
+                    fom: Uttaksdagen(tidsperiode.fom).forrige()
                 }
             }
         ];
-    } else if (isSameDay(t1.sluttdato, tidsperiode.sluttdato)) {
+    } else if (isSameDay(t1.tom, tidsperiode.tom)) {
         // Sluttdato er samme, dvs. sluttdato må flyttes, startdato er samme
         return [
             {
                 ...periode,
                 tidsperiode: {
                     ...periode.tidsperiode,
-                    sluttdato: Uttaksdagen(tidsperiode.sluttdato).neste()
+                    tom: Uttaksdagen(tidsperiode.tom).neste()
                 }
             }
         ];
@@ -151,7 +142,7 @@ function fjernTidsperiodeFraPeriode(
             ...periode,
             tidsperiode: {
                 ...periode.tidsperiode,
-                sluttdato: Uttaksdagen(tidsperiode.startdato).forrige()
+                tom: Uttaksdagen(tidsperiode.fom).forrige()
             }
         },
         {
@@ -159,7 +150,7 @@ function fjernTidsperiodeFraPeriode(
             id: guid(),
             tidsperiode: {
                 ...periode.tidsperiode,
-                startdato: Uttaksdagen(tidsperiode.sluttdato).neste()
+                fom: Uttaksdagen(tidsperiode.tom).neste()
             }
         }
     ];

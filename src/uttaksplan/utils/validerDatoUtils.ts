@@ -37,7 +37,7 @@ export const validerDato = (
         isWithinRange(
             normaliserDato(dato),
             normaliserDato(familiehendelsedato),
-            normaliserDato(Uttaksdagen(tidsrom.startdato).forrige())
+            normaliserDato(Uttaksdagen(tidsrom.fom).forrige())
         )
     ) {
         return 'innenforForsteSeksUker';
@@ -45,8 +45,8 @@ export const validerDato = (
     if (
         !isWithinRange(
             normaliserDato(dato),
-            normaliserDato(tidsrom.startdato),
-            normaliserDato(tidsrom.sluttdato)
+            normaliserDato(tidsrom.fom),
+            normaliserDato(tidsrom.tom)
         )
     ) {
         return 'utenforPerioder';
@@ -56,7 +56,7 @@ export const validerDato = (
     }
     let gyldig: DatoValideringsfeil;
     ugyldigePerioder.forEach((p) => {
-        if (gyldig && isWithinRange(dato, p.startdato, p.sluttdato)) {
+        if (gyldig && isWithinRange(dato, p.fom, p.tom)) {
             gyldig = 'innenforUlovligPeriode';
         }
     });

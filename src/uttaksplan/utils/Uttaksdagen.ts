@@ -131,20 +131,18 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
  * @param fra
  * @param til
  */
-function getUttaksdagerFremTilDato(startdato: Date, sluttdato: Date): number {
-    if (isSameDay(startdato, sluttdato)) {
+function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
+    if (isSameDay(fom, tom)) {
         return 0;
     }
-    if (isBefore(startdato, sluttdato)) {
-        return (
-            Tidsperioden({ startdato, sluttdato }).getAntallUttaksdager() - 1
-        );
+    if (isBefore(fom, tom)) {
+        return Tidsperioden({ fom, tom }).getAntallUttaksdager() - 1;
     }
     return (
         -1 *
         (Tidsperioden({
-            startdato: sluttdato,
-            sluttdato: startdato
+            fom: tom,
+            tom: fom
         }).getAntallUttaksdager() -
             1)
     );
