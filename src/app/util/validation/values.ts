@@ -18,6 +18,10 @@ export const date1YearAgo = moment()
     .subtract(1, 'years')
     .startOf('day');
 
+export const date1YearAhead = moment()
+    .add(1, 'years')
+    .startOf('day');
+
 export const date3YearsAgo = moment()
     .subtract(3, 'years')
     .startOf('day');

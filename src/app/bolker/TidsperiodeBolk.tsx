@@ -1,21 +1,35 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import {
     TidsperiodeMedValgfriSluttdatoPartial,
     TidsperiodePartial
 } from 'common/types';
+import { Avgrensninger } from 'nav-datovelger';
+import { Validator } from 'common/lib/validation/types';
+import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
 
 type TidsperiodeType =
     | TidsperiodePartial
     | TidsperiodeMedValgfriSluttdatoPartial;
 
+export interface DatoAvgrensninger {
+    fra?: Avgrensninger;
+    til?: Avgrensninger;
+}
+
+export interface DatoValidatorer {
+    fra?: Validator[];
+    til?: Validator[];
+}
+
 interface TidsperiodeBolkProps {
     tidsperiode: TidsperiodeType;
     onChange: (tidsperiode: TidsperiodeType) => void;
     sluttdatoDisabled?: boolean;
+    datoAvgrensninger?: DatoAvgrensninger;
+    datoValidatorer?: DatoValidatorer;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -32,13 +46,19 @@ class TidsperiodeBolk extends React.Component<Props> {
     }
 
     render() {
-        const { tidsperiode, intl, sluttdatoDisabled } = this.props;
+        const {
+            tidsperiode,
+            datoAvgrensninger,
+            datoValidatorer,
+            intl,
+            sluttdatoDisabled
+        } = this.props;
 
         return (
             <React.Fragment>
                 <Spørsmål
                     render={() => (
-                        <DatoInput
+                        <DatoInputWithValidation
                             id="fraDatoInput"
                             label={getMessage(intl, 'fraogmed')}
                             onChange={(startdato: Date) => {
@@ -48,13 +68,17 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 });
                             }}
                             dato={tidsperiode.startdato}
+                            avgrensninger={
+                                datoAvgrensninger && datoAvgrensninger.fra
+                            }
+                            validators={datoValidatorer && datoValidatorer.fra}
                         />
                     )}
                 />
 
                 <Spørsmål
                     render={() => (
-                        <DatoInput
+                        <DatoInputWithValidation
                             id="tilDatoInput"
                             label={getMessage(intl, 'tilogmed')}
                             onChange={(sluttdato: Date) => {
@@ -65,6 +89,10 @@ class TidsperiodeBolk extends React.Component<Props> {
                             }}
                             dato={tidsperiode.sluttdato}
                             disabled={false || sluttdatoDisabled}
+                            avgrensninger={
+                                datoAvgrensninger && datoAvgrensninger.til
+                            }
+                            validators={datoValidatorer && datoValidatorer.til}
                         />
                     )}
                 />
