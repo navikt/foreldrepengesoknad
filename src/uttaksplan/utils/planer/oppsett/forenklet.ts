@@ -55,7 +55,7 @@ export function opprettUttaksperioderEnkel(
         forelder: 'forelder2',
         konto: StønadskontoType.FarsDel,
         tidsperiode: getTidsperiode(
-            Uttaksdagen(morsDelEtterTermin.tidsperiode.sluttdato).neste(),
+            Uttaksdagen(morsDelEtterTermin.tidsperiode.tom).neste(),
             ukerFarsDel * UTTAKSDAGER_I_UKE
         )
     };

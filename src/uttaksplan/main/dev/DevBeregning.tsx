@@ -23,15 +23,15 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                     <ul>
                         <li>
                             Første registrerte uttaksdag:{' '}
-                            {uttaksinfo.registrertTidsperiode.startdato.toDateString()}
+                            {uttaksinfo.registrertTidsperiode.fom.toDateString()}
                         </li>
                         <li>
                             Siste registrerte uttaksdag:{' '}
-                            {uttaksinfo.registrertTidsperiode.sluttdato.toDateString()}
+                            {uttaksinfo.registrertTidsperiode.tom.toDateString()}
                         </li>
                         <li>
                             Siste registrerte uttaksdag (inkludert opphold):{' '}
-                            {uttaksinfo.registrertTidsperiodeInkludertOpphold.sluttdato.toDateString()}
+                            {uttaksinfo.registrertTidsperiodeInkludertOpphold.tom.toDateString()}
                         </li>
                         <li>
                             Siste beregnet uttaksdag:{' '}

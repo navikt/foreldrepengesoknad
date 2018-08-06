@@ -56,8 +56,8 @@ const mockUtsettelse: Utsettelsesperiode = {
     type: Periodetype.Utsettelse,
     årsak: UtsettelseÅrsakType.Ferie,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 7, 30)),
-        sluttdato: normaliserDato(new Date(2018, 7, 31))
+        fom: normaliserDato(new Date(2018, 7, 30)),
+        tom: normaliserDato(new Date(2018, 7, 31))
     }
 };
 
@@ -65,8 +65,8 @@ const mockUtsettelse2: Utsettelsesperiode = {
     ...mockUtsettelse,
     årsak: UtsettelseÅrsakType.Arbeid,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 9, 22)),
-        sluttdato: normaliserDato(new Date(2018, 9, 22))
+        fom: normaliserDato(new Date(2018, 9, 22)),
+        tom: normaliserDato(new Date(2018, 9, 22))
     }
 };
 
@@ -74,8 +74,8 @@ export const mockUttaksperiode: Uttaksperiode = {
     forelder: 'forelder1',
     konto: StønadskontoType.Foreldrepenger,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 9, 3)),
-        sluttdato: normaliserDato(new Date(2018, 9, 4))
+        fom: normaliserDato(new Date(2018, 9, 3)),
+        tom: normaliserDato(new Date(2018, 9, 4))
     },
     type: Periodetype.Uttak
 };
@@ -84,8 +84,8 @@ const mockUttaksperiodeOverUtsettelse: Uttaksperiode = {
     forelder: 'forelder2',
     konto: StønadskontoType.Foreldrepenger,
     tidsperiode: {
-        startdato: normaliserDato(new Date(2018, 7, 28)),
-        sluttdato: normaliserDato(new Date(2018, 8, 3))
+        fom: normaliserDato(new Date(2018, 7, 28)),
+        tom: normaliserDato(new Date(2018, 8, 3))
     },
     type: Periodetype.Uttak
 };
@@ -152,7 +152,7 @@ class DevToolbar extends React.Component<Props, {}> {
             return;
         }
         const tidsperiode = Tidsperioden(periode.tidsperiode).setStartdato(
-            Uttaksdagen(periode.tidsperiode.startdato).leggTil(10)
+            Uttaksdagen(periode.tidsperiode.fom).leggTil(10)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({
@@ -164,7 +164,7 @@ class DevToolbar extends React.Component<Props, {}> {
     flyttPeriode(dager: number = 1, idx: number = 3) {
         const periode = this.props.appState.uttaksplan.uttaksplan.perioder[idx];
         const tidsperiode = Tidsperioden(periode.tidsperiode).setStartdato(
-            Uttaksdagen(periode.tidsperiode.startdato).leggTil(dager)
+            Uttaksdagen(periode.tidsperiode.fom).leggTil(dager)
         );
         this.props.dispatch(
             opprettEllerOppdaterPeriode({

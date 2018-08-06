@@ -39,7 +39,7 @@ function getFrivilligMødrekvoteEtterTermin(
 ): Tidsperiode {
     const startdato = Uttaksdagen(
         getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
-            .sluttdato
+            .tom
     ).neste();
     return getTidsperiode(
         startdato,
@@ -56,7 +56,7 @@ function getFellesperiodeForelder1(
 ): Tidsperiode {
     const startdato = Uttaksdagen(
         getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
-            .sluttdato
+            .tom
     ).neste();
     return getTidsperiode(startdato, fellesukerForelder1 * UTTAKSDAGER_I_UKE);
 }
@@ -72,12 +72,12 @@ function getFellesperiodeForelder2(
             ? getFrivilligMødrekvoteEtterTermin(
                   familiehendelsedato,
                   permisjonsregler
-              ).sluttdato
+              ).tom
             : getFellesperiodeForelder1(
                   familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1
-              ).sluttdato
+              ).tom
     ).neste();
     return getTidsperiode(startdato, fellesukerForelder2 * UTTAKSDAGER_I_UKE);
 }
@@ -94,13 +94,13 @@ function getFedrekvote(
                   familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1
-              ).sluttdato
+              ).tom
             : getFellesperiodeForelder2(
                   familiehendelsedato,
                   permisjonsregler,
                   fellesukerForelder1,
                   fellesukerForelder2
-              ).sluttdato
+              ).tom
     ).neste();
     return getTidsperiode(
         startdato,

@@ -193,7 +193,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                         pågående: !annenInntekt.pågående,
                                         tidsperiode: {
                                             ...annenInntekt.tidsperiode,
-                                            sluttdato: undefined
+                                            tom: undefined
                                         }
                                     });
                                 }}

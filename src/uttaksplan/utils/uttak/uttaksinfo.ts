@@ -34,9 +34,9 @@ export const getUttaksinfo = (perioder: Periode[]): Uttaksinfo | undefined => {
         true
     ) as Tidsperiode;
     const sluttdatoGittUttaksdager = getTidsperiode(
-        registrertTidsperiode.startdato,
+        registrertTidsperiode.fom,
         antallDagerTotalt
-    ).sluttdato;
+    ).tom;
     return {
         antallDagerTotalt,
         antallDagerOpphold,

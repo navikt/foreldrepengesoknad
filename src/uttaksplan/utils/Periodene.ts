@@ -57,7 +57,7 @@ export const Periodene = (perioder: Periode[]) => ({
  * @param p2
  */
 export function sorterPerioder(p1: Periode, p2: Periode) {
-    if (isSameDay(p1.tidsperiode.startdato, p2.tidsperiode.startdato)) {
+    if (isSameDay(p1.tidsperiode.fom, p2.tidsperiode.fom)) {
         if (p1.endret && !p2.endret) {
             return -1;
         }
@@ -69,9 +69,7 @@ export function sorterPerioder(p1: Periode, p2: Periode) {
         }
         return 1;
     }
-    return isBefore(p1.tidsperiode.startdato, p2.tidsperiode.startdato)
-        ? -1
-        : 1;
+    return isBefore(p1.tidsperiode.fom, p2.tidsperiode.fom) ? -1 : 1;
 }
 
 function getPeriode(perioder: Periode[], id: string): Periode | undefined {
@@ -120,8 +118,8 @@ function finnPeriodeMedDato(
     return perioder.find((periode) => {
         return isWithinRange(
             dato,
-            periode.tidsperiode.startdato,
-            periode.tidsperiode.sluttdato
+            periode.tidsperiode.fom,
+            periode.tidsperiode.tom
         );
     });
 }
@@ -142,8 +140,8 @@ function finnPerioderPåEllerEtterDato(
             return false;
         }
         return (
-            isAfter(periode.tidsperiode.startdato, dato) ||
-            isSameDay(periode.tidsperiode.startdato, dato)
+            isAfter(periode.tidsperiode.fom, dato) ||
+            isSameDay(periode.tidsperiode.fom, dato)
         );
     });
 }
@@ -163,7 +161,7 @@ function finnPerioderFørDato(
         if (ignorerPeriode && periode.id === ignorerPeriode.id) {
             return false;
         }
-        return isBefore(periode.tidsperiode.sluttdato, dato);
+        return isBefore(periode.tidsperiode.tom, dato);
     });
 }
 
@@ -177,12 +175,11 @@ function finnOverlappendePerioder(
     tidsperiode: Tidsperiode
 ): Periode[] {
     return perioder.filter((periode) => {
-        const { startdato, sluttdato } = periode.tidsperiode;
+        const { fom, tom } = periode.tidsperiode;
         return (
-            (isBefore(startdato, tidsperiode.sluttdato) ||
-                isSameDay(startdato, tidsperiode.sluttdato)) &&
-            (isAfter(sluttdato, tidsperiode.startdato) ||
-                isSameDay(sluttdato, tidsperiode.startdato))
+            (isBefore(fom, tidsperiode.tom) ||
+                isSameDay(fom, tidsperiode.tom)) &&
+            (isAfter(tom, tidsperiode.fom) || isSameDay(tom, tidsperiode.fom))
         );
     });
 }
@@ -194,7 +191,7 @@ function finnOverlappendePerioder(
  */
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
     return Perioden(periode).setStartdato(
-        Uttaksdagen(periode.tidsperiode.startdato).leggTil(uttaksdager)
+        Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager)
     );
 }
 
@@ -222,7 +219,7 @@ function finnPerioderFørPeriode(
     periode: Periode
 ): Periode[] {
     return perioder.filter((p) =>
-        isBefore(p.tidsperiode.sluttdato, periode.tidsperiode.startdato)
+        isBefore(p.tidsperiode.tom, periode.tidsperiode.fom)
     );
 }
 
@@ -254,7 +251,7 @@ function finnPerioderEtterPeriode(
     periode: Periode
 ): Periode[] {
     return perioder.filter((p) =>
-        isAfter(p.tidsperiode.startdato, periode.tidsperiode.sluttdato)
+        isAfter(p.tidsperiode.fom, periode.tidsperiode.tom)
     );
 }
 
@@ -398,7 +395,7 @@ function getPeriodeMedSammeStartdatoSomPeriode(
     return perioder.find(
         (p) =>
             p.id !== periode.id &&
-            isSameDay(p.tidsperiode.startdato, periode.tidsperiode.startdato)
+            isSameDay(p.tidsperiode.fom, periode.tidsperiode.fom)
     );
 }
 
@@ -416,14 +413,14 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
         }
         const nestePeriode = perioder[idx + 1];
 
-        const tidsperiodeMellomPerioder = {
-            startdato: Uttaksdagen(periode.tidsperiode.sluttdato).neste(),
-            sluttdato: Uttaksdagen(nestePeriode.tidsperiode.startdato).forrige()
+        const tidsperiodeMellomPerioder: Tidsperiode = {
+            fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige()
         };
         if (
             isBefore(
-                tidsperiodeMellomPerioder.sluttdato,
-                tidsperiodeMellomPerioder.startdato
+                tidsperiodeMellomPerioder.tom,
+                tidsperiodeMellomPerioder.fom
             )
         ) {
             return;
@@ -454,20 +451,20 @@ function getFørsteOgSisteUttaksdag(
     if (filtrertePerioder.length === 0) {
         return undefined;
     }
-    let startdato: Date = filtrertePerioder[0].tidsperiode.startdato;
-    let sluttdato: Date = filtrertePerioder[1].tidsperiode.sluttdato;
+    let fom: Date = filtrertePerioder[0].tidsperiode.fom;
+    let tom: Date = filtrertePerioder[1].tidsperiode.tom;
 
     filtrertePerioder.forEach((p) => {
-        if (isBefore(p.tidsperiode.startdato, startdato)) {
-            startdato = p.tidsperiode.startdato;
+        if (isBefore(p.tidsperiode.fom, fom)) {
+            fom = p.tidsperiode.fom;
         }
-        if (isAfter(p.tidsperiode.sluttdato, sluttdato)) {
-            sluttdato = p.tidsperiode.sluttdato;
+        if (isAfter(p.tidsperiode.tom, tom)) {
+            tom = p.tidsperiode.tom;
         }
     });
 
     return {
-        startdato,
-        sluttdato
+        fom,
+        tom
     };
 }

@@ -45,10 +45,10 @@ export function getGyldigTidsromForUtsettelse(
         familiehendelsedato,
         permisjonsregler
     );
-    const startdato = Uttaksdagen(mødrekvoteEtterTermin.sluttdato).neste();
+    const fom = Uttaksdagen(mødrekvoteEtterTermin.tom).neste();
     return {
-        startdato,
-        sluttdato: sisteRegistrertePermisjonsdag
+        fom,
+        tom: sisteRegistrertePermisjonsdag
     };
 }
 

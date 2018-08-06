@@ -99,11 +99,11 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
                 durationRenderer={(dager: number) => (
                     <UkerOgDager dager={dager} />
                 )}
-                rangeRenderer={(startdato: Date, sluttdato: Date) => (
+                rangeRenderer={(fom: Date, tom: Date) => (
                     <TidsperiodeTekst
                         tidsperiode={{
-                            startdato,
-                            sluttdato
+                            fom,
+                            tom
                         }}
                         visSluttdato={true}
                         visUkedag={true}

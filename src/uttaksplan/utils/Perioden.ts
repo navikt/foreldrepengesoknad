@@ -10,10 +10,10 @@ export const Perioden = (periode: Periode) => ({
     erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
     erSammenhengende: (periode2: Periode) =>
         erPerioderSammenhengende(periode, periode2),
-    setStartdato: (startdato: Date) => flyttPeriode(periode, startdato),
+    setStartdato: (fom: Date) => flyttPeriode(periode, fom),
     setUttaksdager: (uttaksdager: number) =>
         (periode.tidsperiode = getTidsperiode(
-            periode.tidsperiode.startdato,
+            periode.tidsperiode.fom,
             uttaksdager
         )),
     getAntallUttaksdager: () =>
@@ -39,8 +39,8 @@ function erUttak(periode: Periode): boolean {
  * @param p2
  */
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = Uttaksdagen(p1.tidsperiode.sluttdato).neste();
-    const p2Startdato = p2.tidsperiode.startdato;
+    const p1NesteUttaksdato = Uttaksdagen(p1.tidsperiode.tom).neste();
+    const p2Startdato = p2.tidsperiode.fom;
     return isSameDay(p1NesteUttaksdato, p2Startdato);
 }
 
@@ -85,11 +85,11 @@ function getPeriodeFootprint(periode: Periode) {
 /**
  * Flytter periode til ny startdato, beholder samme antall uttaksdager
  * @param periode
- * @param startdato
+ * @param fom
  */
-function flyttPeriode(periode: Periode, startdato: Date): Periode {
+function flyttPeriode(periode: Periode, fom: Date): Periode {
     return {
         ...periode,
-        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(startdato)
+        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom)
     };
 }
