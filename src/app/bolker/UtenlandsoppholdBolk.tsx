@@ -6,7 +6,9 @@ import {
     UtenlandsoppholdType,
     Utenlandsopphold
 } from '../types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdModal from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
+import UtenlandsoppholdModal, {
+    UtenlandsoppholdModalPropsPartial
+} from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
 import { ISODateToPrettyDateFormat } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
 
@@ -17,6 +19,7 @@ interface UtenlandsoppholdBolkProps {
     opphold: Utenlandsopphold[];
     oppholdType: UtenlandsoppholdType;
     onChange: (perioder: Utenlandsopphold[]) => void;
+    utenlandsoppholdModalProps?: UtenlandsoppholdModalPropsPartial;
 }
 
 interface UtenlandsoppholdBolkState {
@@ -60,10 +63,7 @@ class UtenlandsoppholdBolk extends React.Component<
             editedOppholdList[oppholdIndex] = oppholdToEdit;
             onChange(editedOppholdList);
         }
-        this.closeModal({
-            oppholdToEdit: undefined,
-            oppholdIndex: undefined
-        });
+        this.closeModal();
     }
 
     onOppholdDelete(oppholdToDelete: Utenlandsopphold) {
@@ -87,9 +87,10 @@ class UtenlandsoppholdBolk extends React.Component<
         });
     }
 
-    closeModal(otherState: UtenlandsoppholdBolkStatePartial = {}) {
+    closeModal() {
         this.setState({
-            ...otherState,
+            oppholdToEdit: undefined,
+            oppholdIndex: undefined,
             modalIsOpen: false
         });
     }
@@ -100,7 +101,8 @@ class UtenlandsoppholdBolk extends React.Component<
             showUtenlandsoppholdContent,
             oppfølgingsspørsmål,
             opphold,
-            oppholdType
+            oppholdType,
+            utenlandsoppholdModalProps
         } = this.props;
         const { oppholdToEdit } = this.state;
 
@@ -142,17 +144,14 @@ class UtenlandsoppholdBolk extends React.Component<
                 <UtenlandsoppholdModal
                     type={oppholdType}
                     isOpen={this.state.modalIsOpen}
-                    onRequestClose={() =>
-                        this.closeModal({
-                            oppholdIndex: undefined,
-                            oppholdToEdit: undefined
-                        })
-                    }
+                    onRequestClose={() => this.closeModal()}
                     contentLabel={`Landvelger for ${oppholdType}`}
                     children={null}
-                    opphold={oppholdToEdit}
+                    oppholdToEdit={oppholdToEdit}
+                    oppholdList={opphold}
                     onAdd={this.onAdd}
                     onEdit={this.onEdit}
+                    {...utenlandsoppholdModalProps || {}}
                 />
             </React.Fragment>
         );
