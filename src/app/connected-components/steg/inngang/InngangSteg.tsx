@@ -1,20 +1,27 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from '../../../redux/reducers';
-import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
-import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
-import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
-import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
-import { StegID } from '../../../util/routing/stegConfig';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { HistoryProps } from '../../../types/common';
+
+import { AppState } from '../../../redux/reducers';
+import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import { HistoryProps, Kjønn } from '../../../types/common';
+import Person from '../../../types/Person';
+import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
+
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+
 import Steg, { StegProps } from '../../../components/steg/Steg';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
+import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
+
+import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
 import isAvailable from '../isAvailable';
+import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 
 export interface StateProps {
+    søkersKjønn: Kjønn;
     situasjon?: Søkersituasjon;
     visSpørsmålOmSøkerrolle?: boolean;
     rolle?: SøkerRolle;
@@ -30,6 +37,67 @@ export type Props = DispatchProps &
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
+    }
+
+    componentDidMount() {
+        if (this.shouldResetSøkerRolle()) {
+            this.resetSøkerRolle();
+        }
+    }
+
+    shouldResetSøkerRolle(): boolean {
+        return (
+            this.props.situasjon === Søkersituasjon.STEBARN ||
+            this.gjelderSøknadenFødselOgErSøkerMann()
+        );
+    }
+
+    gjelderSøknadenFødselOgErSøkerMann(): boolean {
+        const { situasjon, søkersKjønn } = this.props;
+        return (
+            situasjon === Søkersituasjon.FØDSEL && søkersKjønn === Kjønn.MANN
+        );
+    }
+
+    resetSøkerRolle() {
+        this.props.dispatch(
+            søknadActions.updateSøker({
+                rolle: undefined
+            })
+        );
+    }
+
+    componentWillUnmount() {
+        if (this.props.rolle === undefined) {
+            this.determineSøkerRolle();
+        }
+    }
+
+    determineSøkerRolle() {
+        if (this.props.situasjon === Søkersituasjon.STEBARN) {
+            this.setSøkerRolleInCaseOfStebarnsadopsjon();
+        } else if (this.gjelderSøknadenFødselOgErSøkerMann()) {
+            this.setSøkerRolleAsFar();
+        }
+    }
+
+    setSøkerRolleInCaseOfStebarnsadopsjon() {
+        this.props.dispatch(
+            søknadActions.updateSøker({
+                rolle:
+                    this.props.søkersKjønn === Kjønn.KVINNE
+                        ? SøkerRolle.MOR
+                        : SøkerRolle.FAR
+            })
+        );
+    }
+
+    setSøkerRolleAsFar() {
+        this.props.dispatch(
+            søknadActions.updateSøker({
+                rolle: SøkerRolle.FAR
+            })
+        );
     }
 
     render() {
@@ -98,24 +166,27 @@ const resolveNesteSteg = (state: AppState): StegID | undefined => {
 };
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const kjønn = state.api.person ? state.api.person.kjønn : undefined;
+    const søkersKjønn = (state.api.person as Person).kjønn;
     const situasjon = state.søknad.situasjon;
     const roller =
-        kjønn && situasjon
-            ? getSøkerrollerForBruker(kjønn, situasjon)
+        søkersKjønn && situasjon
+            ? getSøkerrollerForBruker(søkersKjønn, situasjon)
             : undefined;
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp:
-            state.søknad.søker.rolle !== undefined ||
-            situasjon === Søkersituasjon.STEBARN,
+        renderFortsettKnapp: inngangErGyldig(
+            situasjon,
+            state.søknad.søker.rolle,
+            søkersKjønn
+        ),
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state),
         nesteStegRoute: resolveNesteSteg(state)
     };
 
     return {
+        søkersKjønn,
         visSpørsmålOmSøkerrolle: roller !== undefined,
         rolle: state.søknad.søker.rolle,
         situasjon,
