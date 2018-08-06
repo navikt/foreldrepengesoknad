@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import * as classnames from 'classnames';
-import './uttaksoversikt.less';
+import classnames from 'classnames';
 import { BeregnetUttak } from 'uttaksplan/types';
+
+import './uttaksoversikt.less';
 
 export interface OwnProps {
     uttak: BeregnetUttak[];

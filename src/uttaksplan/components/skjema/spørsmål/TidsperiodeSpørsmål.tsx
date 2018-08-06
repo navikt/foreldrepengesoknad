@@ -6,7 +6,7 @@ import { Row, Column } from 'nav-frontend-grid';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { renderDag } from 'common/util/renderUtils';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 interface TidsperiodeDatoProps {
     label?: string;
@@ -76,7 +76,9 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     helgedagerIkkeTillatt,
                                     ugyldigeTidsperioder
                                 }}
-                                kalenderplassering="fullskjerm"
+                                kalender={{
+                                    plassering: 'fullskjerm'
+                                }}
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}
@@ -88,8 +90,8 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                     <div className="blokkPad-s">
                         <div className="blokk-xxs">
                             <DatoInput
-                                id="sluttdato"
                                 dato={sluttdato.dato}
+                                id="sluttdato"
                                 label={
                                     sluttdato.label ||
                                     intl.formatMessage({
@@ -114,7 +116,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     helgedagerIkkeTillatt
                                 }}
                                 onChange={(date) => sluttdato.onChange(date)}
-                                kalenderplassering="fullskjerm"
+                                kalender={{ plassering: 'fullskjerm' }}
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}

@@ -8,7 +8,7 @@ import {
     isEqual
 } from 'date-fns';
 import { normaliserDato } from 'common/util/datoUtils';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 const holidays = DateHolidays('no');
 

@@ -1,4 +1,4 @@
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 import { getTidsperiode, Periodene } from 'uttaksplan/utils';
 import { Periode } from 'uttaksplan/types';
 

@@ -3,9 +3,9 @@ import {
     Uttaksperiode,
     StønadskontoType,
     Periodetype,
-    Dekningsgrad
+    Dekningsgrad,
+    Tidsperiode
 } from 'uttaksplan/types';
-import { Tidsperiode } from 'nav-datovelger';
 import { sorterPerioder, Uttaksdagen, getTidsperiode } from 'uttaksplan/utils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';

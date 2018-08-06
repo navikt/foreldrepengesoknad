@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import './tidsperiodeTekst.less';
 import FormatertDato from 'common/components/formatert-dato/FormatertDato';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 export interface Props {
     tidsperiode: Tidsperiode;

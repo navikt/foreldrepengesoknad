@@ -13,7 +13,7 @@ import { normaliserDato } from 'common/util/datoUtils';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { preventFormSubmit } from 'common/util/eventUtils';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 import { getStønadskontoRegler } from 'uttaksplan/utils/regler/uttaksperioderegler';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';
