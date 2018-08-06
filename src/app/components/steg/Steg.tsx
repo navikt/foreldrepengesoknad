@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import stegConfig, { StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import ValidForm from 'common/lib/validation/ValidForm';
+import ValidForm, { FormSubmitEvent } from 'common/lib/validation/ValidForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
@@ -18,7 +19,10 @@ export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
-    onSubmit?: () => void;
+    onSubmit?: (
+        event: FormSubmitEvent,
+        stegFormRef: Element | null | Text
+    ) => void;
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
 }
@@ -26,6 +30,8 @@ export interface StegProps {
 type Props = StegProps & InjectedIntlProps;
 
 class Steg extends React.Component<Props & DispatchProps> {
+    private stegFormRef: React.RefObject<ValidForm>;
+
     constructor(props: Props & DispatchProps) {
         super(props);
 
@@ -34,14 +40,19 @@ class Steg extends React.Component<Props & DispatchProps> {
             history.push(routeConfig.APP_ROUTE_PREFIX);
         }
 
+        this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
-    handleOnSubmit() {
-        const { onSubmit, dispatch } = this.props;
+    getFormElement() {
+        const el = this.stegFormRef.current;
+        return ReactDOM.findDOMNode(el as React.ReactInstance);
+    }
 
+    handleOnSubmit(event: FormSubmitEvent) {
+        const { onSubmit, dispatch } = this.props;
         if (onSubmit) {
-            onSubmit();
+            onSubmit(event, this.getFormElement());
         } else {
             dispatch(apiActionCreators.storeAppState());
             this.navigateToNextStep();
@@ -69,7 +80,7 @@ class Steg extends React.Component<Props & DispatchProps> {
         };
 
         return (
-            <ValidForm {...formProps}>
+            <ValidForm {...formProps} ref={this.stegFormRef}>
                 <div className="blokk-m">
                     <Stegindikator id={id} />
                 </div>
