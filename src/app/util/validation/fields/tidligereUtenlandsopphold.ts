@@ -24,18 +24,18 @@ export const getTilAvgrensninger = (fraDate?: Date): Avgrensninger => {
 };
 
 export const getTidligereUtenlandsoppholdFradatoRegler = (
-    startdato: Date | undefined,
-    sluttdato: Date | undefined,
+    fom: Date | undefined,
+    tom: Date | undefined,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const startM = moment(startdato);
-    const sluttM = moment(sluttdato);
+    const startM = moment(fom);
+    const sluttM = moment(tom);
 
     return [
         {
-            test: () => startdato !== undefined,
+            test: () => fom !== undefined,
             failText: getMessage(intl, `${intlKey}.tidligere`)
         },
         {
@@ -44,16 +44,13 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
         },
         {
             test: () =>
-                sluttdato ? startM.startOf('day').isSameOrBefore(sluttM) : true,
+                tom ? startM.startOf('day').isSameOrBefore(sluttM) : true,
             failText: getMessage(intl, `${intlKey}.førTilDato`)
         },
         {
             test: () =>
-                startdato && sluttdato
-                    ? !harTidsperiodeOverlapp(
-                          { startdato, sluttdato },
-                          ugyldigePerioder
-                      )
+                fom && tom
+                    ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder)
                     : true,
             failText: getMessage(intl, `${intlKey}.overlapp`)
         }
@@ -61,18 +58,18 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
 };
 
 export const getTidligereUtenlandsoppholdTildatoRegler = (
-    startdato: Date | undefined,
-    sluttdato: Date | undefined,
+    fom: Date | undefined,
+    tom: Date | undefined,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const startM = moment(sluttdato);
-    const sluttM = moment(startdato);
+    const startM = moment(tom);
+    const sluttM = moment(fom);
 
     return [
         {
-            test: () => startdato !== undefined,
+            test: () => fom !== undefined,
             failText: getMessage(intl, `${intlKey}.tidligere`)
         },
         {
@@ -81,16 +78,13 @@ export const getTidligereUtenlandsoppholdTildatoRegler = (
         },
         {
             test: () =>
-                sluttdato ? sluttM.endOf('day').isSameOrAfter(startM) : true,
+                tom ? sluttM.endOf('day').isSameOrAfter(startM) : true,
             failText: getMessage(intl, `${intlKey}.etterFraDato`)
         },
         {
             test: () =>
-                startdato && sluttdato
-                    ? !harTidsperiodeOverlapp(
-                          { startdato, sluttdato },
-                          ugyldigePerioder
-                      )
+                fom && tom
+                    ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder)
                     : true,
             failText: getMessage(intl, `${intlKey}.overlapp`)
         }
