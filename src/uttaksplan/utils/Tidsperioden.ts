@@ -25,13 +25,13 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
 });
 
 /**
- * Returnerer ny Tidsperiode gitt gyldig uttaksdag-startdato og antall uttaksdager
+ * Returnerer ny Tidsperiode gitt gyldig uttaksdag-fom og antall uttaksdager
  * @param fom
  * @param uttaksdager
  */
 export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
     if (!Uttaksdagen(fom).erUttaksdag()) {
-        throw new Error('Startdato er ikke en uttaksdag');
+        throw new Error('FOM er ikke en uttaksdag');
     }
     return {
         fom,

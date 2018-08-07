@@ -27,10 +27,10 @@ export function getDefaultState(
                   utsettelse.forelder || søker.erAleneOmOmsorg
                       ? 'forelder1'
                       : undefined,
-              startdato: utsettelse.tidsperiode
+              fom: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.fom
                   : undefined,
-              sluttdato: utsettelse.tidsperiode
+              tom: utsettelse.tidsperiode
                   ? utsettelse.tidsperiode.tom
                   : undefined
           }
@@ -56,11 +56,11 @@ export function validerUtsettelseskjema(
     const andreUtsettelser = utsettelse
         ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
         : registrerteUtsettelser;
-    const { årsak, forelder, startdato, sluttdato } = state;
+    const { årsak, forelder, fom, tom } = state;
     const valideringsfeil: Valideringsfeil = new Map();
     const ugyldigeTidsrom = getUgyldigeTidsrom(andreUtsettelser, utsettelse);
 
-    if (!startdato) {
+    if (!fom) {
         valideringsfeil.set('startdato', {
             feilmelding: intl.formatMessage({
                 id: 'uttaksplan.utsettelseskjema.feil.startdatoMangler'
@@ -68,7 +68,7 @@ export function validerUtsettelseskjema(
         });
     } else {
         const datoValideringsfeil = validerDato(
-            startdato,
+            fom,
             tidsperiode,
             ugyldigeTidsrom,
             familiehendelsedato
@@ -88,7 +88,7 @@ export function validerUtsettelseskjema(
             });
         }
     }
-    if (!sluttdato) {
+    if (!tom) {
         valideringsfeil.set('sluttdato', {
             feilmelding: intl.formatMessage({
                 id: 'uttaksplan.utsettelseskjema.feil.sluttdatoMangler'
@@ -96,11 +96,11 @@ export function validerUtsettelseskjema(
         });
     } else {
         const datoValideringsfeil = validerDato(
-            sluttdato,
+            tom,
             {
                 ...tidsperiode,
                 tom: getTilTidsromSluttdato(
-                    startdato || tidsperiode.fom,
+                    fom || tidsperiode.fom,
                     andreUtsettelser,
                     uttaksgrunnlag
                 )
@@ -120,7 +120,7 @@ export function validerUtsettelseskjema(
                     }
                 )
             });
-        } else if (startdato && isBefore(sluttdato, startdato)) {
+        } else if (fom && isBefore(tom, fom)) {
             valideringsfeil.set('sluttdato', {
                 feilmelding: intl.formatMessage({
                     id:
@@ -134,8 +134,8 @@ export function validerUtsettelseskjema(
         getAntallFeriedager(
             årsak,
             forelder,
-            startdato,
-            sluttdato,
+            fom,
+            tom,
             registrerteUtsettelser,
             utsettelse
         ) > permisjonsregler.maksFeriedagerMedOverføring
@@ -147,11 +147,7 @@ export function validerUtsettelseskjema(
         });
     }
     let helligdagFeilErRegistrert = false;
-    if (
-        årsak === UtsettelseÅrsakType.Ferie &&
-        startdato &&
-        erFridag(startdato)
-    ) {
+    if (årsak === UtsettelseÅrsakType.Ferie && fom && erFridag(fom)) {
         helligdagFeilErRegistrert = true;
         valideringsfeil.set('startdato', {
             feilmelding: intl.formatMessage({
@@ -160,11 +156,7 @@ export function validerUtsettelseskjema(
         });
     }
 
-    if (
-        årsak === UtsettelseÅrsakType.Ferie &&
-        sluttdato &&
-        erFridag(sluttdato)
-    ) {
+    if (årsak === UtsettelseÅrsakType.Ferie && tom && erFridag(tom)) {
         helligdagFeilErRegistrert = true;
         valideringsfeil.set('sluttdato', {
             feilmelding: intl.formatMessage({
@@ -175,11 +167,11 @@ export function validerUtsettelseskjema(
     if (
         !helligdagFeilErRegistrert &&
         årsak === UtsettelseÅrsakType.Ferie &&
-        startdato &&
-        sluttdato &&
+        fom &&
+        tom &&
         Tidsperioden({
-            fom: startdato,
-            tom: sluttdato
+            fom,
+            tom
         }).getAntallFridager() > 0
     ) {
         valideringsfeil.set('tidsperiode', {
