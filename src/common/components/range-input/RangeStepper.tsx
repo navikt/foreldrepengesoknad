@@ -23,7 +23,7 @@ const RangeStepper: React.StatelessComponent<Props> = ({
         size="stor"
         stil="hvit"
         onClick={() => onClick()}
-        label={label}
+        ariaLabel={label}
         disabled={disabled}
         ikon={
             <Chevron
