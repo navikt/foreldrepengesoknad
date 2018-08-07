@@ -26,6 +26,7 @@ import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { AttachmentType } from '../../types/søknad/Søknad';
+import { InputChangeEvent } from '../../types/dom/Events';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -179,9 +180,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     intl,
                                     'annenInntekt.spørsmål.arbeidsgiver'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => {
+                                onChange={(e: InputChangeEvent) => {
                                     const utlandInntekt: JobbIUtlandetInntektPartial = {
                                         arbeidsgiverNavn: e.target.value
                                     };
