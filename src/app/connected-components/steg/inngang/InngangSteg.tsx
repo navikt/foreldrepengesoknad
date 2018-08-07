@@ -21,7 +21,7 @@ import isAvailable from '../isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 
 export interface StateProps {
-    søkersKjønn: Kjønn;
+    kjønn: Kjønn;
     situasjon?: Søkersituasjon;
     visSpørsmålOmSøkerrolle?: boolean;
     rolle?: SøkerRolle;
@@ -49,7 +49,7 @@ class InngangSteg extends React.Component<Props, {}> {
         this.props.dispatch(
             søknadActions.updateSøker({
                 rolle:
-                    this.props.søkersKjønn === Kjønn.KVINNE
+                    this.props.kjønn === Kjønn.KVINNE
                         ? SøkerRolle.MOR
                         : SøkerRolle.FAR
             })
@@ -127,11 +127,11 @@ const resolveNesteSteg = (state: AppState): StegID | undefined => {
 };
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const søkersKjønn = (state.api.person as Person).kjønn;
+    const kjønn = (state.api.person as Person).kjønn;
     const situasjon = state.søknad.situasjon;
     const roller =
-        søkersKjønn && situasjon
-            ? getSøkerrollerForBruker(søkersKjønn, situasjon)
+        kjønn && situasjon
+            ? getSøkerrollerForBruker(kjønn, situasjon)
             : undefined;
 
     const stegProps: StegProps = {
@@ -139,7 +139,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: inngangErGyldig(
             situasjon,
             state.søknad.søker.rolle,
-            søkersKjønn
+            kjønn
         ),
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state),
@@ -147,7 +147,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 
     return {
-        søkersKjønn,
+        kjønn,
         visSpørsmålOmSøkerrolle: roller !== undefined,
         rolle: state.søknad.søker.rolle,
         situasjon,
