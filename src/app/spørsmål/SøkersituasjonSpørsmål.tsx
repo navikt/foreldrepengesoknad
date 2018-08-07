@@ -36,6 +36,7 @@ const SøkersituasjonSpørsmål = (props: Props) => {
                 getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
             ]}
             name="søkersituasjon"
+            infoboksTekst="Dette er en test"
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: Søkersituasjon
