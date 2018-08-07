@@ -19,14 +19,15 @@ import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
 import isAvailable from '../isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
+import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
 
 export interface StateProps {
     kjønn: Kjønn;
     situasjon?: Søkersituasjon;
     visSpørsmålOmSøkerrolle?: boolean;
-    rolle?: SøkerRolle;
     roller?: SøkerRolle[];
     stegProps: StegProps;
+    søker: SøkerPartial;
 }
 
 export type Props = DispatchProps &
@@ -37,10 +38,15 @@ export type Props = DispatchProps &
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
+
+        this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(
+            this
+        );
     }
 
-    resolveSøkerRolle() {
-        const { rolle, situasjon, kjønn } = this.props;
+    resolveSøkerRolle(situasjon: Søkersituasjon) {
+        const { kjønn, søker } = this.props;
+        const { rolle } = søker;
 
         if (
             situasjon === Søkersituasjon.STEBARN ||
@@ -48,19 +54,38 @@ class InngangSteg extends React.Component<Props, {}> {
         ) {
             return kjønn === Kjønn.KVINNE ? SøkerRolle.MOR : SøkerRolle.FAR;
         }
-
         return rolle;
+    }
+
+    updateSituasjonAndRolleInState(situasjon: Søkersituasjon) {
+        const { søker, dispatch } = this.props;
+        const situasjonInState = this.props.situasjon;
+        const updatedSøker: SøkerPartial = {
+            ...søker,
+            rolle:
+                situasjonInState === Søkersituasjon.STEBARN
+                    ? undefined
+                    : this.resolveSøkerRolle(situasjon)
+        };
+
+        dispatch(
+            søknadActions.updateSøknad({
+                situasjon,
+                søker: updatedSøker as Søker
+            })
+        );
     }
 
     render() {
         const {
             roller,
             situasjon,
-            rolle,
+            søker,
             visSpørsmålOmSøkerrolle,
             dispatch,
             stegProps
         } = this.props;
+        const { rolle } = søker;
 
         return (
             <Steg {...stegProps}>
@@ -68,18 +93,7 @@ class InngangSteg extends React.Component<Props, {}> {
                     render={() => (
                         <SøkersituasjonSpørsmål
                             situasjon={situasjon}
-                            onChange={(value) => {
-                                dispatch(
-                                    søknadActions.updateSøknad({
-                                        situasjon: value
-                                    })
-                                );
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        rolle: this.resolveSøkerRolle()
-                                    })
-                                );
-                            }}
+                            onChange={this.updateSituasjonAndRolleInState}
                         />
                     )}
                 />
@@ -125,6 +139,7 @@ const resolveNesteSteg = (state: AppState): StegID | undefined => {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = (state.api.person as Person).kjønn;
     const situasjon = state.søknad.situasjon;
+    const søker = state.søknad.søker;
     const roller =
         kjønn && situasjon
             ? getSøkerrollerForBruker(kjønn, situasjon)
@@ -145,7 +160,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         kjønn,
         visSpørsmålOmSøkerrolle: roller !== undefined,
-        rolle: state.søknad.søker.rolle,
+        søker,
         situasjon,
         roller,
         stegProps
