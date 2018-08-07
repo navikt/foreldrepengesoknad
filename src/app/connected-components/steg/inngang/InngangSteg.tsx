@@ -39,21 +39,17 @@ class InngangSteg extends React.Component<Props, {}> {
         super(props);
     }
 
-    componentWillUnmount() {
-        if (this.props.rolle === undefined) {
-            this.determineSøkerRolle();
-        }
-    }
+    resolveSøkerRolle() {
+        const { rolle, situasjon, kjønn } = this.props;
 
-    determineSøkerRolle() {
-        this.props.dispatch(
-            søknadActions.updateSøker({
-                rolle:
-                    this.props.kjønn === Kjønn.KVINNE
-                        ? SøkerRolle.MOR
-                        : SøkerRolle.FAR
-            })
-        );
+        if (
+            situasjon === Søkersituasjon.STEBARN ||
+            (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN)
+        ) {
+            return kjønn === Kjønn.KVINNE ? SøkerRolle.MOR : SøkerRolle.FAR;
+        }
+
+        return rolle;
     }
 
     render() {
@@ -80,7 +76,7 @@ class InngangSteg extends React.Component<Props, {}> {
                                 );
                                 dispatch(
                                     søknadActions.updateSøker({
-                                        rolle: undefined
+                                        rolle: this.resolveSøkerRolle()
                                     })
                                 );
                             }}
