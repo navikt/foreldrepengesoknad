@@ -95,7 +95,8 @@ class UttaksplanSide extends React.Component<Props, State> {
                 <Uttaksplan
                     grunnlag={{
                         søker: {
-                            ...mockUttaksplanSøker
+                            ...mockUttaksplanSøker,
+                            rolle: this.state.skjemadata.søkerrolle
                         },
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
