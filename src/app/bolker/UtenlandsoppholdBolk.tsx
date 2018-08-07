@@ -173,12 +173,8 @@ const OppholdListeElement: React.StatelessComponent<
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToPrettyDateFormat(
-                        opphold.tidsperiode.startdato
-                    ),
-                    tom: ISODateToPrettyDateFormat(
-                        opphold.tidsperiode.sluttdato
-                    )
+                    fom: ISODateToPrettyDateFormat(opphold.tidsperiode.fom),
+                    tom: ISODateToPrettyDateFormat(opphold.tidsperiode.tom)
                 }}
             />
         </div>

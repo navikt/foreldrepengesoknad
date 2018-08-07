@@ -66,8 +66,8 @@ export const mapPeriodeToTimelineEvent = (
             id: periode.id || guid(),
             type: TimelineItemType.event,
             title: getTittel(),
-            startDate: periode.tidsperiode.startdato,
-            endDate: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.fom,
+            endDate: periode.tidsperiode.tom,
             personName:
                 periode.forelder === 'forelder2' && annenForelder
                     ? annenForelder.fornavn
@@ -80,10 +80,10 @@ export const mapPeriodeToTimelineEvent = (
         };
     } else {
         const gapItem: TimelineGap = {
-            id: periode.tidsperiode.startdato.toDateString(),
+            id: periode.tidsperiode.fom.toDateString(),
             type: TimelineItemType.gap,
-            startDate: periode.tidsperiode.startdato,
-            endDate: periode.tidsperiode.sluttdato,
+            startDate: periode.tidsperiode.fom,
+            endDate: periode.tidsperiode.tom,
             title: 'Opphold/tapte dager',
             days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             icons: getTimelineIconsForPeriode(periode),

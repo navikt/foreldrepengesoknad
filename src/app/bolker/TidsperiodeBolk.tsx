@@ -61,13 +61,13 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <DatoInputWithValidation
                             id="fraDatoInput"
                             label={getMessage(intl, 'fraogmed')}
-                            onChange={(startdato: Date) => {
+                            onChange={(fom: Date) => {
                                 this.handleOnChange({
                                     ...tidsperiode,
-                                    startdato
+                                    fom
                                 });
                             }}
-                            dato={tidsperiode.startdato}
+                            dato={tidsperiode.fom}
                             avgrensninger={
                                 datoAvgrensninger && datoAvgrensninger.fra
                             }
@@ -81,13 +81,13 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <DatoInputWithValidation
                             id="tilDatoInput"
                             label={getMessage(intl, 'tilogmed')}
-                            onChange={(sluttdato: Date) => {
+                            onChange={(tom: Date) => {
                                 this.handleOnChange({
                                     ...tidsperiode,
-                                    sluttdato
+                                    tom
                                 });
                             }}
-                            dato={tidsperiode.sluttdato}
+                            dato={tidsperiode.tom}
                             disabled={false || sluttdatoDisabled}
                             avgrensninger={
                                 datoAvgrensninger && datoAvgrensninger.til

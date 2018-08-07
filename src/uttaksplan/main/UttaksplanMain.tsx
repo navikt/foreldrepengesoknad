@@ -127,7 +127,7 @@ class UttaksplanMain extends React.Component<Props> {
                 <div className="blokk-m">
                     <Veilederinfo type="info">
                         Her setter du opp hvordan dere ønsker å ta ut
-                        foreldrepengene. Henrik må sende inn egen søknad.
+                        foreldrepengene.
                     </Veilederinfo>
                 </div>
                 {!perioderOpprettet && (

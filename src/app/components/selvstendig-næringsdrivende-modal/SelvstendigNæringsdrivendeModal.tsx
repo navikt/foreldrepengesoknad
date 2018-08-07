@@ -179,7 +179,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                         pågående: !pågående,
                                         tidsperiode: {
                                             ...tidsperiode,
-                                            sluttdato: undefined
+                                            tom: undefined
                                         }
                                     });
                                 }}
@@ -284,7 +284,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         synlig={
                             stillingsprosent !== undefined &&
                             tidsperiode &&
-                            tidsperiode.startdato &&
+                            tidsperiode.fom &&
                             erMindreEnn4ÅrSidenOppstart(næring as Næring)
                         }
                         render={() => (
@@ -309,7 +309,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         synlig={
                             stillingsprosent !== undefined &&
                             tidsperiode &&
-                            tidsperiode.startdato &&
+                            tidsperiode.fom &&
                             !erMindreEnn4ÅrSidenOppstart(næring as Næring)
                         }
                         render={() => (

@@ -139,11 +139,11 @@ class UtenlandsoppholdModal extends React.Component<
             const { getFraAvgrensning, getTilAvgrensning } = avgrensningGetters;
             return {
                 fra: getFraAvgrensning && {
-                    ...getFraAvgrensning(tidsperiode && tidsperiode.sluttdato),
+                    ...getFraAvgrensning(tidsperiode && tidsperiode.tom),
                     ugyldigeTidsperioder: this.getTidsperioder()
                 },
                 til: getTilAvgrensning && {
-                    ...getTilAvgrensning(tidsperiode && tidsperiode.startdato),
+                    ...getTilAvgrensning(tidsperiode && tidsperiode.fom),
                     ugyldigeTidsperioder: this.getTidsperioder()
                 }
             };
@@ -158,8 +158,8 @@ class UtenlandsoppholdModal extends React.Component<
 
         const tidsperiode = oppholdToEdit && oppholdToEdit.tidsperiode;
         const ugyldigeTidsperioder = this.getTidsperioder();
-        const startdato = tidsperiode && tidsperiode.startdato;
-        const sluttdato = tidsperiode && tidsperiode.sluttdato;
+        const startdato = tidsperiode && tidsperiode.fom;
+        const sluttdato = tidsperiode && tidsperiode.tom;
 
         if (tidsperiodeValidators) {
             const { getFraRegler, getTilRegler } = tidsperiodeValidators;

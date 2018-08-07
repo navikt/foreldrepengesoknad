@@ -151,12 +151,10 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const utsettelser = utsettelse
             ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
             : registrerteUtsettelser;
-        const tilTidsromStartdato = startdato
-            ? startdato
-            : tidsperiode.startdato;
+        const tilTidsromStartdato = startdato ? startdato : tidsperiode.fom;
         const tilTidsperiode: Tidsperiode = {
-            startdato: tilTidsromStartdato,
-            sluttdato: getTilTidsromSluttdato(
+            fom: tilTidsromStartdato,
+            tom: getTilTidsromSluttdato(
                 tilTidsromStartdato,
                 utsettelser,
                 this.props.uttaksgrunnlag

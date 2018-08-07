@@ -19,26 +19,23 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     getAntallUttaksdager: (taBortFridager?: boolean) =>
         getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
-    setStartdato: (startdato: Date) => flyttTidsperiode(tidsperiode, startdato),
+    setStartdato: (fom: Date) => flyttTidsperiode(tidsperiode, fom),
     setUttaksdager: (uttaksdager: number) =>
-        getTidsperiode(tidsperiode.startdato, uttaksdager)
+        getTidsperiode(tidsperiode.fom, uttaksdager)
 });
 
 /**
  * Returnerer ny Tidsperiode gitt gyldig uttaksdag-startdato og antall uttaksdager
- * @param startdato
+ * @param fom
  * @param uttaksdager
  */
-export function getTidsperiode(
-    startdato: Date,
-    uttaksdager: number
-): Tidsperiode {
-    if (!Uttaksdagen(startdato).erUttaksdag()) {
+export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
+    if (!Uttaksdagen(fom).erUttaksdag()) {
         throw new Error('Startdato er ikke en uttaksdag');
     }
     return {
-        startdato,
-        sluttdato: Uttaksdagen(startdato).leggTil(uttaksdager - 1)
+        fom,
+        tom: Uttaksdagen(fom).leggTil(uttaksdager - 1)
     };
 }
 
@@ -73,18 +70,18 @@ function getAntallUttaksdagerITidsperiode(
     tidsperiode: Tidsperiode,
     taBortFridager?: boolean
 ): number {
-    if (tidsperiode.startdato > tidsperiode.sluttdato) {
+    if (tidsperiode.fom > tidsperiode.tom) {
         return -1;
     }
-    const startdato = new Date(tidsperiode.startdato.getTime());
-    const sluttdato = new Date(tidsperiode.sluttdato.getTime());
+    const fom = new Date(tidsperiode.fom.getTime());
+    const tom = new Date(tidsperiode.tom.getTime());
     let antall = 0;
     let fridager = 0;
-    while (startdato <= sluttdato) {
-        if (Uttaksdagen(startdato).erUttaksdag()) {
+    while (fom <= tom) {
+        if (Uttaksdagen(fom).erUttaksdag()) {
             antall++;
         }
-        startdato.setDate(startdato.getDate() + 1);
+        fom.setDate(fom.getDate() + 1);
     }
     if (taBortFridager) {
         fridager = getUttaksdagerSomErFridager(tidsperiode).length;
@@ -105,14 +102,11 @@ function getUttaksdagerSomErFridager(tidsperiode: Tidsperiode): Holiday[] {
  * Setter ny startdato og flytter sluttdato slik at antall
  * uttaksdager blir det samme
  * @param tidsperiode
- * @param startdato
+ * @param fom
  */
-function flyttTidsperiode(
-    tidsperiode: Tidsperiode,
-    startdato: Date
-): Tidsperiode {
+function flyttTidsperiode(tidsperiode: Tidsperiode, fom: Date): Tidsperiode {
     const uttaksdager = getAntallUttaksdagerITidsperiode(tidsperiode);
-    return getTidsperiode(startdato, uttaksdager);
+    return getTidsperiode(fom, uttaksdager);
 }
 
 /**
@@ -134,14 +128,8 @@ function erTidsperiodeOmsluttetAvTidsperiode(
     tidsperiode2: Tidsperiode
 ): boolean {
     return (
-        erSammeEllerSenereDato(
-            tidsperiode1.startdato,
-            tidsperiode2.startdato
-        ) &&
-        erSammeEllerTidligereDato(
-            tidsperiode1.sluttdato,
-            tidsperiode2.sluttdato
-        )
+        erSammeEllerSenereDato(tidsperiode1.fom, tidsperiode2.fom) &&
+        erSammeEllerTidligereDato(tidsperiode1.tom, tidsperiode2.tom)
     );
 }
 
@@ -155,7 +143,7 @@ function erTidsperiodeUtenforTidsperiode(
     tidsperiode2: Tidsperiode
 ): boolean {
     return (
-        isAfter(tidsperiode1.startdato, tidsperiode2.sluttdato) ||
-        isBefore(tidsperiode1.sluttdato, tidsperiode2.startdato)
+        isAfter(tidsperiode1.fom, tidsperiode2.tom) ||
+        isBefore(tidsperiode1.tom, tidsperiode2.fom)
     );
 }

@@ -169,14 +169,10 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = 
             <FormattedMessage
                 id="tidsintervall"
                 values={{
-                    fom: ISODateToPrettyDateFormat(
-                        næring.tidsperiode.startdato
-                    ),
+                    fom: ISODateToPrettyDateFormat(næring.tidsperiode.fom),
                     tom: næring.pågående
                         ? 'pågående'
-                        : ISODateToPrettyDateFormat(
-                              næring.tidsperiode.sluttdato
-                          )
+                        : ISODateToPrettyDateFormat(næring.tidsperiode.tom)
                 }}
             />
         </div>
