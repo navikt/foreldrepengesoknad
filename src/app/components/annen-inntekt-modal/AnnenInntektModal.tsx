@@ -15,7 +15,7 @@ import {
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { Checkbox } from 'nav-frontend-skjema';
+import { Checkbox, Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import BEMHelper from 'common/util/bem';
@@ -26,6 +26,7 @@ import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { AttachmentType } from '../../types/søknad/Søknad';
+import { InputChangeEvent } from '../../types/dom/Events';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -164,6 +165,31 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     };
                                     this.updateAnnenInntekt(utlandInntekt);
                                 }}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            (annenInntekt as JobbIUtlandetInntekt).land !==
+                            undefined
+                        }
+                        render={() => (
+                            <Input
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.spørsmål.arbeidsgiver'
+                                )}
+                                onChange={(e: InputChangeEvent) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        arbeidsgiverNavn: e.target.value
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
+                                value={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .arbeidsgiverNavn || ''
+                                }
                             />
                         )}
                     />
