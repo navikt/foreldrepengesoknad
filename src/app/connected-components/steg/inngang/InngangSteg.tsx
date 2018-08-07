@@ -39,34 +39,6 @@ class InngangSteg extends React.Component<Props, {}> {
         super(props);
     }
 
-    componentDidMount() {
-        if (this.shouldResetSøkerRolle()) {
-            this.resetSøkerRolle();
-        }
-    }
-
-    shouldResetSøkerRolle(): boolean {
-        return (
-            this.props.situasjon === Søkersituasjon.STEBARN ||
-            this.gjelderSøknadenFødselOgErSøkerMann()
-        );
-    }
-
-    gjelderSøknadenFødselOgErSøkerMann(): boolean {
-        const { situasjon, søkersKjønn } = this.props;
-        return (
-            situasjon === Søkersituasjon.FØDSEL && søkersKjønn === Kjønn.MANN
-        );
-    }
-
-    resetSøkerRolle() {
-        this.props.dispatch(
-            søknadActions.updateSøker({
-                rolle: undefined
-            })
-        );
-    }
-
     componentWillUnmount() {
         if (this.props.rolle === undefined) {
             this.determineSøkerRolle();
@@ -74,28 +46,12 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     determineSøkerRolle() {
-        if (this.props.situasjon === Søkersituasjon.STEBARN) {
-            this.setSøkerRolleInCaseOfStebarnsadopsjon();
-        } else if (this.gjelderSøknadenFødselOgErSøkerMann()) {
-            this.setSøkerRolleAsFar();
-        }
-    }
-
-    setSøkerRolleInCaseOfStebarnsadopsjon() {
         this.props.dispatch(
             søknadActions.updateSøker({
                 rolle:
                     this.props.søkersKjønn === Kjønn.KVINNE
                         ? SøkerRolle.MOR
                         : SøkerRolle.FAR
-            })
-        );
-    }
-
-    setSøkerRolleAsFar() {
-        this.props.dispatch(
-            søknadActions.updateSøker({
-                rolle: SøkerRolle.FAR
             })
         );
     }
@@ -116,13 +72,18 @@ class InngangSteg extends React.Component<Props, {}> {
                     render={() => (
                         <SøkersituasjonSpørsmål
                             situasjon={situasjon}
-                            onChange={(value) =>
+                            onChange={(value) => {
                                 dispatch(
                                     søknadActions.updateSøknad({
                                         situasjon: value
                                     })
-                                )
-                            }
+                                );
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        rolle: undefined
+                                    })
+                                );
+                            }}
                         />
                     )}
                 />
