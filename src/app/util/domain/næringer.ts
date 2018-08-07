@@ -7,7 +7,7 @@ export const erMindreEnn4ÅrSidenOppstart = (næring: Næring): boolean => {
     const date4YearsAgo = moment()
         .subtract(4, 'years')
         .startOf('day');
-    const startdato = moment(tidsperiode.startdato).startOf('day');
+    const startdato = moment(tidsperiode.fom).startOf('day');
 
     return date4YearsAgo.isSameOrBefore(startdato);
 };

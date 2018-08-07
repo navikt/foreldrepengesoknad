@@ -108,7 +108,7 @@ const mapStateToProps = (
     const { familiehendelsedato } = props;
     const { dekningsgrad } = form;
     const sisteRegistrertePermisjonsdag =
-        props.uttaksinfo.registrertTidsperiode.sluttdato;
+        props.uttaksinfo.registrertTidsperiode.tom;
     if (
         !familiehendelsedato ||
         !dekningsgrad ||

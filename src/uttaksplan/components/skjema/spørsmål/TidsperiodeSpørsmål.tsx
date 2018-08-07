@@ -6,7 +6,7 @@ import { Row, Column } from 'nav-frontend-grid';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { renderDag } from 'common/util/renderUtils';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 interface TidsperiodeDatoProps {
     label?: string;
@@ -68,15 +68,19 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                 }
                                 avgrensninger={{
                                     minDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.startdato
+                                        ? tidsperiodeStartdato.fom
                                         : undefined,
                                     maksDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.sluttdato
+                                        ? tidsperiodeStartdato.tom
                                         : undefined,
                                     helgedagerIkkeTillatt,
-                                    ugyldigeTidsperioder
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder
+                                        ? ugyldigeTidsperioder
+                                        : undefined
                                 }}
-                                kalenderplassering="fullskjerm"
+                                kalender={{
+                                    plassering: 'fullskjerm'
+                                }}
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}
@@ -88,8 +92,8 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                     <div className="blokkPad-s">
                         <div className="blokk-xxs">
                             <DatoInput
-                                id="sluttdato"
                                 dato={sluttdato.dato}
+                                id="sluttdato"
                                 label={
                                     sluttdato.label ||
                                     intl.formatMessage({
@@ -105,16 +109,18 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     minDato:
                                         minSluttdato ||
                                         (tidsperiodeSluttdato
-                                            ? tidsperiodeSluttdato.startdato
+                                            ? tidsperiodeSluttdato.fom
                                             : undefined),
                                     maksDato: tidsperiodeSluttdato
-                                        ? tidsperiodeSluttdato.sluttdato
+                                        ? tidsperiodeSluttdato.tom
                                         : undefined,
-                                    ugyldigeTidsperioder,
-                                    helgedagerIkkeTillatt
+                                    helgedagerIkkeTillatt,
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder
+                                        ? ugyldigeTidsperioder
+                                        : undefined
                                 }}
                                 onChange={(date) => sluttdato.onChange(date)}
-                                kalenderplassering="fullskjerm"
+                                kalender={{ plassering: 'fullskjerm' }}
                                 dayPickerProps={{
                                     renderDay: renderDag
                                 }}

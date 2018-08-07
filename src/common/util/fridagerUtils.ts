@@ -8,13 +8,13 @@ import {
     isEqual
 } from 'date-fns';
 import { normaliserDato } from 'common/util/datoUtils';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 const holidays = DateHolidays('no');
 
 export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
-    const fraÅr = tidsperiode.startdato.getFullYear();
-    const tilÅr = tidsperiode.sluttdato.getFullYear();
+    const fraÅr = tidsperiode.fom.getFullYear();
+    const tilÅr = tidsperiode.tom.getFullYear();
     let days = [] as Holiday[];
     if (fraÅr === tilÅr) {
         days = holidays.getHolidays(fraÅr);
@@ -25,8 +25,8 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
             år++;
         }
     }
-    const start = addDays(tidsperiode.startdato, -1);
-    const slutt = addDays(tidsperiode.sluttdato, 1);
+    const start = addDays(tidsperiode.fom, -1);
+    const slutt = addDays(tidsperiode.tom, 1);
     return days
         .filter((d) => d.type === 'public')
         .filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
@@ -43,8 +43,8 @@ export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
 
 /* Default - hente ut helligdager i default tidsrom */
 export const fridager = getOffentligeFridager({
-    startdato: new Date(2017, 0, 1),
-    sluttdato: new Date(2022, 0, 1)
+    fom: new Date(2017, 0, 1),
+    tom: new Date(2022, 0, 1)
 });
 
 export const erFridag = (dato: Date): string | undefined => {

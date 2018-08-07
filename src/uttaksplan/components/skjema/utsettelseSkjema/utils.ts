@@ -28,10 +28,10 @@ export function getDefaultState(
                       ? 'forelder1'
                       : undefined,
               startdato: utsettelse.tidsperiode
-                  ? utsettelse.tidsperiode.startdato
+                  ? utsettelse.tidsperiode.fom
                   : undefined,
               sluttdato: utsettelse.tidsperiode
-                  ? utsettelse.tidsperiode.sluttdato
+                  ? utsettelse.tidsperiode.tom
                   : undefined
           }
         : {
@@ -99,8 +99,8 @@ export function validerUtsettelseskjema(
             sluttdato,
             {
                 ...tidsperiode,
-                sluttdato: getTilTidsromSluttdato(
-                    startdato || tidsperiode.startdato,
+                tom: getTilTidsromSluttdato(
+                    startdato || tidsperiode.fom,
                     andreUtsettelser,
                     uttaksgrunnlag
                 )
@@ -178,8 +178,8 @@ export function validerUtsettelseskjema(
         startdato &&
         sluttdato &&
         Tidsperioden({
-            startdato,
-            sluttdato
+            fom: startdato,
+            tom: sluttdato
         }).getAntallFridager() > 0
     ) {
         valideringsfeil.set('tidsperiode', {
@@ -206,8 +206,8 @@ export function getUgyldigeTidsrom(
         registrerteUtsettelser
             .filter((u) => !utsettelse || utsettelse.id !== u.id)
             .map((u) => ({
-                startdato: u.tidsperiode.startdato,
-                sluttdato: u.tidsperiode.sluttdato
+                fom: u.tidsperiode.fom,
+                tom: u.tidsperiode.tom
             }));
     return ugyldigeTidsrom;
 }
@@ -216,21 +216,21 @@ export function getUgyldigeTidsrom(
  * Finner siste gyldige sluttdato for en utsettelse
  * @param familiehendelsedato
  * @param permisjonsregler
- * @param tilTidsromStartdato
+ * @param tilTidsromFom
  * @param registrerteUtsettelser
  */
 export function getTilTidsromSluttdato(
-    tilTidsromStartdato: Date,
+    tilTidsromFom: Date,
     registrerteUtsettelser: Utsettelsesperiode[],
     uttaksgrunnlag: Uttaksgrunnlag
 ) {
     if (registrerteUtsettelser.length > 0) {
         const pafolgendeUtsettelser = registrerteUtsettelser.filter((u) =>
-            isAfter(u.tidsperiode.startdato, tilTidsromStartdato)
+            isAfter(u.tidsperiode.fom, tilTidsromFom)
         );
         if (pafolgendeUtsettelser.length > 0) {
             return Uttaksdagen(
-                pafolgendeUtsettelser[0].tidsperiode.startdato
+                pafolgendeUtsettelser[0].tidsperiode.fom
             ).forrige();
         }
     }
@@ -242,16 +242,16 @@ export function getTilTidsromSluttdato(
  * ny utsettelse
  * @param årsak
  * @param forelder
- * @param startdato
- * @param sluttdato
+ * @param fom
+ * @param tom
  * @param registrerteUtsettelser
  * @param utsettelse
  */
 export function getAntallFeriedager(
     årsak: UtsettelseÅrsakType | undefined,
     forelder: Forelder | undefined,
-    startdato: Date | undefined,
-    sluttdato: Date | undefined,
+    fom: Date | undefined,
+    tom: Date | undefined,
     registrerteUtsettelser: Utsettelsesperiode[],
     utsettelse: Utsettelsesperiode | undefined
 ) {
@@ -267,10 +267,10 @@ export function getAntallFeriedager(
     }
 
     let fridager = 0;
-    if (startdato && sluttdato) {
+    if (fom && tom) {
         const tidsperiode: Tidsperiode = {
-            startdato,
-            sluttdato
+            fom,
+            tom
         };
         nyeFeriedager = Tidsperioden(tidsperiode).getAntallUttaksdager();
         fridager = Tidsperioden(tidsperiode).getAntallFridager();
