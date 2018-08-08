@@ -133,7 +133,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="annenInntekt.modal.tittel" />
                     </Undertittel>
-
                     <Spørsmål
                         render={() => (
                             <InntektstypeVelger
@@ -147,7 +146,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         synlig={gjelderJobbIUtlandet}
                         render={() => (
@@ -168,7 +166,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         synlig={
                             (annenInntekt as JobbIUtlandetInntekt).land !==
@@ -193,7 +190,27 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
+                    <Spørsmål
+                        synlig={
+                            gjelderJobbIUtlandet &&
+                            (annenInntekt as JobbIUtlandetInntekt)
+                                .arbeidsgiverNavn !== undefined
+                        }
+                        render={() => (
+                            <ErArbeidsgiverNærVennEllerFamilie
+                                erArbeidsgiverNærVennEllerFamilie={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .erNærVennEllerFamilieMedArbeidsgiver
+                                }
+                                onChange={(v: boolean) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        erNærVennEllerFamilieMedArbeidsgiver: v
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
+                            />
+                        )}
+                    />
                     <Bolk
                         render={() => (
                             <TidsperiodeBolk
@@ -205,7 +222,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         render={() => (
                             <Checkbox
@@ -226,7 +242,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         render={() => (
                             <AttachmentsUploader
@@ -258,25 +273,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
-                    <Spørsmål
-                        synlig={gjelderJobbIUtlandet}
-                        render={() => (
-                            <ErArbeidsgiverNærVennEllerFamilie
-                                erArbeidsgiverNærVennEllerFamilie={
-                                    (annenInntekt as JobbIUtlandetInntekt)
-                                        .erNærVennEllerFamilieMedArbeidsgiver
-                                }
-                                onChange={(v: boolean) => {
-                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                        erNærVennEllerFamilieMedArbeidsgiver: v
-                                    };
-                                    this.updateAnnenInntekt(utlandInntekt);
-                                }}
-                            />
-                        )}
-                    />
-
                     <Knapperad>
                         <Knapp
                             type="standard"
