@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const contextPath = '/foreldrepengesoknad-api';
-const path = require('path');
 const multer = require('multer');
 const MockStorage = require('./mock-storage');
 
@@ -61,8 +60,6 @@ router.post('/rest/storage', (req, res) => {
     MockStorage.updateSoknad(req.body);
     return res.sendStatus(200);
 });
-
-router.delete('/rest/storage', (req, res) => res.sendStatus(200));
 
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });
 router.post(
