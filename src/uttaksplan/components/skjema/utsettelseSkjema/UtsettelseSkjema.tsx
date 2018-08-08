@@ -50,8 +50,8 @@ export type Props = OwnProps & InjectedIntlProps;
 export interface State {
     årsak?: UtsettelseÅrsakType;
     forelder?: Forelder;
-    startdato?: Date;
-    sluttdato?: Date;
+    fom?: Date;
+    tom?: Date;
     valideringsfeil: Valideringsfeil;
     visValideringsfeil?: boolean;
 }
@@ -78,16 +78,16 @@ class UtsettelseSkjema extends React.Component<Props, State> {
     }
 
     setStartdato(dato: Date) {
-        const startdato = normaliserDato(dato);
+        const fom = normaliserDato(dato);
         this.setState({
-            startdato
+            fom
         });
         this.revaliderSkjema();
     }
 
     setSluttdato(dato: Date) {
-        const sluttdato = normaliserDato(dato);
-        this.setState({ sluttdato });
+        const tom = normaliserDato(dato);
+        this.setState({ tom });
         this.revaliderSkjema();
     }
 
@@ -110,18 +110,21 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         return valideringsfeil;
     }
 
-    hentSkjemadata(): Utsettelsesperiode {
-        const { årsak, startdato, sluttdato, forelder } = this.state;
+    hentSkjemadata(): Utsettelsesperiode | undefined {
+        const { årsak, fom, tom, forelder } = this.state;
+        if (!årsak || !forelder || !tom || !fom) {
+            return undefined;
+        }
         return {
             id: this.props.utsettelse ? this.props.utsettelse.id : undefined,
             type: Periodetype.Utsettelse,
             årsak,
             tidsperiode: {
-                startdato,
-                sluttdato
+                fom,
+                tom
             },
             forelder
-        } as any;
+        };
     }
 
     handleSubmitClick(evt: React.MouseEvent<HTMLButtonElement>) {
@@ -129,14 +132,17 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const valideringsfeil = this.validerSkjema();
         if (valideringsfeil.size === 0) {
             this.setState({ visValideringsfeil: false });
-            this.props.onChange(this.hentSkjemadata());
+            const skjemadata = this.hentSkjemadata();
+            if (skjemadata) {
+                this.props.onChange(skjemadata);
+            }
         } else {
             this.setState({ visValideringsfeil: true, valideringsfeil });
         }
     }
 
     render() {
-        const { årsak, startdato, sluttdato, forelder } = this.state;
+        const { årsak, fom, tom, forelder } = this.state;
         const {
             utsettelse,
             navnForelder1,
@@ -151,7 +157,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const utsettelser = utsettelse
             ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
             : registrerteUtsettelser;
-        const tilTidsromStartdato = startdato ? startdato : tidsperiode.fom;
+        const tilTidsromStartdato = fom ? fom : tidsperiode.fom;
         const tilTidsperiode: Tidsperiode = {
             fom: tilTidsromStartdato,
             tom: getTilTidsromSluttdato(
@@ -168,8 +174,8 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                 ? getAntallFeriedager(
                       årsak,
                       forelder,
-                      startdato,
-                      sluttdato,
+                      fom,
+                      tom,
                       utsettelser,
                       utsettelse
                   )
@@ -183,14 +189,12 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const visStartdatofeil =
             !this.skalValidere &&
             startdatoFeil &&
-            (this.state.visValideringsfeil ||
-                this.state.startdato !== undefined);
+            (this.state.visValideringsfeil || this.state.fom !== undefined);
 
         const visSluttdatofeil =
             !this.skalValidere &&
             sluttdatoFeil &&
-            (this.state.visValideringsfeil ||
-                this.state.sluttdato !== undefined);
+            (this.state.visValideringsfeil || this.state.tom !== undefined);
 
         const tidsperiodeFeil =
             !visStartdatofeil && !visSluttdatofeil
@@ -250,7 +254,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     <div className="blokkPad-s">
                         <TidsperiodeSpørsmål
                             startdato={{
-                                dato: startdato,
+                                dato: fom,
                                 label: intl.formatMessage({
                                     id:
                                         'uttaksplan.utsettelseskjema.startdato.sporsmal'
@@ -261,7 +265,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 visFeil: visStartdatofeil
                             }}
                             sluttdato={{
-                                dato: sluttdato,
+                                dato: tom,
                                 label: intl.formatMessage({
                                     id:
                                         'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
