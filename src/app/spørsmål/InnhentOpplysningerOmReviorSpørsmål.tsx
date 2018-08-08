@@ -5,7 +5,7 @@ import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-res
 
 interface InnhenteOpplsyningerOmRevisorSpørsmålProps {
     hentOpplysningerOmRevisor?: boolean;
-    onChange: (nyIArbeidslivet: boolean) => void;
+    onChange: (hentOpplysningerOmRevisor: boolean) => void;
 }
 
 type Props = InnhenteOpplsyningerOmRevisorSpørsmålProps & InjectedIntlProps;
