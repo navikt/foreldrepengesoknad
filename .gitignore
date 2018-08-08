@@ -6,4 +6,5 @@ node_modules
 yarn.lock
 yarn-error.log
 workbench
+mock_data
 .DS_Store
