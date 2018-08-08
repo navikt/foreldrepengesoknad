@@ -28,6 +28,7 @@ import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNærin
 import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -162,6 +163,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     this.updateNæring({ tidsperiode: v })
                                 }
                                 sluttdatoDisabled={pågående}
+                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                    tidsperiode
+                                )}
                             />
                         )}
                     />
