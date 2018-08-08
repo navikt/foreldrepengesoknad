@@ -31,6 +31,8 @@ export const dateMoreThan3YearsAgo = moment()
     .subtract(1, 'days')
     .startOf('day');
 
+export const date4yearsAgo = moment().subtract(4, 'years');
+
 export const fjortenUkerPluss3Number = 14 * 7 + 3;
 export const fjortenUkerPluss3 = moment().add(fjortenUkerPluss3Number, 'days');
 export const fjortenUkerPluss4 = moment().add(

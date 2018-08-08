@@ -24,7 +24,7 @@ export class Næring {
     regnskapsfører: Næringsrelasjon;
     harRevisor: boolean;
     revisor: Næringsrelasjon;
-    innhentOpplsyningerOmRevisor: boolean;
+    kanInnhenteOpplsyningerFraRevisor: boolean;
 }
 
 export class EndringAvNæringsinntektInformasjon {

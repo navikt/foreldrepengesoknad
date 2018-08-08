@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import RadioPanelGruppeResponsive from 'common/components/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
+import { InputChangeEvent } from '../types/dom/Events';
 
 interface InnhenteOpplsyningerOmRevisorSpørsmålProps {
     hentOpplysningerOmRevisor?: boolean;
@@ -15,7 +16,7 @@ enum OpplysningerOmRevior {
     'IKKE_HENT_OPPLYSNINGER_OM_REVISOR' = 'ikkeHentOpplysningerOmRevisor'
 }
 
-const InnhenteOpplsyningerOmRevisorSpørsmål = (props: Props) => {
+const KanInnhenteOpplsyningerFraRevisorSpørsmål = (props: Props) => {
     const { onChange, hentOpplysningerOmRevisor, intl } = props;
 
     let checked;
@@ -41,10 +42,7 @@ const InnhenteOpplsyningerOmRevisorSpørsmål = (props: Props) => {
                 }
             ]}
             name="hentOpplysningerOmRevisor"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: OpplysningerOmRevior
-            ) =>
+            onChange={(e: InputChangeEvent, v: OpplysningerOmRevior) =>
                 onChange(
                     v === OpplysningerOmRevior.HENT_OPPLYSNINGER_OM_REVISOR
                 )
@@ -53,4 +51,4 @@ const InnhenteOpplsyningerOmRevisorSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(InnhenteOpplsyningerOmRevisorSpørsmål);
+export default injectIntl(KanInnhenteOpplsyningerFraRevisorSpørsmål);

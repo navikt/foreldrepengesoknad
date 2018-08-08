@@ -28,8 +28,9 @@ import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNærin
 import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
-import InnhentOpplysningerOmReviorSpørsmål from '../../spørsmål/InnhentOpplysningerOmReviorSpørsmål';
+import KanInnhenteOpplysningerOmReviorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import moment from 'moment';
+import { InputChangeEvent } from '../../types/dom/Events';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -144,7 +145,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             nyIArbeidslivet,
             harRegnskapsfører,
             harRevisor,
-            innhentOpplsyningerOmRevisor,
+            kanInnhenteOpplsyningerFraRevisor,
             regnskapsfører,
             revisor
         } = næring;
@@ -171,16 +172,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
 
                     <Spørsmål
-                        synlig={næringstyper !== undefined}
+                        synlig={
+                            næringstyper !== undefined &&
+                            næringstyper.length > 0
+                        }
                         render={() => (
                             <Input
                                 label={getMessage(
                                     intl,
                                     'selvstendigNæringsdrivende.modal.navn'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
+                                onChange={(e: InputChangeEvent) =>
                                     this.updateNæring({
                                         navnPåNæringen: e.target.value
                                     })
@@ -198,9 +200,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     intl,
                                     'selvstendigNæringsdrivende.modal.orgnr'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
+                                onChange={(e: InputChangeEvent) =>
                                     this.updateNæring({
                                         organisasjonsnummer: e.target.value
                                     })
@@ -253,15 +253,13 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     intl,
                                     'annenInntekt.spørsmål.næringsinntekt'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => {
+                                onChange={(e: InputChangeEvent) => {
                                     const næringPartial: NæringPartial = {
                                         næringsinntekt: e.target.value
                                     };
                                     this.updateNæring(næringPartial);
                                 }}
-                                value={næringsinntekt}
+                                value={næringsinntekt || ''}
                             />
                         )}
                     />
@@ -307,9 +305,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     intl,
                                     'selvstendigNæringsdrivende.modal.stillingsprosent'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
+                                onChange={(e: InputChangeEvent) =>
                                     this.updateNæring({
                                         stillingsprosent: e.target.value
                                     })
@@ -388,22 +384,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={harRegnskapsfører === true}
-                        render={() => (
-                            <InnhentOpplysningerOmReviorSpørsmål
-                                hentOpplysningerOmRevisor={
-                                    innhentOpplsyningerOmRevisor
-                                }
-                                onChange={(v: boolean) =>
-                                    this.updateNæring({
-                                        innhentOpplsyningerOmRevisor: v
-                                    })
-                                }
-                            />
-                        )}
-                    />
-
                     <Bolk
                         synlig={
                             stillingsprosent !== undefined &&
@@ -426,6 +406,24 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 onChange={(v: NæringsrelasjonPartial) =>
                                     this.updateNæring({
                                         revisor: v as Næringsrelasjon
+                                    })
+                                }
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            harRegnskapsfører === false && harRevisor === true
+                        }
+                        render={() => (
+                            <KanInnhenteOpplysningerOmReviorSpørsmål
+                                hentOpplysningerOmRevisor={
+                                    kanInnhenteOpplsyningerFraRevisor
+                                }
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({
+                                        kanInnhenteOpplsyningerFraRevisor: v
                                     })
                                 }
                             />
