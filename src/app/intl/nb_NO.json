@@ -40,14 +40,14 @@
     "dinePlikter.listeElement.2.link": "nav.no/rettogplikt",
 
     "annenForelder.spørsmål.kanOppgis":
-        "Jeg kan ikke oppgi den andre forelderen",
+        "Jeg kan ikke oppgi navnet til den andre forelderen",
     "annenForelder.spørsmål.adoptererAlene": "Jeg adopterer alene",
     "annenForelder.spørsmål.navn": "Den andre forelderen heter...",
     "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
     "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
 
-    "annenInntekt.modal.pågående": "Pågående periode",
-    "annenInntekt.spørsmål": "De siste 10 månedene har jeg...",
+    "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
+    "annenInntekt.spørsmål": "Har du hatt annen inntekt de siste 10 månedene?",
     "annenInntekt.alternativ.hatt": "hatt annen inntekt",
     "annenInntekt.alternativ.ikkeHatt": "ikke hatt annen inntekt",
     "annenInntekt.leggTilInntekt": "Legg til inntekt",
@@ -104,7 +104,7 @@
         "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Er du selvstendig næringsdrivende eller frilanser?",
+        "Er du selvstendig næringsdrivende?",
 
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
         "Har du jobbet som frilanser de siste 10 månedene?",
@@ -112,7 +112,7 @@
         "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
-    "frilans.oppstart": "Når begynte du som frilans?",
+    "frilans.oppstart": "Når begynte du som frilanser?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
     "frilansOppdrag.modal.pågående": "Pågående oppdrag",
@@ -127,15 +127,16 @@
 
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
 
-    "næringstype.spørsmål": "Hvilke typer næringer er det du har drevet?",
+    "næringstype.spørsmål": "Hvilken type virksomhet har du?",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål":
         "Perioder som selvstendig næringsdrivende",
-    "selvstendigNæringsdrivende.modal.navn": "Navn på næringen",
+    "selvstendigNæringsdrivende.modal.navn": "Navn på virksomheten",
     "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
-    "selvstendigNæringsdrivende.modal.tittel": "Legg til næring",
+    "selvstendigNæringsdrivende.modal.tittel":
+        "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.registrertILand":
-        "Hvilket land er næringen registrert i?",
+        "Hvilket land er virksomheten registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
     "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
     "varigEndringAvNæringsinntekt.spørsmål":
@@ -168,13 +169,13 @@
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
 
-    "annenForelder.aleneOmOmsorg": "Jeg skal ha aleneomsorg",
+    "annenForelder.aleneOmOmsorg": "Jeg har aleneomsorgen",
     "annenForelder.bostedsland": "og bor i...",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
-    "annenForelder.label.navn": "Den andre forelderen heter...",
+    "annenForelder.label.navn": "Hva heter den andre forelderen?",
     "annenForelder.label.kanIkkeOppgiNavn":
-        "Jeg kan ikke oppgi den andre forelderen",
+        "Jeg kan ikke oppgi navnet til andre forelderen",
     "annenForelder.label.fødselsnummer":
         "og har fødselsnummer eller D-nummer...",
     "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
@@ -208,10 +209,10 @@
     "søkerrolle.rolle.FORESATT": "Foresatt",
     "søkerrolle.rolle.FORESATT2": "Foresatt 2",
 
-    "søkersituasjon.spørsmål": "Gjelder søknaden fødsel eller adopsjon?",
+    "søkersituasjon.spørsmål": "Jeg om foreldrepenger ved...",
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
-    "søkersituasjon.alternativ.stebarn": "Stebarn",
+    "søkersituasjon.alternativ.stebarn": "Stebarnadopsjon",
     "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
 
     "gjelderSøknadenNoenAvDisseBarna.spørsmål":
