@@ -28,6 +28,10 @@ import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNærin
 import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
+import KanInnhenteOpplysningerOmReviorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
+import moment from 'moment';
+import { InputChangeEvent } from '../../types/dom/Events';
+import { date4yearsAgo } from '../../util/validation/values';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -77,7 +81,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
     }
 
-    updateNæring(næringProperties: NæringPartial) {
+    updateNæring(næringProperties: NæringPartial): void {
         this.setState({
             næring: {
                 ...this.state.næring,
@@ -86,7 +90,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         });
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    onSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
         event.stopPropagation();
 
@@ -100,7 +104,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         }
     }
 
-    toggleNæringstype(næringstype: Næringstype) {
+    toggleNæringstype(næringstype: Næringstype): void {
         const { næring } = this.state;
         const newNæringstyper = ((næring && næring.næringstyper) || []).slice();
         const indexOfNæringstype = newNæringstyper.indexOf(næringstype);
@@ -114,12 +118,24 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.updateNæring({ næringstyper: newNæringstyper });
     }
 
+    shouldAskForNæringsinntekt(): boolean {
+        const næringFomDato =
+            this.state.næring &&
+            this.state.næring.tidsperiode &&
+            this.state.næring.tidsperiode.fom;
+
+        return næringFomDato
+            ? moment(næringFomDato, moment.ISO_8601) > date4yearsAgo
+            : false;
+    }
+
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { næring } = this.state;
         const {
             navnPåNæringen,
             næringstyper,
+            næringsinntekt,
             tidsperiode,
             pågående,
             organisasjonsnummer,
@@ -129,6 +145,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             nyIArbeidslivet,
             harRegnskapsfører,
             harRevisor,
+            kanInnhenteOpplsyningerFraRevisor,
             regnskapsfører,
             revisor
         } = næring;
@@ -154,7 +171,47 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
+                    <Spørsmål
+                        synlig={
+                            næringstyper !== undefined &&
+                            næringstyper.length > 0
+                        }
+                        render={() => (
+                            <Input
+                                label={getMessage(
+                                    intl,
+                                    'selvstendigNæringsdrivende.modal.navn'
+                                )}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.updateNæring({
+                                        navnPåNæringen: e.target.value
+                                    })
+                                }
+                                value={navnPåNæringen || ''}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={navnPåNæringen !== undefined}
+                        render={() => (
+                            <Input
+                                label={getMessage(
+                                    intl,
+                                    'selvstendigNæringsdrivende.modal.orgnr'
+                                )}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.updateNæring({
+                                        organisasjonsnummer: e.target.value
+                                    })
+                                }
+                                value={organisasjonsnummer || ''}
+                            />
+                        )}
+                    />
+
                     <Bolk
+                        synlig={organisasjonsnummer !== undefined}
                         render={() => (
                             <TidsperiodeBolk
                                 tidsperiode={tidsperiode || {}}
@@ -167,6 +224,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
 
                     <Spørsmål
+                        synlig={organisasjonsnummer !== undefined}
                         render={() => (
                             <Checkbox
                                 checked={pågående || false}
@@ -188,41 +246,20 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
 
                     <Spørsmål
-                        synlig={næringstyper !== undefined}
+                        synlig={this.shouldAskForNæringsinntekt()}
                         render={() => (
                             <Input
                                 label={getMessage(
                                     intl,
-                                    'selvstendigNæringsdrivende.modal.navn'
+                                    'annenInntekt.spørsmål.næringsinntekt'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                    this.updateNæring({
-                                        navnPåNæringen: e.target.value
-                                    })
-                                }
-                                value={navnPåNæringen || ''}
-                            />
-                        )}
-                    />
-
-                    <Spørsmål
-                        synlig={navnPåNæringen !== undefined}
-                        render={() => (
-                            <Input
-                                label={getMessage(
-                                    intl,
-                                    'selvstendigNæringsdrivende.modal.orgnr'
-                                )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                    this.updateNæring({
-                                        organisasjonsnummer: e.target.value
-                                    })
-                                }
-                                value={organisasjonsnummer || ''}
+                                onChange={(e: InputChangeEvent) => {
+                                    const næringPartial: NæringPartial = {
+                                        næringsinntekt: e.target.value
+                                    };
+                                    this.updateNæring(næringPartial);
+                                }}
+                                value={næringsinntekt || ''}
                             />
                         )}
                     />
@@ -268,9 +305,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     intl,
                                     'selvstendigNæringsdrivende.modal.stillingsprosent'
                                 )}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
+                                onChange={(e: InputChangeEvent) =>
                                     this.updateNæring({
                                         stillingsprosent: e.target.value
                                     })
@@ -350,7 +385,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
 
                     <Bolk
-                        synlig={stillingsprosent !== undefined}
+                        synlig={
+                            stillingsprosent !== undefined &&
+                            harRegnskapsfører === false
+                        }
                         render={() => (
                             <NæringsrelasjonBolk
                                 renderSpørsmål={() => (
@@ -368,6 +406,24 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 onChange={(v: NæringsrelasjonPartial) =>
                                     this.updateNæring({
                                         revisor: v as Næringsrelasjon
+                                    })
+                                }
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={
+                            harRegnskapsfører === false && harRevisor === true
+                        }
+                        render={() => (
+                            <KanInnhenteOpplysningerOmReviorSpørsmål
+                                hentOpplysningerOmRevisor={
+                                    kanInnhenteOpplsyningerFraRevisor
+                                }
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({
+                                        kanInnhenteOpplsyningerFraRevisor: v
                                     })
                                 }
                             />
