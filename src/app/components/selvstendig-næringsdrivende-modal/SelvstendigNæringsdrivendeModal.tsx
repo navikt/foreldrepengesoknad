@@ -28,6 +28,8 @@ import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNærin
 import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
+import InnhentOpplysningerOmReviorSpørsmål from '../../spørsmål/InnhentOpplysningerOmReviorSpørsmål';
+import moment from 'moment';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -77,7 +79,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
     }
 
-    updateNæring(næringProperties: NæringPartial) {
+    updateNæring(næringProperties: NæringPartial): void {
         this.setState({
             næring: {
                 ...this.state.næring,
@@ -86,7 +88,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         });
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    onSubmit(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
         event.stopPropagation();
 
@@ -100,7 +102,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         }
     }
 
-    toggleNæringstype(næringstype: Næringstype) {
+    toggleNæringstype(næringstype: Næringstype): void {
         const { næring } = this.state;
         const newNæringstyper = ((næring && næring.næringstyper) || []).slice();
         const indexOfNæringstype = newNæringstyper.indexOf(næringstype);
@@ -114,12 +116,25 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.updateNæring({ næringstyper: newNæringstyper });
     }
 
+    shouldAskForNæringsinntekt(): boolean {
+        const næringFomDato =
+            this.state.næring &&
+            this.state.næring.tidsperiode &&
+            this.state.næring.tidsperiode.fom;
+
+        const date4yearsAgo = moment().subtract(4, 'years');
+        return næringFomDato
+            ? moment(næringFomDato, moment.ISO_8601) > date4yearsAgo
+            : false;
+    }
+
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { næring } = this.state;
         const {
             navnPåNæringen,
             næringstyper,
+            næringsinntekt,
             tidsperiode,
             pågående,
             organisasjonsnummer,
@@ -129,6 +144,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             nyIArbeidslivet,
             harRegnskapsfører,
             harRevisor,
+            innhentOpplsyningerOmRevisor,
             regnskapsfører,
             revisor
         } = næring;
@@ -150,39 +166,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             <NæringstypeSpørsmål
                                 næringstyper={næringstyper || []}
                                 onChange={this.toggleNæringstype}
-                            />
-                        )}
-                    />
-
-                    <Bolk
-                        render={() => (
-                            <TidsperiodeBolk
-                                tidsperiode={tidsperiode || {}}
-                                onChange={(v: TidsperiodeMedValgfriSluttdato) =>
-                                    this.updateNæring({ tidsperiode: v })
-                                }
-                                sluttdatoDisabled={pågående}
-                            />
-                        )}
-                    />
-
-                    <Spørsmål
-                        render={() => (
-                            <Checkbox
-                                checked={pågående || false}
-                                label={getMessage(
-                                    intl,
-                                    'annenInntekt.modal.pågående'
-                                )}
-                                onChange={() => {
-                                    this.updateNæring({
-                                        pågående: !pågående,
-                                        tidsperiode: {
-                                            ...tidsperiode,
-                                            tom: undefined
-                                        }
-                                    });
-                                }}
                             />
                         )}
                     />
@@ -223,6 +206,62 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     })
                                 }
                                 value={organisasjonsnummer || ''}
+                            />
+                        )}
+                    />
+
+                    <Bolk
+                        synlig={organisasjonsnummer !== undefined}
+                        render={() => (
+                            <TidsperiodeBolk
+                                tidsperiode={tidsperiode || {}}
+                                onChange={(v: TidsperiodeMedValgfriSluttdato) =>
+                                    this.updateNæring({ tidsperiode: v })
+                                }
+                                sluttdatoDisabled={pågående}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={organisasjonsnummer !== undefined}
+                        render={() => (
+                            <Checkbox
+                                checked={pågående || false}
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.modal.pågående'
+                                )}
+                                onChange={() => {
+                                    this.updateNæring({
+                                        pågående: !pågående,
+                                        tidsperiode: {
+                                            ...tidsperiode,
+                                            tom: undefined
+                                        }
+                                    });
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Spørsmål
+                        synlig={this.shouldAskForNæringsinntekt()}
+                        render={() => (
+                            <Input
+                                label={getMessage(
+                                    intl,
+                                    'annenInntekt.spørsmål.næringsinntekt'
+                                )}
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => {
+                                    const næringPartial: NæringPartial = {
+                                        næringsinntekt: e.target.value
+                                    };
+                                    this.updateNæring(næringPartial);
+                                }}
+                                value={næringsinntekt}
                             />
                         )}
                     />
@@ -349,8 +388,27 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
+                    <Spørsmål
+                        synlig={harRegnskapsfører === true}
+                        render={() => (
+                            <InnhentOpplysningerOmReviorSpørsmål
+                                hentOpplysningerOmRevisor={
+                                    innhentOpplsyningerOmRevisor
+                                }
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({
+                                        innhentOpplsyningerOmRevisor: v
+                                    })
+                                }
+                            />
+                        )}
+                    />
+
                     <Bolk
-                        synlig={stillingsprosent !== undefined}
+                        synlig={
+                            stillingsprosent !== undefined &&
+                            harRegnskapsfører === false
+                        }
                         render={() => (
                             <NæringsrelasjonBolk
                                 renderSpørsmål={() => (

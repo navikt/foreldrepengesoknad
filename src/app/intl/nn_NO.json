@@ -57,6 +57,8 @@
         "Jeg har hatt inntekt i forbindelse med...",
     "annenInntekt.modal.land": "Hvilket land gjelder det?",
     "annenInntekt.spørsmål.arbeidsgiver": "Navn på arbeidsgiver...",
+    "annenInntekt.spørsmål.næringsinntekt":
+        "Næringsinntekt sålangt i år (før skatt)",
 
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
@@ -187,6 +189,8 @@
         "Er arbeidsgiver nær venn eller familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
+    "hentOpplysningerOmRevisor.spørsmål":
+        "Samtykke til uthenting av opplsysninger for revisor",
 
     "annenForelder.aleneOmOmsorg": "Jeg skal ha aleneomsorg",
     "annenForelder.bostedsland": "og bor i...",

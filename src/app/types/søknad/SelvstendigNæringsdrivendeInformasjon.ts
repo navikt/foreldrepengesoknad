@@ -10,6 +10,7 @@ export enum Næringstype {
 export class Næring {
     næringstyper: Næringstype[];
     tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    næringsinntekt: string;
     pågående: boolean;
     navnPåNæringen: string;
     organisasjonsnummer: string;
@@ -23,6 +24,7 @@ export class Næring {
     regnskapsfører: Næringsrelasjon;
     harRevisor: boolean;
     revisor: Næringsrelasjon;
+    innhentOpplsyningerOmRevisor: boolean;
 }
 
 export class EndringAvNæringsinntektInformasjon {
