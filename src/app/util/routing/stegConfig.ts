@@ -50,13 +50,13 @@ const stegConfig: StegConfig = {
         index: 1
     },
     [StegID.RELASJON_TIL_BARN_FØDSEL]: {
-        tittel: 'Relasjon til barn fødsel',
+        tittel: 'Informasjon om barnet',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
     },
     [StegID.ANNEN_FORELDER]: {
-        tittel: 'Den andre forelderen',
+        tittel: 'Informasjon om den andre forelderen',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.UTENLANDSOPPHOLD,
         index: 2
@@ -68,7 +68,7 @@ const stegConfig: StegConfig = {
         index: 3
     },
     [StegID.ANDRE_INNTEKTER]: {
-        tittel: 'Andre inntekter',
+        tittel: 'Opplysninger om inntekt',
         fortsettKnappLabel: 'Gå til uttaksplan',
         nesteSteg: StegID.UTTAKSPLAN,
         index: 4
