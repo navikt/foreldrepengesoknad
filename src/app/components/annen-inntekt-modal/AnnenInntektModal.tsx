@@ -192,6 +192,27 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
+                    <Spørsmål
+                        synlig={
+                            gjelderJobbIUtlandet &&
+                            (annenInntekt as JobbIUtlandetInntekt)
+                                .arbeidsgiverNavn !== undefined
+                        }
+                        render={() => (
+                            <ErArbeidsgiverNærVennEllerFamilie
+                                erArbeidsgiverNærVennEllerFamilie={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .erNærVennEllerFamilieMedArbeidsgiver
+                                }
+                                onChange={(v: boolean) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        erNærVennEllerFamilieMedArbeidsgiver: v
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
+                            />
+                        )}
+                    />
                     <Bolk
                         render={() => (
                             <TidsperiodeBolk
@@ -254,23 +275,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                 attachmentType={
                                     AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
                                 }
-                            />
-                        )}
-                    />
-                    <Spørsmål
-                        synlig={gjelderJobbIUtlandet}
-                        render={() => (
-                            <ErArbeidsgiverNærVennEllerFamilie
-                                erArbeidsgiverNærVennEllerFamilie={
-                                    (annenInntekt as JobbIUtlandetInntekt)
-                                        .erNærVennEllerFamilieMedArbeidsgiver
-                                }
-                                onChange={(v: boolean) => {
-                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                        erNærVennEllerFamilieMedArbeidsgiver: v
-                                    };
-                                    this.updateAnnenInntekt(utlandInntekt);
-                                }}
                             />
                         )}
                     />
