@@ -4,22 +4,19 @@ import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
 import InfoIkon from 'common/components/ikoner/InfoIkon';
 import { Collapse } from 'react-collapse';
 const classNames = require('classnames');
-import './spørsmålInfoboks.less';
+import './infoboks.less';
 
-interface SpørsmålInfoboksProps {
+interface InfoboksProps {
     tekst: string;
     stil?: Stil;
 }
 
-interface SpørsmålInfoboksState {
+interface InfoboksState {
     isExpanded: boolean;
 }
 
-class SpørsmålInfoboks extends React.Component<
-    SpørsmålInfoboksProps,
-    SpørsmålInfoboksState
-> {
-    constructor(props: SpørsmålInfoboksProps) {
+class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
+    constructor(props: InfoboksProps) {
         super(props);
 
         this.state = {
@@ -64,4 +61,4 @@ class SpørsmålInfoboks extends React.Component<
     }
 }
 
-export default SpørsmålInfoboks;
+export default Infoboks;

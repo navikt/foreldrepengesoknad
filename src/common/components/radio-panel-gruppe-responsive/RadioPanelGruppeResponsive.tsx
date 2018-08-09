@@ -8,7 +8,7 @@ import {
 } from 'nav-frontend-skjema';
 import './radioPanelGruppeResponsive.less';
 import 'nav-frontend-skjema-style';
-import SpørsmålInfoboks from 'common/components/spørsmål-infoboks/SpørsmålInfoboks';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
@@ -36,9 +36,7 @@ class RadioPanelGruppeResponsive extends React.Component<Props> {
         return (
             <div className="radioPanelGruppe">
                 <Fieldset legend={legend}>
-                    {infoboksTekst && (
-                        <SpørsmålInfoboks tekst={infoboksTekst} />
-                    )}
+                    {infoboksTekst && <Infoboks tekst={infoboksTekst} />}
                     <SkjemaGruppe
                         className="radioPanelGruppe--responsive"
                         feil={feil}>

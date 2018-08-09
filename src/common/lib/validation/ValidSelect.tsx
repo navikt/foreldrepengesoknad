@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { Select } from 'nav-frontend-skjema';
 import { InputProps } from './types';
 import {
-    default as ValidBase,
-    ValidBaseProps
-} from 'common/lib/validation/index';
+    default as ValiderbartSkjemaelement,
+    ValiderbartSkjemaelementProps
+} from 'common/lib/validation/ValiderbartSkjemaelement';
 
-class ValidSelect extends Component<ValidBaseProps & InputProps> {
+class ValidSelect extends Component<
+    ValiderbartSkjemaelementProps & InputProps
+> {
     render() {
         const { ...other } = this.props;
-        return <ValidBase component={Select} {...other} />;
+        return <ValiderbartSkjemaelement component={Select} {...other} />;
     }
 }
 

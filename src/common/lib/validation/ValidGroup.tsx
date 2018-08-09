@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import {
-    default as ValidBase,
-    ValidBaseProps
-} from 'common/lib/validation/index';
+    default as ValiderbartSkjemaelement,
+    ValiderbartSkjemaelementProps
+} from 'common/lib/validation/ValiderbartSkjemaelement';
 
-class ValidGroup extends Component<ValidBaseProps> {
+class ValidGroup extends Component<ValiderbartSkjemaelementProps> {
     render() {
         const { ...other } = this.props;
-        return <ValidBase component={SkjemaGruppe} {...other} />;
+        return <ValiderbartSkjemaelement component={SkjemaGruppe} {...other} />;
     }
 }
 

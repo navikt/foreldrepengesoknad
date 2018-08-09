@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { ValidInput } from 'common/lib/validation';
 import { getFødselsnummerRegler } from '../util/validation/fields/fødselsnummer';
+import Input from 'common/components/skjema-elementer/Input';
+import { InputChangeEvent, SelectChangeEvent } from '../types/dom/Events';
 
 interface FødselsnummerSpørsmålProps {
     kanIkkeOppgis: boolean;
@@ -33,17 +34,16 @@ const FødselsnummerSpørsmål = (props: Props) => {
         onChange,
         intl
     } = props;
-    const FnrComponent = utenlandskFnr ? Input : ValidInput;
 
     return (
         <React.Fragment>
             <Spørsmål
                 render={() => (
-                    <FnrComponent
+                    <Input
                         disabled={kanIkkeOppgis || false}
                         label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
                         name="fødselsnummer"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: InputChangeEvent) =>
                             onChange({ fnr: e.target.value }, e)
                         }
                         value={fnr || ''}
@@ -53,6 +53,8 @@ const FødselsnummerSpørsmål = (props: Props) => {
                             søkersFødselsnummer,
                             intl
                         )}
+                        infotekst="Dette er en test"
+                        autoComplete="off"
                     />
                 )}
             />
@@ -66,7 +68,7 @@ const FødselsnummerSpørsmål = (props: Props) => {
                             intl,
                             'annenForelder.spørsmål.utenlandskFnr'
                         )}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: InputChangeEvent) =>
                             onChange({ utenlandskFnr: e.target.checked }, e)
                         }
                     />
@@ -80,10 +82,9 @@ const FødselsnummerSpørsmål = (props: Props) => {
                         label={
                             <Labeltekst intlId={'annenForelder.bostedsland'} />
                         }
-                        onChange={(
-                            land: string,
-                            e: React.ChangeEvent<HTMLSelectElement>
-                        ) => onChange({ bostedsland: land }, e)}
+                        onChange={(land: string, e: SelectChangeEvent) =>
+                            onChange({ bostedsland: land }, e)
+                        }
                         defaultValue={bostedsland}
                     />
                 )}
