@@ -2,7 +2,7 @@ import moment from 'moment';
 import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
-import { Validator } from 'common/lib/validation/types';
+import { Validator } from 'common/lib/validation/types/index';
 import {
     date1YearAgo,
     fjortenUkerPluss3Number,

@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Input, Textarea, Select } from 'nav-frontend-skjema';
-import { Validator } from './types';
+import { Validator } from '../types/index';
 import PT from 'prop-types';
-import SkjemaelementFeilmelding from './SkjemaelementFeilmelding';
+import SkjemaelementFeilmelding from '../errors/SkjemaelementFeilmelding';
 import DatoInput from 'common/components/dato-input/DatoInput';
 
 export interface ValiderbartSkjemaelementProps {
@@ -195,8 +195,3 @@ class ValiderbartSkjemaelement extends React.Component<
     }
 }
 export default ValiderbartSkjemaelement;
-
-export { default as ValidForm } from './ValidForm';
-export { default as ValidGroup } from './ValidGroup';
-export { default as ValidSelect } from './ValidSelect';
-export { default as Feiloppsummering } from './Feiloppsummering';

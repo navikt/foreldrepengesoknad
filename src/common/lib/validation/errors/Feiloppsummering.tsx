@@ -1,8 +1,8 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { SummaryError } from './types';
+import { SummaryError } from '../types/index';
 
-import './validering-style.less';
+import '../styles/validering-styles.less';
 
 interface Props {
     title: string;

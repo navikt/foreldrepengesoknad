@@ -12,8 +12,8 @@ import Bolk from '../../common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
 import Input from 'nav-frontend-skjema/lib/input';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import { InputChangeEvent, TextareaChangeEvent } from '../types/dom/Events';
+import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;

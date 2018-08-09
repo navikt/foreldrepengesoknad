@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
-import { Validator } from 'common/lib/validation/types';
+import { Validator } from 'common/lib/validation/types/index';
 import { Fødselsdato } from '../../../types/common';
 import getMessage from 'common/util/i18nUtils';
 import { date3YearsAgo, today, tomorrow } from '../values';

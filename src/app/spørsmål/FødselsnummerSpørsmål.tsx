@@ -7,7 +7,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { getFødselsnummerRegler } from '../util/validation/fields/fødselsnummer';
-import Input from 'common/components/skjema-elementer/Input';
+import Input from 'common/wrappers/skjemaelementer/Input';
 import { InputChangeEvent, SelectChangeEvent } from '../types/dom/Events';
 
 interface FødselsnummerSpørsmålProps {
