@@ -26,11 +26,16 @@ import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
 import DateValues from '../../../util/validation/values';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/f\u00F8dselsdato';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import Bolk from 'common/components/bolk/Bolk';
+import getMessage from 'common/util/i18nUtils';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
     visOver15årMelding: boolean;
     stegProps: StegProps;
+    fødselsdatoerOk: boolean;
 }
 
 export type Props = DispatchProps &
@@ -60,10 +65,17 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
         const {
             barn,
             visOver15årMelding,
+            fødselsdatoerOk,
             intl,
             stegProps,
             dispatch
         } = this.props;
+
+        const visSpørsmålOmAntallBarn = barn.foreldreansvarsdato !== undefined;
+        const visSpørsmålOmFødselsdatoer = barn.antallBarn !== undefined;
+        const visSpørsmålOmVedlegg =
+            fødselsdatoerOk || barn.adopsjonsvedtak !== undefined;
+
         return (
             <Steg {...stegProps}>
                 <Spørsmål
@@ -84,49 +96,19 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         />
                     )}
                 />
+                {visSpørsmålOmAntallBarn && (
+                    <AntallBarnSpørsmålsgruppe
+                        spørsmål={intl.formatMessage({
+                            id: 'foreldreansvar.antallBarn'
+                        })}
+                        inputName="foreldreansvar.antallBarn.input"
+                        antallBarn={barn.antallBarn}
+                        onChange={this.oppdaterAntallBarn}
+                    />
+                )}
+
                 <Spørsmål
-                    animert={true}
-                    synlig={barn.foreldreansvarsdato !== undefined}
-                    render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={barn.adopsjonsvedtak || []}
-                            attachmentType={AttachmentType.ADOPSJONSVEDTAK}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment: Attachment) =>
-                                dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                        />
-                    )}
-                />
-                <Spørsmål
-                    animert={false}
-                    synlig={barn.foreldreansvarsdato !== undefined}
-                    margin="none"
-                    render={() => (
-                        <AntallBarnSpørsmålsgruppe
-                            spørsmål={intl.formatMessage({
-                                id: 'foreldreansvar.antallBarn'
-                            })}
-                            inputName="foreldreansvar.antallBarn.input"
-                            antallBarn={barn.antallBarn}
-                            onChange={this.oppdaterAntallBarn}
-                        />
-                    )}
-                />
-                <Spørsmål
-                    synlig={barn.antallBarn !== undefined}
+                    synlig={visSpørsmålOmFødselsdatoer}
                     margin="none"
                     render={() => (
                         <FødselsdatoerSpørsmål
@@ -145,10 +127,51 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     )}
                 />
                 {visOver15årMelding && (
-                    <Veilederinfo type="advarsel">
-                        Barn over 15 år er registrert.
-                    </Veilederinfo>
+                    <div className="blokk-s">
+                        <Veilederinfo type="advarsel">
+                            Barn over 15 år er registrert.
+                        </Veilederinfo>
+                    </div>
                 )}
+
+                <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
+                    <Bolk
+                        tittel={getMessage(
+                            intl,
+                            'attachments.tittel.foreldreansvar'
+                        )}
+                        render={() => (
+                            <div className="blokkPad-m">
+                                <AttachmentsUploaderPure
+                                    attachments={barn.adopsjonsvedtak || []}
+                                    attachmentType={
+                                        AttachmentType.ADOPSJONSVEDTAK
+                                    }
+                                    onFilesSelect={(
+                                        attachments: Attachment[]
+                                    ) => {
+                                        attachments.forEach(
+                                            (attachment: Attachment) => {
+                                                dispatch(
+                                                    søknadActions.uploadAttachment(
+                                                        attachment
+                                                    )
+                                                );
+                                            }
+                                        );
+                                    }}
+                                    onFileDelete={(attachment: Attachment) =>
+                                        dispatch(
+                                            søknadActions.deleteAttachment(
+                                                attachment
+                                            )
+                                        )
+                                    }
+                                />
+                            </div>
+                        )}
+                    />
+                </EkspanderbartInnhold>
             </Steg>
         );
     }
@@ -166,13 +189,13 @@ const erAlderOver15År = (datoer: Fødselsdato[]) => {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
+    const fødselsdatoerOk = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
-        renderFortsettKnapp: barnErGyldig(
-            state.søknad.barn,
-            state.søknad.situasjon
-        ),
+        renderFortsettKnapp:
+            barnErGyldig(state.søknad.barn, state.søknad.situasjon) &&
+            fødselsdatoerOk,
         history: props.history,
         isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state)
     };
@@ -180,6 +203,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         barn,
         visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || []),
+        fødselsdatoerOk,
         stegProps
     };
 };
