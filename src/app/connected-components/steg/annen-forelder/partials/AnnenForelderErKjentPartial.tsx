@@ -18,17 +18,23 @@ import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from '../../../../types/søknad/Søknad';
+import { connect } from 'react-redux';
+import { AppState } from '../../../../redux/reducers';
 
-interface AnnenForelderErKjentPartialProps {
-    barn: ForeldreansvarBarn;
-    annenForelder: AnnenForelderPartial;
-    registrertAnnenForelder: any;
-    erFarEllerMedmor: boolean;
-    visInformasjonVedOmsorgsovertakelse: boolean;
+interface StateProps {
+    barn: Partial<ForeldreansvarBarn>;
+    annenForelder: Partial<AnnenForelderPartial>;
     søker: SøkerPartial;
 }
 
+interface AnnenForelderErKjentPartialProps {
+    registrertAnnenForelder: any;
+    erFarEllerMedmor: boolean;
+    visInformasjonVedOmsorgsovertakelse: boolean;
+}
+
 type Props = AnnenForelderErKjentPartialProps &
+    StateProps &
     InjectedIntlProps &
     DispatchProps;
 
@@ -190,7 +196,11 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             synlig={barn.foreldreansvarsdato !== undefined}
                             render={() => (
                                 <AttachmentsUploaderPure
-                                    attachments={barn.omsorgsovertakelse}
+                                    attachments={
+                                        barn.omsorgsovertakelse
+                                            ? barn.omsorgsovertakelse
+                                            : []
+                                    }
                                     attachmentType={
                                         AttachmentType.OMSROGSOVERTAKELSE
                                     }
@@ -234,4 +244,14 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
     }
 }
 
-export default injectIntl(AnnenForelderErKjentPartial);
+const mapStateToProps = (state: AppState): StateProps => {
+    return {
+        annenForelder: state.søknad.annenForelder,
+        søker: state.søknad.søker,
+        barn: state.søknad.barn
+    };
+};
+
+export default connect(mapStateToProps)(
+    injectIntl(AnnenForelderErKjentPartial)
+);
