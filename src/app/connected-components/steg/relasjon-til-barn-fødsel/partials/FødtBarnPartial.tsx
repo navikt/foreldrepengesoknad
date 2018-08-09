@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Bolk from 'common/components/bolk/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
@@ -45,7 +45,7 @@ class FødtBarnPartial extends React.Component<Props> {
         const { intl, dispatch, barn, fødselsattest } = this.props;
         return (
             <React.Fragment>
-                <AntallBarnSpørsmål
+                <AntallBarnSpørsmålsgruppe
                     spørsmål={getMessage(intl, 'antallBarn.spørsmål.fått')}
                     inputName="antallBarn"
                     antallBarn={barn.antallBarn}

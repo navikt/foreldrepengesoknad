@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
@@ -22,10 +22,11 @@ import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
 import DateValues from '../../../util/validation/values';
+import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/f\u00F8dselsdato';
 
 interface StateProps {
     barn: Adopsjonsbarn;
-    visSpørsmålOmAntallBarn: boolean;
     stegProps: StegProps;
 }
 
@@ -61,13 +62,19 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const {
-            visSpørsmålOmAntallBarn,
-            barn,
-            dispatch,
-            stegProps,
-            intl
-        } = this.props;
+        const { barn, dispatch, stegProps, intl } = this.props;
+
+        const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
+
+        const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
+        const visSpørsmålOmFødselsdatoer =
+            visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
+        const visSpørsmålOmAdoptertIUtlandet =
+            barn.adoptertIUtlandet !== undefined ||
+            (visSpørsmålOmFødselsdatoer && fødselsdatoerFyltUt);
+        const visSpørsmålOmVedlegg =
+            visSpørsmålOmAdoptertIUtlandet &&
+            barn.adoptertIUtlandet !== undefined;
 
         return (
             <Steg {...stegProps}>
@@ -88,73 +95,36 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
-                    tittel={getMessage(
-                        intl,
-                        'attachments.tittel.omsorgsovertakelse'
-                    )}
-                    render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={
-                                (barn as Adopsjonsbarn).omsorgsovertakelse || []
-                            }
-                            attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment) =>
-                                dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                        />
-                    )}
-                />
+                {visSpørsmålOmAntallBarn && (
+                    <AntallBarnSpørsmålsgruppe
+                        spørsmål={getMessage(
+                            intl,
+                            'antallBarn.spørsmål.venter'
+                        )}
+                        inputName="antallBarn"
+                        antallBarn={barn.antallBarn}
+                        onChange={this.oppdaterAntallBarn}
+                    />
+                )}
+
+                {visSpørsmålOmFødselsdatoer && (
+                    <FødselsdatoerSpørsmål
+                        fødselsdatoer={barn.fødselsdatoer || []}
+                        fødselsdatoAvgrensninger={{
+                            minDato: DateValues.date15YearsAgo.toDate()
+                        }}
+                        onChange={(fødselsdatoer: Date[]) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    fødselsdatoer
+                                })
+                            )
+                        }
+                    />
+                )}
 
                 <Spørsmål
-                    synlig={visSpørsmålOmAntallBarn}
-                    render={() => (
-                        <AntallBarnSpørsmål
-                            spørsmål={getMessage(
-                                intl,
-                                'antallBarn.spørsmål.venter'
-                            )}
-                            inputName="antallBarn"
-                            antallBarn={barn.antallBarn}
-                            onChange={this.oppdaterAntallBarn}
-                        />
-                    )}
-                />
-
-                <Spørsmål
-                    synlig={barn.antallBarn !== undefined}
-                    render={() => (
-                        <FødselsdatoerSpørsmål
-                            fødselsdatoer={barn.fødselsdatoer || []}
-                            fødselsdatoAvgrensninger={{
-                                minDato: DateValues.date15YearsAgo.toDate()
-                            }}
-                            onChange={(fødselsdatoer: Date[]) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsdatoer
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
-
-                <Spørsmål
-                    synlig={barn.fødselsdatoer.length > 0}
+                    synlig={visSpørsmålOmAdoptertIUtlandet}
                     render={() => (
                         <AdoptertIUtlandetSpørsmål
                             adoptertIUtlandet={barn.adoptertIUtlandet}
@@ -168,6 +138,48 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         />
                     )}
                 />
+
+                <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
+                    <Bolk
+                        tittel={getMessage(
+                            intl,
+                            'attachments.tittel.omsorgsovertakelse'
+                        )}
+                        render={() => (
+                            <div className="blokkPad-m">
+                                <AttachmentsUploaderPure
+                                    attachments={
+                                        (barn as Adopsjonsbarn)
+                                            .omsorgsovertakelse || []
+                                    }
+                                    attachmentType={
+                                        AttachmentType.OMSROGSOVERTAKELSE
+                                    }
+                                    onFilesSelect={(
+                                        attachments: Attachment[]
+                                    ) => {
+                                        attachments.forEach(
+                                            (attachment: Attachment) => {
+                                                dispatch(
+                                                    søknadActions.uploadAttachment(
+                                                        attachment
+                                                    )
+                                                );
+                                            }
+                                        );
+                                    }}
+                                    onFileDelete={(attachment) =>
+                                        dispatch(
+                                            søknadActions.deleteAttachment(
+                                                attachment
+                                            )
+                                        )
+                                    }
+                                />
+                            </div>
+                        )}
+                    />
+                </EkspanderbartInnhold>
             </Steg>
         );
     }
@@ -185,8 +197,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         barn,
-        visSpørsmålOmAntallBarn:
-            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0,
         stegProps
     };
 };

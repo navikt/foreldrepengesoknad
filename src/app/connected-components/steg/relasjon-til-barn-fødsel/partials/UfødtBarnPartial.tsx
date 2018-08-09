@@ -5,7 +5,7 @@ import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
@@ -67,7 +67,7 @@ class UfødtBarnPartial extends React.Component<Props> {
 
                 {erMorEllerMorErForSyk && (
                     <React.Fragment>
-                        <AntallBarnSpørsmål
+                        <AntallBarnSpørsmålsgruppe
                             antallBarn={barn.antallBarn}
                             inputName="antallBarn"
                             onChange={(antallBarn: number) => {

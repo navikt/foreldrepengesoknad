@@ -24,7 +24,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 type AntallBarnVerdi = '1' | '2' | '3';
 
-class AntallBarnSpørsmål extends React.Component<Props> {
+class AntallBarnSpørsmålsgruppe extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onRadioChange = this.onRadioChange.bind(this);
@@ -140,4 +140,4 @@ class AntallBarnSpørsmål extends React.Component<Props> {
     }
 }
 
-export default injectIntl(AntallBarnSpørsmål);
+export default injectIntl(AntallBarnSpørsmålsgruppe);

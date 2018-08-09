@@ -8,7 +8,7 @@ import Steg from 'app/components/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
@@ -115,7 +115,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     synlig={barn.foreldreansvarsdato !== undefined}
                     margin="none"
                     render={() => (
-                        <AntallBarnSpørsmål
+                        <AntallBarnSpørsmålsgruppe
                             spørsmål={intl.formatMessage({
                                 id: 'foreldreansvar.antallBarn'
                             })}
