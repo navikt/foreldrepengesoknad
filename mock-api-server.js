@@ -7,6 +7,15 @@ const MockStorage = require('./mock-storage');
 
 require('dotenv').config();
 
+const mockArbeidsforhold = {
+    arbeidsgiverNavn: 'NAV',
+    arbeidsgiverId: '974652250',
+    arbeidsgiverIdType: 'orgnr',
+    fom: new Date(2018, 1, 1),
+    tom: undefined,
+    stillingsprosent: 100
+};
+
 const mockResponse = {
     søker: {
         fnr: '11111111111',
@@ -16,7 +25,7 @@ const mockResponse = {
         fødselsdato: '1979-01-28',
         ikkeNordiskEøsLand: true
     },
-    arbeidsforhold: {}
+    arbeidsforhold: [mockArbeidsforhold]
 };
 
 const allowCrossDomain = function(req, res, next) {
