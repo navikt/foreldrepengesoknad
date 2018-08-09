@@ -7,11 +7,13 @@ import {
     getFødselsdatoRegler
 } from '../util/validation/fields/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { Avgrensninger } from 'nav-datovelger';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: Fødselsdato[];
     onChange: (fødselsdatoer: Fødselsdato[]) => void;
     collapsed?: boolean;
+    fødselsdatoAvgrensninger?: Avgrensninger;
 }
 
 type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
@@ -22,12 +24,28 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.onDatoChange = this.onDatoChange.bind(this);
+        this.renderCollapsedFødselsdatoSpørsmål = this.renderCollapsedFødselsdatoSpørsmål.bind(
+            this
+        );
+        this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(
+            this
+        );
+        this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(
+            this
+        );
     }
 
     onDatoChange(dato: Fødselsdato, idx: number) {
         const datoer = [...this.props.fødselsdatoer];
         datoer[idx] = dato;
         this.props.onChange(datoer);
+    }
+
+    getFødselsdatoAvgrensninger() {
+        return {
+            ...fødselsdatoAvgrensninger,
+            ...this.props.fødselsdatoAvgrensninger
+        };
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
@@ -39,7 +57,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                 dato={fødselsdatoer[0]}
                 onChange={(d: Date) => this.onDatoChange(d, 0)}
                 label={<Labeltekst intlId="fødselsdatoer.fødsel" />}
-                avgrensninger={fødselsdatoAvgrensninger}
+                avgrensninger={this.getFødselsdatoAvgrensninger()}
                 validators={getFødselsdatoRegler(fødselsdatoer[0], intl)}
             />
         );
@@ -61,7 +79,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                                     intlId={`fødselsdatoer.flere.${idx + 1}`}
                                 />
                             }
-                            avgrensninger={fødselsdatoAvgrensninger}
+                            avgrensninger={this.getFødselsdatoAvgrensninger()}
                             validators={getFødselsdatoRegler(dato, intl)}
                         />
                     </div>
