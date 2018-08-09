@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import {
-    default as ValidBase,
-    ValidBaseProps
-} from 'common/lib/validation/index';
+    default as ValiderbartSkjemaelement,
+    ValiderbartSkjemaelementProps
+} from 'common/lib/validation/ValiderbartSkjemaelement';
 import DatoInput, {
     DatoInputProps
 } from 'common/components/dato-input/DatoInput';
 
 class DatoInputWithValidation extends Component<
-    ValidBaseProps & DatoInputProps
+    ValiderbartSkjemaelementProps & DatoInputProps
 > {
     render() {
         const { ...other } = this.props;
-        return <ValidBase component={DatoInput} {...other} />;
+        return <ValiderbartSkjemaelement component={DatoInput} {...other} />;
     }
 }
 
