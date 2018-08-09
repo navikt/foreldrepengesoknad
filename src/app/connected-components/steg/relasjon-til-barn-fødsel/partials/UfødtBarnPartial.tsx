@@ -46,22 +46,18 @@ class UfødtBarnPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    animert={false}
-                    synlig={erFarEllerMedmor}
-                    render={() => (
-                        <MorForSykSpørsmål
-                            erMorForSyk={annenForelder.erForSyk}
-                            onChange={(erForSyk: boolean) => {
-                                dispatch(
-                                    søknadActions.updateAnnenForelder({
-                                        erForSyk
-                                    })
-                                );
-                            }}
-                        />
-                    )}
-                />
+                {erFarEllerMedmor && (
+                    <MorForSykSpørsmål
+                        erMorForSyk={annenForelder.erForSyk}
+                        onChange={(erForSyk: boolean) => {
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    erForSyk
+                                })
+                            );
+                        }}
+                    />
+                )}
 
                 {annenForelder.erForSyk === false && (
                     <Veilederinfo type="feil">
@@ -71,24 +67,19 @@ class UfødtBarnPartial extends React.Component<Props> {
 
                 {erMorEllerMorErForSyk && (
                     <React.Fragment>
-                        <Spørsmål
-                            animert={false}
-                            render={() => (
-                                <AntallBarnSpørsmål
-                                    antallBarn={barn.antallBarn}
-                                    inputName="antallBarn"
-                                    onChange={(antallBarn: number) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                antallBarn
-                                            })
-                                        );
-                                    }}
-                                    spørsmål={getMessage(
-                                        intl,
-                                        'antallBarn.spørsmål.venter'
-                                    )}
-                                />
+                        <AntallBarnSpørsmål
+                            antallBarn={barn.antallBarn}
+                            inputName="antallBarn"
+                            onChange={(antallBarn: number) => {
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        antallBarn
+                                    })
+                                );
+                            }}
+                            spørsmål={getMessage(
+                                intl,
+                                'antallBarn.spørsmål.venter'
                             )}
                         />
 
