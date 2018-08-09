@@ -26,6 +26,10 @@ export const date3YearsAgo = moment()
     .subtract(3, 'years')
     .startOf('day');
 
+export const date4YearsAgo = moment()
+    .subtract(4, 'years')
+    .startOf('day');
+
 export const dateMoreThan3YearsAgo = moment()
     .subtract(3, 'years')
     .subtract(1, 'days')
@@ -46,7 +50,8 @@ const DateValues = {
     tomorrow,
     date1YearAgo,
     date1YearAhead,
-    date3YearsAgo
+    date3YearsAgo,
+    date4YearsAgo
 };
 
 export default DateValues;
