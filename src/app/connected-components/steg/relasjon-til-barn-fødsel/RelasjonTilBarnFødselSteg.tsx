@@ -31,7 +31,8 @@ import { findDateMostDistantInPast } from '../../../util/dates/dates';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { harArbeidsforhold } from '../../../util/domain/arbeidsforhold';
+import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
+import DateValues from '../../../util/validation/values';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -280,7 +281,10 @@ const mapStateToProps = (
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
     const skalLasteOppTerminbekreftelse: boolean =
         barn.erBarnetFødt === false &&
-        harArbeidsforhold(state.api.arbeidsforhold);
+        !harAktivtArbeidsforhold(
+            state.api.arbeidsforhold,
+            DateValues.today.toDate()
+        );
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
