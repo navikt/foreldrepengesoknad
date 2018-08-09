@@ -19,10 +19,8 @@ export const getAndreInntekterTidsperiodeAvgrensninger = (
 };
 
 export const getTidsperiodeAvgrensningerSiste4år = (): Avgrensninger => {
-    const maksDato = DateValues.today.toDate();
-    const minDato = DateValues.today.subtract(4, 'years').toDate();
     return {
-        minDato,
-        maksDato
+        minDato: DateValues.date4YearsAgo.toDate(),
+        maksDato: DateValues.today.toDate()
     };
 };
