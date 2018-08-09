@@ -21,6 +21,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
+import DateValues from '../../../util/validation/values';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -138,6 +139,9 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     render={() => (
                         <FødselsdatoerSpørsmål
                             fødselsdatoer={barn.fødselsdatoer || []}
+                            fødselsdatoAvgrensninger={{
+                                minDato: DateValues.date15YearsAgo.toDate()
+                            }}
                             onChange={(fødselsdatoer: Date[]) =>
                                 dispatch(
                                     søknadActions.updateBarn({
