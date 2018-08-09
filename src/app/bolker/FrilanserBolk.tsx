@@ -13,7 +13,7 @@ import {
 import FrilansOppdragBolk from './FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 interface FrilanserBolkProps {
     søker: Søker;

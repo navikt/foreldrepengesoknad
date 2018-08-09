@@ -3,7 +3,9 @@ import * as ReactDOM from 'react-dom';
 import stegConfig, { StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import ValidForm, { FormSubmitEvent } from 'common/lib/validation/ValidForm';
+import ValiderbarForm, {
+    FormSubmitEvent
+} from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
@@ -30,7 +32,7 @@ export interface StegProps {
 type Props = StegProps & InjectedIntlProps;
 
 class Steg extends React.Component<Props & DispatchProps> {
-    private stegFormRef: React.RefObject<ValidForm>;
+    private stegFormRef: React.RefObject<ValiderbarForm>;
 
     constructor(props: Props & DispatchProps) {
         super(props);
@@ -80,7 +82,7 @@ class Steg extends React.Component<Props & DispatchProps> {
         };
 
         return (
-            <ValidForm {...formProps} ref={this.stegFormRef}>
+            <ValiderbarForm {...formProps} ref={this.stegFormRef}>
                 <div className="blokk-m">
                     <Stegindikator id={id} />
                 </div>
@@ -91,7 +93,7 @@ class Steg extends React.Component<Props & DispatchProps> {
                         {stegConfig[id].fortsettKnappLabel}
                     </FortsettKnapp>
                 )}
-            </ValidForm>
+            </ValiderbarForm>
         );
     }
 }

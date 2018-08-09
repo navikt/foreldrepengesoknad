@@ -1,7 +1,7 @@
-import { ValiderbartSkjemaelementProps } from 'common/lib/validation/ValiderbartSkjemaelement';
+import { ValiderbartSkjemaelementProps } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export interface CommonSkjemaelementProps {
-    infotekst: string;
+    infotekst?: string;
 }
 
 export type SkjemaelementProps = CommonSkjemaelementProps &

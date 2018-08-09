@@ -1,30 +1,33 @@
 import * as React from 'react';
 import PT from 'prop-types';
-import { ValidationResult, SummaryError } from './types';
-import Feiloppsummering from 'common/lib/validation/Feiloppsummering';
+import { ValidationResult, SummaryError } from '../types/index';
+import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
-export interface ValidFormProps {
+export interface ValiderbarFormProps {
     onSubmit?: (evt: FormSubmitEvent) => void;
     children: React.ReactNode;
     summaryTitle?: string;
     noSummary?: boolean;
 }
 
-interface State {
+interface ValiderbarFormState {
     results: ValidationResult[];
     valid: boolean;
     failedSubmit: boolean;
 }
 
-class ValidForm extends React.Component<ValidFormProps, State> {
+class ValiderbarForm extends React.Component<
+    ValiderbarFormProps,
+    ValiderbarFormState
+> {
     static childContextTypes = {
         validForm: PT.object
     };
     components: any[];
 
-    constructor(props: ValidFormProps) {
+    constructor(props: ValiderbarFormProps) {
         super(props);
 
         this.state = {
@@ -167,4 +170,4 @@ class ValidForm extends React.Component<ValidFormProps, State> {
     }
 }
 
-export default ValidForm;
+export default ValiderbarForm;

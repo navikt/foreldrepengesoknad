@@ -10,7 +10,6 @@ import { AppState } from '../../../redux/reducers';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import AntallBarnSpørsmål from '../../../spørsmål/AntallBarnSpørsmål';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
@@ -22,6 +21,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
+import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 export interface StateProps {
     barn: Adopsjonsbarn;

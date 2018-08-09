@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import {
     default as ValiderbartSkjemaelement,
     ValiderbartSkjemaelementProps
-} from 'common/lib/validation/ValiderbartSkjemaelement';
+} from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 import DatoInput, {
     DatoInputProps
 } from 'common/components/dato-input/DatoInput';
 
-class DatoInputWithValidation extends Component<
+class ValiderbarDatoInput extends Component<
     ValiderbartSkjemaelementProps & DatoInputProps
 > {
     render() {
@@ -16,4 +16,4 @@ class DatoInputWithValidation extends Component<
     }
 }
 
-export default DatoInputWithValidation;
+export default ValiderbarDatoInput;

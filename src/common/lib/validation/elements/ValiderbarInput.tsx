@@ -3,7 +3,7 @@ import { Input, NavFrontendInputProps } from 'nav-frontend-skjema';
 import {
     default as ValiderbartSkjemaelement,
     ValiderbartSkjemaelementProps
-} from 'common/lib/validation/ValiderbartSkjemaelement';
+} from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export type ValiderbarInputProps = ValiderbartSkjemaelementProps &
     NavFrontendInputProps;

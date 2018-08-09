@@ -1,16 +1,13 @@
 import * as React from 'react';
-import { Select } from 'nav-frontend-skjema';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import ValidSelect from 'common/lib/validation/ValidSelect';
-import { Feil } from 'common/components/skjema-input-element/types';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
 import InjectedIntl = ReactIntl.InjectedIntl;
 import getMessage from 'common/util/i18nUtils';
+import Select from 'common/wrappers/skjemaelementer/Select';
 
 interface InntektstypeVelgerProps {
     defaultValue?: string;
     label: React.ReactNode;
-    feil?: Feil;
     validators?: any;
     name?: string;
     onChange: (
@@ -60,10 +57,8 @@ class InntektstypeVelger extends React.Component<
 
     render() {
         const { validators, onChange, ...restProps } = this.props;
-        const SelectComponent =
-            validators && validators.length > 0 ? ValidSelect : Select;
         return (
-            <SelectComponent
+            <Select
                 {...restProps}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     onChange(e.target.value, e)
@@ -71,7 +66,7 @@ class InntektstypeVelger extends React.Component<
                 validators={validators}>
                 <option value="" />
                 {this.renderInntektstypeOptions()}
-            </SelectComponent>
+            </Select>
         );
     }
 }

@@ -9,7 +9,6 @@ import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSp
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
@@ -21,6 +20,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
+import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 interface StateProps {
     barn: Adopsjonsbarn;

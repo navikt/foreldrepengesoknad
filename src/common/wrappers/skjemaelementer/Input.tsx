@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { NavFrontendInputProps as NFInputProps } from 'nav-frontend-skjema';
-import { SkjemaelementProps } from 'common/components/skjema-elementer/common';
+import { SkjemaelementProps } from 'common/wrappers/skjemaelementer/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/components/skjema-elementer/Label';
-import ValiderbarInput from 'common/lib/validation/ValiderbarInput';
+import InputLabel from 'common/wrappers/skjemaelementer/Label';
+import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 
 type InputWrapperProps = SkjemaelementProps & NFInputProps;
 

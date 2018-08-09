@@ -13,7 +13,6 @@ import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
 import {
     getTermindatoRegler,
     termindatoAvgrensninger
@@ -23,6 +22,7 @@ import {
     getTerminbekreftelseDatoRegler
 } from '../../../../util/validation/fields/terminbekreftelsedato';
 import { AttachmentType } from '../../../../types/søknad/Søknad';
+import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -98,7 +98,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             animert={false}
                             synlig={barn.antallBarn !== undefined}
                             render={() => (
-                                <DatoInputWithValidation
+                                <DatoInput
                                     id="termindato"
                                     name="termindato"
                                     label={getMessage(
@@ -165,7 +165,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 barn.termindato !== undefined
                             }
                             render={() => (
-                                <DatoInputWithValidation
+                                <DatoInput
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
                                     label={getMessage(
