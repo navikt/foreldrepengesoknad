@@ -31,7 +31,8 @@ import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerOmReviorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import moment from 'moment';
 import { InputChangeEvent } from '../../types/dom/Events';
-import { date4yearsAgo } from '../../util/validation/values';
+import { date4YearsAgo } from '../../util/validation/values';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -125,7 +126,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             this.state.næring.tidsperiode.fom;
 
         return næringFomDato
-            ? moment(næringFomDato, moment.ISO_8601) > date4yearsAgo
+            ? moment(næringFomDato, moment.ISO_8601) > date4YearsAgo
             : false;
     }
 
@@ -219,6 +220,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                     this.updateNæring({ tidsperiode: v })
                                 }
                                 sluttdatoDisabled={pågående}
+                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                    tidsperiode
+                                )}
                             />
                         )}
                     />

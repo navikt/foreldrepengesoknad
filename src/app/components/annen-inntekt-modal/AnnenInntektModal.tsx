@@ -27,6 +27,7 @@ import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { AttachmentType } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -124,6 +125,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
             annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
 
         const cls = BEMHelper('annenInntektModal');
+
         return (
             <Modal
                 className={cls.className}
@@ -219,6 +221,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
                                 ) => this.updateAnnenInntekt({ tidsperiode })}
                                 sluttdatoDisabled={annenInntekt.pågående}
+                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                    annenInntekt.tidsperiode
+                                )}
                             />
                         )}
                     />

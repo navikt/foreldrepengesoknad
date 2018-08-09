@@ -3,7 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { Select } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema-input-element/types';
 import ValidSelect from 'common/lib/validation/ValidSelect';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 
 interface StateProps {
     defaultValue?: string;
@@ -19,30 +19,34 @@ interface StateProps {
 
 type Props = StateProps & InjectedIntlProps;
 
+interface CountryOptionsCache {
+    locale: string;
+    options: React.ReactNode[];
+}
+
 class Landvelger extends React.Component<Props> {
+    countryOptionsCache: CountryOptionsCache;
     constructor(props: Props) {
         super(props);
-        this.renderCountryOptions = this.renderCountryOptions.bind(this);
+        this.getCountryOptions = this.getCountryOptions.bind(this);
+        this.updateCache = this.updateCache.bind(this);
     }
 
-    renderCountryOptions() {
-        const { intl } = this.props;
-        const språk = intl.locale;
-        const isoCodeIndex = 0;
-        const countryNameIndex = 1;
-        return Object.entries(countries.getNames(språk))
-            .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], språk))
-            .filter(
-                (countryOptionValue) =>
-                    countryOptionValue[isoCodeIndex] !== 'NO'
-            )
-            .map((countryOptionValue: string[]) => (
-                <option
-                    key={countryOptionValue[isoCodeIndex]}
-                    value={countryOptionValue[isoCodeIndex]}>
-                    {countryOptionValue[countryNameIndex]}
-                </option>
-            ));
+    updateCache(intl: InjectedIntl) {
+        this.countryOptionsCache = {
+            locale: intl.locale,
+            options: createCountryOptions(intl)
+        };
+    }
+
+    getCountryOptions(): React.ReactNode[] {
+        if (
+            !this.countryOptionsCache ||
+            this.props.intl.locale !== this.countryOptionsCache.locale
+        ) {
+            this.updateCache(this.props.intl);
+        }
+        return this.countryOptionsCache.options;
     }
 
     render() {
@@ -57,10 +61,28 @@ class Landvelger extends React.Component<Props> {
                 }
                 validators={validators}>
                 <option value="" />
-                {this.renderCountryOptions()}
+                {this.getCountryOptions()}
             </SelectComponent>
         );
     }
 }
+
+const createCountryOptions = (intl: InjectedIntl): React.ReactNode[] => {
+    const språk = intl.locale;
+    const isoCodeIndex = 0;
+    const countryNameIndex = 1;
+    return Object.entries(countries.getNames(språk))
+        .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], språk))
+        .filter(
+            (countryOptionValue) => countryOptionValue[isoCodeIndex] !== 'NO'
+        )
+        .map((countryOptionValue: string[]) => (
+            <option
+                key={countryOptionValue[isoCodeIndex]}
+                value={countryOptionValue[isoCodeIndex]}>
+                {countryOptionValue[countryNameIndex]}
+            </option>
+        ));
+};
 
 export default injectIntl(Landvelger);
