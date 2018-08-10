@@ -5,7 +5,7 @@ import { guid } from 'nav-frontend-js-utils';
 import InputLabel from 'common/wrappers/skjemaelementer/Label';
 import ValiderbarSelect from 'common/lib/validation/elements/ValiderbarSelect';
 
-type SelectWrapperProps = SkjemaelementProps & SelectProps;
+export type SelectWrapperProps = SkjemaelementProps & SelectProps;
 
 const Select: React.StatelessComponent<SelectWrapperProps> = (
     props: SelectWrapperProps
