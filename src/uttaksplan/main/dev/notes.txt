@@ -1,0 +1,18 @@
+Hva er felles
+
+Egen periode før termin - spesielle krav
+
+Termindato/fødselsdato/adopsjonsdato
+- Bestemmer for hvor tidlig en kan legge til perioder/endre påfølgende perioder
+- Alltid begrense på termindato og maks permisjonslengde
+- Summere brukte dager
+- Sørge for ikke overlappende perioder
+
+Kompliserende:
+- Skal mor ha uttak etter far
+
+
+Egne oppgaver:
+1. Endre periode før termin/fødsel
+
+

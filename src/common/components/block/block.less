@@ -6,8 +6,8 @@
         padding-right: @outlineSize;
         margin-left: -1 * @outlineSize;
         margin-right: -1 * @outlineSize;
-        &--skjult {
-            .sporsmal {
+        &--hidden {
+            .block {
                 padding-bottom: 0;
             }
         }
@@ -26,6 +26,8 @@
         padding-bottom: 0.5rem;
     }
     &--none {
-        padding-bottom: 0;
+        // Hack på grunn av bug i ReactCollapse - den viser ikke noe dersom padding er 0
+        padding-bottom: 1px;
+        margin-bottom: -1px;
     }
 }
