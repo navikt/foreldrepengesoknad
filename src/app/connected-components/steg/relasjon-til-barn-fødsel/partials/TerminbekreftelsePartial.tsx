@@ -84,6 +84,10 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                             barn.termindato,
                             intl
                         )}
+                        infotekst={getMessage(
+                            intl,
+                            'terminbekreftelseDato.infotekst'
+                        )}
                     />
                 )}
             />

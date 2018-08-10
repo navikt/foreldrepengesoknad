@@ -253,6 +253,8 @@
     "termindato.spørsmål": "Når er termindato?",
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
+    "terminbekreftelseDato.infotekst":
+        "Vi trenger disse opplysningene fordi....",
 
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
 
