@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Chevron from 'nav-frontend-chevron';
-import Sirkelknapp from '../sirkelknapp/Sirkelknapp';
+import Sirkelknapp from '../../../sirkelknapp/Sirkelknapp';
 
 import './rangeStepper.less';
 

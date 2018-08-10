@@ -3,7 +3,7 @@ import { Input, Textarea, Select } from 'nav-frontend-skjema';
 import { Validator } from '../types/index';
 import PT from 'prop-types';
 import SkjemaelementFeilmelding from '../errors/SkjemaelementFeilmelding';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 
 export interface ValiderbartSkjemaelementProps {
     id?: string;

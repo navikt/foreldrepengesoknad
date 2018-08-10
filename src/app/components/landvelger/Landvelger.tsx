@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
-import Select from 'common/wrappers/skjemaelementer/Select';
+import Select from 'common/components/skjema/wrappers/Select';
 
 interface StateProps {
     defaultValue?: string;

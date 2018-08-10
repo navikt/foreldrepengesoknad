@@ -8,7 +8,7 @@ import {
 } from 'common/types';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 type TidsperiodeType =
     | TidsperiodePartial

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { RangeInputValueLabelRendererOptions } from 'common/components/range-input/RangeInput';
+import { RangeInputValueLabelRendererOptions } from 'common/components/skjema/elements/range-input/RangeInput';
 
 export interface Props {
     options: RangeInputValueLabelRendererOptions;
