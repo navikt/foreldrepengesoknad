@@ -17,7 +17,7 @@ import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from '../../../../types/søknad/Søknad';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 

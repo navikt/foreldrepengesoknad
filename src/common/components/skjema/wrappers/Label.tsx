@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Infoboks from 'common/components/infoboks/Infoboks';
-import { CommonSkjemaelementProps } from 'common/wrappers/skjemaelementer/types/common';
+import { CommonSkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import './styles.less';
 
 export type SkjemaLabelProps = CommonSkjemaelementProps & {

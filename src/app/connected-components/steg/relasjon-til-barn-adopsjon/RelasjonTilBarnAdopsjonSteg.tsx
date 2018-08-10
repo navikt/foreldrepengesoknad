@@ -22,7 +22,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 
 interface StateProps {

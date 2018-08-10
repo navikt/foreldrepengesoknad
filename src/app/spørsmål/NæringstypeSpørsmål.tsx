@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import getMessage from 'common/util/i18nUtils';
-import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
+import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { Næringstype } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { InputChangeEvent } from '../types/dom/Events';
 

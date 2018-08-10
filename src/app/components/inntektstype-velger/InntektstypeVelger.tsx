@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
 import InjectedIntl = ReactIntl.InjectedIntl;
 import getMessage from 'common/util/i18nUtils';
-import Select from 'common/wrappers/skjemaelementer/Select';
+import Select from 'common/components/skjema/wrappers/Select';
 
 interface InntektstypeVelgerProps {
     defaultValue?: string;

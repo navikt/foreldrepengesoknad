@@ -16,7 +16,7 @@ import {
     termindatoAvgrensninger
 } from '../../../../util/validation/fields/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;

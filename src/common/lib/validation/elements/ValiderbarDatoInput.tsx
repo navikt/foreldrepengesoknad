@@ -5,7 +5,7 @@ import {
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 import DatoInput, {
     DatoInputProps
-} from 'common/components/dato-input/DatoInput';
+} from 'common/components/skjema/elements/dato-input/DatoInput';
 
 class ValiderbarDatoInput extends Component<
     ValiderbartSkjemaelementProps & DatoInputProps

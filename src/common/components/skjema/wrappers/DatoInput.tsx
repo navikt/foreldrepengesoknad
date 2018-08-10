@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { SkjemaelementProps } from 'common/wrappers/skjemaelementer/types/common';
+import { SkjemaelementProps } from 'common/components/skjema/wrappers/types/common';
 import { guid } from 'nav-frontend-js-utils';
-import InputLabel from 'common/wrappers/skjemaelementer/Label';
+import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
-import { DatoInputProps } from 'common/components/dato-input/DatoInput';
+import { DatoInputProps } from 'common/components/skjema/elements/dato-input/DatoInput';
 
 type DatoInputWrapperProps = SkjemaelementProps & DatoInputProps;
 

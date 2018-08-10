@@ -6,7 +6,7 @@ import {
     getFødselsdatoRegler
 } from '../util/validation/fields/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Avgrensninger } from 'nav-datovelger';
 
 export interface FødselsdatoerSpørsmålProps {

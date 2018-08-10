@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { addYears } from 'date-fns';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import { renderDag } from 'common/util/renderUtils';
 
 export interface OwnProps {

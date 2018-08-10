@@ -13,7 +13,7 @@ import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 export interface OwnProps {
     barn: UfødtBarn;
