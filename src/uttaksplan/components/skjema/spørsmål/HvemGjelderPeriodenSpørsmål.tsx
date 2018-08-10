@@ -2,7 +2,7 @@ import * as React from 'react';
 import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Forelder } from 'common/types';
-import { Feil } from 'common/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface OwnProps {
     spørsmål: string;

@@ -11,12 +11,12 @@ import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
 import {
     getTermindatoRegler,
     termindatoAvgrensninger
 } from '../../../../util/validation/fields/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -87,7 +87,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             animert={false}
                             synlig={barn.antallBarn !== undefined}
                             render={() => (
-                                <DatoInputWithValidation
+                                <DatoInput
                                     id="termindato"
                                     name="termindato"
                                     label={getMessage(

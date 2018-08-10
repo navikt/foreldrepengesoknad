@@ -10,7 +10,6 @@ import { DispatchProps } from 'common/redux/types';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDenAndreForelderenInformertSpørsmål';
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
-import DatoInput from 'common/components/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Bolk from '../../../../../common/components/bolk/Bolk';
@@ -18,6 +17,7 @@ import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from '../../../../types/søknad/Søknad';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 
