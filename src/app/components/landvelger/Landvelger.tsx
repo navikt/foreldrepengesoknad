@@ -12,6 +12,7 @@ interface StateProps {
         value: string,
         event?: React.ChangeEvent<HTMLSelectElement>
     ) => void;
+    infotekst?: string;
 }
 
 type Props = StateProps & InjectedIntlProps;
@@ -43,10 +44,11 @@ class Landvelger extends React.Component<Props> {
     }
 
     render() {
-        const { validators, onChange, ...restProps } = this.props;
+        const { validators, onChange, infotekst, ...restProps } = this.props;
         return (
             <Select
                 {...restProps}
+                infotekst={infotekst}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     onChange(e.target.value, e)
                 }

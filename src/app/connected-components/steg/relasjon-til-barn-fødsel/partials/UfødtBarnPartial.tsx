@@ -166,6 +166,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             }
                             render={() => (
                                 <DatoInput
+                                    infotekst="Du må oppgi terminbekreftelsesdato fordi blablabla"
                                     id="terminbekreftelseDato"
                                     name="terminbekreftelseDato"
                                     label={getMessage(
