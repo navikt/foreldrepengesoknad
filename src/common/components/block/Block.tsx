@@ -11,7 +11,7 @@ export type BlockPadding = 'm' | 's' | 'xs' | 'xxs' | 'none';
 export interface Props {
     /** Default true */
     visible?: boolean;
-    /** Default true */
+    /** Animation is set to default true if visible is !undefined, unless animated is set to false */
     animated?: boolean;
     /** Size - default m */
     margin?: BlockPadding;
@@ -22,21 +22,21 @@ export interface Props {
 const cls = BEMHelper('block');
 
 const Block: React.StatelessComponent<Props> = ({
-    visible = true,
-    animated = true,
+    visible,
     margin = 'm',
+    animated,
     render = () => null
 }) => {
-    if (!visible || !render) {
+    if (visible === false || !render) {
         return null;
     }
-    const getContent = () => (
+    const content = (
         <div className={classNames(cls.className, cls.modifier(margin))}>
             {render()}
         </div>
     );
 
-    if (animated === true) {
+    if (visible !== undefined || animated === true) {
         return (
             <Collapse
                 springConfig={collapseSpringConfig}
@@ -44,11 +44,11 @@ const Block: React.StatelessComponent<Props> = ({
                 className={classNames(cls.element('collapse'), {
                     [cls.element('collapse', 'hidden')]: !visible
                 })}>
-                {visible ? getContent() : <div />}
+                {content}
             </Collapse>
         );
     }
-    return getContent();
+    return content;
 };
 
 export default Block;

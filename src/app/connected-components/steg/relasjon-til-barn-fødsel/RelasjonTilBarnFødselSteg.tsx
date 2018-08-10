@@ -6,7 +6,6 @@ import Steg, { StegProps } from 'app/components/steg/Steg';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 
 import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål';
 
@@ -24,7 +23,6 @@ import Søker from '../../../types/søknad/Søker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import Bolk from 'common/components/bolk/Bolk';
 import BarnBolk from '../../../bolker/BarnBolk';
 import { guid } from 'nav-frontend-js-utils';
 import { findDateMostDistantInPast } from '../../../util/dates/dates';
@@ -33,6 +31,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
 import DateValues from '../../../util/validation/values';
+import Block from 'common/components/block/Block';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -201,8 +200,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                     this.hasCheckedRegistrertBarn() ||
                     barnErGyldig(barn, situasjon)
                 }>
-                <Bolk
-                    synlig={registrerteBarn.length > 0}
+                <Block
+                    visible={registrerteBarn.length > 0}
                     render={() => (
                         <BarnBolk
                             gjelderAnnetBarn={gjelderAnnetBarn}
@@ -216,56 +215,55 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                         />
                     )}
                 />
-
-                {(gjelderAnnetBarn || registrerteBarn.length === 0) && (
-                    <Bolk
-                        render={() => (
-                            <React.Fragment>
-                                <Spørsmål
-                                    render={() => (
-                                        <ErBarnetFødtSpørsmål
-                                            erBarnetFødt={barn.erBarnetFødt}
-                                            onChange={(erBarnetFødt: boolean) =>
-                                                dispatch(
-                                                    søknadActions.updateBarn({
-                                                        erBarnetFødt
-                                                    })
-                                                )
-                                            }
-                                        />
-                                    )}
-                                />
-                                {barn.erBarnetFødt === true && (
-                                    <FødtBarnPartial
-                                        dispatch={dispatch}
-                                        barn={barn as FødtBarn}
-                                        fødselsattest={fødselsattest || []}
+                <Block
+                    margin="none"
+                    visible={gjelderAnnetBarn || registrerteBarn.length === 0}
+                    render={() => (
+                        <React.Fragment>
+                            <Block
+                                render={() => (
+                                    <ErBarnetFødtSpørsmål
+                                        erBarnetFødt={barn.erBarnetFødt}
+                                        onChange={(erBarnetFødt: boolean) =>
+                                            dispatch(
+                                                søknadActions.updateBarn({
+                                                    erBarnetFødt
+                                                })
+                                            )
+                                        }
                                     />
                                 )}
-                                {barn.erBarnetFødt === false && (
-                                    <div className="blokk-m">
-                                        <UfødtBarnPartial
-                                            dispatch={dispatch}
-                                            barn={barn as UfødtBarn}
-                                            annenForelder={annenForelder}
-                                            skalLasteOppTerminbekreftelse={
-                                                skalLasteOppTerminbekreftelse
-                                            }
-                                            søker={søker}
-                                            erFarEllerMedmor={erFarEllerMedmor(
-                                                person.kjønn,
-                                                søker.rolle
-                                            )}
-                                            terminbekreftelse={
-                                                terminbekreftelse || []
-                                            }
-                                        />
-                                    </div>
-                                )}
-                            </React.Fragment>
-                        )}
-                    />
-                )}
+                            />
+                            {barn.erBarnetFødt === true && (
+                                <FødtBarnPartial
+                                    dispatch={dispatch}
+                                    barn={barn as FødtBarn}
+                                    fødselsattest={fødselsattest || []}
+                                />
+                            )}
+                            {barn.erBarnetFødt === false && (
+                                <div className="blokk-m">
+                                    <UfødtBarnPartial
+                                        dispatch={dispatch}
+                                        barn={barn as UfødtBarn}
+                                        annenForelder={annenForelder}
+                                        skalLasteOppTerminbekreftelse={
+                                            skalLasteOppTerminbekreftelse
+                                        }
+                                        søker={søker}
+                                        erFarEllerMedmor={erFarEllerMedmor(
+                                            person.kjønn,
+                                            søker.rolle
+                                        )}
+                                        terminbekreftelse={
+                                            terminbekreftelse || []
+                                        }
+                                    />
+                                </div>
+                            )}
+                        </React.Fragment>
+                    )}
+                />
             </Steg>
         );
     }
