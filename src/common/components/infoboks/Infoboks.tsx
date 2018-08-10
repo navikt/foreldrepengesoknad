@@ -49,12 +49,12 @@ class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
                 />
                 <Collapse
                     hasNestedCollapse={true}
-                    className={classNames('spørsmålInfoboks', {
-                        'spørsmålInfoboks--open': isExpanded
+                    className={classNames('infoboks', {
+                        'infoboks--open': isExpanded
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>
-                    <div className="spørsmålInfoboks__wrapper">{tekst}</div>
+                    <div className="infoboks__wrapper">{tekst}</div>
                 </Collapse>
             </React.Fragment>
         );
