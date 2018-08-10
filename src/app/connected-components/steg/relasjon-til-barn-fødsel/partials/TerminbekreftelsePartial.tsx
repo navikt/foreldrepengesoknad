@@ -5,14 +5,14 @@ import {
 } from '../../../../util/validation/fields/terminbekreftelsedato';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AttachmentType } from '../../../../types/søknad/Søknad';
-import { UfødtBarn } from '../../../../types/s\u00F8knad/Barn';
+import { UfødtBarn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Bolk from 'common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/sp\u00F8rsm\u00E5l/Sp\u00F8rsm\u00E5l';
+import Spørsmål from 'common/components/spørsm\u00E5l/Spørsm\u00E5l';
 import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
 
 export interface OwnProps {

@@ -26,7 +26,7 @@ import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
 import DateValues from '../../../util/validation/values';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/f\u00F8dselsdato';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import Bolk from 'common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';

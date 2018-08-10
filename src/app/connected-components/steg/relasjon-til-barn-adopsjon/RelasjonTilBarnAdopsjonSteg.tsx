@@ -23,7 +23,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
 import DateValues from '../../../util/validation/values';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/f\u00F8dselsdato';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 
 interface StateProps {
     barn: Adopsjonsbarn;

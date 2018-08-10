@@ -22,7 +22,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType } from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/f\u00F8dselsdato';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import Bolk from 'common/components/bolk/Bolk';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import getMessage from 'common/util/i18nUtils';
