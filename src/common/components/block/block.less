@@ -1,0 +1,31 @@
+.block {
+    /** Motvirke at outline på elementer blir klippet på grunn av overflow:hidden */
+    @outlineSize: 8px;
+    &__collapse {
+        padding-left: @outlineSize;
+        padding-right: @outlineSize;
+        margin-left: -1 * @outlineSize;
+        margin-right: -1 * @outlineSize;
+        &--skjult {
+            .sporsmal {
+                padding-bottom: 0;
+            }
+        }
+    }
+    /** Variasjoner på luft under. --m er default */
+    &--m {
+        padding-bottom: 2rem;
+    }
+    &--s {
+        padding-bottom: 1.5rem;
+    }
+    &--xs {
+        padding-bottom: 1rem;
+    }
+    &--xxs {
+        padding-bottom: 0.5rem;
+    }
+    &--none {
+        padding-bottom: 0;
+    }
+}
