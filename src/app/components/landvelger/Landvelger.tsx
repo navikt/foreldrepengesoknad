@@ -1,20 +1,18 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { Select } from 'nav-frontend-skjema';
-import { Feil } from 'common/components/skjema-input-element/types';
-import ValidSelect from 'common/lib/validation/ValidSelect';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import Select from 'common/components/skjema/wrappers/Select';
 
 interface StateProps {
     defaultValue?: string;
     label: React.ReactNode;
-    feil?: Feil;
     validators?: any;
     name?: string;
     onChange: (
         value: string,
         event?: React.ChangeEvent<HTMLSelectElement>
     ) => void;
+    infotekst?: string;
 }
 
 type Props = StateProps & InjectedIntlProps;
@@ -50,19 +48,18 @@ class Landvelger extends React.Component<Props> {
     }
 
     render() {
-        const { validators, onChange, ...restProps } = this.props;
-        const SelectComponent =
-            validators && validators.length > 0 ? ValidSelect : Select;
+        const { validators, onChange, infotekst, ...restProps } = this.props;
         return (
-            <SelectComponent
+            <Select
                 {...restProps}
+                infotekst={infotekst}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     onChange(e.target.value, e)
                 }
                 validators={validators}>
                 <option value="" />
                 {this.getCountryOptions()}
-            </SelectComponent>
+            </Select>
         );
     }
 }

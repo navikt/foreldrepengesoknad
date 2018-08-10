@@ -20,14 +20,14 @@ import TidsperiodeBolk, {
 } from '../../bolker/TidsperiodeBolk';
 import Bolk from '../../../common/components/bolk/Bolk';
 import { Avgrensninger } from 'nav-datovelger';
-import { Validator } from 'common/lib/validation/types';
+import { Validator } from 'common/lib/validation/types/index';
 import {
     InjectedIntl,
     InjectedIntlProps,
     injectIntl,
     FormattedMessage
 } from 'react-intl';
-import ValidForm from 'common/lib/validation/ValidForm';
+import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;
@@ -210,7 +210,7 @@ class UtenlandsoppholdModal extends React.Component<
                 className={cls.className}
                 onRequestClose={this.onRequestClose}
                 {...modalProps}>
-                <ValidForm onSubmit={this.onSubmit} noSummary={true}>
+                <ValiderbarForm onSubmit={this.onSubmit} noSummary={true}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>
@@ -261,7 +261,7 @@ class UtenlandsoppholdModal extends React.Component<
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
                     </Knapperad>
-                </ValidForm>
+                </ValiderbarForm>
             </Modal>
         );
     }

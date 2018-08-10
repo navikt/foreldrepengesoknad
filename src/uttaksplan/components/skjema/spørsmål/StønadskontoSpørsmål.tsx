@@ -4,7 +4,7 @@ import Radioliste, {
 } from 'uttaksplan/components/radioliste/Radioliste';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types';
-import { Feil } from 'common/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface OwnProps {
     spørsmål: string;

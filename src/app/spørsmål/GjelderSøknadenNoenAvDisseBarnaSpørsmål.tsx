@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { VelgbartRegistrertBarn } from '../types/Person';
-import CheckboksPanelGruppeResponsive from 'common/components/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
+import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { formaterNavn } from '../util/domain/personUtil';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
-import { Feil } from 'common/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { Row, Column } from 'nav-frontend-grid';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { renderDag } from 'common/util/renderUtils';
 import { Tidsperiode } from 'common/types';

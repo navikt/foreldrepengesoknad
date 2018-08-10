@@ -7,8 +7,8 @@ import {
     TidsperiodePartial
 } from 'common/types';
 import { Avgrensninger } from 'nav-datovelger';
-import { Validator } from 'common/lib/validation/types';
-import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import { Validator } from 'common/lib/validation/types/index';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 type TidsperiodeType =
     | TidsperiodePartial
@@ -58,7 +58,7 @@ class TidsperiodeBolk extends React.Component<Props> {
             <React.Fragment>
                 <Spørsmål
                     render={() => (
-                        <DatoInputWithValidation
+                        <DatoInput
                             id="fraDatoInput"
                             label={getMessage(intl, 'fraogmed')}
                             onChange={(fom: Date) => {
@@ -78,7 +78,7 @@ class TidsperiodeBolk extends React.Component<Props> {
 
                 <Spørsmål
                     render={() => (
-                        <DatoInputWithValidation
+                        <DatoInput
                             id="tilDatoInput"
                             label={getMessage(intl, 'tilogmed')}
                             onChange={(tom: Date) => {
