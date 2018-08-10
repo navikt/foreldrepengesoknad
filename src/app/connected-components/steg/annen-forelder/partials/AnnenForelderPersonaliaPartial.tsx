@@ -11,7 +11,7 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from '../../../../../common/components/bolk/Bolk';
-import FødselsnummerSpørsmålsgruppe from '../../../../spørsmål/FødselsnummerSpørsmålsgruppe';
+import FødselsnummerSpørsmålsgruppe from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';

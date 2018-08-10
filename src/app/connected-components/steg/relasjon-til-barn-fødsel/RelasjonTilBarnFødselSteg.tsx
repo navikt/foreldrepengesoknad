@@ -192,13 +192,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<
         }
 
         const { registrerteBarn, gjelderAnnetBarn } = this.state;
-
         return (
             <Steg
                 {...stegProps}
                 renderFortsettKnapp={
                     this.hasCheckedRegistrertBarn() ||
-                    barnErGyldig(barn, situasjon)
+                    barnErGyldig(barn, situasjon, skalLasteOppTerminbekreftelse)
                 }>
                 <Block
                     visible={registrerteBarn.length > 0}
@@ -217,6 +216,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                 />
                 <Block
                     margin="none"
+                    hasChildBlocks={true}
                     visible={gjelderAnnetBarn || registrerteBarn.length === 0}
                     render={() => (
                         <React.Fragment>

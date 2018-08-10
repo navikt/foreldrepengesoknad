@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmålsgruppe from '../../../spørsmål/AntallBarnSpørsmålsgruppe';
+import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
@@ -96,7 +96,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 />
 
                 {visSpørsmålOmAntallBarn && (
-                    <AntallBarnSpørsmålsgruppe
+                    <AntallBarnBolk
                         spørsmål={getMessage(
                             intl,
                             'antallBarn.spørsmål.venter'

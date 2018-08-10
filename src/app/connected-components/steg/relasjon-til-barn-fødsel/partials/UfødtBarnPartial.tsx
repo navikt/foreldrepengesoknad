@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
+import AntallBarnBolk from '../../../../bolker/AntallBarnBolk';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
@@ -17,6 +16,7 @@ import {
 } from '../../../../util/validation/fields/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import Block from 'common/components/block/Block';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
@@ -67,7 +67,7 @@ class UfødtBarnPartial extends React.Component<Props> {
 
                 {erMorEllerMorErForSyk && (
                     <React.Fragment>
-                        <AntallBarnSpørsmålsgruppe
+                        <AntallBarnBolk
                             antallBarn={barn.antallBarn}
                             inputName="antallBarn"
                             onChange={(antallBarn: number) => {
@@ -83,9 +83,9 @@ class UfødtBarnPartial extends React.Component<Props> {
                             )}
                         />
 
-                        <Spørsmål
-                            animert={false}
-                            synlig={barn.antallBarn !== undefined}
+                        <Block
+                            margin="none"
+                            visible={barn.antallBarn !== undefined}
                             render={() => (
                                 <DatoInput
                                     id="termindato"

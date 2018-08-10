@@ -8,7 +8,7 @@ import Steg, { StegProps } from 'app/components/steg/Steg';
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import AntallBarnSpørsmålsgruppe from '../../../spørsmål/AntallBarnSpørsmålsgruppe';
+import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
@@ -88,7 +88,7 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                     )}
                 />
                 {visSpørsmålOmAntallBarn && (
-                    <AntallBarnSpørsmålsgruppe
+                    <AntallBarnBolk
                         spørsmål={intl.formatMessage({
                             id: 'stebarnsadopsjon.antallBarn'
                         })}
