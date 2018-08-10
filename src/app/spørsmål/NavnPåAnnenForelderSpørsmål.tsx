@@ -3,7 +3,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Input } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 
 interface NavnPåAnnenForelderSpørsmålProps {
     navn?: string;
@@ -17,21 +16,15 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     const { kanIkkeOppgis, navn, onChange, intl } = props;
 
     return (
-        <React.Fragment>
-            <Spørsmål
-                render={() => (
-                    <Input
-                        disabled={kanIkkeOppgis}
-                        label={getMessage(intl, 'annenForelder.spørsmål.navn')}
-                        name="navn"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            onChange({ navn: e.target.value })
-                        }
-                        value={navn === undefined ? '' : navn}
-                    />
-                )}
-            />
-        </React.Fragment>
+        <Input
+            disabled={kanIkkeOppgis}
+            label={getMessage(intl, 'annenForelder.spørsmål.navn')}
+            name="navn"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange({ navn: e.target.value })
+            }
+            value={navn === undefined ? '' : navn}
+        />
     );
 };
 
