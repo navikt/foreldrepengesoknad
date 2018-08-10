@@ -24,7 +24,7 @@ interface FødselsnummerSpørsmålProps {
 
 type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
-const FødselsnummerSpørsmål = (props: Props) => {
+const FødselsnummerBolk = (props: Props) => {
     const {
         kanIkkeOppgis,
         fnr,
@@ -93,4 +93,4 @@ const FødselsnummerSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(FødselsnummerSpørsmål);
+export default injectIntl(FødselsnummerBolk);
