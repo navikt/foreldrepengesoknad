@@ -36,7 +36,7 @@ import {
     getSenereUtenlandsoppholdFradatoRegler as fraReglerSenerePerioder,
     getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
 } from '../../../util/validation/fields/senereUtenlandsopphold';
-import { FormSubmitEvent } from 'common/lib/validation/ValidForm';
+import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 

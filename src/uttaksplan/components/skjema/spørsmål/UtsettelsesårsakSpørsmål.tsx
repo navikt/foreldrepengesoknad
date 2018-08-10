@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Radioliste from 'uttaksplan/components/radioliste/Radioliste';
-import { Feil } from 'common/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { Forelder } from 'common/types';
 import { UtsettelseÅrsakType } from 'uttaksplan/types';
 

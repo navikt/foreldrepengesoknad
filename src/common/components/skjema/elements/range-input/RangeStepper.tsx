@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Chevron from 'nav-frontend-chevron';
-import Sirkelknapp from '../sirkelknapp/Sirkelknapp';
+import Sirkelknapp from '../../../sirkelknapp/Sirkelknapp';
 
 import './rangeStepper.less';
 
@@ -23,7 +23,7 @@ const RangeStepper: React.StatelessComponent<Props> = ({
         size="stor"
         stil="hvit"
         onClick={() => onClick()}
-        label={label}
+        ariaLabel={label}
         disabled={disabled}
         ikon={
             <Chevron

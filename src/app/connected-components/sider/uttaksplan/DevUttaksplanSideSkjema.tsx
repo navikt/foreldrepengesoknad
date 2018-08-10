@@ -4,7 +4,7 @@ import Radioliste, {
 } from 'uttaksplan/components/radioliste/Radioliste';
 import { UttaksplamTestSkjemadata } from './UttaksplanSide';
 import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { Row, Column } from 'nav-frontend-grid';
 import { guid } from 'nav-frontend-js-utils';

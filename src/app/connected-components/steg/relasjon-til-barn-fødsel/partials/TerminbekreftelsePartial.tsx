@@ -12,8 +12,8 @@ import Bolk from 'common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsm\u00E5l/Spørsm\u00E5l';
-import DatoInputWithValidation from 'common/lib/validation/DatoInputWithValidation';
+import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -61,7 +61,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     barn.termindato !== undefined
                 }
                 render={() => (
-                    <DatoInputWithValidation
+                    <DatoInput
                         id="terminbekreftelseDato"
                         name="terminbekreftelseDato"
                         label={getMessage(
@@ -83,6 +83,10 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                             barn.terminbekreftelseDato,
                             barn.termindato,
                             intl
+                        )}
+                        infotekst={getMessage(
+                            intl,
+                            'terminbekreftelseDato.infotekst'
                         )}
                     />
                 )}

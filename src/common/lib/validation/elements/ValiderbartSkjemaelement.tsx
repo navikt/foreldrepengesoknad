@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Input, Textarea, Select } from 'nav-frontend-skjema';
-import { Validator } from './types';
+import { Validator } from '../types/index';
 import PT from 'prop-types';
-import SkjemaelementFeilmelding from './SkjemaelementFeilmelding';
-import DatoInput from 'common/components/dato-input/DatoInput';
+import SkjemaelementFeilmelding from '../errors/SkjemaelementFeilmelding';
+import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 
-export interface ValidBaseProps {
+export interface ValiderbartSkjemaelementProps {
     id?: string;
     name?: string;
     optional?: boolean;
     validators?: Validator[];
     feil?: SkjemaelementFeilmelding;
+    label?: ReactNode;
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
     onChange?: (evt: any) => void;
@@ -18,18 +19,21 @@ export interface ValidBaseProps {
     onValidate?: (evt: any) => void;
 }
 
-export interface Props extends ValidBaseProps {
+export interface Props extends ValiderbartSkjemaelementProps {
     component: any;
 }
 
-export interface State {
+export interface ValiderbartSkjemaelementState {
     tests: any[];
     valid: boolean;
     hasBlurred: boolean;
     optional?: boolean;
 }
 
-class ValidBase extends React.Component<Props, State> {
+class ValiderbartSkjemaelement extends React.Component<
+    Props,
+    ValiderbartSkjemaelementState
+> {
     static contextTypes = {
         validForm: PT.object
     };
@@ -190,10 +194,4 @@ class ValidBase extends React.Component<Props, State> {
         );
     }
 }
-export default ValidBase;
-
-export { default as ValidForm } from './ValidForm';
-export { default as ValidInput } from './ValidInput';
-export { default as ValidGroup } from './ValidGroup';
-export { default as ValidSelect } from './ValidSelect';
-export { default as Feiloppsummering } from './Feiloppsummering';
+export default ValiderbartSkjemaelement;
