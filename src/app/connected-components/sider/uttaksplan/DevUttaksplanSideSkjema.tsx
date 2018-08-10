@@ -3,10 +3,7 @@ import Radioliste, {
     RadiolisteValg
 } from 'uttaksplan/components/radioliste/Radioliste';
 import { UttaksplamTestSkjemadata } from './UttaksplanSide';
-import {
-    SøkerRolle,
-    Søkersituasjon
-} from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/dato-input/DatoInput';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { Row, Column } from 'nav-frontend-grid';

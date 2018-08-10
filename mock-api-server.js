@@ -7,18 +7,6 @@ const MockStorage = require('./mock-storage');
 
 require('dotenv').config();
 
-const mockResponse = {
-    søker: {
-        fnr: '11111111111',
-        fornavn: 'HENRIKKE',
-        etternavn: 'IBSEN',
-        kjønn: 'K',
-        fødselsdato: '1979-01-28',
-        ikkeNordiskEøsLand: true
-    },
-    arbeidsforhold: {}
-};
-
 const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader(
@@ -44,11 +32,7 @@ app.use(delayAllResponses(500));
 app.use(express.json());
 
 router.get(['/rest/sokerinfo'], (req, res) => {
-    res.send(mockResponse);
-});
-
-router.get(['/rest/sokerinfo'], (req, res) => {
-    res.send(mockResponse);
+    res.send(MockStorage.getSokerInfo());
 });
 
 router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));

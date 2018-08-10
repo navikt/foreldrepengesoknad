@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Element } from 'nav-frontend-typografi';
 
 interface Props {
     tittel?: string;
@@ -16,7 +17,11 @@ const Bolk: React.StatelessComponent<Props> = ({
     }
     return (
         <section className="bolk">
-            {tittel && <h1 className="bolk__tittel">{tittel || 'bolk'}</h1>}
+            {tittel && (
+                <Element tag="h1" className="bolk__tittel">
+                    {tittel || 'bolk'}
+                </Element>
+            )}
             {render && render()}
         </section>
     );

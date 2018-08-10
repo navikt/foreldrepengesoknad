@@ -33,3 +33,10 @@ export const getFødselsdatoRegler = (
         }
     ];
 };
+
+export const fødselsdatoerErFyltUt = (
+    fødselsdatoer: Date[] | undefined
+): boolean =>
+    fødselsdatoer !== undefined &&
+    fødselsdatoer.length > 0 &&
+    fødselsdatoer.findIndex((d) => d === undefined) === -1;

@@ -11,7 +11,7 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from '../../../../../common/components/bolk/Bolk';
-import FødselsnummerSpørsmål from '../../../../spørsmål/FødselsnummerSpørsmål';
+import FødselsnummerSpørsmålsgruppe from '../../../../spørsmål/FødselsnummerSpørsmålsgruppe';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
@@ -78,18 +78,22 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                 <Bolk
                     synlig={registrertAnnenForelder === undefined}
                     render={() => (
-                        <NavnPåAnnenForelderSpørsmål
-                            navn={navn}
-                            kanIkkeOppgis={kanIkkeOppgis}
-                            onChange={(
-                                annenForelderPartial: AnnenForelderPartial
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder(
-                                        annenForelderPartial
-                                    )
-                                )
-                            }
+                        <Spørsmål
+                            render={() => (
+                                <NavnPåAnnenForelderSpørsmål
+                                    navn={navn}
+                                    kanIkkeOppgis={kanIkkeOppgis}
+                                    onChange={(
+                                        annenForelderPartial: AnnenForelderPartial
+                                    ) =>
+                                        dispatch(
+                                            søknadActions.updateAnnenForelder(
+                                                annenForelderPartial
+                                            )
+                                        )
+                                    }
+                                />
+                            )}
                         />
                     )}
                 />
@@ -136,27 +140,24 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={navn !== undefined}
-                    render={() => (
-                        <FødselsnummerSpørsmål
-                            kanIkkeOppgis={kanIkkeOppgis}
-                            søkersFødselsnummer={søkersFødselsnummer}
-                            fnr={annenForelder.fnr}
-                            utenlandskFnr={annenForelder.utenlandskFnr}
-                            bostedsland={annenForelder.bostedsland}
-                            onChange={(
-                                annenForelderPartial: AnnenForelderPartial
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder(
-                                        annenForelderPartial
-                                    )
+                {navn !== undefined && (
+                    <FødselsnummerSpørsmålsgruppe
+                        kanIkkeOppgis={kanIkkeOppgis}
+                        søkersFødselsnummer={søkersFødselsnummer}
+                        fnr={annenForelder.fnr}
+                        utenlandskFnr={annenForelder.utenlandskFnr}
+                        bostedsland={annenForelder.bostedsland}
+                        onChange={(
+                            annenForelderPartial: AnnenForelderPartial
+                        ) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder(
+                                    annenForelderPartial
                                 )
-                            }
-                        />
-                    )}
-                />
+                            )
+                        }
+                    />
+                )}
             </React.Fragment>
         );
     }

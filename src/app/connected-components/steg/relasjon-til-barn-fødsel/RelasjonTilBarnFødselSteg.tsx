@@ -31,6 +31,8 @@ import { findDateMostDistantInPast } from '../../../util/dates/dates';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
+import DateValues from '../../../util/validation/values';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -41,6 +43,7 @@ interface RelasjonTilBarnFødselStegProps {
     fødselsattest: Attachment[];
     stegProps: StegProps;
     situasjon: Søkersituasjon;
+    skalLasteOppTerminbekreftelse: boolean;
 }
 
 interface RelasjonTilBarnFødselStegState {
@@ -181,6 +184,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
             terminbekreftelse,
             situasjon,
             stegProps,
+            skalLasteOppTerminbekreftelse,
             dispatch
         } = this.props;
 
@@ -239,19 +243,24 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                                     />
                                 )}
                                 {barn.erBarnetFødt === false && (
-                                    <UfødtBarnPartial
-                                        dispatch={dispatch}
-                                        barn={barn as UfødtBarn}
-                                        annenForelder={annenForelder}
-                                        søker={søker}
-                                        erFarEllerMedmor={erFarEllerMedmor(
-                                            person.kjønn,
-                                            søker.rolle
-                                        )}
-                                        terminbekreftelse={
-                                            terminbekreftelse || []
-                                        }
-                                    />
+                                    <div className="blokk-m">
+                                        <UfødtBarnPartial
+                                            dispatch={dispatch}
+                                            barn={barn as UfødtBarn}
+                                            annenForelder={annenForelder}
+                                            skalLasteOppTerminbekreftelse={
+                                                skalLasteOppTerminbekreftelse
+                                            }
+                                            søker={søker}
+                                            erFarEllerMedmor={erFarEllerMedmor(
+                                                person.kjønn,
+                                                søker.rolle
+                                            )}
+                                            terminbekreftelse={
+                                                terminbekreftelse || []
+                                            }
+                                        />
+                                    </div>
                                 )}
                             </React.Fragment>
                         )}
@@ -270,6 +279,12 @@ const mapStateToProps = (
     const barn = state.søknad.barn;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
+    const skalLasteOppTerminbekreftelse: boolean =
+        barn.erBarnetFødt === false &&
+        !harAktivtArbeidsforhold(
+            state.api.arbeidsforhold,
+            DateValues.today.toDate()
+        );
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
@@ -285,6 +300,7 @@ const mapStateToProps = (
         barn,
         terminbekreftelse,
         fødselsattest,
+        skalLasteOppTerminbekreftelse,
         stegProps
     };
 };
