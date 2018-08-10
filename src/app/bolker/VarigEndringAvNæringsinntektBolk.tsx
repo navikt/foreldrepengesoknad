@@ -14,6 +14,7 @@ import Textarea from 'nav-frontend-skjema/lib/textarea';
 import Input from 'nav-frontend-skjema/lib/input';
 import { InputChangeEvent, TextareaChangeEvent } from '../types/dom/Events';
 import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
+import { getTidsperiodeAvgrensningerSiste4år } from '../util/validation/fields/andreInntekter';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
@@ -81,6 +82,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                             );
                                         }}
                                         dato={info && info.dato}
+                                        avgrensninger={getTidsperiodeAvgrensningerSiste4år()}
                                     />
                                 )}
                             />

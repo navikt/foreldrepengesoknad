@@ -27,6 +27,7 @@ import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { AttachmentType } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface AnnenInntektModalProps extends ModalProps {
     annenInntekt?: AnnenInntekt;
@@ -124,6 +125,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
             annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
 
         const cls = BEMHelper('annenInntektModal');
+
         return (
             <Modal
                 className={cls.className}
@@ -133,7 +135,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="annenInntekt.modal.tittel" />
                     </Undertittel>
-
                     <Spørsmål
                         render={() => (
                             <InntektstypeVelger
@@ -147,7 +148,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         synlig={gjelderJobbIUtlandet}
                         render={() => (
@@ -168,7 +168,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         synlig={
                             (annenInntekt as JobbIUtlandetInntekt).land !==
@@ -193,7 +192,27 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
+                    <Spørsmål
+                        synlig={
+                            gjelderJobbIUtlandet &&
+                            (annenInntekt as JobbIUtlandetInntekt)
+                                .arbeidsgiverNavn !== undefined
+                        }
+                        render={() => (
+                            <ErArbeidsgiverNærVennEllerFamilie
+                                erArbeidsgiverNærVennEllerFamilie={
+                                    (annenInntekt as JobbIUtlandetInntekt)
+                                        .erNærVennEllerFamilieMedArbeidsgiver
+                                }
+                                onChange={(v: boolean) => {
+                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                        erNærVennEllerFamilieMedArbeidsgiver: v
+                                    };
+                                    this.updateAnnenInntekt(utlandInntekt);
+                                }}
+                            />
+                        )}
+                    />
                     <Bolk
                         render={() => (
                             <TidsperiodeBolk
@@ -202,10 +221,12 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
                                 ) => this.updateAnnenInntekt({ tidsperiode })}
                                 sluttdatoDisabled={annenInntekt.pågående}
+                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                    annenInntekt.tidsperiode
+                                )}
                             />
                         )}
                     />
-
                     <Spørsmål
                         render={() => (
                             <Checkbox
@@ -226,7 +247,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
                     <Spørsmål
                         render={() => (
                             <AttachmentsUploader
@@ -258,25 +278,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-
-                    <Spørsmål
-                        synlig={gjelderJobbIUtlandet}
-                        render={() => (
-                            <ErArbeidsgiverNærVennEllerFamilie
-                                erArbeidsgiverNærVennEllerFamilie={
-                                    (annenInntekt as JobbIUtlandetInntekt)
-                                        .erNærVennEllerFamilieMedArbeidsgiver
-                                }
-                                onChange={(v: boolean) => {
-                                    const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                        erNærVennEllerFamilieMedArbeidsgiver: v
-                                    };
-                                    this.updateAnnenInntekt(utlandInntekt);
-                                }}
-                            />
-                        )}
-                    />
-
                     <Knapperad>
                         <Knapp
                             type="standard"
