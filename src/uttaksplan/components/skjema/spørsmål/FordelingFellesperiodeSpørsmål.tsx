@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import RangeInput from 'common/components/range-input/RangeInput';
+import RangeInput from 'common/components/skjema/elements/range-input/RangeInput';
 import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import Sporsmal from 'uttaksplan/components/sporsmal/Sporsmal';
 import FordelingFellesperiodeLabelRenderer from './fordelingFellesperiode/FordelingFellesperiodeLabelRenderer';

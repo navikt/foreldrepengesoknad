@@ -1,5 +1,5 @@
 import { InjectedIntl } from 'react-intl';
-import { Validator } from 'common/lib/validation/types';
+import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 const isValidFødselsnummer = require('is-valid-fodselsnummer');
 

@@ -22,7 +22,7 @@ import {
 
 import './utsettelseSkjema.less';
 import { Valideringsfeil, Skjemaelement } from './types';
-import { Feil } from 'common/components/skjema-input-element/types';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { normaliserDato } from 'common/util/datoUtils';
 import HvemGjelderPeriodenSpørsmål from 'uttaksplan/components/skjema/spørsmål/HvemGjelderPeriodenSpørsmål';

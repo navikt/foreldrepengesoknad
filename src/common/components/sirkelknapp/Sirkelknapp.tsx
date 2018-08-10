@@ -8,9 +8,9 @@ import preventDoubleTapZoom from 'common/util/preventDoubleTapZoom';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 
-export interface Props {
+export interface SirkelknappProps {
     /** Tekst som blir lest opp og satt som tittel på knappen */
-    label: string;
+    ariaLabel: string;
     /** Ikon som brukes inne i knappen */
     ikon: React.ReactNode;
     /** Funksjon som kalles knappen klikkes på */
@@ -27,9 +27,9 @@ export interface Props {
     size?: 'normal' | 'stor';
 }
 
-const Sirkelknapp: React.StatelessComponent<Props> = ({
+const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
     onClick,
-    label,
+    ariaLabel,
     ikon,
     toggle,
     disabled,
@@ -56,7 +56,7 @@ const Sirkelknapp: React.StatelessComponent<Props> = ({
             <span className="sirkelknapp__ikon" role="presentation">
                 {ikon}
             </span>
-            <AriaText id={labelId}>{label}</AriaText>
+            <AriaText id={labelId}>{ariaLabel}</AriaText>
         </button>
     );
 };

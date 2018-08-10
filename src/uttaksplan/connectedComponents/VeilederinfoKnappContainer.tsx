@@ -24,7 +24,7 @@ class VeilederinfoKnappContainer extends React.Component<Props, {}> {
         return (
             <Sirkelknapp
                 stil="info"
-                label={label}
+                ariaLabel={label}
                 ikon={isOpen ? <LukkInfoIkon /> : <InfoIkon />}
                 toggle={{ pressed: isOpen }}
                 onClick={() => dispatch(isOpen ? skjulInfo(id) : visInfo(id))}
