@@ -16,6 +16,7 @@ import {
     FrilansOppdrag,
     FrilansOppdragPartial
 } from '../../types/søknad/FrilansInformasjon';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;
@@ -86,6 +87,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { oppdrag } = this.state;
         const cls = BEMHelper('frilansOppdragModal');
+
         return (
             <Modal
                 className={cls.className}
@@ -123,6 +125,9 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                                     tidsperiode: TidsperiodeMedValgfriSluttdato
                                 ) => this.updateOppdrag({ tidsperiode })}
                                 sluttdatoDisabled={oppdrag.pågående}
+                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                    oppdrag.tidsperiode
+                                )}
                             />
                         )}
                     />

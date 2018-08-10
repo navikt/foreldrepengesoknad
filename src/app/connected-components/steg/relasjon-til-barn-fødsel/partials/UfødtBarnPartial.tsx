@@ -3,25 +3,19 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
-import Bolk from 'common/components/bolk/Bolk';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
-import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import {
     getTermindatoRegler,
     termindatoAvgrensninger
 } from '../../../../util/validation/fields/termindato';
-import {
-    getTerminbekreftelsedatoAvgrensninger,
-    getTerminbekreftelseDatoRegler
-} from '../../../../util/validation/fields/terminbekreftelsedato';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/wrappers/skjemaelementer/DatoInput';
 
 interface UfødtBarnPartialProps {
@@ -29,6 +23,7 @@ interface UfødtBarnPartialProps {
     søker: Søker;
     annenForelder: AnnenForelderPartial;
     terminbekreftelse: Attachment[];
+    skalLasteOppTerminbekreftelse: boolean;
     erFarEllerMedmor: boolean;
 }
 
@@ -40,6 +35,7 @@ class UfødtBarnPartial extends React.Component<Props> {
             barn,
             annenForelder,
             terminbekreftelse,
+            skalLasteOppTerminbekreftelse,
             erFarEllerMedmor,
             dispatch,
             intl
@@ -50,21 +46,18 @@ class UfødtBarnPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    synlig={erFarEllerMedmor}
-                    render={() => (
-                        <MorForSykSpørsmål
-                            erMorForSyk={annenForelder.erForSyk}
-                            onChange={(erForSyk: boolean) => {
-                                dispatch(
-                                    søknadActions.updateAnnenForelder({
-                                        erForSyk
-                                    })
-                                );
-                            }}
-                        />
-                    )}
-                />
+                {erFarEllerMedmor && (
+                    <MorForSykSpørsmål
+                        erMorForSyk={annenForelder.erForSyk}
+                        onChange={(erForSyk: boolean) => {
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    erForSyk
+                                })
+                            );
+                        }}
+                    />
+                )}
 
                 {annenForelder.erForSyk === false && (
                     <Veilederinfo type="feil">
@@ -74,23 +67,19 @@ class UfødtBarnPartial extends React.Component<Props> {
 
                 {erMorEllerMorErForSyk && (
                     <React.Fragment>
-                        <Spørsmål
-                            render={() => (
-                                <AntallBarnSpørsmål
-                                    antallBarn={barn.antallBarn}
-                                    inputName="antallBarn"
-                                    onChange={(antallBarn: number) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                antallBarn
-                                            })
-                                        );
-                                    }}
-                                    spørsmål={getMessage(
-                                        intl,
-                                        'antallBarn.spørsmål.venter'
-                                    )}
-                                />
+                        <AntallBarnSpørsmålsgruppe
+                            antallBarn={barn.antallBarn}
+                            inputName="antallBarn"
+                            onChange={(antallBarn: number) => {
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        antallBarn
+                                    })
+                                );
+                            }}
+                            spørsmål={getMessage(
+                                intl,
+                                'antallBarn.spørsmål.venter'
                             )}
                         />
 
@@ -122,76 +111,14 @@ class UfødtBarnPartial extends React.Component<Props> {
                             )}
                         />
 
-                        <Bolk
-                            synlig={barn.termindato !== undefined}
-                            tittel={getMessage(
-                                intl,
-                                'vedlegg.tittel.terminbekreftelse'
-                            )}
-                            render={() => (
-                                <AttachmentsUploaderPure
-                                    attachments={terminbekreftelse}
-                                    attachmentType={
-                                        AttachmentType.TERMINBEKREFTELSE
-                                    }
-                                    onFilesSelect={(
-                                        attachments: Attachment[]
-                                    ) => {
-                                        attachments.forEach(
-                                            (attachment: Attachment) => {
-                                                dispatch(
-                                                    søknadActions.uploadAttachment(
-                                                        attachment
-                                                    )
-                                                );
-                                            }
-                                        );
-                                    }}
-                                    onFileDelete={(attachment: Attachment) =>
-                                        dispatch(
-                                            søknadActions.deleteAttachment(
-                                                attachment
-                                            )
-                                        )
-                                    }
-                                />
-                            )}
-                        />
-
-                        <Spørsmål
-                            animert={false}
-                            synlig={
-                                terminbekreftelse.length > 0 &&
-                                barn.termindato !== undefined
-                            }
-                            render={() => (
-                                <DatoInput
-                                    infotekst="Du må oppgi terminbekreftelsesdato fordi blablabla"
-                                    id="terminbekreftelseDato"
-                                    name="terminbekreftelseDato"
-                                    label={getMessage(
-                                        intl,
-                                        'terminbekreftelseDato.spørsmål'
-                                    )}
-                                    onChange={(terminbekreftelseDato: Date) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                terminbekreftelseDato
-                                            })
-                                        );
-                                    }}
-                                    dato={barn.terminbekreftelseDato}
-                                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(
-                                        barn.termindato
-                                    )}
-                                    validators={getTerminbekreftelseDatoRegler(
-                                        barn.terminbekreftelseDato,
-                                        barn.termindato,
-                                        intl
-                                    )}
-                                />
-                            )}
-                        />
+                        {skalLasteOppTerminbekreftelse &&
+                        barn.termindato !== undefined ? (
+                            <TerminbekreftelsePartial
+                                barn={barn}
+                                terminbekreftelse={terminbekreftelse}
+                                dispatch={dispatch}
+                            />
+                        ) : null}
                     </React.Fragment>
                 )}
             </React.Fragment>

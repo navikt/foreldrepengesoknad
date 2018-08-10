@@ -2,31 +2,10 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const contextPath = '/foreldrepengesoknad-api';
-
 const multer = require('multer');
+const MockStorage = require('./mock-storage');
 
 require('dotenv').config();
-
-const mockResponse = {
-    søker: {
-        fnr: '11111111111',
-        fornavn: 'HENRIKKE',
-        etternavn: 'IBSEN',
-        kjønn: 'K',
-        fødselsdato: '1979-01-28',
-        ikkeNordiskEøsLand: true,
-        barn: [
-            {
-                fnr: '12345123451',
-                fornavn: 'EMMA',
-                etternavn: 'BERG',
-                kjønn: 'K',
-                fødselsdato: '2017-01-01'
-            }
-        ]
-    },
-    arbeidsforhold: {}
-};
 
 const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
@@ -50,16 +29,21 @@ const delayAllResponses = function(millis) {
 
 app.use(allowCrossDomain);
 app.use(delayAllResponses(500));
+app.use(express.json());
 
 router.get(['/rest/sokerinfo'], (req, res) => {
-    res.send(mockResponse);
-});
-
-router.get(['/rest/sokerinfo'], (req, res) => {
-    res.send(mockResponse);
+    res.send(MockStorage.getSokerInfo());
 });
 
 router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));
+
+router.get('/rest/storage', (req, res) => {
+    res.send(MockStorage.getSoknad());
+});
+router.post('/rest/storage', (req, res) => {
+    MockStorage.updateSoknad(req.body);
+    return res.sendStatus(200);
+});
 
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });
 router.post(

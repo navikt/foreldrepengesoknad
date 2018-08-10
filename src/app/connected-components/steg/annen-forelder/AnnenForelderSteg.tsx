@@ -6,28 +6,23 @@ import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPa
 import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { StegID } from '../../../util/routing/stegConfig';
-
 import { AppState } from '../../../redux/reducers';
-import AnnenForelder, {
-    RegistrertAnnenForelder
-} from '../../../types/søknad/AnnenForelder';
-import { BarnPartial, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { RegistrertAnnenForelder } from '../../../types/søknad/AnnenForelder';
+import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
-import Søker from '../../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
-import isAvailable from '../isAvailable';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
+import isAvailable from '../isAvailable';
+import { StegID } from '../../../util/routing/stegConfig';
 
 interface StateProps {
-    person: Person;
-    barn: BarnPartial;
-    søker: Søker;
+    personHentet: boolean;
+    erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder: RegistrertAnnenForelder;
-    annenForelder: AnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
+    shouldRenderAnnenForelderErKjentPartial: boolean;
     stegProps: StegProps;
 }
 
@@ -37,40 +32,23 @@ class AnnenForelderSteg extends React.Component<Props> {
         super(props);
     }
 
-    shouldRenderAnnenForelderErKjentPartial() {
-        const { annenForelder, registrertAnnenForelder } = this.props;
-        return (
-            (annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder
-        );
-    }
-
     render() {
         const {
-            person,
-            barn,
-            søker,
-            annenForelder,
+            personHentet,
+            erSøkerFarEllerMedmor,
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
-            dispatch,
+            shouldRenderAnnenForelderErKjentPartial,
             stegProps
         } = this.props;
 
-        if (person) {
-            const erSøkerFarEllerMedmor = erFarEllerMedmor(
-                person.kjønn,
-                søker.rolle
-            );
-
+        if (personHentet) {
             return (
                 <Steg {...stegProps}>
                     <React.Fragment>
                         <AnnenForelderPersonaliaPartial />
-                        {this.shouldRenderAnnenForelderErKjentPartial() && (
+                        {shouldRenderAnnenForelderErKjentPartial && (
                             <AnnenForelderErKjentPartial
-                                barn={barn as ForeldreansvarBarn}
-                                annenForelder={annenForelder}
-                                søker={søker}
                                 registrertAnnenForelder={
                                     registrertAnnenForelder
                                 }
@@ -78,7 +56,6 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 visInformasjonVedOmsorgsovertakelse={
                                     visInformasjonVedOmsorgsovertakelse
                                 }
-                                dispatch={dispatch}
                             />
                         )}
                     </React.Fragment>
@@ -95,6 +72,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         .registrertAnnenForelder as RegistrertAnnenForelder;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
+    const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
     const annenForelder = state.søknad.annenForelder;
 
     const stegProps: StegProps = {
@@ -108,13 +86,16 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state)
     };
 
+    const shouldRenderAnnenForelderErKjentPartial =
+        ((annenForelder.navn && annenForelder.fnr) ||
+            registrertAnnenForelder) !== undefined;
+
     return {
         stegProps,
-        person,
+        personHentet: person !== undefined,
+        erSøkerFarEllerMedmor,
         registrertAnnenForelder,
-        barn,
-        søker,
-        annenForelder,
+        shouldRenderAnnenForelderErKjentPartial,
         visInformasjonVedOmsorgsovertakelse:
             barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0
     };

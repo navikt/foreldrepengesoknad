@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
-import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
+import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import { Fødselsdato } from '../../../types/common';
 import getMessage from 'common/util/i18nUtils';
@@ -33,3 +33,10 @@ export const getFødselsdatoRegler = (
         }
     ];
 };
+
+export const fødselsdatoerErFyltUt = (
+    fødselsdatoer: Date[] | undefined
+): boolean =>
+    fødselsdatoer !== undefined &&
+    fødselsdatoer.length > 0 &&
+    fødselsdatoer.findIndex((d) => d === undefined) === -1;

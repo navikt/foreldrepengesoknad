@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import Bolk from 'common/components/bolk/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmål from '../../../../spørsmål/AntallBarnSpørsmål';
+import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
@@ -46,23 +45,14 @@ class FødtBarnPartial extends React.Component<Props> {
         const { intl, dispatch, barn, fødselsattest } = this.props;
         return (
             <React.Fragment>
-                <Spørsmål
-                    render={() => (
-                        <AntallBarnSpørsmål
-                            spørsmål={getMessage(
-                                intl,
-                                'antallBarn.spørsmål.fått'
-                            )}
-                            inputName="antallBarn"
-                            antallBarn={barn.antallBarn}
-                            onChange={this.oppdaterAntallBarn}
-                        />
-                    )}
+                <AntallBarnSpørsmålsgruppe
+                    spørsmål={getMessage(intl, 'antallBarn.spørsmål.fått')}
+                    inputName="antallBarn"
+                    antallBarn={barn.antallBarn}
+                    onChange={this.oppdaterAntallBarn}
                 />
-
-                <Spørsmål
-                    animert={false}
-                    render={() => (
+                {barn.antallBarn !== undefined && (
+                    <div className="blokk-m">
                         <FødselsdatoerSpørsmål
                             collapsed={true}
                             fødselsdatoer={barn.fødselsdatoer}
@@ -74,8 +64,8 @@ class FødtBarnPartial extends React.Component<Props> {
                                 )
                             }
                         />
-                    )}
-                />
+                    </div>
+                )}
 
                 <Bolk
                     synlig={
@@ -86,26 +76,30 @@ class FødtBarnPartial extends React.Component<Props> {
                     }
                     tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
                     render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={fødselsattest}
-                            attachmentType={AttachmentType.FØDSELSATTEST}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment: Attachment) =>
-                                dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                        />
+                        <div className="blokk-m">
+                            <AttachmentsUploaderPure
+                                attachments={fødselsattest}
+                                attachmentType={AttachmentType.FØDSELSATTEST}
+                                onFilesSelect={(attachments: Attachment[]) => {
+                                    attachments.forEach(
+                                        (attachment: Attachment) => {
+                                            dispatch(
+                                                søknadActions.uploadAttachment(
+                                                    attachment
+                                                )
+                                            );
+                                        }
+                                    );
+                                }}
+                                onFileDelete={(attachment: Attachment) =>
+                                    dispatch(
+                                        søknadActions.deleteAttachment(
+                                            attachment
+                                        )
+                                    )
+                                }
+                            />
+                        </div>
                     )}
                 />
             </React.Fragment>
