@@ -74,7 +74,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const visSpørsmålOmAnkomstdato = barn.adoptertIUtlandet === true;
         const visSpørsmålOmVedlegg =
             visSpørsmålOmAdoptertIUtlandet &&
-            ((barn.adoptertIUtlandet !== true &&
+            ((barn.adoptertIUtlandet === true &&
                 barn.ankomstdato !== undefined) ||
                 barn.adoptertIUtlandet === false);
 
