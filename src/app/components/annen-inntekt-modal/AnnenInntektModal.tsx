@@ -25,7 +25,7 @@ import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
-import { AttachmentType } from '../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
@@ -101,6 +101,25 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     vedlegg: annenInntekt.vedlegg
                 }
             });
+        }
+    }
+
+    findSkjemanummer(): Skjemanummer {
+        const { annenInntekt } = this.state;
+
+        switch (annenInntekt.type) {
+            case AnnenInntektType.MILITÆRTJENESTE:
+                return Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
+            case AnnenInntektType.JOBB_I_UTLANDET:
+                return Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG;
+            case AnnenInntektType.VENTELØNN:
+                return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
+            case AnnenInntektType.SLUTTPAKKE:
+                return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
+            case AnnenInntektType.LØNN_VED_VIDEREUTDANNING:
+                return Skjemanummer.INNTEKTSOPPLYSNINGER;
+            default:
+                return Skjemanummer.ANNET;
         }
     }
 
@@ -275,6 +294,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                                 attachmentType={
                                     AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
                                 }
+                                skjemanummer={this.findSkjemanummer()}
                             />
                         )}
                     />
