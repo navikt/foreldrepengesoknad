@@ -61,6 +61,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                     <div className="m-textCenter">
                         <Knapperad>
                             <Knapp
+                                htmlType="button"
                                 onClick={() =>
                                     dispatch(
                                         visPeriodeDialog(Periodetype.Uttak)
@@ -69,6 +70,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                                 Legg til periode
                             </Knapp>
                             <Knapp
+                                htmlType="button"
                                 onClick={() =>
                                     dispatch(
                                         visPeriodeDialog(Periodetype.Utsettelse)
