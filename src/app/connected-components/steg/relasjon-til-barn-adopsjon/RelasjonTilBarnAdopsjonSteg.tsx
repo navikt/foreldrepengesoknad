@@ -63,7 +63,6 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
     render() {
         const { barn, dispatch, stegProps, intl } = this.props;
-
         const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
         const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
@@ -72,9 +71,12 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const visSpørsmålOmAdoptertIUtlandet =
             barn.adoptertIUtlandet !== undefined ||
             (visSpørsmålOmFødselsdatoer && fødselsdatoerFyltUt);
+        const visSpørsmålOmAnkomstdato = barn.adoptertIUtlandet === true;
         const visSpørsmålOmVedlegg =
             visSpørsmålOmAdoptertIUtlandet &&
-            barn.adoptertIUtlandet !== undefined;
+            ((barn.adoptertIUtlandet !== true &&
+                barn.ankomstdato !== undefined) ||
+                barn.adoptertIUtlandet === false);
 
         return (
             <Steg {...stegProps}>
@@ -135,6 +137,25 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     })
                                 )
                             }
+                        />
+                    )}
+                />
+
+                <Spørsmål
+                    synlig={visSpørsmålOmAnkomstdato}
+                    render={() => (
+                        <DatoInput
+                            id="ankomstdato"
+                            name="ankomstdato"
+                            label={getMessage(intl, 'ankomstdato.spørsmål')}
+                            onChange={(ankomstdato: Date) => {
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        ankomstdato
+                                    })
+                                );
+                            }}
+                            dato={barn.ankomstdato}
                         />
                     )}
                 />

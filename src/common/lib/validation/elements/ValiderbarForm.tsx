@@ -83,7 +83,9 @@ class ValiderbarForm extends React.Component<
                 const results = this.state.results.slice();
                 const fieldResult = this.components[index].validate();
                 results[index] = fieldResult;
-                const valid = results.every((result) => result.valid === true);
+                const valid = results.every(
+                    (result) => result === undefined || result.valid === true
+                );
 
                 this.setState({
                     results,
@@ -98,7 +100,10 @@ class ValiderbarForm extends React.Component<
         const results = this.components.map((component) =>
             component.validate()
         );
-        const valid = results.every((result) => result.valid === true);
+
+        const valid = results.every(
+            (result) => result === undefined || result.valid === true
+        );
 
         this.setState({
             results: results.slice(),
@@ -125,7 +130,9 @@ class ValiderbarForm extends React.Component<
         results.splice(index, 1);
 
         // Sjekk om skjemaet er gyldig (valig)
-        const valid = results.every((result) => result.valid === true);
+        const valid = results.every(
+            (result) => result === undefined || result.valid === true
+        );
 
         // Oppdater state
         this.setState({
@@ -136,7 +143,7 @@ class ValiderbarForm extends React.Component<
 
     mapResultsToErrorSummary(): SummaryError[] {
         return this.state.results
-            .filter((result) => !result.valid)
+            .filter((result) => result && !result.valid)
             .map((result) => ({
                 name: result.name,
                 text: result.tests.find((test: any) => !test.verdict).failText
