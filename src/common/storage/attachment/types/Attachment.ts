@@ -1,4 +1,7 @@
-import { AttachmentType } from '../../../../app/types/søknad/Søknad';
+import {
+    AttachmentType,
+    Skjemanummer
+} from '../../../../app/types/søknad/Søknad';
 
 export interface Attachment {
     id: string;
@@ -9,4 +12,5 @@ export interface Attachment {
     pending: boolean;
     uploaded: boolean;
     type: AttachmentType;
+    skjemanummer: Skjemanummer;
 }
