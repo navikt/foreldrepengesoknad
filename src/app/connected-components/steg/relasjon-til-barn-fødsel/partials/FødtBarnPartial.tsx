@@ -11,7 +11,7 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 
 interface StateProps {
     barn: FødtBarn;
@@ -80,6 +80,7 @@ class FødtBarnPartial extends React.Component<Props> {
                             <AttachmentsUploaderPure
                                 attachments={fødselsattest}
                                 attachmentType={AttachmentType.FØDSELSATTEST}
+                                skjemanummer={Skjemanummer.FØDSELSATTEST}
                                 onFilesSelect={(attachments: Attachment[]) => {
                                     attachments.forEach(
                                         (attachment: Attachment) => {

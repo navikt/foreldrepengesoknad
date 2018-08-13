@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentOverview from 'common/storage/attachment/components/AttachmentOverview';
-import { AttachmentType } from '../../../../app/types/søknad/Søknad';
+import {
+    AttachmentType,
+    Skjemanummer
+} from '../../../../app/types/søknad/Søknad';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
     attachmentType: AttachmentType;
+    skjemanummer: Skjemanummer;
     onFilesSelect: (attachments: Attachment[]) => void;
     onFileDelete: (attachment: Attachment) => void;
 }
@@ -30,11 +34,12 @@ export default class AttachmentsUploaderPure extends React.Component<
     }
 
     render() {
-        const { attachments, attachmentType } = this.props;
+        const { attachments, attachmentType, skjemanummer } = this.props;
         return (
             <AttachmentOverview
                 attachments={attachments}
                 attachmentType={attachmentType}
+                skjemanummer={skjemanummer}
                 onFilesSelect={this.onFilesSelect}
                 onFileDelete={this.onFileDelete}
             />

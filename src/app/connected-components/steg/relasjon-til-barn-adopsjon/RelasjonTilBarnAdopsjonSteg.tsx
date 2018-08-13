@@ -19,7 +19,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType } from '../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
@@ -154,6 +154,9 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                     }
                                     attachmentType={
                                         AttachmentType.OMSROGSOVERTAKELSE
+                                    }
+                                    skjemanummer={
+                                        Skjemanummer.OMSORGSOVERTAKELSESDATO
                                     }
                                     onFilesSelect={(
                                         attachments: Attachment[]
