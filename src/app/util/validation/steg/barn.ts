@@ -32,9 +32,8 @@ const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
 };
 
 const ufødtBarnErGyldig = (barn: UfødtBarn) => {
-    const { termindato, terminbekreftelseDato } = barn;
-
-    return termindato !== undefined && terminbekreftelseDato !== undefined;
+    const { termindato } = barn;
+    return termindato !== undefined;
 };
 
 export const barnErGyldig = (
