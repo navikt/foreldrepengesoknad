@@ -23,7 +23,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType } from '../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
@@ -166,6 +166,9 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                                                 attachment
                                             )
                                         )
+                                    }
+                                    skjemanummer={
+                                        Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
                                     }
                                 />
                             </div>

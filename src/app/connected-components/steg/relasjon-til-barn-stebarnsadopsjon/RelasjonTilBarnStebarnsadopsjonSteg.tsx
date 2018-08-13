@@ -20,7 +20,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType } from '../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import Bolk from 'common/components/bolk/Bolk';
@@ -145,6 +145,9 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                                                 attachment
                                             )
                                         )
+                                    }
+                                    skjemanummer={
+                                        Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
                                     }
                                 />
                             </div>
