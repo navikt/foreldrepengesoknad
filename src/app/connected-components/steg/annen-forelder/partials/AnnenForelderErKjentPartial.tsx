@@ -16,7 +16,7 @@ import Bolk from '../../../../../common/components/bolk/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
@@ -223,6 +223,9 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                                 attachment
                                             )
                                         )
+                                    }
+                                    skjemanummer={
+                                        Skjemanummer.OMSORGSOVERTAKELSESDATO
                                     }
                                 />
                             )}

@@ -9,11 +9,15 @@ import { mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from '../../../../app/types/søknad/Søknad';
+import {
+    AttachmentType,
+    Skjemanummer
+} from '../../../../app/types/søknad/Søknad';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
     attachmentType: AttachmentType;
+    skjemanummer: Skjemanummer;
     inputId?: string;
     showFileSize?: boolean;
     onFilesSelect: (files: Attachment[]) => void;
@@ -26,6 +30,7 @@ class AttachmentOverview extends React.Component<AttachmentOverviewProps> {
             inputId = guid(),
             attachments,
             attachmentType,
+            skjemanummer,
             showFileSize,
             onFileDelete,
             onFilesSelect
@@ -40,7 +45,11 @@ class AttachmentOverview extends React.Component<AttachmentOverviewProps> {
                         onFilesSelect={(files: File[]) => {
                             onFilesSelect(
                                 files.map((f) =>
-                                    mapFileToAttachment(f, attachmentType)
+                                    mapFileToAttachment(
+                                        f,
+                                        attachmentType,
+                                        skjemanummer
+                                    )
                                 )
                             );
                         }}

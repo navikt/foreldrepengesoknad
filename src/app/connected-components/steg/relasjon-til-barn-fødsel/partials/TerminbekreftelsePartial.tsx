@@ -4,7 +4,7 @@ import {
     getTerminbekreftelseDatoRegler
 } from '../../../../util/validation/fields/terminbekreftelsedato';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -34,6 +34,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                         <AttachmentsUploaderPure
                             attachments={terminbekreftelse}
                             attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                            skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                             onFilesSelect={(attachments: Attachment[]) => {
                                 attachments.forEach(
                                     (attachment: Attachment) => {
@@ -45,11 +46,11 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                                     }
                                 );
                             }}
-                            onFileDelete={(attachment: Attachment) =>
+                            onFileDelete={(attachment: Attachment) => {
                                 dispatch(
                                     søknadActions.deleteAttachment(attachment)
-                                )
-                            }
+                                );
+                            }}
                         />
                     </div>
                 )}
