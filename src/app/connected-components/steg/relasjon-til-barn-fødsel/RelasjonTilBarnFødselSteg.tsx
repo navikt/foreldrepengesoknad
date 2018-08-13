@@ -242,24 +242,20 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                                 />
                             )}
                             {barn.erBarnetFødt === false && (
-                                <div className="blokk-m">
-                                    <UfødtBarnPartial
-                                        dispatch={dispatch}
-                                        barn={barn as UfødtBarn}
-                                        annenForelder={annenForelder}
-                                        skalLasteOppTerminbekreftelse={
-                                            skalLasteOppTerminbekreftelse
-                                        }
-                                        søker={søker}
-                                        erFarEllerMedmor={erFarEllerMedmor(
-                                            person.kjønn,
-                                            søker.rolle
-                                        )}
-                                        terminbekreftelse={
-                                            terminbekreftelse || []
-                                        }
-                                    />
-                                </div>
+                                <UfødtBarnPartial
+                                    dispatch={dispatch}
+                                    barn={barn as UfødtBarn}
+                                    annenForelder={annenForelder}
+                                    skalLasteOppTerminbekreftelse={
+                                        skalLasteOppTerminbekreftelse
+                                    }
+                                    søker={søker}
+                                    erFarEllerMedmor={erFarEllerMedmor(
+                                        person.kjønn,
+                                        søker.rolle
+                                    )}
+                                    terminbekreftelse={terminbekreftelse || []}
+                                />
                             )}
                         </React.Fragment>
                     )}
