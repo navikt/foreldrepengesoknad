@@ -27,30 +27,26 @@ class BarnBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    render={() => (
-                        <GjelderSøknadenNoenAvDisseBarnaSpørsmål
-                            registrerteBarn={registrerteBarn}
-                            onChange={(id: string) => {
-                                onRegistrertBarnChange(id);
-                            }}
-                            disabled={gjelderAnnetBarn || false}
-                        />
-                    )}
-                />
+                <Block>
+                    <GjelderSøknadenNoenAvDisseBarnaSpørsmål
+                        registrerteBarn={registrerteBarn}
+                        onChange={(id: string) => {
+                            onRegistrertBarnChange(id);
+                        }}
+                        disabled={gjelderAnnetBarn || false}
+                    />
+                </Block>
 
-                <Block
-                    render={() => (
-                        <Checkbox
-                            label={getMessage(
-                                intl,
-                                'søknadenGjelderAnnetBarn.spørsmål'
-                            )}
-                            checked={gjelderAnnetBarn}
-                            onChange={onAnnetBarnChange}
-                        />
-                    )}
-                />
+                <Block>
+                    <Checkbox
+                        label={getMessage(
+                            intl,
+                            'søknadenGjelderAnnetBarn.spørsmål'
+                        )}
+                        checked={gjelderAnnetBarn}
+                        onChange={onAnnetBarnChange}
+                    />
+                </Block>
             </React.Fragment>
         );
     }
