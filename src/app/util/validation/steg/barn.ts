@@ -5,9 +5,14 @@ import Barn, {
     UfødtBarn
 } from '../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import { fødselsdatoerErFyltUt } from '../fields/f\u00F8dselsdato';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
-    return barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0;
+    return (
+        barn.fødselsdatoer !== undefined &&
+        barn.fødselsdatoer.length > 0 &&
+        fødselsdatoerErFyltUt(barn.fødselsdatoer)
+    );
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
@@ -31,21 +36,32 @@ const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
     return foreldreansvarsdato && fødselsdatoer.length > 0;
 };
 
-const ufødtBarnErGyldig = (barn: UfødtBarn) => {
-    const { termindato } = barn;
-    return termindato !== undefined;
+const ufødtBarnErGyldig = (
+    barn: UfødtBarn,
+    skalLasteOppTerminbekreftelse: boolean
+) => {
+    const { termindato, terminbekreftelseDato } = barn;
+
+    return (
+        (termindato !== undefined && skalLasteOppTerminbekreftelse === false) ||
+        (skalLasteOppTerminbekreftelse && terminbekreftelseDato !== undefined)
+    );
 };
 
 export const barnErGyldig = (
     barn: Barn,
-    situasjon: Søkersituasjon
+    situasjon: Søkersituasjon,
+    skalLasteOppTerminbekreftelse?: boolean
 ): boolean => {
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
-            return (
-                fødtBarnErGyldig(barn as FødtBarn) ||
-                ufødtBarnErGyldig(barn as UfødtBarn)
-            );
+            return barn.erBarnetFødt
+                ? fødtBarnErGyldig(barn as FødtBarn)
+                : ufødtBarnErGyldig(
+                      barn as UfødtBarn,
+                      skalLasteOppTerminbekreftelse || false
+                  );
+
         case Søkersituasjon.ADOPSJON:
             return adopsjonsbarnErGyldig(barn as Adopsjonsbarn);
         case Søkersituasjon.STEBARN:

@@ -8,10 +8,9 @@ import {
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
-import Bolk from 'common/components/bolk/Bolk';
+import Block from 'common/components/block/Block';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste12MndSpørsmål';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
@@ -85,7 +84,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Spørsmål
+            <Block
                 render={() => (
                     <BoddINorgeSiste12MndSpørsmål
                         iNorgeSiste12={
@@ -132,7 +131,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
-                <Bolk
+                <Block
                     render={() => (
                         <UtenlandsoppholdBolk
                             renderSpørsmål={
@@ -171,8 +170,8 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
                         undefined
                     }
@@ -214,8 +213,8 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
                             undefined && søknad.barn.erBarnetFødt === false
                     }

@@ -4,7 +4,7 @@ import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import {
     AnnenInntekt,
@@ -22,7 +22,6 @@ import BEMHelper from 'common/util/bem';
 import './annenInntektModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Bolk from '../../../common/components/bolk/Bolk';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { AttachmentType, Skjemanummer } from '../../types/søknad/Søknad';
@@ -154,7 +153,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="annenInntekt.modal.tittel" />
                     </Undertittel>
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <InntektstypeVelger
                                 label={
@@ -167,8 +166,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Spørsmål
-                        synlig={gjelderJobbIUtlandet}
+                    <Block
+                        visible={gjelderJobbIUtlandet}
                         render={() => (
                             <Landvelger
                                 defaultValue={
@@ -187,8 +186,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             (annenInntekt as JobbIUtlandetInntekt).land !==
                             undefined
                         }
@@ -211,8 +210,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             gjelderJobbIUtlandet &&
                             (annenInntekt as JobbIUtlandetInntekt)
                                 .arbeidsgiverNavn !== undefined
@@ -232,7 +231,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Bolk
+                    <Block
                         render={() => (
                             <TidsperiodeBolk
                                 tidsperiode={annenInntekt.tidsperiode || {}}
@@ -246,7 +245,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <Checkbox
                                 checked={annenInntekt.pågående || false}
@@ -266,7 +265,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             />
                         )}
                     />
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <AttachmentsUploader
                                 attachments={annenInntekt.vedlegg || []}

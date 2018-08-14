@@ -8,12 +8,11 @@ import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad'
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Bolk from 'common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import Block from 'common/components/block/Block';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -26,38 +25,31 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
     return (
         <React.Fragment>
-            <Bolk
-                synlig={props.barn.termindato !== undefined}
-                tittel={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}
+            <Block
+                visible={props.barn.termindato !== undefined}
+                title={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}
                 render={() => (
-                    <div className="blokk-m">
-                        <AttachmentsUploaderPure
-                            attachments={terminbekreftelse}
-                            attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                            skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment: Attachment) => {
+                    <AttachmentsUploaderPure
+                        attachments={terminbekreftelse}
+                        attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                        skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
                                 dispatch(
-                                    søknadActions.deleteAttachment(attachment)
+                                    søknadActions.uploadAttachment(attachment)
                                 );
-                            }}
-                        />
-                    </div>
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) => {
+                            dispatch(
+                                søknadActions.deleteAttachment(attachment)
+                            );
+                        }}
+                    />
                 )}
             />
-            <Spørsmål
-                animert={false}
-                synlig={
+            <Block
+                visible={
                     terminbekreftelse.length > 0 &&
                     barn.termindato !== undefined
                 }

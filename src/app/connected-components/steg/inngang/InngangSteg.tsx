@@ -12,7 +12,7 @@ import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 
@@ -89,7 +89,7 @@ class InngangSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Spørsmål
+                <Block
                     render={() => (
                         <SøkersituasjonSpørsmål
                             situasjon={situasjon}
@@ -97,8 +97,8 @@ class InngangSteg extends React.Component<Props, {}> {
                         />
                     )}
                 />
-                <Spørsmål
-                    synlig={visSpørsmålOmSøkerrolle !== undefined}
+                <Block
+                    visible={visSpørsmålOmSøkerrolle !== undefined}
                     render={() =>
                         visSpørsmålOmSøkerrolle ? (
                             <SøkerrolleSpørsmål

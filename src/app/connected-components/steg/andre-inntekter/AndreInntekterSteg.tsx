@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import AnnenInntektSiste10MndSpørsmål, {
     AnnenInntekt
 } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
@@ -15,7 +15,6 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
-import Bolk from '../../../../common/components/bolk/Bolk';
 import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
@@ -52,7 +51,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Spørsmål
+            <Block
                 render={() => (
                     <AnnenInntektSiste10MndSpørsmål
                         harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
@@ -76,7 +75,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
         return (
-            <Spørsmål
+            <Block
                 render={() => (
                     <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
@@ -101,7 +100,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps}>
-                <Bolk
+                <Block
                     render={() => (
                         <FrilanserBolk
                             søker={søker}
@@ -123,7 +122,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
+                <Block
                     render={() => (
                         <SelvstendigNæringsdrivendeBolk
                             oppfølgingsspørsmål={getMessage(
@@ -153,7 +152,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
+                <Block
                     render={() => (
                         <AndreInntekterBolk
                             oppfølgingsspørsmål={getMessage(

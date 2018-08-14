@@ -3,7 +3,7 @@ import Modal, { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox, Input } from 'nav-frontend-skjema';
@@ -11,7 +11,6 @@ import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Bolk from '../../../common/components/bolk/Bolk';
 import {
     FrilansOppdrag,
     FrilansOppdragPartial
@@ -98,7 +97,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         <FormattedMessage id="frilansOppdrag.modal.tittel" />
                     </Undertittel>
 
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <Input
                                 label={getMessage(
@@ -117,7 +116,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
+                    <Block
                         render={() => (
                             <TidsperiodeBolk
                                 tidsperiode={oppdrag.tidsperiode || {}}
@@ -132,7 +131,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <Checkbox
                                 checked={oppdrag.pågående || false}

@@ -7,12 +7,11 @@ import ErMorUførSpørsmål from '../../../../spørsmål/ErMorUførSpørsmål';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDenAndreForelderenInformertSpørsmål';
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import Bolk from '../../../../../common/components/bolk/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -61,8 +60,10 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    synlig={!erFarEllerMedmor && søker.erAleneOmOmsorg === true}
+                <Block
+                    visible={
+                        !erFarEllerMedmor && søker.erAleneOmOmsorg === true
+                    }
                     render={() => (
                         <React.Fragment>
                             <Veilederinfo>
@@ -86,8 +87,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         annenForelder.skalHaForeldrepenger === true ||
                         (!søker.erAleneOmOmsorg &&
                             !harDenAndreForelderenOpplystOmSinPågåendeSak)
@@ -109,8 +110,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         annenForelder.harRettPåForeldrepenger === false &&
                         erFarEllerMedmor
                     }
@@ -129,8 +130,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         annenForelder.harRettPåForeldrepenger === true ||
                         (annenForelder.skalHaForeldrepenger === true &&
                             annenForelder.harRettPåForeldrepenger !== undefined)
@@ -142,8 +143,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         (søker.erAleneOmOmsorg === false &&
                             annenForelder.harRettPåForeldrepenger === true) ||
                         (søker.erAleneOmOmsorg === false &&
@@ -170,8 +171,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
 
                 {erFarEllerMedmor && (
                     <React.Fragment>
-                        <Spørsmål
-                            synlig={søker.erAleneOmOmsorg === true}
+                        <Block
+                            visible={søker.erAleneOmOmsorg === true}
                             render={() => (
                                 <DatoInput
                                     id="omsorgsovertakelseDato"
@@ -191,9 +192,9 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             )}
                         />
 
-                        <Spørsmål
-                            animert={true}
-                            synlig={barn.foreldreansvarsdato !== undefined}
+                        <Block
+                            animated={true}
+                            visible={barn.foreldreansvarsdato !== undefined}
                             render={() => (
                                 <AttachmentsUploaderPure
                                     attachments={
@@ -231,8 +232,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                             )}
                         />
 
-                        <Bolk
-                            synlig={visInformasjonVedOmsorgsovertakelse}
+                        <Block
+                            visible={visInformasjonVedOmsorgsovertakelse}
                             render={() => (
                                 <Veilederinfo>
                                     Du kan få 46/56 uker eller det som er igjen
