@@ -59,6 +59,8 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                 />
 
                 <Block
+                    margin="none"
+                    animated={false}
                     visible={
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår ===
                         true
