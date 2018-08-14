@@ -23,7 +23,6 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
-import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import getMessage from 'common/util/i18nUtils';
 
 export interface StateProps {
@@ -112,41 +111,38 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                         />
                     )}
                 />
-                <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
-                    <Block
-                        title={getMessage(
-                            intl,
-                            'attachments.tittel.stebarnsadopsjon'
-                        )}
-                        render={() => (
-                            <AttachmentsUploaderPure
-                                attachments={barn.adopsjonsvedtak || []}
-                                attachmentType={AttachmentType.ADOPSJONSVEDTAK}
-                                onFilesSelect={(attachments: Attachment[]) => {
-                                    attachments.forEach(
-                                        (attachment: Attachment) => {
-                                            dispatch(
-                                                søknadActions.uploadAttachment(
-                                                    attachment
-                                                )
-                                            );
-                                        }
-                                    );
-                                }}
-                                onFileDelete={(attachment: Attachment) =>
-                                    dispatch(
-                                        søknadActions.deleteAttachment(
-                                            attachment
-                                        )
-                                    )
-                                }
-                                skjemanummer={
-                                    Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
-                                }
-                            />
-                        )}
-                    />
-                </EkspanderbartInnhold>
+                <Block
+                    visible={visSpørsmålOmVedlegg}
+                    title={getMessage(
+                        intl,
+                        'attachments.tittel.stebarnsadopsjon'
+                    )}
+                    render={() => (
+                        <AttachmentsUploaderPure
+                            attachments={barn.adopsjonsvedtak || []}
+                            attachmentType={AttachmentType.ADOPSJONSVEDTAK}
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
+                                        dispatch(
+                                            søknadActions.uploadAttachment(
+                                                attachment
+                                            )
+                                        );
+                                    }
+                                );
+                            }}
+                            onFileDelete={(attachment: Attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
+                            skjemanummer={
+                                Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
+                            }
+                        />
+                    )}
+                />
             </Steg>
         );
     }

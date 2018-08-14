@@ -58,6 +58,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
             <Collapse
                 springConfig={collapseSpringConfig}
                 isOpened={visible === true}
+                hasNestedCollapse={hasChildBlocks}
                 className={classNames(cls.element('collapse'), {
                     [cls.element('collapse', 'hidden')]: !visible
                 })}>
