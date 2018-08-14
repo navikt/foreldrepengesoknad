@@ -28,12 +28,12 @@ const cls = BEMHelper('block');
 const Block: React.StatelessComponent<BlockProps> = ({
     visible,
     margin = 'm',
-    animated,
+    animated = true,
     title,
     children,
     hasChildBlocks
 }) => {
-    if (visible === false && children) {
+    if (children === undefined) {
         return null;
     }
     const contentClass = classNames(cls.className, cls.modifier(margin));
@@ -48,19 +48,14 @@ const Block: React.StatelessComponent<BlockProps> = ({
         ) : (
             <div className={contentClass}>{children}</div>
         );
-
-    if (
-        (visible !== undefined || animated === true) &&
-        hasChildBlocks !== true
-    ) {
+    const isOpened = visible !== false;
+    if (animated === true) {
         return (
             <Collapse
                 springConfig={collapseSpringConfig}
-                isOpened={visible === true}
+                isOpened={isOpened}
                 hasNestedCollapse={hasChildBlocks}
-                className={classNames(cls.element('collapse'), {
-                    [cls.element('collapse', 'hidden')]: !visible
-                })}>
+                className={cls.element('collapse')}>
                 {content}
             </Collapse>
         );
