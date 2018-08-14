@@ -7,7 +7,7 @@ export const mockUttaksplanSøker: UttaksplanSøker = {
     mellomnavn: '',
     etternavn: 'Skraam',
     kjønn: Kjønn.KVINNE,
-    erAleneOmOmsorg: true,
+    erAleneOmOmsorg: undefined,
     rolle: SøkerRolle.MOR,
     situasjon: Søkersituasjon.FØDSEL
 };

@@ -19,6 +19,7 @@ import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad'
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
+import AleneOmOmsorgSpørsmål from '../../../../sp\u00F8rsm\u00E5l/AleneOmOmsorgSp\u00F8rsm\u00E5l';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -60,6 +61,18 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
+                <Block>
+                    <AleneOmOmsorgSpørsmål
+                        aleneOmOmsorg={søker.erAleneOmOmsorg}
+                        onChange={(erAleneOmOmsorg) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    erAleneOmOmsorg
+                                })
+                            )
+                        }
+                    />
+                </Block>
                 <Block
                     visible={
                         !erFarEllerMedmor && søker.erAleneOmOmsorg === true
@@ -85,7 +98,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                 <Block
                     visible={
                         annenForelder.skalHaForeldrepenger === true ||
-                        (!søker.erAleneOmOmsorg &&
+                        (søker.erAleneOmOmsorg === false &&
                             !harDenAndreForelderenOpplystOmSinPågåendeSak)
                     }>
                     <RettPåForeldrepengerSpørsmål
