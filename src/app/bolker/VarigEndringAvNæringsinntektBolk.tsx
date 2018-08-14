@@ -7,8 +7,7 @@ import {
 } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import VarigEndringAvNæringsinntektSpørsmål from '../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import Bolk from '../../common/components/bolk/Bolk';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
 import Input from 'nav-frontend-skjema/lib/input';
@@ -44,7 +43,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
+                <Block
                     render={() => (
                         <VarigEndringAvNæringsinntektSpørsmål
                             varigEndringAvNæringsinntekt={
@@ -59,14 +58,14 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     )}
                 />
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår ===
                         true
                     }
                     render={() => (
                         <React.Fragment>
-                            <Spørsmål
+                            <Block
                                 render={() => (
                                     <DatoInput
                                         id="datoForEndring"
@@ -86,7 +85,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                     />
                                 )}
                             />
-                            <Spørsmål
+                            <Block
                                 render={() => (
                                     <Input
                                         label={getMessage(
@@ -109,7 +108,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                                     />
                                 )}
                             />
-                            <Spørsmål
+                            <Block
                                 render={() => (
                                     <Textarea
                                         label={getMessage(

@@ -1,15 +1,16 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Collapse } from 'react-collapse';
+// import { Element } from 'nav-frontend-typografi';
+
 import BEMHelper from 'common/util/bem';
 import { collapseSpringConfig } from 'common/util/animationUtils';
 
 import './block.less';
-import { Element } from '../../../../node_modules/nav-frontend-typografi';
 
 export type BlockPadding = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
-export interface Props {
+export interface BlockProps {
     title?: string;
     /** Default true */
     visible?: boolean;
@@ -25,7 +26,7 @@ export interface Props {
 
 const cls = BEMHelper('block');
 
-const Block: React.StatelessComponent<Props> = ({
+const Block: React.StatelessComponent<BlockProps> = ({
     visible,
     margin = 'm',
     animated,
@@ -40,9 +41,9 @@ const Block: React.StatelessComponent<Props> = ({
     const content =
         title !== undefined ? (
             <section className={contentClass}>
-                <Element tag="h1" className={cls.element('title')}>
+                <h1 className={`typo-element ${cls.element('title')}`}>
                     {title}
-                </Element>
+                </h1>
                 {render()}
             </section>
         ) : (
