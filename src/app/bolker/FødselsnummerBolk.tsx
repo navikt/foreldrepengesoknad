@@ -37,7 +37,7 @@ const FødselsnummerBolk = (props: Props) => {
 
     return (
         <React.Fragment>
-            <Block>
+            <Block margin="xs">
                 <Input
                     disabled={kanIkkeOppgis || false}
                     label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
