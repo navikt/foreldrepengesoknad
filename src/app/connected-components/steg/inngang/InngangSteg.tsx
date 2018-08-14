@@ -89,34 +89,27 @@ class InngangSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Block
-                    render={() => (
-                        <SøkersituasjonSpørsmål
-                            situasjon={situasjon}
-                            onChange={this.updateSituasjonAndRolleInState}
+                <Block>
+                    <SøkersituasjonSpørsmål
+                        situasjon={situasjon}
+                        onChange={this.updateSituasjonAndRolleInState}
+                    />
+                </Block>
+                <Block visible={visSpørsmålOmSøkerrolle !== undefined}>
+                    {visSpørsmålOmSøkerrolle && (
+                        <SøkerrolleSpørsmål
+                            rolle={rolle}
+                            roller={roller}
+                            onChange={(nyRolle: SøkerRolle) =>
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        rolle: nyRolle
+                                    })
+                                )
+                            }
                         />
                     )}
-                />
-                <Block
-                    visible={visSpørsmålOmSøkerrolle !== undefined}
-                    render={() =>
-                        visSpørsmålOmSøkerrolle ? (
-                            <SøkerrolleSpørsmål
-                                rolle={rolle}
-                                roller={roller}
-                                onChange={(nyRolle: SøkerRolle) =>
-                                    dispatch(
-                                        søknadActions.updateSøker({
-                                            rolle: nyRolle
-                                        })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
-                />
+                </Block>
             </Steg>
         );
     }

@@ -131,13 +131,11 @@ class UtenlandsoppholdBolk extends React.Component<
                             />
                         </div>
 
-                        <div className="blokk-s">
-                            <Knapp
-                                onClick={() => this.openModal()}
-                                htmlType="button">
-                                <FormattedMessage id="utenlandsopphold.leggTilLand" />
-                            </Knapp>
-                        </div>
+                        <Knapp
+                            onClick={() => this.openModal()}
+                            htmlType="button">
+                            <FormattedMessage id="utenlandsopphold.leggTilLand" />
+                        </Knapp>
                     </React.Fragment>
                 )}
 

@@ -199,68 +199,56 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                     this.hasCheckedRegistrertBarn() ||
                     barnErGyldig(barn, situasjon, skalLasteOppTerminbekreftelse)
                 }>
-                <Block
-                    visible={registrerteBarn.length > 0}
-                    margin="none"
-                    render={() => (
-                        <BarnBolk
-                            gjelderAnnetBarn={gjelderAnnetBarn}
-                            registrerteBarn={registrerteBarn}
-                            onRegistrertBarnChange={(id: string) =>
-                                this.updateBarnInState(id)
-                            }
-                            onAnnetBarnChange={
-                                this.updateGjelderAnnetBarnInState
-                            }
-                        />
-                    )}
-                />
+                <Block visible={registrerteBarn.length > 0} margin="none">
+                    <BarnBolk
+                        gjelderAnnetBarn={gjelderAnnetBarn}
+                        registrerteBarn={registrerteBarn}
+                        onRegistrertBarnChange={(id: string) =>
+                            this.updateBarnInState(id)
+                        }
+                        onAnnetBarnChange={this.updateGjelderAnnetBarnInState}
+                    />
+                </Block>
                 <Block
                     margin="none"
                     hasChildBlocks={true}
-                    visible={gjelderAnnetBarn || registrerteBarn.length === 0}
-                    render={() => (
-                        <React.Fragment>
-                            <Block
-                                render={() => (
-                                    <ErBarnetFødtSpørsmål
-                                        erBarnetFødt={barn.erBarnetFødt}
-                                        onChange={(erBarnetFødt: boolean) =>
-                                            dispatch(
-                                                søknadActions.updateBarn({
-                                                    erBarnetFødt
-                                                })
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                            {barn.erBarnetFødt === true && (
-                                <FødtBarnPartial
-                                    dispatch={dispatch}
-                                    barn={barn as FødtBarn}
-                                    fødselsattest={fødselsattest || []}
-                                />
-                            )}
-                            {barn.erBarnetFødt === false && (
-                                <UfødtBarnPartial
-                                    dispatch={dispatch}
-                                    barn={barn as UfødtBarn}
-                                    annenForelder={annenForelder}
-                                    skalLasteOppTerminbekreftelse={
-                                        skalLasteOppTerminbekreftelse
-                                    }
-                                    søker={søker}
-                                    erFarEllerMedmor={erFarEllerMedmor(
-                                        person.kjønn,
-                                        søker.rolle
-                                    )}
-                                    terminbekreftelse={terminbekreftelse || []}
-                                />
-                            )}
-                        </React.Fragment>
+                    visible={gjelderAnnetBarn || registrerteBarn.length === 0}>
+                    <Block>
+                        <ErBarnetFødtSpørsmål
+                            erBarnetFødt={barn.erBarnetFødt}
+                            onChange={(erBarnetFødt: boolean) =>
+                                dispatch(
+                                    søknadActions.updateBarn({
+                                        erBarnetFødt
+                                    })
+                                )
+                            }
+                        />
+                    </Block>
+                    {barn.erBarnetFødt === true && (
+                        <FødtBarnPartial
+                            dispatch={dispatch}
+                            barn={barn as FødtBarn}
+                            fødselsattest={fødselsattest || []}
+                        />
                     )}
-                />
+                    {barn.erBarnetFødt === false && (
+                        <UfødtBarnPartial
+                            dispatch={dispatch}
+                            barn={barn as UfødtBarn}
+                            annenForelder={annenForelder}
+                            skalLasteOppTerminbekreftelse={
+                                skalLasteOppTerminbekreftelse
+                            }
+                            søker={søker}
+                            erFarEllerMedmor={erFarEllerMedmor(
+                                person.kjønn,
+                                søker.rolle
+                            )}
+                            terminbekreftelse={terminbekreftelse || []}
+                        />
+                    )}
+                </Block>
             </Steg>
         );
     }

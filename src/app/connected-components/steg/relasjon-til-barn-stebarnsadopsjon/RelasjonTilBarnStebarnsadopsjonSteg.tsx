@@ -67,24 +67,22 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Block
-                    render={() => (
-                        <DatoInput
-                            id="adopsjonsdato"
-                            label={
-                                <Labeltekst intlId="stebarnsadopsjon.adopsjonsdato" />
-                            }
-                            onChange={(dato: Date) => {
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        adopsjonsdato: dato
-                                    })
-                                );
-                            }}
-                            dato={barn.adopsjonsdato}
-                        />
-                    )}
-                />
+                <Block>
+                    <DatoInput
+                        id="adopsjonsdato"
+                        label={
+                            <Labeltekst intlId="stebarnsadopsjon.adopsjonsdato" />
+                        }
+                        onChange={(dato: Date) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adopsjonsdato: dato
+                                })
+                            );
+                        }}
+                        dato={barn.adopsjonsdato}
+                    />
+                </Block>
                 {visSpørsmålOmAntallBarn && (
                     <AntallBarnBolk
                         spørsmål={intl.formatMessage({
@@ -95,54 +93,42 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                         onChange={this.oppdaterAntallBarn}
                     />
                 )}
-                <Block
-                    visible={visSpørsmålOmFødselsdatoer}
-                    margin="none"
-                    render={() => (
-                        <FødselsdatoerSpørsmål
-                            fødselsdatoer={barn.fødselsdatoer}
-                            onChange={(fødselsdatoer: Date[]) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsdatoer
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block visible={visSpørsmålOmFødselsdatoer} margin="none">
+                    <FødselsdatoerSpørsmål
+                        fødselsdatoer={barn.fødselsdatoer}
+                        onChange={(fødselsdatoer: Date[]) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    fødselsdatoer
+                                })
+                            )
+                        }
+                    />
+                </Block>
                 <Block
                     visible={visSpørsmålOmVedlegg}
                     title={getMessage(
                         intl,
                         'attachments.tittel.stebarnsadopsjon'
-                    )}
-                    render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={barn.adopsjonsvedtak || []}
-                            attachmentType={AttachmentType.ADOPSJONSVEDTAK}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment: Attachment) =>
+                    )}>
+                    <AttachmentsUploaderPure
+                        attachments={barn.adopsjonsvedtak || []}
+                        attachmentType={AttachmentType.ADOPSJONSVEDTAK}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
                                 dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                            skjemanummer={
-                                Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
-                            }
-                        />
-                    )}
-                />
+                                    søknadActions.uploadAttachment(attachment)
+                                );
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) =>
+                            dispatch(søknadActions.deleteAttachment(attachment))
+                        }
+                        skjemanummer={
+                            Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
+                        }
+                    />
+                </Block>
             </Steg>
         );
     }
