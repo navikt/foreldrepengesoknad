@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Checkbox } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import Landvelger from '../components/landvelger/Landvelger';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { getFødselsnummerRegler } from '../util/validation/fields/fødselsnummer';
@@ -37,7 +37,7 @@ const FødselsnummerBolk = (props: Props) => {
 
     return (
         <React.Fragment>
-            <Spørsmål
+            <Block
                 render={() => (
                     <Input
                         disabled={kanIkkeOppgis || false}
@@ -59,7 +59,7 @@ const FødselsnummerBolk = (props: Props) => {
                 )}
             />
 
-            <Spørsmål
+            <Block
                 render={() => (
                     <Checkbox
                         disabled={kanIkkeOppgis}
@@ -75,8 +75,8 @@ const FødselsnummerBolk = (props: Props) => {
                 )}
             />
 
-            <Spørsmål
-                synlig={utenlandskFnr === true}
+            <Block
+                visible={utenlandskFnr === true}
                 render={() => (
                     <Landvelger
                         label={

@@ -201,6 +201,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                 }>
                 <Block
                     visible={registrerteBarn.length > 0}
+                    margin="none"
                     render={() => (
                         <BarnBolk
                             gjelderAnnetBarn={gjelderAnnetBarn}

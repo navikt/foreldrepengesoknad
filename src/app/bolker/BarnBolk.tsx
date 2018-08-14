@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import { VelgbartRegistrertBarn } from '../types/Person';
 import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
@@ -27,7 +27,7 @@ class BarnBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
+                <Block
                     render={() => (
                         <GjelderSøknadenNoenAvDisseBarnaSpørsmål
                             registrerteBarn={registrerteBarn}
@@ -39,7 +39,7 @@ class BarnBolk extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
+                <Block
                     render={() => (
                         <Checkbox
                             label={getMessage(

@@ -84,7 +84,6 @@ class UfødtBarnPartial extends React.Component<Props> {
                         />
 
                         <Block
-                            margin="none"
                             visible={barn.antallBarn !== undefined}
                             render={() => (
                                 <DatoInput

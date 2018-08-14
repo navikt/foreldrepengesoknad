@@ -7,7 +7,7 @@ import Steg, { StegProps } from 'app/components/steg/Steg';
 
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -23,7 +23,6 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
-import Bolk from 'common/components/bolk/Bolk';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import getMessage from 'common/util/i18nUtils';
 
@@ -69,7 +68,7 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Spørsmål
+                <Block
                     render={() => (
                         <DatoInput
                             id="adopsjonsdato"
@@ -97,8 +96,8 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                         onChange={this.oppdaterAntallBarn}
                     />
                 )}
-                <Spørsmål
-                    synlig={visSpørsmålOmFødselsdatoer}
+                <Block
+                    visible={visSpørsmålOmFødselsdatoer}
                     margin="none"
                     render={() => (
                         <FødselsdatoerSpørsmål
@@ -114,43 +113,37 @@ class RelasjonTilBarnStebarnsadopsjonSteg extends React.Component<Props, {}> {
                     )}
                 />
                 <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
-                    <Bolk
-                        tittel={getMessage(
+                    <Block
+                        title={getMessage(
                             intl,
                             'attachments.tittel.stebarnsadopsjon'
                         )}
                         render={() => (
-                            <div className="blokkPad-m">
-                                <AttachmentsUploaderPure
-                                    attachments={barn.adopsjonsvedtak || []}
-                                    attachmentType={
-                                        AttachmentType.ADOPSJONSVEDTAK
-                                    }
-                                    onFilesSelect={(
-                                        attachments: Attachment[]
-                                    ) => {
-                                        attachments.forEach(
-                                            (attachment: Attachment) => {
-                                                dispatch(
-                                                    søknadActions.uploadAttachment(
-                                                        attachment
-                                                    )
-                                                );
-                                            }
-                                        );
-                                    }}
-                                    onFileDelete={(attachment: Attachment) =>
-                                        dispatch(
-                                            søknadActions.deleteAttachment(
-                                                attachment
-                                            )
+                            <AttachmentsUploaderPure
+                                attachments={barn.adopsjonsvedtak || []}
+                                attachmentType={AttachmentType.ADOPSJONSVEDTAK}
+                                onFilesSelect={(attachments: Attachment[]) => {
+                                    attachments.forEach(
+                                        (attachment: Attachment) => {
+                                            dispatch(
+                                                søknadActions.uploadAttachment(
+                                                    attachment
+                                                )
+                                            );
+                                        }
+                                    );
+                                }}
+                                onFileDelete={(attachment: Attachment) =>
+                                    dispatch(
+                                        søknadActions.deleteAttachment(
+                                            attachment
                                         )
-                                    }
-                                    skjemanummer={
-                                        Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
-                                    }
-                                />
-                            </div>
+                                    )
+                                }
+                                skjemanummer={
+                                    Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
+                                }
+                            />
                         )}
                     />
                 </EkspanderbartInnhold>

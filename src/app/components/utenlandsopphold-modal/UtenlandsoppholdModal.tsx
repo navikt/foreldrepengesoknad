@@ -10,7 +10,7 @@ import {
     UtenlandsoppholdSkjemadataPartial
 } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
@@ -18,7 +18,6 @@ import TidsperiodeBolk, {
     DatoAvgrensninger,
     DatoValidatorer
 } from '../../bolker/TidsperiodeBolk';
-import Bolk from '../../../common/components/bolk/Bolk';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import {
@@ -215,7 +214,7 @@ class UtenlandsoppholdModal extends React.Component<
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>
 
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <Landvelger
                                 label={
@@ -233,7 +232,7 @@ class UtenlandsoppholdModal extends React.Component<
                         )}
                     />
 
-                    <Bolk
+                    <Block
                         render={() => (
                             <TidsperiodeBolk
                                 datoAvgrensninger={this.getTidsperiodeAvgrensninger()}

@@ -7,20 +7,18 @@ import søknadActions from './../../../redux/actions/søknad/søknadActionCreato
 import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
 import AdoptertIUtlandetSpørsmål from '../../../spørsmål/AdoptertIUtlandetSpørsmål';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import Bolk from '../../../../common/components/bolk/Bolk';
 import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
-import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
@@ -78,7 +76,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps}>
-                <Spørsmål
+                <Block
                     render={() => (
                         <DatoInput
                             id="adopsjonsdato"
@@ -123,8 +121,8 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 )}
 
-                <Spørsmål
-                    synlig={visSpørsmålOmAdoptertIUtlandet}
+                <Block
+                    visible={visSpørsmålOmAdoptertIUtlandet}
                     render={() => (
                         <AdoptertIUtlandetSpørsmål
                             adoptertIUtlandet={barn.adoptertIUtlandet}
@@ -139,50 +137,38 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     )}
                 />
 
-                <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
-                    <Bolk
-                        tittel={getMessage(
-                            intl,
-                            'attachments.tittel.omsorgsovertakelse'
-                        )}
-                        render={() => (
-                            <div className="blokkPad-m">
-                                <AttachmentsUploaderPure
-                                    attachments={
-                                        (barn as Adopsjonsbarn)
-                                            .omsorgsovertakelse || []
-                                    }
-                                    attachmentType={
-                                        AttachmentType.OMSROGSOVERTAKELSE
-                                    }
-                                    skjemanummer={
-                                        Skjemanummer.OMSORGSOVERTAKELSESDATO
-                                    }
-                                    onFilesSelect={(
-                                        attachments: Attachment[]
-                                    ) => {
-                                        attachments.forEach(
-                                            (attachment: Attachment) => {
-                                                dispatch(
-                                                    søknadActions.uploadAttachment(
-                                                        attachment
-                                                    )
-                                                );
-                                            }
-                                        );
-                                    }}
-                                    onFileDelete={(attachment) =>
+                <Block
+                    visible={visSpørsmålOmVedlegg}
+                    title={getMessage(
+                        intl,
+                        'attachments.tittel.omsorgsovertakelse'
+                    )}
+                    render={() => (
+                        <AttachmentsUploaderPure
+                            attachments={
+                                (barn as Adopsjonsbarn).omsorgsovertakelse || []
+                            }
+                            attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
+                            skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
+                            onFilesSelect={(attachments: Attachment[]) => {
+                                attachments.forEach(
+                                    (attachment: Attachment) => {
                                         dispatch(
-                                            søknadActions.deleteAttachment(
+                                            søknadActions.uploadAttachment(
                                                 attachment
                                             )
-                                        )
+                                        );
                                     }
-                                />
-                            </div>
-                        )}
-                    />
-                </EkspanderbartInnhold>
+                                );
+                            }}
+                            onFileDelete={(attachment) =>
+                                dispatch(
+                                    søknadActions.deleteAttachment(attachment)
+                                )
+                            }
+                        />
+                    )}
+                />
             </Steg>
         );
     }

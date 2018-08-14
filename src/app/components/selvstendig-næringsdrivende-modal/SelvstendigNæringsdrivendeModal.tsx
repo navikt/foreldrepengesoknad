@@ -3,7 +3,7 @@ import Modal, { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
@@ -19,7 +19,6 @@ import NæringstypeSpørsmål from '../../spørsmål/NæringstypeSpørsmål';
 import './selvstendigNæringsdrivendeModal.less';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
-import Bolk from '../../../common/components/bolk/Bolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import Landvelger from '../landvelger/Landvelger';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
@@ -163,7 +162,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         <FormattedMessage id="selvstendigNæringsdrivende.modal.tittel" />
                     </Undertittel>
 
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <NæringstypeSpørsmål
                                 næringstyper={næringstyper || []}
@@ -172,8 +171,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             næringstyper !== undefined &&
                             næringstyper.length > 0
                         }
@@ -193,8 +192,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={navnPåNæringen !== undefined}
+                    <Block
+                        visible={navnPåNæringen !== undefined}
                         render={() => (
                             <Input
                                 label={getMessage(
@@ -211,8 +210,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={organisasjonsnummer !== undefined}
+                    <Block
+                        visible={organisasjonsnummer !== undefined}
                         render={() => (
                             <TidsperiodeBolk
                                 tidsperiode={tidsperiode || {}}
@@ -227,8 +226,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={organisasjonsnummer !== undefined}
+                    <Block
+                        visible={organisasjonsnummer !== undefined}
                         render={() => (
                             <Checkbox
                                 checked={pågående || false}
@@ -249,8 +248,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={this.shouldAskForNæringsinntekt()}
+                    <Block
+                        visible={this.shouldAskForNæringsinntekt()}
                         render={() => (
                             <Input
                                 label={getMessage(
@@ -268,8 +267,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={organisasjonsnummer !== undefined}
+                    <Block
+                        visible={organisasjonsnummer !== undefined}
                         render={() => (
                             <ErNæringenRegistrertINorgeSpørsmål
                                 registrertINorge={registrertINorge}
@@ -280,8 +279,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={registrertINorge === false}
+                    <Block
+                        visible={registrertINorge === false}
                         render={() => (
                             <Landvelger
                                 onChange={(v: string) =>
@@ -296,8 +295,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             registrertINorge === true ||
                             (registrertINorge === false &&
                                 registrertILand !== undefined)
@@ -319,8 +318,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={
+                    <Block
+                        visible={
                             stillingsprosent !== undefined &&
                             tidsperiode &&
                             tidsperiode.fom &&
@@ -328,7 +327,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         render={() => (
                             <React.Fragment>
-                                <Spørsmål
+                                <Block
                                     render={() => (
                                         <HeltNyIArbeidslivetSpørsmål
                                             nyIArbeidslivet={nyIArbeidslivet}
@@ -344,8 +343,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={
+                    <Block
+                        visible={
                             stillingsprosent !== undefined &&
                             tidsperiode &&
                             tidsperiode.fom &&
@@ -361,8 +360,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={stillingsprosent !== undefined}
+                    <Block
+                        visible={stillingsprosent !== undefined}
                         render={() => (
                             <NæringsrelasjonBolk
                                 renderSpørsmål={() => (
@@ -388,8 +387,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={
+                    <Block
+                        visible={
                             stillingsprosent !== undefined &&
                             harRegnskapsfører === false
                         }
@@ -416,8 +415,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             harRegnskapsfører === false && harRevisor === true
                         }
                         render={() => (

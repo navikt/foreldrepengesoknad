@@ -9,8 +9,7 @@ import AnnenForelder, {
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import Bolk from '../../../../../common/components/bolk/Bolk';
+import Block from 'common/components/block/Block';
 import FødselsnummerSpørsmålsgruppe from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
@@ -67,38 +66,34 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Bolk
-                    tittel="Informasjon om den andre forelderen"
-                    synlig={registrertAnnenForelder !== undefined}
+                <Block
+                    title="Informasjon om den andre forelderen"
+                    visible={registrertAnnenForelder !== undefined}
                     render={() => (
                         <PersonaliaBox personalia={registrertAnnenForelder} />
                     )}
                 />
 
-                <Bolk
-                    synlig={registrertAnnenForelder === undefined}
+                <Block
+                    visible={registrertAnnenForelder === undefined}
                     render={() => (
-                        <Spørsmål
-                            render={() => (
-                                <NavnPåAnnenForelderSpørsmål
-                                    navn={navn}
-                                    kanIkkeOppgis={kanIkkeOppgis}
-                                    onChange={(
-                                        annenForelderPartial: AnnenForelderPartial
-                                    ) =>
-                                        dispatch(
-                                            søknadActions.updateAnnenForelder(
-                                                annenForelderPartial
-                                            )
-                                        )
-                                    }
-                                />
-                            )}
+                        <NavnPåAnnenForelderSpørsmål
+                            navn={navn}
+                            kanIkkeOppgis={kanIkkeOppgis}
+                            onChange={(
+                                annenForelderPartial: AnnenForelderPartial
+                            ) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(
+                                        annenForelderPartial
+                                    )
+                                )
+                            }
                         />
                     )}
                 />
 
-                <Spørsmål
+                <Block
                     render={() => (
                         <Checkbox
                             checked={kanIkkeOppgis || false}
@@ -118,8 +113,8 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
-                    synlig={!kanIkkeOppgis}
+                <Block
+                    visible={!kanIkkeOppgis}
                     render={() => (
                         <Checkbox
                             checked={søker.erAleneOmOmsorg || false}
