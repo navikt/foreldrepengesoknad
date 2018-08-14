@@ -88,7 +88,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block>
+                <Block visible={situasjon !== 'stebarn'}>
                     <Checkbox
                         checked={kanIkkeOppgis || false}
                         label={
