@@ -12,6 +12,7 @@ import { HistoryProps } from '../../../types/common';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import apiActions from '../../../redux/actions/api/apiActionCreators';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
@@ -35,6 +36,7 @@ type Props = AndreInntekterStegProps &
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
             harHattAnnenInntekt: undefined
         };
@@ -44,6 +46,11 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål = this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål.bind(
             this
         );
+    }
+
+    updateSøkerAndSave(søker: Partial<Søker>) {
+        this.props.dispatch(søknadActions.updateSøker(søker));
+        this.props.dispatch(apiActions.storeAppState());
     }
 
     renderAnnenInntektSiste10MndSpørsmål() {
@@ -132,11 +139,9 @@ class AndreInntekterSteg extends React.Component<Props> {
                             søker.selvstendigNæringsdrivendeInformasjon || []
                         }
                         onChange={(updatedNæringer: Næring[]) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    selvstendigNæringsdrivendeInformasjon: updatedNæringer
-                                })
-                            )
+                            this.updateSøkerAndSave({
+                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                            })
                         }
                     />
                 </Block>
