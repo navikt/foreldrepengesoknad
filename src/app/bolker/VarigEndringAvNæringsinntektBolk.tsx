@@ -43,20 +43,18 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    render={() => (
-                        <VarigEndringAvNæringsinntektSpørsmål
-                            varigEndringAvNæringsinntekt={
-                                hattVarigEndringAvNæringsinntektSiste4Kalenderår
-                            }
-                            onChange={(v: boolean) =>
-                                onChange({
-                                    hattVarigEndringAvNæringsinntektSiste4Kalenderår: v
-                                })
-                            }
-                        />
-                    )}
-                />
+                <Block>
+                    <VarigEndringAvNæringsinntektSpørsmål
+                        varigEndringAvNæringsinntekt={
+                            hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                        }
+                        onChange={(v: boolean) =>
+                            onChange({
+                                hattVarigEndringAvNæringsinntektSiste4Kalenderår: v
+                            })
+                        }
+                    />
+                </Block>
 
                 <Block
                     margin="none"
@@ -64,73 +62,54 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     visible={
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår ===
                         true
-                    }
-                    render={() => (
-                        <React.Fragment>
-                            <Block
-                                render={() => (
-                                    <DatoInput
-                                        id="datoForEndring"
-                                        label={getMessage(
-                                            intl,
-                                            'varigEndringAvNæringsinntekt.dato.label'
-                                        )}
-                                        onChange={(dato: Date) => {
-                                            this.updateEndringAvNæringsinntektInformasjon(
-                                                {
-                                                    dato
-                                                }
-                                            );
-                                        }}
-                                        dato={info && info.dato}
-                                        avgrensninger={getTidsperiodeAvgrensningerSiste4år()}
-                                    />
-                                )}
-                            />
-                            <Block
-                                render={() => (
-                                    <Input
-                                        label={getMessage(
-                                            intl,
-                                            'varigEndringAvNæringsinntekt.inntektEtterEndring.label'
-                                        )}
-                                        value={
-                                            (info &&
-                                                info.næringsinntektEtterEndring) ||
-                                            ''
-                                        }
-                                        onChange={(e: InputChangeEvent) =>
-                                            this.updateEndringAvNæringsinntektInformasjon(
-                                                {
-                                                    næringsinntektEtterEndring:
-                                                        e.target.value
-                                                }
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                            <Block
-                                render={() => (
-                                    <Textarea
-                                        label={getMessage(
-                                            intl,
-                                            'varigEndringAvNæringsinntekt.forklaring.label'
-                                        )}
-                                        value={(info && info.forklaring) || ''}
-                                        onChange={(e: TextareaChangeEvent) => {
-                                            this.updateEndringAvNæringsinntektInformasjon(
-                                                {
-                                                    forklaring: e.target.value
-                                                }
-                                            );
-                                        }}
-                                    />
-                                )}
-                            />
-                        </React.Fragment>
-                    )}
-                />
+                    }>
+                    <Block>
+                        <DatoInput
+                            id="datoForEndring"
+                            label={getMessage(
+                                intl,
+                                'varigEndringAvNæringsinntekt.dato.label'
+                            )}
+                            onChange={(dato: Date) => {
+                                this.updateEndringAvNæringsinntektInformasjon({
+                                    dato
+                                });
+                            }}
+                            dato={info && info.dato}
+                            avgrensninger={getTidsperiodeAvgrensningerSiste4år()}
+                        />
+                    </Block>
+                    <Block>
+                        <Input
+                            label={getMessage(
+                                intl,
+                                'varigEndringAvNæringsinntekt.inntektEtterEndring.label'
+                            )}
+                            value={
+                                (info && info.næringsinntektEtterEndring) || ''
+                            }
+                            onChange={(e: InputChangeEvent) =>
+                                this.updateEndringAvNæringsinntektInformasjon({
+                                    næringsinntektEtterEndring: e.target.value
+                                })
+                            }
+                        />
+                    </Block>
+                    <Block>
+                        <Textarea
+                            label={getMessage(
+                                intl,
+                                'varigEndringAvNæringsinntekt.forklaring.label'
+                            )}
+                            value={(info && info.forklaring) || ''}
+                            onChange={(e: TextareaChangeEvent) => {
+                                this.updateEndringAvNæringsinntektInformasjon({
+                                    forklaring: e.target.value
+                                });
+                            }}
+                        />
+                    </Block>
+                </Block>
             </React.Fragment>
         );
     }
