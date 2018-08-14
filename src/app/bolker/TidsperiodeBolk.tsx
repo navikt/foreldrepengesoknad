@@ -1,6 +1,6 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import {
     TidsperiodeMedValgfriSluttdatoPartial,
@@ -56,7 +56,7 @@ class TidsperiodeBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
+                <Block
                     render={() => (
                         <DatoInput
                             id="fraDatoInput"
@@ -76,7 +76,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                     )}
                 />
 
-                <Spørsmål
+                <Block
                     render={() => (
                         <DatoInput
                             id="tilDatoInput"

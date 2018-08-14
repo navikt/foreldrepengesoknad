@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Select } from 'nav-frontend-skjema';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
 import getMessage from 'common/util/i18nUtils';
@@ -24,7 +24,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 type AntallBarnVerdi = '1' | '2' | '3';
 
-class AntallBarnSpørsmålsgruppe extends React.Component<Props> {
+class AntallBarnBolk extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onRadioChange = this.onRadioChange.bind(this);
@@ -48,7 +48,7 @@ class AntallBarnSpørsmålsgruppe extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
+                <Block
                     render={() => (
                         <RadioPanelGruppeResponsive
                             legend={spørsmål}
@@ -87,8 +87,8 @@ class AntallBarnSpørsmålsgruppe extends React.Component<Props> {
                         />
                     )}
                 />
-                <Spørsmål
-                    synlig={antallBarnVerdi === '3'}
+                <Block
+                    visible={antallBarnVerdi === '3'}
                     render={() => (
                         <Select
                             bredde="xs"
@@ -140,4 +140,4 @@ class AntallBarnSpørsmålsgruppe extends React.Component<Props> {
     }
 }
 
-export default injectIntl(AntallBarnSpørsmålsgruppe);
+export default injectIntl(AntallBarnBolk);

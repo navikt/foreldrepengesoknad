@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { NæringsrelasjonPartial } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import Input from 'nav-frontend-skjema/lib/input';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
@@ -43,7 +43,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                 {renderSpørsmål()}
                 {oppfølgingsspørsmålSynlig && (
                     <React.Fragment>
-                        <Spørsmål
+                        <Block
                             render={() => (
                                 <Input
                                     value={navn || ''}
@@ -59,7 +59,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 />
                             )}
                         />
-                        <Spørsmål
+                        <Block
                             render={() => (
                                 <Input
                                     value={telefonnummer || ''}
@@ -75,7 +75,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 />
                             )}
                         />
-                        <Spørsmål
+                        <Block
                             render={() => (
                                 <ErNærVennEllerFamilieAvPersonSpørsmål
                                     erNærVennEllerFamilieAvPerson={

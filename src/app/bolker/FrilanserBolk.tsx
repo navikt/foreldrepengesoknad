@@ -1,8 +1,7 @@
 import * as React from 'react';
 import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
-import Bolk from '../../common/components/bolk/Bolk';
+import Block from 'common/components/block/Block';
 import DriverDuFosterhjemSpørsmål from '../spørsmål/DriverDuFosterhjemSpørsmål';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
 import Søker, { SøkerPartial } from '../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
@@ -54,8 +53,8 @@ class FrilanserBolk extends React.Component<Props> {
             frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
 
         return (
-            <Spørsmål
-                synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+            <Block
+                visible={søker.harJobbetSomFrilansSiste10Mnd === true}
                 render={() => (
                     <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
                         onChange={(v: boolean) =>
@@ -91,7 +90,7 @@ class FrilanserBolk extends React.Component<Props> {
         return (
             <React.Fragment>
                 <div className="blokk-s">
-                    <Spørsmål
+                    <Block
                         render={() => (
                             <HarDuJobbetSomFrilansSiste10MndSpørsmål
                                 onChange={(v: boolean) =>
@@ -106,9 +105,9 @@ class FrilanserBolk extends React.Component<Props> {
                         )}
                     />
 
-                    <Spørsmål
-                        animert={false}
-                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                    <Block
+                        animated={false}
+                        visible={søker.harJobbetSomFrilansSiste10Mnd === true}
                         render={() => (
                             <DatoInput
                                 id="frilansStartDato"
@@ -123,8 +122,8 @@ class FrilanserBolk extends React.Component<Props> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                    <Block
+                        visible={søker.harJobbetSomFrilansSiste10Mnd === true}
                         render={() => (
                             <JobberDuFremdelesSomFrilansSpørsmål
                                 onChange={(v: boolean) =>
@@ -139,8 +138,8 @@ class FrilanserBolk extends React.Component<Props> {
                         )}
                     />
 
-                    <Bolk
-                        synlig={søker.harJobbetSomFrilansSiste10Mnd === true}
+                    <Block
+                        visible={søker.harJobbetSomFrilansSiste10Mnd === true}
                         render={() => (
                             <FrilansOppdragBolk
                                 renderSpørsmål={
@@ -167,8 +166,8 @@ class FrilanserBolk extends React.Component<Props> {
                         )}
                     />
 
-                    <Spørsmål
-                        synlig={
+                    <Block
+                        visible={
                             søker.harJobbetSomFrilansSiste10Mnd === true &&
                             jobberFremdelesSomFrilans === true &&
                             ((oppdragForNæreVennerEllerFamilieSiste10Mnd !==
