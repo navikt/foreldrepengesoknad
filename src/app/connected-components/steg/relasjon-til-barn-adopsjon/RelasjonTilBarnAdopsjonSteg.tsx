@@ -91,7 +91,10 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                {visSpørsmålOmAntallBarn && (
+                <Block
+                    visible={visSpørsmålOmAntallBarn}
+                    margin="none"
+                    hasChildBlocks={true}>
                     <AntallBarnBolk
                         spørsmål={getMessage(
                             intl,
@@ -101,7 +104,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
                     />
-                )}
+                </Block>
 
                 {visSpørsmålOmFødselsdatoer && (
                     <FødselsdatoerSpørsmål
