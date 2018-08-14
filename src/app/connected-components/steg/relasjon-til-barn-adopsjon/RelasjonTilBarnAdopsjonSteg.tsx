@@ -76,22 +76,20 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps}>
-                <Block
-                    render={() => (
-                        <DatoInput
-                            id="adopsjonsdato"
-                            label={getMessage(intl, 'adopsjonsdato.spørsmål')}
-                            onChange={(adopsjonsdato: Date) => {
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        adopsjonsdato
-                                    })
-                                );
-                            }}
-                            dato={barn.adopsjonsdato}
-                        />
-                    )}
-                />
+                <Block>
+                    <DatoInput
+                        id="adopsjonsdato"
+                        label={getMessage(intl, 'adopsjonsdato.spørsmål')}
+                        onChange={(adopsjonsdato: Date) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adopsjonsdato
+                                })
+                            );
+                        }}
+                        dato={barn.adopsjonsdato}
+                    />
+                </Block>
 
                 {visSpørsmålOmAntallBarn && (
                     <AntallBarnBolk
@@ -121,54 +119,43 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 )}
 
-                <Block
-                    visible={visSpørsmålOmAdoptertIUtlandet}
-                    render={() => (
-                        <AdoptertIUtlandetSpørsmål
-                            adoptertIUtlandet={barn.adoptertIUtlandet}
-                            onChange={(adoptertIUtlandet) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        adoptertIUtlandet
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block visible={visSpørsmålOmAdoptertIUtlandet}>
+                    <AdoptertIUtlandetSpørsmål
+                        adoptertIUtlandet={barn.adoptertIUtlandet}
+                        onChange={(adoptertIUtlandet) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adoptertIUtlandet
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
                 <Block
                     visible={visSpørsmålOmVedlegg}
                     title={getMessage(
                         intl,
                         'attachments.tittel.omsorgsovertakelse'
-                    )}
-                    render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={
-                                (barn as Adopsjonsbarn).omsorgsovertakelse || []
-                            }
-                            attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
-                            skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment) =>
+                    )}>
+                    <AttachmentsUploaderPure
+                        attachments={
+                            (barn as Adopsjonsbarn).omsorgsovertakelse || []
+                        }
+                        attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
+                        skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
                                 dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                        />
-                    )}
-                />
+                                    søknadActions.uploadAttachment(attachment)
+                                );
+                            });
+                        }}
+                        onFileDelete={(attachment) =>
+                            dispatch(søknadActions.deleteAttachment(attachment))
+                        }
+                    />
+                </Block>
             </Steg>
         );
     }

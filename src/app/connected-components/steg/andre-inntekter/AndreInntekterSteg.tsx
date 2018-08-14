@@ -51,22 +51,20 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Block
-                render={() => (
-                    <AnnenInntektSiste10MndSpørsmål
-                        harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
-                        onChange={(value: AnnenInntekt) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    harHattAnnenInntektSiste10Mnd:
-                                        value ===
-                                        AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
-                                })
-                            )
-                        }
-                    />
-                )}
-            />
+            <Block>
+                <AnnenInntektSiste10MndSpørsmål
+                    harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
+                    onChange={(value: AnnenInntekt) =>
+                        dispatch(
+                            søknadActions.updateSøker({
+                                harHattAnnenInntektSiste10Mnd:
+                                    value ===
+                                    AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                            })
+                        )
+                    }
+                />
+            </Block>
         );
     }
 
@@ -75,22 +73,20 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
         return (
-            <Block
-                render={() => (
-                    <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
-                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
-                        }
-                        onChange={(value: boolean) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: value
-                                })
-                            )
-                        }
-                    />
-                )}
-            />
+            <Block>
+                <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                    }
+                    onChange={(value: boolean) =>
+                        dispatch(
+                            søknadActions.updateSøker({
+                                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: value
+                            })
+                        )
+                    }
+                />
+            </Block>
         );
     }
 
@@ -100,84 +96,75 @@ class AndreInntekterSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps}>
-                <Block
-                    render={() => (
-                        <FrilanserBolk
-                            søker={søker}
-                            onChangeSøker={(søkerProperties: Søker) =>
-                                dispatch(
-                                    søknadActions.updateSøker(søkerProperties)
-                                )
-                            }
-                            onChangeFrilansinformasjon={(
-                                frilansInformasjon: FrilansInformasjon
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        frilansInformasjon
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block>
+                    <FrilanserBolk
+                        søker={søker}
+                        onChangeSøker={(søkerProperties: Søker) =>
+                            dispatch(søknadActions.updateSøker(søkerProperties))
+                        }
+                        onChangeFrilansinformasjon={(
+                            frilansInformasjon: FrilansInformasjon
+                        ) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    frilansInformasjon
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
-                <Block
-                    render={() => (
-                        <SelvstendigNæringsdrivendeBolk
-                            oppfølgingsspørsmål={getMessage(
-                                intl,
-                                'selvstendigNæringsdrivende.oppfølgingsspørsmål'
-                            )}
-                            renderSpørsmål={
-                                this
-                                    .renderSelvstendigNæringsdrivendeSiste10MndSpørsmål
-                            }
-                            showNæringsPerioderContent={
-                                søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
-                                true
-                            }
-                            næringListe={
-                                søker.selvstendigNæringsdrivendeInformasjon ||
-                                []
-                            }
-                            onChange={(updatedNæringer: Næring[]) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        selvstendigNæringsdrivendeInformasjon: updatedNæringer
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block>
+                    <SelvstendigNæringsdrivendeBolk
+                        oppfølgingsspørsmål={getMessage(
+                            intl,
+                            'selvstendigNæringsdrivende.oppfølgingsspørsmål'
+                        )}
+                        renderSpørsmål={
+                            this
+                                .renderSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                        }
+                        showNæringsPerioderContent={
+                            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
+                            true
+                        }
+                        næringListe={
+                            søker.selvstendigNæringsdrivendeInformasjon || []
+                        }
+                        onChange={(updatedNæringer: Næring[]) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
-                <Block
-                    render={() => (
-                        <AndreInntekterBolk
-                            oppfølgingsspørsmål={getMessage(
-                                intl,
-                                'annenInntekt.oppfølgingsspørsmål'
-                            )}
-                            renderSpørsmål={
-                                this.renderAnnenInntektSiste10MndSpørsmål
-                            }
-                            showAndreInntekterPeriodeContent={
-                                harHattAnnenInntektSiste10Mnd
-                            }
-                            andreInntekterSiste10Mnd={
-                                søker.andreInntekterSiste10Mnd
-                            }
-                            onChange={(andreInntekterSiste10Mnd) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        andreInntekterSiste10Mnd
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block>
+                    <AndreInntekterBolk
+                        oppfølgingsspørsmål={getMessage(
+                            intl,
+                            'annenInntekt.oppfølgingsspørsmål'
+                        )}
+                        renderSpørsmål={
+                            this.renderAnnenInntektSiste10MndSpørsmål
+                        }
+                        showAndreInntekterPeriodeContent={
+                            harHattAnnenInntektSiste10Mnd
+                        }
+                        andreInntekterSiste10Mnd={
+                            søker.andreInntekterSiste10Mnd
+                        }
+                        onChange={(andreInntekterSiste10Mnd) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    andreInntekterSiste10Mnd
+                                })
+                            )
+                        }
+                    />
+                </Block>
             </Steg>
         );
     }

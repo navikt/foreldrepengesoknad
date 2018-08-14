@@ -51,22 +51,19 @@ class FødtBarnPartial extends React.Component<Props> {
                     antallBarn={barn.antallBarn}
                     onChange={this.oppdaterAntallBarn}
                 />
-                <Block
-                    visible={barn.antallBarn !== undefined}
-                    render={() => (
-                        <FødselsdatoerSpørsmål
-                            collapsed={true}
-                            fødselsdatoer={barn.fødselsdatoer}
-                            onChange={(fødselsdatoer: Date[]) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsdatoer
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block visible={barn.antallBarn !== undefined}>
+                    <FødselsdatoerSpørsmål
+                        collapsed={true}
+                        fødselsdatoer={barn.fødselsdatoer}
+                        onChange={(fødselsdatoer: Date[]) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    fødselsdatoer
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
                 <Block
                     visible={
@@ -75,31 +72,23 @@ class FødtBarnPartial extends React.Component<Props> {
                             (fødselsdato: Date) => fødselsdato instanceof Date
                         )
                     }
-                    title={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
-                    render={() => (
-                        <AttachmentsUploaderPure
-                            attachments={fødselsattest}
-                            attachmentType={AttachmentType.FØDSELSATTEST}
-                            skjemanummer={Skjemanummer.FØDSELSATTEST}
-                            onFilesSelect={(attachments: Attachment[]) => {
-                                attachments.forEach(
-                                    (attachment: Attachment) => {
-                                        dispatch(
-                                            søknadActions.uploadAttachment(
-                                                attachment
-                                            )
-                                        );
-                                    }
-                                );
-                            }}
-                            onFileDelete={(attachment: Attachment) =>
+                    title={getMessage(intl, 'vedlegg.tittel.fødselsattest')}>
+                    <AttachmentsUploaderPure
+                        attachments={fødselsattest}
+                        attachmentType={AttachmentType.FØDSELSATTEST}
+                        skjemanummer={Skjemanummer.FØDSELSATTEST}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
                                 dispatch(
-                                    søknadActions.deleteAttachment(attachment)
-                                )
-                            }
-                        />
-                    )}
-                />
+                                    søknadActions.uploadAttachment(attachment)
+                                );
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) =>
+                            dispatch(søknadActions.deleteAttachment(attachment))
+                        }
+                    />
+                </Block>
             </React.Fragment>
         );
     }

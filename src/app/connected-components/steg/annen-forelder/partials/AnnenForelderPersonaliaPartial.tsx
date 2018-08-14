@@ -68,72 +68,57 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             <React.Fragment>
                 <Block
                     title="Informasjon om den andre forelderen"
-                    visible={registrertAnnenForelder !== undefined}
-                    render={() => (
-                        <PersonaliaBox personalia={registrertAnnenForelder} />
-                    )}
-                />
+                    visible={registrertAnnenForelder !== undefined}>
+                    <PersonaliaBox personalia={registrertAnnenForelder} />
+                </Block>
 
-                <Block
-                    visible={registrertAnnenForelder === undefined}
-                    render={() => (
-                        <NavnPåAnnenForelderSpørsmål
-                            navn={navn}
-                            kanIkkeOppgis={kanIkkeOppgis}
-                            onChange={(
-                                annenForelderPartial: AnnenForelderPartial
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder(
-                                        annenForelderPartial
-                                    )
+                <Block visible={registrertAnnenForelder === undefined}>
+                    <NavnPåAnnenForelderSpørsmål
+                        navn={navn}
+                        kanIkkeOppgis={kanIkkeOppgis}
+                        onChange={(
+                            annenForelderPartial: AnnenForelderPartial
+                        ) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder(
+                                    annenForelderPartial
                                 )
-                            }
-                        />
-                    )}
-                />
+                            )
+                        }
+                    />
+                </Block>
 
-                <Block
-                    render={() => (
-                        <Checkbox
-                            checked={kanIkkeOppgis || false}
-                            label={
-                                situasjon === Søkersituasjon.ADOPSJON
-                                    ? getMessage(
-                                          intl,
-                                          'annenForelder.spørsmål.adoptererAlene'
-                                      )
-                                    : getMessage(
-                                          intl,
-                                          'annenForelder.spørsmål.kanOppgis'
-                                      )
-                            }
-                            onChange={() => this.onKanIkkeOppgis()}
-                        />
-                    )}
-                />
+                <Block>
+                    <Checkbox
+                        checked={kanIkkeOppgis || false}
+                        label={
+                            situasjon === Søkersituasjon.ADOPSJON
+                                ? getMessage(
+                                      intl,
+                                      'annenForelder.spørsmål.adoptererAlene'
+                                  )
+                                : getMessage(
+                                      intl,
+                                      'annenForelder.spørsmål.kanOppgis'
+                                  )
+                        }
+                        onChange={() => this.onKanIkkeOppgis()}
+                    />
+                </Block>
 
-                <Block
-                    visible={!kanIkkeOppgis}
-                    render={() => (
-                        <Checkbox
-                            checked={søker.erAleneOmOmsorg || false}
-                            label={getMessage(
-                                intl,
-                                'annenForelder.aleneOmOmsorg'
-                            )}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        erAleneOmOmsorg: e.target.checked
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block visible={!kanIkkeOppgis}>
+                    <Checkbox
+                        checked={søker.erAleneOmOmsorg || false}
+                        label={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    erAleneOmOmsorg: e.target.checked
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
                 {navn !== undefined && (
                     <FødselsnummerSpørsmålsgruppe
