@@ -28,7 +28,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'aleneOmOmsorg.spørsmål')}
+            legend={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

@@ -10,7 +10,7 @@ import søknadActions from '../../../../redux/actions/søknad/søknadActionCreat
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import FødselsnummerSpørsmålsgruppe from '../../../../bolker/FødselsnummerBolk';
+import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
@@ -54,7 +54,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
     render() {
         const {
-            søker,
             søkersFødselsnummer,
             annenForelder,
             registrertAnnenForelder,
@@ -72,7 +71,9 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     <PersonaliaBox personalia={registrertAnnenForelder} />
                 </Block>
 
-                <Block visible={registrertAnnenForelder === undefined}>
+                <Block
+                    visible={registrertAnnenForelder === undefined}
+                    margin="xs">
                     <NavnPåAnnenForelderSpørsmål
                         navn={navn}
                         kanIkkeOppgis={kanIkkeOppgis}
@@ -106,38 +107,25 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={!kanIkkeOppgis}>
-                    <Checkbox
-                        checked={søker.erAleneOmOmsorg || false}
-                        label={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    erAleneOmOmsorg: e.target.checked
-                                })
-                            )
-                        }
-                    />
-                </Block>
-
-                {navn !== undefined && (
-                    <FødselsnummerSpørsmålsgruppe
-                        kanIkkeOppgis={kanIkkeOppgis}
-                        søkersFødselsnummer={søkersFødselsnummer}
-                        fnr={annenForelder.fnr}
-                        utenlandskFnr={annenForelder.utenlandskFnr}
-                        bostedsland={annenForelder.bostedsland}
-                        onChange={(
-                            annenForelderPartial: AnnenForelderPartial
-                        ) =>
-                            dispatch(
-                                søknadActions.updateAnnenForelder(
-                                    annenForelderPartial
+                {navn !== undefined &&
+                    navn !== '' && (
+                        <FødselsnummerBolk
+                            kanIkkeOppgis={kanIkkeOppgis}
+                            søkersFødselsnummer={søkersFødselsnummer}
+                            fnr={annenForelder.fnr}
+                            utenlandskFnr={annenForelder.utenlandskFnr}
+                            bostedsland={annenForelder.bostedsland}
+                            onChange={(
+                                annenForelderPartial: AnnenForelderPartial
+                            ) =>
+                                dispatch(
+                                    søknadActions.updateAnnenForelder(
+                                        annenForelderPartial
+                                    )
                                 )
-                            )
-                        }
-                    />
-                )}
+                            }
+                        />
+                    )}
             </React.Fragment>
         );
     }
