@@ -42,9 +42,9 @@ export interface UttaksplanSøker {
     mellomnavn: string;
     etternavn: string;
     kjønn: Kjønn;
-    erAleneOmOmsorg: boolean;
     rolle: SøkerRolle;
     situasjon: Søkersituasjon;
+    erAleneOmOmsorg?: boolean;
 }
 export interface UttaksplanAnnenForelder {
     fornavn: string;
