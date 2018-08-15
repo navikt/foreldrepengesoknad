@@ -1,7 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Collapse } from 'react-collapse';
-// import { Element } from 'nav-frontend-typografi';
 
 import BEMHelper from 'common/util/bem';
 import { collapseSpringConfig } from 'common/util/animationUtils';
@@ -20,8 +19,8 @@ export interface BlockProps {
     margin?: BlockPadding;
     /** If Block contains child Block. If so, it disables animation */
     hasChildBlocks?: boolean;
-    /** Render function called when content is visible */
-    render: () => JSX.Element | undefined;
+    /** content */
+    children: React.ReactNode;
 }
 
 const cls = BEMHelper('block');
@@ -31,10 +30,10 @@ const Block: React.StatelessComponent<BlockProps> = ({
     margin = 'm',
     animated,
     title,
-    hasChildBlocks,
-    render = () => null
+    children,
+    hasChildBlocks
 }) => {
-    if (visible === false || !render) {
+    if (visible === false && children) {
         return null;
     }
     const contentClass = classNames(cls.className, cls.modifier(margin));
@@ -44,10 +43,10 @@ const Block: React.StatelessComponent<BlockProps> = ({
                 <h1 className={`typo-element ${cls.element('title')}`}>
                     {title}
                 </h1>
-                {render()}
+                {children}
             </section>
         ) : (
-            <div className={contentClass}>{render()}</div>
+            <div className={contentClass}>{children}</div>
         );
 
     if (

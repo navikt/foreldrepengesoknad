@@ -7,14 +7,14 @@ export const getSøkerrollerForBruker = (
 ): SøkerRolle[] | undefined => {
     if (situasjon === Søkersituasjon.FØDSEL) {
         if (kjønn === Kjønn.KVINNE) {
-            return [SøkerRolle.MOR, SøkerRolle.MEDMOR];
+            return [SøkerRolle.MOR /*, SøkerRolle.MEDMOR*/];
         }
     }
     if (situasjon === Søkersituasjon.ADOPSJON) {
         if (kjønn === Kjønn.KVINNE) {
-            return [SøkerRolle.MOR, SøkerRolle.MEDMOR];
+            return [SøkerRolle.MOR /*, SøkerRolle.MEDMOR*/];
         }
-        return [SøkerRolle.FAR, SøkerRolle.FAR2];
+        return [SøkerRolle.FAR /*, SøkerRolle.FAR2*/];
     }
     if (situasjon === Søkersituasjon.FORELDREANSVAR) {
         if (kjønn === Kjønn.KVINNE) {

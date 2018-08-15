@@ -43,52 +43,43 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                 {renderSpørsmål()}
                 {oppfølgingsspørsmålSynlig && (
                     <React.Fragment>
-                        <Block
-                            render={() => (
-                                <Input
-                                    value={navn || ''}
-                                    label={getMessage(
-                                        intl,
-                                        'næringsrelasjon.navn'
-                                    )}
-                                    onChange={(e: InputChangeEvent) =>
-                                        this.handleOnChange({
-                                            navn: e.target.value
-                                        })
-                                    }
-                                />
-                            )}
-                        />
-                        <Block
-                            render={() => (
-                                <Input
-                                    value={telefonnummer || ''}
-                                    label={getMessage(
-                                        intl,
-                                        'næringsrelasjon.tlfnr'
-                                    )}
-                                    onChange={(e: InputChangeEvent) =>
-                                        this.handleOnChange({
-                                            telefonnummer: e.target.value
-                                        })
-                                    }
-                                />
-                            )}
-                        />
-                        <Block
-                            render={() => (
-                                <ErNærVennEllerFamilieAvPersonSpørsmål
-                                    erNærVennEllerFamilieAvPerson={
-                                        erNærVennEllerFamilie
-                                    }
-                                    onChange={(v: boolean) =>
-                                        this.handleOnChange({
-                                            erNærVennEllerFamilie: v
-                                        })
-                                    }
-                                />
-                            )}
-                        />
+                        <Block>
+                            <Input
+                                value={navn || ''}
+                                label={getMessage(intl, 'næringsrelasjon.navn')}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.handleOnChange({
+                                        navn: e.target.value
+                                    })
+                                }
+                            />
+                        </Block>
+                        <Block>
+                            <Input
+                                value={telefonnummer || ''}
+                                label={getMessage(
+                                    intl,
+                                    'næringsrelasjon.tlfnr'
+                                )}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.handleOnChange({
+                                        telefonnummer: e.target.value
+                                    })
+                                }
+                            />
+                        </Block>
+                        <Block>
+                            <ErNærVennEllerFamilieAvPersonSpørsmål
+                                erNærVennEllerFamilieAvPerson={
+                                    erNærVennEllerFamilie
+                                }
+                                onChange={(v: boolean) =>
+                                    this.handleOnChange({
+                                        erNærVennEllerFamilie: v
+                                    })
+                                }
+                            />
+                        </Block>
                     </React.Fragment>
                 )}
             </React.Fragment>
