@@ -7,8 +7,8 @@ import Steg from 'app/components/steg/Steg';
 
 import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../../redux/reducers';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
-import AntallBarnSpørsmålsgruppe from '../../../spørsmål/AntallBarnSpørsmålsgruppe';
+import Block from 'common/components/block/Block';
+import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsmål';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
@@ -23,12 +23,10 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType } from '../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
-import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
-import Bolk from 'common/components/bolk/Bolk';
 import getMessage from 'common/util/i18nUtils';
 
 export interface StateProps {
@@ -78,26 +76,24 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Spørsmål
-                    render={() => (
-                        <DatoInput
-                            id="foreldreansvar_dato"
-                            label={
-                                <Labeltekst intlId="foreldreansvar.overtakelsedato" />
-                            }
-                            onChange={(dato: Date) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        foreldreansvarsdato: dato
-                                    })
-                                )
-                            }
-                            dato={barn.foreldreansvarsdato}
-                        />
-                    )}
-                />
+                <Block>
+                    <DatoInput
+                        id="foreldreansvar_dato"
+                        label={
+                            <Labeltekst intlId="foreldreansvar.overtakelsedato" />
+                        }
+                        onChange={(dato: Date) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    foreldreansvarsdato: dato
+                                })
+                            )
+                        }
+                        dato={barn.foreldreansvarsdato}
+                    />
+                </Block>
                 {visSpørsmålOmAntallBarn && (
-                    <AntallBarnSpørsmålsgruppe
+                    <AntallBarnBolk
                         spørsmål={intl.formatMessage({
                             id: 'foreldreansvar.antallBarn'
                         })}
@@ -107,25 +103,21 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     />
                 )}
 
-                <Spørsmål
-                    synlig={visSpørsmålOmFødselsdatoer}
-                    margin="none"
-                    render={() => (
-                        <FødselsdatoerSpørsmål
-                            fødselsdatoer={barn.fødselsdatoer || []}
-                            fødselsdatoAvgrensninger={{
-                                minDato: DateValues.date15YearsAgo.toDate()
-                            }}
-                            onChange={(fødselsdatoer: Date[]) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsdatoer
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                <Block visible={visSpørsmålOmFødselsdatoer} margin="none">
+                    <FødselsdatoerSpørsmål
+                        fødselsdatoer={barn.fødselsdatoer || []}
+                        fødselsdatoAvgrensninger={{
+                            minDato: DateValues.date15YearsAgo.toDate()
+                        }}
+                        onChange={(fødselsdatoer: Date[]) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    fødselsdatoer
+                                })
+                            )
+                        }
+                    />
+                </Block>
                 {visOver15årMelding && (
                     <div className="blokk-s">
                         <Veilederinfo type="advarsel">
@@ -134,44 +126,30 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     </div>
                 )}
 
-                <EkspanderbartInnhold erApen={visSpørsmålOmVedlegg}>
-                    <Bolk
-                        tittel={getMessage(
-                            intl,
-                            'attachments.tittel.foreldreansvar'
-                        )}
-                        render={() => (
-                            <div className="blokkPad-m">
-                                <AttachmentsUploaderPure
-                                    attachments={barn.adopsjonsvedtak || []}
-                                    attachmentType={
-                                        AttachmentType.ADOPSJONSVEDTAK
-                                    }
-                                    onFilesSelect={(
-                                        attachments: Attachment[]
-                                    ) => {
-                                        attachments.forEach(
-                                            (attachment: Attachment) => {
-                                                dispatch(
-                                                    søknadActions.uploadAttachment(
-                                                        attachment
-                                                    )
-                                                );
-                                            }
-                                        );
-                                    }}
-                                    onFileDelete={(attachment: Attachment) =>
-                                        dispatch(
-                                            søknadActions.deleteAttachment(
-                                                attachment
-                                            )
-                                        )
-                                    }
-                                />
-                            </div>
-                        )}
+                <Block
+                    title={getMessage(
+                        intl,
+                        'attachments.tittel.foreldreansvar'
+                    )}
+                    visible={visSpørsmålOmVedlegg}>
+                    <AttachmentsUploaderPure
+                        attachments={barn.adopsjonsvedtak || []}
+                        attachmentType={AttachmentType.ADOPSJONSVEDTAK}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
+                                dispatch(
+                                    søknadActions.uploadAttachment(attachment)
+                                );
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) =>
+                            dispatch(søknadActions.deleteAttachment(attachment))
+                        }
+                        skjemanummer={
+                            Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
+                        }
                     />
-                </EkspanderbartInnhold>
+                </Block>
             </Steg>
         );
     }

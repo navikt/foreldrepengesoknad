@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { NæringsrelasjonPartial } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import Input from 'nav-frontend-skjema/lib/input';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
@@ -43,52 +43,43 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                 {renderSpørsmål()}
                 {oppfølgingsspørsmålSynlig && (
                     <React.Fragment>
-                        <Spørsmål
-                            render={() => (
-                                <Input
-                                    value={navn || ''}
-                                    label={getMessage(
-                                        intl,
-                                        'næringsrelasjon.navn'
-                                    )}
-                                    onChange={(e: InputChangeEvent) =>
-                                        this.handleOnChange({
-                                            navn: e.target.value
-                                        })
-                                    }
-                                />
-                            )}
-                        />
-                        <Spørsmål
-                            render={() => (
-                                <Input
-                                    value={telefonnummer || ''}
-                                    label={getMessage(
-                                        intl,
-                                        'næringsrelasjon.tlfnr'
-                                    )}
-                                    onChange={(e: InputChangeEvent) =>
-                                        this.handleOnChange({
-                                            telefonnummer: e.target.value
-                                        })
-                                    }
-                                />
-                            )}
-                        />
-                        <Spørsmål
-                            render={() => (
-                                <ErNærVennEllerFamilieAvPersonSpørsmål
-                                    erNærVennEllerFamilieAvPerson={
-                                        erNærVennEllerFamilie
-                                    }
-                                    onChange={(v: boolean) =>
-                                        this.handleOnChange({
-                                            erNærVennEllerFamilie: v
-                                        })
-                                    }
-                                />
-                            )}
-                        />
+                        <Block>
+                            <Input
+                                value={navn || ''}
+                                label={getMessage(intl, 'næringsrelasjon.navn')}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.handleOnChange({
+                                        navn: e.target.value
+                                    })
+                                }
+                            />
+                        </Block>
+                        <Block>
+                            <Input
+                                value={telefonnummer || ''}
+                                label={getMessage(
+                                    intl,
+                                    'næringsrelasjon.tlfnr'
+                                )}
+                                onChange={(e: InputChangeEvent) =>
+                                    this.handleOnChange({
+                                        telefonnummer: e.target.value
+                                    })
+                                }
+                            />
+                        </Block>
+                        <Block>
+                            <ErNærVennEllerFamilieAvPersonSpørsmål
+                                erNærVennEllerFamilieAvPerson={
+                                    erNærVennEllerFamilie
+                                }
+                                onChange={(v: boolean) =>
+                                    this.handleOnChange({
+                                        erNærVennEllerFamilie: v
+                                    })
+                                }
+                            />
+                        </Block>
                     </React.Fragment>
                 )}
             </React.Fragment>

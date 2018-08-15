@@ -7,19 +7,19 @@ import ErMorUførSpørsmål from '../../../../spørsmål/ErMorUførSpørsmål';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDenAndreForelderenInformertSpørsmål';
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import Bolk from '../../../../../common/components/bolk/Bolk';
 import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
+import AleneOmOmsorgSpørsmål from '../../../../sp\u00F8rsm\u00E5l/AleneOmOmsorgSp\u00F8rsm\u00E5l';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -61,182 +61,176 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    synlig={!erFarEllerMedmor && søker.erAleneOmOmsorg === true}
-                    render={() => (
-                        <React.Fragment>
-                            <Veilederinfo>
-                                Informasjon om deling av uttak og at den andre
-                                kan ta perm.
-                            </Veilederinfo>
-                            <SkalFarEllerMedmorHaForeldrepengerSpørsmål
-                                navn={annenForelder.navn}
-                                skalFarEllerMedmorHaForeldrepenger={
-                                    annenForelder.skalHaForeldrepenger
-                                }
-                                onChange={(skalHaForeldrepenger: boolean) => {
-                                    dispatch(
-                                        søknadActions.updateAnnenForelder({
-                                            skalHaForeldrepenger
-                                        })
-                                    );
-                                }}
-                            />
-                        </React.Fragment>
-                    )}
-                />
-
-                <Spørsmål
-                    synlig={
+                <Block>
+                    <AleneOmOmsorgSpørsmål
+                        aleneOmOmsorg={søker.erAleneOmOmsorg}
+                        onChange={(erAleneOmOmsorg) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    erAleneOmOmsorg
+                                })
+                            )
+                        }
+                    />
+                </Block>
+                <Block
+                    visible={
+                        !erFarEllerMedmor && søker.erAleneOmOmsorg === true
+                    }>
+                    <Veilederinfo>
+                        Informasjon om deling av uttak og at den andre kan ta
+                        perm.
+                    </Veilederinfo>
+                    <SkalFarEllerMedmorHaForeldrepengerSpørsmål
+                        navn={annenForelder.navn}
+                        skalFarEllerMedmorHaForeldrepenger={
+                            annenForelder.skalHaForeldrepenger
+                        }
+                        onChange={(skalHaForeldrepenger: boolean) => {
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    skalHaForeldrepenger
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+                <Block
+                    visible={
                         annenForelder.skalHaForeldrepenger === true ||
-                        (!søker.erAleneOmOmsorg &&
+                        (søker.erAleneOmOmsorg === false &&
                             !harDenAndreForelderenOpplystOmSinPågåendeSak)
-                    }
-                    render={() => (
-                        <RettPåForeldrepengerSpørsmål
-                            navn={navn}
-                            harAnnenForelderRettPåForeldrepenger={
-                                annenForelder.harRettPåForeldrepenger
-                            }
-                            onChange={(harRettPåForeldrepenger: boolean) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder({
-                                        harRettPåForeldrepenger
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                    }>
+                    <RettPåForeldrepengerSpørsmål
+                        navn={navn}
+                        harAnnenForelderRettPåForeldrepenger={
+                            annenForelder.harRettPåForeldrepenger
+                        }
+                        onChange={(harRettPåForeldrepenger: boolean) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    harRettPåForeldrepenger
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         annenForelder.harRettPåForeldrepenger === false &&
                         erFarEllerMedmor
-                    }
-                    render={() => (
-                        <ErMorUførSpørsmål
-                            navn={navn}
-                            erUfør={annenForelder.erUfør}
-                            onChange={(erUfør: boolean) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder({
-                                        erUfør
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                    }>
+                    <ErMorUførSpørsmål
+                        navn={navn}
+                        erUfør={annenForelder.erUfør}
+                        onChange={(erUfør: boolean) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    erUfør
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         annenForelder.harRettPåForeldrepenger === true ||
                         (annenForelder.skalHaForeldrepenger === true &&
                             annenForelder.harRettPåForeldrepenger !== undefined)
-                    }
-                    render={() => (
-                        <Veilederinfo>
-                            Informasjon om rettigheter og deling av uttaksplan
-                        </Veilederinfo>
-                    )}
-                />
+                    }>
+                    <Veilederinfo>
+                        Informasjon om rettigheter og deling av uttaksplan
+                    </Veilederinfo>
+                </Block>
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         (søker.erAleneOmOmsorg === false &&
                             annenForelder.harRettPåForeldrepenger === true) ||
                         (søker.erAleneOmOmsorg === false &&
                             harDenAndreForelderenOpplystOmSinPågåendeSak ===
                                 true &&
                             erFarEllerMedmor)
-                    }
-                    render={() => (
-                        <ErDenAndreForelderenInformertSpørsmål
-                            navn={navn}
-                            erDenAndreForelderenInformert={
-                                annenForelder.erInformertOmSøknaden
-                            }
-                            onChange={(erInformertOmSøknaden: boolean) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder({
-                                        erInformertOmSøknaden
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
+                    }>
+                    <ErDenAndreForelderenInformertSpørsmål
+                        navn={navn}
+                        erDenAndreForelderenInformert={
+                            annenForelder.erInformertOmSøknaden
+                        }
+                        onChange={(erInformertOmSøknaden: boolean) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder({
+                                    erInformertOmSøknaden
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
                 {erFarEllerMedmor && (
                     <React.Fragment>
-                        <Spørsmål
-                            synlig={søker.erAleneOmOmsorg === true}
-                            render={() => (
-                                <DatoInput
-                                    id="omsorgsovertakelseDato"
-                                    label={getMessage(
-                                        intl,
-                                        'omsorgsovertakelseDato.spørsmål'
-                                    )}
-                                    onChange={(foreldreansvarsdato: Date) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                foreldreansvarsdato
-                                            })
-                                        );
-                                    }}
-                                    dato={barn.foreldreansvarsdato}
-                                />
-                            )}
-                        />
+                        <Block visible={søker.erAleneOmOmsorg === true}>
+                            <DatoInput
+                                id="omsorgsovertakelseDato"
+                                label={getMessage(
+                                    intl,
+                                    'omsorgsovertakelseDato.spørsmål'
+                                )}
+                                onChange={(foreldreansvarsdato: Date) => {
+                                    dispatch(
+                                        søknadActions.updateBarn({
+                                            foreldreansvarsdato
+                                        })
+                                    );
+                                }}
+                                dato={barn.foreldreansvarsdato}
+                            />
+                        </Block>
 
-                        <Spørsmål
-                            animert={true}
-                            synlig={barn.foreldreansvarsdato !== undefined}
-                            render={() => (
-                                <AttachmentsUploaderPure
-                                    attachments={
-                                        barn.omsorgsovertakelse
-                                            ? barn.omsorgsovertakelse
-                                            : []
-                                    }
-                                    attachmentType={
-                                        AttachmentType.OMSROGSOVERTAKELSE
-                                    }
-                                    onFilesSelect={(
-                                        attachments: Attachment[]
-                                    ) => {
-                                        attachments.forEach(
-                                            (attachment: Attachment) => {
-                                                dispatch(
-                                                    søknadActions.uploadAttachment(
-                                                        attachment
-                                                    )
-                                                );
-                                            }
-                                        );
-                                    }}
-                                    onFileDelete={(attachment: Attachment) =>
-                                        dispatch(
-                                            søknadActions.deleteAttachment(
-                                                attachment
-                                            )
+                        <Block
+                            animated={true}
+                            visible={barn.foreldreansvarsdato !== undefined}>
+                            <AttachmentsUploaderPure
+                                attachments={
+                                    barn.omsorgsovertakelse
+                                        ? barn.omsorgsovertakelse
+                                        : []
+                                }
+                                attachmentType={
+                                    AttachmentType.OMSROGSOVERTAKELSE
+                                }
+                                onFilesSelect={(attachments: Attachment[]) => {
+                                    attachments.forEach(
+                                        (attachment: Attachment) => {
+                                            dispatch(
+                                                søknadActions.uploadAttachment(
+                                                    attachment
+                                                )
+                                            );
+                                        }
+                                    );
+                                }}
+                                onFileDelete={(attachment: Attachment) =>
+                                    dispatch(
+                                        søknadActions.deleteAttachment(
+                                            attachment
                                         )
-                                    }
-                                />
-                            )}
-                        />
+                                    )
+                                }
+                                skjemanummer={
+                                    Skjemanummer.OMSORGSOVERTAKELSESDATO
+                                }
+                            />
+                        </Block>
 
-                        <Bolk
-                            synlig={visInformasjonVedOmsorgsovertakelse}
-                            render={() => (
-                                <Veilederinfo>
-                                    Du kan få 46/56 uker eller det som er igjen
-                                    av permisjonen
-                                </Veilederinfo>
-                            )}
-                        />
+                        <Block visible={visInformasjonVedOmsorgsovertakelse}>
+                            <Veilederinfo>
+                                Du kan få 46/56 uker eller det som er igjen av
+                                permisjonen
+                            </Veilederinfo>
+                        </Block>
                     </React.Fragment>
                 )}
             </React.Fragment>

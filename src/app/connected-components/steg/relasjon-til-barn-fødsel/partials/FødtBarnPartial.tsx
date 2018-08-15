@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import Bolk from 'common/components/bolk/Bolk';
 
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import AntallBarnSpørsmålsgruppe from '../../../../spørsmål/AntallBarnSpørsmålsgruppe';
+import AntallBarnBolk from '../../../../bolker/AntallBarnBolk';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
@@ -11,7 +10,8 @@ import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
-import { AttachmentType } from '../../../../types/søknad/Søknad';
+import Block from 'common/components/block/Block';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 
 interface StateProps {
     barn: FødtBarn;
@@ -45,63 +45,50 @@ class FødtBarnPartial extends React.Component<Props> {
         const { intl, dispatch, barn, fødselsattest } = this.props;
         return (
             <React.Fragment>
-                <AntallBarnSpørsmålsgruppe
+                <AntallBarnBolk
                     spørsmål={getMessage(intl, 'antallBarn.spørsmål.fått')}
                     inputName="antallBarn"
                     antallBarn={barn.antallBarn}
                     onChange={this.oppdaterAntallBarn}
                 />
-                {barn.antallBarn !== undefined && (
-                    <div className="blokk-m">
-                        <FødselsdatoerSpørsmål
-                            collapsed={true}
-                            fødselsdatoer={barn.fødselsdatoer}
-                            onChange={(fødselsdatoer: Date[]) =>
-                                dispatch(
-                                    søknadActions.updateBarn({
-                                        fødselsdatoer
-                                    })
-                                )
-                            }
-                        />
-                    </div>
-                )}
+                <Block visible={barn.antallBarn !== undefined}>
+                    <FødselsdatoerSpørsmål
+                        collapsed={true}
+                        fødselsdatoer={barn.fødselsdatoer}
+                        onChange={(fødselsdatoer: Date[]) =>
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    fødselsdatoer
+                                })
+                            )
+                        }
+                    />
+                </Block>
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         barn.fødselsdatoer.length > 0 &&
                         barn.fødselsdatoer.every(
                             (fødselsdato: Date) => fødselsdato instanceof Date
                         )
                     }
-                    tittel={getMessage(intl, 'vedlegg.tittel.fødselsattest')}
-                    render={() => (
-                        <div className="blokk-m">
-                            <AttachmentsUploaderPure
-                                attachments={fødselsattest}
-                                attachmentType={AttachmentType.FØDSELSATTEST}
-                                onFilesSelect={(attachments: Attachment[]) => {
-                                    attachments.forEach(
-                                        (attachment: Attachment) => {
-                                            dispatch(
-                                                søknadActions.uploadAttachment(
-                                                    attachment
-                                                )
-                                            );
-                                        }
-                                    );
-                                }}
-                                onFileDelete={(attachment: Attachment) =>
-                                    dispatch(
-                                        søknadActions.deleteAttachment(
-                                            attachment
-                                        )
-                                    )
-                                }
-                            />
-                        </div>
-                    )}
-                />
+                    title={getMessage(intl, 'vedlegg.tittel.fødselsattest')}>
+                    <AttachmentsUploaderPure
+                        attachments={fødselsattest}
+                        attachmentType={AttachmentType.FØDSELSATTEST}
+                        skjemanummer={Skjemanummer.FØDSELSATTEST}
+                        onFilesSelect={(attachments: Attachment[]) => {
+                            attachments.forEach((attachment: Attachment) => {
+                                dispatch(
+                                    søknadActions.uploadAttachment(attachment)
+                                );
+                            });
+                        }}
+                        onFileDelete={(attachment: Attachment) =>
+                            dispatch(søknadActions.deleteAttachment(attachment))
+                        }
+                    />
+                </Block>
             </React.Fragment>
         );
     }

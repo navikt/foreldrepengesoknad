@@ -1,6 +1,6 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import {
     TidsperiodeMedValgfriSluttdatoPartial,
@@ -56,46 +56,42 @@ class TidsperiodeBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    render={() => (
-                        <DatoInput
-                            id="fraDatoInput"
-                            label={getMessage(intl, 'fraogmed')}
-                            onChange={(fom: Date) => {
-                                this.handleOnChange({
-                                    ...tidsperiode,
-                                    fom
-                                });
-                            }}
-                            dato={tidsperiode.fom}
-                            avgrensninger={
-                                datoAvgrensninger && datoAvgrensninger.fra
-                            }
-                            validators={datoValidatorer && datoValidatorer.fra}
-                        />
-                    )}
-                />
+                <Block>
+                    <DatoInput
+                        id="fraDatoInput"
+                        label={getMessage(intl, 'fraogmed')}
+                        onChange={(fom: Date) => {
+                            this.handleOnChange({
+                                ...tidsperiode,
+                                fom
+                            });
+                        }}
+                        dato={tidsperiode.fom}
+                        avgrensninger={
+                            datoAvgrensninger && datoAvgrensninger.fra
+                        }
+                        validators={datoValidatorer && datoValidatorer.fra}
+                    />
+                </Block>
 
-                <Spørsmål
-                    render={() => (
-                        <DatoInput
-                            id="tilDatoInput"
-                            label={getMessage(intl, 'tilogmed')}
-                            onChange={(tom: Date) => {
-                                this.handleOnChange({
-                                    ...tidsperiode,
-                                    tom
-                                });
-                            }}
-                            dato={tidsperiode.tom}
-                            disabled={false || sluttdatoDisabled}
-                            avgrensninger={
-                                datoAvgrensninger && datoAvgrensninger.til
-                            }
-                            validators={datoValidatorer && datoValidatorer.til}
-                        />
-                    )}
-                />
+                <Block margin="none">
+                    <DatoInput
+                        id="tilDatoInput"
+                        label={getMessage(intl, 'tilogmed')}
+                        onChange={(tom: Date) => {
+                            this.handleOnChange({
+                                ...tidsperiode,
+                                tom
+                            });
+                        }}
+                        dato={tidsperiode.tom}
+                        disabled={false || sluttdatoDisabled}
+                        avgrensninger={
+                            datoAvgrensninger && datoAvgrensninger.til
+                        }
+                        validators={datoValidatorer && datoValidatorer.til}
+                    />
+                </Block>
             </React.Fragment>
         );
     }

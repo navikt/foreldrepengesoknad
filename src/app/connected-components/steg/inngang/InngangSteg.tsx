@@ -12,7 +12,7 @@ import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 
@@ -89,34 +89,27 @@ class InngangSteg extends React.Component<Props, {}> {
 
         return (
             <Steg {...stegProps}>
-                <Spørsmål
-                    render={() => (
-                        <SøkersituasjonSpørsmål
-                            situasjon={situasjon}
-                            onChange={this.updateSituasjonAndRolleInState}
+                <Block>
+                    <SøkersituasjonSpørsmål
+                        situasjon={situasjon}
+                        onChange={this.updateSituasjonAndRolleInState}
+                    />
+                </Block>
+                <Block visible={visSpørsmålOmSøkerrolle !== undefined}>
+                    {visSpørsmålOmSøkerrolle && (
+                        <SøkerrolleSpørsmål
+                            rolle={rolle}
+                            roller={roller}
+                            onChange={(nyRolle: SøkerRolle) =>
+                                dispatch(
+                                    søknadActions.updateSøker({
+                                        rolle: nyRolle
+                                    })
+                                )
+                            }
                         />
                     )}
-                />
-                <Spørsmål
-                    synlig={visSpørsmålOmSøkerrolle !== undefined}
-                    render={() =>
-                        visSpørsmålOmSøkerrolle ? (
-                            <SøkerrolleSpørsmål
-                                rolle={rolle}
-                                roller={roller}
-                                onChange={(nyRolle: SøkerRolle) =>
-                                    dispatch(
-                                        søknadActions.updateSøker({
-                                            rolle: nyRolle
-                                        })
-                                    )
-                                }
-                            />
-                        ) : (
-                            undefined
-                        )
-                    }
-                />
+                </Block>
             </Steg>
         );
     }

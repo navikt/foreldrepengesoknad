@@ -3,7 +3,7 @@ import Modal, { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import { Undertittel } from 'nav-frontend-typografi';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox, Input } from 'nav-frontend-skjema';
@@ -11,7 +11,6 @@ import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import Bolk from '../../../common/components/bolk/Bolk';
 import {
     FrilansOppdrag,
     FrilansOppdragPartial
@@ -98,60 +97,54 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         <FormattedMessage id="frilansOppdrag.modal.tittel" />
                     </Undertittel>
 
-                    <Spørsmål
-                        render={() => (
-                            <Input
-                                label={getMessage(
-                                    intl,
-                                    'frilansOppdrag.modal.oppdragsgiver'
-                                )}
-                                value={oppdrag.navnPåArbeidsgiver || ''}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                    this.updateOppdrag({
-                                        navnPåArbeidsgiver: e.target.value
-                                    })
-                                }
-                            />
-                        )}
-                    />
+                    <Block>
+                        <Input
+                            label={getMessage(
+                                intl,
+                                'frilansOppdrag.modal.oppdragsgiver'
+                            )}
+                            value={oppdrag.navnPåArbeidsgiver || ''}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                this.updateOppdrag({
+                                    navnPåArbeidsgiver: e.target.value
+                                })
+                            }
+                        />
+                    </Block>
 
-                    <Bolk
-                        render={() => (
-                            <TidsperiodeBolk
-                                tidsperiode={oppdrag.tidsperiode || {}}
-                                onChange={(
-                                    tidsperiode: TidsperiodeMedValgfriSluttdato
-                                ) => this.updateOppdrag({ tidsperiode })}
-                                sluttdatoDisabled={oppdrag.pågående}
-                                datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                                    oppdrag.tidsperiode
-                                )}
-                            />
-                        )}
-                    />
+                    <Block>
+                        <TidsperiodeBolk
+                            tidsperiode={oppdrag.tidsperiode || {}}
+                            onChange={(
+                                tidsperiode: TidsperiodeMedValgfriSluttdato
+                            ) => this.updateOppdrag({ tidsperiode })}
+                            sluttdatoDisabled={oppdrag.pågående}
+                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                                oppdrag.tidsperiode
+                            )}
+                        />
+                    </Block>
 
-                    <Spørsmål
-                        render={() => (
-                            <Checkbox
-                                checked={oppdrag.pågående || false}
-                                label={getMessage(
-                                    intl,
-                                    'frilansOppdrag.modal.pågående'
-                                )}
-                                onChange={() => {
-                                    this.updateOppdrag({
-                                        pågående: !oppdrag.pågående,
-                                        tidsperiode: {
-                                            ...oppdrag.tidsperiode,
-                                            tom: undefined
-                                        }
-                                    });
-                                }}
-                            />
-                        )}
-                    />
+                    <Block>
+                        <Checkbox
+                            checked={oppdrag.pågående || false}
+                            label={getMessage(
+                                intl,
+                                'frilansOppdrag.modal.pågående'
+                            )}
+                            onChange={() => {
+                                this.updateOppdrag({
+                                    pågående: !oppdrag.pågående,
+                                    tidsperiode: {
+                                        ...oppdrag.tidsperiode,
+                                        tom: undefined
+                                    }
+                                });
+                            }}
+                        />
+                    </Block>
 
                     <Knapperad>
                         <Knapp

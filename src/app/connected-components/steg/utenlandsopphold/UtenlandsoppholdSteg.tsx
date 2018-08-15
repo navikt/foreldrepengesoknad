@@ -8,10 +8,9 @@ import {
 } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
-import Bolk from 'common/components/bolk/Bolk';
+import Block from 'common/components/block/Block';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import BoddINorgeSiste12MndSpørsmål from '../../../spørsmål/BoddINorgeSiste12MndSpørsmål';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
 import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNeste12MndSpørsmål';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
@@ -85,22 +84,20 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Spørsmål
-                render={() => (
-                    <BoddINorgeSiste12MndSpørsmål
-                        iNorgeSiste12={
-                            informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
-                        }
-                        onChange={(iNorgeSiste12Mnd: boolean) =>
-                            dispatch(
-                                søknadActions.updateUtenlandsopphold({
-                                    iNorgeSiste12Mnd
-                                })
-                            )
-                        }
-                    />
-                )}
-            />
+            <Block>
+                <BoddINorgeSiste12MndSpørsmål
+                    iNorgeSiste12={
+                        informasjonOmUtenlandsopphold.iNorgeSiste12Mnd
+                    }
+                    onChange={(iNorgeSiste12Mnd: boolean) =>
+                        dispatch(
+                            søknadActions.updateUtenlandsopphold({
+                                iNorgeSiste12Mnd
+                            })
+                        )
+                    }
+                />
+            </Block>
         );
     }
 
@@ -132,109 +129,101 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
-                <Bolk
-                    render={() => (
-                        <UtenlandsoppholdBolk
-                            renderSpørsmål={
-                                this.renderHarBoddINorgeSiste12MndSpørsmål
+                <Block>
+                    <UtenlandsoppholdBolk
+                        renderSpørsmål={
+                            this.renderHarBoddINorgeSiste12MndSpørsmål
+                        }
+                        showUtenlandsoppholdContent={
+                            informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ===
+                            false
+                        }
+                        oppfølgingsspørsmål={getMessage(
+                            intl,
+                            'utenlandsopphold.select.spørsmål.tidligereOpphold'
+                        )}
+                        opphold={
+                            søknad.informasjonOmUtenlandsopphold
+                                .tidligereOpphold
+                        }
+                        oppholdType={'tidligereOpphold'}
+                        onChange={(opphold: Utenlandsopphold[]) =>
+                            this.updateUtenlandsopphold(
+                                opphold,
+                                'tidligereOpphold'
+                            )
+                        }
+                        utenlandsoppholdModalProps={{
+                            avgrensningGetters: {
+                                getFraAvgrensning: fraAvgrensningerTidligerePerioder,
+                                getTilAvgrensning: tilAvgrensningerTidligerePerioder
+                            },
+                            tidsperiodeValidators: {
+                                getFraRegler: fraReglerTidligerePerioder,
+                                getTilRegler: tilReglerTidligerePerioder
                             }
-                            showUtenlandsoppholdContent={
-                                informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ===
-                                false
-                            }
-                            oppfølgingsspørsmål={getMessage(
-                                intl,
-                                'utenlandsopphold.select.spørsmål.tidligereOpphold'
-                            )}
-                            opphold={
-                                søknad.informasjonOmUtenlandsopphold
-                                    .tidligereOpphold
-                            }
-                            oppholdType={'tidligereOpphold'}
-                            onChange={(opphold: Utenlandsopphold[]) =>
-                                this.updateUtenlandsopphold(
-                                    opphold,
-                                    'tidligereOpphold'
-                                )
-                            }
-                            utenlandsoppholdModalProps={{
-                                avgrensningGetters: {
-                                    getFraAvgrensning: fraAvgrensningerTidligerePerioder,
-                                    getTilAvgrensning: tilAvgrensningerTidligerePerioder
-                                },
-                                tidsperiodeValidators: {
-                                    getFraRegler: fraReglerTidligerePerioder,
-                                    getTilRegler: tilReglerTidligerePerioder
-                                }
-                            }}
-                        />
-                    )}
-                />
+                        }}
+                    />
+                </Block>
 
-                <Bolk
-                    synlig={
+                <Block
+                    visible={
                         informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
                         undefined
-                    }
-                    render={() => (
-                        <UtenlandsoppholdBolk
-                            renderSpørsmål={
-                                this.renderSkalBoINorgeNeste12MndSpørsmål
+                    }>
+                    <UtenlandsoppholdBolk
+                        renderSpørsmål={
+                            this.renderSkalBoINorgeNeste12MndSpørsmål
+                        }
+                        showUtenlandsoppholdContent={
+                            informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ===
+                            false
+                        }
+                        oppfølgingsspørsmål={getMessage(
+                            intl,
+                            'utenlandsopphold.select.spørsmål.senereOpphold'
+                        )}
+                        opphold={
+                            søknad.informasjonOmUtenlandsopphold.senereOpphold
+                        }
+                        oppholdType={'senereOpphold'}
+                        onChange={(opphold: Utenlandsopphold[]) =>
+                            this.updateUtenlandsopphold(
+                                opphold,
+                                'senereOpphold'
+                            )
+                        }
+                        utenlandsoppholdModalProps={{
+                            avgrensningGetters: {
+                                getFraAvgrensning: fraAvgrensningerSenerePerioder,
+                                getTilAvgrensning: tilAvgrensningerSenerePerioder
+                            },
+                            tidsperiodeValidators: {
+                                getFraRegler: fraReglerSenerePerioder,
+                                getTilRegler: tilReglerSenerePerioder
                             }
-                            showUtenlandsoppholdContent={
-                                informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ===
-                                false
-                            }
-                            oppfølgingsspørsmål={getMessage(
-                                intl,
-                                'utenlandsopphold.select.spørsmål.senereOpphold'
-                            )}
-                            opphold={
-                                søknad.informasjonOmUtenlandsopphold
-                                    .senereOpphold
-                            }
-                            oppholdType={'senereOpphold'}
-                            onChange={(opphold: Utenlandsopphold[]) =>
-                                this.updateUtenlandsopphold(
-                                    opphold,
-                                    'senereOpphold'
-                                )
-                            }
-                            utenlandsoppholdModalProps={{
-                                avgrensningGetters: {
-                                    getFraAvgrensning: fraAvgrensningerSenerePerioder,
-                                    getTilAvgrensning: tilAvgrensningerSenerePerioder
-                                },
-                                tidsperiodeValidators: {
-                                    getFraRegler: fraReglerSenerePerioder,
-                                    getTilRegler: tilReglerSenerePerioder
-                                }
-                            }}
-                        />
-                    )}
-                />
+                        }}
+                    />
+                </Block>
 
-                <Spørsmål
-                    synlig={
+                <Block
+                    visible={
                         informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
                             undefined && søknad.barn.erBarnetFødt === false
-                    }
-                    render={() => (
-                        <VæreINorgeVedFødselSpørsmål
-                            fødselINorge={
-                                søknad.informasjonOmUtenlandsopphold
-                                    .fødselINorge
-                            }
-                            onChange={(fødselINorge: boolean) => {
-                                dispatch(
-                                    søknadActions.updateUtenlandsopphold({
-                                        fødselINorge
-                                    })
-                                );
-                            }}
-                        />
-                    )}
-                />
+                    }>
+                    <VæreINorgeVedFødselSpørsmål
+                        fødselINorge={
+                            søknad.informasjonOmUtenlandsopphold.fødselINorge
+                        }
+                        onChange={(fødselINorge: boolean) => {
+                            dispatch(
+                                søknadActions.updateUtenlandsopphold({
+                                    fødselINorge
+                                })
+                            );
+                        }}
+                    />
+                </Block>
             </Steg>
         );
     }

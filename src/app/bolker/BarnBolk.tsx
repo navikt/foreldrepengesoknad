@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Spørsmål from 'common/components/spørsmål/Spørsmål';
+import Block from 'common/components/block/Block';
 import { VelgbartRegistrertBarn } from '../types/Person';
 import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
@@ -27,30 +27,26 @@ class BarnBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Spørsmål
-                    render={() => (
-                        <GjelderSøknadenNoenAvDisseBarnaSpørsmål
-                            registrerteBarn={registrerteBarn}
-                            onChange={(id: string) => {
-                                onRegistrertBarnChange(id);
-                            }}
-                            disabled={gjelderAnnetBarn || false}
-                        />
-                    )}
-                />
+                <Block>
+                    <GjelderSøknadenNoenAvDisseBarnaSpørsmål
+                        registrerteBarn={registrerteBarn}
+                        onChange={(id: string) => {
+                            onRegistrertBarnChange(id);
+                        }}
+                        disabled={gjelderAnnetBarn || false}
+                    />
+                </Block>
 
-                <Spørsmål
-                    render={() => (
-                        <Checkbox
-                            label={getMessage(
-                                intl,
-                                'søknadenGjelderAnnetBarn.spørsmål'
-                            )}
-                            checked={gjelderAnnetBarn}
-                            onChange={onAnnetBarnChange}
-                        />
-                    )}
-                />
+                <Block>
+                    <Checkbox
+                        label={getMessage(
+                            intl,
+                            'søknadenGjelderAnnetBarn.spørsmål'
+                        )}
+                        checked={gjelderAnnetBarn}
+                        onChange={onAnnetBarnChange}
+                    />
+                </Block>
             </React.Fragment>
         );
     }
