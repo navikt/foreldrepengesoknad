@@ -236,6 +236,8 @@
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
     "terminbekreftelseDato.infotekst":
         "Vi trenger disse opplysningene fordi....",
+    "terminbekreftelsen.text.terminbekreftelsen":
+        "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
 
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
 
