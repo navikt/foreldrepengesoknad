@@ -47,11 +47,18 @@ const ufødtBarnErGyldig = (
     skalLasteOppTerminbekreftelse: boolean
 ) => {
     const { termindato, terminbekreftelseDato } = barn;
-
-    return (
-        (termindato !== undefined && skalLasteOppTerminbekreftelse === false) ||
-        (skalLasteOppTerminbekreftelse && terminbekreftelseDato !== undefined)
-    );
+    if (!termindato) {
+        return false;
+    }
+    if (
+        skalLasteOppTerminbekreftelse &&
+        barn.terminbekreftelse &&
+        barn.terminbekreftelse.length > 0 &&
+        terminbekreftelseDato === undefined
+    ) {
+        return false;
+    }
+    return true;
 };
 
 export const barnErGyldig = (

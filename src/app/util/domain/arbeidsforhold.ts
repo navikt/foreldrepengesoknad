@@ -13,5 +13,8 @@ export const harAktivtArbeidsforhold = (
     if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return false;
     }
-    return arbeidsforhold.find((a) => a.tom === undefined) !== undefined;
+    return (
+        arbeidsforhold.find((a) => a.tom === undefined || a.tom === null) !==
+        undefined
+    );
 };

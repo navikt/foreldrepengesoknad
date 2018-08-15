@@ -13,6 +13,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { DispatchProps } from 'common/redux/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -25,6 +26,14 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
     return (
         <React.Fragment>
+            <Block margin="xs">
+                <Veilederinfo>
+                    {getMessage(
+                        intl,
+                        'terminbekreftelsen.text.terminbekreftelsen'
+                    )}
+                </Veilederinfo>
+            </Block>
             <Block
                 visible={props.barn.termindato !== undefined}
                 title={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}>

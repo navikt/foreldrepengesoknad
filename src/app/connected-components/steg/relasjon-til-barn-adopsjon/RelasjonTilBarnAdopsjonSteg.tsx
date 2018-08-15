@@ -96,7 +96,10 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmEktefellesBarn}>
+                <Block
+                    visible={visSpørsmålOmEktefellesBarn}
+                    margin="none"
+                    hasChildBlocks={true}>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
                         onChange={(adopsjonAvEktefellesBarn: boolean) => {
