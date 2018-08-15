@@ -56,7 +56,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
                 isOpened={isOpened}
                 hasNestedCollapse={hasChildBlocks}
                 className={cls.element('collapse')}>
-                {content}
+                {visible !== false ? content : <div />}
             </Collapse>
         );
     }
