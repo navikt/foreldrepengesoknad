@@ -50,6 +50,11 @@ const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
     payload
 });
 
+const updateSøkerAndStorage = (payload: SøkerPartial): UpdateSøker => ({
+    type: SøknadActionKeys.UPDATE_SØKER,
+    payload
+});
+
 const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
@@ -104,6 +109,7 @@ export default {
     updateBarn,
     updateUtenlandsopphold,
     updateSøker,
+    updateSøkerAndStorage,
     updateSøknad,
     uploadAttachment,
     uploadAttachmentSuccess,
