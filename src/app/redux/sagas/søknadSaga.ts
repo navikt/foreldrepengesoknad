@@ -11,7 +11,7 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(apiActions.storeAppState());
 }
 
-export default function* storageSaga() {
+export default function* søknadSaga() {
     yield all([
         takeEvery(
             SøknadActionKeys.UPDATE_SØKER_AND_STORAGE,
