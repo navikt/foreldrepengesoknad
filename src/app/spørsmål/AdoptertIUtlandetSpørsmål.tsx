@@ -4,7 +4,7 @@ import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-
 import getMessage from 'common/util/i18nUtils';
 
 export enum BarnAdoptert {
-    'ADOPTERT_I_UTLANDET' = 'adoptertIUtlandet',
+    'ADOPTERT_I_UTLANDET' = 'adopsjonAvEktefellesBarn',
     'IKKE_ADOPTERT_I_UTLANDET' = 'ikkeAdoptertIUtlandet'
 }
 

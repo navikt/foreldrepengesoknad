@@ -16,6 +16,7 @@ export enum SøknadActionKeys {
     'DELETE_ATTACHMENT_FAILED' = 'deleteAttachmentFailed',
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKER' = 'updateSøker',
+    'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad'
 }
 
@@ -36,6 +37,11 @@ export interface UpdateUtenlandsopphold {
 
 export interface UpdateSøker {
     type: SøknadActionKeys.UPDATE_SØKER;
+    payload: SøkerPartial;
+}
+
+export interface UpdateSøkerAndStorage {
+    type: SøknadActionKeys.UPDATE_SØKER_AND_STORAGE;
     payload: SøkerPartial;
 }
 
@@ -82,6 +88,7 @@ export type SøknadAction =
     | UpdateAnnenForelder
     | UpdateUtenlandsopphold
     | UpdateSøker
+    | UpdateSøkerAndStorage
     | UpdateSøknad
     | UploadAttachment
     | UploadAttachmentSuccess

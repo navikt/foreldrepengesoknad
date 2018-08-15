@@ -6,11 +6,6 @@
         padding-right: @outlineSize;
         margin-left: -1 * @outlineSize;
         margin-right: -1 * @outlineSize;
-        &--hidden {
-            .block {
-                padding-bottom: 0;
-            }
-        }
     }
 
     &__title {
@@ -34,5 +29,14 @@
         // Hack på grunn av bug i ReactCollapse - den viser ikke noe dersom padding er 0
         padding-bottom: 1px;
         margin-bottom: -1px;
+    }
+    .heading {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .sirkelknapp  {
+            margin-left: 1rem;
+        }
     }
 }

@@ -6,12 +6,16 @@ import BEMHelper from 'common/util/bem';
 import { collapseSpringConfig } from 'common/util/animationUtils';
 
 import './block.less';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 export type BlockPadding = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
 export interface BlockProps {
-    title?: string;
     /** Default true */
+    header?: {
+        title: string;
+        info?: string;
+    };
     visible?: boolean;
     /** Animation is set to default true if visible is !undefined, unless animated is set to false */
     animated?: boolean;
@@ -28,39 +32,37 @@ const cls = BEMHelper('block');
 const Block: React.StatelessComponent<BlockProps> = ({
     visible,
     margin = 'm',
-    animated,
-    title,
+    header,
+    animated = true,
     children,
     hasChildBlocks
 }) => {
-    if (visible === false && children) {
+    if (children === undefined) {
         return null;
     }
     const contentClass = classNames(cls.className, cls.modifier(margin));
     const content =
-        title !== undefined ? (
+        header !== undefined ? (
             <section className={contentClass}>
-                <h1 className={`typo-element ${cls.element('title')}`}>
-                    {title}
-                </h1>
+                <div className="heading">
+                    <h1 className={`typo-element ${cls.element('title')}`}>
+                        {header.title}
+                    </h1>
+                    {header.info && <Infoboks tekst={header.info} />}
+                </div>
                 {children}
             </section>
         ) : (
             <div className={contentClass}>{children}</div>
         );
-
-    if (
-        (visible !== undefined || animated === true) &&
-        hasChildBlocks !== true
-    ) {
+    const isOpened = visible !== false;
+    if (animated === true) {
         return (
             <Collapse
                 springConfig={collapseSpringConfig}
-                isOpened={visible === true}
+                isOpened={isOpened}
                 hasNestedCollapse={hasChildBlocks}
-                className={classNames(cls.element('collapse'), {
-                    [cls.element('collapse', 'hidden')]: !visible
-                })}>
+                className={cls.element('collapse')}>
                 {content}
             </Collapse>
         );
