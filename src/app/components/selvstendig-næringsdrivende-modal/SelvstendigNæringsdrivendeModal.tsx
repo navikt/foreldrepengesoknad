@@ -311,7 +311,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 })
                             }
                         />
-                        )} />
                     </Block>
                     <Block
                         visible={
