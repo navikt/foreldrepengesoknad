@@ -7,7 +7,8 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
+import Input from 'common/components/skjema/wrappers/Input';
 import {
     Næring,
     NæringPartial,
@@ -32,6 +33,8 @@ import moment from 'moment';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { date4YearsAgo } from '../../util/validation/values';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
+import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
+import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
     næring?: Næring;
@@ -157,7 +160,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 className={cls.className}
                 onRequestClose={onRequestClose}
                 {...modalProps}>
-                <form onSubmit={this.onSubmit}>
+                <ValiderbarForm
+                    onSubmit={this.onSubmit}
+                    noSummary={false}
+                    summaryTitle={'Skjemafeil'}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="selvstendigNæringsdrivende.modal.tittel" />
                     </Undertittel>
@@ -293,6 +299,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 })
                             }
                             value={stillingsprosent || ''}
+                            validators={getStillingsprosentRegler(
+                                stillingsprosent || '',
+                                intl
+                            )}
                         />
                     </Block>
 
@@ -404,7 +414,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
                     </Knapperad>
-                </form>
+                </ValiderbarForm>
             </Modal>
         );
     }
