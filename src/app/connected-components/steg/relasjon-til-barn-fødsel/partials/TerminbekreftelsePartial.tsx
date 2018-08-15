@@ -24,9 +24,7 @@ export type Props = OwnProps & InjectedIntlProps & DispatchProps;
 
 const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
-    const harLastetOppTerminbekreftelse =
-        terminbekreftelse && terminbekreftelse.length > 0;
-    const validerDatofelt = harLastetOppTerminbekreftelse;
+    const validerDatofelt = terminbekreftelse && terminbekreftelse.length > 0;
     return (
         <React.Fragment>
             <Block margin="xs">
