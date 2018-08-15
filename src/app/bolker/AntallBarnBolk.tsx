@@ -48,93 +48,82 @@ class AntallBarnBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    render={() => (
-                        <RadioPanelGruppeResponsive
-                            legend={spørsmål}
-                            name={inputName}
-                            feil={feil}
-                            onChange={(event: any, value: string) =>
-                                this.onRadioChange(value as AntallBarnVerdi)
+                <Block>
+                    <RadioPanelGruppeResponsive
+                        legend={spørsmål}
+                        name={inputName}
+                        feil={feil}
+                        onChange={(event: any, value: string) =>
+                            this.onRadioChange(value as AntallBarnVerdi)
+                        }
+                        checked={antallBarnVerdi}
+                        radios={[
+                            {
+                                inputProps: { id: 'js-ettBarn' },
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.ettbarn'
+                                ),
+                                value: '1'
+                            },
+                            {
+                                inputProps: { id: 'js-tvillinger' },
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.tvillinger'
+                                ),
+                                value: '2'
+                            },
+                            {
+                                inputProps: { id: 'js-flereBarn' },
+                                label: getMessage(
+                                    intl,
+                                    'antallBarn.alternativ.flere'
+                                ),
+                                value: '3'
                             }
-                            checked={antallBarnVerdi}
-                            radios={[
-                                {
-                                    inputProps: { id: 'js-ettBarn' },
-                                    label: getMessage(
-                                        intl,
-                                        'antallBarn.alternativ.ettbarn'
-                                    ),
-                                    value: '1'
-                                },
-                                {
-                                    inputProps: { id: 'js-tvillinger' },
-                                    label: getMessage(
-                                        intl,
-                                        'antallBarn.alternativ.tvillinger'
-                                    ),
-                                    value: '2'
-                                },
-                                {
-                                    inputProps: { id: 'js-flereBarn' },
-                                    label: getMessage(
-                                        intl,
-                                        'antallBarn.alternativ.flere'
-                                    ),
-                                    value: '3'
-                                }
-                            ]}
-                        />
-                    )}
-                />
-                <Block
-                    visible={antallBarnVerdi === '3'}
-                    render={() => (
-                        <Select
-                            bredde="xs"
-                            label={
-                                <Labeltekst intlId="antallBarn.select.tekst" />
-                            }
-                            onChange={(
-                                evt: React.ChangeEvent<HTMLSelectElement>
-                            ) =>
-                                this.onSelectChange(
-                                    parseInt(evt.target.value, 10)
-                                )
-                            }>
-                            {antallBarn === undefined && (
-                                <option
-                                    value=""
-                                    selected={antallBarn === undefined}>
-                                    {intl.formatMessage({
-                                        id: 'antallBarn.select.velg'
-                                    })}
-                                </option>
-                            )}
-                            <option value={3} selected={antallBarn === 3}>
-                                3
+                        ]}
+                    />
+                </Block>
+                <Block visible={antallBarnVerdi === '3'}>
+                    <Select
+                        bredde="xs"
+                        label={<Labeltekst intlId="antallBarn.select.tekst" />}
+                        onChange={(evt: React.ChangeEvent<HTMLSelectElement>) =>
+                            this.onSelectChange(parseInt(evt.target.value, 10))
+                        }>
+                        {antallBarn === undefined && (
+                            <option
+                                value=""
+                                selected={antallBarn === undefined}>
+                                {intl.formatMessage({
+                                    id: 'antallBarn.select.velg'
+                                })}
                             </option>
-                            <option value={4} selected={antallBarn === 4}>
-                                4
-                            </option>
-                            <option value={5} selected={antallBarn === 5}>
-                                5
-                            </option>
-                            <option value={6} selected={antallBarn === 6}>
-                                6
-                            </option>
-                            <option value={7} selected={antallBarn === 7}>
-                                7
-                            </option>
-                            <option value={8} selected={antallBarn === 8}>
-                                8
-                            </option>
-                            <option value={9} selected={antallBarn === 9}>
-                                9
-                            </option>
-                        </Select>
-                    )}
-                />
+                        )}
+                        <option value={3} selected={antallBarn === 3}>
+                            3
+                        </option>
+                        <option value={4} selected={antallBarn === 4}>
+                            4
+                        </option>
+                        <option value={5} selected={antallBarn === 5}>
+                            5
+                        </option>
+                        <option value={6} selected={antallBarn === 6}>
+                            6
+                        </option>
+                        <option value={7} selected={antallBarn === 7}>
+                            7
+                        </option>
+                        <option value={8} selected={antallBarn === 8}>
+                            8
+                        </option>
+                        <option value={9} selected={antallBarn === 9}>
+                            9
+                        </option>
+                    </Select>
+                </Block>
             </React.Fragment>
         );
     }

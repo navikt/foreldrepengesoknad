@@ -10,7 +10,7 @@ import søknadActions from '../../../../redux/actions/søknad/søknadActionCreat
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import FødselsnummerSpørsmålsgruppe from '../../../../bolker/FødselsnummerBolk';
+import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
@@ -54,7 +54,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
     render() {
         const {
-            søker,
             søkersFødselsnummer,
             annenForelder,
             registrertAnnenForelder,
@@ -68,18 +67,54 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             <React.Fragment>
                 <Block
                     title="Informasjon om den andre forelderen"
-                    visible={registrertAnnenForelder !== undefined}
-                    render={() => (
-                        <PersonaliaBox personalia={registrertAnnenForelder} />
-                    )}
-                />
+                    visible={registrertAnnenForelder !== undefined}>
+                    <PersonaliaBox personalia={registrertAnnenForelder} />
+                </Block>
 
                 <Block
                     visible={registrertAnnenForelder === undefined}
-                    render={() => (
-                        <NavnPåAnnenForelderSpørsmål
-                            navn={navn}
+                    margin="xs">
+                    <NavnPåAnnenForelderSpørsmål
+                        navn={navn}
+                        kanIkkeOppgis={kanIkkeOppgis}
+                        onChange={(
+                            annenForelderPartial: AnnenForelderPartial
+                        ) =>
+                            dispatch(
+                                søknadActions.updateAnnenForelder(
+                                    annenForelderPartial
+                                )
+                            )
+                        }
+                    />
+                </Block>
+
+                <Block>
+                    <Checkbox
+                        checked={kanIkkeOppgis || false}
+                        label={
+                            situasjon === Søkersituasjon.ADOPSJON
+                                ? getMessage(
+                                      intl,
+                                      'annenForelder.spørsmål.adoptererAlene'
+                                  )
+                                : getMessage(
+                                      intl,
+                                      'annenForelder.spørsmål.kanOppgis'
+                                  )
+                        }
+                        onChange={() => this.onKanIkkeOppgis()}
+                    />
+                </Block>
+
+                {navn !== undefined &&
+                    navn !== '' && (
+                        <FødselsnummerBolk
                             kanIkkeOppgis={kanIkkeOppgis}
+                            søkersFødselsnummer={søkersFødselsnummer}
+                            fnr={annenForelder.fnr}
+                            utenlandskFnr={annenForelder.utenlandskFnr}
+                            bostedsland={annenForelder.bostedsland}
                             onChange={(
                                 annenForelderPartial: AnnenForelderPartial
                             ) =>
@@ -91,68 +126,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                             }
                         />
                     )}
-                />
-
-                <Block
-                    render={() => (
-                        <Checkbox
-                            checked={kanIkkeOppgis || false}
-                            label={
-                                situasjon === Søkersituasjon.ADOPSJON
-                                    ? getMessage(
-                                          intl,
-                                          'annenForelder.spørsmål.adoptererAlene'
-                                      )
-                                    : getMessage(
-                                          intl,
-                                          'annenForelder.spørsmål.kanOppgis'
-                                      )
-                            }
-                            onChange={() => this.onKanIkkeOppgis()}
-                        />
-                    )}
-                />
-
-                <Block
-                    visible={!kanIkkeOppgis}
-                    render={() => (
-                        <Checkbox
-                            checked={søker.erAleneOmOmsorg || false}
-                            label={getMessage(
-                                intl,
-                                'annenForelder.aleneOmOmsorg'
-                            )}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        erAleneOmOmsorg: e.target.checked
-                                    })
-                                )
-                            }
-                        />
-                    )}
-                />
-
-                {navn !== undefined && (
-                    <FødselsnummerSpørsmålsgruppe
-                        kanIkkeOppgis={kanIkkeOppgis}
-                        søkersFødselsnummer={søkersFødselsnummer}
-                        fnr={annenForelder.fnr}
-                        utenlandskFnr={annenForelder.utenlandskFnr}
-                        bostedsland={annenForelder.bostedsland}
-                        onChange={(
-                            annenForelderPartial: AnnenForelderPartial
-                        ) =>
-                            dispatch(
-                                søknadActions.updateAnnenForelder(
-                                    annenForelderPartial
-                                )
-                            )
-                        }
-                    />
-                )}
             </React.Fragment>
         );
     }

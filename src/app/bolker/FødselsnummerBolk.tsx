@@ -37,58 +37,49 @@ const FødselsnummerBolk = (props: Props) => {
 
     return (
         <React.Fragment>
-            <Block
-                render={() => (
-                    <Input
-                        disabled={kanIkkeOppgis || false}
-                        label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
-                        name="fødselsnummer"
-                        onChange={(e: InputChangeEvent) =>
-                            onChange({ fnr: e.target.value }, e)
-                        }
-                        value={fnr || ''}
-                        validators={getFødselsnummerRegler(
-                            fnr,
-                            utenlandskFnr,
-                            søkersFødselsnummer,
-                            intl
-                        )}
-                        infotekst="Dette er en test"
-                        autoComplete="off"
-                    />
-                )}
-            />
+            <Block margin="xs">
+                <Input
+                    disabled={kanIkkeOppgis || false}
+                    label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
+                    name="fødselsnummer"
+                    onChange={(e: InputChangeEvent) =>
+                        onChange({ fnr: e.target.value }, e)
+                    }
+                    value={fnr || ''}
+                    validators={getFødselsnummerRegler(
+                        fnr,
+                        utenlandskFnr,
+                        søkersFødselsnummer,
+                        intl
+                    )}
+                    infotekst="Dette er en test"
+                    autoComplete="off"
+                />
+            </Block>
 
-            <Block
-                render={() => (
-                    <Checkbox
-                        disabled={kanIkkeOppgis}
-                        checked={utenlandskFnr || false}
-                        label={getMessage(
-                            intl,
-                            'annenForelder.spørsmål.utenlandskFnr'
-                        )}
-                        onChange={(e: InputChangeEvent) =>
-                            onChange({ utenlandskFnr: e.target.checked }, e)
-                        }
-                    />
-                )}
-            />
+            <Block>
+                <Checkbox
+                    disabled={kanIkkeOppgis}
+                    checked={utenlandskFnr || false}
+                    label={getMessage(
+                        intl,
+                        'annenForelder.spørsmål.utenlandskFnr'
+                    )}
+                    onChange={(e: InputChangeEvent) =>
+                        onChange({ utenlandskFnr: e.target.checked }, e)
+                    }
+                />
+            </Block>
 
-            <Block
-                visible={utenlandskFnr === true}
-                render={() => (
-                    <Landvelger
-                        label={
-                            <Labeltekst intlId={'annenForelder.bostedsland'} />
-                        }
-                        onChange={(land: string, e: SelectChangeEvent) =>
-                            onChange({ bostedsland: land }, e)
-                        }
-                        defaultValue={bostedsland}
-                    />
-                )}
-            />
+            <Block visible={utenlandskFnr === true}>
+                <Landvelger
+                    label={<Labeltekst intlId={'annenForelder.bostedsland'} />}
+                    onChange={(land: string, e: SelectChangeEvent) =>
+                        onChange({ bostedsland: land }, e)
+                    }
+                    defaultValue={bostedsland}
+                />
+            </Block>
         </React.Fragment>
     );
 };

@@ -83,32 +83,26 @@ class UfødtBarnPartial extends React.Component<Props> {
                             )}
                         />
 
-                        <Block
-                            visible={barn.antallBarn !== undefined}
-                            render={() => (
-                                <DatoInput
-                                    id="termindato"
-                                    name="termindato"
-                                    label={getMessage(
-                                        intl,
-                                        'termindato.spørsmål'
-                                    )}
-                                    onChange={(termindato: Date) => {
-                                        dispatch(
-                                            søknadActions.updateBarn({
-                                                termindato
-                                            })
-                                        );
-                                    }}
-                                    dato={barn.termindato}
-                                    avgrensninger={termindatoAvgrensninger}
-                                    validators={getTermindatoRegler(
-                                        barn.termindato,
-                                        intl
-                                    )}
-                                />
-                            )}
-                        />
+                        <Block visible={barn.antallBarn !== undefined}>
+                            <DatoInput
+                                id="termindato"
+                                name="termindato"
+                                label={getMessage(intl, 'termindato.spørsmål')}
+                                onChange={(termindato: Date) => {
+                                    dispatch(
+                                        søknadActions.updateBarn({
+                                            termindato
+                                        })
+                                    );
+                                }}
+                                dato={barn.termindato}
+                                avgrensninger={termindatoAvgrensninger}
+                                validators={getTermindatoRegler(
+                                    barn.termindato,
+                                    intl
+                                )}
+                            />
+                        </Block>
 
                         {skalLasteOppTerminbekreftelse &&
                         barn.termindato !== undefined ? (

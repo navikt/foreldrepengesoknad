@@ -26,72 +26,64 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
     return (
         <React.Fragment>
+            <Block>
+                <Veilederinfo>
+                    {getMessage(
+                        intl,
+                        'terminbekreftelsen.text.terminbekreftelsen'
+                    )}
+                </Veilederinfo>
+            </Block>
             <Block
-                render={() => (
-                    <Veilederinfo>
-                        {getMessage(
-                            intl,
-                            'terminbekreftelsen.text.terminbekreftelsen'
-                        )}
-                    </Veilederinfo>
-                )}
-            />
-
-            <Block
-                title={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}
-                render={() => (
-                    <AttachmentsUploaderPure
-                        attachments={terminbekreftelse}
-                        attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                        skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
-                        onFilesSelect={(attachments: Attachment[]) => {
-                            attachments.forEach((attachment: Attachment) => {
-                                dispatch(
-                                    søknadActions.uploadAttachment(attachment)
-                                );
-                            });
-                        }}
-                        onFileDelete={(attachment: Attachment) => {
+                visible={props.barn.termindato !== undefined}
+                title={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}>
+                <AttachmentsUploaderPure
+                    attachments={terminbekreftelse}
+                    attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                    skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+                    onFilesSelect={(attachments: Attachment[]) => {
+                        attachments.forEach((attachment: Attachment) => {
                             dispatch(
-                                søknadActions.deleteAttachment(attachment)
+                                søknadActions.uploadAttachment(attachment)
                             );
-                        }}
-                    />
-                )}
-            />
+                        });
+                    }}
+                    onFileDelete={(attachment: Attachment) => {
+                        dispatch(søknadActions.deleteAttachment(attachment));
+                    }}
+                />
+            </Block>
             <Block
-                visible={terminbekreftelse.length > 0}
-                render={() => (
-                    <DatoInput
-                        id="terminbekreftelseDato"
-                        name="terminbekreftelseDato"
-                        label={getMessage(
-                            intl,
-                            'terminbekreftelseDato.spørsmål'
-                        )}
-                        onChange={(terminbekreftelseDato: Date) => {
-                            dispatch(
-                                søknadActions.updateBarn({
-                                    terminbekreftelseDato
-                                })
-                            );
-                        }}
-                        dato={barn.terminbekreftelseDato}
-                        avgrensninger={getTerminbekreftelsedatoAvgrensninger(
-                            barn.termindato
-                        )}
-                        validators={getTerminbekreftelseDatoRegler(
-                            barn.terminbekreftelseDato,
-                            barn.termindato,
-                            intl
-                        )}
-                        infotekst={getMessage(
-                            intl,
-                            'terminbekreftelseDato.infotekst'
-                        )}
-                    />
-                )}
-            />
+                visible={
+                    terminbekreftelse.length > 0 &&
+                    barn.termindato !== undefined
+                }>
+                <DatoInput
+                    id="terminbekreftelseDato"
+                    name="terminbekreftelseDato"
+                    label={getMessage(intl, 'terminbekreftelseDato.spørsmål')}
+                    onChange={(terminbekreftelseDato: Date) => {
+                        dispatch(
+                            søknadActions.updateBarn({
+                                terminbekreftelseDato
+                            })
+                        );
+                    }}
+                    dato={barn.terminbekreftelseDato}
+                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(
+                        barn.termindato
+                    )}
+                    validators={getTerminbekreftelseDatoRegler(
+                        barn.terminbekreftelseDato,
+                        barn.termindato,
+                        intl
+                    )}
+                    infotekst={getMessage(
+                        intl,
+                        'terminbekreftelseDato.infotekst'
+                    )}
+                />
+            </Block>
         </React.Fragment>
     );
 };

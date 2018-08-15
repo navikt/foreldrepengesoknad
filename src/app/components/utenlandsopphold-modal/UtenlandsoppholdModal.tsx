@@ -214,40 +214,32 @@ class UtenlandsoppholdModal extends React.Component<
                         <FormattedMessage id="utenlandsopphold.tittel" />
                     </Undertittel>
 
-                    <Block
-                        render={() => (
-                            <Landvelger
-                                label={
-                                    <Labeltekst
-                                        intlId={`utenlandsopphold.select.spørsmål.${type}`}
-                                    />
-                                }
-                                onChange={(land: string) =>
-                                    this.updateOpphold({ land })
-                                }
-                                defaultValue={
-                                    oppholdToEdit && oppholdToEdit.land
-                                }
-                            />
-                        )}
-                    />
-
-                    <Block
-                        render={() => (
-                            <TidsperiodeBolk
-                                datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
-                                datoValidatorer={this.getTidsperiodeValidatorer()}
-                                tidsperiode={
-                                    (oppholdToEdit &&
-                                        oppholdToEdit.tidsperiode) ||
-                                    {}
-                                }
-                                onChange={(
-                                    tidsperiode: TidsperiodeMedValgfriSluttdato
-                                ) => this.updateOpphold({ tidsperiode })}
-                            />
-                        )}
-                    />
+                    <Block>
+                        <Landvelger
+                            label={
+                                <Labeltekst
+                                    intlId={`utenlandsopphold.select.spørsmål.${type}`}
+                                />
+                            }
+                            onChange={(land: string) =>
+                                this.updateOpphold({ land })
+                            }
+                            defaultValue={oppholdToEdit && oppholdToEdit.land}
+                        />
+                    </Block>
+                    <Block>
+                        <TidsperiodeBolk
+                            datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
+                            datoValidatorer={this.getTidsperiodeValidatorer()}
+                            tidsperiode={
+                                (oppholdToEdit && oppholdToEdit.tidsperiode) ||
+                                {}
+                            }
+                            onChange={(
+                                tidsperiode: TidsperiodeMedValgfriSluttdato
+                            ) => this.updateOpphold({ tidsperiode })}
+                        />
+                    </Block>
 
                     <Knapperad>
                         <Knapp

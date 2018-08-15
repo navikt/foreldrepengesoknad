@@ -15,7 +15,7 @@ describe('Block component', () => {
 
     describe('defaults', () => {
         beforeEach(() => {
-            shallowBlock = renderBlock({ render: () => children });
+            shallowBlock = renderBlock({ children });
         });
 
         it('should render block-content specified by render-prop', () => {
@@ -33,7 +33,7 @@ describe('Block component', () => {
     describe('visible=false', () => {
         beforeEach(() => {
             shallowBlock = renderBlock({
-                render: () => children,
+                children,
                 visible: false
             });
         });
@@ -47,7 +47,7 @@ describe('Block component', () => {
     describe('animert=false', () => {
         beforeEach(() => {
             shallowBlock = renderBlock({
-                render: () => children,
+                children,
                 animated: false
             });
         });
