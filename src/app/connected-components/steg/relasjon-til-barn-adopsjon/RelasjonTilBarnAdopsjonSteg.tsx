@@ -22,6 +22,7 @@ import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
+import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -63,7 +64,9 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const { barn, dispatch, stegProps, intl } = this.props;
         const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
-        const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
+        const visSpørsmålOmEktefellesBarn = barn.adopsjonsdato !== undefined;
+        const visSpørsmålOmAntallBarn =
+            barn.adopsjonAvEktefellesBarn !== undefined;
         const visSpørsmålOmFødselsdatoer =
             visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
         const visSpørsmålOmAdoptertIUtlandet =
@@ -93,7 +96,20 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                {visSpørsmålOmAntallBarn && (
+                <Block visible={visSpørsmålOmEktefellesBarn}>
+                    <AdopsjonAvEktefellesBarnSpørsmål
+                        adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
+                        onChange={(adopsjonAvEktefellesBarn: boolean) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adopsjonAvEktefellesBarn
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+
+                <Block visible={visSpørsmålOmAntallBarn}>
                     <AntallBarnBolk
                         spørsmål={getMessage(
                             intl,
@@ -103,9 +119,9 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
                     />
-                )}
+                </Block>
 
-                {visSpørsmålOmFødselsdatoer && (
+                <Block visible={visSpørsmålOmFødselsdatoer}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         fødselsdatoAvgrensninger={{
@@ -119,7 +135,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             )
                         }
                     />
-                )}
+                </Block>
 
                 <Block visible={visSpørsmålOmAdoptertIUtlandet}>
                     <AdoptertIUtlandetSpørsmål

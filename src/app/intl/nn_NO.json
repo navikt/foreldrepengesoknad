@@ -267,6 +267,9 @@
 
     "tidsintervall": "{fom} - {tom}",
 
+    "adopsjonAvEktefellesBarn.spørsmål":
+        "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
+
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
