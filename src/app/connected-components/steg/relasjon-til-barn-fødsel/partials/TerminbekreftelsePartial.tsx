@@ -31,9 +31,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                 <AttachmentsUploaderPure
                     attachments={terminbekreftelse}
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                    skjemanummer={
-                        Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
-                    }
+                    skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     onFilesSelect={(attachments: Attachment[]) => {
                         attachments.forEach((attachment: Attachment) => {
                             dispatch(
