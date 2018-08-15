@@ -26,7 +26,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
     return (
         <React.Fragment>
-            <Block>
+            <Block margin="xs">
                 <Veilederinfo>
                     {getMessage(
                         intl,
