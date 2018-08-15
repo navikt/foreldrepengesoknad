@@ -4,7 +4,7 @@ import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-
 import getMessage from 'common/util/i18nUtils';
 
 export enum BarnAdoptert {
-    'ADOPTERT_I_UTLANDET' = 'adoptertIUtlandet',
+    'ADOPTERT_I_UTLANDET' = 'adopsjonAvEktefellesBarn',
     'IKKE_ADOPTERT_I_UTLANDET' = 'ikkeAdoptertIUtlandet'
 }
 
@@ -31,7 +31,7 @@ const AdoptertIUtlandetSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'adoptertIUtlandet.spørsmål')}
+            legend={getMessage(intl, 'adopsjonAvEktefellesBarn.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
