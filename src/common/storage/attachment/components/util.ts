@@ -5,12 +5,14 @@ import {
     Skjemanummer
 } from '../../../../app/types/søknad/Søknad';
 
+const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
+
 export const mapFileToAttachment = (
     file: File,
     type: AttachmentType,
     skjemanummer: Skjemanummer
 ): Attachment => ({
-    id: guid().replace(/-/g, ''),
+    id: generateAttachmentId(),
     file,
     filename: file.name,
     filesize: file.size,
