@@ -1,7 +1,13 @@
-import { format, startOfDay } from 'date-fns';
+import { format } from 'date-fns';
 import * as locale from 'date-fns/locale/nb';
+import moment from 'moment';
 
-export const normaliserDato = (dato: Date): Date => startOfDay(dato);
+export const normaliserDato = (dato: Date): Date => {
+    return moment
+        .utc(dato)
+        .startOf('day')
+        .toDate();
+};
 
 export function formaterDato(dato: Date, datoformat?: string): string {
     return format(dato, datoformat || 'dddd D. MMMM YYYY', { locale });

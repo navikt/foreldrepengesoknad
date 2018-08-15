@@ -1,5 +1,4 @@
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import * as moment from 'moment';
 
 export const harArbeidsforhold = (
     arbeidsforhold: Arbeidsforhold[] | undefined
@@ -14,11 +13,5 @@ export const harAktivtArbeidsforhold = (
     if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return false;
     }
-    return (
-        arbeidsforhold.find(
-            (a) =>
-                a.tom === undefined ||
-                moment(dato).isBetween(a.fom, a.tom, 'days', '[]')
-        ) !== undefined
-    );
+    return arbeidsforhold.find((a) => a.tom === undefined) !== undefined;
 };
