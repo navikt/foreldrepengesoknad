@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
+import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
+
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
 
-import EtikettLiten from 'nav-frontend-typografi/lib/etikett-liten';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { ISODateToPrettyDateFormat } from '../../../app/util/dates/dates';
 
-import './arbeidsforhold.less';
 import getMessage from 'common/util/i18nUtils';
 import BEMHelper from 'common/util/bem';
+
+import './arbeidsforhold.less';
 
 interface ArbeidsforholdInfoBoxProps {
     arbeidsforhold: Arbeidsforhold;

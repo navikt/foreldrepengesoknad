@@ -5,8 +5,9 @@ import { Collapse } from 'react-collapse';
 import BEMHelper from 'common/util/bem';
 import { collapseSpringConfig } from 'common/util/animationUtils';
 
-import './block.less';
 import Infoboks from 'common/components/infoboks/Infoboks';
+
+import './block.less';
 
 export type BlockPadding = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
