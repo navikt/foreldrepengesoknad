@@ -5,7 +5,7 @@ import Barn, {
     UfødtBarn
 } from '../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../fields/f\u00F8dselsdato';
+import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (

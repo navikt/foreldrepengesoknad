@@ -19,7 +19,7 @@ import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad'
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
-import AleneOmOmsorgSpørsmål from '../../../../sp\u00F8rsm\u00E5l/AleneOmOmsorgSp\u00F8rsm\u00E5l';
+import AleneOmOmsorgSpørsmål from '../../../../spørsm\u00E5l/AleneOmOmsorgSpørsm\u00E5l';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
