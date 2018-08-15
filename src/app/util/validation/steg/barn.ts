@@ -16,12 +16,18 @@ const fødtBarnErGyldig = (barn: FødtBarn) => {
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
-    const { fødselsdatoer, adopsjonsdato, adoptertIUtlandet } = barn;
+    const {
+        fødselsdatoer,
+        adopsjonsdato,
+        adoptertIUtlandet,
+        ankomstdato
+    } = barn;
 
     return (
         fødselsdatoer.length > 0 &&
         adopsjonsdato &&
-        adoptertIUtlandet !== undefined
+        (adoptertIUtlandet === false ||
+            (adoptertIUtlandet === true && ankomstdato !== undefined))
     );
 };
 

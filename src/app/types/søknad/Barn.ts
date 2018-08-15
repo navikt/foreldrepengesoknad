@@ -19,9 +19,11 @@ export interface FødtBarn extends BarnBase {
 export interface Adopsjonsbarn extends BarnBase {
     fødselsdatoer: Date[];
     adopsjonsdato: Date;
+    ankomstdato: Date;
     adoptertIUtlandet: boolean;
     omsorgsovertakelse: Attachment[];
     adopsjonsvedtak: Attachment[];
+    adopsjonAvEktefellesBarn: boolean;
 }
 
 export interface ForeldreansvarBarn extends BarnBase {

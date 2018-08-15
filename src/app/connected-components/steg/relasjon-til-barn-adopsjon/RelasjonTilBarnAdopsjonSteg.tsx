@@ -22,6 +22,7 @@ import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
+import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -61,18 +62,22 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
     render() {
         const { barn, dispatch, stegProps, intl } = this.props;
-
         const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
-        const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
+        const visSpørsmålOmEktefellesBarn = barn.adopsjonsdato !== undefined;
+        const visSpørsmålOmAntallBarn =
+            barn.adopsjonAvEktefellesBarn !== undefined;
         const visSpørsmålOmFødselsdatoer =
             visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
         const visSpørsmålOmAdoptertIUtlandet =
             barn.adoptertIUtlandet !== undefined ||
             (visSpørsmålOmFødselsdatoer && fødselsdatoerFyltUt);
+        const visSpørsmålOmAnkomstdato = barn.adoptertIUtlandet === true;
         const visSpørsmålOmVedlegg =
             visSpørsmålOmAdoptertIUtlandet &&
-            barn.adoptertIUtlandet !== undefined;
+            ((barn.adoptertIUtlandet === true &&
+                barn.ankomstdato !== undefined) ||
+                barn.adoptertIUtlandet === false);
 
         return (
             <Steg {...stegProps}>
@@ -92,9 +97,22 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 </Block>
 
                 <Block
-                    visible={visSpørsmålOmAntallBarn}
+                    visible={visSpørsmålOmEktefellesBarn}
                     margin="none"
                     hasChildBlocks={true}>
+                    <AdopsjonAvEktefellesBarnSpørsmål
+                        adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
+                        onChange={(adopsjonAvEktefellesBarn: boolean) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adopsjonAvEktefellesBarn
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+
+                <Block visible={visSpørsmålOmAntallBarn}>
                     <AntallBarnBolk
                         spørsmål={getMessage(
                             intl,
@@ -106,7 +124,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                {visSpørsmålOmFødselsdatoer && (
+                <Block visible={visSpørsmålOmFødselsdatoer}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         fødselsdatoAvgrensninger={{
@@ -120,7 +138,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             )
                         }
                     />
-                )}
+                </Block>
 
                 <Block visible={visSpørsmålOmAdoptertIUtlandet}>
                     <AdoptertIUtlandetSpørsmål
@@ -132,6 +150,22 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 })
                             )
                         }
+                    />
+                </Block>
+
+                <Block visible={visSpørsmålOmAnkomstdato}>
+                    <DatoInput
+                        id="ankomstdato"
+                        name="ankomstdato"
+                        label={getMessage(intl, 'ankomstdato.spørsmål')}
+                        onChange={(ankomstdato: Date) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    ankomstdato
+                                })
+                            );
+                        }}
+                        dato={barn.ankomstdato}
                     />
                 </Block>
 
