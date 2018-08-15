@@ -4,6 +4,7 @@ import innsendingSaga from './innsendingSaga';
 import attachmentSaga from './attachmentSaga';
 import summarySaga from './summarySaga';
 import storageSaga from './storageSaga';
+import søknadSaga from './s\u00F8knadSaga';
 
 export default function* rootSaga() {
     yield all([
@@ -11,6 +12,7 @@ export default function* rootSaga() {
         innsendingSaga(),
         attachmentSaga(),
         summarySaga(),
-        storageSaga()
+        storageSaga(),
+        søknadSaga()
     ]);
 }

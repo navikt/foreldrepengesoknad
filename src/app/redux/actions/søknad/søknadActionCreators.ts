@@ -9,7 +9,8 @@ import {
     UploadAttachmentFailed,
     DeleteAttachment,
     DeleteAttachmentFailed,
-    DeleteAttachmentSuccess
+    DeleteAttachmentSuccess,
+    UpdateSøkerAndStorage
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -50,8 +51,10 @@ const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
     payload
 });
 
-const updateSøkerAndStorage = (payload: SøkerPartial): UpdateSøker => ({
-    type: SøknadActionKeys.UPDATE_SØKER,
+const updateSøkerAndStorage = (
+    payload: SøkerPartial
+): UpdateSøkerAndStorage => ({
+    type: SøknadActionKeys.UPDATE_SØKER_AND_STORAGE,
     payload
 });
 

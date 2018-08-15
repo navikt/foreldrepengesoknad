@@ -41,7 +41,7 @@ export interface UpdateSøker {
 }
 
 export interface UpdateSøkerAndStorage {
-    type: SøknadActionKeys.UPDATE_SØKER;
+    type: SøknadActionKeys.UPDATE_SØKER_AND_STORAGE;
     payload: SøkerPartial;
 }
 
