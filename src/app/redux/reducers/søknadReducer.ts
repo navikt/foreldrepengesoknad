@@ -21,7 +21,7 @@ const getDefaultState = (): SøknadPartial => {
             senereOpphold: []
         },
         søker: {
-            erAleneOmOmsorg: false,
+            erAleneOmOmsorg: undefined,
             andreInntekterSiste10Mnd: []
         },
         harGodkjentVilkår: false,

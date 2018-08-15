@@ -11,6 +11,8 @@
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
+    "pågående": "pågående",
+
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
 
     "søknad.pageheading": "Søknad om foreldrepenger",
@@ -59,6 +61,17 @@
     "annenInntekt.spørsmål.arbeidsgiver": "Navn på arbeidsgiver...",
     "annenInntekt.spørsmål.næringsinntekt":
         "Næringsinntekt sålangt i år (før skatt)",
+
+    "annenInntekt.arbeidsforhold.infotekst":
+        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
+    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold":
+        "Vi fant ingen registrerte arbeidsforhold.",
+    "annenInntekt.arbeidsforhold.label": "Registrerte arbeidsforhold",
+    "annenInntekt.arbeidsforhold.stillingsprosent":
+        "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
+    "annenInntekt.arbeidsforhold.organisasjonsnummer":
+        "ORG.NR: {organisasjonsnummer}",
 
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
@@ -177,6 +190,8 @@
     "annenForelder.bostedsland": "og bor i...",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
+    "annenForelder.label.visAnnenForelder":
+        "Informasjon om den andre forelderen",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
     "annenForelder.label.kanIkkeOppgiNavn":
         "Jeg kan ikke oppgi navnet til andre forelderen",
@@ -223,6 +238,11 @@
         "Gjelder foreldrepengesøknaden noen av disse barna?",
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
+    "adopsjonAvEktefellesBarn.spørsmål":
+        "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
+
+    "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
+
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
         "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
@@ -231,11 +251,15 @@
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
 
+    "ankomstdato.spørsmål": "Når ankommer barnet Norge?",
+
     "termindato.spørsmål": "Når er termindato?",
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
     "terminbekreftelseDato.infotekst":
         "Vi trenger disse opplysningene fordi....",
+    "terminbekreftelsen.text.terminbekreftelsen":
+        "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
 
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
 

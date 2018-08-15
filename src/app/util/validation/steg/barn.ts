@@ -5,7 +5,7 @@ import Barn, {
     UfødtBarn
 } from '../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../fields/f\u00F8dselsdato';
+import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -16,12 +16,18 @@ const fødtBarnErGyldig = (barn: FødtBarn) => {
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
-    const { fødselsdatoer, adopsjonsdato, adoptertIUtlandet } = barn;
+    const {
+        fødselsdatoer,
+        adopsjonsdato,
+        adoptertIUtlandet,
+        ankomstdato
+    } = barn;
 
     return (
         fødselsdatoer.length > 0 &&
         adopsjonsdato &&
-        adoptertIUtlandet !== undefined
+        (adoptertIUtlandet === false ||
+            (adoptertIUtlandet === true && ankomstdato !== undefined))
     );
 };
 
@@ -41,11 +47,18 @@ const ufødtBarnErGyldig = (
     skalLasteOppTerminbekreftelse: boolean
 ) => {
     const { termindato, terminbekreftelseDato } = barn;
-
-    return (
-        (termindato !== undefined && skalLasteOppTerminbekreftelse === false) ||
-        (skalLasteOppTerminbekreftelse && terminbekreftelseDato !== undefined)
-    );
+    if (!termindato) {
+        return false;
+    }
+    if (
+        skalLasteOppTerminbekreftelse &&
+        barn.terminbekreftelse &&
+        barn.terminbekreftelse.length > 0 &&
+        terminbekreftelseDato === undefined
+    ) {
+        return false;
+    }
+    return true;
 };
 
 export const barnErGyldig = (

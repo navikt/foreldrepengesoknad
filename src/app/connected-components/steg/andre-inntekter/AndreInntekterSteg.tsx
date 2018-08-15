@@ -21,9 +21,12 @@ import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../..
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/ArbeidsforholdInfoWrapper';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
+    arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
 }
 
@@ -35,6 +38,7 @@ type Props = AndreInntekterStegProps &
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
             harHattAnnenInntekt: undefined
         };
@@ -44,6 +48,10 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål = this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål.bind(
             this
         );
+    }
+
+    updateSøkerAndSave(søker: Partial<Søker>) {
+        this.props.dispatch(søknadActions.updateSøkerAndStorage(søker));
     }
 
     renderAnnenInntektSiste10MndSpørsmål() {
@@ -91,11 +99,26 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søker, dispatch, intl } = this.props;
+        const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
             <Steg {...stegProps}>
+                <Block
+                    header={{
+                        title: getMessage(
+                            intl,
+                            'annenInntekt.arbeidsforhold.label'
+                        ),
+                        info: getMessage(
+                            intl,
+                            'annenInntekt.arbeidsforhold.infotekst'
+                        )
+                    }}>
+                    <ArbeidsforholdInfoWrapper
+                        arbeidsforhold={arbeidsforhold}
+                    />
+                </Block>
                 <Block>
                     <FrilanserBolk
                         søker={søker}
@@ -113,7 +136,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-
                 <Block>
                     <SelvstendigNæringsdrivendeBolk
                         oppfølgingsspørsmål={getMessage(
@@ -132,15 +154,12 @@ class AndreInntekterSteg extends React.Component<Props> {
                             søker.selvstendigNæringsdrivendeInformasjon || []
                         }
                         onChange={(updatedNæringer: Næring[]) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    selvstendigNæringsdrivendeInformasjon: updatedNæringer
-                                })
-                            )
+                            this.updateSøkerAndSave({
+                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                            })
                         }
                     />
                 </Block>
-
                 <Block>
                     <AndreInntekterBolk
                         oppfølgingsspørsmål={getMessage(
@@ -184,6 +203,7 @@ export default injectIntl(
 
         return {
             søker,
+            arbeidsforhold: state.api.arbeidsforhold,
             stegProps,
             ...props
         };
