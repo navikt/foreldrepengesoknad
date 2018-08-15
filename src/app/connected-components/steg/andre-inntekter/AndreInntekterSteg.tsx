@@ -12,7 +12,6 @@ import { HistoryProps } from '../../../types/common';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import apiActions from '../../../redux/actions/api/apiActionCreators';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/FrilanserBolk';
@@ -49,8 +48,7 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     updateSøkerAndSave(søker: Partial<Søker>) {
-        this.props.dispatch(søknadActions.updateSøker(søker));
-        this.props.dispatch(apiActions.storeAppState());
+        this.props.dispatch(søknadActions.updateSøkerAndStorage(søker));
     }
 
     renderAnnenInntektSiste10MndSpørsmål() {

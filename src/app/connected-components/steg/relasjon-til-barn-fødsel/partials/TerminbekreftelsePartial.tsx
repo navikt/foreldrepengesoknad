@@ -24,6 +24,7 @@ export type Props = OwnProps & InjectedIntlProps & DispatchProps;
 
 const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     const { terminbekreftelse, barn, intl, dispatch } = props;
+    const validerDatofelt = terminbekreftelse && terminbekreftelse.length > 0;
     return (
         <React.Fragment>
             <Block margin="xs">
@@ -73,11 +74,15 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     avgrensninger={getTerminbekreftelsedatoAvgrensninger(
                         barn.termindato
                     )}
-                    validators={getTerminbekreftelseDatoRegler(
-                        barn.terminbekreftelseDato,
-                        barn.termindato,
-                        intl
-                    )}
+                    validators={
+                        validerDatofelt
+                            ? getTerminbekreftelseDatoRegler(
+                                  barn.terminbekreftelseDato,
+                                  barn.termindato,
+                                  intl
+                              )
+                            : []
+                    }
                     infotekst={getMessage(
                         intl,
                         'terminbekreftelseDato.infotekst'
