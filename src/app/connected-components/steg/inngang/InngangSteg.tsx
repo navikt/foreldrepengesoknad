@@ -48,24 +48,17 @@ class InngangSteg extends React.Component<Props, {}> {
         const { kjønn, søker } = this.props;
         const { rolle } = søker;
 
-        if (
-            situasjon === Søkersituasjon.STEBARN ||
-            (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN)
-        ) {
-            return kjønn === Kjønn.KVINNE ? SøkerRolle.MOR : SøkerRolle.FAR;
+        if (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN) {
+            return SøkerRolle.FAR;
         }
         return rolle;
     }
 
     updateSituasjonAndRolleInState(situasjon: Søkersituasjon) {
         const { søker, dispatch } = this.props;
-        const situasjonInState = this.props.situasjon;
         const updatedSøker: SøkerPartial = {
             ...søker,
-            rolle:
-                situasjonInState === Søkersituasjon.STEBARN
-                    ? undefined
-                    : this.resolveSøkerRolle(situasjon)
+            rolle: this.resolveSøkerRolle(situasjon)
         };
 
         dispatch(
@@ -117,14 +110,12 @@ class InngangSteg extends React.Component<Props, {}> {
 
 const resolveNesteSteg = (state: AppState): StegID | undefined => {
     const { situasjon } = state.søknad;
-    if (situasjon === Søkersituasjon.STEBARN) {
-        return StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON;
-    } else if (situasjon === Søkersituasjon.ADOPSJON) {
-        return StegID.RELASJON_TIL_BARN_ADOPSJON;
+    if (situasjon === Søkersituasjon.FØDSEL) {
+        return StegID.RELASJON_TIL_BARN_FØDSEL;
     } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
         return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
-    } else if (situasjon === Søkersituasjon.FØDSEL) {
-        return StegID.RELASJON_TIL_BARN_FØDSEL;
+    } else if (situasjon === Søkersituasjon.ADOPSJON) {
+        return StegID.RELASJON_TIL_BARN_ADOPSJON;
     }
     return;
 };

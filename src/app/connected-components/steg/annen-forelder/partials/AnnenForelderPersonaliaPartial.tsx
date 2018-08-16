@@ -19,6 +19,7 @@ import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
 import Person from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
@@ -27,6 +28,7 @@ interface AnnenForelderPersonaliaPartialProps {
     søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
     situasjon: Søkersituasjon;
+    adopsjonAvEktefellesBarn: boolean;
 }
 
 type Props = AnnenForelderPersonaliaPartialProps &
@@ -61,7 +63,8 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
             registrertAnnenForelder,
             situasjon,
             dispatch,
-            intl
+            intl,
+            adopsjonAvEktefellesBarn
         } = this.props;
         const { kanIkkeOppgis, navn } = annenForelder;
 
@@ -100,7 +103,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={situasjon !== 'stebarn'}>
+                <Block visible={adopsjonAvEktefellesBarn !== true}>
                     <Checkbox
                         checked={kanIkkeOppgis || false}
                         label={
@@ -150,7 +153,9 @@ const mapStateToProps = (
     annenForelder: state.søknad.annenForelder,
     registrertAnnenForelder: undefined,
     erFarEllerMedmor: true,
-    situasjon: state.søknad.situasjon
+    situasjon: state.søknad.situasjon,
+    adopsjonAvEktefellesBarn: (state.søknad.barn as Adopsjonsbarn)
+        .adopsjonAvEktefellesBarn
 });
 
 export default connect<AnnenForelderPersonaliaPartialProps, {}, {}>(
