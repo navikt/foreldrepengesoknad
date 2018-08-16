@@ -68,7 +68,12 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
         return (
             <React.Fragment>
                 <Block
-                    title="Informasjon om den andre forelderen"
+                    header={{
+                        title: getMessage(
+                            intl,
+                            'annenForelder.label.visAnnenForelder'
+                        )
+                    }}
                     visible={registrertAnnenForelder !== undefined}>
                     {registrertAnnenForelder ? (
                         <PersonaliaBox personalia={registrertAnnenForelder} />

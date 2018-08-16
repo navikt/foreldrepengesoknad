@@ -37,7 +37,9 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
             </Block>
             <Block
                 visible={props.barn.termindato !== undefined}
-                title={getMessage(intl, 'vedlegg.tittel.terminbekreftelse')}>
+                header={{
+                    title: getMessage(intl, 'vedlegg.tittel.terminbekreftelse')
+                }}>
                 <AttachmentsUploaderPure
                     attachments={terminbekreftelse}
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
