@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox } from 'nav-frontend-skjema';
 import Input from 'common/components/skjema/wrappers/Input';
 import {
@@ -31,8 +29,6 @@ import { date4YearsAgo } from '../../util/validation/values';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
-
-import './selvstendigNæringsdrivendeModal.less';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -149,8 +145,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             revisor
         } = næring;
 
-        // const cls = BEMHelper('selvstendigNæringsdrivendeModal');
-
         return (
             <ModalForm
                 title={intl.formatMessage({
@@ -158,7 +152,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 })}
                 onSubmit={this.onSubmit}
                 onRequestClose={onClose}
-                isOpen={isOpen}>
+                isOpen={isOpen}
+                renderFormButtons={true}
+                submitLabel={getMessage(intl, 'leggtil')}
+                cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
                     <NæringstypeSpørsmål
                         næringstyper={næringstyper || []}
@@ -387,15 +384,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                     />
                 </Block>
-
-                <Knapperad>
-                    <Knapp type="standard" onClick={onClose} htmlType="button">
-                        <FormattedMessage id="avbryt" />
-                    </Knapp>
-                    <Hovedknapp>
-                        <FormattedMessage id="leggtil" />
-                    </Hovedknapp>
-                </Knapperad>
             </ModalForm>
         );
     }
