@@ -1,12 +1,9 @@
 import * as React from 'react';
-import Modal, { ModalProps } from 'nav-frontend-modal';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
-import { Undertittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import BEMHelper from 'common/util/bem';
 import { Checkbox } from 'nav-frontend-skjema';
 import Input from 'common/components/skjema/wrappers/Input';
 import {
@@ -17,7 +14,6 @@ import {
     Næringstype
 } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import NæringstypeSpørsmål from '../../spørsmål/NæringstypeSpørsmål';
-import './selvstendigNæringsdrivendeModal.less';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
@@ -34,11 +30,15 @@ import { InputChangeEvent } from '../../types/dom/Events';
 import { date4YearsAgo } from '../../util/validation/values';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
-import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
+import ModalForm from 'common/components/modalForm/ModalForm';
 
-export interface SelvstendigNæringsdrivendeModalProps extends ModalProps {
+import './selvstendigNæringsdrivendeModal.less';
+
+export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
     editMode: boolean;
+    isOpen: boolean;
+    onClose: () => void;
     onAdd: (næring: Næring) => void;
     onEdit: (næring: Næring) => void;
 }
@@ -93,13 +93,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         });
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-        event.stopPropagation();
-
+    onSubmit(): void {
         const { onAdd, onEdit, editMode } = this.props;
         const { næring } = this.state;
-
         if (editMode) {
             onEdit(næring as Næring);
         } else {
@@ -133,7 +129,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, onRequestClose, ...modalProps } = this.props;
+        const { intl, isOpen, onClose } = this.props;
         const { næring } = this.state;
         const {
             navnPåNæringen,
@@ -153,269 +149,254 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             revisor
         } = næring;
 
-        const cls = BEMHelper('selvstendigNæringsdrivendeModal');
+        // const cls = BEMHelper('selvstendigNæringsdrivendeModal');
 
         return (
-            <Modal
-                className={cls.className}
-                onRequestClose={onRequestClose}
-                {...modalProps}>
-                <ValiderbarForm
-                    onSubmit={this.onSubmit}
-                    noSummary={false}
-                    summaryTitle={'Skjemafeil'}>
-                    <Undertittel className={cls.element('title')}>
-                        <FormattedMessage id="selvstendigNæringsdrivende.modal.tittel" />
-                    </Undertittel>
+            <ModalForm
+                title={intl.formatMessage({
+                    id: 'selvstendigNæringsdrivende.modal.tittel'
+                })}
+                onSubmit={this.onSubmit}
+                onRequestClose={onClose}
+                isOpen={isOpen}>
+                <Block>
+                    <NæringstypeSpørsmål
+                        næringstyper={næringstyper || []}
+                        onChange={this.toggleNæringstype}
+                    />
+                </Block>
 
-                    <Block>
-                        <NæringstypeSpørsmål
-                            næringstyper={næringstyper || []}
-                            onChange={this.toggleNæringstype}
-                        />
-                    </Block>
+                <Block
+                    visible={
+                        næringstyper !== undefined && næringstyper.length > 0
+                    }>
+                    <Input
+                        label={getMessage(
+                            intl,
+                            'selvstendigNæringsdrivende.modal.navn'
+                        )}
+                        onChange={(e: InputChangeEvent) =>
+                            this.updateNæring({
+                                navnPåNæringen: e.target.value
+                            })
+                        }
+                        value={navnPåNæringen || ''}
+                    />
+                </Block>
 
-                    <Block
-                        visible={
-                            næringstyper !== undefined &&
-                            næringstyper.length > 0
-                        }>
-                        <Input
-                            label={getMessage(
-                                intl,
-                                'selvstendigNæringsdrivende.modal.navn'
-                            )}
-                            onChange={(e: InputChangeEvent) =>
-                                this.updateNæring({
-                                    navnPåNæringen: e.target.value
-                                })
-                            }
-                            value={navnPåNæringen || ''}
-                        />
-                    </Block>
+                <Block visible={navnPåNæringen !== undefined}>
+                    <Input
+                        label={getMessage(
+                            intl,
+                            'selvstendigNæringsdrivende.modal.orgnr'
+                        )}
+                        onChange={(e: InputChangeEvent) =>
+                            this.updateNæring({
+                                organisasjonsnummer: e.target.value
+                            })
+                        }
+                        value={organisasjonsnummer || ''}
+                    />
+                </Block>
 
-                    <Block visible={navnPåNæringen !== undefined}>
-                        <Input
-                            label={getMessage(
-                                intl,
-                                'selvstendigNæringsdrivende.modal.orgnr'
-                            )}
-                            onChange={(e: InputChangeEvent) =>
-                                this.updateNæring({
-                                    organisasjonsnummer: e.target.value
-                                })
-                            }
-                            value={organisasjonsnummer || ''}
-                        />
-                    </Block>
+                <Block
+                    visible={organisasjonsnummer !== undefined}
+                    margin="none">
+                    <TidsperiodeBolk
+                        tidsperiode={tidsperiode || {}}
+                        onChange={(v: TidsperiodeMedValgfriSluttdato) =>
+                            this.updateNæring({ tidsperiode: v })
+                        }
+                        sluttdatoDisabled={pågående}
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                            tidsperiode
+                        )}
+                    />
+                </Block>
 
-                    <Block
-                        visible={organisasjonsnummer !== undefined}
-                        margin="none">
-                        <TidsperiodeBolk
-                            tidsperiode={tidsperiode || {}}
-                            onChange={(v: TidsperiodeMedValgfriSluttdato) =>
-                                this.updateNæring({ tidsperiode: v })
-                            }
-                            sluttdatoDisabled={pågående}
-                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                                tidsperiode
-                            )}
-                        />
-                    </Block>
+                <Block visible={organisasjonsnummer !== undefined}>
+                    <Checkbox
+                        checked={pågående || false}
+                        label={getMessage(intl, 'annenInntekt.modal.pågående')}
+                        onChange={() => {
+                            this.updateNæring({
+                                pågående: !pågående,
+                                tidsperiode: {
+                                    ...tidsperiode,
+                                    tom: undefined
+                                }
+                            });
+                        }}
+                    />
+                </Block>
 
-                    <Block visible={organisasjonsnummer !== undefined}>
-                        <Checkbox
-                            checked={pågående || false}
-                            label={getMessage(
-                                intl,
-                                'annenInntekt.modal.pågående'
-                            )}
-                            onChange={() => {
-                                this.updateNæring({
-                                    pågående: !pågående,
-                                    tidsperiode: {
-                                        ...tidsperiode,
-                                        tom: undefined
-                                    }
-                                });
-                            }}
-                        />
-                    </Block>
+                <Block visible={this.shouldAskForNæringsinntekt()}>
+                    <Input
+                        label={getMessage(
+                            intl,
+                            'annenInntekt.spørsmål.næringsinntekt'
+                        )}
+                        onChange={(e: InputChangeEvent) => {
+                            const næringPartial: NæringPartial = {
+                                næringsinntekt: e.target.value
+                            };
+                            this.updateNæring(næringPartial);
+                        }}
+                        value={næringsinntekt || ''}
+                    />
+                </Block>
 
-                    <Block visible={this.shouldAskForNæringsinntekt()}>
-                        <Input
-                            label={getMessage(
-                                intl,
-                                'annenInntekt.spørsmål.næringsinntekt'
-                            )}
-                            onChange={(e: InputChangeEvent) => {
-                                const næringPartial: NæringPartial = {
-                                    næringsinntekt: e.target.value
-                                };
-                                this.updateNæring(næringPartial);
-                            }}
-                            value={næringsinntekt || ''}
-                        />
-                    </Block>
+                <Block visible={organisasjonsnummer !== undefined}>
+                    <ErNæringenRegistrertINorgeSpørsmål
+                        registrertINorge={registrertINorge}
+                        onChange={(v: boolean) =>
+                            this.updateNæring({ registrertINorge: v })
+                        }
+                    />
+                </Block>
 
-                    <Block visible={organisasjonsnummer !== undefined}>
-                        <ErNæringenRegistrertINorgeSpørsmål
-                            registrertINorge={registrertINorge}
-                            onChange={(v: boolean) =>
-                                this.updateNæring({ registrertINorge: v })
-                            }
-                        />
-                    </Block>
+                <Block visible={registrertINorge === false}>
+                    <Landvelger
+                        onChange={(v: string) =>
+                            this.updateNæring({ registrertILand: v })
+                        }
+                        label={getMessage(
+                            intl,
+                            'selvstendigNæringsdrivende.modal.registrertILand'
+                        )}
+                        defaultValue={registrertILand}
+                    />
+                </Block>
 
-                    <Block visible={registrertINorge === false}>
-                        <Landvelger
-                            onChange={(v: string) =>
-                                this.updateNæring({ registrertILand: v })
-                            }
-                            label={getMessage(
-                                intl,
-                                'selvstendigNæringsdrivende.modal.registrertILand'
-                            )}
-                            defaultValue={registrertILand}
-                        />
-                    </Block>
+                <Block
+                    visible={
+                        registrertINorge === true ||
+                        (registrertINorge === false &&
+                            registrertILand !== undefined)
+                    }>
+                    <Input
+                        bredde="XS"
+                        label={getMessage(
+                            intl,
+                            'selvstendigNæringsdrivende.modal.stillingsprosent'
+                        )}
+                        onChange={(e: InputChangeEvent) =>
+                            this.updateNæring({
+                                stillingsprosent: e.target.value
+                            })
+                        }
+                        value={stillingsprosent || ''}
+                        validators={getStillingsprosentRegler(
+                            stillingsprosent || '',
+                            intl
+                        )}
+                    />
+                </Block>
 
-                    <Block
-                        visible={
-                            registrertINorge === true ||
-                            (registrertINorge === false &&
-                                registrertILand !== undefined)
-                        }>
-                        <Input
-                            bredde="XS"
-                            label={getMessage(
-                                intl,
-                                'selvstendigNæringsdrivende.modal.stillingsprosent'
-                            )}
-                            onChange={(e: InputChangeEvent) =>
-                                this.updateNæring({
-                                    stillingsprosent: e.target.value
-                                })
-                            }
-                            value={stillingsprosent || ''}
-                            validators={getStillingsprosentRegler(
-                                stillingsprosent || '',
-                                intl
-                            )}
-                        />
-                    </Block>
+                <Block
+                    visible={
+                        stillingsprosent !== undefined &&
+                        tidsperiode &&
+                        tidsperiode.fom &&
+                        erMindreEnn4ÅrSidenOppstart(næring as Næring)
+                    }>
+                    <HeltNyIArbeidslivetSpørsmål
+                        nyIArbeidslivet={nyIArbeidslivet}
+                        onChange={(v: boolean) =>
+                            this.updateNæring({
+                                nyIArbeidslivet: v
+                            })
+                        }
+                    />
+                </Block>
+                <Block
+                    visible={
+                        stillingsprosent !== undefined &&
+                        tidsperiode &&
+                        tidsperiode.fom &&
+                        !erMindreEnn4ÅrSidenOppstart(næring as Næring)
+                    }>
+                    <VarigEndringAvNæringsinntektBolk
+                        næring={næring as Næring}
+                        onChange={(changedProps: NæringPartial) =>
+                            this.updateNæring(changedProps)
+                        }
+                    />
+                </Block>
 
-                    <Block
-                        visible={
-                            stillingsprosent !== undefined &&
-                            tidsperiode &&
-                            tidsperiode.fom &&
-                            erMindreEnn4ÅrSidenOppstart(næring as Næring)
-                        }>
-                        <HeltNyIArbeidslivetSpørsmål
-                            nyIArbeidslivet={nyIArbeidslivet}
-                            onChange={(v: boolean) =>
-                                this.updateNæring({
-                                    nyIArbeidslivet: v
-                                })
-                            }
-                        />
-                    </Block>
-                    <Block
-                        visible={
-                            stillingsprosent !== undefined &&
-                            tidsperiode &&
-                            tidsperiode.fom &&
-                            !erMindreEnn4ÅrSidenOppstart(næring as Næring)
-                        }>
-                        <VarigEndringAvNæringsinntektBolk
-                            næring={næring as Næring}
-                            onChange={(changedProps: NæringPartial) =>
-                                this.updateNæring(changedProps)
-                            }
-                        />
-                    </Block>
+                <Block visible={stillingsprosent !== undefined}>
+                    <NæringsrelasjonBolk
+                        renderSpørsmål={() => (
+                            <HarDuRegnskapsførerSpørsmål
+                                harRegnskapsfører={harRegnskapsfører}
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({
+                                        harRegnskapsfører: v
+                                    })
+                                }
+                            />
+                        )}
+                        oppfølgingsspørsmålSynlig={harRegnskapsfører === true}
+                        næringsrelasjon={regnskapsfører || {}}
+                        onChange={(v: NæringsrelasjonPartial) =>
+                            this.updateNæring({
+                                regnskapsfører: v as Næringsrelasjon
+                            })
+                        }
+                    />
+                </Block>
 
-                    <Block visible={stillingsprosent !== undefined}>
-                        <NæringsrelasjonBolk
-                            renderSpørsmål={() => (
-                                <HarDuRegnskapsførerSpørsmål
-                                    harRegnskapsfører={harRegnskapsfører}
-                                    onChange={(v: boolean) =>
-                                        this.updateNæring({
-                                            harRegnskapsfører: v
-                                        })
-                                    }
-                                />
-                            )}
-                            oppfølgingsspørsmålSynlig={
-                                harRegnskapsfører === true
-                            }
-                            næringsrelasjon={regnskapsfører || {}}
-                            onChange={(v: NæringsrelasjonPartial) =>
-                                this.updateNæring({
-                                    regnskapsfører: v as Næringsrelasjon
-                                })
-                            }
-                        />
-                    </Block>
+                <Block
+                    visible={
+                        stillingsprosent !== undefined &&
+                        harRegnskapsfører === false
+                    }>
+                    <NæringsrelasjonBolk
+                        renderSpørsmål={() => (
+                            <HarDuRevisorSpørsmål
+                                harRevisor={harRevisor}
+                                onChange={(v: boolean) =>
+                                    this.updateNæring({
+                                        harRevisor: v
+                                    })
+                                }
+                            />
+                        )}
+                        oppfølgingsspørsmålSynlig={harRevisor === true}
+                        næringsrelasjon={revisor || {}}
+                        onChange={(v: NæringsrelasjonPartial) =>
+                            this.updateNæring({
+                                revisor: v as Næringsrelasjon
+                            })
+                        }
+                    />
+                </Block>
 
-                    <Block
-                        visible={
-                            stillingsprosent !== undefined &&
-                            harRegnskapsfører === false
-                        }>
-                        <NæringsrelasjonBolk
-                            renderSpørsmål={() => (
-                                <HarDuRevisorSpørsmål
-                                    harRevisor={harRevisor}
-                                    onChange={(v: boolean) =>
-                                        this.updateNæring({
-                                            harRevisor: v
-                                        })
-                                    }
-                                />
-                            )}
-                            oppfølgingsspørsmålSynlig={harRevisor === true}
-                            næringsrelasjon={revisor || {}}
-                            onChange={(v: NæringsrelasjonPartial) =>
-                                this.updateNæring({
-                                    revisor: v as Næringsrelasjon
-                                })
-                            }
-                        />
-                    </Block>
+                <Block
+                    visible={
+                        harRegnskapsfører === false && harRevisor === true
+                    }>
+                    <KanInnhenteOpplysningerOmReviorSpørsmål
+                        hentOpplysningerOmRevisor={
+                            kanInnhenteOpplsyningerFraRevisor
+                        }
+                        onChange={(v: boolean) =>
+                            this.updateNæring({
+                                kanInnhenteOpplsyningerFraRevisor: v
+                            })
+                        }
+                    />
+                </Block>
 
-                    <Block
-                        visible={
-                            harRegnskapsfører === false && harRevisor === true
-                        }>
-                        <KanInnhenteOpplysningerOmReviorSpørsmål
-                            hentOpplysningerOmRevisor={
-                                kanInnhenteOpplsyningerFraRevisor
-                            }
-                            onChange={(v: boolean) =>
-                                this.updateNæring({
-                                    kanInnhenteOpplsyningerFraRevisor: v
-                                })
-                            }
-                        />
-                    </Block>
-
-                    <Knapperad>
-                        <Knapp
-                            type="standard"
-                            onClick={onRequestClose}
-                            htmlType="button">
-                            <FormattedMessage id="avbryt" />
-                        </Knapp>
-                        <Hovedknapp>
-                            <FormattedMessage id="leggtil" />
-                        </Hovedknapp>
-                    </Knapperad>
-                </ValiderbarForm>
-            </Modal>
+                <Knapperad>
+                    <Knapp type="standard" onClick={onClose} htmlType="button">
+                        <FormattedMessage id="avbryt" />
+                    </Knapp>
+                    <Hovedknapp>
+                        <FormattedMessage id="leggtil" />
+                    </Hovedknapp>
+                </Knapperad>
+            </ModalForm>
         );
     }
 }
