@@ -29,6 +29,7 @@ import { date4YearsAgo } from '../../util/validation/values';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
+import { getFloatFromString } from 'common/util/numberUtils';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -76,6 +77,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.onSubmit = this.onSubmit.bind(this);
         this.updateNæring = this.updateNæring.bind(this);
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
+        this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(
+            this
+        );
     }
 
     updateNæring(næringProperties: NæringPartial): void {
@@ -114,6 +118,13 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         return næringFomDato
             ? moment(næringFomDato, moment.ISO_8601) > date4YearsAgo
             : false;
+    }
+
+    handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
+        const pst = getFloatFromString(e.target.value);
+        this.updateNæring({
+            stillingsprosent: pst ? pst.toFixed(1) : e.target.value
+        });
     }
 
     render() {
@@ -274,6 +285,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 stillingsprosent: e.target.value
                             })
                         }
+                        onBlur={this.handleStillingsprosentBlur}
                         value={stillingsprosent || ''}
                         validators={getStillingsprosentRegler(
                             stillingsprosent || '',
