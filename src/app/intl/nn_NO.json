@@ -60,6 +60,17 @@
     "annenInntekt.spørsmål.næringsinntekt":
         "Næringsinntekt sålangt i år (før skatt)",
 
+    "annenInntekt.arbeidsforhold.infotekst":
+        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
+    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold":
+        "Vi fant ingen registrerte arbeidsforhold.",
+    "annenInntekt.arbeidsforhold.label": "Registrerte arbeidsforhold",
+    "annenInntekt.arbeidsforhold.stillingsprosent":
+        "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
+    "annenInntekt.arbeidsforhold.organisasjonsnummer":
+        "ORG.NR: {organisasjonsnummer}",
+
     "inntektstype.jobbIUtlandet": "Jobb i utlandet",
     "inntektstype.militæret":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
@@ -196,6 +207,8 @@
     "annenForelder.bostedsland": "og bor i...",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
+    "annenForelder.label.visAnnenForelder":
+        "Informasjon om den andre forelderen",
     "annenForelder.label.navn": "Den andre forelderen heter...",
     "annenForelder.label.kanIkkeOppgiNavn":
         "Jeg kan ikke oppgi den andre forelderen",

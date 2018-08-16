@@ -5,13 +5,18 @@ import { Collapse } from 'react-collapse';
 import BEMHelper from 'common/util/bem';
 import { collapseSpringConfig } from 'common/util/animationUtils';
 
+import Infoboks from 'common/components/infoboks/Infoboks';
+
 import './block.less';
 
 export type BlockPadding = 'm' | 's' | 'xs' | 'xxs' | 'none';
 
 export interface BlockProps {
-    title?: string;
     /** Default true */
+    header?: {
+        title: string;
+        info?: string;
+    };
     visible?: boolean;
     /** Animation is set to default true if visible is !undefined, unless animated is set to false */
     animated?: boolean;
@@ -28,8 +33,8 @@ const cls = BEMHelper('block');
 const Block: React.StatelessComponent<BlockProps> = ({
     visible,
     margin = 'm',
+    header,
     animated = true,
-    title,
     children,
     hasChildBlocks
 }) => {
@@ -38,11 +43,14 @@ const Block: React.StatelessComponent<BlockProps> = ({
     }
     const contentClass = classNames(cls.className, cls.modifier(margin));
     const content =
-        title !== undefined ? (
+        header !== undefined ? (
             <section className={contentClass}>
-                <h1 className={`typo-element ${cls.element('title')}`}>
-                    {title}
-                </h1>
+                <div className="heading">
+                    <h1 className={`typo-element ${cls.element('title')}`}>
+                        {header.title}
+                    </h1>
+                    {header.info && <Infoboks tekst={header.info} />}
+                </div>
                 {children}
             </section>
         ) : (

@@ -72,7 +72,9 @@ class FødtBarnPartial extends React.Component<Props> {
                             (fødselsdato: Date) => fødselsdato instanceof Date
                         )
                     }
-                    title={getMessage(intl, 'vedlegg.tittel.fødselsattest')}>
+                    header={{
+                        title: getMessage(intl, 'vedlegg.tittel.fødselsattest')
+                    }}>
                     <AttachmentsUploaderPure
                         attachments={fødselsattest}
                         attachmentType={AttachmentType.FØDSELSATTEST}

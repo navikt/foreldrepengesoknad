@@ -171,10 +171,12 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block
                     visible={visSpørsmålOmVedlegg}
-                    title={getMessage(
-                        intl,
-                        'attachments.tittel.omsorgsovertakelse'
-                    )}>
+                    header={{
+                        title: getMessage(
+                            intl,
+                            'attachments.tittel.omsorgsovertakelse'
+                        )
+                    }}>
                     <AttachmentsUploaderPure
                         attachments={
                             (barn as Adopsjonsbarn).omsorgsovertakelse || []

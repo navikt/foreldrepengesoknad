@@ -21,9 +21,12 @@ import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../..
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
+import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
+    arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
 }
 
@@ -96,11 +99,26 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søker, dispatch, intl } = this.props;
+        const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
             <Steg {...stegProps}>
+                <Block
+                    header={{
+                        title: getMessage(
+                            intl,
+                            'annenInntekt.arbeidsforhold.label'
+                        ),
+                        info: getMessage(
+                            intl,
+                            'annenInntekt.arbeidsforhold.infotekst'
+                        )
+                    }}>
+                    <ArbeidsforholdInfoWrapper
+                        arbeidsforhold={arbeidsforhold}
+                    />
+                </Block>
                 <Block>
                     <FrilanserBolk
                         søker={søker}
@@ -118,7 +136,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-
                 <Block>
                     <SelvstendigNæringsdrivendeBolk
                         oppfølgingsspørsmål={getMessage(
@@ -143,7 +160,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-
                 <Block>
                     <AndreInntekterBolk
                         oppfølgingsspørsmål={getMessage(
@@ -187,6 +203,7 @@ export default injectIntl(
 
         return {
             søker,
+            arbeidsforhold: state.api.arbeidsforhold,
             stegProps,
             ...props
         };
