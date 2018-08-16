@@ -22,7 +22,7 @@ import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInfor
 import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
-import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/ArbeidsforholdInfoWrapper';
+import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
