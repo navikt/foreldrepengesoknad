@@ -23,6 +23,7 @@ import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødsels
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -177,6 +178,14 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             'attachments.tittel.omsorgsovertakelse'
                         )
                     }}>
+                    <Block margin="xs">
+                        <Veilederinfo>
+                            {getMessage(
+                                intl,
+                                'vedlegg.veileder.omsorgsovertakelse'
+                            )}
+                        </Veilederinfo>
+                    </Block>
                     <AttachmentsUploaderPure
                         attachments={
                             (barn as Adopsjonsbarn).omsorgsovertakelse || []

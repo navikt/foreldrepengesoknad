@@ -29,10 +29,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
         <React.Fragment>
             <Block margin="xs">
                 <Veilederinfo>
-                    {getMessage(
-                        intl,
-                        'terminbekreftelsen.text.terminbekreftelsen'
-                    )}
+                    {getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}
                 </Veilederinfo>
             </Block>
             <Block
