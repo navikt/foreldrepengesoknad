@@ -134,7 +134,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
 
                         <SelvstendigNæringsdrivendeModal
                             isOpen={this.state.modalIsOpen}
-                            onClose={() =>
+                            onCancel={() =>
                                 this.closeModal({
                                     næringIndex: undefined,
                                     næringToEdit: undefined
