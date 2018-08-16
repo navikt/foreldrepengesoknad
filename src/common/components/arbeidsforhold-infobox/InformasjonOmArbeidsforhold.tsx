@@ -12,12 +12,12 @@ import BEMHelper from 'common/util/bem';
 
 import './arbeidsforhold.less';
 
-interface ArbeidsforholdInfoBoxProps {
+interface InformasjonOmArbeidsforholdProps {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const ArbeidsforholdInfoBox: React.StatelessComponent<
-    ArbeidsforholdInfoBoxProps & InjectedIntlProps
+const InformasjonOmArbeidsforhold: React.StatelessComponent<
+    InformasjonOmArbeidsforholdProps & InjectedIntlProps
 > = ({ arbeidsforhold, intl }) => {
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
@@ -55,4 +55,4 @@ const ArbeidsforholdInfoBox: React.StatelessComponent<
         </div>
     );
 };
-export default injectIntl(ArbeidsforholdInfoBox);
+export default injectIntl(InformasjonOmArbeidsforhold);

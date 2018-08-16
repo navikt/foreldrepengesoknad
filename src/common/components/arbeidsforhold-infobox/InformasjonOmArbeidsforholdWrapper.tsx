@@ -5,7 +5,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
 
-import ArbeidsforholdInfoBox from 'common/components/arbeidsforhold-infobox/ArbeidsforholdInfoBox';
+import ArbeidsforholdInfoBox from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforhold';
 import getMessage from 'common/util/i18nUtils';
 
 import './arbeidsforhold.less';
@@ -13,7 +13,7 @@ import './arbeidsforhold.less';
 interface ArbeidsforholdInfoWrapperProps {
     arbeidsforhold: Arbeidsforhold[];
 }
-const ArbeidsforholdInfoWrapper: React.StatelessComponent<
+const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<
     ArbeidsforholdInfoWrapperProps & InjectedIntlProps
 > = ({ arbeidsforhold, intl }) => {
     return (
@@ -50,4 +50,4 @@ const ArbeidsforholdInfoWrapper: React.StatelessComponent<
     );
 };
 
-export default injectIntl(ArbeidsforholdInfoWrapper);
+export default injectIntl(InformasjonOmArbeidsforholdWrapper);
