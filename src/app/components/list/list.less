@@ -1,3 +1,7 @@
+@import './../../../common/styles/variables.less';
+
+@breakpoint: 350px;
+
 .list {
     margin: 0;
     padding: 0;
@@ -28,7 +32,14 @@
             margin-top: 0.5rem;
 
             .linkButton {
-                float: right;
+                @media (max-width: @breakpoint) {
+                    display: block;
+                    margin-top: 0.5rem;
+                }
+
+                @media (min-width: @breakpoint) {
+                    float: right;
+                }
             }
         }
 
