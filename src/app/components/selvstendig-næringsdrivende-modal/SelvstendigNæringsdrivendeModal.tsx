@@ -279,6 +279,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             stillingsprosent || '',
                             intl
                         )}
+                        maxLength={5}
                     />
                 </Block>
 

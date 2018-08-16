@@ -14,6 +14,7 @@ export interface ModalFormProps {
     isOpen: boolean;
     title: string;
     renderFormButtons: boolean;
+    noSummary?: boolean;
     summary?: {
         title: string;
     };
@@ -52,6 +53,7 @@ class ModalForm extends React.Component<Props, {}> {
             intl,
             children,
             summary,
+            noSummary,
             renderFormButtons
         } = this.props;
 
@@ -66,7 +68,7 @@ class ModalForm extends React.Component<Props, {}> {
                 <div className={cls.element('content')}>
                     <ValiderbarForm
                         onSubmit={this.handleOnSubmit}
-                        noSummary={false}
+                        noSummary={noSummary}
                         summaryTitle={summary ? summary.title : undefined}>
                         <Undertittel className={cls.element('title')}>
                             {title}
