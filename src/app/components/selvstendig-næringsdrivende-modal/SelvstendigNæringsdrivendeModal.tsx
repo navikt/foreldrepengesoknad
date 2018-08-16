@@ -32,11 +32,9 @@ import ModalForm from 'common/components/modalForm/ModalForm';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
-    editMode: boolean;
     isOpen: boolean;
     onCancel: () => void;
-    onAdd: (næring: Næring) => void;
-    onEdit: (næring: Næring) => void;
+    onSubmit: (næring: Næring) => void;
 }
 
 type Props = SelvstendigNæringsdrivendeModalProps & InjectedIntlProps;
@@ -90,13 +88,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     onSubmit(): void {
-        const { onAdd, onEdit, editMode } = this.props;
-        const { næring } = this.state;
-        if (editMode) {
-            onEdit(næring as Næring);
-        } else {
-            onAdd(næring as Næring);
-        }
+        this.props.onSubmit(this.state.næring as Næring);
     }
 
     toggleNæringstype(næringstype: Næringstype): void {

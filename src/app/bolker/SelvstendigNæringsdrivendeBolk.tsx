@@ -133,6 +133,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                         </div>
 
                         <SelvstendigNæringsdrivendeModal
+                            næring={næringToEdit}
                             isOpen={this.state.modalIsOpen}
                             onCancel={() =>
                                 this.closeModal({
@@ -140,10 +141,11 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                     næringToEdit: undefined
                                 })
                             }
-                            næring={næringToEdit}
-                            onAdd={this.onAdd}
-                            onEdit={this.onEdit}
-                            editMode={næringToEdit !== undefined}
+                            onSubmit={
+                                næringToEdit !== undefined
+                                    ? this.onEdit
+                                    : this.onAdd
+                            }
                         />
                     </React.Fragment>
                 )}
