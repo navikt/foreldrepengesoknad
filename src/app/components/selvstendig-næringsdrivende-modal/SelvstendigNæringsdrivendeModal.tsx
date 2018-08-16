@@ -34,7 +34,7 @@ export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
     editMode: boolean;
     isOpen: boolean;
-    onClose: () => void;
+    onCancel: () => void;
     onAdd: (næring: Næring) => void;
     onEdit: (næring: Næring) => void;
 }
@@ -125,7 +125,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, isOpen, onClose } = this.props;
+        const { intl, isOpen, onCancel } = this.props;
         const { næring } = this.state;
         const {
             navnPåNæringen,
@@ -151,7 +151,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     id: 'selvstendigNæringsdrivende.modal.tittel'
                 })}
                 onSubmit={this.onSubmit}
-                onRequestClose={onClose}
+                onRequestClose={onCancel}
                 isOpen={isOpen}
                 renderFormButtons={true}
                 submitLabel={getMessage(intl, 'leggtil')}
