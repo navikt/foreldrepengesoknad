@@ -31,7 +31,7 @@ const AdoptertIUtlandetSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'adopsjonAvEktefellesBarn.spørsmål')}
+            legend={getMessage(intl, 'adoptertIUtlandet.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
