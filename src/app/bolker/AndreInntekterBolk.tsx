@@ -1,10 +1,17 @@
 import * as React from 'react';
-import { AnnenInntekt } from '../types/søknad/AnnenInntekt';
-import InteractiveList from '../components/interactive-list/InteractiveList';
+import {
+    AnnenInntekt,
+    AnnenInntektType,
+    JobbIUtlandetInntekt
+} from '../types/søknad/AnnenInntekt';
 import { Knapp } from 'nav-frontend-knapper';
-import { FormattedMessage } from 'react-intl';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
-import { ISODateToPrettyDateFormat } from '../util/dates/dates';
+import { prettifyTidsperiode } from '../util/dates/dates';
+import List from '../components/list/List';
+import ListElement from '../components/list-element/ListElement';
+import Block from 'common/components/block/Block';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -98,37 +105,39 @@ class AndreInntekterBolk extends React.Component<
         } = this.props;
 
         const { annenInntektToEdit } = this.state;
+        const InntektListElement = injectIntl(AndreInntekterListeElement);
 
         return (
             <React.Fragment>
                 {renderSpørsmål()}
                 {showAndreInntekterPeriodeContent && (
                     <React.Fragment>
-                        <div className="blokk-xs">
+                        <Block margin="xs">
                             <h4>{oppfølgingsspørsmål}</h4>
-                        </div>
+                        </Block>
 
-                        <div className="blokk-xs">
-                            <InteractiveList
+                        <Block margin="xs">
+                            <List
                                 data={andreInntekterSiste10Mnd}
-                                onSelect={this.onSelect}
-                                onDelete={this.onDelete}
-                                renderElement={(annenInntekt: AnnenInntekt) => (
-                                    <AndreInntekterListeElement
+                                renderElement={(
+                                    annenInntekt: AnnenInntekt,
+                                    index: number
+                                ) => (
+                                    <InntektListElement
                                         annenInntekt={annenInntekt}
+                                        key={`annenInntekt-${index}`}
                                     />
                                 )}
-                                deleteAriaLabel="Slett inntektsperiode"
                             />
-                        </div>
+                        </Block>
 
-                        <div className="blokk-s">
+                        <Block margin="s">
                             <Knapp
                                 onClick={() => this.openModal()}
                                 htmlType="button">
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
-                        </div>
+                        </Block>
                     </React.Fragment>
                 )}
 
@@ -157,28 +166,30 @@ interface AndreInntekterListeElementProps {
 }
 
 const AndreInntekterListeElement: React.StatelessComponent<
-    AndreInntekterListeElementProps
-> = ({ annenInntekt }) => (
-    <React.Fragment>
-        <div className="interactiveList__element__land">
-            {annenInntekt.type}
-        </div>
-        <div className="interactiveList__element__dato">
-            <FormattedMessage
-                id="tidsintervall"
-                values={{
-                    fom: ISODateToPrettyDateFormat(
-                        annenInntekt.tidsperiode.fom
-                    ),
-                    tom: annenInntekt.pågående
-                        ? 'pågående'
-                        : ISODateToPrettyDateFormat(
-                              annenInntekt.tidsperiode.tom
-                          )
-                }}
-            />
-        </div>
-    </React.Fragment>
-);
+    AndreInntekterListeElementProps & InjectedIntlProps
+> = ({ annenInntekt, intl }) => {
+    const { type, tidsperiode } = annenInntekt;
+    const intlKey = 'inntektstype.';
+    let title = `${type}`;
+
+    if (type === AnnenInntektType.JOBB_I_UTLANDET) {
+        const arbeidsgiver = (annenInntekt as JobbIUtlandetInntekt)
+            .arbeidsgiverNavn;
+        title = `${getMessage(
+            intl,
+            `${intlKey}${type.toLowerCase()}`
+        )} (${arbeidsgiver})`;
+    } else {
+        title = getMessage(intl, `${intlKey}${type.toLowerCase()}`);
+    }
+
+    return (
+        <ListElement
+            title={title}
+            text={prettifyTidsperiode(tidsperiode)}
+            deleteLinkText={'Slett periode'}
+        />
+    );
+};
 
 export default AndreInntekterBolk;

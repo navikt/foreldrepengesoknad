@@ -1,5 +1,6 @@
 import { Alder } from '../../types/common';
 import * as moment from 'moment';
+import { TidsperiodePartial } from 'common/types';
 
 export const getDateFromString = (dato?: string) => {
     if (dato) {
@@ -33,6 +34,12 @@ export const ISODateToPrettyDateFormat = (dato?: Date | string) => {
             : '';
     }
     return dato;
+};
+
+export const prettifyTidsperiode = (tidsperiode: TidsperiodePartial) => {
+    return `${ISODateToPrettyDateFormat(
+        tidsperiode.fom
+    )} - ${ISODateToPrettyDateFormat(tidsperiode.tom)}`;
 };
 
 export const findDateMostDistantInPast = (

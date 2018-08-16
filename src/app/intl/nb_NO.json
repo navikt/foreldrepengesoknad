@@ -73,13 +73,14 @@
     "annenInntekt.arbeidsforhold.organisasjonsnummer":
         "ORG.NR: {organisasjonsnummer}",
 
-    "inntektstype.jobbIUtlandet": "Jobb i utlandet",
-    "inntektstype.militæret":
+    "inntektstype.etterlønn_arbeidsgiver":
+        "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.militær_eller_siviltjeneste":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
-    "inntektstype.videreutdanning":
+    "inntektstype.lønn_under_utdanning":
         "Lønn ved permisjon for videreutdanning eller etterutdanning",
     "inntektstype.ventelønn": "Ventelønn",
-    "inntektstype.sluttvederlag": "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
