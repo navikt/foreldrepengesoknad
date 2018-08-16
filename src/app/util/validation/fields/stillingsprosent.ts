@@ -6,7 +6,14 @@ import { getFloatFromString } from 'common/util/numberUtils';
 const isStillingsprosentMax100Percent = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
     if (pst) {
-        return pst <= 100 && pst > 0;
+        return pst <= 100;
+    }
+    return false;
+};
+const isStillingsprosentAbove0 = (stillingsprosent: string): boolean => {
+    const pst = getFloatFromString(stillingsprosent);
+    if (pst) {
+        return pst > 0;
     }
     return false;
 };
@@ -24,6 +31,10 @@ export const getStillingsprosentRegler = (
         {
             test: () => isStillingsprosentMax100Percent(stillingsprosent),
             failText: getMessage(intl, `${intlKey}.over100prosent`)
+        },
+        {
+            test: () => isStillingsprosentAbove0(stillingsprosent),
+            failText: getMessage(intl, `${intlKey}.under0`)
         }
     ];
 };
