@@ -114,9 +114,6 @@ class AndreInntekterBolk extends React.Component<
                     <React.Fragment>
                         <Block margin="xs">
                             <h4>{oppfølgingsspørsmål}</h4>
-                        </Block>
-
-                        <Block margin="xs">
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(
@@ -168,7 +165,8 @@ interface AndreInntekterListeElementProps {
 const AndreInntekterListeElement: React.StatelessComponent<
     AndreInntekterListeElementProps & InjectedIntlProps
 > = ({ annenInntekt, intl }) => {
-    const { type, tidsperiode } = annenInntekt;
+    const { type, tidsperiode, vedlegg } = annenInntekt;
+    const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
     let title = `${type}`;
 
@@ -187,7 +185,13 @@ const AndreInntekterListeElement: React.StatelessComponent<
         <ListElement
             title={title}
             text={prettifyTidsperiode(tidsperiode)}
-            deleteLinkText={'Slett periode'}
+            deleteLinkText="Slett periode"
+            etikettProps={{
+                type: harVedlegg ? 'suksess' : 'fokus',
+                children: harVedlegg
+                    ? 'Dokumentasjon er vedlagt'
+                    : 'Dokumentasjon mangler'
+            }}
         />
     );
 };

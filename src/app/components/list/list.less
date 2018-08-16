@@ -1,0 +1,39 @@
+.list {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+
+    .listElement {
+        border-radius: 4px;
+        border: solid 1px #7f756c;
+        padding: 1rem;
+        margin-bottom: 1rem;
+
+        &__top {
+            .title {
+                display: inline-block;
+                font-weight: bold;
+                width: 95%;
+            }
+
+            svg {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        &__bottom {
+            margin-top: 0.5rem;
+
+            .linkButton {
+                float: right;
+            }
+        }
+
+        &__text {
+            margin-top: 0.5rem;
+        }
+    }
+}

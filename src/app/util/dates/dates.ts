@@ -39,7 +39,7 @@ export const ISODateToPrettyDateFormat = (dato?: Date | string) => {
 export const prettifyTidsperiode = (tidsperiode: TidsperiodePartial) => {
     return `${ISODateToPrettyDateFormat(
         tidsperiode.fom
-    )} - ${ISODateToPrettyDateFormat(tidsperiode.tom)}`;
+    )} - ${ISODateToPrettyDateFormat(tidsperiode.tom) || 'pågående'}`;
 };
 
 export const findDateMostDistantInPast = (
