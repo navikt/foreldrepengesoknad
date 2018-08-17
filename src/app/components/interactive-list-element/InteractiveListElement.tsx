@@ -3,8 +3,10 @@ import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
 import CustomSVG from 'common/components/custom-svg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 import { default as Etikett, EtikettBaseProps } from 'nav-frontend-etiketter';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import './interactiveListElement.less';
+import getMessage from 'common/util/i18nUtils';
 const pencil = require('./pencil.svg').default;
 
 export interface InteractiveListElementProps {
@@ -21,8 +23,8 @@ interface AllListElementProps extends InteractiveListElementProps {
 
 const cls = BEMHelper('interactiveListElement');
 
-export default class InteractiveListElement extends React.Component<
-    AllListElementProps
+class InteractiveListElement extends React.Component<
+    AllListElementProps & InjectedIntlProps
 > {
     render() {
         const {
@@ -31,7 +33,8 @@ export default class InteractiveListElement extends React.Component<
             deleteLinkText,
             etikettProps,
             onDelete,
-            onEdit
+            onEdit,
+            intl
         } = this.props;
         return (
             <li className={cls.className}>
@@ -40,7 +43,7 @@ export default class InteractiveListElement extends React.Component<
                     <button
                         className="interactiveListElement__top__editButton"
                         onClick={onEdit}
-                        {...{ 'aria-label': 'Rediger' }}
+                        {...{ 'aria-label': getMessage(intl, 'rediger') }}
                         type="button">
                         <CustomSVG
                             className="interactiveListElement__top__editButton__icon"
@@ -67,3 +70,5 @@ export default class InteractiveListElement extends React.Component<
         );
     }
 }
+
+export default injectIntl(InteractiveListElement);
