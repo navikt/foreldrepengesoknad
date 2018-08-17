@@ -30,6 +30,7 @@ import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
+import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organisasjonsnummer';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -175,6 +176,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             intl,
                             'selvstendigNæringsdrivende.modal.navn'
                         )}
+                        required={true}
                         onChange={(e: InputChangeEvent) =>
                             this.updateNæring({
                                 navnPåNæringen: e.target.value
@@ -195,7 +197,15 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 organisasjonsnummer: e.target.value
                             })
                         }
+                        maxLength={9}
+                        minLength={9}
+                        pattern="[0-9]{9}"
+                        required={true}
                         value={organisasjonsnummer || ''}
+                        validators={getOrganisasjonsnummerRegler(
+                            organisasjonsnummer || '',
+                            intl
+                        )}
                     />
                 </Block>
 
