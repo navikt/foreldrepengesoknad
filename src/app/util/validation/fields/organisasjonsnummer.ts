@@ -7,11 +7,8 @@ const onlyNumbersRegExp = /^[0-9]*$/;
 const harVerdi = (orgnr: string | undefined) => {
     return orgnr !== undefined && orgnr !== '';
 };
-const er9Tegn = (orgnr: string): boolean => {
-    return orgnr.length === 9;
-};
-const erKunTall = (orgnr: string): boolean => {
-    return onlyNumbersRegExp.test(orgnr);
+const er9Tall = (orgnr: string): boolean => {
+    return onlyNumbersRegExp.test(orgnr) && orgnr.length === 9;
 };
 
 export const getOrganisasjonsnummerRegler = (
@@ -25,12 +22,8 @@ export const getOrganisasjonsnummerRegler = (
             failText: getMessage(intl, `${intlKey}.required`)
         },
         {
-            test: () => er9Tegn(organisasjonsnummer),
-            failText: getMessage(intl, `${intlKey}.9tall`)
-        },
-        {
-            test: () => erKunTall(organisasjonsnummer),
-            failText: getMessage(intl, `${intlKey}.kunTall`)
+            test: () => er9Tall(organisasjonsnummer),
+            failText: getMessage(intl, `${intlKey}.er9tall`)
         }
     ];
 };

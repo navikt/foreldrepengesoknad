@@ -328,6 +328,17 @@
         "Du må legge inn en dato som er etter fra-datoen",
     "valideringsfeil.utenlandsopphold.overlapp":
         "Du har allerede lagt inn utenlandsopphold i denne perioden",
+    "valideringsfeil.organisasjonsnummer.required":
+        "Organisasjonsnummer må fylles ut",
+    "valideringsfeil.organisasjonsnummer.er9tall":
+        "Organisasjonsnummer må bestå av 9 tall",
+    "valideringsfeil.stillingsprosent.required": "Stillingsprosent er påkrevd",
+    "valideringsfeil.stillingsprosent.ugyldigTall":
+        "Stillingsprosent må være et gyldig tall opp til 100",
+    "valideringsfeil.stillingsprosent.over100prosent":
+        "Stillingsprosent kan være maks 100",
+    "valideringsfeil.stillingsprosent.under0":
+        "Stillingsprosenten må være over 0",
 
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
