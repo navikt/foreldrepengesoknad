@@ -108,7 +108,7 @@ class AndreInntekterBolk extends React.Component<
         } = this.props;
 
         const { annenInntektToEdit } = this.state;
-        const InntektListElement = injectIntl(AndreInntekterListeElement);
+        const ListElement = injectIntl(AndreInntekterListeElement);
 
         return (
             <React.Fragment>
@@ -123,7 +123,7 @@ class AndreInntekterBolk extends React.Component<
                                     annenInntekt: AnnenInntekt,
                                     index: number
                                 ) => (
-                                    <InntektListElement
+                                    <ListElement
                                         annenInntekt={annenInntekt}
                                         key={`annenInntekt-${index}`}
                                         onEdit={() =>
@@ -190,16 +190,18 @@ const AndreInntekterListeElement: React.StatelessComponent<
         title = getMessage(intl, `${intlKey}${type.toLowerCase()}`);
     }
 
+    const deleteLinkText = getMessage(intl, 'slett.periode');
+    const dokVedlagt = getMessage(intl, 'dokumentasjon.vedlagt');
+    const dokMangler = getMessage(intl, 'dokumentasjon.mangler');
+
     return (
         <InteractiveListElement
             title={title}
             text={prettifyTidsperiode(tidsperiode)}
-            deleteLinkText="Slett periode"
+            deleteLinkText={deleteLinkText}
             etikettProps={{
                 type: harVedlegg ? 'suksess' : 'fokus',
-                children: harVedlegg
-                    ? 'Dokumentasjon er vedlagt'
-                    : 'Dokumentasjon mangler'
+                children: harVedlegg ? dokVedlagt : dokMangler
             }}
             {...rest}
         />

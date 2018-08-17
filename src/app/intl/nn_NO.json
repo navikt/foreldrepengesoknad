@@ -71,6 +71,14 @@
     "annenInntekt.arbeidsforhold.organisasjonsnummer":
         "ORG.NR: {organisasjonsnummer}",
 
+    "slett.utenlandsopphold": "Slett opphold",
+    "slett.oppdrag": "Slett oppdrag",
+    "slett.næring": "Slett næring",
+    "slett.periode": "Slett periode",
+
+    "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
+    "dokumentasjon.mangler": "Dokumentasjon mangler",
+
     "inntektstype.etterlønn_arbeidsgiver":
         "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektstype.militær_eller_siviltjeneste":

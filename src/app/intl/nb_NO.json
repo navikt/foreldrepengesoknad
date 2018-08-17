@@ -272,6 +272,14 @@
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
     "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
 
+    "slett.utenlandsopphold": "Slett opphold",
+    "slett.oppdrag": "Slett oppdrag",
+    "slett.næring": "Slett næring",
+    "slett.periode": "Slett periode",
+
+    "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
+    "dokumentasjon.mangler": "Dokumentasjon mangler",
+
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
