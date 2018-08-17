@@ -65,6 +65,7 @@ class ValiderbarForm extends React.Component<
 
     onSubmit(e: FormSubmitEvent) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.validateAll()) {
             if (this.props.onSubmit) {
                 this.props.onSubmit(e);
