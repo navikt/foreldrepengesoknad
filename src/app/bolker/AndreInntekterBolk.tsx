@@ -39,9 +39,9 @@ class AndreInntekterBolk extends React.Component<
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.onAdd = this.onAdd.bind(this);
-        this.onEdit = this.onEdit.bind(this);
+        this.onEditSubmit = this.onEditSubmit.bind(this);
         this.onDelete = this.onDelete.bind(this);
-        this.onSelect = this.onSelect.bind(this);
+        this.onEdit = this.onEdit.bind(this);
 
         this.state = {
             modalIsOpen: false
@@ -54,7 +54,7 @@ class AndreInntekterBolk extends React.Component<
         this.closeModal();
     }
 
-    onEdit(annenInntekt: AnnenInntekt) {
+    onEditSubmit(annenInntekt: AnnenInntekt) {
         const { andreInntekterSiste10Mnd, onChange } = this.props;
         const { annenInntektIndex } = this.state;
         const editedInntekter = andreInntekterSiste10Mnd.slice();
@@ -75,7 +75,7 @@ class AndreInntekterBolk extends React.Component<
         onChange(editedInntekter);
     }
 
-    onSelect(annenInntektToEdit: AnnenInntekt, annenInntektIndex: number) {
+    onEdit(annenInntektToEdit: AnnenInntekt, annenInntektIndex: number) {
         this.openModal({
             annenInntektToEdit,
             annenInntektIndex
@@ -123,6 +123,12 @@ class AndreInntekterBolk extends React.Component<
                                     <InntektListElement
                                         annenInntekt={annenInntekt}
                                         key={`annenInntekt-${index}`}
+                                        onEdit={() =>
+                                            this.onEdit(annenInntekt, index)
+                                        }
+                                        onDelete={() =>
+                                            this.onDelete(annenInntekt)
+                                        }
                                     />
                                 )}
                             />
@@ -150,7 +156,7 @@ class AndreInntekterBolk extends React.Component<
                     children={null}
                     annenInntekt={annenInntektToEdit}
                     onAdd={this.onAdd}
-                    onEdit={this.onEdit}
+                    onEdit={this.onEditSubmit}
                     editMode={annenInntektToEdit !== undefined}
                 />
             </React.Fragment>
@@ -160,11 +166,13 @@ class AndreInntekterBolk extends React.Component<
 
 interface AndreInntekterListeElementProps {
     annenInntekt: AnnenInntekt;
+    onEdit: () => void;
+    onDelete: () => void;
 }
 
 const AndreInntekterListeElement: React.StatelessComponent<
     AndreInntekterListeElementProps & InjectedIntlProps
-> = ({ annenInntekt, intl }) => {
+> = ({ annenInntekt, intl, ...rest }) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
@@ -192,6 +200,7 @@ const AndreInntekterListeElement: React.StatelessComponent<
                     ? 'Dokumentasjon er vedlagt'
                     : 'Dokumentasjon mangler'
             }}
+            {...rest}
         />
     );
 };
