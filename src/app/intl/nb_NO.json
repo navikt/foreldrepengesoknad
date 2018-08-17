@@ -13,6 +13,8 @@
 
     "pågående": "pågående",
 
+    "rediger": "Rediger",
+
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
 
     "søknad.pageheading": "Søknad om foreldrepenger",
@@ -73,13 +75,14 @@
     "annenInntekt.arbeidsforhold.organisasjonsnummer":
         "ORG.NR: {organisasjonsnummer}",
 
-    "inntektstype.jobbIUtlandet": "Jobb i utlandet",
-    "inntektstype.militæret":
+    "inntektstype.etterlønn_arbeidsgiver":
+        "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.militær_eller_siviltjeneste":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
-    "inntektstype.videreutdanning":
+    "inntektstype.lønn_under_utdanning":
         "Lønn ved permisjon for videreutdanning eller etterutdanning",
     "inntektstype.ventelønn": "Ventelønn",
-    "inntektstype.sluttvederlag": "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
@@ -270,6 +273,14 @@
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
     "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
+
+    "slett.utenlandsopphold": "Slett opphold",
+    "slett.oppdrag": "Slett oppdrag",
+    "slett.næring": "Slett næring",
+    "slett.periode": "Slett periode",
+
+    "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
+    "dokumentasjon.mangler": "Dokumentasjon mangler",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
