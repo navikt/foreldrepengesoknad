@@ -7,5 +7,4 @@ export const inngangErGyldig = (
     kjønn: Kjønn
 ): boolean =>
     søkerRolle !== undefined ||
-    situasjon === Søkersituasjon.STEBARN ||
     (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN);

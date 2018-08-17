@@ -259,8 +259,6 @@
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
     "terminbekreftelseDato.infotekst":
         "Vi trenger disse opplysningene fordi....",
-    "terminbekreftelsen.text.terminbekreftelsen":
-        "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
 
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
 
@@ -282,6 +280,11 @@
         "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
     "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
+
+    "vedlegg.veileder.terminbekreftelsen":
+        "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
+    "vedlegg.veileder.omsorgsovertakelse":
+        "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
 

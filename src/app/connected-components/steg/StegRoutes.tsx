@@ -10,7 +10,6 @@ import { StegID } from '../../util/routing/stegConfig';
 import Applikasjonsside from '../sider/Applikasjonsside';
 import RelasjonTilBarnFødselSteg from './relasjon-til-barn-fødsel/RelasjonTilBarnFødselSteg';
 import RelasjonTilBarnAdopsjonSteg from './relasjon-til-barn-adopsjon/RelasjonTilBarnAdopsjonSteg';
-import RelasjonTilBarnStebarnsadopsjonSteg from './relasjon-til-barn-stebarnsadopsjon/RelasjonTilBarnStebarnsadopsjonSteg';
 import RelasjonTilBarnForeldreansvarSteg from './relasjon-til-barn-foreldreansvar/RelasjonTilBarnForeldreansvarSteg';
 import UtenlandsoppholdSteg from './utenlandsopphold/UtenlandsoppholdSteg';
 import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
@@ -39,13 +38,6 @@ class StegRoutes extends React.Component<Props> {
                         path={søknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}
                         component={RelasjonTilBarnAdopsjonSteg}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
-                    />
-                    <Route
-                        path={søknadStegPath(
-                            StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON
-                        )}
-                        component={RelasjonTilBarnStebarnsadopsjonSteg}
-                        key={StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON}
                     />
                     <Route
                         path={søknadStegPath(
