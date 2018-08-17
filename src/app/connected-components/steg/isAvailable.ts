@@ -3,8 +3,7 @@ import Søknad from '../../types/søknad/Søknad';
 import {
     søknadGjelderAdopsjon,
     søknadGjelderForeldreansvar,
-    søknadGjelderFødsel,
-    søknadGjelderStebarn
+    søknadGjelderFødsel
 } from '../../util/validation/fields/situasjon';
 import { barnErGyldig } from '../../util/validation/steg/barn';
 import { AppState } from '../../redux/reducers/index';
@@ -27,8 +26,6 @@ const isAvailable = (stegId: StegID, state: AppState): boolean => {
             return harGodkjentVilkår(søknad) && søknadGjelderFødsel(søknad);
         case StegID.RELASJON_TIL_BARN_ADOPSJON:
             return harGodkjentVilkår(søknad) && søknadGjelderAdopsjon(søknad);
-        case StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON:
-            return harGodkjentVilkår(søknad) && søknadGjelderStebarn(søknad);
         case StegID.RELASJON_TIL_BARN_FORELDREANSVAR:
             return (
                 harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad)

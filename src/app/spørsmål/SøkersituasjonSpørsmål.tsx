@@ -32,7 +32,6 @@ const SøkersituasjonSpørsmål = (props: Props) => {
             radios={[
                 getSituasjonOption(Søkersituasjon.ADOPSJON),
                 getSituasjonOption(Søkersituasjon.FØDSEL),
-                getSituasjonOption(Søkersituasjon.STEBARN),
                 getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
             ]}
             name="søkersituasjon"
