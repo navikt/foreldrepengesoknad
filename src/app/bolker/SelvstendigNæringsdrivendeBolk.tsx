@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
@@ -9,6 +9,7 @@ import InteractiveListElement, {
     InteractiveListElementProps
 } from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
+import getMessage from 'common/util/i18nUtils';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -104,6 +105,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         } = this.props;
 
         const { næringToEdit } = this.state;
+        const ListElement = injectIntl(NæringListeElement);
 
         return (
             <React.Fragment>
@@ -118,7 +120,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                     updatedNæring: Næring,
                                     index: number
                                 ) => (
-                                    <NæringListeElement
+                                    <ListElement
                                         næring={updatedNæring}
                                         onEdit={() =>
                                             this.onSelect(updatedNæring, index)
@@ -170,14 +172,16 @@ interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
 }
 
-const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = ({
-    næring,
-    ...rest
-}) => (
-    <InteractiveListElement
-        title={næring.navnPåNæringen}
-        text={prettifyTidsperiode(næring.tidsperiode)}
-        deleteLinkText="Slett periode"
-        {...rest}
-    />
-);
+const NæringListeElement: React.StatelessComponent<
+    NæringListeElementProps & InjectedIntlProps
+> = ({ næring, intl, ...rest }) => {
+    const deleteLinkText = getMessage(intl, 'slett.næring');
+    return (
+        <InteractiveListElement
+            title={næring.navnPåNæringen}
+            text={prettifyTidsperiode(næring.tidsperiode)}
+            deleteLinkText={deleteLinkText}
+            {...rest}
+        />
+    );
+};

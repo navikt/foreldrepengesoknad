@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
@@ -9,6 +9,7 @@ import InteractiveListElement, {
 } from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
 import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
 
 interface FrilansOppdragBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -102,6 +103,7 @@ export default class FrilansOppdragBolk extends React.Component<
         } = this.props;
 
         const { oppdragToEdit } = this.state;
+        const ListElement = injectIntl(FrilansOppdragListeElement);
 
         return (
             <React.Fragment>
@@ -116,7 +118,7 @@ export default class FrilansOppdragBolk extends React.Component<
                                     updatedOppdrag: FrilansOppdrag,
                                     index: number
                                 ) => (
-                                    <FrilansOppdragListeElement
+                                    <ListElement
                                         oppdrag={updatedOppdrag}
                                         onDelete={() =>
                                             this.onDelete(updatedOppdrag)
@@ -165,12 +167,15 @@ interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
 }
 
 const FrilansOppdragListeElement: React.StatelessComponent<
-    FrilansOppdragListeElementProps
-> = ({ oppdrag, ...rest }) => (
-    <InteractiveListElement
-        title={oppdrag.navnPåArbeidsgiver}
-        text={prettifyTidsperiode(oppdrag.tidsperiode)}
-        deleteLinkText="Slett oppdrag"
-        {...rest}
-    />
-);
+    FrilansOppdragListeElementProps & InjectedIntlProps
+> = ({ oppdrag, intl, ...rest }) => {
+    const deleteLinkText = getMessage(intl, 'slett.oppdrag');
+    return (
+        <InteractiveListElement
+            title={oppdrag.navnPåArbeidsgiver}
+            text={prettifyTidsperiode(oppdrag.tidsperiode)}
+            deleteLinkText={deleteLinkText}
+            {...rest}
+        />
+    );
+};

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
-import { FormattedMessage } from 'react-intl';
 import {
     UtenlandsoppholdType,
     Utenlandsopphold
@@ -15,6 +14,8 @@ import List from '../components/list/List';
 import InteractiveListElement, {
     InteractiveListElementProps
 } from '../components/interactive-list-element/InteractiveListElement';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -110,6 +111,7 @@ class UtenlandsoppholdBolk extends React.Component<
         } = this.props;
         const { oppholdToEdit } = this.state;
 
+        const ListElement = injectIntl(OppholdListeElement);
         return (
             <React.Fragment>
                 {renderSpørsmål()}
@@ -123,7 +125,7 @@ class UtenlandsoppholdBolk extends React.Component<
                                     oppholdToRender: Utenlandsopphold,
                                     index: number
                                 ) => (
-                                    <OppholdListeElement
+                                    <ListElement
                                         opphold={oppholdToRender}
                                         onEdit={() =>
                                             this.onOppholdSelect(
@@ -172,14 +174,17 @@ interface OppholdListeElementProps extends InteractiveListElementProps {
 }
 
 const OppholdListeElement: React.StatelessComponent<
-    OppholdListeElementProps
-> = ({ opphold, ...rest }) => (
-    <InteractiveListElement
-        title={countries.getName(opphold.land, 'nb')}
-        text={prettifyTidsperiode(opphold.tidsperiode)}
-        deleteLinkText="Slett utenlandsopphold"
-        {...rest}
-    />
-);
+    OppholdListeElementProps & InjectedIntlProps
+> = ({ opphold, intl, ...rest }) => {
+    const deleteLinKText = getMessage(intl, 'slett.utenlandsopphold');
+    return (
+        <InteractiveListElement
+            title={countries.getName(opphold.land, 'nb')}
+            text={prettifyTidsperiode(opphold.tidsperiode)}
+            deleteLinkText={deleteLinKText}
+            {...rest}
+        />
+    );
+};
 
 export default UtenlandsoppholdBolk;
