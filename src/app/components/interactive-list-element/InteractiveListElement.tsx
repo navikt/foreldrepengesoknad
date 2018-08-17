@@ -4,9 +4,10 @@ import CustomSVG from 'common/components/custom-svg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 import { default as Etikett, EtikettBaseProps } from 'nav-frontend-etiketter';
 
+import './interactiveListElement.less';
 const pencil = require('./pencil.svg').default;
 
-interface ListElementProps {
+interface InteractiveListElementProps {
     title: string;
     text: string;
     deleteLinkText: string;
@@ -15,9 +16,11 @@ interface ListElementProps {
     onDelete: () => void;
 }
 
-const cls = BEMHelper('listElement');
+const cls = BEMHelper('interactiveListElement');
 
-export default class ListElement extends React.Component<ListElementProps> {
+export default class InteractiveListElement extends React.Component<
+    InteractiveListElementProps
+> {
     render() {
         const {
             title,
@@ -46,7 +49,7 @@ export default class ListElement extends React.Component<ListElementProps> {
                         <Etikett {...etikettProps} />
                     )}
                     <button
-                        className="listElement__bottom__slettKnapp"
+                        className="interactiveListElement__bottom__slettKnapp"
                         onClick={onDelete}
                         type="button">
                         {deleteLinkText}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { FormattedMessage } from 'react-intl';
-import InteractiveList from '../components/interactive-list/InteractiveList';
 import {
     UtenlandsoppholdType,
     Utenlandsopphold
@@ -9,8 +8,11 @@ import {
 import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
 } from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
-import { ISODateToPrettyDateFormat } from '../util/dates/dates';
+import { prettifyTidsperiode } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
+import Block from 'common/components/block/Block';
+import List from '../components/list/List';
+import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -111,25 +113,32 @@ class UtenlandsoppholdBolk extends React.Component<
                 {renderSpørsmål()}
                 {showUtenlandsoppholdContent && (
                     <React.Fragment>
-                        <div className="blokk-xs">
+                        <Block margin="xs">
                             <h4>{oppfølgingsspørsmål}</h4>
-                        </div>
-
-                        <div className="blokk-xs">
-                            <InteractiveList
+                            <List
                                 data={opphold}
-                                onSelect={this.onOppholdSelect}
-                                onDelete={this.onOppholdDelete}
                                 renderElement={(
-                                    oppholdToRender: Utenlandsopphold
+                                    oppholdToRender: Utenlandsopphold,
+                                    index: number
                                 ) => (
                                     <OppholdListeElement
                                         opphold={oppholdToRender}
+                                        onEdit={() =>
+                                            this.onOppholdSelect(
+                                                oppholdToRender,
+                                                index
+                                            )
+                                        }
+                                        onDelete={() =>
+                                            this.onOppholdDelete(
+                                                oppholdToRender
+                                            )
+                                        }
+                                        key={JSON.stringify(oppholdToRender)}
                                     />
                                 )}
-                                deleteAriaLabel="Slett utenlandsopphold"
                             />
-                        </div>
+                        </Block>
 
                         <Knapp
                             onClick={() => this.openModal()}
@@ -158,25 +167,19 @@ class UtenlandsoppholdBolk extends React.Component<
 
 interface OppholdListeElementProps {
     opphold: Utenlandsopphold;
+    onEdit: () => void;
+    onDelete: () => void;
 }
 
 const OppholdListeElement: React.StatelessComponent<
     OppholdListeElementProps
-> = ({ opphold }) => (
-    <React.Fragment>
-        <div className="interactiveList__element__land">
-            {countries.getName(opphold.land, 'nb')}
-        </div>
-        <div className="interactiveList__element__dato">
-            <FormattedMessage
-                id="tidsintervall"
-                values={{
-                    fom: ISODateToPrettyDateFormat(opphold.tidsperiode.fom),
-                    tom: ISODateToPrettyDateFormat(opphold.tidsperiode.tom)
-                }}
-            />
-        </div>
-    </React.Fragment>
+> = ({ opphold, ...rest }) => (
+    <InteractiveListElement
+        title={countries.getName(opphold.land, 'nb')}
+        text={prettifyTidsperiode(opphold.tidsperiode)}
+        deleteLinkText="Slett utenlandsopphold"
+        {...rest}
+    />
 );
 
 export default UtenlandsoppholdBolk;

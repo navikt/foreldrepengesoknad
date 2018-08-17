@@ -4,7 +4,7 @@ import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
-import ListElement from '../components/list-element/ListElement';
+import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
 import Block from 'common/components/block/Block';
 
@@ -167,7 +167,7 @@ interface FrilansOppdragListeElementProps {
 const FrilansOppdragListeElement: React.StatelessComponent<
     FrilansOppdragListeElementProps
 > = ({ oppdrag, ...rest }) => (
-    <ListElement
+    <InteractiveListElement
         title={oppdrag.navnPåArbeidsgiver}
         text={prettifyTidsperiode(oppdrag.tidsperiode)}
         deleteLinkText="Slett oppdrag"
