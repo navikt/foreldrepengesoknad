@@ -4,7 +4,6 @@ export enum StegID {
     'INNGANG' = 'inngang',
     'RELASJON_TIL_BARN_FØDSEL' = 'relasjon-til-barn-fodsel',
     'RELASJON_TIL_BARN_ADOPSJON' = 'relasjon-til-barn-adopsjon',
-    'RELASJON_TIL_BARN_STEBARNSADOPSJON' = 'relasjon-til-barn-stebarnsadopsjon',
     'RELASJON_TIL_BARN_FORELDREANSVAR' = 'relasjon-til-barn-foreldreansvar',
     'UTENLANDSOPPHOLD' = 'utenlandsopphold',
     'ANNEN_FORELDER' = 'annen-forelder',
@@ -33,12 +32,6 @@ const stegConfig: StegConfig = {
     },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
         tittel: 'Relasjon til barn (adopsjon) header',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.ANNEN_FORELDER,
-        index: 1
-    },
-    [StegID.RELASJON_TIL_BARN_STEBARNSADOPSJON]: {
-        tittel: 'Relasjon til barn tidlig stebarnsadopsjon',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
