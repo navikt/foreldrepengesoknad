@@ -133,19 +133,19 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                         </div>
 
                         <SelvstendigNæringsdrivendeModal
+                            næring={næringToEdit}
                             isOpen={this.state.modalIsOpen}
-                            onRequestClose={() =>
+                            onCancel={() =>
                                 this.closeModal({
                                     næringIndex: undefined,
                                     næringToEdit: undefined
                                 })
                             }
-                            contentLabel="Periode som selvstendig næringsdrivende"
-                            children={null}
-                            næring={næringToEdit}
-                            onAdd={this.onAdd}
-                            onEdit={this.onEdit}
-                            editMode={næringToEdit !== undefined}
+                            onSubmit={
+                                næringToEdit !== undefined
+                                    ? this.onEdit
+                                    : this.onAdd
+                            }
                         />
                     </React.Fragment>
                 )}
