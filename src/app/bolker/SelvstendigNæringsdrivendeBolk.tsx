@@ -5,7 +5,9 @@ import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
 import Block from 'common/components/block/Block';
-import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
+import InteractiveListElement, {
+    InteractiveListElementProps
+} from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
 
 interface SelvstendigNæringsdrivendeBolkProps {
@@ -164,10 +166,8 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 }
 
-interface NæringListeElementProps {
+interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
-    onEdit: () => void;
-    onDelete: () => void;
 }
 
 const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = ({

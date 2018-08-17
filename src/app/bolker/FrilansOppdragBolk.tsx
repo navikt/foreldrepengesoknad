@@ -4,7 +4,9 @@ import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
-import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
+import InteractiveListElement, {
+    InteractiveListElementProps
+} from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
 import Block from 'common/components/block/Block';
 
@@ -158,10 +160,8 @@ export default class FrilansOppdragBolk extends React.Component<
     }
 }
 
-interface FrilansOppdragListeElementProps {
+interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
     oppdrag: FrilansOppdrag;
-    onEdit: () => void;
-    onDelete: () => void;
 }
 
 const FrilansOppdragListeElement: React.StatelessComponent<

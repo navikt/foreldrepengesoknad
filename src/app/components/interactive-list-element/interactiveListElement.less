@@ -17,15 +17,15 @@
             width: 95%;
         }
 
-        button {
+        &__editButton {
             background: none;
             border: 0;
-        }
 
-        svg {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
+            &__icon {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
         }
     }
 
@@ -33,20 +33,7 @@
         margin-top: 0.5rem;
         min-height: 1rem;
 
-        .linkButton {
-            @media (max-width: @breakpoint) {
-                display: block;
-                margin-top: 0.5rem;
-            }
-
-            @media (min-width: @breakpoint) {
-                position: absolute;
-                bottom: 1rem;
-                right: 1rem;
-            }
-        }
-
-        &__slettKnapp {
+        &__deleteButton {
             .lenke-mixin();
             border-top: none;
             border-left: none;

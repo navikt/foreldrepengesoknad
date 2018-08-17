@@ -12,7 +12,9 @@ import { prettifyTidsperiode } from '../util/dates/dates';
 import * as countries from 'i18n-iso-countries';
 import Block from 'common/components/block/Block';
 import List from '../components/list/List';
-import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
+import InteractiveListElement, {
+    InteractiveListElementProps
+} from '../components/interactive-list-element/InteractiveListElement';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -165,10 +167,8 @@ class UtenlandsoppholdBolk extends React.Component<
     }
 }
 
-interface OppholdListeElementProps {
+interface OppholdListeElementProps extends InteractiveListElementProps {
     opphold: Utenlandsopphold;
-    onEdit: () => void;
-    onDelete: () => void;
 }
 
 const OppholdListeElement: React.StatelessComponent<
