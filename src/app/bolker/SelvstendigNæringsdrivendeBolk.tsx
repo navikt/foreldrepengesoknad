@@ -5,7 +5,7 @@ import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
 import Block from 'common/components/block/Block';
-import ListElement from '../components/list-element/ListElement';
+import InteractiveListElement from '../components/interactive-list-element/InteractiveListElement';
 import List from '../components/list/List';
 
 interface SelvstendigNæringsdrivendeBolkProps {
@@ -174,7 +174,7 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = 
     næring,
     ...rest
 }) => (
-    <ListElement
+    <InteractiveListElement
         title={næring.navnPåNæringen}
         text={prettifyTidsperiode(næring.tidsperiode)}
         deleteLinkText="Slett periode"

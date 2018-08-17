@@ -8,7 +8,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import List from '../components/list/List';
-import ListElement from '../components/list-element/ListElement';
+import { default as InteractiveListElement } from '../components/interactive-list-element/InteractiveListElement';
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -190,7 +190,7 @@ const AndreInntekterListeElement: React.StatelessComponent<
     }
 
     return (
-        <ListElement
+        <InteractiveListElement
             title={title}
             text={prettifyTidsperiode(tidsperiode)}
             deleteLinkText="Slett periode"
