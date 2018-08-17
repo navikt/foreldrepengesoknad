@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
-import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToPrettyDateFormat } from '../util/dates/dates';
+import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
+import InteractiveListElement, {
+    InteractiveListElementProps
+} from '../components/interactive-list-element/InteractiveListElement';
+import List from '../components/list/List';
+import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
 
 interface FrilansOppdragBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -32,7 +37,7 @@ export default class FrilansOppdragBolk extends React.Component<
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.onAdd = this.onAdd.bind(this);
-        this.onEdit = this.onEdit.bind(this);
+        this.onEditSubmit = this.onEditSubmit.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onSelect = this.onSelect.bind(this);
 
@@ -47,7 +52,7 @@ export default class FrilansOppdragBolk extends React.Component<
         this.closeModal();
     }
 
-    onEdit(oppdrag: FrilansOppdrag) {
+    onEditSubmit(oppdrag: FrilansOppdrag) {
         const { oppdragListe, onChange } = this.props;
         const { oppdragIndex } = this.state;
         const editedOppdragListe = oppdragListe.slice();
@@ -98,39 +103,42 @@ export default class FrilansOppdragBolk extends React.Component<
         } = this.props;
 
         const { oppdragToEdit } = this.state;
+        const ListElement = injectIntl(FrilansOppdragListeElement);
 
         return (
             <React.Fragment>
                 {renderSpørsmål()}
                 {showOppdragsPerioderContent && (
                     <React.Fragment>
-                        <div className="blokk-xs">
+                        <Block margin="xs">
                             <h4>{oppfølgingsspørsmål}</h4>
-                        </div>
-
-                        <div className="blokk-xs">
-                            <InteractiveList
+                            <List
                                 data={oppdragListe}
-                                onSelect={this.onSelect}
-                                onDelete={this.onDelete}
                                 renderElement={(
-                                    updatedOppdrag: FrilansOppdrag
+                                    updatedOppdrag: FrilansOppdrag,
+                                    index: number
                                 ) => (
-                                    <FrilansOppdragListeElement
+                                    <ListElement
                                         oppdrag={updatedOppdrag}
+                                        onDelete={() =>
+                                            this.onDelete(updatedOppdrag)
+                                        }
+                                        onEdit={() =>
+                                            this.onSelect(updatedOppdrag, index)
+                                        }
+                                        key={JSON.stringify(updatedOppdrag)}
                                     />
                                 )}
-                                deleteAriaLabel="Slett frilansoppdrag"
                             />
-                        </div>
+                        </Block>
 
-                        <div className="blokk-s">
+                        <Block margin="s">
                             <Knapp
                                 onClick={() => this.openModal()}
                                 htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
-                        </div>
+                        </Block>
                     </React.Fragment>
                 )}
 
@@ -146,7 +154,7 @@ export default class FrilansOppdragBolk extends React.Component<
                     children={null}
                     oppdrag={oppdragToEdit}
                     onAdd={this.onAdd}
-                    onEdit={this.onEdit}
+                    onEdit={this.onEditSubmit}
                     editMode={oppdragToEdit !== undefined}
                 />
             </React.Fragment>
@@ -154,27 +162,20 @@ export default class FrilansOppdragBolk extends React.Component<
     }
 }
 
-interface FrilansOppdragListeElementProps {
+interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
     oppdrag: FrilansOppdrag;
 }
 
 const FrilansOppdragListeElement: React.StatelessComponent<
-    FrilansOppdragListeElementProps
-> = ({ oppdrag }) => (
-    <React.Fragment>
-        <div className="interactiveList__element__land">
-            {oppdrag.navnPåArbeidsgiver}
-        </div>
-        <div className="interactiveList__element__dato">
-            <FormattedMessage
-                id="tidsintervall"
-                values={{
-                    fom: ISODateToPrettyDateFormat(oppdrag.tidsperiode.fom),
-                    tom: oppdrag.pågående
-                        ? 'pågående'
-                        : ISODateToPrettyDateFormat(oppdrag.tidsperiode.tom)
-                }}
-            />
-        </div>
-    </React.Fragment>
-);
+    FrilansOppdragListeElementProps & InjectedIntlProps
+> = ({ oppdrag, intl, ...rest }) => {
+    const deleteLinkText = getMessage(intl, 'slett.oppdrag');
+    return (
+        <InteractiveListElement
+            title={oppdrag.navnPåArbeidsgiver}
+            text={prettifyTidsperiode(oppdrag.tidsperiode)}
+            deleteLinkText={deleteLinkText}
+            {...rest}
+        />
+    );
+};

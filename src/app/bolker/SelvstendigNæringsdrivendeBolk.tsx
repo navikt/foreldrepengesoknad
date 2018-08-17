@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import InteractiveList from '../components/interactive-list/InteractiveList';
-import { ISODateToPrettyDateFormat } from '../util/dates/dates';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { prettifyTidsperiode } from '../util/dates/dates';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
+import Block from 'common/components/block/Block';
+import InteractiveListElement, {
+    InteractiveListElementProps
+} from '../components/interactive-list-element/InteractiveListElement';
+import List from '../components/list/List';
+import getMessage from 'common/util/i18nUtils';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -100,29 +105,38 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         } = this.props;
 
         const { næringToEdit } = this.state;
+        const ListElement = injectIntl(NæringListeElement);
 
         return (
             <React.Fragment>
                 {renderSpørsmål()}
                 {showNæringsPerioderContent && (
                     <React.Fragment>
-                        <div className="blokk-xs">
+                        <Block margin="xs">
                             <h4>{oppfølgingsspørsmål}</h4>
-                        </div>
-
-                        <div className="blokk-xs">
-                            <InteractiveList
+                            <List
                                 data={næringListe}
-                                onSelect={this.onSelect}
-                                onDelete={this.onDelete}
-                                renderElement={(updatedNæring: Næring) => (
-                                    <NæringListeElement
+                                renderElement={(
+                                    updatedNæring: Næring,
+                                    index: number
+                                ) => (
+                                    <ListElement
                                         næring={updatedNæring}
+                                        onEdit={() =>
+                                            this.onSelect(updatedNæring, index)
+                                        }
+                                        onDelete={() =>
+                                            this.onDelete(updatedNæring)
+                                        }
+                                        key={`${
+                                            updatedNæring.navnPåNæringen
+                                        }${JSON.stringify(
+                                            updatedNæring.tidsperiode
+                                        )}`}
                                     />
                                 )}
-                                deleteAriaLabel="Slett selvstendig næringsdrivende-periode"
                             />
-                        </div>
+                        </Block>
 
                         <div className="blokk-s">
                             <Knapp
@@ -154,27 +168,20 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 }
 
-interface NæringListeElementProps {
+interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
 }
 
-const NæringListeElement: React.StatelessComponent<NæringListeElementProps> = ({
-    næring
-}) => (
-    <React.Fragment>
-        <div className="interactiveList__element__land">
-            {næring.navnPåNæringen}
-        </div>
-        <div className="interactiveList__element__dato">
-            <FormattedMessage
-                id="tidsintervall"
-                values={{
-                    fom: ISODateToPrettyDateFormat(næring.tidsperiode.fom),
-                    tom: næring.pågående
-                        ? 'pågående'
-                        : ISODateToPrettyDateFormat(næring.tidsperiode.tom)
-                }}
-            />
-        </div>
-    </React.Fragment>
-);
+const NæringListeElement: React.StatelessComponent<
+    NæringListeElementProps & InjectedIntlProps
+> = ({ næring, intl, ...rest }) => {
+    const deleteLinkText = getMessage(intl, 'slett.næring');
+    return (
+        <InteractiveListElement
+            title={næring.navnPåNæringen}
+            text={prettifyTidsperiode(næring.tidsperiode)}
+            deleteLinkText={deleteLinkText}
+            {...rest}
+        />
+    );
+};
