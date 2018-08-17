@@ -2,6 +2,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { RegistrertAnnenForelder } from '../../../types/søknad/AnnenForelder';
 import Person from '../../../types/Person';
 import { erFarEllerMedmor } from '../../domain/personUtil';
+import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 
 export const annenForelderErGyldig = (
     søknad: Søknad,
@@ -16,11 +17,14 @@ export const annenForelderErGyldig = (
         erInformertOmSøknaden,
         skalHaForeldrepenger
     } = annenForelder;
-    const { rolle } = søker;
+    const { rolle, erAleneOmOmsorg } = søker;
     const kjønn = person && person.kjønn;
     const harOpplystOmSinPågåendeSak =
         registrertAnnenForelder &&
         registrertAnnenForelder.harOpplystOmSinPågåendeSak;
+    const barn = søknad.barn as ForeldreansvarBarn;
+    const vedleggOmsorgsovertakelse =
+        barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
 
     const result =
         kanIkkeOppgis === true ||
@@ -31,7 +35,11 @@ export const annenForelderErGyldig = (
             !erFarEllerMedmor(kjønn, rolle)) ||
         (skalHaForeldrepenger === true &&
             harRettPåForeldrepenger !== undefined) ||
-        (harOpplystOmSinPågåendeSak && !erFarEllerMedmor(kjønn, rolle));
+        (harOpplystOmSinPågåendeSak && !erFarEllerMedmor(kjønn, rolle)) ||
+        (erFarEllerMedmor(kjønn, rolle) &&
+            erAleneOmOmsorg &&
+            barn.foreldreansvarsdato &&
+            vedleggOmsorgsovertakelse);
 
     return result !== undefined && result !== false;
 };
