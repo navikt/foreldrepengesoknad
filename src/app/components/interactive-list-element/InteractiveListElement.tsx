@@ -7,19 +7,22 @@ import { default as Etikett, EtikettBaseProps } from 'nav-frontend-etiketter';
 import './interactiveListElement.less';
 const pencil = require('./pencil.svg').default;
 
-interface InteractiveListElementProps {
+export interface InteractiveListElementProps {
+    onEdit: () => void;
+    onDelete: () => void;
+}
+
+interface AllListElementProps extends InteractiveListElementProps {
     title: string;
     text: string;
     deleteLinkText: string;
     etikettProps?: EtikettBaseProps;
-    onEdit: () => void;
-    onDelete: () => void;
 }
 
 const cls = BEMHelper('interactiveListElement');
 
 export default class InteractiveListElement extends React.Component<
-    InteractiveListElementProps
+    AllListElementProps
 > {
     render() {
         const {
@@ -35,10 +38,15 @@ export default class InteractiveListElement extends React.Component<
                 <div className={cls.element('top')}>
                     <Normaltekst className="title">{title}</Normaltekst>
                     <button
+                        className="interactiveListElement__top__editButton"
                         onClick={onEdit}
                         {...{ 'aria-label': 'Rediger' }}
                         type="button">
-                        <CustomSVG iconRef={pencil} size={24} />
+                        <CustomSVG
+                            className="interactiveListElement__top__editButton__icon"
+                            iconRef={pencil}
+                            size={24}
+                        />
                     </button>
                 </div>
                 <Normaltekst className={cls.element('text')}>
@@ -49,7 +57,7 @@ export default class InteractiveListElement extends React.Component<
                         <Etikett {...etikettProps} />
                     )}
                     <button
-                        className="interactiveListElement__bottom__slettKnapp"
+                        className="interactiveListElement__bottom__deleteButton"
                         onClick={onDelete}
                         type="button">
                         {deleteLinkText}

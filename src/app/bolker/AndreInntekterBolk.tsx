@@ -8,7 +8,10 @@ import { Knapp } from 'nav-frontend-knapper';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
 import { prettifyTidsperiode } from '../util/dates/dates';
 import List from '../components/list/List';
-import { default as InteractiveListElement } from '../components/interactive-list-element/InteractiveListElement';
+import {
+    InteractiveListElementProps,
+    default as InteractiveListElement
+} from '../components/interactive-list-element/InteractiveListElement';
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -164,10 +167,8 @@ class AndreInntekterBolk extends React.Component<
     }
 }
 
-interface AndreInntekterListeElementProps {
+interface AndreInntekterListeElementProps extends InteractiveListElementProps {
     annenInntekt: AnnenInntekt;
-    onEdit: () => void;
-    onDelete: () => void;
 }
 
 const AndreInntekterListeElement: React.StatelessComponent<
