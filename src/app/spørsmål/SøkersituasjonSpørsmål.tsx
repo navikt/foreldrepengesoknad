@@ -30,8 +30,8 @@ const SøkersituasjonSpørsmål = (props: Props) => {
             checked={situasjon}
             legend={getMessage(intl, 'søkersituasjon.spørsmål')}
             radios={[
-                getSituasjonOption(Søkersituasjon.ADOPSJON),
                 getSituasjonOption(Søkersituasjon.FØDSEL),
+                getSituasjonOption(Søkersituasjon.ADOPSJON),
                 getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
             ]}
             name="søkersituasjon"
