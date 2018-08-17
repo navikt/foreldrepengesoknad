@@ -25,6 +25,11 @@ export const getStillingsprosentRegler = (
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
         {
+            test: () =>
+                stillingsprosent !== undefined && stillingsprosent !== '',
+            failText: getMessage(intl, `${intlKey}.required`)
+        },
+        {
             test: () => getFloatFromString(stillingsprosent) !== undefined,
             failText: getMessage(intl, `${intlKey}.ugyldigTall`)
         },
