@@ -65,15 +65,18 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const { barn, dispatch, stegProps, intl } = this.props;
         const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
-        const visSpørsmålOmEktefellesBarn = barn.adopsjonsdato !== undefined;
-        const visSpørsmålOmAntallBarn =
+        const visSpørsmålOmAdopsjonsdato =
             barn.adopsjonAvEktefellesBarn !== undefined;
+        const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
         const visSpørsmålOmFødselsdatoer =
             visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
         const visSpørsmålOmAdoptertIUtlandet =
-            barn.adoptertIUtlandet !== undefined ||
-            (visSpørsmålOmFødselsdatoer && fødselsdatoerFyltUt);
-        const visSpørsmålOmAnkomstdato = barn.adoptertIUtlandet === true;
+            !barn.adopsjonAvEktefellesBarn &&
+            visSpørsmålOmFødselsdatoer &&
+            fødselsdatoerFyltUt;
+        const visSpørsmålOmAnkomstdato =
+            barn.adopsjonAvEktefellesBarn === false &&
+            barn.adoptertIUtlandet === true;
         const visSpørsmålOmVedlegg =
             visSpørsmålOmAdoptertIUtlandet &&
             ((barn.adoptertIUtlandet === true &&
@@ -83,24 +86,6 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         return (
             <Steg {...stegProps}>
                 <Block>
-                    <DatoInput
-                        id="adopsjonsdato"
-                        label={getMessage(intl, 'adopsjonsdato.spørsmål')}
-                        onChange={(adopsjonsdato: Date) => {
-                            dispatch(
-                                søknadActions.updateBarn({
-                                    adopsjonsdato
-                                })
-                            );
-                        }}
-                        dato={barn.adopsjonsdato}
-                    />
-                </Block>
-
-                <Block
-                    visible={visSpørsmålOmEktefellesBarn}
-                    margin="none"
-                    hasChildBlocks={true}>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
                         onChange={(adopsjonAvEktefellesBarn: boolean) => {
@@ -110,6 +95,26 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 })
                             );
                         }}
+                    />
+                </Block>
+
+                <Block visible={visSpørsmålOmAdopsjonsdato}>
+                    <DatoInput
+                        id="adopsjonsdato"
+                        label={getMessage(
+                            intl,
+                            barn.adopsjonAvEktefellesBarn
+                                ? 'stebarnsadopsjonsdato.spørsmål'
+                                : 'adopsjonsdato.spørsmål'
+                        )}
+                        onChange={(adopsjonsdato: Date) => {
+                            dispatch(
+                                søknadActions.updateBarn({
+                                    adopsjonsdato
+                                })
+                            );
+                        }}
+                        dato={barn.adopsjonsdato}
                     />
                 </Block>
 
