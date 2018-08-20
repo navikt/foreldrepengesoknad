@@ -77,12 +77,21 @@
 
     "inntektstype.etterlønn_arbeidsgiver":
         "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.etterlønn_arbeidsgiver_info":
+        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
     "inntektstype.militær_eller_siviltjeneste":
         "Militæret, sivilforsvar eller sivilforsvarstjeneste",
+    "inntektstype.militær_eller_siviltjeneste_info":
+        "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.lønn_under_utdanning":
         "Lønn ved permisjon for videreutdanning eller etterutdanning",
+    "inntektstype.lønn_under_utdanning_info": "TODO",
     "inntektstype.ventelønn": "Ventelønn",
+    "inntektstype.ventelønn_info":
+        "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden ventelønnen gjelder for.",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
+    "inntektstype.jobb_i_utlandet_info":
+        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise arbeidsperioden, stillingsprosenten og inntekten din.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
