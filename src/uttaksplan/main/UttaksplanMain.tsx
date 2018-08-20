@@ -31,6 +31,7 @@ import Periodeplanlegger from 'uttaksplan/main/Periodeplanlegger';
 import UttaksplanSkjema from 'uttaksplan/components/skjema/uttaksplanSkjema/UttaksplanSkjema';
 import { getUttaksinfo, Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
+import UtaksperiodeFinalForm from 'uttaksplan/components/skjema/uttaksperiodeSkjema/UtaksperiodeFinalForm';
 
 export interface StateProps {
     form: UttaksplanFormState;
@@ -130,6 +131,7 @@ class UttaksplanMain extends React.Component<Props> {
                         foreldrepengene.
                     </Veilederinfo>
                 </div>
+                <UtaksperiodeFinalForm />
                 {!perioderOpprettet && (
                     <div className="blokk-m no-print">
                         <div className="blokk-l">
