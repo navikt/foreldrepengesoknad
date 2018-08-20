@@ -119,7 +119,8 @@ class AndreInntekterSteg extends React.Component<Props> {
                         arbeidsforhold={arbeidsforhold}
                     />
                 </Block>
-                <Block hasChildBlocks={true}>
+
+                <Block hasChildBlocks={true} margin="none">
                     <FrilanserBolk
                         søker={søker}
                         onChangeSøker={(søkerProperties: Søker) =>
@@ -136,7 +137,8 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block hasChildBlocks={true}>
+
+                <Block hasChildBlocks={true} margin="none">
                     <SelvstendigNæringsdrivendeBolk
                         oppfølgingsspørsmål={getMessage(
                             intl,
@@ -160,7 +162,8 @@ class AndreInntekterSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block hasChildBlocks={true}>
+
+                <Block hasChildBlocks={true} margin="none">
                     <AndreInntekterBolk
                         oppfølgingsspørsmål={getMessage(
                             intl,
