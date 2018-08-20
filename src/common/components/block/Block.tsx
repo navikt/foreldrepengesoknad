@@ -38,7 +38,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
     children,
     hasChildBlocks
 }) => {
-    if (children === undefined) {
+    if (children === undefined || (animated !== true && visible === false)) {
         return null;
     }
     const contentClass = classNames(cls.className, cls.modifier(margin));
