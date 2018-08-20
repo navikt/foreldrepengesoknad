@@ -129,7 +129,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
-                <Block>
+                <Block hasChildBlocks={true}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={
                             this.renderHarBoddINorgeSiste12MndSpørsmål
@@ -167,6 +167,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                 </Block>
 
                 <Block
+                    hasChildBlocks={true}
                     visible={
                         informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !==
                         undefined

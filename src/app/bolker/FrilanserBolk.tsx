@@ -125,7 +125,9 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={søker.harJobbetSomFrilansSiste10Mnd === true}>
+                <Block
+                    visible={søker.harJobbetSomFrilansSiste10Mnd === true}
+                    margin="none">
                     <FrilansOppdragBolk
                         renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
                         showOppdragsPerioderContent={
