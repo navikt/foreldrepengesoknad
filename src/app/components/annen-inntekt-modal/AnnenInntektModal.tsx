@@ -1,8 +1,5 @@
 import * as React from 'react';
-import Modal, { ModalProps } from 'nav-frontend-modal';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
-import { Undertittel } from 'nav-frontend-typografi';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
@@ -14,12 +11,9 @@ import {
     JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
 import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
-import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox, Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import BEMHelper from 'common/util/bem';
-import './annenInntektModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Landvelger from '../landvelger/Landvelger';
@@ -27,12 +21,14 @@ import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverN
 import { AttachmentType, Skjemanummer } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
+import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
+import ModalForm from 'common/components/modalForm/ModalForm';
 
-export interface AnnenInntektModalProps extends ModalProps {
+export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
-    editMode: boolean;
-    onAdd: (annenInntekt: AnnenInntekt) => void;
-    onEdit: (annenInntekt: AnnenInntekt) => void;
+    isOpen: boolean;
+    onCancel: () => void;
+    onSubmit: (annenInntekt: AnnenInntekt) => void;
 }
 
 type Props = AnnenInntektModalProps & InjectedIntlProps;
@@ -122,173 +118,152 @@ class AnnenInntektModal extends React.Component<Props, State> {
         }
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const { onAdd, onEdit, editMode } = this.props;
-        const { annenInntekt } = this.state;
-
-        if (editMode) {
-            onEdit(annenInntekt as AnnenInntekt);
-        } else {
-            onAdd(annenInntekt as AnnenInntekt);
-        }
+    onSubmit() {
+        this.props.onSubmit(this.state.annenInntekt as AnnenInntekt);
     }
 
     render() {
-        const { intl, onRequestClose, ...modalProps } = this.props;
+        const { intl, isOpen, onCancel } = this.props;
         const { annenInntekt } = this.state;
         const gjelderJobbIUtlandet =
             annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
 
-        const cls = BEMHelper('annenInntektModal');
-
+        const visTidsperiode = annenInntekt.type !== undefined;
         return (
-            <Modal
-                className={cls.className}
-                onRequestClose={onRequestClose}
-                {...modalProps}>
-                <form onSubmit={this.onSubmit}>
-                    <Undertittel className={cls.element('title')}>
-                        <FormattedMessage id="annenInntekt.modal.tittel" />
-                    </Undertittel>
-                    <Block>
-                        <InntektstypeVelger
-                            label={
-                                <Labeltekst intlId="annenInntekt.modal.select.spørsmål" />
-                            }
-                            onChange={(type: AnnenInntektType) =>
-                                this.updateAnnenInntekt({ type })
-                            }
-                            defaultValue={annenInntekt.type}
-                        />
-                    </Block>
-                    <Block visible={gjelderJobbIUtlandet}>
-                        <Landvelger
-                            defaultValue={
-                                (annenInntekt as JobbIUtlandetInntekt).land
-                            }
-                            label={getMessage(intl, 'annenInntekt.modal.land')}
-                            onChange={(v: string) => {
-                                const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                    land: v
-                                };
-                                this.updateAnnenInntekt(utlandInntekt);
-                            }}
-                        />
-                    </Block>
-                    <Block
-                        visible={
-                            (annenInntekt as JobbIUtlandetInntekt).land !==
-                            undefined
-                        }>
-                        <Input
-                            label={getMessage(
-                                intl,
-                                'annenInntekt.spørsmål.arbeidsgiver'
-                            )}
-                            onChange={(e: InputChangeEvent) => {
-                                const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                    arbeidsgiverNavn: e.target.value
-                                };
-                                this.updateAnnenInntekt(utlandInntekt);
-                            }}
-                            value={
-                                (annenInntekt as JobbIUtlandetInntekt)
-                                    .arbeidsgiverNavn || ''
-                            }
-                        />
-                    </Block>
-                    <Block
-                        visible={
-                            gjelderJobbIUtlandet &&
+            <ModalForm
+                isOpen={isOpen}
+                title={getMessage(intl, 'annenInntekt.modal.tittel')}
+                onSubmit={this.onSubmit}
+                onRequestClose={onCancel}
+                renderFormButtons={true}
+                dialogSize="medium"
+                submitLabel={getMessage(intl, 'leggtil')}
+                cancelLabel={getMessage(intl, 'avbryt')}>
+                <Block>
+                    <InntektstypeVelger
+                        label={
+                            <Labeltekst intlId="annenInntekt.modal.select.spørsmål" />
+                        }
+                        onChange={(type: AnnenInntektType) =>
+                            this.updateAnnenInntekt({ type })
+                        }
+                        defaultValue={annenInntekt.type}
+                    />
+                </Block>
+                <Block visible={gjelderJobbIUtlandet}>
+                    <Landvelger
+                        defaultValue={
+                            (annenInntekt as JobbIUtlandetInntekt).land
+                        }
+                        label={getMessage(intl, 'annenInntekt.modal.land')}
+                        onChange={(v: string) => {
+                            const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                land: v
+                            };
+                            this.updateAnnenInntekt(utlandInntekt);
+                        }}
+                    />
+                </Block>
+                <Block
+                    visible={
+                        (annenInntekt as JobbIUtlandetInntekt).land !==
+                        undefined
+                    }>
+                    <Input
+                        label={getMessage(
+                            intl,
+                            'annenInntekt.spørsmål.arbeidsgiver'
+                        )}
+                        onChange={(e: InputChangeEvent) => {
+                            const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                arbeidsgiverNavn: e.target.value
+                            };
+                            this.updateAnnenInntekt(utlandInntekt);
+                        }}
+                        value={
                             (annenInntekt as JobbIUtlandetInntekt)
-                                .arbeidsgiverNavn !== undefined
-                        }>
-                        <ErArbeidsgiverNærVennEllerFamilie
-                            erArbeidsgiverNærVennEllerFamilie={
-                                (annenInntekt as JobbIUtlandetInntekt)
-                                    .erNærVennEllerFamilieMedArbeidsgiver
-                            }
-                            onChange={(v: boolean) => {
-                                const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                    erNærVennEllerFamilieMedArbeidsgiver: v
-                                };
-                                this.updateAnnenInntekt(utlandInntekt);
-                            }}
-                        />
-                    </Block>
-                    <Block>
-                        <TidsperiodeBolk
-                            tidsperiode={annenInntekt.tidsperiode || {}}
-                            onChange={(
-                                tidsperiode: TidsperiodeMedValgfriSluttdato
-                            ) => this.updateAnnenInntekt({ tidsperiode })}
-                            sluttdatoDisabled={annenInntekt.pågående}
-                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                                annenInntekt.tidsperiode
-                            )}
-                        />
-                    </Block>
-                    <Block>
-                        <Checkbox
-                            checked={annenInntekt.pågående || false}
-                            label={getMessage(
-                                intl,
-                                'annenInntekt.modal.pågående'
-                            )}
-                            onChange={() => {
-                                this.updateAnnenInntekt({
-                                    pågående: !annenInntekt.pågående,
-                                    tidsperiode: {
-                                        ...annenInntekt.tidsperiode,
-                                        tom: undefined
-                                    }
-                                });
-                            }}
-                        />
-                    </Block>
-                    <Block>
-                        <AttachmentsUploader
-                            attachments={annenInntekt.vedlegg || []}
-                            onFilesUploadStart={(attachments: Attachment[]) => {
-                                this.updateVedleggList([
-                                    ...(annenInntekt.vedlegg || []),
-                                    ...attachments
-                                ]);
-                            }}
-                            onFileUploadFinish={(vedlegg: Attachment) =>
-                                this.updateVedleggItem(vedlegg)
-                            }
-                            onFileDeleteStart={(vedlegg: Attachment) => {
-                                this.updateVedleggItem(vedlegg);
-                            }}
-                            onFileDeleteFinish={(vedlegg: Attachment) => {
-                                const vedleggList = annenInntekt.vedlegg || [];
-                                const index = vedleggList.indexOf(vedlegg);
-                                vedleggList.splice(index, 1);
-                                this.updateVedleggList(vedleggList);
-                            }}
-                            attachmentType={
-                                AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
-                            }
-                            skjemanummer={this.findSkjemanummer()}
-                        />
-                    </Block>
-                    <Knapperad>
-                        <Knapp
-                            type="standard"
-                            onClick={onRequestClose}
-                            htmlType="button">
-                            <FormattedMessage id="avbryt" />
-                        </Knapp>
-                        <Hovedknapp>
-                            <FormattedMessage id="leggtil" />
-                        </Hovedknapp>
-                    </Knapperad>
-                </form>
-            </Modal>
+                                .arbeidsgiverNavn || ''
+                        }
+                    />
+                </Block>
+                <Block
+                    visible={
+                        gjelderJobbIUtlandet &&
+                        (annenInntekt as JobbIUtlandetInntekt)
+                            .arbeidsgiverNavn !== undefined
+                    }>
+                    <ErArbeidsgiverNærVennEllerFamilie
+                        erArbeidsgiverNærVennEllerFamilie={
+                            (annenInntekt as JobbIUtlandetInntekt)
+                                .erNærVennEllerFamilieMedArbeidsgiver
+                        }
+                        onChange={(v: boolean) => {
+                            const utlandInntekt: JobbIUtlandetInntektPartial = {
+                                erNærVennEllerFamilieMedArbeidsgiver: v
+                            };
+                            this.updateAnnenInntekt(utlandInntekt);
+                        }}
+                    />
+                </Block>
+                <Block visible={visTidsperiode}>
+                    <TidsperiodeBolk
+                        tidsperiode={annenInntekt.tidsperiode || {}}
+                        onChange={(
+                            tidsperiode: TidsperiodeMedValgfriSluttdato
+                        ) => this.updateAnnenInntekt({ tidsperiode })}
+                        sluttdatoDisabled={annenInntekt.pågående}
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
+                            annenInntekt.tidsperiode
+                        )}
+                    />
+                    <Checkbox
+                        checked={annenInntekt.pågående || false}
+                        label={getMessage(intl, 'annenInntekt.modal.pågående')}
+                        onChange={() => {
+                            this.updateAnnenInntekt({
+                                pågående: !annenInntekt.pågående,
+                                tidsperiode: {
+                                    ...annenInntekt.tidsperiode,
+                                    tom: undefined
+                                }
+                            });
+                        }}
+                    />
+                </Block>
+                <Block
+                    visible={
+                        annenInntekt.type !== undefined &&
+                        annenInntekt.type !==
+                            AnnenInntektType.LØNN_VED_VIDEREUTDANNING
+                    }>
+                    <AnnenInntektVedleggInfo type={annenInntekt.type} />
+                    <AttachmentsUploader
+                        attachments={annenInntekt.vedlegg || []}
+                        onFilesUploadStart={(attachments: Attachment[]) => {
+                            this.updateVedleggList([
+                                ...(annenInntekt.vedlegg || []),
+                                ...attachments
+                            ]);
+                        }}
+                        onFileUploadFinish={(vedlegg: Attachment) =>
+                            this.updateVedleggItem(vedlegg)
+                        }
+                        onFileDeleteStart={(vedlegg: Attachment) => {
+                            this.updateVedleggItem(vedlegg);
+                        }}
+                        onFileDeleteFinish={(vedlegg: Attachment) => {
+                            const vedleggList = annenInntekt.vedlegg || [];
+                            const index = vedleggList.indexOf(vedlegg);
+                            vedleggList.splice(index, 1);
+                            this.updateVedleggList(vedleggList);
+                        }}
+                        attachmentType={
+                            AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
+                        }
+                        skjemanummer={this.findSkjemanummer()}
+                    />
+                </Block>
+            </ModalForm>
         );
     }
 }

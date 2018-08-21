@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Modal from 'nav-frontend-modal';
 import { Undertittel } from 'nav-frontend-typografi';
+import classnames from 'classnames';
 
 import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
 import BEMHelper from 'common/util/bem';
@@ -18,6 +19,7 @@ export interface ModalFormProps {
     summary?: {
         title: string;
     };
+    dialogSize?: 'large' | 'medium' | 'small';
     submitLabel?: string;
     cancelLabel?: string;
     onRequestClose?: () => void;
@@ -53,6 +55,7 @@ class ModalForm extends React.Component<Props, {}> {
             intl,
             children,
             summary,
+            dialogSize = 'large',
             noSummary,
             renderFormButtons
         } = this.props;
@@ -64,7 +67,7 @@ class ModalForm extends React.Component<Props, {}> {
                 onRequestClose={this.handleOnRequestClose}
                 closeButton={true}
                 shouldCloseOnOverlayClick={false}
-                className={cls.className}>
+                className={classnames(cls.className, cls.modifier(dialogSize))}>
                 <div className={cls.element('content')}>
                     <ValiderbarForm
                         onSubmit={this.handleOnSubmit}
