@@ -149,18 +149,16 @@ class AndreInntekterBolk extends React.Component<
 
                 <AnnenInntektModal
                     isOpen={this.state.modalIsOpen}
-                    onRequestClose={() =>
+                    onCancel={() =>
                         this.closeModal({
                             annenInntektIndex: undefined,
                             annenInntektToEdit: undefined
                         })
                     }
-                    contentLabel="Ny periode med annen inntekt"
-                    children={null}
                     annenInntekt={annenInntektToEdit}
-                    onAdd={this.onAdd}
-                    onEdit={this.onEditSubmit}
-                    editMode={annenInntektToEdit !== undefined}
+                    onSubmit={
+                        annenInntektToEdit ? this.onEditSubmit : this.onAdd
+                    }
                 />
             </React.Fragment>
         );
@@ -175,6 +173,8 @@ const AndreInntekterListeElement: React.StatelessComponent<
     AndreInntekterListeElementProps & InjectedIntlProps
 > = ({ annenInntekt, intl, ...rest }) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
+    const inntektstypeSkalHaVedlegg =
+        type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
     let title = `${type}`;
@@ -199,10 +199,14 @@ const AndreInntekterListeElement: React.StatelessComponent<
             title={title}
             text={prettifyTidsperiode(tidsperiode)}
             deleteLinkText={deleteLinkText}
-            etikettProps={{
-                type: harVedlegg ? 'suksess' : 'fokus',
-                children: harVedlegg ? dokVedlagt : dokMangler
-            }}
+            etikettProps={
+                inntektstypeSkalHaVedlegg
+                    ? {
+                          type: harVedlegg ? 'suksess' : 'fokus',
+                          children: harVedlegg ? dokVedlagt : dokMangler
+                      }
+                    : undefined
+            }
             {...rest}
         />
     );
