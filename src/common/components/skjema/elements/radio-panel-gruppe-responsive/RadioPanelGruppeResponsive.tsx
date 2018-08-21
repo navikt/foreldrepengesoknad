@@ -15,7 +15,7 @@ interface ResponsiveProps {
     infoboksTekst?: string;
 }
 
-type Props = RadioPanelGruppeProps & ResponsiveProps;
+export type Props = RadioPanelGruppeProps & ResponsiveProps;
 
 class RadioPanelGruppeResponsive extends React.Component<Props> {
     render() {

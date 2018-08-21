@@ -19,6 +19,13 @@
         margin-bottom: -1 * @panelBottomMargin;
         margin-right: -1 * @panelRightMargin;
 
+        &.skjema__feilomrade--harFeil {
+            margin-bottom: @panelBottomMargin;
+        }
+        > [role='alert'] {
+            flex-basis: 100%;
+        }
+
         .radioPanel {
             margin: 0 @panelRightMargin @panelBottomMargin 0;
             &__label {

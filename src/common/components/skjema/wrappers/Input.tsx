@@ -5,7 +5,7 @@ import { guid } from 'nav-frontend-js-utils';
 import InputLabel from 'common/components/skjema/wrappers/Label';
 import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 
-type InputWrapperProps = SkjemaelementProps & NFInputProps;
+export type InputWrapperProps = SkjemaelementProps & NFInputProps;
 
 const Input: React.StatelessComponent<InputWrapperProps> = (
     props: InputWrapperProps
