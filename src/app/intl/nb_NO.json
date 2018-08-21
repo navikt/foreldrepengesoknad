@@ -245,6 +245,7 @@
         "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
 
     "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
+    "attachments.tittel.stebarnsadopsjon": "Stebarnsadopsjon",
 
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
@@ -296,6 +297,8 @@
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
     "vedlegg.veileder.omsorgsovertakelse":
         "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
+    "vedlegg.veileder.stebarnsadopsjon":
+        "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
 

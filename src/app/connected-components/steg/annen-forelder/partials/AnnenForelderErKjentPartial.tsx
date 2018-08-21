@@ -199,7 +199,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                         : []
                                 }
                                 attachmentType={
-                                    AttachmentType.OMSROGSOVERTAKELSE
+                                    AttachmentType.OMSORGSOVERTAKELSE
                                 }
                                 onFilesSelect={(attachments: Attachment[]) => {
                                     attachments.forEach(

@@ -63,8 +63,8 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
     render() {
         const { barn, dispatch, stegProps, intl } = this.props;
-        const fødselsdatoerFyltUt = fødselsdatoerErFyltUt(barn.fødselsdatoer);
 
+        const utfyltFødselsdatoer = fødselsdatoerErFyltUt(barn.fødselsdatoer);
         const visSpørsmålOmAdopsjonsdato =
             barn.adopsjonAvEktefellesBarn !== undefined;
         const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
@@ -73,15 +73,17 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const visSpørsmålOmAdoptertIUtlandet =
             !barn.adopsjonAvEktefellesBarn &&
             visSpørsmålOmFødselsdatoer &&
-            fødselsdatoerFyltUt;
+            utfyltFødselsdatoer;
         const visSpørsmålOmAnkomstdato =
             barn.adopsjonAvEktefellesBarn === false &&
             barn.adoptertIUtlandet === true;
-        const visSpørsmålOmVedlegg =
+        const utfyltAdoptertIUtlandet =
             visSpørsmålOmAdoptertIUtlandet &&
-            ((barn.adoptertIUtlandet === true &&
-                barn.ankomstdato !== undefined) ||
+            ((barn.adoptertIUtlandet && barn.ankomstdato !== undefined) ||
                 barn.adoptertIUtlandet === false);
+        const visSpørsmålOmVedlegg =
+            utfyltAdoptertIUtlandet ||
+            (barn.adopsjonAvEktefellesBarn === true && utfyltFødselsdatoer);
 
         return (
             <Steg {...stegProps}>
@@ -180,14 +182,18 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     header={{
                         title: getMessage(
                             intl,
-                            'attachments.tittel.omsorgsovertakelse'
+                            barn.adopsjonAvEktefellesBarn
+                                ? 'attachments.tittel.stebarnsadopsjon'
+                                : 'attachments.tittel.omsorgsovertakelse'
                         )
                     }}>
                     <Block margin="xs">
                         <Veilederinfo>
                             {getMessage(
                                 intl,
-                                'vedlegg.veileder.omsorgsovertakelse'
+                                barn.adopsjonAvEktefellesBarn
+                                    ? 'vedlegg.veileder.stebarnsadopsjon'
+                                    : 'vedlegg.veileder.omsorgsovertakelse'
                             )}
                         </Veilederinfo>
                     </Block>
@@ -195,7 +201,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         attachments={
                             (barn as Adopsjonsbarn).omsorgsovertakelse || []
                         }
-                        attachmentType={AttachmentType.OMSROGSOVERTAKELSE}
+                        attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                         skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                         onFilesSelect={(attachments: Attachment[]) => {
                             attachments.forEach((attachment: Attachment) => {
