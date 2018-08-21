@@ -149,18 +149,16 @@ class AndreInntekterBolk extends React.Component<
 
                 <AnnenInntektModal
                     isOpen={this.state.modalIsOpen}
-                    onRequestClose={() =>
+                    onCancel={() =>
                         this.closeModal({
                             annenInntektIndex: undefined,
                             annenInntektToEdit: undefined
                         })
                     }
-                    contentLabel="Ny periode med annen inntekt"
-                    children={null}
                     annenInntekt={annenInntektToEdit}
-                    onAdd={this.onAdd}
-                    onEdit={this.onEditSubmit}
-                    editMode={annenInntektToEdit !== undefined}
+                    onSubmit={
+                        annenInntektToEdit ? this.onEditSubmit : this.onAdd
+                    }
                 />
             </React.Fragment>
         );
