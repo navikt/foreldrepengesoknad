@@ -173,6 +173,8 @@ const AndreInntekterListeElement: React.StatelessComponent<
     AndreInntekterListeElementProps & InjectedIntlProps
 > = ({ annenInntekt, intl, ...rest }) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
+    const inntektstypeSkalHaVedlegg =
+        type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
     let title = `${type}`;
@@ -197,10 +199,14 @@ const AndreInntekterListeElement: React.StatelessComponent<
             title={title}
             text={prettifyTidsperiode(tidsperiode)}
             deleteLinkText={deleteLinkText}
-            etikettProps={{
-                type: harVedlegg ? 'suksess' : 'fokus',
-                children: harVedlegg ? dokVedlagt : dokMangler
-            }}
+            etikettProps={
+                inntektstypeSkalHaVedlegg
+                    ? {
+                          type: harVedlegg ? 'suksess' : 'fokus',
+                          children: harVedlegg ? dokVedlagt : dokMangler
+                      }
+                    : undefined
+            }
             {...rest}
         />
     );
