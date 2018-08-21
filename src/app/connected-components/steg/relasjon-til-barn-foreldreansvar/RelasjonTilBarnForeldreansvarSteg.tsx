@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 
 import { StegID } from '../../../util/routing/stegConfig';
 import Steg from 'app/components/steg/Steg';
@@ -134,6 +134,9 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         )
                     }}
                     visible={visSpørsmålOmVedlegg}>
+                    <Veilederinfo>
+                        <FormattedMessage id="vedlegg.veileder.omsorgsovertakelse" />
+                    </Veilederinfo>
                     <AttachmentsUploaderPure
                         attachments={barn.adopsjonsvedtak || []}
                         attachmentType={AttachmentType.ADOPSJONSVEDTAK}

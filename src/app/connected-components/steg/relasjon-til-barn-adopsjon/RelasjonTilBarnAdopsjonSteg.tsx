@@ -193,7 +193,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                                 intl,
                                 barn.adopsjonAvEktefellesBarn
                                     ? 'vedlegg.veileder.stebarnsadopsjon'
-                                    : 'vedlegg.veileder.omsorgsovertakelse'
+                                    : 'vedlegg.veileder.adopsjon'
                             )}
                         </Veilederinfo>
                     </Block>
