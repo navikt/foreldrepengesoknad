@@ -1,9 +1,9 @@
 {
     "søker": {
         "fnr": "11111111111",
-        "fornavn": "HENRIKKE",
+        "fornavn": "HENRIK",
         "etternavn": "IBSEN",
-        "kjønn": "K",
+        "kjønn": "M",
         "fødselsdato": "1979-01-28",
         "ikkeNordiskEøsLand": true
     },
