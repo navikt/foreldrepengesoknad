@@ -230,7 +230,12 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }}
                     />
                 </Block>
-                <Block visible={annenInntekt.type !== undefined}>
+                <Block
+                    visible={
+                        annenInntekt.type !== undefined &&
+                        annenInntekt.type !==
+                            AnnenInntektType.LØNN_VED_VIDEREUTDANNING
+                    }>
                     <AnnenInntektVedleggInfo type={annenInntekt.type} />
                     <AttachmentsUploader
                         attachments={annenInntekt.vedlegg || []}
