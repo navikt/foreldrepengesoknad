@@ -54,7 +54,7 @@ export interface SøknadPartial {
 export type Skjemadata = Partial<Søknad>;
 
 export enum AttachmentType {
-    OMSROGSOVERTAKELSE = 'omsorgsovertakelse',
+    OMSORGSOVERTAKELSE = 'omsorgsovertakelse',
     ADOPSJONSVEDTAK = 'adopsjonsvedtak',
     TERMINBEKREFTELSE = 'terminbekreftelse',
     FØDSELSATTEST = 'fødselsattest',
