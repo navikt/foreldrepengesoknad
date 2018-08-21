@@ -19,15 +19,21 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
     const {
         fødselsdatoer,
         adopsjonsdato,
+        adopsjonAvEktefellesBarn,
         adoptertIUtlandet,
-        ankomstdato
+        ankomstdato,
+        omsorgsovertakelse
     } = barn;
 
     return (
         fødselsdatoer.length > 0 &&
+        fødselsdatoer[0] !== undefined &&
         adopsjonsdato &&
-        (adoptertIUtlandet === false ||
-            (adoptertIUtlandet === true && ankomstdato !== undefined))
+        (adopsjonAvEktefellesBarn ||
+            adoptertIUtlandet === false ||
+            (adoptertIUtlandet && ankomstdato !== undefined)) &&
+        omsorgsovertakelse !== undefined &&
+        omsorgsovertakelse.length > 0
     );
 };
 
