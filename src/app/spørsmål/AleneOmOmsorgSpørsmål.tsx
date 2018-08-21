@@ -40,6 +40,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
                 }
             ]}
             name="omsorgsfordeling"
+            infoboksTekst="Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen."
             onChange={(
                 e: React.ChangeEvent<HTMLInputElement>,
                 v: Omsorgsfordeling
