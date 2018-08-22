@@ -2,14 +2,18 @@ import {
     ApiActionKeys,
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
-import Person, { RegistrertAnnenForelder } from '../../types/Person';
+import Person, {
+    RegistrertAnnenForelder,
+    RegistrertBarn
+} from '../../types/Person';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
 export interface ApiState {
-    person?: Person;
+    person: Person;
     arbeidsforhold?: Arbeidsforhold[];
     registrertAnnenForelder?: RegistrertAnnenForelder;
+    registrerteBarn?: RegistrertBarn[];
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     søknadSendingInProgress: boolean;
@@ -19,24 +23,19 @@ export interface ApiState {
 
 export type ApiStatePartial = Partial<ApiState>;
 
-const getDefaultState = (): ApiState => ({
-    person: undefined,
-    arbeidsforhold: undefined,
-    registrertAnnenForelder: undefined,
+const getDefaultState = (): ApiStatePartial => ({
     isLoadingSøkerinfo: false,
     isLoadingAppState: true,
     søknadSendingInProgress: false,
-    kvittering: undefined,
     error: {
-        networkError: false,
-        response: undefined
+        networkError: false
     }
 });
 
 const apiReducer = (
     state = getDefaultState(),
     action: ApiActionTypes
-): ApiState => {
+): ApiStatePartial => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {

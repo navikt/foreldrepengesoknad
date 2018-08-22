@@ -11,11 +11,8 @@ import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 
 function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
-    const { person } = apiState;
-    if (person) {
-        return !person.registrerteBarn || person.registrerteBarn.length <= 0;
-    }
-    return true;
+    const { registrerteBarn } = apiState;
+    return !(registrerteBarn && registrerteBarn.length > 0);
 }
 
 const getRegistrerteBarn = (
@@ -76,9 +73,9 @@ function* getSøkerinfo(action: any) {
             person: {
                 ...person,
                 ikkeNordiskEøsLand: person.ikkeNordiskEøsLand || false,
-                erMyndig: erMyndig(person.fødselsdato),
-                registrerteBarn: getRegistrerteBarn(søkerinfo)
+                erMyndig: erMyndig(person.fødselsdato)
             },
+            registrerteBarn: getRegistrerteBarn(søkerinfo),
             registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true,
