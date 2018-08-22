@@ -9,10 +9,10 @@ export interface PersonDTO {
     kjønn: Kjønn;
 }
 
-export type RegistrertAnnenForelder = PersonDTO;
+export type RegistrertAnnenForelderDTO = PersonDTO;
 
 export interface BarnDTO extends PersonDTO {
-    annenForelder?: RegistrertAnnenForelder;
+    annenForelder?: RegistrertAnnenForelderDTO;
 }
 
 export interface SøkerDTO extends PersonDTO {
