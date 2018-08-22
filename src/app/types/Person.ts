@@ -2,10 +2,10 @@ import { Kjønn } from './common';
 import Bankkonto from './Bankkonto';
 
 interface PersonBase {
-    fornavn: string;
-    mellomnavn: string;
-    etternavn: string;
     fnr: string;
+    fornavn: string;
+    mellomnavn?: string;
+    etternavn: string;
     kjønn: Kjønn;
     fødselsdato: string;
 }
@@ -19,7 +19,7 @@ interface Person extends PersonBase {
 
 export interface RegistrertBarn {
     fornavn: string;
-    mellomnavn: string;
+    mellomnavn?: string;
     etternavn: string;
     fødselsdato: Date;
 }
