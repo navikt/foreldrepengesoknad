@@ -11,7 +11,7 @@ export interface ApiState {
     person?: Person;
     arbeidsforhold?: Arbeidsforhold[];
     registrertAnnenForelder?: RegistrertAnnenForelder;
-    isLoadingPerson: boolean;
+    isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     søknadSendingInProgress: boolean;
     kvittering?: ForeldrepengesøknadResponse;
@@ -24,7 +24,7 @@ const getDefaultState = (): ApiState => ({
     person: undefined,
     arbeidsforhold: undefined,
     registrertAnnenForelder: undefined,
-    isLoadingPerson: false,
+    isLoadingSøkerinfo: false,
     isLoadingAppState: true,
     søknadSendingInProgress: false,
     kvittering: undefined,
@@ -34,7 +34,10 @@ const getDefaultState = (): ApiState => ({
     }
 });
 
-const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
+const apiReducer = (
+    state = getDefaultState(),
+    action: ApiActionTypes
+): ApiState => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {
@@ -44,15 +47,7 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
         case ApiActionKeys.GET_SØKERINFO:
             return {
                 ...state,
-                isLoadingPerson: true
-            };
-        case ApiActionKeys.UPDATE_PERSON:
-            return {
-                ...state,
-                person: {
-                    ...state.person,
-                    ...action.payload
-                }
+                isLoadingSøkerinfo: true
             };
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {

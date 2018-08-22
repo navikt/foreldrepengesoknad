@@ -38,7 +38,7 @@ function* getSøkerinfo(action: any) {
                     mapBarnDTOToRegistrertBarn(b)
                 )
             },
-            isLoadingPerson: false,
+            isLoadingSøkerinfo: false,
             isLoadingAppState: true,
             arbeidsforhold
         };
@@ -54,14 +54,14 @@ function* getSøkerinfo(action: any) {
                 ? redirectToLogin()
                 : yield put(
                       apiActions.updateApi({
-                          isLoadingPerson: false,
+                          isLoadingSøkerinfo: false,
                           error
                       })
                   );
         } else {
             yield put(
                 apiActions.updateApi({
-                    isLoadingPerson: false,
+                    isLoadingSøkerinfo: false,
                     error: {
                         networkError: true
                     }
