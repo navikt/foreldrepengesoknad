@@ -19,7 +19,7 @@ import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad'
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
-import AleneOmOmsorgSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
+import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -62,7 +62,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
         return (
             <React.Fragment>
                 <Block>
-                    <AleneOmOmsorgSpørsmål
+                    <AleneOmOmsorgsSpørsmål
                         aleneOmOmsorg={søker.erAleneOmOmsorg}
                         onChange={(erAleneOmOmsorg) =>
                             dispatch(

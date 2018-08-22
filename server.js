@@ -58,5 +58,8 @@ const startServer = (html) => {
 const logError = (errorMessage, details) => console.log(errorMessage, details);
 
 getDecorator()
-    .then(renderApp, (error) => logError('Failed to get decorator', error))
+    .then(renderApp, (error) => {
+        logError('Failed to get decorator', error);
+        process.exit(1);
+    })
     .then(startServer, (error) => logError('Failed to render app', error));
