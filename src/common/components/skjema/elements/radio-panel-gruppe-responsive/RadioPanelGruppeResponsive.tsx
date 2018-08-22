@@ -46,7 +46,7 @@ class RadioPanelGruppeResponsive extends React.Component<Props> {
                                     <RadioPanel
                                         checked={checked === radio.value}
                                         name={name}
-                                        onChange={(event: any) =>
+                                        onChange={(event) =>
                                             onChange(event, radio.value)
                                         }
                                         {...radio}
