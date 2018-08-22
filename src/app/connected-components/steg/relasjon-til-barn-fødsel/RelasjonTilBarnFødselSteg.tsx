@@ -38,6 +38,7 @@ interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
+    registrerteBarn?: RegistrertBarn[];
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
@@ -47,7 +48,7 @@ interface RelasjonTilBarnFødselStegProps {
 
 interface RelasjonTilBarnFødselStegState {
     gjelderAnnetBarn: boolean;
-    registrerteBarn: VelgbartRegistrertBarn[];
+    valgbartRegistrertBarn: VelgbartRegistrertBarn[];
 }
 
 type Props = RelasjonTilBarnFødselStegProps &
@@ -69,17 +70,19 @@ class RelasjonTilBarnFødselSteg extends React.Component<
     static buildStateFromProps(
         props: Props,
         state: RelasjonTilBarnFødselStegState
-    ) {
+    ): RelasjonTilBarnFødselStegState {
         const harRegistrerteBarn =
-            state && state.registrerteBarn && state.registrerteBarn.length > 0;
+            state &&
+            state.valgbartRegistrertBarn &&
+            state.valgbartRegistrertBarn.length > 0;
         if (harRegistrerteBarn) {
             return state;
         }
 
-        const { person } = props;
+        const { registrerteBarn } = props;
         return {
             gjelderAnnetBarn: (state && state.gjelderAnnetBarn) || false,
-            registrerteBarn: (person.registrerteBarn || []).map(
+            valgbartRegistrertBarn: (registrerteBarn || []).map(
                 (registrertBarn: RegistrertBarn) => {
                     const velgbartBarn = registrertBarn as VelgbartRegistrertBarn;
                     velgbartBarn.id = guid();
@@ -94,7 +97,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
 
         this.state = RelasjonTilBarnFødselSteg.buildStateFromProps(props, {
             gjelderAnnetBarn: false,
-            registrerteBarn: []
+            valgbartRegistrertBarn: []
         });
 
         this.findBarnInState = this.findBarnInState.bind(this);
@@ -108,17 +111,17 @@ class RelasjonTilBarnFødselSteg extends React.Component<
     }
 
     findBarnInState(id: string): VelgbartRegistrertBarn | undefined {
-        const { registrerteBarn } = this.state;
-        return registrerteBarn.find(
+        const { valgbartRegistrertBarn } = this.state;
+        return valgbartRegistrertBarn.find(
             (registrertBarn: VelgbartRegistrertBarn) => id === registrertBarn.id
         );
     }
 
     updateFødselsdatoInReduxState() {
         const { dispatch } = this.props;
-        const { registrerteBarn } = this.state;
+        const { valgbartRegistrertBarn } = this.state;
 
-        const valgteBarn = registrerteBarn.filter((b) => b.checked);
+        const valgteBarn = valgbartRegistrertBarn.filter((b) => b.checked);
         const fødselsdatoMostDistantInPast = findDateMostDistantInPast(
             valgteBarn.map((b) => b.fødselsdato)
         );
@@ -138,12 +141,14 @@ class RelasjonTilBarnFødselSteg extends React.Component<
     updateBarnInState(id: string) {
         const registrertBarn = this.findBarnInState(id);
         if (registrertBarn) {
-            const { registrerteBarn } = this.state;
-            const index = registrerteBarn.indexOf(registrertBarn);
-            registrerteBarn[index].checked = !registrerteBarn[index].checked;
+            const { valgbartRegistrertBarn } = this.state;
+            const index = valgbartRegistrertBarn.indexOf(registrertBarn);
+            valgbartRegistrertBarn[index].checked = !valgbartRegistrertBarn[
+                index
+            ].checked;
             this.setState(
                 {
-                    registrerteBarn
+                    valgbartRegistrertBarn
                 },
                 this.updateFødselsdatoInReduxState
             );
@@ -151,11 +156,11 @@ class RelasjonTilBarnFødselSteg extends React.Component<
     }
 
     updateGjelderAnnetBarnInState() {
-        const { gjelderAnnetBarn, registrerteBarn } = this.state;
+        const { gjelderAnnetBarn, valgbartRegistrertBarn } = this.state;
         this.setState(
             {
                 gjelderAnnetBarn: !gjelderAnnetBarn,
-                registrerteBarn: registrerteBarn.map(
+                valgbartRegistrertBarn: valgbartRegistrertBarn.map(
                     (barn: VelgbartRegistrertBarn) => ({
                         ...barn,
                         checked: false
@@ -167,8 +172,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<
     }
 
     hasCheckedRegistrertBarn() {
-        const { registrerteBarn } = this.state;
-        return registrerteBarn.some(
+        const { valgbartRegistrertBarn } = this.state;
+        return valgbartRegistrertBarn.some(
             (barn: VelgbartRegistrertBarn) => barn.checked === true
         );
     }
@@ -191,7 +196,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<
             return null;
         }
 
-        const { registrerteBarn, gjelderAnnetBarn } = this.state;
+        const { valgbartRegistrertBarn, gjelderAnnetBarn } = this.state;
         return (
             <Steg
                 {...stegProps}
@@ -199,10 +204,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                     this.hasCheckedRegistrertBarn() ||
                     barnErGyldig(barn, situasjon, skalLasteOppTerminbekreftelse)
                 }>
-                <Block visible={registrerteBarn.length > 0} margin="none">
+                <Block
+                    visible={valgbartRegistrertBarn.length > 0}
+                    margin="none">
                     <BarnBolk
                         gjelderAnnetBarn={gjelderAnnetBarn}
-                        registrerteBarn={registrerteBarn}
+                        registrerteBarn={valgbartRegistrertBarn}
                         onRegistrertBarnChange={(id: string) =>
                             this.updateBarnInState(id)
                         }
@@ -212,7 +219,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                 <Block
                     margin="none"
                     hasChildBlocks={true}
-                    visible={gjelderAnnetBarn || registrerteBarn.length === 0}>
+                    visible={
+                        gjelderAnnetBarn || valgbartRegistrertBarn.length === 0
+                    }>
                     <Block>
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -258,7 +267,7 @@ const mapStateToProps = (
     state: AppState,
     props: Props
 ): RelasjonTilBarnFødselStegProps => {
-    const person = state.api.person as Person;
+    const { person, registrerteBarn } = state.api;
     const barn = state.søknad.barn;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
@@ -280,6 +289,7 @@ const mapStateToProps = (
         situasjon: state.søknad.situasjon,
         annenForelder: state.søknad.annenForelder,
         person,
+        registrerteBarn,
         barn,
         terminbekreftelse,
         fødselsattest,
