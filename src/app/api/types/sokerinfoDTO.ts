@@ -1,16 +1,11 @@
 import { Kjønn } from '../../types/common';
 
-export type Fødselsnummer = string;
-export type Landkode = string;
-export type Datostreng = string;
-export type Organisasjonsnummer = string;
-
 export interface PersonDTO {
-    fnr: Fødselsnummer;
+    fnr: string;
     fornavn: string;
     etternavn: string;
     mellomnavn?: string;
-    fødselsdato: Datostreng;
+    fødselsdato: string;
     kjønn: Kjønn;
 }
 
@@ -21,18 +16,18 @@ export interface BarnDTO extends PersonDTO {
 }
 
 export interface SøkerDTO extends PersonDTO {
-    land: Landkode;
+    land: string;
     ikkeNordiskEøsLand?: boolean;
     barn?: BarnDTO[];
 }
 
 export interface ArbeidsforholdDTO {
-    arbeidsgiverId: Organisasjonsnummer;
+    arbeidsgiverId: string;
     arbeidsgiverIdType: string;
     arbeidsgiverNavn: string;
     stillingsprosent: number;
-    fom: Datostreng;
-    tom?: Datostreng;
+    fom: string;
+    tom?: string;
 }
 
 export interface SøkerinfoDTO {
