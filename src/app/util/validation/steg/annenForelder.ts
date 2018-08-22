@@ -1,6 +1,5 @@
 import Søknad from '../../../types/søknad/Søknad';
-import { RegistrertAnnenForelder } from '../../../types/søknad/AnnenForelder';
-import Person from '../../../types/Person';
+import Person, { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 

@@ -7,11 +7,10 @@ import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial'
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import { RegistrertAnnenForelder } from '../../../types/søknad/AnnenForelder';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
-import Person from '../../../types/Person';
+import Person, { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
