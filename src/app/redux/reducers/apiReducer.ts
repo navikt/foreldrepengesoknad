@@ -10,7 +10,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
 export interface ApiState {
-    person: Person;
+    person?: Person;
     arbeidsforhold?: Arbeidsforhold[];
     registrertAnnenForelder?: RegistrertAnnenForelder;
     registrerteBarn?: RegistrertBarn[];
@@ -23,7 +23,7 @@ export interface ApiState {
 
 export type ApiStatePartial = Partial<ApiState>;
 
-const getDefaultState = (): ApiStatePartial => ({
+const getDefaultState = (): ApiState => ({
     isLoadingSøkerinfo: false,
     isLoadingAppState: true,
     søknadSendingInProgress: false,
