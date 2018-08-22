@@ -1,20 +1,44 @@
 {
     "søker": {
-        "fnr": "11111111111",
-        "fornavn": "HENRIKKE",
-        "etternavn": "IBSEN",
+        "fnr": "25059710888",
+        "fornavn": "MOR",
+        "etternavn": "MORSEN",
         "kjønn": "K",
-        "fødselsdato": "1979-01-28",
-        "ikkeNordiskEøsLand": true
+        "fødselsdato": "1997-05-25",
+        "land": "NO",
+        "ikkeNordiskEøsLand": false,
+        "barn": [
+            {
+                "fornavn": "BARN",
+                "etternavn": "MORSEN",
+                "fnr": "29031857021",
+                "kjønn": "K",
+                "fødselsdato": "2018-03-29",
+                "annenForelder": {
+                    "fnr": "28019400133",
+                    "fornavn": "FAR",
+                    "etternavn": "FARSEN",
+                    "fødselsdato": "1994-01-28"
+                }
+            }
+        ]
     },
     "arbeidsforhold": [
         {
-            "arbeidsgiverNavn": "NAV",
-            "arbeidsgiverId": "974652250",
+            "arbeidsgiverId": "973135678",
             "arbeidsgiverIdType": "orgnr",
-            "fom": "2009-01-31T23:00:00.000Z",
-            "tom": "2010-01-31T23:00:00.000Z",
-            "stillingsprosent": 100
+            "arbeidsgiverNavn": "COLOR LINE CREW AS",
+            "stillingsprosent": 100.0,
+            "fom": "2016-01-01",
+            "tom": null
+        },
+        {
+            "arbeidsgiverId": "974716860",
+            "arbeidsgiverIdType": "orgnr",
+            "arbeidsgiverNavn": "UNIVERSITETET I OSLO",
+            "stillingsprosent": 69.0,
+            "fom": "2018-08-01",
+            "tom": null
         }
     ]
 }
