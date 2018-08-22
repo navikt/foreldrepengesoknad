@@ -34,7 +34,7 @@ import DateValues from '../../../util/validation/values';
 import Block from 'common/components/block/Block';
 
 interface RelasjonTilBarnFødselStegProps {
-    person: Person;
+    person?: Person;
     barn: Barn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
