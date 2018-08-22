@@ -34,11 +34,12 @@ describe('Block component', () => {
         beforeEach(() => {
             shallowBlock = renderBlock({
                 children,
-                visible: false
+                visible: false,
+                animated: false
             });
         });
 
-        it('should not render content when visible=false', () => {
+        it('should not render content when visible=false && animated === false', () => {
             const collapse = shallowBlock.find('.block__collapse');
             expect(collapse.exists()).toBe(false);
         });
