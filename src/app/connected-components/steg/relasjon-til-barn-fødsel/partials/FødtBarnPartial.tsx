@@ -12,6 +12,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import Block from 'common/components/block/Block';
 import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     barn: FødtBarn;
@@ -65,32 +66,52 @@ class FødtBarnPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        barn.fødselsdatoer.length > 0 &&
-                        barn.fødselsdatoer.every(
-                            (fødselsdato: Date) => fødselsdato instanceof Date
-                        )
-                    }
-                    header={{
-                        title: getMessage(intl, 'vedlegg.tittel.fødselsattest')
-                    }}>
-                    <AttachmentsUploaderPure
-                        attachments={fødselsattest}
-                        attachmentType={AttachmentType.FØDSELSATTEST}
-                        skjemanummer={Skjemanummer.FØDSELSATTEST}
-                        onFilesSelect={(attachments: Attachment[]) => {
-                            attachments.forEach((attachment: Attachment) => {
-                                dispatch(
-                                    søknadActions.uploadAttachment(attachment)
-                                );
-                            });
-                        }}
-                        onFileDelete={(attachment: Attachment) =>
-                            dispatch(søknadActions.deleteAttachment(attachment))
-                        }
-                    />
-                </Block>
+                {barn.fødselsdatoer.length > 0 &&
+                barn.fødselsdatoer.every(
+                    (fødselsdato: Date) => fødselsdato instanceof Date
+                ) ? (
+                    <React.Fragment>
+                        <Block margin="xs">
+                            <Veilederinfo>
+                                {getMessage(
+                                    intl,
+                                    'vedlegg.veileder.fødselsattest'
+                                )}
+                            </Veilederinfo>
+                        </Block>
+                        <Block
+                            header={{
+                                title: getMessage(
+                                    intl,
+                                    'vedlegg.tittel.fødselsattest'
+                                )
+                            }}>
+                            <AttachmentsUploaderPure
+                                attachments={fødselsattest}
+                                attachmentType={AttachmentType.FØDSELSATTEST}
+                                skjemanummer={Skjemanummer.FØDSELSATTEST}
+                                onFilesSelect={(attachments: Attachment[]) => {
+                                    attachments.forEach(
+                                        (attachment: Attachment) => {
+                                            dispatch(
+                                                søknadActions.uploadAttachment(
+                                                    attachment
+                                                )
+                                            );
+                                        }
+                                    );
+                                }}
+                                onFileDelete={(attachment: Attachment) =>
+                                    dispatch(
+                                        søknadActions.deleteAttachment(
+                                            attachment
+                                        )
+                                    )
+                                }
+                            />
+                        </Block>
+                    </React.Fragment>
+                ) : null}
             </React.Fragment>
         );
     }
