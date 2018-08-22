@@ -2,8 +2,7 @@ import {
     ApiActionKeys,
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
-import Person from '../../types/Person';
-import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
+import Person, { RegistrertAnnenForelder } from '../../types/Person';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 

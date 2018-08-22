@@ -13,7 +13,7 @@ interface PersonBase {
 interface Person extends PersonBase {
     ikkeNordiskEøsLand: boolean;
     erMyndig: boolean;
-    registrerteBarn: RegistrertBarn[];
+    registrerteBarn?: RegistrertBarn[];
     bankkonto?: Bankkonto;
 }
 
@@ -22,6 +22,16 @@ export interface RegistrertBarn {
     mellomnavn?: string;
     etternavn: string;
     fødselsdato: Date;
+}
+
+export interface RegistrertAnnenForelder {
+    fnr: string;
+    fornavn: string;
+    mellomnavn?: string;
+    etternavn: string;
+    kjønn: Kjønn;
+    fødselsdato: string;
+    harOpplystOmSinPågåendeSak?: boolean;
 }
 
 export interface VelgbartRegistrertBarn extends RegistrertBarn {

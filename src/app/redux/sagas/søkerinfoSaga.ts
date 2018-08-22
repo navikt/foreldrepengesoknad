@@ -5,9 +5,10 @@ import { redirectToLogin } from '../../util/routing/login';
 import { erMyndig } from '../../util/domain/personUtil';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { ApiStatePartial } from '../reducers/apiReducer';
-import { SøkerDTO, BarnDTO } from '../../api/types/sokerinfoDTO';
-import { RegistrertBarn } from '../../types/Person';
+import { RegistrertBarn, RegistrertAnnenForelder } from '../../types/Person';
 import moment from 'moment';
+import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
+import Arbeidsforhold from '../../types/Arbeidsforhold';
 
 function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
     const { person } = apiState;
@@ -17,30 +18,71 @@ function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
     return true;
 }
 
-const mapBarnDTOToRegistrertBarn = (barn: BarnDTO): RegistrertBarn => ({
-    etternavn: barn.etternavn,
-    fornavn: barn.fornavn,
-    mellomnavn: barn.mellomnavn,
-    fødselsdato: moment(barn.fødselsdato).toDate()
-});
+const getRegistrerteBarn = (
+    søkerinfo: SøkerinfoDTO
+): RegistrertBarn[] | undefined => {
+    const { barn } = søkerinfo.søker;
+    if (!barn || barn.length === 0) {
+        return undefined;
+    }
+    return barn.map((b: any): RegistrertBarn => ({
+        ...b,
+        fødselsdato: moment(b.fødselsdato).toDate()
+    }));
+};
+
+const getRegistrertAnnenForelder = (
+    søkerinfo: SøkerinfoDTO
+): RegistrertAnnenForelder | undefined => {
+    if (!søkerinfo.søker.barn || søkerinfo.søker.barn.length === 0) {
+        return undefined;
+    }
+    const foreldre: RegistrertAnnenForelder[] = [];
+    søkerinfo.søker.barn.forEach((barn) => {
+        const { annenForelder } = barn;
+        if (
+            annenForelder &&
+            !foreldre.find((f) => f.fnr === annenForelder.fnr)
+        ) {
+            foreldre.push(annenForelder);
+        }
+    });
+    return foreldre.length === 1 ? foreldre[0] : undefined;
+};
+
+const getArbeidsforhold = (
+    søkerinfo: SøkerinfoDTO
+): Arbeidsforhold[] | undefined => {
+    const { arbeidsforhold } = søkerinfo;
+    if (!arbeidsforhold || arbeidsforhold.length === 0) {
+        return undefined;
+    }
+    return arbeidsforhold.map((a) => {
+        const forhold: Arbeidsforhold = {
+            ...a,
+            fom: moment(a.fom).toDate(),
+            tom: a.tom ? moment(a.tom).toDate() : undefined
+        };
+        return forhold;
+    });
+};
 
 function* getSøkerinfo(action: any) {
     try {
         const response = yield call(Api.getSøkerinfo, action.params);
-        const { land, barn, ...søker } = response.data.søker as SøkerDTO;
-        const arbeidsforhold = response.data.arbeidsforhold;
+        const søkerinfo: SøkerinfoDTO = response.data;
+        const { barn, ...person } = søkerinfo.søker;
         const nextApiState: ApiStatePartial = {
             person: {
-                ...søker,
-                ikkeNordiskEøsLand: søker.ikkeNordiskEøsLand || false,
-                erMyndig: erMyndig(søker.fødselsdato),
-                registrerteBarn: (barn || []).map((b) =>
-                    mapBarnDTOToRegistrertBarn(b)
-                )
+                ...person,
+                ikkeNordiskEøsLand: person.ikkeNordiskEøsLand || false,
+                erMyndig: erMyndig(person.fødselsdato),
+                registrerteBarn: getRegistrerteBarn(søkerinfo)
             },
+            registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true,
-            arbeidsforhold
+            arbeidsforhold: getArbeidsforhold(søkerinfo)
         };
         yield put(apiActions.updateApi(nextApiState));
         if (shouldUseStoredDataIfTheyExist(nextApiState)) {
