@@ -222,6 +222,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                 skjemanummer={
                                     Skjemanummer.OMSORGSOVERTAKELSESDATO
                                 }
+                                dispatch={dispatch}
                             />
                         </Block>
 

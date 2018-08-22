@@ -153,6 +153,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         skjemanummer={
                             Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
                         }
+                        dispatch={dispatch}
                     />
                 </Block>
             </Steg>

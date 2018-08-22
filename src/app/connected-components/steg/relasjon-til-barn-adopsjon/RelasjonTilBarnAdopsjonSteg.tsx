@@ -213,6 +213,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         onFileDelete={(attachment) =>
                             dispatch(søknadActions.deleteAttachment(attachment))
                         }
+                        dispatch={dispatch}
                     />
                 </Block>
             </Steg>

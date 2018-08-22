@@ -6,6 +6,7 @@ import Person from '../../types/Person';
 import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
+import { SøknadAction } from '../actions/søknad/søknadActionDefinitions';
 
 export interface ApiState {
     person?: Person;
@@ -34,7 +35,10 @@ const getDefaultState = (): ApiState => ({
     }
 });
 
-const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
+const apiReducer = (
+    state = getDefaultState(),
+    action: ApiActionTypes | SøknadAction
+) => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {

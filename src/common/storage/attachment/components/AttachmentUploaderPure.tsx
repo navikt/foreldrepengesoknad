@@ -5,6 +5,7 @@ import {
     AttachmentType,
     Skjemanummer
 } from '../../../../app/types/søknad/Søknad';
+import { DispatchProps } from 'common/redux/types';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
@@ -14,10 +15,9 @@ export interface AttachmentsUploaderProps {
     onFileDelete: (attachment: Attachment) => void;
 }
 
-export default class AttachmentsUploaderPure extends React.Component<
-    AttachmentsUploaderProps
-> {
-    constructor(props: AttachmentsUploaderProps) {
+type Props = AttachmentsUploaderProps & DispatchProps;
+export default class AttachmentsUploaderPure extends React.Component<Props> {
+    constructor(props: Props) {
         super(props);
         this.onFileDelete = this.onFileDelete.bind(this);
         this.onFilesSelect = this.onFilesSelect.bind(this);
@@ -34,15 +34,23 @@ export default class AttachmentsUploaderPure extends React.Component<
     }
 
     render() {
-        const { attachments, attachmentType, skjemanummer } = this.props;
+        const {
+            attachments,
+            attachmentType,
+            skjemanummer,
+            dispatch
+        } = this.props;
         return (
-            <AttachmentOverview
-                attachments={attachments}
-                attachmentType={attachmentType}
-                skjemanummer={skjemanummer}
-                onFilesSelect={this.onFilesSelect}
-                onFileDelete={this.onFileDelete}
-            />
+            <React.Fragment>
+                <AttachmentOverview
+                    attachments={attachments}
+                    attachmentType={attachmentType}
+                    skjemanummer={skjemanummer}
+                    onFilesSelect={this.onFilesSelect}
+                    onFileDelete={this.onFileDelete}
+                    dispatch={dispatch}
+                />
+            </React.Fragment>
         );
     }
 }

@@ -15,6 +15,7 @@ import {
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import { DispatchProps } from 'common/redux/types';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -32,11 +33,12 @@ interface AndreInntekterBolkState {
 
 type AndreInntekterBolkStatePartial = Partial<AndreInntekterBolkState>;
 
+type Props = AndreInntekterBolkProps & DispatchProps;
 class AndreInntekterBolk extends React.Component<
-    AndreInntekterBolkProps,
+    Props,
     AndreInntekterBolkState
 > {
-    constructor(props: AndreInntekterBolkProps) {
+    constructor(props: Props) {
         super(props);
 
         this.openModal = this.openModal.bind(this);
@@ -104,7 +106,8 @@ class AndreInntekterBolk extends React.Component<
             oppfølgingsspørsmål,
             renderSpørsmål,
             showAndreInntekterPeriodeContent,
-            andreInntekterSiste10Mnd
+            andreInntekterSiste10Mnd,
+            dispatch
         } = this.props;
 
         const { annenInntektToEdit } = this.state;
@@ -156,6 +159,7 @@ class AndreInntekterBolk extends React.Component<
                         })
                     }
                     annenInntekt={annenInntektToEdit}
+                    dispatch={dispatch}
                     onSubmit={
                         annenInntektToEdit ? this.onEditSubmit : this.onAdd
                     }

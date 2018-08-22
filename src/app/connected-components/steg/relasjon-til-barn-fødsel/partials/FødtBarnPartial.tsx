@@ -89,6 +89,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         onFileDelete={(attachment: Attachment) =>
                             dispatch(søknadActions.deleteAttachment(attachment))
                         }
+                        dispatch={dispatch}
                     />
                 </Block>
             </React.Fragment>

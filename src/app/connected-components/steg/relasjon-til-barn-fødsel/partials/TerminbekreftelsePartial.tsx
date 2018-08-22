@@ -51,6 +51,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     onFileDelete={(attachment: Attachment) => {
                         dispatch(søknadActions.deleteAttachment(attachment));
                     }}
+                    dispatch={dispatch}
                 />
             </Block>
             <Block
