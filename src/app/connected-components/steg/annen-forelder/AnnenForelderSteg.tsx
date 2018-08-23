@@ -10,7 +10,7 @@ import { AppState } from '../../../redux/reducers';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
-import Person, { RegistrertAnnenForelder } from '../../../types/Person';
+import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
@@ -20,7 +20,8 @@ import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 
 interface StateProps {
-    personHentet: boolean;
+    antallBarn?: number;
+    søkersFødselsnummer?: string;
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
@@ -36,23 +37,25 @@ class AnnenForelderSteg extends React.Component<Props> {
 
     render() {
         const {
-            personHentet,
             erSøkerFarEllerMedmor,
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             shouldRenderAnnenForelderErKjentPartial,
+            søkersFødselsnummer,
+            antallBarn,
             stegProps,
             intl
         } = this.props;
 
-        if (personHentet) {
+        if (søkersFødselsnummer) {
             return (
                 <Steg {...stegProps}>
                     <Block
                         header={{
                             title: getMessage(
                                 intl,
-                                'annenForelder.label.visAnnenForelder'
+                                'annenForelder.label.registrertForelder',
+                                { antallBarn }
                             )
                         }}
                         visible={registrertAnnenForelder !== undefined}>
@@ -63,7 +66,11 @@ class AnnenForelderSteg extends React.Component<Props> {
                         )}
                     </Block>
                     <React.Fragment>
-                        <AnnenForelderPersonaliaPartial />
+                        {registrertAnnenForelder === undefined && (
+                            <AnnenForelderPersonaliaPartial
+                                søkersFødselsnummer={søkersFødselsnummer}
+                            />
+                        )}
                         {shouldRenderAnnenForelderErKjentPartial && (
                             <AnnenForelderErKjentPartial
                                 registrertAnnenForelder={
@@ -84,18 +91,18 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const person = state.api.person as Person;
+    const { person, registrerteBarn } = state.api;
     const registrertAnnenForelder = state.api.registrertAnnenForelder;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
-    const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
+    const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
     const annenForelder = state.søknad.annenForelder;
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: annenForelderErGyldig(
             state.søknad,
-            person,
+            person!,
             registrertAnnenForelder
         ),
         history: props.history,
@@ -108,7 +115,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         stegProps,
-        personHentet: person !== undefined,
+        antallBarn: registrerteBarn ? registrerteBarn.length : 0,
+        søkersFødselsnummer: person ? person.fnr : undefined,
         erSøkerFarEllerMedmor,
         registrertAnnenForelder,
         shouldRenderAnnenForelderErKjentPartial,
