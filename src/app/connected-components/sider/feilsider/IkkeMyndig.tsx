@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
-import { ApiState, Søkerinfo } from '../../../redux/reducers/apiReducer';
+import { ApiState } from '../../../redux/reducers/apiReducer';
 import DocumentTitle from 'react-document-title';
 import Applikasjonsside from '../Applikasjonsside';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
+import { Søkerinfo } from '../../../types/søkerinfo';
 
 const URL_PAPIRSØKNAD =
     'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/' +

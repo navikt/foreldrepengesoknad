@@ -3,10 +3,11 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import { ApiStatePartial, Søkerinfo } from '../reducers/apiReducer';
+import { ApiStatePartial } from '../reducers/apiReducer';
 
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
+import { Søkerinfo } from '../../types/søkerinfo';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -21,7 +22,7 @@ function* getSøkerinfo(action: any) {
         const response = yield call(Api.getSøkerinfo, action.params);
         const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
-            ...getSøkerinfoFromDTO(søkerinfoDTO),
+            søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true
         };

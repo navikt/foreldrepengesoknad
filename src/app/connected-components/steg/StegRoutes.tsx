@@ -20,8 +20,8 @@ import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
-import { Søkerinfo } from '../../redux/reducers/apiReducer';
 import { SøkerinfoProps } from '../Foreldrepengesøknad';
+import { Søkerinfo } from '../../types/søkerinfo';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;

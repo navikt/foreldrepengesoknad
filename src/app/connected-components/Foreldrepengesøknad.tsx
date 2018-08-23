@@ -21,7 +21,7 @@ import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
-import { Søkerinfo } from '../redux/reducers/apiReducer';
+import { Søkerinfo } from '../types/søkerinfo';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;

@@ -9,7 +9,7 @@ import { barnErGyldig } from '../../util/validation/steg/barn';
 import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
 import Person from '../../types/Person';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-import { Søkerinfo } from '../../redux/reducers/apiReducer';
+import { Søkerinfo } from '../../types/søkerinfo';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
