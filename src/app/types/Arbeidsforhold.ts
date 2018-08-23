@@ -3,7 +3,7 @@ interface Arbeidsforhold {
     arbeidsgiverId: string;
     arbeidsgiverIdType: string;
     fom: Date;
-    tom: Date;
+    tom?: Date;
     stillingsprosent: number;
 }
 

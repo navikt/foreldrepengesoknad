@@ -8,7 +8,7 @@ import lenker from '../../util/routing/lenker';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;
-    onRequestClose: any;
+    onRequestClose: () => void;
 }
 
 type Props = DineRettigheterModalProps & InjectedIntlProps;

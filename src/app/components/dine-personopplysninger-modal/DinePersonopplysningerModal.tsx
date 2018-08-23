@@ -6,7 +6,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;
-    onRequestClose: any;
+    onRequestClose: () => void;
 }
 
 type Props = DineRettigheterModalProps & InjectedIntlProps;

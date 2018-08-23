@@ -7,7 +7,7 @@ import { cleanUpSøknad } from '../util/søknad/cleanup';
 
 const apiBaseUrl = Environment.REST_API_URL;
 
-function getPerson() {
+function getSøkerinfo() {
     return axios.get(`${apiBaseUrl}/sokerinfo`, {
         timeout: 15 * 1000,
         withCredentials: true
@@ -49,7 +49,7 @@ function deleteStoredAppState() {
 }
 
 const Api = {
-    getPerson,
+    getSøkerinfo,
     sendSøknad,
     getStoredAppState,
     storeAppState,

@@ -32,9 +32,7 @@ class ForeldrenavnSpørsmål extends React.Component<Props> {
                         })}
                         value={navnForelder1 || ''}
                         placeholder="Navn"
-                        onChange={(e: any) =>
-                            onSetNavnForelder1(e.target.value)
-                        }
+                        onChange={(e) => onSetNavnForelder1(e.target.value)}
                     />
                 </Column>
                 <Column xs="6">
@@ -45,9 +43,7 @@ class ForeldrenavnSpørsmål extends React.Component<Props> {
                         })}
                         value={navnForelder2 || ''}
                         placeholder="Navn"
-                        onChange={(e: any) =>
-                            onSetNavnForelder2(e.target.value)
-                        }
+                        onChange={(e) => onSetNavnForelder2(e.target.value)}
                     />
                 </Column>
             </Row>

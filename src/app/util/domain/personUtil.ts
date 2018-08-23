@@ -1,7 +1,6 @@
 import { Kjønn } from '../../types/common';
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import moment from 'moment';
-import Person from '../../types/Person';
 
 export const erFarEllerMedmor = (
     kjønn: Kjønn,
@@ -18,8 +17,8 @@ export const formaterNavn = (
         : `${fornavn} ${etternavn}`;
 };
 
-export const erMyndig = (person: Person) => {
+export const erMyndig = (fødselsdato: string) => {
     const now = moment();
-    const fødselsdato = moment(person.fødselsdato);
-    return now.diff(fødselsdato, 'years') >= 18;
+    const fdato = moment(fødselsdato);
+    return now.diff(fdato, 'years') >= 18;
 };
