@@ -71,7 +71,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
         case SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS:
             const uploadedAttachment = action.attachment;
             const url = action.url;
-
             uploadedAttachment.url = url;
             uploadedAttachment.pending = false;
             uploadedAttachment.uploaded = true;
@@ -80,6 +79,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
         case SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED:
             const failedAttachment = action.attachment;
             failedAttachment.pending = false;
+            failedAttachment.uploaded = false;
             return editAttachmentInState(failedAttachment, state);
 
         case SøknadActionKeys.DELETE_ATTACHMENT:
@@ -93,8 +93,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
 
         case SøknadActionKeys.DELETE_ATTACHMENT_FAILED:
             const attachmentFailedToDelete = action.attachment;
-            attachmentFailedToDelete.pending = false;
-            return editAttachmentInState(attachmentFailedToDelete, state);
+            return removeAttachmentFromState(attachmentFailedToDelete, state);
     }
     return state;
 };
