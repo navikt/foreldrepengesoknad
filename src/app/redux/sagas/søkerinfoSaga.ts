@@ -6,7 +6,7 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { ApiStatePartial } from '../reducers/apiReducer';
 
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
-import SøkerinfotUtils from '../../api/utils/s\u00F8kerinfoUtils';
+import { getApiStateFromSøkerinfo } from '../../api/utils/s\u00F8kerinfoUtils';
 
 function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
     const { registrerteBarn } = apiState;
@@ -19,12 +19,7 @@ function* getSøkerinfo(action: any) {
         const søkerinfo: SøkerinfoDTO = response.data;
 
         const nextApiState: ApiStatePartial = {
-            person: SøkerinfotUtils.getPerson(søkerinfo),
-            registrerteBarn: SøkerinfotUtils.getRegistrerteBarn(søkerinfo),
-            registrertAnnenForelder: SøkerinfotUtils.getRegistrertAnnenForelder(
-                søkerinfo
-            ),
-            arbeidsforhold: SøkerinfotUtils.getArbeidsforhold(søkerinfo),
+            ...getApiStateFromSøkerinfo(søkerinfo),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true
         };
