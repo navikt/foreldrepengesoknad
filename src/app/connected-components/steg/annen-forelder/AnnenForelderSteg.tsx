@@ -9,24 +9,31 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
-import { HistoryProps } from '../../../types/common';
-import Person, { RegistrertAnnenForelder } from '../../../types/Person';
+import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
-import { SøknadStegProps } from '../../Foreldrepenges\u00F8knad';
+import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
+import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
     personHentet: boolean;
     erSøkerFarEllerMedmor: boolean;
-    registrertAnnenForelder: RegistrertAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
     shouldRenderAnnenForelderErKjentPartial: boolean;
     stegProps: StegProps;
 }
 
-type Props = SøknadStegProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = SøkerinfoProps &
+    StateProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -40,14 +47,31 @@ class AnnenForelderSteg extends React.Component<Props> {
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             shouldRenderAnnenForelderErKjentPartial,
-            stegProps
+            stegProps,
+            intl
         } = this.props;
 
         if (personHentet) {
             return (
                 <Steg {...stegProps}>
+                    <Block
+                        header={{
+                            title: getMessage(
+                                intl,
+                                'annenForelder.label.visAnnenForelder'
+                            )
+                        }}
+                        visible={registrertAnnenForelder !== undefined}>
+                        {registrertAnnenForelder ? (
+                            <PersonaliaBox person={registrertAnnenForelder} />
+                        ) : (
+                            undefined
+                        )}
+                    </Block>
                     <React.Fragment>
-                        <AnnenForelderPersonaliaPartial />
+                        <AnnenForelderPersonaliaPartial
+                            søkerinfo={this.props.søkerinfo}
+                        />
                         {shouldRenderAnnenForelderErKjentPartial && (
                             <AnnenForelderErKjentPartial
                                 registrertAnnenForelder={
@@ -68,8 +92,8 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const person = props.søkerinfo.person;
-    const registrertAnnenForelder = props.søkerinfo.registrertAnnenForelder;
+    console.log(props);
+    const { person, registrertAnnenForelder } = props.søkerinfo;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
@@ -83,7 +107,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             registrertAnnenForelder
         ),
         history: props.history,
-        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state)
+        isAvailable: isAvailable(
+            StegID.ANNEN_FORELDER,
+            state.søknad,
+            props.søkerinfo
+        )
     };
 
     const shouldRenderAnnenForelderErKjentPartial =

@@ -30,7 +30,7 @@ interface StateProps {
 }
 
 interface AnnenForelderErKjentPartialProps {
-    registrertAnnenForelder: RegistrertAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
     visInformasjonVedOmsorgsovertakelse: boolean;
 }
