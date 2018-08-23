@@ -1,13 +1,13 @@
 import { Kjønn } from './common';
 import Bankkonto from './Bankkonto';
 
-interface PersonBase {
+export interface PersonBase {
     fnr: string;
     fornavn: string;
     mellomnavn?: string;
     etternavn: string;
     kjønn: Kjønn;
-    fødselsdato: string;
+    fødselsdato: Date;
 }
 
 interface Person extends PersonBase {
