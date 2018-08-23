@@ -12,7 +12,7 @@ export const getSøkerrollerForBruker = (
     }
     if (situasjon === Søkersituasjon.ADOPSJON) {
         if (kjønn === Kjønn.KVINNE) {
-            return [SøkerRolle.MOR, SøkerRolle.MEDMOR];
+            return [SøkerRolle.MOR /*, SøkerRolle.MEDMOR*/];
         }
         return [SøkerRolle.FAR /*, SøkerRolle.FAR2*/];
     }
