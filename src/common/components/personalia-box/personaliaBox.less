@@ -1,20 +1,24 @@
+@import '../../styles/variables.less';
+
 .personaliaBox {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     padding: 1rem;
-    background: lightgray;
+    background: @blockLightGray;
     &__fnr {
+        color: @navGra60;
         text-align: left;
         min-width: 50%;
     }
     &__alder {
+        color: @navGra60;
         text-align: right;
         min-width: 50%;
     }
     &__navn {
-        text-transform: capitalize;
-        text-align: center;
+        padding-top: 0.5rem;
+        text-align: left;
         min-width: 100%;
     }
 }
