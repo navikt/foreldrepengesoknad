@@ -3,7 +3,7 @@ import Lukknapp, { LukknappProps } from 'nav-frontend-lukknapp';
 
 import AlertStripe, { AlertStripeBaseProps } from 'nav-frontend-alertstriper';
 
-import './alertstripeContent.less';
+import './alertstripewithCloseButton.less';
 
 interface AlertstripeContentProps {
     alertStripeProps: AlertStripeBaseProps;

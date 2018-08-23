@@ -14,7 +14,7 @@ import {
     Skjemanummer
 } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
-import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeContent';
+import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
