@@ -12,6 +12,7 @@ const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
     return {
         ...person,
+        fødselsdato: moment(person.fødselsdato).toDate(),
         ikkeNordiskEøsLand: person.ikkeNordiskEøsLand || false,
         erMyndig: erMyndig(person.fødselsdato)
     };
@@ -43,7 +44,10 @@ const getRegistrertAnnenForelder = (
             annenForelder &&
             !foreldre.find((f) => f.fnr === annenForelder.fnr)
         ) {
-            foreldre.push(annenForelder);
+            foreldre.push({
+                ...annenForelder,
+                fødselsdato: moment(annenForelder.fødselsdato).toDate()
+            });
         }
     });
     return foreldre.length === 1 ? foreldre[0] : undefined;

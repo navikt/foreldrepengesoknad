@@ -7,6 +7,7 @@ import { ApiStatePartial } from '../reducers/apiReducer';
 
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getApiStateFromSøkerinfo } from '../../api/utils/s\u00F8kerinfoUtils';
+import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
 
 function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
     const { registrerteBarn } = apiState;
@@ -24,6 +25,13 @@ function* getSøkerinfo(action: any) {
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
+        if (nextApiState.registrertAnnenForelder) {
+            yield put(
+                søknadActionCreators.updateAnnenForelder(
+                    nextApiState.registrertAnnenForelder
+                )
+            );
+        }
         if (shouldUseStoredDataIfTheyExist(nextApiState)) {
             yield put(apiActions.getStoredAppState());
         } else {

@@ -1,35 +1,33 @@
 import * as React from 'react';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
+import { EtikettLiten, Element } from 'nav-frontend-typografi';
 
 import './personaliaBox.less';
-
-export interface Personalia {
-    fnr: string;
-    navn: string;
-    alder: number;
-}
+import { PersonBase } from 'app/types/Person';
+import { getAlderFraDato } from 'app/util/dates/dates';
+import { formaterNavn } from 'app/util/domain/personUtil';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 interface PersonaliaBoxProps {
-    personalia: Personalia;
+    person: PersonBase;
 }
 
-const PersonaliaBox = (props: PersonaliaBoxProps) => {
-    if (!props.personalia) {
-        return null;
-    }
+const PersonaliaBox = ({ person }: PersonaliaBoxProps) => {
     return (
         <div className="personaliaBox">
-            <Normaltekst className="personaliaBox__fnr">
-                {props.personalia.fnr}
-            </Normaltekst>
-            <Normaltekst className="personaliaBox__alder">
-                {props.personalia.alder}
-            </Normaltekst>
+            <EtikettLiten className="personaliaBox__fnr">
+                {person.fnr}
+            </EtikettLiten>
+            <EtikettLiten className="personaliaBox__alder">
+                <FormattedMessage
+                    id="personalia.år"
+                    values={{ år: getAlderFraDato(person.fødselsdato).år }}
+                />
+            </EtikettLiten>
             <Element className="personaliaBox__navn">
-                {props.personalia.navn}
+                {formaterNavn(person.fornavn, person.etternavn, person.fornavn)}
             </Element>
         </div>
     );
 };
 
-export default PersonaliaBox;
+export default injectIntl(PersonaliaBox);
