@@ -15,6 +15,7 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
+import { SøknadStegProps } from '../../Foreldrepenges\u00F8knad';
 
 interface StateProps {
     personHentet: boolean;
@@ -25,7 +26,8 @@ interface StateProps {
     stegProps: StegProps;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+type Props = SøknadStegProps & StateProps & InjectedIntlProps & DispatchProps;
+
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -66,9 +68,8 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const person = state.api.person as Person;
-    const registrertAnnenForelder = state.api
-        .registrertAnnenForelder as RegistrertAnnenForelder;
+    const person = props.søkerinfo.person;
+    const registrertAnnenForelder = props.søkerinfo.registrertAnnenForelder;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);

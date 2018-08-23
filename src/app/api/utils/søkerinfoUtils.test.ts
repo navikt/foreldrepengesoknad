@@ -54,7 +54,7 @@ describe('SøkerinfoUtils', () => {
     describe('getRegistrertAnnenForelder', () => {
         it('registrerAnnenForelder er undefined ved ingen barn', () => {
             const apiState = getApiStateFromSøkerinfo(søkerinfo);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn uten annen forelder har ikke registrerAnnenForelder', () => {
             const søkerinfoMedBarn = {
@@ -62,7 +62,7 @@ describe('SøkerinfoUtils', () => {
             };
             søkerinfoMedBarn.søker.barn = [barn];
             const apiState = getApiStateFromSøkerinfo(søkerinfo);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn med annen forelder har registrerAnnenForelder', () => {
             const info = {
@@ -73,7 +73,7 @@ describe('SøkerinfoUtils', () => {
                 }
             };
             const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeDefined();
+            expect(apiState.søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
             const info = {
@@ -84,7 +84,7 @@ describe('SøkerinfoUtils', () => {
                 }
             };
             const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeDefined();
+            expect(apiState.søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
             const info = {
@@ -95,7 +95,7 @@ describe('SøkerinfoUtils', () => {
                 }
             };
             const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
     });
 });

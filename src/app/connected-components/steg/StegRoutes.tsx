@@ -19,24 +19,37 @@ import InngangSteg from './inngang/InngangSteg';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
+import { HistoryProps } from '../../types/common';
+import { Søkerinfo } from '../../redux/reducers/apiReducer';
+import { SøknadStegProps } from '../Foreldrepenges\u00F8knad';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-type Props = RouteComponentProps<any> & DispatchProps;
+interface OwnProps {
+    søkerinfo: Søkerinfo;
+}
+type Props = OwnProps & RouteComponentProps<any> & DispatchProps & HistoryProps;
+
 class StegRoutes extends React.Component<Props> {
     render() {
+        const stegProps: SøknadStegProps = {
+            søkerinfo: this.props.søkerinfo,
+            history: this.props.history
+        };
         return (
             <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
                 <Switch>
                     <Route
                         path={søknadStegPath(StegID.INNGANG)}
-                        component={InngangSteg}
+                        render={() => <InngangSteg {...stegProps} />}
                         key={StegID.INNGANG}
                     />
                     <Route
                         path={søknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}
-                        component={RelasjonTilBarnAdopsjonSteg}
+                        render={() => (
+                            <RelasjonTilBarnAdopsjonSteg {...stegProps} />
+                        )}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
                     />
                     <Route

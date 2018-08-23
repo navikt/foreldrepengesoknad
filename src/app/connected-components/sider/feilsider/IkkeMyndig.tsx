@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
-import { ApiState } from '../../../redux/reducers/apiReducer';
+import { ApiState, Søkerinfo } from '../../../redux/reducers/apiReducer';
 import DocumentTitle from 'react-document-title';
 import Applikasjonsside from '../Applikasjonsside';
-import Person from '../../../types/Person';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
 
 const URL_PAPIRSØKNAD =
@@ -15,22 +14,22 @@ const URL_PAPIRSØKNAD =
     'foreldrepenger-og-engangsstonad/Foreldrepenger+og+engangsst%C3%B8nad?method=mail&veiledertype=privatperson';
 
 interface StateProps {
-    person: Person;
+    søkerinfo: Søkerinfo;
 }
 
 type Props = StateProps & InjectedIntlProps;
 
 const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
-    const { intl, person } = props;
+    const { intl, søkerinfo } = props;
 
-    if (person) {
+    if (søkerinfo) {
         return (
             <Applikasjonsside visSpråkvelger={false} margin={false}>
                 <DocumentTitle title={getMessage(intl, 'søknad.pageheading')} />
                 <Feilsidemelding
                     illustrasjon={{
                         tittel: getMessage(intl, 'ikkeMyndig.tittel', {
-                            navn: person.fornavn.toLowerCase()
+                            navn: søkerinfo.person.fornavn.toLowerCase()
                         }),
                         tekst: getMessage(intl, 'ikkeMyndig.ingress'),
                         lenke: {
@@ -51,7 +50,7 @@ const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: { api: ApiState }) => ({
-    person: state.api.person
+    søkerinfo: state.api.søkerinfo
 });
 
 export default connect(mapStateToProps)(injectIntl(IkkeMyndig));

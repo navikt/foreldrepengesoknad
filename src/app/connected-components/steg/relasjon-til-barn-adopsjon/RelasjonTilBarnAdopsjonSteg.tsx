@@ -13,7 +13,6 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
@@ -24,13 +23,14 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { SøknadStegProps } from '../../Foreldrepenges\u00F8knad';
 
 interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+type Props = SøknadStegProps & StateProps & InjectedIntlProps & DispatchProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
