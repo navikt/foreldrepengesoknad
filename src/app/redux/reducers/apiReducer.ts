@@ -9,11 +9,15 @@ import Person, {
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
-export interface ApiState {
-    person?: Person;
+export interface Søkerinfo {
+    person: Person;
     arbeidsforhold?: Arbeidsforhold[];
     registrertAnnenForelder?: RegistrertAnnenForelder;
     registrerteBarn?: RegistrertBarn[];
+}
+
+export interface ApiState {
+    søkerinfo?: Søkerinfo;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     søknadSendingInProgress: boolean;
