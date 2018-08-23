@@ -14,25 +14,21 @@ import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
-import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
-import { SøkerinfoProps } from '../../../Foreldrepengesøknad';
 
-interface AnnenForelderPersonaliaPartialProps {
+interface StateProps {
     søker: Søker;
     annenForelder: AnnenForelder;
-    registrertAnnenForelder?: RegistrertAnnenForelder;
-    søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
     situasjon: Søkersituasjon;
     adopsjonAvEktefellesBarn: boolean;
 }
+interface OwnProps {
+    søkersFødselsnummer: string;
+}
 
-type Props = AnnenForelderPersonaliaPartialProps &
-    SøkerinfoProps &
-    InjectedIntlProps &
-    DispatchProps;
+type Props = StateProps & OwnProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     onKanIkkeOppgis() {
@@ -59,7 +55,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
         const {
             søkersFødselsnummer,
             annenForelder,
-            registrertAnnenForelder,
             situasjon,
             dispatch,
             intl,
@@ -69,9 +64,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    visible={registrertAnnenForelder === undefined}
-                    margin="xs">
+                <Block margin="xs">
                     <NavnPåAnnenForelderSpørsmål
                         navn={navn}
                         kanIkkeOppgis={kanIkkeOppgis}
@@ -129,20 +122,15 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState,
-    props: Props
-): AnnenForelderPersonaliaPartialProps => ({
+const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     søker: state.søknad.søker,
-    søkersFødselsnummer: props.søkerinfo.person.fnr,
     annenForelder: state.søknad.annenForelder,
-    registrertAnnenForelder: undefined,
     erFarEllerMedmor: true,
     situasjon: state.søknad.situasjon,
     adopsjonAvEktefellesBarn: (state.søknad.barn as Adopsjonsbarn)
         .adopsjonAvEktefellesBarn
 });
 
-export default connect<AnnenForelderPersonaliaPartialProps, {}, {}>(
-    mapStateToProps
-)(injectIntl(AnnenForelderPersonaliaPartial));
+export default connect<StateProps, {}, OwnProps>(mapStateToProps)(
+    injectIntl(AnnenForelderPersonaliaPartial)
+);

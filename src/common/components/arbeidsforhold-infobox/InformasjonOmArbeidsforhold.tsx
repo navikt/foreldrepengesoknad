@@ -5,7 +5,7 @@ import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
 
-import { ISODateToPrettyDateFormat } from '../../../app/util/dates/dates';
+import { formatDate } from '../../../app/util/dates/dates';
 
 import getMessage from 'common/util/i18nUtils';
 import BEMHelper from 'common/util/bem';
@@ -46,9 +46,9 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<
             <Element>{arbeidsforhold.arbeidsgiverNavn}</Element>
             <Normaltekst>
                 {getMessage(intl, 'annenInntekt.arbeidsforhold.periode', {
-                    fom: ISODateToPrettyDateFormat(arbeidsforhold.fom),
+                    fom: formatDate(arbeidsforhold.fom),
                     tom: arbeidsforhold.tom
-                        ? ISODateToPrettyDateFormat(arbeidsforhold.tom)
+                        ? formatDate(arbeidsforhold.tom)
                         : getMessage(intl, 'pågående')
                 })}
             </Normaltekst>

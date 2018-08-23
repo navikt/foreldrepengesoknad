@@ -26,7 +26,7 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
     };
 };
 
-export const ISODateToPrettyDateFormat = (dato?: Date | string) => {
+export const formatDate = (dato?: Date | string) => {
     if (dato) {
         const parsetDato = moment(dato);
         return dato && parsetDato.isValid()
@@ -37,9 +37,8 @@ export const ISODateToPrettyDateFormat = (dato?: Date | string) => {
 };
 
 export const prettifyTidsperiode = (tidsperiode: TidsperiodePartial) => {
-    return `${ISODateToPrettyDateFormat(
-        tidsperiode.fom
-    )} - ${ISODateToPrettyDateFormat(tidsperiode.tom) || 'pågående'}`;
+    return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) ||
+        'pågående'}`;
 };
 
 export const findDateMostDistantInPast = (

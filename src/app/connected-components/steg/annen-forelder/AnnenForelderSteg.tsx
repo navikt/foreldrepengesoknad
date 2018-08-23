@@ -9,6 +9,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
+import { HistoryProps } from '../../../types/common';
 import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
@@ -18,10 +19,10 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../Foreldrepengesøknad';
-import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
-    personHentet: boolean;
+    antallBarn?: number;
+    søkersFødselsnummer?: string;
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
@@ -42,23 +43,25 @@ class AnnenForelderSteg extends React.Component<Props> {
 
     render() {
         const {
-            personHentet,
             erSøkerFarEllerMedmor,
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             shouldRenderAnnenForelderErKjentPartial,
+            søkersFødselsnummer,
+            antallBarn,
             stegProps,
             intl
         } = this.props;
 
-        if (personHentet) {
+        if (søkersFødselsnummer) {
             return (
                 <Steg {...stegProps}>
                     <Block
                         header={{
                             title: getMessage(
                                 intl,
-                                'annenForelder.label.visAnnenForelder'
+                                'annenForelder.label.registrertForelder',
+                                { antallBarn }
                             )
                         }}
                         visible={registrertAnnenForelder !== undefined}>
@@ -69,9 +72,11 @@ class AnnenForelderSteg extends React.Component<Props> {
                         )}
                     </Block>
                     <React.Fragment>
-                        <AnnenForelderPersonaliaPartial
-                            søkerinfo={this.props.søkerinfo}
-                        />
+                        {registrertAnnenForelder === undefined && (
+                            <AnnenForelderPersonaliaPartial
+                                søkersFødselsnummer={søkersFødselsnummer}
+                            />
+                        )}
                         {shouldRenderAnnenForelderErKjentPartial && (
                             <AnnenForelderErKjentPartial
                                 registrertAnnenForelder={
@@ -92,17 +97,21 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { person, registrertAnnenForelder } = props.søkerinfo;
+    const {
+        person,
+        registrertAnnenForelder,
+        registrerteBarn
+    } = props.søkerinfo;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
-    const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
+    const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
     const annenForelder = state.søknad.annenForelder;
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: annenForelderErGyldig(
             state.søknad,
-            person,
+            person!,
             registrertAnnenForelder
         ),
         history: props.history,
@@ -119,7 +128,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         stegProps,
-        personHentet: person !== undefined,
+        antallBarn: registrerteBarn ? registrerteBarn.length : 0,
+        søkersFødselsnummer: person ? person.fnr : undefined,
         erSøkerFarEllerMedmor,
         registrertAnnenForelder,
         shouldRenderAnnenForelderErKjentPartial,
