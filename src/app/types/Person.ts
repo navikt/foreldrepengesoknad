@@ -23,13 +23,7 @@ export interface RegistrertBarn {
     fødselsdato: Date;
 }
 
-export interface RegistrertAnnenForelder {
-    fnr: string;
-    fornavn: string;
-    mellomnavn?: string;
-    etternavn: string;
-    kjønn: Kjønn;
-    fødselsdato: string;
+export interface RegistrertAnnenForelder extends PersonBase {
     harOpplystOmSinPågåendeSak?: boolean;
 }
 

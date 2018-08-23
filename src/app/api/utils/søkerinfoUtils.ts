@@ -6,6 +6,7 @@ import Person, {
 import { SøkerinfoDTO } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
+import { ApiStatePartial } from '../../redux/reducers/apiReducer';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -65,11 +66,11 @@ const getArbeidsforhold = (
     });
 };
 
-const SøkerinfotUtils = {
-    getPerson,
-    getArbeidsforhold,
-    getRegistrertAnnenForelder,
-    getRegistrerteBarn
-};
-
-export default SøkerinfotUtils;
+export const getApiStateFromSøkerinfo = (
+    søkerinfo: SøkerinfoDTO
+): ApiStatePartial => ({
+    person: getPerson(søkerinfo),
+    registrerteBarn: getRegistrerteBarn(søkerinfo),
+    registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
+    arbeidsforhold: getArbeidsforhold(søkerinfo)
+});
