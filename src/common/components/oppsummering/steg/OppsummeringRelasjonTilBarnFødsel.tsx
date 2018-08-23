@@ -2,7 +2,7 @@ import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { ISODateToPrettyDateFormat } from '../../../../app/util/dates/dates';
+import { formatDate } from '../../../../app/util/dates/dates';
 import {
     FødtBarn,
     BarnPartial,
@@ -23,7 +23,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
             <React.Fragment>
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.fødselsdato')}
-                    text={ISODateToPrettyDateFormat(fødselsdatoer[0]) || ''}
+                    text={formatDate(fødselsdatoer[0]) || ''}
                 />
                 {fødselsattest && (
                     <DisplayTextWithLabel
@@ -54,7 +54,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
             <React.Fragment>
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.termindato')}
-                    text={ISODateToPrettyDateFormat(termindato) || ''}
+                    text={formatDate(termindato) || ''}
                 />
                 {terminbekreftelse && (
                     <DisplayTextWithLabel
@@ -72,9 +72,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                         intl,
                         'oppsummering.terminbekreftelseDato'
                     )}
-                    text={
-                        ISODateToPrettyDateFormat(terminbekreftelseDato) || ''
-                    }
+                    text={formatDate(terminbekreftelseDato) || ''}
                 />
             </React.Fragment>
         );

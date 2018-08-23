@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { VelgbartRegistrertBarn } from '../types/Person';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { formaterNavn } from '../util/domain/personUtil';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
+import { formatDate } from '../util/dates/dates';
 
 interface GjelderSøknadenNoenAvDisseBarnaSpørsmålProps {
     registrerteBarn: VelgbartRegistrertBarn[];
@@ -25,7 +25,7 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
                 label: formatertNavn,
                 value: registrertBarn.id,
                 checked: registrertBarn.checked === true || false,
-                subtext: moment(registrertBarn.fødselsdato).format('DD.MM.YYYY')
+                subtext: formatDate(registrertBarn.fødselsdato)
             };
         });
     }
