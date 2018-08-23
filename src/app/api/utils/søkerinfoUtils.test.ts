@@ -4,7 +4,7 @@ import {
     SøkerinfoDTOAnnenForelder
 } from '../types/sokerinfoDTO';
 import { Kjønn } from '../../types/common';
-import { getApiStateFromSøkerinfo } from './søkerinfoUtils';
+import { getSøkerinfoFromDTO } from './søkerinfoUtils';
 
 const søkerinfo: SøkerinfoDTO = {
     søker: {
@@ -53,7 +53,7 @@ const barnMedUlikForelder: SøkerinfoDTOBarn = {
 describe('SøkerinfoUtils', () => {
     describe('getRegistrertAnnenForelder', () => {
         it('registrerAnnenForelder er undefined ved ingen barn', () => {
-            const apiState = getApiStateFromSøkerinfo(søkerinfo);
+            const apiState = getSøkerinfoFromDTO(søkerinfo);
             expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn uten annen forelder har ikke registrerAnnenForelder', () => {
@@ -61,7 +61,7 @@ describe('SøkerinfoUtils', () => {
                 ...søkerinfo
             };
             søkerinfoMedBarn.søker.barn = [barn];
-            const apiState = getApiStateFromSøkerinfo(søkerinfo);
+            const apiState = getSøkerinfoFromDTO(søkerinfo);
             expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn med annen forelder har registrerAnnenForelder', () => {
@@ -72,7 +72,7 @@ describe('SøkerinfoUtils', () => {
                     barn: [barnMedForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
+            const apiState = getSøkerinfoFromDTO(info);
             expect(apiState.søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
@@ -83,7 +83,7 @@ describe('SøkerinfoUtils', () => {
                     barn: [barnMedForelder, barnMedForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
+            const apiState = getSøkerinfoFromDTO(info);
             expect(apiState.søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
@@ -94,7 +94,7 @@ describe('SøkerinfoUtils', () => {
                     barn: [barnMedForelder, barnMedUlikForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
+            const apiState = getSøkerinfoFromDTO(info);
             expect(apiState.søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
     });

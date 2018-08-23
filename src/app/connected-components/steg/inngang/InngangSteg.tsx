@@ -5,7 +5,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
-import { HistoryProps, Kjønn } from '../../../types/common';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -19,7 +18,8 @@ import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils
 import isAvailable from '../isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
-import { SøknadStegProps } from '../../Foreldrepenges\u00F8knad';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { Kjønn, HistoryProps } from '../../../types/common';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -30,10 +30,11 @@ export interface StateProps {
     søker: SøkerPartial;
 }
 
-export type Props = SøknadStegProps &
+export type Props = SøkerinfoProps &
     StateProps &
     InjectedIntlProps &
-    DispatchProps;
+    DispatchProps &
+    HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -137,7 +138,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             kjønn
         ),
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state),
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegRoute: resolveNesteSteg(state)
     };
 

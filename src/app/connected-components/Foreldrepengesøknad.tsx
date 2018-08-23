@@ -22,7 +22,6 @@ import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
 import { Søkerinfo } from '../redux/reducers/apiReducer';
-import { History } from 'history';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
@@ -33,9 +32,8 @@ interface StateProps {
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
-export interface SøknadStegProps {
+export interface SøkerinfoProps {
     søkerinfo: Søkerinfo;
-    history: History;
 }
 
 class Foreldrepengesøknad extends React.Component<Props> {
@@ -74,12 +72,16 @@ class Foreldrepengesøknad extends React.Component<Props> {
         return this.renderRoutes([
             <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
-                render={() => <StegRoutes søkerinfo={søkerinfo} />}
+                render={(props) => (
+                    <StegRoutes {...props} søkerinfo={søkerinfo} />
+                )}
                 key="steg"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
-                component={Velkommen}
+                render={(props) => (
+                    <Velkommen {...props} søkerinfo={søkerinfo} />
+                )}
                 key="velkommen"
             />,
             <Route

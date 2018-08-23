@@ -70,11 +70,13 @@ const getArbeidsforhold = (
     });
 };
 
-export const getApiStateFromSøkerinfo = (
+export const getSøkerinfoFromDTO = (
     søkerinfo: SøkerinfoDTO
 ): ApiStatePartial => ({
-    person: getPerson(søkerinfo),
-    registrerteBarn: getRegistrerteBarn(søkerinfo),
-    registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
-    arbeidsforhold: getArbeidsforhold(søkerinfo)
+    søkerinfo: {
+        person: getPerson(søkerinfo),
+        registrerteBarn: getRegistrerteBarn(søkerinfo),
+        registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
+        arbeidsforhold: getArbeidsforhold(søkerinfo)
+    }
 });

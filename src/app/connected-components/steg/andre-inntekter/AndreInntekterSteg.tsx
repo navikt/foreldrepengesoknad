@@ -8,7 +8,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
-import { HistoryProps } from '../../../types/common';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -23,16 +22,19 @@ import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { HistoryProps } from '../../../types/common';
 
-interface AndreInntekterStegProps {
+interface StateProps {
     stegProps: StegProps;
     arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
 }
 
-type Props = AndreInntekterStegProps &
-    InjectedIntlProps &
+type Props = SøkerinfoProps &
     HistoryProps &
+    StateProps &
+    InjectedIntlProps &
     DispatchProps;
 
 class AndreInntekterSteg extends React.Component<Props> {
@@ -191,24 +193,30 @@ class AndreInntekterSteg extends React.Component<Props> {
         );
     }
 }
-export default injectIntl(
-    connect((state: AppState, props: Props) => {
-        const { søknad } = state;
-        const { history } = props;
-        const { søker } = søknad;
 
-        const stegProps: StegProps = {
-            id: StegID.ANDRE_INNTEKTER,
-            renderFortsettKnapp: annenInntektErGyldig(søker),
-            history,
-            isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state)
-        };
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const { søknad } = state;
+    const { history, arbeidsforhold } = props;
+    const { søker } = søknad;
 
-        return {
-            søker,
-            arbeidsforhold: state.api.arbeidsforhold,
-            stegProps,
-            ...props
-        };
-    })(AndreInntekterSteg)
+    const stegProps: StegProps = {
+        id: StegID.ANDRE_INNTEKTER,
+        renderFortsettKnapp: annenInntektErGyldig(søker),
+        history,
+        isAvailable: isAvailable(
+            StegID.ANDRE_INNTEKTER,
+            state.søknad,
+            props.søkerinfo
+        )
+    };
+
+    return {
+        søker,
+        arbeidsforhold,
+        stegProps
+    };
+};
+
+export default connect<StateProps, {}, {}>(mapStateToProps)(
+    injectIntl(AndreInntekterSteg)
 );

@@ -20,6 +20,7 @@ import { StegID } from '../../../util/routing/stegConfig';
 import summaryActionCreators from '../../../redux/actions/summary/summaryActionCreators';
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
 
 interface StateProps {
     person: Person;
@@ -30,7 +31,11 @@ interface StateProps {
     perioder: Periode[];
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+type Props = SøkerinfoProps &
+    StateProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -101,7 +106,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søknad = state.søknad;
-    const person = state.api.person as Person;
+    const { person } = props.søkerinfo;
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering, // TODO check if all steps is approved.

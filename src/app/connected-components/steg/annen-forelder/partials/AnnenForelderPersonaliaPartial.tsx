@@ -14,9 +14,10 @@ import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
-import Person, { RegistrertAnnenForelder } from '../../../../types/Person';
+import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
+import { SøkerinfoProps } from '../../../Foreldrepengesøknad';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
@@ -29,6 +30,7 @@ interface AnnenForelderPersonaliaPartialProps {
 }
 
 type Props = AnnenForelderPersonaliaPartialProps &
+    SøkerinfoProps &
     InjectedIntlProps &
     DispatchProps;
 
@@ -128,10 +130,11 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 }
 
 const mapStateToProps = (
-    state: AppState
+    state: AppState,
+    props: Props
 ): AnnenForelderPersonaliaPartialProps => ({
     søker: state.søknad.søker,
-    søkersFødselsnummer: (state.api.person as Person).fnr,
+    søkersFødselsnummer: props.søkerinfo.person.fnr,
     annenForelder: state.søknad.annenForelder,
     registrertAnnenForelder: undefined,
     erFarEllerMedmor: true,

@@ -6,17 +6,20 @@ import {
     søknadGjelderFødsel
 } from '../../util/validation/fields/situasjon';
 import { barnErGyldig } from '../../util/validation/steg/barn';
-import { AppState } from '../../redux/reducers/index';
 import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
 import Person from '../../types/Person';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
+import { Søkerinfo } from '../../redux/reducers/apiReducer';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
-const isAvailable = (stegId: StegID, state: AppState): boolean => {
-    const { søknad, api } = state;
+const isAvailable = (
+    stegId: StegID,
+    søknad: Søknad,
+    søkerinfo: Søkerinfo
+): boolean => {
     const { barn, situasjon } = søknad;
-    const { person, registrertAnnenForelder } = api;
+    const { person, registrertAnnenForelder } = søkerinfo;
 
     switch (stegId) {
         case StegID.INNGANG:

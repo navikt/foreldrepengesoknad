@@ -22,6 +22,7 @@ import { HistoryProps } from '../../../types/common';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 import './velkommen.less';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
 
 interface StateProps {
     person?: Person;
@@ -37,7 +38,8 @@ type Props = StateProps &
     DispatchProps &
     InjectedIntlProps &
     HistoryProps &
-    DispatchProps;
+    DispatchProps &
+    SøkerinfoProps;
 
 class Velkommen extends React.Component<Props, OwnProps> {
     componentWillMount() {
@@ -155,8 +157,8 @@ class Velkommen extends React.Component<Props, OwnProps> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-    person: state.api.person,
+const mapStateToProps = (state: AppState, props: Props): StateProps => ({
+    person: props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår
 });
 

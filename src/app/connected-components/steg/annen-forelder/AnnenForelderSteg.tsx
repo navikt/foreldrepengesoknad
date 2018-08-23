@@ -92,7 +92,6 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    console.log(props);
     const { person, registrertAnnenForelder } = props.søkerinfo;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;

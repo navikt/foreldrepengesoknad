@@ -23,14 +23,19 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { SøknadStegProps } from '../../Foreldrepenges\u00F8knad';
+import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
 }
 
-type Props = SøknadStegProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = SøkerinfoProps &
+    StateProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -227,7 +232,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
         renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state)
+        isAvailable: isAvailable(
+            StegID.RELASJON_TIL_BARN_ADOPSJON,
+            state.søknad,
+            props.søkerinfo
+        )
     };
 
     return {

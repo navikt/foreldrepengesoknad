@@ -3,28 +3,30 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import { ApiStatePartial } from '../reducers/apiReducer';
+import { ApiStatePartial, Søkerinfo } from '../reducers/apiReducer';
 
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
-import { getApiStateFromSøkerinfo } from '../../api/utils/s\u00F8kerinfoUtils';
+import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 
-function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
-    const { registrerteBarn } = apiState;
+function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
+    if (!søkerinfo) {
+        return false;
+    }
+    const { registrerteBarn } = søkerinfo;
     return !(registrerteBarn && registrerteBarn.length > 0);
 }
 
 function* getSøkerinfo(action: any) {
     try {
         const response = yield call(Api.getSøkerinfo, action.params);
-        const søkerinfo: SøkerinfoDTO = response.data;
-
+        const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
-            ...getApiStateFromSøkerinfo(søkerinfo),
+            ...getSøkerinfoFromDTO(søkerinfoDTO),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
-        if (shouldUseStoredDataIfTheyExist(nextApiState)) {
+        if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
             yield put(apiActions.getStoredAppState());
         } else {
             yield put(apiActions.deleteStoredAppState());
