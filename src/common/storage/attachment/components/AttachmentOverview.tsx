@@ -37,21 +37,22 @@ class AttachmentOverview extends React.Component<Props, State> {
         super(props);
         this.state = {
             showErrorMessage: false,
-            failedAttachments: []
+            failedAttachments: props.attachments.filter(isAttachmentWithError)
         };
-
         this.hideErrorMessage = this.hideErrorMessage.bind(this);
     }
 
     componentDidUpdate() {
-        const attachmentsWithNewErrors = this.props.attachments.filter(
+        const attachmentsWithoutOldFailedAttachments = this.props.attachments.filter(
             (a: Attachment) => !this.state.failedAttachments.includes(a)
         );
 
-        if (this.hasFailedAttachments(attachmentsWithNewErrors)) {
+        if (this.hasFailedAttachments(attachmentsWithoutOldFailedAttachments)) {
             this.setState({
                 failedAttachments: this.state.failedAttachments.concat(
-                    attachmentsWithNewErrors.filter(isAttachmentWithError)
+                    attachmentsWithoutOldFailedAttachments.filter(
+                        isAttachmentWithError
+                    )
                 )
             });
             this.showErrorMessage();
