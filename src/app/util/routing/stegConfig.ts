@@ -51,24 +51,24 @@ const stegConfig: StegConfig = {
     [StegID.ANNEN_FORELDER]: {
         tittel: 'Informasjon om den andre forelderen',
         fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.UTENLANDSOPPHOLD,
+        nesteSteg: StegID.UTTAKSPLAN,
         index: 2
+    },
+    [StegID.UTTAKSPLAN]: {
+        tittel: 'Velkommen til eksempel-uttaksplanen',
+        fortsettKnappLabel: 'Gå til oppsummering',
+        nesteSteg: StegID.UTENLANDSOPPHOLD,
+        index: 3
     },
     [StegID.UTENLANDSOPPHOLD]: {
         tittel: 'Informasjon om utenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANDRE_INNTEKTER,
-        index: 3
+        index: 4
     },
     [StegID.ANDRE_INNTEKTER]: {
         tittel: 'Opplysninger om inntekt',
         fortsettKnappLabel: 'Gå til uttaksplan',
-        nesteSteg: StegID.UTTAKSPLAN,
-        index: 4
-    },
-    [StegID.UTTAKSPLAN]: {
-        tittel: 'Velkommen til eksempel-uttaksplanen',
-        fortsettKnappLabel: 'Gå til oppsummering',
         nesteSteg: StegID.OPPSUMMERING,
         index: 5
     },
