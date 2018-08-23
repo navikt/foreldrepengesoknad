@@ -185,7 +185,6 @@ class AndreInntekterSteg extends React.Component<Props> {
                                 })
                             )
                         }
-                        dispatch={dispatch}
                     />
                 </Block>
             </Steg>

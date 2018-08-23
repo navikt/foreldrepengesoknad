@@ -17,9 +17,10 @@ export interface AttachmentsUploaderProps {
     onFileDeleteFinish: (attachment: Attachment) => void;
 }
 
-type Props = AttachmentsUploaderProps;
-export default class AttachmentsUploader extends React.Component<Props> {
-    constructor(props: Props) {
+export default class AttachmentsUploader extends React.Component<
+    AttachmentsUploaderProps
+> {
+    constructor(props: AttachmentsUploaderProps) {
         super(props);
         this.onFilesSelect = this.onFilesSelect.bind(this);
         this.onFileDelete = this.onFileDelete.bind(this);

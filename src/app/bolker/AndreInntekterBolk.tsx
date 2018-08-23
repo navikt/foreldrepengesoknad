@@ -15,7 +15,6 @@ import {
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { DispatchProps } from 'common/redux/types';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -33,12 +32,11 @@ interface AndreInntekterBolkState {
 
 type AndreInntekterBolkStatePartial = Partial<AndreInntekterBolkState>;
 
-type Props = AndreInntekterBolkProps & DispatchProps;
 class AndreInntekterBolk extends React.Component<
-    Props,
+    AndreInntekterBolkProps,
     AndreInntekterBolkState
 > {
-    constructor(props: Props) {
+    constructor(props: AndreInntekterBolkProps) {
         super(props);
 
         this.openModal = this.openModal.bind(this);

@@ -13,5 +13,4 @@ export interface Attachment {
     uploaded: boolean;
     type: AttachmentType;
     skjemanummer: Skjemanummer;
-    error?: any;
 }

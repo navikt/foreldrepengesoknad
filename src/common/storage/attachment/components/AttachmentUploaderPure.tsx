@@ -14,9 +14,10 @@ export interface AttachmentsUploaderProps {
     onFileDelete: (attachment: Attachment) => void;
 }
 
-type Props = AttachmentsUploaderProps;
-export default class AttachmentsUploaderPure extends React.Component<Props> {
-    constructor(props: Props) {
+export default class AttachmentsUploaderPure extends React.Component<
+    AttachmentsUploaderProps
+> {
+    constructor(props: AttachmentsUploaderProps) {
         super(props);
         this.onFileDelete = this.onFileDelete.bind(this);
         this.onFilesSelect = this.onFilesSelect.bind(this);
@@ -35,15 +36,13 @@ export default class AttachmentsUploaderPure extends React.Component<Props> {
     render() {
         const { attachments, attachmentType, skjemanummer } = this.props;
         return (
-            <React.Fragment>
-                <AttachmentOverview
-                    attachments={attachments}
-                    attachmentType={attachmentType}
-                    skjemanummer={skjemanummer}
-                    onFilesSelect={this.onFilesSelect}
-                    onFileDelete={this.onFileDelete}
-                />
-            </React.Fragment>
+            <AttachmentOverview
+                attachments={attachments}
+                attachmentType={attachmentType}
+                skjemanummer={skjemanummer}
+                onFilesSelect={this.onFilesSelect}
+                onFileDelete={this.onFileDelete}
+            />
         );
     }
 }
