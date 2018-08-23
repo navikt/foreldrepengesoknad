@@ -12,28 +12,26 @@ import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
-import PersonaliaBox, {
-    Personalia
-} from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
 import Person from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
 
-interface AnnenForelderPersonaliaPartialProps {
+interface StateProps {
     søker: Søker;
     annenForelder: AnnenForelder;
-    registrertAnnenForelder?: Personalia;
     søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
     situasjon: Søkersituasjon;
     adopsjonAvEktefellesBarn: boolean;
 }
 
-type Props = AnnenForelderPersonaliaPartialProps &
-    InjectedIntlProps &
-    DispatchProps;
+interface OwnProps {
+    søkersFødselsnummer: string;
+}
+
+export type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     onKanIkkeOppgis() {
@@ -60,7 +58,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
         const {
             søkersFødselsnummer,
             annenForelder,
-            registrertAnnenForelder,
             situasjon,
             dispatch,
             intl,
@@ -70,24 +67,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    header={{
-                        title: getMessage(
-                            intl,
-                            'annenForelder.label.visAnnenForelder'
-                        )
-                    }}
-                    visible={registrertAnnenForelder !== undefined}>
-                    {registrertAnnenForelder ? (
-                        <PersonaliaBox personalia={registrertAnnenForelder} />
-                    ) : (
-                        undefined
-                    )}
-                </Block>
-
-                <Block
-                    visible={registrertAnnenForelder === undefined}
-                    margin="xs">
+                <Block margin="xs">
                     <NavnPåAnnenForelderSpørsmål
                         navn={navn}
                         kanIkkeOppgis={kanIkkeOppgis}
@@ -145,19 +125,16 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState
-): AnnenForelderPersonaliaPartialProps => ({
+const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     søker: state.søknad.søker,
     søkersFødselsnummer: (state.api.person as Person).fnr,
     annenForelder: state.søknad.annenForelder,
-    registrertAnnenForelder: undefined,
     erFarEllerMedmor: true,
     situasjon: state.søknad.situasjon,
     adopsjonAvEktefellesBarn: (state.søknad.barn as Adopsjonsbarn)
         .adopsjonAvEktefellesBarn
 });
 
-export default connect<AnnenForelderPersonaliaPartialProps, {}, {}>(
-    mapStateToProps
-)(injectIntl(AnnenForelderPersonaliaPartial));
+export default connect<StateProps & OwnProps, {}, OwnProps>(mapStateToProps)(
+    injectIntl(AnnenForelderPersonaliaPartial)
+);

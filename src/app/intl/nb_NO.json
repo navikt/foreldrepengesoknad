@@ -33,6 +33,8 @@
     "velkommen.lesMerOmPersonopplysninger":
         "Les om hvordan NAV behandler personopplysningene dine",
 
+    "personalia.år": "{år} år",
+
     "dinePersonopplysninger.sectionheading":
         "Slik behandler NAV personopplysningene dine",
 
@@ -202,8 +204,8 @@
     "annenForelder.bostedsland": "og bor i...",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
-    "annenForelder.label.visAnnenForelder":
-        "Informasjon om den andre forelderen",
+    "annenForelder.label.registrertForelder":
+        "Registrert annen forelder for {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
     "annenForelder.label.kanIkkeOppgiNavn":
         "Jeg kan ikke oppgi navnet til andre forelderen",
