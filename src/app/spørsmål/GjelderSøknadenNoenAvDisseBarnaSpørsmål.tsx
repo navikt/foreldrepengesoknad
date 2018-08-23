@@ -5,6 +5,7 @@ import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/ch
 import { formaterNavn } from '../util/domain/personUtil';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
+import { formatDate } from '../util/dates/dates';
 
 interface GjelderSøknadenNoenAvDisseBarnaSpørsmålProps {
     registrerteBarn: VelgbartRegistrertBarn[];
@@ -23,7 +24,8 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
             return {
                 label: formatertNavn,
                 value: registrertBarn.id,
-                checked: registrertBarn.checked === true || false
+                checked: registrertBarn.checked === true || false,
+                subtext: formatDate(registrertBarn.fødselsdato)
             };
         });
     }
