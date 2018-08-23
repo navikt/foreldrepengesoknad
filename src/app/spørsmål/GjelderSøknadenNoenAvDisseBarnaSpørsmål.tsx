@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { VelgbartRegistrertBarn } from '../types/Person';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
@@ -23,7 +24,8 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
             return {
                 label: formatertNavn,
                 value: registrertBarn.id,
-                checked: registrertBarn.checked === true || false
+                checked: registrertBarn.checked === true || false,
+                subtext: moment(registrertBarn.fødselsdato).format('DD.MM.YYYY')
             };
         });
     }
