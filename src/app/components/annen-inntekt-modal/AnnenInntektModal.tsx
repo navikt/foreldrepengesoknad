@@ -21,7 +21,6 @@ import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverN
 import { AttachmentType, Skjemanummer } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
-import { DispatchProps } from 'common/redux/types';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 
@@ -32,7 +31,7 @@ export interface AnnenInntektModalProps {
     onSubmit: (annenInntekt: AnnenInntekt) => void;
 }
 
-type Props = AnnenInntektModalProps & InjectedIntlProps & DispatchProps;
+type Props = AnnenInntektModalProps & InjectedIntlProps;
 
 interface State {
     annenInntekt: AnnenInntektPartial;
@@ -124,7 +123,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, isOpen, onCancel, dispatch } = this.props;
+        const { intl, isOpen, onCancel } = this.props;
         const { annenInntekt } = this.state;
         const gjelderJobbIUtlandet =
             annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
@@ -262,7 +261,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
                         }
                         skjemanummer={this.findSkjemanummer()}
-                        dispatch={dispatch}
                     />
                 </Block>
             </ModalForm>

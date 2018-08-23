@@ -106,8 +106,7 @@ class AndreInntekterBolk extends React.Component<
             oppfølgingsspørsmål,
             renderSpørsmål,
             showAndreInntekterPeriodeContent,
-            andreInntekterSiste10Mnd,
-            dispatch
+            andreInntekterSiste10Mnd
         } = this.props;
 
         const { annenInntektToEdit } = this.state;
@@ -159,7 +158,6 @@ class AndreInntekterBolk extends React.Component<
                         })
                     }
                     annenInntekt={annenInntektToEdit}
-                    dispatch={dispatch}
                     onSubmit={
                         annenInntektToEdit ? this.onEditSubmit : this.onAdd
                     }

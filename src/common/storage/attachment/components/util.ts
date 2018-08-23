@@ -22,5 +22,5 @@ export const mapFileToAttachment = (
     skjemanummer
 });
 
-export const attachmentWithUploadError = (attachment: Attachment): boolean =>
-    attachment.pending === false && attachment.uploaded === false;
+export const isAttachmentWithError = ({ pending, uploaded }: Attachment) =>
+    pending === false && uploaded === false;

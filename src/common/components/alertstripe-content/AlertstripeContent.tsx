@@ -1,21 +1,26 @@
 import * as React from 'react';
-import Lukknapp from 'nav-frontend-lukknapp';
+import Lukknapp, { LukknappProps } from 'nav-frontend-lukknapp';
+
+import AlertStripe, { AlertStripeBaseProps } from 'nav-frontend-alertstriper';
 
 import './alertstripeContent.less';
 
 interface AlertstripeContentProps {
-    message: string;
+    alertStripeProps: AlertStripeBaseProps;
+    lukknappProps: LukknappProps;
     onClose?: () => void;
 }
 
-type Props = AlertstripeContentProps;
-const AlertstripeContent: React.StatelessComponent<Props> = ({
-    message,
-    onClose
-}) => (
-    <div className="alertStripeContent">
-        <p>{message}</p>
-        {onClose && <Lukknapp type="button" onClick={onClose} hvit={true} />}
-    </div>
-);
-export default AlertstripeContent;
+const AlertstripeWithCloseButton: React.StatelessComponent<
+    AlertstripeContentProps
+> = ({ alertStripeProps, lukknappProps, onClose }) => {
+    return (
+        <AlertStripe {...alertStripeProps}>
+            <div className="alertStripeContent">
+                {alertStripeProps.children}
+                {onClose && <Lukknapp {...lukknappProps} onClick={onClose} />}
+            </div>
+        </AlertStripe>
+    );
+};
+export default AlertstripeWithCloseButton;

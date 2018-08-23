@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import VedleggInput from './AttachmentInput';
 import AttachmentList from './AttachmentList';
 import LabelText from '../../../components/labeltekst/Labeltekst';
 import { bytesString, getTotalFileSize } from 'common/util/filesize';
-import { attachmentWithUploadError, mapFileToAttachment } from './util';
+import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -14,11 +14,7 @@ import {
     Skjemanummer
 } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { DispatchProps } from 'common/redux/types';
-import AlertstripeContent from 'common/components/alertstripe-content/AlertstripeContent';
-import getMessage from 'common/util/i18nUtils';
-import søknadActionCreators from '../../../../app/redux/actions/søknad/søknadActionCreators';
+import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeContent';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
@@ -30,23 +26,52 @@ export interface AttachmentOverviewProps {
     onFileDelete: (file: Attachment) => void;
 }
 
-type Props = AttachmentOverviewProps & DispatchProps & InjectedIntlProps;
-class AttachmentOverview extends React.Component<Props> {
+interface State {
+    showErrorMessage: boolean;
+    failedAttachments: Attachment[];
+}
+
+type Props = AttachmentOverviewProps;
+class AttachmentOverview extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.removeFailedAttachments = this.removeFailedAttachments.bind(this);
+        this.state = {
+            showErrorMessage: false,
+            failedAttachments: []
+        };
+
+        this.hideErrorMessage = this.hideErrorMessage.bind(this);
     }
 
-    removeFailedAttachments() {
-        this.props.attachments
-            .filter(attachmentWithUploadError)
-            .forEach((a: Attachment) =>
-                this.props.dispatch(søknadActionCreators.deleteAttachment(a))
-            );
+    componentDidUpdate() {
+        const attachmentsWithNewErrors = this.props.attachments.filter(
+            (a: Attachment) => !this.state.failedAttachments.includes(a)
+        );
+
+        if (this.hasFailedAttachments(attachmentsWithNewErrors)) {
+            this.setState({
+                failedAttachments: this.state.failedAttachments.concat(
+                    attachmentsWithNewErrors.filter(isAttachmentWithError)
+                )
+            });
+            this.showErrorMessage();
+        }
     }
 
-    componentWillUnmount() {
-        this.removeFailedAttachments();
+    hasFailedAttachments(attachments: Attachment[]) {
+        return attachments.some(isAttachmentWithError);
+    }
+
+    showErrorMessage() {
+        this.setState({
+            showErrorMessage: true
+        });
+    }
+
+    hideErrorMessage() {
+        this.setState({
+            showErrorMessage: false
+        });
     }
 
     render() {
@@ -57,21 +82,21 @@ class AttachmentOverview extends React.Component<Props> {
             skjemanummer,
             showFileSize,
             onFileDelete,
-            onFilesSelect,
-            intl
+            onFilesSelect
         } = this.props;
 
-        const attachmentWithoutErrors = attachments.filter(
-            (a: Attachment) => !attachmentWithUploadError(a)
+        const attachmentsToRender = attachments.filter(
+            (a: Attachment) => !isAttachmentWithError(a)
         );
-        const showAttachments = attachmentWithoutErrors.length > 0;
-        const hasErrors = attachments.some(attachmentWithUploadError);
+        const showAttachments = attachmentsToRender.length > 0;
 
         return (
-            <div>
-                <div
-                    className={
-                        showAttachments || hasErrors ? 'blokk-xs' : undefined
+            <React.Fragment>
+                <Block
+                    margin={
+                        showAttachments || this.state.showErrorMessage
+                            ? 'xs'
+                            : 'none'
                     }>
                     <VedleggInput
                         id={inputId}
@@ -86,65 +111,68 @@ class AttachmentOverview extends React.Component<Props> {
                                 )
                             );
                         }}
-                        onClick={this.removeFailedAttachments}
+                        onClick={this.hideErrorMessage}
                     />
-                </div>
+                </Block>
                 <CSSTransition
                     classNames="transitionFade"
                     timeout={150}
-                    in={showAttachments || hasErrors}
+                    in={showAttachments || this.state.showErrorMessage}
                     unmountOnExit={true}>
                     <React.Fragment>
-                        {(showAttachments || hasErrors) && (
+                        {(showAttachments || this.state.showErrorMessage) && (
                             <React.Fragment>
                                 <Block
                                     margin="xs"
-                                    visible={hasErrors}
+                                    visible={this.state.showErrorMessage}
                                     animated={false}>
-                                    <AlertStripe type="advarsel" solid={true}>
-                                        <AlertstripeContent
-                                            message={getMessage(
-                                                intl,
-                                                'vedlegg.feilmelding'
-                                            )}
-                                            onClose={
-                                                this.removeFailedAttachments
-                                            }
-                                        />
-                                    </AlertStripe>
+                                    <AlertstripeWithCloseButton
+                                        alertStripeProps={{
+                                            type: 'advarsel',
+                                            solid: true,
+                                            children: (
+                                                <FormattedMessage
+                                                    id={'vedlegg.feilmelding'}
+                                                />
+                                            )
+                                        }}
+                                        lukknappProps={{
+                                            hvit: true,
+                                            type: 'button'
+                                        }}
+                                        onClose={this.hideErrorMessage}
+                                    />
                                 </Block>
-
-                                <div>
-                                    <div className="blokk-xs">
-                                        <LabelText>
-                                            <FormattedMessage
-                                                id="vedlegg.liste.tittel"
-                                                values={{
-                                                    størrelse: bytesString(
-                                                        getTotalFileSize(
-                                                            attachmentWithoutErrors.map(
-                                                                (v) => v.file
-                                                            )
+                                <Block margin="xs">
+                                    <LabelText>
+                                        <FormattedMessage
+                                            id="vedlegg.liste.tittel"
+                                            values={{
+                                                størrelse: bytesString(
+                                                    getTotalFileSize(
+                                                        attachmentsToRender.map(
+                                                            (a: Attachment) =>
+                                                                a.file
                                                         )
                                                     )
-                                                }}
-                                            />
-                                        </LabelText>
-                                    </div>
-                                    <AttachmentList
-                                        attachments={attachmentWithoutErrors}
-                                        showFileSize={showFileSize}
-                                        onDelete={(file: Attachment) =>
-                                            onFileDelete(file)
-                                        }
-                                    />
-                                </div>
+                                                )
+                                            }}
+                                        />
+                                    </LabelText>
+                                </Block>
+                                <AttachmentList
+                                    attachments={attachmentsToRender}
+                                    showFileSize={showFileSize}
+                                    onDelete={(file: Attachment) =>
+                                        onFileDelete(file)
+                                    }
+                                />
                             </React.Fragment>
                         )}
                     </React.Fragment>
                 </CSSTransition>
-            </div>
+            </React.Fragment>
         );
     }
 }
-export default injectIntl(AttachmentOverview);
+export default AttachmentOverview;
