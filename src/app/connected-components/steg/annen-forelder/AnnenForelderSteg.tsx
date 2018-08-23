@@ -15,11 +15,14 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
+import Block from 'common/components/block/Block';
+import getMessage from 'common/util/i18nUtils';
+import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 
 interface StateProps {
     personHentet: boolean;
     erSøkerFarEllerMedmor: boolean;
-    registrertAnnenForelder: RegistrertAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     visInformasjonVedOmsorgsovertakelse: boolean;
     shouldRenderAnnenForelderErKjentPartial: boolean;
     stegProps: StegProps;
@@ -38,12 +41,27 @@ class AnnenForelderSteg extends React.Component<Props> {
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
             shouldRenderAnnenForelderErKjentPartial,
-            stegProps
+            stegProps,
+            intl
         } = this.props;
 
         if (personHentet) {
             return (
                 <Steg {...stegProps}>
+                    <Block
+                        header={{
+                            title: getMessage(
+                                intl,
+                                'annenForelder.label.visAnnenForelder'
+                            )
+                        }}
+                        visible={registrertAnnenForelder !== undefined}>
+                        {registrertAnnenForelder ? (
+                            <PersonaliaBox person={registrertAnnenForelder} />
+                        ) : (
+                            undefined
+                        )}
+                    </Block>
                     <React.Fragment>
                         <AnnenForelderPersonaliaPartial />
                         {shouldRenderAnnenForelderErKjentPartial && (
@@ -67,8 +85,7 @@ class AnnenForelderSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const person = state.api.person as Person;
-    const registrertAnnenForelder = state.api
-        .registrertAnnenForelder as RegistrertAnnenForelder;
+    const registrertAnnenForelder = state.api.registrertAnnenForelder;
     const barn = state.søknad.barn as ForeldreansvarBarn;
     const søker = state.søknad.søker;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);

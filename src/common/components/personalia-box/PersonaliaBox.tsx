@@ -2,31 +2,25 @@ import * as React from 'react';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 import './personaliaBox.less';
-
-export interface Personalia {
-    fnr: string;
-    navn: string;
-    alder: number;
-}
+import { PersonBase } from 'app/types/Person';
+import { getAlderFraDato } from 'app/util/dates/dates';
+import { formaterNavn } from 'app/util/domain/personUtil';
 
 interface PersonaliaBoxProps {
-    personalia: Personalia;
+    person: PersonBase;
 }
 
-const PersonaliaBox = (props: PersonaliaBoxProps) => {
-    if (!props.personalia) {
-        return null;
-    }
+const PersonaliaBox = ({ person }: PersonaliaBoxProps) => {
     return (
         <div className="personaliaBox">
             <Normaltekst className="personaliaBox__fnr">
-                {props.personalia.fnr}
+                {person.fnr}
             </Normaltekst>
             <Normaltekst className="personaliaBox__alder">
-                {props.personalia.alder}
+                {getAlderFraDato(person.fødselsdato).år}
             </Normaltekst>
             <Element className="personaliaBox__navn">
-                {props.personalia.navn}
+                {formaterNavn(person.fornavn, person.etternavn, person.fornavn)}
             </Element>
         </div>
     );

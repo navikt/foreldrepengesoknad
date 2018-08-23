@@ -12,19 +12,16 @@ import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
-import PersonaliaBox, {
-    Personalia
-} from 'common/components/personalia-box/PersonaliaBox';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
-import Person from '../../../../types/Person';
+import Person, { RegistrertAnnenForelder } from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
 
 interface AnnenForelderPersonaliaPartialProps {
     søker: Søker;
     annenForelder: AnnenForelder;
-    registrertAnnenForelder?: Personalia;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
     søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
     situasjon: Søkersituasjon;
@@ -70,21 +67,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block
-                    header={{
-                        title: getMessage(
-                            intl,
-                            'annenForelder.label.visAnnenForelder'
-                        )
-                    }}
-                    visible={registrertAnnenForelder !== undefined}>
-                    {registrertAnnenForelder ? (
-                        <PersonaliaBox personalia={registrertAnnenForelder} />
-                    ) : (
-                        undefined
-                    )}
-                </Block>
-
                 <Block
                     visible={registrertAnnenForelder === undefined}
                     margin="xs">
