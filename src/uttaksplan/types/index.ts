@@ -39,7 +39,7 @@ export interface FellesperiodeFordeling {
 
 export interface UttaksplanSøker {
     fornavn: string;
-    mellomnavn: string;
+    mellomnavn?: string;
     etternavn: string;
     kjønn: Kjønn;
     rolle: SøkerRolle;

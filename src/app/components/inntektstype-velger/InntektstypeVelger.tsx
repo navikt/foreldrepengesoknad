@@ -4,11 +4,12 @@ import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
 import InjectedIntl = ReactIntl.InjectedIntl;
 import getMessage from 'common/util/i18nUtils';
 import Select from 'common/components/skjema/wrappers/Select';
+import { Validator } from 'common/lib/validation/types';
 
 interface InntektstypeVelgerProps {
     defaultValue?: string;
     label: React.ReactNode;
-    validators?: any;
+    validators?: Validator[];
     name?: string;
     onChange: (
         value: string,

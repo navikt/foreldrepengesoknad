@@ -20,6 +20,8 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
+import { RegistrertAnnenForelder } from '../../../../types/Person';
+import { formaterNavn } from '../../../../util/domain/personUtil';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -28,7 +30,7 @@ interface StateProps {
 }
 
 interface AnnenForelderErKjentPartialProps {
-    registrertAnnenForelder: any;
+    registrertAnnenForelder: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
     visInformasjonVedOmsorgsovertakelse: boolean;
 }
@@ -56,7 +58,11 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
             registrertAnnenForelder.harOpplystOmSinPågåendeSak;
 
         const navn = registrertAnnenForelder
-            ? registrertAnnenForelder.navn
+            ? formaterNavn(
+                  registrertAnnenForelder.fornavn,
+                  registrertAnnenForelder.etternavn,
+                  registrertAnnenForelder.mellomnavn
+              )
             : annenForelder.navn;
 
         return (

@@ -53,9 +53,10 @@ class AntallBarnBolk extends React.Component<Props> {
                         legend={spørsmål}
                         name={inputName}
                         feil={feil}
-                        onChange={(event: any, value: string) =>
-                            this.onRadioChange(value as AntallBarnVerdi)
-                        }
+                        onChange={(
+                            event: React.SyntheticEvent<EventTarget>,
+                            value: string
+                        ) => this.onRadioChange(value as AntallBarnVerdi)}
                         checked={antallBarnVerdi}
                         radios={[
                             {

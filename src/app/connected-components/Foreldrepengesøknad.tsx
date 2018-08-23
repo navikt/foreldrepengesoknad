@@ -23,11 +23,12 @@ import DevSideoversikt from '../dev/DevSideoversikt';
 import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
+import { AppState } from '../redux/reducers';
 
 interface StateProps {
-    person: Person;
+    person?: Person;
     error: any;
-    isLoadingPerson: boolean;
+    isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
 }
 
@@ -94,17 +95,17 @@ class Foreldrepengesøknad extends React.Component<Props> {
         const {
             error,
             isLoadingAppState,
-            isLoadingPerson,
+            isLoadingSøkerinfo,
             person
         } = this.props;
 
         if (
             isLoadingAppState ||
-            isLoadingPerson ||
+            isLoadingSøkerinfo ||
             (error.response && error.response.status === 401)
         ) {
             return <Spinner type="XXL" />;
-        } else if (!person && !isLoadingPerson) {
+        } else if (!person && !isLoadingSøkerinfo) {
             return this.renderErrorRoute(GenerellFeil);
         } else if (person && !person.erMyndig) {
             return this.renderErrorRoute(IkkeMyndig);
@@ -113,10 +114,10 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     person: state.api.person,
     error: state.api.error,
-    isLoadingPerson: state.api.isLoadingPerson,
+    isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
     isLoadingAppState: state.api.isLoadingAppState
 });
 

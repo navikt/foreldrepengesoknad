@@ -54,7 +54,7 @@ class CheckboksPanelGruppeResponsive extends React.Component<Props> {
                                                     checkboks.checked || false
                                                 }
                                                 disabled={disabled || false}
-                                                onChange={(event: any) =>
+                                                onChange={(event) =>
                                                     onChange(
                                                         event,
                                                         checkboks.value

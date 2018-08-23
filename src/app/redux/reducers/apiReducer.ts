@@ -2,8 +2,10 @@ import {
     ApiActionKeys,
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
-import Person from '../../types/Person';
-import { RegistrertAnnenForelder } from '../../types/søknad/AnnenForelder';
+import Person, {
+    RegistrertAnnenForelder,
+    RegistrertBarn
+} from '../../types/Person';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 
@@ -11,7 +13,8 @@ export interface ApiState {
     person?: Person;
     arbeidsforhold?: Arbeidsforhold[];
     registrertAnnenForelder?: RegistrertAnnenForelder;
-    isLoadingPerson: boolean;
+    registrerteBarn?: RegistrertBarn[];
+    isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     søknadSendingInProgress: boolean;
     kvittering?: ForeldrepengesøknadResponse;
@@ -21,20 +24,18 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 const getDefaultState = (): ApiState => ({
-    person: undefined,
-    arbeidsforhold: undefined,
-    registrertAnnenForelder: undefined,
-    isLoadingPerson: false,
+    isLoadingSøkerinfo: false,
     isLoadingAppState: true,
     søknadSendingInProgress: false,
-    kvittering: undefined,
     error: {
-        networkError: false,
-        response: undefined
+        networkError: false
     }
 });
 
-const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
+const apiReducer = (
+    state = getDefaultState(),
+    action: ApiActionTypes
+): ApiStatePartial => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {
@@ -44,15 +45,7 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes) => {
         case ApiActionKeys.GET_SØKERINFO:
             return {
                 ...state,
-                isLoadingPerson: true
-            };
-        case ApiActionKeys.UPDATE_PERSON:
-            return {
-                ...state,
-                person: {
-                    ...state.person,
-                    ...action.payload
-                }
+                isLoadingSøkerinfo: true
             };
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {

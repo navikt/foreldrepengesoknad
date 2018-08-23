@@ -2,11 +2,12 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import Select from 'common/components/skjema/wrappers/Select';
+import { Validator } from 'common/lib/validation/types';
 
 interface StateProps {
     defaultValue?: string;
     label: React.ReactNode;
-    validators?: any;
+    validators?: Validator[];
     name?: string;
     onChange: (
         value: string,

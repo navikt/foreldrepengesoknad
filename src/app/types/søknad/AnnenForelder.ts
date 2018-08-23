@@ -11,13 +11,6 @@ interface AnnenForelder {
     erUfør: boolean;
 }
 
-export interface RegistrertAnnenForelder {
-    navn: string;
-    fnr: string;
-    alder: string;
-    harOpplystOmSinPågåendeSak: boolean;
-}
-
 export type AnnenForelderPartial = Partial<AnnenForelder>;
 
 export default AnnenForelder;
