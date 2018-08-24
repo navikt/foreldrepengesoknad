@@ -16,10 +16,12 @@ interface ArbeidsforholdInfoWrapperProps {
 const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<
     ArbeidsforholdInfoWrapperProps & InjectedIntlProps
 > = ({ arbeidsforhold, intl }) => {
+    const harArbeidsforhold =
+        arbeidsforhold !== undefined && arbeidsforhold.length > 0;
+
     return (
         <React.Fragment>
-            {(arbeidsforhold === undefined ||
-                (arbeidsforhold && arbeidsforhold.length === 0)) && (
+            {!harArbeidsforhold && (
                 <div className="arbeidsforholdInfoBox">
                     <Normaltekst>
                         {getMessage(
@@ -29,23 +31,20 @@ const InformasjonOmArbeidsforholdWrapper: React.StatelessComponent<
                     </Normaltekst>
                 </div>
             )}
-            {arbeidsforhold &&
-                arbeidsforhold.length > 0 && (
-                    <ul className="arbeidsforholdList">
-                        {arbeidsforhold.map(
-                            (arbeidsforholdElement: Arbeidsforhold) => (
-                                <li key={arbeidsforholdElement.arbeidsgiverId}>
-                                    <ArbeidsforholdInfoBox
-                                        key={
-                                            arbeidsforholdElement.arbeidsgiverId
-                                        }
-                                        arbeidsforhold={arbeidsforholdElement}
-                                    />
-                                </li>
-                            )
-                        )}
-                    </ul>
-                )}
+            {harArbeidsforhold && (
+                <ul className="arbeidsforholdList">
+                    {arbeidsforhold.map(
+                        (arbeidsforholdElement: Arbeidsforhold) => (
+                            <li key={arbeidsforholdElement.arbeidsgiverId}>
+                                <ArbeidsforholdInfoBox
+                                    key={arbeidsforholdElement.arbeidsgiverId}
+                                    arbeidsforhold={arbeidsforholdElement}
+                                />
+                            </li>
+                        )
+                    )}
+                </ul>
+            )}
         </React.Fragment>
     );
 };
