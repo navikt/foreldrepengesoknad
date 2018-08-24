@@ -13,22 +13,23 @@ interface YtelseInfoWrapperProps {
 const InformasjonOmYtelserWrapper: React.StatelessComponent<
     YtelseInfoWrapperProps & InjectedIntlProps
 > = ({ ytelser, intl }) => {
+    const harYtelser = ytelser !== undefined && ytelser.length > 0;
+
     return (
         <React.Fragment>
-            {(ytelser === undefined || (ytelser && ytelser.length === 0)) && (
+            {!harYtelser && (
                 <div className="ytelserEmpty">
                     <Normaltekst>
                         {getMessage(intl, 'annenInntekt.ytelser.tekst')}
                     </Normaltekst>
                 </div>
             )}
-            {ytelser &&
-                ytelser.length > 0 && (
-                    <ul className="ytelserList">
-                        /* TODO: Render info om ytelse */
-                        {ytelser.map(() => 'Ytelse')}
-                    </ul>
-                )}
+            {harYtelser && (
+                <ul className="ytelserList">
+                    /* TODO: Render info om ytelse */
+                    {ytelser.map(() => 'Ytelse')}
+                </ul>
+            )}
         </React.Fragment>
     );
 };
