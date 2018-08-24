@@ -11,6 +11,7 @@ import './attachment.less';
 interface AttachmentInputProps {
     id: string;
     onFilesSelect: (files: File[]) => void;
+    onClick: () => void;
 }
 
 type Props = AttachmentInputProps & InjectedIntlProps;
@@ -75,7 +76,7 @@ class AttachmentInput extends React.Component<Props> {
     }
 
     render() {
-        const { id, intl } = this.props;
+        const { id, onClick, intl } = this.props;
         const inputId = `${id}-input`;
 
         const BEM = BEMHelper('attachmentButton');
@@ -105,6 +106,7 @@ class AttachmentInput extends React.Component<Props> {
                     accept=".pdf, .jpg, .jpeg, .png"
                     onChange={(e) => this.onFileSelect(e)}
                     multiple={true}
+                    onClick={onClick}
                 />
             </label>
         );
