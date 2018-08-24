@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { NæringsrelasjonPartial } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import { NæringsrelasjonPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import Block from 'common/components/block/Block';
 import Input from 'nav-frontend-skjema/lib/input';
-import { InputChangeEvent } from '../types/dom/Events';
+import { InputChangeEvent } from '../../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
-import ErNærVennEllerFamilieAvPersonSpørsmål from '../spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
+import ErNærVennEllerFamilieAvPersonSpørsmål from '../../spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
+import { tlfnrVisible } from './visibilityFns';
 
 interface NæringsrelasjonBolkProps {
     næringsrelasjon: NæringsrelasjonPartial;
@@ -54,7 +55,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 }
                             />
                         </Block>
-                        <Block>
+                        <Block visible={tlfnrVisible(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
                                 label={getMessage(
@@ -68,7 +69,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 }
                             />
                         </Block>
-                        <Block>
+                        <Block visible={tlfnrVisible(næringsrelasjon)}>
                             <ErNærVennEllerFamilieAvPersonSpørsmål
                                 erNærVennEllerFamilieAvPerson={
                                     erNærVennEllerFamilie
