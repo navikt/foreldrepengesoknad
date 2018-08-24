@@ -36,3 +36,23 @@ export const selvstendigNæringsdrivendeBolkVisible: AnnenInntektVisibilityFn = 
     }
     return false;
 };
+
+export const andreInntekterBolkVisible: AnnenInntektVisibilityFn = (
+    søker: Søker
+) => {
+    const {
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+        selvstendigNæringsdrivendeInformasjon
+    } = søker;
+    if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true) {
+        return (
+            selvstendigNæringsdrivendeInformasjon !== undefined &&
+            selvstendigNæringsdrivendeInformasjon.length > 0 &&
+            selvstendigNæringsdrivendeBolkVisible(søker)
+        );
+    }
+    return (
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false &&
+        selvstendigNæringsdrivendeBolkVisible(søker)
+    );
+};

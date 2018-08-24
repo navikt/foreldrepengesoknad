@@ -23,7 +23,10 @@ import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
-import { selvstendigNæringsdrivendeBolkVisible } from './visibilityFns';
+import {
+    andreInntekterBolkVisible,
+    selvstendigNæringsdrivendeBolkVisible
+} from './visibilityFns';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -170,7 +173,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                 <Block
                     hasChildBlocks={true}
                     margin="none"
-                    visible={selvstendigNæringsdrivendeBolkVisible(søker)}>
+                    visible={andreInntekterBolkVisible(søker)}>
                     <AndreInntekterBolk
                         oppfølgingsspørsmål={getMessage(
                             intl,
