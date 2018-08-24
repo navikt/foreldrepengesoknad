@@ -88,7 +88,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         perm.
                     </Veilederinfo>
                     <SkalFarEllerMedmorHaForeldrepengerSpørsmål
-                        navn={annenForelder.navn}
+                        navn={navn}
                         skalFarEllerMedmorHaForeldrepenger={
                             annenForelder.skalHaForeldrepenger
                         }
@@ -140,12 +140,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        annenForelder.harRettPåForeldrepenger === true ||
-                        (annenForelder.skalHaForeldrepenger === true &&
-                            annenForelder.harRettPåForeldrepenger !== undefined)
-                    }>
+                <Block visible={annenForelder.harRettPåForeldrepenger === true}>
                     <Veilederinfo>
                         Informasjon om rettigheter og deling av uttaksplan
                     </Veilederinfo>
