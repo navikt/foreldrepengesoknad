@@ -56,7 +56,7 @@ const stegConfig: StegConfig = {
     },
     [StegID.UTTAKSPLAN]: {
         tittel: 'Velkommen til eksempel-uttaksplanen',
-        fortsettKnappLabel: 'Gå til oppsummering',
+        fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.UTENLANDSOPPHOLD,
         index: 3
     },
@@ -68,7 +68,7 @@ const stegConfig: StegConfig = {
     },
     [StegID.ANDRE_INNTEKTER]: {
         tittel: 'Opplysninger om inntekt',
-        fortsettKnappLabel: 'Gå til uttaksplan',
+        fortsettKnappLabel: 'Gå til oppsummering',
         nesteSteg: StegID.OPPSUMMERING,
         index: 5
     },
