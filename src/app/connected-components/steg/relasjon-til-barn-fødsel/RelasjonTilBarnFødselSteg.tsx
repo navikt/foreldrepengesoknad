@@ -32,6 +32,7 @@ import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
 import DateValues from '../../../util/validation/values';
 import Block from 'common/components/block/Block';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface RelasjonTilBarnFødselStegProps {
     person?: Person;
@@ -241,22 +242,29 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                             fødselsattest={fødselsattest || []}
                         />
                     )}
-                    {barn.erBarnetFødt === false && (
-                        <UfødtBarnPartial
-                            dispatch={dispatch}
-                            barn={barn as UfødtBarn}
-                            annenForelder={annenForelder}
-                            skalLasteOppTerminbekreftelse={
-                                skalLasteOppTerminbekreftelse
-                            }
-                            søker={søker}
-                            erFarEllerMedmor={erFarEllerMedmor(
-                                person.kjønn,
-                                søker.rolle
-                            )}
-                            terminbekreftelse={terminbekreftelse || []}
-                        />
-                    )}
+                    {barn.erBarnetFødt === false &&
+                        !erFarEllerMedmor(person.kjønn, søker.rolle) && (
+                            <UfødtBarnPartial
+                                dispatch={dispatch}
+                                barn={barn as UfødtBarn}
+                                annenForelder={annenForelder}
+                                skalLasteOppTerminbekreftelse={
+                                    skalLasteOppTerminbekreftelse
+                                }
+                                søker={søker}
+                                erFarEllerMedmor={erFarEllerMedmor(
+                                    person.kjønn,
+                                    søker.rolle
+                                )}
+                                terminbekreftelse={terminbekreftelse || []}
+                            />
+                        )}
+                    {barn.erBarnetFødt === false &&
+                        erFarEllerMedmor(person.kjønn, søker.rolle) && (
+                            <Veilederinfo>
+                                Litt info her om hva som er galt
+                            </Veilederinfo>
+                        )}
                 </Block>
             </Steg>
         );
