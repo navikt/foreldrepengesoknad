@@ -317,6 +317,9 @@
         "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
+    "far.omsorgsovertakelse.vedlegg.veileder":
+        "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet",
+    "omsorgsovertakelseDato.spørsmål": "Dato du ble alene om omsorgen",
 
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",

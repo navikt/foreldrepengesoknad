@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import RettPåForeldrepengerSpørsmål from '../../../../spørsmål/RettPåForeldrepengerSpørsmål';
@@ -194,10 +194,18 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                 dato={barn.foreldreansvarsdato}
                             />
                         </Block>
-
                         <Block
                             animated={true}
                             visible={barn.foreldreansvarsdato !== undefined}>
+                            <Block
+                                animated={false}
+                                margin="xs"
+                                visible={visInformasjonVedOmsorgsovertakelse}>
+                                <Veilederinfo>
+                                    <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
+                                </Veilederinfo>
+                            </Block>
+
                             <AttachmentsUploaderPure
                                 attachments={
                                     barn.omsorgsovertakelse
@@ -229,13 +237,6 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                     Skjemanummer.OMSORGSOVERTAKELSESDATO
                                 }
                             />
-                        </Block>
-
-                        <Block visible={visInformasjonVedOmsorgsovertakelse}>
-                            <Veilederinfo>
-                                Du kan få 46/56 uker eller det som er igjen av
-                                permisjonen
-                            </Veilederinfo>
                         </Block>
                     </React.Fragment>
                 )}
