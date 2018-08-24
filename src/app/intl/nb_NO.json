@@ -76,6 +76,9 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer":
         "ORG.NR: {organisasjonsnummer}",
+    "annenInntekt.ytelser.label": "Ytelser fra NAV",
+    "annenInntekt.ytelser.tekst":
+        "Eventuelle ytelser du mottar fra NAV vil tas hensyn til i saksbehandlingen",
 
     "inntektstype.etterlønn_arbeidsgiver":
         "Sluttvederlag, sluttpakke eller etterlønn",
