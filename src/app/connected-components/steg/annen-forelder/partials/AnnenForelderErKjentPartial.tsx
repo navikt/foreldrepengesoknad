@@ -196,7 +196,10 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         </Block>
                         <Block
                             animated={true}
-                            visible={barn.foreldreansvarsdato !== undefined}>
+                            visible={
+                                søker.erAleneOmOmsorg &&
+                                barn.foreldreansvarsdato !== undefined
+                            }>
                             <Block
                                 animated={false}
                                 margin="xs"
