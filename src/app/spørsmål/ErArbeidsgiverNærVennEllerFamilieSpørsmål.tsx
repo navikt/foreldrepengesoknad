@@ -5,7 +5,7 @@ import getMessage from 'common/util/i18nUtils';
 import { InputChangeEvent } from '../types/dom/Events';
 
 export enum NÆR_VENN_ELLER_FAMILIE {
-    'ER_NÆR_VENN_ELLER_FAMILIE' = 'erNærVennEllerFamilie',
+    'ER_NÆR_VENN_ELLER_FAMILIE' = 'erNærVennEllerFamilieVisible',
     'ER_IKKE_NÆR_VENN_ELLER_FAMILIE' = 'erIkkeNærVennEllerFamilie'
 }
 

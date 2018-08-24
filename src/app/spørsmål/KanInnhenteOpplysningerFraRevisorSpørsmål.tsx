@@ -5,50 +5,56 @@ import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-
 import { InputChangeEvent } from '../types/dom/Events';
 
 interface InnhenteOpplsyningerOmRevisorSpørsmålProps {
-    hentOpplysningerOmRevisor?: boolean;
+    kanInnhenteOpplysningerFraRevisor?: boolean;
     onChange: (hentOpplysningerOmRevisor: boolean) => void;
 }
 
 type Props = InnhenteOpplsyningerOmRevisorSpørsmålProps & InjectedIntlProps;
 
-enum OpplysningerOmRevior {
-    'HENT_OPPLYSNINGER_OM_REVISOR' = 'hentOpplysningerOmRevisor',
-    'IKKE_HENT_OPPLYSNINGER_OM_REVISOR' = 'ikkeHentOpplysningerOmRevisor'
+enum OpplysningerFraRevior {
+    'KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR' = 'hentOpplysningerFraRevisor',
+    'KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR' = 'ikkeHentOpplysningerFraRevisor'
 }
 
-const KanInnhenteOpplsyningerFraRevisorSpørsmål = (props: Props) => {
-    const { onChange, hentOpplysningerOmRevisor, intl } = props;
+const KanInnhenteOpplysningerFraRevisorSpørsmål = (props: Props) => {
+    const { onChange, kanInnhenteOpplysningerFraRevisor, intl } = props;
 
     let checked;
-    if (hentOpplysningerOmRevisor === true) {
-        checked = OpplysningerOmRevior.HENT_OPPLYSNINGER_OM_REVISOR;
-    } else if (hentOpplysningerOmRevisor === false) {
-        checked = OpplysningerOmRevior.IKKE_HENT_OPPLYSNINGER_OM_REVISOR;
+    if (kanInnhenteOpplysningerFraRevisor === true) {
+        checked = OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR;
+    } else if (kanInnhenteOpplysningerFraRevisor === false) {
+        checked =
+            OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR;
     }
 
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'hentOpplysningerOmRevisor.spørsmål')}
+            legend={getMessage(
+                intl,
+                'kanInnhenteOpplysningerFraRevisor.spørsmål'
+            )}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value: OpplysningerOmRevior.HENT_OPPLYSNINGER_OM_REVISOR
+                    value:
+                        OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR
                 },
                 {
                     label: getMessage(intl, 'nei'),
                     value:
-                        OpplysningerOmRevior.IKKE_HENT_OPPLYSNINGER_OM_REVISOR
+                        OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR
                 }
             ]}
-            name="hentOpplysningerOmRevisor"
-            onChange={(e: InputChangeEvent, v: OpplysningerOmRevior) =>
+            name="hentOpplysningerFraRevisor"
+            onChange={(e: InputChangeEvent, v: OpplysningerFraRevior) =>
                 onChange(
-                    v === OpplysningerOmRevior.HENT_OPPLYSNINGER_OM_REVISOR
+                    v ===
+                        OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR
                 )
             }
         />
     );
 };
 
-export default injectIntl(KanInnhenteOpplsyningerFraRevisorSpørsmål);
+export default injectIntl(KanInnhenteOpplysningerFraRevisorSpørsmål);

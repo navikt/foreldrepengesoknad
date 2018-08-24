@@ -1,15 +1,15 @@
 import * as React from 'react';
-import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
+import HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål from '../../spørsmål/HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål';
 import Block from 'common/components/block/Block';
-import DriverDuFosterhjemSpørsmål from '../spørsmål/DriverDuFosterhjemSpørsmål';
-import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
-import Søker, { SøkerPartial } from '../types/søknad/Søker';
-import JobberDuFremdelesSomFrilansSpørsmål from '../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
+import DriverDuFosterhjemSpørsmål from '../../spørsmål/DriverDuFosterhjemSpørsmål';
+import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
+import Søker, { SøkerPartial } from '../../types/søknad/Søker';
+import JobberDuFremdelesSomFrilansSpørsmål from '../../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
 import {
     FrilansInformasjonPartial,
     FrilansOppdrag
-} from '../types/søknad/FrilansInformasjon';
-import FrilansOppdragBolk from './FrilansOppdragBolk';
+} from '../../types/søknad/FrilansInformasjon';
+import FrilansOppdragBolk from '../FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
@@ -19,7 +19,7 @@ import {
     frilansOppdragBolkVisible,
     frilansOppdragPerioderVisible,
     frilansStartdatoVisible
-} from '../connected-components/steg/andre-inntekter/visibilityFns';
+} from './visibilityFns';
 
 interface FrilanserBolkProps {
     søker: Søker;
