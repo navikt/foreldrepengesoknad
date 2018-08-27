@@ -17,7 +17,6 @@ import Person, {
     VelgbartRegistrertBarn
 } from '../../../types/Person';
 import Barn, { FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
-import { HistoryProps } from '../../../types/common';
 import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
@@ -32,6 +31,8 @@ import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
 import DateValues from '../../../util/validation/values';
 import Block from 'common/components/block/Block';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { HistoryProps } from '../../../types/common';
 
 interface RelasjonTilBarnFødselStegProps {
     person?: Person;
@@ -54,6 +55,7 @@ interface RelasjonTilBarnFødselStegState {
 type Props = RelasjonTilBarnFødselStegProps &
     InjectedIntlProps &
     DispatchProps &
+    SøkerinfoProps &
     HistoryProps;
 
 class RelasjonTilBarnFødselSteg extends React.Component<
@@ -267,21 +269,22 @@ const mapStateToProps = (
     state: AppState,
     props: Props
 ): RelasjonTilBarnFødselStegProps => {
-    const { person, registrerteBarn } = state.api;
+    const { person, registrerteBarn, arbeidsforhold } = props.søkerinfo;
     const barn = state.søknad.barn;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
     const skalLasteOppTerminbekreftelse: boolean =
         barn.erBarnetFødt === false &&
-        !harAktivtArbeidsforhold(
-            state.api.arbeidsforhold,
-            DateValues.today.toDate()
-        );
+        !harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate());
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state)
+        isAvailable: isAvailable(
+            StegID.RELASJON_TIL_BARN_FØDSEL,
+            state.søknad,
+            props.søkerinfo
+        )
     };
 
     return {

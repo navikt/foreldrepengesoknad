@@ -6,33 +6,39 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { ApiStatePartial } from '../reducers/apiReducer';
 
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
-import { getApiStateFromSøkerinfo } from '../../api/utils/s\u00F8kerinfoUtils';
-import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
+import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
+import { Søkerinfo } from '../../types/søkerinfo';
+import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 
-function shouldUseStoredDataIfTheyExist(apiState: ApiStatePartial) {
-    const { registrerteBarn } = apiState;
+function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
+    if (!søkerinfo) {
+        return false;
+    }
+    const { registrerteBarn } = søkerinfo;
     return !(registrerteBarn && registrerteBarn.length > 0);
 }
 
 function* getSøkerinfo(action: any) {
     try {
         const response = yield call(Api.getSøkerinfo, action.params);
-        const søkerinfo: SøkerinfoDTO = response.data;
-
+        const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
-            ...getApiStateFromSøkerinfo(søkerinfo),
+            søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
             isLoadingSøkerinfo: false,
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
-        if (nextApiState.registrertAnnenForelder) {
+        if (
+            nextApiState.søkerinfo &&
+            nextApiState.søkerinfo.registrertAnnenForelder
+        ) {
             yield put(
                 søknadActionCreators.updateAnnenForelder(
-                    nextApiState.registrertAnnenForelder
+                    nextApiState.søkerinfo.registrertAnnenForelder
                 )
             );
         }
-        if (shouldUseStoredDataIfTheyExist(nextApiState)) {
+        if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
             yield put(apiActions.getStoredAppState());
         } else {
             yield put(apiActions.deleteStoredAppState());

@@ -6,20 +6,21 @@ import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import { HistoryProps } from '../../../types/common';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { Periode } from 'uttaksplan/types';
 import Person from '../../../types/Person';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { HistoryProps } from '../../../types/common';
 
-interface UttaksplanStegProps {
+interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     person: Person;
     perioder: Periode[];
 }
 
-type Props = UttaksplanStegProps & HistoryProps & DispatchProps;
+type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
 class UttaksplanSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -74,7 +75,10 @@ class UttaksplanSteg extends React.Component<Props> {
     }
 }
 
-export default connect((state: AppState, props: Props) => {
+const mapStateToProps = (
+    state: AppState,
+    props: HistoryProps & SøkerinfoProps
+): StateProps => {
     const { søknad, uttaksplan } = state;
     const { history } = props;
 
@@ -86,9 +90,10 @@ export default connect((state: AppState, props: Props) => {
 
     return {
         søknad,
-        person: state.api.person,
+        person: props.søkerinfo.person,
         perioder: uttaksplan.uttaksplan.perioder,
-        stegProps,
-        ...props
+        stegProps
     };
-})(UttaksplanSteg);
+};
+
+export default connect<StateProps, {}, {}>(mapStateToProps)(UttaksplanSteg);

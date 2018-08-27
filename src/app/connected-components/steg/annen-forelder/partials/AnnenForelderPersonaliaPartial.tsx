@@ -14,24 +14,21 @@ import FødselsnummerBolk from '../../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenForelderSpørsmål';
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
-import Person from '../../../../types/Person';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Adopsjonsbarn } from '../../../../types/søknad/Barn';
 
 interface StateProps {
     søker: Søker;
     annenForelder: AnnenForelder;
-    søkersFødselsnummer: string;
     erFarEllerMedmor: boolean;
     situasjon: Søkersituasjon;
     adopsjonAvEktefellesBarn: boolean;
 }
-
 interface OwnProps {
     søkersFødselsnummer: string;
 }
 
-export type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = StateProps & OwnProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     onKanIkkeOppgis() {
@@ -127,7 +124,6 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     søker: state.søknad.søker,
-    søkersFødselsnummer: (state.api.person as Person).fnr,
     annenForelder: state.søknad.annenForelder,
     erFarEllerMedmor: true,
     situasjon: state.søknad.situasjon,
@@ -135,6 +131,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
         .adopsjonAvEktefellesBarn
 });
 
-export default connect<StateProps & OwnProps, {}, OwnProps>(mapStateToProps)(
+export default connect<StateProps, {}, OwnProps>(mapStateToProps)(
     injectIntl(AnnenForelderPersonaliaPartial)
 );
