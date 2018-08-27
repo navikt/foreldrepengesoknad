@@ -19,61 +19,108 @@ import InngangSteg from './inngang/InngangSteg';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
+import { HistoryProps } from '../../types/common';
+import { SøkerinfoProps } from '../../types/søkerinfo';
 
 export const søknadStegPath = (stegPath?: string): string =>
     `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-type Props = RouteComponentProps<any> & DispatchProps;
+type Props = SøkerinfoProps &
+    RouteComponentProps<any> &
+    DispatchProps &
+    HistoryProps;
+
 class StegRoutes extends React.Component<Props> {
     render() {
+        const { søkerinfo } = this.props;
+
         return (
             <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
                 <Switch>
                     <Route
                         path={søknadStegPath(StegID.INNGANG)}
-                        component={InngangSteg}
+                        render={(props) => (
+                            <InngangSteg {...props} søkerinfo={søkerinfo} />
+                        )}
                         key={StegID.INNGANG}
                     />
                     <Route
                         path={søknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}
-                        component={RelasjonTilBarnAdopsjonSteg}
+                        render={(props) => (
+                            <RelasjonTilBarnAdopsjonSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.RELASJON_TIL_BARN_ADOPSJON}
                     />
                     <Route
                         path={søknadStegPath(
                             StegID.RELASJON_TIL_BARN_FORELDREANSVAR
                         )}
-                        component={RelasjonTilBarnForeldreansvarSteg}
+                        render={(props) => (
+                            <RelasjonTilBarnForeldreansvarSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.RELASJON_TIL_BARN_FORELDREANSVAR}
                     />
                     <Route
                         path={søknadStegPath(StegID.RELASJON_TIL_BARN_FØDSEL)}
-                        component={RelasjonTilBarnFødselSteg}
+                        render={(props) => (
+                            <RelasjonTilBarnFødselSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.RELASJON_TIL_BARN_FØDSEL}
                     />
                     <Route
                         path={søknadStegPath(StegID.ANNEN_FORELDER)}
-                        component={AnnenForelderSteg}
+                        render={(props) => (
+                            <AnnenForelderSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.ANNEN_FORELDER}
                     />
                     <Route
                         path={søknadStegPath(StegID.UTENLANDSOPPHOLD)}
-                        component={UtenlandsoppholdSteg}
+                        render={(props) => (
+                            <UtenlandsoppholdSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.UTENLANDSOPPHOLD}
                     />
                     <Route
                         path={søknadStegPath(StegID.ANDRE_INNTEKTER)}
-                        component={AndreInntekterSteg}
+                        render={(props) => (
+                            <AndreInntekterSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.ANDRE_INNTEKTER}
                     />
                     <Route
                         path={søknadStegPath(StegID.UTTAKSPLAN)}
-                        component={UttaksplanSteg}
+                        render={(props) => (
+                            <UttaksplanSteg {...props} søkerinfo={søkerinfo} />
+                        )}
                         key={StegID.UTTAKSPLAN}
                     />
                     <Route
                         path={søknadStegPath(StegID.OPPSUMMERING)}
-                        component={OppsummeringSteg}
+                        render={(props) => (
+                            <OppsummeringSteg
+                                {...props}
+                                søkerinfo={søkerinfo}
+                            />
+                        )}
                         key={StegID.OPPSUMMERING}
                     />
                 </Switch>

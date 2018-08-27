@@ -13,9 +13,6 @@ import Spinner from 'nav-frontend-spinner';
 import routeConfig from '../util/routing/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
-
-import Person from '../types/Person';
-
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
@@ -24,9 +21,10 @@ import UttaksplanSide from './sider/uttaksplan/UttaksplanSide';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
+import { Søkerinfo } from '../types/søkerinfo';
 
 interface StateProps {
-    person?: Person;
+    søkerinfo?: Søkerinfo;
     error: any;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
@@ -36,8 +34,8 @@ type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
 class Foreldrepengesøknad extends React.Component<Props> {
     componentWillMount() {
-        const { dispatch, person } = this.props;
-        if (!person) {
+        const { dispatch, søkerinfo } = this.props;
+        if (!søkerinfo) {
             dispatch(api.getSøkerinfo());
         }
     }
@@ -66,16 +64,20 @@ class Foreldrepengesøknad extends React.Component<Props> {
         ]);
     }
 
-    renderSøknadRoutes() {
+    renderSøknadRoutes(søkerinfo: Søkerinfo) {
         return this.renderRoutes([
             <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
-                component={StegRoutes}
+                render={(props) => (
+                    <StegRoutes {...props} søkerinfo={søkerinfo} />
+                )}
                 key="steg"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
-                component={Velkommen}
+                render={(props) => (
+                    <Velkommen {...props} søkerinfo={søkerinfo} />
+                )}
                 key="velkommen"
             />,
             <Route
@@ -93,29 +95,32 @@ class Foreldrepengesøknad extends React.Component<Props> {
 
     render() {
         const {
+            søkerinfo,
             error,
             isLoadingAppState,
-            isLoadingSøkerinfo,
-            person
+            isLoadingSøkerinfo
         } = this.props;
 
         if (
             isLoadingAppState ||
             isLoadingSøkerinfo ||
+            !søkerinfo ||
             (error.response && error.response.status === 401)
         ) {
             return <Spinner type="XXL" />;
-        } else if (!person && !isLoadingSøkerinfo) {
+        } else if (!søkerinfo && !isLoadingSøkerinfo) {
             return this.renderErrorRoute(GenerellFeil);
-        } else if (person && !person.erMyndig) {
-            return this.renderErrorRoute(IkkeMyndig);
+        } else if (søkerinfo && !søkerinfo.person.erMyndig) {
+            return this.renderErrorRoute(() => (
+                <IkkeMyndig søkerinfo={søkerinfo!} />
+            ));
         }
-        return this.renderSøknadRoutes();
+        return this.renderSøknadRoutes(søkerinfo);
     }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    person: state.api.person,
+    søkerinfo: state.api.søkerinfo,
     error: state.api.error,
     isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
     isLoadingAppState: state.api.isLoadingAppState

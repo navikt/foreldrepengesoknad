@@ -28,6 +28,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import getMessage from 'common/util/i18nUtils';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -36,8 +37,9 @@ export interface StateProps {
     fødselsdatoerOk: boolean;
 }
 
-export type Props = DispatchProps &
+export type Props = SøkerinfoProps &
     StateProps &
+    DispatchProps &
     InjectedIntlProps &
     HistoryProps;
 
@@ -180,7 +182,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             barnErGyldig(state.søknad.barn, state.søknad.situasjon) &&
             fødselsdatoerOk,
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state)
+        isAvailable: isAvailable(
+            StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
+            state.søknad,
+            props.søkerinfo
+        )
     };
 
     return {
@@ -191,6 +197,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default injectIntl(
-    connect(mapStateToProps)(RelasjonTilBarnForeldreansvarSteg)
+export default connect<StateProps, {}, {}>(mapStateToProps)(
+    injectIntl(RelasjonTilBarnForeldreansvarSteg)
 );

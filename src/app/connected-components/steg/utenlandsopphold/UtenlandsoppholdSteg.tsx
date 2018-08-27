@@ -38,13 +38,15 @@ import {
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
-interface UtenlandsoppholdProps {
+interface StateProps {
     søknad: Søknad;
     stegProps: StegProps;
 }
 
-type Props = UtenlandsoppholdProps &
+type Props = SøkerinfoProps &
+    StateProps &
     InjectedIntlProps &
     DispatchProps &
     HistoryProps;
@@ -230,22 +232,31 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 }
 
-export default injectIntl(
-    connect((state: AppState, props: Props) => {
-        const { søknad } = state;
-        const { history } = props;
+const mapStateToProps = (
+    state: AppState,
+    props: SøkerinfoProps & HistoryProps
+) => {
+    const { søknad } = state;
+    const { history } = props;
 
-        const stegProps: StegProps = {
-            id: StegID.UTENLANDSOPPHOLD,
-            renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
-            history,
-            isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state)
-        };
+    const stegProps: StegProps = {
+        id: StegID.UTENLANDSOPPHOLD,
+        renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
+        history,
+        isAvailable: isAvailable(
+            StegID.UTENLANDSOPPHOLD,
+            state.søknad,
+            props.søkerinfo
+        )
+    };
 
-        return {
-            søknad,
-            stegProps,
-            ...props
-        };
-    })(UtenlandsoppholdSteg)
+    return {
+        søknad,
+        stegProps,
+        ...props
+    };
+};
+
+export default connect<StateProps, {}, {}>(mapStateToProps)(
+    injectIntl(UtenlandsoppholdSteg)
 );
