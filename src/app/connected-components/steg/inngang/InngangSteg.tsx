@@ -18,7 +18,7 @@ import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils
 import isAvailable from '../isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
 
 export interface StateProps {

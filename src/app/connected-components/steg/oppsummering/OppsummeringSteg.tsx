@@ -20,7 +20,7 @@ import { StegID } from '../../../util/routing/stegConfig';
 import summaryActionCreators from '../../../redux/actions/summary/summaryActionCreators';
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 interface StateProps {
     person: Person;

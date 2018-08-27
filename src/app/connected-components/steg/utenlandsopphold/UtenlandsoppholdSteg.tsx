@@ -38,7 +38,7 @@ import {
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 interface StateProps {
     søknad: Søknad;

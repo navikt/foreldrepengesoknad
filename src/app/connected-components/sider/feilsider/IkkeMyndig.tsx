@@ -6,17 +6,13 @@ import getMessage from 'common/util/i18nUtils';
 import DocumentTitle from 'react-document-title';
 import Applikasjonsside from '../Applikasjonsside';
 import Feilsidemelding from 'common/components/feilsidemelding/Feilsidemelding';
-import { Søkerinfo } from '../../../types/søkerinfo';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 const URL_PAPIRSØKNAD =
     'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/Skjemaer/Familie/' +
     'foreldrepenger-og-engangsstonad/Foreldrepenger+og+engangsst%C3%B8nad?method=mail&veiledertype=privatperson';
 
-interface OwnProps {
-    søkerinfo: Søkerinfo;
-}
-
-type Props = OwnProps & InjectedIntlProps;
+type Props = InjectedIntlProps & SøkerinfoProps;
 
 const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
     const { intl, søkerinfo } = props;

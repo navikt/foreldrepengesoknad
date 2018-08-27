@@ -22,7 +22,7 @@ import { HistoryProps } from '../../../types/common';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
 import './velkommen.less';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 interface StateProps {
     person?: Person;

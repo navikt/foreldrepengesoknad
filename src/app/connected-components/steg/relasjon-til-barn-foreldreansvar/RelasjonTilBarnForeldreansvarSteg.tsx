@@ -28,7 +28,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import getMessage from 'common/util/i18nUtils';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;

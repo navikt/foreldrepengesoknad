@@ -31,7 +31,7 @@ import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
 import DateValues from '../../../util/validation/values';
 import Block from 'common/components/block/Block';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 
 interface RelasjonTilBarnFødselStegProps {

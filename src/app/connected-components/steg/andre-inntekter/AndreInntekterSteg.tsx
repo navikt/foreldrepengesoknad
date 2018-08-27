@@ -22,8 +22,8 @@ import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
-import { SøkerinfoProps } from '../../Foreldrepengesøknad';
 import { HistoryProps } from '../../../types/common';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
 
 interface StateProps {
     stegProps: StegProps;

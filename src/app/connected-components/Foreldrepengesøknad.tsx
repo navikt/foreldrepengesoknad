@@ -32,10 +32,6 @@ interface StateProps {
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
-export interface SøkerinfoProps {
-    søkerinfo: Søkerinfo;
-}
-
 class Foreldrepengesøknad extends React.Component<Props> {
     componentWillMount() {
         const { dispatch, søkerinfo } = this.props;
