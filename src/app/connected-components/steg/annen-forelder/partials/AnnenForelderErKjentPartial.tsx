@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import RettPåForeldrepengerSpørsmål from '../../../../spørsmål/RettPåForeldrepengerSpørsmål';
@@ -88,7 +88,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         perm.
                     </Veilederinfo>
                     <SkalFarEllerMedmorHaForeldrepengerSpørsmål
-                        navn={annenForelder.navn}
+                        navn={navn}
                         skalFarEllerMedmorHaForeldrepenger={
                             annenForelder.skalHaForeldrepenger
                         }
@@ -140,12 +140,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        annenForelder.harRettPåForeldrepenger === true ||
-                        (annenForelder.skalHaForeldrepenger === true &&
-                            annenForelder.harRettPåForeldrepenger !== undefined)
-                    }>
+                <Block visible={annenForelder.harRettPåForeldrepenger === true}>
                     <Veilederinfo>
                         Informasjon om rettigheter og deling av uttaksplan
                     </Veilederinfo>
@@ -194,10 +189,21 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                 dato={barn.foreldreansvarsdato}
                             />
                         </Block>
-
                         <Block
                             animated={true}
-                            visible={barn.foreldreansvarsdato !== undefined}>
+                            visible={
+                                søker.erAleneOmOmsorg === true &&
+                                barn.foreldreansvarsdato !== undefined
+                            }>
+                            <Block
+                                animated={false}
+                                margin="xs"
+                                visible={visInformasjonVedOmsorgsovertakelse}>
+                                <Veilederinfo>
+                                    <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
+                                </Veilederinfo>
+                            </Block>
+
                             <AttachmentsUploaderPure
                                 attachments={
                                     barn.omsorgsovertakelse
@@ -229,13 +235,6 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                     Skjemanummer.OMSORGSOVERTAKELSESDATO
                                 }
                             />
-                        </Block>
-
-                        <Block visible={visInformasjonVedOmsorgsovertakelse}>
-                            <Veilederinfo>
-                                Du kan få 46/56 uker eller det som er igjen av
-                                permisjonen
-                            </Veilederinfo>
                         </Block>
                     </React.Fragment>
                 )}

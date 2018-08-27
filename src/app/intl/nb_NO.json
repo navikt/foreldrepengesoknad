@@ -76,6 +76,9 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer":
         "ORG.NR: {organisasjonsnummer}",
+    "annenInntekt.ytelser.label": "Ytelser fra NAV",
+    "annenInntekt.ytelser.tekst":
+        "Eventuelle ytelser du mottar fra NAV vil tas hensyn til i saksbehandlingen",
 
     "inntektstype.etterlønn_arbeidsgiver":
         "Sluttvederlag, sluttpakke eller etterlønn",
@@ -315,8 +318,12 @@
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse":
         "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
+    "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
+    "far.omsorgsovertakelse.vedlegg.veileder":
+        "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet",
+    "omsorgsovertakelseDato.spørsmål": "Dato du ble alene om omsorgen",
 
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",

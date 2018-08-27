@@ -24,7 +24,11 @@ const PersonaliaBox = ({ person }: PersonaliaBoxProps) => {
                 />
             </EtikettLiten>
             <Element className="personaliaBox__navn">
-                {formaterNavn(person.fornavn, person.etternavn, person.fornavn)}
+                {formaterNavn(
+                    person.fornavn,
+                    person.etternavn,
+                    person.mellomnavn
+                )}
             </Element>
         </div>
     );

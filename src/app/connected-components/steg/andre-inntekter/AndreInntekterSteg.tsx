@@ -24,6 +24,7 @@ import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
 
 interface StateProps {
     stegProps: StegProps;
@@ -106,6 +107,13 @@ class AndreInntekterSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps}>
+                <Block
+                    header={{
+                        title: getMessage(intl, 'annenInntekt.ytelser.label')
+                    }}>
+                    <YtelseInfoWrapper ytelser={[]} />
+                </Block>
+
                 <Block
                     header={{
                         title: getMessage(
