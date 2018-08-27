@@ -1,13 +1,17 @@
 import Søker from '../../../types/søknad/Søker';
 import {
     driverDuFosterhjemVisible,
-    frilansOppdragBolkVisible,
+    oppdragBolkVisible,
     frilansOppdragErUtfylt
-} from '../../../bolker/frilanser-bolk/visibilityFns';
+} from '../../../bolker/frilanser-bolk/visibility';
 
-type AnnenInntektVisibilityFn = (søker: Søker) => boolean;
+type VisibilityFunction = (søker: Søker) => boolean;
+interface FieldVisibilityFunctions {
+    selvstendigNæringsdrivendeBolk: VisibilityFunction;
+    andreInntekterBolk: VisibilityFunction;
+}
 
-export const selvstendigNæringsdrivendeBolkVisible: AnnenInntektVisibilityFn = (
+export const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction = (
     søker: Søker
 ) => {
     const { harJobbetSomFrilansSiste10Mnd, frilansInformasjon } = søker;
@@ -30,16 +34,14 @@ export const selvstendigNæringsdrivendeBolkVisible: AnnenInntektVisibilityFn = 
         } else {
             return (
                 frilansOppdragErUtfylt(frilansInformasjon) &&
-                frilansOppdragBolkVisible(søker)
+                oppdragBolkVisible(søker)
             );
         }
     }
     return false;
 };
 
-export const andreInntekterBolkVisible: AnnenInntektVisibilityFn = (
-    søker: Søker
-) => {
+export const andreInntekterBolkVisible: VisibilityFunction = (søker: Søker) => {
     const {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         selvstendigNæringsdrivendeInformasjon
@@ -56,3 +58,10 @@ export const andreInntekterBolkVisible: AnnenInntektVisibilityFn = (
         selvstendigNæringsdrivendeBolkVisible(søker)
     );
 };
+
+const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+    selvstendigNæringsdrivendeBolk: selvstendigNæringsdrivendeBolkVisible,
+    andreInntekterBolk: andreInntekterBolkVisible
+};
+
+export default fieldVisibilityFunctions;

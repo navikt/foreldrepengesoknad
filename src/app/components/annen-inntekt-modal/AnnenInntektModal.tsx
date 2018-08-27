@@ -23,6 +23,7 @@ import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
+import visibility from './visibility';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -125,10 +126,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { annenInntekt } = this.state;
-        const gjelderJobbIUtlandet =
-            annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET;
 
-        const visTidsperiode = annenInntekt.type !== undefined;
         return (
             <ModalForm
                 isOpen={isOpen}
@@ -150,7 +148,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         defaultValue={annenInntekt.type}
                     />
                 </Block>
-                <Block visible={gjelderJobbIUtlandet}>
+                <Block visible={visibility.land(annenInntekt)}>
                     <Landvelger
                         defaultValue={
                             (annenInntekt as JobbIUtlandetInntekt).land
@@ -164,11 +162,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }}
                     />
                 </Block>
-                <Block
-                    visible={
-                        (annenInntekt as JobbIUtlandetInntekt).land !==
-                        undefined
-                    }>
+                <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
                         label={getMessage(
                             intl,
@@ -186,12 +180,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }
                     />
                 </Block>
-                <Block
-                    visible={
-                        gjelderJobbIUtlandet &&
-                        (annenInntekt as JobbIUtlandetInntekt)
-                            .arbeidsgiverNavn !== undefined
-                    }>
+                <Block>
                     <ErArbeidsgiverNærVennEllerFamilie
                         erArbeidsgiverNærVennEllerFamilie={
                             (annenInntekt as JobbIUtlandetInntekt)
@@ -205,7 +194,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }}
                     />
                 </Block>
-                <Block visible={visTidsperiode}>
+                <Block>
                     <TidsperiodeBolk
                         tidsperiode={annenInntekt.tidsperiode || {}}
                         onChange={(
@@ -230,12 +219,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }}
                     />
                 </Block>
-                <Block
-                    visible={
-                        annenInntekt.type !== undefined &&
-                        annenInntekt.type !==
-                            AnnenInntektType.LØNN_VED_VIDEREUTDANNING
-                    }>
+                <Block visible={visibility.vedlegg(annenInntekt)}>
                     <AnnenInntektVedleggInfo type={annenInntekt.type} />
                     <AttachmentsUploader
                         attachments={annenInntekt.vedlegg || []}

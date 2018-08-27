@@ -130,10 +130,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                     <Block>
                         <Checkbox
                             checked={oppdrag.pågående || false}
-                            label={getMessage(
-                                intl,
-                                'frilansOppdrag.modal.pågående'
-                            )}
+                            label={getMessage(intl, 'pågående')}
                             onChange={() => {
                                 this.updateOppdrag({
                                     pågående: !oppdrag.pågående,

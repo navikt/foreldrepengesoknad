@@ -5,27 +5,36 @@ import {
 } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { date4YearsAgo } from '../../util/validation/values';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
-import { erNærVennEllerFamilieVisible } from '../../bolker/næringsrelasjon-bolk/visibilityFns';
+import { erNærVennEllerFamilieVisible } from '../../bolker/næringsrelasjon-bolk/visibility';
 
-type NæringVisibilityFn = (næring: NæringPartial) => boolean;
+type VisibilityFunction = (næring: NæringPartial) => boolean;
+interface FieldVisibilityFunctions {
+    navnPåNæringen: VisibilityFunction;
+    organisasjonsnummer: VisibilityFunction;
+    tidsperiode: VisibilityFunction;
+    næringsinntekt: VisibilityFunction;
+    næringRegistrertINorge: VisibilityFunction;
+    næringRegistrertILand: VisibilityFunction;
+    stillingsprosent: VisibilityFunction;
+    nyIArbeidslivet: VisibilityFunction;
+    varigEndringAvNæringsinntekt: VisibilityFunction;
+    regnskapsførerBolk: VisibilityFunction;
+    revisorBolk: VisibilityFunction;
+    kanInnhenteOpplysningerFraRevisor: VisibilityFunction;
+    formButtons: VisibilityFunction;
+}
 
-export const navnPåNæringenVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const navnPåNæringenVisible = (næring: NæringPartial) => {
     const { næringstyper } = næring;
     return næringstyper !== undefined && næringstyper.length > 0;
 };
 
-export const organisasjonsnummerVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const organisasjonsnummerVisible = (næring: NæringPartial) => {
     const { navnPåNæringen } = næring;
     return navnPåNæringenVisible(næring) && navnPåNæringen !== undefined;
 };
 
-export const tidsperiodeVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const tidsperiodeVisible = (næring: NæringPartial) => {
     const { organisasjonsnummer } = næring;
     return (
         organisasjonsnummerVisible(næring) && organisasjonsnummer !== undefined
@@ -41,9 +50,7 @@ export const tidsperiodeErUtfylt = (næring: NæringPartial): boolean => {
     return false;
 };
 
-export const næringsinntektVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const næringsinntektVisible = (næring: NæringPartial) => {
     const { tidsperiode } = næring;
     if (tidsperiode && tidsperiodeErUtfylt(næring)) {
         const { fom } = tidsperiode;
@@ -55,9 +62,7 @@ export const næringsinntektVisible: NæringVisibilityFn = (
     return false;
 };
 
-export const næringRegistrertINorgeVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const næringRegistrertINorgeVisible = (næring: NæringPartial) => {
     const { næringsinntekt } = næring;
     if (næringsinntektVisible(næring)) {
         return næringsinntekt !== undefined;
@@ -65,16 +70,12 @@ export const næringRegistrertINorgeVisible: NæringVisibilityFn = (
     return tidsperiodeVisible(næring) && tidsperiodeErUtfylt(næring);
 };
 
-export const næringRegistrertILandVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const næringRegistrertILandVisible = (næring: NæringPartial) => {
     const { registrertINorge } = næring;
     return næringRegistrertINorgeVisible(næring) && registrertINorge === false;
 };
 
-export const stillingsprosentVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const stillingsprosentVisible = (næring: NæringPartial) => {
     const { registrertINorge, registrertILand } = næring;
     if (registrertINorge === true) {
         return næringRegistrertINorgeVisible(næring);
@@ -87,9 +88,7 @@ export const stillingsprosentVisible: NæringVisibilityFn = (
     }
 };
 
-export const nyIArbeidslivetVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const nyIArbeidslivetVisible = (næring: NæringPartial) => {
     const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
@@ -100,9 +99,7 @@ export const nyIArbeidslivetVisible: NæringVisibilityFn = (
     );
 };
 
-export const varigEndringAvNæringsinntektVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const varigEndringAvNæringsinntektVisible = (næring: NæringPartial) => {
     const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
@@ -113,9 +110,7 @@ export const varigEndringAvNæringsinntektVisible: NæringVisibilityFn = (
     );
 };
 
-export const regnskapsførerBolkVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const regnskapsførerBolkVisible = (næring: NæringPartial) => {
     const {
         nyIArbeidslivet,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår
@@ -129,9 +124,7 @@ export const regnskapsførerBolkVisible: NæringVisibilityFn = (
     return false;
 };
 
-export const revisorBolkVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const revisorBolkVisible = (næring: NæringPartial) => {
     const { harRegnskapsfører } = næring;
     if (regnskapsførerBolkVisible(næring)) {
         return harRegnskapsfører === false;
@@ -139,7 +132,7 @@ export const revisorBolkVisible: NæringVisibilityFn = (
     return false;
 };
 
-export const kanInnhenteOpplysningerFraRevisorVisible: NæringVisibilityFn = (
+export const kanInnhenteOpplysningerFraRevisorVisible = (
     næring: NæringPartial
 ) => {
     const { harRevisor, revisor } = næring;
@@ -154,15 +147,14 @@ export const kanInnhenteOpplysningerFraRevisorVisible: NæringVisibilityFn = (
     return false;
 };
 
-export const formButtonsVisible: NæringVisibilityFn = (
-    næring: NæringPartial
-) => {
+export const formButtonsVisible = (næring: NæringPartial) => {
     const {
         harRegnskapsfører,
         harRevisor,
         revisor,
         regnskapsfører,
-        kanInnhenteOpplsyningerFraRevisor
+        kanInnhenteOpplsyningerFraRevisor,
+        nyIArbeidslivet
     } = næring;
 
     if (harRegnskapsfører && regnskapsfører !== undefined) {
@@ -178,5 +170,26 @@ export const formButtonsVisible: NæringVisibilityFn = (
             kanInnhenteOpplysningerFraRevisorVisible(næring)
         );
     }
+    if (harRegnskapsfører === false && harRevisor === false) {
+        return nyIArbeidslivetVisible(næring) && nyIArbeidslivet !== undefined;
+    }
     return false;
 };
+
+const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+    navnPåNæringen: navnPåNæringenVisible,
+    organisasjonsnummer: organisasjonsnummerVisible,
+    tidsperiode: tidsperiodeVisible,
+    næringsinntekt: næringsinntektVisible,
+    næringRegistrertINorge: næringRegistrertINorgeVisible,
+    næringRegistrertILand: næringRegistrertILandVisible,
+    stillingsprosent: stillingsprosentVisible,
+    nyIArbeidslivet: nyIArbeidslivetVisible,
+    varigEndringAvNæringsinntekt: varigEndringAvNæringsinntektVisible,
+    regnskapsførerBolk: regnskapsførerBolkVisible,
+    revisorBolk: revisorBolkVisible,
+    kanInnhenteOpplysningerFraRevisor: kanInnhenteOpplysningerFraRevisorVisible,
+    formButtons: formButtonsVisible
+};
+
+export default fieldVisibilityFunctions;

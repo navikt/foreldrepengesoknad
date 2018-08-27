@@ -13,13 +13,7 @@ import FrilansOppdragBolk from '../FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import {
-    driverDuFosterhjemVisible,
-    fremdelesFrilansVisible,
-    frilansOppdragBolkVisible,
-    frilansOppdragPerioderVisible,
-    frilansStartdatoVisible
-} from './visibilityFns';
+import visibility from './visibility';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -103,9 +97,7 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    animated={false}
-                    visible={frilansStartdatoVisible(søker)}>
+                <Block animated={false} visible={visibility.startdato(søker)}>
                     <DatoInput
                         id="frilansStartDato"
                         label={getMessage(intl, 'frilans.oppstart')}
@@ -118,7 +110,7 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={fremdelesFrilansVisible(søker)}>
+                <Block visible={visibility.fremdelesFrilans(søker)}>
                     <JobberDuFremdelesSomFrilansSpørsmål
                         onChange={(v: boolean) =>
                             this.handleFrilansinformasjonOnChange({
@@ -129,10 +121,10 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={frilansOppdragBolkVisible(søker)} margin="none">
+                <Block visible={visibility.oppdragBolk(søker)} margin="none">
                     <FrilansOppdragBolk
                         renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
-                        showOppdragsPerioderContent={frilansOppdragPerioderVisible(
+                        showOppdragsPerioderContent={visibility.oppdragPerioder(
                             søker
                         )}
                         oppfølgingsspørsmål={getMessage(
@@ -150,7 +142,7 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={driverDuFosterhjemVisible(søker)}>
+                <Block visible={visibility.driverFosterhjem(søker)}>
                     <DriverDuFosterhjemSpørsmål
                         onChange={(v: boolean) =>
                             this.handleFrilansinformasjonOnChange({

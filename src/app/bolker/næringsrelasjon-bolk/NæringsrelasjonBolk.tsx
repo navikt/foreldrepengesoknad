@@ -6,7 +6,7 @@ import Input from 'nav-frontend-skjema/lib/input';
 import { InputChangeEvent } from '../../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
 import ErNærVennEllerFamilieAvPersonSpørsmål from '../../spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
-import { tlfnrVisible } from './visibilityFns';
+import visibility from './visibility';
 
 interface NæringsrelasjonBolkProps {
     næringsrelasjon: NæringsrelasjonPartial;
@@ -55,7 +55,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 }
                             />
                         </Block>
-                        <Block visible={tlfnrVisible(næringsrelasjon)}>
+                        <Block visible={visibility.tlfnr(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
                                 label={getMessage(
@@ -69,7 +69,10 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 }
                             />
                         </Block>
-                        <Block visible={tlfnrVisible(næringsrelasjon)}>
+                        <Block
+                            visible={visibility.erNærVennEllerFamilie(
+                                næringsrelasjon
+                            )}>
                             <ErNærVennEllerFamilieAvPersonSpørsmål
                                 erNærVennEllerFamilieAvPerson={
                                     erNærVennEllerFamilie
