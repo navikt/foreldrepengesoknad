@@ -2,18 +2,11 @@ import {
     ApiActionKeys,
     ApiActionTypes
 } from '../actions/api/apiActionDefinitions';
-import Person, {
-    RegistrertAnnenForelder,
-    RegistrertBarn
-} from '../../types/Person';
-import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
+import { Søkerinfo } from '../../types/søkerinfo';
 
 export interface ApiState {
-    person?: Person;
-    arbeidsforhold?: Arbeidsforhold[];
-    registrertAnnenForelder?: RegistrertAnnenForelder;
-    registrerteBarn?: RegistrertBarn[];
+    søkerinfo?: Søkerinfo;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     søknadSendingInProgress: boolean;
