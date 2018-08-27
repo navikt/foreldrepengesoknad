@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AnnenInntektType } from '../../types/s\u00F8knad/AnnenInntekt';
+import { AnnenInntektType } from '../../types/søknad/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';

@@ -12,7 +12,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import { Uttaksinfo } from 'uttaksplan/utils/uttak/uttaksinfo';
 
-export interface StateProps {
+interface StateProps {
     perioder: Periode[];
     uttaksgrunnlag: Uttaksgrunnlag;
     uttaksinfo: Uttaksinfo;
