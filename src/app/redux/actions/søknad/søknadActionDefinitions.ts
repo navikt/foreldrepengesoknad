@@ -1,9 +1,11 @@
-import { Skjemadata } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+
+export type UpdateSøknadActionPayload = Partial<Søknad>;
 
 export enum SøknadActionKeys {
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
@@ -47,7 +49,7 @@ export interface UpdateSøkerAndStorage {
 
 export interface UpdateSøknad {
     type: SøknadActionKeys.UPDATE_SØKNAD;
-    payload: Skjemadata;
+    payload: UpdateSøknadActionPayload;
 }
 
 export interface UploadAttachment {

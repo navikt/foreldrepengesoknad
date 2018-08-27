@@ -1,4 +1,3 @@
-import { Skjemadata } from '../../../types/søknad/Søknad';
 import {
     SøknadActionKeys,
     UpdateBarn,
@@ -10,7 +9,8 @@ import {
     DeleteAttachment,
     DeleteAttachmentFailed,
     DeleteAttachmentSuccess,
-    UpdateSøkerAndStorage
+    UpdateSøkerAndStorage,
+    UpdateSøknadActionPayload
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -58,7 +58,7 @@ const updateSøkerAndStorage = (
     payload
 });
 
-const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
+const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
 });

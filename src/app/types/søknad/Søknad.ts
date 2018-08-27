@@ -51,8 +51,6 @@ export interface SøknadPartial {
     vedlegg?: Attachment[];
 }
 
-export type Skjemadata = Partial<Søknad>;
-
 export enum AttachmentType {
     OMSORGSOVERTAKELSE = 'omsorgsovertakelse',
     ADOPSJONSVEDTAK = 'adopsjonsvedtak',
