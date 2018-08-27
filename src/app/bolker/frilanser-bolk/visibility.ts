@@ -1,26 +1,28 @@
 import Søker from '../../types/søknad/Søker';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
 
-type FrilanserBolkVisibilityFn = (søker: Søker) => boolean;
+type VisibilityFunction = (søker: Søker) => boolean;
+interface FieldVisibilityFunctions {
+    startdato: VisibilityFunction;
+    fremdelesFrilans: VisibilityFunction;
+    oppdragBolk: VisibilityFunction;
+    oppdragPerioder: VisibilityFunction;
+    driverFosterhjem: VisibilityFunction;
+}
 
-export const frilansStartdatoVisible: FrilanserBolkVisibilityFn = (
-    søker: Søker
-) => søker.harJobbetSomFrilansSiste10Mnd === true;
+export const startdatoVisible = (søker: Søker) =>
+    søker.harJobbetSomFrilansSiste10Mnd === true;
 
-export const fremdelesFrilansVisible: FrilanserBolkVisibilityFn = (
-    søker: Søker
-) => {
+export const fremdelesFrilansVisible = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { oppstart } = frilansInformasjon;
-        return frilansStartdatoVisible(søker) && oppstart !== undefined;
+        return startdatoVisible(søker) && oppstart !== undefined;
     }
     return false;
 };
 
-export const frilansOppdragBolkVisible: FrilanserBolkVisibilityFn = (
-    søker: Søker
-) => {
+export const oppdragBolkVisible = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
@@ -32,16 +34,14 @@ export const frilansOppdragBolkVisible: FrilanserBolkVisibilityFn = (
     return false;
 };
 
-export const frilansOppdragPerioderVisible: FrilanserBolkVisibilityFn = (
-    søker: Søker
-) => {
+export const oppdragPerioderVisible = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const {
             harJobbetForNærVennEllerFamilieSiste10Mnd
         } = frilansInformasjon;
         return (
-            frilansOppdragBolkVisible(søker) &&
+            oppdragBolkVisible(søker) &&
             harJobbetForNærVennEllerFamilieSiste10Mnd === true
         );
     }
@@ -66,17 +66,25 @@ export const frilansOppdragErUtfylt = (
     return harJobbetForNærVennEllerFamilieSiste10Mnd === false;
 };
 
-export const driverDuFosterhjemVisible: FrilanserBolkVisibilityFn = (
-    søker: Søker
-) => {
+export const driverDuFosterhjemVisible = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
         return (
             frilansOppdragErUtfylt(frilansInformasjon) &&
-            frilansOppdragBolkVisible(søker) &&
+            oppdragBolkVisible(søker) &&
             jobberFremdelesSomFrilans === true
         );
     }
     return false;
 };
+
+const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+    startdato: startdatoVisible,
+    fremdelesFrilans: fremdelesFrilansVisible,
+    oppdragBolk: oppdragBolkVisible,
+    oppdragPerioder: oppdragPerioderVisible,
+    driverFosterhjem: driverDuFosterhjemVisible
+};
+
+export default fieldVisibilityFunctions;
