@@ -7,3 +7,7 @@ export interface Søkerinfo {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     registrerteBarn?: RegistrertBarn[];
 }
+
+export interface SøkerinfoProps {
+    søkerinfo: Søkerinfo;
+}
