@@ -22,7 +22,7 @@ import Søker from '../../../types/søknad/Søker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import BarnBolk from '../../../bolker/BarnBolk';
+import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
 import { guid } from 'nav-frontend-js-utils';
 import { findDateMostDistantInPast } from '../../../util/dates/dates';
 import isAvailable from '../isAvailable';
@@ -209,13 +209,15 @@ class RelasjonTilBarnFødselSteg extends React.Component<
                 <Block
                     visible={valgbartRegistrertBarn.length > 0}
                     margin="none">
-                    <BarnBolk
+                    <HvilkeBarnGjelderSøknadenBolk
                         gjelderAnnetBarn={gjelderAnnetBarn}
                         registrerteBarn={valgbartRegistrertBarn}
-                        onRegistrertBarnChange={(id: string) =>
+                        onGjelderRegistrertBarnChange={(id: string) =>
                             this.updateBarnInState(id)
                         }
-                        onAnnetBarnChange={this.updateGjelderAnnetBarnInState}
+                        onGjelderAnnetBarnChange={
+                            this.updateGjelderAnnetBarnInState
+                        }
                     />
                 </Block>
                 <Block

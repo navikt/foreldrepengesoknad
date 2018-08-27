@@ -9,8 +9,8 @@ import getMessage from 'common/util/i18nUtils';
 interface BarnBolkProps {
     gjelderAnnetBarn: boolean;
     registrerteBarn: VelgbartRegistrertBarn[];
-    onRegistrertBarnChange: (fødselsdato: string) => void;
-    onAnnetBarnChange: () => void;
+    onGjelderRegistrertBarnChange: (fødselsdato: string) => void;
+    onGjelderAnnetBarnChange: () => void;
 }
 
 type Props = BarnBolkProps & InjectedIntlProps;
@@ -20,8 +20,8 @@ class BarnBolk extends React.Component<Props> {
         const {
             registrerteBarn,
             gjelderAnnetBarn,
-            onRegistrertBarnChange,
-            onAnnetBarnChange,
+            onGjelderRegistrertBarnChange,
+            onGjelderAnnetBarnChange,
             intl
         } = this.props;
 
@@ -31,7 +31,7 @@ class BarnBolk extends React.Component<Props> {
                     <GjelderSøknadenNoenAvDisseBarnaSpørsmål
                         registrerteBarn={registrerteBarn}
                         onChange={(id: string) => {
-                            onRegistrertBarnChange(id);
+                            onGjelderRegistrertBarnChange(id);
                         }}
                         disabled={gjelderAnnetBarn || false}
                     />
@@ -44,7 +44,7 @@ class BarnBolk extends React.Component<Props> {
                             'søknadenGjelderAnnetBarn.spørsmål'
                         )}
                         checked={gjelderAnnetBarn}
-                        onChange={onAnnetBarnChange}
+                        onChange={onGjelderAnnetBarnChange}
                     />
                 </Block>
             </React.Fragment>
