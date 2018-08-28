@@ -5,7 +5,7 @@ import { RegistrertBarn } from '../types/Person';
 import GjelderSøknadenNoenAvDisseBarnaSpørsmål from '../spørsmål/GjelderSøknadenNoenAvDisseBarnaSpørsmål';
 import Checkbox from 'nav-frontend-skjema/lib/checkbox';
 import getMessage from 'common/util/i18nUtils';
-import { SøknadenGjelderBarnValg } from '../types/s\u00F8knad/S\u00F8knad';
+import { SøknadenGjelderBarnValg } from '../types/søknad/Søknad';
 
 interface BarnBolkProps {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;

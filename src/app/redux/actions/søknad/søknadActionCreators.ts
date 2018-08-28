@@ -23,7 +23,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { SøknadenGjelderBarnValg } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 
 const updateBarn = (
     payload:

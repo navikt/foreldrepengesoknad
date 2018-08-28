@@ -10,7 +10,7 @@ import {
 } from '../util/attachmentStateUpdates';
 import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import { AnnenForelderPartial } from '../../types/s\u00F8knad/AnnenForelder';
+import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
 
 const getDefaultState = (): SøknadPartial => {
