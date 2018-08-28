@@ -21,9 +21,10 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../isAvailable';
-import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { harAktivtArbeidsforhold } from '../../../util/domain/arbeidsforhold';
-import DateValues from '../../../util/validation/values';
+import {
+    barnErGyldig,
+    skalSøkerLasteOppTerminbekreftelse
+} from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
@@ -39,7 +40,6 @@ interface RelasjonTilBarnFødselStegProps {
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
-    renderFortsettKnapp: boolean;
     skalLasteOppTerminbekreftelse: boolean;
 }
 
@@ -138,26 +138,20 @@ const mapStateToProps = (
     state: AppState,
     props: Props
 ): RelasjonTilBarnFødselStegProps => {
-    const { person, registrerteBarn = [], arbeidsforhold } = props.søkerinfo;
-    const { barn, situasjon, temp, søker, annenForelder } = state.søknad;
+    const { person, registrerteBarn = [] } = props.søkerinfo;
+    const { barn, temp, søker, annenForelder } = state.søknad;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
-    const skalLasteOppTerminbekreftelse: boolean =
-        barn.erBarnetFødt === false &&
-        !harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate());
 
-    const { søknadenGjelderBarnValg } = temp;
-    const harValgtRegistrertBarn =
-        søknadenGjelderBarnValg.valgteBarn.length > 0;
-
-    const renderFortsettKnapp =
-        barnErGyldig(barn, situasjon, skalLasteOppTerminbekreftelse) ||
-        harValgtRegistrertBarn;
+    const skalLasteOppTerminbekreftelse: boolean = skalSøkerLasteOppTerminbekreftelse(
+        state.søknad,
+        props.søkerinfo
+    );
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         history: props.history,
-        renderFortsettKnapp,
+        renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
         isAvailable: isAvailable(
             StegID.RELASJON_TIL_BARN_FØDSEL,
             state.søknad,
@@ -170,12 +164,11 @@ const mapStateToProps = (
         annenForelder,
         person,
         registrerteBarn,
-        søknadenGjelderBarnValg,
+        søknadenGjelderBarnValg: temp.søknadenGjelderBarnValg,
         barn,
         terminbekreftelse,
         fødselsattest,
         skalLasteOppTerminbekreftelse,
-        renderFortsettKnapp,
         stegProps
     };
 };

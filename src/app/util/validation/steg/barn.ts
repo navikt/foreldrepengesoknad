@@ -1,11 +1,14 @@
-import Barn, {
+import {
     Adopsjonsbarn,
     ForeldreansvarBarn,
     FødtBarn,
     UfødtBarn
 } from '../../../types/søknad/Barn';
-import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
+import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
+import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
+import DateValues from '../values';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -62,13 +65,17 @@ const ufødtBarnErGyldig = (
     return true;
 };
 
-export const barnErGyldig = (
-    barn: Barn,
-    situasjon: Søkersituasjon,
-    skalLasteOppTerminbekreftelse?: boolean
-): boolean => {
+export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
+    const { situasjon, barn } = søknad;
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(
+        søknad,
+        søkerinfo
+    );
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
+            if (harValgtRegistrertBarn(søknad)) {
+                return true;
+            }
             return barn.erBarnetFødt
                 ? fødtBarnErGyldig(barn as FødtBarn)
                 : ufødtBarnErGyldig(
@@ -83,4 +90,21 @@ export const barnErGyldig = (
         default:
             return false;
     }
+};
+
+export const skalSøkerLasteOppTerminbekreftelse = (
+    søknad: Søknad,
+    søkerinfo: Søkerinfo
+): boolean => {
+    return (
+        søknad.barn.erBarnetFødt === false &&
+        !harAktivtArbeidsforhold(
+            søkerinfo.arbeidsforhold,
+            DateValues.today.toDate()
+        )
+    );
+};
+
+const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
+    return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
 };

@@ -18,7 +18,6 @@ const isAvailable = (
     søknad: Søknad,
     søkerinfo: Søkerinfo
 ): boolean => {
-    const { barn, situasjon } = søknad;
     const { person, registrertAnnenForelder } = søkerinfo;
 
     switch (stegId) {
@@ -35,12 +34,12 @@ const isAvailable = (
             );
 
         case StegID.ANNEN_FORELDER:
-            return harGodkjentVilkår(søknad) && barnErGyldig(barn, situasjon);
+            return harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo);
 
         case StegID.UTENLANDSOPPHOLD:
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(barn, situasjon) &&
+                barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(
                     søknad,
                     person as Person,
@@ -51,7 +50,7 @@ const isAvailable = (
         case StegID.ANDRE_INNTEKTER:
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(barn, situasjon) &&
+                barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(
                     søknad,
                     person as Person,
