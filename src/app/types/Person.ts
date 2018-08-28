@@ -16,7 +16,9 @@ interface Person extends PersonBase {
     bankkonto?: Bankkonto;
 }
 
-export type RegistrertBarn = PersonBase;
+export interface RegistrertBarn extends PersonBase {
+    annenForelder?: RegistrertAnnenForelder;
+}
 
 export interface RegistrertAnnenForelder extends PersonBase {
     harOpplystOmSinPågåendeSak?: boolean;

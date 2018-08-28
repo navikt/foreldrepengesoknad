@@ -8,7 +8,6 @@ import { ApiStatePartial } from '../reducers/apiReducer';
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
-import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -28,16 +27,6 @@ function* getSøkerinfo(action: any) {
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
-        if (
-            nextApiState.søkerinfo &&
-            nextApiState.søkerinfo.registrertAnnenForelder
-        ) {
-            yield put(
-                søknadActionCreators.updateAnnenForelder(
-                    nextApiState.søkerinfo.registrertAnnenForelder
-                )
-            );
-        }
         if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
             yield put(apiActions.getStoredAppState());
         } else {

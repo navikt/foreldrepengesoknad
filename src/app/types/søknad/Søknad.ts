@@ -7,7 +7,7 @@ import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { RegistrertBarn } from '../Person';
+import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -33,6 +33,7 @@ export interface SøknadenGjelderBarnValg {
 
 interface SkjemaEkstradata {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
+    registrertAnnenForelder: RegistrertAnnenForelder;
 }
 
 interface Søknad {
