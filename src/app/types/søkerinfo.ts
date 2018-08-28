@@ -3,8 +3,8 @@ import Arbeidsforhold from './Arbeidsforhold';
 
 export interface Søkerinfo {
     person: Person;
-    arbeidsforhold?: Arbeidsforhold[];
-    registrerteBarn?: RegistrertBarn[];
+    arbeidsforhold: Arbeidsforhold[];
+    registrerteBarn: RegistrertBarn[];
 }
 
 export interface SøkerinfoProps {
