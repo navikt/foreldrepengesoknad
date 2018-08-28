@@ -28,7 +28,7 @@ import {
 import Block from 'common/components/block/Block';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { SøknadenGjelderBarnValg } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;

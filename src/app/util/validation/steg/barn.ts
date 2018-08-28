@@ -7,7 +7,7 @@ import {
 } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
-import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
+import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import DateValues from '../values';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';

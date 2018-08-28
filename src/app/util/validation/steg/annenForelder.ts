@@ -1,7 +1,7 @@
 import Søknad from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
-import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
+import { Søkerinfo } from '../../../types/søkerinfo';
 
 export const annenForelderErGyldig = (
     søknad: Søknad,
