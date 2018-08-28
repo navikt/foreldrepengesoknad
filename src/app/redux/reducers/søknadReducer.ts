@@ -8,6 +8,7 @@ import {
     editAttachmentInState,
     removeAttachmentFromState
 } from '../util/attachmentStateUpdates';
+import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -35,7 +36,10 @@ const getDefaultState = (): SøknadPartial => {
     };
 };
 
-const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
+const søknadReducer = (
+    state = getDefaultState(),
+    action: SøknadAction
+): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.UPDATE_BARN:
             return {
@@ -68,12 +72,15 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 ...action.payload
             };
-        case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER: {
+        case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             return {
                 ...state,
                 temp: {
                     ...state.temp,
-                    søknadenGjelderBarnValg: action.payload
+                    søknadenGjelderBarnValg: action.payload,
+                    registrertAnnenForelder: getUniqeRegistrertAnnenForelderFromBarn(
+                        action.payload.valgteBarn
+                    )
                 }
             };
         }

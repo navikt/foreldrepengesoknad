@@ -20,11 +20,11 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
-    'UPDATE_SØKNADEN_GJELDER' = 'updateSøknadenGjelder'
+    'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn'
 }
 
 export interface UpdateSøknadenGjelder {
-    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER;
+    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN;
     payload: SøknadenGjelderBarnValg;
 }
 

@@ -111,7 +111,7 @@ const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
     return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
 };
 
-export const getRegistrertAnnenForelder = (
+export const getUniqeRegistrertAnnenForelderFromBarn = (
     barn?: RegistrertBarn[]
 ): RegistrertAnnenForelder | undefined => {
     if (!barn || barn.length === 0) {
