@@ -10,7 +10,8 @@ import {
     DeleteAttachmentFailed,
     DeleteAttachmentSuccess,
     UpdateSøkerAndStorage,
-    UpdateSøknadActionPayload
+    UpdateSøknadActionPayload,
+    UpdateSøknadenGjelder
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -22,6 +23,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { SøknadenGjelderBarnValg } from '../../../types/s\u00F8knad/S\u00F8knad';
 
 const updateBarn = (
     payload:
@@ -31,6 +33,13 @@ const updateBarn = (
         | ForeldreansvarBarnPartial
 ): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
+    payload
+});
+
+const updateSøknadenGjelderBarn = (
+    payload: SøknadenGjelderBarnValg
+): UpdateSøknadenGjelder => ({
+    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER,
     payload
 });
 
@@ -110,6 +119,7 @@ const deleteAttachmentFailed = (
 export default {
     updateAnnenForelder,
     updateBarn,
+    updateSøknadenGjelderBarn,
     updateUtenlandsopphold,
     updateSøker,
     updateSøkerAndStorage,

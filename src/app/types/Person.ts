@@ -16,20 +16,10 @@ interface Person extends PersonBase {
     bankkonto?: Bankkonto;
 }
 
-export interface RegistrertBarn {
-    fornavn: string;
-    mellomnavn?: string;
-    etternavn: string;
-    fødselsdato: Date;
-}
+export type RegistrertBarn = PersonBase;
 
 export interface RegistrertAnnenForelder extends PersonBase {
     harOpplystOmSinPågåendeSak?: boolean;
-}
-
-export interface VelgbartRegistrertBarn extends RegistrertBarn {
-    checked?: boolean;
-    id: string;
 }
 
 export type PersonPartial = Partial<Person>;
