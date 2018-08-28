@@ -1,6 +1,6 @@
 import Søker from '../../types/søknad/Søker';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
-import { driverDuFosterhjemVisible } from '../../bolker/frilanser-bolk/visibility';
+import visibilityFns from '../../bolker/frilanser-bolk/visibility';
 
 const cleanupFrilansInformasjon = (
     søker: Søker
@@ -14,7 +14,7 @@ const cleanupFrilansInformasjon = (
     if (harJobbetForNærVennEllerFamilieSiste10Mnd === false) {
         frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd = [];
     }
-    if (!driverDuFosterhjemVisible(søker)) {
+    if (!visibilityFns.driverDuFosterhjemVisible(søker)) {
         frilansInformasjon.driverFosterhjem = undefined;
     }
 
