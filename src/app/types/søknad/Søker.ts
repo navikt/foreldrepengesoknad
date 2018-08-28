@@ -7,11 +7,11 @@ export interface Søker {
     rolle: SøkerRolle;
     harJobbetSomFrilansSiste10Mnd: boolean;
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    selvstendigNæringsdrivendeInformasjon?: Næring[];
+    selvstendigNæringsdrivendeBolk?: Næring[];
     frilansInformasjon?: FrilansInformasjon;
     erAleneOmOmsorg: boolean;
     harHattAnnenInntektSiste10Mnd: boolean;
-    andreInntekterSiste10Mnd: AnnenInntekt[];
+    andreInntekterSiste10Mnd?: AnnenInntekt[];
 }
 
 export type SøkerPartial = Partial<Søker>;

@@ -16,21 +16,20 @@ import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import Landvelger from '../landvelger/Landvelger';
-import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
 import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';
 import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
-import NæringsrelasjonBolk from '../../bolker/NæringsrelasjonBolk';
+import NæringsrelasjonBolk from '../../bolker/næringsrelasjon-bolk/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
-import KanInnhenteOpplysningerOmReviorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
-import moment from 'moment';
+import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { InputChangeEvent } from '../../types/dom/Events';
-import { date4YearsAgo } from '../../util/validation/values';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organisasjonsnummer';
+import visibility from './visibility';
+import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -93,7 +92,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     onSubmit(): void {
-        this.props.onSubmit(this.state.næring as Næring);
+        this.props.onSubmit(cleanupNæring(this.state.næring as Næring));
     }
 
     toggleNæringstype(næringstype: Næringstype): void {
@@ -108,17 +107,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         }
 
         this.updateNæring({ næringstyper: newNæringstyper });
-    }
-
-    shouldAskForNæringsinntekt(): boolean {
-        const næringFomDato =
-            this.state.næring &&
-            this.state.næring.tidsperiode &&
-            this.state.næring.tidsperiode.fom;
-
-        return næringFomDato
-            ? moment(næringFomDato, moment.ISO_8601) > date4YearsAgo
-            : false;
     }
 
     handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -157,7 +145,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 onSubmit={this.onSubmit}
                 onRequestClose={onCancel}
                 isOpen={isOpen}
-                renderFormButtons={true}
+                renderFormButtons={visibility.formButtons(næring)}
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
@@ -167,10 +155,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        næringstyper !== undefined && næringstyper.length > 0
-                    }>
+                <Block visible={visibility.navnPåNæringen(næring)}>
                     <Input
                         label={getMessage(
                             intl,
@@ -186,7 +171,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={navnPåNæringen !== undefined}>
+                <Block visible={visibility.organisasjonsnummer(næring)}>
                     <Input
                         label={getMessage(
                             intl,
@@ -209,9 +194,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={organisasjonsnummer !== undefined}
-                    margin="none">
+                <Block visible={visibility.tidsperiode(næring)} margin="none">
                     <TidsperiodeBolk
                         tidsperiode={tidsperiode || {}}
                         onChange={(v: TidsperiodeMedValgfriSluttdato) =>
@@ -224,7 +207,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={organisasjonsnummer !== undefined}>
+                <Block visible={visibility.tidsperiode(næring)}>
                     <Checkbox
                         checked={pågående || false}
                         label={getMessage(intl, 'annenInntekt.modal.pågående')}
@@ -240,7 +223,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={this.shouldAskForNæringsinntekt()}>
+                <Block visible={visibility.næringsinntekt(næring)}>
                     <Input
                         label={getMessage(
                             intl,
@@ -256,7 +239,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={organisasjonsnummer !== undefined}>
+                <Block visible={visibility.næringRegistrertINorge(næring)}>
                     <ErNæringenRegistrertINorgeSpørsmål
                         registrertINorge={registrertINorge}
                         onChange={(v: boolean) =>
@@ -265,7 +248,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={registrertINorge === false}>
+                <Block visible={visibility.næringRegistrertILand(næring)}>
                     <Landvelger
                         onChange={(v: string) =>
                             this.updateNæring({ registrertILand: v })
@@ -278,12 +261,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        registrertINorge === true ||
-                        (registrertINorge === false &&
-                            registrertILand !== undefined)
-                    }>
+                <Block visible={visibility.stillingsprosent(næring)}>
                     <Input
                         bredde="XS"
                         label={getMessage(
@@ -305,13 +283,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        stillingsprosent !== undefined &&
-                        tidsperiode &&
-                        tidsperiode.fom &&
-                        erMindreEnn4ÅrSidenOppstart(næring as Næring)
-                    }>
+                <Block visible={visibility.nyIArbeidslivet(næring)}>
                     <HeltNyIArbeidslivetSpørsmål
                         nyIArbeidslivet={nyIArbeidslivet}
                         onChange={(v: boolean) =>
@@ -322,12 +294,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
                 <Block
-                    visible={
-                        stillingsprosent !== undefined &&
-                        tidsperiode &&
-                        tidsperiode.fom &&
-                        !erMindreEnn4ÅrSidenOppstart(næring as Næring)
-                    }>
+                    visible={visibility.varigEndringAvNæringsinntekt(næring)}>
                     <VarigEndringAvNæringsinntektBolk
                         næring={næring as Næring}
                         onChange={(changedProps: NæringPartial) =>
@@ -336,7 +303,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={stillingsprosent !== undefined}>
+                <Block visible={visibility.regnskapsførerBolk(næring)}>
                     <NæringsrelasjonBolk
                         renderSpørsmål={() => (
                             <HarDuRegnskapsførerSpørsmål
@@ -358,11 +325,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        stillingsprosent !== undefined &&
-                        harRegnskapsfører === false
-                    }>
+                <Block visible={visibility.revisorBolk(næring)}>
                     <NæringsrelasjonBolk
                         renderSpørsmål={() => (
                             <HarDuRevisorSpørsmål
@@ -385,11 +348,11 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 </Block>
 
                 <Block
-                    visible={
-                        harRegnskapsfører === false && harRevisor === true
-                    }>
-                    <KanInnhenteOpplysningerOmReviorSpørsmål
-                        hentOpplysningerOmRevisor={
+                    visible={visibility.kanInnhenteOpplysningerFraRevisor(
+                        næring
+                    )}>
+                    <KanInnhenteOpplysningerFraRevisorSpørsmål
+                        kanInnhenteOpplysningerFraRevisor={
                             kanInnhenteOpplsyningerFraRevisor
                         }
                         onChange={(v: boolean) =>
