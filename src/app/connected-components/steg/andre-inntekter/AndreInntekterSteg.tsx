@@ -29,7 +29,7 @@ import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/
 import visibility from './visibility';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { søknadStegPath } from '../StegRoutes';
-import cleanupSøker from '../../../util/cleanup/cleanupSøker';
+import cleanupAndreInntekterSteg from '../../../util/cleanup/cleanupAndreInntekterSteg';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -108,7 +108,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 
     handleOnSubmit() {
         const { søker, dispatch, history } = this.props;
-        dispatch(søknadActions.updateSøker(cleanupSøker(søker)));
+        dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
         dispatch(apiActionCreators.storeAppState());
         history.push(
             `${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`

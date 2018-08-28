@@ -3,7 +3,7 @@ import cleanupNæring from './cleanupNæring';
 import cleanupFrilansInformasjon from './cleanupFrilansInformasjon';
 import cleanupAnnenInntekt from './cleanupAnnenInntekt';
 
-const cleanupSøker = (søker: Søker): Søker => {
+const cleanupAndreInntekterSteg = (søker: Søker): Søker => {
     const {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         selvstendigNæringsdrivendeInformasjon,
@@ -41,4 +41,4 @@ const cleanupSøker = (søker: Søker): Søker => {
     return søker;
 };
 
-export default cleanupSøker;
+export default cleanupAndreInntekterSteg;
