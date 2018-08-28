@@ -19,7 +19,7 @@ export interface SøkerinfoDTOBarn extends SøkerinfoDTOPerson {
 
 export interface SøkerinfoDTOSøker extends SøkerinfoDTOPerson {
     ikkeNordiskEøsLand?: boolean;
-    barn?: SøkerinfoDTOBarn[];
+    barn: SøkerinfoDTOBarn[];
 }
 
 export interface SøkerinfoDTOArbeidsforhold {
@@ -33,5 +33,5 @@ export interface SøkerinfoDTOArbeidsforhold {
 
 export interface SøkerinfoDTO {
     søker: SøkerinfoDTOSøker;
-    arbeidsforhold?: SøkerinfoDTOArbeidsforhold[];
+    arbeidsforhold: SøkerinfoDTOArbeidsforhold[];
 }

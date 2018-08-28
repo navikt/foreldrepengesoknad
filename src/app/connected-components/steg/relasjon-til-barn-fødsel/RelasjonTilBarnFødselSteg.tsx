@@ -31,7 +31,7 @@ import { HistoryProps } from '../../../types/common';
 import { SøknadenGjelderBarnValg } from '../../../types/s\u00F8knad/S\u00F8knad';
 
 interface RelasjonTilBarnFødselStegProps {
-    person?: Person;
+    person: Person;
     barn: Barn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
@@ -66,10 +66,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         } = this.props;
 
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
-
-        if (person === undefined) {
-            return null;
-        }
 
         return (
             <Steg {...stegProps}>
@@ -143,7 +139,7 @@ const mapStateToProps = (
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
 
-    const skalLasteOppTerminbekreftelse: boolean = skalSøkerLasteOppTerminbekreftelse(
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(
         state.søknad,
         props.søkerinfo
     );

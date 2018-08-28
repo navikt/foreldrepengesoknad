@@ -1,14 +1,14 @@
 import Søknad from '../../../types/søknad/Søknad';
-import Person, { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
 
 export const annenForelderErGyldig = (
     søknad: Søknad,
-    person: Person,
-    registrertAnnenForelder?: RegistrertAnnenForelder
+    søkerinfo: Søkerinfo
 ): boolean => {
-    const { annenForelder, søker } = søknad;
+    const { annenForelder, søker, temp } = søknad;
+
     const {
         kanIkkeOppgis,
         harRettPåForeldrepenger,
@@ -17,10 +17,10 @@ export const annenForelderErGyldig = (
         skalHaForeldrepenger
     } = annenForelder;
     const { rolle, erAleneOmOmsorg } = søker;
-    const kjønn = person && person.kjønn;
+    const { kjønn } = søkerinfo.person;
     const harOpplystOmSinPågåendeSak =
-        registrertAnnenForelder &&
-        registrertAnnenForelder.harOpplystOmSinPågåendeSak;
+        temp.registrertAnnenForelder &&
+        temp.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
     const barn = søknad.barn as ForeldreansvarBarn;
     const vedleggOmsorgsovertakelse =
         barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
