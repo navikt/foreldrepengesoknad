@@ -18,7 +18,7 @@ const isAvailable = (
     søknad: Søknad,
     søkerinfo: Søkerinfo
 ): boolean => {
-    const { person, registrertAnnenForelder } = søkerinfo;
+    const { person } = søkerinfo;
 
     switch (stegId) {
         case StegID.INNGANG:
@@ -43,7 +43,7 @@ const isAvailable = (
                 annenForelderErGyldig(
                     søknad,
                     person as Person,
-                    registrertAnnenForelder
+                    søknad.temp.registrertAnnenForelder
                 )
             );
 
@@ -54,7 +54,7 @@ const isAvailable = (
                 annenForelderErGyldig(
                     søknad,
                     person as Person,
-                    registrertAnnenForelder
+                    søknad.temp.registrertAnnenForelder
                 ) &&
                 utenlandsoppholdErGyldig(søknad)
             );

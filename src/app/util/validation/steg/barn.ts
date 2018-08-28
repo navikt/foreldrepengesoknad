@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
     Adopsjonsbarn,
     ForeldreansvarBarn,
@@ -9,6 +10,7 @@ import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
 import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import DateValues from '../values';
+import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -107,4 +109,26 @@ export const skalSøkerLasteOppTerminbekreftelse = (
 
 const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
     return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
+};
+
+export const getRegistrertAnnenForelder = (
+    barn?: RegistrertBarn[]
+): RegistrertAnnenForelder | undefined => {
+    if (!barn || barn.length === 0) {
+        return undefined;
+    }
+    const foreldre: RegistrertAnnenForelder[] = [];
+    barn.forEach((b) => {
+        const { annenForelder } = b;
+        if (
+            annenForelder &&
+            !foreldre.find((f) => f.fnr === annenForelder.fnr)
+        ) {
+            foreldre.push({
+                ...annenForelder,
+                fødselsdato: moment(annenForelder.fødselsdato).toDate()
+            });
+        }
+    });
+    return foreldre.length === 1 ? foreldre[0] : undefined;
 };

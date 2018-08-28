@@ -1,8 +1,5 @@
 import moment from 'moment';
-import Person, {
-    RegistrertBarn,
-    RegistrertAnnenForelder
-} from '../../types/Person';
+import Person, { RegistrertBarn } from '../../types/Person';
 import { SøkerinfoDTO } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
@@ -31,28 +28,6 @@ const getRegistrerteBarn = (
     }));
 };
 
-const getRegistrertAnnenForelder = (
-    søkerinfo: SøkerinfoDTO
-): RegistrertAnnenForelder | undefined => {
-    if (!søkerinfo.søker.barn || søkerinfo.søker.barn.length === 0) {
-        return undefined;
-    }
-    const foreldre: RegistrertAnnenForelder[] = [];
-    søkerinfo.søker.barn.forEach((barn) => {
-        const { annenForelder } = barn;
-        if (
-            annenForelder &&
-            !foreldre.find((f) => f.fnr === annenForelder.fnr)
-        ) {
-            foreldre.push({
-                ...annenForelder,
-                fødselsdato: moment(annenForelder.fødselsdato).toDate()
-            });
-        }
-    });
-    return foreldre.length === 1 ? foreldre[0] : undefined;
-};
-
 const getArbeidsforhold = (
     søkerinfo: SøkerinfoDTO
 ): Arbeidsforhold[] | undefined => {
@@ -73,6 +48,5 @@ const getArbeidsforhold = (
 export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => ({
     person: getPerson(søkerinfo),
     registrerteBarn: getRegistrerteBarn(søkerinfo),
-    registrertAnnenForelder: getRegistrertAnnenForelder(søkerinfo),
     arbeidsforhold: getArbeidsforhold(søkerinfo)
 });
