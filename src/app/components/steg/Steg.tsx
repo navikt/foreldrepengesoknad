@@ -16,6 +16,7 @@ import { AppState } from '../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
 import apiActionCreators from '../../redux/actions/api/apiActionCreators';
+import StegFooter from '../steg-footer/StegFooter';
 
 export interface StegProps {
     id: StegID;
@@ -82,18 +83,21 @@ class Steg extends React.Component<Props & DispatchProps> {
         };
 
         return (
-            <ValiderbarForm {...formProps} ref={this.stegFormRef}>
-                <div className="blokk-m">
-                    <Stegindikator id={id} />
-                </div>
+            <React.Fragment>
+                <ValiderbarForm {...formProps} ref={this.stegFormRef}>
+                    <div className="blokk-m">
+                        <Stegindikator id={id} />
+                    </div>
 
-                {this.props.children}
-                {renderFortsettKnapp === true && (
-                    <FortsettKnapp>
-                        {stegConfig[id].fortsettKnappLabel}
-                    </FortsettKnapp>
-                )}
-            </ValiderbarForm>
+                    {this.props.children}
+                    {renderFortsettKnapp === true && (
+                        <FortsettKnapp>
+                            {stegConfig[id].fortsettKnappLabel}
+                        </FortsettKnapp>
+                    )}
+                </ValiderbarForm>
+                <StegFooter />
+            </React.Fragment>
         );
     }
 }
