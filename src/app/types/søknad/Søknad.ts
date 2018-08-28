@@ -33,7 +33,7 @@ export interface SøknadenGjelderBarnValg {
 
 interface SkjemaEkstradata {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
-    registrertAnnenForelder: RegistrertAnnenForelder;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
 interface Søknad {

@@ -39,7 +39,7 @@ const updateBarn = (
 const updateSøknadenGjelderBarn = (
     payload: SøknadenGjelderBarnValg
 ): UpdateSøknadenGjelder => ({
-    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER,
+    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
     payload
 });
 
