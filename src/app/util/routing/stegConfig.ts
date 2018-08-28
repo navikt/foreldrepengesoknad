@@ -50,7 +50,7 @@ const stegConfig: StegConfig = {
     },
     [StegID.ANNEN_FORELDER]: {
         tittel: 'Informasjon om den andre forelderen',
-        fortsettKnappLabel: 'Fortsett',
+        fortsettKnappLabel: 'Gå til uttaksplan',
         nesteSteg: StegID.UTTAKSPLAN,
         index: 2
     },

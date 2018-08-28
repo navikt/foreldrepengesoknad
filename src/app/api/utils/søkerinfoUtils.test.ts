@@ -4,9 +4,9 @@ import {
     SøkerinfoDTOAnnenForelder
 } from '../types/sokerinfoDTO';
 import { Kjønn } from '../../types/common';
-import { getApiStateFromSøkerinfo } from './søkerinfoUtils';
+import { getSøkerinfoFromDTO } from './søkerinfoUtils';
 
-const søkerinfo: SøkerinfoDTO = {
+const søkerinfoDTO: SøkerinfoDTO = {
     søker: {
         fnr: '',
         fornavn: '',
@@ -53,49 +53,49 @@ const barnMedUlikForelder: SøkerinfoDTOBarn = {
 describe('SøkerinfoUtils', () => {
     describe('getRegistrertAnnenForelder', () => {
         it('registrerAnnenForelder er undefined ved ingen barn', () => {
-            const apiState = getApiStateFromSøkerinfo(søkerinfo);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            const søkerinfo = getSøkerinfoFromDTO(søkerinfoDTO);
+            expect(søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn uten annen forelder har ikke registrerAnnenForelder', () => {
             const søkerinfoMedBarn = {
-                ...søkerinfo
+                ...søkerinfoDTO
             };
             søkerinfoMedBarn.søker.barn = [barn];
-            const apiState = getApiStateFromSøkerinfo(søkerinfo);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            const søkerinfo = getSøkerinfoFromDTO(søkerinfoDTO);
+            expect(søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
         it('barn med annen forelder har registrerAnnenForelder', () => {
             const info = {
-                ...søkerinfo,
+                ...søkerinfoDTO,
                 søker: {
-                    ...søkerinfo.søker,
+                    ...søkerinfoDTO.søker,
                     barn: [barnMedForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeDefined();
+            const søkerinfo = getSøkerinfoFromDTO(info);
+            expect(søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
             const info = {
-                ...søkerinfo,
+                ...søkerinfoDTO,
                 søker: {
-                    ...søkerinfo.søker,
+                    ...søkerinfoDTO.søker,
                     barn: [barnMedForelder, barnMedForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeDefined();
+            const søkerinfo = getSøkerinfoFromDTO(info);
+            expect(søkerinfo!.registrertAnnenForelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
             const info = {
-                ...søkerinfo,
+                ...søkerinfoDTO,
                 søker: {
-                    ...søkerinfo.søker,
+                    ...søkerinfoDTO.søker,
                     barn: [barnMedForelder, barnMedUlikForelder]
                 }
             };
-            const apiState = getApiStateFromSøkerinfo(info);
-            expect(apiState.registrertAnnenForelder).toBeUndefined();
+            const søkerinfo = getSøkerinfoFromDTO(info);
+            expect(søkerinfo!.registrertAnnenForelder).toBeUndefined();
         });
     });
 });
