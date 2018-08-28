@@ -1,19 +1,11 @@
 import Søker from '../../types/søknad/Søker';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
+import VisibilityFunction from '../../types/dom/Visibility';
 
-type VisibilityFunction = (søker: Søker) => boolean;
-interface FieldVisibilityFunctions {
-    startdato: VisibilityFunction;
-    fremdelesFrilans: VisibilityFunction;
-    oppdragBolk: VisibilityFunction;
-    oppdragPerioder: VisibilityFunction;
-    driverFosterhjem: VisibilityFunction;
-}
-
-export const startdatoVisible = (søker: Søker) =>
+const startdatoVisible: VisibilityFunction<Søker> = (søker: Søker) =>
     søker.harJobbetSomFrilansSiste10Mnd === true;
 
-export const fremdelesFrilansVisible = (søker: Søker) => {
+const fremdelesFrilansVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { oppstart } = frilansInformasjon;
@@ -22,7 +14,7 @@ export const fremdelesFrilansVisible = (søker: Søker) => {
     return false;
 };
 
-export const oppdragBolkVisible = (søker: Søker) => {
+const oppdragBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
@@ -34,7 +26,7 @@ export const oppdragBolkVisible = (søker: Søker) => {
     return false;
 };
 
-export const oppdragPerioderVisible = (søker: Søker) => {
+const oppdragPerioderVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const {
@@ -48,7 +40,7 @@ export const oppdragPerioderVisible = (søker: Søker) => {
     return false;
 };
 
-export const frilansOppdragErUtfylt = (
+const frilansOppdragErUtfylt: VisibilityFunction<FrilansInformasjon> = (
     frilansInformasjon: FrilansInformasjon
 ) => {
     const {
@@ -66,7 +58,7 @@ export const frilansOppdragErUtfylt = (
     return harJobbetForNærVennEllerFamilieSiste10Mnd === false;
 };
 
-export const driverDuFosterhjemVisible = (søker: Søker) => {
+const driverDuFosterhjemVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
@@ -79,12 +71,11 @@ export const driverDuFosterhjemVisible = (søker: Søker) => {
     return false;
 };
 
-const fieldVisibilityFunctions: FieldVisibilityFunctions = {
-    startdato: startdatoVisible,
-    fremdelesFrilans: fremdelesFrilansVisible,
-    oppdragBolk: oppdragBolkVisible,
-    oppdragPerioder: oppdragPerioderVisible,
-    driverFosterhjem: driverDuFosterhjemVisible
+export default {
+    startdatoVisible,
+    fremdelesFrilansVisible,
+    oppdragBolkVisible,
+    oppdragPerioderVisible,
+    driverDuFosterhjemVisible,
+    frilansOppdragErUtfylt
 };
-
-export default fieldVisibilityFunctions;

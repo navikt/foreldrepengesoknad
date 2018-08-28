@@ -6,42 +6,34 @@ import {
 import { date4YearsAgo } from '../../util/validation/values';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
 import { erNærVennEllerFamilieVisible } from '../../bolker/næringsrelasjon-bolk/visibility';
+import VisibilityFunction from '../../types/dom/Visibility';
 
-type VisibilityFunction = (næring: NæringPartial) => boolean;
-interface FieldVisibilityFunctions {
-    navnPåNæringen: VisibilityFunction;
-    organisasjonsnummer: VisibilityFunction;
-    tidsperiode: VisibilityFunction;
-    næringsinntekt: VisibilityFunction;
-    næringRegistrertINorge: VisibilityFunction;
-    næringRegistrertILand: VisibilityFunction;
-    stillingsprosent: VisibilityFunction;
-    nyIArbeidslivet: VisibilityFunction;
-    varigEndringAvNæringsinntekt: VisibilityFunction;
-    regnskapsførerBolk: VisibilityFunction;
-    revisorBolk: VisibilityFunction;
-    kanInnhenteOpplysningerFraRevisor: VisibilityFunction;
-    formButtons: VisibilityFunction;
-}
-
-export const navnPåNæringenVisible = (næring: NæringPartial) => {
+const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { næringstyper } = næring;
     return næringstyper !== undefined && næringstyper.length > 0;
 };
 
-export const organisasjonsnummerVisible = (næring: NæringPartial) => {
+const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { navnPåNæringen } = næring;
     return navnPåNæringenVisible(næring) && navnPåNæringen !== undefined;
 };
 
-export const tidsperiodeVisible = (næring: NæringPartial) => {
+const tidsperiodeVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { organisasjonsnummer } = næring;
     return (
         organisasjonsnummerVisible(næring) && organisasjonsnummer !== undefined
     );
 };
 
-export const tidsperiodeErUtfylt = (næring: NæringPartial): boolean => {
+const tidsperiodeErUtfylt: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+): boolean => {
     const { tidsperiode, pågående } = næring;
     if (tidsperiode !== undefined) {
         const { fom, tom } = tidsperiode;
@@ -50,7 +42,9 @@ export const tidsperiodeErUtfylt = (næring: NæringPartial): boolean => {
     return false;
 };
 
-export const næringsinntektVisible = (næring: NæringPartial) => {
+const næringsinntektVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { tidsperiode } = næring;
     if (tidsperiode && tidsperiodeErUtfylt(næring)) {
         const { fom } = tidsperiode;
@@ -62,7 +56,9 @@ export const næringsinntektVisible = (næring: NæringPartial) => {
     return false;
 };
 
-export const næringRegistrertINorgeVisible = (næring: NæringPartial) => {
+const næringRegistrertINorgeVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { næringsinntekt } = næring;
     if (næringsinntektVisible(næring)) {
         return næringsinntekt !== undefined;
@@ -70,12 +66,16 @@ export const næringRegistrertINorgeVisible = (næring: NæringPartial) => {
     return tidsperiodeVisible(næring) && tidsperiodeErUtfylt(næring);
 };
 
-export const næringRegistrertILandVisible = (næring: NæringPartial) => {
+const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { registrertINorge } = næring;
     return næringRegistrertINorgeVisible(næring) && registrertINorge === false;
 };
 
-export const stillingsprosentVisible = (næring: NæringPartial) => {
+const stillingsprosentVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { registrertINorge, registrertILand } = næring;
     if (registrertINorge === true) {
         return næringRegistrertINorgeVisible(næring);
@@ -88,7 +88,9 @@ export const stillingsprosentVisible = (næring: NæringPartial) => {
     }
 };
 
-export const nyIArbeidslivetVisible = (næring: NæringPartial) => {
+const nyIArbeidslivetVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
@@ -99,7 +101,9 @@ export const nyIArbeidslivetVisible = (næring: NæringPartial) => {
     );
 };
 
-export const varigEndringAvNæringsinntektVisible = (næring: NæringPartial) => {
+const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
@@ -110,7 +114,9 @@ export const varigEndringAvNæringsinntektVisible = (næring: NæringPartial) =>
     );
 };
 
-export const regnskapsførerBolkVisible = (næring: NæringPartial) => {
+const regnskapsførerBolkVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const {
         nyIArbeidslivet,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår
@@ -124,7 +130,9 @@ export const regnskapsførerBolkVisible = (næring: NæringPartial) => {
     return false;
 };
 
-export const revisorBolkVisible = (næring: NæringPartial) => {
+const revisorBolkVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { harRegnskapsfører } = næring;
     if (regnskapsførerBolkVisible(næring)) {
         return harRegnskapsfører === false;
@@ -132,9 +140,9 @@ export const revisorBolkVisible = (næring: NæringPartial) => {
     return false;
 };
 
-export const kanInnhenteOpplysningerFraRevisorVisible = (
-    næring: NæringPartial
-) => {
+const kanInnhenteOpplysningerFraRevisorVisible: VisibilityFunction<
+    NæringPartial
+> = (næring: NæringPartial) => {
     const { harRevisor, revisor } = næring;
     if (revisorBolkVisible(næring) && revisor !== undefined) {
         const { erNærVennEllerFamilie } = revisor;
@@ -147,7 +155,9 @@ export const kanInnhenteOpplysningerFraRevisorVisible = (
     return false;
 };
 
-export const formButtonsVisible = (næring: NæringPartial) => {
+const formButtonsVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const {
         harRegnskapsfører,
         harRevisor,
@@ -176,7 +186,7 @@ export const formButtonsVisible = (næring: NæringPartial) => {
     return false;
 };
 
-const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+export default {
     navnPåNæringen: navnPåNæringenVisible,
     organisasjonsnummer: organisasjonsnummerVisible,
     tidsperiode: tidsperiodeVisible,
@@ -191,5 +201,3 @@ const fieldVisibilityFunctions: FieldVisibilityFunctions = {
     kanInnhenteOpplysningerFraRevisor: kanInnhenteOpplysningerFraRevisorVisible,
     formButtons: formButtonsVisible
 };
-
-export default fieldVisibilityFunctions;

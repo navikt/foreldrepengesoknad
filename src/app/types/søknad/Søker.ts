@@ -7,7 +7,7 @@ export interface Søker {
     rolle: SøkerRolle;
     harJobbetSomFrilansSiste10Mnd: boolean;
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
-    selvstendigNæringsdrivendeInformasjon?: Næring[];
+    selvstendigNæringsdrivendeBolk?: Næring[];
     frilansInformasjon?: FrilansInformasjon;
     erAleneOmOmsorg: boolean;
     harHattAnnenInntektSiste10Mnd: boolean;
