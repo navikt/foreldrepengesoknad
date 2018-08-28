@@ -1,6 +1,6 @@
-import { Kjønn } from '../../types/common';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../../../types/Person';
 import { getUniqeRegistrertAnnenForelderFromBarn } from './barn';
+import { Kjønn } from '../../../types/common';
 
 const forelder1: RegistrertAnnenForelder = {
     fnr: '1',
