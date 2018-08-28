@@ -200,8 +200,8 @@
         "Er arbeidsgiver nær venn eller familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
-    "hentOpplysningerOmRevisor.spørsmål":
-        "Samtykke til uthenting av opplsysninger fra revisor",
+    "kanInnhenteOpplysningerFraRevisor.spørsmål":
+        "Samtykker du til uthenting av opplsysninger fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Jeg har aleneomsorgen",
     "annenForelder.bostedsland": "og bor i...",

@@ -5,7 +5,10 @@ import AnnenInntektSiste10MndSpørsmål, {
     AnnenInntekt
 } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { StegID } from '../../../util/routing/stegConfig';
+import {
+    default as stegConfig,
+    StegID
+} from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
@@ -13,7 +16,7 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../types/søknad/Søker';
-import FrilanserBolk from '../../../bolker/FrilanserBolk';
+import FrilanserBolk from '../../../bolker/frilanser-bolk/FrilanserBolk';
 import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
@@ -22,6 +25,10 @@ import isAvailable from '../isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
+import visibility from './visibility';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { søknadStegPath } from '../StegRoutes';
+import cleanupAndreInntekterSteg from '../../../util/cleanup/cleanupAndreInntekterSteg';
 import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
@@ -41,6 +48,7 @@ type Props = SøkerinfoProps &
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
             harHattAnnenInntekt: undefined
@@ -101,19 +109,27 @@ class AndreInntekterSteg extends React.Component<Props> {
         );
     }
 
+    handleOnSubmit() {
+        const { søker, dispatch, history } = this.props;
+        dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(
+            `${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`
+        );
+    }
+
     render() {
         const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Steg {...stegProps}>
+            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.ytelser.label')
                     }}>
                     <YtelseInfoWrapper ytelser={[]} />
                 </Block>
-
                 <Block
                     header={{
                         title: getMessage(
@@ -148,7 +164,10 @@ class AndreInntekterSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block hasChildBlocks={true} margin="none">
+                <Block
+                    hasChildBlocks={true}
+                    margin="none"
+                    visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
                     <SelvstendigNæringsdrivendeBolk
                         oppfølgingsspørsmål={getMessage(
                             intl,
@@ -162,18 +181,19 @@ class AndreInntekterSteg extends React.Component<Props> {
                             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
                             true
                         }
-                        næringListe={
-                            søker.selvstendigNæringsdrivendeInformasjon || []
-                        }
+                        næringListe={søker.selvstendigNæringsdrivendeBolk || []}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
-                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                                selvstendigNæringsdrivendeBolk: updatedNæringer
                             })
                         }
                     />
                 </Block>
 
-                <Block hasChildBlocks={true} margin="none">
+                <Block
+                    hasChildBlocks={true}
+                    margin="none"
+                    visible={visibility.andreInntekterBolk(søker)}>
                     <AndreInntekterBolk
                         oppfølgingsspørsmål={getMessage(
                             intl,
@@ -186,7 +206,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                             harHattAnnenInntektSiste10Mnd
                         }
                         andreInntekterSiste10Mnd={
-                            søker.andreInntekterSiste10Mnd
+                            søker.andreInntekterSiste10Mnd || []
                         }
                         onChange={(andreInntekterSiste10Mnd) =>
                             dispatch(
