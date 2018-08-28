@@ -97,7 +97,9 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block animated={false} visible={visibility.startdato(søker)}>
+                <Block
+                    animated={false}
+                    visible={visibility.startdatoVisible(søker)}>
                     <DatoInput
                         id="frilansStartDato"
                         label={getMessage(intl, 'frilans.oppstart')}
@@ -110,7 +112,7 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.fremdelesFrilans(søker)}>
+                <Block visible={visibility.fremdelesFrilansVisible(søker)}>
                     <JobberDuFremdelesSomFrilansSpørsmål
                         onChange={(v: boolean) =>
                             this.handleFrilansinformasjonOnChange({
@@ -121,10 +123,12 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.oppdragBolk(søker)} margin="none">
+                <Block
+                    visible={visibility.oppdragBolkVisible(søker)}
+                    margin="none">
                     <FrilansOppdragBolk
                         renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
-                        showOppdragsPerioderContent={visibility.oppdragPerioder(
+                        showOppdragsPerioderContent={visibility.oppdragPerioderVisible(
                             søker
                         )}
                         oppfølgingsspørsmål={getMessage(
@@ -142,7 +146,7 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.driverFosterhjem(søker)}>
+                <Block visible={visibility.driverDuFosterhjemVisible(søker)}>
                     <DriverDuFosterhjemSpørsmål
                         onChange={(v: boolean) =>
                             this.handleFrilansinformasjonOnChange({

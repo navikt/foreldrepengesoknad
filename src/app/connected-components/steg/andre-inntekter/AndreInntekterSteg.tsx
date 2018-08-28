@@ -181,12 +181,10 @@ class AndreInntekterSteg extends React.Component<Props> {
                             søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
                             true
                         }
-                        næringListe={
-                            søker.selvstendigNæringsdrivendeInformasjon || []
-                        }
+                        næringListe={søker.selvstendigNæringsdrivendeBolk || []}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
-                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
+                                selvstendigNæringsdrivendeBolk: updatedNæringer
                             })
                         }
                     />

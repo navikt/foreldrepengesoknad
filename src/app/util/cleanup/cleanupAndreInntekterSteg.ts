@@ -6,17 +6,17 @@ import cleanupAnnenInntekt from './cleanupAnnenInntekt';
 const cleanupAndreInntekterSteg = (søker: Søker): Søker => {
     const {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-        selvstendigNæringsdrivendeInformasjon,
+        selvstendigNæringsdrivendeBolk,
         harJobbetSomFrilansSiste10Mnd,
         frilansInformasjon,
         harHattAnnenInntektSiste10Mnd,
         andreInntekterSiste10Mnd
     } = søker;
 
-    if (selvstendigNæringsdrivendeInformasjon) {
-        søker.selvstendigNæringsdrivendeInformasjon =
+    if (selvstendigNæringsdrivendeBolk) {
+        søker.selvstendigNæringsdrivendeBolk =
             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true
-                ? (søker.selvstendigNæringsdrivendeInformasjon = selvstendigNæringsdrivendeInformasjon.map(
+                ? (søker.selvstendigNæringsdrivendeBolk = selvstendigNæringsdrivendeBolk.map(
                       (næring) => cleanupNæring(næring)
                   ))
                 : undefined;

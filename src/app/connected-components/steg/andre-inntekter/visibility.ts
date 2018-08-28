@@ -1,19 +1,15 @@
 import Søker from '../../../types/søknad/Søker';
-import {
-    driverDuFosterhjemVisible,
-    oppdragBolkVisible,
-    frilansOppdragErUtfylt
-} from '../../../bolker/frilanser-bolk/visibility';
+import frilansVisibility from '../../../bolker/frilanser-bolk/visibility';
+import VisibilityFunction from '../../../types/dom/Visibility';
 
-type VisibilityFunction = (søker: Søker) => boolean;
-interface FieldVisibilityFunctions {
-    selvstendigNæringsdrivendeBolk: VisibilityFunction;
-    andreInntekterBolk: VisibilityFunction;
-}
-
-export const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction = (
+const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (
     søker: Søker
 ) => {
+    const {
+        driverDuFosterhjemVisible,
+        oppdragBolkVisible,
+        frilansOppdragErUtfylt
+    } = frilansVisibility;
     const { harJobbetSomFrilansSiste10Mnd, frilansInformasjon } = søker;
 
     if (harJobbetSomFrilansSiste10Mnd === false) {
@@ -41,15 +37,15 @@ export const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction = (
     return false;
 };
 
-export const andreInntekterBolkVisible: VisibilityFunction = (søker: Søker) => {
+const andreInntekterBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const {
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-        selvstendigNæringsdrivendeInformasjon
+        selvstendigNæringsdrivendeBolk
     } = søker;
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true) {
         return (
-            selvstendigNæringsdrivendeInformasjon !== undefined &&
-            selvstendigNæringsdrivendeInformasjon.length > 0 &&
+            selvstendigNæringsdrivendeBolk !== undefined &&
+            selvstendigNæringsdrivendeBolk.length > 0 &&
             selvstendigNæringsdrivendeBolkVisible(søker)
         );
     }
@@ -59,9 +55,7 @@ export const andreInntekterBolkVisible: VisibilityFunction = (søker: Søker) =>
     );
 };
 
-const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+export default {
     selvstendigNæringsdrivendeBolk: selvstendigNæringsdrivendeBolkVisible,
     andreInntekterBolk: andreInntekterBolkVisible
 };
-
-export default fieldVisibilityFunctions;

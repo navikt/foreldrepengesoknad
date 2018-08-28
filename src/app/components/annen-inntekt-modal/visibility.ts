@@ -2,39 +2,31 @@ import {
     AnnenInntektPartial,
     AnnenInntektType
 } from '../../types/søknad/AnnenInntekt';
+import VisibilityFunction from '../../types/dom/Visibility';
 
-type VisibilityFunction = (annenInntekt: AnnenInntektPartial) => boolean;
-interface FieldVisibilityFunctions {
-    land: VisibilityFunction;
-    arbeidsgiverNavn: VisibilityFunction;
-    vedlegg: VisibilityFunction;
-}
-
-export const landVisible: VisibilityFunction = (
+const landVisible: VisibilityFunction<AnnenInntektPartial> = (
     annenInntekt: AnnenInntektPartial
 ) => {
     const { type } = annenInntekt;
     return type === AnnenInntektType.JOBB_I_UTLANDET;
 };
 
-export const arbeidsgiverNavnVisible: VisibilityFunction = (
+const arbeidsgiverNavnVisible: VisibilityFunction<AnnenInntektPartial> = (
     annenInntekt: AnnenInntektPartial
 ) => {
     const { type } = annenInntekt;
     return type === AnnenInntektType.JOBB_I_UTLANDET;
 };
 
-export const vedleggVisible: VisibilityFunction = (
+const vedleggVisible: VisibilityFunction<AnnenInntektPartial> = (
     annenInntekt: AnnenInntektPartial
 ) => {
     const { type } = annenInntekt;
     return type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
 };
 
-const fieldVisibilityFunctions: FieldVisibilityFunctions = {
+export default {
     land: landVisible,
     arbeidsgiverNavn: arbeidsgiverNavnVisible,
     vedlegg: vedleggVisible
 };
-
-export default fieldVisibilityFunctions;
