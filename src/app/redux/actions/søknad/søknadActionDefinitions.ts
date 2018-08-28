@@ -1,4 +1,4 @@
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -19,7 +19,13 @@ export enum SøknadActionKeys {
     'UPDATE_UTENLANDSOPPHOLD' = 'updateUtenlandsopphold',
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
-    'UPDATE_SØKNAD' = 'updateSøknad'
+    'UPDATE_SØKNAD' = 'updateSøknad',
+    'UPDATE_SØKNADEN_GJELDER' = 'updateSøknadenGjelder'
+}
+
+export interface UpdateSøknadenGjelder {
+    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER;
+    payload: SøknadenGjelderBarnValg;
 }
 
 export interface UpdateBarn {
@@ -87,6 +93,7 @@ export interface DeleteAttachmentFailed {
 
 export type SøknadAction =
     | UpdateBarn
+    | UpdateSøknadenGjelder
     | UpdateAnnenForelder
     | UpdateUtenlandsopphold
     | UpdateSøker

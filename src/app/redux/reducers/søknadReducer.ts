@@ -25,7 +25,13 @@ const getDefaultState = (): SøknadPartial => {
             andreInntekterSiste10Mnd: []
         },
         harGodkjentVilkår: false,
-        harGodkjentOppsummering: false
+        harGodkjentOppsummering: false,
+        temp: {
+            søknadenGjelderBarnValg: {
+                valgteBarn: [],
+                gjelderAnnetBarn: undefined
+            }
+        }
     };
 };
 
@@ -62,6 +68,15 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 ...action.payload
             };
+        case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER: {
+            return {
+                ...state,
+                temp: {
+                    ...state.temp,
+                    søknadenGjelderBarnValg: action.payload
+                }
+            };
+        }
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
