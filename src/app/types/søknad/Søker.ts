@@ -11,7 +11,7 @@ export interface Søker {
     frilansInformasjon?: FrilansInformasjon;
     erAleneOmOmsorg: boolean;
     harHattAnnenInntektSiste10Mnd: boolean;
-    andreInntekterSiste10Mnd: AnnenInntekt[];
+    andreInntekterSiste10Mnd?: AnnenInntekt[];
 }
 
 export type SøkerPartial = Partial<Søker>;
