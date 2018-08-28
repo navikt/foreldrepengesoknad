@@ -13,7 +13,6 @@ import FødselsdatoerSpørsmål from '../../../spørsmål/FødselsdatoerSpørsm�
 import utils from '../../../util/domain/fødselsdato';
 import { AppState } from '../../../redux/reducers';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { HistoryProps } from '../../../types/common';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../isAvailable';
@@ -24,13 +23,19 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { HistoryProps } from '../../../types/common';
 
 interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
 }
 
-type Props = StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+type Props = SøkerinfoProps &
+    StateProps &
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -227,7 +232,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
         renderFortsettKnapp: barnErGyldig(barn, state.søknad.situasjon),
         history: props.history,
-        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state)
+        isAvailable: isAvailable(
+            StegID.RELASJON_TIL_BARN_ADOPSJON,
+            state.søknad,
+            props.søkerinfo
+        )
     };
 
     return {

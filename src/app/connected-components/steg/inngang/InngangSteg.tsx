@@ -5,8 +5,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
-import { HistoryProps, Kjønn } from '../../../types/common';
-import Person from '../../../types/Person';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -20,6 +18,8 @@ import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils
 import isAvailable from '../isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
+import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { Kjønn, HistoryProps } from '../../../types/common';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -30,10 +30,11 @@ export interface StateProps {
     søker: SøkerPartial;
 }
 
-export type Props = DispatchProps &
+export type Props = SøkerinfoProps &
     StateProps &
-    HistoryProps &
-    InjectedIntlProps;
+    InjectedIntlProps &
+    DispatchProps &
+    HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -121,7 +122,7 @@ const resolveNesteSteg = (state: AppState): StegID | undefined => {
 };
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const kjønn = (state.api.person as Person).kjønn;
+    const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
     const søker = state.søknad.søker;
     const roller =
@@ -137,7 +138,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
             kjønn
         ),
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state),
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegRoute: resolveNesteSteg(state)
     };
 
