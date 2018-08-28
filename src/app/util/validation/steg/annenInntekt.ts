@@ -52,7 +52,9 @@ export const annenInntektErGyldig = (søker: Søker): boolean => {
     }
 
     if (harHattAnnenInntektSiste10Mnd) {
-        andreTyperInntektGyldig = andreInntekterSiste10Mnd.length > 0;
+        andreTyperInntektGyldig =
+            andreInntekterSiste10Mnd !== undefined &&
+            andreInntekterSiste10Mnd.length > 0;
     }
 
     return (

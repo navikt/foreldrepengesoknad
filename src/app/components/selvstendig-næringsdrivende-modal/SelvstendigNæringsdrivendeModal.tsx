@@ -29,6 +29,7 @@ import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organisasjonsnummer';
 import visibility from './visibility';
+import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -91,7 +92,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     }
 
     onSubmit(): void {
-        this.props.onSubmit(this.state.næring as Næring);
+        this.props.onSubmit(cleanupNæring(this.state.næring as Næring));
     }
 
     toggleNæringstype(næringstype: Næringstype): void {

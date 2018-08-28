@@ -5,7 +5,10 @@ import AnnenInntektSiste10MndSpørsmål, {
     AnnenInntekt
 } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { StegID } from '../../../util/routing/stegConfig';
+import {
+    default as stegConfig,
+    StegID
+} from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import { HistoryProps } from '../../../types/common';
@@ -24,6 +27,9 @@ import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import visibility from './visibility';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { søknadStegPath } from '../StegRoutes';
+import cleanupSøker from '../../../util/cleanup/cleanupSøker';
 
 interface AndreInntekterStegProps {
     stegProps: StegProps;
@@ -39,6 +45,7 @@ type Props = AndreInntekterStegProps &
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
             harHattAnnenInntekt: undefined
@@ -99,12 +106,21 @@ class AndreInntekterSteg extends React.Component<Props> {
         );
     }
 
+    handleOnSubmit() {
+        const { søker, dispatch, history } = this.props;
+        dispatch(søknadActions.updateSøker(cleanupSøker(søker)));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(
+            `${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`
+        );
+    }
+
     render() {
         const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Steg {...stegProps}>
+            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Block
                     header={{
                         title: getMessage(
@@ -183,7 +199,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                             harHattAnnenInntektSiste10Mnd
                         }
                         andreInntekterSiste10Mnd={
-                            søker.andreInntekterSiste10Mnd
+                            søker.andreInntekterSiste10Mnd || []
                         }
                         onChange={(andreInntekterSiste10Mnd) =>
                             dispatch(
