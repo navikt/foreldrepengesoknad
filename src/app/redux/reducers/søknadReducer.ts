@@ -9,6 +9,9 @@ import {
     removeAttachmentFromState
 } from '../util/attachmentStateUpdates';
 import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
+import { RegistrertAnnenForelder } from '../../types/Person';
+import { AnnenForelderPartial } from '../../types/s\u00F8knad/AnnenForelder';
+import { formaterNavn } from '../../util/domain/personUtil';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -33,6 +36,19 @@ const getDefaultState = (): SøknadPartial => {
                 gjelderAnnetBarn: undefined
             }
         }
+    };
+};
+
+const getAnnenForelderFromRegistrertForelder = (
+    registertForelder: RegistrertAnnenForelder
+): AnnenForelderPartial => {
+    return {
+        fnr: registertForelder.fnr,
+        navn: formaterNavn(
+            registertForelder.fornavn,
+            registertForelder.etternavn,
+            registertForelder.mellomnavn
+        )
     };
 };
 
@@ -73,14 +89,20 @@ const søknadReducer = (
                 ...action.payload
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
+            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(
+                action.payload.valgteBarn
+            );
             return {
                 ...state,
+                annenForelder: registrertAnnenForelder
+                    ? getAnnenForelderFromRegistrertForelder(
+                          registrertAnnenForelder
+                      )
+                    : state.annenForelder,
                 temp: {
                     ...state.temp,
                     søknadenGjelderBarnValg: action.payload,
-                    registrertAnnenForelder: getUniqeRegistrertAnnenForelderFromBarn(
-                        action.payload.valgteBarn
-                    )
+                    registrertAnnenForelder
                 }
             };
         }
