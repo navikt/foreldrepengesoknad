@@ -3,9 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { Checkbox } from 'nav-frontend-skjema';
 
-import AnnenForelder, {
-    AnnenForelderPartial
-} from '../../../../types/søknad/AnnenForelder';
+import AnnenForelder, { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
 import getMessage from 'common/util/i18nUtils';
@@ -52,14 +50,7 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
     }
 
     render() {
-        const {
-            søkersFødselsnummer,
-            annenForelder,
-            situasjon,
-            dispatch,
-            intl,
-            adopsjonAvEktefellesBarn
-        } = this.props;
+        const { søkersFødselsnummer, annenForelder, situasjon, dispatch, intl, adopsjonAvEktefellesBarn } = this.props;
         const { kanIkkeOppgis, navn } = annenForelder;
 
         return (
@@ -68,14 +59,8 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                     <NavnPåAnnenForelderSpørsmål
                         navn={navn}
                         kanIkkeOppgis={kanIkkeOppgis}
-                        onChange={(
-                            annenForelderPartial: AnnenForelderPartial
-                        ) =>
-                            dispatch(
-                                søknadActions.updateAnnenForelder(
-                                    annenForelderPartial
-                                )
-                            )
+                        onChange={(annenForelderPartial: AnnenForelderPartial) =>
+                            dispatch(søknadActions.updateAnnenForelder(annenForelderPartial))
                         }
                     />
                 </Block>
@@ -85,14 +70,8 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                         checked={kanIkkeOppgis || false}
                         label={
                             situasjon === Søkersituasjon.ADOPSJON
-                                ? getMessage(
-                                      intl,
-                                      'annenForelder.spørsmål.adoptererAlene'
-                                  )
-                                : getMessage(
-                                      intl,
-                                      'annenForelder.spørsmål.kanOppgis'
-                                  )
+                                ? getMessage(intl, 'annenForelder.spørsmål.adoptererAlene')
+                                : getMessage(intl, 'annenForelder.spørsmål.kanOppgis')
                         }
                         onChange={() => this.onKanIkkeOppgis()}
                     />
@@ -106,14 +85,8 @@ class AnnenForelderPersonaliaPartial extends React.Component<Props> {
                             fnr={annenForelder.fnr}
                             utenlandskFnr={annenForelder.utenlandskFnr}
                             bostedsland={annenForelder.bostedsland}
-                            onChange={(
-                                annenForelderPartial: AnnenForelderPartial
-                            ) =>
-                                dispatch(
-                                    søknadActions.updateAnnenForelder(
-                                        annenForelderPartial
-                                    )
-                                )
+                            onChange={(annenForelderPartial: AnnenForelderPartial) =>
+                                dispatch(søknadActions.updateAnnenForelder(annenForelderPartial))
                             }
                         />
                     )}
@@ -127,10 +100,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     annenForelder: state.søknad.annenForelder,
     erFarEllerMedmor: true,
     situasjon: state.søknad.situasjon,
-    adopsjonAvEktefellesBarn: (state.søknad.barn as Adopsjonsbarn)
-        .adopsjonAvEktefellesBarn
+    adopsjonAvEktefellesBarn: (state.søknad.barn as Adopsjonsbarn).adopsjonAvEktefellesBarn
 });
 
-export default connect<StateProps, {}, OwnProps>(mapStateToProps)(
-    injectIntl(AnnenForelderPersonaliaPartial)
-);
+export default connect<StateProps, {}, OwnProps>(mapStateToProps)(injectIntl(AnnenForelderPersonaliaPartial));

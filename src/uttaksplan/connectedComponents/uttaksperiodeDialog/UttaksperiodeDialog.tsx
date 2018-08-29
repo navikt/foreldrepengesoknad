@@ -5,17 +5,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Modal from 'nav-frontend-modal';
 
 import { DispatchProps } from 'common/redux/types';
-import {
-    lukkPeriodeDialog,
-    opprettEllerOppdaterPeriode,
-    slettPeriode
-} from 'uttaksplan/redux/actions';
-import {
-    Periodetype,
-    Uttaksperiode,
-    Periode,
-    Dekningsgrad
-} from 'uttaksplan/types';
+import { lukkPeriodeDialog, opprettEllerOppdaterPeriode, slettPeriode } from 'uttaksplan/redux/actions';
+import { Periodetype, Uttaksperiode, Periode, Dekningsgrad } from 'uttaksplan/types';
 
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
@@ -38,16 +29,7 @@ type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
 
 const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
-    const {
-        familiehendelsedato,
-        dekningsgrad,
-        isOpen,
-        valgtPeriode,
-        perioder,
-        uttaksgrunnlag,
-        dispatch,
-        intl
-    } = props;
+    const { familiehendelsedato, dekningsgrad, isOpen, valgtPeriode, perioder, uttaksgrunnlag, dispatch, intl } = props;
     if (!isOpen || !perioder || !uttaksgrunnlag) {
         return null;
     }
@@ -63,9 +45,7 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
                 familiehendelsedato={familiehendelsedato}
                 dekningsgrad={dekningsgrad}
                 periode={valgtPeriode}
-                ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(
-                    perioder
-                )}
+                ugyldigeTidsperioder={getUgyldigeTidsperioderForUttaksperiode(perioder)}
                 uttaksgrunnlag={uttaksgrunnlag}
                 onChange={(p) => {
                     dispatch(opprettEllerOppdaterPeriode(p));
@@ -82,18 +62,12 @@ const UttaksperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
 
 const mapStateToProps = (state: UttaksplanAppState): StateProps => {
     const { uttaksplan, view } = state.uttaksplan;
-    if (
-        !view.dialogErApen ||
-        (view.valgtPeriode &&
-            view.valgtPeriode.periodetype !== Periodetype.Uttak)
-    ) {
+    if (!view.dialogErApen || (view.valgtPeriode && view.valgtPeriode.periodetype !== Periodetype.Uttak)) {
         return { isOpen: false };
     }
     return {
         isOpen: true,
-        valgtPeriode: view.valgtPeriode
-            ? (view.valgtPeriode.periode as Uttaksperiode)
-            : undefined,
+        valgtPeriode: view.valgtPeriode ? (view.valgtPeriode.periode as Uttaksperiode) : undefined,
         perioder: uttaksplan.perioder
     };
 };

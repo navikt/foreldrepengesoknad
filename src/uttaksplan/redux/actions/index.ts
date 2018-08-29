@@ -1,9 +1,4 @@
-import {
-    Dekningsgrad,
-    Periodetype,
-    Periode,
-    Permisjonsregler
-} from '../../types';
+import { Dekningsgrad, Periodetype, Periode, Permisjonsregler } from '../../types';
 import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from './actionTypes';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import { UttaksplanRequiredProps } from 'uttaksplan/types';
@@ -15,10 +10,7 @@ export function setFellesperiodeukerMor(uker: number): UttaksplanActionTypes {
     };
 }
 
-export function initUttaksplan(
-    props: UttaksplanRequiredProps,
-    dekningsgrad: Dekningsgrad
-): UttaksplanActionTypes {
+export function initUttaksplan(props: UttaksplanRequiredProps, dekningsgrad: Dekningsgrad): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.INIT_UTTAKSPLAN,
         props,
@@ -37,10 +29,7 @@ export function setDekningsgrad(
     };
 }
 
-export function visPeriodeDialog(
-    periodetype: Periodetype,
-    periode?: Periode
-): UttaksplanActionTypes {
+export function visPeriodeDialog(periodetype: Periodetype, periode?: Periode): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.PERIODE_VIS_DIALOG,
         periode,
@@ -54,9 +43,7 @@ export function lukkPeriodeDialog(): UttaksplanActionTypes {
     };
 }
 
-export function opprettEllerOppdaterPeriode(
-    periode: Periode
-): UttaksplanActionTypes {
+export function opprettEllerOppdaterPeriode(periode: Periode): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.PERIODE_OPPRETT_ELLER_OPPDATER,
         periode
@@ -120,18 +107,14 @@ export function opprettPerioderAleneomsorg(
     };
 }
 
-export function setManuellUttaksplan(
-    manuellUttaksplan: boolean
-): UttaksplanActionTypes {
+export function setManuellUttaksplan(manuellUttaksplan: boolean): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.SET_MANUELL_UTTAKSPLAN,
         manuellUttaksplan
     };
 }
 
-export function setUttaksgrunnlag(
-    uttaksgrunnlag: Uttaksgrunnlag
-): UttaksplanActionTypes {
+export function setUttaksgrunnlag(uttaksgrunnlag: Uttaksgrunnlag): UttaksplanActionTypes {
     return {
         type: UttaksplanActionTypeKeys.SET_UTTAKSGRUNNLAG,
         uttaksgrunnlag

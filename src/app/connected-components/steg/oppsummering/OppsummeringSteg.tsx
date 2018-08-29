@@ -31,11 +31,7 @@ interface StateProps {
     perioder: Periode[];
 }
 
-type Props = SøkerinfoProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -44,9 +40,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
         if (this.props.kvittering) {
-            this.props.history.push(
-                `${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`
-            );
+            this.props.history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
         }
     }
 
@@ -66,14 +60,7 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     render() {
-        const {
-            søknad,
-            person,
-            godkjenteSteg,
-            stegProps,
-            dispatch,
-            intl
-        } = this.props;
+        const { søknad, person, godkjenteSteg, stegProps, dispatch, intl } = this.props;
         if (person === undefined) {
             return null;
         }
@@ -123,6 +110,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(OppsummeringSteg)
-);
+export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(OppsummeringSteg));

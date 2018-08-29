@@ -2,14 +2,8 @@ import Søker from '../../../types/søknad/Søker';
 import frilansVisibility from '../../../bolker/frilanser-bolk/visibility';
 import VisibilityFunction from '../../../types/dom/Visibility';
 
-const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (
-    søker: Søker
-) => {
-    const {
-        driverDuFosterhjemVisible,
-        oppdragBolkVisible,
-        frilansOppdragErUtfylt
-    } = frilansVisibility;
+const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
+    const { driverDuFosterhjemVisible, oppdragBolkVisible, frilansOppdragErUtfylt } = frilansVisibility;
     const { harJobbetSomFrilansSiste10Mnd, frilansInformasjon } = søker;
 
     if (harJobbetSomFrilansSiste10Mnd === false) {
@@ -17,31 +11,19 @@ const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (
     }
 
     if (frilansInformasjon !== undefined) {
-        const {
-            driverFosterhjem,
-            jobberFremdelesSomFrilans
-        } = frilansInformasjon;
+        const { driverFosterhjem, jobberFremdelesSomFrilans } = frilansInformasjon;
 
         if (jobberFremdelesSomFrilans === true) {
-            return (
-                driverDuFosterhjemVisible(søker) &&
-                driverFosterhjem !== undefined
-            );
+            return driverDuFosterhjemVisible(søker) && driverFosterhjem !== undefined;
         } else {
-            return (
-                frilansOppdragErUtfylt(frilansInformasjon) &&
-                oppdragBolkVisible(søker)
-            );
+            return frilansOppdragErUtfylt(frilansInformasjon) && oppdragBolkVisible(søker);
         }
     }
     return false;
 };
 
 const andreInntekterBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
-    const {
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-        selvstendigNæringsdrivendeBolk
-    } = søker;
+    const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, selvstendigNæringsdrivendeBolk } = søker;
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true) {
         return (
             selvstendigNæringsdrivendeBolk !== undefined &&
@@ -49,10 +31,7 @@ const andreInntekterBolkVisible: VisibilityFunction<Søker> = (søker: Søker) =
             selvstendigNæringsdrivendeBolkVisible(søker)
         );
     }
-    return (
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false &&
-        selvstendigNæringsdrivendeBolkVisible(søker)
-    );
+    return harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false && selvstendigNæringsdrivendeBolkVisible(søker);
 };
 
 export default {

@@ -3,9 +3,7 @@ import * as ReactDOM from 'react-dom';
 import stegConfig, { StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import ValiderbarForm, {
-    FormSubmitEvent
-} from 'common/lib/validation/elements/ValiderbarForm';
+import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
@@ -22,10 +20,7 @@ export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
-    onSubmit?: (
-        event: FormSubmitEvent,
-        stegFormRef: Element | null | Text
-    ) => void;
+    onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
 }
@@ -65,9 +60,7 @@ class Steg extends React.Component<Props & DispatchProps> {
     navigateToNextStep() {
         const { id, nesteStegRoute } = this.props;
 
-        const nextStepPathname = nesteStegRoute
-            ? nesteStegRoute
-            : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
+        const nextStepPathname = nesteStegRoute ? nesteStegRoute : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
 
         this.props.history.push(nextStepPathname);
     }
@@ -90,11 +83,7 @@ class Steg extends React.Component<Props & DispatchProps> {
                     </div>
 
                     {this.props.children}
-                    {renderFortsettKnapp === true && (
-                        <FortsettKnapp>
-                            {stegConfig[id].fortsettKnappLabel}
-                        </FortsettKnapp>
-                    )}
+                    {renderFortsettKnapp === true && <FortsettKnapp>{stegConfig[id].fortsettKnappLabel}</FortsettKnapp>}
                 </ValiderbarForm>
                 <StegFooter />
             </React.Fragment>

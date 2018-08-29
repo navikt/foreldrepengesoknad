@@ -4,5 +4,4 @@ export interface CommonSkjemaelementProps {
     infotekst?: string;
 }
 
-export type SkjemaelementProps = CommonSkjemaelementProps &
-    ValiderbartSkjemaelementProps;
+export type SkjemaelementProps = CommonSkjemaelementProps & ValiderbartSkjemaelementProps;

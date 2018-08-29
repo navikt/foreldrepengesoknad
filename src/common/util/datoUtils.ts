@@ -37,9 +37,7 @@ export function dagIMåned(dato: Date): string {
     return format(dato, 'D.', { locale });
 }
 
-export const getUkerOgDagerFromDager = (
-    dager: number
-): { uker: number; dager: number } => {
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
     const uker = Math.floor(dager / 5);
     return {
         dager: dager - uker * 5,

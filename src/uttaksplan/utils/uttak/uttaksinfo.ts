@@ -27,16 +27,10 @@ export const getUttaksinfo = (perioder: Periode[]): Uttaksinfo | undefined => {
     const antallDagerOpphold = periodene.getAntallDagerOpphold();
     const antallDagerUtsettelser = periodene.getAntallDagerUtsatt();
     const antallDagerUttak = periodene.getAntallDagerUttak();
-    const antallDagerTotalt =
-        antallDagerOpphold + antallDagerUtsettelser + antallDagerUttak;
+    const antallDagerTotalt = antallDagerOpphold + antallDagerUtsettelser + antallDagerUttak;
     const registrertTidsperiode = periodene.getFørsteOgSisteRegistrerteUttaksdager() as Tidsperiode;
-    const registrertTidsperiodeInkludertOpphold = periodene.getFørsteOgSisteRegistrerteUttaksdager(
-        true
-    ) as Tidsperiode;
-    const sluttdatoGittUttaksdager = getTidsperiode(
-        registrertTidsperiode.fom,
-        antallDagerTotalt
-    ).tom;
+    const registrertTidsperiodeInkludertOpphold = periodene.getFørsteOgSisteRegistrerteUttaksdager(true) as Tidsperiode;
+    const sluttdatoGittUttaksdager = getTidsperiode(registrertTidsperiode.fom, antallDagerTotalt).tom;
     return {
         antallDagerTotalt,
         antallDagerOpphold,

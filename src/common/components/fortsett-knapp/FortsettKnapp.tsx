@@ -14,10 +14,7 @@ interface FortsettKnappProps {
 const FortsettKnapp = (props: FortsettKnappProps & InjectedIntlProps) => {
     const { intl, children, onClick } = props;
     return (
-        <Hovedknapp
-            className="fortsettKnapp"
-            htmlType="submit"
-            onClick={onClick}>
+        <Hovedknapp className="fortsettKnapp" htmlType="submit" onClick={onClick}>
             {children || getMessage(intl, 'fortsettknapp.label')}
         </Hovedknapp>
     );

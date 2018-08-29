@@ -7,10 +7,7 @@ import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 
 interface SøkersituasjonProps {
     situasjon?: Søkersituasjon;
-    onChange: (
-        situasjon: Søkersituasjon,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (situasjon: Søkersituasjon, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = SøkersituasjonProps & InjectedIntlProps;
@@ -36,10 +33,7 @@ const SøkersituasjonSpørsmål = (props: Props) => {
                 TODO: Legg tilbake når foreldreansvar støttes */
             ]}
             name="søkersituasjon"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: Søkersituasjon
-            ) => onChange(v, e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Søkersituasjon) => onChange(v, e)}
         />
     );
 };

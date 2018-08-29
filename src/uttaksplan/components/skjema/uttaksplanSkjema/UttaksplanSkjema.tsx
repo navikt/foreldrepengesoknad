@@ -18,23 +18,12 @@ import { UttaksplanFormState } from 'uttaksplan/redux/types';
 
 class UttaksplanSkjema extends React.Component<Props, {}> {
     render() {
-        const {
-            form,
-            uttaksgrunnlag,
-            onChangeDekningsgrad,
-            onChangeFordeling
-        } = this.props;
+        const { form, uttaksgrunnlag, onChangeDekningsgrad, onChangeFordeling } = this.props;
 
-        const {
-            dekningsgrad,
-            ukerFellesperiode,
-            fellesperiodeukerForelder1
-        } = form;
+        const { dekningsgrad, ukerFellesperiode, fellesperiodeukerForelder1 } = form;
         const { permisjonsregler } = uttaksgrunnlag;
         const navnForelder1 = uttaksgrunnlag.søker.fornavn;
-        const navnForelder2 = uttaksgrunnlag.annenForelder
-            ? uttaksgrunnlag.annenForelder.fornavn
-            : 'Forelder 2';
+        const navnForelder2 = uttaksgrunnlag.annenForelder ? uttaksgrunnlag.annenForelder.fornavn : 'Forelder 2';
 
         return (
             <React.Fragment>
@@ -42,19 +31,13 @@ class UttaksplanSkjema extends React.Component<Props, {}> {
                     <DekningsgradSpørsmål
                         dekningsgrad={dekningsgrad}
                         antallUkerTotalt80={permisjonsregler.antallUkerTotalt80}
-                        antallUkerTotalt100={
-                            permisjonsregler.antallUkerTotalt100
-                        }
+                        antallUkerTotalt100={permisjonsregler.antallUkerTotalt100}
                         permisjonsregler={permisjonsregler}
                         onChange={onChangeDekningsgrad}
                     />
                 </div>
 
-                <EkspanderbartInnhold
-                    erApen={
-                        dekningsgrad &&
-                        uttaksgrunnlag.annenForelder !== undefined
-                    }>
+                <EkspanderbartInnhold erApen={dekningsgrad && uttaksgrunnlag.annenForelder !== undefined}>
                     <div className="blokk-s">
                         <FordelingFellesperiodeSpørsmål
                             navnForelder1={navnForelder1}

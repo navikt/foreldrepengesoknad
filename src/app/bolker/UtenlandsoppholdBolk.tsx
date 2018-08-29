@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
-import {
-    UtenlandsoppholdType,
-    Utenlandsopphold
-} from '../types/søknad/InformasjonOmUtenlandsopphold';
+import { UtenlandsoppholdType, Utenlandsopphold } from '../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
 } from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
@@ -35,10 +32,7 @@ interface UtenlandsoppholdBolkState {
 
 type UtenlandsoppholdBolkStatePartial = Partial<UtenlandsoppholdBolkState>;
 
-class UtenlandsoppholdBolk extends React.Component<
-    UtenlandsoppholdBolkProps,
-    UtenlandsoppholdBolkState
-> {
+class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, UtenlandsoppholdBolkState> {
     constructor(props: UtenlandsoppholdBolkProps) {
         super(props);
 
@@ -121,32 +115,18 @@ class UtenlandsoppholdBolk extends React.Component<
                             <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={opphold}
-                                renderElement={(
-                                    oppholdToRender: Utenlandsopphold,
-                                    index: number
-                                ) => (
+                                renderElement={(oppholdToRender: Utenlandsopphold, index: number) => (
                                     <ListElement
                                         opphold={oppholdToRender}
-                                        onEdit={() =>
-                                            this.onOppholdSelect(
-                                                oppholdToRender,
-                                                index
-                                            )
-                                        }
-                                        onDelete={() =>
-                                            this.onOppholdDelete(
-                                                oppholdToRender
-                                            )
-                                        }
+                                        onEdit={() => this.onOppholdSelect(oppholdToRender, index)}
+                                        onDelete={() => this.onOppholdDelete(oppholdToRender)}
                                         key={JSON.stringify(oppholdToRender)}
                                     />
                                 )}
                             />
                         </Block>
 
-                        <Knapp
-                            onClick={() => this.openModal()}
-                            htmlType="button">
+                        <Knapp onClick={() => this.openModal()} htmlType="button">
                             <FormattedMessage id="utenlandsopphold.leggTilLand" />
                         </Knapp>
                     </React.Fragment>
@@ -173,9 +153,11 @@ interface OppholdListeElementProps extends InteractiveListElementProps {
     opphold: Utenlandsopphold;
 }
 
-const OppholdListeElement: React.StatelessComponent<
-    OppholdListeElementProps & InjectedIntlProps
-> = ({ opphold, intl, ...rest }) => {
+const OppholdListeElement: React.StatelessComponent<OppholdListeElementProps & InjectedIntlProps> = ({
+    opphold,
+    intl,
+    ...rest
+}) => {
     const deleteLinKText = getMessage(intl, 'slett.utenlandsopphold');
     return (
         <InteractiveListElement

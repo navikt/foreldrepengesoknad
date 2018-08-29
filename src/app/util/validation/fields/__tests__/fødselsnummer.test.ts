@@ -8,25 +8,13 @@ const callFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) =>
-    getFødselsnummerRegler(
-        fødselsnummer,
-        utenlandskFødselsnummer,
-        søkersFødselsnummer,
-        intl
-    )[0].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[0].test();
 
 const callMatchingApplicantsFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) =>
-    getFødselsnummerRegler(
-        fødselsnummer,
-        utenlandskFødselsnummer,
-        søkersFødselsnummer,
-        intl
-    )[1].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[1].test();
 
 describe('Fødselsnummer validation', () => {
     const SØKER_FNR = '21079951436';
@@ -38,24 +26,16 @@ describe('Fødselsnummer validation', () => {
     });
 
     it('shuold return true for a valid norwegian fødselsnummer', () => {
-        expect(
-            callFødselsnummerValidator(VALID_NORWEGIAN_FNR, false, SØKER_FNR)
-        ).toEqual(true);
+        expect(callFødselsnummerValidator(VALID_NORWEGIAN_FNR, false, SØKER_FNR)).toEqual(true);
     });
 
     it('shuold return false for an invalid norwegian fødselsnummer', () => {
-        expect(
-            callFødselsnummerValidator(INVALID_NORWEGIAN_FNR, false, SØKER_FNR)
-        ).toEqual(false);
+        expect(callFødselsnummerValidator(INVALID_NORWEGIAN_FNR, false, SØKER_FNR)).toEqual(false);
     });
 
     it('should return false if norwegian fødselsnummer is not 11 digits', () => {
-        expect(
-            callFødselsnummerValidator('123451234511', false, SØKER_FNR)
-        ).toEqual(false);
-        expect(
-            callFødselsnummerValidator('1234512345', false, SØKER_FNR)
-        ).toEqual(false);
+        expect(callFødselsnummerValidator('123451234511', false, SØKER_FNR)).toEqual(false);
+        expect(callFødselsnummerValidator('1234512345', false, SØKER_FNR)).toEqual(false);
     });
 
     it('should return false if fødselsnummer is an empty string', () => {
@@ -64,12 +44,8 @@ describe('Fødselsnummer validation', () => {
     });
 
     it('should return false for fødselsnummer matching applicants fødselsnummer', () => {
-        expect(
-            callMatchingApplicantsFødselsnummerValidator(
-                VALID_NORWEGIAN_FNR,
-                false,
-                VALID_NORWEGIAN_FNR
-            )
-        ).toEqual(false);
+        expect(callMatchingApplicantsFødselsnummerValidator(VALID_NORWEGIAN_FNR, false, VALID_NORWEGIAN_FNR)).toEqual(
+            false
+        );
     });
 });

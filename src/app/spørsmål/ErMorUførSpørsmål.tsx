@@ -41,9 +41,7 @@ const ErMorUfør = (props: Props) => {
                 }
             ]}
             name="erMorUfør"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Mor) =>
-                onChange(v === Mor.ER_UFØR)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Mor) => onChange(v === Mor.ER_UFØR)}
         />
     );
 };

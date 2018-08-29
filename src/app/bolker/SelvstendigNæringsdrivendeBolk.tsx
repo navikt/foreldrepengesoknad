@@ -25,9 +25,7 @@ interface SelvstendigNæringsdrivendeBolkState {
     næringIndex?: number;
 }
 
-type SelvstendigNæringsdrivendeBolkStatePartial = Partial<
-    SelvstendigNæringsdrivendeBolkState
->;
+type SelvstendigNæringsdrivendeBolkStatePartial = Partial<SelvstendigNæringsdrivendeBolkState>;
 
 export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     SelvstendigNæringsdrivendeBolkProps,
@@ -97,12 +95,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const {
-            næringListe,
-            oppfølgingsspørsmål,
-            renderSpørsmål,
-            showNæringsPerioderContent
-        } = this.props;
+        const { næringListe, oppfølgingsspørsmål, renderSpørsmål, showNæringsPerioderContent } = this.props;
 
         const { næringToEdit } = this.state;
         const ListElement = injectIntl(NæringListeElement);
@@ -116,21 +109,12 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                             <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={næringListe}
-                                renderElement={(
-                                    updatedNæring: Næring,
-                                    index: number
-                                ) => (
+                                renderElement={(updatedNæring: Næring, index: number) => (
                                     <ListElement
                                         næring={updatedNæring}
-                                        onEdit={() =>
-                                            this.onSelect(updatedNæring, index)
-                                        }
-                                        onDelete={() =>
-                                            this.onDelete(updatedNæring)
-                                        }
-                                        key={`${
-                                            updatedNæring.navnPåNæringen
-                                        }${JSON.stringify(
+                                        onEdit={() => this.onSelect(updatedNæring, index)}
+                                        onDelete={() => this.onDelete(updatedNæring)}
+                                        key={`${updatedNæring.navnPåNæringen}${JSON.stringify(
                                             updatedNæring.tidsperiode
                                         )}`}
                                     />
@@ -139,9 +123,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                         </Block>
 
                         <div className="blokk-s">
-                            <Knapp
-                                onClick={() => this.openModal()}
-                                htmlType="button">
+                            <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </div>
@@ -155,11 +137,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                     næringToEdit: undefined
                                 })
                             }
-                            onSubmit={
-                                næringToEdit !== undefined
-                                    ? this.onEdit
-                                    : this.onAdd
-                            }
+                            onSubmit={næringToEdit !== undefined ? this.onEdit : this.onAdd}
                         />
                     </React.Fragment>
                 )}
@@ -172,9 +150,11 @@ interface NæringListeElementProps extends InteractiveListElementProps {
     næring: Næring;
 }
 
-const NæringListeElement: React.StatelessComponent<
-    NæringListeElementProps & InjectedIntlProps
-> = ({ næring, intl, ...rest }) => {
+const NæringListeElement: React.StatelessComponent<NæringListeElementProps & InjectedIntlProps> = ({
+    næring,
+    intl,
+    ...rest
+}) => {
     const deleteLinkText = getMessage(intl, 'slett.næring');
     return (
         <InteractiveListElement

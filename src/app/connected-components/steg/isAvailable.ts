@@ -12,11 +12,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
-const isAvailable = (
-    stegId: StegID,
-    søknad: Søknad,
-    søkerinfo: Søkerinfo
-): boolean => {
+const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     switch (stegId) {
         case StegID.INNGANG:
             return harGodkjentVilkår(søknad);
@@ -26,16 +22,12 @@ const isAvailable = (
         case StegID.RELASJON_TIL_BARN_ADOPSJON:
             return harGodkjentVilkår(søknad) && søknadGjelderAdopsjon(søknad);
         case StegID.RELASJON_TIL_BARN_FORELDREANSVAR:
-            return (
-                harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad)
-            );
+            return harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad);
         case StegID.ANNEN_FORELDER:
             return harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo);
         case StegID.UTENLANDSOPPHOLD:
             return (
-                harGodkjentVilkår(søknad) &&
-                barnErGyldig(søknad, søkerinfo) &&
-                annenForelderErGyldig(søknad, søkerinfo)
+                harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo) && annenForelderErGyldig(søknad, søkerinfo)
             );
         case StegID.ANDRE_INNTEKTER:
             return (

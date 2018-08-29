@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Radioliste, {
-    RadiolisteValg
-} from 'uttaksplan/components/radioliste/Radioliste';
+import Radioliste, { RadiolisteValg } from 'uttaksplan/components/radioliste/Radioliste';
 import { UttaksplamTestSkjemadata } from './UttaksplanSide';
 import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
@@ -14,20 +12,20 @@ export interface Props {
     onChange: (skjemadata: UttaksplamTestSkjemadata) => void;
 }
 
-const søkerroller: RadiolisteValg[] = Object.keys(SøkerRolle).map(
-    (rolle): RadiolisteValg => ({ tittel: rolle, verdi: rolle })
-);
+const søkerroller: RadiolisteValg[] = Object.keys(SøkerRolle).map((rolle): RadiolisteValg => ({
+    tittel: rolle,
+    verdi: rolle
+}));
 
-const søkersituasjoner: RadiolisteValg[] = Object.keys(Søkersituasjon).map(
-    (situasjon): RadiolisteValg => ({ tittel: situasjon, verdi: situasjon })
-);
+const søkersituasjoner: RadiolisteValg[] = Object.keys(Søkersituasjon).map((situasjon): RadiolisteValg => ({
+    tittel: situasjon,
+    verdi: situasjon
+}));
 
-const antallBarnValg: RadiolisteValg[] = ['1', '2'].map(
-    (antall): RadiolisteValg => ({
-        tittel: antall,
-        verdi: antall
-    })
-);
+const antallBarnValg: RadiolisteValg[] = ['1', '2'].map((antall): RadiolisteValg => ({
+    tittel: antall,
+    verdi: antall
+}));
 
 const getHendelsesdatoLabel = (data: UttaksplamTestSkjemadata): string => {
     if (data.søkersituasjon === Søkersituasjon.FØDSEL) {
@@ -43,12 +41,7 @@ interface JaNeiProps {
     synlig?: boolean;
 }
 
-const JaNeiSpørsmål: React.StatelessComponent<JaNeiProps> = ({
-    synlig = true,
-    spørsmål,
-    checked,
-    onChange
-}) => (
+const JaNeiSpørsmål: React.StatelessComponent<JaNeiProps> = ({ synlig = true, spørsmål, checked, onChange }) => (
     <EkspanderbartInnhold erApen={synlig === true} animert={false}>
         <div className="blokkPad-s">
             <Radioliste
@@ -65,13 +58,7 @@ const JaNeiSpørsmål: React.StatelessComponent<JaNeiProps> = ({
                         verdi: 'nei'
                     }
                 ]}
-                valgtVerdi={
-                    checked === undefined
-                        ? undefined
-                        : checked === true
-                            ? 'ja'
-                            : 'nei'
-                }
+                valgtVerdi={checked === undefined ? undefined : checked === true ? 'ja' : 'nei'}
                 onChange={(v) => onChange(v === 'ja')}
             />
         </div>
@@ -130,15 +117,9 @@ const DevUttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
             <div className="blokk-m">
                 <Row>
                     <Column xs="12" sm="6">
-                        <h3>
-                            {skjemadata.antallBarn === '1' ? 'Barnet' : 'Barna'}
-                        </h3>
+                        <h3>{skjemadata.antallBarn === '1' ? 'Barnet' : 'Barna'}</h3>
                         <JaNeiSpørsmål
-                            spørsmål={`Er ${
-                                skjemadata.antallBarn === '1'
-                                    ? 'barnet'
-                                    : 'barna'
-                            } født`}
+                            spørsmål={`Er ${skjemadata.antallBarn === '1' ? 'barnet' : 'barna'} født`}
                             checked={skjemadata.erBarnetFødt}
                             onChange={(checked) =>
                                 onChange({
@@ -152,9 +133,7 @@ const DevUttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                             id="hendelsesdato"
                             label={getHendelsesdatoLabel(skjemadata)}
                             dato={skjemadata.dato}
-                            onChange={(dato) =>
-                                onChange({ ...skjemadata, dato })
-                            }
+                            onChange={(dato) => onChange({ ...skjemadata, dato })}
                         />
                     </Column>
                     <Column xs="12" sm="6">
@@ -181,10 +160,7 @@ const DevUttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                             }
                         />
                         <JaNeiSpørsmål
-                            synlig={
-                                skjemadata.fnrFarOppgitt === true &&
-                                skjemadata.farHarRett === true
-                            }
+                            synlig={skjemadata.fnrFarOppgitt === true && skjemadata.farHarRett === true}
                             spørsmål="Bor sammen"
                             checked={skjemadata.borSammen}
                             onChange={(checked) =>
@@ -195,10 +171,7 @@ const DevUttaksplanSideSkjema: React.StatelessComponent<Props> = (props) => {
                             }
                         />
                         <JaNeiSpørsmål
-                            synlig={
-                                skjemadata.fnrFarOppgitt === true &&
-                                skjemadata.borSammen === false
-                            }
+                            synlig={skjemadata.fnrFarOppgitt === true && skjemadata.borSammen === false}
                             spørsmål="Aleneomsorg"
                             checked={skjemadata.aleneomsorg}
                             onChange={(checked) =>

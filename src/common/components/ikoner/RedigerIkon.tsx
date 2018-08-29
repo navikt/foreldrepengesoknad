@@ -1,12 +1,7 @@
 import * as React from 'react';
 
 const RedigerIkon = (props: any) => (
-    <svg
-        width={16}
-        height={16}
-        viewBox="0 0 24 24"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...props}>
+    <svg width={16} height={16} viewBox="0 0 24 24" xmlnsXlink="http://www.w3.org/1999/xlink" {...props}>
         <desc>Created with Sketch.</desc>
         <defs>
             <path
@@ -14,22 +9,12 @@ const RedigerIkon = (props: any) => (
                 id="path-1"
             />
         </defs>
-        <g
-            id="Symbols"
-            stroke="none"
-            strokeWidth="1"
-            fill="none"
-            fillRule="evenodd">
+        <g id="Symbols" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g id="icon/fill/edition/-pencil-2">
                 <mask id="mask-2" fill="white">
                     <use xlinkHref="#path-1" />
                 </mask>
-                <use
-                    id="Mask"
-                    fill="#0067C5"
-                    fillRule="nonzero"
-                    xlinkHref="#path-1"
-                />
+                <use id="Mask" fill="#0067C5" fillRule="nonzero" xlinkHref="#path-1" />
             </g>
         </g>
     </svg>

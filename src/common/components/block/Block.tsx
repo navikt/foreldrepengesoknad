@@ -46,9 +46,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
         header !== undefined ? (
             <section className={contentClass}>
                 <div className="heading">
-                    <h1 className={`typo-element ${cls.element('title')}`}>
-                        {header.title}
-                    </h1>
+                    <h1 className={`typo-element ${cls.element('title')}`}>{header.title}</h1>
                     {header.info && <Infoboks tekst={header.info} />}
                 </div>
                 {children}

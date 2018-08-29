@@ -9,12 +9,6 @@ interface ListProps<T> {
 export default class List<T> extends React.Component<ListProps<T>> {
     render() {
         const { data, renderElement } = this.props;
-        return (
-            <ul className="list">
-                {data.map((dataObject: T, i: number) =>
-                    renderElement(dataObject, i)
-                )}
-            </ul>
-        );
+        return <ul className="list">{data.map((dataObject: T, i: number) => renderElement(dataObject, i))}</ul>;
     }
 }

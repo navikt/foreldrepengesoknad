@@ -35,16 +35,10 @@ class OppsummeringWrapper extends React.Component<Props> {
         const { className, person, søknad, godkjenteSteg, intl } = this.props;
         return (
             <div className={className}>
-                <Veilederinfo>
-                    {getMessage(intl, 'oppsummering.veileder')}
-                </Veilederinfo>
+                <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
                 <div className="oppsummeringWrapper">
                     <SøkerPersonalia
-                        navn={formaterNavn(
-                            person.fornavn,
-                            person.etternavn,
-                            person.mellomnavn
-                        )}
+                        navn={formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
                         fnr={person.fnr}
                         kjønn={person.kjønn}
                     />
@@ -52,30 +46,16 @@ class OppsummeringWrapper extends React.Component<Props> {
                     <EkspanderbartOppsummeringsPanel
                         steg={StegID.RELASJON_TIL_BARN_FØDSEL}
                         checked={godkjenteSteg[StegID.RELASJON_TIL_BARN_FØDSEL]}
-                        tittel={getMessage(
-                            intl,
-                            'oppsummering.relasjonTilBarn'
-                        )}
-                        onClick={(stegID: StegID) =>
-                            this.onOppsummeringExpand(stegID)
-                        }
-                        render={() => (
-                            <OppsummeringRelasjonTilBarnFødsel
-                                barn={søknad.barn}
-                            />
-                        )}
+                        tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
+                        onClick={(stegID: StegID) => this.onOppsummeringExpand(stegID)}
+                        render={() => <OppsummeringRelasjonTilBarnFødsel barn={søknad.barn} />}
                     />
 
                     <EkspanderbartOppsummeringsPanel
                         steg={StegID.ANNEN_FORELDER}
                         checked={godkjenteSteg[StegID.ANNEN_FORELDER]}
-                        tittel={getMessage(
-                            intl,
-                            'oppsummering.denAndreForelderen'
-                        )}
-                        onClick={(stegID: StegID) =>
-                            this.onOppsummeringExpand(stegID)
-                        }
+                        tittel={getMessage(intl, 'oppsummering.denAndreForelderen')}
+                        onClick={(stegID: StegID) => this.onOppsummeringExpand(stegID)}
                         render={() => (
                             <OppsummeringDenAndreForelderen
                                 annenForelder={søknad.annenForelder}

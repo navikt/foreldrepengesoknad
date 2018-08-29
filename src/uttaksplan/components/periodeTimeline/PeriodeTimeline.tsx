@@ -2,13 +2,8 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Timeline from 'uttaksplan/components/timeline/Timeline';
 import { Periode, Dekningsgrad } from 'uttaksplan/types';
-import {
-    TimelineItem,
-    TimelineItemType
-} from 'uttaksplan/components/timeline/types';
-import UttaksplanIkon, {
-    UttaksplanIkonKeys
-} from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
+import { TimelineItem, TimelineItemType } from 'uttaksplan/components/timeline/types';
+import UttaksplanIkon, { UttaksplanIkonKeys } from 'uttaksplan/components/uttaksplanIkon/UttaksplanIkon';
 import {
     mapPeriodeToTimelineEvent,
     sortTimelineItems,
@@ -49,30 +44,14 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
     }
 
     render() {
-        const {
-            familiehendelsedato,
-            perioder,
-            uttaksgrunnlag,
-            uttaksinfo,
-            intl
-        } = this.props;
-        const items = perioder.map((periode) =>
-            mapPeriodeToTimelineEvent(periode, intl, uttaksgrunnlag)
-        );
-        items.push(
-            getFamiliehendelseMarker(
-                familiehendelsedato,
-                uttaksgrunnlag.erBarnetFødt
-            )
-        );
+        const { familiehendelsedato, perioder, uttaksgrunnlag, uttaksinfo, intl } = this.props;
+        const items = perioder.map((periode) => mapPeriodeToTimelineEvent(periode, intl, uttaksgrunnlag));
+        items.push(getFamiliehendelseMarker(familiehendelsedato, uttaksgrunnlag.erBarnetFødt));
         items.sort(sortTimelineItems).map((item, idx, arr) => {
             if (idx > 0) {
                 const prevItem = arr[idx];
                 if (prevItem.type === TimelineItemType.event) {
-                    if (
-                        isBefore(item.startDate, prevItem.endDate) ||
-                        isSameDay(item.startDate, prevItem.endDate)
-                    ) {
+                    if (isBefore(item.startDate, prevItem.endDate) || isSameDay(item.startDate, prevItem.endDate)) {
                         return {
                             ...item,
                             error: 'Overlappende perioder'
@@ -90,15 +69,11 @@ class PeriodeTidslinje extends React.Component<Props, {}> {
         return (
             <Timeline
                 items={getGaps(items)}
-                iconRenderer={(icon) => (
-                    <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />
-                )}
+                iconRenderer={(icon) => <UttaksplanIkon ikon={icon as UttaksplanIkonKeys} />}
                 onItemClick={(item: TimelineItem) => {
                     this.handleItemClick(item);
                 }}
-                durationRenderer={(dager: number) => (
-                    <UkerOgDager dager={dager} />
-                )}
+                durationRenderer={(dager: number) => <UkerOgDager dager={dager} />}
                 rangeRenderer={(fom: Date, tom: Date) => (
                     <TidsperiodeTekst
                         tidsperiode={{

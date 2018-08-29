@@ -4,11 +4,7 @@ import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import { FormattedMessage } from 'react-intl';
 
 const DekningsgradInfo: React.StatelessComponent<{}> = (props) => (
-    <VeilederinfoContainer
-        id={Infotekster.sats}
-        type="info"
-        visVeileder={false}
-        stil="kunTekst">
+    <VeilederinfoContainer id={Infotekster.sats} type="info" visVeileder={false} stil="kunTekst">
         <FormattedMessage id="uttaksplan.skjema.veiledning.sats" />
     </VeilederinfoContainer>
 );

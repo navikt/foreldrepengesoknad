@@ -1,7 +1,4 @@
-import {
-    UttaksplanActionTypes,
-    UttaksplanActionTypeKeys
-} from '../actions/actionTypes';
+import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from '../actions/actionTypes';
 import { UttaksplanViewState, SynligInfoMap } from 'uttaksplan/redux/types';
 
 export enum Infotekster {

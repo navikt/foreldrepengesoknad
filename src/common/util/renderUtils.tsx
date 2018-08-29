@@ -5,10 +5,7 @@ export const renderDag = (d: Date) => {
     const fridag = erFridag(d);
     if (fridag) {
         return (
-            <span
-                className="kalender-offentligFridag"
-                aria-label={fridag}
-                title={fridag}>
+            <span className="kalender-offentligFridag" aria-label={fridag} title={fridag}>
                 {d.getDate()}
             </span>
         );

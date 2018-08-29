@@ -42,9 +42,7 @@ const Feilsidemelding: React.StatelessComponent<Props> = ({
                                 <div>{illustrasjon.tekst}</div>
 
                                 {illustrasjon.lenke && (
-                                    <Lenke
-                                        className="intro-snakkelenke"
-                                        href={illustrasjon.lenke.url}>
+                                    <Lenke className="intro-snakkelenke" href={illustrasjon.lenke.url}>
                                         {illustrasjon.lenke.tekst}
                                     </Lenke>
                                 )}

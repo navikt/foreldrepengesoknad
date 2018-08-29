@@ -9,9 +9,7 @@ function* sendSøknad(action: SendSøknad) {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const response = yield call(Api.sendSøknad, action.søknad);
         const kvittering: ForeldrepengesøknadResponse = response.data;
-        yield put(
-            apiActions.updateApi({ kvittering, søknadSendingInProgress: false })
-        );
+        yield put(apiActions.updateApi({ kvittering, søknadSendingInProgress: false }));
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
     }

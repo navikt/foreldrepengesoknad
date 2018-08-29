@@ -27,10 +27,7 @@ interface FrilansOppdragBolkState {
 
 type FrilansOppdragBolkStatePartial = Partial<FrilansOppdragBolkState>;
 
-export default class FrilansOppdragBolk extends React.Component<
-    FrilansOppdragBolkProps,
-    FrilansOppdragBolkState
-> {
+export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, FrilansOppdragBolkState> {
     constructor(props: FrilansOppdragBolkProps) {
         super(props);
 
@@ -95,12 +92,7 @@ export default class FrilansOppdragBolk extends React.Component<
     }
 
     render() {
-        const {
-            oppdragListe,
-            oppfølgingsspørsmål,
-            renderSpørsmål,
-            showOppdragsPerioderContent
-        } = this.props;
+        const { oppdragListe, oppfølgingsspørsmål, renderSpørsmål, showOppdragsPerioderContent } = this.props;
 
         const { oppdragToEdit } = this.state;
         const ListElement = injectIntl(FrilansOppdragListeElement);
@@ -114,18 +106,11 @@ export default class FrilansOppdragBolk extends React.Component<
                             <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={oppdragListe}
-                                renderElement={(
-                                    updatedOppdrag: FrilansOppdrag,
-                                    index: number
-                                ) => (
+                                renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (
                                     <ListElement
                                         oppdrag={updatedOppdrag}
-                                        onDelete={() =>
-                                            this.onDelete(updatedOppdrag)
-                                        }
-                                        onEdit={() =>
-                                            this.onSelect(updatedOppdrag, index)
-                                        }
+                                        onDelete={() => this.onDelete(updatedOppdrag)}
+                                        onEdit={() => this.onSelect(updatedOppdrag, index)}
                                         key={JSON.stringify(updatedOppdrag)}
                                     />
                                 )}
@@ -133,9 +118,7 @@ export default class FrilansOppdragBolk extends React.Component<
                         </Block>
 
                         <Block margin="s">
-                            <Knapp
-                                onClick={() => this.openModal()}
-                                htmlType="button">
+                            <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </Block>
@@ -166,9 +149,11 @@ interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
     oppdrag: FrilansOppdrag;
 }
 
-const FrilansOppdragListeElement: React.StatelessComponent<
-    FrilansOppdragListeElementProps & InjectedIntlProps
-> = ({ oppdrag, intl, ...rest }) => {
+const FrilansOppdragListeElement: React.StatelessComponent<FrilansOppdragListeElementProps & InjectedIntlProps> = ({
+    oppdrag,
+    intl,
+    ...rest
+}) => {
     const deleteLinkText = getMessage(intl, 'slett.oppdrag');
     return (
         <InteractiveListElement

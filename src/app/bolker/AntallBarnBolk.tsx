@@ -42,9 +42,7 @@ class AntallBarnBolk extends React.Component<Props> {
     render() {
         const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
         const antallBarnVerdi: AntallBarnVerdi | undefined =
-            antallBarn !== undefined
-                ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi)
-                : undefined;
+            antallBarn !== undefined ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi) : undefined;
 
         return (
             <React.Fragment>
@@ -53,34 +51,24 @@ class AntallBarnBolk extends React.Component<Props> {
                         legend={spørsmål}
                         name={inputName}
                         feil={feil}
-                        onChange={(
-                            event: React.SyntheticEvent<EventTarget>,
-                            value: string
-                        ) => this.onRadioChange(value as AntallBarnVerdi)}
+                        onChange={(event: React.SyntheticEvent<EventTarget>, value: string) =>
+                            this.onRadioChange(value as AntallBarnVerdi)
+                        }
                         checked={antallBarnVerdi}
                         radios={[
                             {
                                 inputProps: { id: 'js-ettBarn' },
-                                label: getMessage(
-                                    intl,
-                                    'antallBarn.alternativ.ettbarn'
-                                ),
+                                label: getMessage(intl, 'antallBarn.alternativ.ettbarn'),
                                 value: '1'
                             },
                             {
                                 inputProps: { id: 'js-tvillinger' },
-                                label: getMessage(
-                                    intl,
-                                    'antallBarn.alternativ.tvillinger'
-                                ),
+                                label: getMessage(intl, 'antallBarn.alternativ.tvillinger'),
                                 value: '2'
                             },
                             {
                                 inputProps: { id: 'js-flereBarn' },
-                                label: getMessage(
-                                    intl,
-                                    'antallBarn.alternativ.flere'
-                                ),
+                                label: getMessage(intl, 'antallBarn.alternativ.flere'),
                                 value: '3'
                             }
                         ]}
@@ -94,9 +82,7 @@ class AntallBarnBolk extends React.Component<Props> {
                             this.onSelectChange(parseInt(evt.target.value, 10))
                         }>
                         {antallBarn === undefined && (
-                            <option
-                                value=""
-                                selected={antallBarn === undefined}>
+                            <option value="" selected={antallBarn === undefined}>
                                 {intl.formatMessage({
                                     id: 'antallBarn.select.velg'
                                 })}

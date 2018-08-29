@@ -12,10 +12,7 @@ interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const getRadioOptions = (
-    roller: SøkerRolle[] = [],
-    intl: InjectedIntl
-): RadioProps[] =>
+const getRadioOptions = (roller: SøkerRolle[] = [], intl: InjectedIntl): RadioProps[] =>
     roller.map((rolle) => ({
         label: intl.formatMessage({ id: `søkerrolle.rolle.${rolle}` }),
         value: rolle
@@ -30,10 +27,7 @@ const SøkerrolleSpørsmål = (props: Props) => {
             checked={rolle}
             legend={intl.formatMessage({ id: 'søkerrolle.spørsmål' })}
             radios={getRadioOptions(roller, intl)}
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                nyRolle: SøkerRolle
-            ) => onChange(nyRolle)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, nyRolle: SøkerRolle) => onChange(nyRolle)}
         />
     );
 };

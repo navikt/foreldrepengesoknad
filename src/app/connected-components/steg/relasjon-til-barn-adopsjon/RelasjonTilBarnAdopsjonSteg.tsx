@@ -31,11 +31,7 @@ interface StateProps {
     stegProps: StegProps;
 }
 
-type Props = SøkerinfoProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -44,10 +40,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         if (props.barn.antallBarn) {
             props.dispatch(
                 søknadActions.updateBarn({
-                    fødselsdatoer: utils.trimFødselsdatoer(
-                        props.barn.antallBarn,
-                        this.props.barn.fødselsdatoer
-                    )
+                    fødselsdatoer: utils.trimFødselsdatoer(props.barn.antallBarn, this.props.barn.fødselsdatoer)
                 })
             );
         }
@@ -58,10 +51,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...this.props.barn,
                 antallBarn: antall,
-                fødselsdatoer: utils.trimFødselsdatoer(
-                    antall,
-                    this.props.barn.fødselsdatoer
-                )
+                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer)
             })
         );
     }
@@ -70,25 +60,17 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         const { barn, dispatch, stegProps, intl } = this.props;
 
         const utfyltFødselsdatoer = fødselsdatoerErFyltUt(barn.fødselsdatoer);
-        const visSpørsmålOmAdopsjonsdato =
-            barn.adopsjonAvEktefellesBarn !== undefined;
+        const visSpørsmålOmAdopsjonsdato = barn.adopsjonAvEktefellesBarn !== undefined;
         const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
-        const visSpørsmålOmFødselsdatoer =
-            visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
+        const visSpørsmålOmFødselsdatoer = visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
         const visSpørsmålOmAdoptertIUtlandet =
-            !barn.adopsjonAvEktefellesBarn &&
-            visSpørsmålOmFødselsdatoer &&
-            utfyltFødselsdatoer;
-        const visSpørsmålOmAnkomstdato =
-            barn.adopsjonAvEktefellesBarn === false &&
-            barn.adoptertIUtlandet === true;
+            !barn.adopsjonAvEktefellesBarn && visSpørsmålOmFødselsdatoer && utfyltFødselsdatoer;
+        const visSpørsmålOmAnkomstdato = barn.adopsjonAvEktefellesBarn === false && barn.adoptertIUtlandet === true;
         const utfyltAdoptertIUtlandet =
             visSpørsmålOmAdoptertIUtlandet &&
-            ((barn.adoptertIUtlandet && barn.ankomstdato !== undefined) ||
-                barn.adoptertIUtlandet === false);
+            ((barn.adoptertIUtlandet && barn.ankomstdato !== undefined) || barn.adoptertIUtlandet === false);
         const visSpørsmålOmVedlegg =
-            utfyltAdoptertIUtlandet ||
-            (barn.adopsjonAvEktefellesBarn === true && utfyltFødselsdatoer);
+            utfyltAdoptertIUtlandet || (barn.adopsjonAvEktefellesBarn === true && utfyltFødselsdatoer);
 
         return (
             <Steg {...stegProps}>
@@ -110,9 +92,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         id="adopsjonsdato"
                         label={getMessage(
                             intl,
-                            barn.adopsjonAvEktefellesBarn
-                                ? 'stebarnsadopsjonsdato.spørsmål'
-                                : 'adopsjonsdato.spørsmål'
+                            barn.adopsjonAvEktefellesBarn ? 'stebarnsadopsjonsdato.spørsmål' : 'adopsjonsdato.spørsmål'
                         )}
                         onChange={(adopsjonsdato: Date) => {
                             dispatch(
@@ -127,10 +107,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visSpørsmålOmAntallBarn}>
                     <AntallBarnBolk
-                        spørsmål={getMessage(
-                            intl,
-                            'antallBarn.spørsmål.venter'
-                        )}
+                        spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
                         inputName="antallBarn"
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
@@ -203,21 +180,15 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         </Veilederinfo>
                     </Block>
                     <AttachmentsUploaderPure
-                        attachments={
-                            (barn as Adopsjonsbarn).omsorgsovertakelse || []
-                        }
+                        attachments={(barn as Adopsjonsbarn).omsorgsovertakelse || []}
                         attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                         skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                         onFilesSelect={(attachments: Attachment[]) => {
                             attachments.forEach((attachment: Attachment) => {
-                                dispatch(
-                                    søknadActions.uploadAttachment(attachment)
-                                );
+                                dispatch(søknadActions.uploadAttachment(attachment));
                             });
                         }}
-                        onFileDelete={(attachment) =>
-                            dispatch(søknadActions.deleteAttachment(attachment))
-                        }
+                        onFileDelete={(attachment) => dispatch(søknadActions.deleteAttachment(attachment))}
                     />
                 </Block>
             </Steg>
@@ -232,11 +203,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.RELASJON_TIL_BARN_ADOPSJON,
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
         history: props.history,
-        isAvailable: isAvailable(
-            StegID.RELASJON_TIL_BARN_ADOPSJON,
-            state.søknad,
-            props.søkerinfo
-        )
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_ADOPSJON, state.søknad, props.søkerinfo)
     };
 
     return {
@@ -245,6 +212,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(RelasjonTilBarnAdopsjonSteg)
-);
+export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnAdopsjonSteg));

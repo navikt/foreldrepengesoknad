@@ -21,10 +21,7 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../isAvailable';
-import {
-    barnErGyldig,
-    skalSøkerLasteOppTerminbekreftelse
-} from '../../../util/validation/steg/barn';
+import { barnErGyldig, skalSøkerLasteOppTerminbekreftelse } from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -44,11 +41,7 @@ interface RelasjonTilBarnFødselStegProps {
     skalLasteOppTerminbekreftelse: boolean;
 }
 
-type Props = RelasjonTilBarnFødselStegProps &
-    InjectedIntlProps &
-    DispatchProps &
-    SøkerinfoProps &
-    HistoryProps;
+type Props = RelasjonTilBarnFødselStegProps & InjectedIntlProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
 class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     render() {
@@ -75,21 +68,14 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         søknadenGjelderBarnValg={søknadenGjelderBarnValg}
                         registrerteBarn={registrerteBarn}
                         onChange={(søknadenGjelder) =>
-                            dispatch(
-                                søknadActions.updateSøknadenGjelderBarn(
-                                    søknadenGjelder
-                                )
-                            )
+                            dispatch(søknadActions.updateSøknadenGjelderBarn(søknadenGjelder))
                         }
                     />
                 </Block>
                 <Block
                     margin="none"
                     hasChildBlocks={true}
-                    visible={
-                        gjelderAnnetBarn === true ||
-                        registrerteBarn.length === 0
-                    }>
+                    visible={gjelderAnnetBarn === true || registrerteBarn.length === 0}>
                     <Block>
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -115,22 +101,15 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 dispatch={dispatch}
                                 barn={barn as UfødtBarn}
                                 annenForelder={annenForelder}
-                                skalLasteOppTerminbekreftelse={
-                                    skalLasteOppTerminbekreftelse
-                                }
+                                skalLasteOppTerminbekreftelse={skalLasteOppTerminbekreftelse}
                                 søker={søker}
-                                erFarEllerMedmor={erFarEllerMedmor(
-                                    person.kjønn,
-                                    søker.rolle
-                                )}
+                                erFarEllerMedmor={erFarEllerMedmor(person.kjønn, søker.rolle)}
                                 terminbekreftelse={terminbekreftelse || []}
                             />
                         )}
                     {barn.erBarnetFødt === false &&
                         erFarEllerMedmor(person.kjønn, søker.rolle) && (
-                            <Veilederinfo>
-                                Litt info her om hva som er galt
-                            </Veilederinfo>
+                            <Veilederinfo>Litt info her om hva som er galt</Veilederinfo>
                         )}
                 </Block>
             </Steg>
@@ -138,29 +117,19 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState,
-    props: Props
-): RelasjonTilBarnFødselStegProps => {
+const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { person, registrerteBarn = [] } = props.søkerinfo;
     const { barn, temp, søker, annenForelder } = state.søknad;
     const fødselsattest = (barn as FødtBarn).fødselsattest;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
 
-    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(
-        state.søknad,
-        props.søkerinfo
-    );
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(state.søknad, props.søkerinfo);
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         history: props.history,
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
-        isAvailable: isAvailable(
-            StegID.RELASJON_TIL_BARN_FØDSEL,
-            state.søknad,
-            props.søkerinfo
-        )
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo)
     };
 
     return {
@@ -177,6 +146,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect<RelasjonTilBarnFødselStegProps, {}, {}>(mapStateToProps)(
-    injectIntl(RelasjonTilBarnFødselSteg)
-);
+export default connect<RelasjonTilBarnFødselStegProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnFødselSteg));

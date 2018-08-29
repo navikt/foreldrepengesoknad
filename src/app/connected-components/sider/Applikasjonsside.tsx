@@ -28,14 +28,7 @@ class Sidemal extends React.Component<Props> {
         super(props);
     }
     render() {
-        const {
-            visSpråkvelger,
-            visSøknadstittel,
-            språkkode,
-            children,
-            margin = true,
-            dispatch
-        } = this.props;
+        const { visSpråkvelger, visSøknadstittel, språkkode, children, margin = true, dispatch } = this.props;
 
         const BEM = BEMHelper('content');
         const cls = classnames(BEM.className, {
@@ -45,18 +38,9 @@ class Sidemal extends React.Component<Props> {
         return (
             <React.Fragment>
                 {visSpråkvelger && (
-                    <Språkvelger
-                        kode={språkkode}
-                        setSpråkkode={(kode: Språkkode) =>
-                            dispatch(setSpråk(kode))
-                        }
-                    />
+                    <Språkvelger kode={språkkode} setSpråkkode={(kode: Språkkode) => dispatch(setSpråk(kode))} />
                 )}
-                {visSøknadstittel && (
-                    <Søknadstittel>
-                        {getMessage(this.props.intl, 'søknad.pageheading')}
-                    </Søknadstittel>
-                )}
+                {visSøknadstittel && <Søknadstittel>{getMessage(this.props.intl, 'søknad.pageheading')}</Søknadstittel>}
                 <div className={cls}>{children}</div>
             </React.Fragment>
         );

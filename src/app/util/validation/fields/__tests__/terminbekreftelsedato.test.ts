@@ -6,26 +6,11 @@ import { getTerminbekreftelseDatoRegler } from '../terminbekreftelsedato';
 
 const intl = {} as InjectedIntl;
 const callMåOppgis = (terminbekreftelseDato: Date | undefined) =>
-    getTerminbekreftelseDatoRegler(
-        terminbekreftelseDato,
-        undefined,
-        intl
-    )[0].test();
+    getTerminbekreftelseDatoRegler(terminbekreftelseDato, undefined, intl)[0].test();
 const callIdagEllerTidligere = (terminbekreftelseDato: Date) =>
-    getTerminbekreftelseDatoRegler(
-        terminbekreftelseDato,
-        undefined,
-        intl
-    )[1].test();
-const callUtstedtUke26EllerSenere = (
-    terminbekreftelseDato: Date,
-    termindato: Date
-) =>
-    getTerminbekreftelseDatoRegler(
-        terminbekreftelseDato,
-        termindato,
-        intl
-    )[2].test();
+    getTerminbekreftelseDatoRegler(terminbekreftelseDato, undefined, intl)[1].test();
+const callUtstedtUke26EllerSenere = (terminbekreftelseDato: Date, termindato: Date) =>
+    getTerminbekreftelseDatoRegler(terminbekreftelseDato, termindato, intl)[2].test();
 
 describe('Terminbekreftelsedato validation', () => {
     beforeEach(() => {
@@ -45,9 +30,7 @@ describe('Terminbekreftelsedato validation', () => {
         const ugyldigTerminbekreftelse = moment()
             .subtract(fjortenUkerPluss3Number + 1, 'days')
             .toDate();
-        expect(
-            callUtstedtUke26EllerSenere(ugyldigTerminbekreftelse, termindato)
-        ).toEqual(false);
+        expect(callUtstedtUke26EllerSenere(ugyldigTerminbekreftelse, termindato)).toEqual(false);
     });
 
     it('should return true if date is valid', () => {
@@ -58,8 +41,6 @@ describe('Terminbekreftelsedato validation', () => {
 
         expect(callMåOppgis(gyldigTerminbekreftelse)).toEqual(true);
         expect(callIdagEllerTidligere(termindato)).toEqual(true);
-        expect(
-            callUtstedtUke26EllerSenere(gyldigTerminbekreftelse, termindato)
-        ).toEqual(true);
+        expect(callUtstedtUke26EllerSenere(gyldigTerminbekreftelse, termindato)).toEqual(true);
     });
 });

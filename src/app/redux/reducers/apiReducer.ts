@@ -1,7 +1,4 @@
-import {
-    ApiActionKeys,
-    ApiActionTypes
-} from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys, ApiActionTypes } from '../actions/api/apiActionDefinitions';
 import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
 import { Søkerinfo } from '../../types/søkerinfo';
 
@@ -25,10 +22,7 @@ const getDefaultState = (): ApiState => ({
     }
 });
 
-const apiReducer = (
-    state = getDefaultState(),
-    action: ApiActionTypes
-): ApiStatePartial => {
+const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiStatePartial => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {

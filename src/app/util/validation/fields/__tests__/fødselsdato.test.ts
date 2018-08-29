@@ -2,20 +2,12 @@ import { getFødselsdatoRegler } from '../fødselsdato';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { Fødselsdato } from '../../../../types/common';
-import {
-    date3YearsAgo,
-    dateMoreThan3YearsAgo,
-    today,
-    tomorrow
-} from '../../values';
+import { date3YearsAgo, dateMoreThan3YearsAgo, today, tomorrow } from '../../values';
 
 const intl = {} as InjectedIntl;
-const callMåOppgis = (fødselsdato: Fødselsdato) =>
-    getFødselsdatoRegler(fødselsdato, intl)[0].test();
-const callIdagEllerTidligere = (fødselsdato: Fødselsdato) =>
-    getFødselsdatoRegler(fødselsdato, intl)[1].test();
-const callIkkeMerEnn3ÅrSiden = (fødselsdato: Fødselsdato) =>
-    getFødselsdatoRegler(fødselsdato, intl)[2].test();
+const callMåOppgis = (fødselsdato: Fødselsdato) => getFødselsdatoRegler(fødselsdato, intl)[0].test();
+const callIdagEllerTidligere = (fødselsdato: Fødselsdato) => getFødselsdatoRegler(fødselsdato, intl)[1].test();
+const callIkkeMerEnn3ÅrSiden = (fødselsdato: Fødselsdato) => getFødselsdatoRegler(fødselsdato, intl)[2].test();
 
 describe('Fødselsdato validation', () => {
     beforeEach(() => {
@@ -31,9 +23,7 @@ describe('Fødselsdato validation', () => {
     });
 
     it('should return false if date is more than 3 years back', () => {
-        expect(callIkkeMerEnn3ÅrSiden(dateMoreThan3YearsAgo.toDate())).toEqual(
-            false
-        );
+        expect(callIkkeMerEnn3ÅrSiden(dateMoreThan3YearsAgo.toDate())).toEqual(false);
     });
 
     it('should return true if date is valid', () => {

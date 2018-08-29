@@ -37,11 +37,7 @@ export interface StateProps {
     fødselsdatoerOk: boolean;
 }
 
-export type Props = SøkerinfoProps &
-    StateProps &
-    DispatchProps &
-    InjectedIntlProps &
-    HistoryProps;
+export type Props = SøkerinfoProps & StateProps & DispatchProps & InjectedIntlProps & HistoryProps;
 
 class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -53,37 +49,24 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
         this.props.dispatch(
             søknadActions.updateBarn({
                 antallBarn: antall,
-                fødselsdatoer: utils.trimFødselsdatoer(
-                    antall,
-                    this.props.barn.fødselsdatoer
-                )
+                fødselsdatoer: utils.trimFødselsdatoer(antall, this.props.barn.fødselsdatoer)
             })
         );
     }
 
     render() {
-        const {
-            barn,
-            visOver15årMelding,
-            fødselsdatoerOk,
-            intl,
-            stegProps,
-            dispatch
-        } = this.props;
+        const { barn, visOver15årMelding, fødselsdatoerOk, intl, stegProps, dispatch } = this.props;
 
         const visSpørsmålOmAntallBarn = barn.foreldreansvarsdato !== undefined;
         const visSpørsmålOmFødselsdatoer = barn.antallBarn !== undefined;
-        const visSpørsmålOmVedlegg =
-            fødselsdatoerOk || barn.adopsjonsvedtak !== undefined;
+        const visSpørsmålOmVedlegg = fødselsdatoerOk || barn.adopsjonsvedtak !== undefined;
 
         return (
             <Steg {...stegProps}>
                 <Block>
                     <DatoInput
                         id="foreldreansvar_dato"
-                        label={
-                            <Labeltekst intlId="foreldreansvar.overtakelsedato" />
-                        }
+                        label={<Labeltekst intlId="foreldreansvar.overtakelsedato" />}
                         onChange={(dato: Date) =>
                             dispatch(
                                 søknadActions.updateBarn({
@@ -122,18 +105,13 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                 </Block>
                 {visOver15årMelding && (
                     <div className="blokk-s">
-                        <Veilederinfo type="advarsel">
-                            Barn over 15 år er registrert.
-                        </Veilederinfo>
+                        <Veilederinfo type="advarsel">Barn over 15 år er registrert.</Veilederinfo>
                     </div>
                 )}
 
                 <Block
                     header={{
-                        title: getMessage(
-                            intl,
-                            'attachments.tittel.foreldreansvar'
-                        )
+                        title: getMessage(intl, 'attachments.tittel.foreldreansvar')
                     }}
                     visible={visSpørsmålOmVedlegg}>
                     <Veilederinfo>
@@ -144,17 +122,11 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         attachmentType={AttachmentType.ADOPSJONSVEDTAK}
                         onFilesSelect={(attachments: Attachment[]) => {
                             attachments.forEach((attachment: Attachment) => {
-                                dispatch(
-                                    søknadActions.uploadAttachment(attachment)
-                                );
+                                dispatch(søknadActions.uploadAttachment(attachment));
                             });
                         }}
-                        onFileDelete={(attachment: Attachment) =>
-                            dispatch(søknadActions.deleteAttachment(attachment))
-                        }
-                        skjemanummer={
-                            Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL
-                        }
+                        onFileDelete={(attachment: Attachment) => dispatch(søknadActions.deleteAttachment(attachment))}
+                        skjemanummer={Skjemanummer.DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL}
                     />
                 </Block>
             </Steg>
@@ -178,14 +150,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
-        renderFortsettKnapp:
-            barnErGyldig(state.søknad, props.søkerinfo) && fødselsdatoerOk,
+        renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo) && fødselsdatoerOk,
         history: props.history,
-        isAvailable: isAvailable(
-            StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
-            state.søknad,
-            props.søkerinfo
-        )
+        isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FORELDREANSVAR, state.søknad, props.søkerinfo)
     };
 
     return {
@@ -196,6 +163,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(RelasjonTilBarnForeldreansvarSteg)
-);
+export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(RelasjonTilBarnForeldreansvarSteg));

@@ -1,8 +1,5 @@
 import moment from 'moment';
-import {
-    getFraAvgrensninger,
-    getTilAvgrensninger
-} from '../tidligereUtenlandsopphold';
+import { getFraAvgrensninger, getTilAvgrensninger } from '../tidligereUtenlandsopphold';
 import { date1YearAgo, today } from '../../values';
 
 describe('Tidligere utenlandsopphold-avgrensninger', () => {
@@ -14,9 +11,7 @@ describe('Tidligere utenlandsopphold-avgrensninger', () => {
 
         it('should set maksDato to tilDato if specified', () => {
             const tilDato = moment().add(1, 'day');
-            const maksDato = moment(
-                getFraAvgrensninger(tilDato.toDate()).maksDato
-            );
+            const maksDato = moment(getFraAvgrensninger(tilDato.toDate()).maksDato);
             expect(moment(maksDato).isSame(tilDato)).toBe(true);
         });
 
@@ -34,9 +29,7 @@ describe('Tidligere utenlandsopphold-avgrensninger', () => {
 
         it('should set minDato to fraDato if specified', () => {
             const fraDato = moment().subtract(1, 'day');
-            const minDato = moment(
-                getTilAvgrensninger(fraDato.toDate()).minDato
-            );
+            const minDato = moment(getTilAvgrensninger(fraDato.toDate()).minDato);
             expect(minDato.isSame(fraDato)).toBe(true);
         });
 

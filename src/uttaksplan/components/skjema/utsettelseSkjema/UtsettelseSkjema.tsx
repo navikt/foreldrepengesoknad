@@ -101,11 +101,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
 
     validerSkjema(): Valideringsfeil {
         this.skalValidere = false;
-        const valideringsfeil = validerUtsettelseskjema(
-            this.state,
-            this.props,
-            this.props.uttaksgrunnlag
-        );
+        const valideringsfeil = validerUtsettelseskjema(this.state, this.props, this.props.uttaksgrunnlag);
         this.setState({ valideringsfeil });
         return valideringsfeil;
     }
@@ -160,25 +156,14 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const tilTidsromStartdato = fom ? fom : tidsperiode.fom;
         const tilTidsperiode: Tidsperiode = {
             fom: tilTidsromStartdato,
-            tom: getTilTidsromSluttdato(
-                tilTidsromStartdato,
-                utsettelser,
-                this.props.uttaksgrunnlag
-            )
+            tom: getTilTidsromSluttdato(tilTidsromStartdato, utsettelser, this.props.uttaksgrunnlag)
         };
 
         const ugyldigeTidsrom = getUgyldigeTidsrom(utsettelser, utsettelse);
 
         const antallFeriedager =
             this.state.årsak === UtsettelseÅrsakType.Ferie
-                ? getAntallFeriedager(
-                      årsak,
-                      forelder,
-                      fom,
-                      tom,
-                      utsettelser,
-                      utsettelse
-                  )
+                ? getAntallFeriedager(årsak, forelder, fom, tom, utsettelser, utsettelse)
                 : 0;
 
         const visFerieinfo = forelder && årsak === UtsettelseÅrsakType.Ferie;
@@ -187,26 +172,17 @@ class UtsettelseSkjema extends React.Component<Props, State> {
         const sluttdatoFeil = this.getSkjemaelementFeil('sluttdato');
 
         const visStartdatofeil =
-            !this.skalValidere &&
-            startdatoFeil &&
-            (this.state.visValideringsfeil || this.state.fom !== undefined);
+            !this.skalValidere && startdatoFeil && (this.state.visValideringsfeil || this.state.fom !== undefined);
 
         const visSluttdatofeil =
-            !this.skalValidere &&
-            sluttdatoFeil &&
-            (this.state.visValideringsfeil || this.state.tom !== undefined);
+            !this.skalValidere && sluttdatoFeil && (this.state.visValideringsfeil || this.state.tom !== undefined);
 
         const tidsperiodeFeil =
-            !visStartdatofeil && !visSluttdatofeil
-                ? this.getSkjemaelementFeil('tidsperiode')
-                : undefined;
+            !visStartdatofeil && !visSluttdatofeil ? this.getSkjemaelementFeil('tidsperiode') : undefined;
 
         const visSpørsmålOmHvem = !søker.erAleneOmOmsorg;
         return (
-            <form
-                action="#"
-                onSubmit={preventFormSubmit}
-                className="utsettelseSkjema dialogContent">
+            <form action="#" onSubmit={preventFormSubmit} className="utsettelseSkjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id="uttaksplan.utsettelseskjema.tittel" />
                 </h1>
@@ -228,9 +204,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     </div>
                 )}
 
-                <EkspanderbartInnhold
-                    erApen={forelder !== undefined}
-                    harEkspanderbartInnhold={true}>
+                <EkspanderbartInnhold erApen={forelder !== undefined} harEkspanderbartInnhold={true}>
                     {forelder && (
                         <div className="blokkPad-xxs">
                             <UtsettelsesårsakSpørsmål
@@ -248,16 +222,13 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     )}
                 </EkspanderbartInnhold>
 
-                <EkspanderbartInnhold
-                    erApen={this.state.årsak !== undefined}
-                    harEkspanderbartInnhold={true}>
+                <EkspanderbartInnhold erApen={this.state.årsak !== undefined} harEkspanderbartInnhold={true}>
                     <div className="blokkPad-s">
                         <TidsperiodeSpørsmål
                             startdato={{
                                 dato: fom,
                                 label: intl.formatMessage({
-                                    id:
-                                        'uttaksplan.utsettelseskjema.startdato.sporsmal'
+                                    id: 'uttaksplan.utsettelseskjema.startdato.sporsmal'
                                 }),
                                 tidsperiode,
                                 onChange: this.setStartdato,
@@ -267,8 +238,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                             sluttdato={{
                                 dato: tom,
                                 label: intl.formatMessage({
-                                    id:
-                                        'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
+                                    id: 'uttaksplan.utsettelseskjema.sluttdato.sporsmal'
                                 }),
                                 tidsperiode: tilTidsperiode,
                                 onChange: this.setSluttdato,
@@ -303,11 +273,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                     <Row>
                         <Column xs="12" sm={utsettelse ? '6' : '12'}>
                             <div className="blokkPad-xxs">
-                                <Hovedknapp
-                                    onClick={(evt) =>
-                                        this.handleSubmitClick(evt)
-                                    }
-                                    className="m-fullBredde">
+                                <Hovedknapp onClick={(evt) => this.handleSubmitClick(evt)} className="m-fullBredde">
                                     {utsettelse ? (
                                         <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.oppdater" />
                                     ) : (
@@ -321,9 +287,7 @@ class UtsettelseSkjema extends React.Component<Props, State> {
                                 <Knapp
                                     htmlType="button"
                                     data-ref="fjern-knapp"
-                                    onClick={() =>
-                                        this.props.onFjern(utsettelse)
-                                    }
+                                    onClick={() => this.props.onFjern(utsettelse)}
                                     className="m-fullBredde">
                                     <FormattedMessage id="uttaksplan.utsettelseskjema.knapp.fjern" />
                                 </Knapp>

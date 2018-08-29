@@ -73,9 +73,7 @@ class ModalForm extends React.Component<Props, {}> {
                         onSubmit={this.handleOnSubmit}
                         noSummary={noSummary}
                         summaryTitle={summary ? summary.title : undefined}>
-                        <Undertittel className={cls.element('title')}>
-                            {title}
-                        </Undertittel>
+                        <Undertittel className={cls.element('title')}>{title}</Undertittel>
                         <div className="blokk-m">{children}</div>
                         {renderFormButtons && (
                             <div className={cls.element('buttonrow')}>
@@ -87,16 +85,13 @@ class ModalForm extends React.Component<Props, {}> {
                                         onClick={this.handleOnRequestClose}>
                                         {cancelLabel ||
                                             intl.formatMessage({
-                                                id:
-                                                    'komponent.modalForm.cancelLabel'
+                                                id: 'komponent.modalForm.cancelLabel'
                                             })}
                                     </Knapp>
-                                    <Hovedknapp
-                                        className={cls.element('submitButton')}>
+                                    <Hovedknapp className={cls.element('submitButton')}>
                                         {submitLabel ||
                                             intl.formatMessage({
-                                                id:
-                                                    'komponent.modalForm.submitLabel'
+                                                id: 'komponent.modalForm.submitLabel'
                                             })}
                                     </Hovedknapp>
                                 </Knapperad>

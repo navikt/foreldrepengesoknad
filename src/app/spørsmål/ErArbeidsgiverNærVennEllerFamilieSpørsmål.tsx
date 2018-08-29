@@ -11,10 +11,7 @@ export enum NÆR_VENN_ELLER_FAMILIE {
 
 interface ErArbeidsgiverNærVennEllerFamilieSpørsmålProps {
     erArbeidsgiverNærVennEllerFamilie?: boolean;
-    onChange: (
-        nærVennEllerFamilie: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (nærVennEllerFamilie: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = ErArbeidsgiverNærVennEllerFamilieSpørsmålProps & InjectedIntlProps;
@@ -32,10 +29,7 @@ const ErArbeidsgiverNærVennEllerFamilieSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'erArbeidsgiverNærVennEllerFamilie.spørsmål'
-            )}
+            legend={getMessage(intl, 'erArbeidsgiverNærVennEllerFamilie.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -48,10 +42,7 @@ const ErArbeidsgiverNærVennEllerFamilieSpørsmål = (props: Props) => {
             ]}
             name="erArbeidsgiverNærVennEllerFamilie"
             onChange={(e: InputChangeEvent, v: NÆR_VENN_ELLER_FAMILIE) =>
-                onChange(
-                    v === NÆR_VENN_ELLER_FAMILIE.ER_NÆR_VENN_ELLER_FAMILIE,
-                    e
-                )
+                onChange(v === NÆR_VENN_ELLER_FAMILIE.ER_NÆR_VENN_ELLER_FAMILIE, e)
             }
         />
     );

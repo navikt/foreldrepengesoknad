@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    TimelineIcon,
-    TimelineIconRenderer
-} from 'uttaksplan/components/timeline/types';
+import { TimelineIcon, TimelineIconRenderer } from 'uttaksplan/components/timeline/types';
 import BEMHelper from 'common/util/bem';
 
 export interface Props {
@@ -11,10 +8,7 @@ export interface Props {
 }
 const BEM = BEMHelper('timelineIcons');
 
-const TimelineIcons: React.StatelessComponent<Props> = ({
-    icons,
-    iconRenderer
-}) =>
+const TimelineIcons: React.StatelessComponent<Props> = ({ icons, iconRenderer }) =>
     icons && iconRenderer ? (
         <div className={BEM.className}>
             {icons.map((icon) => (

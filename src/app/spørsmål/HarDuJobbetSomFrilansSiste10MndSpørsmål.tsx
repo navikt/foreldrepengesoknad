@@ -10,21 +10,13 @@ enum FrilansSiste10Mnd {
 
 interface HarDuJobbetSomFrilansSiste10MndSpørsmålProps {
     harJobbetSomFrilansSiste10Mnd: boolean;
-    onChange: (
-        erFrilanser: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (erFrilanser: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = HarDuJobbetSomFrilansSiste10MndSpørsmålProps & InjectedIntlProps;
 
 const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
-    const {
-        onChange,
-        harJobbetSomFrilansSiste10Mnd,
-        intl,
-        ...otherProps
-    } = props;
+    const { onChange, harJobbetSomFrilansSiste10Mnd, intl, ...otherProps } = props;
 
     let checked;
     if (harJobbetSomFrilansSiste10Mnd === true) {
@@ -36,10 +28,7 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'harDuJobbetSomFrilansSiste10Mnd.spørsmål'
-            )}
+            legend={getMessage(intl, 'harDuJobbetSomFrilansSiste10Mnd.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -51,14 +40,8 @@ const HarDuJobbetSomFrilansSiste10MndSpørsmål = (props: Props) => {
                 }
             ]}
             name="harJobbetSomFrilansSiste10Mnd"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: FrilansSiste10Mnd
-            ) =>
-                onChange(
-                    v === FrilansSiste10Mnd.HAR_JOBBET_FRILANS_SISTE_10_MND,
-                    e
-                )
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: FrilansSiste10Mnd) =>
+                onChange(v === FrilansSiste10Mnd.HAR_JOBBET_FRILANS_SISTE_10_MND, e)
             }
             {...otherProps}
         />

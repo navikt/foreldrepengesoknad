@@ -37,16 +37,12 @@ const AdopsjonAvEktefellesBarnSpørsmål = (props: Props) => {
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        AdopsjonAvEktefellesBarn.IKKE_ADOPSJON_AV_EKTEFELLES_BARN
+                    value: AdopsjonAvEktefellesBarn.IKKE_ADOPSJON_AV_EKTEFELLES_BARN
                 }
             ]}
             name="adopsjonAvEktefellesBarn"
             onChange={(e: InputChangeEvent, v: AdopsjonAvEktefellesBarn) =>
-                onChange(
-                    v === AdopsjonAvEktefellesBarn.ADOPSJON_AV_EKTEFELLES_BARN,
-                    e
-                )
+                onChange(v === AdopsjonAvEktefellesBarn.ADOPSJON_AV_EKTEFELLES_BARN, e)
             }
         />
     );

@@ -1,10 +1,5 @@
 import moment from 'moment';
-import {
-    Adopsjonsbarn,
-    ForeldreansvarBarn,
-    FødtBarn,
-    UfødtBarn
-} from '../../../types/søknad/Barn';
+import { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
 import { Søkerinfo } from '../../../types/søkerinfo';
@@ -14,9 +9,7 @@ import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
-        barn.fødselsdatoer !== undefined &&
-        barn.fødselsdatoer.length > 0 &&
-        fødselsdatoerErFyltUt(barn.fødselsdatoer)
+        barn.fødselsdatoer !== undefined && barn.fødselsdatoer.length > 0 && fødselsdatoerErFyltUt(barn.fødselsdatoer)
     );
 };
 
@@ -34,9 +27,7 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== undefined &&
         adopsjonsdato &&
-        (adopsjonAvEktefellesBarn ||
-            adoptertIUtlandet === false ||
-            (adoptertIUtlandet && ankomstdato !== undefined)) &&
+        (adopsjonAvEktefellesBarn || adoptertIUtlandet === false || (adoptertIUtlandet && ankomstdato !== undefined)) &&
         omsorgsovertakelse !== undefined &&
         omsorgsovertakelse.length > 0
     );
@@ -48,10 +39,7 @@ const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
     return foreldreansvarsdato && fødselsdatoer.length > 0;
 };
 
-const ufødtBarnErGyldig = (
-    barn: UfødtBarn,
-    skalLasteOppTerminbekreftelse: boolean
-) => {
+const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boolean) => {
     const { termindato, terminbekreftelseDato } = barn;
     if (!termindato) {
         return false;
@@ -69,10 +57,7 @@ const ufødtBarnErGyldig = (
 
 export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { situasjon, barn } = søknad;
-    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(
-        søknad,
-        søkerinfo
-    );
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
             if (harValgtRegistrertBarn(søknad)) {
@@ -80,10 +65,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
             }
             return barn.erBarnetFødt
                 ? fødtBarnErGyldig(barn as FødtBarn)
-                : ufødtBarnErGyldig(
-                      barn as UfødtBarn,
-                      skalLasteOppTerminbekreftelse || false
-                  );
+                : ufødtBarnErGyldig(barn as UfødtBarn, skalLasteOppTerminbekreftelse || false);
 
         case Søkersituasjon.ADOPSJON:
             return adopsjonsbarnErGyldig(barn as Adopsjonsbarn);
@@ -94,16 +76,10 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
     }
 };
 
-export const skalSøkerLasteOppTerminbekreftelse = (
-    søknad: Søknad,
-    søkerinfo: Søkerinfo
-): boolean => {
+export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     return (
         søknad.barn.erBarnetFødt === false &&
-        !harAktivtArbeidsforhold(
-            søkerinfo.arbeidsforhold,
-            DateValues.today.toDate()
-        )
+        !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold, DateValues.today.toDate())
     );
 };
 
@@ -120,10 +96,7 @@ export const getUniqeRegistrertAnnenForelderFromBarn = (
     const foreldre: RegistrertAnnenForelder[] = [];
     barn.forEach((b) => {
         const { annenForelder } = b;
-        if (
-            annenForelder &&
-            !foreldre.find((f) => f.fnr === annenForelder.fnr)
-        ) {
+        if (annenForelder && !foreldre.find((f) => f.fnr === annenForelder.fnr)) {
             foreldre.push({
                 ...annenForelder,
                 fødselsdato: moment(annenForelder.fødselsdato).toDate()

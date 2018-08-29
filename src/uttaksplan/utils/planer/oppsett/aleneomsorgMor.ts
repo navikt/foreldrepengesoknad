@@ -1,15 +1,6 @@
-import {
-    Permisjonsregler,
-    Uttaksperiode,
-    StønadskontoType,
-    Periodetype,
-    Dekningsgrad
-} from 'uttaksplan/types';
+import { Permisjonsregler, Uttaksperiode, StønadskontoType, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { sorterPerioder, Uttaksdagen, getTidsperiode } from 'uttaksplan/utils';
-import {
-    getPermisjonStartdato,
-    getAntallUkerTotalt
-} from 'uttaksplan/utils/permisjonUtils';
+import { getPermisjonStartdato, getAntallUkerTotalt } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 
@@ -22,10 +13,8 @@ export function opprettUttaksperioderAleneomsorgMor(
     permisjonsregler: Permisjonsregler
 ): Uttaksperiode[] {
     familiehendelsedato = normaliserDato(familiehendelsedato);
-    const dagerTotalt =
-        getAntallUkerTotalt(permisjonsregler, dekningsgrad) * UTTAKSDAGER_I_UKE;
-    const dagerFørTermin =
-        permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE;
+    const dagerTotalt = getAntallUkerTotalt(permisjonsregler, dekningsgrad) * UTTAKSDAGER_I_UKE;
+    const dagerFørTermin = permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE;
     const dagerEtterTermin = dagerTotalt - dagerFørTermin;
     const perioder: Uttaksperiode[] = [
         {
@@ -33,10 +22,7 @@ export function opprettUttaksperioderAleneomsorgMor(
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getTidsperiode(
-                getPermisjonStartdato(familiehendelsedato, permisjonsregler),
-                dagerFørTermin
-            ),
+            tidsperiode: getTidsperiode(getPermisjonStartdato(familiehendelsedato, permisjonsregler), dagerFørTermin),
             låstForelder: true
         },
         {
@@ -44,10 +30,7 @@ export function opprettUttaksperioderAleneomsorgMor(
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(
-                Uttaksdagen(familiehendelsedato).denneEllerNeste(),
-                dagerEtterTermin
-            )
+            tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), dagerEtterTermin)
         }
     ];
     return perioder.sort(sorterPerioder);

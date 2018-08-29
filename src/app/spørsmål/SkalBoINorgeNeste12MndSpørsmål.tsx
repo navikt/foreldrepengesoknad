@@ -10,10 +10,7 @@ export enum SkalBoINorgeNeste12Mnd {
 
 interface SkalBoINorgeNeste12MndSpørsmålProps {
     iNorgeNeste12?: boolean;
-    onChange: (
-        iNorgeSiste12: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (iNorgeSiste12: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = SkalBoINorgeNeste12MndSpørsmålProps & InjectedIntlProps;
@@ -34,29 +31,17 @@ const SkalBoINorgeNeste12MndSpørsmål = (props: Props) => {
             legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
             radios={[
                 {
-                    label: getMessage(
-                        intl,
-                        'iNorgeNeste12Mnd.alternativ.boINorge'
-                    ),
+                    label: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boINorge'),
                     value: SkalBoINorgeNeste12Mnd.SKAL_BO_I_NORGE_NESTE_12
                 },
                 {
-                    label: getMessage(
-                        intl,
-                        'iNorgeNeste12Mnd.alternativ.boIUtlandet'
-                    ),
+                    label: getMessage(intl, 'iNorgeNeste12Mnd.alternativ.boIUtlandet'),
                     value: SkalBoINorgeNeste12Mnd.SKAL_BO_I_UTLANDET_NESTE_12
                 }
             ]}
             name="iNorgeNeste12Mnd"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: SkalBoINorgeNeste12Mnd
-            ) =>
-                onChange(
-                    v === SkalBoINorgeNeste12Mnd.SKAL_BO_I_NORGE_NESTE_12,
-                    e
-                )
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: SkalBoINorgeNeste12Mnd) =>
+                onChange(v === SkalBoINorgeNeste12Mnd.SKAL_BO_I_NORGE_NESTE_12, e)
             }
             {...otherProps}
         />

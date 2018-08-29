@@ -13,10 +13,7 @@ import { guid } from 'nav-frontend-js-utils';
 
 const UTTAKSDAGER_I_UKE = 5;
 
-function getMødrekvoteFørTermin(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
+function getMødrekvoteFørTermin(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Tidsperiode {
     return getTidsperiode(
         getPermisjonStartdato(familiehendelsedato, permisjonsregler),
         permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE
@@ -33,19 +30,11 @@ export function getPakrevdMødrekvoteEtterTermin(
     );
 }
 
-function getFrivilligMødrekvoteEtterTermin(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
-    const startdato = Uttaksdagen(
-        getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
-            .tom
-    ).neste();
+function getFrivilligMødrekvoteEtterTermin(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Tidsperiode {
+    const startdato = Uttaksdagen(getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom).neste();
     return getTidsperiode(
         startdato,
-        (permisjonsregler.antallUkerMødrekvote -
-            permisjonsregler.antallUkerMødrekvoteEtterFødsel) *
-            UTTAKSDAGER_I_UKE
+        (permisjonsregler.antallUkerMødrekvote - permisjonsregler.antallUkerMødrekvoteEtterFødsel) * UTTAKSDAGER_I_UKE
     );
 }
 
@@ -54,10 +43,7 @@ function getFellesperiodeForelder1(
     permisjonsregler: Permisjonsregler,
     fellesukerForelder1: number
 ): Tidsperiode {
-    const startdato = Uttaksdagen(
-        getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
-            .tom
-    ).neste();
+    const startdato = Uttaksdagen(getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom).neste();
     return getTidsperiode(startdato, fellesukerForelder1 * UTTAKSDAGER_I_UKE);
 }
 
@@ -69,15 +55,8 @@ function getFellesperiodeForelder2(
 ): Tidsperiode {
     const startdato = Uttaksdagen(
         fellesukerForelder1 === 0
-            ? getFrivilligMødrekvoteEtterTermin(
-                  familiehendelsedato,
-                  permisjonsregler
-              ).tom
-            : getFellesperiodeForelder1(
-                  familiehendelsedato,
-                  permisjonsregler,
-                  fellesukerForelder1
-              ).tom
+            ? getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom
+            : getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1).tom
     ).neste();
     return getTidsperiode(startdato, fellesukerForelder2 * UTTAKSDAGER_I_UKE);
 }
@@ -90,22 +69,11 @@ function getFedrekvote(
 ): Tidsperiode {
     const startdato = Uttaksdagen(
         fellesukerForelder2 === 0
-            ? getFellesperiodeForelder1(
-                  familiehendelsedato,
-                  permisjonsregler,
-                  fellesukerForelder1
-              ).tom
-            : getFellesperiodeForelder2(
-                  familiehendelsedato,
-                  permisjonsregler,
-                  fellesukerForelder1,
-                  fellesukerForelder2
-              ).tom
+            ? getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1).tom
+            : getFellesperiodeForelder2(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2)
+                  .tom
     ).neste();
-    return getTidsperiode(
-        startdato,
-        permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE
-    );
+    return getTidsperiode(startdato, permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE);
 }
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
@@ -123,10 +91,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getMødrekvoteFørTermin(
-                familiehendelsedato,
-                permisjonsregler
-            ),
+            tidsperiode: getMødrekvoteFørTermin(familiehendelsedato, permisjonsregler),
             låstForelder: true
         },
         {
@@ -134,32 +99,21 @@ export function opprettUttaksperioderToForeldreEttBarn(
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getPakrevdMødrekvoteEtterTermin(
-                familiehendelsedato,
-                permisjonsregler
-            )
+            tidsperiode: getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getFrivilligMødrekvoteEtterTermin(
-                familiehendelsedato,
-                permisjonsregler
-            )
+            tidsperiode: getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: 'forelder2',
             konto: StønadskontoType.Fedrekvote,
-            tidsperiode: getFedrekvote(
-                familiehendelsedato,
-                permisjonsregler,
-                fellesukerForelder1,
-                fellesukerForelder2
-            )
+            tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2)
         }
     ];
     if (fellesukerForelder1 > 0) {
@@ -168,11 +122,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             type: Periodetype.Uttak,
             forelder: 'forelder1',
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeForelder1(
-                familiehendelsedato,
-                permisjonsregler,
-                fellesukerForelder1
-            )
+            tidsperiode: getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1)
         });
     }
     if (fellesukerForelder2 > 0) {

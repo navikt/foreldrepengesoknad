@@ -51,9 +51,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
         } else {
             return {
                 annenInntekt:
-                    state &&
-                    state.annenInntekt &&
-                    Object.keys(state.annenInntekt).length > 0
+                    state && state.annenInntekt && Object.keys(state.annenInntekt).length > 0
                         ? state.annenInntekt
                         : props.annenInntekt || {}
             };
@@ -139,20 +137,14 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
                     <InntektstypeVelger
-                        label={
-                            <Labeltekst intlId="annenInntekt.modal.select.spørsmål" />
-                        }
-                        onChange={(type: AnnenInntektType) =>
-                            this.updateAnnenInntekt({ type })
-                        }
+                        label={<Labeltekst intlId="annenInntekt.modal.select.spørsmål" />}
+                        onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
                         defaultValue={annenInntekt.type}
                     />
                 </Block>
                 <Block visible={visibility.land(annenInntekt)}>
                     <Landvelger
-                        defaultValue={
-                            (annenInntekt as JobbIUtlandetInntekt).land
-                        }
+                        defaultValue={(annenInntekt as JobbIUtlandetInntekt).land}
                         label={getMessage(intl, 'annenInntekt.modal.land')}
                         onChange={(v: string) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
@@ -164,27 +156,20 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
-                        label={getMessage(
-                            intl,
-                            'annenInntekt.spørsmål.arbeidsgiver'
-                        )}
+                        label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
                         onChange={(e: InputChangeEvent) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
                                 arbeidsgiverNavn: e.target.value
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
-                        value={
-                            (annenInntekt as JobbIUtlandetInntekt)
-                                .arbeidsgiverNavn || ''
-                        }
+                        value={(annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || ''}
                     />
                 </Block>
                 <Block>
                     <ErArbeidsgiverNærVennEllerFamilie
                         erArbeidsgiverNærVennEllerFamilie={
-                            (annenInntekt as JobbIUtlandetInntekt)
-                                .erNærVennEllerFamilieMedArbeidsgiver
+                            (annenInntekt as JobbIUtlandetInntekt).erNærVennEllerFamilieMedArbeidsgiver
                         }
                         onChange={(v: boolean) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
@@ -197,13 +182,11 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 <Block>
                     <TidsperiodeBolk
                         tidsperiode={annenInntekt.tidsperiode || {}}
-                        onChange={(
-                            tidsperiode: TidsperiodeMedValgfriSluttdato
-                        ) => this.updateAnnenInntekt({ tidsperiode })}
+                        onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
+                            this.updateAnnenInntekt({ tidsperiode })
+                        }
                         sluttdatoDisabled={annenInntekt.pågående}
-                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                            annenInntekt.tidsperiode
-                        )}
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(annenInntekt.tidsperiode)}
                     />
                     <Checkbox
                         checked={annenInntekt.pågående || false}
@@ -224,14 +207,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <AttachmentsUploader
                         attachments={annenInntekt.vedlegg || []}
                         onFilesUploadStart={(attachments: Attachment[]) => {
-                            this.updateVedleggList([
-                                ...(annenInntekt.vedlegg || []),
-                                ...attachments
-                            ]);
+                            this.updateVedleggList([...(annenInntekt.vedlegg || []), ...attachments]);
                         }}
-                        onFileUploadFinish={(vedlegg: Attachment) =>
-                            this.updateVedleggItem(vedlegg)
-                        }
+                        onFileUploadFinish={(vedlegg: Attachment) => this.updateVedleggItem(vedlegg)}
                         onFileDeleteStart={(vedlegg: Attachment) => {
                             this.updateVedleggItem(vedlegg);
                         }}
@@ -241,9 +219,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             vedleggList.splice(index, 1);
                             this.updateVedleggList(vedleggList);
                         }}
-                        attachmentType={
-                            AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON
-                        }
+                        attachmentType={AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON}
                         skjemanummer={this.findSkjemanummer()}
                     />
                 </Block>

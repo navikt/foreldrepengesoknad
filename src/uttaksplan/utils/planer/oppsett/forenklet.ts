@@ -1,10 +1,4 @@
-import {
-    Permisjonsregler,
-    Uttaksperiode,
-    StønadskontoType,
-    Periodetype,
-    Dekningsgrad
-} from 'uttaksplan/types';
+import { Permisjonsregler, Uttaksperiode, StønadskontoType, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { sorterPerioder, getTidsperiode, Uttaksdagen } from 'uttaksplan/utils';
 import { getPermisjonStartdato } from 'uttaksplan/utils/permisjonUtils';
 import { normaliserDato } from 'common/util/datoUtils';
@@ -23,11 +17,9 @@ export function opprettUttaksperioderEnkel(
     familiehendelsedato = normaliserDato(familiehendelsedato);
 
     const ukerMorFørTermin = permisjonsregler.antallUkerForeldrepengerFørFødsel;
-    const ukerMorsDel =
-        fellesukerForelder1 + permisjonsregler.antallUkerMødrekvote;
+    const ukerMorsDel = fellesukerForelder1 + permisjonsregler.antallUkerMødrekvote;
 
-    const ukerFarsDel =
-        fellesukerForelder2 + permisjonsregler.antallUkerFedrekvote;
+    const ukerFarsDel = fellesukerForelder2 + permisjonsregler.antallUkerFedrekvote;
 
     const morsDelFørTermin: Uttaksperiode = {
         id: guid(),
@@ -44,10 +36,7 @@ export function opprettUttaksperioderEnkel(
         type: Periodetype.Uttak,
         forelder: 'forelder1',
         konto: StønadskontoType.MorsDel,
-        tidsperiode: getTidsperiode(
-            Uttaksdagen(familiehendelsedato).denneEllerNeste(),
-            ukerMorsDel * UTTAKSDAGER_I_UKE
-        )
+        tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), ukerMorsDel * UTTAKSDAGER_I_UKE)
     };
     const farsDel: Uttaksperiode = {
         id: guid(),
@@ -60,10 +49,6 @@ export function opprettUttaksperioderEnkel(
         )
     };
 
-    const perioder: Uttaksperiode[] = [
-        morsDelFørTermin,
-        morsDelEtterTermin,
-        farsDel
-    ];
+    const perioder: Uttaksperiode[] = [morsDelFørTermin, morsDelEtterTermin, farsDel];
     return perioder.sort(sorterPerioder);
 }

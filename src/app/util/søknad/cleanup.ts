@@ -9,11 +9,7 @@ const cleanUpBarn = (barn: Barn, søkersituasjon: Søkersituasjon): Barn => {
     switch (søkersituasjon) {
         case Søkersituasjon.FØDSEL:
             return barn.erBarnetFødt
-                ? (_.pick(barn, [
-                      ...barnBaseInterfaceKeys,
-                      'fødselsattest',
-                      'fødselsdatoer'
-                  ]) as FødtBarn)
+                ? (_.pick(barn, [...barnBaseInterfaceKeys, 'fødselsattest', 'fødselsdatoer']) as FødtBarn)
                 : (_.pick(barn, [
                       ...barnBaseInterfaceKeys,
                       'termindato',
@@ -37,16 +33,10 @@ const fetchAndCleanUpAttachments = (object: object): Attachment[] => {
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
-                foundAttachments.push(
-                    ...removeAttachmentsWithUploadError(object[key])
-                );
-                object[key] = (object[key] as Attachment[]).map(
-                    (attachment: Attachment) => attachment.id
-                );
+                foundAttachments.push(...removeAttachmentsWithUploadError(object[key]));
+                object[key] = (object[key] as Attachment[]).map((attachment: Attachment) => attachment.id);
             } else {
-                foundAttachments.push(
-                    ...fetchAndCleanUpAttachments(object[key])
-                );
+                foundAttachments.push(...fetchAndCleanUpAttachments(object[key]));
             }
         }
     });

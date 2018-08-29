@@ -7,11 +7,7 @@ export interface Props {
     visKunDager?: boolean;
 }
 
-const UkerOgDager: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    dager,
-    visKunDager,
-    intl
-}) => {
+const UkerOgDager: React.StatelessComponent<Props & InjectedIntlProps> = ({ dager, visKunDager, intl }) => {
     if (visKunDager) {
         return (
             <React.Fragment>
@@ -30,10 +26,7 @@ const UkerOgDager: React.StatelessComponent<Props & InjectedIntlProps> = ({
         <React.Fragment>
             {intl.formatMessage(
                 {
-                    id:
-                        ukerOgDager.uker > 0
-                            ? 'common.varighet.ukerogdager'
-                            : 'common.varighet.dager'
+                    id: ukerOgDager.uker > 0 ? 'common.varighet.ukerogdager' : 'common.varighet.dager'
                 },
                 { ...ukerOgDager }
             )}

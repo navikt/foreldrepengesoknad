@@ -23,7 +23,8 @@ const Uttaksoversikt: React.StatelessComponent<Props> = ({ uttak }) => {
                     <h2 className="uttaksoversikt__navn">{u.navn}</h2>
                     <div className="uttaksoversikt__dager">{u.dager}</div>
                     <div className="uttaksoversikt_post">
-                        dag{u.dager !== 1 ? 'er' : ''} igjen
+                        dag
+                        {u.dager !== 1 ? 'er' : ''} igjen
                     </div>
                 </div>
             ))}

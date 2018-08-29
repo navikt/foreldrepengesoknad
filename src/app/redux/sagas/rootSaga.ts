@@ -7,12 +7,5 @@ import storageSaga from './storageSaga';
 import søknadSaga from './søknadSaga';
 
 export default function* rootSaga() {
-    yield all([
-        søkerinfoSaga(),
-        innsendingSaga(),
-        attachmentSaga(),
-        summarySaga(),
-        storageSaga(),
-        søknadSaga()
-    ]);
+    yield all([søkerinfoSaga(), innsendingSaga(), attachmentSaga(), summarySaga(), storageSaga(), søknadSaga()]);
 }

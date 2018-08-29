@@ -21,10 +21,7 @@ import { Tidsperioden } from 'uttaksplan/utils/Tidsperioden';
  * @param familiehendelsedato
  * @param permisjonsregler
  */
-export function getPermisjonStartdato(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Date {
+export function getPermisjonStartdato(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Date {
     return Uttaksdagen(
         familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
@@ -41,10 +38,7 @@ export function getGyldigTidsromForUtsettelse(
     permisjonsregler: Permisjonsregler,
     sisteRegistrertePermisjonsdag: Date
 ): Tidsperiode {
-    const mødrekvoteEtterTermin = getPakrevdMødrekvoteEtterTermin(
-        familiehendelsedato,
-        permisjonsregler
-    );
+    const mødrekvoteEtterTermin = getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler);
     const fom = Uttaksdagen(mødrekvoteEtterTermin.tom).neste();
     return {
         fom,
@@ -57,14 +51,9 @@ export function getGyldigTidsromForUtsettelse(
  * @param permisjonsregler
  * @param dekningsgrad
  */
-export function getAntallUkerFellesperiode(
-    permisjonsregler: Permisjonsregler,
-    dekningsgrad: Dekningsgrad
-) {
+export function getAntallUkerFellesperiode(permisjonsregler: Permisjonsregler, dekningsgrad: Dekningsgrad) {
     const totaltAntallUker =
-        dekningsgrad === '80%'
-            ? permisjonsregler.antallUkerTotalt80
-            : permisjonsregler.antallUkerTotalt100;
+        dekningsgrad === '80%' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
     return (
         totaltAntallUker -
         permisjonsregler.antallUkerMødrekvote -
@@ -78,21 +67,15 @@ export function getAntallUkerFellesperiode(
  * @param utsettelser
  * @param forelder
  */
-export const getAntallFeriedagerForForelder = (
-    utsettelser: Utsettelsesperiode[],
-    forelder: Forelder
-): number => {
+export const getAntallFeriedagerForForelder = (utsettelser: Utsettelsesperiode[], forelder: Forelder): number => {
     const ferier = utsettelser.filter(
-        (utsettelse) =>
-            utsettelse.årsak === UtsettelseÅrsakType.Ferie &&
-            utsettelse.forelder === forelder
+        (utsettelse) => utsettelse.årsak === UtsettelseÅrsakType.Ferie && utsettelse.forelder === forelder
     );
     return ferier.length === 0
         ? 0
         : ferier.reduce(
               (dager: number, periode: Utsettelsesperiode) =>
-                  dager +
-                  Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
+                  dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
               0
           );
 };
@@ -102,11 +85,6 @@ export const getAntallFeriedagerForForelder = (
  * @param permisjonsregler
  * @param dekningsgrad
  */
-export function getAntallUkerTotalt(
-    permisjonsregler: Permisjonsregler,
-    dekningsgrad: Dekningsgrad
-) {
-    return dekningsgrad === '80%'
-        ? permisjonsregler.antallUkerTotalt80
-        : permisjonsregler.antallUkerTotalt100;
+export function getAntallUkerTotalt(permisjonsregler: Permisjonsregler, dekningsgrad: Dekningsgrad) {
+    return dekningsgrad === '80%' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
 }

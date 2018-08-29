@@ -1,8 +1,5 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import {
-    TidsperiodeMedValgfriSluttdato,
-    TidsperiodeMedValgfriSluttdatoPartial
-} from 'common/types';
+import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoPartial } from 'common/types';
 
 export enum AnnenInntektType {
     'SLUTTPAKKE' = 'ETTERLØNN_ARBEIDSGIVER',

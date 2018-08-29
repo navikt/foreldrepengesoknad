@@ -10,10 +10,7 @@ export interface SlettKnappProps extends KnappProps {
     onClick: () => void;
 }
 
-const SlettKnapp: React.StatelessComponent<SlettKnappProps> = ({
-    onClick,
-    ariaLabel
-}) => (
+const SlettKnapp: React.StatelessComponent<SlettKnappProps> = ({ onClick, ariaLabel }) => (
     <button
         type="button"
         className="slettKnapp"

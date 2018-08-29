@@ -1,17 +1,10 @@
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import {
-    AttachmentType,
-    Skjemanummer
-} from '../../../../app/types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../app/types/søknad/Søknad';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
-export const mapFileToAttachment = (
-    file: File,
-    type: AttachmentType,
-    skjemanummer: Skjemanummer
-): Attachment => ({
+export const mapFileToAttachment = (file: File, type: AttachmentType, skjemanummer: Skjemanummer): Attachment => ({
     id: generateAttachmentId(),
     file,
     filename: file.name,
@@ -22,5 +15,4 @@ export const mapFileToAttachment = (
     skjemanummer
 });
 
-export const isAttachmentWithError = ({ pending, uploaded }: Attachment) =>
-    pending === false && uploaded === false;
+export const isAttachmentWithError = ({ pending, uploaded }: Attachment) => pending === false && uploaded === false;

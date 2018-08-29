@@ -10,19 +10,11 @@ interface Props {
     visUkedag?: boolean;
 }
 
-export const datoString = (dato: Date) =>
-    `${ukedag(dato).substr(0, 3)}. ${dagIMåned(dato)} ${mnd(dato)} ${år(dato)}`;
+export const datoString = (dato: Date) => `${ukedag(dato).substr(0, 3)}. ${dagIMåned(dato)} ${mnd(dato)} ${år(dato)}`;
 
-const FormatertDato: React.StatelessComponent<Props> = ({
-    dato,
-    visUkedag = true
-}) => (
+const FormatertDato: React.StatelessComponent<Props> = ({ dato, visUkedag = true }) => (
     <span className="formatert-dato">
-        {visUkedag && (
-            <span className="formatert-dato__ukedag">
-                {ukedag(dato).substr(0, 3)}.{' '}
-            </span>
-        )}
+        {visUkedag && <span className="formatert-dato__ukedag">{ukedag(dato).substr(0, 3)}. </span>}
         <span className="formatert-dato__dag">{dagIMåned(dato)}</span>{' '}
         <span className="formatert-dato__måned">{mnd(dato)}</span>{' '}
         <span className="formatert-dato__år">{år(dato)}</span>

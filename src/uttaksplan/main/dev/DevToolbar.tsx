@@ -28,10 +28,7 @@ import './devUtil';
 import './dev.less';
 import { Uttaksdagen, Tidsperioden } from 'uttaksplan/utils';
 import { Checkbox } from 'nav-frontend-skjema';
-import {
-    mockUttaksplanSøker,
-    mockUttasksplanAnnenForelder
-} from 'app/dev/uttaksplanMock';
+import { mockUttaksplanSøker, mockUttasksplanAnnenForelder } from 'app/dev/uttaksplanMock';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
 export interface StateProps {
@@ -111,9 +108,7 @@ class DevToolbar extends React.Component<Props, {}> {
     }
 
     leggTilPeriode() {
-        this.props.dispatch(
-            opprettEllerOppdaterPeriode(mockUttaksperiodeOverUtsettelse)
-        );
+        this.props.dispatch(opprettEllerOppdaterPeriode(mockUttaksperiodeOverUtsettelse));
     }
 
     reset() {
@@ -196,20 +191,11 @@ class DevToolbar extends React.Component<Props, {}> {
                     <Knapp onClick={this.lagOpphold}>+ O</Knapp>
                     <Knapp onClick={this.play}>>></Knapp>
                     <Knapp onClick={this.reset}>R</Knapp>
-                    <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>
-                        Rebuild
-                    </Knapp>
+                    <Knapp onClick={() => this.props.dispatch(dev('refordel'))}>Rebuild</Knapp>
                     <Checkbox
-                        checked={
-                            this.props.appState.uttaksplan.uttaksplan
-                                .manuellOppdatering
-                        }
+                        checked={this.props.appState.uttaksplan.uttaksplan.manuellOppdatering}
                         label="Manuell oppdatering"
-                        onChange={(evt) =>
-                            this.props.dispatch(
-                                setManuellUttaksplan(evt.target.checked)
-                            )
-                        }
+                        onChange={(evt) => this.props.dispatch(setManuellUttaksplan(evt.target.checked))}
                     />
                 </Knapperad>
             </div>

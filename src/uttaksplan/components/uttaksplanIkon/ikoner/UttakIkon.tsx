@@ -2,11 +2,7 @@ import React, { SVGProps } from 'react';
 
 const UttakIkon = (props: SVGProps<any>) => (
     <svg width={24} height={24} viewBox="0 0 24 24" {...props}>
-        <g
-            fill="none"
-            fillRule="evenodd"
-            stroke="#3E3832"
-            strokeLinejoin="round">
+        <g fill="none" fillRule="evenodd" stroke="#3E3832" strokeLinejoin="round">
             <path d="M4.701 22.44H.534v-8.378h4.167z" />
             <path
                 strokeLinecap="round"

@@ -10,10 +10,7 @@ enum JobberFremdelesSomFrilans {
 
 interface JobberFremdelesSomFrilansSpørsmålProps {
     jobberFremdelesSomFrilans?: boolean;
-    onChange: (
-        jobberFremdelesSomFrilans: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (jobberFremdelesSomFrilans: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = JobberFremdelesSomFrilansSpørsmålProps & InjectedIntlProps;
@@ -35,25 +32,16 @@ const JobberFremdelesSomFrilansSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value:
-                        JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS
+                    value: JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        JobberFremdelesSomFrilans.JOBBER_IKKE_FREMDELES_SOM_FRILANS
+                    value: JobberFremdelesSomFrilans.JOBBER_IKKE_FREMDELES_SOM_FRILANS
                 }
             ]}
             name="jobberFremdelesSomFrilans"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: JobberFremdelesSomFrilans
-            ) =>
-                onChange(
-                    v ===
-                        JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS,
-                    e
-                )
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: JobberFremdelesSomFrilans) =>
+                onChange(v === JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS, e)
             }
             {...otherProps}
         />

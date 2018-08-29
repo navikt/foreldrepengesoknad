@@ -11,15 +11,8 @@ interface OwnProps {
 
 export type Props = OwnProps & InjectedIntlProps;
 
-const Labeltekst: React.StatelessComponent<Props> = ({
-    children,
-    intlId,
-    intlValue,
-    intl
-}) => (
-    <span className="labeltext">
-        {intlId ? intl.formatMessage({ id: intlId }, intlValue) : children}
-    </span>
+const Labeltekst: React.StatelessComponent<Props> = ({ children, intlId, intlValue, intl }) => (
+    <span className="labeltext">{intlId ? intl.formatMessage({ id: intlId }, intlValue) : children}</span>
 );
 
 export default injectIntl(Labeltekst);

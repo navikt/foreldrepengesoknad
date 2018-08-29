@@ -2,8 +2,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import Block, { BlockProps } from 'common/components/block/Block';
 
-const renderBlock = (props: BlockProps): ShallowWrapper =>
-    shallow(<Block {...props} />);
+const renderBlock = (props: BlockProps): ShallowWrapper => shallow(<Block {...props} />);
 
 describe('Block component', () => {
     let shallowBlock: ShallowWrapper;

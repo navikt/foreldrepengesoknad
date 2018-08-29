@@ -67,46 +67,26 @@ class FødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 {barn.fødselsdatoer.length > 0 &&
-                barn.fødselsdatoer.every(
-                    (fødselsdato: Date) => fødselsdato instanceof Date
-                ) ? (
+                barn.fødselsdatoer.every((fødselsdato: Date) => fødselsdato instanceof Date) ? (
                     <React.Fragment>
                         <Block margin="xs">
-                            <Veilederinfo>
-                                {getMessage(
-                                    intl,
-                                    'vedlegg.veileder.fødselsattest'
-                                )}
-                            </Veilederinfo>
+                            <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.fødselsattest')}</Veilederinfo>
                         </Block>
                         <Block
                             header={{
-                                title: getMessage(
-                                    intl,
-                                    'vedlegg.tittel.fødselsattest'
-                                )
+                                title: getMessage(intl, 'vedlegg.tittel.fødselsattest')
                             }}>
                             <AttachmentsUploaderPure
                                 attachments={fødselsattest}
                                 attachmentType={AttachmentType.FØDSELSATTEST}
                                 skjemanummer={Skjemanummer.FØDSELSATTEST}
                                 onFilesSelect={(attachments: Attachment[]) => {
-                                    attachments.forEach(
-                                        (attachment: Attachment) => {
-                                            dispatch(
-                                                søknadActions.uploadAttachment(
-                                                    attachment
-                                                )
-                                            );
-                                        }
-                                    );
+                                    attachments.forEach((attachment: Attachment) => {
+                                        dispatch(søknadActions.uploadAttachment(attachment));
+                                    });
                                 }}
                                 onFileDelete={(attachment: Attachment) =>
-                                    dispatch(
-                                        søknadActions.deleteAttachment(
-                                            attachment
-                                        )
-                                    )
+                                    dispatch(søknadActions.deleteAttachment(attachment))
                                 }
                             />
                         </Block>

@@ -1,10 +1,7 @@
 import { takeEvery, all, put } from 'redux-saga/effects';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import {
-    SøknadActionKeys,
-    UpdateSøkerAndStorage
-} from '../actions/søknad/søknadActionDefinitions';
+import { SøknadActionKeys, UpdateSøkerAndStorage } from '../actions/søknad/søknadActionDefinitions';
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -12,10 +9,5 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
 }
 
 export default function* søknadSaga() {
-    yield all([
-        takeEvery(
-            SøknadActionKeys.UPDATE_SØKER_AND_STORAGE,
-            updateSøkerAndStorage
-        )
-    ]);
+    yield all([takeEvery(SøknadActionKeys.UPDATE_SØKER_AND_STORAGE, updateSøkerAndStorage)]);
 }

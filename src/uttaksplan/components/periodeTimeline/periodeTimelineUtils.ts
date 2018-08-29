@@ -1,9 +1,4 @@
-import {
-    Periode,
-    Periodetype,
-    StønadskontoType,
-    UtsettelseÅrsakType
-} from 'uttaksplan/types';
+import { Periode, Periodetype, StønadskontoType, UtsettelseÅrsakType } from 'uttaksplan/types';
 import { InjectedIntl } from 'react-intl';
 import {
     TimelineEvent,
@@ -31,16 +26,12 @@ export const mapPeriodeToTimelineEvent = (
             if (periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
                 if (søker.erAleneOmOmsorg) {
                     return intl.formatMessage({
-                        id: `stønadskontotype.${
-                            StønadskontoType.Foreldrepenger
-                        }`
+                        id: `stønadskontotype.${StønadskontoType.Foreldrepenger}`
                     });
                 } else {
                     if (annenForelder === undefined) {
                         return intl.formatMessage({
-                            id: `stønadskontotype.${
-                                StønadskontoType.Foreldrepenger
-                            }`
+                            id: `stønadskontotype.${StønadskontoType.Foreldrepenger}`
                         });
                     }
                 }
@@ -58,20 +49,14 @@ export const mapPeriodeToTimelineEvent = (
         }
         return periode.type;
     };
-    if (
-        periode.type === Periodetype.Uttak ||
-        periode.type === Periodetype.Utsettelse
-    ) {
+    if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Utsettelse) {
         return {
             id: periode.id || guid(),
             type: TimelineItemType.event,
             title: getTittel(),
             startDate: periode.tidsperiode.fom,
             endDate: periode.tidsperiode.tom,
-            personName:
-                periode.forelder === 'forelder2' && annenForelder
-                    ? annenForelder.fornavn
-                    : søker.fornavn,
+            personName: periode.forelder === 'forelder2' && annenForelder ? annenForelder.fornavn : søker.fornavn,
             days: Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
             color: getColorsForPeriode(periode),
             labels: getLabelsForPeriode(periode),
@@ -118,9 +103,7 @@ const getLabelsForPeriode = (periode: Periode): TimelineLabel[] | undefined => {
     return undefined;
 };
 
-export const getTimelineIconsForPeriode = (
-    periode: Periode
-): UttaksplanIkonKeys[] | undefined => {
+export const getTimelineIconsForPeriode = (periode: Periode): UttaksplanIkonKeys[] | undefined => {
     if (periode.type === Periodetype.Utsettelse) {
         if (periode.årsak === UtsettelseÅrsakType.Ferie) {
             return [UttaksplanIkonKeys.ferie];
@@ -136,10 +119,7 @@ export const getTimelineIconsForPeriode = (
     return undefined;
 };
 
-export function getFamiliehendelseMarker(
-    familiehendelsedato: Date,
-    erBarnetFødt: boolean
-): TimelineMarker {
+export function getFamiliehendelseMarker(familiehendelsedato: Date, erBarnetFødt: boolean): TimelineMarker {
     return {
         id: 'termin',
         type: TimelineItemType.marker,
@@ -150,9 +130,7 @@ export function getFamiliehendelseMarker(
     };
 }
 
-export function getSistePermisjonsdagMarker(
-    sistePermisjonsdag: Date
-): TimelineMarker {
+export function getSistePermisjonsdagMarker(sistePermisjonsdag: Date): TimelineMarker {
     return {
         id: 'sistePermisjonsdag',
         type: TimelineItemType.marker,
@@ -178,17 +156,11 @@ export function getGaps(items: TimelineItem[]) {
     items.forEach((item, idx, arr) => {
         if (idx > 0) {
             const prevItem = arr[idx - 1];
-            const prevEndDate: Date =
-                prevItem.type === TimelineItemType.marker
-                    ? prevItem.startDate
-                    : prevItem.endDate;
+            const prevEndDate: Date = prevItem.type === TimelineItemType.marker ? prevItem.startDate : prevItem.endDate;
 
             const dager =
-                Uttaksdagen(prevEndDate).getUttaksdagerFremTilDato(
-                    item.startDate
-                ) -
-                (prevItem.type === TimelineItemType.marker ||
-                (item.type === TimelineItemType.marker && idx === len - 1)
+                Uttaksdagen(prevEndDate).getUttaksdagerFremTilDato(item.startDate) -
+                (prevItem.type === TimelineItemType.marker || (item.type === TimelineItemType.marker && idx === len - 1)
                     ? 0
                     : 1);
 
@@ -201,9 +173,7 @@ export function getGaps(items: TimelineItem[]) {
                     type: TimelineItemType.gap,
                     startDate: Uttaksdagen(prevEndDate).neste(),
                     endDate: Uttaksdagen(item.startDate).forrige(),
-                    days:
-                        dager +
-                        (prevItem.type === TimelineItemType.marker ? 1 : 0),
+                    days: dager + (prevItem.type === TimelineItemType.marker ? 1 : 0),
                     data: {},
                     title: 'Ubrukte uttaksdager'
                 };
@@ -211,8 +181,7 @@ export function getGaps(items: TimelineItem[]) {
             }
             if (
                 (isBefore(item.startDate, prevEndDate) ||
-                    (isSameDay(item.startDate, prevEndDate) &&
-                        prevItem.type !== TimelineItemType.marker)) &&
+                    (isSameDay(item.startDate, prevEndDate) && prevItem.type !== TimelineItemType.marker)) &&
                 prevItem.type !== TimelineItemType.marker
             ) {
                 mappedItems.push({

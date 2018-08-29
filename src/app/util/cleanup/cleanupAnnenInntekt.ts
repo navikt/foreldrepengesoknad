@@ -1,7 +1,4 @@
-import {
-    AnnenInntekt,
-    JobbIUtlandetInntekt
-} from '../../types/søknad/AnnenInntekt';
+import { AnnenInntekt, JobbIUtlandetInntekt } from '../../types/søknad/AnnenInntekt';
 import visibility from '../../components/annen-inntekt-modal/visibility';
 
 const cleanupAnnenInntekt = (inntekt: AnnenInntekt): AnnenInntekt => {

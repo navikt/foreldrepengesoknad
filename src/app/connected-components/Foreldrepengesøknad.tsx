@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {
-    Redirect,
-    Route,
-    RouteComponentProps,
-    Switch,
-    withRouter
-} from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 
 import Spinner from 'nav-frontend-spinner';
 
@@ -55,29 +49,19 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     renderErrorRoute(component: React.ComponentType) {
-        return this.renderRoutes([
-            <Route
-                key="feil"
-                path={routeConfig.APP_ROUTE_PREFIX}
-                component={component}
-            />
-        ]);
+        return this.renderRoutes([<Route key="feil" path={routeConfig.APP_ROUTE_PREFIX} component={component} />]);
     }
 
     renderSøknadRoutes(søkerinfo: Søkerinfo) {
         return this.renderRoutes([
             <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
-                render={(props) => (
-                    <StegRoutes {...props} søkerinfo={søkerinfo} />
-                )}
+                render={(props) => <StegRoutes {...props} søkerinfo={søkerinfo} />}
                 key="steg"
             />,
             <Route
                 path={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
-                render={(props) => (
-                    <Velkommen {...props} søkerinfo={søkerinfo} />
-                )}
+                render={(props) => <Velkommen {...props} søkerinfo={søkerinfo} />}
                 key="velkommen"
             />,
             <Route
@@ -85,21 +69,12 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 component={SøknadSendtSide}
                 key="søknadsendt"
             />,
-            <Route
-                path={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`}
-                component={UttaksplanSide}
-                key="uttaksplan"
-            />
+            <Route path={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`} component={UttaksplanSide} key="uttaksplan" />
         ]);
     }
 
     render() {
-        const {
-            søkerinfo,
-            error,
-            isLoadingAppState,
-            isLoadingSøkerinfo
-        } = this.props;
+        const { søkerinfo, error, isLoadingAppState, isLoadingSøkerinfo } = this.props;
 
         if (
             isLoadingAppState ||
@@ -111,9 +86,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         } else if (!søkerinfo && !isLoadingSøkerinfo) {
             return this.renderErrorRoute(GenerellFeil);
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
-            return this.renderErrorRoute(() => (
-                <IkkeMyndig søkerinfo={søkerinfo!} />
-            ));
+            return this.renderErrorRoute(() => <IkkeMyndig søkerinfo={søkerinfo!} />);
         }
         return this.renderSøknadRoutes(søkerinfo);
     }
@@ -126,6 +99,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
     isLoadingAppState: state.api.isLoadingAppState
 });
 
-export default withRouter(
-    connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad)
-);
+export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));

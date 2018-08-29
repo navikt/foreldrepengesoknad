@@ -33,10 +33,7 @@ describe('Selvstendig næringsdrivende-bolk visibility', () => {
     let oppdragUtfyltSpy: SpyInstance;
 
     beforeEach(() => {
-        driverFosterhjemSpy = jest.spyOn(
-            frilansFns,
-            'driverDuFosterhjemVisible'
-        );
+        driverFosterhjemSpy = jest.spyOn(frilansFns, 'driverDuFosterhjemVisible');
         oppdragBolkSpy = jest.spyOn(frilansFns, 'oppdragBolkVisible');
         oppdragUtfyltSpy = jest.spyOn(frilansFns, 'frilansOppdragErUtfylt');
     });
@@ -54,18 +51,14 @@ describe('Selvstendig næringsdrivende-bolk visibility', () => {
                 driverFosterhjem: true
             }
         };
-        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(
-            true
-        );
+        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(true);
         expect(driverFosterhjemSpy).toHaveBeenCalledWith(søkerSomErFrilans);
 
         let søkerSomErFerdigSomFrilans = {
             ...søkerMedFrilans,
             frilansInformasjon: ferdigSomFrilans
         };
-        expect(
-            fns.selvstendigNæringsdrivendeBolk(søkerSomErFerdigSomFrilans)
-        ).toBe(true);
+        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFerdigSomFrilans)).toBe(true);
         expect(oppdragBolkSpy).toHaveBeenCalledWith(søkerSomErFerdigSomFrilans);
         expect(oppdragUtfyltSpy).toHaveBeenCalledWith(ferdigSomFrilans);
     });
@@ -75,9 +68,7 @@ describe('Selvstendig næringsdrivende-bolk visibility', () => {
             ...søkerMedFrilans,
             frilansInformasjon: fremdelesFrilans
         };
-        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(
-            false
-        );
+        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(false);
         expect(driverFosterhjemSpy).toHaveBeenCalledWith(søkerSomErFrilans);
     });
 });

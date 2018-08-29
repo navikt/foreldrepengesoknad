@@ -6,20 +6,14 @@ const { JSDOM } = jsdom;
 
 const requestDecorator = (callback) =>
     request(
-        `${
-            process.env.APPRES_CMS_URL
-        }/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`,
+        `${process.env.APPRES_CMS_URL}/common-html/v4/navno?header=true&styles=true&scripts=true&footer=true`,
         callback
     );
 
 const getDecorator = () =>
     new Promise((resolve, reject) => {
         const callback = (error, response, body) => {
-            if (
-                !error &&
-                response.statusCode >= 200 &&
-                response.statusCode < 400
-            ) {
+            if (!error && response.statusCode >= 200 && response.statusCode < 400) {
                 const { document } = new JSDOM(body).window;
                 const prop = 'innerHTML';
 

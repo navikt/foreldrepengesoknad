@@ -11,10 +11,7 @@ import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import {
-    FrilansOppdrag,
-    FrilansOppdragPartial
-} from '../../types/søknad/FrilansInformasjon';
+import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 
 export interface FrilansOppdragModalProps extends ModalProps {
@@ -43,9 +40,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         } else {
             return {
                 oppdrag:
-                    state &&
-                    state.oppdrag &&
-                    Object.keys(state.oppdrag).length > 0
+                    state && state.oppdrag && Object.keys(state.oppdrag).length > 0
                         ? state.oppdrag
                         : props.oppdrag || {}
             };
@@ -88,10 +83,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         const cls = BEMHelper('frilansOppdragModal');
 
         return (
-            <Modal
-                className={cls.className}
-                onRequestClose={onRequestClose}
-                {...modalProps}>
+            <Modal className={cls.className} onRequestClose={onRequestClose} {...modalProps}>
                 <form onSubmit={this.onSubmit}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="frilansOppdrag.modal.tittel" />
@@ -99,14 +91,9 @@ class FrilansOppdragModal extends React.Component<Props, State> {
 
                     <Block>
                         <Input
-                            label={getMessage(
-                                intl,
-                                'frilansOppdrag.modal.oppdragsgiver'
-                            )}
+                            label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
                             value={oppdrag.navnPåArbeidsgiver || ''}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) =>
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 this.updateOppdrag({
                                     navnPåArbeidsgiver: e.target.value
                                 })
@@ -117,13 +104,11 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                     <Block>
                         <TidsperiodeBolk
                             tidsperiode={oppdrag.tidsperiode || {}}
-                            onChange={(
-                                tidsperiode: TidsperiodeMedValgfriSluttdato
-                            ) => this.updateOppdrag({ tidsperiode })}
+                            onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
+                                this.updateOppdrag({ tidsperiode })
+                            }
                             sluttdatoDisabled={oppdrag.pågående}
-                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                                oppdrag.tidsperiode
-                            )}
+                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(oppdrag.tidsperiode)}
                         />
                     </Block>
 
@@ -144,10 +129,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                     </Block>
 
                     <Knapperad>
-                        <Knapp
-                            type="standard"
-                            onClick={onRequestClose}
-                            htmlType="button">
+                        <Knapp type="standard" onClick={onRequestClose} htmlType="button">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
                         <Hovedknapp>

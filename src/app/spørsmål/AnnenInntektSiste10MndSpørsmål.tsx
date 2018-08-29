@@ -37,17 +37,11 @@ class AnnenInntektSiste10MndSpørsmål extends React.Component<Props> {
                         value: AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
                     },
                     {
-                        label: getMessage(
-                            intl,
-                            'annenInntekt.alternativ.ikkeHatt'
-                        ),
+                        label: getMessage(intl, 'annenInntekt.alternativ.ikkeHatt'),
                         value: AnnenInntekt.HAR_IKKE_HATT_ANNEN_INNTEKT
                     }
                 ]}
-                onChange={(
-                    event: React.SyntheticEvent<EventTarget>,
-                    value: string
-                ) => onChange(value)}
+                onChange={(event: React.SyntheticEvent<EventTarget>, value: string) => onChange(value)}
             />
         );
     }

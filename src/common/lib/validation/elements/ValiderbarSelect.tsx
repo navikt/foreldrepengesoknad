@@ -7,9 +7,7 @@ import {
 
 export type ValiderbarSelectProps = ValiderbartSkjemaelementProps & SelectProps;
 
-const ValiderbarSelect: React.StatelessComponent<ValiderbarSelectProps> = (
-    props: ValiderbarSelectProps
-) => {
+const ValiderbarSelect: React.StatelessComponent<ValiderbarSelectProps> = (props: ValiderbarSelectProps) => {
     return <ValiderbartSkjemaelement component={Select} {...props} />;
 };
 

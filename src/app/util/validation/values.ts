@@ -43,10 +43,7 @@ export const getDate10MonthsAgo = moment().subtract(10, 'months');
 
 export const fjortenUkerPluss3Number = 14 * 7 + 3;
 export const fjortenUkerPluss3 = moment().add(fjortenUkerPluss3Number, 'days');
-export const fjortenUkerPluss4 = moment().add(
-    fjortenUkerPluss3Number + 1,
-    'days'
-);
+export const fjortenUkerPluss4 = moment().add(fjortenUkerPluss3Number + 1, 'days');
 
 const DateValues = {
     today,

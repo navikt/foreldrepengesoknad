@@ -11,10 +11,7 @@ interface InntektstypeVelgerProps {
     label: React.ReactNode;
     validators?: Validator[];
     name?: string;
-    onChange: (
-        value: string,
-        event?: React.ChangeEvent<HTMLSelectElement>
-    ) => void;
+    onChange: (value: string, event?: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 interface InntektstypeOptions {
@@ -22,38 +19,22 @@ interface InntektstypeOptions {
 }
 
 const getOptions = (intl: InjectedIntl): InntektstypeOptions => ({
-    [AnnenInntektType.JOBB_I_UTLANDET]: getMessage(
-        intl,
-        'inntektstype.jobb_i_utlandet'
-    ),
-    [AnnenInntektType.MILITÆRTJENESTE]: getMessage(
-        intl,
-        'inntektstype.militær_eller_siviltjeneste'
-    ),
-    [AnnenInntektType.LØNN_VED_VIDEREUTDANNING]: getMessage(
-        intl,
-        'inntektstype.lønn_under_utdanning'
-    ),
+    [AnnenInntektType.JOBB_I_UTLANDET]: getMessage(intl, 'inntektstype.jobb_i_utlandet'),
+    [AnnenInntektType.MILITÆRTJENESTE]: getMessage(intl, 'inntektstype.militær_eller_siviltjeneste'),
+    [AnnenInntektType.LØNN_VED_VIDEREUTDANNING]: getMessage(intl, 'inntektstype.lønn_under_utdanning'),
     [AnnenInntektType.VENTELØNN]: getMessage(intl, 'inntektstype.ventelønn'),
-    [AnnenInntektType.SLUTTPAKKE]: getMessage(
-        intl,
-        'inntektstype.etterlønn_arbeidsgiver'
-    )
+    [AnnenInntektType.SLUTTPAKKE]: getMessage(intl, 'inntektstype.etterlønn_arbeidsgiver')
 });
 
-class InntektstypeVelger extends React.Component<
-    InntektstypeVelgerProps & InjectedIntlProps
-> {
+class InntektstypeVelger extends React.Component<InntektstypeVelgerProps & InjectedIntlProps> {
     renderInntektstypeOptions() {
-        return Object.entries(getOptions(this.props.intl)).map(
-            (value: string[]) => {
-                return (
-                    <option key={value[0]} value={value[0]}>
-                        {value[1]}
-                    </option>
-                );
-            }
-        );
+        return Object.entries(getOptions(this.props.intl)).map((value: string[]) => {
+            return (
+                <option key={value[0]} value={value[0]}>
+                    {value[1]}
+                </option>
+            );
+        });
     }
 
     render() {
@@ -61,9 +42,7 @@ class InntektstypeVelger extends React.Component<
         return (
             <Select
                 {...restProps}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    onChange(e.target.value, e)
-                }
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value, e)}
                 validators={validators}>
                 <option value="" />
                 {this.renderInntektstypeOptions()}

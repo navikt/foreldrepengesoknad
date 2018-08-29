@@ -3,18 +3,11 @@ import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
-import {
-    date1YearAgo,
-    fjortenUkerPluss3Number,
-    today,
-    tomorrow
-} from '../values';
+import { date1YearAgo, fjortenUkerPluss3Number, today, tomorrow } from '../values';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 
-export const getTerminbekreftelsedatoAvgrensninger = (
-    termindato?: Date
-): Avgrensninger => ({
+export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgrensninger => ({
     minDato: termindato
         ? moment(termindato)
               .subtract(fjortenUkerPluss3, 'days')
@@ -38,17 +31,13 @@ export const getTerminbekreftelseDatoRegler = (
             failText: getMessage(intl, `${intlKey}.duMåOppgi`)
         },
         {
-            test: () =>
-                moment.max(terminbekreftelsedatoM, tomorrow) === tomorrow,
+            test: () => moment.max(terminbekreftelsedatoM, tomorrow) === tomorrow,
             failText: getMessage(intl, `${intlKey}.forSen`)
         },
         {
             test: () =>
                 moment
-                    .max(
-                        termindatoM.subtract(fjortenUkerPluss3Number, 'days'),
-                        terminbekreftelsedatoM
-                    )
+                    .max(termindatoM.subtract(fjortenUkerPluss3Number, 'days'), terminbekreftelsedatoM)
                     .isSame(terminbekreftelsedatoM),
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke26`)
         }

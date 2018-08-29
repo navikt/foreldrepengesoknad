@@ -30,11 +30,7 @@ interface StateProps {
     stegProps: StegProps;
 }
 
-type Props = SøkerinfoProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -58,34 +54,20 @@ class AnnenForelderSteg extends React.Component<Props> {
                 <Steg {...stegProps}>
                     <Block
                         header={{
-                            title: getMessage(
-                                intl,
-                                'annenForelder.label.registrertForelder',
-                                { antallBarn }
-                            )
+                            title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
                         }}
                         visible={registrertAnnenForelder !== undefined}>
-                        {registrertAnnenForelder ? (
-                            <PersonaliaBox person={registrertAnnenForelder} />
-                        ) : (
-                            undefined
-                        )}
+                        {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
                     </Block>
                     <React.Fragment>
                         {registrertAnnenForelder === undefined && (
-                            <AnnenForelderPersonaliaPartial
-                                søkersFødselsnummer={søkersFødselsnummer}
-                            />
+                            <AnnenForelderPersonaliaPartial søkersFødselsnummer={søkersFødselsnummer} />
                         )}
                         {shouldRenderAnnenForelderErKjentPartial && (
                             <AnnenForelderErKjentPartial
-                                registrertAnnenForelder={
-                                    registrertAnnenForelder
-                                }
+                                registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
-                                visInformasjonVedOmsorgsovertakelse={
-                                    visInformasjonVedOmsorgsovertakelse
-                                }
+                                visInformasjonVedOmsorgsovertakelse={visInformasjonVedOmsorgsovertakelse}
                             />
                         )}
                     </React.Fragment>
@@ -106,21 +88,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: annenForelderErGyldig(
-            state.søknad,
-            props.søkerinfo
-        ),
+        renderFortsettKnapp: annenForelderErGyldig(state.søknad, props.søkerinfo),
         history: props.history,
-        isAvailable: isAvailable(
-            StegID.ANNEN_FORELDER,
-            state.søknad,
-            props.søkerinfo
-        )
+        isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
 
     const shouldRenderAnnenForelderErKjentPartial =
-        ((annenForelder.navn && annenForelder.fnr) ||
-            registrertAnnenForelder) !== undefined;
+        ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined;
 
     return {
         stegProps,
@@ -129,11 +103,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         erSøkerFarEllerMedmor,
         registrertAnnenForelder,
         shouldRenderAnnenForelderErKjentPartial,
-        visInformasjonVedOmsorgsovertakelse:
-            omsorgsovertakelse && omsorgsovertakelse.length > 0
+        visInformasjonVedOmsorgsovertakelse: omsorgsovertakelse && omsorgsovertakelse.length > 0
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(AnnenForelderSteg)
-);
+export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(AnnenForelderSteg));

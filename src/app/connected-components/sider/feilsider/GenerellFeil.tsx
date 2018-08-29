@@ -8,10 +8,7 @@ class GenerellFeil extends React.Component {
         return (
             <Applikasjonsside visSpråkvelger={false}>
                 <DocumentTitle title="Søknad om foreldrepenger" />
-                <Feilsidemelding
-                    tittel="Det oppstod en feil"
-                    ingress="Litt mer informasjon om hva som gikk feil"
-                />
+                <Feilsidemelding tittel="Det oppstod en feil" ingress="Litt mer informasjon om hva som gikk feil" />
             </Applikasjonsside>
         );
     }

@@ -46,10 +46,7 @@ interface State {
 
 class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     static getDerivedStateFromProps(props: Props, state: State) {
-        return SelvstendigNæringsdrivendeModal.buildStateFromProps(
-            props,
-            state
-        );
+        return SelvstendigNæringsdrivendeModal.buildStateFromProps(props, state);
     }
 
     static buildStateFromProps(props: Props, state?: State) {
@@ -60,11 +57,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         } else {
             return {
                 næring:
-                    state &&
-                    state.næring &&
-                    Object.keys(state.næring).length > 0
-                        ? state.næring
-                        : props.næring || {}
+                    state && state.næring && Object.keys(state.næring).length > 0 ? state.næring : props.næring || {}
             };
         }
     }
@@ -77,9 +70,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.onSubmit = this.onSubmit.bind(this);
         this.updateNæring = this.updateNæring.bind(this);
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
-        this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(
-            this
-        );
+        this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(this);
     }
 
     updateNæring(næringProperties: NæringPartial): void {
@@ -149,18 +140,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
-                    <NæringstypeSpørsmål
-                        næringstyper={næringstyper || []}
-                        onChange={this.toggleNæringstype}
-                    />
+                    <NæringstypeSpørsmål næringstyper={næringstyper || []} onChange={this.toggleNæringstype} />
                 </Block>
 
                 <Block visible={visibility.navnPåNæringen(næring)}>
                     <Input
-                        label={getMessage(
-                            intl,
-                            'selvstendigNæringsdrivende.modal.navn'
-                        )}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.navn')}
                         required={true}
                         onChange={(e: InputChangeEvent) =>
                             this.updateNæring({
@@ -173,10 +158,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.organisasjonsnummer(næring)}>
                     <Input
-                        label={getMessage(
-                            intl,
-                            'selvstendigNæringsdrivende.modal.orgnr'
-                        )}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
                         onChange={(e: InputChangeEvent) =>
                             this.updateNæring({
                                 organisasjonsnummer: e.target.value
@@ -187,23 +169,16 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         pattern="[0-9]{9}"
                         required={true}
                         value={organisasjonsnummer || ''}
-                        validators={getOrganisasjonsnummerRegler(
-                            organisasjonsnummer || '',
-                            intl
-                        )}
+                        validators={getOrganisasjonsnummerRegler(organisasjonsnummer || '', intl)}
                     />
                 </Block>
 
                 <Block visible={visibility.tidsperiode(næring)} margin="none">
                     <TidsperiodeBolk
                         tidsperiode={tidsperiode || {}}
-                        onChange={(v: TidsperiodeMedValgfriSluttdato) =>
-                            this.updateNæring({ tidsperiode: v })
-                        }
+                        onChange={(v: TidsperiodeMedValgfriSluttdato) => this.updateNæring({ tidsperiode: v })}
                         sluttdatoDisabled={pågående}
-                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(
-                            tidsperiode
-                        )}
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(tidsperiode)}
                     />
                 </Block>
 
@@ -225,10 +200,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.næringsinntekt(næring)}>
                     <Input
-                        label={getMessage(
-                            intl,
-                            'annenInntekt.spørsmål.næringsinntekt'
-                        )}
+                        label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(e: InputChangeEvent) => {
                             const næringPartial: NæringPartial = {
                                 næringsinntekt: e.target.value
@@ -242,21 +214,14 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.næringRegistrertINorge(næring)}>
                     <ErNæringenRegistrertINorgeSpørsmål
                         registrertINorge={registrertINorge}
-                        onChange={(v: boolean) =>
-                            this.updateNæring({ registrertINorge: v })
-                        }
+                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
                     />
                 </Block>
 
                 <Block visible={visibility.næringRegistrertILand(næring)}>
                     <Landvelger
-                        onChange={(v: string) =>
-                            this.updateNæring({ registrertILand: v })
-                        }
-                        label={getMessage(
-                            intl,
-                            'selvstendigNæringsdrivende.modal.registrertILand'
-                        )}
+                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
                         defaultValue={registrertILand}
                     />
                 </Block>
@@ -264,10 +229,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.stillingsprosent(næring)}>
                     <Input
                         bredde="XS"
-                        label={getMessage(
-                            intl,
-                            'selvstendigNæringsdrivende.modal.stillingsprosent'
-                        )}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>
                             this.updateNæring({
                                 stillingsprosent: e.target.value
@@ -275,10 +237,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         onBlur={this.handleStillingsprosentBlur}
                         value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(
-                            stillingsprosent || '',
-                            intl
-                        )}
+                        validators={getStillingsprosentRegler(stillingsprosent || '', intl)}
                         maxLength={4}
                     />
                 </Block>
@@ -293,13 +252,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                     />
                 </Block>
-                <Block
-                    visible={visibility.varigEndringAvNæringsinntekt(næring)}>
+                <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>
                     <VarigEndringAvNæringsinntektBolk
                         næring={næring as Næring}
-                        onChange={(changedProps: NæringPartial) =>
-                            this.updateNæring(changedProps)
-                        }
+                        onChange={(changedProps: NæringPartial) => this.updateNæring(changedProps)}
                     />
                 </Block>
 
@@ -347,14 +303,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block
-                    visible={visibility.kanInnhenteOpplysningerFraRevisor(
-                        næring
-                    )}>
+                <Block visible={visibility.kanInnhenteOpplysningerFraRevisor(næring)}>
                     <KanInnhenteOpplysningerFraRevisorSpørsmål
-                        kanInnhenteOpplysningerFraRevisor={
-                            kanInnhenteOpplsyningerFraRevisor
-                        }
+                        kanInnhenteOpplysningerFraRevisor={kanInnhenteOpplsyningerFraRevisor}
                         onChange={(v: boolean) =>
                             this.updateNæring({
                                 kanInnhenteOpplsyningerFraRevisor: v

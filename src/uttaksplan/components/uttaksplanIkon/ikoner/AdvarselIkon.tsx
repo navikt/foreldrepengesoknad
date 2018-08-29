@@ -11,12 +11,7 @@ const AdvarselIkon = (props: Props) => {
     const farge = props.type === 'feil' ? '#ba3a26' : '#ff9100';
 
     return (
-        <svg
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width={24}
-            height={24}
-            viewBox="0 0 24 24"
-            {...props}>
+        <svg xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} viewBox="0 0 24 24" {...props}>
             <title>{props.title}</title>
             <defs>
                 <path

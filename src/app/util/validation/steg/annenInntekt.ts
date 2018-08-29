@@ -18,11 +18,7 @@ const frilansErGyldig = (frilansInformasjon: FrilansInformasjon): boolean => {
             driverFosterhjem !== undefined;
     }
 
-    return (
-        oppstart !== undefined &&
-        jobberFremdelesSomFrilans !== undefined &&
-        oppdragGyldig
-    );
+    return oppstart !== undefined && jobberFremdelesSomFrilans !== undefined && oppdragGyldig;
 };
 
 export const annenInntektErGyldig = (søker: Søker): boolean => {
@@ -40,21 +36,16 @@ export const annenInntektErGyldig = (søker: Søker): boolean => {
     let andreTyperInntektGyldig = true;
 
     if (harJobbetSomFrilansSiste10Mnd) {
-        frilansGyldig =
-            frilansInformasjon !== undefined &&
-            frilansErGyldig(frilansInformasjon);
+        frilansGyldig = frilansInformasjon !== undefined && frilansErGyldig(frilansInformasjon);
     }
 
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         selvstendigNæringsdrivendeGyldig =
-            selvstendigNæringsdrivendeBolk !== undefined &&
-            selvstendigNæringsdrivendeBolk.length > 0;
+            selvstendigNæringsdrivendeBolk !== undefined && selvstendigNæringsdrivendeBolk.length > 0;
     }
 
     if (harHattAnnenInntektSiste10Mnd) {
-        andreTyperInntektGyldig =
-            andreInntekterSiste10Mnd !== undefined &&
-            andreInntekterSiste10Mnd.length > 0;
+        andreTyperInntektGyldig = andreInntekterSiste10Mnd !== undefined && andreInntekterSiste10Mnd.length > 0;
     }
 
     return (

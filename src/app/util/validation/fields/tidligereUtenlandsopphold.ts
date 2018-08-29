@@ -43,15 +43,11 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
             failText: getMessage(intl, `${intlKey}.tidligere`)
         },
         {
-            test: () =>
-                tom ? startM.startOf('day').isSameOrBefore(sluttM) : true,
+            test: () => (tom ? startM.startOf('day').isSameOrBefore(sluttM) : true),
             failText: getMessage(intl, `${intlKey}.førTilDato`)
         },
         {
-            test: () =>
-                fom && tom
-                    ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder)
-                    : true,
+            test: () => (fom && tom ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder) : true),
             failText: getMessage(intl, `${intlKey}.overlapp`)
         }
     ];
@@ -77,15 +73,11 @@ export const getTidligereUtenlandsoppholdTildatoRegler = (
             failText: getMessage(intl, `${intlKey}.tidligere`)
         },
         {
-            test: () =>
-                tom ? sluttM.endOf('day').isSameOrAfter(startM) : true,
+            test: () => (tom ? sluttM.endOf('day').isSameOrAfter(startM) : true),
             failText: getMessage(intl, `${intlKey}.etterFraDato`)
         },
         {
-            test: () =>
-                fom && tom
-                    ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder)
-                    : true,
+            test: () => (fom && tom ? !harTidsperiodeOverlapp({ fom, tom }, ugyldigePerioder) : true),
             failText: getMessage(intl, `${intlKey}.overlapp`)
         }
     ];

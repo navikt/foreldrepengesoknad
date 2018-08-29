@@ -10,18 +10,13 @@ import { isSameDay, isAfter, isBefore } from 'date-fns';
  */
 
 export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
-    erLik: (tidsperiode2: Tidsperiode) =>
-        erTidsperioderLike(tidsperiode, tidsperiode2),
-    erOmsluttetAv: (tidsperiode2: Tidsperiode) =>
-        erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
-    erUtenfor: (tidsperiode2: Tidsperiode) =>
-        erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
-    getAntallUttaksdager: (taBortFridager?: boolean) =>
-        getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
+    erLik: (tidsperiode2: Tidsperiode) => erTidsperioderLike(tidsperiode, tidsperiode2),
+    erOmsluttetAv: (tidsperiode2: Tidsperiode) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
+    erUtenfor: (tidsperiode2: Tidsperiode) => erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
+    getAntallUttaksdager: (taBortFridager?: boolean) => getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => flyttTidsperiode(tidsperiode, fom),
-    setUttaksdager: (uttaksdager: number) =>
-        getTidsperiode(tidsperiode.fom, uttaksdager)
+    setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager)
 });
 
 /**
@@ -43,14 +38,10 @@ export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
  * Summerer antall uttaksdager som er i en eller flere perioder
  * @param tidsperioder
  */
-export function getAntallUttaksdagerITidsperioder(
-    tidsperioder: Tidsperiode[],
-    taBortFridager?: boolean
-): number {
+export function getAntallUttaksdagerITidsperioder(tidsperioder: Tidsperiode[], taBortFridager?: boolean): number {
     return tidsperioder.reduce(
         (dager: number, tidsperiode: Tidsperiode) =>
-            dager +
-            getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
+            dager + getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
         0
     );
 }
@@ -66,10 +57,7 @@ export function erSammeEllerSenereDato(d1: Date, d2: Date) {
 /**
  * Summerer antall uttaksdager i angitt tidsperiode
  */
-function getAntallUttaksdagerITidsperiode(
-    tidsperiode: Tidsperiode,
-    taBortFridager?: boolean
-): number {
+function getAntallUttaksdagerITidsperiode(tidsperiode: Tidsperiode, taBortFridager?: boolean): number {
     if (tidsperiode.fom > tidsperiode.tom) {
         return -1;
     }
@@ -93,9 +81,7 @@ function getAntallUttaksdagerITidsperiode(
  * Finner uttaksdager som er offentlig fridag
  */
 function getUttaksdagerSomErFridager(tidsperiode: Tidsperiode): Holiday[] {
-    return getOffentligeFridager(tidsperiode).filter((dag) =>
-        Uttaksdagen(dag.date).erUttaksdag()
-    );
+    return getOffentligeFridager(tidsperiode).filter((dag) => Uttaksdagen(dag.date).erUttaksdag());
 }
 
 /**
@@ -123,10 +109,7 @@ function erTidsperioderLike(t1: Tidsperiode, t2: Tidsperiode) {
  * @param tidsperiode1
  * @param tidsperiode2
  */
-function erTidsperiodeOmsluttetAvTidsperiode(
-    tidsperiode1: Tidsperiode,
-    tidsperiode2: Tidsperiode
-): boolean {
+function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean {
     return (
         erSammeEllerSenereDato(tidsperiode1.fom, tidsperiode2.fom) &&
         erSammeEllerTidligereDato(tidsperiode1.tom, tidsperiode2.tom)
@@ -138,12 +121,6 @@ function erTidsperiodeOmsluttetAvTidsperiode(
  * @param tidsperiode1
  * @param tidsperiode2
  */
-function erTidsperiodeUtenforTidsperiode(
-    tidsperiode1: Tidsperiode,
-    tidsperiode2: Tidsperiode
-): boolean {
-    return (
-        isAfter(tidsperiode1.fom, tidsperiode2.tom) ||
-        isBefore(tidsperiode1.tom, tidsperiode2.fom)
-    );
+function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean {
+    return isAfter(tidsperiode1.fom, tidsperiode2.tom) || isBefore(tidsperiode1.tom, tidsperiode2.fom);
 }

@@ -5,10 +5,7 @@ import DriverDuFosterhjemSpørsmål from '../../spørsmål/DriverDuFosterhjemSp�
 import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../../spørsmål/HarDuJobbetSomFrilansSiste10MndSpørsmål';
 import Søker, { SøkerPartial } from '../../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
-import {
-    FrilansInformasjonPartial,
-    FrilansOppdrag
-} from '../../types/søknad/FrilansInformasjon';
+import { FrilansInformasjonPartial, FrilansOppdrag } from '../../types/søknad/FrilansInformasjon';
 import FrilansOppdragBolk from '../FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -27,12 +24,8 @@ class FrilanserBolk extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleSøkerOnChange = this.handleSøkerOnChange.bind(this);
-        this.handleFrilansinformasjonOnChange = this.handleFrilansinformasjonOnChange.bind(
-            this
-        );
-        this.renderOppdragSiste10MndSpørsmål = this.renderOppdragSiste10MndSpørsmål.bind(
-            this
-        );
+        this.handleFrilansinformasjonOnChange = this.handleFrilansinformasjonOnChange.bind(this);
+        this.renderOppdragSiste10MndSpørsmål = this.renderOppdragSiste10MndSpørsmål.bind(this);
     }
 
     handleSøkerOnChange(changedProps: SøkerPartial) {
@@ -50,8 +43,7 @@ class FrilanserBolk extends React.Component<Props> {
         const { søker } = this.props;
         const { frilansInformasjon } = søker;
         const harJobbetForNærVennEllerFamilieSiste10Mnd =
-            frilansInformasjon &&
-            frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
+            frilansInformasjon && frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
 
         return (
             <Block>
@@ -61,9 +53,7 @@ class FrilanserBolk extends React.Component<Props> {
                             harJobbetForNærVennEllerFamilieSiste10Mnd: v
                         })
                     }
-                    harJobbetForNærVennEllerFamilieSiste10Mnd={
-                        harJobbetForNærVennEllerFamilieSiste10Mnd
-                    }
+                    harJobbetForNærVennEllerFamilieSiste10Mnd={harJobbetForNærVennEllerFamilieSiste10Mnd}
                 />
             </Block>
         );
@@ -73,13 +63,10 @@ class FrilanserBolk extends React.Component<Props> {
         const { søker, intl } = this.props;
         const { frilansInformasjon } = søker;
 
-        const driverFosterhjem =
-            frilansInformasjon && frilansInformasjon.driverFosterhjem;
-        const jobberFremdelesSomFrilans =
-            frilansInformasjon && frilansInformasjon.jobberFremdelesSomFrilans;
+        const driverFosterhjem = frilansInformasjon && frilansInformasjon.driverFosterhjem;
+        const jobberFremdelesSomFrilans = frilansInformasjon && frilansInformasjon.jobberFremdelesSomFrilans;
         const oppdragForNæreVennerEllerFamilieSiste10Mnd =
-            frilansInformasjon &&
-            frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd;
+            frilansInformasjon && frilansInformasjon.oppdragForNæreVennerEllerFamilieSiste10Mnd;
         const oppstartsdato = frilansInformasjon && frilansInformasjon.oppstart;
 
         return (
@@ -91,15 +78,11 @@ class FrilanserBolk extends React.Component<Props> {
                                 harJobbetSomFrilansSiste10Mnd: v
                             })
                         }
-                        harJobbetSomFrilansSiste10Mnd={
-                            søker.harJobbetSomFrilansSiste10Mnd
-                        }
+                        harJobbetSomFrilansSiste10Mnd={søker.harJobbetSomFrilansSiste10Mnd}
                     />
                 </Block>
 
-                <Block
-                    animated={false}
-                    visible={visibility.startdatoVisible(søker)}>
+                <Block animated={false} visible={visibility.startdatoVisible(søker)}>
                     <DatoInput
                         id="frilansStartDato"
                         label={getMessage(intl, 'frilans.oppstart')}
@@ -123,21 +106,12 @@ class FrilanserBolk extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={visibility.oppdragBolkVisible(søker)}
-                    margin="none">
+                <Block visible={visibility.oppdragBolkVisible(søker)} margin="none">
                     <FrilansOppdragBolk
                         renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
-                        showOppdragsPerioderContent={visibility.oppdragPerioderVisible(
-                            søker
-                        )}
-                        oppfølgingsspørsmål={getMessage(
-                            intl,
-                            'frilansOppdrag.oppfølgingsspørsmål'
-                        )}
-                        oppdragListe={
-                            oppdragForNæreVennerEllerFamilieSiste10Mnd || []
-                        }
+                        showOppdragsPerioderContent={visibility.oppdragPerioderVisible(søker)}
+                        oppfølgingsspørsmål={getMessage(intl, 'frilansOppdrag.oppfølgingsspørsmål')}
+                        oppdragListe={oppdragForNæreVennerEllerFamilieSiste10Mnd || []}
                         onChange={(oppdragListe: FrilansOppdrag[]) =>
                             this.handleFrilansinformasjonOnChange({
                                 oppdragForNæreVennerEllerFamilieSiste10Mnd: oppdragListe

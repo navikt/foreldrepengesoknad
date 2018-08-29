@@ -16,32 +16,25 @@ class DevSideoversikt extends React.Component<{}, {}> {
             <Applikasjonsside visSpråkvelger={true}>
                 <h1>Hjelpeside for utviklere</h1>
                 <Veilederinfo>
-                    Denne siden er kun for utvikling, og viser en oversikt over,
-                    og lenke til de stegene vi har registrert. Status på de
-                    ulike stegene må en sjekke med utviklere.
+                    Denne siden er kun for utvikling, og viser en oversikt over, og lenke til de stegene vi har
+                    registrert. Status på de ulike stegene må en sjekke med utviklere.
                 </Veilederinfo>
 
                 <h2>Frittstående sider</h2>
                 <div className="blokk-l">
                     <ul className="dev-sider">
                         <li>
-                            <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}inngang`}
-                                className="lenke">
+                            <Link to={`${routeConfig.APP_ROUTE_PREFIX}inngang`} className="lenke">
                                 Inngangsside (valg av situasjon)
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`}
-                                className="lenke">
+                            <Link to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} className="lenke">
                                 Velkommen
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`}
-                                className="lenke">
+                            <Link to={`${routeConfig.APP_ROUTE_PREFIX}uttaksplan`} className="lenke">
                                 Uttaksplan
                             </Link>
                         </li>

@@ -7,21 +7,13 @@ import { DatoInputProps } from 'common/components/skjema/elements/dato-input/Dat
 
 type DatoInputWrapperProps = SkjemaelementProps & DatoInputProps;
 
-const DatoInput: React.StatelessComponent<DatoInputWrapperProps> = (
-    props: DatoInputWrapperProps
-) => {
+const DatoInput: React.StatelessComponent<DatoInputWrapperProps> = (props: DatoInputWrapperProps) => {
     const id = props.id || guid();
     return (
         <ValiderbarDatoInput
             {...props}
             id={id}
-            label={
-                <InputLabel
-                    label={props.label}
-                    infotekst={props.infotekst}
-                    inputId={id}
-                />
-            }
+            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
         />
     );
 };

@@ -30,8 +30,7 @@ class UttaksplanSteg extends React.Component<Props> {
     render() {
         const { søknad, stegProps, person, dispatch } = this.props;
         const annenForelder =
-            søknad.annenForelder.skalHaForeldrepenger ||
-            søknad.annenForelder.harRettPåForeldrepenger
+            søknad.annenForelder.skalHaForeldrepenger || søknad.annenForelder.harRettPåForeldrepenger
                 ? {
                       etternavn: '',
                       fornavn: søknad.annenForelder.navn
@@ -45,9 +44,7 @@ class UttaksplanSteg extends React.Component<Props> {
             <Steg {...stegProps}>
                 <Uttaksplan
                     grunnlag={{
-                        familiehendelsedato:
-                            (barn as UfødtBarn).termindato ||
-                            (barn as FødtBarn).fødselsdatoer[0],
+                        familiehendelsedato: (barn as UfødtBarn).termindato || (barn as FødtBarn).fødselsdatoer[0],
                         erBarnetFødt: barn.erBarnetFødt,
                         erDeltPermisjon: annenForelder !== undefined,
                         annenForelder,
@@ -75,10 +72,7 @@ class UttaksplanSteg extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (
-    state: AppState,
-    props: HistoryProps & SøkerinfoProps
-): StateProps => {
+const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const { søknad, uttaksplan } = state;
     const { history } = props;
 

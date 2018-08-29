@@ -80,9 +80,7 @@ class SøknadSendtSide extends React.Component<Props> {
         const { intl, person } = this.props;
         return (
             <Applikasjonsside visSøknadstittel={true}>
-                <DocumentTitle
-                    title={getMessage(intl, 'kvittering.sectionheading')}
-                />
+                <DocumentTitle title={getMessage(intl, 'kvittering.sectionheading')} />
 
                 <div className="søknadSendt">
                     <SpotlightLetter className="blokk-m søknadSendt__spotlightLetter" />
@@ -90,27 +88,18 @@ class SøknadSendtSide extends React.Component<Props> {
                         {this.buildHeadlineMessage()}
                     </Innholdstittel>
 
-                    <Ingress className="blokk-xs">
-                        {this.buildReferansenummerMessage()}
-                    </Ingress>
-                    <Ingress className="blokk-xs">
-                        {this.buildDittNavMessage()}
-                    </Ingress>
+                    <Ingress className="blokk-xs">{this.buildReferansenummerMessage()}</Ingress>
+                    <Ingress className="blokk-xs">{this.buildDittNavMessage()}</Ingress>
 
                     {person.bankkonto &&
                         person.bankkonto.kontonummer && (
                             <Ingress className="blokk-m">
-                                {this.buildBankAccountMessage(
-                                    person.bankkonto.kontonummer
-                                )}
+                                {this.buildBankAccountMessage(person.bankkonto.kontonummer)}
                             </Ingress>
                         )}
 
                     <Hovedknapp
-                        onClick={() =>
-                            ((window as any).location =
-                                'https://tjenester.nav.no/dittnav/oversikt')
-                        }>
+                        onClick={() => ((window as any).location = 'https://tjenester.nav.no/dittnav/oversikt')}>
                         {getMessage(intl, 'avslutt')}
                     </Hovedknapp>
                 </div>
@@ -124,6 +113,4 @@ const mapStateToProps = (state: any) => ({
     kvittering: state.api.kvittering
 });
 
-export default connect<StateProps>(mapStateToProps)(
-    injectIntl(SøknadSendtSide)
-);
+export default connect<StateProps>(mapStateToProps)(injectIntl(SøknadSendtSide));

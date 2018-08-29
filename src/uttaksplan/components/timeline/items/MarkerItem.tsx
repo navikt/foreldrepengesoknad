@@ -11,10 +11,7 @@ export interface Props extends TimelineItemProps {
 
 const BEM = BEMHelper('timelineMarkerItem');
 
-const MarkerItem: React.StatelessComponent<Props> = ({
-    item,
-    iconRenderer
-}) => (
+const MarkerItem: React.StatelessComponent<Props> = ({ item, iconRenderer }) => (
     <article className={BEM.className}>
         <TimelineIcons icons={item.icons} iconRenderer={iconRenderer} />
         <h1 className={BEM.element('title')}>{item.title}</h1>

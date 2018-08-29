@@ -30,19 +30,13 @@ export interface StateProps {
     søker: SøkerPartial;
 }
 
-export type Props = SøkerinfoProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps &
-    HistoryProps;
+export type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
 
-        this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(
-            this
-        );
+        this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(this);
     }
 
     resolveSøkerRolle(situasjon: Søkersituasjon) {
@@ -71,23 +65,13 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const {
-            roller,
-            situasjon,
-            søker,
-            visSpørsmålOmSøkerrolle,
-            dispatch,
-            stegProps
-        } = this.props;
+        const { roller, situasjon, søker, visSpørsmålOmSøkerrolle, dispatch, stegProps } = this.props;
         const { rolle } = søker;
 
         return (
             <Steg {...stegProps}>
                 <Block>
-                    <SøkersituasjonSpørsmål
-                        situasjon={situasjon}
-                        onChange={this.updateSituasjonAndRolleInState}
-                    />
+                    <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
                 <Block visible={visSpørsmålOmSøkerrolle !== undefined}>
                     {visSpørsmålOmSøkerrolle && (
@@ -125,18 +109,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
     const søker = state.søknad.søker;
-    const roller =
-        kjønn && situasjon
-            ? getSøkerrollerForBruker(kjønn, situasjon)
-            : undefined;
+    const roller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : undefined;
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: inngangErGyldig(
-            situasjon,
-            state.søknad.søker.rolle,
-            kjønn
-        ),
+        renderFortsettKnapp: inngangErGyldig(situasjon, state.søknad.søker.rolle, kjønn),
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegRoute: resolveNesteSteg(state)

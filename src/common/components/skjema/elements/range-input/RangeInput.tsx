@@ -13,9 +13,7 @@ export interface RangeInputValueLabelRendererOptions {
     max: number;
 }
 
-export type RangeInputValueLabelRenderer = (
-    options: RangeInputValueLabelRendererOptions
-) => React.ReactElement<any>;
+export type RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendererOptions) => React.ReactElement<any>;
 
 interface Props {
     label: string | React.ReactNode;
@@ -38,9 +36,7 @@ interface State {
     active: boolean;
 }
 
-const defaultValueLabelRenderer: RangeInputValueLabelRenderer = (
-    options: RangeInputValueLabelRendererOptions
-) => (
+const defaultValueLabelRenderer: RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendererOptions) => (
     <div className="rangeInput__valueLabels">
         <div className="rangeInput__valueLabels__left">{options.min}</div>
         <div className="rangeInput__valueLabels__right">{options.max}</div>
@@ -109,48 +105,31 @@ class RangeInput extends React.Component<Props, State> {
                         <div className="rangeInput__stepper rangeInput__stepper--previous">
                             <RangeStepper
                                 direction="previous"
-                                onClick={() =>
-                                    value > min ? onChange(value - 1) : null
-                                }
-                                label={
-                                    steppers ? steppers.reduceLabel : 'Mindre'
-                                }
+                                onClick={() => (value > min ? onChange(value - 1) : null)}
+                                label={steppers ? steppers.reduceLabel : 'Mindre'}
                             />
                         </div>
                     )}
                     <div className="rangeInput__range">
-                        {ariaDescription && (
-                            <AriaText id="aria">{ariaDescription}</AriaText>
-                        )}
+                        {ariaDescription && <AriaText id="aria">{ariaDescription}</AriaText>}
                         <input
                             {...rest}
                             id={id}
                             aria-describedby="aria"
                             className="nav-frontend-range-input"
                             type="range"
-                            onChange={(e) =>
-                                onChange(parseInt(e.target.value, 10))
-                            }
+                            onChange={(e) => onChange(parseInt(e.target.value, 10))}
                         />
-                        <div
-                            role="alert"
-                            aria-live="assertive"
-                            className="sr-only">
-                            {ariaValueChangedMessage && this.state.active
-                                ? ariaValueChangedMessage(value)
-                                : undefined}
+                        <div role="alert" aria-live="assertive" className="sr-only">
+                            {ariaValueChangedMessage && this.state.active ? ariaValueChangedMessage(value) : undefined}
                         </div>
                     </div>
                     {steppers && (
                         <div className="rangeInput__stepper rangeInput__stepper--next">
                             <RangeStepper
                                 direction="next"
-                                onClick={() =>
-                                    value < max ? onChange(value + 1) : null
-                                }
-                                label={
-                                    steppers ? steppers.increaseLabel : 'Mer'
-                                }
+                                onClick={() => (value < max ? onChange(value + 1) : null)}
+                                label={steppers ? steppers.increaseLabel : 'Mer'}
                             />
                         </div>
                     )}

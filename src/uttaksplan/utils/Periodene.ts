@@ -18,35 +18,24 @@ export const Periodene = (perioder: Periode[]) => ({
     getOpphold: () => getOpphold(perioder),
     getUttak: () => getUttaksperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
-    getPeriodeMedSammeStartdato: (periode: Periode) =>
-        getPeriodeMedSammeStartdatoSomPeriode(perioder, periode),
-    getAntallDagerUttak: (konto?: StønadskontoType) =>
-        getAntallDagerUttak(perioder, konto),
+    getPeriodeMedSammeStartdato: (periode: Periode) => getPeriodeMedSammeStartdatoSomPeriode(perioder, periode),
+    getAntallDagerUttak: (konto?: StønadskontoType) => getAntallDagerUttak(perioder, konto),
     getAntallDagerUtsatt: () => getAntallDagerUtsatt(perioder),
     getAntallDagerOpphold: () => getAntallDagerOpphold(perioder),
-    getFørsteOgSisteRegistrerteUttaksdager: (
-        inkludertOpphold: boolean = false
-    ) => getFørsteOgSisteUttaksdag(perioder, inkludertOpphold),
-    getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] =>
-        getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
+    getFørsteOgSisteRegistrerteUttaksdager: (inkludertOpphold: boolean = false) =>
+        getFørsteOgSisteUttaksdag(perioder, inkludertOpphold),
+    getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] => getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
-    finnPerioderFørDato: (dato: Date, ignorerPeriode?: Periode) =>
-        finnPerioderFørDato(perioder, dato, ignorerPeriode),
+    finnPerioderFørDato: (dato: Date, ignorerPeriode?: Periode) => finnPerioderFørDato(perioder, dato, ignorerPeriode),
     finnPerioderPåEllerEtterDato: (dato: Date, ignorerPeriode?: Periode) =>
         finnPerioderPåEllerEtterDato(perioder, dato, ignorerPeriode),
-    finnOverlappendePerioder: (periode: Periode) =>
-        finnOverlappendePerioder(perioder, periode.tidsperiode),
-    finnAlleForegåendePerioder: (periode: Periode) =>
-        finnPerioderFørPeriode(perioder, periode),
-    finnAllePåfølgendePerioder: (periode: Periode) =>
-        finnPerioderEtterPeriode(perioder, periode),
-    finnDenForegåendePerioden: (periode: Periode) =>
-        finnForrigePeriode(perioder, periode),
-    finnPåfølgendePeriode: (periode: Periode) =>
-        finnPåfølgendePeriode(perioder, periode),
+    finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode.tidsperiode),
+    finnAlleForegåendePerioder: (periode: Periode) => finnPerioderFørPeriode(perioder, periode),
+    finnAllePåfølgendePerioder: (periode: Periode) => finnPerioderEtterPeriode(perioder, periode),
+    finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
+    finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
-    forskyvPerioder: (uttaksdager: number) =>
-        forskyvPerioder(perioder, uttaksdager),
+    forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     finnOppholdIPerioder: (): Periode[] => finnOppholdMellomPerioder(perioder),
     sort: () => perioder.sort(sorterPerioder)
 });
@@ -81,9 +70,7 @@ function getPeriode(perioder: Periode[], id: string): Periode | undefined {
  * @param perioder
  */
 function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
-    return perioder.filter(
-        (periode) => periode.type === Periodetype.Uttak
-    ) as Uttaksperiode[];
+    return perioder.filter((periode) => periode.type === Periodetype.Uttak) as Uttaksperiode[];
 }
 
 /**
@@ -91,9 +78,7 @@ function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
  * @param perioder
  */
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter(
-        (periode) => periode.type === Periodetype.Utsettelse
-    ) as Utsettelsesperiode[];
+    return perioder.filter((periode) => periode.type === Periodetype.Utsettelse) as Utsettelsesperiode[];
 }
 
 /**
@@ -101,9 +86,7 @@ function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
  * @param perioder
  */
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
-    return perioder.filter(
-        (periode) => periode.type === Periodetype.Opphold
-    ) as Oppholdsperiode[];
+    return perioder.filter((periode) => periode.type === Periodetype.Opphold) as Oppholdsperiode[];
 }
 
 /**
@@ -111,16 +94,9 @@ function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
  * @param perioder
  * @param dato dato som periode skal inneholde
  */
-function finnPeriodeMedDato(
-    perioder: Periode[],
-    dato: Date
-): Periode | undefined {
+function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {
     return perioder.find((periode) => {
-        return isWithinRange(
-            dato,
-            periode.tidsperiode.fom,
-            periode.tidsperiode.tom
-        );
+        return isWithinRange(dato, periode.tidsperiode.fom, periode.tidsperiode.tom);
     });
 }
 
@@ -130,19 +106,12 @@ function finnPeriodeMedDato(
  * @param dato dato som periode skal inneholde
  * @param ignorerPeriode periode som skal ekskluderes fra resultatet
  */
-function finnPerioderPåEllerEtterDato(
-    perioder: Periode[],
-    dato: Date,
-    ignorerPeriode?: Periode
-): Periode[] {
+function finnPerioderPåEllerEtterDato(perioder: Periode[], dato: Date, ignorerPeriode?: Periode): Periode[] {
     return perioder.filter((periode) => {
         if (ignorerPeriode && periode.id === ignorerPeriode.id) {
             return false;
         }
-        return (
-            isAfter(periode.tidsperiode.fom, dato) ||
-            isSameDay(periode.tidsperiode.fom, dato)
-        );
+        return isAfter(periode.tidsperiode.fom, dato) || isSameDay(periode.tidsperiode.fom, dato);
     });
 }
 
@@ -152,11 +121,7 @@ function finnPerioderPåEllerEtterDato(
  * @param dato dato som periode skal inneholde
  * @param ignorerPeriode periode som skal ekskluderes fra resultatet
  */
-function finnPerioderFørDato(
-    perioder: Periode[],
-    dato: Date,
-    ignorerPeriode?: Periode
-): Periode[] {
+function finnPerioderFørDato(perioder: Periode[], dato: Date, ignorerPeriode?: Periode): Periode[] {
     return perioder.filter((periode) => {
         if (ignorerPeriode && periode.id === ignorerPeriode.id) {
             return false;
@@ -170,15 +135,11 @@ function finnPerioderFørDato(
  * @param perioder Alle perioder
  * @param tidsperiode
  */
-function finnOverlappendePerioder(
-    perioder: Periode[],
-    tidsperiode: Tidsperiode
-): Periode[] {
+function finnOverlappendePerioder(perioder: Periode[], tidsperiode: Tidsperiode): Periode[] {
     return perioder.filter((periode) => {
         const { fom, tom } = periode.tidsperiode;
         return (
-            (isBefore(fom, tidsperiode.tom) ||
-                isSameDay(fom, tidsperiode.tom)) &&
+            (isBefore(fom, tidsperiode.tom) || isSameDay(fom, tidsperiode.tom)) &&
             (isAfter(tom, tidsperiode.fom) || isSameDay(tom, tidsperiode.fom))
         );
     });
@@ -190,9 +151,7 @@ function finnOverlappendePerioder(
  * @param uttaksdager
  */
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
-    return Perioden(periode).setStartdato(
-        Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager)
-    );
+    return Perioden(periode).setStartdato(Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager));
 }
 
 /**
@@ -214,13 +173,8 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
  * @param perioder
  * @param periode
  */
-function finnPerioderFørPeriode(
-    perioder: Periode[],
-    periode: Periode
-): Periode[] {
-    return perioder.filter((p) =>
-        isBefore(p.tidsperiode.tom, periode.tidsperiode.fom)
-    );
+function finnPerioderFørPeriode(perioder: Periode[], periode: Periode): Periode[] {
+    return perioder.filter((p) => isBefore(p.tidsperiode.tom, periode.tidsperiode.fom));
 }
 
 /**
@@ -229,10 +183,7 @@ function finnPerioderFørPeriode(
  * @param periode
  */
 
-function finnForrigePeriode(
-    perioder: Periode[],
-    periode: Periode
-): Periode | undefined {
+function finnForrigePeriode(perioder: Periode[], periode: Periode): Periode | undefined {
     const foregåendePerioder = finnPerioderFørPeriode(perioder, periode);
     if (foregåendePerioder.length > 0) {
         return foregåendePerioder.pop();
@@ -246,13 +197,8 @@ function finnForrigePeriode(
  * @param periode
  */
 
-function finnPerioderEtterPeriode(
-    perioder: Periode[],
-    periode: Periode
-): Periode[] {
-    return perioder.filter((p) =>
-        isAfter(p.tidsperiode.fom, periode.tidsperiode.tom)
-    );
+function finnPerioderEtterPeriode(perioder: Periode[], periode: Periode): Periode[] {
+    return perioder.filter((p) => isAfter(p.tidsperiode.fom, periode.tidsperiode.tom));
 }
 
 /**
@@ -260,10 +206,7 @@ function finnPerioderEtterPeriode(
  * @param perioder
  * @param periode
  */
-function finnPåfølgendePeriode(
-    perioder: Periode[],
-    periode: Periode
-): Periode | undefined {
+function finnPåfølgendePeriode(perioder: Periode[], periode: Periode): Periode | undefined {
     const påfølgendePerioder = finnPerioderEtterPeriode(perioder, periode);
     if (påfølgendePerioder.length > 0) {
         return påfølgendePerioder[0];
@@ -276,16 +219,11 @@ function finnPåfølgendePeriode(
  * @param perioder
  * @param konto
  */
-function getAntallDagerUttak(
-    perioder: Periode[],
-    konto?: StønadskontoType
-): number {
+function getAntallDagerUttak(perioder: Periode[], konto?: StønadskontoType): number {
     const uttaksperioder = Periodene(perioder).getUttak();
     return uttaksperioder.reduce((dager: number, periode: Uttaksperiode) => {
         if (konto === undefined || periode.konto === konto) {
-            return (
-                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-            );
+            return dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
         }
         return dager;
     }, 0);
@@ -297,14 +235,9 @@ function getAntallDagerUttak(
  * @param konto
  */
 function getAntallDagerUtsatt(perioder: Periode[]): number {
-    return getUtsettelser(perioder).reduce(
-        (dager: number, periode: Utsettelsesperiode) => {
-            return (
-                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-            );
-        },
-        0
-    );
+    return getUtsettelser(perioder).reduce((dager: number, periode: Utsettelsesperiode) => {
+        return dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
+    }, 0);
 }
 
 /**
@@ -313,14 +246,9 @@ function getAntallDagerUtsatt(perioder: Periode[]): number {
  * @param konto
  */
 function getAntallDagerOpphold(perioder: Periode[]): number {
-    return getOpphold(perioder).reduce(
-        (dager: number, periode: Oppholdsperiode) => {
-            return (
-                dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
-            );
-        },
-        0
-    );
+    return getOpphold(perioder).reduce((dager: number, periode: Oppholdsperiode) => {
+        return dager + Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
+    }, 0);
 }
 
 /**
@@ -328,51 +256,31 @@ function getAntallDagerOpphold(perioder: Periode[]): number {
  * grupperer dem per StønadstypeKonto
  * @param uttaksperioder
  */
-function getAntallUttaksdagerPerKonto(
-    uttaksperioder: Uttaksperiode[]
-): StønadskontoUttak[] {
+function getAntallUttaksdagerPerKonto(uttaksperioder: Uttaksperiode[]): StønadskontoUttak[] {
     return [
         {
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.ForeldrepengerFørFødsel
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.ForeldrepengerFørFødsel)
         },
         {
             konto: StønadskontoType.Foreldrepenger,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.Foreldrepenger
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.Foreldrepenger)
         },
         {
             konto: StønadskontoType.Mødrekvote,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.Mødrekvote
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.Mødrekvote)
         },
         {
             konto: StønadskontoType.Fedrekvote,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.Fedrekvote
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.Fedrekvote)
         },
         {
             konto: StønadskontoType.Fellesperiode,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.Fellesperiode
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.Fellesperiode)
         },
         {
             konto: StønadskontoType.SamtidigUttak,
-            dager: getAntallDagerUttak(
-                uttaksperioder,
-                StønadskontoType.SamtidigUttak
-            )
+            dager: getAntallDagerUttak(uttaksperioder, StønadskontoType.SamtidigUttak)
         }
     ];
 }
@@ -383,20 +291,11 @@ function getAntallUttaksdagerPerKonto(
  * @param fjernes
  */
 function fjernPerioder(perioder: Periode[], fjernes: Periode[]) {
-    return perioder.filter(
-        (p) => (fjernes.findIndex((f) => p.id === f.id) >= 0 ? false : true)
-    );
+    return perioder.filter((p) => (fjernes.findIndex((f) => p.id === f.id) >= 0 ? false : true));
 }
 
-function getPeriodeMedSammeStartdatoSomPeriode(
-    perioder: Periode[],
-    periode: Periode
-) {
-    return perioder.find(
-        (p) =>
-            p.id !== periode.id &&
-            isSameDay(p.tidsperiode.fom, periode.tidsperiode.fom)
-    );
+function getPeriodeMedSammeStartdatoSomPeriode(perioder: Periode[], periode: Periode) {
+    return perioder.find((p) => p.id !== periode.id && isSameDay(p.tidsperiode.fom, periode.tidsperiode.fom));
 }
 
 /**
@@ -417,18 +316,11 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
             fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
             tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige()
         };
-        if (
-            isBefore(
-                tidsperiodeMellomPerioder.tom,
-                tidsperiodeMellomPerioder.fom
-            )
-        ) {
+        if (isBefore(tidsperiodeMellomPerioder.tom, tidsperiodeMellomPerioder.fom)) {
             return;
         }
 
-        const uttaksdagerITidsperiode = Tidsperioden(
-            tidsperiodeMellomPerioder
-        ).getAntallUttaksdager();
+        const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
         if (uttaksdagerITidsperiode > 0) {
             opphold.push({
                 id: guid(),
@@ -440,13 +332,8 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
     return opphold;
 }
 
-function getFørsteOgSisteUttaksdag(
-    perioder: Periode[],
-    inkludertOpphold: boolean
-): Tidsperiode | undefined {
-    const filtrertePerioder = inkludertOpphold
-        ? perioder
-        : perioder.filter((p2) => p2.type !== Periodetype.Opphold);
+function getFørsteOgSisteUttaksdag(perioder: Periode[], inkludertOpphold: boolean): Tidsperiode | undefined {
+    const filtrertePerioder = inkludertOpphold ? perioder : perioder.filter((p2) => p2.type !== Periodetype.Opphold);
 
     if (filtrertePerioder.length === 0) {
         return undefined;

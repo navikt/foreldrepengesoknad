@@ -32,31 +32,14 @@ const Veilederinfo: React.StatelessComponent<VeilederInfoProps> = ({
     children
 }) => {
     return (
-        <div
-            className={classnames(
-                'veilederinfo',
-                `veilederinfo--${stil}`,
-                `veilederinfo--${type}`
-            )}>
+        <div className={classnames('veilederinfo', `veilederinfo--${stil}`, `veilederinfo--${type}`)}>
             {visVeileder && (
-                <span
-                    className="veilederinfo__veileder"
-                    role="presentation"
-                    aria-hidden={true}>
-                    <Veileder
-                        farge="lilla"
-                        ansikt={getAnsiktFromType(type)}
-                        stil="kompakt"
-                    />
+                <span className="veilederinfo__veileder" role="presentation" aria-hidden={true}>
+                    <Veileder farge="lilla" ansikt={getAnsiktFromType(type)} stil="kompakt" />
                 </span>
             )}
 
-            <div
-                className={classnames(
-                    'veilederinfo__innhold',
-                    `veilederinfo__innhold--${type}`,
-                    'typo-normal'
-                )}>
+            <div className={classnames('veilederinfo__innhold', `veilederinfo__innhold--${type}`, 'typo-normal')}>
                 {children}
             </div>
         </div>

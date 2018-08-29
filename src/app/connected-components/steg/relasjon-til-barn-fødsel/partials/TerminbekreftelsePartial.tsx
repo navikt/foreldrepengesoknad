@@ -28,9 +28,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
     return (
         <React.Fragment>
             <Block margin="xs">
-                <Veilederinfo>
-                    {getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}
-                </Veilederinfo>
+                <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
             </Block>
             <Block
                 visible={props.barn.termindato !== undefined}
@@ -43,9 +41,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     onFilesSelect={(attachments: Attachment[]) => {
                         attachments.forEach((attachment: Attachment) => {
-                            dispatch(
-                                søknadActions.uploadAttachment(attachment)
-                            );
+                            dispatch(søknadActions.uploadAttachment(attachment));
                         });
                     }}
                     onFileDelete={(attachment: Attachment) => {
@@ -53,11 +49,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     }}
                 />
             </Block>
-            <Block
-                visible={
-                    terminbekreftelse.length > 0 &&
-                    barn.termindato !== undefined
-                }>
+            <Block visible={terminbekreftelse.length > 0 && barn.termindato !== undefined}>
                 <DatoInput
                     id="terminbekreftelseDato"
                     name="terminbekreftelseDato"
@@ -70,22 +62,13 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                         );
                     }}
                     dato={barn.terminbekreftelseDato}
-                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(
-                        barn.termindato
-                    )}
+                    avgrensninger={getTerminbekreftelsedatoAvgrensninger(barn.termindato)}
                     validators={
                         validerDatofelt
-                            ? getTerminbekreftelseDatoRegler(
-                                  barn.terminbekreftelseDato,
-                                  barn.termindato,
-                                  intl
-                              )
+                            ? getTerminbekreftelseDatoRegler(barn.terminbekreftelseDato, barn.termindato, intl)
                             : []
                     }
-                    infotekst={getMessage(
-                        intl,
-                        'terminbekreftelseDato.infotekst'
-                    )}
+                    infotekst={getMessage(intl, 'terminbekreftelseDato.infotekst')}
                 />
             </Block>
         </React.Fragment>

@@ -22,9 +22,7 @@ const FordelingFellesperiodeLabelRenderer: React.StatelessComponent<Props> = ({
             {introRenderer && introRenderer()}
             <div className="skjema_fordelingFellesperiode">
                 <div className="skjema_fordelingFellesperiode__forelder1">
-                    <div className="skjema_fordelingFellesperiode__forelderNavn blokk-xxxs">
-                        {navnForelder1}
-                    </div>
+                    <div className="skjema_fordelingFellesperiode__forelderNavn blokk-xxxs">{navnForelder1}</div>
                     <div className="skjema_fordelingFellesperiode__uker">
                         <FormattedMessage
                             id="uttaksplan.skjema.fordeling.uker"
@@ -35,9 +33,7 @@ const FordelingFellesperiodeLabelRenderer: React.StatelessComponent<Props> = ({
                     </div>
                 </div>
                 <div className="skjema_fordelingFellesperiode__forelder2">
-                    <div className="skjema_fordelingFellesperiode__forelderNavn  blokk-xxxs">
-                        {navnForelder2}
-                    </div>
+                    <div className="skjema_fordelingFellesperiode__forelderNavn  blokk-xxxs">{navnForelder2}</div>
                     <div className="skjema_fordelingFellesperiode__uker">
                         <FormattedMessage
                             id="uttaksplan.skjema.fordeling.uker"

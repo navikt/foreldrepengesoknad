@@ -18,31 +18,19 @@ export interface Props extends ModalProps {
 
 class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
     render() {
-        const {
-            onAvbryt,
-            onBekreft,
-            avbrytLabel,
-            bekreftLabel,
-            intl,
-            children,
-            ...modalProps
-        } = this.props;
+        const { onAvbryt, onBekreft, avbrytLabel, bekreftLabel, intl, children, ...modalProps } = this.props;
         return (
             <Modal {...modalProps} className="bekreftDialog">
                 <div className="blokk-m">{children}</div>
                 <div className="bekreftDialog__knapperad">
-                    <Hovedknapp
-                        onClick={() => onBekreft()}
-                        className="bekreftDialog__bekreftKnapp">
+                    <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
                         {this.props.bekreftLabel ||
                             intl.formatMessage({
                                 id: 'komponent.bekreftDialog.bekreftLabel'
                             })}
                     </Hovedknapp>
                     <Knapp
-                        onClick={() =>
-                            onAvbryt ? onAvbryt() : this.props.onRequestClose()
-                        }
+                        onClick={() => (onAvbryt ? onAvbryt() : this.props.onRequestClose())}
                         className="bekreftDialog__avbrytKnapp">
                         {this.props.avbrytLabel ||
                             intl.formatMessage({

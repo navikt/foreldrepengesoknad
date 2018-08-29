@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { Infotekster } from 'uttaksplan/redux/reducers/viewReducer';
 import EkspanderbartInnhold from 'common/components/ekspanderbart-innhold/EkspanderbartInnhold';
-import Veilederinfo, {
-    VeilederInfoProps
-} from 'common/components/veileder-info/Veilederinfo';
+import Veilederinfo, { VeilederInfoProps } from 'common/components/veileder-info/Veilederinfo';
 
 export interface StateProps {
     isOpen: boolean;
@@ -21,13 +19,7 @@ export interface OwnProps extends VeilederInfoProps {
 
 type Props = StateProps & OwnProps;
 
-const SkjemaVeileder: React.StatelessComponent<Props> = ({
-    id,
-    isOpen,
-    ariaLive,
-    apen = false,
-    ...rest
-}) => {
+const SkjemaVeileder: React.StatelessComponent<Props> = ({ id, isOpen, ariaLive, apen = false, ...rest }) => {
     const erApen: boolean = isOpen || apen;
     const content = erApen ? <Veilederinfo {...rest} /> : <div />;
     return (

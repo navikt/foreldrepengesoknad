@@ -16,24 +16,22 @@ const cleanupAndreInntekterSteg = (søker: Søker): Søker => {
     if (selvstendigNæringsdrivendeBolk) {
         søker.selvstendigNæringsdrivendeBolk =
             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true
-                ? (søker.selvstendigNæringsdrivendeBolk = selvstendigNæringsdrivendeBolk.map(
-                      (næring) => cleanupNæring(næring)
+                ? (søker.selvstendigNæringsdrivendeBolk = selvstendigNæringsdrivendeBolk.map((næring) =>
+                      cleanupNæring(næring)
                   ))
                 : undefined;
     }
 
     if (frilansInformasjon) {
         søker.frilansInformasjon =
-            harJobbetSomFrilansSiste10Mnd === true
-                ? cleanupFrilansInformasjon(søker)
-                : undefined;
+            harJobbetSomFrilansSiste10Mnd === true ? cleanupFrilansInformasjon(søker) : undefined;
     }
 
     if (andreInntekterSiste10Mnd) {
         søker.andreInntekterSiste10Mnd =
             harHattAnnenInntektSiste10Mnd === true
-                ? (søker.andreInntekterSiste10Mnd = andreInntekterSiste10Mnd.map(
-                      (inntekt) => cleanupAnnenInntekt(inntekt)
+                ? (søker.andreInntekterSiste10Mnd = andreInntekterSiste10Mnd.map((inntekt) =>
+                      cleanupAnnenInntekt(inntekt)
                   ))
                 : undefined;
     }

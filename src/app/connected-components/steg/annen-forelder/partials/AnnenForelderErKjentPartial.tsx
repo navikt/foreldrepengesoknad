@@ -35,10 +35,7 @@ interface AnnenForelderErKjentPartialProps {
     visInformasjonVedOmsorgsovertakelse: boolean;
 }
 
-type Props = AnnenForelderErKjentPartialProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps;
+type Props = AnnenForelderErKjentPartialProps & StateProps & InjectedIntlProps & DispatchProps;
 
 class AnnenForelderErKjentPartial extends React.Component<Props> {
     render() {
@@ -54,8 +51,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
         } = this.props;
 
         const harDenAndreForelderenOpplystOmSinPågåendeSak =
-            registrertAnnenForelder &&
-            registrertAnnenForelder.harOpplystOmSinPågåendeSak;
+            registrertAnnenForelder && registrertAnnenForelder.harOpplystOmSinPågåendeSak;
 
         const navn = registrertAnnenForelder
             ? formaterNavn(
@@ -79,19 +75,11 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block
-                    visible={
-                        !erFarEllerMedmor && søker.erAleneOmOmsorg === true
-                    }>
-                    <Veilederinfo>
-                        Informasjon om deling av uttak og at den andre kan ta
-                        perm.
-                    </Veilederinfo>
+                <Block visible={!erFarEllerMedmor && søker.erAleneOmOmsorg === true}>
+                    <Veilederinfo>Informasjon om deling av uttak og at den andre kan ta perm.</Veilederinfo>
                     <SkalFarEllerMedmorHaForeldrepengerSpørsmål
                         navn={navn}
-                        skalFarEllerMedmorHaForeldrepenger={
-                            annenForelder.skalHaForeldrepenger
-                        }
+                        skalFarEllerMedmorHaForeldrepenger={annenForelder.skalHaForeldrepenger}
                         onChange={(skalHaForeldrepenger: boolean) => {
                             dispatch(
                                 søknadActions.updateAnnenForelder({
@@ -104,14 +92,11 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                 <Block
                     visible={
                         annenForelder.skalHaForeldrepenger === true ||
-                        (søker.erAleneOmOmsorg === false &&
-                            !harDenAndreForelderenOpplystOmSinPågåendeSak)
+                        (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
                     }>
                     <RettPåForeldrepengerSpørsmål
                         navn={navn}
-                        harAnnenForelderRettPåForeldrepenger={
-                            annenForelder.harRettPåForeldrepenger
-                        }
+                        harAnnenForelderRettPåForeldrepenger={annenForelder.harRettPåForeldrepenger}
                         onChange={(harRettPåForeldrepenger: boolean) =>
                             dispatch(
                                 søknadActions.updateAnnenForelder({
@@ -122,11 +107,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        annenForelder.harRettPåForeldrepenger === false &&
-                        erFarEllerMedmor
-                    }>
+                <Block visible={annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor}>
                     <ErMorUførSpørsmål
                         navn={navn}
                         erUfør={annenForelder.erUfør}
@@ -141,25 +122,19 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                 </Block>
 
                 <Block visible={annenForelder.harRettPåForeldrepenger === true}>
-                    <Veilederinfo>
-                        Informasjon om rettigheter og deling av uttaksplan
-                    </Veilederinfo>
+                    <Veilederinfo>Informasjon om rettigheter og deling av uttaksplan</Veilederinfo>
                 </Block>
 
                 <Block
                     visible={
+                        (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
                         (søker.erAleneOmOmsorg === false &&
-                            annenForelder.harRettPåForeldrepenger === true) ||
-                        (søker.erAleneOmOmsorg === false &&
-                            harDenAndreForelderenOpplystOmSinPågåendeSak ===
-                                true &&
+                            harDenAndreForelderenOpplystOmSinPågåendeSak === true &&
                             erFarEllerMedmor)
                     }>
                     <ErDenAndreForelderenInformertSpørsmål
                         navn={navn}
-                        erDenAndreForelderenInformert={
-                            annenForelder.erInformertOmSøknaden
-                        }
+                        erDenAndreForelderenInformert={annenForelder.erInformertOmSøknaden}
                         onChange={(erInformertOmSøknaden: boolean) =>
                             dispatch(
                                 søknadActions.updateAnnenForelder({
@@ -175,10 +150,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         <Block visible={søker.erAleneOmOmsorg === true}>
                             <DatoInput
                                 id="omsorgsovertakelseDato"
-                                label={getMessage(
-                                    intl,
-                                    'omsorgsovertakelseDato.spørsmål'
-                                )}
+                                label={getMessage(intl, 'omsorgsovertakelseDato.spørsmål')}
                                 onChange={(foreldreansvarsdato: Date) => {
                                     dispatch(
                                         søknadActions.updateBarn({
@@ -191,49 +163,25 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         </Block>
                         <Block
                             animated={true}
-                            visible={
-                                søker.erAleneOmOmsorg === true &&
-                                barn.foreldreansvarsdato !== undefined
-                            }>
-                            <Block
-                                animated={false}
-                                margin="xs"
-                                visible={visInformasjonVedOmsorgsovertakelse}>
+                            visible={søker.erAleneOmOmsorg === true && barn.foreldreansvarsdato !== undefined}>
+                            <Block animated={false} margin="xs" visible={visInformasjonVedOmsorgsovertakelse}>
                                 <Veilederinfo>
                                     <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
                                 </Veilederinfo>
                             </Block>
 
                             <AttachmentsUploaderPure
-                                attachments={
-                                    barn.omsorgsovertakelse
-                                        ? barn.omsorgsovertakelse
-                                        : []
-                                }
-                                attachmentType={
-                                    AttachmentType.OMSORGSOVERTAKELSE
-                                }
+                                attachments={barn.omsorgsovertakelse ? barn.omsorgsovertakelse : []}
+                                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                                 onFilesSelect={(attachments: Attachment[]) => {
-                                    attachments.forEach(
-                                        (attachment: Attachment) => {
-                                            dispatch(
-                                                søknadActions.uploadAttachment(
-                                                    attachment
-                                                )
-                                            );
-                                        }
-                                    );
+                                    attachments.forEach((attachment: Attachment) => {
+                                        dispatch(søknadActions.uploadAttachment(attachment));
+                                    });
                                 }}
                                 onFileDelete={(attachment: Attachment) =>
-                                    dispatch(
-                                        søknadActions.deleteAttachment(
-                                            attachment
-                                        )
-                                    )
+                                    dispatch(søknadActions.deleteAttachment(attachment))
                                 }
-                                skjemanummer={
-                                    Skjemanummer.OMSORGSOVERTAKELSESDATO
-                                }
+                                skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
                             />
                         </Block>
                     </React.Fragment>
@@ -251,6 +199,4 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-export default connect(mapStateToProps)(
-    injectIntl(AnnenForelderErKjentPartial)
-);
+export default connect(mapStateToProps)(injectIntl(AnnenForelderErKjentPartial));

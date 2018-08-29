@@ -14,8 +14,7 @@ interface SkalFarEllerMedmorHaForeldrepengerSpørsmålProps {
     onChange: (harAnnenForelderRettPåForeldrepenger: boolean) => void;
 }
 
-type Props = SkalFarEllerMedmorHaForeldrepengerSpørsmålProps &
-    InjectedIntlProps;
+type Props = SkalFarEllerMedmorHaForeldrepengerSpørsmålProps & InjectedIntlProps;
 
 const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
     const { navn, onChange, skalFarEllerMedmorHaForeldrepenger, intl } = props;
@@ -30,11 +29,7 @@ const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'skalFarEllerMedmorHaForeldrepenger.spørsmål',
-                { navn }
-            )}
+            legend={getMessage(intl, 'skalFarEllerMedmorHaForeldrepenger.spørsmål', { navn })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -46,10 +41,9 @@ const SkalFarEllerMedmorHaForeldrepengerSpørsmål = (props: Props) => {
                 }
             ]}
             name="skalFarEllerMedmorHaForeldrepenger"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: FarEllerMedmor
-            ) => onChange(v === FarEllerMedmor.SKAL_HA_FORELDREPENGER)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: FarEllerMedmor) =>
+                onChange(v === FarEllerMedmor.SKAL_HA_FORELDREPENGER)
+            }
         />
     );
 };

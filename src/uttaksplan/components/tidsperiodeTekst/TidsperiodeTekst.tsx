@@ -10,11 +10,7 @@ export interface Props {
     visUkedag?: boolean;
 }
 
-const TidsperiodeTekst: React.StatelessComponent<Props> = ({
-    tidsperiode,
-    visUkedag = true,
-    visSluttdato
-}) => {
+const TidsperiodeTekst: React.StatelessComponent<Props> = ({ tidsperiode, visUkedag = true, visSluttdato }) => {
     return (
         <div className="tidsperiodeTekst">
             <span className="tidsperiodeTekst__periode">
@@ -22,11 +18,7 @@ const TidsperiodeTekst: React.StatelessComponent<Props> = ({
                 {visSluttdato && (
                     <span>
                         {' '}
-                        -{' '}
-                        <FormatertDato
-                            dato={tidsperiode.tom}
-                            visUkedag={visUkedag}
-                        />
+                        - <FormatertDato dato={tidsperiode.tom} visUkedag={visUkedag} />
                     </span>
                 )}
             </span>

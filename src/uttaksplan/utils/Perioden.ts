@@ -8,16 +8,11 @@ export const Perioden = (periode: Periode) => ({
     erUtsettelse: () => erUtsettelse(periode),
     erOpphold: () => erOpphold(periode),
     erLik: (periode2: Periode) => erPerioderLike(periode, periode2),
-    erSammenhengende: (periode2: Periode) =>
-        erPerioderSammenhengende(periode, periode2),
+    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),
     setUttaksdager: (uttaksdager: number) =>
-        (periode.tidsperiode = getTidsperiode(
-            periode.tidsperiode.fom,
-            uttaksdager
-        )),
-    getAntallUttaksdager: () =>
-        Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
+        (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
+    getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager()
 });
 
 function erOpphold(periode: Periode): boolean {
@@ -52,11 +47,7 @@ function erPerioderSammenhengende(p1: Periode, p2: Periode) {
  * @param p2 periode 2
  */
 function erPerioderLike(p1: Periode, p2: Periode) {
-    if (
-        p1.type !== p2.type ||
-        p1.type === Periodetype.Utsettelse ||
-        p2.type === Periodetype.Utsettelse
-    ) {
+    if (p1.type !== p2.type || p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse) {
         return false;
     }
     const k1 = getPeriodeFootprint(p1);
@@ -76,9 +67,7 @@ function getPeriodeFootprint(periode: Periode) {
         case Periodetype.Utsettelse:
             return `${periode.type}${periode.forelder}${periode.årsak}`;
         case Periodetype.Uttak:
-            return `${periode.type}${periode.forelder}${periode.konto}${
-                periode.låstForelder
-            }`;
+            return `${periode.type}${periode.forelder}${periode.konto}${periode.låstForelder}`;
     }
 }
 

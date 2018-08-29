@@ -29,21 +29,16 @@ export const getAlderFraDato = (fødselsdato: Date): Alder => {
 export const formatDate = (dato?: Date | string) => {
     if (dato) {
         const parsetDato = moment(dato);
-        return dato && parsetDato.isValid()
-            ? parsetDato.format('DD.MM.YYYY')
-            : '';
+        return dato && parsetDato.isValid() ? parsetDato.format('DD.MM.YYYY') : '';
     }
     return dato;
 };
 
 export const prettifyTidsperiode = (tidsperiode: TidsperiodePartial) => {
-    return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) ||
-        'pågående'}`;
+    return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) || 'pågående'}`;
 };
 
-export const findDateMostDistantInPast = (
-    dateArray: Date[]
-): Date | undefined => {
+export const findDateMostDistantInPast = (dateArray: Date[]): Date | undefined => {
     if (dateArray.length > 0) {
         return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
     }

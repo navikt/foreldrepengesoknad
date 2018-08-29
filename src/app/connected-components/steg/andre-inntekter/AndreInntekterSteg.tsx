@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
-import AnnenInntektSiste10MndSpørsmål, {
-    AnnenInntekt
-} from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
+import AnnenInntektSiste10MndSpørsmål, { AnnenInntekt } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import {
-    default as stegConfig,
-    StegID
-} from '../../../util/routing/stegConfig';
+import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import AndreInntekterBolk from '../../../bolker/AndreInntekterBolk';
@@ -39,11 +34,7 @@ interface StateProps {
     søker: Søker;
 }
 
-type Props = SøkerinfoProps &
-    HistoryProps &
-    StateProps &
-    InjectedIntlProps &
-    DispatchProps;
+type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
 
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
@@ -53,9 +44,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.state = {
             harHattAnnenInntekt: undefined
         };
-        this.renderAnnenInntektSiste10MndSpørsmål = this.renderAnnenInntektSiste10MndSpørsmål.bind(
-            this
-        );
+        this.renderAnnenInntektSiste10MndSpørsmål = this.renderAnnenInntektSiste10MndSpørsmål.bind(this);
         this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål = this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål.bind(
             this
         );
@@ -76,9 +65,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                     onChange={(value: AnnenInntekt) =>
                         dispatch(
                             søknadActions.updateSøker({
-                                harHattAnnenInntektSiste10Mnd:
-                                    value ===
-                                    AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                                harHattAnnenInntektSiste10Mnd: value === AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
                             })
                         )
                     }
@@ -94,9 +81,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         return (
             <Block>
                 <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
-                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
-                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
-                    }
+                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
                     onChange={(value: boolean) =>
                         dispatch(
                             søknadActions.updateSøker({
@@ -113,9 +98,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { søker, dispatch, history } = this.props;
         dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
         dispatch(apiActionCreators.storeAppState());
-        history.push(
-            `${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`
-        );
+        history.push(`${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`);
     }
 
     render() {
@@ -132,29 +115,17 @@ class AndreInntekterSteg extends React.Component<Props> {
                 </Block>
                 <Block
                     header={{
-                        title: getMessage(
-                            intl,
-                            'annenInntekt.arbeidsforhold.label'
-                        ),
-                        info: getMessage(
-                            intl,
-                            'annenInntekt.arbeidsforhold.infotekst'
-                        )
+                        title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
+                        info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}>
-                    <ArbeidsforholdInfoWrapper
-                        arbeidsforhold={arbeidsforhold}
-                    />
+                    <ArbeidsforholdInfoWrapper arbeidsforhold={arbeidsforhold} />
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none">
                     <FrilanserBolk
                         søker={søker}
-                        onChangeSøker={(søkerProperties: Søker) =>
-                            dispatch(søknadActions.updateSøker(søkerProperties))
-                        }
-                        onChangeFrilansinformasjon={(
-                            frilansInformasjon: FrilansInformasjon
-                        ) =>
+                        onChangeSøker={(søkerProperties: Søker) => dispatch(søknadActions.updateSøker(søkerProperties))}
+                        onChangeFrilansinformasjon={(frilansInformasjon: FrilansInformasjon) =>
                             dispatch(
                                 søknadActions.updateSøker({
                                     frilansInformasjon
@@ -164,23 +135,11 @@ class AndreInntekterSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    hasChildBlocks={true}
-                    margin="none"
-                    visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
+                <Block hasChildBlocks={true} margin="none" visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
                     <SelvstendigNæringsdrivendeBolk
-                        oppfølgingsspørsmål={getMessage(
-                            intl,
-                            'selvstendigNæringsdrivende.oppfølgingsspørsmål'
-                        )}
-                        renderSpørsmål={
-                            this
-                                .renderSelvstendigNæringsdrivendeSiste10MndSpørsmål
-                        }
-                        showNæringsPerioderContent={
-                            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ===
-                            true
-                        }
+                        oppfølgingsspørsmål={getMessage(intl, 'selvstendigNæringsdrivende.oppfølgingsspørsmål')}
+                        renderSpørsmål={this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål}
+                        showNæringsPerioderContent={søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true}
                         næringListe={søker.selvstendigNæringsdrivendeBolk || []}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
@@ -190,24 +149,12 @@ class AndreInntekterSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    hasChildBlocks={true}
-                    margin="none"
-                    visible={visibility.andreInntekterBolk(søker)}>
+                <Block hasChildBlocks={true} margin="none" visible={visibility.andreInntekterBolk(søker)}>
                     <AndreInntekterBolk
-                        oppfølgingsspørsmål={getMessage(
-                            intl,
-                            'annenInntekt.oppfølgingsspørsmål'
-                        )}
-                        renderSpørsmål={
-                            this.renderAnnenInntektSiste10MndSpørsmål
-                        }
-                        showAndreInntekterPeriodeContent={
-                            harHattAnnenInntektSiste10Mnd
-                        }
-                        andreInntekterSiste10Mnd={
-                            søker.andreInntekterSiste10Mnd || []
-                        }
+                        oppfølgingsspørsmål={getMessage(intl, 'annenInntekt.oppfølgingsspørsmål')}
+                        renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
+                        showAndreInntekterPeriodeContent={harHattAnnenInntektSiste10Mnd}
+                        andreInntekterSiste10Mnd={søker.andreInntekterSiste10Mnd || []}
                         onChange={(andreInntekterSiste10Mnd) =>
                             dispatch(
                                 søknadActions.updateSøker({
@@ -231,11 +178,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
         history,
-        isAvailable: isAvailable(
-            StegID.ANDRE_INNTEKTER,
-            state.søknad,
-            props.søkerinfo
-        )
+        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo)
     };
 
     return {
@@ -245,6 +188,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps, {}, {}>(mapStateToProps)(
-    injectIntl(AndreInntekterSteg)
-);
+export default connect<StateProps, {}, {}>(mapStateToProps)(injectIntl(AndreInntekterSteg));

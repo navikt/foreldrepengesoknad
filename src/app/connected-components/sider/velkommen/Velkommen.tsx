@@ -34,12 +34,7 @@ interface OwnProps {
     isDinePersonopplysningerModalOpen: boolean;
 }
 
-type Props = StateProps &
-    DispatchProps &
-    InjectedIntlProps &
-    HistoryProps &
-    DispatchProps &
-    SøkerinfoProps;
+type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps & DispatchProps & SøkerinfoProps;
 
 class Velkommen extends React.Component<Props, OwnProps> {
     componentWillMount() {
@@ -73,13 +68,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
     }
 
     render() {
-        const {
-            person,
-            harGodkjentVilkår,
-            history,
-            dispatch,
-            intl
-        } = this.props;
+        const { person, harGodkjentVilkår, history, dispatch, intl } = this.props;
 
         if (person === undefined) {
             return null;
@@ -111,16 +100,12 @@ class Velkommen extends React.Component<Props, OwnProps> {
                                 })
                             );
                         }}>
-                        <span>
-                            {this.getBekreftCheckboksPanelLabelHeader()}
-                        </span>
+                        <span>{this.getBekreftCheckboksPanelLabelHeader()}</span>
                     </BekreftCheckboksPanel>
                     <Hovedknapp
                         className="velkommen__startSøknadKnapp blokk-m"
                         disabled={!harGodkjentVilkår}
-                        onClick={() =>
-                            harGodkjentVilkår && history.push('soknad/inngang')
-                        }>
+                        onClick={() => harGodkjentVilkår && history.push('soknad/inngang')}>
                         {getMessage(intl, 'velkommen.startSøknadKnapp')}
                     </Hovedknapp>
                     <div className="velkommen__personopplysningerLink">
@@ -140,9 +125,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
 
                 <DinePlikterModal
                     isOpen={this.state.isDinePlikterModalOpen}
-                    onRequestClose={() =>
-                        this.setState({ isDinePlikterModalOpen: false })
-                    }
+                    onRequestClose={() => this.setState({ isDinePlikterModalOpen: false })}
                 />
                 <DinePersonopplysningerModal
                     isOpen={this.state.isDinePersonopplysningerModalOpen}

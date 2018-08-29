@@ -3,10 +3,7 @@ import { erFarEllerMedmor } from '../../domain/personUtil';
 import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { Søkerinfo } from '../../../types/søkerinfo';
 
-export const annenForelderErGyldig = (
-    søknad: Søknad,
-    søkerinfo: Søkerinfo
-): boolean => {
+export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { annenForelder, søker, temp } = søknad;
 
     const {
@@ -19,26 +16,19 @@ export const annenForelderErGyldig = (
     const { rolle, erAleneOmOmsorg } = søker;
     const { kjønn } = søkerinfo.person;
     const harOpplystOmSinPågåendeSak =
-        temp.registrertAnnenForelder &&
-        temp.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
+        temp.registrertAnnenForelder && temp.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
     const barn = søknad.barn as ForeldreansvarBarn;
-    const vedleggOmsorgsovertakelse =
-        barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
+    const vedleggOmsorgsovertakelse = barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
 
     const result =
         kanIkkeOppgis === true ||
         erInformertOmSøknaden !== undefined ||
         erUfør !== undefined ||
         skalHaForeldrepenger === false ||
-        (harRettPåForeldrepenger === false &&
-            !erFarEllerMedmor(kjønn, rolle)) ||
-        (skalHaForeldrepenger === true &&
-            harRettPåForeldrepenger !== undefined) ||
+        (harRettPåForeldrepenger === false && !erFarEllerMedmor(kjønn, rolle)) ||
+        (skalHaForeldrepenger === true && harRettPåForeldrepenger !== undefined) ||
         (harOpplystOmSinPågåendeSak && !erFarEllerMedmor(kjønn, rolle)) ||
-        (erFarEllerMedmor(kjønn, rolle) &&
-            erAleneOmOmsorg &&
-            barn.foreldreansvarsdato &&
-            vedleggOmsorgsovertakelse);
+        (erFarEllerMedmor(kjønn, rolle) && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelse);
 
     return result !== undefined && result !== false;
 };

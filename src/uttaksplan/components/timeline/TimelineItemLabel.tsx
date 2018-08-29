@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    EtikettAdvarsel,
-    EtikettSuksess,
-    EtikettInfo,
-    EtikettFokus
-} from 'nav-frontend-etiketter';
+import { EtikettAdvarsel, EtikettSuksess, EtikettInfo, EtikettFokus } from 'nav-frontend-etiketter';
 import { TimelineLabel } from 'uttaksplan/components/timeline/types';
 
 export interface Props {
@@ -14,11 +9,7 @@ export interface Props {
 const TimelineItemLabel: React.StatelessComponent<Props> = ({ label }) => {
     switch (label.type) {
         case 'advarsel':
-            return (
-                <EtikettAdvarsel typo="undertekst">
-                    {label.text}
-                </EtikettAdvarsel>
-            );
+            return <EtikettAdvarsel typo="undertekst">{label.text}</EtikettAdvarsel>;
         case 'fokus':
             return (
                 <EtikettFokus typo="undertekst" type="fokus">
@@ -32,9 +23,7 @@ const TimelineItemLabel: React.StatelessComponent<Props> = ({ label }) => {
                 </EtikettInfo>
             );
         default:
-            return (
-                <EtikettSuksess typo="undertekst">{label.text}</EtikettSuksess>
-            );
+            return <EtikettSuksess typo="undertekst">{label.text}</EtikettSuksess>;
     }
 };
 

@@ -2,9 +2,7 @@ import Søker from '../../types/søknad/Søker';
 import { FrilansInformasjon } from '../../types/søknad/FrilansInformasjon';
 import visibilityFns from '../../bolker/frilanser-bolk/visibility';
 
-const cleanupFrilansInformasjon = (
-    søker: Søker
-): FrilansInformasjon | undefined => {
+const cleanupFrilansInformasjon = (søker: Søker): FrilansInformasjon | undefined => {
     const { frilansInformasjon } = søker;
     if (!frilansInformasjon) {
         return frilansInformasjon;

@@ -10,10 +10,7 @@ import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import {
-    getTermindatoRegler,
-    termindatoAvgrensninger
-} from '../../../../util/validation/fields/termindato';
+import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/fields/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
@@ -41,8 +38,7 @@ class UfødtBarnPartial extends React.Component<Props> {
             intl
         } = this.props;
 
-        const erMorEllerMorErForSyk =
-            !erFarEllerMedmor || annenForelder.erForSyk === true;
+        const erMorEllerMorErForSyk = !erFarEllerMedmor || annenForelder.erForSyk === true;
 
         return (
             <React.Fragment>
@@ -60,9 +56,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                 )}
 
                 {annenForelder.erForSyk === false && (
-                    <Veilederinfo type="feil">
-                        {getMessage(intl, 'annenForelder.forelder1IkkeSyk')}
-                    </Veilederinfo>
+                    <Veilederinfo type="feil">{getMessage(intl, 'annenForelder.forelder1IkkeSyk')}</Veilederinfo>
                 )}
 
                 {erMorEllerMorErForSyk && (
@@ -77,10 +71,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                     })
                                 );
                             }}
-                            spørsmål={getMessage(
-                                intl,
-                                'antallBarn.spørsmål.venter'
-                            )}
+                            spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
                         />
 
                         <Block visible={barn.antallBarn !== undefined}>
@@ -97,15 +88,11 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 }}
                                 dato={barn.termindato}
                                 avgrensninger={termindatoAvgrensninger}
-                                validators={getTermindatoRegler(
-                                    barn.termindato,
-                                    intl
-                                )}
+                                validators={getTermindatoRegler(barn.termindato, intl)}
                             />
                         </Block>
 
-                        {skalLasteOppTerminbekreftelse &&
-                        barn.termindato !== undefined ? (
+                        {skalLasteOppTerminbekreftelse && barn.termindato !== undefined ? (
                             <TerminbekreftelsePartial
                                 barn={barn}
                                 terminbekreftelse={terminbekreftelse}

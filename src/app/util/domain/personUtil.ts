@@ -2,19 +2,11 @@ import { Kjønn } from '../../types/common';
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import moment from 'moment';
 
-export const erFarEllerMedmor = (
-    kjønn: Kjønn,
-    søkerRolle: SøkerRolle
-): boolean => kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR;
+export const erFarEllerMedmor = (kjønn: Kjønn, søkerRolle: SøkerRolle): boolean =>
+    kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR;
 
-export const formaterNavn = (
-    fornavn: string,
-    etternavn: string,
-    mellomnavn?: string
-) => {
-    return mellomnavn
-        ? `${fornavn} ${mellomnavn} ${etternavn}`
-        : `${fornavn} ${etternavn}`;
+export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: string) => {
+    return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
 };
 
 export const erMyndig = (fødselsdato: string) => {

@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {
-    UttaksplanAppState,
-    UttaksplanFormState
-} from 'uttaksplan/redux/types';
-import {
-    Periode,
-    Dekningsgrad,
-    UttaksplanRequiredProps
-} from 'uttaksplan/types';
+import { UttaksplanAppState, UttaksplanFormState } from 'uttaksplan/redux/types';
+import { Periode, Dekningsgrad, UttaksplanRequiredProps } from 'uttaksplan/types';
 import { DispatchProps } from 'common/redux/types';
 
 import { Knapp } from 'nav-frontend-knapper';
@@ -61,18 +54,14 @@ class UttaksplanMain extends React.Component<Props> {
 
     componentWillReceiveProps(nextProps: Props) {
         if (
-            JSON.stringify(this.props.grunnlag) !==
-                JSON.stringify(nextProps.grunnlag) ||
+            JSON.stringify(this.props.grunnlag) !== JSON.stringify(nextProps.grunnlag) ||
             nextProps.dekningsgrad !== this.props.dekningsgrad
         ) {
             this.resetUttaksplan(nextProps.grunnlag, nextProps.dekningsgrad);
         }
     }
 
-    resetUttaksplan(
-        grunnlag: UttaksplanRequiredProps,
-        dekningsgrad: Dekningsgrad
-    ) {
+    resetUttaksplan(grunnlag: UttaksplanRequiredProps, dekningsgrad: Dekningsgrad) {
         this.props.dispatch(initUttaksplan(grunnlag, dekningsgrad));
     }
 
@@ -93,27 +82,14 @@ class UttaksplanMain extends React.Component<Props> {
                     )
                 );
             } else {
-                dispatch(
-                    opprettPerioderAleneomsorg(
-                        grunnlag.familiehendelsedato,
-                        dekningsgrad,
-                        uttaksgrunnlag
-                    )
-                );
+                dispatch(opprettPerioderAleneomsorg(grunnlag.familiehendelsedato, dekningsgrad, uttaksgrunnlag));
             }
 
             dispatch(visTidslinje(true));
         }
     }
     render() {
-        const {
-            grunnlag,
-            perioder,
-            uttaksgrunnlag,
-            uttaksinfo,
-            dispatch,
-            form
-        } = this.props;
+        const { grunnlag, perioder, uttaksgrunnlag, uttaksinfo, dispatch, form } = this.props;
 
         const perioderOpprettet = perioder.length > 0;
         const dekningsgrad = form.dekningsgrad;
@@ -126,8 +102,7 @@ class UttaksplanMain extends React.Component<Props> {
             <React.Fragment>
                 <div className="blokk-m">
                     <Veilederinfo type="info">
-                        Her setter du opp hvordan dere ønsker å ta ut
-                        foreldrepengene.
+                        Her setter du opp hvordan dere ønsker å ta ut foreldrepengene.
                     </Veilederinfo>
                 </div>
                 {!perioderOpprettet && (
@@ -137,41 +112,24 @@ class UttaksplanMain extends React.Component<Props> {
                                 form={form}
                                 uttaksgrunnlag={uttaksgrunnlag}
                                 onChangeDekningsgrad={(dg) =>
-                                    dispatch(
-                                        setDekningsgrad(
-                                            dg,
-                                            uttaksgrunnlag.permisjonsregler
-                                        )
-                                    )
+                                    dispatch(setDekningsgrad(dg, uttaksgrunnlag.permisjonsregler))
                                 }
-                                onChangeFordeling={(uker) =>
-                                    dispatch(setFellesperiodeukerMor(uker))
-                                }
+                                onChangeFordeling={(uker) => dispatch(setFellesperiodeukerMor(uker))}
                             />
                         </div>
                         <div className="m-textCenter">
-                            <Knapp onClick={() => this.opprettPerioder()}>
-                                Lag forslag til tidsplan
-                            </Knapp>
+                            <Knapp onClick={() => this.opprettPerioder()}>Lag forslag til tidsplan</Knapp>
                         </div>
                     </div>
                 )}
                 {perioderOpprettet && (
                     <div className="m-textCenter blokk-l">
-                        <Knapp
-                            onClick={() =>
-                                this.resetUttaksplan(
-                                    this.props.grunnlag,
-                                    this.props.dekningsgrad
-                                )
-                            }>
+                        <Knapp onClick={() => this.resetUttaksplan(this.props.grunnlag, this.props.dekningsgrad)}>
                             Lag ny plan
                         </Knapp>
                     </div>
                 )}
-                <EkspanderbartInnhold
-                    bredBakgrunn={true}
-                    erApen={perioderOpprettet && uttaksinfo !== undefined}>
+                <EkspanderbartInnhold bredBakgrunn={true} erApen={perioderOpprettet && uttaksinfo !== undefined}>
                     {perioderOpprettet &&
                         uttaksinfo && (
                             <div className="tidsplan">
@@ -184,10 +142,7 @@ class UttaksplanMain extends React.Component<Props> {
                             </div>
                         )}
                 </EkspanderbartInnhold>
-                <DevBeregning
-                    perioder={perioder}
-                    uttaksgrunnlag={uttaksgrunnlag}
-                />
+                <DevBeregning perioder={perioder} uttaksgrunnlag={uttaksgrunnlag} />
                 <DevHelper
                     familiehendelsedato={grunnlag.familiehendelsedato}
                     dekningsgrad={dekningsgrad || '100%'}

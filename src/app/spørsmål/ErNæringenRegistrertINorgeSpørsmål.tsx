@@ -10,10 +10,7 @@ export enum NæringRegistrertINorge {
 
 interface ErNæringenRegistrertINorgeSpørsmålProps {
     registrertINorge?: boolean;
-    onChange: (
-        registrertINorge: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (registrertINorge: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = ErNæringenRegistrertINorgeSpørsmålProps & InjectedIntlProps;
@@ -39,19 +36,12 @@ const ErNæringenRegistrertINorgeSpørsmål = (props: Props) => {
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        NæringRegistrertINorge.NÆRINGEN_ER_IKKE_REGISTRERT_I_NORGE
+                    value: NæringRegistrertINorge.NÆRINGEN_ER_IKKE_REGISTRERT_I_NORGE
                 }
             ]}
             name="erNæringenRegistrertINorge"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: NæringRegistrertINorge
-            ) =>
-                onChange(
-                    v === NæringRegistrertINorge.NÆRINGEN_ER_REGISTRERT_I_NORGE,
-                    e
-                )
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: NæringRegistrertINorge) =>
+                onChange(v === NæringRegistrertINorge.NÆRINGEN_ER_REGISTRERT_I_NORGE, e)
             }
             {...otherProps}
         />

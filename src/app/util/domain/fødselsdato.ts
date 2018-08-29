@@ -6,12 +6,7 @@ const fødselsdatoerToString = (datoer: Fødselsdato[]): string[] => {
 };
 
 const fødselsdatoerFromString = (datoer: string[]) => {
-    return datoer.map(
-        (dato) =>
-            dato !== undefined && dato !== ''
-                ? getDateFromString(dato)
-                : undefined
-    );
+    return datoer.map((dato) => (dato !== undefined && dato !== '' ? getDateFromString(dato) : undefined));
 };
 
 const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
@@ -19,9 +14,7 @@ const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
     if (datoer.length > antall) {
         fødselsdatoer = datoer.slice(0, antall);
     } else {
-        fødselsdatoer = new Array(antall - fødselsdatoer.length).fill(
-            undefined
-        );
+        fødselsdatoer = new Array(antall - fødselsdatoer.length).fill(undefined);
         fødselsdatoer.unshift(...datoer);
     }
     return fødselsdatoer;

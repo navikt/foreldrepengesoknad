@@ -10,10 +10,7 @@ export enum MorForSyk {
 
 interface MorForSykSpørsmålProps {
     erMorForSyk?: boolean;
-    onChange: (
-        erBarnetFødt: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (erBarnetFødt: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = MorForSykSpørsmålProps & InjectedIntlProps;
@@ -43,9 +40,7 @@ const MorForSykSpørsmål = (props: Props) => {
                     value: MorForSyk.IKKE_FOR_SYK
                 }
             ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: MorForSyk) =>
-                onChange(v === MorForSyk.FOR_SYK, e)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: MorForSyk) => onChange(v === MorForSyk.FOR_SYK, e)}
             {...otherProps}
         />
     );

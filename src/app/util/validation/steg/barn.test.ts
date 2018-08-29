@@ -47,23 +47,15 @@ describe('barn.steg.validation', () => {
             expect(forelder).toBeUndefined();
         });
         it('barn med annen forelder har registrertAnnenForelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([
-                barnMedForelder
-            ]);
+            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder]);
             expect(forelder).toBeDefined();
         });
         it('registrertAnnenForelder er defined ved flere barn med samme forelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([
-                barnMedForelder,
-                barnMedForelder
-            ]);
+            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedForelder]);
             expect(forelder).toBeDefined();
         });
         it('annenForelder er defined ved flere barn med samme forelder', () => {
-            const forelder = getUniqeRegistrertAnnenForelderFromBarn([
-                barnMedForelder,
-                barnMedUlikForelder
-            ]);
+            const forelder = getUniqeRegistrertAnnenForelderFromBarn([barnMedForelder, barnMedUlikForelder]);
             expect(forelder).toBeUndefined();
         });
     });

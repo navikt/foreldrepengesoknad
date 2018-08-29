@@ -7,10 +7,7 @@ import DocumentTitle from 'react-document-title';
 import { Permisjonsregler, Periode } from '../../../../uttaksplan/types';
 import { getPermisjonsregler } from 'uttaksplan/utils/regler/permisjonsregler';
 import Uttaksplan from 'uttaksplan/main/UttaksplanMain';
-import {
-    mockUttaksplanSøker,
-    mockUttasksplanAnnenForelder
-} from '../../../dev/uttaksplanMock';
+import { mockUttaksplanSøker, mockUttasksplanAnnenForelder } from '../../../dev/uttaksplanMock';
 import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DevUttaksplanSideSkjema from './DevUttaksplanSideSkjema';
 import { addDays } from 'date-fns';
@@ -47,9 +44,7 @@ export interface State {
     skjemadata: UttaksplamTestSkjemadata;
 }
 
-const getAnnenForelder = (
-    skjema: UttaksplamTestSkjemadata
-): UttaksplanAnnenForelder | undefined => {
+const getAnnenForelder = (skjema: UttaksplamTestSkjemadata): UttaksplanAnnenForelder | undefined => {
     if (skjema.fnrFarOppgitt === false || !skjema.farHarRett) {
         return undefined;
     }
@@ -86,9 +81,7 @@ class UttaksplanSide extends React.Component<Props, State> {
 
                 <div className="dev-only">
                     <DevUttaksplanSideSkjema
-                        onChange={(skjemadata: UttaksplamTestSkjemadata) =>
-                            this.setState({ skjemadata })
-                        }
+                        onChange={(skjemadata: UttaksplamTestSkjemadata) => this.setState({ skjemadata })}
                         skjemadata={this.state.skjemadata}
                     />
                 </div>
@@ -117,10 +110,8 @@ const mapStateToProps = (state: UttaksplanAppState): StateProps => {
         form: {
             navnForelder1: 'Kari',
             navnForelder2: 'Ola',
-            fellesperiodeukerForelder1:
-                state.uttaksplan.form.fellesperiodeukerForelder1,
-            fellesperiodeukerForelder2:
-                state.uttaksplan.form.fellesperiodeukerForelder2,
+            fellesperiodeukerForelder1: state.uttaksplan.form.fellesperiodeukerForelder1,
+            fellesperiodeukerForelder2: state.uttaksplan.form.fellesperiodeukerForelder2,
             permisjonsregler: getPermisjonsregler(),
             familiehendelsedato
         }

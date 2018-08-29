@@ -30,10 +30,7 @@ export interface ValiderbartSkjemaelementState {
     optional?: boolean;
 }
 
-class ValiderbartSkjemaelement extends React.Component<
-    Props,
-    ValiderbartSkjemaelementState
-> {
+class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemaelementState> {
     static contextTypes = {
         validForm: PT.object
     };
@@ -159,9 +156,7 @@ class ValiderbartSkjemaelement extends React.Component<
             ...other
         } = this.props;
 
-        const failedVerdict = !this.state.valid
-            ? { feilmelding: this.getFirstFailedVerdict().failText }
-            : undefined;
+        const failedVerdict = !this.state.valid ? { feilmelding: this.getFirstFailedVerdict().failText } : undefined;
 
         const elementRef: any = {};
         switch (component) {

@@ -41,9 +41,7 @@ const HarDuRevisorSpørsmål = (props: Props) => {
                 }
             ]}
             name="harDuRevisor"
-            onChange={(e: InputChangeEvent, v: HarRevisor) =>
-                onChange(v === HarRevisor.HAR_REVISOR)
-            }
+            onChange={(e: InputChangeEvent, v: HarRevisor) => onChange(v === HarRevisor.HAR_REVISOR)}
         />
     );
 };

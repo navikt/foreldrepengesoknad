@@ -3,11 +3,7 @@ import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { formatDate } from '../../../../app/util/dates/dates';
-import {
-    FødtBarn,
-    BarnPartial,
-    UfødtBarn
-} from '../../../../app/types/søknad/Barn';
+import { FødtBarn, BarnPartial, UfødtBarn } from '../../../../app/types/søknad/Barn';
 
 interface OppsummeringRelasjonTilBarnFødselProps {
     barn: BarnPartial;
@@ -27,10 +23,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                 />
                 {fødselsattest && (
                     <DisplayTextWithLabel
-                        label={getMessage(
-                            intl,
-                            'oppsummering.terminbekreftelse'
-                        )}
+                        label={getMessage(intl, 'oppsummering.terminbekreftelse')}
                         text={fødselsattest.map((vedlegg) => vedlegg.filename)}
                     />
                 )}
@@ -40,11 +33,7 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
 
     renderOppsummeringUfødtBarn() {
         const { barn, intl } = this.props;
-        const {
-            terminbekreftelseDato,
-            termindato,
-            terminbekreftelse
-        } = barn as UfødtBarn;
+        const { terminbekreftelseDato, termindato, terminbekreftelse } = barn as UfødtBarn;
 
         if (termindato === undefined || terminbekreftelseDato === undefined) {
             return;
@@ -58,20 +47,12 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
                 />
                 {terminbekreftelse && (
                     <DisplayTextWithLabel
-                        label={getMessage(
-                            intl,
-                            'oppsummering.terminbekreftelse'
-                        )}
-                        text={terminbekreftelse.map(
-                            (vedlegg) => vedlegg.filename
-                        )}
+                        label={getMessage(intl, 'oppsummering.terminbekreftelse')}
+                        text={terminbekreftelse.map((vedlegg) => vedlegg.filename)}
                     />
                 )}
                 <DisplayTextWithLabel
-                    label={getMessage(
-                        intl,
-                        'oppsummering.terminbekreftelseDato'
-                    )}
+                    label={getMessage(intl, 'oppsummering.terminbekreftelseDato')}
                     text={formatDate(terminbekreftelseDato) || ''}
                 />
             </React.Fragment>
@@ -88,29 +69,20 @@ class OppsummeringRelasjonTilBarFødsel extends React.Component<Props> {
         } else if (antallBarn === 2) {
             antallBarnSummaryText = getMessage(intl, 'oppsummering.tvillinger');
         } else {
-            antallBarnSummaryText = getMessage(
-                intl,
-                'oppsummering.antallBarn.flere',
-                {
-                    antall: antallBarn
-                }
-            );
+            antallBarnSummaryText = getMessage(intl, 'oppsummering.antallBarn.flere', {
+                antall: antallBarn
+            });
         }
 
         return (
             <React.Fragment>
                 {antallBarn && (
                     <DisplayTextWithLabel
-                        label={getMessage(
-                            intl,
-                            'oppsummering.antallBarn.label'
-                        )}
+                        label={getMessage(intl, 'oppsummering.antallBarn.label')}
                         text={antallBarnSummaryText}
                     />
                 )}
-                {erBarnetFødt
-                    ? this.renderOppsummeringFødtBarn()
-                    : this.renderOppsummeringUfødtBarn()}
+                {erBarnetFødt ? this.renderOppsummeringFødtBarn() : this.renderOppsummeringUfødtBarn()}
             </React.Fragment>
         );
     }
