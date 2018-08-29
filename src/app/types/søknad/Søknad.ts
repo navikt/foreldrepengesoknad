@@ -7,6 +7,7 @@ import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -25,6 +26,16 @@ export enum Søkersituasjon {
     FORELDREANSVAR = 'omsorgsovertakelse'
 }
 
+export interface SøknadenGjelderBarnValg {
+    valgteBarn: RegistrertBarn[];
+    gjelderAnnetBarn?: boolean;
+}
+
+interface SkjemaEkstradata {
+    søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
+    registrertAnnenForelder?: RegistrertAnnenForelder;
+}
+
 interface Søknad {
     type: Foreldrepenger;
     harGodkjentVilkår: boolean;
@@ -36,6 +47,7 @@ interface Søknad {
     uttaksplan: Periode[];
     søker: Søker;
     vedlegg?: Attachment[];
+    temp: SkjemaEkstradata;
 }
 
 export interface SøknadPartial {
@@ -49,9 +61,8 @@ export interface SøknadPartial {
     uttaksplan?: Periode[];
     søker: SøkerPartial;
     vedlegg?: Attachment[];
+    temp: SkjemaEkstradata;
 }
-
-export type Skjemadata = Partial<Søknad>;
 
 export enum AttachmentType {
     OMSORGSOVERTAKELSE = 'omsorgsovertakelse',

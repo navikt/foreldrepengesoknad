@@ -8,6 +8,10 @@ import {
     editAttachmentInState,
     removeAttachmentFromState
 } from '../util/attachmentStateUpdates';
+import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
+import { RegistrertAnnenForelder } from '../../types/Person';
+import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
+import { formaterNavn } from '../../util/domain/personUtil';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -25,11 +29,33 @@ const getDefaultState = (): SøknadPartial => {
             andreInntekterSiste10Mnd: []
         },
         harGodkjentVilkår: false,
-        harGodkjentOppsummering: false
+        harGodkjentOppsummering: false,
+        temp: {
+            søknadenGjelderBarnValg: {
+                valgteBarn: [],
+                gjelderAnnetBarn: undefined
+            }
+        }
     };
 };
 
-const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
+const getAnnenForelderFromRegistrertForelder = (
+    registertForelder: RegistrertAnnenForelder
+): AnnenForelderPartial => {
+    return {
+        fnr: registertForelder.fnr,
+        navn: formaterNavn(
+            registertForelder.fornavn,
+            registertForelder.etternavn,
+            registertForelder.mellomnavn
+        )
+    };
+};
+
+const søknadReducer = (
+    state = getDefaultState(),
+    action: SøknadAction
+): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.UPDATE_BARN:
             return {
@@ -62,6 +88,24 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction) => {
                 ...state,
                 ...action.payload
             };
+        case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
+            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(
+                action.payload.valgteBarn
+            );
+            return {
+                ...state,
+                annenForelder: registrertAnnenForelder
+                    ? getAnnenForelderFromRegistrertForelder(
+                          registrertAnnenForelder
+                      )
+                    : state.annenForelder,
+                temp: {
+                    ...state.temp,
+                    søknadenGjelderBarnValg: action.payload,
+                    registrertAnnenForelder
+                }
+            };
+        }
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
