@@ -45,9 +45,14 @@ class InngangSteg extends React.Component<Props, {}> {
         const { kjønn, søker } = this.props;
         const { rolle } = søker;
 
+        if (situasjon === Søkersituasjon.ADOPSJON && kjønn === Kjønn.KVINNE) {
+            return SøkerRolle.MOR;
+        }
+
         if (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN) {
             return SøkerRolle.FAR;
         }
+
         return rolle;
     }
 
@@ -67,8 +72,7 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     handleOnSubmit() {
-        const { søker, dispatch, history } = this.props;
-        // dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
+        const { dispatch, history } = this.props;
         dispatch(apiActionCreators.storeAppState());
         history.push(`${søknadStegPath(stegConfig[StegID.INNGANG].nesteSteg)}`);
     }
@@ -117,10 +121,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const situasjon = state.søknad.situasjon;
     const søker = state.søknad.søker;
     const roller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
+    const erRolleGyldig = roller.some((r) => r === søker.rolle);
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: inngangErGyldig(situasjon, state.søknad.søker.rolle, kjønn),
+        renderFortsettKnapp: inngangErGyldig(situasjon, søker.rolle, kjønn, erRolleGyldig),
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegRoute: resolveNesteSteg(state)
