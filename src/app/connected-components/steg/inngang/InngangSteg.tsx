@@ -15,11 +15,12 @@ import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørs
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 
 import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
+import { resolveStegToRender } from '../util/navigation';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -93,18 +94,6 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 }
 
-const resolveNesteSteg = (state: AppState): StegID | undefined => {
-    const { situasjon } = state.søknad;
-    if (situasjon === Søkersituasjon.FØDSEL) {
-        return StegID.RELASJON_TIL_BARN_FØDSEL;
-    } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
-        return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
-    } else if (situasjon === Søkersituasjon.ADOPSJON) {
-        return StegID.RELASJON_TIL_BARN_ADOPSJON;
-    }
-    return;
-};
-
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
@@ -116,7 +105,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: inngangErGyldig(situasjon, state.søknad.søker.rolle, kjønn),
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        nesteStegRoute: resolveNesteSteg(state)
+        nesteStegRoute: resolveStegToRender(state)
     };
 
     return {

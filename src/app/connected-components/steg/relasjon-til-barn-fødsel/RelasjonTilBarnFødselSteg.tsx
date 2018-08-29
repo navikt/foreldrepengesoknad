@@ -20,7 +20,7 @@ import { StegID } from '../../../util/routing/stegConfig';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { barnErGyldig, skalSøkerLasteOppTerminbekreftelse } from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';

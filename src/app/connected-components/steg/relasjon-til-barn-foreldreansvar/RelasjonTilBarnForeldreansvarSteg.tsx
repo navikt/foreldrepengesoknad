@@ -21,7 +21,7 @@ import { getAlderFraDato } from '../../../util/dates/dates';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';

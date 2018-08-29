@@ -13,12 +13,13 @@ import { HistoryProps } from '../../../types/common';
 import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { resolveStegToRender } from '../util/navigation';
 
 interface StateProps {
     antallBarn?: number;
@@ -89,6 +90,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: annenForelderErGyldig(state.søknad, props.søkerinfo),
+        previousStegRoute: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
