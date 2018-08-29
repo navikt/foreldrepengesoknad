@@ -18,12 +18,8 @@ type Props = BarnBolkProps & InjectedIntlProps;
 class BarnBolk extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.onGjelderRegistrertBarnChange = this.onGjelderRegistrertBarnChange.bind(
-            this
-        );
-        this.onGjelderAnnetBarnChange = this.onGjelderAnnetBarnChange.bind(
-            this
-        );
+        this.onGjelderRegistrertBarnChange = this.onGjelderRegistrertBarnChange.bind(this);
+        this.onGjelderAnnetBarnChange = this.onGjelderAnnetBarnChange.bind(this);
     }
     onGjelderAnnetBarnChange(checked: boolean) {
         this.props.onChange({
@@ -35,9 +31,7 @@ class BarnBolk extends React.Component<Props> {
         const { valgteBarn } = this.props.søknadenGjelderBarnValg;
         this.props.onChange({
             gjelderAnnetBarn: false,
-            valgteBarn: checked
-                ? [...valgteBarn, barn]
-                : valgteBarn.filter((b) => b.fnr !== barn.fnr)
+            valgteBarn: checked ? [...valgteBarn, barn] : valgteBarn.filter((b) => b.fnr !== barn.fnr)
         });
     }
     render() {
@@ -50,24 +44,15 @@ class BarnBolk extends React.Component<Props> {
                         registrerteBarn={registrerteBarn}
                         valgteBarn={søknadenGjelderBarnValg.valgteBarn}
                         onChange={this.onGjelderRegistrertBarnChange}
-                        disabled={
-                            søknadenGjelderBarnValg.gjelderAnnetBarn || false
-                        }
+                        disabled={søknadenGjelderBarnValg.gjelderAnnetBarn || false}
                     />
                 </Block>
 
                 <Block>
                     <Checkbox
-                        label={getMessage(
-                            intl,
-                            'søknadenGjelderAnnetBarn.spørsmål'
-                        )}
-                        checked={
-                            søknadenGjelderBarnValg.gjelderAnnetBarn === true
-                        }
-                        onChange={(evt) =>
-                            this.onGjelderAnnetBarnChange(evt.target.checked)
-                        }
+                        label={getMessage(intl, 'søknadenGjelderAnnetBarn.spørsmål')}
+                        checked={søknadenGjelderBarnValg.gjelderAnnetBarn === true}
+                        onChange={(evt) => this.onGjelderAnnetBarnChange(evt.target.checked)}
                     />
                 </Block>
             </React.Fragment>

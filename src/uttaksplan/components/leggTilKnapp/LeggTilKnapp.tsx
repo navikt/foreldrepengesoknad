@@ -11,11 +11,7 @@ export interface Props extends React.HTMLProps<HTMLButtonElement> {
 }
 
 const LeggTilKnapp: React.StatelessComponent<Props> = (props) => (
-    <Knapp
-        htmlType="button"
-        onClick={(e) => props.onClick(e)}
-        className="leggTilKnapp"
-        data-ref="leggTilKnapp">
+    <Knapp htmlType="button" onClick={(e) => props.onClick(e)} className="leggTilKnapp" data-ref="leggTilKnapp">
         <span className="leggTilKnapp__content">
             <span className="leggTilKnapp__pluss">
                 <PlussIkon />

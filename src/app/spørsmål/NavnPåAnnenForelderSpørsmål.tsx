@@ -20,9 +20,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
             disabled={kanIkkeOppgis}
             label={getMessage(intl, 'annenForelder.spørsmål.navn')}
             name="navn"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                onChange({ navn: e.target.value })
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ navn: e.target.value })}
             value={navn === undefined ? '' : navn}
         />
     );

@@ -4,8 +4,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { isBefore, isAfter, isSameDay } from 'date-fns';
 import { slåSammenLikePerioder } from 'uttaksplan/utils/planer/UttaksplanBuilder';
 
-export const UttaksplanManuell = (perioder: Periode[]) =>
-    new UttaksplanManuellBuilder(perioder);
+export const UttaksplanManuell = (perioder: Periode[]) => new UttaksplanManuellBuilder(perioder);
 
 class UttaksplanManuellBuilder {
     constructor(public perioder: Periode[]) {}
@@ -52,22 +51,15 @@ class UttaksplanManuellBuilder {
  * @param periode
  * @returns Modifisert periodeliste med justert/fjernet opphold
  */
-function fjernUttaksdagerFraPerioder(
-    perioder: Periode[],
-    periode: Periode
-): Periode[] {
+function fjernUttaksdagerFraPerioder(perioder: Periode[], periode: Periode): Periode[] {
     const nyePerioder: Periode[] = [];
     perioder.forEach((p) => {
         if (Tidsperioden(p.tidsperiode).erOmsluttetAv(periode.tidsperiode)) {
             return;
         } else if (Tidsperioden(p.tidsperiode).erUtenfor(periode.tidsperiode)) {
             nyePerioder.push(p);
-        } else if (
-            Tidsperioden(periode.tidsperiode).erOmsluttetAv(p.tidsperiode)
-        ) {
-            fjernTidsperiodeFraPeriode(p, periode.tidsperiode).forEach((p2) =>
-                nyePerioder.push(p2)
-            );
+        } else if (Tidsperioden(periode.tidsperiode).erOmsluttetAv(p.tidsperiode)) {
+            fjernTidsperiodeFraPeriode(p, periode.tidsperiode).forEach((p2) => nyePerioder.push(p2));
         } else if (isBefore(p.tidsperiode.fom, periode.tidsperiode.fom)) {
             nyePerioder.push({
                 ...p,
@@ -94,10 +86,7 @@ function fjernUttaksdagerFraPerioder(
  * @param periode
  * @param periode2
  */
-function fjernTidsperiodeFraPeriode(
-    periode: Periode,
-    tidsperiode: Tidsperiode
-): Periode[] {
+function fjernTidsperiodeFraPeriode(periode: Periode, tidsperiode: Tidsperiode): Periode[] {
     const t1 = periode.tidsperiode;
 
     // Dersom de ikke overlapper
@@ -106,10 +95,7 @@ function fjernTidsperiodeFraPeriode(
     }
 
     // Total overlapp
-    if (
-        isSameDay(t1.fom, tidsperiode.fom) &&
-        isSameDay(t1.tom, tidsperiode.tom)
-    ) {
+    if (isSameDay(t1.fom, tidsperiode.fom) && isSameDay(t1.tom, tidsperiode.tom)) {
         return [];
     }
 

@@ -1,10 +1,7 @@
 import * as React from 'react';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { Fødselsdato } from '../types/common';
-import {
-    fødselsdatoAvgrensninger,
-    getFødselsdatoRegler
-} from '../util/validation/fields/fødselsdato';
+import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fields/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Avgrensninger } from 'nav-datovelger';
@@ -24,15 +21,9 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
         this.onDatoChange = this.onDatoChange.bind(this);
-        this.renderCollapsedFødselsdatoSpørsmål = this.renderCollapsedFødselsdatoSpørsmål.bind(
-            this
-        );
-        this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(
-            this
-        );
-        this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(
-            this
-        );
+        this.renderCollapsedFødselsdatoSpørsmål = this.renderCollapsedFødselsdatoSpørsmål.bind(this);
+        this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(this);
+        this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(this);
     }
 
     onDatoChange(dato: Fødselsdato, idx: number) {
@@ -74,11 +65,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                             name={getKey(idx)}
                             dato={fødselsdatoer[idx]}
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
-                            label={
-                                <Labeltekst
-                                    intlId={`fødselsdatoer.flere.${idx + 1}`}
-                                />
-                            }
+                            label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
                             avgrensninger={this.getFødselsdatoAvgrensninger()}
                             validators={getFødselsdatoRegler(dato, intl)}
                         />
@@ -90,9 +77,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
 
     render() {
         const { collapsed } = this.props;
-        return collapsed
-            ? this.renderCollapsedFødselsdatoSpørsmål()
-            : this.renderExpandedFødselsdatoSpørsmål();
+        return collapsed ? this.renderCollapsedFødselsdatoSpørsmål() : this.renderExpandedFødselsdatoSpørsmål();
     }
 }
 

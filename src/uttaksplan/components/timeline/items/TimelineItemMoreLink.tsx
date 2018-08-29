@@ -5,10 +5,7 @@ export interface Props {
     onClick: () => void;
 }
 
-const TimelineItemMoreLink: React.StatelessComponent<Props> = ({
-    itemId,
-    onClick
-}) => (
+const TimelineItemMoreLink: React.StatelessComponent<Props> = ({ itemId, onClick }) => (
     <a
         className={'timelineItemMoreLink'}
         aria-labelledby={itemId}

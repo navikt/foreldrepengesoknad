@@ -9,11 +9,7 @@ interface Props {
     setSpråkkode: (kode: Språkkode) => void;
 }
 
-const Språkvelger: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    intl,
-    kode,
-    setSpråkkode
-}) => {
+const Språkvelger: React.StatelessComponent<Props & InjectedIntlProps> = ({ intl, kode, setSpråkkode }) => {
     return (
         <div className="sprakvelger">
             <a

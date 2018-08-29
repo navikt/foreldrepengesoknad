@@ -9,10 +9,7 @@ import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import {
-    AttachmentType,
-    Skjemanummer
-} from '../../../../app/types/søknad/Søknad';
+import { AttachmentType, Skjemanummer } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 
@@ -50,9 +47,7 @@ class AttachmentOverview extends React.Component<Props, State> {
         if (this.hasFailedAttachments(attachmentsWithoutOldFailedAttachments)) {
             this.setState({
                 failedAttachments: this.state.failedAttachments.concat(
-                    attachmentsWithoutOldFailedAttachments.filter(
-                        isAttachmentWithError
-                    )
+                    attachmentsWithoutOldFailedAttachments.filter(isAttachmentWithError)
                 )
             });
             this.showErrorMessage();
@@ -86,31 +81,16 @@ class AttachmentOverview extends React.Component<Props, State> {
             onFilesSelect
         } = this.props;
 
-        const attachmentsToRender = attachments.filter(
-            (a: Attachment) => !isAttachmentWithError(a)
-        );
+        const attachmentsToRender = attachments.filter((a: Attachment) => !isAttachmentWithError(a));
         const showAttachments = attachmentsToRender.length > 0;
 
         return (
             <React.Fragment>
-                <Block
-                    margin={
-                        showAttachments || this.state.showErrorMessage
-                            ? 'xs'
-                            : 'none'
-                    }>
+                <Block margin={showAttachments || this.state.showErrorMessage ? 'xs' : 'none'}>
                     <VedleggInput
                         id={inputId}
                         onFilesSelect={(files: File[]) => {
-                            onFilesSelect(
-                                files.map((f) =>
-                                    mapFileToAttachment(
-                                        f,
-                                        attachmentType,
-                                        skjemanummer
-                                    )
-                                )
-                            );
+                            onFilesSelect(files.map((f) => mapFileToAttachment(f, attachmentType, skjemanummer)));
                         }}
                         onClick={this.hideErrorMessage}
                     />
@@ -123,19 +103,12 @@ class AttachmentOverview extends React.Component<Props, State> {
                     <React.Fragment>
                         {(showAttachments || this.state.showErrorMessage) && (
                             <React.Fragment>
-                                <Block
-                                    margin="xs"
-                                    visible={this.state.showErrorMessage}
-                                    animated={false}>
+                                <Block margin="xs" visible={this.state.showErrorMessage} animated={false}>
                                     <AlertstripeWithCloseButton
                                         alertStripeProps={{
                                             type: 'advarsel',
                                             solid: true,
-                                            children: (
-                                                <FormattedMessage
-                                                    id={'vedlegg.feilmelding'}
-                                                />
-                                            )
+                                            children: <FormattedMessage id={'vedlegg.feilmelding'} />
                                         }}
                                         lukknappProps={{
                                             hvit: true,
@@ -150,12 +123,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                                             id="vedlegg.liste.tittel"
                                             values={{
                                                 størrelse: bytesString(
-                                                    getTotalFileSize(
-                                                        attachmentsToRender.map(
-                                                            (a: Attachment) =>
-                                                                a.file
-                                                        )
-                                                    )
+                                                    getTotalFileSize(attachmentsToRender.map((a: Attachment) => a.file))
                                                 )
                                             }}
                                         />
@@ -164,9 +132,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                                 <AttachmentList
                                     attachments={attachmentsToRender}
                                     showFileSize={showFileSize}
-                                    onDelete={(file: Attachment) =>
-                                        onFileDelete(file)
-                                    }
+                                    onDelete={(file: Attachment) => onFileDelete(file)}
                                 />
                             </React.Fragment>
                         )}

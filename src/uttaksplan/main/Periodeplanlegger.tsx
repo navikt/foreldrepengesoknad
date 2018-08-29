@@ -29,9 +29,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
 
     handlePeriodeClick(periode: Periode) {
         if (periode.type === Periodetype.Utsettelse) {
-            this.props.dispatch(
-                visPeriodeDialog(Periodetype.Utsettelse, periode)
-            );
+            this.props.dispatch(visPeriodeDialog(Periodetype.Utsettelse, periode));
         } else if (periode.type === Periodetype.Uttak) {
             this.props.dispatch(visPeriodeDialog(Periodetype.Uttak, periode));
         }
@@ -45,8 +43,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                 <div className="blokkPad-m">
                     <h2 className="tidsplan__tittel">Planen</h2>
                     <p className="blokkPad-s">
-                        Du kan endre periodene ved å velge dem, eller legge til
-                        nye perioder og/eller utsettelser.
+                        Du kan endre periodene ved å velge dem, eller legge til nye perioder og/eller utsettelser.
                     </p>
                     <PeriodeTimeline
                         familiehendelsedato={familiehendelsedato}
@@ -60,22 +57,10 @@ class Periodeplanlegger extends React.Component<Props, {}> {
                 <div>
                     <div className="m-textCenter">
                         <Knapperad>
-                            <Knapp
-                                htmlType="button"
-                                onClick={() =>
-                                    dispatch(
-                                        visPeriodeDialog(Periodetype.Uttak)
-                                    )
-                                }>
+                            <Knapp htmlType="button" onClick={() => dispatch(visPeriodeDialog(Periodetype.Uttak))}>
                                 Legg til periode
                             </Knapp>
-                            <Knapp
-                                htmlType="button"
-                                onClick={() =>
-                                    dispatch(
-                                        visPeriodeDialog(Periodetype.Utsettelse)
-                                    )
-                                }>
+                            <Knapp htmlType="button" onClick={() => dispatch(visPeriodeDialog(Periodetype.Utsettelse))}>
                                 Legg til utsettelse
                             </Knapp>
                         </Knapperad>
@@ -90,11 +75,7 @@ class Periodeplanlegger extends React.Component<Props, {}> {
 
                 <UtsettelsesperiodeDialog
                     navnForelder1={uttaksgrunnlag.søker.fornavn}
-                    navnForelder2={
-                        uttaksgrunnlag.annenForelder
-                            ? uttaksgrunnlag.annenForelder.fornavn
-                            : 'Forelder 2'
-                    }
+                    navnForelder2={uttaksgrunnlag.annenForelder ? uttaksgrunnlag.annenForelder.fornavn : 'Forelder 2'}
                     familiehendelsedato={familiehendelsedato}
                     permisjonsregler={uttaksgrunnlag.permisjonsregler}
                     uttaksinfo={uttaksinfo}

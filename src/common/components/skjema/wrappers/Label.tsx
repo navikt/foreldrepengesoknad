@@ -8,11 +8,7 @@ export type SkjemaLabelProps = CommonSkjemaelementProps & {
     inputId: string;
 };
 
-const InputLabel: React.StatelessComponent<SkjemaLabelProps> = ({
-    label,
-    infotekst,
-    inputId
-}) => {
+const InputLabel: React.StatelessComponent<SkjemaLabelProps> = ({ label, infotekst, inputId }) => {
     return (
         <label htmlFor={inputId}>
             {label}

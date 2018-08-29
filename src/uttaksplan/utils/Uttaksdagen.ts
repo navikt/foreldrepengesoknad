@@ -11,8 +11,7 @@ export const Uttaksdagen = (dato: Date) => ({
     neste: (): Date => getUttaksdagEtterDato(dato),
     denneEllerNeste: (): Date => getUttaksdagFraOgMedDato(dato),
     denneEllerForrige: (): Date => getUttaksdagTilOgMedDato(dato),
-    getUttaksdagerFremTilDato: (tildato: Date) =>
-        getUttaksdagerFremTilDato(dato, tildato),
+    getUttaksdagerFremTilDato: (tildato: Date) => getUttaksdagerFremTilDato(dato, tildato),
     leggTil: (uttaksdager: number): Date => {
         if (uttaksdager < 0) {
             return trekkUttaksdagerFraDato(dato, uttaksdager);
@@ -21,8 +20,7 @@ export const Uttaksdagen = (dato: Date) => ({
         }
         return dato;
     },
-    trekkFra: (uttaksdager: number): Date =>
-        trekkUttaksdagerFraDato(dato, uttaksdager)
+    trekkFra: (uttaksdager: number): Date => trekkUttaksdagerFraDato(dato, uttaksdager)
 });
 
 /**

@@ -8,11 +8,7 @@ export interface Props {
     hideArrow?: boolean;
 }
 
-const Callout: React.StatelessComponent<Props> = ({
-    borderColor = 'gray',
-    hideArrow = false,
-    children
-}) => (
+const Callout: React.StatelessComponent<Props> = ({ borderColor = 'gray', hideArrow = false, children }) => (
     <div className={`callout callout--${borderColor}`}>
         {!hideArrow && (
             <div className="callout__arrow">

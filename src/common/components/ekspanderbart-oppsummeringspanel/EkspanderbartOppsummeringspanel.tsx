@@ -13,25 +13,16 @@ interface OppsummeringsBolkProps {
     onClick: (type: string) => void;
 }
 
-class EkspanderbartOppsummeringsPanel extends React.Component<
-    OppsummeringsBolkProps
-> {
+class EkspanderbartOppsummeringsPanel extends React.Component<OppsummeringsBolkProps> {
     render() {
         const { steg, tittel, checked, render, onClick } = this.props;
         return (
             <div className="ekspanderbartOppsumeringspanel">
                 <EkspanderbartpanelBase
                     ariaTittel={tittel}
-                    heading={
-                        <EkspanderbartOppsumeringspanelHeader
-                            tittel={tittel}
-                            checked={checked}
-                        />
-                    }
+                    heading={<EkspanderbartOppsumeringspanelHeader tittel={tittel} checked={checked} />}
                     onClick={() => onClick(steg)}>
-                    <div className="ekspanderbartOppsumeringspanel__content">
-                        {render && render()}
-                    </div>
+                    <div className="ekspanderbartOppsumeringspanel__content">{render && render()}</div>
                 </EkspanderbartpanelBase>
             </div>
         );

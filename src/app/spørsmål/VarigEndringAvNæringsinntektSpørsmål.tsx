@@ -22,8 +22,7 @@ const VarigEndringAvNæringsinntektSpørsmål = (props: Props) => {
     if (varigEndringAvNæringsinntekt === true) {
         checked = VarigEndringAvNæringsinntekt.VARIG_ENDRING_AV_NÆRINGSINNTEKT;
     } else if (varigEndringAvNæringsinntekt === false) {
-        checked =
-            VarigEndringAvNæringsinntekt.IKKE_VARIG_ENDRING_AV_NÆRINGSINNTEKT;
+        checked = VarigEndringAvNæringsinntekt.IKKE_VARIG_ENDRING_AV_NÆRINGSINNTEKT;
     }
 
     return (
@@ -33,24 +32,16 @@ const VarigEndringAvNæringsinntektSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value:
-                        VarigEndringAvNæringsinntekt.VARIG_ENDRING_AV_NÆRINGSINNTEKT
+                    value: VarigEndringAvNæringsinntekt.VARIG_ENDRING_AV_NÆRINGSINNTEKT
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        VarigEndringAvNæringsinntekt.IKKE_VARIG_ENDRING_AV_NÆRINGSINNTEKT
+                    value: VarigEndringAvNæringsinntekt.IKKE_VARIG_ENDRING_AV_NÆRINGSINNTEKT
                 }
             ]}
             name="varigEndringAvNæringsinntekt"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: VarigEndringAvNæringsinntekt
-            ) =>
-                onChange(
-                    v ===
-                        VarigEndringAvNæringsinntekt.VARIG_ENDRING_AV_NÆRINGSINNTEKT
-                )
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: VarigEndringAvNæringsinntekt) =>
+                onChange(v === VarigEndringAvNæringsinntekt.VARIG_ENDRING_AV_NÆRINGSINNTEKT)
             }
         />
     );

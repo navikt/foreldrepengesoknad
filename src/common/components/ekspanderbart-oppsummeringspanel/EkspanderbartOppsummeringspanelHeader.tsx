@@ -9,9 +9,7 @@ interface EkspanderbartOppsummeringsPanelHeaderProps {
     checked: boolean;
 }
 
-const EkspanderbartOppsumeringspanelHeader = (
-    props: EkspanderbartOppsummeringsPanelHeaderProps
-) => {
+const EkspanderbartOppsumeringspanelHeader = (props: EkspanderbartOppsummeringsPanelHeaderProps) => {
     const { checked, tittel } = props;
     return (
         <div className="ekspanderbartOppsumeringspanelHeader">

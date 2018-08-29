@@ -16,40 +16,32 @@ interface InformasjonOmArbeidsforholdProps {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const InformasjonOmArbeidsforhold: React.StatelessComponent<
-    InformasjonOmArbeidsforholdProps & InjectedIntlProps
-> = ({ arbeidsforhold, intl }) => {
+const InformasjonOmArbeidsforhold: React.StatelessComponent<InformasjonOmArbeidsforholdProps & InjectedIntlProps> = ({
+    arbeidsforhold,
+    intl
+}) => {
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
         <div className={cls.className}>
             <div className={cls.element('topRow')}>
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr' && (
                     <EtikettLiten>
-                        {getMessage(
-                            intl,
-                            'annenInntekt.arbeidsforhold.organisasjonsnummer',
-                            {
-                                organisasjonsnummer:
-                                    arbeidsforhold.arbeidsgiverId
-                            }
-                        )}
+                        {getMessage(intl, 'annenInntekt.arbeidsforhold.organisasjonsnummer', {
+                            organisasjonsnummer: arbeidsforhold.arbeidsgiverId
+                        })}
                     </EtikettLiten>
                 )}
                 <EtikettLiten className={cls.element('stillingsprosent')}>
-                    {getMessage(
-                        intl,
-                        'annenInntekt.arbeidsforhold.stillingsprosent',
-                        { stillingsprosent: arbeidsforhold.stillingsprosent }
-                    )}
+                    {getMessage(intl, 'annenInntekt.arbeidsforhold.stillingsprosent', {
+                        stillingsprosent: arbeidsforhold.stillingsprosent
+                    })}
                 </EtikettLiten>
             </div>
             <Element>{arbeidsforhold.arbeidsgiverNavn}</Element>
             <Normaltekst>
                 {getMessage(intl, 'annenInntekt.arbeidsforhold.periode', {
                     fom: formatDate(arbeidsforhold.fom),
-                    tom: arbeidsforhold.tom
-                        ? formatDate(arbeidsforhold.tom)
-                        : getMessage(intl, 'pågående')
+                    tom: arbeidsforhold.tom ? formatDate(arbeidsforhold.tom) : getMessage(intl, 'pågående')
                 })}
             </Normaltekst>
         </div>

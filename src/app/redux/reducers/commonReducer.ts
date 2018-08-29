@@ -1,7 +1,4 @@
-import {
-    CommonActionKeys,
-    CommonActionTypes
-} from '../actions/common/commonActionDefinitions';
+import { CommonActionKeys, CommonActionTypes } from '../actions/common/commonActionDefinitions';
 import { Språkkode } from 'common/intl/types';
 
 const getDefaultState = (): CommonState => ({
@@ -14,18 +11,12 @@ export interface CommonState {
 type CommonStatePartial = Partial<CommonState>;
 
 // Hjelper til med typesjekking
-const updateCommonState = (
-    state: CommonState,
-    newStatePartial: CommonStatePartial
-): CommonState => ({
+const updateCommonState = (state: CommonState, newStatePartial: CommonStatePartial): CommonState => ({
     ...state,
     ...newStatePartial
 });
 
-const commonReducer = (
-    state = getDefaultState(),
-    action: CommonActionTypes
-) => {
+const commonReducer = (state = getDefaultState(), action: CommonActionTypes) => {
     switch (action.type) {
         case CommonActionKeys.SET_SPRÅK:
             return updateCommonState(state, { språkkode: action.språkkode });

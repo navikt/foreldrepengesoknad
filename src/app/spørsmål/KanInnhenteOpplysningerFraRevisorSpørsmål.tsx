@@ -23,35 +23,26 @@ const KanInnhenteOpplysningerFraRevisorSpørsmål = (props: Props) => {
     if (kanInnhenteOpplysningerFraRevisor === true) {
         checked = OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR;
     } else if (kanInnhenteOpplysningerFraRevisor === false) {
-        checked =
-            OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR;
+        checked = OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR;
     }
 
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'kanInnhenteOpplysningerFraRevisor.spørsmål'
-            )}
+            legend={getMessage(intl, 'kanInnhenteOpplysningerFraRevisor.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value:
-                        OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR
+                    value: OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR
+                    value: OpplysningerFraRevior.KAN_IKKE_INNHENTE_OPPLYSNINGER_FRA_REVISOR
                 }
             ]}
             name="hentOpplysningerFraRevisor"
             onChange={(e: InputChangeEvent, v: OpplysningerFraRevior) =>
-                onChange(
-                    v ===
-                        OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR
-                )
+                onChange(v === OpplysningerFraRevior.KAN_INNHENTE_OPPLYSNINGER_FRA_REVISOR)
             }
         />
     );

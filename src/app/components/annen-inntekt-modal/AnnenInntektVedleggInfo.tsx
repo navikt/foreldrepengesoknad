@@ -10,10 +10,7 @@ interface OwnProps {
 
 export type Props = OwnProps & InjectedIntlProps;
 
-const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({
-    intl,
-    type
-}) => {
+const AnnenInntektVedleggInfo: React.StatelessComponent<Props> = ({ intl, type }) => {
     if (type === undefined) {
         return null;
     }

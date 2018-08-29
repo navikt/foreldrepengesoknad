@@ -5,18 +5,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Modal from 'nav-frontend-modal';
 
 import { DispatchProps } from 'common/redux/types';
-import {
-    lukkPeriodeDialog,
-    opprettEllerOppdaterPeriode,
-    slettPeriode
-} from 'uttaksplan/redux/actions';
-import {
-    Tidsperiode,
-    Permisjonsregler,
-    Periode,
-    Periodetype,
-    Utsettelsesperiode
-} from 'uttaksplan/types';
+import { lukkPeriodeDialog, opprettEllerOppdaterPeriode, slettPeriode } from 'uttaksplan/redux/actions';
+import { Tidsperiode, Permisjonsregler, Periode, Periodetype, Utsettelsesperiode } from 'uttaksplan/types';
 
 import { UttaksplanAppState } from 'uttaksplan/redux/types';
 import { getGyldigTidsromForUtsettelse } from 'uttaksplan/utils/permisjonUtils';
@@ -42,9 +32,7 @@ interface OwnProps {
 
 type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
 
-const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
-    props: Props
-) => {
+const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (props: Props) => {
     const periodetype = Periodetype.Uttak;
     const {
         isOpen,
@@ -77,9 +65,7 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
                 uttaksgrunnlag={uttaksgrunnlag}
                 søker={uttaksgrunnlag.søker}
                 registrerteUtsettelser={
-                    perioder.filter(
-                        (p) => p.type === Periodetype.Utsettelse
-                    ) as Utsettelsesperiode[]
+                    perioder.filter((p) => p.type === Periodetype.Utsettelse) as Utsettelsesperiode[]
                 }
                 utsettelse={utsettelse}
                 navnForelder1={navnForelder1}
@@ -100,15 +86,11 @@ const UtsettelsesperiodeDialog: React.StatelessComponent<Props> = (
     );
 };
 
-const mapStateToProps = (
-    state: UttaksplanAppState,
-    props: OwnProps
-): StateProps | undefined => {
+const mapStateToProps = (state: UttaksplanAppState, props: OwnProps): StateProps | undefined => {
     const { form, uttaksplan, view } = state.uttaksplan;
     const { familiehendelsedato } = props;
     const { dekningsgrad } = form;
-    const sisteRegistrertePermisjonsdag =
-        props.uttaksinfo.registrertTidsperiode.tom;
+    const sisteRegistrertePermisjonsdag = props.uttaksinfo.registrertTidsperiode.tom;
     if (
         !familiehendelsedato ||
         !dekningsgrad ||

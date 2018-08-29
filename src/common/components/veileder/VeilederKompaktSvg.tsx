@@ -6,10 +6,7 @@ export interface Props {
 
 // tslint:disable max-line-length
 const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps }) => (
-    <svg
-        viewBox="0 0 96 96"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        {...svgProps}>
+    <svg viewBox="0 0 96 96" xmlnsXlink="http://www.w3.org/1999/xlink" {...svgProps}>
         <title>NAV veileder</title>
         <defs>
             <path
@@ -85,21 +82,9 @@ const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps }) => (
                     id="Fill-98"
                     fill="#FFF"
                 />
-                <path
-                    id="Fill-99"
-                    fill="#FFF"
-                    d="M4.403 9.26h-.776l.83-1.997h.778z"
-                />
-                <path
-                    id="Fill-100"
-                    fill="#FFF"
-                    d="M14.187 9.26h-.481l.83-1.997h.48z"
-                />
-                <path
-                    id="Fill-101"
-                    fill="#FFF"
-                    d="M15.515 9.26h-.204l.828-1.997h.204z"
-                />
+                <path id="Fill-99" fill="#FFF" d="M4.403 9.26h-.776l.83-1.997h.778z" />
+                <path id="Fill-100" fill="#FFF" d="M14.187 9.26h-.481l.83-1.997h.48z" />
+                <path id="Fill-101" fill="#FFF" d="M15.515 9.26h-.204l.828-1.997h.204z" />
                 <path
                     d="M6.536 9.25h.611a.054.054 0 0 0 .056-.054V7.328a.054.054 0 0 0-.056-.054H6.53a.07.07 0 0 0-.071.07l-.243.588c-.015.03.01.067.042.067h.175c.026 0 .048.02.048.048v1.15c0 .03.024.053.055.053"
                     id="Fill-102"
@@ -140,11 +125,7 @@ const VeilederKompakt: React.StatelessComponent<Props> = ({ svgProps }) => (
                     id="Fill-109"
                     fill="#5A1F57"
                 />
-                <path
-                    id="Fill-110"
-                    fill="#C2B5CF"
-                    d="M9.117 2.856h.98V.26h-.98z"
-                />
+                <path id="Fill-110" fill="#C2B5CF" d="M9.117 2.856h.98V.26h-.98z" />
             </g>
         </g>
     </svg>

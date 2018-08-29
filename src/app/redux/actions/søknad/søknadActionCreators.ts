@@ -26,19 +26,13 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 
 const updateBarn = (
-    payload:
-        | FødtBarnPartial
-        | UfødtBarnPartial
-        | AdopsjonsbarnPartial
-        | ForeldreansvarBarnPartial
+    payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
 ): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
     payload
 });
 
-const updateSøknadenGjelderBarn = (
-    payload: SøknadenGjelderBarnValg
-): UpdateSøknadenGjelder => ({
+const updateSøknadenGjelderBarn = (payload: SøknadenGjelderBarnValg): UpdateSøknadenGjelder => ({
     type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
     payload
 });
@@ -48,9 +42,7 @@ const updateAnnenForelder = (payload: AnnenForelderPartial) => ({
     payload
 });
 
-const updateUtenlandsopphold = (
-    payload: InformasjonOmUtenlandsoppholdPartial
-): UpdateUtenlandsopphold => ({
+const updateUtenlandsopphold = (payload: InformasjonOmUtenlandsoppholdPartial): UpdateUtenlandsopphold => ({
     type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
     payload
 });
@@ -60,9 +52,7 @@ const updateSøker = (payload: SøkerPartial): UpdateSøker => ({
     payload
 });
 
-const updateSøkerAndStorage = (
-    payload: SøkerPartial
-): UpdateSøkerAndStorage => ({
+const updateSøkerAndStorage = (payload: SøkerPartial): UpdateSøkerAndStorage => ({
     type: SøknadActionKeys.UPDATE_SØKER_AND_STORAGE,
     payload
 });
@@ -77,19 +67,13 @@ const uploadAttachment = (payload: Attachment) => ({
     payload
 });
 
-const uploadAttachmentSuccess = (
-    attachment: Attachment,
-    url: string
-): UploadAttachmentSuccess => ({
+const uploadAttachmentSuccess = (attachment: Attachment, url: string): UploadAttachmentSuccess => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS,
     attachment,
     url
 });
 
-const uploadAttachmentFailed = (
-    error: string,
-    attachment: Attachment
-): UploadAttachmentFailed => ({
+const uploadAttachmentFailed = (error: string, attachment: Attachment): UploadAttachmentFailed => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_FAILED,
     error,
     attachment
@@ -100,17 +84,12 @@ const deleteAttachment = (attachment: Attachment): DeleteAttachment => ({
     attachment
 });
 
-const deleteAttachmentSuccess = (
-    attachment: Attachment
-): DeleteAttachmentSuccess => ({
+const deleteAttachmentSuccess = (attachment: Attachment): DeleteAttachmentSuccess => ({
     type: SøknadActionKeys.DELETE_ATTACHMENT_SUCCESS,
     attachment
 });
 
-const deleteAttachmentFailed = (
-    error: any,
-    attachment: Attachment
-): DeleteAttachmentFailed => ({
+const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttachmentFailed => ({
     type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED,
     error,
     attachment

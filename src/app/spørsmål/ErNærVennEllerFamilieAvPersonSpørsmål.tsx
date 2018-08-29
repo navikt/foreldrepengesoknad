@@ -21,11 +21,9 @@ const ErNærVennEllerFamilieAvPersonSpørsmål = (props: Props) => {
 
     let checked;
     if (erNærVennEllerFamilieAvPerson === true) {
-        checked =
-            ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON;
+        checked = ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON;
     } else if (erNærVennEllerFamilieAvPerson === false) {
-        checked =
-            ErNærVennEllerFamilieAvPerson.ER_IKKE_NÆR_VENN_ELLER_FAMILIE_AV_PERSON;
+        checked = ErNærVennEllerFamilieAvPerson.ER_IKKE_NÆR_VENN_ELLER_FAMILIE_AV_PERSON;
     }
 
     return (
@@ -35,21 +33,16 @@ const ErNærVennEllerFamilieAvPersonSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value:
-                        ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON
+                    value: ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value:
-                        ErNærVennEllerFamilieAvPerson.ER_IKKE_NÆR_VENN_ELLER_FAMILIE_AV_PERSON
+                    value: ErNærVennEllerFamilieAvPerson.ER_IKKE_NÆR_VENN_ELLER_FAMILIE_AV_PERSON
                 }
             ]}
             name="erNærVennEllerFamilieAvPerson"
             onChange={(e: InputChangeEvent, v: ErNærVennEllerFamilieAvPerson) =>
-                onChange(
-                    v ===
-                        ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON
-                )
+                onChange(v === ErNærVennEllerFamilieAvPerson.ER_NÆR_VENN_ELLER_FAMILIE_AV_PERSON)
             }
         />
     );

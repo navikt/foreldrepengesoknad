@@ -9,10 +9,7 @@ interface StateProps {
     label: React.ReactNode;
     validators?: Validator[];
     name?: string;
-    onChange: (
-        value: string,
-        event?: React.ChangeEvent<HTMLSelectElement>
-    ) => void;
+    onChange: (value: string, event?: React.ChangeEvent<HTMLSelectElement>) => void;
     infotekst?: string;
 }
 
@@ -39,10 +36,7 @@ class Landvelger extends React.Component<Props> {
     }
 
     getCountryOptions(): React.ReactNode[] {
-        if (
-            !this.countryOptionsCache ||
-            this.props.intl.locale !== this.countryOptionsCache.locale
-        ) {
+        if (!this.countryOptionsCache || this.props.intl.locale !== this.countryOptionsCache.locale) {
             this.updateCache(this.props.intl);
         }
         return this.countryOptionsCache.options;
@@ -54,9 +48,7 @@ class Landvelger extends React.Component<Props> {
             <Select
                 {...restProps}
                 infotekst={infotekst}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                    onChange(e.target.value, e)
-                }
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value, e)}
                 validators={validators}>
                 <option value="" />
                 {this.getCountryOptions()}
@@ -71,13 +63,9 @@ const createCountryOptions = (intl: InjectedIntl): React.ReactNode[] => {
     const countryNameIndex = 1;
     return Object.entries(countries.getNames(språk))
         .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], språk))
-        .filter(
-            (countryOptionValue) => countryOptionValue[isoCodeIndex] !== 'NO'
-        )
+        .filter((countryOptionValue) => countryOptionValue[isoCodeIndex] !== 'NO')
         .map((countryOptionValue: string[]) => (
-            <option
-                key={countryOptionValue[isoCodeIndex]}
-                value={countryOptionValue[isoCodeIndex]}>
+            <option key={countryOptionValue[isoCodeIndex]} value={countryOptionValue[isoCodeIndex]}>
                 {countryOptionValue[countryNameIndex]}
             </option>
         ));

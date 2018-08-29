@@ -7,21 +7,13 @@ import ValiderbarInput from 'common/lib/validation/elements/ValiderbarInput';
 
 type InputWrapperProps = SkjemaelementProps & NFInputProps;
 
-const Input: React.StatelessComponent<InputWrapperProps> = (
-    props: InputWrapperProps
-) => {
+const Input: React.StatelessComponent<InputWrapperProps> = (props: InputWrapperProps) => {
     const id = props.id || guid();
     return (
         <ValiderbarInput
             {...props}
             id={id}
-            label={
-                <InputLabel
-                    label={props.label}
-                    infotekst={props.infotekst}
-                    inputId={id}
-                />
-            }
+            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
         />
     );
 };

@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-    AnnenInntekt,
-    AnnenInntektType,
-    JobbIUtlandetInntekt
-} from '../types/søknad/AnnenInntekt';
+import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../types/søknad/AnnenInntekt';
 import { Knapp } from 'nav-frontend-knapper';
 import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
 import { prettifyTidsperiode } from '../util/dates/dates';
@@ -32,10 +28,7 @@ interface AndreInntekterBolkState {
 
 type AndreInntekterBolkStatePartial = Partial<AndreInntekterBolkState>;
 
-class AndreInntekterBolk extends React.Component<
-    AndreInntekterBolkProps,
-    AndreInntekterBolkState
-> {
+class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreInntekterBolkState> {
     constructor(props: AndreInntekterBolkProps) {
         super(props);
 
@@ -119,28 +112,19 @@ class AndreInntekterBolk extends React.Component<
                             <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={andreInntekterSiste10Mnd}
-                                renderElement={(
-                                    annenInntekt: AnnenInntekt,
-                                    index: number
-                                ) => (
+                                renderElement={(annenInntekt: AnnenInntekt, index: number) => (
                                     <ListElement
                                         annenInntekt={annenInntekt}
                                         key={`annenInntekt-${index}`}
-                                        onEdit={() =>
-                                            this.onEdit(annenInntekt, index)
-                                        }
-                                        onDelete={() =>
-                                            this.onDelete(annenInntekt)
-                                        }
+                                        onEdit={() => this.onEdit(annenInntekt, index)}
+                                        onDelete={() => this.onDelete(annenInntekt)}
                                     />
                                 )}
                             />
                         </Block>
 
                         <Block margin="s">
-                            <Knapp
-                                onClick={() => this.openModal()}
-                                htmlType="button">
+                            <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
                         </Block>
@@ -156,9 +140,7 @@ class AndreInntekterBolk extends React.Component<
                         })
                     }
                     annenInntekt={annenInntektToEdit}
-                    onSubmit={
-                        annenInntektToEdit ? this.onEditSubmit : this.onAdd
-                    }
+                    onSubmit={annenInntektToEdit ? this.onEditSubmit : this.onAdd}
                 />
             </React.Fragment>
         );
@@ -169,23 +151,20 @@ interface AndreInntekterListeElementProps extends InteractiveListElementProps {
     annenInntekt: AnnenInntekt;
 }
 
-const AndreInntekterListeElement: React.StatelessComponent<
-    AndreInntekterListeElementProps & InjectedIntlProps
-> = ({ annenInntekt, intl, ...rest }) => {
+const AndreInntekterListeElement: React.StatelessComponent<AndreInntekterListeElementProps & InjectedIntlProps> = ({
+    annenInntekt,
+    intl,
+    ...rest
+}) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
-    const inntektstypeSkalHaVedlegg =
-        type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
+    const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
     let title = `${type}`;
 
     if (type === AnnenInntektType.JOBB_I_UTLANDET) {
-        const arbeidsgiver = (annenInntekt as JobbIUtlandetInntekt)
-            .arbeidsgiverNavn;
-        title = `${getMessage(
-            intl,
-            `${intlKey}${type.toLowerCase()}`
-        )} (${arbeidsgiver})`;
+        const arbeidsgiver = (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn;
+        title = `${getMessage(intl, `${intlKey}${type.toLowerCase()}`)} (${arbeidsgiver})`;
     } else {
         title = getMessage(intl, `${intlKey}${type.toLowerCase()}`);
     }

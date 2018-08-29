@@ -32,12 +32,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
     }
 
     render() {
-        const {
-            næringsrelasjon,
-            renderSpørsmål,
-            oppfølgingsspørsmålSynlig,
-            intl
-        } = this.props;
+        const { næringsrelasjon, renderSpørsmål, oppfølgingsspørsmålSynlig, intl } = this.props;
         const { navn, telefonnummer, erNærVennEllerFamilie } = næringsrelasjon;
         return (
             <React.Fragment>
@@ -58,10 +53,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                         <Block visible={visibility.tlfnr(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
-                                label={getMessage(
-                                    intl,
-                                    'næringsrelasjon.tlfnr'
-                                )}
+                                label={getMessage(intl, 'næringsrelasjon.tlfnr')}
                                 onChange={(e: InputChangeEvent) =>
                                     this.handleOnChange({
                                         telefonnummer: e.target.value
@@ -69,14 +61,9 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                                 }
                             />
                         </Block>
-                        <Block
-                            visible={visibility.erNærVennEllerFamilie(
-                                næringsrelasjon
-                            )}>
+                        <Block visible={visibility.erNærVennEllerFamilie(næringsrelasjon)}>
                             <ErNærVennEllerFamilieAvPersonSpørsmål
-                                erNærVennEllerFamilieAvPerson={
-                                    erNærVennEllerFamilie
-                                }
+                                erNærVennEllerFamilieAvPerson={erNærVennEllerFamilie}
                                 onChange={(v: boolean) =>
                                     this.handleOnChange({
                                         erNærVennEllerFamilie: v

@@ -23,19 +23,9 @@ interface AllListElementProps extends InteractiveListElementProps {
 
 const cls = BEMHelper('interactiveListElement');
 
-class InteractiveListElement extends React.Component<
-    AllListElementProps & InjectedIntlProps
-> {
+class InteractiveListElement extends React.Component<AllListElementProps & InjectedIntlProps> {
     render() {
-        const {
-            title,
-            text,
-            deleteLinkText,
-            etikettProps,
-            onDelete,
-            onEdit,
-            intl
-        } = this.props;
+        const { title, text, deleteLinkText, etikettProps, onDelete, onEdit, intl } = this.props;
         return (
             <li className={cls.className}>
                 <div className={cls.element('top')}>
@@ -52,17 +42,10 @@ class InteractiveListElement extends React.Component<
                         />
                     </button>
                 </div>
-                <Normaltekst className={cls.element('text')}>
-                    {text}
-                </Normaltekst>
+                <Normaltekst className={cls.element('text')}>{text}</Normaltekst>
                 <div className={cls.element('bottom')}>
-                    {etikettProps !== undefined && (
-                        <Etikett {...etikettProps} />
-                    )}
-                    <button
-                        className="interactiveListElement__bottom__deleteButton"
-                        onClick={onDelete}
-                        type="button">
+                    {etikettProps !== undefined && <Etikett {...etikettProps} />}
+                    <button className="interactiveListElement__bottom__deleteButton" onClick={onDelete} type="button">
                         {deleteLinkText}
                     </button>
                 </div>

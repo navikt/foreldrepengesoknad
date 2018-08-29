@@ -16,10 +16,7 @@ const AttachmentList: React.StatelessComponent<Props> = (props) => {
         <ul className="attachmentList">
             <TransitionGroup>
                 {attachments.map((attachment, index) => (
-                    <CSSTransition
-                        classNames="transitionFade"
-                        timeout={500}
-                        key={index}>
+                    <CSSTransition classNames="transitionFade" timeout={500} key={index}>
                         <li>
                             <AttachmentComponent
                                 attachment={attachment}

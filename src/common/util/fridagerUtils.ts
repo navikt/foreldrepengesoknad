@@ -1,12 +1,5 @@
 import DateHolidays, { Holiday } from 'date-holidays';
-import {
-    isBefore,
-    isAfter,
-    addDays,
-    startOfMonth,
-    endOfMonth,
-    isEqual
-} from 'date-fns';
+import { isBefore, isAfter, addDays, startOfMonth, endOfMonth, isEqual } from 'date-fns';
 import { normaliserDato } from 'common/util/datoUtils';
 import { Tidsperiode } from 'common/types';
 
@@ -27,18 +20,14 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
     }
     const start = addDays(tidsperiode.fom, -1);
     const slutt = addDays(tidsperiode.tom, 1);
-    return days
-        .filter((d) => d.type === 'public')
-        .filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
+    return days.filter((d) => d.type === 'public').filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
     const days: Holiday[] = holidays.getHolidays(måned.getFullYear());
     const start = startOfMonth(måned);
     const slutt = endOfMonth(måned);
-    return days
-        .filter((d) => d.type === 'public')
-        .filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
+    return days.filter((d) => d.type === 'public').filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
 };
 
 /* Default - hente ut helligdager i default tidsrom */

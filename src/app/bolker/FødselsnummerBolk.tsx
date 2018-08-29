@@ -16,24 +16,13 @@ interface FødselsnummerSpørsmålProps {
     fnr: string;
     utenlandskFnr: boolean;
     bostedsland: string;
-    onChange: (
-        annenForelder: AnnenForelderPartial,
-        e: React.ChangeEvent<any>
-    ) => void;
+    onChange: (annenForelder: AnnenForelderPartial, e: React.ChangeEvent<any>) => void;
 }
 
 type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
 const FødselsnummerBolk = (props: Props) => {
-    const {
-        kanIkkeOppgis,
-        fnr,
-        utenlandskFnr,
-        søkersFødselsnummer,
-        bostedsland,
-        onChange,
-        intl
-    } = props;
+    const { kanIkkeOppgis, fnr, utenlandskFnr, søkersFødselsnummer, bostedsland, onChange, intl } = props;
 
     return (
         <React.Fragment>
@@ -42,16 +31,9 @@ const FødselsnummerBolk = (props: Props) => {
                     disabled={kanIkkeOppgis || false}
                     label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
                     name="fødselsnummer"
-                    onChange={(e: InputChangeEvent) =>
-                        onChange({ fnr: e.target.value }, e)
-                    }
+                    onChange={(e: InputChangeEvent) => onChange({ fnr: e.target.value }, e)}
                     value={fnr || ''}
-                    validators={getFødselsnummerRegler(
-                        fnr,
-                        utenlandskFnr,
-                        søkersFødselsnummer,
-                        intl
-                    )}
+                    validators={getFødselsnummerRegler(fnr, utenlandskFnr, søkersFødselsnummer, intl)}
                     infotekst="Dette er en test"
                     autoComplete="off"
                 />
@@ -61,22 +43,15 @@ const FødselsnummerBolk = (props: Props) => {
                 <Checkbox
                     disabled={kanIkkeOppgis}
                     checked={utenlandskFnr || false}
-                    label={getMessage(
-                        intl,
-                        'annenForelder.spørsmål.utenlandskFnr'
-                    )}
-                    onChange={(e: InputChangeEvent) =>
-                        onChange({ utenlandskFnr: e.target.checked }, e)
-                    }
+                    label={getMessage(intl, 'annenForelder.spørsmål.utenlandskFnr')}
+                    onChange={(e: InputChangeEvent) => onChange({ utenlandskFnr: e.target.checked }, e)}
                 />
             </Block>
 
             <Block visible={utenlandskFnr === true}>
                 <Landvelger
                     label={<Labeltekst intlId={'annenForelder.bostedsland'} />}
-                    onChange={(land: string, e: SelectChangeEvent) =>
-                        onChange({ bostedsland: land }, e)
-                    }
+                    onChange={(land: string, e: SelectChangeEvent) => onChange({ bostedsland: land }, e)}
                     defaultValue={bostedsland}
                 />
             </Block>

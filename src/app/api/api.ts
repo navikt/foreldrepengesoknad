@@ -36,11 +36,7 @@ function getStoredAppState() {
 function storeAppState(state: AppState) {
     const url = `${apiBaseUrl}/storage`;
     const { søknad, common, summary } = state;
-    return axios.post(
-        url,
-        { søknad, common, summary },
-        { withCredentials: true }
-    );
+    return axios.post(url, { søknad, common, summary }, { withCredentials: true });
 }
 
 function deleteStoredAppState() {

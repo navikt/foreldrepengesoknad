@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { default as NavStegindikator } from 'nav-frontend-stegindikator';
-import stegConfig, {
-    StegConfigItem,
-    StegID,
-    StegConfig
-} from '../../util/routing/stegConfig';
+import stegConfig, { StegConfigItem, StegID, StegConfig } from '../../util/routing/stegConfig';
 import './stegindikator.less';
 import BEMHelper from 'common/util/bem';
 
@@ -22,23 +18,12 @@ class Stegindikator extends React.Component<Props> {
 
     buildStegindikatorSteg(config: StegConfig) {
         return Object.values(config)
-            .reduce(
-                (
-                    stegConfigList: StegConfigItem[],
-                    stegConfigItem: StegConfigItem
-                ) => {
-                    if (
-                        !stegConfigList.some(
-                            (stegListElement) =>
-                                stegListElement.index === stegConfigItem.index
-                        )
-                    ) {
-                        stegConfigList.push(stegConfigItem);
-                    }
-                    return stegConfigList;
-                },
-                []
-            )
+            .reduce((stegConfigList: StegConfigItem[], stegConfigItem: StegConfigItem) => {
+                if (!stegConfigList.some((stegListElement) => stegListElement.index === stegConfigItem.index)) {
+                    stegConfigList.push(stegConfigItem);
+                }
+                return stegConfigList;
+            }, [])
             .map((stegConfigItem) => ({
                 label: stegConfigItem.tittel,
                 index: stegConfigItem.index
@@ -58,10 +43,7 @@ class Stegindikator extends React.Component<Props> {
                 aria-valuemin={1}
                 aria-valuemax={steg.length}>
                 <h1 className={`typo-systemtittel ${bem.element('title')}`}>
-                    <span
-                        className="m_no-focusOutline"
-                        ref={(c) => (this.title = c)}
-                        tabIndex={-1}>
+                    <span className="m_no-focusOutline" ref={(c) => (this.title = c)} tabIndex={-1}>
                         {stegConfig[id].tittel}
                     </span>
                 </h1>

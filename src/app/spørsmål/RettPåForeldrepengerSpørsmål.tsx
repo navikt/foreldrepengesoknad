@@ -16,12 +16,7 @@ interface RettPåForeldrepengerSpørsmålProps {
 
 type Props = RettPåForeldrepengerSpørsmålProps & InjectedIntlProps;
 const RettPåForeldrepengerSpørsmål = (props: Props) => {
-    const {
-        onChange,
-        harAnnenForelderRettPåForeldrepenger,
-        navn,
-        intl
-    } = props;
+    const { onChange, harAnnenForelderRettPåForeldrepenger, navn, intl } = props;
 
     let checked;
     if (harAnnenForelderRettPåForeldrepenger === true) {
@@ -33,11 +28,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'andreForelderenRettPåForeldrepenger.spørsmål',
-                { navn }
-            )}
+            legend={getMessage(intl, 'andreForelderenRettPåForeldrepenger.spørsmål', { navn })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -49,10 +40,9 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
                 }
             ]}
             name="andreForelderenRettPåForeldrepenger"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: AnnenForelder
-            ) => onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: AnnenForelder) =>
+                onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER)
+            }
         />
     );
 };

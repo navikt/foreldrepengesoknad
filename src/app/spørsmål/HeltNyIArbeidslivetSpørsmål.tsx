@@ -40,10 +40,9 @@ const HeltNyIArbeidslivetSpørsmål = (props: Props) => {
                 }
             ]}
             name="nyIArbeidslivet"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: NyIArbeidslivet
-            ) => onChange(v === NyIArbeidslivet.NY_I_ARBEIDSLIVET)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: NyIArbeidslivet) =>
+                onChange(v === NyIArbeidslivet.NY_I_ARBEIDSLIVET)
+            }
         />
     );
 };

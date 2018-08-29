@@ -46,22 +46,11 @@ class Timeline extends React.Component<Props, {}> {
                         durationRenderer={this.props.durationRenderer}
                         rangeRenderer={this.props.rangeRenderer}
                         formRenderer={this.props.formRenderer}
-                        mode={
-                            !this.props.editItem
-                                ? 'view'
-                                : this.props.editItem === item.data
-                                    ? 'edit'
-                                    : 'disabled'
-                        }
+                        mode={!this.props.editItem ? 'view' : this.props.editItem === item.data ? 'edit' : 'disabled'}
                     />
                 );
             case 'marker':
-                return (
-                    <MarkerItem
-                        item={item as TimelineMarker}
-                        iconRenderer={this.props.iconRenderer}
-                    />
-                );
+                return <MarkerItem item={item as TimelineMarker} iconRenderer={this.props.iconRenderer} />;
             case 'gap':
                 return (
                     <GapItem
@@ -81,9 +70,7 @@ class Timeline extends React.Component<Props, {}> {
         return (
             <ol className="timeline">
                 {items.map((item, idx) => (
-                    <li
-                        className="timeline__itemWrapper"
-                        key={`${item.id || idx}`}>
+                    <li className="timeline__itemWrapper" key={`${item.id || idx}`}>
                         {this.renderItem(item)}
                     </li>
                 ))}

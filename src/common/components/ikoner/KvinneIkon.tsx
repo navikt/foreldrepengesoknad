@@ -16,9 +16,7 @@ const KvinneIkon = (props: any) => (
             fill="none"
             fillRule="evenodd"
             transform="translate(0.000000, -11.000000)">
-            <g
-                id="⚙️/-ikon/-id-markering-/-kvinne"
-                transform="translate(0.000000, 11.000000)">
+            <g id="⚙️/-ikon/-id-markering-/-kvinne" transform="translate(0.000000, 11.000000)">
                 <circle id="Oval" fill="#FFFFFF" cx="16" cy="16" r="16" />
                 <g id="kvinne" strokeWidth="1" fill="#C86151">
                     <g id="Layer_1">

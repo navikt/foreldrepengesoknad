@@ -53,21 +53,11 @@ const RadiolisteRadio: React.StatelessComponent<RadiolisteRadioProps> = ({
     radioProps
 }) => (
     <div>
-        <RadioPanel
-            value={verdi}
-            name={navn}
-            label={tittel}
-            checked={valgt}
-            onChange={() => onChange()}
-        />
+        <RadioPanel value={verdi} name={navn} label={tittel} checked={valgt} onChange={() => onChange()} />
         {detailsRenderer && (
             <div aria-live="polite">
                 <EkspanderbartInnhold erApen={valgt}>
-                    {valgt && (
-                        <div className="radioliste__radio__details">
-                            {detailsRenderer()}
-                        </div>
-                    )}
+                    {valgt && <div className="radioliste__radio__details">{detailsRenderer()}</div>}
                 </EkspanderbartInnhold>
             </div>
         )}
@@ -93,14 +83,10 @@ const Radioliste: React.StatelessComponent<Props> = ({
         <SkjemaGruppe feil={feil}>
             <fieldset className={cls}>
                 <legend>{tittel}</legend>
-                {beskrivelse && (
-                    <div className="radioliste__beskrivelse">{beskrivelse}</div>
-                )}
+                {beskrivelse && <div className="radioliste__beskrivelse">{beskrivelse}</div>}
                 <div className="radioliste__radioer">
                     {valg.map((option) => (
-                        <div
-                            className="radioliste__radiowrapper"
-                            key={`${inputnavn}${option.verdi}`}>
+                        <div className="radioliste__radiowrapper" key={`${inputnavn}${option.verdi}`}>
                             <div className="radioliste__radio">
                                 <RadiolisteRadio
                                     {...option}

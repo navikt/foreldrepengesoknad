@@ -14,18 +14,10 @@ import Block from 'common/components/block/Block';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import BEMHelper from 'common/util/bem';
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk, {
-    DatoAvgrensninger,
-    DatoValidatorer
-} from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk, { DatoAvgrensninger, DatoValidatorer } from '../../bolker/TidsperiodeBolk';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
-import {
-    InjectedIntl,
-    InjectedIntlProps,
-    injectIntl,
-    FormattedMessage
-} from 'react-intl';
+import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface AvgrensningGetters {
@@ -34,18 +26,8 @@ export interface AvgrensningGetters {
 }
 
 export interface ValidatorGetters {
-    getFraRegler?: (
-        d1: Date | undefined,
-        d2: Date | undefined,
-        list: Tidsperiode[],
-        intl: InjectedIntl
-    ) => Validator[];
-    getTilRegler?: (
-        d1: Date | undefined,
-        d2: Date | undefined,
-        list: Tidsperiode[],
-        intl: InjectedIntl
-    ) => Validator[];
+    getFraRegler?: (d1: Date | undefined, d2: Date | undefined, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
+    getTilRegler?: (d1: Date | undefined, d2: Date | undefined, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
 }
 
 interface Props extends ModalProps {
@@ -60,28 +42,17 @@ interface Props extends ModalProps {
 
 export type UtenlandsoppholdModalProps = Props & InjectedIntlProps;
 
-export type UtenlandsoppholdModalPropsPartial = Partial<
-    UtenlandsoppholdModalProps
->;
+export type UtenlandsoppholdModalPropsPartial = Partial<UtenlandsoppholdModalProps>;
 
 interface State {
     oppholdToEdit: UtenlandsoppholdSkjemadataPartial | undefined;
     editMode: boolean;
 }
 
-class UtenlandsoppholdModal extends React.Component<
-    UtenlandsoppholdModalProps,
-    State
-> {
-    static getDerivedStateFromProps(
-        props: UtenlandsoppholdModalProps,
-        state: State
-    ) {
+class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, State> {
+    static getDerivedStateFromProps(props: UtenlandsoppholdModalProps, state: State) {
         const { isOpen } = props;
-        const oppholdToEdit =
-            state.oppholdToEdit !== undefined && isOpen
-                ? state.oppholdToEdit
-                : props.oppholdToEdit;
+        const oppholdToEdit = state.oppholdToEdit !== undefined && isOpen ? state.oppholdToEdit : props.oppholdToEdit;
         return {
             oppholdToEdit,
             editMode: props.oppholdToEdit !== undefined
@@ -163,22 +134,8 @@ class UtenlandsoppholdModal extends React.Component<
         if (tidsperiodeValidators) {
             const { getFraRegler, getTilRegler } = tidsperiodeValidators;
             return {
-                fra:
-                    getFraRegler &&
-                    getFraRegler(
-                        startdato,
-                        sluttdato,
-                        ugyldigeTidsperioder,
-                        intl
-                    ),
-                til:
-                    getTilRegler &&
-                    getTilRegler(
-                        sluttdato,
-                        startdato,
-                        ugyldigeTidsperioder,
-                        intl
-                    )
+                fra: getFraRegler && getFraRegler(startdato, sluttdato, ugyldigeTidsperioder, intl),
+                til: getTilRegler && getTilRegler(sluttdato, startdato, ugyldigeTidsperioder, intl)
             };
         }
 
@@ -187,9 +144,7 @@ class UtenlandsoppholdModal extends React.Component<
 
     getTidsperioder(): Tidsperiode[] {
         const { oppholdToEdit, oppholdList } = this.props;
-        return oppholdList
-            .filter((opphold) => opphold !== oppholdToEdit)
-            .map((opphold) => opphold.tidsperiode);
+        return oppholdList.filter((opphold) => opphold !== oppholdToEdit).map((opphold) => opphold.tidsperiode);
     }
 
     onRequestClose() {
@@ -205,10 +160,7 @@ class UtenlandsoppholdModal extends React.Component<
         const cls = BEMHelper('utenlandsoppholdModal');
 
         return (
-            <Modal
-                className={cls.className}
-                onRequestClose={this.onRequestClose}
-                {...modalProps}>
+            <Modal className={cls.className} onRequestClose={this.onRequestClose} {...modalProps}>
                 <ValiderbarForm onSubmit={this.onSubmit} noSummary={true}>
                     <Undertittel className={cls.element('title')}>
                         <FormattedMessage id="utenlandsopphold.tittel" />
@@ -216,14 +168,8 @@ class UtenlandsoppholdModal extends React.Component<
 
                     <Block>
                         <Landvelger
-                            label={
-                                <Labeltekst
-                                    intlId={`utenlandsopphold.select.spørsmål.${type}`}
-                                />
-                            }
-                            onChange={(land: string) =>
-                                this.updateOpphold({ land })
-                            }
+                            label={<Labeltekst intlId={`utenlandsopphold.select.spørsmål.${type}`} />}
+                            onChange={(land: string) => this.updateOpphold({ land })}
                             defaultValue={oppholdToEdit && oppholdToEdit.land}
                         />
                     </Block>
@@ -231,21 +177,15 @@ class UtenlandsoppholdModal extends React.Component<
                         <TidsperiodeBolk
                             datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
                             datoValidatorer={this.getTidsperiodeValidatorer()}
-                            tidsperiode={
-                                (oppholdToEdit && oppholdToEdit.tidsperiode) ||
-                                {}
+                            tidsperiode={(oppholdToEdit && oppholdToEdit.tidsperiode) || {}}
+                            onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
+                                this.updateOpphold({ tidsperiode })
                             }
-                            onChange={(
-                                tidsperiode: TidsperiodeMedValgfriSluttdato
-                            ) => this.updateOpphold({ tidsperiode })}
                         />
                     </Block>
 
                     <Knapperad>
-                        <Knapp
-                            type="standard"
-                            onClick={this.onRequestClose}
-                            htmlType="button">
+                        <Knapp type="standard" onClick={this.onRequestClose} htmlType="button">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
                         <Hovedknapp>

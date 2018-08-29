@@ -7,21 +7,13 @@ import ValiderbarSelect from 'common/lib/validation/elements/ValiderbarSelect';
 
 export type SelectWrapperProps = SkjemaelementProps & SelectProps;
 
-const Select: React.StatelessComponent<SelectWrapperProps> = (
-    props: SelectWrapperProps
-) => {
+const Select: React.StatelessComponent<SelectWrapperProps> = (props: SelectWrapperProps) => {
     const id = props.id || guid();
     return (
         <ValiderbarSelect
             {...props}
             id={id}
-            label={
-                <InputLabel
-                    label={props.label}
-                    infotekst={props.infotekst}
-                    inputId={id}
-                />
-            }
+            label={<InputLabel label={props.label} infotekst={props.infotekst} inputId={id} />}
         />
     );
 };

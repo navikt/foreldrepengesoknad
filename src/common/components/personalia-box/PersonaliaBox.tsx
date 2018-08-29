@@ -14,21 +14,12 @@ interface PersonaliaBoxProps {
 const PersonaliaBox = ({ person }: PersonaliaBoxProps) => {
     return (
         <div className="personaliaBox">
-            <EtikettLiten className="personaliaBox__fnr">
-                {person.fnr}
-            </EtikettLiten>
+            <EtikettLiten className="personaliaBox__fnr">{person.fnr}</EtikettLiten>
             <EtikettLiten className="personaliaBox__alder">
-                <FormattedMessage
-                    id="personalia.år"
-                    values={{ år: getAlderFraDato(person.fødselsdato).år }}
-                />
+                <FormattedMessage id="personalia.år" values={{ år: getAlderFraDato(person.fødselsdato).år }} />
             </EtikettLiten>
             <Element className="personaliaBox__navn">
-                {formaterNavn(
-                    person.fornavn,
-                    person.etternavn,
-                    person.mellomnavn
-                )}
+                {formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
             </Element>
         </div>
     );

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Radioliste, {
-    RadiolisteValg
-} from 'uttaksplan/components/radioliste/Radioliste';
+import Radioliste, { RadiolisteValg } from 'uttaksplan/components/radioliste/Radioliste';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { StønadskontoType } from 'uttaksplan/types';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';

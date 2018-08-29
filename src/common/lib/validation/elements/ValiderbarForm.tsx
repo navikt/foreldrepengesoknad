@@ -18,10 +18,7 @@ interface ValiderbarFormState {
     failedSubmit: boolean;
 }
 
-class ValiderbarForm extends React.Component<
-    ValiderbarFormProps,
-    ValiderbarFormState
-> {
+class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarFormState> {
     static childContextTypes = {
         validForm: PT.object
     };
@@ -96,9 +93,7 @@ class ValiderbarForm extends React.Component<
     }
 
     validateAll() {
-        const results = this.components.map((component) =>
-            component.validate()
-        );
+        const results = this.components.map((component) => component.validate());
         const valid = results.every((result) => result.valid === true);
 
         this.setState({
@@ -136,29 +131,18 @@ class ValiderbarForm extends React.Component<
     }
 
     mapResultsToErrorSummary(): SummaryError[] {
-        return this.state.results
-            .filter((result) => !result.valid)
-            .map((result) => ({
-                name: result.name,
-                text: result.tests.find((test: any) => !test.verdict).failText
-            }));
+        return this.state.results.filter((result) => !result.valid).map((result) => ({
+            name: result.name,
+            text: result.tests.find((test: any) => !test.verdict).failText
+        }));
     }
 
     render() {
-        const {
-            onSubmit,
-            noSummary = false,
-            summaryTitle,
-            ...other
-        } = this.props;
+        const { onSubmit, noSummary = false, summaryTitle, ...other } = this.props;
         let summaryBox;
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (
-                <Feiloppsummering
-                    title={summaryTitle || ''}
-                    show={true}
-                    errors={this.mapResultsToErrorSummary()}
-                />
+                <Feiloppsummering title={summaryTitle || ''} show={true} errors={this.mapResultsToErrorSummary()} />
             );
         }
 

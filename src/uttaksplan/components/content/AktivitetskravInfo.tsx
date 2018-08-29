@@ -12,28 +12,22 @@ export interface Props {
     navnForelder2?: string;
 }
 
-const AktivitetskravInfo: React.StatelessComponent<
-    Props & InjectedIntlProps
-> = ({ permisjonsregler, navnForelder1, navnForelder2, intl }) => (
-    <VeilederinfoContainer
-        id={Infotekster.fordelingFellesperiode}
-        visVeileder={false}
-        type="info"
-        stil="kunTekst">
+const AktivitetskravInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    permisjonsregler,
+    navnForelder1,
+    navnForelder2,
+    intl
+}) => (
+    <VeilederinfoContainer id={Infotekster.fordelingFellesperiode} visVeileder={false} type="info" stil="kunTekst">
         <div className="blokkPad-xxs">
             <FormattedMessage
                 id="uttaksplan.skjema.fordeling.veiledning"
                 values={{
                     pakrevdForelder1:
-                        permisjonsregler.antallUkerForeldrepengerFørFødsel +
-                        permisjonsregler.antallUkerMødrekvote,
+                        permisjonsregler.antallUkerForeldrepengerFørFødsel + permisjonsregler.antallUkerMødrekvote,
                     pakrevdForelder2: permisjonsregler.antallUkerFedrekvote,
-                    navnForelder1:
-                        navnForelder1 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder1' }),
-                    navnForelder2:
-                        navnForelder2 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
+                    navnForelder1: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' }),
+                    navnForelder2: navnForelder2 || intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }}
             />
         </div>

@@ -14,13 +14,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 class ForeldrenavnSpørsmål extends React.Component<Props> {
     render() {
-        const {
-            intl,
-            navnForelder1,
-            navnForelder2,
-            onSetNavnForelder1,
-            onSetNavnForelder2
-        } = this.props;
+        const { intl, navnForelder1, navnForelder2, onSetNavnForelder1, onSetNavnForelder2 } = this.props;
 
         return (
             <Row>

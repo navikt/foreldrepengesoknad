@@ -1,9 +1,4 @@
-import {
-    UttaksplanRequiredProps,
-    UttaksplanSøker,
-    Permisjonsregler,
-    StønadskontoType
-} from 'uttaksplan/types';
+import { UttaksplanRequiredProps, UttaksplanSøker, Permisjonsregler, StønadskontoType } from 'uttaksplan/types';
 import { Dekningsgrad } from 'common/types';
 
 import { getPermisjonsregler } from '../regler/permisjonsregler';
@@ -31,51 +26,27 @@ export interface Uttaksgrunnlag extends UttaksplanRequiredProps {
     };
 }
 
-export function getUttaksgrunnlag(
-    props: UttaksplanRequiredProps,
-    dekningsgrad: Dekningsgrad
-): Uttaksgrunnlag {
+export function getUttaksgrunnlag(props: UttaksplanRequiredProps, dekningsgrad: Dekningsgrad): Uttaksgrunnlag {
     const permisjonsregler = getPermisjonsregler();
     return {
         ...props,
         dekningsgrad,
         permisjonsregler,
         erDeltPermisjon: props.annenForelder !== undefined,
-        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(
-            props.søker,
-            props.erDeltPermisjon
-        ),
-        antallUttaksdagerTotalt:
-            getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5,
+        tilgjengeligeStønadskontoer: getTilgjengeligeStønadskontoer(props.søker, props.erDeltPermisjon),
+        antallUttaksdagerTotalt: getAntallUkerTotalt(permisjonsregler, dekningsgrad) * 5,
         antallUkerTotalt: getAntallUkerTotalt(permisjonsregler, dekningsgrad),
         datoer: {
-            førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(
-                props.familiehendelsedato,
-                permisjonsregler
-            ),
-            sisteMuligeUttaksdag: getSisteMuligePermisjonsdag(
-                props.familiehendelsedato,
-                permisjonsregler
-            ),
-            sisteUttaksdagFørFødsel: Uttaksdagen(
-                props.familiehendelsedato
-            ).forrige(),
-            førsteUttaksdagEtterFødsel: Uttaksdagen(
-                props.familiehendelsedato
-            ).denneEllerNeste()
+            førsteMuligeUttaksdag: getFørsteMuligePermisjonsdag(props.familiehendelsedato, permisjonsregler),
+            sisteMuligeUttaksdag: getSisteMuligePermisjonsdag(props.familiehendelsedato, permisjonsregler),
+            sisteUttaksdagFørFødsel: Uttaksdagen(props.familiehendelsedato).forrige(),
+            førsteUttaksdagEtterFødsel: Uttaksdagen(props.familiehendelsedato).denneEllerNeste()
         }
     };
 }
 
-const getTilgjengeligeStønadskontoer = (
-    søker: UttaksplanSøker,
-    erDeltPermisjon: boolean
-): StønadskontoType[] => {
-    if (
-        søker.kjønn === Kjønn.KVINNE &&
-        søker.erAleneOmOmsorg &&
-        !erDeltPermisjon
-    ) {
+const getTilgjengeligeStønadskontoer = (søker: UttaksplanSøker, erDeltPermisjon: boolean): StønadskontoType[] => {
+    if (søker.kjønn === Kjønn.KVINNE && søker.erAleneOmOmsorg && !erDeltPermisjon) {
         return [StønadskontoType.Foreldrepenger];
     }
     if (erFarEllerMedmor(søker.kjønn, søker.rolle) && !erDeltPermisjon) {
@@ -94,13 +65,8 @@ const getTilgjengeligeStønadskontoer = (
  * @param familiehendelsedato
  * @param permisjonsregler
  */
-function getSisteMuligePermisjonsdag(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Date {
-    return Uttaksdagen(
-        addYears(familiehendelsedato, permisjonsregler.maksPermisjonslengdeIÅr)
-    ).denneEllerNeste();
+function getSisteMuligePermisjonsdag(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Date {
+    return Uttaksdagen(addYears(familiehendelsedato, permisjonsregler.maksPermisjonslengdeIÅr)).denneEllerNeste();
 }
 
 /**
@@ -108,10 +74,7 @@ function getSisteMuligePermisjonsdag(
  * @param familiehendelsedato
  * @param permisjonsregler
  */
-function getFørsteMuligePermisjonsdag(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Date {
+function getFørsteMuligePermisjonsdag(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Date {
     return Uttaksdagen(
         familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);

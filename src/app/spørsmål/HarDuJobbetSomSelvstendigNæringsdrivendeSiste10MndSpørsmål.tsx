@@ -16,23 +16,14 @@ interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
     ) => void;
 }
 
-type Props = HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps &
-    InjectedIntlProps;
+type Props = HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps & InjectedIntlProps;
 
-const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
-    props: Props
-) => {
-    const {
-        onChange,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-        intl,
-        ...otherProps
-    } = props;
+const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (props: Props) => {
+    const { onChange, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, intl, ...otherProps } = props;
 
     let checked;
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true) {
-        checked =
-            HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.HAR_VÆRT_SELVSTENDIG_NÆRINGSDRIVENDE_SISTE_10_MND;
+        checked = HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.HAR_VÆRT_SELVSTENDIG_NÆRINGSDRIVENDE_SISTE_10_MND;
     } else if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false) {
         checked =
             HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.HAR_IKKE_VÆRT_SELVSTENDIG_NÆRINGSDRIVENDE_SISTE_10_MND;
@@ -41,10 +32,7 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(
-                intl,
-                'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål'
-            )}
+            legend={getMessage(intl, 'harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål')}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -58,10 +46,7 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
                 }
             ]}
             name="harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
-            ) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) =>
                 onChange(
                     v ===
                         HarJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.HAR_VÆRT_SELVSTENDIG_NÆRINGSDRIVENDE_SISTE_10_MND,
@@ -73,6 +58,4 @@ const HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål = (
     );
 };
 
-export default injectIntl(
-    HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
-);
+export default injectIntl(HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål);

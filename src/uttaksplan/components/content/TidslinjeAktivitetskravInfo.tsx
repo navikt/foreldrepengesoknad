@@ -8,20 +8,18 @@ export interface Props {
     navnForelder2?: string;
 }
 
-const TidslinjeAktivitetskravInfo: React.StatelessComponent<
-    Props & InjectedIntlProps
-> = ({ navnForelder1, navnForelder2, intl }) => (
+const TidslinjeAktivitetskravInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    navnForelder1,
+    navnForelder2,
+    intl
+}) => (
     <div className="blokkPad-xs">
         <div className="blokkPad-xxs">
             <FormattedMessage
                 id="uttaksplan.tidslinje.aktivitetskrav"
                 values={{
-                    navnForelder1:
-                        navnForelder1 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder1' }),
-                    navnForelder2:
-                        navnForelder2 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
+                    navnForelder1: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' }),
+                    navnForelder2: navnForelder2 || intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }}
             />
         </div>

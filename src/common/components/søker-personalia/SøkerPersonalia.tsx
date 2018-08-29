@@ -14,9 +14,7 @@ interface SøkersPersonaliaProps {
 const SøkerPersonalia = (props: SøkersPersonaliaProps) => {
     return (
         <div className="søkersPersonalia">
-            <div className="søkersPersonalia__ikon">
-                {props.kjønn === 'K' ? <KvinneIkon /> : <MannIkon />}
-            </div>
+            <div className="søkersPersonalia__ikon">{props.kjønn === 'K' ? <KvinneIkon /> : <MannIkon />}</div>
             <div className="søkersPersonalia__text">
                 <Undertittel>{props.navn}</Undertittel>
                 <Normaltekst>{props.fnr}</Normaltekst>

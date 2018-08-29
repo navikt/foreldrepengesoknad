@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    Uttaksperiode,
-    Periode,
-    Forelder,
-    StønadskontoType,
-    Periodetype,
-    Dekningsgrad
-} from 'uttaksplan/types';
+import { Uttaksperiode, Periode, Forelder, StønadskontoType, Periodetype, Dekningsgrad } from 'uttaksplan/types';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { normaliserDato } from 'common/util/datoUtils';
@@ -54,9 +47,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
         const { tilgjengeligeStønadskontoer } = uttaksgrunnlag;
 
         const singelStønadskonto =
-            tilgjengeligeStønadskontoer.length === 1
-                ? tilgjengeligeStønadskontoer[0]
-                : undefined;
+            tilgjengeligeStønadskontoer.length === 1 ? tilgjengeligeStønadskontoer[0] : undefined;
 
         this.state = {
             forelder: periode ? periode.forelder : undefined,
@@ -115,34 +106,25 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            periode,
-            onFjern,
-            uttaksgrunnlag,
-            ugyldigeTidsperioder
-        } = this.props;
+        const { periode, onFjern, uttaksgrunnlag, ugyldigeTidsperioder } = this.props;
         const tittelKey = periode
             ? 'uttaksplan.uttaksperiodeskjema.endre.tittel'
             : 'uttaksplan.uttaksperiodeskjema.tittel';
         const { fom, tom, forelder, stønadskonto } = this.state;
-        const tilgjengeligeStønadskontoer =
-            uttaksgrunnlag.tilgjengeligeStønadskontoer;
+        const tilgjengeligeStønadskontoer = uttaksgrunnlag.tilgjengeligeStønadskontoer;
 
         // Hvilke spørsmål skal vises
         const visSpørsmålOmHvem = uttaksgrunnlag.erDeltPermisjon;
         const visSpørsmålOmStønadskonto = visSpørsmålOmHvem
             ? forelder !== undefined
             : tilgjengeligeStønadskontoer.length > 1;
-        const visSpørsmålOmTidsrom =
-            !uttaksgrunnlag.erDeltPermisjon || stønadskonto ? true : false;
+        const visSpørsmålOmTidsrom = !uttaksgrunnlag.erDeltPermisjon || stønadskonto ? true : false;
 
         const lagreKnappTilgjengelig = !this.skjemaErGyldig();
         const { permisjonsregler, søker, annenForelder } = uttaksgrunnlag;
 
         const navnForelder1 = søker.fornavn;
-        const navnForelder2 = annenForelder
-            ? annenForelder.fornavn
-            : 'forelder 2';
+        const navnForelder2 = annenForelder ? annenForelder.fornavn : 'forelder 2';
 
         const regler = stønadskonto
             ? getStønadskontoRegler(
@@ -164,10 +146,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
               };
 
         return (
-            <form
-                action="#"
-                onSubmit={preventFormSubmit}
-                className="uttaksperiodeskjema dialogContent">
+            <form action="#" onSubmit={preventFormSubmit} className="uttaksperiodeskjema dialogContent">
                 <h1 className="typo-undertittel m-textCenter blokk-s">
                     <FormattedMessage id={tittelKey} />
                 </h1>
@@ -193,12 +172,8 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                             <StønadskontoSpørsmål
                                 spørsmål="Hvilken stønadskonto skal brukes?"
                                 stønadskonto={this.state.stønadskonto}
-                                tilgjengeligeKontoer={
-                                    tilgjengeligeStønadskontoer
-                                }
-                                onChange={(sk: StønadskontoType) =>
-                                    this.setState({ stønadskonto: sk })
-                                }
+                                tilgjengeligeKontoer={tilgjengeligeStønadskontoer}
+                                onChange={(sk: StønadskontoType) => this.setState({ stønadskonto: sk })}
                             />
                         </div>
                     </EkspanderbartInnhold>
@@ -221,8 +196,7 @@ class UttaksperiodeSkjema extends React.Component<Props, State> {
                     />
                 </EkspanderbartInnhold>
 
-                <EkspanderbartInnhold
-                    erApen={fom !== undefined && tom !== undefined}>
+                <EkspanderbartInnhold erApen={fom !== undefined && tom !== undefined}>
                     <Knapperad>
                         <Hovedknapp
                             onClick={this.handleSubmitClick}

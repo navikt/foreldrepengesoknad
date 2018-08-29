@@ -1,13 +1,6 @@
-import {
-    SøknadAction,
-    SøknadActionKeys
-} from '../actions/søknad/søknadActionDefinitions';
+import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
-import {
-    addAttachmentToState,
-    editAttachmentInState,
-    removeAttachmentFromState
-} from '../util/attachmentStateUpdates';
+import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
 import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
@@ -39,23 +32,14 @@ const getDefaultState = (): SøknadPartial => {
     };
 };
 
-const getAnnenForelderFromRegistrertForelder = (
-    registertForelder: RegistrertAnnenForelder
-): AnnenForelderPartial => {
+const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): AnnenForelderPartial => {
     return {
         fnr: registertForelder.fnr,
-        navn: formaterNavn(
-            registertForelder.fornavn,
-            registertForelder.etternavn,
-            registertForelder.mellomnavn
-        )
+        navn: formaterNavn(registertForelder.fornavn, registertForelder.etternavn, registertForelder.mellomnavn)
     };
 };
 
-const søknadReducer = (
-    state = getDefaultState(),
-    action: SøknadAction
-): SøknadPartial => {
+const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.UPDATE_BARN:
             return {
@@ -89,15 +73,11 @@ const søknadReducer = (
                 ...action.payload
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
-            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(
-                action.payload.valgteBarn
-            );
+            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
             return {
                 ...state,
                 annenForelder: registrertAnnenForelder
-                    ? getAnnenForelderFromRegistrertForelder(
-                          registrertAnnenForelder
-                      )
+                    ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
                     : state.annenForelder,
                 temp: {
                     ...state.temp,

@@ -13,12 +13,7 @@ interface NæringstypeSpørsmålProps {
 
 type Props = NæringstypeSpørsmålProps & InjectedIntlProps;
 
-const næringstypeValues = [
-    Næringstype.DAGMAMMA,
-    Næringstype.FISKER,
-    Næringstype.JORDBRUK,
-    Næringstype.ANNET
-];
+const næringstypeValues = [Næringstype.DAGMAMMA, Næringstype.FISKER, Næringstype.JORDBRUK, Næringstype.ANNET];
 
 const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) => {
     const { onChange, næringstyper, intl } = props;

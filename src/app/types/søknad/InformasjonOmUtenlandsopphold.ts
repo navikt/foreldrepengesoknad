@@ -21,11 +21,7 @@ interface InformasjonOmUtenlandsopphold {
 
 export type UtenlandsoppholdType = 'senereOpphold' | 'tidligereOpphold';
 
-export type InformasjonOmUtenlandsoppholdPartial = Partial<
-    InformasjonOmUtenlandsopphold
->;
-export type UtenlandsoppholdSkjemadataPartial = Partial<
-    UtenlandsoppholdSkjemadata
->;
+export type InformasjonOmUtenlandsoppholdPartial = Partial<InformasjonOmUtenlandsopphold>;
+export type UtenlandsoppholdSkjemadataPartial = Partial<UtenlandsoppholdSkjemadata>;
 
 export default InformasjonOmUtenlandsopphold;

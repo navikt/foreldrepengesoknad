@@ -4,9 +4,7 @@ import EksterneLenker from 'uttaksplan/eksterneLenker';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 
-const UlonnetPermisjonInfo: React.StatelessComponent<InjectedIntlProps> = ({
-    intl
-}) => {
+const UlonnetPermisjonInfo: React.StatelessComponent<InjectedIntlProps> = ({ intl }) => {
     return (
         <div>
             <Element tag="h2">

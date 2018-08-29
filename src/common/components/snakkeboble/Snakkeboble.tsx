@@ -8,10 +8,7 @@ interface Props {
     tekst: string | React.ReactNode;
 }
 
-const Snakkeboble: React.StatelessComponent<Props> = ({
-    tittel = null,
-    tekst
-}) => (
+const Snakkeboble: React.StatelessComponent<Props> = ({ tittel = null, tekst }) => (
     <div className={`snakkeboble snakkeboble--hvit`}>
         <div className="snakkeboble__innhold">
             {tittel && (

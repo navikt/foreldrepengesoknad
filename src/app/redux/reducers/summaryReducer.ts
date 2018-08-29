@@ -1,7 +1,4 @@
-import {
-    SummaryActionTypes,
-    SummaryActionKeys
-} from '../actions/summary/summaryActionDefinitions';
+import { SummaryActionTypes, SummaryActionKeys } from '../actions/summary/summaryActionDefinitions';
 
 export interface SummaryState {
     godkjenteSteg: {};
@@ -11,10 +8,7 @@ const getDefaultState = (): SummaryState => ({
     godkjenteSteg: {}
 });
 
-const summaryReducer = (
-    state = getDefaultState(),
-    action: SummaryActionTypes
-) => {
+const summaryReducer = (state = getDefaultState(), action: SummaryActionTypes) => {
     switch (action.type) {
         case SummaryActionKeys.APPROVE_STEP:
             return {

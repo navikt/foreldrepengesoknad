@@ -8,19 +8,13 @@ function* approveStep(action: any) {
 }
 
 function* flagStep(action: any) {
-    const approvedSteg = yield select(
-        (state: AppState) => state.summary.godkjenteSteg
-    );
+    const approvedSteg = yield select((state: AppState) => state.summary.godkjenteSteg);
     if (approvedSteg[action.stegID]) {
         yield put({ type: SummaryActionKeys.FLAG_STEP, action });
     }
 }
 
 export default function* summarySaga() {
-    yield all(
-        Object.entries(SøknadActionKeys).map((søknadActionKey) =>
-            takeLatest(søknadActionKey, flagStep)
-        )
-    );
+    yield all(Object.entries(SøknadActionKeys).map((søknadActionKey) => takeLatest(søknadActionKey, flagStep)));
     yield all([takeLatest(SummaryActionKeys.EXPAND_SUMMARY, approveStep)]);
 }

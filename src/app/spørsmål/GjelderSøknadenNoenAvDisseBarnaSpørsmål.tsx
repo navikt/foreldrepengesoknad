@@ -16,10 +16,7 @@ interface GjelderSøknadenNoenAvDisseBarnaSpørsmålProps {
 
 type Props = GjelderSøknadenNoenAvDisseBarnaSpørsmålProps & InjectedIntlProps;
 
-const erBarnValgt = (
-    barn: RegistrertBarn,
-    valgteBarn: RegistrertBarn[]
-): boolean => {
+const erBarnValgt = (barn: RegistrertBarn, valgteBarn: RegistrertBarn[]): boolean => {
     return valgteBarn.find((b) => b.fnr === barn.fnr) !== undefined;
 };
 
@@ -45,15 +42,10 @@ class GjelderSøknadenNoenAvDisseBarnaSpørsmål extends React.Component<Props> 
                 <CheckboksPanelGruppeResponsive
                     checkboxes={this.createRegistrertBarnOptions()}
                     disabled={disabled}
-                    legend={getMessage(
-                        intl,
-                        'gjelderSøknadenNoenAvDisseBarna.spørsmål'
-                    )}
+                    legend={getMessage(intl, 'gjelderSøknadenNoenAvDisseBarna.spørsmål')}
                     onChange={(e: InputChangeEvent, fnr: string) => {
                         onChange(
-                            this.props.registrerteBarn.find(
-                                (b) => b.fnr === fnr
-                            ) as RegistrertBarn,
+                            this.props.registrerteBarn.find((b) => b.fnr === fnr) as RegistrertBarn,
                             e.target.checked
                         );
                     }}

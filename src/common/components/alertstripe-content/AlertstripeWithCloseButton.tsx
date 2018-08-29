@@ -11,9 +11,11 @@ interface AlertstripeContentProps {
     onClose?: () => void;
 }
 
-const AlertstripeWithCloseButton: React.StatelessComponent<
-    AlertstripeContentProps
-> = ({ alertStripeProps, lukknappProps, onClose }) => {
+const AlertstripeWithCloseButton: React.StatelessComponent<AlertstripeContentProps> = ({
+    alertStripeProps,
+    lukknappProps,
+    onClose
+}) => {
     return (
         <AlertStripe {...alertStripeProps}>
             <div className="alertStripeContent">

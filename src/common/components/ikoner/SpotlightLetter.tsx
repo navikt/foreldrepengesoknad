@@ -14,12 +14,7 @@ const SpotlightLetter = (props: any) => (
             <circle id="path-1" cx="60" cy="60" r="60" />
             <circle id="path-3" cx="8" cy="8" r="8" />
         </defs>
-        <g
-            id="Spotlight/letter"
-            stroke="none"
-            strokeWidth="1"
-            fill="none"
-            fillRule="evenodd">
+        <g id="Spotlight/letter" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <use id="Background" fill="#9BD0B0" xlinkHref="#path-1" />
             <g id="Letter" transform="translate(32.000000, 30.000000)">
                 <path
@@ -33,9 +28,7 @@ const SpotlightLetter = (props: any) => (
                         id="Paper"
                         fill="#DCDCD2"
                     />
-                    <g
-                        id="Checkmark"
-                        transform="translate(16.000000, 5.000000)">
+                    <g id="Checkmark" transform="translate(16.000000, 5.000000)">
                         <use id="Circle" fill="#0C5EA8" xlinkHref="#path-3" />
                         <path
                             d="M6.56203584,9.48462091 L11.2605404,4.94732782 C11.6578208,4.5636786 12.2908893,4.57472885 12.6745385,4.97200925 C13.0581878,5.36928965 13.0471375,6.0023582 12.6498571,6.38600742 L7.19332991,11.6553145 C6.79622485,12.0387944 6.16353973,12.0279231 5.77983986,11.6311589 C5.72674155,11.5893288 5.6771113,11.5414566 5.63194475,11.4876292 L3.56731217,9.02709588 C3.21231038,8.60402121 3.26749434,7.97326562 3.69056901,7.61826382 C4.11364367,7.26326203 4.74439926,7.31844599 5.09940106,7.74152066 L6.56203584,9.48462091 Z"

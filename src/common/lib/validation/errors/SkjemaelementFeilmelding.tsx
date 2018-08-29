@@ -7,11 +7,7 @@ export interface Props {
 
 class SkjemaelementFeilmelding extends React.Component<Props> {
     renderFeil() {
-        return (
-            <div className="skjemaelement__feilmelding">
-                {this.props.feil.feilmelding}
-            </div>
-        );
+        return <div className="skjemaelement__feilmelding">{this.props.feil.feilmelding}</div>;
     }
 
     render() {

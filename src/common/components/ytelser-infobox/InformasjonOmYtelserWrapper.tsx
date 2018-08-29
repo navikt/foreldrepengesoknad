@@ -10,18 +10,17 @@ import './ytelser.less';
 interface YtelseInfoWrapperProps {
     ytelser: any[];
 }
-const InformasjonOmYtelserWrapper: React.StatelessComponent<
-    YtelseInfoWrapperProps & InjectedIntlProps
-> = ({ ytelser, intl }) => {
+const InformasjonOmYtelserWrapper: React.StatelessComponent<YtelseInfoWrapperProps & InjectedIntlProps> = ({
+    ytelser,
+    intl
+}) => {
     const harYtelser = ytelser !== undefined && ytelser.length > 0;
 
     return (
         <React.Fragment>
             {!harYtelser && (
                 <div className="ytelserEmpty">
-                    <Normaltekst>
-                        {getMessage(intl, 'annenInntekt.ytelser.tekst')}
-                    </Normaltekst>
+                    <Normaltekst>{getMessage(intl, 'annenInntekt.ytelser.tekst')}</Normaltekst>
                 </div>
             )}
             {harYtelser && (

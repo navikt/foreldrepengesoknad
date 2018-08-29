@@ -10,12 +10,7 @@ export interface OwnProps {
 
 export type Props = OwnProps & InjectedIntlProps;
 
-const Foreldernavn: React.StatelessComponent<Props> = ({
-    forelder,
-    navn,
-    capitalize,
-    intl
-}) => {
+const Foreldernavn: React.StatelessComponent<Props> = ({ forelder, navn, capitalize, intl }) => {
     let foreldernavn: string;
     if (navn !== undefined && navn !== '') {
         foreldernavn = navn;

@@ -18,15 +18,11 @@ const isStillingsprosentAbove0 = (stillingsprosent: string): boolean => {
     return false;
 };
 
-export const getStillingsprosentRegler = (
-    stillingsprosent: string,
-    intl: InjectedIntl
-): Validator[] => {
+export const getStillingsprosentRegler = (stillingsprosent: string, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
         {
-            test: () =>
-                stillingsprosent !== undefined && stillingsprosent !== '',
+            test: () => stillingsprosent !== undefined && stillingsprosent !== '',
             failText: getMessage(intl, `${intlKey}.required`)
         },
         {

@@ -10,10 +10,7 @@ export enum BarnAdoptert {
 
 interface BarnFødtBolkProps {
     adoptertIUtlandet?: boolean;
-    onChange: (
-        fødtIUtlandet: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (fødtIUtlandet: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = BarnFødtBolkProps & InjectedIntlProps;
@@ -43,10 +40,9 @@ const AdoptertIUtlandetSpørsmål = (props: Props) => {
                 }
             ]}
             name="adoptertIUtlandet"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: BarnAdoptert
-            ) => onChange(v === BarnAdoptert.ADOPTERT_I_UTLANDET, e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: BarnAdoptert) =>
+                onChange(v === BarnAdoptert.ADOPTERT_I_UTLANDET, e)
+            }
         />
     );
 };

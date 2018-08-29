@@ -11,10 +11,7 @@ export const fødselsdatoAvgrensninger: Avgrensninger = {
     maksDato: today.toDate()
 };
 
-export const getFødselsdatoRegler = (
-    fødselsdato: Fødselsdato,
-    intl: InjectedIntl
-): Validator[] => {
+export const getFødselsdatoRegler = (fødselsdato: Fødselsdato, intl: InjectedIntl): Validator[] => {
     const date = moment(fødselsdato);
     const intlKey = 'valideringsfeil.fodselsdato';
 
@@ -34,9 +31,5 @@ export const getFødselsdatoRegler = (
     ];
 };
 
-export const fødselsdatoerErFyltUt = (
-    fødselsdatoer: Date[] | undefined
-): boolean =>
-    fødselsdatoer !== undefined &&
-    fødselsdatoer.length > 0 &&
-    fødselsdatoer.findIndex((d) => d === undefined) === -1;
+export const fødselsdatoerErFyltUt = (fødselsdatoer: Date[] | undefined): boolean =>
+    fødselsdatoer !== undefined && fødselsdatoer.length > 0 && fødselsdatoer.findIndex((d) => d === undefined) === -1;

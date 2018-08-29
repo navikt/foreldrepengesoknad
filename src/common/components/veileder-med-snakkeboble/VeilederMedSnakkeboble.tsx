@@ -14,10 +14,7 @@ interface Dialog {
     text: string | React.ReactNode;
 }
 
-const VeilederMedSnakkeboble: React.StatelessComponent<Props> = ({
-    dialog,
-    veileder
-}) => {
+const VeilederMedSnakkeboble: React.StatelessComponent<Props> = ({ dialog, veileder }) => {
     return (
         <div className="veilederMedSnakkeboble">
             {dialog && (

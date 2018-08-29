@@ -1,14 +1,7 @@
 import * as React from 'react';
 import TimelineIcons from 'uttaksplan/components/timeline/TimelineIcons';
-import {
-    TimelineItemProps,
-    RangeRenderer,
-    DurationRenderer
-} from 'uttaksplan/components/timeline/Timeline';
-import {
-    TimelineGap,
-    TimelineItem
-} from 'uttaksplan/components/timeline/types';
+import { TimelineItemProps, RangeRenderer, DurationRenderer } from 'uttaksplan/components/timeline/Timeline';
+import { TimelineGap, TimelineItem } from 'uttaksplan/components/timeline/types';
 import TimelineItemMoreLink from 'uttaksplan/components/timeline/items/TimelineItemMoreLink';
 import { guid } from 'nav-frontend-js-utils';
 import BEMHelper from 'common/util/bem';
@@ -23,12 +16,7 @@ export interface Props extends TimelineItemProps {
 
 const BEM = BEMHelper('timelineGapItem');
 
-const GapItem: React.StatelessComponent<Props> = ({
-    item,
-    durationRenderer,
-    iconRenderer,
-    onClick
-}) => {
+const GapItem: React.StatelessComponent<Props> = ({ item, durationRenderer, iconRenderer, onClick }) => {
     const itemId = guid();
     return (
         <article className={BEM.className}>
@@ -40,12 +28,7 @@ const GapItem: React.StatelessComponent<Props> = ({
                 </EtikettLiten>
             </div>
             <div className={BEM.element('comment')}> {item.comment}</div>
-            {onClick && (
-                <TimelineItemMoreLink
-                    itemId={itemId}
-                    onClick={() => onClick(item)}
-                />
-            )}
+            {onClick && <TimelineItemMoreLink itemId={itemId} onClick={() => onClick(item)} />}
         </article>
     );
 };

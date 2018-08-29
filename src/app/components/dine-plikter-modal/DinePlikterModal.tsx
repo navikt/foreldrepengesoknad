@@ -27,9 +27,7 @@ const DinePlikterModal = (props: Props) => {
 
                 <ul>
                     <li>
-                        <Normaltekst>
-                            {getMessage(intl, 'dinePlikter.listeElement.1')}
-                        </Normaltekst>
+                        <Normaltekst>{getMessage(intl, 'dinePlikter.listeElement.1')}</Normaltekst>
                     </li>
                     <li>
                         <Normaltekst>
@@ -37,9 +35,7 @@ const DinePlikterModal = (props: Props) => {
                                 id="dinePlikter.listeElement.2"
                                 values={{
                                     link: (
-                                        <Lenke
-                                            href={lenker.rettOgPlikt}
-                                            target="_blank">
+                                        <Lenke href={lenker.rettOgPlikt} target="_blank">
                                             <FormattedMessage id="dinePlikter.listeElement.2.link" />
                                         </Lenke>
                                     )

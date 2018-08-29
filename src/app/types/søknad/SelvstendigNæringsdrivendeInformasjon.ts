@@ -40,7 +40,5 @@ export class Næringsrelasjon {
 }
 
 export type NæringPartial = Partial<Næring>;
-export type EndringAvNæringsinntektInformasjonPartial = Partial<
-    EndringAvNæringsinntektInformasjon
->;
+export type EndringAvNæringsinntektInformasjonPartial = Partial<EndringAvNæringsinntektInformasjon>;
 export type NæringsrelasjonPartial = Partial<Næringsrelasjon>;

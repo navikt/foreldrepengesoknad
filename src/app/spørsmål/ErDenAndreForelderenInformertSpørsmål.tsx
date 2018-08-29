@@ -17,13 +17,7 @@ interface ErDenAndreForelderenInformertSpørsmål {
 type Props = ErDenAndreForelderenInformertSpørsmål & InjectedIntlProps;
 
 const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
-    const {
-        onChange,
-        intl,
-        erDenAndreForelderenInformert,
-        navn,
-        ...otherProps
-    } = props;
+    const { onChange, intl, erDenAndreForelderenInformert, navn, ...otherProps } = props;
 
     let checked;
     if (erDenAndreForelderenInformert === true) {
@@ -49,10 +43,9 @@ const ErDenAndreForelderenInformertSpørsmål = (props: Props) => {
                 }
             ]}
             name="erDenAndreForelderenInformert"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: AndreForelderen
-            ) => onChange(v === AndreForelderen.ER_INFORMERT)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: AndreForelderen) =>
+                onChange(v === AndreForelderen.ER_INFORMERT)
+            }
             {...otherProps}
         />
     );

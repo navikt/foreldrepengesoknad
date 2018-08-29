@@ -16,20 +16,12 @@ const CheckboxIkon = (props: CheckboxIkonProps) => {
             <defs>
                 <circle id="path-1" cx="12" cy="12" r="12" />
             </defs>
-            <g
-                id="Icons/checkmark/circular/checked_green"
-                stroke="none"
-                strokeWidth="1"
-                fill="none"
-                fillRule="evenodd">
+            <g id="Icons/checkmark/circular/checked_green" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <mask id="mask-2" fill="white">
                     <use xlinkHref="#path-1" />
                 </mask>
                 <g id="Mask" />
-                <g
-                    id="Farge/-interaksjon/-Grønn"
-                    mask="url(#mask-2)"
-                    fill="#06893A">
+                <g id="Farge/-interaksjon/-Grønn" mask="url(#mask-2)" fill="#06893A">
                     <polygon id="Fill-45" points="0 24 24 24 24 0 0 0" />
                 </g>
                 <path
@@ -50,12 +42,7 @@ const CheckboxIkon = (props: CheckboxIkonProps) => {
             <defs>
                 <circle id="path-1" cx="12" cy="12" r="12" />
             </defs>
-            <g
-                id="Icons/checkmark/circular/pending"
-                stroke="none"
-                strokeWidth="1"
-                fill="none"
-                fillRule="evenodd">
+            <g id="Icons/checkmark/circular/pending" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <mask id="mask-2" fill="white">
                     <use xlinkHref="#path-1" />
                 </mask>

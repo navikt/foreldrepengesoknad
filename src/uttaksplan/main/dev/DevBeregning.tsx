@@ -8,10 +8,7 @@ export interface Props {
     perioder: Periode[];
 }
 
-const DevBeregning: React.StatelessComponent<Props> = ({
-    uttaksgrunnlag,
-    perioder
-}) => {
+const DevBeregning: React.StatelessComponent<Props> = ({ uttaksgrunnlag, perioder }) => {
     const uttaksinfo = getUttaksinfo(perioder);
     return (
         <div className="dev-only blokk-xl">
@@ -21,36 +18,17 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                 <div className="panel">
                     <h3>Uttaksinfo</h3>
                     <ul>
-                        <li>
-                            Første registrerte uttaksdag:{' '}
-                            {uttaksinfo.registrertTidsperiode.fom.toDateString()}
-                        </li>
-                        <li>
-                            Siste registrerte uttaksdag:{' '}
-                            {uttaksinfo.registrertTidsperiode.tom.toDateString()}
-                        </li>
+                        <li>Første registrerte uttaksdag: {uttaksinfo.registrertTidsperiode.fom.toDateString()}</li>
+                        <li>Siste registrerte uttaksdag: {uttaksinfo.registrertTidsperiode.tom.toDateString()}</li>
                         <li>
                             Siste registrerte uttaksdag (inkludert opphold):{' '}
                             {uttaksinfo.registrertTidsperiodeInkludertOpphold.tom.toDateString()}
                         </li>
-                        <li>
-                            Siste beregnet uttaksdag:{' '}
-                            {uttaksinfo.sluttdatoGittUttaksdager.toDateString()}
-                        </li>
-                        <li>
-                            Antall dager uttak: {uttaksinfo.antallDagerUttak}
-                        </li>
-                        <li>
-                            Antall dager opphold:{' '}
-                            {uttaksinfo.antallDagerOpphold}
-                        </li>
-                        <li>
-                            Antall dager utsettelser:{' '}
-                            {uttaksinfo.antallDagerUtsettelser}
-                        </li>
-                        <li>
-                            Antall dager totalt: {uttaksinfo.antallDagerTotalt}
-                        </li>
+                        <li>Siste beregnet uttaksdag: {uttaksinfo.sluttdatoGittUttaksdager.toDateString()}</li>
+                        <li>Antall dager uttak: {uttaksinfo.antallDagerUttak}</li>
+                        <li>Antall dager opphold: {uttaksinfo.antallDagerOpphold}</li>
+                        <li>Antall dager utsettelser: {uttaksinfo.antallDagerUtsettelser}</li>
+                        <li>Antall dager totalt: {uttaksinfo.antallDagerTotalt}</li>
                     </ul>
                 </div>
             )}
@@ -61,10 +39,7 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                         {Object.keys(uttaksgrunnlag.datoer).map((d, idx) => (
                             <React.Fragment key={idx}>
                                 <li>
-                                    {d}:{' '}
-                                    {(uttaksgrunnlag.datoer[
-                                        d
-                                    ] as Date).toDateString()}
+                                    {d}: {(uttaksgrunnlag.datoer[d] as Date).toDateString()}
                                 </li>
                             </React.Fragment>
                         ))}
@@ -75,37 +50,16 @@ const DevBeregning: React.StatelessComponent<Props> = ({
                 <div className="panel">
                     <h3>Uttaksgrunnlag</h3>
                     <ul>
-                        <li>
-                            familiehendelsedato:{' '}
-                            {uttaksgrunnlag.familiehendelsedato.toDateString()}
-                        </li>
+                        <li>familiehendelsedato: {uttaksgrunnlag.familiehendelsedato.toDateString()}</li>
                         <li>Dekningsgrad: {uttaksgrunnlag.dekningsgrad}</li>
-                        <li>
-                            To foreldre:{' '}
-                            {uttaksgrunnlag.annenForelder !== undefined
-                                ? 'Ja'
-                                : 'Nei'}
-                        </li>
-                        <li>
-                            Antall uttaksdager tilgjengelig:{' '}
-                            {uttaksgrunnlag.antallUttaksdagerTotalt}
-                        </li>
+                        <li>To foreldre: {uttaksgrunnlag.annenForelder !== undefined ? 'Ja' : 'Nei'}</li>
+                        <li>Antall uttaksdager tilgjengelig: {uttaksgrunnlag.antallUttaksdagerTotalt}</li>
                         <li>Antall barn: {uttaksgrunnlag.antallBarn}</li>
-                        <li>
-                            Er barnet født:{' '}
-                            {uttaksgrunnlag.erBarnetFødt ? 'Ja' : 'Nei'}
-                        </li>
+                        <li>Er barnet født: {uttaksgrunnlag.erBarnetFødt ? 'Ja' : 'Nei'}</li>
                         <li>Søkers kjønn: {uttaksgrunnlag.søker.kjønn}</li>
-                        <li>
-                            Aleneomsorg:{' '}
-                            {uttaksgrunnlag.søker.erAleneOmOmsorg
-                                ? 'Ja'
-                                : 'Nei'}
-                        </li>
+                        <li>Aleneomsorg: {uttaksgrunnlag.søker.erAleneOmOmsorg ? 'Ja' : 'Nei'}</li>
                         <li>Søkerrolle: {uttaksgrunnlag.søker.rolle}</li>
-                        <li>
-                            Søkersituasjon: {uttaksgrunnlag.søker.situasjon}
-                        </li>
+                        <li>Søkersituasjon: {uttaksgrunnlag.søker.situasjon}</li>
                     </ul>
                 </div>
             )}

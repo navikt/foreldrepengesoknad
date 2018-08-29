@@ -1,10 +1,4 @@
-import {
-    UtsettelseÅrsakType,
-    Forelder,
-    Tidsperiode,
-    Utsettelsesperiode,
-    UttaksplanSøker
-} from 'uttaksplan/types';
+import { UtsettelseÅrsakType, Forelder, Tidsperiode, Utsettelsesperiode, UttaksplanSøker } from 'uttaksplan/types';
 import { Tidsperioden, Uttaksdagen } from 'uttaksplan/utils';
 import { getAntallFeriedagerForForelder } from 'uttaksplan/utils/permisjonUtils';
 import { isAfter, isBefore } from 'date-fns';
@@ -15,24 +9,14 @@ import { Valideringsfeil } from 'uttaksplan/components/skjema/utsettelseSkjema/t
 import { validerDato } from 'uttaksplan/utils/validerDatoUtils';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 
-export function getDefaultState(
-    søker: UttaksplanSøker,
-    utsettelse?: Utsettelsesperiode
-): SkjemaState {
+export function getDefaultState(søker: UttaksplanSøker, utsettelse?: Utsettelsesperiode): SkjemaState {
     return utsettelse
         ? {
               valideringsfeil: new Map(),
               årsak: utsettelse.årsak,
-              forelder:
-                  utsettelse.forelder || søker.erAleneOmOmsorg
-                      ? 'forelder1'
-                      : undefined,
-              fom: utsettelse.tidsperiode
-                  ? utsettelse.tidsperiode.fom
-                  : undefined,
-              tom: utsettelse.tidsperiode
-                  ? utsettelse.tidsperiode.tom
-                  : undefined
+              forelder: utsettelse.forelder || søker.erAleneOmOmsorg ? 'forelder1' : undefined,
+              fom: utsettelse.tidsperiode ? utsettelse.tidsperiode.fom : undefined,
+              tom: utsettelse.tidsperiode ? utsettelse.tidsperiode.tom : undefined
           }
         : {
               valideringsfeil: new Map(),
@@ -45,14 +29,7 @@ export function validerUtsettelseskjema(
     props: SkjemaProps,
     uttaksgrunnlag: Uttaksgrunnlag
 ): Valideringsfeil {
-    const {
-        familiehendelsedato,
-        tidsperiode,
-        permisjonsregler,
-        registrerteUtsettelser,
-        utsettelse,
-        intl
-    } = props;
+    const { familiehendelsedato, tidsperiode, permisjonsregler, registrerteUtsettelser, utsettelse, intl } = props;
     const andreUtsettelser = utsettelse
         ? registrerteUtsettelser.filter((u) => u.id !== utsettelse.id)
         : registrerteUtsettelser;
@@ -67,12 +44,7 @@ export function validerUtsettelseskjema(
             })
         });
     } else {
-        const datoValideringsfeil = validerDato(
-            fom,
-            tidsperiode,
-            ugyldigeTidsrom,
-            familiehendelsedato
-        );
+        const datoValideringsfeil = validerDato(fom, tidsperiode, ugyldigeTidsrom, familiehendelsedato);
         if (datoValideringsfeil) {
             valideringsfeil.set('startdato', {
                 feilmelding: intl.formatMessage(
@@ -99,11 +71,7 @@ export function validerUtsettelseskjema(
             tom,
             {
                 ...tidsperiode,
-                tom: getTilTidsromSluttdato(
-                    fom || tidsperiode.fom,
-                    andreUtsettelser,
-                    uttaksgrunnlag
-                )
+                tom: getTilTidsromSluttdato(fom || tidsperiode.fom, andreUtsettelser, uttaksgrunnlag)
             },
             ugyldigeTidsrom
         );
@@ -123,22 +91,15 @@ export function validerUtsettelseskjema(
         } else if (fom && isBefore(tom, fom)) {
             valideringsfeil.set('sluttdato', {
                 feilmelding: intl.formatMessage({
-                    id:
-                        'uttaksplan.utsettelseskjema.feil.sluttdatoEtterStartdato'
+                    id: 'uttaksplan.utsettelseskjema.feil.sluttdatoEtterStartdato'
                 })
             });
         }
     }
     if (
         årsak === UtsettelseÅrsakType.Ferie &&
-        getAntallFeriedager(
-            årsak,
-            forelder,
-            fom,
-            tom,
-            registrerteUtsettelser,
-            utsettelse
-        ) > permisjonsregler.maksFeriedagerMedOverføring
+        getAntallFeriedager(årsak, forelder, fom, tom, registrerteUtsettelser, utsettelse) >
+            permisjonsregler.maksFeriedagerMedOverføring
     ) {
         valideringsfeil.set('feriedager', {
             feilmelding: intl.formatMessage({
@@ -195,12 +156,10 @@ export function getUgyldigeTidsrom(
 ): Tidsperiode[] | undefined {
     const ugyldigeTidsrom =
         registrerteUtsettelser &&
-        registrerteUtsettelser
-            .filter((u) => !utsettelse || utsettelse.id !== u.id)
-            .map((u) => ({
-                fom: u.tidsperiode.fom,
-                tom: u.tidsperiode.tom
-            }));
+        registrerteUtsettelser.filter((u) => !utsettelse || utsettelse.id !== u.id).map((u) => ({
+            fom: u.tidsperiode.fom,
+            tom: u.tidsperiode.tom
+        }));
     return ugyldigeTidsrom;
 }
 
@@ -217,13 +176,9 @@ export function getTilTidsromSluttdato(
     uttaksgrunnlag: Uttaksgrunnlag
 ) {
     if (registrerteUtsettelser.length > 0) {
-        const pafolgendeUtsettelser = registrerteUtsettelser.filter((u) =>
-            isAfter(u.tidsperiode.fom, tilTidsromFom)
-        );
+        const pafolgendeUtsettelser = registrerteUtsettelser.filter((u) => isAfter(u.tidsperiode.fom, tilTidsromFom));
         if (pafolgendeUtsettelser.length > 0) {
-            return Uttaksdagen(
-                pafolgendeUtsettelser[0].tidsperiode.fom
-            ).forrige();
+            return Uttaksdagen(pafolgendeUtsettelser[0].tidsperiode.fom).forrige();
         }
     }
     return uttaksgrunnlag.datoer.sisteMuligeUttaksdag;
@@ -252,10 +207,7 @@ export function getAntallFeriedager(
     let feriedagerDenneUtsettelsen = 0;
 
     if (forelder && årsak === UtsettelseÅrsakType.Ferie) {
-        registrerteFeriedager = getAntallFeriedagerForForelder(
-            registrerteUtsettelser,
-            forelder
-        );
+        registrerteFeriedager = getAntallFeriedagerForForelder(registrerteUtsettelser, forelder);
     }
 
     let fridager = 0;
@@ -269,15 +221,8 @@ export function getAntallFeriedager(
     }
 
     if (utsettelse) {
-        feriedagerDenneUtsettelsen = Tidsperioden(
-            utsettelse.tidsperiode
-        ).getAntallUttaksdager();
+        feriedagerDenneUtsettelsen = Tidsperioden(utsettelse.tidsperiode).getAntallUttaksdager();
     }
 
-    return (
-        registrerteFeriedager +
-        nyeFeriedager -
-        feriedagerDenneUtsettelsen -
-        fridager
-    );
+    return registrerteFeriedager + nyeFeriedager - feriedagerDenneUtsettelsen - fridager;
 }

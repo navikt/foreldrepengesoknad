@@ -2,17 +2,12 @@ import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import {
-    TidsperiodeMedValgfriSluttdatoPartial,
-    TidsperiodePartial
-} from 'common/types';
+import { TidsperiodeMedValgfriSluttdatoPartial, TidsperiodePartial } from 'common/types';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
-type TidsperiodeType =
-    | TidsperiodePartial
-    | TidsperiodeMedValgfriSluttdatoPartial;
+type TidsperiodeType = TidsperiodePartial | TidsperiodeMedValgfriSluttdatoPartial;
 
 export interface DatoAvgrensninger {
     fra?: Avgrensninger;
@@ -46,13 +41,7 @@ class TidsperiodeBolk extends React.Component<Props> {
     }
 
     render() {
-        const {
-            tidsperiode,
-            datoAvgrensninger,
-            datoValidatorer,
-            intl,
-            sluttdatoDisabled
-        } = this.props;
+        const { tidsperiode, datoAvgrensninger, datoValidatorer, intl, sluttdatoDisabled } = this.props;
 
         return (
             <React.Fragment>
@@ -67,9 +56,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                             });
                         }}
                         dato={tidsperiode.fom}
-                        avgrensninger={
-                            datoAvgrensninger && datoAvgrensninger.fra
-                        }
+                        avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
                         validators={datoValidatorer && datoValidatorer.fra}
                     />
                 </Block>
@@ -86,9 +73,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         }}
                         dato={tidsperiode.tom}
                         disabled={false || sluttdatoDisabled}
-                        avgrensninger={
-                            datoAvgrensninger && datoAvgrensninger.til
-                        }
+                        avgrensninger={datoAvgrensninger && datoAvgrensninger.til}
                         validators={datoValidatorer && datoValidatorer.til}
                     />
                 </Block>

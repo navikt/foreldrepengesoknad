@@ -1,9 +1,4 @@
-import {
-    Dekningsgrad,
-    Periode,
-    Periodetype,
-    Permisjonsregler
-} from '../../types';
+import { Dekningsgrad, Periode, Periodetype, Permisjonsregler } from '../../types';
 import { Uttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import { UttaksplanRequiredProps } from 'uttaksplan/types';
 

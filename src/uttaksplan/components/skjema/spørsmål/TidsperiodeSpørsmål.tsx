@@ -42,8 +42,7 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
         <SkjemaGruppe
             feil={tidsperiodeFeil}
             className={classnames('tidsperiodeSkjemagruppe', {
-                'tidsperiodeSkjemagruppe--harFeil':
-                    tidsperiodeFeil !== undefined
+                'tidsperiodeSkjemagruppe--harFeil': tidsperiodeFeil !== undefined
             })}>
             <Row>
                 <Column xs="12" sm="6">
@@ -58,25 +57,13 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                     })
                                 }
                                 dato={startdato.dato}
-                                feil={
-                                    startdato.visFeil && startdato.feil
-                                        ? startdato.feil
-                                        : undefined
-                                }
-                                onChange={(dato: Date) =>
-                                    startdato.onChange(dato)
-                                }
+                                feil={startdato.visFeil && startdato.feil ? startdato.feil : undefined}
+                                onChange={(dato: Date) => startdato.onChange(dato)}
                                 avgrensninger={{
-                                    minDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.fom
-                                        : undefined,
-                                    maksDato: tidsperiodeStartdato
-                                        ? tidsperiodeStartdato.tom
-                                        : undefined,
+                                    minDato: tidsperiodeStartdato ? tidsperiodeStartdato.fom : undefined,
+                                    maksDato: tidsperiodeStartdato ? tidsperiodeStartdato.tom : undefined,
                                     helgedagerIkkeTillatt,
-                                    ugyldigeTidsperioder: ugyldigeTidsperioder
-                                        ? ugyldigeTidsperioder
-                                        : undefined
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder ? ugyldigeTidsperioder : undefined
                                 }}
                                 kalender={{
                                     plassering: 'fullskjerm'
@@ -100,24 +87,13 @@ const TidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                                         id: 'uttaksplan.sluttdato.sporsmal'
                                     })
                                 }
-                                feil={
-                                    sluttdato.visFeil && sluttdato.feil
-                                        ? sluttdato.feil
-                                        : undefined
-                                }
+                                feil={sluttdato.visFeil && sluttdato.feil ? sluttdato.feil : undefined}
                                 avgrensninger={{
                                     minDato:
-                                        minSluttdato ||
-                                        (tidsperiodeSluttdato
-                                            ? tidsperiodeSluttdato.fom
-                                            : undefined),
-                                    maksDato: tidsperiodeSluttdato
-                                        ? tidsperiodeSluttdato.tom
-                                        : undefined,
+                                        minSluttdato || (tidsperiodeSluttdato ? tidsperiodeSluttdato.fom : undefined),
+                                    maksDato: tidsperiodeSluttdato ? tidsperiodeSluttdato.tom : undefined,
                                     helgedagerIkkeTillatt,
-                                    ugyldigeTidsperioder: ugyldigeTidsperioder
-                                        ? ugyldigeTidsperioder
-                                        : undefined
+                                    ugyldigeTidsperioder: ugyldigeTidsperioder ? ugyldigeTidsperioder : undefined
                                 }}
                                 onChange={(date) => sluttdato.onChange(date)}
                                 kalender={{ plassering: 'fullskjerm' }}

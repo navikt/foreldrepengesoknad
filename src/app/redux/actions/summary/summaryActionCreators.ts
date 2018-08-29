@@ -1,7 +1,4 @@
-import {
-    SummaryActionKeys,
-    SummaryActionTypes
-} from './summaryActionDefinitions';
+import { SummaryActionKeys, SummaryActionTypes } from './summaryActionDefinitions';
 import { StegID } from '../../../util/routing/stegConfig';
 import { SummaryState } from '../../reducers/summaryReducer';
 

@@ -14,9 +14,7 @@ export interface OwnProps {
     onChange: (dager: number) => void;
 }
 
-const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
-    OwnProps & InjectedIntlProps
-> = ({
+const FordelingFellesperiodeSpørsmål: React.StatelessComponent<OwnProps & InjectedIntlProps> = ({
     navnForelder1,
     navnForelder2,
     ukerForelder1,
@@ -52,17 +50,13 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
             reduceLabel: intl.formatMessage(
                 { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                 {
-                    navn:
-                        navnForelder1 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder1' })
+                    navn: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' })
                 }
             ),
             increaseLabel: intl.formatMessage(
                 { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                 {
-                    navn:
-                        navnForelder2 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
+                    navn: navnForelder2 || intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }
             )
         }}
@@ -72,26 +66,16 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                 {
                     ukerForelder1: value,
                     ukerForelder2: ukerFellesperiode - value,
-                    navnForelder1:
-                        navnForelder1 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder1' }),
-                    navnForelder2:
-                        navnForelder2 ||
-                        intl.formatMessage({ id: 'uttaksplan.forelder2' })
+                    navnForelder1: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' }),
+                    navnForelder2: navnForelder2 || intl.formatMessage({ id: 'uttaksplan.forelder2' })
                 }
             )
         }
         valueLabelRenderer={(options) => (
             <FordelingFellesperiodeLabelRenderer
                 options={options}
-                navnForelder1={
-                    navnForelder1 ||
-                    intl.formatMessage({ id: 'uttaksplan.Forelder1' })
-                }
-                navnForelder2={
-                    navnForelder2 ||
-                    intl.formatMessage({ id: 'uttaksplan.Forelder2' })
-                }
+                navnForelder1={navnForelder1 || intl.formatMessage({ id: 'uttaksplan.Forelder1' })}
+                navnForelder2={navnForelder2 || intl.formatMessage({ id: 'uttaksplan.Forelder2' })}
                 introRenderer={introRenderer}
             />
         )}

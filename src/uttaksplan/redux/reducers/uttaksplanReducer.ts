@@ -1,7 +1,4 @@
-import {
-    UttaksplanActionTypes,
-    UttaksplanActionTypeKeys
-} from '../actions/actionTypes';
+import { UttaksplanActionTypes, UttaksplanActionTypeKeys } from '../actions/actionTypes';
 import { UttaksplanState } from '../types';
 import { getUttaksgrunnlag } from 'uttaksplan/utils/uttak/uttaksgrunnlag';
 import { UttaksplanBuilder } from 'uttaksplan/utils/planer/UttaksplanBuilder';
@@ -14,19 +11,13 @@ const defaultState: UttaksplanState = {
     manuellOppdatering: false
 };
 
-const UttaksplanReducer = (
-    state = defaultState,
-    action: UttaksplanActionTypes
-): UttaksplanState => {
+const UttaksplanReducer = (state = defaultState, action: UttaksplanActionTypes): UttaksplanState => {
     switch (action.type) {
         case UttaksplanActionTypeKeys.INIT_UTTAKSPLAN:
             return {
                 manuellOppdatering: false,
                 perioder: [],
-                uttaksgrunnlag: getUttaksgrunnlag(
-                    action.props,
-                    action.dekningsgrad
-                )
+                uttaksgrunnlag: getUttaksgrunnlag(action.props, action.dekningsgrad)
             };
         case UttaksplanActionTypeKeys.OPPRETT_PERIODER_TO_FORELDRE:
             return {
@@ -57,32 +48,24 @@ const UttaksplanReducer = (
             if (state.manuellOppdatering) {
                 return {
                     ...state,
-                    perioder: UttaksplanManuell(
-                        state.perioder
-                    ).leggTilEllerOppdater(action.periode).perioder
+                    perioder: UttaksplanManuell(state.perioder).leggTilEllerOppdater(action.periode).perioder
                 };
             }
             return {
                 ...state,
-                perioder: UttaksplanBuilder(
-                    state.perioder
-                ).leggTilEllerOppdaterPeriode(action.periode).perioder
+                perioder: UttaksplanBuilder(state.perioder).leggTilEllerOppdaterPeriode(action.periode).perioder
             };
 
         case UttaksplanActionTypeKeys.PERIODE_SLETT:
             if (state.manuellOppdatering) {
                 return {
                     ...state,
-                    perioder: UttaksplanManuell(state.perioder).slettPeriode(
-                        action.periode
-                    ).perioder
+                    perioder: UttaksplanManuell(state.perioder).slettPeriode(action.periode).perioder
                 };
             }
             return {
                 ...state,
-                perioder: UttaksplanBuilder(state.perioder).slettPeriodeOgBuild(
-                    action.periode
-                ).perioder
+                perioder: UttaksplanBuilder(state.perioder).slettPeriodeOgBuild(action.periode).perioder
             };
 
         case UttaksplanActionTypeKeys.SET_MANUELL_UTTAKSPLAN:

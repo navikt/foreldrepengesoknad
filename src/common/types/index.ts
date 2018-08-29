@@ -15,6 +15,4 @@ export interface TidsperiodeMedValgfriSluttdato {
 }
 
 export type TidsperiodePartial = Partial<Tidsperiode>;
-export type TidsperiodeMedValgfriSluttdatoPartial = Partial<
-    TidsperiodeMedValgfriSluttdato
->;
+export type TidsperiodeMedValgfriSluttdatoPartial = Partial<TidsperiodeMedValgfriSluttdato>;

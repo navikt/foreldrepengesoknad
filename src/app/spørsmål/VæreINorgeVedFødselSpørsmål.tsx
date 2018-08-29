@@ -10,10 +10,7 @@ enum INorgeVedFødsel {
 
 interface VæreINorgeVedFødselSpørsmålProps {
     fødselINorge?: boolean;
-    onChange: (
-        fødselINorge: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (fødselINorge: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = VæreINorgeVedFødselSpørsmålProps & InjectedIntlProps;
@@ -37,10 +34,9 @@ const VæreINorgeVedFødselSpørsmål = (props: Props) => {
                 { label: getMessage(intl, 'nei'), value: INorgeVedFødsel.NEI }
             ]}
             name="væreINorgeVedFødsel"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: INorgeVedFødsel
-            ) => onChange(v === INorgeVedFødsel.JA, e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: INorgeVedFødsel) =>
+                onChange(v === INorgeVedFødsel.JA, e)
+            }
         />
     );
 };

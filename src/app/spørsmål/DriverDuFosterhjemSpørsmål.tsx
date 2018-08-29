@@ -10,10 +10,7 @@ export enum DriverFosterhjem {
 
 interface DriverFosterhjemSpørsmålProps {
     driverFosterhjem?: boolean;
-    onChange: (
-        harJobbetForNærVennEllerFamilieSiste12Mnd: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (harJobbetForNærVennEllerFamilieSiste12Mnd: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = DriverFosterhjemSpørsmålProps & InjectedIntlProps;
@@ -43,10 +40,9 @@ const DriverDuFosterhjemSpørsmål = (props: Props) => {
                 }
             ]}
             name="driverFosterhjem"
-            onChange={(
-                e: React.ChangeEvent<HTMLInputElement>,
-                v: DriverFosterhjem
-            ) => onChange(v === DriverFosterhjem.DRIVER_FOSTERHJEM, e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: DriverFosterhjem) =>
+                onChange(v === DriverFosterhjem.DRIVER_FOSTERHJEM, e)
+            }
         />
     );
 };

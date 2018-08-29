@@ -2,24 +2,15 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Operation } from '../types/Operation';
 import { SøknadPartial } from '../../types/søknad/Søknad';
 
-export const editAttachmentInState = (
-    attachment: Attachment,
-    state: SøknadPartial
-): SøknadPartial => {
+export const editAttachmentInState = (attachment: Attachment, state: SøknadPartial): SøknadPartial => {
     return updateAttachmentState(attachment, state, Operation.EDIT);
 };
 
-export const removeAttachmentFromState = (
-    attachment: Attachment,
-    state: SøknadPartial
-) => {
+export const removeAttachmentFromState = (attachment: Attachment, state: SøknadPartial) => {
     return updateAttachmentState(attachment, state, Operation.DELETE);
 };
 
-export const addAttachmentToState = (
-    attachment: Attachment,
-    state: SøknadPartial
-) => {
+export const addAttachmentToState = (attachment: Attachment, state: SøknadPartial) => {
     return updateAttachmentState(attachment, state, Operation.ADD);
 };
 
@@ -44,11 +35,7 @@ const stateWithUpdatedBarnAttachments = (
     operation: Operation
 ): SøknadPartial => {
     const attachments = state.barn[attachment.type] || [];
-    const updatedAttachments = updateAttachmentList(
-        attachments,
-        attachment,
-        operation
-    );
+    const updatedAttachments = updateAttachmentList(attachments, attachment, operation);
     return {
         ...state,
         barn: { ...state.barn, [attachment.type]: updatedAttachments }
@@ -64,18 +51,12 @@ const stateWithUpdatedAndreInntekterAttachments = (
     if (andreInntekter) {
         const annenInntekt = andreInntekter.find(
             (currentAnnenInntekt) =>
-                currentAnnenInntekt.vedlegg.find(
-                    (currentVedlegg) => currentVedlegg.id === attachment.id
-                ) !== undefined
+                currentAnnenInntekt.vedlegg.find((currentVedlegg) => currentVedlegg.id === attachment.id) !== undefined
         );
         if (annenInntekt) {
             const attachments = annenInntekt.vedlegg;
             const annenInntektIndex = andreInntekter.indexOf(annenInntekt);
-            annenInntekt.vedlegg = updateAttachmentList(
-                attachments,
-                attachment,
-                operation
-            );
+            annenInntekt.vedlegg = updateAttachmentList(attachments, attachment, operation);
             andreInntekter[annenInntektIndex] = annenInntekt;
             return {
                 ...state,
@@ -89,11 +70,7 @@ const stateWithUpdatedAndreInntekterAttachments = (
     return state;
 };
 
-const updateAttachmentState = (
-    attachment: Attachment,
-    state: SøknadPartial,
-    operation: Operation
-): SøknadPartial => {
+const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, operation: Operation): SøknadPartial => {
     const { type } = attachment;
     const isAttachmentForBarn =
         type === 'terminbekreftelse' ||
@@ -105,11 +82,7 @@ const updateAttachmentState = (
     if (isAttachmentForBarn) {
         return stateWithUpdatedBarnAttachments(attachment, state, operation);
     } else if (isAttachmentForAnnenInntekt) {
-        return stateWithUpdatedAndreInntekterAttachments(
-            attachment,
-            state,
-            operation
-        );
+        return stateWithUpdatedAndreInntekterAttachments(attachment, state, operation);
     }
 
     return state;

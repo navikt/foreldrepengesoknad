@@ -10,10 +10,7 @@ export enum BarnFødt {
 
 interface BarnFødtBolkProps {
     erBarnetFødt?: boolean;
-    onChange: (
-        erBarnetFødt: boolean,
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => void;
+    onChange: (erBarnetFødt: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 type Props = BarnFødtBolkProps & InjectedIntlProps;
@@ -37,9 +34,7 @@ const ErBarnetFødtSpørsmål = (props: Props) => {
                 { label: getMessage(intl, 'nei'), value: BarnFødt.IKKE_FØDT }
             ]}
             name="barnFødt"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: BarnFødt) =>
-                onChange(v === BarnFødt.ER_FØDT, e)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: BarnFødt) => onChange(v === BarnFødt.ER_FØDT, e)}
             {...otherProps}
         />
     );

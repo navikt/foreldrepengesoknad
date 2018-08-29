@@ -19,12 +19,7 @@ export default function preventDoubleTapZoom(event: React.TouchEvent<any>) {
     const { clientX, clientY } = event.touches[0];
     const xDiff = Math.abs(lastClientX - clientX);
     const yDiff = Math.abs(lastClientY - clientY);
-    if (
-        xDiff < minZoomTouchDelta &&
-        yDiff < minZoomTouchDelta &&
-        event.touches.length === 1 &&
-        timeDiff < delay
-    ) {
+    if (xDiff < minZoomTouchDelta && yDiff < minZoomTouchDelta && event.touches.length === 1 && timeDiff < delay) {
         event.preventDefault();
         // Trigger a fake click for the tap we just prevented
         (event.target as any).click();
