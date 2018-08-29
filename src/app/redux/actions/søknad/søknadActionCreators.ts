@@ -1,4 +1,3 @@
-import { Skjemadata } from '../../../types/søknad/Søknad';
 import {
     SøknadActionKeys,
     UpdateBarn,
@@ -10,7 +9,9 @@ import {
     DeleteAttachment,
     DeleteAttachmentFailed,
     DeleteAttachmentSuccess,
-    UpdateSøkerAndStorage
+    UpdateSøkerAndStorage,
+    UpdateSøknadActionPayload,
+    UpdateSøknadenGjelder
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -22,6 +23,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 
 const updateBarn = (
     payload:
@@ -31,6 +33,13 @@ const updateBarn = (
         | ForeldreansvarBarnPartial
 ): UpdateBarn => ({
     type: SøknadActionKeys.UPDATE_BARN,
+    payload
+});
+
+const updateSøknadenGjelderBarn = (
+    payload: SøknadenGjelderBarnValg
+): UpdateSøknadenGjelder => ({
+    type: SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN,
     payload
 });
 
@@ -58,7 +67,7 @@ const updateSøkerAndStorage = (
     payload
 });
 
-const updateSøknad = (payload: Skjemadata): UpdateSøknad => ({
+const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
     payload
 });
@@ -110,6 +119,7 @@ const deleteAttachmentFailed = (
 export default {
     updateAnnenForelder,
     updateBarn,
+    updateSøknadenGjelderBarn,
     updateUtenlandsopphold,
     updateSøker,
     updateSøkerAndStorage,

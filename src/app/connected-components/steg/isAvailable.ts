@@ -7,7 +7,6 @@ import {
 } from '../../util/validation/fields/situasjon';
 import { barnErGyldig } from '../../util/validation/steg/barn';
 import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
-import Person from '../../types/Person';
 import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
 import { Søkerinfo } from '../../types/søkerinfo';
 
@@ -18,9 +17,6 @@ const isAvailable = (
     søknad: Søknad,
     søkerinfo: Søkerinfo
 ): boolean => {
-    const { barn, situasjon } = søknad;
-    const { person, registrertAnnenForelder } = søkerinfo;
-
     switch (stegId) {
         case StegID.INNGANG:
             return harGodkjentVilkår(søknad);
@@ -33,33 +29,21 @@ const isAvailable = (
             return (
                 harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad)
             );
-
         case StegID.ANNEN_FORELDER:
-            return harGodkjentVilkår(søknad) && barnErGyldig(barn, situasjon);
-
+            return harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo);
         case StegID.UTENLANDSOPPHOLD:
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(barn, situasjon) &&
-                annenForelderErGyldig(
-                    søknad,
-                    person as Person,
-                    registrertAnnenForelder
-                )
+                barnErGyldig(søknad, søkerinfo) &&
+                annenForelderErGyldig(søknad, søkerinfo)
             );
-
         case StegID.ANDRE_INNTEKTER:
             return (
                 harGodkjentVilkår(søknad) &&
-                barnErGyldig(barn, situasjon) &&
-                annenForelderErGyldig(
-                    søknad,
-                    person as Person,
-                    registrertAnnenForelder
-                ) &&
+                barnErGyldig(søknad, søkerinfo) &&
+                annenForelderErGyldig(søknad, søkerinfo) &&
                 utenlandsoppholdErGyldig(søknad)
             );
-
         default:
             return false;
     }

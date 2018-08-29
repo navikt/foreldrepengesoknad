@@ -179,8 +179,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FORELDREANSVAR,
         renderFortsettKnapp:
-            barnErGyldig(state.søknad.barn, state.søknad.situasjon) &&
-            fødselsdatoerOk,
+            barnErGyldig(state.søknad, props.søkerinfo) && fødselsdatoerOk,
         history: props.history,
         isAvailable: isAvailable(
             StegID.RELASJON_TIL_BARN_FORELDREANSVAR,

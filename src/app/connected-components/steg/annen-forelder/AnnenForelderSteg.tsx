@@ -97,22 +97,18 @@ class AnnenForelderSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const {
-        person,
-        registrertAnnenForelder,
-        registrerteBarn
-    } = props.søkerinfo;
-    const barn = state.søknad.barn as ForeldreansvarBarn;
-    const søker = state.søknad.søker;
+    const { person, registrerteBarn } = props.søkerinfo;
+    const { barn, søker, annenForelder, temp } = state.søknad;
+    const { registrertAnnenForelder } = temp;
+    const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
+
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
-    const annenForelder = state.søknad.annenForelder;
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: annenForelderErGyldig(
             state.søknad,
-            person!,
-            registrertAnnenForelder
+            props.søkerinfo
         ),
         history: props.history,
         isAvailable: isAvailable(
@@ -129,12 +125,12 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         stegProps,
         antallBarn: registrerteBarn ? registrerteBarn.length : 0,
-        søkersFødselsnummer: person ? person.fnr : undefined,
+        søkersFødselsnummer: person.fnr,
         erSøkerFarEllerMedmor,
         registrertAnnenForelder,
         shouldRenderAnnenForelderErKjentPartial,
         visInformasjonVedOmsorgsovertakelse:
-            barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0
+            omsorgsovertakelse && omsorgsovertakelse.length > 0
     };
 };
 

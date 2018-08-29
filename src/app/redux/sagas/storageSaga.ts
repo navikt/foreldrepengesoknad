@@ -9,9 +9,14 @@ import summaryActionCreators from '../actions/summary/summaryActionCreators';
 
 function* saveAppState() {
     try {
-        const stateSelector = (state: any) => state;
-        const appState = yield select(stateSelector);
-        yield call(Api.storeAppState, appState);
+        const stateSelector = (state: AppState) => state;
+        const appState: AppState = yield select(stateSelector);
+        const { temp, ...søknad } = appState.søknad;
+        const cleanedAppState = {
+            ...appState,
+            søknad
+        };
+        yield call(Api.storeAppState, cleanedAppState);
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
     }

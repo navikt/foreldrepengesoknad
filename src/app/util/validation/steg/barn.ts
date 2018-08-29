@@ -1,11 +1,16 @@
-import Barn, {
+import moment from 'moment';
+import {
     Adopsjonsbarn,
     ForeldreansvarBarn,
     FødtBarn,
     UfødtBarn
 } from '../../../types/søknad/Barn';
-import { Søkersituasjon } from '../../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
+import { Søkerinfo } from '../../../types/søkerinfo';
+import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
+import DateValues from '../values';
+import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -62,13 +67,17 @@ const ufødtBarnErGyldig = (
     return true;
 };
 
-export const barnErGyldig = (
-    barn: Barn,
-    situasjon: Søkersituasjon,
-    skalLasteOppTerminbekreftelse?: boolean
-): boolean => {
+export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
+    const { situasjon, barn } = søknad;
+    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(
+        søknad,
+        søkerinfo
+    );
     switch (situasjon) {
         case Søkersituasjon.FØDSEL:
+            if (harValgtRegistrertBarn(søknad)) {
+                return true;
+            }
             return barn.erBarnetFødt
                 ? fødtBarnErGyldig(barn as FødtBarn)
                 : ufødtBarnErGyldig(
@@ -83,4 +92,43 @@ export const barnErGyldig = (
         default:
             return false;
     }
+};
+
+export const skalSøkerLasteOppTerminbekreftelse = (
+    søknad: Søknad,
+    søkerinfo: Søkerinfo
+): boolean => {
+    return (
+        søknad.barn.erBarnetFødt === false &&
+        !harAktivtArbeidsforhold(
+            søkerinfo.arbeidsforhold,
+            DateValues.today.toDate()
+        )
+    );
+};
+
+const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
+    return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
+};
+
+export const getUniqeRegistrertAnnenForelderFromBarn = (
+    barn?: RegistrertBarn[]
+): RegistrertAnnenForelder | undefined => {
+    if (!barn || barn.length === 0) {
+        return undefined;
+    }
+    const foreldre: RegistrertAnnenForelder[] = [];
+    barn.forEach((b) => {
+        const { annenForelder } = b;
+        if (
+            annenForelder &&
+            !foreldre.find((f) => f.fnr === annenForelder.fnr)
+        ) {
+            foreldre.push({
+                ...annenForelder,
+                fødselsdato: moment(annenForelder.fødselsdato).toDate()
+            });
+        }
+    });
+    return foreldre.length === 1 ? foreldre[0] : undefined;
 };
