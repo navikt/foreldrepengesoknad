@@ -5,7 +5,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { søknadStegPath } from '../StegRoutes';
-import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
@@ -39,6 +39,7 @@ class InngangSteg extends React.Component<Props, {}> {
         super(props);
 
         this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
     resolveSøkerRolle(situasjon: Søkersituasjon) {
@@ -72,9 +73,16 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     handleOnSubmit() {
-        const { dispatch, history } = this.props;
+        const { dispatch, history, situasjon } = this.props;
         dispatch(apiActionCreators.storeAppState());
-        history.push(`${søknadStegPath(stegConfig[StegID.INNGANG].nesteSteg)}`);
+
+        if (situasjon === Søkersituasjon.FØDSEL) {
+            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_FØDSEL)}`);
+        } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
+            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_FORELDREANSVAR)}`);
+        } else if (situasjon === Søkersituasjon.ADOPSJON) {
+            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}`);
+        }
     }
 
     render() {
@@ -104,18 +112,6 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 }
 
-const resolveNesteSteg = (state: AppState): StegID | undefined => {
-    const { situasjon } = state.søknad;
-    if (situasjon === Søkersituasjon.FØDSEL) {
-        return StegID.RELASJON_TIL_BARN_FØDSEL;
-    } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
-        return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
-    } else if (situasjon === Søkersituasjon.ADOPSJON) {
-        return StegID.RELASJON_TIL_BARN_ADOPSJON;
-    }
-    return;
-};
-
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
@@ -125,10 +121,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: inngangErGyldig(situasjon, søker.rolle, kjønn, erRolleGyldig),
+        renderFortsettKnapp: inngangErGyldig(situasjon, kjønn, erRolleGyldig),
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        nesteStegRoute: resolveNesteSteg(state)
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo)
     };
 
     return {
