@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { AppState } from '../../../redux/reducers';
-import { StegID } from '../../../util/routing/stegConfig';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { søknadStegPath } from '../StegRoutes';
+import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
@@ -20,14 +22,14 @@ import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
+import visibility from './visibility';
 
 export interface StateProps {
     kjønn: Kjønn;
     situasjon?: Søkersituasjon;
-    visSpørsmålOmSøkerrolle?: boolean;
-    roller?: SøkerRolle[];
+    roller: SøkerRolle[];
     stegProps: StegProps;
-    søker: SøkerPartial;
+    søker: Søker;
 }
 
 export type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -64,29 +66,34 @@ class InngangSteg extends React.Component<Props, {}> {
         );
     }
 
+    handleOnSubmit() {
+        const { søker, dispatch, history } = this.props;
+        // dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(`${søknadStegPath(stegConfig[StegID.INNGANG].nesteSteg)}`);
+    }
+
     render() {
-        const { roller, situasjon, søker, visSpørsmålOmSøkerrolle, dispatch, stegProps } = this.props;
+        const { roller, situasjon, søker, dispatch, stegProps } = this.props;
         const { rolle } = søker;
 
         return (
-            <Steg {...stegProps}>
+            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
-                <Block visible={visSpørsmålOmSøkerrolle !== undefined}>
-                    {visSpørsmålOmSøkerrolle && (
-                        <SøkerrolleSpørsmål
-                            rolle={rolle}
-                            roller={roller}
-                            onChange={(nyRolle: SøkerRolle) =>
-                                dispatch(
-                                    søknadActions.updateSøker({
-                                        rolle: nyRolle
-                                    })
-                                )
-                            }
-                        />
-                    )}
+                <Block visible={visibility.søkerRolleSpørsmål(roller)}>
+                    <SøkerrolleSpørsmål
+                        rolle={rolle}
+                        roller={roller}
+                        onChange={(nyRolle: SøkerRolle) =>
+                            dispatch(
+                                søknadActions.updateSøker({
+                                    rolle: nyRolle
+                                })
+                            )
+                        }
+                    />
                 </Block>
             </Steg>
         );
@@ -109,7 +116,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
     const søker = state.søknad.søker;
-    const roller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : undefined;
+    const roller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
@@ -121,7 +128,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         kjønn,
-        visSpørsmålOmSøkerrolle: roller !== undefined,
         søker,
         situasjon,
         roller,
