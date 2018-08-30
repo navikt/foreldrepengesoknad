@@ -1,52 +1,52 @@
 import { createSelector } from 'reselect';
-import { AnnenForelderDataSelectors as selectors } from './dataSelectors';
+import { AnnenForelderDataSelectors as data } from './dataSelectors';
 import { Søker } from '../../../../types/søknad/Søker';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { ForeldreansvarBarn, Barn } from '../../../../types/søknad/Barn';
 
 const visRegistrertAnnenForelderBolk = createSelector(
-    [selectors.getRegistrertAnnenForelder],
+    [data.getRegistrertAnnenForelder],
     (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder !== undefined
 );
 
 const visAnnenForelderPersonaliaSkjema = createSelector(
-    [selectors.getRegistrertAnnenForelder],
+    [data.getRegistrertAnnenForelder],
     (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder === undefined
 );
 
 const visAnnenForelderErKjentPartial = createSelector(
-    [selectors.getAnnenForelder, selectors.getRegistrertAnnenForelder],
-    (annenForelder: AnnenForelder, registrertAnnenForelder) =>
+    [data.getAnnenForelder, data.getRegistrertAnnenForelder],
+    (annenForelder: AnnenForelder, registrertAnnenForelder): boolean =>
         ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined
 );
 
-const visOmsorgsovertakelse = createSelector([selectors.getBarn], (barn: Barn) => {
+const visOmsorgsovertakelse = createSelector([data.getBarn], (barn: Barn) => {
     const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
     return omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0;
 });
 
 const visAnnenForelderKanIkkeOppgisValg = createSelector(
-    [selectors.getGjelderAdopsjonAvEktefellesBarn],
-    (adopsjonAvEktefellesBarn: boolean) => {
+    [data.getGjelderAdopsjonAvEktefellesBarn],
+    (adopsjonAvEktefellesBarn: boolean): boolean => {
         return !adopsjonAvEktefellesBarn;
     }
 );
 
-const visFødselsnummerInput = createSelector([selectors.getAnnenForelder], (annenForelder: AnnenForelder) => {
+const visFødselsnummerInput = createSelector([data.getAnnenForelder], (annenForelder: AnnenForelder) => {
     return annenForelder.navn !== undefined && annenForelder.navn !== '';
 });
 
 const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = createSelector(
-    [selectors.getSøker, selectors.getErFarEllerMedmor],
-    (søker: Søker, farEllerMedmor) => {
+    [data.getSøker, data.getErFarEllerMedmor],
+    (søker: Søker, farEllerMedmor): boolean => {
         return !farEllerMedmor && søker.erAleneOmOmsorg === true;
     }
 );
 
 const visHarRettPåForeldrepengerSpørsmål = createSelector(
-    [selectors.getAnnenForelder, selectors.getSøker, selectors.getHarDenAndreForelderenOpplystOmSinPågåendeSak],
-    (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak) => {
+    [data.getAnnenForelder, data.getSøker, data.getHarDenAndreForelderenOpplystOmSinPågåendeSak],
+    (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak): boolean => {
         return (
             annenForelder.skalHaForeldrepenger === true ||
             (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
@@ -54,14 +54,46 @@ const visHarRettPåForeldrepengerSpørsmål = createSelector(
     }
 );
 const visSkalAnnenForelderHaForeldrepengerSpørsmål = createSelector(
-    [selectors.getAnnenForelder, selectors.getSøker, selectors.getHarDenAndreForelderenOpplystOmSinPågåendeSak],
-    (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak) => {
+    [data.getAnnenForelder, data.getSøker, data.getHarDenAndreForelderenOpplystOmSinPågåendeSak],
+    (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak): boolean => {
         return (
             annenForelder.skalHaForeldrepenger === true ||
             (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
         );
     }
 );
+
+const visErMorUførSpørsmål = createSelector(
+    [data.getAnnenForelder, data.getErFarEllerMedmor],
+    (annenForelder, erFarEllerMedmor): boolean => {
+        return annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor;
+    }
+);
+
+const visInfoOmRettigheterOgDelingAvUttaksplan = createSelector([data.getAnnenForelder], (annenForelder): boolean => {
+    return annenForelder.harRettPåForeldrepenger === true;
+});
+
+const visErDenAndreForelderenInformertSpørsmål = createSelector(
+    [
+        data.getSøker,
+        data.getAnnenForelder,
+        data.getHarDenAndreForelderenOpplystOmSinPågåendeSak,
+        data.getErFarEllerMedmor
+    ],
+    (søker, annenForelder, harDenAndreForelderenOpplystOmSinPågåendeSak, erFarEllerMedmor): boolean => {
+        return (
+            (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
+            (søker.erAleneOmOmsorg === false &&
+                harDenAndreForelderenOpplystOmSinPågåendeSak === true &&
+                erFarEllerMedmor)
+        );
+    }
+);
+
+const visOmsorgsovertakelseDatoSpørsmål = createSelector([data.getSøker], (søker): boolean => {
+    return søker.erAleneOmOmsorg === true;
+});
 
 export const AnnenForelderVisibilityFuncs = {
     visAnnenForelderErKjentPartial,
@@ -72,5 +104,9 @@ export const AnnenForelderVisibilityFuncs = {
     visOmsorgsovertakelse,
     visRegistrertAnnenForelderBolk,
     visSkalAnnenForelderHaForeldrepengerSpørsmål,
-    visSkalFarEllerMedmorHaForeldrepengerSpørsmål
+    visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
+    visErMorUførSpørsmål,
+    visInfoOmRettigheterOgDelingAvUttaksplan,
+    visErDenAndreForelderenInformertSpørsmål,
+    visOmsorgsovertakelseDatoSpørsmål
 };

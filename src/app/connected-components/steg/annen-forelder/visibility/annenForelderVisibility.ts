@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { AnnenForelderVisibilityFuncs } from './visibilitySelectors';
+import { AnnenForelderVisibilityFuncs as v } from './visibilitySelectors';
+import { AppState } from '../../../../redux/reducers';
 
 export interface AnnenForelderStegPersonaliaVisibility {
     annenForelderKanIkkeOppgisValg: boolean;
@@ -10,54 +11,39 @@ export interface AnnenForelderErKjentVisibility {
     skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
     skalAnnenForelderHaForeldrepengerSpørsmål: boolean;
+    erMorUførSpørsmål: boolean;
+    infoOmRettigheterOgDelingAvUttaksplan: boolean;
+    erDenAndreForelderenInformertSpørsmål: boolean;
+    omsorgsovertakelseDatoSpørsmål: boolean;
 }
 
 export interface AnnenForelderStegVisibility {
     registrertAnnenForelderBolk: boolean;
     annenForelderPersonaliaSkjema: boolean;
     annenForelderErKjentPartial: boolean;
-    informasjonOmOmsorgsovertakelse: boolean;
+    inforOmOmsorgsovertakelse: boolean;
     personalia: AnnenForelderStegPersonaliaVisibility;
     annenForelderErKjent: AnnenForelderErKjentVisibility;
 }
 
-export const getAnnenForelderVisibility = createSelector(
-    [
-        AnnenForelderVisibilityFuncs.visRegistrertAnnenForelderBolk,
-        AnnenForelderVisibilityFuncs.visAnnenForelderPersonaliaSkjema,
-        AnnenForelderVisibilityFuncs.visAnnenForelderErKjentPartial,
-        AnnenForelderVisibilityFuncs.visOmsorgsovertakelse,
-        AnnenForelderVisibilityFuncs.visAnnenForelderKanIkkeOppgisValg,
-        AnnenForelderVisibilityFuncs.visFødselsnummerInput,
-        AnnenForelderVisibilityFuncs.visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
-        AnnenForelderVisibilityFuncs.visHarRettPåForeldrepengerSpørsmål,
-        AnnenForelderVisibilityFuncs.visSkalAnnenForelderHaForeldrepengerSpørsmål
-    ],
-    (
-        registrertAnnenForelderBolk,
-        annenForelderPersonaliaSkjema,
-        annenForelderErKjentPartial,
-        informasjonOmOmsorgsovertakelse,
-        annenForelderKanIkkeOppgisValg,
-        fødselsnummerInput,
-        skalFarEllerMedmorHaForeldrepengerSpørsmål,
-        harRettPåForeldrepengerSpørsmål,
-        skalAnnenForelderHaForeldrepengerSpørsmål
-    ): AnnenForelderStegVisibility => ({
-        registrertAnnenForelderBolk,
-        annenForelderPersonaliaSkjema,
-        annenForelderErKjentPartial,
-        informasjonOmOmsorgsovertakelse,
+export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVisibility => {
+    return {
+        registrertAnnenForelderBolk: v.visRegistrertAnnenForelderBolk(state),
+        annenForelderPersonaliaSkjema: v.visAnnenForelderPersonaliaSkjema(state),
+        annenForelderErKjentPartial: v.visAnnenForelderErKjentPartial(state),
+        inforOmOmsorgsovertakelse: v.visInfoOmRettigheterOgDelingAvUttaksplan(state),
         personalia: {
-            annenForelderKanIkkeOppgisValg,
-            fødselsnummerInput
+            annenForelderKanIkkeOppgisValg: v.visAnnenForelderKanIkkeOppgisValg(state),
+            fødselsnummerInput: v.visFødselsnummerInput(state)
         },
         annenForelderErKjent: {
-            skalFarEllerMedmorHaForeldrepengerSpørsmål,
-            harRettPåForeldrepengerSpørsmål,
-            skalAnnenForelderHaForeldrepengerSpørsmål
+            skalFarEllerMedmorHaForeldrepengerSpørsmål: v.visSkalFarEllerMedmorHaForeldrepengerSpørsmål(state),
+            harRettPåForeldrepengerSpørsmål: v.visHarRettPåForeldrepengerSpørsmål(state),
+            skalAnnenForelderHaForeldrepengerSpørsmål: v.visSkalAnnenForelderHaForeldrepengerSpørsmål(state),
+            erMorUførSpørsmål: v.visErMorUførSpørsmål(state),
+            infoOmRettigheterOgDelingAvUttaksplan: v.visInfoOmRettigheterOgDelingAvUttaksplan(state),
+            erDenAndreForelderenInformertSpørsmål: v.visErDenAndreForelderenInformertSpørsmål(state),
+            omsorgsovertakelseDatoSpørsmål: v.visOmsorgsovertakelseDatoSpørsmål(state)
         }
-    })
-);
-
-export default AnnenForelderStegVisibility;
+    };
+};

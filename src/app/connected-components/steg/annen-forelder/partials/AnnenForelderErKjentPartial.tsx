@@ -53,9 +53,6 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
             intl
         } = this.props;
 
-        const harDenAndreForelderenOpplystOmSinPågåendeSak =
-            registrertAnnenForelder && registrertAnnenForelder.harOpplystOmSinPågåendeSak;
-
         const navn = registrertAnnenForelder
             ? formaterNavn(
                   registrertAnnenForelder.fornavn,
@@ -106,7 +103,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor}>
+                <Block visible={vis.erMorUførSpørsmål}>
                     <ErMorUførSpørsmål
                         navn={navn}
                         erUfør={annenForelder.erUfør}
@@ -124,13 +121,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     <Veilederinfo>Informasjon om rettigheter og deling av uttaksplan</Veilederinfo>
                 </Block>
 
-                <Block
-                    visible={
-                        (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
-                        (søker.erAleneOmOmsorg === false &&
-                            harDenAndreForelderenOpplystOmSinPågåendeSak === true &&
-                            erFarEllerMedmor)
-                    }>
+                <Block visible={vis.erDenAndreForelderenInformertSpørsmål}>
                     <ErDenAndreForelderenInformertSpørsmål
                         navn={navn}
                         erDenAndreForelderenInformert={annenForelder.erInformertOmSøknaden}
