@@ -69,7 +69,6 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 vis={vis.annenForelderErKjent}
                                 registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
-                                visInformasjonVedOmsorgsovertakelse={vis.inforOmOmsorgsovertakelse}
                             />
                         )}
                     </React.Fragment>

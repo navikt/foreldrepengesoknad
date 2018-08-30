@@ -33,7 +33,6 @@ interface StateProps {
 interface AnnenForelderErKjentPartialProps {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
-    visInformasjonVedOmsorgsovertakelse: boolean;
     vis: AnnenForelderErKjentVisibility;
 }
 
@@ -41,17 +40,7 @@ type Props = AnnenForelderErKjentPartialProps & StateProps & InjectedIntlProps &
 
 class AnnenForelderErKjentPartial extends React.Component<Props> {
     render() {
-        const {
-            barn,
-            annenForelder,
-            søker,
-            erFarEllerMedmor,
-            registrertAnnenForelder,
-            visInformasjonVedOmsorgsovertakelse,
-            vis,
-            dispatch,
-            intl
-        } = this.props;
+        const { barn, annenForelder, søker, registrertAnnenForelder, vis, dispatch, intl } = this.props;
 
         const navn = registrertAnnenForelder
             ? formaterNavn(
@@ -135,9 +124,9 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                {erFarEllerMedmor && (
+                {vis.farEllerMedmorBolk && (
                     <React.Fragment>
-                        <Block visible={søker.erAleneOmOmsorg === true}>
+                        <Block visible={vis.omsorgsovertakelseDatoSpørsmål}>
                             <DatoInput
                                 id="omsorgsovertakelseDato"
                                 label={getMessage(intl, 'omsorgsovertakelseDato.spørsmål')}
@@ -151,10 +140,8 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                                 dato={barn.foreldreansvarsdato}
                             />
                         </Block>
-                        <Block
-                            animated={true}
-                            visible={søker.erAleneOmOmsorg === true && barn.foreldreansvarsdato !== undefined}>
-                            <Block animated={false} margin="xs" visible={visInformasjonVedOmsorgsovertakelse}>
+                        <Block animated={true} visible={vis.omsorgsovertakelseVedleggSpørsmål}>
+                            <Block animated={false} margin="xs" visible={vis.infoOmOmsorgsovertakelse}>
                                 <Veilederinfo>
                                     <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
                                 </Veilederinfo>

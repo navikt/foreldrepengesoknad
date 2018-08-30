@@ -95,6 +95,14 @@ const visOmsorgsovertakelseDatoSpørsmål = createSelector([data.getSøker], (s�
     return søker.erAleneOmOmsorg === true;
 });
 
+const visFarEllerMedmorBolk = createSelector([data.getErFarEllerMedmor], (farEllerMedmor): boolean => {
+    return farEllerMedmor;
+});
+
+const visOmsorgsovertakelseVedleggSpørsmål = createSelector([data.getSøker, data.getBarn], (søker, barn): boolean => {
+    return søker.erAleneOmOmsorg === true && (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined;
+});
+
 export const AnnenForelderVisibilityFuncs = {
     visAnnenForelderErKjentPartial,
     visAnnenForelderKanIkkeOppgisValg,
@@ -108,5 +116,7 @@ export const AnnenForelderVisibilityFuncs = {
     visErMorUførSpørsmål,
     visInfoOmRettigheterOgDelingAvUttaksplan,
     visErDenAndreForelderenInformertSpørsmål,
-    visOmsorgsovertakelseDatoSpørsmål
+    visOmsorgsovertakelseDatoSpørsmål,
+    visFarEllerMedmorBolk,
+    visOmsorgsovertakelseVedleggSpørsmål
 };

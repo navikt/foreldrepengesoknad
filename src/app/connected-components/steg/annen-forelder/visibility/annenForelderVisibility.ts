@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import { AnnenForelderVisibilityFuncs as v } from './visibilitySelectors';
 import { AppState } from '../../../../redux/reducers';
 
@@ -15,13 +14,15 @@ export interface AnnenForelderErKjentVisibility {
     infoOmRettigheterOgDelingAvUttaksplan: boolean;
     erDenAndreForelderenInformertSpørsmål: boolean;
     omsorgsovertakelseDatoSpørsmål: boolean;
+    farEllerMedmorBolk: boolean;
+    omsorgsovertakelseVedleggSpørsmål: boolean;
+    infoOmOmsorgsovertakelse: boolean;
 }
 
 export interface AnnenForelderStegVisibility {
     registrertAnnenForelderBolk: boolean;
     annenForelderPersonaliaSkjema: boolean;
     annenForelderErKjentPartial: boolean;
-    inforOmOmsorgsovertakelse: boolean;
     personalia: AnnenForelderStegPersonaliaVisibility;
     annenForelderErKjent: AnnenForelderErKjentVisibility;
 }
@@ -31,7 +32,7 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
         registrertAnnenForelderBolk: v.visRegistrertAnnenForelderBolk(state),
         annenForelderPersonaliaSkjema: v.visAnnenForelderPersonaliaSkjema(state),
         annenForelderErKjentPartial: v.visAnnenForelderErKjentPartial(state),
-        inforOmOmsorgsovertakelse: v.visInfoOmRettigheterOgDelingAvUttaksplan(state),
+
         personalia: {
             annenForelderKanIkkeOppgisValg: v.visAnnenForelderKanIkkeOppgisValg(state),
             fødselsnummerInput: v.visFødselsnummerInput(state)
@@ -43,7 +44,10 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
             erMorUførSpørsmål: v.visErMorUførSpørsmål(state),
             infoOmRettigheterOgDelingAvUttaksplan: v.visInfoOmRettigheterOgDelingAvUttaksplan(state),
             erDenAndreForelderenInformertSpørsmål: v.visErDenAndreForelderenInformertSpørsmål(state),
-            omsorgsovertakelseDatoSpørsmål: v.visOmsorgsovertakelseDatoSpørsmål(state)
+            omsorgsovertakelseDatoSpørsmål: v.visOmsorgsovertakelseDatoSpørsmål(state),
+            farEllerMedmorBolk: v.visFarEllerMedmorBolk(state),
+            omsorgsovertakelseVedleggSpørsmål: v.visOmsorgsovertakelseVedleggSpørsmål(state),
+            infoOmOmsorgsovertakelse: v.visInfoOmRettigheterOgDelingAvUttaksplan(state)
         }
     };
 };
