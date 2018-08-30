@@ -22,6 +22,7 @@ import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
+import { AnnenForelderErKjentVisibility } from '../annenForelderVisibility';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -33,6 +34,7 @@ interface AnnenForelderErKjentPartialProps {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
     visInformasjonVedOmsorgsovertakelse: boolean;
+    vis: AnnenForelderErKjentVisibility;
 }
 
 type Props = AnnenForelderErKjentPartialProps & StateProps & InjectedIntlProps & DispatchProps;
@@ -46,6 +48,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
             erFarEllerMedmor,
             registrertAnnenForelder,
             visInformasjonVedOmsorgsovertakelse,
+            vis,
             dispatch,
             intl
         } = this.props;
@@ -75,7 +78,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block visible={!erFarEllerMedmor && søker.erAleneOmOmsorg === true}>
+                <Block visible={vis.skalFarEllerMedmorHaForeldrepengerSpørsmål}>
                     <Veilederinfo>Informasjon om deling av uttak og at den andre kan ta perm.</Veilederinfo>
                     <SkalFarEllerMedmorHaForeldrepengerSpørsmål
                         navn={navn}
