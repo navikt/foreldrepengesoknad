@@ -15,7 +15,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerTidligerePerioder,

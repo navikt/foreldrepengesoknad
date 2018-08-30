@@ -1,7 +1,10 @@
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
-import { getUniqeRegistrertAnnenForelderFromBarn } from '../../util/validation/steg/barn';
+import {
+    getUniqeRegistrertAnnenForelderFromBarn,
+    getBarnInfoFraRegistrertBarnValg
+} from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
@@ -74,8 +77,10 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
+            const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
             return {
                 ...state,
+                barn,
                 annenForelder: registrertAnnenForelder
                     ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
                     : state.annenForelder,

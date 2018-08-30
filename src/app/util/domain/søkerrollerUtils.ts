@@ -1,7 +1,7 @@
 import { Kjønn } from '../../types/common';
 import { Søkersituasjon, SøkerRolle } from '../../types/søknad/Søknad';
 
-export const getSøkerrollerForBruker = (kjønn: Kjønn, situasjon: Søkersituasjon): SøkerRolle[] | undefined => {
+export const getSøkerrollerForBruker = (kjønn: Kjønn, situasjon: Søkersituasjon): SøkerRolle[] => {
     if (situasjon === Søkersituasjon.FØDSEL) {
         if (kjønn === Kjønn.KVINNE) {
             return [SøkerRolle.MOR, SøkerRolle.MEDMOR];
@@ -19,5 +19,5 @@ export const getSøkerrollerForBruker = (kjønn: Kjønn, situasjon: Søkersituas
         }
         return [SøkerRolle.FORESATT, SøkerRolle.FORESATT2, SøkerRolle.FAR];
     }
-    return undefined;
+    return [];
 };
