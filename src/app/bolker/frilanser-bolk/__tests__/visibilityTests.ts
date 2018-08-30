@@ -115,6 +115,7 @@ describe('Frilanser-bolk', () => {
         });
 
         it('should be hidden if jobberFremdelesSomFrilans !== true', () => {
+            søker.frilansInformasjon.jobberFremdelesSomFrilans = false;
             expect(fns.driverDuFosterhjemVisible(søker as Søker)).toBe(false);
         });
 
