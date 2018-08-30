@@ -6,7 +6,7 @@ import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import DateValues from '../values';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
-import { findDateMostDistantInPast } from '../../dates/dates';
+import { findOldestDate } from '../../dates/dates';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -116,7 +116,7 @@ export const getBarnInfoFraRegistrertBarnValg = (
             fødselsdatoer: []
         };
     }
-    const fødselsdato = findDateMostDistantInPast(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
+    const fødselsdato = findOldestDate(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
     return {
         fødselsdatoer: fødselsdato ? [fødselsdato] : [],
         antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
