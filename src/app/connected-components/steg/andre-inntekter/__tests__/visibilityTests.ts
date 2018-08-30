@@ -1,22 +1,22 @@
 import { default as Søker } from '../../../../types/søknad/Søker';
 import { default as fns } from './../visibility';
 import { default as frilansFns } from './../../../../bolker/frilanser-bolk/visibility';
-import { FrilansInformasjon } from '../../../../types/søknad/FrilansInformasjon';
+import { FrilansInformasjon, FrilansInformasjonPartial } from '../../../../types/søknad/FrilansInformasjon';
 
-let søkerUtenEgneVirksomheter: Søker = {
+const søkerUtenEgneVirksomheter = {
     harJobbetSomFrilansSiste10Mnd: false,
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false
-} as Søker;
+};
 
-let søkerMedEgneVirksomheter: Søker = {
+const søkerMedEgneVirksomheter = {
     harJobbetSomFrilansSiste10Mnd: true,
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true
-} as Søker;
+};
 
 describe('Selvstendig næringsdrivende-bolk', () => {
     describe('when harJobbetSomFrilansSiste10Mnd === false', () => {
         it('should be visible', () => {
-            expect(fns.selvstendigNæringsdrivendeBolk(søkerUtenEgneVirksomheter)).toBe(true);
+            expect(fns.selvstendigNæringsdrivendeBolk(søkerUtenEgneVirksomheter as Søker)).toBe(true);
         });
     });
 
@@ -25,22 +25,20 @@ describe('Selvstendig næringsdrivende-bolk', () => {
             let søker: Søker;
 
             beforeEach(() => {
-                const frilansInformasjon = {
+                const frilansInformasjon: FrilansInformasjonPartial = {
                     jobberFremdelesSomFrilans: true,
                     driverFosterhjem: undefined
                 };
 
-                søker = {
-                    ...søkerMedEgneVirksomheter,
-                    frilansInformasjon: frilansInformasjon as FrilansInformasjon
-                } as Søker;
+                søker = søkerMedEgneVirksomheter as Søker;
+                søker.frilansInformasjon = frilansInformasjon as FrilansInformasjon;
             });
 
             it('should be visible if fosterhjem has value and is visible', () => {
                 frilansFns.driverDuFosterhjemVisible = jest.fn(() => true);
                 if (søker.frilansInformasjon) {
                     søker.frilansInformasjon.driverFosterhjem = true;
-                    expect(fns.selvstendigNæringsdrivendeBolk(søker as Søker)).toBe(true);
+                    expect(fns.selvstendigNæringsdrivendeBolk(søker)).toBe(true);
                 }
             });
 
@@ -63,10 +61,8 @@ describe('Selvstendig næringsdrivende-bolk', () => {
                     jobberFremdelesSomFrilans: false
                 };
 
-                søker = {
-                    ...søkerMedEgneVirksomheter,
-                    frilansInformasjon: frilansInformasjon as FrilansInformasjon
-                } as Søker;
+                søker = søkerMedEgneVirksomheter as Søker;
+                søker.frilansInformasjon = frilansInformasjon as FrilansInformasjon;
 
                 frilansFns.frilansOppdragErUtfylt = jest
                     .fn()
