@@ -86,7 +86,7 @@ const visErDenAndreForelderenInformertSpørsmål = createSelector(
             (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
             (søker.erAleneOmOmsorg === false &&
                 harDenAndreForelderenOpplystOmSinPågåendeSak === true &&
-                erFarEllerMedmor)
+                erFarEllerMedmor === true)
         );
     }
 );

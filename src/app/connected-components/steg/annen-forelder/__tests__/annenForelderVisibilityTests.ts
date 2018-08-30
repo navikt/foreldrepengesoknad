@@ -1,8 +1,9 @@
-import { SøknadPartial, SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Kjønn } from '../../../../types/common';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { SøkerRolle, Søkersituasjon, SøknadPartial } from '../../../../types/søknad/Søknad';
 import { AnnenForelderVisibilityFuncs as func } from '../visibility/visibilitySelectors';
+import { ForeldreansvarBarn } from '../../../../types/s\u00F8knad/Barn';
 
 const attachment: Partial<Attachment> = {};
 
@@ -92,6 +93,127 @@ describe('AnnenForelder visibility tests', () => {
                 ).toBeFalsy();
                 expect(
                     func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: false }, true)
+                ).toBeFalsy();
+            });
+
+            describe('SkalAnnenForelderHaForeldrepengerSpørsmål should render when', () => {
+                it('annenForelder har rett på foreldrepenger', () => {
+                    expect(
+                        func.visSkalAnnenForelderHaForeldrepengerSpørsmål.resultFunc(
+                            { skalHaForeldrepenger: true },
+                            {},
+                            undefined
+                        )
+                    ).toBeTruthy();
+                });
+                it('søker is not aleneOmOmsorg and andreForelderHarOpplyst om sin sak', () => {
+                    expect(
+                        func.visSkalAnnenForelderHaForeldrepengerSpørsmål.resultFunc(
+                            {},
+                            { erAleneOmOmsorg: false },
+                            false
+                        )
+                    ).toBeTruthy();
+                });
+            });
+            it('SkalAnnenForelderHaForeldrepengerSpørsmål should not render', () => {
+                expect(
+                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål.resultFunc(
+                        { skalHaForeldrepenger: false },
+                        {},
+                        undefined
+                    )
+                ).toBeFalsy();
+                expect(
+                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål.resultFunc({}, { erAleneOmOmsorg: false }, true)
+                ).toBeFalsy();
+                expect(
+                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål.resultFunc({}, { erAleneOmOmsorg: true }, true)
+                ).toBeFalsy();
+            });
+
+            it('Should render ErMorUførSpørsmål', () => {
+                expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: false }, true)).toBeTruthy();
+                expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: false }, false)).toBeFalsy();
+                expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, true)).toBeFalsy();
+                expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, false)).toBeFalsy();
+            });
+
+            it('Should render infoOmRettigheterOgDelingAvUttaksplan', () => {
+                expect(
+                    func.visInfoOmRettigheterOgDelingAvUttaksplan.resultFunc({ harRettPåForeldrepenger: true })
+                ).toBeTruthy();
+                expect(
+                    func.visInfoOmRettigheterOgDelingAvUttaksplan.resultFunc({ harRettPåForeldrepenger: false })
+                ).toBeFalsy();
+            });
+
+            it('Should erDenAndreForelderenInformertSpørsmål', () => {
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: false },
+                        { harRettPåForeldrepenger: false },
+                        true,
+                        true
+                    )
+                ).toBeTruthy();
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: false },
+                        { harRettPåForeldrepenger: true },
+                        true,
+                        true
+                    )
+                ).toBeTruthy();
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: true },
+                        { harRettPåForeldrepenger: false },
+                        true,
+                        true
+                    )
+                ).toBeFalsy();
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc({ erAleneOmOmsorg: true }, {}, true, true)
+                ).toBeFalsy();
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: false },
+                        {},
+                        true,
+                        false
+                    )
+                ).toBeFalsy();
+                expect(
+                    func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: false },
+                        {},
+                        false,
+                        false
+                    )
+                ).toBeFalsy();
+            });
+
+            it('Should render visOmsorgsovertakelseDatoSpørsmål', () => {
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc({ erAleneOmOmsorg: true })).toBeTruthy();
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc({ erAleneOmOmsorg: false })).toBeFalsy();
+            });
+
+            it('Should render visFarEllerMedmorBolk', () => {
+                expect(func.visFarEllerMedmorBolk.resultFunc(true)).toBeTruthy();
+                expect(func.visFarEllerMedmorBolk.resultFunc(false)).toBeFalsy();
+            });
+
+            it('Should render visOmsorgsovertakelseVedleggSpørsmål', () => {
+                const barn: Partial<ForeldreansvarBarn> = { foreldreansvarsdato: new Date() };
+                expect(
+                    func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc({ erAleneOmOmsorg: true }, barn)
+                ).toBeTruthy();
+                expect(
+                    func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc(
+                        { erAleneOmOmsorg: false },
+                        { ...barn, foreldreansvarsdato: undefined }
+                    )
                 ).toBeFalsy();
             });
         });
