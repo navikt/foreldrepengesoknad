@@ -140,10 +140,10 @@ class AndreInntekterSteg extends React.Component<Props> {
                         oppfølgingsspørsmål={getMessage(intl, 'selvstendigNæringsdrivende.oppfølgingsspørsmål')}
                         renderSpørsmål={this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål}
                         showNæringsPerioderContent={søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true}
-                        næringListe={søker.selvstendigNæringsdrivendeBolk || []}
+                        næringListe={søker.selvstendigNæringsdrivendeInformasjon || []}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
-                                selvstendigNæringsdrivendeBolk: updatedNæringer
+                                selvstendigNæringsdrivendeInformasjon: updatedNæringer
                             })
                         }
                     />

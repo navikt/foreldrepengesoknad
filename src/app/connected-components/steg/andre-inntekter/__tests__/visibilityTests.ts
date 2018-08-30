@@ -1,76 +1,121 @@
-import moment from 'moment';
-import { default as fns } from './../visibility';
 import { default as Søker } from '../../../../types/søknad/Søker';
+import { default as fns } from './../visibility';
+import { default as frilansFns } from './../../../../bolker/frilanser-bolk/visibility';
 import { FrilansInformasjon } from '../../../../types/søknad/FrilansInformasjon';
-import frilansFns from './../../../../bolker/frilanser-bolk/visibility';
-import SpyInstance = jest.SpyInstance;
 
-let søkerUtenFrilans: Søker = {
-    harJobbetSomFrilansSiste10Mnd: false
+let søkerUtenEgneVirksomheter: Søker = {
+    harJobbetSomFrilansSiste10Mnd: false,
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false
 } as Søker;
 
-let søkerMedFrilans: Søker = {
-    harJobbetSomFrilansSiste10Mnd: true
+let søkerMedEgneVirksomheter: Søker = {
+    harJobbetSomFrilansSiste10Mnd: true,
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true
 } as Søker;
 
-let fremdelesFrilans: FrilansInformasjon = {
-    jobberFremdelesSomFrilans: true,
-    harJobbetForNærVennEllerFamilieSiste10Mnd: false,
-    oppstart: moment('12-25-1995', 'MM-DD-YYYY').toDate(),
-    oppdragForNæreVennerEllerFamilieSiste10Mnd: []
-};
-
-let ferdigSomFrilans: FrilansInformasjon = {
-    jobberFremdelesSomFrilans: false,
-    harJobbetForNærVennEllerFamilieSiste10Mnd: false,
-    oppstart: moment('12-25-1995', 'MM-DD-YYYY').toDate(),
-    oppdragForNæreVennerEllerFamilieSiste10Mnd: []
-};
-
-describe('Selvstendig næringsdrivende-bolk visibility', () => {
-    let driverFosterhjemSpy: SpyInstance;
-    let oppdragBolkSpy: SpyInstance;
-    let oppdragUtfyltSpy: SpyInstance;
-
-    beforeEach(() => {
-        driverFosterhjemSpy = jest.spyOn(frilansFns, 'driverDuFosterhjemVisible');
-        oppdragBolkSpy = jest.spyOn(frilansFns, 'oppdragBolkVisible');
-        oppdragUtfyltSpy = jest.spyOn(frilansFns, 'frilansOppdragErUtfylt');
+describe('Selvstendig næringsdrivende-bolk', () => {
+    describe('when harJobbetSomFrilansSiste10Mnd === false', () => {
+        it('should be visible', () => {
+            expect(fns.selvstendigNæringsdrivendeBolk(søkerUtenEgneVirksomheter)).toBe(true);
+        });
     });
 
-    it('should be visible if !harJobbetSomFrilansSiste10Mnd', () => {
-        const isVisible = fns.selvstendigNæringsdrivendeBolk(søkerUtenFrilans);
-        expect(isVisible).toBe(true);
-    });
+    describe('when harJobbetSomFrilansSiste10Mnd === true', () => {
+        describe('and jobberFremdelesSomFrilans === true', () => {
+            let søker: Søker;
 
-    it('should be visible if harJobbetSomFrilansSiste10Mnd and has sufficient data in frilansInformasjon', () => {
-        let søkerSomErFrilans = {
-            ...søkerMedFrilans,
-            frilansInformasjon: {
-                ...fremdelesFrilans,
-                driverFosterhjem: true
-            }
-        };
-        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(true);
-        expect(driverFosterhjemSpy).toHaveBeenCalledWith(søkerSomErFrilans);
+            beforeEach(() => {
+                const frilansInformasjon = {
+                    jobberFremdelesSomFrilans: true,
+                    driverFosterhjem: undefined
+                };
 
-        let søkerSomErFerdigSomFrilans = {
-            ...søkerMedFrilans,
-            frilansInformasjon: ferdigSomFrilans
-        };
-        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFerdigSomFrilans)).toBe(true);
-        expect(oppdragBolkSpy).toHaveBeenCalledWith(søkerSomErFerdigSomFrilans);
-        expect(oppdragUtfyltSpy).toHaveBeenCalledWith(ferdigSomFrilans);
-    });
+                søker = {
+                    ...søkerMedEgneVirksomheter,
+                    frilansInformasjon: frilansInformasjon as FrilansInformasjon
+                } as Søker;
+            });
 
-    it('should not be visible if harJobbetSomFrilansSiste10Mnd and has insufficient data in frilansInformasjon', () => {
-        const søkerSomErFrilans = {
-            ...søkerMedFrilans,
-            frilansInformasjon: fremdelesFrilans
-        };
-        expect(fns.selvstendigNæringsdrivendeBolk(søkerSomErFrilans)).toBe(false);
-        expect(driverFosterhjemSpy).toHaveBeenCalledWith(søkerSomErFrilans);
+            it('should be visible if fosterhjem has value and is visible', () => {
+                frilansFns.driverDuFosterhjemVisible = jest.fn(() => true);
+                if (søker.frilansInformasjon) {
+                    søker.frilansInformasjon.driverFosterhjem = true;
+                    expect(fns.selvstendigNæringsdrivendeBolk(søker as Søker)).toBe(true);
+                }
+            });
+
+            it('should be hidden if fosterjem is undefined or !driverDuFosterhjemVisible', () => {
+                frilansFns.driverDuFosterhjemVisible = jest.fn(() => true);
+                expect(fns.selvstendigNæringsdrivendeBolk(søker as Søker)).toBe(false);
+                if (søker.frilansInformasjon) {
+                    frilansFns.driverDuFosterhjemVisible = jest.fn(() => false);
+                    søker.frilansInformasjon.driverFosterhjem = true;
+                    expect(fns.selvstendigNæringsdrivendeBolk(søker as Søker)).toBe(false);
+                }
+            });
+        });
+
+        describe('and jobberFremdelesSomFrilans === false', () => {
+            let søker: Søker;
+
+            beforeEach(() => {
+                const frilansInformasjon = {
+                    jobberFremdelesSomFrilans: false
+                };
+
+                søker = {
+                    ...søkerMedEgneVirksomheter,
+                    frilansInformasjon: frilansInformasjon as FrilansInformasjon
+                } as Søker;
+
+                frilansFns.frilansOppdragErUtfylt = jest
+                    .fn()
+                    .mockReturnValueOnce(false)
+                    .mockReturnValueOnce(false)
+                    .mockReturnValueOnce(true)
+                    .mockReturnValue(true);
+
+                frilansFns.oppdragBolkVisible = jest
+                    .fn()
+                    .mockReturnValueOnce(false)
+                    .mockReturnValueOnce(true)
+                    .mockReturnValueOnce(false)
+                    .mockReturnValue(true);
+            });
+
+            it('should be visible only when frilansOppdragErUtfylt && oppdragBolkVisible evaluates to true', () => {
+                expect(fns.selvstendigNæringsdrivendeBolk(søker)).toBe(false);
+                expect(fns.selvstendigNæringsdrivendeBolk(søker)).toBe(false);
+                expect(fns.selvstendigNæringsdrivendeBolk(søker)).toBe(false);
+                expect(fns.selvstendigNæringsdrivendeBolk(søker)).toBe(true);
+            });
+        });
     });
 });
 
-describe('Andre inntekter-bolk visibility', () => {});
+describe('Andre inntekter-bolk', () => {
+    describe('when selvstendigNæringsdrivendeBolk is visible', () => {
+        beforeEach(() => {
+            fns.selvstendigNæringsdrivendeBolk = jest.fn(() => true);
+        });
+
+        it('should be visible if !harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd', () => {
+            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter)).toBe(true);
+        });
+
+        it('should be hidden if harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd and has insufficient data about selvstendigNæringsdrivende', () => {
+            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter)).toBe(false);
+        });
+    });
+
+    describe('when selvstendigNæringsdrivendeBolk is hidden', () => {
+        beforeEach(() => {
+            fns.selvstendigNæringsdrivendeBolk = jest.fn(() => false);
+        });
+
+        it('should be hidden regardless of Søker-objects property values', () => {
+            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter)).toEqual(false);
+            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter)).toEqual(false);
+        });
+    });
+});
