@@ -1,11 +1,11 @@
-import Søknad from '../../../types/s\u00F8knad/S\u00F8knad';
+import Søknad from '../../../types/søknad/Søknad';
 import { createSelector } from 'reselect';
 import { AppState } from '../../../redux/reducers';
-import AnnenForelder from '../../../types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from '../../../types/søknad/AnnenForelder';
 import Person, { RegistrertAnnenForelder } from '../../../types/Person';
-import { Barn, ForeldreansvarBarn, Adopsjonsbarn } from '../../../types/s\u00F8knad/Barn';
-import { Søker } from '../../../types/s\u00F8knad/S\u00F8ker';
-import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
+import { Barn, ForeldreansvarBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { Søker } from '../../../types/søknad/Søker';
+import { Søkerinfo } from '../../../types/søkerinfo';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export interface AnnenForelderStegPersonaliaVisibility {
@@ -31,107 +31,102 @@ export interface AnnenForelderStegVisibility {
 const søknadSelector = (state: AppState) => state.søknad;
 const søkerinfoSelector = (state: AppState) => state.api.søkerinfo;
 
-export const getAnnenForelder = createSelector(søknadSelector, (søknad: Søknad): Partial<AnnenForelder> => {
+const getAnnenForelder = createSelector(søknadSelector, (søknad: Søknad): Partial<AnnenForelder> => {
     return søknad.annenForelder;
 });
-
-export const getBarn = createSelector(søknadSelector, (søknad: Søknad): Partial<Barn> => {
+const getBarn = createSelector(søknadSelector, (søknad: Søknad): Partial<Barn> => {
     return søknad.barn;
 });
-
-export const getSøker = createSelector(søknadSelector, (søknad: Søknad): Partial<Søker> => {
+const getSøker = createSelector(søknadSelector, (søknad: Søknad): Partial<Søker> => {
     return søknad.søker;
 });
-
-export const getPerson = createSelector(søkerinfoSelector, (søkerinfo: Søkerinfo): Person => {
+const getPerson = createSelector(søkerinfoSelector, (søkerinfo: Søkerinfo): Person => {
     return søkerinfo.person;
 });
-
-export const getRegistrertAnnenForelder = createSelector(søknadSelector, (søknad: Søknad):
+const getRegistrertAnnenForelder = createSelector(søknadSelector, (søknad: Søknad):
     | RegistrertAnnenForelder
     | undefined => {
     return søknad.temp.registrertAnnenForelder;
 });
-
-export const getHarDenAndreForelderenOpplystOmSinPågåendeSak = createSelector(
+const getHarDenAndreForelderenOpplystOmSinPågåendeSak = createSelector(
     getRegistrertAnnenForelder,
     (registrertAnnenForelder: RegistrertAnnenForelder) => {
         return registrertAnnenForelder !== undefined && registrertAnnenForelder.harOpplystOmSinPågåendeSak;
     }
 );
+const getGjelderAdopsjonAvEktefellesBarn = createSelector(getBarn, (barn: Barn) => {
+    return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
+});
 
-export const getErFarEllerMedmor = createSelector(getSøker, getPerson, (søker: Søker, person: Person) => {
+const getErFarEllerMedmor = createSelector(getSøker, getPerson, (søker: Søker, person: Person) => {
     return erFarEllerMedmor(person.kjønn, søker.rolle);
 });
 
 /** Visibility selectors */
+export const AnnenForelderVisibilityFuncs = {
+    visRegistrertAnnenForelderBolk: createSelector(
+        getRegistrertAnnenForelder,
+        (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder !== undefined
+    ),
 
-export const visRegistrertAnnenForelderBolk = createSelector(
-    getRegistrertAnnenForelder,
-    (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder !== undefined
-);
+    visAnnenForelderPersonaliaSkjema: createSelector(
+        getRegistrertAnnenForelder,
+        (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder === undefined
+    ),
 
-export const visAnnenForelderPersonaliaSkjema = createSelector(
-    getRegistrertAnnenForelder,
-    (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder === undefined
-);
+    visAnnenForelderErKjentPartial: createSelector(
+        getAnnenForelder,
+        getRegistrertAnnenForelder,
+        (annenForelder: AnnenForelder, registrertAnnenForelder) =>
+            ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined
+    ),
 
-export const visAnnenForelderErKjentPartial = createSelector(
-    getAnnenForelder,
-    getRegistrertAnnenForelder,
-    (annenForelder: AnnenForelder, registrertAnnenForelder) =>
-        ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined
-);
+    visOmsorgsovertakelse: createSelector(getBarn, (barn: Barn) => {
+        const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
+        return omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0;
+    }),
 
-export const visOmsorgsovertakelse = createSelector(getBarn, (barn: Barn) => {
-    const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
-    return omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0;
-});
+    visAnnenForelderKanIkkeOppgisValg: createSelector(
+        getGjelderAdopsjonAvEktefellesBarn,
+        (adopsjonAvEktefellesBarn: boolean) => {
+            return !adopsjonAvEktefellesBarn;
+        }
+    ),
 
-export const gjelderAdopsjonAvEktefellesBarn = createSelector(getBarn, (barn: Barn) => {
-    return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
-});
+    visFødselsnummerInput: createSelector(getAnnenForelder, (annenForelder: AnnenForelder) => {
+        return annenForelder.navn !== undefined && annenForelder.navn !== '';
+    }),
 
-export const visAnnenForelderKanIkkeOppgisValg = createSelector(
-    gjelderAdopsjonAvEktefellesBarn,
-    (adopsjonAvEktefellesBarn: boolean) => {
-        return !adopsjonAvEktefellesBarn;
-    }
-);
+    visSkalFarEllerMedmorHaForeldrepengerSpørsmål: createSelector(
+        getSøker,
+        getErFarEllerMedmor,
+        (søker: Søker, farEllerMedmor) => {
+            return !farEllerMedmor && søker.erAleneOmOmsorg === true;
+        }
+    ),
 
-export const visFødselsnummerInput = createSelector(getAnnenForelder, (annenForelder: AnnenForelder) => {
-    return annenForelder.navn !== undefined && annenForelder.navn !== '';
-});
-
-export const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = createSelector(
-    getSøker,
-    getErFarEllerMedmor,
-    (søker: Søker, farEllerMedmor) => {
-        return !farEllerMedmor && søker.erAleneOmOmsorg === true;
-    }
-);
-
-export const visHarRettPåForeldrepengerSpørsmål = createSelector(
-    getAnnenForelder,
-    getSøker,
-    getHarDenAndreForelderenOpplystOmSinPågåendeSak,
-    (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak) => {
-        return (
-            annenForelder.skalHaForeldrepenger === true ||
-            (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
-        );
-    }
-);
+    visHarRettPåForeldrepengerSpørsmål: createSelector(
+        getAnnenForelder,
+        getSøker,
+        getHarDenAndreForelderenOpplystOmSinPågåendeSak,
+        (annenForelder, søker, harDenAndreForelderenOpplystOmSinPågåendeSak) => {
+            return (
+                annenForelder.skalHaForeldrepenger === true ||
+                (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
+            );
+        }
+    )
+};
 
 export const getAnnenForelderVisibility = createSelector(
-    visRegistrertAnnenForelderBolk,
-    visAnnenForelderPersonaliaSkjema,
-    visAnnenForelderErKjentPartial,
-    visOmsorgsovertakelse,
-    visAnnenForelderKanIkkeOppgisValg,
-    visFødselsnummerInput,
-    visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
-    visHarRettPåForeldrepengerSpørsmål,
+    AnnenForelderVisibilityFuncs.visRegistrertAnnenForelderBolk,
+    AnnenForelderVisibilityFuncs.visAnnenForelderPersonaliaSkjema,
+    AnnenForelderVisibilityFuncs.visAnnenForelderErKjentPartial,
+    AnnenForelderVisibilityFuncs.visOmsorgsovertakelse,
+    AnnenForelderVisibilityFuncs.visAnnenForelderKanIkkeOppgisValg,
+    AnnenForelderVisibilityFuncs.visFødselsnummerInput,
+    AnnenForelderVisibilityFuncs.visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
+    AnnenForelderVisibilityFuncs.visHarRettPåForeldrepengerSpørsmål,
     (
         registrertAnnenForelderBolk,
         annenForelderPersonaliaSkjema,
