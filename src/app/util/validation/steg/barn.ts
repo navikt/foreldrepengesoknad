@@ -1,11 +1,12 @@
 import moment from 'moment';
-import { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
+import { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn, Barn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import DateValues from '../values';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
+import { findOldestDate } from '../../dates/dates';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -55,6 +56,10 @@ const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boo
     return true;
 };
 
+const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
+    return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
+};
+
 export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { situasjon, barn } = søknad;
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo);
@@ -83,10 +88,6 @@ export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo
     );
 };
 
-const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
-    return søknad.temp.søknadenGjelderBarnValg.valgteBarn.length > 0;
-};
-
 export const getUniqeRegistrertAnnenForelderFromBarn = (
     barn?: RegistrertBarn[]
 ): RegistrertAnnenForelder | undefined => {
@@ -104,4 +105,21 @@ export const getUniqeRegistrertAnnenForelderFromBarn = (
         }
     });
     return foreldre.length === 1 ? foreldre[0] : undefined;
+};
+
+export const getBarnInfoFraRegistrertBarnValg = (
+    gjelderAnnetBarn: boolean | undefined,
+    valgteBarn: RegistrertBarn[]
+): Partial<Barn> => {
+    if (gjelderAnnetBarn === true) {
+        return {
+            fødselsdatoer: []
+        };
+    }
+    const fødselsdato = findOldestDate(valgteBarn.map((b: RegistrertBarn) => b.fødselsdato));
+    return {
+        fødselsdatoer: fødselsdato ? [fødselsdato] : [],
+        antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
+        erBarnetFødt: valgteBarn.length > 0 || undefined
+    };
 };
