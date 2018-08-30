@@ -1,8 +1,8 @@
 import { SøknadPartial, SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { AnnenForelderVisibilityFuncs as fns } from '../annenForelderVisibility';
 import { Kjønn } from '../../../../types/common';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AnnenForelderVisibilityFuncs as func } from '../visibility/visibilitySelectors';
 
 const attachment: Partial<Attachment> = {};
 
@@ -56,61 +56,63 @@ const søknad: Partial<SøknadPartial> = {
 describe('AnnenForelder visibility tests', () => {
     describe('Routing visibilities', () => {
         it('Should only render personalia for registrertAnnenForelder if registrertAnnenForelder exists', () => {
-            expect(fns.visRegistrertAnnenForelderBolk.resultFunc(registrertAnnenForelder)).toBeTruthy();
-            expect(fns.visRegistrertAnnenForelderBolk.resultFunc(undefined)).toBeFalsy();
+            expect(func.visRegistrertAnnenForelderBolk.resultFunc(registrertAnnenForelder)).toBeTruthy();
+            expect(func.visRegistrertAnnenForelderBolk.resultFunc(undefined)).toBeFalsy();
         });
 
         it('Should only render annenForelderPersonaliaSkjema when registrertAnnenForelder is undefined', () => {
-            expect(fns.visAnnenForelderPersonaliaSkjema.resultFunc(registrertAnnenForelder)).toBeFalsy();
-            expect(fns.visAnnenForelderPersonaliaSkjema.resultFunc(undefined)).toBeTruthy();
+            expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(registrertAnnenForelder)).toBeFalsy();
+            expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(undefined)).toBeTruthy();
         });
 
         describe('visAnnenForelderErKjentPartial', () => {
             it('Should be visible when registrertAnnenForelder is defined', () => {
                 expect(
-                    fns.visAnnenForelderErKjentPartial.resultFunc(søknad.annenForelder!, registrertAnnenForelder)
+                    func.visAnnenForelderErKjentPartial.resultFunc(søknad.annenForelder!, registrertAnnenForelder)
                 ).toBeTruthy();
             });
             it('Should be visible when registrertAnnenForelder is undefined and navn/fnr is has values', () => {
                 expect(
-                    fns.visAnnenForelderErKjentPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
+                    func.visAnnenForelderErKjentPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
                 ).toBeTruthy();
             });
             it('Should be hidden when !registrertAnnenForelder and !navn || !fnr', () => {
-                expect(fns.visAnnenForelderErKjentPartial.resultFunc({ navn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
-                expect(fns.visAnnenForelderErKjentPartial.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
+                expect(
+                    func.visAnnenForelderErKjentPartial.resultFunc({ navn: 'asd', fnr: '' }!, undefined)
+                ).toBeFalsy();
+                expect(func.visAnnenForelderErKjentPartial.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
             });
 
             it('Should not render skalFarEllerMedmorHaForeldrepengerSpørsmål when er alene om omsorg and !farEllerMedmor', () => {
                 expect(
-                    fns.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: true }, false)
+                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: true }, false)
                 ).toBeTruthy();
                 expect(
-                    fns.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: false }, false)
+                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: false }, false)
                 ).toBeFalsy();
                 expect(
-                    fns.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: false }, true)
+                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: false }, true)
                 ).toBeFalsy();
             });
         });
 
         describe('AnnenForelderPersonaliaPartial', () => {
             it('Should not render annenForelderKanIkkeOppgisValg when barn.gjelderAdopsjonAvEktefellesBarn', () => {
-                expect(fns.visAnnenForelderKanIkkeOppgisValg.resultFunc(false)).toBeTruthy();
-                expect(fns.visAnnenForelderKanIkkeOppgisValg.resultFunc(true)).toBeFalsy();
+                expect(func.visAnnenForelderKanIkkeOppgisValg.resultFunc(false)).toBeTruthy();
+                expect(func.visAnnenForelderKanIkkeOppgisValg.resultFunc(true)).toBeFalsy();
             });
             it('Should only render fødselsnummerInput when navn has value', () => {
-                expect(fns.visFødselsnummerInput.resultFunc({ navn: undefined })).toBeFalsy();
-                expect(fns.visFødselsnummerInput.resultFunc({ navn: '' })).toBeFalsy();
-                expect(fns.visFødselsnummerInput.resultFunc({ navn: 'a' })).toBeTruthy();
+                expect(func.visFødselsnummerInput.resultFunc({ navn: undefined })).toBeFalsy();
+                expect(func.visFødselsnummerInput.resultFunc({ navn: '' })).toBeFalsy();
+                expect(func.visFødselsnummerInput.resultFunc({ navn: 'a' })).toBeTruthy();
             });
         });
 
         it('Should show omsorgsovertakelse when omsorgsovertakelse has one or more attachments', () => {
-            expect(fns.visOmsorgsovertakelse.resultFunc(søknad.barn!)).toBeFalsy();
-            expect(fns.visOmsorgsovertakelse.resultFunc({ ...søknad.barn, omsorgsovertakelse: [] }!)).toBeFalsy();
+            expect(func.visOmsorgsovertakelse.resultFunc(søknad.barn!)).toBeFalsy();
+            expect(func.visOmsorgsovertakelse.resultFunc({ ...søknad.barn, omsorgsovertakelse: [] }!)).toBeFalsy();
             expect(
-                fns.visOmsorgsovertakelse.resultFunc({
+                func.visOmsorgsovertakelse.resultFunc({
                     ...søknad.barn,
                     omsorgsovertakelse: [attachment as Attachment]
                 })

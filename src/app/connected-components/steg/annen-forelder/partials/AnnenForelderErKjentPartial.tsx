@@ -22,7 +22,7 @@ import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
-import { AnnenForelderErKjentVisibility } from '../annenForelderVisibility';
+import { AnnenForelderErKjentVisibility } from '../visibility/annenForelderVisibility';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -92,11 +92,7 @@ class AnnenForelderErKjentPartial extends React.Component<Props> {
                         }}
                     />
                 </Block>
-                <Block
-                    visible={
-                        annenForelder.skalHaForeldrepenger === true ||
-                        (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
-                    }>
+                <Block visible={vis.skalAnnenForelderHaForeldrepengerSpørsmål}>
                     <RettPåForeldrepengerSpørsmål
                         navn={navn}
                         harAnnenForelderRettPåForeldrepenger={annenForelder.harRettPåForeldrepenger}

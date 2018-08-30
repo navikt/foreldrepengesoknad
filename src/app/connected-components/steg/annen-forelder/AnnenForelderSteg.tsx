@@ -18,7 +18,7 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './annenForelderVisibility';
+import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './visibility/annenForelderVisibility';
 
 interface StateProps {
     antallBarn?: number;
