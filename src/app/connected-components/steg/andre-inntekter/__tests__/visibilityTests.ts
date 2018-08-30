@@ -96,11 +96,11 @@ describe('Andre inntekter-bolk', () => {
         });
 
         it('should be visible if !harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd', () => {
-            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter)).toBe(true);
+            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter as Søker)).toBe(true);
         });
 
         it('should be hidden if harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd and has insufficient data about selvstendigNæringsdrivende', () => {
-            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter)).toBe(false);
+            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter as Søker)).toBe(false);
         });
     });
 
@@ -110,8 +110,8 @@ describe('Andre inntekter-bolk', () => {
         });
 
         it('should be hidden regardless of Søker-objects property values', () => {
-            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter)).toEqual(false);
-            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter)).toEqual(false);
+            expect(fns.andreInntekterBolk(søkerMedEgneVirksomheter as Søker)).toEqual(false);
+            expect(fns.andreInntekterBolk(søkerUtenEgneVirksomheter as Søker)).toEqual(false);
         });
     });
 });
