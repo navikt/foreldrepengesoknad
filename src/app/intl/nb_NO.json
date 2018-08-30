@@ -15,38 +15,33 @@
 
     "rediger": "Rediger",
 
+    "tilbake": "Tilbake",
+
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
 
     "søknad.pageheading": "Søknad om foreldrepenger",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
-    "velkommen.ingress":
-        "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
+    "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.bobletittel": "Hei, {name}!",
-    "velkommen.bobletekst":
-        "Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.",
+    "velkommen.bobletekst": "Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
-    "velkommen.samtykkeIntro":
-        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
+    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
     "velkommen.dinePlikter": "dine plikter",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
-    "velkommen.lesMerOmPersonopplysninger":
-        "Les om hvordan NAV behandler personopplysningene dine",
+    "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
     "personalia.år": "{år} år",
 
-    "dinePersonopplysninger.sectionheading":
-        "Slik behandler NAV personopplysningene dine",
+    "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
 
     "dinePlikter.sectionheading": "Dine plikter",
     "dinePlikter.listeElement.1":
         "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
-    "dinePlikter.listeElement.2":
-        "Jeg har lest og forstått det som står på {link}",
+    "dinePlikter.listeElement.2": "Jeg har lest og forstått det som står på {link}",
     "dinePlikter.listeElement.2.link": "nav.no/rettogplikt",
 
-    "annenForelder.spørsmål.kanOppgis":
-        "Jeg kan ikke oppgi navnet til den andre forelderen",
+    "annenForelder.spørsmål.kanOppgis": "Jeg kan ikke oppgi navnet til den andre forelderen",
     "annenForelder.spørsmål.adoptererAlene": "Jeg adopterer alene",
     "annenForelder.spørsmål.navn": "Den andre forelderen heter...",
     "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
@@ -59,37 +54,28 @@
     "annenInntekt.leggTilInntekt": "Legg til inntekt",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
     "annenInntekt.modal.tittel": "Legg til inntekt",
-    "annenInntekt.modal.select.spørsmål":
-        "Jeg har hatt inntekt i forbindelse med...",
+    "annenInntekt.modal.select.spørsmål": "Jeg har hatt inntekt i forbindelse med...",
     "annenInntekt.modal.land": "Hvilket land gjelder det?",
     "annenInntekt.spørsmål.arbeidsgiver": "Navn på arbeidsgiver...",
-    "annenInntekt.spørsmål.næringsinntekt":
-        "Næringsinntekt sålangt i år (før skatt)",
+    "annenInntekt.spørsmål.næringsinntekt": "Næringsinntekt sålangt i år (før skatt)",
 
     "annenInntekt.arbeidsforhold.infotekst":
         "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
-    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold":
-        "Vi fant ingen registrerte arbeidsforhold.",
+    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Vi fant ingen registrerte arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Registrerte arbeidsforhold",
-    "annenInntekt.arbeidsforhold.stillingsprosent":
-        "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
-    "annenInntekt.arbeidsforhold.organisasjonsnummer":
-        "ORG.NR: {organisasjonsnummer}",
+    "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Ytelser fra NAV",
-    "annenInntekt.ytelser.tekst":
-        "Eventuelle ytelser du mottar fra NAV vil tas hensyn til i saksbehandlingen",
+    "annenInntekt.ytelser.tekst": "Eventuelle ytelser du mottar fra NAV vil tas hensyn til i saksbehandlingen",
 
-    "inntektstype.etterlønn_arbeidsgiver":
-        "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.etterlønn_arbeidsgiver": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektstype.etterlønn_arbeidsgiver_info":
         "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
-    "inntektstype.militær_eller_siviltjeneste":
-        "Militæret, sivilforsvar eller sivilforsvarstjeneste",
+    "inntektstype.militær_eller_siviltjeneste": "Militæret, sivilforsvar eller sivilforsvarstjeneste",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
-    "inntektstype.lønn_under_utdanning":
-        "Lønn ved permisjon for videreutdanning eller etterutdanning",
+    "inntektstype.lønn_under_utdanning": "Lønn ved permisjon for videreutdanning eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "TODO",
     "inntektstype.ventelønn": "Ventelønn",
     "inntektstype.ventelønn_info":
@@ -132,14 +118,11 @@
     "begynnsøknad.label": "Begynn med søknaden",
     "fortsettknapp.label": "Fortsett",
 
-    "morForSykSpørsmål.spørsmål":
-        "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
+    "morForSykSpørsmål.spørsmål": "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
-    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Er du selvstendig næringsdrivende?",
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål": "Er du selvstendig næringsdrivende?",
 
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål":
-        "Har du jobbet som frilanser de siste 10 månedene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste 10 månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
         "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
@@ -148,12 +131,10 @@
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
     "frilansOppdrag.modal.pågående": "Pågående oppdrag",
-    "frilansOppdrag.oppfølgingsspørsmål":
-        "Oppdrag for nære venner eller familie siste 10 måneder",
+    "frilansOppdrag.oppfølgingsspørsmål": "Oppdrag for nære venner eller familie siste 10 måneder",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Næringsinntekt etter endring",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Næringsinntekt etter endring",
     "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
     "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
 
@@ -161,47 +142,37 @@
 
     "næringstype.spørsmål": "Hvilken type virksomhet har du?",
 
-    "selvstendigNæringsdrivende.oppfølgingsspørsmål":
-        "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.modal.navn": "Navn på virksomheten",
     "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
-    "selvstendigNæringsdrivende.modal.tittel":
-        "Opplysninger om virksomheten din",
-    "selvstendigNæringsdrivende.modal.registrertILand":
-        "Hvilket land er virksomheten registrert i?",
+    "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
+    "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
     "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
 
-    "erDuSelvstendigNæringsdrivende.spørsmål":
-        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
+    "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
     "harRevisor.spørsmål": "Har du revisor?",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "næringsrelasjon.navn": "Navn på personen",
     "næringsrelasjon.tlfnr": "Telefonnummer til personen",
-    "næringsrelasjon.nærVennEllerFamilie":
-        "Er du en nær venn eller familie av denne personen?",
+    "næringsrelasjon.nærVennEllerFamilie": "Er du en nær venn eller familie av denne personen?",
 
     "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
-    "andreForelderenRettPåForeldrepenger.spørsmål":
-        "Har {navn} rett på foreldrepenger?",
+    "andreForelderenRettPåForeldrepenger.spørsmål": "Har {navn} rett på foreldrepenger?",
 
-    "erDenAndreForelderenInformert.spørsmål":
-        "Er {navn} informert om søknaden min?",
+    "erDenAndreForelderenInformert.spørsmål": "Er {navn} informert om søknaden min?",
 
-    "skalFarEllerMedmorHaForeldrepenger.spørsmål":
-        "Skal {navn} ha foreldrepenger?",
+    "skalFarEllerMedmorHaForeldrepenger.spørsmål": "Skal {navn} ha foreldrepenger?",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
-    "erArbeidsgiverNærVennEllerFamilie.spørsmål":
-        "Er arbeidsgiver nær venn eller familie?",
+    "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er arbeidsgiver nær venn eller familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
-    "kanInnhenteOpplysningerFraRevisor.spørsmål":
-        "Samtykker du til uthenting av opplsysninger fra revisor?",
+    "kanInnhenteOpplysningerFraRevisor.spørsmål": "Samtykker du til uthenting av opplsysninger fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Jeg har aleneomsorgen",
     "annenForelder.bostedsland": "og bor i...",
@@ -210,31 +181,24 @@
     "annenForelder.label.registrertForelder":
         "Registrert annen forelder for {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
-    "annenForelder.label.kanIkkeOppgiNavn":
-        "Jeg kan ikke oppgi navnet til andre forelderen",
-    "annenForelder.label.fødselsnummer":
-        "og har fødselsnummer eller D-nummer...",
+    "annenForelder.label.kanIkkeOppgiNavn": "Jeg kan ikke oppgi navnet til andre forelderen",
+    "annenForelder.label.fødselsnummer": "og har fødselsnummer eller D-nummer...",
     "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
     "annenForelder.label.bostedsland": "og bor i...",
     "annenForelder.placeholder.navn": "Navn",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
-    "annenForelder.ugyldigFødselsnummer":
-        "Du må skrive et gyldig nummer (11 sifre)",
-    "annenForelder.ugyldigEgetFødselsnummer":
-        "Du kan ikke oppgi ditt eget fødselsnummer",
+    "annenForelder.ugyldigFødselsnummer": "Du må skrive et gyldig nummer (11 sifre)",
+    "annenForelder.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
-    "annenForelder.ugyldigBostedsland":
-        "Du må oppgi hvor den andre forelderen bor",
+    "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
 
     "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
-    "boddINorgeSiste12Mnd.alternativ.boddIUtlandet":
-        "bodd i utlandet helt eller delvis",
+    "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
 
     "iNorgeNeste12Mnd.spørsmål": "De neste 12 månedene skal jeg...",
     "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
-    "iNorgeNeste12Mnd.alternativ.boIUtlandet":
-        "bo i utlandet helt eller delvis",
+    "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bo i utlandet helt eller delvis",
 
     "søkerrolle.spørsmål": "Jeg søker som ...",
     "søkerrolle.rolle.MOR": "Mor",
@@ -251,12 +215,10 @@
     "søkersituasjon.alternativ.stebarn": "Stebarnadopsjon",
     "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
 
-    "gjelderSøknadenNoenAvDisseBarna.spørsmål":
-        "Gjelder foreldrepengesøknaden noen av disse barna?",
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
-    "adopsjonAvEktefellesBarn.spørsmål":
-        "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
+    "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
 
     "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
     "attachments.tittel.stebarnsadopsjon": "Stebarnsadopsjon",
@@ -275,8 +237,7 @@
     "termindato.spørsmål": "Når er termindato?",
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
-    "terminbekreftelseDato.infotekst":
-        "Vi trenger disse opplysningene fordi....",
+    "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
 
@@ -303,8 +264,7 @@
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
     "vedlegg.lastoppknapp.label": "Last opp vedlegg",
-    "vedlegg.tittel.omsorgsovertakelse":
-        "Last opp dokumentasjon på omsorgsovertakelse",
+    "vedlegg.tittel.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.tittel.fødselsattest": "Last opp fødselsattest",
     "vedlegg.tittel.terminbekreftelse": "Last opp terminbekreftelse",
 
@@ -312,12 +272,10 @@
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
-    "vedlegg.veileder.adopsjon":
-        "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
+    "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
-    "vedlegg.veileder.omsorgsovertakelse":
-        "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
+    "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
@@ -330,53 +288,35 @@
     "driverFosterhjem.spørsmål": "Driver du fosterhjem?",
 
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
-    "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere":
-        "Fødselsdato må være idag eller tidligere",
+    "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
         "Du kan ikke søke om engangsstønad for barn som er eldre enn tre år.",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
-    "valideringsfeil.termindato.duMåVæreIUke26":
-        "Du kan tidligst søke når du er i 26. svangerskapsuke",
-    "valideringsfeil.termindato.forTidlig":
-        "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
+    "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidligst søke når du er i 26. svangerskapsuke",
+    "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
 
-    "valideringsfeil.terminbekreftelseDato.duMåOppgi":
-        "Du må oppgi når terminbekreftelsen er datert",
-    "valideringsfeil.terminbekreftelseDato.forSen":
-        "Datoen på terminbekreftelsen kan ikke være frem i tid.",
+    "valideringsfeil.terminbekreftelseDato.duMåOppgi": "Du må oppgi når terminbekreftelsen er datert",
+    "valideringsfeil.terminbekreftelseDato.forSen": "Datoen på terminbekreftelsen kan ikke være frem i tid.",
     "valideringsfeil.terminbekreftelseDato.duMåVæreIUke26":
         "Terminbekreftelsen må vise at du er i 26. svangerskapsuke eller senere",
 
-    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer":
-        "Du kan ikke oppgi ditt eget fødselsnummer",
+    "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
 
-    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer":
-        "Du må skrive et gyldig nummer (11 sifre)",
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig nummer (11 sifre)",
 
-    "valideringsfeil.utenlandsopphold.tidligere":
-        "Du må legge inn en dato som er innenfor de siste tolv månedene.",
-    "valideringsfeil.utenlandsopphold.senere":
-        "Du må legge inn en dato som er innenfor de neste tolv månedene.",
-    "valideringsfeil.utenlandsopphold.dagensEllerSenere":
-        "Du må legge inn dagens dato eller senere.",
-    "valideringsfeil.utenlandsopphold.førTilDato":
-        "Du må legge inn en dato som er før til-datoen.",
-    "valideringsfeil.utenlandsopphold.etterFraDato":
-        "Du må legge inn en dato som er etter fra-datoen",
-    "valideringsfeil.utenlandsopphold.overlapp":
-        "Du har allerede lagt inn utenlandsopphold i denne perioden",
-    "valideringsfeil.organisasjonsnummer.required":
-        "Organisasjonsnummer må fylles ut",
-    "valideringsfeil.organisasjonsnummer.er9tall":
-        "Organisasjonsnummer må bestå av 9 tall",
+    "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste tolv månedene.",
+    "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste tolv månedene.",
+    "valideringsfeil.utenlandsopphold.dagensEllerSenere": "Du må legge inn dagens dato eller senere.",
+    "valideringsfeil.utenlandsopphold.førTilDato": "Du må legge inn en dato som er før til-datoen.",
+    "valideringsfeil.utenlandsopphold.etterFraDato": "Du må legge inn en dato som er etter fra-datoen",
+    "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
+    "valideringsfeil.organisasjonsnummer.required": "Organisasjonsnummer må fylles ut",
+    "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
     "valideringsfeil.stillingsprosent.required": "Stillingsprosent er påkrevd",
-    "valideringsfeil.stillingsprosent.ugyldigTall":
-        "Stillingsprosent må være et gyldig tall opp til 100",
-    "valideringsfeil.stillingsprosent.over100prosent":
-        "Stillingsprosent kan være maks 100",
-    "valideringsfeil.stillingsprosent.under0":
-        "Stillingsprosenten må være over 0",
+    "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
+    "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
+    "valideringsfeil.stillingsprosent.under0": "Stillingsprosenten må være over 0",
 
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
@@ -400,32 +340,23 @@
     "oppsummering.antallBarn.9": "Ni",
 
     "oppsummering.denAndreForelderen": "Den andre forelderen",
-    "oppsummering.annenForelder.aleneOmOmsorg.label":
-        "{personligPronomen} har...",
+    "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
     "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
     "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
-    "oppsummering.annenForelder.kanIkkeOppgis":
-        "Jeg kan ikke oppgi den andre forelderen",
+    "oppsummering.annenForelder.kanIkkeOppgis": "Jeg kan ikke oppgi den andre forelderen",
     "oppsummering.annenForelder.navn.label": "Den andre forelderen heter...",
-    "oppsummering.annenForelder.fødselsnummer.label":
-        "og har fødselsnummer eller D-nummer...",
-    "oppsummering.annenForelder.utenlandskFødselsnummer.label":
-        "Utenlandsk fødselsnummer",
+    "oppsummering.annenForelder.fødselsnummer.label": "og har fødselsnummer eller D-nummer...",
+    "oppsummering.annenForelder.utenlandskFødselsnummer.label": "Utenlandsk fødselsnummer",
     "oppsummering.annenForelder.bostedsland.label": "og bor i...",
-    "oppsummering.annenForelder.harRettPåForeldrepenger.label":
-        "Har {navn} rett på foreldrepenger?",
-    "oppsummering.annenForelder.skalHaForeldrepenger.label":
-        "Skal {navn} ha foreldrepenger?",
-    "oppsummering.annenForelder.erInformertOmSøknaden.label":
-        "Er {navn} informert om søknaden?",
-    "oppsummering.annenForelder.erForSyk.label":
-        "Er { navn } for syk til å ta seg av barnet eller innlagt?",
+    "oppsummering.annenForelder.harRettPåForeldrepenger.label": "Har {navn} rett på foreldrepenger?",
+    "oppsummering.annenForelder.skalHaForeldrepenger.label": "Skal {navn} ha foreldrepenger?",
+    "oppsummering.annenForelder.erInformertOmSøknaden.label": "Er {navn} informert om søknaden?",
+    "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
-    "kvittering.referansenummer":
-        "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",
+    "kvittering.referansenummer": "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",
     "kvittering.dittNav": "Du kan følge med på søknaden på {dittNavLink}.",
     "kvittering.dittNavLink": "Ditt NAV",
     "kvittering.kontonummer":

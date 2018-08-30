@@ -80,9 +80,7 @@ class Steg extends React.Component<Props & DispatchProps> {
 
     navigateToPreviousStep(): void {
         const { previousStegRoute } = this.props;
-
         const previousStegPathname = previousStegRoute ? previousStegRoute : this.findPreviousRoute();
-
         this.props.history.push(previousStegPathname);
     }
 
@@ -108,7 +106,11 @@ class Steg extends React.Component<Props & DispatchProps> {
             <React.Fragment>
                 <ValiderbarForm {...formProps} ref={this.stegFormRef}>
                     <Block margin="xs">
-                        <BackButton hidden={this.shouldHideBackButton()} onClick={this.navigateToPreviousStep} />
+                        <BackButton
+                            text={getMessage(intl, 'tilbake')}
+                            hidden={this.shouldHideBackButton()}
+                            onClick={this.navigateToPreviousStep}
+                        />
                     </Block>
                     <Block>
                         <Stegindikator id={id} />
