@@ -17,7 +17,7 @@ const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
 
 const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     const { barn } = søkerinfo.søker;
-    if (barn.length === 0) {
+    if (barn === undefined || barn.length === 0) {
         return [];
     }
     return barn.map((b: any): RegistrertBarn => ({
@@ -28,7 +28,7 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
 
 const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
     const { arbeidsforhold } = søkerinfo;
-    if (arbeidsforhold.length === 0) {
+    if (arbeidsforhold === undefined || arbeidsforhold.length === 0) {
         return [];
     }
     return arbeidsforhold.map((a) => {

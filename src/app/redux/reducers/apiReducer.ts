@@ -15,7 +15,7 @@ export type ApiStatePartial = Partial<ApiState>;
 
 const getDefaultState = (): ApiState => ({
     isLoadingSøkerinfo: false,
-    isLoadingAppState: true,
+    isLoadingAppState: false,
     søknadSendingInProgress: false,
     error: {
         networkError: false

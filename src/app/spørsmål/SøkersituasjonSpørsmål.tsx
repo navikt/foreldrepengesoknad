@@ -28,9 +28,8 @@ const SøkersituasjonSpørsmål = (props: Props) => {
             legend={getMessage(intl, 'søkersituasjon.spørsmål')}
             radios={[
                 getSituasjonOption(Søkersituasjon.FØDSEL),
-                getSituasjonOption(Søkersituasjon.ADOPSJON)
-                /* getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
-                TODO: Legg tilbake når foreldreansvar støttes */
+                getSituasjonOption(Søkersituasjon.ADOPSJON),
+                getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
             ]}
             name="søkersituasjon"
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Søkersituasjon) => onChange(v, e)}
