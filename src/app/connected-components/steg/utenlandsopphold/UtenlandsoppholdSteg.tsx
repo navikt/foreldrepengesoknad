@@ -103,13 +103,16 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
     render() {
         const { søknad, stegProps, dispatch, intl } = this.props;
+        const { informasjonOmUtenlandsopphold, barn } = søknad;
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Block hasChildBlocks={true}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderHarBoddINorgeSiste12MndSpørsmål}
-                        showUtenlandsoppholdContent={visibility.harBoddINorgeSiste12MndContent(søknad)}
+                        showUtenlandsoppholdContent={visibility.harBoddINorgeSiste12MndContent(
+                            informasjonOmUtenlandsopphold
+                        )}
                         oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.tidligereOpphold}
                         oppholdType={'tidligereOpphold'}
@@ -129,10 +132,14 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block hasChildBlocks={true} visible={visibility.skalBoINorgeNeste12MndBlock(søknad)}>
+                <Block
+                    hasChildBlocks={true}
+                    visible={visibility.skalBoINorgeNeste12MndBlock(informasjonOmUtenlandsopphold)}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderSkalBoINorgeNeste12MndSpørsmål}
-                        showUtenlandsoppholdContent={visibility.skalBoINorgeNeste12MndContent(søknad)}
+                        showUtenlandsoppholdContent={visibility.skalBoINorgeNeste12MndContent(
+                            informasjonOmUtenlandsopphold
+                        )}
                         oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.senereOpphold}
                         oppholdType={'senereOpphold'}
@@ -152,7 +159,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.væreINorgeVedFødselSpørsmål(søknad)}>
+                <Block visible={visibility.væreINorgeVedFødselSpørsmål(informasjonOmUtenlandsopphold, barn)}>
                     <VæreINorgeVedFødselSpørsmål
                         fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
                         onChange={(fødselINorge: boolean) => {

@@ -1,28 +1,27 @@
-import VisibilityFunction from '../../../types/dom/Visibility';
-import Søknad from '../../../types/søknad/Søknad';
+import InformasjonOmUtenlandsopphold from '../../../types/søknad/InformasjonOmUtenlandsopphold';
+import { Barn } from '../../../types/søknad/Barn';
 
-const harBoddINorgeSiste12MndContentVisible: VisibilityFunction<Søknad> = (søknad: Søknad) => {
-    const { informasjonOmUtenlandsopphold } = søknad;
+const harBoddINorgeSiste12MndContentVisible = (
+    informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
+): boolean => informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false;
 
-    return informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false;
-};
+const skalBoINorgeNeste12MndBlockVisible = (
+    informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
+): boolean => informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !== undefined;
 
-const skalBoINorgeNeste12MndContentVisible: VisibilityFunction<Søknad> = (søknad: Søknad) => {
-    const { informasjonOmUtenlandsopphold } = søknad;
+const skalBoINorgeNeste12MndContentVisible = (
+    informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
+): boolean => informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false;
 
-    return informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false;
-};
-
-const skalBoINorgeNeste12MndBlockVisible: VisibilityFunction<Søknad> = (søknad: Søknad) => {
-    const { informasjonOmUtenlandsopphold } = søknad;
-
-    return informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !== undefined;
-};
-
-const væreINorgeVedFødselSpørsmålVisible: VisibilityFunction<Søknad> = (søknad: Søknad) => {
-    const { informasjonOmUtenlandsopphold, barn } = søknad;
-
-    return informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined && barn.erBarnetFødt === false;
+const væreINorgeVedFødselSpørsmålVisible = (
+    informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>,
+    barn: Partial<Barn>
+): boolean => {
+    return (
+        skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
+        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined &&
+        barn.erBarnetFødt === false
+    );
 };
 
 export default {
