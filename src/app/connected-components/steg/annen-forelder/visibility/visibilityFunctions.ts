@@ -2,7 +2,6 @@ import { Søker } from '../../../../types/søknad/Søker';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { ForeldreansvarBarn, Barn } from '../../../../types/søknad/Barn';
-import { AnnenForelderDataFunctions as df } from './dataFunctions';
 
 const visRegistrertAnnenForelderBolk = (registrertAnnenForelder: RegistrertAnnenForelder | undefined): boolean => {
     return registrertAnnenForelder !== undefined;
@@ -13,25 +12,25 @@ const visAnnenForelderPersonaliaPart = (registrertAnnenForelder: RegistrertAnnen
 };
 
 const visAnnenForelderOppfølgingPart = (
-    annenForelder: AnnenForelder,
+    annenForelder: Partial<AnnenForelder>,
     registrertAnnenForelder: RegistrertAnnenForelder | undefined
 ): boolean => {
     return ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined;
 };
 
-const visOmsorgsovertakelse = (barn: Barn) => {
+const visOmsorgsovertakelse = (barn: Partial<Barn>) => {
     const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
     return omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0;
 };
 
-const visAnnenForelderKanIkkeOppgisValg = (barn: Barn): boolean => {
-    return df.getGjelderAdopsjonAvEktefellesBarn(barn);
+const visAnnenForelderKanIkkeOppgisValg = (gjelderAdopsjonAvEktefellesBarn: boolean): boolean => {
+    return gjelderAdopsjonAvEktefellesBarn;
 };
 
-const visFødselsnummerInput = (annenForelder: AnnenForelder) =>
+const visFødselsnummerInput = (annenForelder: Partial<AnnenForelder>) =>
     annenForelder.navn !== undefined && annenForelder.navn !== '';
 
-const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = (søker: Søker, erFarEllerMedmor: boolean): boolean => {
+const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = (søker: Partial<Søker>, erFarEllerMedmor: boolean): boolean => {
     return !erFarEllerMedmor && søker.erAleneOmOmsorg === true;
 };
 
@@ -47,9 +46,9 @@ const visHarRettPåForeldrepengerSpørsmål = (
 };
 
 const visSkalAnnenForelderHaForeldrepengerSpørsmål = (
-    annenForelder: AnnenForelder,
-    søker: Søker,
-    harDenAndreForelderenOpplystOmSinPågåendeSak: boolean
+    annenForelder: Partial<AnnenForelder>,
+    søker: Partial<Søker>,
+    harDenAndreForelderenOpplystOmSinPågåendeSak: boolean | undefined
 ): boolean => {
     return (
         annenForelder.skalHaForeldrepenger === true ||
@@ -57,13 +56,13 @@ const visSkalAnnenForelderHaForeldrepengerSpørsmål = (
     );
 };
 
-const visErMorUførSpørsmål = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean): boolean => {
+const visErMorUførSpørsmål = (annenForelder: Partial<AnnenForelder>, erFarEllerMedmor: boolean): boolean => {
     return annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor;
 };
 
 const visErDenAndreForelderenInformertSpørsmål = (
-    søker: Søker,
-    annenForelder: AnnenForelder,
+    søker: Partial<Søker>,
+    annenForelder: Partial<AnnenForelder>,
     harDenAndreForelderenOpplystOmSinPågåendeSak: boolean,
     erFarEllerMedmor: boolean
 ): boolean => {
@@ -79,11 +78,15 @@ const visFarEllerMedmorBolk = (erFarEllerMedmor: boolean): boolean => {
     return erFarEllerMedmor;
 };
 
-const visOmsorgsovertakelseDatoSpørsmål = (farEllerMedmorBolkSynlig: boolean, søker: Søker): boolean => {
+const visOmsorgsovertakelseDatoSpørsmål = (farEllerMedmorBolkSynlig: boolean, søker: Partial<Søker>): boolean => {
     return farEllerMedmorBolkSynlig && søker.erAleneOmOmsorg === true;
 };
 
-const visOmsorgsovertakelseVedleggSpørsmål = (farEllerMedmorBolkSynlig: boolean, søker: Søker, barn: Barn): boolean => {
+const visOmsorgsovertakelseVedleggSpørsmål = (
+    farEllerMedmorBolkSynlig: boolean,
+    søker: Partial<Søker>,
+    barn: Partial<Barn>
+): boolean => {
     return (
         farEllerMedmorBolkSynlig &&
         søker.erAleneOmOmsorg === true &&

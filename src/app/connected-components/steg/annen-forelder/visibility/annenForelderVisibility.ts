@@ -38,6 +38,7 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
     const andreForelderHarOpplystOmPågåendeSag = df.getHarDenAndreForelderenOpplystOmSinPågåendeSak(
         registrertAnnenForelder!
     );
+    const gjelderAdopsjonAvEktefellesBarn = df.getGjelderAdopsjonAvEktefellesBarn(barn);
 
     const farEllerMedmorBolk = f.visFarEllerMedmorBolk(erFarEllerMedmor);
     return {
@@ -46,7 +47,7 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
         annenForelderOppfølgingPartial: f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder),
 
         personalia: {
-            annenForelderKanIkkeOppgisValg: f.visAnnenForelderKanIkkeOppgisValg(barn),
+            annenForelderKanIkkeOppgisValg: f.visAnnenForelderKanIkkeOppgisValg(gjelderAdopsjonAvEktefellesBarn),
             fødselsnummerInput: f.visFødselsnummerInput(annenForelder)
         },
         annenForelderOppfølging: {
