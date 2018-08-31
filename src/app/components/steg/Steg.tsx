@@ -23,6 +23,7 @@ export interface StegProps {
     onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
+    preSubmit?: () => void;
 }
 
 type Props = StegProps & InjectedIntlProps;
@@ -48,10 +49,13 @@ class Steg extends React.Component<Props & DispatchProps> {
     }
 
     handleOnSubmit(event: FormSubmitEvent) {
-        const { onSubmit, dispatch } = this.props;
+        const { onSubmit, dispatch, preSubmit } = this.props;
         if (onSubmit) {
             onSubmit(event, this.getFormElement());
         } else {
+            if (preSubmit) {
+                preSubmit();
+            }
             dispatch(apiActionCreators.storeAppState());
             this.navigateToNextStep();
         }
