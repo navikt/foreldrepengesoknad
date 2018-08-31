@@ -58,4 +58,25 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             });
         });
     });
+
+    describe('Næring registrert i Norge', () => {
+        beforeEach(() => {
+            fns.tidsperiodeUtfylt = jest.fn(() => true);
+            fns.tidsperiode = jest.fn(() => true);
+            fns.næringsinntekt = jest.fn(() => true);
+        });
+
+        it('should be visible if næringsinntekt field is defined and visible', () => {
+            expect(fns.næringRegistrertINorge({ næringsinntekt: '1111' })).toBe(true);
+        });
+
+        it('should be hidden if næringsinntekt field is visible but its value is undefined', () => {
+            expect(fns.næringRegistrertINorge({})).toBe(false);
+        });
+
+        it('should be visible if tidsperiode is complete and visible when næringsinntekt is not visible', () => {
+            fns.næringsinntekt = jest.fn(() => false);
+            expect(fns.næringRegistrertINorge({})).toBe(true);
+        });
+    });
 });
