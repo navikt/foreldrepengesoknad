@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import stegConfig, { StegID } from '../../util/routing/stegConfig';
+import stegConfig, { StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
@@ -15,14 +15,17 @@ import { DispatchProps } from 'common/redux/types';
 import BEMHelper from 'common/util/bem';
 import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
+import BackButton from 'common/components/back-button/BackButton';
+import Block from 'common/components/block/Block';
 
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     history: History;
-    onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
+    previousStegRoute?: StegID;
+    onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     preSubmit?: () => void;
 }
 
@@ -41,6 +44,7 @@ class Steg extends React.Component<Props & DispatchProps> {
 
         this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
     }
 
     getFormElement() {
@@ -48,7 +52,7 @@ class Steg extends React.Component<Props & DispatchProps> {
         return ReactDOM.findDOMNode(el as React.ReactInstance);
     }
 
-    handleOnSubmit(event: FormSubmitEvent) {
+    handleOnSubmit(event: FormSubmitEvent): void {
         const { onSubmit, dispatch, preSubmit } = this.props;
         if (onSubmit) {
             onSubmit(event, this.getFormElement());
@@ -61,12 +65,35 @@ class Steg extends React.Component<Props & DispatchProps> {
         }
     }
 
-    navigateToNextStep() {
+    navigateToNextStep(): void {
         const { id, nesteStegRoute } = this.props;
 
         const nextStepPathname = nesteStegRoute ? nesteStegRoute : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
 
         this.props.history.push(nextStepPathname);
+    }
+
+    findPreviousRoute(): string {
+        const activeStegId = this.props.id;
+        const previousStegID =
+            Object.keys(stegConfig).find(
+                (currentStegId) => stegConfig[currentStegId].index === stegConfig[activeStegId].index - 1
+            ) || StegID.INNGANG;
+        return `${søknadStegPath(previousStegID)}`;
+    }
+
+    navigateToPreviousStep(): void {
+        const { previousStegRoute } = this.props;
+        const previousStegPathname = previousStegRoute ? previousStegRoute : this.findPreviousRoute();
+        this.props.history.push(previousStegPathname);
+    }
+
+    shouldHideBackButton(): boolean {
+        const activeStegId = this.props.id;
+        return (
+            Math.min(...Object.values(stegConfig).map((stegConfigItem: StegConfigItem) => stegConfigItem.index)) ===
+            stegConfig[activeStegId].index
+        );
     }
 
     render() {
@@ -82,9 +109,16 @@ class Steg extends React.Component<Props & DispatchProps> {
         return (
             <React.Fragment>
                 <ValiderbarForm {...formProps} ref={this.stegFormRef}>
-                    <div className="blokk-m">
+                    <Block margin="xs">
+                        <BackButton
+                            text={getMessage(intl, 'tilbake')}
+                            hidden={this.shouldHideBackButton()}
+                            onClick={this.navigateToPreviousStep}
+                        />
+                    </Block>
+                    <Block>
                         <Stegindikator id={id} />
-                    </div>
+                    </Block>
 
                     {this.props.children}
                     {renderFortsettKnapp === true && <FortsettKnapp>{stegConfig[id].fortsettKnappLabel}</FortsettKnapp>}

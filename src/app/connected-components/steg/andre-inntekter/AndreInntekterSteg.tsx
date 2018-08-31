@@ -16,7 +16,7 @@ import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/SelvstendigNæringsdrivendeBolk';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';

@@ -1,14 +1,14 @@
-import { StegID } from '../../util/routing/stegConfig';
-import Søknad from '../../types/søknad/Søknad';
+import { StegID } from '../../../util/routing/stegConfig';
+import Søknad from '../../../types/søknad/Søknad';
 import {
     søknadGjelderAdopsjon,
     søknadGjelderForeldreansvar,
     søknadGjelderFødsel
-} from '../../util/validation/fields/situasjon';
-import { barnErGyldig } from '../../util/validation/steg/barn';
-import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
-import { utenlandsoppholdErGyldig } from '../../util/validation/steg/utenlandsopphold';
-import { Søkerinfo } from '../../types/søkerinfo';
+} from '../../../util/validation/fields/situasjon';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
+import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
+import { Søkerinfo } from '../../../types/søkerinfo';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 

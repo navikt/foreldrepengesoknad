@@ -17,11 +17,12 @@ import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørs
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
 
 import { getSøkerrollerForBruker } from '../../../util/domain/søkerrollerUtils';
-import isAvailable from '../isAvailable';
+import isAvailable from '../util/isAvailable';
 import { inngangErGyldig } from '../../../util/validation/steg/inngang';
 import { default as Søker, SøkerPartial } from '../../../types/søknad/Søker';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
+import { resolveStegToRender } from '../util/navigation';
 import visibility from './visibility';
 
 export interface StateProps {
@@ -123,7 +124,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.INNGANG,
         renderFortsettKnapp: inngangErGyldig(situasjon, kjønn, erRolleGyldig),
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
+        nesteStegRoute: resolveStegToRender(state)
     };
 
     return {
