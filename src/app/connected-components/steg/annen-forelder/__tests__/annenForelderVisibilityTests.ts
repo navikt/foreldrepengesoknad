@@ -1,7 +1,7 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Kjønn } from '../../../../types/common';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
-import { AnnenForelderVisibilityFuncs as func } from '../visibility/visibilitySelectors';
+import { AnnenForelderVisibilitySelectors as func } from '../visibility/visibilitySelectors';
 import { ForeldreansvarBarn, Barn } from '../../../../types/s\u00F8knad/Barn';
 import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
 
@@ -99,15 +99,6 @@ describe('AnnenForelder visibility tests', () => {
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: false }, false)).toBeFalsy();
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, true)).toBeFalsy();
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, false)).toBeFalsy();
-            });
-
-            it('Should render infoOmRettigheterOgDelingAvUttaksplan depening on harRettPåForeldrepenger', () => {
-                expect(
-                    func.visInfoOmRettigheterOgDelingAvUttaksplan.resultFunc({ harRettPåForeldrepenger: true })
-                ).toBeTruthy();
-                expect(
-                    func.visInfoOmRettigheterOgDelingAvUttaksplan.resultFunc({ harRettPåForeldrepenger: false })
-                ).toBeFalsy();
             });
 
             it('Should render erDenAndreForelderenInformertSpørsmål depending on aleneomsorg, harRettPåForeldrepenger, visFarEllerMedmor bolk and visOmsorgsovertakelseVedlegg', () => {

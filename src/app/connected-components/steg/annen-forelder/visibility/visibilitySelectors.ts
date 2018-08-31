@@ -70,10 +70,6 @@ const visErMorUførSpørsmål = createSelector(
     }
 );
 
-const visInfoOmRettigheterOgDelingAvUttaksplan = createSelector([data.getAnnenForelder], (annenForelder): boolean => {
-    return annenForelder.harRettPåForeldrepenger === true;
-});
-
 const visErDenAndreForelderenInformertSpørsmål = createSelector(
     [
         data.getSøker,
@@ -113,7 +109,7 @@ const visOmsorgsovertakelseVedleggSpørsmål = createSelector(
     }
 );
 
-export const AnnenForelderVisibilityFuncs = {
+export const AnnenForelderVisibilitySelectors = {
     visAnnenForelderOppfølgingPartial,
     visAnnenForelderKanIkkeOppgisValg,
     visAnnenForelderPersonaliaSkjema,
@@ -124,7 +120,6 @@ export const AnnenForelderVisibilityFuncs = {
     visSkalAnnenForelderHaForeldrepengerSpørsmål,
     visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
     visErMorUførSpørsmål,
-    visInfoOmRettigheterOgDelingAvUttaksplan,
     visErDenAndreForelderenInformertSpørsmål,
     visOmsorgsovertakelseDatoSpørsmål,
     visFarEllerMedmorBolk,

@@ -1,5 +1,6 @@
-import { AnnenForelderVisibilityFuncs as v } from './visibilitySelectors';
+import { AnnenForelderVisibilityFunctions as f } from './visibilityFunctions';
 import { AppState } from '../../../../redux/reducers';
+import { AnnenForelderDataFunctions as df } from './dataFunctions';
 
 export interface AnnenForelderStegPersonaliaVisibility {
     annenForelderKanIkkeOppgisValg: boolean;
@@ -11,7 +12,6 @@ export interface AnnenForelderOppfølgingVisibility {
     harRettPåForeldrepengerSpørsmål: boolean;
     skalAnnenForelderHaForeldrepengerSpørsmål: boolean;
     erMorUførSpørsmål: boolean;
-    infoOmRettigheterOgDelingAvUttaksplan: boolean;
     erDenAndreForelderenInformertSpørsmål: boolean;
     omsorgsovertakelseDatoSpørsmål: boolean;
     farEllerMedmorBolk: boolean;
@@ -28,26 +28,53 @@ export interface AnnenForelderStegVisibility {
 }
 
 export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVisibility => {
+    const { søknad } = state;
+    const { søkerinfo } = state.api;
+    const { annenForelder, søker, barn } = søknad;
+    const { registrertAnnenForelder } = søknad.temp;
+
+    const { person } = søkerinfo!;
+    const erFarEllerMedmor = df.getErFarEllerMedmor(søker, person);
+    const andreForelderHarOpplystOmPågåendeSag = df.getHarDenAndreForelderenOpplystOmSinPågåendeSak(
+        registrertAnnenForelder!
+    );
+
+    const farEllerMedmorBolk = f.visFarEllerMedmorBolk(erFarEllerMedmor);
     return {
-        registrertAnnenForelderBolk: v.visRegistrertAnnenForelderBolk(state),
-        annenForelderPersonaliaSkjema: v.visAnnenForelderPersonaliaSkjema(state),
-        annenForelderOppfølgingPartial: v.visAnnenForelderOppfølgingPartial(state),
+        registrertAnnenForelderBolk: f.visRegistrertAnnenForelderBolk(registrertAnnenForelder),
+        annenForelderPersonaliaSkjema: f.visAnnenForelderPersonaliaSkjema(registrertAnnenForelder),
+        annenForelderOppfølgingPartial: f.visAnnenForelderOppfølgingPartial(annenForelder, registrertAnnenForelder),
 
         personalia: {
-            annenForelderKanIkkeOppgisValg: v.visAnnenForelderKanIkkeOppgisValg(state),
-            fødselsnummerInput: v.visFødselsnummerInput(state)
+            annenForelderKanIkkeOppgisValg: f.visAnnenForelderKanIkkeOppgisValg(barn),
+            fødselsnummerInput: f.visFødselsnummerInput(annenForelder)
         },
         annenForelderOppfølging: {
-            skalFarEllerMedmorHaForeldrepengerSpørsmål: v.visSkalFarEllerMedmorHaForeldrepengerSpørsmål(state),
-            harRettPåForeldrepengerSpørsmål: v.visHarRettPåForeldrepengerSpørsmål(state),
-            skalAnnenForelderHaForeldrepengerSpørsmål: v.visSkalAnnenForelderHaForeldrepengerSpørsmål(state),
-            erMorUførSpørsmål: v.visErMorUførSpørsmål(state),
-            infoOmRettigheterOgDelingAvUttaksplan: v.visInfoOmRettigheterOgDelingAvUttaksplan(state),
-            erDenAndreForelderenInformertSpørsmål: v.visErDenAndreForelderenInformertSpørsmål(state),
-            omsorgsovertakelseDatoSpørsmål: v.visOmsorgsovertakelseDatoSpørsmål(state),
-            farEllerMedmorBolk: v.visFarEllerMedmorBolk(state),
-            omsorgsovertakelseVedleggSpørsmål: v.visOmsorgsovertakelseVedleggSpørsmål(state),
-            infoOmOmsorgsovertakelse: v.visInfoOmRettigheterOgDelingAvUttaksplan(state)
+            skalFarEllerMedmorHaForeldrepengerSpørsmål: f.visSkalFarEllerMedmorHaForeldrepengerSpørsmål(
+                søker,
+                erFarEllerMedmor
+            ),
+            harRettPåForeldrepengerSpørsmål: f.visHarRettPåForeldrepengerSpørsmål(
+                annenForelder,
+                søker,
+                andreForelderHarOpplystOmPågåendeSag
+            ),
+            skalAnnenForelderHaForeldrepengerSpørsmål: f.visSkalAnnenForelderHaForeldrepengerSpørsmål(
+                annenForelder,
+                søker,
+                andreForelderHarOpplystOmPågåendeSag
+            ),
+            erMorUførSpørsmål: f.visErMorUførSpørsmål(annenForelder, erFarEllerMedmor),
+            erDenAndreForelderenInformertSpørsmål: f.visErDenAndreForelderenInformertSpørsmål(
+                søker,
+                annenForelder,
+                andreForelderHarOpplystOmPågåendeSag,
+                erFarEllerMedmor
+            ),
+            farEllerMedmorBolk,
+            omsorgsovertakelseDatoSpørsmål: f.visOmsorgsovertakelseDatoSpørsmål(farEllerMedmorBolk, søker),
+            omsorgsovertakelseVedleggSpørsmål: f.visOmsorgsovertakelseVedleggSpørsmål(farEllerMedmorBolk, søker, barn),
+            infoOmOmsorgsovertakelse: f.visInfoOmOmsorgsovertakelse(barn)
         }
     };
 };
