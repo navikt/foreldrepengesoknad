@@ -1,7 +1,6 @@
 import React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
-import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import RettPåForeldrepengerSpørsmål from '../../../../spørsmål/RettPåForeldrepengerSpørsmål';
 import ErMorUførSpørsmål from '../../../../spørsmål/ErMorUførSpørsmål';
 
@@ -12,7 +11,6 @@ import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDe
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { SøkerPartial } from '../../../../types/søknad/Søker';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
@@ -23,22 +21,24 @@ import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørs
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
 import { AnnenForelderOppfølgingVisibility } from '../visibility/annenForelderVisibility';
+import { Søker } from '../../../../types/s\u00F8knad/S\u00F8ker';
+import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
-    annenForelder: Partial<AnnenForelderPartial>;
-    søker: SøkerPartial;
+    annenForelder: Partial<AnnenForelder>;
+    søker: Partial<Søker>;
 }
 
-interface AnnenForelderOppfølgingPartialProps {
+interface AnnenForelderOppfølgingPartProps {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
     vis: AnnenForelderOppfølgingVisibility;
 }
 
-type Props = AnnenForelderOppfølgingPartialProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = AnnenForelderOppfølgingPartProps & StateProps & InjectedIntlProps & DispatchProps;
 
-class AnnenForelderOppfølgingPartial extends React.Component<Props> {
+class AnnenForelderOppfølgingPart extends React.Component<Props> {
     render() {
         const { barn, annenForelder, søker, registrertAnnenForelder, vis, dispatch, intl } = this.props;
 
@@ -176,4 +176,4 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(AnnenForelderOppfølgingPartial));
+export default connect(mapStateToProps)(injectIntl(AnnenForelderOppfølgingPart));

@@ -36,12 +36,10 @@ describe('AnnenForelder visibility tests', () => {
             expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(undefined)).toBeTruthy();
         });
         it('Should show visAnnenForelderOppfølging when registrertAnnenForelder is undefined and when defined name/fnr', () => {
-            expect(func.visAnnenForelderOppfølgingPartial.resultFunc(annenForelder!, undefined)).toBeTruthy();
-            expect(
-                func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
-            ).toBeTruthy();
-            expect(func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
-            expect(func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart.resultFunc(annenForelder!, undefined)).toBeTruthy();
+            expect(func.visAnnenForelderOppfølgingPart.resultFunc({ navn: 'abc', fnr: '123' }, undefined)).toBeTruthy();
+            expect(func.visAnnenForelderOppfølgingPart.resultFunc({ navn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
         });
     });
     describe('Routing visibilities', () => {

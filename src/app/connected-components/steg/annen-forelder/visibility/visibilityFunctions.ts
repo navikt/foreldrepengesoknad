@@ -8,11 +8,11 @@ const visRegistrertAnnenForelderBolk = (registrertAnnenForelder: RegistrertAnnen
     return registrertAnnenForelder !== undefined;
 };
 
-const visAnnenForelderPersonaliaSkjema = (registrertAnnenForelder: RegistrertAnnenForelder | undefined): boolean => {
+const visAnnenForelderPersonaliaPart = (registrertAnnenForelder: RegistrertAnnenForelder | undefined): boolean => {
     return registrertAnnenForelder === undefined;
 };
 
-const visAnnenForelderOppfølgingPartial = (
+const visAnnenForelderOppfølgingPart = (
     annenForelder: AnnenForelder,
     registrertAnnenForelder: RegistrertAnnenForelder | undefined
 ): boolean => {
@@ -97,9 +97,9 @@ const visInfoOmOmsorgsovertakelse = (barn: Barn) => {
 };
 
 export const AnnenForelderVisibilityFunctions = {
-    visAnnenForelderOppfølgingPartial,
+    visAnnenForelderOppfølgingPart,
     visAnnenForelderKanIkkeOppgisValg,
-    visAnnenForelderPersonaliaSkjema,
+    visAnnenForelderPersonaliaPart,
     visFødselsnummerInput,
     visHarRettPåForeldrepengerSpørsmål,
     visOmsorgsovertakelse,

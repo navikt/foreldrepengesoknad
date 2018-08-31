@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
-import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPartial';
-import AnnenForelderOppfølgingPartial from './partials/AnnenForelderOppfølgingPartial';
+import AnnenForelderPersonaliaPart from './parts/AnnenForelderPersonaliaPart';
+import AnnenForelderOppfølgingPart from './parts/AnnenForelderOppfølgingPart';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
@@ -70,13 +70,13 @@ class AnnenForelderSteg extends React.Component<Props> {
                     </Block>
                     <React.Fragment>
                         {vis.annenForelderPersonaliaSkjema && (
-                            <AnnenForelderPersonaliaPartial
+                            <AnnenForelderPersonaliaPart
                                 søkersFødselsnummer={søkersFødselsnummer}
                                 vis={vis.personalia}
                             />
                         )}
                         {vis.annenForelderOppfølging && (
-                            <AnnenForelderOppfølgingPartial
+                            <AnnenForelderOppfølgingPart
                                 vis={vis.annenForelderOppfølging}
                                 registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}

@@ -42,8 +42,8 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
     const farEllerMedmorBolk = f.visFarEllerMedmorBolk(erFarEllerMedmor);
     return {
         registrertAnnenForelderBolk: f.visRegistrertAnnenForelderBolk(registrertAnnenForelder),
-        annenForelderPersonaliaSkjema: f.visAnnenForelderPersonaliaSkjema(registrertAnnenForelder),
-        annenForelderOppfølgingPartial: f.visAnnenForelderOppfølgingPartial(annenForelder, registrertAnnenForelder),
+        annenForelderPersonaliaSkjema: f.visAnnenForelderPersonaliaPart(registrertAnnenForelder),
+        annenForelderOppfølgingPartial: f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder),
 
         personalia: {
             annenForelderKanIkkeOppgisValg: f.visAnnenForelderKanIkkeOppgisValg(barn),
