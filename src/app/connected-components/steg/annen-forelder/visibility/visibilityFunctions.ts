@@ -24,7 +24,7 @@ const visOmsorgsovertakelse = (barn: Partial<Barn>) => {
 };
 
 const visAnnenForelderKanIkkeOppgisValg = (gjelderAdopsjonAvEktefellesBarn: boolean): boolean => {
-    return gjelderAdopsjonAvEktefellesBarn;
+    return gjelderAdopsjonAvEktefellesBarn === false;
 };
 
 const visFødselsnummerInput = (annenForelder: Partial<AnnenForelder>) =>
