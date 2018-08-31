@@ -91,17 +91,27 @@ const visErDenAndreForelderenInformertSpørsmål = createSelector(
     }
 );
 
-const visOmsorgsovertakelseDatoSpørsmål = createSelector([data.getSøker], (søker): boolean => {
-    return søker.erAleneOmOmsorg === true;
-});
-
 const visFarEllerMedmorBolk = createSelector([data.getErFarEllerMedmor], (farEllerMedmor): boolean => {
     return farEllerMedmor;
 });
 
-const visOmsorgsovertakelseVedleggSpørsmål = createSelector([data.getSøker, data.getBarn], (søker, barn): boolean => {
-    return søker.erAleneOmOmsorg === true && (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined;
-});
+const visOmsorgsovertakelseDatoSpørsmål = createSelector(
+    [visFarEllerMedmorBolk, data.getSøker],
+    (farEllerMedmorBolkSynlig, søker): boolean => {
+        return farEllerMedmorBolkSynlig && søker.erAleneOmOmsorg === true;
+    }
+);
+
+const visOmsorgsovertakelseVedleggSpørsmål = createSelector(
+    [visFarEllerMedmorBolk, data.getSøker, data.getBarn],
+    (farEllerMedmorBolkSynlig, søker, barn): boolean => {
+        return (
+            farEllerMedmorBolkSynlig &&
+            søker.erAleneOmOmsorg === true &&
+            (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined
+        );
+    }
+);
 
 export const AnnenForelderVisibilityFuncs = {
     visAnnenForelderOppfølgingPartial,

@@ -1,9 +1,9 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Kjønn } from '../../../../types/common';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
-import { SøkerRolle, Søkersituasjon, SøknadPartial } from '../../../../types/søknad/Søknad';
 import { AnnenForelderVisibilityFuncs as func } from '../visibility/visibilitySelectors';
-import { ForeldreansvarBarn } from '../../../../types/s\u00F8knad/Barn';
+import { ForeldreansvarBarn, Barn } from '../../../../types/s\u00F8knad/Barn';
+import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
 
 const attachment: Partial<Attachment> = {};
 
@@ -15,43 +15,16 @@ const registrertAnnenForelder: RegistrertAnnenForelder = {
     fødselsdato: new Date('1994-01-27T23:00:00.000Z')
 };
 
-const søknad: Partial<SøknadPartial> = {
-    type: 'foreldrepenger',
-    annenForelder: {
-        fnr: '123',
-        navn: 'FAR FARSEN',
-        skalHaForeldrepenger: true,
-        harRettPåForeldrepenger: true
-    },
-    barn: {
-        fødselsdatoer: ['2018-03-28T22:00:00.000Z'],
-        antallBarn: 1,
-        erBarnetFødt: true
-    },
-    søker: {
-        erAleneOmOmsorg: true,
-        andreInntekterSiste10Mnd: [],
-        rolle: SøkerRolle.MOR
-    },
-    harGodkjentVilkår: true,
-    harGodkjentOppsummering: false,
-    situasjon: Søkersituasjon.FØDSEL,
-    temp: {
-        søknadenGjelderBarnValg: {
-            gjelderAnnetBarn: false,
-            valgteBarn: [
-                {
-                    fornavn: 'BARN',
-                    etternavn: 'MORSEN',
-                    fnr: '1234',
-                    kjønn: Kjønn.KVINNE,
-                    fødselsdato: new Date('2018-03-28T22:00:00.000Z'),
-                    annenForelder: registrertAnnenForelder
-                }
-            ]
-        },
-        registrertAnnenForelder
-    }
+const annenForelder: Partial<AnnenForelder> = {
+    fnr: '123',
+    navn: 'FAR FARSEN',
+    skalHaForeldrepenger: true,
+    harRettPåForeldrepenger: true
+};
+const barn: Partial<Barn> = {
+    fødselsdatoer: ['2018-03-28T22:00:00.000Z'],
+    antallBarn: 1,
+    erBarnetFødt: true
 };
 
 describe('AnnenForelder visibility tests', () => {
@@ -62,8 +35,8 @@ describe('AnnenForelder visibility tests', () => {
             expect(func.visRegistrertAnnenForelderBolk.resultFunc(undefined)).toBeFalsy();
             expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(undefined)).toBeTruthy();
         });
-        it('Should show visAnnenForelderOppfølging on defined registrertAnnenForelder defined name/fnr', () => {
-            expect(func.visAnnenForelderOppfølgingPartial.resultFunc(søknad.annenForelder!, undefined)).toBeTruthy();
+        it('Should show visAnnenForelderOppfølging when registrertAnnenForelder is undefined and when defined name/fnr', () => {
+            expect(func.visAnnenForelderOppfølgingPartial.resultFunc(annenForelder!, undefined)).toBeTruthy();
             expect(
                 func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
             ).toBeTruthy();
@@ -73,7 +46,7 @@ describe('AnnenForelder visibility tests', () => {
     });
     describe('Routing visibilities', () => {
         describe('visAnnenForelderErKjentPartial', () => {
-            it('Should not render skalFarEllerMedmorHaForeldrepengerSpørsmål when er alene om omsorg and !farEllerMedmor', () => {
+            it('Should not render skalFarEllerMedmorHaForeldrepengerSpørsmål when er alene om omsorg and not farEllerMedmor', () => {
                 expect(
                     func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: true }, false)
                 ).toBeTruthy();
@@ -121,14 +94,14 @@ describe('AnnenForelder visibility tests', () => {
                 ).toBeFalsy();
             });
 
-            it('Should render ErMorUførSpørsmål', () => {
+            it('Should render ErMorUførSpørsmål depending on when harRettPåForeldrepenger', () => {
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: false }, true)).toBeTruthy();
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: false }, false)).toBeFalsy();
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, true)).toBeFalsy();
                 expect(func.visErMorUførSpørsmål.resultFunc({ harRettPåForeldrepenger: true }, false)).toBeFalsy();
             });
 
-            it('Should render infoOmRettigheterOgDelingAvUttaksplan', () => {
+            it('Should render infoOmRettigheterOgDelingAvUttaksplan depening on harRettPåForeldrepenger', () => {
                 expect(
                     func.visInfoOmRettigheterOgDelingAvUttaksplan.resultFunc({ harRettPåForeldrepenger: true })
                 ).toBeTruthy();
@@ -137,7 +110,7 @@ describe('AnnenForelder visibility tests', () => {
                 ).toBeFalsy();
             });
 
-            it('Should erDenAndreForelderenInformertSpørsmål', () => {
+            it('Should render erDenAndreForelderenInformertSpørsmål depending on aleneomsorg, harRettPåForeldrepenger, visFarEllerMedmor bolk and visOmsorgsovertakelseVedlegg', () => {
                 expect(
                     func.visErDenAndreForelderenInformertSpørsmål.resultFunc(
                         { erAleneOmOmsorg: false },
@@ -183,25 +156,34 @@ describe('AnnenForelder visibility tests', () => {
                 ).toBeFalsy();
             });
 
-            it('Should render visOmsorgsovertakelseDatoSpørsmål', () => {
-                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc({ erAleneOmOmsorg: true })).toBeTruthy();
-                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc({ erAleneOmOmsorg: false })).toBeFalsy();
-            });
-
-            it('Should render visFarEllerMedmorBolk', () => {
+            it('Should render visFarEllerMedmorBolk depending on erFarEllerMedmor', () => {
                 expect(func.visFarEllerMedmorBolk.resultFunc(true)).toBeTruthy();
                 expect(func.visFarEllerMedmorBolk.resultFunc(false)).toBeFalsy();
             });
 
-            it('Should render visOmsorgsovertakelseVedleggSpørsmål', () => {
-                const barn: Partial<ForeldreansvarBarn> = { foreldreansvarsdato: new Date() };
+            it('Should not render visOmsorgsovertakelseDatoSpørsmål when visFarEllerMedmorBolk is hidden', () => {
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc(false, {})).toBeFalsy();
+            });
+            it('Should render visOmsorgsovertakelseDatoSpørsmål when erAleneOmOmsorg', () => {
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc(false, {})).toBeFalsy();
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc(true, { erAleneOmOmsorg: true })).toBeTruthy();
+                expect(func.visOmsorgsovertakelseDatoSpørsmål.resultFunc(true, { erAleneOmOmsorg: false })).toBeFalsy();
+            });
+
+            it('Should not render visOmsorgsovertakelseVedleggSpørsmål when visFarEllerMedmorBolk is hidden', () => {
+                expect(func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc(false, {}, {})).toBeFalsy();
+            });
+            it('Should render visOmsorgsovertakelseVedleggSpørsmål when visFarEllerMedmorBolk and not erAleneOmOmsorg and foreldreansvarsdato is defined', () => {
+                const b: Partial<ForeldreansvarBarn> = { foreldreansvarsdato: new Date() };
+                expect(func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc(false, {}, {})).toBeFalsy();
                 expect(
-                    func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc({ erAleneOmOmsorg: true }, barn)
+                    func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc(true, { erAleneOmOmsorg: true }, b)
                 ).toBeTruthy();
                 expect(
                     func.visOmsorgsovertakelseVedleggSpørsmål.resultFunc(
+                        true,
                         { erAleneOmOmsorg: false },
-                        { ...barn, foreldreansvarsdato: undefined }
+                        { ...b, foreldreansvarsdato: undefined }
                     )
                 ).toBeFalsy();
             });
@@ -220,11 +202,11 @@ describe('AnnenForelder visibility tests', () => {
         });
 
         it('Should show omsorgsovertakelse when omsorgsovertakelse has one or more attachments', () => {
-            expect(func.visOmsorgsovertakelse.resultFunc(søknad.barn!)).toBeFalsy();
-            expect(func.visOmsorgsovertakelse.resultFunc({ ...søknad.barn, omsorgsovertakelse: [] }!)).toBeFalsy();
+            expect(func.visOmsorgsovertakelse.resultFunc(barn!)).toBeFalsy();
+            expect(func.visOmsorgsovertakelse.resultFunc({ ...barn, omsorgsovertakelse: [] }!)).toBeFalsy();
             expect(
                 func.visOmsorgsovertakelse.resultFunc({
-                    ...søknad.barn,
+                    ...barn,
                     omsorgsovertakelse: [attachment as Attachment]
                 })
             ).toBeTruthy();
