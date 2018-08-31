@@ -13,14 +13,19 @@ import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../isAvailable';
-import { StegID } from '../../../util/routing/stegConfig';
+import stegConfig, { StegID } from '../../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './visibility/annenForelderVisibility';
+import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
+import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import { apiActionCreators } from '../../../redux/actions';
+import { søknadStegPath } from '../StegRoutes';
 
 interface StateProps {
+    appState: AppState;
     antallBarn?: number;
     søkersFødselsnummer?: string;
     erSøkerFarEllerMedmor: boolean;
@@ -34,6 +39,16 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    }
+
+    handleOnSubmit() {
+        const { appState, dispatch, history } = this.props;
+        const { annenForelder, barn } = cleanupAnnenForelderSteg(appState);
+        dispatch(søknadActionCreators.updateAnnenForelder(annenForelder));
+        dispatch(søknadActionCreators.updateBarn(barn));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(`${søknadStegPath(stegConfig[StegID.ANNEN_FORELDER].nesteSteg)}`);
     }
 
     render() {
@@ -49,7 +64,7 @@ class AnnenForelderSteg extends React.Component<Props> {
 
         if (søkersFødselsnummer) {
             return (
-                <Steg {...stegProps}>
+                <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                     <Block
                         header={{
                             title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
@@ -64,7 +79,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 vis={vis.personalia}
                             />
                         )}
-                        {vis.annenForelderOppfølgingPartial && (
+                        {vis.annenForelderOppfølging && (
                             <AnnenForelderOppfølgingPartial
                                 vis={vis.annenForelderOppfølging}
                                 registrertAnnenForelder={registrertAnnenForelder}
@@ -96,6 +111,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const vis = getAnnenForelderVisibility(state);
 
     return {
+        appState: state,
         stegProps,
         vis,
         antallBarn: registrerteBarn ? registrerteBarn.length : 0,
