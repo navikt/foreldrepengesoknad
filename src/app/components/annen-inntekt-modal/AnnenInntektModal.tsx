@@ -166,7 +166,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         value={(annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || ''}
                     />
                 </Block>
-                <Block>
+                <Block visible={visibility.erNærVennEllerFamilie(annenInntekt)}>
                     <ErArbeidsgiverNærVennEllerFamilie
                         erArbeidsgiverNærVennEllerFamilie={
                             (annenInntekt as JobbIUtlandetInntekt).erNærVennEllerFamilieMedArbeidsgiver
