@@ -15,7 +15,7 @@ const visAnnenForelderPersonaliaSkjema = createSelector(
     (registrertAnnenForelder: RegistrertAnnenForelder): boolean => registrertAnnenForelder === undefined
 );
 
-const visAnnenForelderErKjentPartial = createSelector(
+const visAnnenForelderOppfølgingPartial = createSelector(
     [data.getAnnenForelder, data.getRegistrertAnnenForelder],
     (annenForelder: AnnenForelder, registrertAnnenForelder): boolean =>
         ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined
@@ -104,7 +104,7 @@ const visOmsorgsovertakelseVedleggSpørsmål = createSelector([data.getSøker, d
 });
 
 export const AnnenForelderVisibilityFuncs = {
-    visAnnenForelderErKjentPartial,
+    visAnnenForelderOppfølgingPartial,
     visAnnenForelderKanIkkeOppgisValg,
     visAnnenForelderPersonaliaSkjema,
     visFødselsnummerInput,

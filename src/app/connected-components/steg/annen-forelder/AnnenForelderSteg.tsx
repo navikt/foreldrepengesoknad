@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPartial';
-import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial';
+import AnnenForelderOppfølgingPartial from './partials/AnnenForelderOppfølgingPartial';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
@@ -64,9 +64,9 @@ class AnnenForelderSteg extends React.Component<Props> {
                                 vis={vis.personalia}
                             />
                         )}
-                        {vis.annenForelderErKjentPartial && (
-                            <AnnenForelderErKjentPartial
-                                vis={vis.annenForelderErKjent}
+                        {vis.annenForelderOppfølgingPartial && (
+                            <AnnenForelderOppfølgingPartial
+                                vis={vis.annenForelderOppfølging}
                                 registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                             />

@@ -22,7 +22,7 @@ import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
-import { AnnenForelderErKjentVisibility } from '../visibility/annenForelderVisibility';
+import { AnnenForelderOppfølgingVisibility } from '../visibility/annenForelderVisibility';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -30,15 +30,15 @@ interface StateProps {
     søker: SøkerPartial;
 }
 
-interface AnnenForelderErKjentPartialProps {
+interface AnnenForelderOppfølgingPartialProps {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
-    vis: AnnenForelderErKjentVisibility;
+    vis: AnnenForelderOppfølgingVisibility;
 }
 
-type Props = AnnenForelderErKjentPartialProps & StateProps & InjectedIntlProps & DispatchProps;
+type Props = AnnenForelderOppfølgingPartialProps & StateProps & InjectedIntlProps & DispatchProps;
 
-class AnnenForelderErKjentPartial extends React.Component<Props> {
+class AnnenForelderOppfølgingPartial extends React.Component<Props> {
     render() {
         const { barn, annenForelder, søker, registrertAnnenForelder, vis, dispatch, intl } = this.props;
 
@@ -176,4 +176,4 @@ const mapStateToProps = (state: AppState): StateProps => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(AnnenForelderErKjentPartial));
+export default connect(mapStateToProps)(injectIntl(AnnenForelderOppfølgingPartial));

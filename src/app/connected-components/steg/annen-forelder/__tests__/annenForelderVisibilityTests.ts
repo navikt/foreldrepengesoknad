@@ -55,35 +55,24 @@ const søknad: Partial<SøknadPartial> = {
 };
 
 describe('AnnenForelder visibility tests', () => {
-    describe('Routing visibilities', () => {
-        it('Should only render personalia for registrertAnnenForelder if registrertAnnenForelder exists', () => {
+    describe('Main and partials', () => {
+        it('should choose between registrertAnnenForelder personalia and annenForelderSkjema', () => {
             expect(func.visRegistrertAnnenForelderBolk.resultFunc(registrertAnnenForelder)).toBeTruthy();
-            expect(func.visRegistrertAnnenForelderBolk.resultFunc(undefined)).toBeFalsy();
-        });
-
-        it('Should only render annenForelderPersonaliaSkjema when registrertAnnenForelder is undefined', () => {
             expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(registrertAnnenForelder)).toBeFalsy();
+            expect(func.visRegistrertAnnenForelderBolk.resultFunc(undefined)).toBeFalsy();
             expect(func.visAnnenForelderPersonaliaSkjema.resultFunc(undefined)).toBeTruthy();
         });
-
+        it('Should show visAnnenForelderOppfølging on defined registrertAnnenForelder defined name/fnr', () => {
+            expect(func.visAnnenForelderOppfølgingPartial.resultFunc(søknad.annenForelder!, undefined)).toBeTruthy();
+            expect(
+                func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
+            ).toBeTruthy();
+            expect(func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPartial.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
+        });
+    });
+    describe('Routing visibilities', () => {
         describe('visAnnenForelderErKjentPartial', () => {
-            it('Should be visible when registrertAnnenForelder is defined', () => {
-                expect(
-                    func.visAnnenForelderErKjentPartial.resultFunc(søknad.annenForelder!, registrertAnnenForelder)
-                ).toBeTruthy();
-            });
-            it('Should be visible when registrertAnnenForelder is undefined and navn/fnr is has values', () => {
-                expect(
-                    func.visAnnenForelderErKjentPartial.resultFunc({ navn: 'abc', fnr: '123' }, undefined)
-                ).toBeTruthy();
-            });
-            it('Should be hidden when !registrertAnnenForelder and !navn || !fnr', () => {
-                expect(
-                    func.visAnnenForelderErKjentPartial.resultFunc({ navn: 'asd', fnr: '' }!, undefined)
-                ).toBeFalsy();
-                expect(func.visAnnenForelderErKjentPartial.resultFunc({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
-            });
-
             it('Should not render skalFarEllerMedmorHaForeldrepengerSpørsmål when er alene om omsorg and !farEllerMedmor', () => {
                 expect(
                     func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål.resultFunc({ erAleneOmOmsorg: true }, false)

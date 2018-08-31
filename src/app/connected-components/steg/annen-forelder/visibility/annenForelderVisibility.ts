@@ -6,7 +6,7 @@ export interface AnnenForelderStegPersonaliaVisibility {
     fødselsnummerInput: boolean;
 }
 
-export interface AnnenForelderErKjentVisibility {
+export interface AnnenForelderOppfølgingVisibility {
     skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
     skalAnnenForelderHaForeldrepengerSpørsmål: boolean;
@@ -22,22 +22,22 @@ export interface AnnenForelderErKjentVisibility {
 export interface AnnenForelderStegVisibility {
     registrertAnnenForelderBolk: boolean;
     annenForelderPersonaliaSkjema: boolean;
-    annenForelderErKjentPartial: boolean;
+    annenForelderOppfølgingPartial: boolean;
     personalia: AnnenForelderStegPersonaliaVisibility;
-    annenForelderErKjent: AnnenForelderErKjentVisibility;
+    annenForelderOppfølging: AnnenForelderOppfølgingVisibility;
 }
 
 export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVisibility => {
     return {
         registrertAnnenForelderBolk: v.visRegistrertAnnenForelderBolk(state),
         annenForelderPersonaliaSkjema: v.visAnnenForelderPersonaliaSkjema(state),
-        annenForelderErKjentPartial: v.visAnnenForelderErKjentPartial(state),
+        annenForelderOppfølgingPartial: v.visAnnenForelderOppfølgingPartial(state),
 
         personalia: {
             annenForelderKanIkkeOppgisValg: v.visAnnenForelderKanIkkeOppgisValg(state),
             fødselsnummerInput: v.visFødselsnummerInput(state)
         },
-        annenForelderErKjent: {
+        annenForelderOppfølging: {
             skalFarEllerMedmorHaForeldrepengerSpørsmål: v.visSkalFarEllerMedmorHaForeldrepengerSpørsmål(state),
             harRettPåForeldrepengerSpørsmål: v.visHarRettPåForeldrepengerSpørsmål(state),
             skalAnnenForelderHaForeldrepengerSpørsmål: v.visSkalAnnenForelderHaForeldrepengerSpørsmål(state),
