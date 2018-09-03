@@ -1,5 +1,5 @@
-import { Barn, FødtBarn, UfødtBarn } from '../../../types/s\u00F8knad/Barn';
-import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { Barn, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
+import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
