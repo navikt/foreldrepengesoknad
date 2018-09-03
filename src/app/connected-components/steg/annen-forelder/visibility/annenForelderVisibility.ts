@@ -21,8 +21,8 @@ export interface AnnenForelderOppfølgingVisibility {
 
 export interface AnnenForelderStegVisibility {
     registrertAnnenForelderBolk: boolean;
-    annenForelderPersonaliaSkjema: boolean;
-    annenForelderOppfølgingPartial: boolean;
+    annenForelderPersonaliaPart: boolean;
+    annenForelderOppfølgingPart: boolean;
     personalia: AnnenForelderStegPersonaliaVisibility;
     annenForelderOppfølging: AnnenForelderOppfølgingVisibility;
 }
@@ -43,8 +43,8 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
     const farEllerMedmorBolk = f.visFarEllerMedmorBolk(erFarEllerMedmor);
     return {
         registrertAnnenForelderBolk: f.visRegistrertAnnenForelderBolk(registrertAnnenForelder),
-        annenForelderPersonaliaSkjema: f.visAnnenForelderPersonaliaPart(registrertAnnenForelder),
-        annenForelderOppfølgingPartial: f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder),
+        annenForelderPersonaliaPart: f.visAnnenForelderPersonaliaPart(registrertAnnenForelder),
+        annenForelderOppfølgingPart: f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder),
 
         personalia: {
             annenForelderKanIkkeOppgisValg: f.visAnnenForelderKanIkkeOppgisValg(gjelderAdopsjonAvEktefellesBarn),
