@@ -31,7 +31,7 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
     const { søknad } = state;
     const { søkerinfo } = state.api;
     const { annenForelder, søker, barn } = søknad;
-    const { registrertAnnenForelder, søknadenGjelderBarnValg } = søknad.temp;
+    const { registrertAnnenForelder } = søknad.temp;
 
     const { person } = søkerinfo!;
     const erFarEllerMedmor = df.getErFarEllerMedmor(søker, person);
