@@ -69,13 +69,13 @@ class AnnenForelderSteg extends React.Component<Props> {
                         {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
                     </Block>
                     <React.Fragment>
-                        {vis.annenForelderPersonaliaSkjema && (
+                        {vis.annenForelderPersonaliaPart && (
                             <AnnenForelderPersonaliaPart
                                 søkersFødselsnummer={søkersFødselsnummer}
                                 vis={vis.personalia}
                             />
                         )}
-                        {vis.annenForelderOppfølging && (
+                        {vis.annenForelderOppfølgingPart && (
                             <AnnenForelderOppfølgingPart
                                 vis={vis.annenForelderOppfølging}
                                 registrertAnnenForelder={registrertAnnenForelder}
