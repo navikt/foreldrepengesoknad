@@ -21,6 +21,8 @@ import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrap
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
+import MockUttaksplan from '../../../components/mockUttaksplan/MockUttaksplan';
 
 interface StateProps {
     person: Person;
@@ -36,6 +38,11 @@ class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.sendSøknad = this.sendSøknad.bind(this);
+    }
+
+    componentDidMount() {
+        const mockPerioder = lagMockUttaksplan(this.props.søknad);
+        this.props.dispatch(søknadActions.updateUttaksplan(mockPerioder));
     }
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
@@ -74,6 +81,7 @@ class OppsummeringSteg extends React.Component<Props> {
                     godkjenteSteg={godkjenteSteg}
                     confirmSteg={(stegID: StegID) => this.confirmSteg(stegID)}
                 />
+                <MockUttaksplan perioder={this.props.søknad.uttaksplan} />
                 <BekreftCheckboksPanel
                     className="blokk-m"
                     checked={søknad.harGodkjentOppsummering}
