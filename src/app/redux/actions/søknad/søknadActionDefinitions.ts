@@ -4,6 +4,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
@@ -20,7 +21,8 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER' = 'updateSøker',
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
-    'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn'
+    'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
+    'UPDATE_UTTAKSPLAN' = 'updateUttaksplan'
 }
 
 export interface UpdateSøknadenGjelder {
@@ -56,6 +58,11 @@ export interface UpdateSøkerAndStorage {
 export interface UpdateSøknad {
     type: SøknadActionKeys.UPDATE_SØKNAD;
     payload: UpdateSøknadActionPayload;
+}
+
+export interface UpdateUttaksplan {
+    type: SøknadActionKeys.UPDATE_UTTAKSPLAN;
+    perioder: Periode[];
 }
 
 export interface UploadAttachment {
@@ -104,4 +111,5 @@ export type SøknadAction =
     | UploadAttachmentFailed
     | DeleteAttachment
     | DeleteAttachmentSuccess
-    | DeleteAttachmentFailed;
+    | DeleteAttachmentFailed
+    | UpdateUttaksplan;
