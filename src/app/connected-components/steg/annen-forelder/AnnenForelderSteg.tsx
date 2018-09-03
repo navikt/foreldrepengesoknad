@@ -2,12 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
-import AnnenForelderPersonaliaPartial from './partials/AnnenForelderPersonaliaPartial';
-import AnnenForelderErKjentPartial from './partials/AnnenForelderErKjentPartial';
+import AnnenForelderPersonaliaPart from './parts/AnnenForelderPersonaliaPart';
+import AnnenForelderOppfølgingPart from './parts/AnnenForelderOppfølgingPart';
 
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import { RegistrertAnnenForelder } from '../../../types/Person';
@@ -19,16 +18,19 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './visibility/annenForelderVisibility';
+import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
+import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
 import { resolveStegToRender } from '../util/navigation';
 
 interface StateProps {
+    appState: AppState;
     antallBarn?: number;
     søkersFødselsnummer?: string;
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
-    visInformasjonVedOmsorgsovertakelse: boolean;
-    shouldRenderAnnenForelderErKjentPartial: boolean;
     stegProps: StegProps;
+    vis: AnnenForelderStegVisibility;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -36,39 +38,48 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class AnnenForelderSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        this.cleanupSteg = this.cleanupSteg.bind(this);
+    }
+
+    cleanupSteg() {
+        const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.appState);
+        this.props.dispatch(søknadActionCreators.updateAnnenForelder(annenForelder));
+        this.props.dispatch(søknadActionCreators.updateBarn(barn));
     }
 
     render() {
         const {
             erSøkerFarEllerMedmor,
             registrertAnnenForelder,
-            visInformasjonVedOmsorgsovertakelse,
-            shouldRenderAnnenForelderErKjentPartial,
             søkersFødselsnummer,
             antallBarn,
             stegProps,
+            vis,
             intl
         } = this.props;
 
         if (søkersFødselsnummer) {
             return (
-                <Steg {...stegProps}>
+                <Steg {...stegProps} preSubmit={this.cleanupSteg}>
                     <Block
                         header={{
                             title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
                         }}
-                        visible={registrertAnnenForelder !== undefined}>
+                        visible={vis.registrertAnnenForelderBolk}>
                         {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
                     </Block>
                     <React.Fragment>
-                        {registrertAnnenForelder === undefined && (
-                            <AnnenForelderPersonaliaPartial søkersFødselsnummer={søkersFødselsnummer} />
+                        {vis.annenForelderPersonaliaSkjema && (
+                            <AnnenForelderPersonaliaPart
+                                søkersFødselsnummer={søkersFødselsnummer}
+                                vis={vis.personalia}
+                            />
                         )}
-                        {shouldRenderAnnenForelderErKjentPartial && (
-                            <AnnenForelderErKjentPartial
+                        {vis.annenForelderOppfølging && (
+                            <AnnenForelderOppfølgingPart
+                                vis={vis.annenForelderOppfølging}
                                 registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
-                                visInformasjonVedOmsorgsovertakelse={visInformasjonVedOmsorgsovertakelse}
                             />
                         )}
                     </React.Fragment>
@@ -81,10 +92,8 @@ class AnnenForelderSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person, registrerteBarn } = props.søkerinfo;
-    const { barn, søker, annenForelder, temp } = state.søknad;
+    const { søker, temp } = state.søknad;
     const { registrertAnnenForelder } = temp;
-    const omsorgsovertakelse = (barn as ForeldreansvarBarn).omsorgsovertakelse;
-
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
 
     const stegProps: StegProps = {
@@ -95,17 +104,16 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
 
-    const shouldRenderAnnenForelderErKjentPartial =
-        ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined;
+    const vis = getAnnenForelderVisibility(state);
 
     return {
+        appState: state,
         stegProps,
+        vis,
         antallBarn: registrerteBarn ? registrerteBarn.length : 0,
         søkersFødselsnummer: person.fnr,
         erSøkerFarEllerMedmor,
-        registrertAnnenForelder,
-        shouldRenderAnnenForelderErKjentPartial,
-        visInformasjonVedOmsorgsovertakelse: omsorgsovertakelse && omsorgsovertakelse.length > 0
+        registrertAnnenForelder
     };
 };
 
