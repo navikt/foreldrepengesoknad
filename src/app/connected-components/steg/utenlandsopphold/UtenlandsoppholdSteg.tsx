@@ -29,6 +29,7 @@ import {
     getSenereUtenlandsoppholdFradatoRegler as fraReglerSenerePerioder,
     getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
 } from '../../../util/validation/fields/senereUtenlandsopphold';
+import { default as visibility } from './visibility';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
@@ -102,14 +103,16 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
     render() {
         const { søknad, stegProps, dispatch, intl } = this.props;
-        const { informasjonOmUtenlandsopphold } = søknad;
+        const { informasjonOmUtenlandsopphold, barn } = søknad;
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
                 <Block hasChildBlocks={true}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderHarBoddINorgeSiste12MndSpørsmål}
-                        showUtenlandsoppholdContent={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false}
+                        showUtenlandsoppholdContent={visibility.harBoddINorgeSiste12MndContent(
+                            informasjonOmUtenlandsopphold
+                        )}
                         oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.tidligereOpphold}
                         oppholdType={'tidligereOpphold'}
@@ -129,10 +132,14 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block hasChildBlocks={true} visible={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !== undefined}>
+                <Block
+                    hasChildBlocks={true}
+                    visible={visibility.skalBoINorgeNeste12MndBlock(informasjonOmUtenlandsopphold)}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderSkalBoINorgeNeste12MndSpørsmål}
-                        showUtenlandsoppholdContent={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false}
+                        showUtenlandsoppholdContent={visibility.skalBoINorgeNeste12MndContent(
+                            informasjonOmUtenlandsopphold
+                        )}
                         oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.senereOpphold}
                         oppholdType={'senereOpphold'}
@@ -152,11 +159,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !== undefined &&
-                        søknad.barn.erBarnetFødt === false
-                    }>
+                <Block visible={visibility.væreINorgeVedFødselSpørsmål(informasjonOmUtenlandsopphold, barn)}>
                     <VæreINorgeVedFødselSpørsmål
                         fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
                         onChange={(fødselINorge: boolean) => {
