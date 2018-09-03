@@ -28,7 +28,7 @@ export const annenInntektErGyldig = (søker: Søker): boolean => {
         harJobbetSomFrilansSiste10Mnd,
         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
         frilansInformasjon,
-        selvstendigNæringsdrivendeBolk
+        selvstendigNæringsdrivendeInformasjon
     } = søker;
 
     let frilansGyldig = true;
@@ -41,7 +41,7 @@ export const annenInntektErGyldig = (søker: Søker): boolean => {
 
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         selvstendigNæringsdrivendeGyldig =
-            selvstendigNæringsdrivendeBolk !== undefined && selvstendigNæringsdrivendeBolk.length > 0;
+            selvstendigNæringsdrivendeInformasjon !== undefined && selvstendigNæringsdrivendeInformasjon.length > 0;
     }
 
     if (harHattAnnenInntektSiste10Mnd) {

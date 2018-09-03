@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import { Næring, NæringPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { date4YearsAgo } from '../../util/validation/values';
 import { erMindreEnn4ÅrSidenOppstart } from '../../util/domain/næringer';
-import { erNærVennEllerFamilieVisible } from '../../bolker/næringsrelasjon-bolk/visibility';
+import næringsrelasjonFns from '../../bolker/næringsrelasjon-bolk/visibility';
 import VisibilityFunction from '../../types/dom/Visibility';
 
 const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
@@ -12,12 +12,12 @@ const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: N�
 
 const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { navnPåNæringen } = næring;
-    return navnPåNæringenVisible(næring) && navnPåNæringen !== undefined;
+    return module.navnPåNæringen(næring) && navnPåNæringen !== undefined;
 };
 
 const tidsperiodeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { organisasjonsnummer } = næring;
-    return organisasjonsnummerVisible(næring) && organisasjonsnummer !== undefined;
+    return module.organisasjonsnummer(næring) && organisasjonsnummer !== undefined;
 };
 
 const tidsperiodeErUtfylt: VisibilityFunction<NæringPartial> = (næring: NæringPartial): boolean => {
@@ -31,32 +31,32 @@ const tidsperiodeErUtfylt: VisibilityFunction<NæringPartial> = (næring: Nærin
 
 const næringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { tidsperiode } = næring;
-    if (tidsperiode && tidsperiodeErUtfylt(næring)) {
+    if (tidsperiode && module.tidsperiodeUtfylt(næring)) {
         const { fom } = tidsperiode;
-        return moment(fom, moment.ISO_8601) > date4YearsAgo && tidsperiodeVisible(næring);
+        return moment(fom, moment.ISO_8601) > date4YearsAgo && module.tidsperiode(næring);
     }
     return false;
 };
 
 const næringRegistrertINorgeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { næringsinntekt } = næring;
-    if (næringsinntektVisible(næring)) {
+    if (module.næringsinntekt(næring)) {
         return næringsinntekt !== undefined;
     }
-    return tidsperiodeVisible(næring) && tidsperiodeErUtfylt(næring);
+    return module.tidsperiodeUtfylt(næring) && module.tidsperiode(næring);
 };
 
 const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { registrertINorge } = næring;
-    return næringRegistrertINorgeVisible(næring) && registrertINorge === false;
+    return module.næringRegistrertINorge(næring) && registrertINorge === false;
 };
 
 const stillingsprosentVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { registrertINorge, registrertILand } = næring;
     if (registrertINorge === true) {
-        return næringRegistrertINorgeVisible(næring);
+        return module.næringRegistrertINorge(næring);
     } else {
-        return registrertINorge === false && registrertILand !== undefined && næringRegistrertILandVisible(næring);
+        return registrertINorge === false && registrertILand !== undefined && module.næringRegistrertILand(næring);
     }
 };
 
@@ -66,7 +66,7 @@ const nyIArbeidslivetVisible: VisibilityFunction<NæringPartial> = (næring: Næ
         næring !== undefined &&
         næring.tidsperiode !== undefined &&
         erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
-        stillingsprosentVisible(næring) &&
+        module.stillingsprosent(næring) &&
         stillingsprosent !== undefined
     );
 };
@@ -77,17 +77,17 @@ const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> =
         næring !== undefined &&
         næring.tidsperiode !== undefined &&
         !erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
-        stillingsprosentVisible(næring) &&
+        module.stillingsprosent(næring) &&
         stillingsprosent !== undefined
     );
 };
 
 const regnskapsførerBolkVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { nyIArbeidslivet, hattVarigEndringAvNæringsinntektSiste4Kalenderår } = næring;
-    if (nyIArbeidslivetVisible(næring)) {
+    if (module.nyIArbeidslivet(næring)) {
         return nyIArbeidslivet !== undefined;
     }
-    if (varigEndringAvNæringsinntektVisible(næring)) {
+    if (module.varigEndringAvNæringsinntekt(næring)) {
         return hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined;
     }
     return false;
@@ -95,7 +95,7 @@ const regnskapsførerBolkVisible: VisibilityFunction<NæringPartial> = (næring:
 
 const revisorBolkVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { harRegnskapsfører } = næring;
-    if (regnskapsførerBolkVisible(næring)) {
+    if (module.regnskapsførerBolk(næring)) {
         return harRegnskapsfører === false;
     }
     return false;
@@ -103,9 +103,13 @@ const revisorBolkVisible: VisibilityFunction<NæringPartial> = (næring: Næring
 
 const kanInnhenteOpplysningerFraRevisorVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { harRevisor, revisor } = næring;
-    if (revisorBolkVisible(næring) && revisor !== undefined) {
+    if (module.revisorBolk(næring) && revisor !== undefined) {
         const { erNærVennEllerFamilie } = revisor;
-        return harRevisor === true && erNærVennEllerFamilie !== undefined && erNærVennEllerFamilieVisible(revisor);
+        return (
+            harRevisor === true &&
+            erNærVennEllerFamilie !== undefined &&
+            næringsrelasjonFns.erNærVennEllerFamilie(revisor)
+        );
     }
     return false;
 };
@@ -122,20 +126,21 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
 
     if (harRegnskapsfører && regnskapsfører !== undefined) {
         const { erNærVennEllerFamilie } = regnskapsfører;
-        return erNærVennEllerFamilie !== undefined && erNærVennEllerFamilieVisible(regnskapsfører);
+        return erNærVennEllerFamilie !== undefined && næringsrelasjonFns.erNærVennEllerFamilie(regnskapsfører);
     }
     if (harRevisor && revisor !== undefined) {
-        return kanInnhenteOpplsyningerFraRevisor !== undefined && kanInnhenteOpplysningerFraRevisorVisible(næring);
+        return kanInnhenteOpplsyningerFraRevisor !== undefined && module.kanInnhenteOpplysningerFraRevisor(næring);
     }
     if (harRegnskapsfører === false && harRevisor === false) {
-        return nyIArbeidslivetVisible(næring) && nyIArbeidslivet !== undefined;
+        return module.nyIArbeidslivet(næring) && nyIArbeidslivet !== undefined;
     }
     return false;
 };
 
-export default {
+const module = {
     navnPåNæringen: navnPåNæringenVisible,
     organisasjonsnummer: organisasjonsnummerVisible,
+    tidsperiodeUtfylt: tidsperiodeErUtfylt,
     tidsperiode: tidsperiodeVisible,
     næringsinntekt: næringsinntektVisible,
     næringRegistrertINorge: næringRegistrertINorgeVisible,
@@ -148,3 +153,5 @@ export default {
     kanInnhenteOpplysningerFraRevisor: kanInnhenteOpplysningerFraRevisorVisible,
     formButtons: formButtonsVisible
 };
+
+export default module;

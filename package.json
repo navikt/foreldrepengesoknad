@@ -5,10 +5,8 @@
     "scripts": {
         "build": "node src/build/scripts/production-build.js",
         "clean-build": "rimraf ./dist",
-        "docker-build":
-            "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
-        "docker-start":
-            "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
+        "docker-build": "npm run clean-build && npm run build && docker build . -t foreldrepengesoknad",
+        "docker-start": "docker run --name foreldrepengesoknad -p 8080:8080 -d foreldrepengesoknad",
         "docker-kill": "npm run docker-stop && npm run docker-rm",
         "docker-rm": "docker rm foreldrepengesoknad",
         "docker-stop": "docker stop foreldrepengesoknad",
@@ -17,14 +15,13 @@
         "start-express": "node ./server.js",
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
-        "start-no-decorator":
-            "node ./src/build/scripts/start-dev-nodecorator.js",
+        "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "pretty-quick --staged",
         "cypress":
             "export PORT=8081 && npm run start-express & wait-on -v -t 15000 http://localhost:8081 && echo $(npm config get prefix)/bin/cypress run",
-        "cy":
-            "cypress open & npm run build && export PORT=8081 && npm run start-express",
-        "jest": "jest --verbose --config ./jest/jest.config.js"
+        "cy": "cypress open & npm run build && export PORT=8081 && npm run start-express",
+        "jest": "jest --verbose --config ./jest/jest.config.js",
+        "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js"
     },
     "keywords": [],
     "author": "NAV",
@@ -92,7 +89,7 @@
         "react-test-renderer": "16.3.2",
         "style-loader": "0.21.0",
         "svg-sprite-loader": "3.7.3",
-        "ts-jest": "22.4.6",
+        "ts-jest": "23.1.4",
         "ts-loader": "4.2.0",
         "tslint": "5.9.1",
         "tslint-config-prettier": "1.12.0",

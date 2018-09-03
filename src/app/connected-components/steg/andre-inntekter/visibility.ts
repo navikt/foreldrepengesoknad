@@ -16,25 +16,29 @@ const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (søk
         if (jobberFremdelesSomFrilans === true) {
             return driverDuFosterhjemVisible(søker) && driverFosterhjem !== undefined;
         } else {
-            return frilansOppdragErUtfylt(frilansInformasjon) && oppdragBolkVisible(søker);
+            const frilansOppdragUtfylt = frilansOppdragErUtfylt(frilansInformasjon);
+            const oppdragBolkIsVisible = oppdragBolkVisible(søker);
+            return frilansOppdragUtfylt && oppdragBolkIsVisible;
         }
     }
     return false;
 };
 
 const andreInntekterBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
-    const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, selvstendigNæringsdrivendeBolk } = søker;
+    const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, selvstendigNæringsdrivendeInformasjon } = søker;
     if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true) {
         return (
-            selvstendigNæringsdrivendeBolk !== undefined &&
-            selvstendigNæringsdrivendeBolk.length > 0 &&
-            selvstendigNæringsdrivendeBolkVisible(søker)
+            selvstendigNæringsdrivendeInformasjon !== undefined &&
+            selvstendigNæringsdrivendeInformasjon.length > 0 &&
+            module.selvstendigNæringsdrivendeBolk(søker)
         );
     }
-    return harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false && selvstendigNæringsdrivendeBolkVisible(søker);
+    return harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === false && module.selvstendigNæringsdrivendeBolk(søker);
 };
 
-export default {
+const module = {
     selvstendigNæringsdrivendeBolk: selvstendigNæringsdrivendeBolkVisible,
     andreInntekterBolk: andreInntekterBolkVisible
 };
+
+export default module;
