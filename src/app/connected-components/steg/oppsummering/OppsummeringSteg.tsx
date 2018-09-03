@@ -13,7 +13,6 @@ import getMessage from 'common/util/i18nUtils';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
-import { Periode } from 'uttaksplan/types';
 import { apiActionCreators } from '../../../redux/actions';
 import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -21,6 +20,7 @@ import summaryActionCreators from '../../../redux/actions/summary/summaryActionC
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 interface StateProps {
     person: Person;
@@ -104,7 +104,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         person,
         søknad,
         godkjenteSteg: state.summary.godkjenteSteg,
-        perioder: state.uttaksplan.uttaksplan.perioder,
+        perioder: state.søknad.uttaksplan,
         kvittering: state.api.kvittering,
         stegProps
     };

@@ -1,4 +1,4 @@
-import { Tidsperiode, Forelder } from '../types';
+import { Tidsperiode, Forelder } from 'common/types';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -7,12 +7,6 @@ export enum Periodetype {
 }
 
 export enum StønadskontoType {
-    /** Mors del før termin */
-    'MorsDelFørTermin' = 'MORS_DEL_FØR_TERMIN',
-    // /** Mors del */
-    'MorsDel' = 'MORS_DEL',
-    // /** Mors del */
-    'FarsDel' = 'FARS_DEL',
     /** Kvote forbeholdt mor */
     'Mødrekvote' = 'MØDREKVOTE',
     /** Kvote forbehold medforelder */
@@ -44,14 +38,12 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
-    endret?: Date; // Timestamp for å kunne prioritere sist endret ved sortering
 }
 
 export interface Uttaksperiode extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
-    låstForelder?: boolean;
 }
 
 export interface Utsettelsesperiode extends PeriodeBase {
@@ -66,10 +58,3 @@ export interface Oppholdsperiode extends PeriodeBase {
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
-
-export type UttakEllerUtsettelseperiode = Uttaksperiode | Utsettelsesperiode;
-
-export interface StønadskontoUttak {
-    konto: StønadskontoType;
-    dager: number;
-}

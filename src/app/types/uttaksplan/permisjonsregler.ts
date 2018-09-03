@@ -1,9 +1,3 @@
-import { Kjønn } from 'app/types/common';
-import { SøkerRolle, Søkersituasjon } from 'app/types/søknad/Søknad';
-
-export * from './periodetyper';
-export * from '../../common/types';
-
 export interface Permisjonsregler {
     /** Totalt antall uker ved 80% */
     antallUkerTotalt80: number;
@@ -30,38 +24,4 @@ export interface Permisjonsregler {
     maksFeriedagerEttÅr: number;
     /** Maks feriedager med overføring fra foregående år og forskudd fra nest år */
     maksFeriedagerMedOverføring: number;
-}
-
-export interface FellesperiodeFordeling {
-    ukerForelder1: number;
-    ukerForelder2: number;
-}
-
-export interface UttaksplanSøker {
-    fornavn: string;
-    mellomnavn?: string;
-    etternavn: string;
-    kjønn: Kjønn;
-    rolle: SøkerRolle;
-    situasjon: Søkersituasjon;
-    erAleneOmOmsorg?: boolean;
-}
-export interface UttaksplanAnnenForelder {
-    fornavn: string;
-    etternavn: string;
-}
-
-export interface UttaksplanRequiredProps {
-    familiehendelsedato: Date;
-    søker: UttaksplanSøker;
-    annenForelder?: UttaksplanAnnenForelder;
-    antallBarn: number;
-    erBarnetFødt: boolean;
-    erDeltPermisjon: boolean;
-}
-
-export interface BeregnetUttak {
-    navn: string;
-    dager: number;
-    overforbruk?: boolean;
 }
