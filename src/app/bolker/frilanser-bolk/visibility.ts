@@ -8,7 +8,7 @@ const fremdelesFrilansVisible: VisibilityFunction<Søker> = (søker: Søker) => 
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { oppstart } = frilansInformasjon;
-        return startdatoVisible(søker) && oppstart !== undefined;
+        return module.startdatoVisible(søker) && oppstart !== undefined;
     }
     return false;
 };
@@ -17,7 +17,7 @@ const oppdragBolkVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
-        return fremdelesFrilansVisible(søker) && jobberFremdelesSomFrilans !== undefined;
+        return module.fremdelesFrilansVisible(søker) && jobberFremdelesSomFrilans !== undefined;
     }
     return false;
 };
@@ -26,7 +26,7 @@ const oppdragPerioderVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { harJobbetForNærVennEllerFamilieSiste10Mnd } = frilansInformasjon;
-        return oppdragBolkVisible(søker) && harJobbetForNærVennEllerFamilieSiste10Mnd === true;
+        return module.oppdragBolkVisible(søker) && harJobbetForNærVennEllerFamilieSiste10Mnd === true;
     }
     return false;
 };
@@ -51,16 +51,14 @@ const driverDuFosterhjemVisible: VisibilityFunction<Søker> = (søker: Søker) =
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
         const { jobberFremdelesSomFrilans } = frilansInformasjon;
-        return (
-            frilansOppdragErUtfylt(frilansInformasjon) &&
-            oppdragBolkVisible(søker) &&
-            jobberFremdelesSomFrilans === true
-        );
+        const oppdragUtfylt = module.frilansOppdragErUtfylt(frilansInformasjon);
+        const oppdragBolkIsVisible = module.oppdragBolkVisible(søker);
+        return oppdragUtfylt && oppdragBolkIsVisible && jobberFremdelesSomFrilans === true;
     }
     return false;
 };
 
-export default {
+const module = {
     startdatoVisible,
     fremdelesFrilansVisible,
     oppdragBolkVisible,
@@ -68,3 +66,5 @@ export default {
     driverDuFosterhjemVisible,
     frilansOppdragErUtfylt
 };
+
+export default module;
