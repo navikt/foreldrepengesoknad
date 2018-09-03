@@ -45,17 +45,6 @@ const visHarRettPåForeldrepengerSpørsmål = (
     );
 };
 
-const visSkalAnnenForelderHaForeldrepengerSpørsmål = (
-    annenForelder: Partial<AnnenForelder>,
-    søker: Partial<Søker>,
-    harDenAndreForelderenOpplystOmSinPågåendeSak: boolean | undefined
-): boolean => {
-    return (
-        annenForelder.skalHaForeldrepenger === true ||
-        (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
-    );
-};
-
 const visErMorUførSpørsmål = (annenForelder: Partial<AnnenForelder>, erFarEllerMedmor: boolean): boolean => {
     return annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor;
 };
@@ -107,7 +96,6 @@ export const AnnenForelderVisibilityFunctions = {
     visHarRettPåForeldrepengerSpørsmål,
     visOmsorgsovertakelse,
     visRegistrertAnnenForelderBolk,
-    visSkalAnnenForelderHaForeldrepengerSpørsmål,
     visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
     visErMorUførSpørsmål,
     visErDenAndreForelderenInformertSpørsmål,

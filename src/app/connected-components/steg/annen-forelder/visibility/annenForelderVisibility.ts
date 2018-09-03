@@ -10,7 +10,6 @@ export interface AnnenForelderStegPersonaliaVisibility {
 export interface AnnenForelderOppfølgingVisibility {
     skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
-    skalAnnenForelderHaForeldrepengerSpørsmål: boolean;
     erMorUførSpørsmål: boolean;
     erDenAndreForelderenInformertSpørsmål: boolean;
     omsorgsovertakelseDatoSpørsmål: boolean;
@@ -60,11 +59,11 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
                 søker,
                 andreForelderHarOpplystOmPågåendeSag
             ),
-            skalAnnenForelderHaForeldrepengerSpørsmål: f.visSkalAnnenForelderHaForeldrepengerSpørsmål(
-                annenForelder,
-                søker,
-                andreForelderHarOpplystOmPågåendeSag
-            ),
+            // skalAnnenForelderHaForeldrepengerSpørsmål: f.visSkalAnnenForelderHaForeldrepengerSpørsmål(
+            //     annenForelder,
+            //     søker,
+            //     andreForelderHarOpplystOmPågåendeSag
+            // ),
             erMorUførSpørsmål: f.visErMorUførSpørsmål(annenForelder, erFarEllerMedmor),
             erDenAndreForelderenInformertSpørsmål: f.visErDenAndreForelderenInformertSpørsmål(
                 søker,

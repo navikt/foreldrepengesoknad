@@ -2,8 +2,8 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Kjønn } from '../../../../types/common';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { AnnenForelderVisibilityFunctions as func } from '../visibility/visibilityFunctions';
-import { ForeldreansvarBarn, Barn } from '../../../../types/s\u00F8knad/Barn';
-import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
+import { ForeldreansvarBarn, Barn } from '../../../../types/søknad/Barn';
+import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 
 const attachment: Partial<Attachment> = {};
 
@@ -53,30 +53,6 @@ describe('AnnenForelder visibility tests', () => {
                 ).toBeFalsy();
                 expect(
                     func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål({ erAleneOmOmsorg: false }, true)
-                ).toBeFalsy();
-            });
-
-            describe('SkalAnnenForelderHaForeldrepengerSpørsmål should render when', () => {
-                it('annenForelder har rett på foreldrepenger', () => {
-                    expect(
-                        func.visSkalAnnenForelderHaForeldrepengerSpørsmål({ skalHaForeldrepenger: true }, {}, undefined)
-                    ).toBeTruthy();
-                });
-                it('søker is not aleneOmOmsorg and andreForelderHarOpplyst om sin sak', () => {
-                    expect(
-                        func.visSkalAnnenForelderHaForeldrepengerSpørsmål({}, { erAleneOmOmsorg: false }, false)
-                    ).toBeTruthy();
-                });
-            });
-            it('SkalAnnenForelderHaForeldrepengerSpørsmål should not render', () => {
-                expect(
-                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål({ skalHaForeldrepenger: false }, {}, undefined)
-                ).toBeFalsy();
-                expect(
-                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål({}, { erAleneOmOmsorg: false }, true)
-                ).toBeFalsy();
-                expect(
-                    func.visSkalAnnenForelderHaForeldrepengerSpørsmål({}, { erAleneOmOmsorg: true }, true)
                 ).toBeFalsy();
             });
 
