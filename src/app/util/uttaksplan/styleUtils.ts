@@ -1,27 +1,33 @@
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Forelder } from 'common/types';
+import { Periodefarge } from '../../components/periodeikon/Periodeikon';
+import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 
-const getColorStyleForPeriode = (periode: Periode, gradert?: boolean): string | undefined => {
+export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forelder): Periodefarge => {
+    if (!forelder) {
+        switch (konto) {
+            case StønadskontoType.Fedrekvote:
+                return 'blaa';
+            case StønadskontoType.Mødrekvote:
+            case StønadskontoType.Foreldrepenger:
+            case StønadskontoType.ForeldrepengerFørFødsel:
+                return 'lilla';
+            case StønadskontoType.Fellesperiode:
+                return 'lillaBlaa';
+        }
+    }
+    return forelder === 'forelder1' ? 'lilla' : 'blaa';
+};
+
+export const getUtsettelseFarge = (): Periodefarge => {
+    return 'gronn';
+};
+
+export const getPeriodeFarge = (periode: Periode): Periodefarge | undefined => {
     if (periode.type === Periodetype.Uttak) {
-        return `${periode.type}-${periode.forelder}`;
+        return getStønadskontoFarge(periode.konto, periode.forelder);
     }
     if (periode.type === Periodetype.Utsettelse) {
-        return `${periode.type}`;
+        return getUtsettelseFarge();
     }
     return undefined;
-};
-
-export const getPeriodeBkgModifierClass = (periode: Periode) => {
-    const colorStyle = getColorStyleForPeriode(periode);
-    if (colorStyle) {
-        return `m-periodeBkg--${colorStyle}`;
-    }
-    return '';
-};
-
-export const getPeriodeBorderModifierClass = (periode: Periode) => {
-    const colorStyle = getColorStyleForPeriode(periode);
-    if (colorStyle) {
-        return `m-periodeBorder--${colorStyle}`;
-    }
-    return '';
 };
