@@ -16,8 +16,7 @@ import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import utils from '../../../util/domain/fødselsdato';
 import { ForeldreansvarBarnPartial } from '../../../types/søknad/Barn';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { Fødselsdato, HistoryProps } from '../../../types/common';
-import { getAlderFraDato } from '../../../util/dates/dates';
+import { HistoryProps } from '../../../types/common';
 import { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -29,12 +28,11 @@ import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import getMessage from 'common/util/i18nUtils';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import visibility from './visibility';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
-    visOver15årMelding: boolean;
     stegProps: StegProps;
-    fødselsdatoerOk: boolean;
 }
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & InjectedIntlProps & HistoryProps;
@@ -55,12 +53,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { barn, visOver15årMelding, fødselsdatoerOk, intl, stegProps, dispatch } = this.props;
-
-        const visSpørsmålOmAntallBarn = barn.foreldreansvarsdato !== undefined;
-        const visSpørsmålOmFødselsdatoer = barn.antallBarn !== undefined;
-        const visSpørsmålOmVedlegg = fødselsdatoerOk || barn.adopsjonsvedtak !== undefined;
-
+        const { barn, intl, stegProps, dispatch } = this.props;
         return (
             <Steg {...stegProps}>
                 <Block>
@@ -77,7 +70,8 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         dato={barn.foreldreansvarsdato}
                     />
                 </Block>
-                {visSpørsmålOmAntallBarn && (
+
+                <Block visible={visibility.antallBarn(barn)}>
                     <AntallBarnBolk
                         spørsmål={intl.formatMessage({
                             id: 'foreldreansvar.antallBarn'
@@ -86,9 +80,9 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
                     />
-                )}
+                </Block>
 
-                <Block visible={visSpørsmålOmFødselsdatoer} margin="none">
+                <Block visible={visibility.fødselsdatoer(barn)} margin="none">
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         fødselsdatoAvgrensninger={{
@@ -103,17 +97,16 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                         }
                     />
                 </Block>
-                {visOver15årMelding && (
-                    <div className="blokk-s">
-                        <Veilederinfo type="advarsel">Barn over 15 år er registrert.</Veilederinfo>
-                    </div>
-                )}
+
+                <Block visible={visibility.harBarnOver15ÅrMelding(barn)} margin="s">
+                    <Veilederinfo type="advarsel">Barn over 15 år er registrert.</Veilederinfo>
+                </Block>
 
                 <Block
                     header={{
                         title: getMessage(intl, 'attachments.tittel.foreldreansvar')
                     }}
-                    visible={visSpørsmålOmVedlegg}>
+                    visible={visibility.vedlegg(barn)}>
                     <Veilederinfo>
                         <FormattedMessage id="vedlegg.veileder.omsorgsovertakelse" />
                     </Veilederinfo>
@@ -134,16 +127,6 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
     }
 }
 
-const erAlderOver15År = (datoer: Fødselsdato[]) => {
-    const harBarnOver15 = datoer.find((dato: Fødselsdato) => {
-        if (dato) {
-            return getAlderFraDato(dato).år > 15;
-        }
-        return false;
-    });
-    return harBarnOver15 !== undefined;
-};
-
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const barn = state.søknad.barn as ForeldreansvarBarnPartial;
     const fødselsdatoerOk = fødselsdatoerErFyltUt(barn.fødselsdatoer);
@@ -157,8 +140,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         barn,
-        visOver15årMelding: erAlderOver15År(barn.fødselsdatoer || []),
-        fødselsdatoerOk,
         stegProps
     };
 };

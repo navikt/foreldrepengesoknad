@@ -222,6 +222,7 @@
 
     "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
     "attachments.tittel.stebarnsadopsjon": "Stebarnsadopsjon",
+    "attachments.tittel.foreldreansvar": "Overtakelse av foreldreansvar",
 
     "ikkeMyndig.tittel": "Hei, {navn}!",
     "ikkeMyndig.ingress":
