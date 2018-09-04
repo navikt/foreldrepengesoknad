@@ -10,15 +10,21 @@
     justify-content: stretch;
     padding-right: 1rem;
 
+    abbr[title] {
+        text-decoration: none;
+        border-bottom: none;
+        cursor: inherit;
+    }
     &__hvem {
         color: #7f756c;
     }
 
     &__ikon {
+        padding-left: 1rem;
         flex-grow: 0;
-        padding: 1rem;
     }
     &__beskrivelse {
+        padding-left: 1rem;
         padding-top: 1rem;
         padding-bottom: 1rem;
         flex-grow: 3;
@@ -29,6 +35,12 @@
     }
     &__tidsrom {
         width: 9rem;
+        @media (max-width: @mobile-breakpoint) {
+            width: 6rem;
+        }
+        @media (max-width: @tablet-breakpoint) {
+            width: 8rem;
+        }
         flex-grow: 0;
         display: flex;
         justify-content: stretch;
@@ -46,6 +58,22 @@
         &__mnd {
             letter-spacing: 0.4px;
             color: #7f756c;
+            &--kort {
+                display: none;
+            }
+            @media (max-width: @tablet-breakpoint) {
+                &--full {
+                    display: none;
+                }
+                &--kort {
+                    display: block;
+                }
+            }
+        }
+    }
+    @media (max-width: @mobile-breakpoint) {
+        &__ikon {
+            display: none;
         }
     }
 }
