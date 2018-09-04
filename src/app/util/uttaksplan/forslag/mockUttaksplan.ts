@@ -5,7 +5,6 @@ import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
 import { opprettUttaksperioderToForeldreEttBarn } from './toForeldreEttBarn';
 
-// Mock
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date | undefined => {
     if (situasjon === Søkersituasjon.FØDSEL) {
         return barn.erBarnetFødt ? (barn as FødtBarn).fødselsdatoer[0] : (barn as UfødtBarn).termindato;
