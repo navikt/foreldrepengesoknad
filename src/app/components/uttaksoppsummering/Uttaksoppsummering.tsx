@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { Undertittel } from 'nav-frontend-typografi';
 import Kontostatus from './Kontostatus';
+import TilesList from '../tiles-list/TilesList';
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
@@ -13,15 +14,11 @@ export interface Props {
 }
 
 const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak }) => (
-    <article className="uttaksOppsummering">
-        <Undertittel tag="h1">GjenståendeUttak</Undertittel>
-        <ul>
-            {uttak.map((u, idx) => (
-                <li key={idx}>
-                    <Kontostatus uttak={u} />
-                </li>
-            ))}
-        </ul>
+    <article>
+        <Undertittel tag="h1" className="blokk-xs">
+            Gjenstående uttak
+        </Undertittel>
+        <TilesList>{uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} />)}</TilesList>
     </article>
 );
 

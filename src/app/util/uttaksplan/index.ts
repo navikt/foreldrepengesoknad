@@ -1,5 +1,6 @@
 import { Forelder } from 'common/types';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { InjectedIntl } from 'react-intl';
 
 export const getForelderNavn = (forelder: Forelder, navnForelder1: string, navnForelder2?: string): string => {
     if (navnForelder2) {
@@ -14,3 +15,6 @@ export const getPeriodeForelderNavn = (periode: Periode, navnForelder1: string, 
     }
     return 'Ingen forelder registrert';
 };
+
+export const getStønadskontoNavn = (konto: StønadskontoType, intl: InjectedIntl) =>
+    intl.formatMessage({ id: `stønadskontotype.${konto}` });
