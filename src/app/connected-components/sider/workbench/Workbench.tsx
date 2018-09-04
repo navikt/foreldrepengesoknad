@@ -5,35 +5,55 @@ import Periodeliste from '../../../components/periodeliste/Periodeliste';
 import { opprettUttaksperioderToForeldreEttBarn } from '../../../util/uttaksplan/forslag/toForeldreEttBarn';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 
-import actions from '../../../redux/actions/søknad/søknadActionCreators';
-
 import { AppState } from '../../../redux/reducers';
 import Søknad from '../../../types/s\u00F8knad/S\u00F8knad';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
-import { Periodetype, Uttaksperiode, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import { StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 
 interface StateProps {
     søknad: Søknad;
 }
 
-const nyPeriode: Uttaksperiode = {
-    type: Periodetype.Uttak,
-    konto: StønadskontoType.Foreldrepenger,
-    tidsperiode: { fom: new Date(), tom: new Date() },
-    forelder: 'forelder1'
-};
-
 const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100%', 13, 13, getPermisjonsregler());
+
+const mockUttak: Stønadskontouttak[] = [
+    {
+        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        dager: 10
+    },
+    {
+        konto: StønadskontoType.Mødrekvote,
+        dager: 0
+    },
+    {
+        konto: StønadskontoType.Fellesperiode,
+        dager: 0
+    },
+    {
+        konto: StønadskontoType.Fedrekvote,
+        dager: 10
+    },
+    {
+        konto: StønadskontoType.Foreldrepenger,
+        dager: -7
+    }
+];
 
 class Workbench extends React.Component<StateProps & DispatchProps> {
     render() {
-        const { dispatch } = this.props;
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title="Workbench" />
-                <Periodeliste perioder={perioder} navnForelder1="Snøhvit" navnForelder2="Hiawatta" />
-                <button onClick={() => dispatch(actions.uttaksplanAddPeriode(nyPeriode))}>Legg til</button>
+                <div className="m-gray-block">
+                    <div className="blokk-l">
+                        <Periodeliste perioder={perioder} navnForelder1="Snøhvit" navnForelder2="Hiawatta" />
+                    </div>
+                    <div className="blokk-l">
+                        <Uttaksoppsummering uttak={mockUttak} />
+                    </div>
+                </div>
             </Applikasjonsside>
         );
     }

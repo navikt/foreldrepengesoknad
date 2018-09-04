@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplanIkon/UttaksplanIkon';
-import PeriodeIkon from '../periodeikon/Periodeikon';
-import { getPeriodeBorderModifierClass } from '../../util/uttaksplan/styleUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -12,6 +10,9 @@ import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
 
 import './periodeheader.less';
 import { måned, måned3bokstaver } from 'common/util/datoUtils';
+import StønadskontoIkon from '../periodeikon/St\u00F8nadskontoIkon';
+import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
+import UtsettelseIkon from '../periodeikon/UtsettelseIkon';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -51,6 +52,15 @@ const renderDagMnd = (dato: Date): JSX.Element => (
     </div>
 );
 
+const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
+    if (periode.type === Periodetype.Uttak) {
+        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
+    } else if (periode.type === Periodetype.Utsettelse) {
+        return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
+    }
+    return undefined;
+};
+
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     advarsel,
@@ -58,9 +68,9 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     intl
 }) => {
     return (
-        <article className={classnames(BEM.className, getPeriodeBorderModifierClass(periode), 'typo-normal')}>
+        <article className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal')}>
             <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
-                <PeriodeIkon periode={periode} />
+                {renderPeriodeIkon(periode)}
             </div>
             <div className={BEM.element('beskrivelse')}>
                 <Element tag="h1">{getPeriodeTittel(periode, foreldernavn)}</Element>
