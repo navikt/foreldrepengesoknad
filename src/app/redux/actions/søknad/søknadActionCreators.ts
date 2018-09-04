@@ -11,7 +11,8 @@ import {
     DeleteAttachmentSuccess,
     UpdateSøkerAndStorage,
     UpdateSøknadActionPayload,
-    UpdateSøknadenGjelder
+    UpdateSøknadenGjelder,
+    UpdateUttaksplan
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -24,6 +25,7 @@ import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/Inf
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 const updateBarn = (
     payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
@@ -95,6 +97,11 @@ const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttac
     attachment
 });
 
+const updateUttaksplan = (perioder: Periode[]): UpdateUttaksplan => ({
+    type: SøknadActionKeys.UPDATE_UTTAKSPLAN,
+    perioder
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -103,6 +110,7 @@ export default {
     updateSøker,
     updateSøkerAndStorage,
     updateSøknad,
+    updateUttaksplan,
     uploadAttachment,
     uploadAttachmentSuccess,
     uploadAttachmentFailed,
