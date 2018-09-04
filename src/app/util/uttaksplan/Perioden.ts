@@ -1,6 +1,6 @@
 import { isSameDay } from 'date-fns';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
-import { getTidsperiode, Tidsperioden } from './Tidsperiden';
+import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const Perioden = (periode: Periode) => ({
