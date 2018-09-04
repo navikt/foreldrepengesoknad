@@ -3,7 +3,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { Tidsperiode, Dekningsgrad } from 'common/types';
 import { Periodetype, StønadskontoType, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
-import { getTidsperiode } from '../Tidsperiden';
+import { getTidsperiode } from '../Tidsperioden';
 import { getPermisjonStartdato } from '../permisjonUtils';
 import { sorterPerioder } from '../Periodene';
 import { Uttaksdagen } from '../Uttaksdagen';
