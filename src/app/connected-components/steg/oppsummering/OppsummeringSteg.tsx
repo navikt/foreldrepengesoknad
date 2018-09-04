@@ -42,7 +42,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
     componentDidMount() {
         const mockPerioder = lagMockUttaksplan(this.props.søknad);
-        this.props.dispatch(søknadActions.updateUttaksplan(mockPerioder));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
     }
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
