@@ -46,10 +46,7 @@ const renderDagMnd = (dato: Date): JSX.Element => (
     <div className={BEM.element('dagmnd')}>
         <span className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</span>
         <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
-            <span className={BEM.element('dagmnd__mnd', 'kort')}>
-                <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
-            </span>
-            <span className={BEM.element('dagmnd__mnd', 'full')}>{måned(dato)}</span>
+            <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
         </EtikettLiten>
     </div>
 );
