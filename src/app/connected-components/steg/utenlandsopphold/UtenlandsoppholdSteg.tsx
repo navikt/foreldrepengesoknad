@@ -34,6 +34,7 @@ import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
 
 interface StateProps {
     søknad: Søknad;
@@ -94,8 +95,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
-        const { dispatch, history } = this.props;
+        const { dispatch, history, søknad } = this.props;
+        const { informasjonOmUtenlandsopphold } = søknad;
         if (event.target === stegForm) {
+            dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
             dispatch(apiActionCreators.storeAppState());
             history.push(`${søknadStegPath(stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg)}`);
         }
