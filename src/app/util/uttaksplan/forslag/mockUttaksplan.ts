@@ -22,7 +22,7 @@ export const lagMockUttaksplan = (søknad: Søknad): Periode[] => {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
                 return opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
             }
-            if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
+            if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
                 return opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
             }
         }
