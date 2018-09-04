@@ -1,5 +1,5 @@
 import { addDays, getISODay, isSameDay, isBefore } from 'date-fns';
-import { Tidsperioden } from './Tidsperiden';
+import { Tidsperioden } from './Tidsperioden';
 
 /**
  * Wrapper en dato med uttaksdager-funksjonalitet
