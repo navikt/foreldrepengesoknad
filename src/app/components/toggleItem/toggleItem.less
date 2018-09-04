@@ -9,7 +9,7 @@
         width: 100%;
         cursor: pointer;
         border-radius: 0.25rem;
-
+        background-color: white;
         text-decoration: none;
         color: @navMorkGra;
 
@@ -28,7 +28,9 @@
         &:hover {
             box-shadow: #b7b1a9 0 2px 1px 0;
             color: @navBla;
-            text-decoration: underline;
+            * {
+                color: @navBla;
+            }
         }
         &:focus {
             box-shadow: 0 0 0px 3px #ffbd66;

@@ -1,5 +1,50 @@
+@import '../../styles/variables.less';
+
 .periodeheader {
     border-radius: 0.25rem;
     background-color: white;
-    padding: 1rem;
+    border-left: 0.5rem solid transparent;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    padding-right: 1rem;
+
+    &__hvem {
+        color: #7f756c;
+    }
+
+    &__ikon {
+        flex-grow: 0;
+        padding: 1rem;
+    }
+    &__beskrivelse {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        flex-grow: 3;
+    }
+    &__advarsel {
+        width: 3rem;
+        flex-grow: 0;
+    }
+    &__tidsrom {
+        width: 9rem;
+        flex-grow: 0;
+        display: flex;
+        justify-content: stretch;
+        flex-wrap: nowrap;
+    }
+    &__dagmnd {
+        width: 50%;
+        flex-grow: 0;
+        text-align: center;
+        &__dato {
+            display: block;
+            font-size: 1.25rem;
+        }
+
+        &__mnd {
+            color: #7f756c;
+        }
+    }
 }
