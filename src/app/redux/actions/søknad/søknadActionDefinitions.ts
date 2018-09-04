@@ -22,9 +22,9 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
     'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
-    'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetUttaksplan',
+    'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
     'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
-    'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanRemovePeriode',
+    'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode'
 }
 
