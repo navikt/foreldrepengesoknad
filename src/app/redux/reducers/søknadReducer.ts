@@ -8,6 +8,7 @@ import {
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
+import { guid } from 'nav-frontend-js-utils';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -102,7 +103,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
             return {
                 ...state,
-                uttaksplan: [...state.uttaksplan, action.periode]
+                uttaksplan: [...state.uttaksplan, { ...action.periode, id: guid() }]
             };
         }
 
