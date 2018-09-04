@@ -1,11 +1,11 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
-import { Periode } from 'uttaksplan/types';
 import { BarnPartial, Barn } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
+import { Periode } from '../uttaksplan/periodetyper';
 
 type Foreldrepenger = 'foreldrepenger';
 
