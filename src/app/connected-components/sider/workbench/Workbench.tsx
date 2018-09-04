@@ -21,37 +21,39 @@ const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100%', 13, 
 const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.ForeldrepengerFørFødsel,
-        dager: 10
+        dagerGjennstående: 10
     },
     {
         konto: StønadskontoType.Mødrekvote,
-        dager: 0
+        dagerGjennstående: 0,
+        forelder: 'forelder1'
     },
     {
         konto: StønadskontoType.Fellesperiode,
-        dager: 0
+        dagerGjennstående: 0
     },
     {
         konto: StønadskontoType.Fedrekvote,
-        dager: 10
-    },
-    {
-        konto: StønadskontoType.Foreldrepenger,
-        dager: -7
+        dagerGjennstående: 10,
+        forelder: 'forelder2'
     }
 ];
 
 class Workbench extends React.Component<StateProps & DispatchProps> {
     render() {
+        const navn = {
+            navnForelder1: 'Amalie',
+            navnForelder2: 'Henrik'
+        };
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title="Workbench" />
                 <div className="m-gray-block">
                     <div className="blokk-l">
-                        <Periodeliste perioder={perioder} navnForelder1="Snøhvit" navnForelder2="Hiawatta" />
+                        <Periodeliste perioder={perioder} {...navn} />
                     </div>
                     <div className="blokk-l">
-                        <Uttaksoppsummering uttak={mockUttak} />
+                        <Uttaksoppsummering uttak={mockUttak} {...navn} />
                     </div>
                 </div>
             </Applikasjonsside>

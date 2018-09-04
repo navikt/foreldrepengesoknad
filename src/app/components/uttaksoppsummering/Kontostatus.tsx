@@ -7,22 +7,38 @@ import BEMHelper from 'common/util/bem';
 import './kontostatus.less';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { getStønadskontoNavn } from '../../util/uttaksplan';
+import { getStønadskontoNavn, getForelderNavn } from '../../util/uttaksplan';
+import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 
 export interface Props {
     uttak: Stønadskontouttak;
+    navnForelder1: string;
+    navnForelder2?: string;
 }
 
 const BEM = BEMHelper('kontostatus');
 
-const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, intl }) => (
+const getTittel = ({ uttak, intl, navnForelder1, navnForelder2 }: Props & InjectedIntlProps): string => {
+    const kontonavn = getStønadskontoNavn(uttak.konto, intl);
+    if (uttak.konto === StønadskontoType.ForeldrepengerFørFødsel || !uttak.forelder) {
+        return kontonavn;
+    }
+    return `${getForelderNavn(uttak.forelder, navnForelder1, navnForelder2)} sin kvote`;
+};
+
+const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    uttak,
+    navnForelder1,
+    navnForelder2,
+    intl
+}) => (
     <Normaltekst className={BEM.className} tag="div">
         <div className={BEM.element('ikon')}>
             <StønadskontoIkon konto={uttak.konto} />
         </div>
         <div className={BEM.element('content')}>
-            <div className={BEM.element('konto')}>{getStønadskontoNavn(uttak.konto, intl)}</div>
-            <strong className={BEM.element('dager')}>{getVarighetString(uttak.dager, intl)}</strong>
+            <div className={BEM.element('konto')}>{getTittel({ uttak, navnForelder1, navnForelder2, intl })}</div>
+            <strong className={BEM.element('dager')}>{getVarighetString(uttak.dagerGjennstående, intl)}</strong>
         </div>
     </Normaltekst>
 );
