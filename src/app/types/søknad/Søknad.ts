@@ -56,7 +56,7 @@ export interface SøknadPartial {
     situasjon?: Søkersituasjon;
     barn: BarnPartial;
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdPartial;
-    uttaksplan?: Periode[];
+    uttaksplan: Periode[];
     søker: SøkerPartial;
     vedlegg?: Attachment[];
     temp: SkjemaEkstradata;
