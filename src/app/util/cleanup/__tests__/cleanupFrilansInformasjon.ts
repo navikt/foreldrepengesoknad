@@ -5,10 +5,7 @@ import {
     FrilansInformasjonPartial,
     FrilansOppdrag
 } from '../../../types/søknad/FrilansInformasjon';
-
-jest.mock('./../../../bolker/frilanser-bolk/visibility', () => ({
-    driverDuFosterhjemVisible: () => false
-}));
+import visibility from './../../../bolker/frilanser-bolk/visibility';
 
 const oppdrag: FrilansOppdrag = {
     navnPåArbeidsgiver: 'asdf',
@@ -50,10 +47,23 @@ describe('cleanupFrilansInformasjon', () => {
         }
     });
 
-    it('should set driverDuFosterhjem to undefined if that field is not visible', () => {
-        const frilans = cleanup(søker as Søker);
-        if (frilans) {
-            expect(frilans.driverFosterhjem).toBeUndefined();
-        }
+    describe('driverFosterhjem value', () => {
+        it('should include the assigned value if field is visible', () => {
+            visibility.driverDuFosterhjemVisible = jest.fn(() => true);
+            const frilans = cleanup(søker as Søker);
+            expect(frilans).toBeDefined();
+            if (søker.frilansInformasjon && frilans) {
+                expect(frilans.driverFosterhjem).toBe(søker.frilansInformasjon.driverFosterhjem);
+            }
+        });
+
+        it('should set value to undefined if field is not visible', () => {
+            visibility.driverDuFosterhjemVisible = jest.fn(() => true);
+            const frilans = cleanup(søker as Søker);
+            expect(frilans).toBeDefined();
+            if (frilans) {
+                expect(frilans.driverFosterhjem).toBeUndefined();
+            }
+        });
     });
 });
