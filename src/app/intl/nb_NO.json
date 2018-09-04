@@ -361,5 +361,17 @@
     "kvittering.dittNavLink": "Ditt NAV",
     "kvittering.kontonummer":
         " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
-    "kvittering.dinProfilLink": "Din profil"
+    "kvittering.dinProfilLink": "Din profil",
+
+    "stønadskontotype.MØDREKVOTE": "Mødrekvote",
+    "stønadskontotype.FEDREKVOTE": "Fedrekvote",
+    "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
+    "stønadskontotype.FELLESPERIODE": "Fellesdel",
+    "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
+
+    "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
+    "utsettelsesårsak.ARBEID": "Arbeid",
+    "utsettelsesårsak.SYKDOM": "Sykdom",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn"
 }
