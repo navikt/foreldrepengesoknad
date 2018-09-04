@@ -11,7 +11,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
 
 import './periodeheader.less';
-import { måned } from 'common/util/datoUtils';
+import { måned, måned3bokstaver } from 'common/util/datoUtils';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -44,8 +44,13 @@ const getPeriodeTittel = (periode: Periode, foreldernavn: string): string => {
 
 const renderDagMnd = (dato: Date): JSX.Element => (
     <div className={BEM.element('dagmnd')}>
-        <div className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</div>
-        <EtikettLiten className={BEM.element('dagmnd__mnd')}>{måned(dato)}</EtikettLiten>
+        <span className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</span>
+        <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
+            <span className={BEM.element('dagmnd__mnd', 'kort')}>
+                <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
+            </span>
+            <span className={BEM.element('dagmnd__mnd', 'full')}>{måned(dato)}</span>
+        </EtikettLiten>
     </div>
 );
 

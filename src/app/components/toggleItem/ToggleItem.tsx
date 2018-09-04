@@ -2,6 +2,8 @@ import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import ToggleArrow from './ToggleArrow';
 
+import './toggleItem.less';
+
 export interface Props {
     renderHeader: () => JSX.Element;
     renderContent: () => JSX.Element;
@@ -11,8 +13,6 @@ export interface Props {
 interface State {
     expanded: boolean;
 }
-
-import './toggleItem.less';
 
 const BEM = BEMHelper('toggleItem');
 

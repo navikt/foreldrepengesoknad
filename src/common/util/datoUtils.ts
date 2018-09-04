@@ -21,6 +21,10 @@ export function måned(dato: Date): string {
     return format(dato, 'MMMM', { locale });
 }
 
+export function måned3bokstaver(dato: Date): string {
+    return format(dato, 'MMM', { locale }).substr(0, 3);
+}
+
 export function mnd(dato: Date): string {
     return format(dato, 'MMM', { locale });
 }
