@@ -12,7 +12,10 @@ import {
     UpdateSøkerAndStorage,
     UpdateSøknadActionPayload,
     UpdateSøknadenGjelder,
-    UttaksplanSetPerioder
+    UttaksplanSetPerioder,
+    UttaksplanAddPeriode,
+    UttaksplanDeletePeriode,
+    UttaksplanUpdatePeriode
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -97,9 +100,22 @@ const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttac
     attachment
 });
 
-const updateUttaksplan = (perioder: Periode[]): UttaksplanSetPerioder => ({
+const uttaksplanSetPerioder = (perioder: Periode[]): UttaksplanSetPerioder => ({
     type: SøknadActionKeys.UTTAKSPLAN_SET_PERIODER,
     perioder
+});
+
+const uttaksplanAddPeriode = (periode: Periode): UttaksplanAddPeriode => ({
+    type: SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE,
+    periode
+});
+const uttaksplanDeletePeriode = (periode: Periode): UttaksplanDeletePeriode => ({
+    type: SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE,
+    periode
+});
+const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => ({
+    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE,
+    periode
 });
 
 export default {
@@ -110,7 +126,10 @@ export default {
     updateSøker,
     updateSøkerAndStorage,
     updateSøknad,
-    updateUttaksplan,
+    uttaksplanSetPerioder,
+    uttaksplanAddPeriode,
+    uttaksplanDeletePeriode,
+    uttaksplanUpdatePeriode,
     uploadAttachment,
     uploadAttachmentSuccess,
     uploadAttachmentFailed,
