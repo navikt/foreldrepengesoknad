@@ -76,11 +76,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 ...state,
                 ...action.payload
             };
-        case SøknadActionKeys.UPDATE_UTTAKSPLAN:
-            return {
-                ...state,
-                uttaksplan: action.perioder
-            };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
@@ -95,6 +90,33 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                     søknadenGjelderBarnValg: action.payload,
                     registrertAnnenForelder
                 }
+            };
+        }
+
+        case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
+            return {
+                ...state,
+                uttaksplan: action.perioder
+            };
+
+        case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
+            return {
+                ...state,
+                uttaksplan: [...state.uttaksplan, action.periode]
+            };
+        }
+
+        case SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE: {
+            return {
+                ...state,
+                uttaksplan: state.uttaksplan.filter((periode) => periode.id !== action.periode.id)
+            };
+        }
+
+        case SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE: {
+            return {
+                ...state,
+                uttaksplan: [...state.uttaksplan.filter((periode) => periode.id !== action.periode.id), action.periode]
             };
         }
 
