@@ -1,29 +1,12 @@
 import * as React from 'react';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
-import { formaterDato } from 'common/util/datoUtils';
-import { Undertittel, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
+import { Periode } from '../../types/uttaksplan/periodetyper';
+import Periodeliste from '../periodeliste/Periodeliste';
 
 export interface Props {
     perioder: Periode[];
+    navnForelder1: string;
+    navnForelder2?: string;
 }
-
-const detaljer = (periode: Periode) => {
-    if (periode.type === Periodetype.Uttak) {
-        return (
-            <Normaltekst>
-                Konto: <em>{periode.konto}</em>, forelder: {periode.forelder}
-            </Normaltekst>
-        );
-    }
-    if (periode.type === Periodetype.Utsettelse) {
-        return (
-            <Normaltekst>
-                Årsak: <em>{periode.årsak}</em>, forelder: {periode.forelder}
-            </Normaltekst>
-        );
-    }
-    return <span />;
-};
 
 const MockUttaksplan: React.StatelessComponent<Props> = (props) => (
     <div className="typo-normal">
@@ -33,18 +16,7 @@ const MockUttaksplan: React.StatelessComponent<Props> = (props) => (
             familiehendelsesdato og legges til i søknaden. Det genererers kun for fødsel-situasjonen.
         </p>
         <h3>Perioder:</h3>
-        <ol className="blokk-l">
-            {props.perioder.map((p) => (
-                <li key={p.id} className="blokk-m">
-                    <EtikettLiten>
-                        {formaterDato(p.tidsperiode.fom)} - {formaterDato(p.tidsperiode.tom)}
-                    </EtikettLiten>
-                    <Undertittel>
-                        Periodetype: {p.type} {detaljer(p)}
-                    </Undertittel>
-                </li>
-            ))}
-        </ol>
+        <Periodeliste {...props} />
     </div>
 );
 
