@@ -24,7 +24,6 @@ export const Periodene = (perioder: Periode[]) => ({
     getAntallDagerOpphold: () => getAntallDagerOpphold(perioder),
     getFørsteOgSisteRegistrerteUttaksdager: (inkludertOpphold: boolean = false) =>
         getFørsteOgSisteUttaksdag(perioder, inkludertOpphold),
-    // getAntallUttaksdagerPerKonto: (): StønadskontoUttak[] => getAntallUttaksdagerPerKonto(getUttaksperioder(perioder)),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnPerioderFørDato: (dato: Date, ignorerPeriode?: Periode) => finnPerioderFørDato(perioder, dato, ignorerPeriode),
     finnPerioderPåEllerEtterDato: (dato: Date, ignorerPeriode?: Periode) =>
