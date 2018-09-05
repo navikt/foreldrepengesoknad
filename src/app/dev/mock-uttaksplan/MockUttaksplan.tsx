@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Periode } from '../../types/uttaksplan/periodetyper';
-import Periodeliste from '../periodeliste/Periodeliste';
+import Periodeliste from '../../components/periodeliste/Periodeliste';
 
 export interface Props {
     perioder: Periode[];

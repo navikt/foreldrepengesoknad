@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Stønadskontouttak } from './Uttaksoppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import StønadskontoIkon from '../uttaksplanIkon/StønadskontoIkon';
 import BEMHelper from 'common/util/bem';
 
 import { getVarighetString } from 'common/util/intlUtils';
@@ -10,6 +9,7 @@ import { getStønadskontoNavn, getForelderNavn } from '../../util/uttaksplan';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 
 import './kontostatus.less';
+import StønadskontoIkon from '../uttaksplan-ikon/St\u00F8nadskontoIkon';
 
 export interface Props {
     uttak: Stønadskontouttak;
