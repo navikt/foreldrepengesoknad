@@ -11,6 +11,7 @@ import NyUttaksperiodeForm from '../ny-uttaksperiode-form/NyUttaksperiodeForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import './nyPeriodeForm.less';
 
 interface Props {
     onSubmit: (periode: Periode) => void;
@@ -56,7 +57,9 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
         const { periode } = this.state;
 
         return (
-            <form onSubmit={this.handleOnSubmit}>
+            <form
+                className={`nyPeriodeForm nyPeriodeForm--${periodetype.toLowerCase()}`}
+                onSubmit={this.handleOnSubmit}>
                 {periodetype === Periodetype.Utsettelse && (
                     <NyUtsettelsesperiodeForm
                         periode={periode as UtsettelsesperiodePartial}

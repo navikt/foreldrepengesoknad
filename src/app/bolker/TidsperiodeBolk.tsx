@@ -6,6 +6,7 @@ import { TidsperiodeMedValgfriSluttdatoPartial, TidsperiodePartial } from 'commo
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import BEMHelper from 'common/util/bem';
 
 type TidsperiodeType = TidsperiodePartial | TidsperiodeMedValgfriSluttdatoPartial;
 
@@ -42,10 +43,11 @@ class TidsperiodeBolk extends React.Component<Props> {
 
     render() {
         const { tidsperiode, datoAvgrensninger, datoValidatorer, intl, sluttdatoDisabled } = this.props;
+        const bem = BEMHelper('tidsperiodeBolk');
 
         return (
-            <React.Fragment>
-                <Block>
+            <div className={bem.className}>
+                <Block margin="none">
                     <DatoInput
                         id="fraDatoInput"
                         label={getMessage(intl, 'fraogmed')}
@@ -77,7 +79,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         validators={datoValidatorer && datoValidatorer.til}
                     />
                 </Block>
-            </React.Fragment>
+            </div>
         );
     }
 }
