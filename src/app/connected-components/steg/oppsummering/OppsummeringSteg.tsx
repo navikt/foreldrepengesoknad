@@ -42,7 +42,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
     componentDidMount() {
         const mockPerioder = lagMockUttaksplan(this.props.søknad);
-        this.props.dispatch(søknadActions.updateUttaksplan(mockPerioder));
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
     }
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
@@ -81,7 +81,13 @@ class OppsummeringSteg extends React.Component<Props> {
                     godkjenteSteg={godkjenteSteg}
                     confirmSteg={(stegID: StegID) => this.confirmSteg(stegID)}
                 />
-                <MockUttaksplan perioder={this.props.søknad.uttaksplan} />
+
+                <MockUttaksplan
+                    perioder={this.props.søknad.uttaksplan}
+                    navnForelder1={person.fornavn}
+                    navnForelder2={søknad.annenForelder ? søknad.annenForelder.navn : undefined}
+                />
+
                 <BekreftCheckboksPanel
                     className="blokk-m"
                     checked={søknad.harGodkjentOppsummering}

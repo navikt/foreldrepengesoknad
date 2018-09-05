@@ -29,6 +29,10 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): 
             return (
                 harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo) && annenForelderErGyldig(søknad, søkerinfo)
             );
+        case StegID.UTTAKSPLAN_SKJEMA:
+            return true;
+        case StegID.UTTAKSPLAN:
+            return true;
         case StegID.ANDRE_INNTEKTER:
             return (
                 harGodkjentVilkår(søknad) &&

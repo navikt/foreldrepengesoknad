@@ -8,6 +8,7 @@ export enum StegID {
     'UTENLANDSOPPHOLD' = 'utenlandsopphold',
     'ANNEN_FORELDER' = 'annen-forelder',
     'ANDRE_INNTEKTER' = 'andre-inntekter',
+    'UTTAKSPLAN_SKJEMA' = 'uttaksplanSkjema',
     'UTTAKSPLAN' = 'uttaksplan',
     'OPPSUMMERING' = 'oppsummering'
 }
@@ -51,31 +52,37 @@ const stegConfig: StegConfig = {
     [StegID.ANNEN_FORELDER]: {
         tittel: 'Informasjon om den andre forelderen',
         fortsettKnappLabel: 'Gå til uttaksplan',
-        nesteSteg: StegID.UTTAKSPLAN,
+        nesteSteg: StegID.UTTAKSPLAN_SKJEMA,
         index: 2
     },
+    [StegID.UTTAKSPLAN_SKJEMA]: {
+        tittel: 'Planlegg uttaksperiodene',
+        fortsettKnappLabel: 'Fortsett',
+        nesteSteg: StegID.UTTAKSPLAN,
+        index: 3
+    },
     [StegID.UTTAKSPLAN]: {
-        tittel: 'Velkommen til eksempel-uttaksplanen',
+        tittel: 'Uttaksplan',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.UTENLANDSOPPHOLD,
-        index: 3
+        index: 4
     },
     [StegID.UTENLANDSOPPHOLD]: {
         tittel: 'Informasjon om utenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANDRE_INNTEKTER,
-        index: 4
+        index: 5
     },
     [StegID.ANDRE_INNTEKTER]: {
         tittel: 'Opplysninger om inntekt',
         fortsettKnappLabel: 'Gå til oppsummering',
         nesteSteg: StegID.OPPSUMMERING,
-        index: 5
+        index: 6
     },
     [StegID.OPPSUMMERING]: {
         tittel: 'Oppsummering',
         fortsettKnappLabel: 'Send søknad',
-        index: 6
+        index: 7
     }
 };
 
