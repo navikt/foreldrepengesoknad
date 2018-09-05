@@ -1,4 +1,5 @@
 import { Tidsperiode, Forelder } from 'common/types';
+import { RecursivePartial } from '../Partial';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -58,3 +59,7 @@ export interface Oppholdsperiode extends PeriodeBase {
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
+
+export type UttaksperiodePartial = RecursivePartial<Uttaksperiode>;
+export type UtsettelsesperiodePartial = RecursivePartial<Utsettelsesperiode>;
+export type PeriodePartial = RecursivePartial<Periode>;
