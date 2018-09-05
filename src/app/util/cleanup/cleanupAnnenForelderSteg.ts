@@ -13,9 +13,17 @@ export const cleanupAnnenForelder = (søknad: Partial<Søknad>, søkerinfo: Søk
     if (!søknad.annenForelder) {
         return {};
     }
+
     const vis = getAnnenForelderVisibility(søknad, søkerinfo!);
     if (!vis) {
         return {};
+    }
+
+    if (søknad.annenForelder.kanIkkeOppgis) {
+        return {
+            erForSyk: søknad.annenForelder.erForSyk,
+            kanIkkeOppgis: true
+        };
     }
 
     const {
