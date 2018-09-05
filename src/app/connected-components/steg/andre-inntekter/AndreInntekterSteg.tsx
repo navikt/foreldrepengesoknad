@@ -19,7 +19,7 @@ import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInfor
 import isAvailable from '../util/isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
-import ArbeidsforholdInfoWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
+import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import visibility from './visibility';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { søknadStegPath } from '../StegRoutes';
@@ -118,7 +118,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}>
-                    <ArbeidsforholdInfoWrapper arbeidsforhold={arbeidsforhold} />
+                    <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none">
@@ -171,8 +171,9 @@ class AndreInntekterSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { søknad } = state;
-    const { history, arbeidsforhold } = props;
+    const { history } = props;
     const { søker } = søknad;
+    const { arbeidsforhold } = props.søkerinfo;
 
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
