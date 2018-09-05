@@ -15,6 +15,7 @@ import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
 import { Søkerinfo } from '../types/søkerinfo';
+import Workbench from './sider/workbench/Workbench';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
@@ -63,7 +64,12 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 render={(props) => <Velkommen {...props} søkerinfo={søkerinfo} />}
                 key="velkommen"
             />,
-            <Route path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`} component={SøknadSendtSide} key="søknadsendt" />
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`}
+                component={SøknadSendtSide}
+                key="søknadsendt"
+            />,
+            <Route path={`${routeConfig.APP_ROUTE_PREFIX}workbench`} component={Workbench} key="workbench" />
         ]);
     }
 

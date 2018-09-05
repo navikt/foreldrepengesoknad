@@ -81,7 +81,13 @@ class OppsummeringSteg extends React.Component<Props> {
                     godkjenteSteg={godkjenteSteg}
                     confirmSteg={(stegID: StegID) => this.confirmSteg(stegID)}
                 />
-                <MockUttaksplan perioder={this.props.søknad.uttaksplan} />
+
+                <MockUttaksplan
+                    perioder={this.props.søknad.uttaksplan}
+                    navnForelder1={person.fornavn}
+                    navnForelder2={søknad.annenForelder ? søknad.annenForelder.navn : undefined}
+                />
+
                 <BekreftCheckboksPanel
                     className="blokk-m"
                     checked={søknad.harGodkjentOppsummering}
