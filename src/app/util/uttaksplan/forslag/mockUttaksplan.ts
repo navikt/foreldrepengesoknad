@@ -1,4 +1,4 @@
-import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn } from '../../../types/søknad/Barn';
+import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import { Uttaksperiode, Utsettelsesperiode } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
@@ -10,6 +10,8 @@ const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date |
         return barn.erBarnetFødt ? (barn as FødtBarn).fødselsdatoer[0] : (barn as UfødtBarn).termindato;
     } else if (situasjon === Søkersituasjon.ADOPSJON) {
         return (barn as Adopsjonsbarn).adopsjonsdato;
+    } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
+        return (barn as ForeldreansvarBarn).foreldreansvarsdato;
     }
     return undefined;
 };
@@ -27,6 +29,17 @@ export const lagMockUttaksplan = (søknad: Søknad): Array<Uttaksperiode | Utset
                 return opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
             }
         } else if (søknad.situasjon === Søkersituasjon.ADOPSJON) {
+            if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
+                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
+                perioder.shift();
+                return perioder;
+            }
+            if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
+                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
+                perioder.shift();
+                return perioder;
+            }
+        } else if (søknad.situasjon === Søkersituasjon.FORELDREANSVAR) {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
                 const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
                 perioder.shift();
