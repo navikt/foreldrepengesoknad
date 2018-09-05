@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DocumentTitle from 'react-document-title';
-import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
+import Søknad from '../../types/søknad/Søknad';
 import { opprettUttaksperioderToForeldreEttBarn } from '../../util/uttaksplan/forslag/toForeldreEttBarn';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';

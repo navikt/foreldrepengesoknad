@@ -1,7 +1,7 @@
 import søknadReducer from '../søknadReducer';
 import actions from '../../actions/søknad/søknadActionCreators';
 import { Periodetype, Uttaksperiode, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { SøknadPartial } from '../../../types/søknad/Søknad';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
 
 let nyPeriode: Uttaksperiode = {

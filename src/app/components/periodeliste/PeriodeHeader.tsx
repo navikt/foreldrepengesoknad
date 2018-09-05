@@ -9,7 +9,7 @@ import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
-import StønadskontoIkon from '../uttaksplan-ikon/St\u00F8nadskontoIkon';
+import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 
 import './periodeheader.less';
