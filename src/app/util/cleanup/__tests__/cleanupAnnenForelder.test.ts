@@ -176,4 +176,22 @@ describe('Cleanup søknad.annenForelder', () => {
             });
         });
     });
+    describe('AnnenForelder personalia', () => {
+        beforeEach(() => {
+            testSøknad = {
+                ...søknad,
+                temp: {
+                    ...testSøknad.temp,
+                    søknadenGjelderBarnValg: {
+                        ...testSøknad.temp.søknadenGjelderBarnValg,
+                        gjelderAnnetBarn: true
+                    }
+                }
+            };
+        });
+        it('Beholder kun kanIkkeOppgis når søker ikke kan oppgi annen forelder', () => {
+            testSøknad.annenForelder.kanIkkeOppgis = true;
+            expect(hasExpectedProperties(runCleanUp(testSøknad), ['kanIkkeOppgis', ...propsOutsideSteg])).toBeTruthy();
+        });
+    });
 });
