@@ -7,7 +7,6 @@ import './toggleItem.less';
 export interface Props {
     renderHeader: () => JSX.Element;
     renderContent: () => JSX.Element;
-    onHeaderClick?: () => void;
 }
 
 interface State {

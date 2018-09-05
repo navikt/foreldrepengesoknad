@@ -9,7 +9,7 @@ import { getStønadskontoNavn, getForelderNavn } from '../../util/uttaksplan';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 
 import './kontostatus.less';
-import StønadskontoIkon from '../uttaksplan-ikon/St\u00F8nadskontoIkon';
+import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
 
 export interface Props {
     uttak: Stønadskontouttak;

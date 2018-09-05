@@ -10,13 +10,9 @@ export interface Props {
     forelder?: Forelder;
 }
 
-const getIkonForKonto = (konto: StønadskontoType): UttaksplanIkonKeys => {
-    return UttaksplanIkonKeys.uttak;
-};
-
 const StønadskontoIkon: React.StatelessComponent<Props> = ({ konto, forelder }) => (
     <IconBox color={getStønadskontoFarge(konto, forelder)}>
-        <UttaksplanIkon ikon={getIkonForKonto(konto)} />
+        <UttaksplanIkon ikon={UttaksplanIkonKeys.uttak} />
     </IconBox>
 );
 
