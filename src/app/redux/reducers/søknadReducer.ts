@@ -31,7 +31,8 @@ const getDefaultState = (): SøknadPartial => {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             }
-        }
+        },
+        uttaksplan: []
     };
 };
 
@@ -74,6 +75,11 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 ...action.payload
+            };
+        case SøknadActionKeys.UPDATE_UTTAKSPLAN:
+            return {
+                ...state,
+                uttaksplan: action.perioder
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);

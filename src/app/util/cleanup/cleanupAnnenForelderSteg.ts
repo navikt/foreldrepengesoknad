@@ -1,7 +1,7 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { AppState } from '../../redux/reducers';
 import { getAnnenForelderVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
-import { Barn, ForeldreansvarBarn } from '../../types/s\u00F8knad/Barn';
+import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
 
 interface CleanedAnnenForelderSteg {
     annenForelder: Partial<AnnenForelder>;
@@ -27,7 +27,7 @@ const cleanupAnnenForelder = (state: AppState): Partial<AnnenForelder> => {
         navn: vis.personalia.fødselsnummerInput ? navn : undefined,
         fnr: vis.personalia.fødselsnummerInput ? fnr : undefined,
         bostedsland: søknad.annenForelder.utenlandskFnr ? bostedsland : undefined,
-        skalHaForeldrepenger: vis.annenForelderOppfølging.skalAnnenForelderHaForeldrepengerSpørsmål
+        skalHaForeldrepenger: vis.annenForelderOppfølging.skalFarEllerMedmorHaForeldrepengerSpørsmål
             ? skalHaForeldrepenger
             : undefined,
         harRettPåForeldrepenger: vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål

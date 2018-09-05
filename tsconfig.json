@@ -20,7 +20,6 @@
         "baseUrl": "./src",
         "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
-            "uttaksplan/*": ["./uttaksplan/*"],
             "common/*": ["./common/*"]
         }
     },
