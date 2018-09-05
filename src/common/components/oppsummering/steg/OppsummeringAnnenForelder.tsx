@@ -3,17 +3,17 @@ import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
 
-import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
+import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 
-interface AndreForeldrenOppsummeringProps {
+interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
     erAleneOmOmsorg: boolean;
 }
 
-type Props = AndreForeldrenOppsummeringProps & InjectedIntlProps;
-const AndreForeldrenOppsummering: React.StatelessComponent<Props> = (props: Props) => {
+type Props = AnnenForelderOppsummeringProps & InjectedIntlProps;
+const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
     const { erAleneOmOmsorg, intl } = props;
     const {
         navn,
@@ -108,4 +108,4 @@ const AndreForeldrenOppsummering: React.StatelessComponent<Props> = (props: Prop
         </React.Fragment>
     );
 };
-export default injectIntl(AndreForeldrenOppsummering);
+export default injectIntl(AnnenForelderOppsummering);

@@ -37,11 +37,11 @@ const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = (søker: Partial<Søker>
 const visHarRettPåForeldrepengerSpørsmål = (
     annenForelder: AnnenForelder,
     søker: Søker,
-    harDenAndreForelderenOpplystOmSinPågåendeSak: boolean
+    harAnnenForelderOpplystOmSinPågåendeSak: boolean
 ): boolean => {
     return (
         annenForelder.skalHaForeldrepenger === true ||
-        (søker.erAleneOmOmsorg === false && !harDenAndreForelderenOpplystOmSinPågåendeSak)
+        (søker.erAleneOmOmsorg === false && !harAnnenForelderOpplystOmSinPågåendeSak)
     );
 };
 
@@ -49,16 +49,16 @@ const visErMorUførSpørsmål = (annenForelder: Partial<AnnenForelder>, erFarEll
     return annenForelder.harRettPåForeldrepenger === false && erFarEllerMedmor;
 };
 
-const visErDenAndreForelderenInformertSpørsmål = (
+const visErAnnenForelderInformertSpørsmål = (
     søker: Partial<Søker>,
     annenForelder: Partial<AnnenForelder>,
-    harDenAndreForelderenOpplystOmSinPågåendeSak: boolean,
+    harAnnenForelderOpplystOmSinPågåendeSak: boolean,
     erFarEllerMedmor: boolean
 ): boolean => {
     return (
         (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
         (søker.erAleneOmOmsorg === false &&
-            harDenAndreForelderenOpplystOmSinPågåendeSak === true &&
+            harAnnenForelderOpplystOmSinPågåendeSak === true &&
             erFarEllerMedmor === true)
     );
 };
@@ -98,7 +98,7 @@ export const AnnenForelderVisibilityFunctions = {
     visRegistrertAnnenForelderBolk,
     visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
     visErMorUførSpørsmål,
-    visErDenAndreForelderenInformertSpørsmål,
+    visErAnnenForelderInformertSpørsmål,
     visOmsorgsovertakelseDatoSpørsmål,
     visFarEllerMedmorBolk,
     visOmsorgsovertakelseVedleggSpørsmål,

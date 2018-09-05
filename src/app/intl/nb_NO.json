@@ -162,9 +162,9 @@
 
     "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
-    "andreForelderenRettPåForeldrepenger.spørsmål": "Har {navn} rett på foreldrepenger?",
+    "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett på foreldrepenger?",
 
-    "erDenAndreForelderenInformert.spørsmål": "Er {navn} informert om søknaden min?",
+    "erAnnenForelderInformert.spørsmål": "Er {navn} informert om søknaden min?",
 
     "skalFarEllerMedmorHaForeldrepenger.spørsmål": "Skal {navn} ha foreldrepenger?",
 
@@ -340,7 +340,7 @@
     "oppsummering.antallBarn.8": "Åtte",
     "oppsummering.antallBarn.9": "Ni",
 
-    "oppsummering.denAndreForelderen": "Den andre forelderen",
+    "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
     "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
     "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
