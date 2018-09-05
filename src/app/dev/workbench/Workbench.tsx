@@ -11,10 +11,8 @@ import Periodeliste from '../../components/periodeliste/Periodeliste';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
-import { Knapp } from 'nav-frontend-knapper';
-import Knapperad from 'common/components/knapperad/Knapperad';
-import NyPeriodeForm from '../../components/ny-periode-form/NyPeriodeForm';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import NyPeriodeBolk from '../../bolker/ny-periode-bolk/NyPeriodeBolk';
 
 interface StateProps {
     søknad: Søknad;
@@ -47,58 +45,17 @@ const mockUttak: Stønadskontouttak[] = [
 
 interface State {
     periodetype?: Periodetype;
-    formIsOpen: boolean;
 }
 
 class Workbench extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-
-        this.openForm = this.openForm.bind(this);
-        this.openNyUttaksperiodeForm = this.openNyUttaksperiodeForm.bind(this);
-        this.openNyUtsettelsesperiodeForm = this.openNyUtsettelsesperiodeForm.bind(this);
-        this.closeForm = this.closeForm.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
-        this.renderPeriodeForm = this.renderPeriodeForm.bind(this);
-
-        this.state = {
-            formIsOpen: false
-        };
-    }
-
-    openForm(periodetype: Periodetype) {
-        this.setState({
-            formIsOpen: true,
-            periodetype
-        });
-    }
-
-    openNyUtsettelsesperiodeForm() {
-        this.openForm(Periodetype.Utsettelse);
-    }
-
-    openNyUttaksperiodeForm() {
-        this.openForm(Periodetype.Uttak);
-    }
-
-    closeForm() {
-        this.setState({
-            formIsOpen: false,
-            periodetype: undefined
-        });
     }
 
     handleOnSubmit(periode: Periode) {
         const { dispatch } = this.props;
         dispatch(søknadActionCreators.uttaksplanAddPeriode(periode));
-    }
-
-    renderPeriodeForm() {
-        const { periodetype, formIsOpen } = this.state;
-        if (formIsOpen && periodetype !== undefined) {
-            return <NyPeriodeForm periodetype={periodetype} onSubmit={this.handleOnSubmit} onCancel={this.closeForm} />;
-        }
-        return null;
     }
 
     render() {
@@ -112,20 +69,12 @@ class Workbench extends React.Component<Props, State> {
                 <div className="m-gray-block">
                     <Block margin="l">
                         <Periodeliste perioder={perioder} {...navn} />
-                        {this.renderPeriodeForm()}
                     </Block>
+
+                    <NyPeriodeBolk onSubmit={this.handleOnSubmit} />
+
                     <Block margin="l">
                         <Uttaksoppsummering uttak={mockUttak} {...navn} />
-                    </Block>
-                    <Block>
-                        <Knapperad>
-                            <Knapp onClick={this.openNyUtsettelsesperiodeForm} htmlType="button">
-                                Utsett ditt uttak
-                            </Knapp>
-                            <Knapp onClick={this.openNyUttaksperiodeForm} htmlType="button">
-                                Legg til periode med foreldrepenger
-                            </Knapp>
-                        </Knapperad>
                     </Block>
                 </div>
             </Applikasjonsside>
