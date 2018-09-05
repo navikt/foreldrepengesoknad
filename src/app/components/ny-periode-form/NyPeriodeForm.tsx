@@ -1,5 +1,4 @@
 import * as React from 'react';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import {
     Periode,
     PeriodePartial,
@@ -9,8 +8,6 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import NyUtsettelsesperiodeForm from '../ny-utsettelsesperiode-form/NyUtsettelsesperiodeForm';
 import NyUttaksperiodeForm from '../ny-uttaksperiode-form/NyUttaksperiodeForm';
-import { TidsperiodePartial } from 'common/types';
-import { Tidsperiode } from 'nav-datovelger';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
@@ -55,23 +52,18 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { onCancel } = this.props;
+        const { periodetype, onCancel } = this.props;
         const { periode } = this.state;
-        const { tidsperiode, type } = periode;
+
         return (
             <form onSubmit={this.handleOnSubmit}>
-                <TidsperiodeBolk
-                    onChange={(t: TidsperiodePartial) => this.updatePeriode({ tidsperiode: t as Tidsperiode })}
-                    tidsperiode={tidsperiode as TidsperiodePartial}
-                />
-
-                {type === Periodetype.Utsettelse && (
+                {periodetype === Periodetype.Utsettelse && (
                     <NyUtsettelsesperiodeForm
                         periode={periode as UtsettelsesperiodePartial}
                         onChange={this.updatePeriode}
                     />
                 )}
-                {type === Periodetype.Uttak && (
+                {periodetype === Periodetype.Uttak && (
                     <NyUttaksperiodeForm periode={periode as UttaksperiodePartial} onChange={this.updatePeriode} />
                 )}
 
