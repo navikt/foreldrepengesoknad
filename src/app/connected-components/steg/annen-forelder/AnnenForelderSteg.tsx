@@ -22,15 +22,16 @@ import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './visib
 import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../util/navigation';
+import Søknad from '../../../types/søknad/Søknad';
 
 interface StateProps {
-    appState: AppState;
+    søknad: Partial<Søknad>;
     antallBarn?: number;
     søkersFødselsnummer?: string;
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
     stegProps: StegProps;
-    vis: AnnenForelderStegVisibility;
+    vis?: AnnenForelderStegVisibility;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -42,7 +43,7 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 
     cleanupSteg() {
-        const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.appState);
+        const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.søknad, this.props.søkerinfo);
         this.props.dispatch(søknadActionCreators.updateAnnenForelder(annenForelder));
         this.props.dispatch(søknadActionCreators.updateBarn(barn));
     }
@@ -58,7 +59,7 @@ class AnnenForelderSteg extends React.Component<Props> {
             intl
         } = this.props;
 
-        if (søkersFødselsnummer) {
+        if (søkersFødselsnummer && vis) {
             return (
                 <Steg {...stegProps} preSubmit={this.cleanupSteg}>
                     <Block
@@ -104,10 +105,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
 
-    const vis = getAnnenForelderVisibility(state);
+    const vis = getAnnenForelderVisibility(state.søknad, props.søkerinfo);
 
     return {
-        appState: state,
+        søknad: state.søknad,
         stegProps,
         vis,
         antallBarn: registrerteBarn ? registrerteBarn.length : 0,
