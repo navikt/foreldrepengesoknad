@@ -59,7 +59,7 @@ const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
         return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
     } else if (periode.type === Periodetype.Utsettelse) {
-        return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
+        return <UtsettelseIkon årsak={periode.årsak} />;
     }
     return undefined;
 };

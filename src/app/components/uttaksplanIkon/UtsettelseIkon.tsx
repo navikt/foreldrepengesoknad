@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
-import { Forelder } from 'common/types';
 import { getUtsettelseFarge } from '../../util/uttaksplan/styleUtils';
 import IconBox from '../icon-box/IconBox';
 
 export interface Props {
     årsak: UtsettelseÅrsakType;
-    forelder?: Forelder;
 }
 
 const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
@@ -24,7 +22,7 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     }
 };
 
-const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak, forelder }) => (
+const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak }) => (
     <IconBox color={getUtsettelseFarge()}>
         <UttaksplanIkon ikon={getIkonForKonto(årsak)} />
     </IconBox>
