@@ -10,6 +10,10 @@ export const getVarighetString = (antallDager: number, intl: InjectedIntl): stri
         }
     );
 
+    if (uker === 0 && dager === 0) {
+        return dagerStr;
+    }
+
     if (uker === 0) {
         return `${tallTilTekst(dager, intl)} ${dagerStr}`;
     }

@@ -16,6 +16,7 @@ import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
+import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
@@ -62,6 +63,11 @@ class StegRoutes extends React.Component<Props> {
                         path={søknadStegPath(StegID.ANDRE_INNTEKTER)}
                         render={(props) => <AndreInntekterSteg {...props} søkerinfo={søkerinfo} />}
                         key={StegID.ANDRE_INNTEKTER}
+                    />
+                    <Route
+                        path={søknadStegPath(StegID.UTTAKSPLAN_SKJEMA)}
+                        render={(props) => <UttaksplanSkjemaSteg {...props} søkerinfo={søkerinfo} />}
+                        key={StegID.UTTAKSPLAN_SKJEMA}
                     />
                     <Route
                         path={søknadStegPath(StegID.UTTAKSPLAN)}

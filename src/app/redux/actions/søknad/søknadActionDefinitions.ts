@@ -22,7 +22,10 @@ export enum SøknadActionKeys {
     'UPDATE_SØKER_AND_STORAGE' = 'updateSøkerAndStorage',
     'UPDATE_SØKNAD' = 'updateSøknad',
     'UPDATE_SØKNADEN_GJELDER_BARN' = 'updateSøknadenGjelderBarn',
-    'UPDATE_UTTAKSPLAN' = 'updateUttaksplan'
+    'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
+    'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
+    'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
+    'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode'
 }
 
 export interface UpdateSøknadenGjelder {
@@ -60,9 +63,29 @@ export interface UpdateSøknad {
     payload: UpdateSøknadActionPayload;
 }
 
-export interface UpdateUttaksplan {
-    type: SøknadActionKeys.UPDATE_UTTAKSPLAN;
+export interface UpdateSøknad {
+    type: SøknadActionKeys.UPDATE_SØKNAD;
+    payload: UpdateSøknadActionPayload;
+}
+
+export interface UttaksplanSetPerioder {
+    type: SøknadActionKeys.UTTAKSPLAN_SET_PERIODER;
     perioder: Periode[];
+}
+
+export interface UttaksplanAddPeriode {
+    type: SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE;
+    periode: Periode;
+}
+
+export interface UttaksplanDeletePeriode {
+    type: SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE;
+    periode: Periode;
+}
+
+export interface UttaksplanUpdatePeriode {
+    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE;
+    periode: Periode;
 }
 
 export interface UploadAttachment {
@@ -112,4 +135,7 @@ export type SøknadAction =
     | DeleteAttachment
     | DeleteAttachmentSuccess
     | DeleteAttachmentFailed
-    | UpdateUttaksplan;
+    | UttaksplanSetPerioder
+    | UttaksplanAddPeriode
+    | UttaksplanDeletePeriode
+    | UttaksplanUpdatePeriode;

@@ -1,0 +1,12 @@
+@import (reference) '@{nodeModulesPath}nav-frontend-chevron-style/src/mixins';
+
+.toggleArrow {
+    width: 16px;
+    height: 16px;
+    display: block;
+    .chevron-mixin();
+    .chevron-orientasjon-mixin(ned);
+    &--expanded {
+        .chevron-orientasjon-mixin(opp);
+    }
+}

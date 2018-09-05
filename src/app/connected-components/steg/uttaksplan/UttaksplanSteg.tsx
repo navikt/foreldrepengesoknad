@@ -9,6 +9,7 @@ import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
+import isAvailable from '../util/isAvailable';
 
 interface StateProps {
     stegProps: StegProps;
@@ -35,12 +36,13 @@ class UttaksplanSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const { søknad } = state;
-    const { history } = props;
+    const { søkerinfo, history } = props;
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: true,
-        history
+        history,
+        isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
 
     return {

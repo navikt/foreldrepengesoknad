@@ -10,11 +10,13 @@ import GenerellFeil from './sider/feilsider/GenerellFeil';
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
 import IkkeMyndig from './sider/feilsider/IkkeMyndig';
-import DevSideoversikt from '../dev/DevSideoversikt';
 import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
 import { Søkerinfo } from '../types/søkerinfo';
+import Workbench from '../dev/workbench/Workbench';
+
+import '../dev/dev.less';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
@@ -37,11 +39,6 @@ class Foreldrepengesøknad extends React.Component<Props> {
         return (
             <Switch>
                 {routes}
-                <Route
-                    path={`${routeConfig.APP_ROUTE_PREFIX}sideoversikt`}
-                    component={DevSideoversikt}
-                    key="devSideoversikt"
-                />
                 <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} />
             </Switch>
         );
@@ -63,7 +60,12 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 render={(props) => <Velkommen {...props} søkerinfo={søkerinfo} />}
                 key="velkommen"
             />,
-            <Route path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`} component={SøknadSendtSide} key="søknadsendt" />
+            <Route
+                path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`}
+                component={SøknadSendtSide}
+                key="søknadsendt"
+            />,
+            <Route path={`${routeConfig.APP_ROUTE_PREFIX}workbench`} component={Workbench} key="workbench" />
         ]);
     }
 
