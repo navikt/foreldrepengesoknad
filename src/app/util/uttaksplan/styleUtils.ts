@@ -1,28 +1,28 @@
 import { Forelder } from 'common/types';
-import { Periodefarge } from '../../components/periodeikon/Periodeikon';
 import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { UttaksplanColor } from '../../types/uttaksplan/colors';
 
-export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forelder): Periodefarge => {
+export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forelder): UttaksplanColor => {
     if (!forelder) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
-                return 'blaa';
+                return 'blue';
             case StønadskontoType.Mødrekvote:
             case StønadskontoType.Foreldrepenger:
             case StønadskontoType.ForeldrepengerFørFødsel:
-                return 'lilla';
+                return 'purple';
             case StønadskontoType.Fellesperiode:
-                return 'lillaBlaa';
+                return 'purpleBlue';
         }
     }
-    return forelder === 'forelder1' ? 'lilla' : 'blaa';
+    return forelder === 'forelder1' ? 'purple' : 'blue';
 };
 
-export const getUtsettelseFarge = (): Periodefarge => {
-    return 'gronn';
+export const getUtsettelseFarge = (): UttaksplanColor => {
+    return 'green';
 };
 
-export const getPeriodeFarge = (periode: Periode): Periodefarge | undefined => {
+export const getPeriodeFarge = (periode: Periode): UttaksplanColor | undefined => {
     if (periode.type === Periodetype.Uttak) {
         return getStønadskontoFarge(periode.konto, periode.forelder);
     }

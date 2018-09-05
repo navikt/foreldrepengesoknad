@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import { UttaksplanIkonKeys } from '../uttaksplanIkon/UttaksplanIkon';
+import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import { Forelder } from 'common/types';
-import PeriodeIkon from './Periodeikon';
 import { getStønadskontoFarge } from '../../util/uttaksplan/styleUtils';
-
-import './periodeikon.less';
+import IconBox from '../icon-box/IconBox';
 
 export interface Props {
     konto: StønadskontoType;
@@ -17,7 +15,9 @@ const getIkonForKonto = (konto: StønadskontoType): UttaksplanIkonKeys => {
 };
 
 const StønadskontoIkon: React.StatelessComponent<Props> = ({ konto, forelder }) => (
-    <PeriodeIkon ikon={getIkonForKonto(konto)} farge={getStønadskontoFarge(konto, forelder)} />
+    <IconBox color={getStønadskontoFarge(konto, forelder)}>
+        <UttaksplanIkon ikon={getIkonForKonto(konto)} />
+    </IconBox>
 );
 
 export default StønadskontoIkon;

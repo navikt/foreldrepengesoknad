@@ -8,11 +8,11 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
-import StønadskontoIkon from '../periodeikon/St\u00F8nadskontoIkon';
-import UtsettelseIkon from '../periodeikon/UtsettelseIkon';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplanIkon/UttaksplanIkon';
 
 import './periodeheader.less';
+import StønadskontoIkon from '../uttaksplanIkon/St\u00F8nadskontoIkon';
+import UtsettelseIkon from '../uttaksplanIkon/UtsettelseIkon';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
