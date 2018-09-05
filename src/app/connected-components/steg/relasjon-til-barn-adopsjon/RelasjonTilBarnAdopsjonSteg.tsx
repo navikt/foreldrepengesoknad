@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { StegID } from '../../../util/routing/stegConfig';
+import stegConfig, { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
@@ -25,6 +25,10 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
+import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
+import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
+import { apiActionCreators } from '../../../redux/actions';
+import { søknadStegPath } from '../StegRoutes';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -36,6 +40,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
 
         if (props.barn.antallBarn) {
             props.dispatch(
@@ -56,11 +61,20 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         );
     }
 
+    handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
+        const { dispatch, history, barn } = this.props;
+        if (event.target === stegForm) {
+            dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
+            dispatch(apiActionCreators.storeAppState());
+            history.push(`${søknadStegPath(stegConfig[StegID.RELASJON_TIL_BARN_ADOPSJON].nesteSteg)}`);
+        }
+    }
+
     render() {
         const { barn, dispatch, stegProps, intl } = this.props;
 
         return (
-            <Steg {...stegProps}>
+            <Steg onSubmit={this.handleOnSubmit} {...stegProps}>
                 <Block>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
