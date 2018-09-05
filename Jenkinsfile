@@ -43,9 +43,8 @@ node {
             System.setProperty("java.net.useSystemProxies", "true")
             System.setProperty("http.nonProxyHosts", "*.adeo.no")
             sh "npm install"
-            //sh "npm run test"
+            sh "npm run jest"
             sh "npm run build"
-            //sh "npm run cypress"
         }
 
         sh "docker build --build-arg version=${releaseVersion} --build-arg app_name=${app} -t ${dockerRepo}/${app}:${releaseVersion} ."
