@@ -110,7 +110,7 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                     <Veilederinfo>Informasjon om rettigheter og deling av uttaksplan</Veilederinfo>
                 </Block>
 
-                <Block visible={vis.erAnnenForelderenInformertSpørsmål}>
+                <Block visible={vis.erAnnenForelderInformertSpørsmål}>
                     <ErAnnenForelderInformertSpørsmål
                         navn={navn}
                         erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
