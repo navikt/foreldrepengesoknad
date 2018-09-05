@@ -11,7 +11,7 @@ export interface AnnenForelderOppfølgingVisibility {
     skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
     erMorUførSpørsmål: boolean;
-    erDenAndreForelderenInformertSpørsmål: boolean;
+    erAnnenForelderenInformertSpørsmål: boolean;
     omsorgsovertakelseDatoSpørsmål: boolean;
     farEllerMedmorBolk: boolean;
     omsorgsovertakelseVedleggSpørsmål: boolean;
@@ -34,7 +34,7 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
 
     const { person } = søkerinfo!;
     const erFarEllerMedmor = df.getErFarEllerMedmor(søker, person);
-    const andreForelderHarOpplystOmPågåendeSag = df.getHarDenAndreForelderenOpplystOmSinPågåendeSak(
+    const annenForelderHarOpplystOmPågåendeSag = df.getHarAnnenForelderOpplystOmSinPågåendeSak(
         registrertAnnenForelder!
     );
     const gjelderAdopsjonAvEktefellesBarn = df.getGjelderAdopsjonAvEktefellesBarn(barn);
@@ -57,13 +57,13 @@ export const getAnnenForelderVisibility = (state: AppState): AnnenForelderStegVi
             harRettPåForeldrepengerSpørsmål: f.visHarRettPåForeldrepengerSpørsmål(
                 annenForelder,
                 søker,
-                andreForelderHarOpplystOmPågåendeSag
+                annenForelderHarOpplystOmPågåendeSag
             ),
             erMorUførSpørsmål: f.visErMorUførSpørsmål(annenForelder, erFarEllerMedmor),
-            erDenAndreForelderenInformertSpørsmål: f.visErDenAndreForelderenInformertSpørsmål(
+            erAnnenForelderenInformertSpørsmål: f.visErAnnenForelderInformertSpørsmål(
                 søker,
                 annenForelder,
-                andreForelderHarOpplystOmPågåendeSag,
+                annenForelderHarOpplystOmPågåendeSag,
                 erFarEllerMedmor
             ),
             farEllerMedmorBolk,

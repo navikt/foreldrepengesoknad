@@ -9,7 +9,7 @@ import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonal
 import OppsummeringRelasjonTilBarnFødsel from 'common/components/oppsummering/steg/OppsummeringRelasjonTilBarnFødsel';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import EkspanderbartOppsummeringsPanel from '../../../common/components/ekspanderbart-oppsummeringspanel/EkspanderbartOppsummeringspanel';
-import OppsummeringDenAndreForelderen from 'common/components/oppsummering/steg/OppsummeringDenAndreForelderen';
+import OppsummeringAnnenForelder from 'common/components/oppsummering/steg/OppsummeringAnnenForelder';
 
 import './oppsummering.less';
 
@@ -54,10 +54,10 @@ class OppsummeringWrapper extends React.Component<Props> {
                     <EkspanderbartOppsummeringsPanel
                         steg={StegID.ANNEN_FORELDER}
                         checked={godkjenteSteg[StegID.ANNEN_FORELDER]}
-                        tittel={getMessage(intl, 'oppsummering.denAndreForelderen')}
+                        tittel={getMessage(intl, 'oppsummering.annenForelder')}
                         onClick={(stegID: StegID) => this.onOppsummeringExpand(stegID)}
                         render={() => (
-                            <OppsummeringDenAndreForelderen
+                            <OppsummeringAnnenForelder
                                 annenForelder={søknad.annenForelder}
                                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             />

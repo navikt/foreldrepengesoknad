@@ -7,7 +7,7 @@ import ErMorUførSpørsmål from '../../../../spørsmål/ErMorUførSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { DispatchProps } from 'common/redux/types';
 import Block from 'common/components/block/Block';
-import ErDenAndreForelderenInformertSpørsmål from '../../../../spørsmål/ErDenAndreForelderenInformertSpørsmål';
+import ErAnnenForelderInformertSpørsmål from '../../../../spørsmål/ErAnnenForelderInformertSpørsmål';
 import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -110,10 +110,10 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                     <Veilederinfo>Informasjon om rettigheter og deling av uttaksplan</Veilederinfo>
                 </Block>
 
-                <Block visible={vis.erDenAndreForelderenInformertSpørsmål}>
-                    <ErDenAndreForelderenInformertSpørsmål
+                <Block visible={vis.erAnnenForelderenInformertSpørsmål}>
+                    <ErAnnenForelderInformertSpørsmål
                         navn={navn}
-                        erDenAndreForelderenInformert={annenForelder.erInformertOmSøknaden}
+                        erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
                         onChange={(erInformertOmSøknaden: boolean) =>
                             dispatch(
                                 søknadActions.updateAnnenForelder({
