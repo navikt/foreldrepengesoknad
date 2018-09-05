@@ -21,8 +21,8 @@ import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørs
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
 import { AnnenForelderOppfølgingVisibility } from '../visibility/annenForelderVisibility';
-import { Søker } from '../../../../types/s\u00F8knad/S\u00F8ker';
-import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
+import { Søker } from '../../../../types/søknad/Søker';
+import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -78,7 +78,7 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                         }}
                     />
                 </Block>
-                <Block visible={vis.skalAnnenForelderHaForeldrepengerSpørsmål}>
+                <Block visible={vis.harRettPåForeldrepengerSpørsmål}>
                     <RettPåForeldrepengerSpørsmål
                         navn={navn}
                         harAnnenForelderRettPåForeldrepenger={annenForelder.harRettPåForeldrepenger}

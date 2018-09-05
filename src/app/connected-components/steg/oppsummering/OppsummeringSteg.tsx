@@ -13,7 +13,6 @@ import getMessage from 'common/util/i18nUtils';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
-import { Periode } from 'uttaksplan/types';
 import { apiActionCreators } from '../../../redux/actions';
 import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -21,6 +20,9 @@ import summaryActionCreators from '../../../redux/actions/summary/summaryActionC
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
+import MockUttaksplan from '../../../components/mockUttaksplan/MockUttaksplan';
 
 interface StateProps {
     person: Person;
@@ -36,6 +38,11 @@ class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.sendSøknad = this.sendSøknad.bind(this);
+    }
+
+    componentDidMount() {
+        const mockPerioder = lagMockUttaksplan(this.props.søknad);
+        this.props.dispatch(søknadActions.updateUttaksplan(mockPerioder));
     }
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
@@ -74,6 +81,7 @@ class OppsummeringSteg extends React.Component<Props> {
                     godkjenteSteg={godkjenteSteg}
                     confirmSteg={(stegID: StegID) => this.confirmSteg(stegID)}
                 />
+                <MockUttaksplan perioder={this.props.søknad.uttaksplan} />
                 <BekreftCheckboksPanel
                     className="blokk-m"
                     checked={søknad.harGodkjentOppsummering}
@@ -104,7 +112,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         person,
         søknad,
         godkjenteSteg: state.summary.godkjenteSteg,
-        perioder: state.uttaksplan.uttaksplan.perioder,
+        perioder: state.søknad.uttaksplan,
         kvittering: state.api.kvittering,
         stegProps
     };

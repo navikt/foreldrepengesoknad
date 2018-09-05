@@ -20,7 +20,7 @@ import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { AnnenForelderStegVisibility, getAnnenForelderVisibility } from './visibility/annenForelderVisibility';
 import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
-import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../util/navigation';
 
 interface StateProps {
