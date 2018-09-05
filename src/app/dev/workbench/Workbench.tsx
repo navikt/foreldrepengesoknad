@@ -67,7 +67,7 @@ class Workbench extends React.Component<Props, State> {
             <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title="Workbench" />
                 <div className="m-gray-block">
-                    <Block margin="l">
+                    <Block margin="m">
                         <Periodeliste perioder={perioder} {...navn} />
                     </Block>
 
