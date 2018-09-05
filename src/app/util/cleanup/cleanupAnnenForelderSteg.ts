@@ -33,7 +33,7 @@ const cleanupAnnenForelder = (state: AppState): Partial<AnnenForelder> => {
         harRettPåForeldrepenger: vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål
             ? harRettPåForeldrepenger
             : undefined,
-        erInformertOmSøknaden: vis.annenForelderOppfølging.erAnnenForelderenInformertSpørsmål
+        erInformertOmSøknaden: vis.annenForelderOppfølging.erAnnenForelderInformertSpørsmål
             ? erInformertOmSøknaden
             : undefined,
         erUfør: vis.annenForelderOppfølging.erMorUførSpørsmål ? erUfør : undefined
