@@ -22,7 +22,7 @@ import { ForeldrepengesøknadResponse } from '../../../types/Foreldrepengesøkna
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
-import MockUttaksplan from '../../../components/mockUttaksplan/MockUttaksplan';
+import MockUttaksplan from '../../../dev/mock-uttaksplan/MockUttaksplan';
 
 interface StateProps {
     person: Person;

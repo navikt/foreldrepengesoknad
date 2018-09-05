@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import ToggleItem from '../toggleItem/ToggleItem';
+import ToggleItem from '../toggle-item/ToggleItem';
 import PeriodeHeader from './PeriodeHeader';
 import PeriodeContent from './PeriodeContent';
 

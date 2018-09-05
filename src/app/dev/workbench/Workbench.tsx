@@ -1,16 +1,15 @@
 import * as React from 'react';
 import DocumentTitle from 'react-document-title';
-import Applikasjonsside from '../Applikasjonsside';
-import Periodeliste from '../../../components/periodeliste/Periodeliste';
-import { opprettUttaksperioderToForeldreEttBarn } from '../../../util/uttaksplan/forslag/toForeldreEttBarn';
-import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
-
-import { AppState } from '../../../redux/reducers';
-import Søknad from '../../../types/s\u00F8knad/S\u00F8knad';
-import { connect } from 'react-redux';
+import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
+import { opprettUttaksperioderToForeldreEttBarn } from '../../util/uttaksplan/forslag/toForeldreEttBarn';
+import Uttaksoppsummering, { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
+import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
+import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { DispatchProps } from 'common/redux/types';
-import { StønadskontoType } from '../../../types/uttaksplan/periodetyper';
-import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
+import Applikasjonsside from '../../connected-components/sider/Applikasjonsside';
+import Periodeliste from '../../components/periodeliste/Periodeliste';
+import { AppState } from '../../redux/reducers';
+import { connect } from 'react-redux';
 
 interface StateProps {
     søknad: Søknad;
