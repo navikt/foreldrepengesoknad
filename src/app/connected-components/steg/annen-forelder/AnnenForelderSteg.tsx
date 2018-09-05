@@ -44,7 +44,7 @@ class AnnenForelderSteg extends React.Component<Props> {
 
     cleanupSteg() {
         const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.søknad, this.props.søkerinfo);
-        this.props.dispatch(søknadActionCreators.updateAnnenForelder(annenForelder));
+        this.props.dispatch(søknadActionCreators.setAnnenForelder(annenForelder));
         this.props.dispatch(søknadActionCreators.updateBarn(barn));
     }
 

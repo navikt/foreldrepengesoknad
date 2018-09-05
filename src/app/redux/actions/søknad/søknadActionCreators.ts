@@ -47,6 +47,11 @@ const updateAnnenForelder = (payload: AnnenForelderPartial) => ({
     payload
 });
 
+const setAnnenForelder = (payload: AnnenForelderPartial) => ({
+    type: SøknadActionKeys.SET_ANNEN_FORELDER,
+    payload
+});
+
 const updateUtenlandsopphold = (payload: InformasjonOmUtenlandsoppholdPartial): UpdateUtenlandsopphold => ({
     type: SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD,
     payload
@@ -120,6 +125,7 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
 
 export default {
     updateAnnenForelder,
+    setAnnenForelder,
     updateBarn,
     updateSøknadenGjelderBarn,
     updateUtenlandsopphold,
