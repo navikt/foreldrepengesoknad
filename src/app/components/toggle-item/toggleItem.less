@@ -1,0 +1,44 @@
+@import '../../../common/styles/variables';
+.toggleItem {
+    &__header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+        border-radius: 0.25rem;
+        background-color: white;
+        text-decoration: none;
+        color: @navMorkGra;
+
+        &__content {
+            width: 90%;
+            flex-grow: 2;
+        }
+        &__arrow {
+            min-width: 2rem;
+            flex-grow: 0;
+            display: block;
+            text-align: right;
+            padding-right: 1rem;
+        }
+        /** Ekspanderbart panel styles */
+        &:hover {
+            box-shadow: #b7b1a9 0 2px 1px 0;
+            color: @navBla;
+            * {
+                color: @navBla;
+            }
+        }
+        &:focus {
+            box-shadow: 0 0 0px 3px #ffbd66;
+            outline: none;
+        }
+    }
+    &__content {
+        position: relative;
+        z-index: 1;
+    }
+}

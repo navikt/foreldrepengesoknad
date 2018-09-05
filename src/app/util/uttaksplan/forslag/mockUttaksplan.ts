@@ -1,6 +1,6 @@
 import { Barn, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Uttaksperiode, Utsettelsesperiode } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
 import { opprettUttaksperioderToForeldreEttBarn } from './toForeldreEttBarn';
@@ -12,7 +12,7 @@ const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date |
     return undefined;
 };
 
-export const lagMockUttaksplan = (søknad: Søknad): Periode[] => {
+export const lagMockUttaksplan = (søknad: Søknad): Array<Uttaksperiode | Utsettelsesperiode> => {
     const { søker, barn, situasjon } = søknad;
 
     if (søknad.situasjon === Søkersituasjon.FØDSEL) {
@@ -21,7 +21,7 @@ export const lagMockUttaksplan = (søknad: Søknad): Periode[] => {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
                 return opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
             }
-            if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
+            if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
                 return opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
             }
         }
