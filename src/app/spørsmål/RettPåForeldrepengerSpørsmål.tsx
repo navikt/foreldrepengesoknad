@@ -28,7 +28,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'andreForelderenRettPåForeldrepenger.spørsmål', { navn })}
+            legend={getMessage(intl, 'annenForelderenRettPåForeldrepenger.spørsmål', { navn })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
@@ -39,7 +39,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
                     value: AnnenForelder.HAR_IKKE_RETT_PÅ_FORELDREPENGER
                 }
             ]}
-            name="andreForelderenRettPåForeldrepenger"
+            name="annenForelderenRettPåForeldrepenger"
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: AnnenForelder) =>
                 onChange(v === AnnenForelder.HAR_RETT_PÅ_FORELDREPENGER)
             }
