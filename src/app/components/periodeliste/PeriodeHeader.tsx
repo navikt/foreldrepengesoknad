@@ -1,18 +1,18 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplanIkon/UttaksplanIkon';
+import { måned, måned3bokstaver } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
+import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
+import StønadskontoIkon from '../periodeikon/St\u00F8nadskontoIkon';
+import UtsettelseIkon from '../periodeikon/UtsettelseIkon';
+import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplanIkon/UttaksplanIkon';
 
 import './periodeheader.less';
-import { måned, måned3bokstaver } from 'common/util/datoUtils';
-import StønadskontoIkon from '../periodeikon/St\u00F8nadskontoIkon';
-import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
-import UtsettelseIkon from '../periodeikon/UtsettelseIkon';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -30,7 +30,10 @@ export interface Props {
 const BEM = BEMHelper('periodeheader');
 
 const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
-    return UttaksplanIkonKeys.advarsel;
+    if (advarsel.type === 'advarsel') {
+        return UttaksplanIkonKeys.advarsel;
+    }
+    return UttaksplanIkonKeys.advarsel; // Feilikon mangler
 };
 
 const getPeriodeTittel = (periode: Periode, foreldernavn: string): string => {
