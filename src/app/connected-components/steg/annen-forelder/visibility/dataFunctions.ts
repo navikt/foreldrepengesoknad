@@ -3,7 +3,7 @@ import { Søker } from '../../../../types/søknad/Søker';
 import Person, { RegistrertAnnenForelder } from '../../../../types/Person';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 
-const getHarDenAndreForelderenOpplystOmSinPågåendeSak = (registrertAnnenForelder: RegistrertAnnenForelder): boolean => {
+const getHarAnnenForelderOpplystOmSinPågåendeSak = (registrertAnnenForelder: RegistrertAnnenForelder): boolean => {
     return registrertAnnenForelder !== undefined && registrertAnnenForelder.harOpplystOmSinPågåendeSak === true;
 };
 
@@ -16,7 +16,7 @@ const getErFarEllerMedmor = (søker: Søker, person: Person): boolean => {
 };
 
 export const AnnenForelderDataFunctions = {
-    getHarDenAndreForelderenOpplystOmSinPågåendeSak,
+    getHarAnnenForelderOpplystOmSinPågåendeSak,
     getGjelderAdopsjonAvEktefellesBarn,
     getErFarEllerMedmor
 };

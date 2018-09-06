@@ -63,9 +63,9 @@ describe('AnnenForelder visibility tests', () => {
                 expect(func.visErMorUførSpørsmål({ harRettPåForeldrepenger: true }, false)).toBeFalsy();
             });
 
-            it('Should render erDenAndreForelderenInformertSpørsmål depending on aleneomsorg, harRettPåForeldrepenger, visFarEllerMedmor bolk and visOmsorgsovertakelseVedlegg', () => {
+            it('Should render erAnnenForelderInformertSpørsmål depending on aleneomsorg, harRettPåForeldrepenger, visFarEllerMedmor bolk and visOmsorgsovertakelseVedlegg', () => {
                 expect(
-                    func.visErDenAndreForelderenInformertSpørsmål(
+                    func.visErAnnenForelderInformertSpørsmål(
                         { erAleneOmOmsorg: false },
                         { harRettPåForeldrepenger: false },
                         true,
@@ -73,7 +73,7 @@ describe('AnnenForelder visibility tests', () => {
                     )
                 ).toBeTruthy();
                 expect(
-                    func.visErDenAndreForelderenInformertSpørsmål(
+                    func.visErAnnenForelderInformertSpørsmål(
                         { erAleneOmOmsorg: false },
                         { harRettPåForeldrepenger: true },
                         true,
@@ -81,21 +81,19 @@ describe('AnnenForelder visibility tests', () => {
                     )
                 ).toBeTruthy();
                 expect(
-                    func.visErDenAndreForelderenInformertSpørsmål(
+                    func.visErAnnenForelderInformertSpørsmål(
                         { erAleneOmOmsorg: true },
                         { harRettPåForeldrepenger: false },
                         true,
                         true
                     )
                 ).toBeFalsy();
+                expect(func.visErAnnenForelderInformertSpørsmål({ erAleneOmOmsorg: true }, {}, true, true)).toBeFalsy();
                 expect(
-                    func.visErDenAndreForelderenInformertSpørsmål({ erAleneOmOmsorg: true }, {}, true, true)
+                    func.visErAnnenForelderInformertSpørsmål({ erAleneOmOmsorg: false }, {}, true, false)
                 ).toBeFalsy();
                 expect(
-                    func.visErDenAndreForelderenInformertSpørsmål({ erAleneOmOmsorg: false }, {}, true, false)
-                ).toBeFalsy();
-                expect(
-                    func.visErDenAndreForelderenInformertSpørsmål({ erAleneOmOmsorg: false }, {}, false, false)
+                    func.visErAnnenForelderInformertSpørsmål({ erAleneOmOmsorg: false }, {}, false, false)
                 ).toBeFalsy();
             });
 
