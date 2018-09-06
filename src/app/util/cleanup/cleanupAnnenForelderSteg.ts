@@ -31,17 +31,17 @@ export const cleanupAnnenForelder = (
     } = annenForelder;
 
     const kanOppgis = (visProp: boolean) => {
-        if (kanIkkeOppgis) {
+        if (kanIkkeOppgis === true) {
             return false;
         }
         return visProp;
     };
 
-    return {
+    const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
         kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
-        navn: kanOppgis(vis.fødselsnummerInput) ? navn : undefined,
-        fnr: kanOppgis(vis.fødselsnummerInput) ? fnr : undefined,
+        navn: kanOppgis(true) ? navn : undefined,
+        fnr: kanOppgis(true) ? fnr : undefined,
         utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
         bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
         skalHaForeldrepenger: kanOppgis(vis.skalFarEllerMedmorHaForeldrepengerSpørsmål)
@@ -51,6 +51,7 @@ export const cleanupAnnenForelder = (
         erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
         erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
     };
+    return cleanedAnnenForelder;
 };
 
 export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
