@@ -56,11 +56,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 ...state,
                 annenForelder: { ...state.annenForelder, ...action.payload }
             };
-        case SøknadActionKeys.SET_ANNEN_FORELDER:
-            return {
-                ...state,
-                annenForelder: { ...action.payload }
-            };
         case SøknadActionKeys.UPDATE_UTENLANDSOPPHOLD:
             return {
                 ...state,

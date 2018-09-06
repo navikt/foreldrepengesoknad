@@ -10,7 +10,8 @@ interface CleanedAnnenForelderSteg {
 }
 
 export const cleanupAnnenForelder = (søknad: Partial<Søknad>, søkerinfo: Søkerinfo): Partial<AnnenForelder> => {
-    if (!søknad.annenForelder) {
+    const { annenForelder } = søknad;
+    if (!annenForelder) {
         return {};
     }
 
@@ -18,59 +19,50 @@ export const cleanupAnnenForelder = (søknad: Partial<Søknad>, søkerinfo: Søk
     if (!vis) {
         return {};
     }
-
-    if (søknad.annenForelder.kanIkkeOppgis) {
-        return {
-            erForSyk: søknad.annenForelder.erForSyk,
-            kanIkkeOppgis: true
-        };
-    }
-
     const {
+        navn,
+        fnr,
         bostedsland,
+        utenlandskFnr,
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
         skalHaForeldrepenger,
         erUfør,
         kanIkkeOppgis,
-        utenlandskFnr,
         ...rest
-    } = søknad.annenForelder;
+    } = annenForelder;
 
-    const annenForelder: Partial<AnnenForelder> = { ...rest };
+    const kanOppgis = (visProp: boolean) => {
+        if (kanIkkeOppgis) {
+            return false;
+        }
+        return visProp;
+    };
 
-    if (vis.annenForelderPersonaliaPart && utenlandskFnr) {
-        annenForelder.utenlandskFnr = utenlandskFnr;
-        annenForelder.bostedsland = bostedsland;
-    }
-
-    if (vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål) {
-        annenForelder.harRettPåForeldrepenger = harRettPåForeldrepenger;
-    }
-
-    if (vis.personalia.annenForelderKanIkkeOppgisValg && kanIkkeOppgis) {
-        annenForelder.kanIkkeOppgis = kanIkkeOppgis;
-    }
-    if (vis.annenForelderOppfølging.skalFarEllerMedmorHaForeldrepengerSpørsmål) {
-        annenForelder.skalHaForeldrepenger = skalHaForeldrepenger;
-    }
-    if (vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål) {
-        annenForelder.harRettPåForeldrepenger = harRettPåForeldrepenger;
-    }
-    if (vis.annenForelderOppfølging.erAnnenForelderInformertSpørsmål) {
-        annenForelder.erInformertOmSøknaden = erInformertOmSøknaden;
-    }
-    if (vis.annenForelderOppfølging.erMorUførSpørsmål) {
-        annenForelder.erUfør = erUfør;
-    }
-
-    return annenForelder;
+    return {
+        ...rest,
+        kanIkkeOppgis: vis.personalia.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
+        navn: kanOppgis(vis.personalia.fødselsnummerInput) ? navn : undefined,
+        fnr: kanOppgis(vis.personalia.fødselsnummerInput) ? fnr : undefined,
+        utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
+        bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
+        skalHaForeldrepenger: kanOppgis(vis.annenForelderOppfølging.skalFarEllerMedmorHaForeldrepengerSpørsmål)
+            ? skalHaForeldrepenger
+            : undefined,
+        harRettPåForeldrepenger: kanOppgis(vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål)
+            ? harRettPåForeldrepenger
+            : undefined,
+        erInformertOmSøknaden: kanOppgis(vis.annenForelderOppfølging.erAnnenForelderInformertSpørsmål)
+            ? erInformertOmSøknaden
+            : undefined,
+        erUfør: kanOppgis(vis.annenForelderOppfølging.erMorUførSpørsmål) ? erUfør : undefined
+    };
 };
 
 export const cleanupAnnenForelderBarn = (søknad: Partial<Søknad>, søkerinfo: Søkerinfo): Partial<Barn> => {
     const vis = getAnnenForelderVisibility(søknad, søkerinfo!);
     if (!vis) {
-        return {};
+        return søknad.barn!;
     }
     const { barn } = søknad;
     if (!vis.annenForelderOppfølging.omsorgsovertakelseDatoSpørsmål) {

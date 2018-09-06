@@ -69,19 +69,15 @@ const søkerinfo: Søkerinfo = {
     registrerteBarn: []
 };
 
-const hasExpectedProperties = (af: Partial<AnnenForelder>, expectedProps: string[]): boolean => {
-    const props = Object.getOwnPropertyNames(af);
-    if (props.length !== expectedProps.length) {
-        return false;
-    }
-    let hasAllProps = true;
-    props.forEach((s) => {
-        const hasProp = expectedProps.find((p) => p === s) !== undefined;
-        if (!hasProp) {
-            hasAllProps = false;
-        }
-    });
-    return hasAllProps;
+const hasOnlyIncludedPropsSet = (annenForelderProps: Partial<AnnenForelder>, propsToInclude: string[]): boolean => {
+    const props = Object.getOwnPropertyNames(annenForelderProps);
+    return (
+        props.find((prop) => {
+            const value = annenForelderProps[prop];
+            const shouldBeIncluded = propsToInclude.find((includedProp) => includedProp === prop) !== undefined;
+            return shouldBeIncluded ? true : value === undefined;
+        }) !== undefined
+    );
 };
 
 const runCleanUp = (s: SøknadPartial) => {
@@ -108,7 +104,7 @@ describe('Cleanup søknad.annenForelder', () => {
             });
             it('far skal ikke ha foreldrepenger', () => {
                 expect(
-                    hasExpectedProperties(runCleanUp(testSøknad), [
+                    hasOnlyIncludedPropsSet(runCleanUp(testSøknad), [
                         'fnr',
                         'navn',
                         'skalHaForeldrepenger',
@@ -125,7 +121,7 @@ describe('Cleanup søknad.annenForelder', () => {
                     }
                 };
                 expect(
-                    hasExpectedProperties(runCleanUp(testSøknad), [
+                    hasOnlyIncludedPropsSet(runCleanUp(testSøknad), [
                         'fnr',
                         'navn',
                         'skalHaForeldrepenger',
@@ -148,7 +144,7 @@ describe('Cleanup søknad.annenForelder', () => {
             });
             it('far HAR IKKE rett på foreldrepenger', () => {
                 expect(
-                    hasExpectedProperties(runCleanUp(testSøknad), [
+                    hasOnlyIncludedPropsSet(runCleanUp(testSøknad), [
                         'fnr',
                         'navn',
                         'harRettPåForeldrepenger',
@@ -165,7 +161,7 @@ describe('Cleanup søknad.annenForelder', () => {
                     }
                 };
                 expect(
-                    hasExpectedProperties(runCleanUp(testSøknad), [
+                    hasOnlyIncludedPropsSet(runCleanUp(testSøknad), [
                         'fnr',
                         'navn',
                         'harRettPåForeldrepenger',
@@ -191,7 +187,9 @@ describe('Cleanup søknad.annenForelder', () => {
         });
         it('Beholder kun kanIkkeOppgis når søker ikke kan oppgi annen forelder', () => {
             testSøknad.annenForelder.kanIkkeOppgis = true;
-            expect(hasExpectedProperties(runCleanUp(testSøknad), ['kanIkkeOppgis', ...propsOutsideSteg])).toBeTruthy();
+            expect(
+                hasOnlyIncludedPropsSet(runCleanUp(testSøknad), ['kanIkkeOppgis', ...propsOutsideSteg])
+            ).toBeTruthy();
         });
     });
 });
