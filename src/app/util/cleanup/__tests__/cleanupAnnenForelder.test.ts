@@ -111,10 +111,7 @@ describe('Cleanup søknad.annenForelder', () => {
     it('should not set any data when annenForelderKanIkkeOppgis is true', () => {
         const testVis: AnnenForelderStegVisibility = {
             ...visibility,
-            personalia: {
-                ...visibility.personalia,
-                annenForelderKanIkkeOppgisValg: true
-            }
+            annenForelderKanIkkeOppgisValg: true
         };
         const res = runCleanUpAnnenForelder(
             {

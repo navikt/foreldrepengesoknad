@@ -3,12 +3,12 @@ import { AnnenForelderDataFunctions as df } from './dataFunctions';
 import Søknad from '../../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 
-export interface AnnenForelderStegPersonaliaVisibility {
+export interface AnnenForelderStegVisibility {
+    registrertAnnenForelderBolk: boolean;
+    annenForelderPersonaliaPart: boolean;
+    annenForelderOppfølgingPart: boolean;
     annenForelderKanIkkeOppgisValg: boolean;
     fødselsnummerInput: boolean;
-}
-
-export interface AnnenForelderOppfølgingVisibility {
     skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
     erMorUførSpørsmål: boolean;
@@ -17,14 +17,6 @@ export interface AnnenForelderOppfølgingVisibility {
     farEllerMedmorBolk: boolean;
     omsorgsovertakelseVedleggSpørsmål: boolean;
     infoOmOmsorgsovertakelse: boolean;
-}
-
-export interface AnnenForelderStegVisibility {
-    registrertAnnenForelderBolk: boolean;
-    annenForelderPersonaliaPart: boolean;
-    annenForelderOppfølgingPart: boolean;
-    personalia: AnnenForelderStegPersonaliaVisibility;
-    annenForelderOppfølging: AnnenForelderOppfølgingVisibility;
 }
 
 export const getAnnenForelderVisibility = (
@@ -84,19 +76,15 @@ export const getAnnenForelderVisibility = (
         registrertAnnenForelderBolk,
         annenForelderPersonaliaPart,
         annenForelderOppfølgingPart,
-        personalia: {
-            annenForelderKanIkkeOppgisValg,
-            fødselsnummerInput
-        },
-        annenForelderOppfølging: {
-            skalFarEllerMedmorHaForeldrepengerSpørsmål,
-            harRettPåForeldrepengerSpørsmål,
-            erMorUførSpørsmål,
-            farEllerMedmorBolk,
-            erAnnenForelderInformertSpørsmål,
-            omsorgsovertakelseDatoSpørsmål,
-            omsorgsovertakelseVedleggSpørsmål,
-            infoOmOmsorgsovertakelse
-        }
+        annenForelderKanIkkeOppgisValg,
+        fødselsnummerInput,
+        skalFarEllerMedmorHaForeldrepengerSpørsmål,
+        harRettPåForeldrepengerSpørsmål,
+        erMorUførSpørsmål,
+        farEllerMedmorBolk,
+        erAnnenForelderInformertSpørsmål,
+        omsorgsovertakelseDatoSpørsmål,
+        omsorgsovertakelseVedleggSpørsmål,
+        infoOmOmsorgsovertakelse
     };
 };

@@ -39,26 +39,22 @@ export const cleanupAnnenForelder = (
 
     return {
         ...rest,
-        kanIkkeOppgis: vis.personalia.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
-        navn: kanOppgis(vis.personalia.fødselsnummerInput) ? navn : undefined,
-        fnr: kanOppgis(vis.personalia.fødselsnummerInput) ? fnr : undefined,
+        kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
+        navn: kanOppgis(vis.fødselsnummerInput) ? navn : undefined,
+        fnr: kanOppgis(vis.fødselsnummerInput) ? fnr : undefined,
         utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
         bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
-        skalHaForeldrepenger: kanOppgis(vis.annenForelderOppfølging.skalFarEllerMedmorHaForeldrepengerSpørsmål)
+        skalHaForeldrepenger: kanOppgis(vis.skalFarEllerMedmorHaForeldrepengerSpørsmål)
             ? skalHaForeldrepenger
             : undefined,
-        harRettPåForeldrepenger: kanOppgis(vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål)
-            ? harRettPåForeldrepenger
-            : undefined,
-        erInformertOmSøknaden: kanOppgis(vis.annenForelderOppfølging.erAnnenForelderInformertSpørsmål)
-            ? erInformertOmSøknaden
-            : undefined,
-        erUfør: kanOppgis(vis.annenForelderOppfølging.erMorUførSpørsmål) ? erUfør : undefined
+        harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
+        erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
+        erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
     };
 };
 
 export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (!vis.annenForelderOppfølging.omsorgsovertakelseDatoSpørsmål) {
+    if (!vis.omsorgsovertakelseDatoSpørsmål) {
         return {
             ...barn,
             foreldreansvarsdato: undefined

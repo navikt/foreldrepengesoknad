@@ -77,14 +77,11 @@ class AnnenForelderSteg extends React.Component<Props> {
                     </Block>
                     <React.Fragment>
                         {vis.annenForelderPersonaliaPart && (
-                            <AnnenForelderPersonaliaPart
-                                søkersFødselsnummer={søkersFødselsnummer}
-                                vis={vis.personalia}
-                            />
+                            <AnnenForelderPersonaliaPart søkersFødselsnummer={søkersFødselsnummer} vis={vis} />
                         )}
                         {vis.annenForelderOppfølgingPart && (
                             <AnnenForelderOppfølgingPart
-                                vis={vis.annenForelderOppfølging}
+                                vis={vis}
                                 registrertAnnenForelder={registrertAnnenForelder}
                                 erFarEllerMedmor={erSøkerFarEllerMedmor}
                             />
