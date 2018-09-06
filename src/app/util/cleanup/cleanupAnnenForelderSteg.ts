@@ -1,5 +1,5 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { getAnnenForelderVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
+import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
 import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
 import { Søkerinfo } from '../../types/søkerinfo';
 import Søknad from '../../types/søknad/Søknad';
@@ -9,14 +9,12 @@ interface CleanedAnnenForelderSteg {
     barn: Partial<Barn>;
 }
 
-export const cleanupAnnenForelder = (søknad: Partial<Søknad>, søkerinfo: Søkerinfo): Partial<AnnenForelder> => {
+export const cleanupAnnenForelder = (
+    vis: AnnenForelderStegVisibility,
+    søknad: Partial<Søknad>
+): Partial<AnnenForelder> => {
     const { annenForelder } = søknad;
     if (!annenForelder) {
-        return {};
-    }
-
-    const vis = getAnnenForelderVisibility(søknad, søkerinfo!);
-    if (!vis) {
         return {};
     }
     const {
@@ -59,12 +57,7 @@ export const cleanupAnnenForelder = (søknad: Partial<Søknad>, søkerinfo: Søk
     };
 };
 
-export const cleanupAnnenForelderBarn = (søknad: Partial<Søknad>, søkerinfo: Søkerinfo): Partial<Barn> => {
-    const vis = getAnnenForelderVisibility(søknad, søkerinfo!);
-    if (!vis) {
-        return søknad.barn!;
-    }
-    const { barn } = søknad;
+export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
     if (!vis.annenForelderOppfølging.omsorgsovertakelseDatoSpørsmål) {
         return {
             ...barn,
@@ -77,10 +70,14 @@ export const cleanupAnnenForelderBarn = (søknad: Partial<Søknad>, søkerinfo: 
     };
 };
 
-const cleanupAnnenForelderSteg = (søknad: Partial<Søknad>, søkerinfo: Søkerinfo): CleanedAnnenForelderSteg => {
+const cleanupAnnenForelderSteg = (
+    vis: AnnenForelderStegVisibility,
+    søknad: Partial<Søknad>,
+    søkerinfo: Søkerinfo
+): CleanedAnnenForelderSteg => {
     return {
-        annenForelder: cleanupAnnenForelder(søknad, søkerinfo!),
-        barn: cleanupAnnenForelderBarn(søknad, søkerinfo!)
+        annenForelder: cleanupAnnenForelder(vis, søknad),
+        barn: søknad.barn ? cleanupAnnenForelderBarn(vis, søknad.barn) : {}
     };
 };
 
