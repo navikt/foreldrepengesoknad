@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { PeriodePartial, UttaksperiodePartial } from '../../types/uttaksplan/periodetyper';
+import { Periode, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import { TidsperiodePartial } from 'common/types';
 import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
 import EtikettLiten from 'nav-frontend-typografi/lib/etikett-liten';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
+import { RecursivePartial } from '../../types/Partial';
 
 interface Props {
-    periode: UttaksperiodePartial;
-    onChange: (periode: PeriodePartial) => void;
+    periode: RecursivePartial<Uttaksperiode>;
+    onChange: (periode: RecursivePartial<Periode>) => void;
 }
 
-const NyUttaksperiodeForm = (props: Props) => {
+const UttaksperiodeForm = (props: Props) => {
     const { periode, onChange } = props;
     const { tidsperiode } = periode;
-    const bem = BEMHelper('nyPeriodeForm');
+    const bem = BEMHelper('periodeForm');
 
     return (
         <React.Fragment>
@@ -29,4 +30,4 @@ const NyUttaksperiodeForm = (props: Props) => {
     );
 };
 
-export default NyUttaksperiodeForm;
+export default UttaksperiodeForm;

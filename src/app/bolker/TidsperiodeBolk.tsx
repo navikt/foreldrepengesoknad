@@ -47,38 +47,42 @@ class TidsperiodeBolk extends React.Component<Props> {
 
         return (
             <div className={bem.className}>
-                <Block margin="none">
-                    <DatoInput
-                        id="fraDatoInput"
-                        label={getMessage(intl, 'fraogmed')}
-                        onChange={(fom: Date) => {
-                            this.handleOnChange({
-                                ...tidsperiode,
-                                fom
-                            });
-                        }}
-                        dato={tidsperiode.fom}
-                        avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
-                        validators={datoValidatorer && datoValidatorer.fra}
-                    />
-                </Block>
+                <div className={bem.element('fra')}>
+                    <Block margin="none">
+                        <DatoInput
+                            id="fraDatoInput"
+                            label={getMessage(intl, 'fraogmed')}
+                            onChange={(fom: Date) => {
+                                this.handleOnChange({
+                                    ...tidsperiode,
+                                    fom
+                                });
+                            }}
+                            dato={tidsperiode.fom}
+                            avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
+                            validators={datoValidatorer && datoValidatorer.fra}
+                        />
+                    </Block>
+                </div>
 
-                <Block margin="none">
-                    <DatoInput
-                        id="tilDatoInput"
-                        label={getMessage(intl, 'tilogmed')}
-                        onChange={(tom: Date) => {
-                            this.handleOnChange({
-                                ...tidsperiode,
-                                tom
-                            });
-                        }}
-                        dato={tidsperiode.tom}
-                        disabled={false || sluttdatoDisabled}
-                        avgrensninger={datoAvgrensninger && datoAvgrensninger.til}
-                        validators={datoValidatorer && datoValidatorer.til}
-                    />
-                </Block>
+                <div className={bem.element('til')}>
+                    <Block margin="none">
+                        <DatoInput
+                            id="tilDatoInput"
+                            label={getMessage(intl, 'tilogmed')}
+                            onChange={(tom: Date) => {
+                                this.handleOnChange({
+                                    ...tidsperiode,
+                                    tom
+                                });
+                            }}
+                            dato={tidsperiode.tom}
+                            disabled={false || sluttdatoDisabled}
+                            avgrensninger={datoAvgrensninger && datoAvgrensninger.til}
+                            validators={datoValidatorer && datoValidatorer.til}
+                        />
+                    </Block>
+                </div>
             </div>
         );
     }
