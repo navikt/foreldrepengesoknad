@@ -1,6 +1,6 @@
 import { BarnPartial, FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 
-const cleanup = (barn: BarnPartial, gjelderAnnentBarn?: boolean): BarnPartial => {
+const cleanupRelasjonTilBarnFødselSteg = (barn: BarnPartial, gjelderAnnentBarn?: boolean): BarnPartial => {
     const { termindato, terminbekreftelse, terminbekreftelseDato } = barn as UfødtBarn;
     const { fødselsdatoer, fødselsattest } = barn as FødtBarn;
 
@@ -12,12 +12,6 @@ const cleanup = (barn: BarnPartial, gjelderAnnentBarn?: boolean): BarnPartial =>
         fødselsdatoer:
             barn.erBarnetFødt || (gjelderAnnentBarn === true && barn.erBarnetFødt) ? fødselsdatoer : undefined,
         fødselsattest: barn.erBarnetFødt ? fødselsattest : undefined
-    };
-};
-
-const cleanupRelasjonTilBarnFødselSteg = (barn: BarnPartial, gjelderAnnentBarn?: boolean): BarnPartial => {
-    return {
-        ...cleanup(barn, gjelderAnnentBarn)
     };
 };
 export default cleanupRelasjonTilBarnFødselSteg;
