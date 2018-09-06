@@ -33,7 +33,7 @@ class IntlProvider extends React.Component<StateProps> {
                       ...nnMessagesCommon
                   };
         return (
-            <Provider locale="nb" messages={messages || {}}>
+            <Provider key={this.props.språkkode} locale={this.props.språkkode} messages={messages || {}}>
                 {this.props.children}
             </Provider>
         );
