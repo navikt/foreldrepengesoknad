@@ -15,22 +15,17 @@ const fødtBarnErGyldig = (barn: FødtBarn) => {
 };
 
 const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
-    const {
-        fødselsdatoer,
-        adopsjonsdato,
-        adopsjonAvEktefellesBarn,
-        adoptertIUtlandet,
-        ankomstdato,
-        omsorgsovertakelse
-    } = barn;
+    const { fødselsdatoer, adopsjonsdato, adopsjonAvEktefellesBarn, adoptertIUtlandet, ankomstdato } = barn;
+    const adopsjonAvEktefellesBarnTruthy = adopsjonAvEktefellesBarn !== undefined && adopsjonAvEktefellesBarn;
+    const adoptertIUtlandetTruthy = adoptertIUtlandet !== undefined && adoptertIUtlandet;
 
     return (
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== undefined &&
-        adopsjonsdato &&
-        (adopsjonAvEktefellesBarn || adoptertIUtlandet === false || (adoptertIUtlandet && ankomstdato !== undefined)) &&
-        omsorgsovertakelse !== undefined &&
-        omsorgsovertakelse.length > 0
+        adopsjonsdato !== undefined &&
+        (adopsjonAvEktefellesBarnTruthy ||
+            adoptertIUtlandet === false ||
+            (adoptertIUtlandetTruthy && ankomstdato !== undefined))
     );
 };
 
