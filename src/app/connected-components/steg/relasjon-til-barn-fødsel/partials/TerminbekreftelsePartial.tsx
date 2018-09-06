@@ -10,28 +10,29 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
-import { DispatchProps } from 'common/redux/types';
+import { DispatchProps } from 'common/redux/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 
 export interface OwnProps {
     barn: UfødtBarn;
     terminbekreftelse: Attachment[];
+    vis: RelasjonTilBarnUfødtVisibility;
 }
 
 export type Props = OwnProps & InjectedIntlProps & DispatchProps;
 
 const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
-    const { terminbekreftelse, barn, intl, dispatch } = props;
-    const validerDatofelt = terminbekreftelse && terminbekreftelse.length > 0;
+    const { barn, terminbekreftelse, intl, dispatch, vis } = props;
+    const validerDatofelt = barn.terminbekreftelse && barn.terminbekreftelse.length > 0;
     return (
         <React.Fragment>
             <Block margin="xs">
                 <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
             </Block>
             <Block
-                visible={props.barn.termindato !== undefined}
                 header={{
                     title: getMessage(intl, 'vedlegg.tittel.terminbekreftelse')
                 }}>
@@ -49,7 +50,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                     }}
                 />
             </Block>
-            <Block visible={terminbekreftelse.length > 0 && barn.termindato !== undefined}>
+            <Block visible={vis.terminbekreftelseDato}>
                 <DatoInput
                     id="terminbekreftelseDato"
                     name="terminbekreftelseDato"

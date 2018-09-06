@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import Steg, { StegProps } from 'app/components/steg/Steg';
-import FødtBarnPartial from './partials/FødtBarnPartial';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 
@@ -21,12 +20,18 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../util/isAvailable';
-import { barnErGyldig, skalSøkerLasteOppTerminbekreftelse } from '../../../util/validation/steg/barn';
+import { barnErGyldig } from '../../../util/validation/steg/barn';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
+import cleanupRelasjonTilBarnFødselSteg from '../../../util/cleanup/relasjonTilBarn/cleanupRelasjonTilBarnFødselSteg';
+import {
+    getRelasjonTilBarnFødselVisibility,
+    RelasjonTilBarnFødselStegVisibility
+} from './visibility/relasjonTilBarnFødselVisibility';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import FødtBarnPartial from './partials/FødtBarnPartial';
 
 interface RelasjonTilBarnFødselStegProps {
     person: Person;
@@ -38,12 +43,23 @@ interface RelasjonTilBarnFødselStegProps {
     terminbekreftelse: Attachment[];
     fødselsattest: Attachment[];
     stegProps: StegProps;
-    skalLasteOppTerminbekreftelse: boolean;
+    vis: RelasjonTilBarnFødselStegVisibility;
 }
 
 type Props = RelasjonTilBarnFødselStegProps & InjectedIntlProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
 class RelasjonTilBarnFødselSteg extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.cleanupSteg = this.cleanupSteg.bind(this);
+    }
+
+    cleanupSteg() {
+        const { barn, vis, søknadenGjelderBarnValg, dispatch } = this.props;
+        const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
+        dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, vis, gjelderAnnetBarn)));
+    }
+
     render() {
         const {
             barn,
@@ -55,15 +71,15 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             registrerteBarn,
             søknadenGjelderBarnValg,
             stegProps,
-            skalLasteOppTerminbekreftelse,
+            vis,
             dispatch
         } = this.props;
 
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
 
         return (
-            <Steg {...stegProps}>
-                <Block visible={registrerteBarn.length > 0} margin="none">
+            <Steg {...stegProps} preSubmit={this.cleanupSteg}>
+                <Block visible={vis.hvilketBarnGjelderSøknadenBolk} margin="none">
                     <HvilkeBarnGjelderSøknadenBolk
                         søknadenGjelderBarnValg={søknadenGjelderBarnValg}
                         registrerteBarn={registrerteBarn}
@@ -72,10 +88,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block
-                    margin="none"
-                    hasChildBlocks={true}
-                    visible={gjelderAnnetBarn === true || registrerteBarn.length === 0}>
+                <Block margin="none" hasChildBlocks={true} visible={vis.erBarnetFødt}>
                     <Block>
                         <ErBarnetFødtSpørsmål
                             erBarnetFødt={barn.erBarnetFødt}
@@ -88,29 +101,33 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             }
                         />
                     </Block>
-                    {barn.erBarnetFødt === true && (
+                    {vis.fødtBarnPart && (
                         <FødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
                             fødselsattest={fødselsattest || []}
+                            gjelderAnnetBarn={gjelderAnnetBarn}
+                            registrerteBarn={registrerteBarn}
+                            vis={vis.født}
                         />
                     )}
                     {barn.erBarnetFødt === false &&
-                        !erFarEllerMedmor(person.kjønn, søker.rolle) && (
-                            <UfødtBarnPartial
-                                dispatch={dispatch}
-                                barn={barn as UfødtBarn}
-                                annenForelder={annenForelder}
-                                skalLasteOppTerminbekreftelse={skalLasteOppTerminbekreftelse}
-                                søker={søker}
-                                erFarEllerMedmor={erFarEllerMedmor(person.kjønn, søker.rolle)}
-                                terminbekreftelse={terminbekreftelse || []}
-                            />
-                        )}
-                    {barn.erBarnetFødt === false &&
                         erFarEllerMedmor(person.kjønn, søker.rolle) && (
-                            <Veilederinfo>Litt info her om hva som er galt</Veilederinfo>
+                            <Veilederinfo>
+                                Info. kan ikke søke før etter at barnet er født, unntak ved sykdom
+                            </Veilederinfo>
                         )}
+                    {vis.ufødtBarnPart && (
+                        <UfødtBarnPartial
+                            dispatch={dispatch}
+                            barn={barn as UfødtBarn}
+                            annenForelder={annenForelder}
+                            søker={søker}
+                            erFarEllerMedmor={erFarEllerMedmor(person.kjønn, søker.rolle)}
+                            terminbekreftelse={terminbekreftelse || []}
+                            vis={vis.ufødt}
+                        />
+                    )}
                 </Block>
             </Steg>
         );
@@ -120,10 +137,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { person, registrerteBarn = [] } = props.søkerinfo;
     const { barn, temp, søker, annenForelder } = state.søknad;
-    const fødselsattest = (barn as FødtBarn).fødselsattest;
-    const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse;
-
-    const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(state.søknad, props.søkerinfo);
+    const fødselsattest = (barn as FødtBarn).fødselsattest || [];
+    const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
 
     const stegProps: StegProps = {
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
@@ -131,6 +146,8 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
         isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo)
     };
+
+    const vis = getRelasjonTilBarnFødselVisibility(state.søknad, state.api);
 
     return {
         søker,
@@ -141,8 +158,8 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         barn,
         terminbekreftelse,
         fødselsattest,
-        skalLasteOppTerminbekreftelse,
-        stegProps
+        stegProps,
+        vis
     };
 };
 
