@@ -75,181 +75,92 @@ const søkerinfo: Søkerinfo = {
     registrerteBarn: []
 };
 
-const hasOnlyIncludedProps = (
-    annenForelderProps: Partial<AnnenForelder>,
-    propsToInclude: Partial<AnnenForelder>
-): boolean => {
+const propsSetOutsideSteg: string[] = ['erForSyk'];
+
+const hasOnlyIncludedProps = (annenForelderProps: Partial<AnnenForelder>, propsToInclude: string[]): boolean => {
     const props = Object.getOwnPropertyNames(annenForelderProps);
-    return (
-        props.find((prop) => {
-            const shouldBeIncluded =
-                Object.keys(propsToInclude).find((includedProp) => includedProp === prop) !== undefined;
-            if (shouldBeIncluded) {
-                return false;
-            }
-            return annenForelderProps[prop] !== undefined;
-        }) === undefined
-    );
+    const propsWithValue = props.filter((p) => annenForelderProps[p] !== undefined);
+    return JSON.stringify(propsToInclude.sort()) === JSON.stringify(propsWithValue.sort());
 };
 
-const visibility = getAnnenForelderVisibility(søknad as Søknad, søkerinfo)!;
-
-const runCleanUpAnnenForelder = (
-    s: SøknadPartial,
-    visibilityPartial?: AnnenForelderStegVisibility
-): Partial<AnnenForelder> => {
-    return cleanupAnnenForelder(visibilityPartial ? { ...visibility, ...visibilityPartial } : visibility, s as Søknad);
+const runCleanUpAnnenForelder = (s: SøknadPartial, visibility: AnnenForelderStegVisibility): Partial<AnnenForelder> => {
+    return cleanupAnnenForelder(visibility, s as Søknad);
 };
 
-const testSøknad: SøknadPartial = {
-    ...søknad
+const cleanAndCheckProps = (s: SøknadPartial, visibility: AnnenForelderStegVisibility, props: string[]) => {
+    return hasOnlyIncludedProps(runCleanUpAnnenForelder(søknad, visibility), [...props, ...propsSetOutsideSteg]);
 };
 
-describe('Cleanup søknad.annenForelder', () => {
-    const propsSetOutsideSteg: Partial<AnnenForelder> = { erForSyk: false };
+let testSøknad: SøknadPartial;
+let testVisibility: AnnenForelderStegVisibility;
 
-    it('should not set any data when annenForelderKanIkkeOppgis is true', () => {
-        const testVis: AnnenForelderStegVisibility = {
-            ...visibility,
+describe('Cleanup AnnenForelder', () => {
+    testSøknad = { ...søknad };
+
+    describe('Alenemor, fødsel', () => {
+        describe('Med registrert annen forelder', () => {
+            testSøknad = { ...søknad };
+            describe('Har IKKE aleneomsorg', () => {
+                it('far har IKKE rett på foreldrepenger', () => {
+                    testVisibility = {
+                        ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                        harRettPåForeldrepengerSpørsmål: true
+                    };
+                    expect(
+                        cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'harRettPåForeldrepenger'])
+                    ).toBeTruthy();
+                });
+                it('far HAR rett på foreldrepenger', () => {
+                    testVisibility = {
+                        ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                        harRettPåForeldrepengerSpørsmål: true,
+                        erAnnenForelderInformertSpørsmål: true
+                    };
+                    expect(
+                        cleanAndCheckProps(testSøknad, testVisibility, [
+                            'navn',
+                            'fnr',
+                            'harRettPåForeldrepenger',
+                            'erInformertOmSøknaden'
+                        ])
+                    ).toBeTruthy();
+                });
+            });
+        });
+        describe('HAR aleneomsorg', () => {
+            it('far skal IKKE ha foreldrepenger', () => {
+                testVisibility = {
+                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                    skalFarEllerMedmorHaForeldrepengerSpørsmål: true,
+                    harRettPåForeldrepengerSpørsmål: false
+                };
+                expect(
+                    cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'skalHaForeldrepenger'])
+                ).toBeTruthy();
+            });
+            it('far SKAL ha foreldrepenger', () => {
+                testVisibility = {
+                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                    skalFarEllerMedmorHaForeldrepengerSpørsmål: true,
+                    harRettPåForeldrepengerSpørsmål: true
+                };
+                expect(
+                    cleanAndCheckProps(testSøknad, testVisibility, [
+                        'navn',
+                        'fnr',
+                        'skalHaForeldrepenger',
+                        'harRettPåForeldrepenger'
+                    ])
+                ).toBeTruthy();
+            });
+        });
+    });
+    it('Skal fjerne alt når annen forelder ikke kan oppgis', () => {
+        testSøknad.annenForelder.kanIkkeOppgis = true;
+        testVisibility = {
+            ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
             annenForelderKanIkkeOppgisValg: true
         };
-        const res = runCleanUpAnnenForelder(
-            {
-                ...testSøknad,
-                annenForelder: {
-                    ...testSøknad.annenForelder,
-                    kanIkkeOppgis: true
-                }
-            },
-            testVis
-        );
-        expect(hasOnlyIncludedProps(res, { kanIkkeOppgis: true, ...propsSetOutsideSteg })).toBeTruthy();
-        expect(res.kanIkkeOppgis).toBeTruthy();
+        expect(cleanAndCheckProps(testSøknad, testVisibility, ['kanIkkeOppgis'])).toBeTruthy();
     });
-
-    // describe('Situation: fødsel, role: mor, registrert barn, registrert annen forelder', () => {
-    //     describe('when aleneomsorg: true', () => {
-    //         beforeEach(() => {
-    //             testSøknad = {
-    //                 ...søknad,
-    //                 søker: {
-    //                     ...søknad.søker,
-    //                     erAleneOmOmsorg: true
-    //                 }
-    //             };
-    //         });
-    //         it('far skal ikke ha foreldrepenger', () => {
-    //             expect(
-    //                 hasOnlyIncludedPropsSet(runCleanUpSøknad(testSøknad), [
-    //                     'fnr',
-    //                     'navn',
-    //                     'skalHaForeldrepenger',
-    //                     ...propsOutsideSteg
-    //                 ])
-    //             ).toBeTruthy();
-    //         });
-    //         it('far skal ha foreldrepenger', () => {
-    //             testSøknad = {
-    //                 ...testSøknad,
-    //                 annenForelder: {
-    //                     ...testSøknad.annenForelder,
-    //                     skalHaForeldrepenger: true
-    //                 }
-    //             };
-    //             expect(
-    //                 hasOnlyIncludedPropsSet(runCleanUpSøknad(testSøknad), [
-    //                     'fnr',
-    //                     'navn',
-    //                     'skalHaForeldrepenger',
-    //                     'harRettPåForeldrepenger',
-    //                     ...propsOutsideSteg
-    //                 ])
-    //             ).toBeTruthy();
-    //         });
-    //     });
-
-    //     describe('when aleneomsorg: false', () => {
-    //         beforeEach(() => {
-    //             testSøknad = {
-    //                 ...søknad,
-    //                 søker: {
-    //                     ...søknad.søker,
-    //                     erAleneOmOmsorg: false
-    //                 }
-    //             };
-    //         });
-    //         it('far HAR IKKE rett på foreldrepenger', () => {
-    //             expect(
-    //                 hasOnlyIncludedPropsSet(runCleanUpSøknad(testSøknad), [
-    //                     'fnr',
-    //                     'navn',
-    //                     'harRettPåForeldrepenger',
-    //                     ...propsOutsideSteg
-    //                 ])
-    //             ).toBeTruthy();
-    //         });
-    //         it('far HAR rett på foreldrepenger', () => {
-    //             testSøknad = {
-    //                 ...testSøknad,
-    //                 annenForelder: {
-    //                     ...testSøknad.annenForelder,
-    //                     harRettPåForeldrepenger: true
-    //                 }
-    //             };
-    //             expect(
-    //                 hasOnlyIncludedPropsSet(runCleanUpSøknad(testSøknad), [
-    //                     'fnr',
-    //                     'navn',
-    //                     'harRettPåForeldrepenger',
-    //                     'erInformertOmSøknaden',
-    //                     ...propsOutsideSteg
-    //                 ])
-    //             ).toBeTruthy();
-    //         });
-    //     });
-    // });
-    // describe('AnnenForelder personalia', () => {
-    //     beforeEach(() => {
-    //         testSøknad = {
-    //             ...søknad,
-    //             temp: {
-    //                 ...testSøknad.temp,
-    //                 søknadenGjelderBarnValg: {
-    //                     ...testSøknad.temp.søknadenGjelderBarnValg,
-    //                     gjelderAnnetBarn: true
-    //                 }
-    //             }
-    //         };
-    //     });
-    //     it('Beholder kun kanIkkeOppgis når søker ikke kan oppgi annen forelder', () => {
-    //         testSøknad.annenForelder.kanIkkeOppgis = true;
-    //         expect(
-    //             hasOnlyIncludedPropsSet(runCleanUpSøknad(testSøknad), ['kanIkkeOppgis', ...propsOutsideSteg])
-    //         ).toBeTruthy();
-    //     });
-    // });
 });
-
-// describe('Cleanup søknad.annenForelder barn modifications', () => {
-//     beforeEach(() => {
-//         testSøknad = {
-//             ...søknad,
-//             søker: {
-//                 ...søknad.søker,
-//                 rolle: SøkerRolle.FAR
-//             }
-//         };
-//     });
-//     it('should not keep omsorgsovertakelseDato when omsorgsovertakelseDatoSpørsmål is hidden (!farEllerMedmorBolk is visible)', () => {
-//         const søkerinfoPartial = {
-//             ...søkerinfo,
-//             person: {
-//                 ...søkerinfo.person,
-//                 kjønn: Kjønn.KVINNE
-//             }
-//         };
-//         const vis = getAnnenForelderVisibility(testSøknad as Søknad, søkerinfoPartial);
-//         const cleanedBarn = cleanupAnnenForelderBarn(testSøknad as Søknad, søkerinfoPartial) as ForeldreansvarBarn;
-//         // expect(cleanedBarn.omsorgsovertakelse).toBeUndefined();
-//     });
-// });
