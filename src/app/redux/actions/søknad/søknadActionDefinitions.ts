@@ -9,7 +9,6 @@ import { Periode } from '../../../types/uttaksplan/periodetyper';
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
 export enum SøknadActionKeys {
-    'SET_ANNEN_FORELDER' = 'setAnnenForelder',
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
     'UPLOAD_ATTACHMENT' = 'uploadAttachment',
@@ -41,11 +40,6 @@ export interface UpdateBarn {
 
 export interface UpdateAnnenForelder {
     type: SøknadActionKeys.UPDATE_ANNEN_FORELDER;
-    payload: AnnenForelderPartial;
-}
-
-export interface SetAnnenForelder {
-    type: SøknadActionKeys.SET_ANNEN_FORELDER;
     payload: AnnenForelderPartial;
 }
 
@@ -131,7 +125,6 @@ export type SøknadAction =
     | UpdateBarn
     | UpdateSøknadenGjelder
     | UpdateAnnenForelder
-    | SetAnnenForelder
     | UpdateUtenlandsopphold
     | UpdateSøker
     | UpdateSøkerAndStorage
