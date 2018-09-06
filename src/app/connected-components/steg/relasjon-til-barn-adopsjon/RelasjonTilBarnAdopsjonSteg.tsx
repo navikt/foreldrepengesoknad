@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { StegID } from '../../../util/routing/stegConfig';
+import stegConfig, { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import søknadActions from './../../../redux/actions/søknad/søknadActionCreators';
 import AntallBarnBolk from '../../../bolker/AntallBarnBolk';
@@ -18,13 +18,17 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
+import visibility from './visibility';
+import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
+import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
+import { apiActionCreators } from '../../../redux/actions';
+import { søknadStegPath } from '../StegRoutes';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -36,6 +40,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
+        this.handleOnSubmit = this.handleOnSubmit.bind(this);
 
         if (props.barn.antallBarn) {
             props.dispatch(
@@ -56,24 +61,20 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         );
     }
 
+    handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
+        const { dispatch, history, barn } = this.props;
+        if (event.target === stegForm) {
+            dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
+            dispatch(apiActionCreators.storeAppState());
+            history.push(`${søknadStegPath(stegConfig[StegID.RELASJON_TIL_BARN_ADOPSJON].nesteSteg)}`);
+        }
+    }
+
     render() {
         const { barn, dispatch, stegProps, intl } = this.props;
 
-        const utfyltFødselsdatoer = fødselsdatoerErFyltUt(barn.fødselsdatoer);
-        const visSpørsmålOmAdopsjonsdato = barn.adopsjonAvEktefellesBarn !== undefined;
-        const visSpørsmålOmAntallBarn = barn.adopsjonsdato !== undefined;
-        const visSpørsmålOmFødselsdatoer = visSpørsmålOmAntallBarn && barn.antallBarn !== undefined;
-        const visSpørsmålOmAdoptertIUtlandet =
-            !barn.adopsjonAvEktefellesBarn && visSpørsmålOmFødselsdatoer && utfyltFødselsdatoer;
-        const visSpørsmålOmAnkomstdato = barn.adopsjonAvEktefellesBarn === false && barn.adoptertIUtlandet === true;
-        const utfyltAdoptertIUtlandet =
-            visSpørsmålOmAdoptertIUtlandet &&
-            ((barn.adoptertIUtlandet && barn.ankomstdato !== undefined) || barn.adoptertIUtlandet === false);
-        const visSpørsmålOmVedlegg =
-            utfyltAdoptertIUtlandet || (barn.adopsjonAvEktefellesBarn === true && utfyltFødselsdatoer);
-
         return (
-            <Steg {...stegProps}>
+            <Steg onSubmit={this.handleOnSubmit} {...stegProps}>
                 <Block>
                     <AdopsjonAvEktefellesBarnSpørsmål
                         adopsjonAvEktefellesBarn={barn.adopsjonAvEktefellesBarn}
@@ -87,7 +88,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmAdopsjonsdato}>
+                <Block visible={visibility.spørsmålOmAdopsjonsdato(barn)}>
                     <DatoInput
                         id="adopsjonsdato"
                         label={getMessage(
@@ -105,7 +106,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmAntallBarn}>
+                <Block visible={visibility.spørsmålOmAntallBarn(barn)}>
                     <AntallBarnBolk
                         spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
                         inputName="antallBarn"
@@ -114,7 +115,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmFødselsdatoer}>
+                <Block visible={visibility.spørsmålOmFødselsdatoer(barn)}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         fødselsdatoAvgrensninger={{
@@ -130,7 +131,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmAdoptertIUtlandet}>
+                <Block visible={visibility.spørsmålOmAdoptertIUtlandet(barn)}>
                     <AdoptertIUtlandetSpørsmål
                         adoptertIUtlandet={barn.adoptertIUtlandet}
                         onChange={(adoptertIUtlandet) =>
@@ -143,7 +144,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visSpørsmålOmAnkomstdato}>
+                <Block visible={visibility.spørsmålOmAnkomstdato(barn)}>
                     <DatoInput
                         id="ankomstdato"
                         name="ankomstdato"
@@ -160,7 +161,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 </Block>
 
                 <Block
-                    visible={visSpørsmålOmVedlegg}
+                    visible={visibility.spørsmålOmVedlegg(barn)}
                     header={{
                         title: getMessage(
                             intl,
