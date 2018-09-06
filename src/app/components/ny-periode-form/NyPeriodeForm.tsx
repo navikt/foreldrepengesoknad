@@ -1,16 +1,11 @@
 import * as React from 'react';
-import {
-    Periode,
-    PeriodePartial,
-    Periodetype,
-    UtsettelsesperiodePartial,
-    UttaksperiodePartial
-} from '../../types/uttaksplan/periodetyper';
-import NyUtsettelsesperiodeForm from '../ny-utsettelsesperiode-form/NyUtsettelsesperiodeForm';
-import NyUttaksperiodeForm from '../ny-uttaksperiode-form/NyUttaksperiodeForm';
+import { Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
+import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
+import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Knapp } from 'nav-frontend-knapper';
+import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 
 interface Props {
@@ -20,10 +15,10 @@ interface Props {
 }
 
 interface State {
-    periode: PeriodePartial;
+    periode: RecursivePartial<Periode>;
 }
 
-const emptyPeriode: PeriodePartial = { tidsperiode: {} };
+const emptyPeriode: RecursivePartial<Periode> = { tidsperiode: {} };
 
 export default class NyPeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -36,9 +31,13 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
-    updatePeriode(periode: PeriodePartial) {
+    updatePeriode(periode: RecursivePartial<Periode>) {
+        const updatedPeriode = {
+            ...this.state.periode,
+            ...periode
+        };
         this.setState({
-            periode
+            periode: updatedPeriode as RecursivePartial<Periode>
         });
     }
 
@@ -57,24 +56,22 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
         const { periode } = this.state;
 
         return (
-            <form
-                className={`nyPeriodeForm nyPeriodeForm--${periodetype.toLowerCase()}`}
-                onSubmit={this.handleOnSubmit}>
+            <form className={`periodeForm periodeForm--${periodetype.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
                 {periodetype === Periodetype.Utsettelse && (
-                    <NyUtsettelsesperiodeForm
-                        periode={periode as UtsettelsesperiodePartial}
+                    <UtsettelsesperiodeForm
+                        periode={periode as Partial<Utsettelsesperiode>}
                         onChange={this.updatePeriode}
                     />
                 )}
                 {periodetype === Periodetype.Uttak && (
-                    <NyUttaksperiodeForm periode={periode as UttaksperiodePartial} onChange={this.updatePeriode} />
+                    <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />
                 )}
 
                 <Knapperad>
-                    <Hovedknapp>Legg til</Hovedknapp>
                     <Knapp htmlType="button" onClick={onCancel}>
                         Avbryt
                     </Knapp>
+                    <Knapp htmlType="submit">Legg til</Knapp>
                 </Knapperad>
             </form>
         );
