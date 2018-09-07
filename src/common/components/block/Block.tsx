@@ -50,7 +50,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
         ) : (
             <div className={contentClass}>{children}</div>
         );
-    return content;
+    return visible === true || visible === undefined ? content : null;
 };
 
 export default Block;
