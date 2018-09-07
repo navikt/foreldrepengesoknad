@@ -5,7 +5,6 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
 import { AppState } from '../reducers';
-import summaryActionCreators from '../actions/summary/summaryActionCreators';
 
 function* saveAppState() {
     try {
@@ -25,7 +24,6 @@ function* saveAppState() {
 function* applyStoredStateToApp(state: AppState) {
     yield put(søknadActions.updateSøknad(state.søknad));
     yield put(commonActions.setSpråk(state.common.språkkode));
-    yield put(summaryActionCreators.updateSummary(state.summary));
     yield put(
         apiActions.updateApi({
             isLoadingAppState: false
