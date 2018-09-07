@@ -109,7 +109,7 @@ class SøknadSendtSide extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-    person: state.api.person,
+    person: state.api.søkerinfo.person,
     kvittering: state.api.kvittering
 });
 
