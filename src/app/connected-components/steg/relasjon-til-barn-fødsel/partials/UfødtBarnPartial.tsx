@@ -5,7 +5,7 @@ import MorForSykSpørsmål from '../../../../spørsmål/MorForSykSpørsmål';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AntallBarnBolk from '../../../../bolker/AntallBarnBolk';
-import { DispatchProps } from 'common/redux/types';
+import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
@@ -14,35 +14,28 @@ import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/v
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
+import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
     terminbekreftelse: Attachment[];
-    skalLasteOppTerminbekreftelse: boolean;
     erFarEllerMedmor: boolean;
+    vis: RelasjonTilBarnUfødtVisibility;
 }
 
 type Props = UfødtBarnPartialProps & InjectedIntlProps & DispatchProps;
 
 class UfødtBarnPartial extends React.Component<Props> {
     render() {
-        const {
-            barn,
-            annenForelder,
-            terminbekreftelse,
-            skalLasteOppTerminbekreftelse,
-            erFarEllerMedmor,
-            dispatch,
-            intl
-        } = this.props;
+        const { barn, terminbekreftelse, annenForelder, erFarEllerMedmor, dispatch, intl, vis } = this.props;
 
         const erMorEllerMorErForSyk = !erFarEllerMedmor || annenForelder.erForSyk === true;
 
         return (
             <React.Fragment>
-                {erFarEllerMedmor && (
+                <Block visible={vis.erMorForSyk}>
                     <MorForSykSpørsmål
                         erMorForSyk={annenForelder.erForSyk}
                         onChange={(erForSyk: boolean) => {
@@ -53,7 +46,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             );
                         }}
                     />
-                )}
+                </Block>
 
                 {annenForelder.erForSyk === false && (
                     <Veilederinfo type="feil">{getMessage(intl, 'annenForelder.forelder1IkkeSyk')}</Veilederinfo>
@@ -74,7 +67,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                             spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
                         />
 
-                        <Block visible={barn.antallBarn !== undefined}>
+                        <Block visible={vis.termindato}>
                             <DatoInput
                                 id="termindato"
                                 name="termindato"
@@ -92,11 +85,12 @@ class UfødtBarnPartial extends React.Component<Props> {
                             />
                         </Block>
 
-                        {skalLasteOppTerminbekreftelse && barn.termindato !== undefined ? (
+                        {vis.terminbekreftelse ? (
                             <TerminbekreftelsePartial
                                 barn={barn}
-                                terminbekreftelse={terminbekreftelse}
                                 dispatch={dispatch}
+                                terminbekreftelse={terminbekreftelse}
+                                vis={vis}
                             />
                         ) : null}
                     </React.Fragment>

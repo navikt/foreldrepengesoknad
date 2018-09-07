@@ -6,17 +6,22 @@ import AntallBarnBolk from '../../../../bolker/AntallBarnBolk';
 import { FødtBarn } from '../../../../types/søknad/Barn';
 import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpørsmål';
 
-import { DispatchProps } from 'common/redux/types';
+import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import Block from 'common/components/block/Block';
 import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { RegistrertBarn } from '../../../../types/Person';
+import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
 
 interface StateProps {
     barn: FødtBarn;
     fødselsattest: Attachment[];
+    registrerteBarn: RegistrertBarn[];
+    gjelderAnnetBarn?: boolean;
+    vis: RelasjonTilBarnFødtVisibility;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProps;
@@ -27,7 +32,7 @@ class FødtBarnPartial extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: [props.barn.fødselsdatoer[0]]
+                fødselsdatoer: [props.barn.fødselsdatoer[0] || null]
             })
         );
     }
@@ -37,13 +42,13 @@ class FødtBarnPartial extends React.Component<Props> {
             søknadActions.updateBarn({
                 ...this.props.barn,
                 antallBarn: antall,
-                fødselsdatoer: [this.props.barn.fødselsdatoer[0]]
+                fødselsdatoer: [this.props.barn.fødselsdatoer[0] || null]
             })
         );
     }
 
     render() {
-        const { intl, dispatch, barn, fødselsattest } = this.props;
+        const { intl, dispatch, barn, fødselsattest, vis } = this.props;
         return (
             <React.Fragment>
                 <AntallBarnBolk
@@ -52,7 +57,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     antallBarn={barn.antallBarn}
                     onChange={this.oppdaterAntallBarn}
                 />
-                <Block visible={barn.antallBarn !== undefined}>
+                <Block visible={vis.fødselsdatoer}>
                     <FødselsdatoerSpørsmål
                         collapsed={true}
                         fødselsdatoer={barn.fødselsdatoer}
@@ -66,8 +71,7 @@ class FødtBarnPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                {barn.fødselsdatoer.length > 0 &&
-                barn.fødselsdatoer.every((fødselsdato: Date) => fødselsdato instanceof Date) ? (
+                {vis.fødselsattest ? (
                     <React.Fragment>
                         <Block margin="xs">
                             <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.fødselsattest')}</Veilederinfo>
