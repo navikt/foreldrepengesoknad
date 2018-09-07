@@ -268,6 +268,12 @@
     "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
     "dokumentasjon.mangler": "Dokumentasjon mangler",
 
+    "spørsmål.dekningsgrad.100": "49 uker med 100% foreldrepenger",
+    "spørsmål.dekningsgrad.80": "59 uker med 80% foreldrepenger",
+    "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger ønsker dere?",
+    "spørsmål.dekningsgrad.label--aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
+    "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere ved å velge 100 prosent",
+
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",

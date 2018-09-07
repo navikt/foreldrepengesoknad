@@ -6,6 +6,7 @@ import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
+import { Dekningsgrad } from 'common/types';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -45,6 +46,7 @@ interface Søknad {
     uttaksplan: Periode[];
     søker: Søker;
     vedlegg?: Attachment[];
+    dekningsgrad: Dekningsgrad;
     temp: SkjemaEkstradata;
 }
 
@@ -59,6 +61,7 @@ export interface SøknadPartial {
     uttaksplan: Periode[];
     søker: SøkerPartial;
     vedlegg?: Attachment[];
+    dekningsgrad?: Dekningsgrad;
     temp: SkjemaEkstradata;
 }
 

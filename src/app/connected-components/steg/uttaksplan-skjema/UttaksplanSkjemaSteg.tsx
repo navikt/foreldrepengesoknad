@@ -10,21 +10,38 @@ import isAvailable from '../util/isAvailable';
 
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplaSkjema';
+import DekningsgradSpørsmål from '../../../sp\u00F8rsm\u00E5l/DekningsgradSp\u00F8rsm\u00E5l';
+import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
+import Block from 'common/components/block/Block';
+import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } from './uttaksplanSkjemaVisibility';
 
 interface StateProps {
     stegProps: StegProps;
+    søknad: SøknadPartial;
+    vis: UttaksplanSkjemaStegVisibility;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     render() {
-        const { stegProps } = this.props;
-        return <Steg {...stegProps}>Uttaksplan skjema</Steg>;
+        const { søknad, vis, stegProps, dispatch } = this.props;
+        return (
+            <Steg {...stegProps}>
+                <Block visible={vis.visDekningsgradSpørsmål}>
+                    <DekningsgradSpørsmål
+                        dekningsgrad={søknad.dekningsgrad}
+                        erAleneomsorg={søknad.søker.erAleneOmOmsorg}
+                        onChange={(dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad }))}
+                    />
+                </Block>
+            </Steg>
+        );
     }
 }
 
-const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps) => {
+const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps): StateProps => {
     const { history } = props;
 
     const stegProps: StegProps = {
@@ -35,7 +52,9 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     };
 
     return {
-        stegProps
+        stegProps,
+        søknad: state.søknad,
+        vis: getUttaksplanSkjemaStegVisibility(state.søknad)
     };
 };
 
