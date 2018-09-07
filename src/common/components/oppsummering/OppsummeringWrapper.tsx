@@ -4,12 +4,12 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import getMessage from 'common/util/i18nUtils';
 import Person from '../../../app/types/Person';
 import Søknad from '../../../app/types/søknad/Søknad';
-import { StegID } from 'app/util/routing/stegConfig';
 import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
 import OppsummeringRelasjonTilBarnFødsel from 'common/components/oppsummering/steg/OppsummeringRelasjonTilBarnFødsel';
 import { formaterNavn } from 'app/util/domain/personUtil';
-import EkspanderbartOppsummeringsPanel from '../../../common/components/ekspanderbart-oppsummeringspanel/EkspanderbartOppsummeringspanel';
 import OppsummeringAnnenForelder from 'common/components/oppsummering/steg/OppsummeringAnnenForelder';
+import Block from 'common/components/block/Block';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 import './oppsummering.less';
 
@@ -17,22 +17,25 @@ interface OppsummeringProps {
     className?: string;
     person: Person;
     søknad: Søknad;
-    confirmSteg: (type: string) => void;
-    godkjenteSteg: {};
+}
+
+interface State {
+    relasjonTilBarnSummaryOpen: boolean;
+    annenForelderSummaryOpen: boolean;
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
-class OppsummeringWrapper extends React.Component<Props> {
+class OppsummeringWrapper extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-    }
-
-    onOppsummeringExpand(stegID: StegID) {
-        this.props.confirmSteg(stegID);
+        this.state = {
+            relasjonTilBarnSummaryOpen: false,
+            annenForelderSummaryOpen: false
+        };
     }
 
     render() {
-        const { className, person, søknad, godkjenteSteg, intl } = this.props;
+        const { className, person, søknad, intl } = this.props;
         return (
             <div className={className}>
                 <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
@@ -43,26 +46,30 @@ class OppsummeringWrapper extends React.Component<Props> {
                         kjønn={person.kjønn}
                     />
 
-                    <EkspanderbartOppsummeringsPanel
-                        steg={StegID.RELASJON_TIL_BARN_FØDSEL}
-                        checked={godkjenteSteg[StegID.RELASJON_TIL_BARN_FØDSEL]}
-                        tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
-                        onClick={(stegID: StegID) => this.onOppsummeringExpand(stegID)}
-                        render={() => <OppsummeringRelasjonTilBarnFødsel barn={søknad.barn} />}
-                    />
+                    <Block animated={false}>
+                        <Ekspanderbartpanel
+                            tittel={getMessage(intl, 'oppsummering.relasjonTilBarn')}
+                            tittelProps={'undertittel'}
+                            onClick={() =>
+                                this.setState({ relasjonTilBarnSummaryOpen: !this.state.relasjonTilBarnSummaryOpen })
+                            }>
+                            <OppsummeringRelasjonTilBarnFødsel barn={søknad.barn} />
+                        </Ekspanderbartpanel>
+                    </Block>
 
-                    <EkspanderbartOppsummeringsPanel
-                        steg={StegID.ANNEN_FORELDER}
-                        checked={godkjenteSteg[StegID.ANNEN_FORELDER]}
-                        tittel={getMessage(intl, 'oppsummering.annenForelder')}
-                        onClick={(stegID: StegID) => this.onOppsummeringExpand(stegID)}
-                        render={() => (
+                    <Block animated={false}>
+                        <Ekspanderbartpanel
+                            tittel={getMessage(intl, 'oppsummering.annenForelder')}
+                            tittelProps={'undertittel'}
+                            onClick={() =>
+                                this.setState({ annenForelderSummaryOpen: !this.state.annenForelderSummaryOpen })
+                            }>
                             <OppsummeringAnnenForelder
                                 annenForelder={søknad.annenForelder}
                                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             />
-                        )}
-                    />
+                        </Ekspanderbartpanel>
+                    </Block>
                 </div>
             </div>
         );
