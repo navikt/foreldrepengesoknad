@@ -59,6 +59,11 @@ export interface Utsettelsesperiode extends PeriodeBase {
     helligdager?: Helligdag[];
 }
 
+export interface UtsettelsePgaArbeid extends Utsettelsesperiode {
+    årsak: UtsettelseÅrsakType.Arbeid;
+    stillingsprosent: string;
+}
+
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;

@@ -17,6 +17,14 @@
 
     "tilbake": "Tilbake",
 
+    "heltid": "Heltid",
+    "deltid": "Deltid",
+
+    "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
+    "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken kvote skal benyttes?",
+
+    "stillingsprosent": "Stillingsprosent",
+
     "jegskalhaferie": "Jeg skal ha ferie",
     "jegskaliarbeid": "Jeg skal i arbeid",
     "pgasykdom": "På grunn av sykdom",

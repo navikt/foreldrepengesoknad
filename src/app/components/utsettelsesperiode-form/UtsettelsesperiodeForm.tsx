@@ -4,6 +4,7 @@ import {
     Oppholdsperiode,
     OppholdÅrsakType,
     Periode,
+    UtsettelsePgaArbeid,
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
@@ -20,6 +21,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import AnnenForeldersUttakForm from './partials/AnnenForeldersUttakForm';
+import UtsettelsePgaArbeidForm from './partials/UtsettelsePgaArbeidForm';
 
 interface UtsettelsesperiodeFormProps {
     periode: RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
@@ -124,6 +126,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 </Block>
                 <Block visible={gjelderOpphold}>
                     <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
+                </Block>
+                <Block visible={årsak === UtsettelseÅrsakType.Arbeid}>
+                    <UtsettelsePgaArbeidForm
+                        onChange={(v: UtsettelsePgaArbeid) => onChange(v)}
+                        periode={periode as RecursivePartial<UtsettelsePgaArbeid>}
+                    />
                 </Block>
             </React.Fragment>
         );
