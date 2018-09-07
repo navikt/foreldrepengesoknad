@@ -9,9 +9,12 @@ export const getAktuelleStønadskontoerForSøker = (søknad: Søknad): Stønadsk
     const { rolle } = søker;
     const { harRettPåForeldrepenger, skalHaForeldrepenger } = annenForelder;
 
-    // Hvis søker har aleneomsorg, men annen forelder har rett på og skal ha foreldrepenger: fordel som vanlig
-    // Hvis annen forelder er ukjent, eller ikke har rett på/skal ha foreldrepenger, bruk kun FORELDREPENGER (+FLERBARNSUKER)
     if (rolle === SøkerRolle.MOR) {
+        // Mangler: når erAleneOmsorg === false, blir bruker kun spurt om harRettPåForeldrepenger.
+        // I tilfellet hvor harRettPåForeldrepenger === true, skal Fellesperiode, Mødrekvote og ForeldrepengerFørFødsel
+        // legges til. Hvis harRettPåForeldrepenger === false, kun Foreldrepenger (+ Flerbarnsuker)
+        //
+        // Merk JIRA-sak (BRIS-393) om at disse to spørsmålene skal slåes sammen, så dette bør gjøres sammen med den.
         if (harRettPåForeldrepenger && skalHaForeldrepenger) {
             aktuelleKontoer.push(
                 StønadskontoType.ForeldrepengerFørFødsel,
@@ -22,6 +25,11 @@ export const getAktuelleStønadskontoerForSøker = (søknad: Søknad): Stønadsk
             aktuelleKontoer.push(StønadskontoType.Foreldrepenger);
         }
     } else {
+        // Mangler: når erAleneOmsorg === false, blir bruker kun spurt om harRettPåForeldrepenger.
+        // I tilfellet hvor harRettPåForeldrepenger === true, skal Fellesperiode og Fedrekvote legges til.
+        // Hvis harRettPåForeldrepenger === false, kun Foreldrepenger (+ Flerbarnsuker)
+        //
+        // Merk JIRA-sak (BRIS-393) om at disse to spørsmålene skal slåes sammen, så dette bør gjøres sammen med den.
         if (harRettPåForeldrepenger && skalHaForeldrepenger) {
             aktuelleKontoer.push(StønadskontoType.Fellesperiode, StønadskontoType.Fedrekvote);
         } else {
