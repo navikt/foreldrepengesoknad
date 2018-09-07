@@ -54,7 +54,8 @@ const søknad: SøknadPartial = {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
         },
-        registrertAnnenForelder
+        registrertAnnenForelder,
+        uttaksplan: {}
     },
     uttaksplan: []
 };

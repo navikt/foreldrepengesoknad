@@ -15,7 +15,8 @@ import {
     UttaksplanSetPerioder,
     UttaksplanAddPeriode,
     UttaksplanDeletePeriode,
-    UttaksplanUpdatePeriode
+    UttaksplanUpdatePeriode,
+    UttaksplanUpdateSkjemadata
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -27,7 +28,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, UttaksplanSkjemadata } from '../../../types/søknad/Søknad';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 const updateBarn = (
@@ -64,6 +65,11 @@ const updateSøkerAndStorage = (payload: SøkerPartial): UpdateSøkerAndStorage 
 
 const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
     type: SøknadActionKeys.UPDATE_SØKNAD,
+    payload
+});
+
+const uttaksplanUpdateSkjemdata = (payload: Partial<UttaksplanSkjemadata>): UttaksplanUpdateSkjemadata => ({
+    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA,
     payload
 });
 
@@ -130,6 +136,7 @@ export default {
     uttaksplanAddPeriode,
     uttaksplanDeletePeriode,
     uttaksplanUpdatePeriode,
+    uttaksplanUpdateSkjemdata,
     uploadAttachment,
     uploadAttachmentSuccess,
     uploadAttachmentFailed,

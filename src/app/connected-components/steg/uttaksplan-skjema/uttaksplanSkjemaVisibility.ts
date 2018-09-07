@@ -1,7 +1,8 @@
 import Søknad, { SøkerRolle, Søkersituasjon } from '../../../types/s\u00F8knad/S\u00F8knad';
 
 export interface UttaksplanSkjemaStegVisibility {
-    visDekningsgradSpørsmål: boolean;
+    dekningsgradSpørsmål: boolean;
+    startdatoPermisjonSpørsmål: boolean;
 }
 
 const visDekningsgradSpørsmål = (rolle: SøkerRolle, situasjon: Søkersituasjon): boolean => {
@@ -12,8 +13,11 @@ const visDekningsgradSpørsmål = (rolle: SøkerRolle, situasjon: Søkersituasjo
 };
 
 const getUttaksplanSkjemaStegVisibility = (søknad: Søknad): UttaksplanSkjemaStegVisibility => {
+    const dekningsgradSpørsmål = visDekningsgradSpørsmål(søknad.søker.rolle, søknad.situasjon);
+    const startdatoPermisjonSpørsmål = dekningsgradSpørsmål && søknad.dekningsgrad !== undefined;
     return {
-        visDekningsgradSpørsmål: visDekningsgradSpørsmål(søknad.søker.rolle, søknad.situasjon)
+        dekningsgradSpørsmål,
+        startdatoPermisjonSpørsmål
     };
 };
 

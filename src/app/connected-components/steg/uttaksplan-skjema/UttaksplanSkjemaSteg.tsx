@@ -15,6 +15,7 @@ import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8kna
 import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
 import Block from 'common/components/block/Block';
 import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } from './uttaksplanSkjemaVisibility';
+import StartdatoPermisjonSpørsmål from '../../../sp\u00F8rsm\u00E5l/StartdatoPermisjonSp\u00F8rsm\u00E5l';
 
 interface StateProps {
     stegProps: StegProps;
@@ -29,11 +30,19 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         const { søknad, vis, stegProps, dispatch } = this.props;
         return (
             <Steg {...stegProps}>
-                <Block visible={vis.visDekningsgradSpørsmål}>
+                <Block visible={vis.dekningsgradSpørsmål}>
                     <DekningsgradSpørsmål
                         dekningsgrad={søknad.dekningsgrad}
                         erAleneomsorg={søknad.søker.erAleneOmOmsorg}
                         onChange={(dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad }))}
+                    />
+                </Block>
+                <Block visible={vis.startdatoPermisjonSpørsmål}>
+                    <StartdatoPermisjonSpørsmål
+                        startdato={søknad.temp.uttaksplan.startdatoPermisjon}
+                        onChange={(startdatoPermisjon) =>
+                            dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata({ startdatoPermisjon }))
+                        }
                     />
                 </Block>
             </Steg>

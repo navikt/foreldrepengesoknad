@@ -29,6 +29,9 @@ const getDefaultState = (): SøknadPartial => {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
+            },
+            uttaksplan: {
+                startdatoPermisjon: undefined
             }
         },
         uttaksplan: []
@@ -116,6 +119,19 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 uttaksplan: [...state.uttaksplan.filter((periode) => periode.id !== action.periode.id), action.periode]
+            };
+        }
+
+        case SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA: {
+            return {
+                ...state,
+                temp: {
+                    ...state.temp,
+                    uttaksplan: {
+                        ...state.temp.uttaksplan,
+                        ...action.payload
+                    }
+                }
             };
         }
 
