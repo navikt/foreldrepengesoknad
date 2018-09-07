@@ -30,7 +30,7 @@ const getDefaultState = (): SøknadPartial => {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             },
-            uttaksplan: {
+            uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             }
         },
@@ -127,8 +127,8 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 ...state,
                 temp: {
                     ...state.temp,
-                    uttaksplan: {
-                        ...state.temp.uttaksplan,
+                    uttaksplanSkjema: {
+                        ...state.temp.uttaksplanSkjema,
                         ...action.payload
                     }
                 }
