@@ -1,10 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { Collapse } from 'react-collapse';
-
 import BEMHelper from 'common/util/bem';
-import { collapseSpringConfig } from 'common/util/animationUtils';
-
 import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './block.less';
@@ -41,7 +37,7 @@ const Block: React.StatelessComponent<BlockProps> = ({
     if (children === undefined || (animated !== true && visible === false)) {
         return null;
     }
-    const contentClass = classNames(cls.className, cls.modifier(margin));
+    const contentClass = classNames(cls.className, !hasChildBlocks ? cls.modifier(margin) : cls.modifier('none'));
     const content =
         header !== undefined ? (
             <section className={contentClass}>
@@ -54,18 +50,6 @@ const Block: React.StatelessComponent<BlockProps> = ({
         ) : (
             <div className={contentClass}>{children}</div>
         );
-    const isOpened = visible !== false;
-    if (animated === true) {
-        return (
-            <Collapse
-                springConfig={collapseSpringConfig}
-                isOpened={isOpened}
-                hasNestedCollapse={hasChildBlocks}
-                className={cls.element('collapse')}>
-                {visible !== false ? content : <div />}
-            </Collapse>
-        );
-    }
     return content;
 };
 
