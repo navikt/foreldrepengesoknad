@@ -40,7 +40,7 @@ export interface UttaksplanSkjemadata {
 interface SkjemaEkstradata {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
-    uttaksplan: UttaksplanSkjemadata;
+    uttaksplanSkjema: UttaksplanSkjemadata;
 }
 
 interface Søknad {

@@ -29,7 +29,7 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     render() {
         const { søknad, vis, stegProps, dispatch } = this.props;
-        const { uttaksplan } = søknad.temp;
+        const { uttaksplanSkjema } = søknad.temp;
         return (
             <Steg {...stegProps}>
                 <Block visible={vis.dekningsgradSpørsmål}>
@@ -41,8 +41,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 </Block>
                 <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
                     <StartdatoPermisjonBolk
-                        startdato={uttaksplan.startdatoPermisjon}
-                        skalIkkeHaUttakFørTermin={uttaksplan.skalIkkeHaUttakFørTermin}
+                        startdato={uttaksplanSkjema.startdatoPermisjon}
+                        skalIkkeHaUttakFørTermin={uttaksplanSkjema.skalIkkeHaUttakFørTermin}
                         onDatoChange={(dato) =>
                             dispatch(
                                 søknadActionCreators.uttaksplanUpdateSkjemdata({
@@ -61,9 +61,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block>
+                <Block visible={vis.planlagtOppholdIUttak}>
                     <PlanlagtOppholdIUttakSpørsmål
-                        harPlanlagtOpphold={uttaksplan.harPlanlagtOppholdIUttak}
+                        harPlanlagtOpphold={uttaksplanSkjema.harPlanlagtOppholdIUttak}
                         onChange={(harPlanlagtOppholdIUttak) =>
                             dispatch(
                                 søknadActionCreators.uttaksplanUpdateSkjemdata({
