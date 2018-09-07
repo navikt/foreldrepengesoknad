@@ -1,7 +1,7 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 abstract class BarnBase {
-    antallBarn?: number;
+    antallBarn: number;
     erBarnetFødt: boolean;
 }
 

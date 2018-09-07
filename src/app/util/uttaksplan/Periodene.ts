@@ -1,5 +1,4 @@
 import { isWithinRange, isBefore, isSameDay, isAfter } from 'date-fns';
-import { guid } from 'nav-frontend-js-utils/lib';
 import {
     Periode,
     StønadskontoType,
@@ -35,7 +34,7 @@ export const Periodene = (perioder: Periode[]) => ({
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
     fjernPerioder: (fjernes: Periode[]) => fjernPerioder(perioder, fjernes),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
-    finnOppholdIPerioder: (): Periode[] => finnOppholdMellomPerioder(perioder),
+    // finnOppholdIPerioder: (): Periode[] => finnOppholdMellomPerioder(perioder),
     sort: () => perioder.sort(sorterPerioder)
 });
 
@@ -251,11 +250,7 @@ function getPeriodeMedSammeStartdatoSomPeriode(perioder: Periode[], periode: Per
     return perioder.find((p) => p.id !== periode.id && isSameDay(p.tidsperiode.fom, periode.tidsperiode.fom));
 }
 
-/**
- * Går gjennom alle perioder og finner uttaksdager som
- * ikke tilhører en periode. Oppretter Opphold for disse
- * @param perioder
- */
+/*
 function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
     const opphold: Oppholdsperiode[] = [];
     const len = perioder.length;
@@ -283,7 +278,7 @@ function finnOppholdMellomPerioder(perioder: Periode[]): Oppholdsperiode[] {
         }
     });
     return opphold;
-}
+}*/
 
 function getFørsteOgSisteUttaksdag(perioder: Periode[], inkludertOpphold: boolean): Tidsperiode | undefined {
     const filtrertePerioder = inkludertOpphold ? perioder : perioder.filter((p2) => p2.type !== Periodetype.Opphold);
