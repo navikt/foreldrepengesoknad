@@ -15,7 +15,8 @@ import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8kna
 import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
 import Block from 'common/components/block/Block';
 import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } from './uttaksplanSkjemaVisibility';
-import StartdatoPermisjonSpørsmål from '../../../bolker/StartdatoPermisjonBolk';
+import StartdatoPermisjonBolk from '../../../bolker/StartdatoPermisjonBolk';
+import PlanlagtOppholdIUttakSpørsmål from '../../../sp\u00F8rsm\u00E5l/PlanlagtOppholdIUttakSp\u00F8rsm\u00E5l';
 
 interface StateProps {
     stegProps: StegProps;
@@ -28,6 +29,7 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     render() {
         const { søknad, vis, stegProps, dispatch } = this.props;
+        const { uttaksplan } = søknad.temp;
         return (
             <Steg {...stegProps}>
                 <Block visible={vis.dekningsgradSpørsmål}>
@@ -38,9 +40,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
-                    <StartdatoPermisjonSpørsmål
-                        startdato={søknad.temp.uttaksplan.startdatoPermisjon}
-                        skalIkkeHaUttakFørTermin={søknad.temp.uttaksplan.skalIkkeHaUttakFørTermin}
+                    <StartdatoPermisjonBolk
+                        startdato={uttaksplan.startdatoPermisjon}
+                        skalIkkeHaUttakFørTermin={uttaksplan.skalIkkeHaUttakFørTermin}
                         onDatoChange={(dato) =>
                             dispatch(
                                 søknadActionCreators.uttaksplanUpdateSkjemdata({
@@ -54,6 +56,18 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                                 søknadActionCreators.uttaksplanUpdateSkjemdata({
                                     skalIkkeHaUttakFørTermin: skalIkkeHaUttak,
                                     startdatoPermisjon: undefined
+                                })
+                            )
+                        }
+                    />
+                </Block>
+                <Block>
+                    <PlanlagtOppholdIUttakSpørsmål
+                        harPlanlagtOpphold={uttaksplan.harPlanlagtOppholdIUttak}
+                        onChange={(harPlanlagtOppholdIUttak) =>
+                            dispatch(
+                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                    harPlanlagtOppholdIUttak
                                 })
                             )
                         }

@@ -6,22 +6,7 @@
         "kjønn": "K",
         "fødselsdato": "1997-05-25",
         "land": "NO",
-        "ikkeNordiskEøsLand": false,
-        "barn": [
-            {
-                "fornavn": "BARN",
-                "etternavn": "MORSEN",
-                "fnr": "29031857021",
-                "kjønn": "K",
-                "fødselsdato": "2018-03-29",
-                "annenForelder": {
-                    "fnr": "28019400133",
-                    "fornavn": "FAR",
-                    "etternavn": "FARSEN",
-                    "fødselsdato": "1994-01-28"
-                }
-            }
-        ]
+        "ikkeNordiskEøsLand": false
     },
     "arbeidsforhold": [
         {
