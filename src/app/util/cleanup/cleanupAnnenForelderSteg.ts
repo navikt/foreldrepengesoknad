@@ -1,49 +1,61 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { AppState } from '../../redux/reducers';
-import { getAnnenForelderVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
+import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
 import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
+import { Søkerinfo } from '../../types/søkerinfo';
+import Søknad from '../../types/søknad/Søknad';
 
 interface CleanedAnnenForelderSteg {
     annenForelder: Partial<AnnenForelder>;
     barn: Partial<Barn>;
 }
 
-const cleanupAnnenForelder = (state: AppState): Partial<AnnenForelder> => {
-    const { søknad } = state;
+export const cleanupAnnenForelder = (
+    vis: AnnenForelderStegVisibility,
+    søknad: Partial<Søknad>
+): Partial<AnnenForelder> => {
+    const { annenForelder } = søknad;
+    if (!annenForelder) {
+        return {};
+    }
     const {
         navn,
         fnr,
         bostedsland,
+        utenlandskFnr,
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
         skalHaForeldrepenger,
         erUfør,
+        kanIkkeOppgis,
         ...rest
-    } = søknad.annenForelder;
+    } = annenForelder;
 
-    const vis = getAnnenForelderVisibility(state);
-    return {
+    const kanOppgis = (visProp: boolean) => {
+        if (kanIkkeOppgis === true) {
+            return false;
+        }
+        return visProp;
+    };
+
+    const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
-        navn: vis.personalia.fødselsnummerInput ? navn : undefined,
-        fnr: vis.personalia.fødselsnummerInput ? fnr : undefined,
-        bostedsland: søknad.annenForelder.utenlandskFnr ? bostedsland : undefined,
-        skalHaForeldrepenger: vis.annenForelderOppfølging.skalFarEllerMedmorHaForeldrepengerSpørsmål
+        kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
+        navn: kanOppgis(true) ? navn : undefined,
+        fnr: kanOppgis(true) ? fnr : undefined,
+        utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
+        bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
+        skalHaForeldrepenger: kanOppgis(vis.skalFarEllerMedmorHaForeldrepengerSpørsmål)
             ? skalHaForeldrepenger
             : undefined,
-        harRettPåForeldrepenger: vis.annenForelderOppfølging.harRettPåForeldrepengerSpørsmål
-            ? harRettPåForeldrepenger
-            : undefined,
-        erInformertOmSøknaden: vis.annenForelderOppfølging.erAnnenForelderInformertSpørsmål
-            ? erInformertOmSøknaden
-            : undefined,
-        erUfør: vis.annenForelderOppfølging.erMorUførSpørsmål ? erUfør : undefined
+        harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
+        erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
+        erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
     };
+    return cleanedAnnenForelder;
 };
 
-const cleanupAnnenForelderBarn = (state: AppState): Partial<Barn> => {
-    const vis = getAnnenForelderVisibility(state);
-    const { barn } = state.søknad;
-    if (!vis.annenForelderOppfølging.omsorgsovertakelseDatoSpørsmål) {
+export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
+    if (!vis.omsorgsovertakelseDatoSpørsmål) {
         return {
             ...barn,
             foreldreansvarsdato: undefined
@@ -55,10 +67,14 @@ const cleanupAnnenForelderBarn = (state: AppState): Partial<Barn> => {
     };
 };
 
-const cleanupAnnenForelderSteg = (state: AppState): CleanedAnnenForelderSteg => {
+const cleanupAnnenForelderSteg = (
+    vis: AnnenForelderStegVisibility,
+    søknad: Partial<Søknad>,
+    søkerinfo: Søkerinfo
+): CleanedAnnenForelderSteg => {
     return {
-        annenForelder: cleanupAnnenForelder(state),
-        barn: cleanupAnnenForelderBarn(state)
+        annenForelder: cleanupAnnenForelder(vis, søknad),
+        barn: søknad.barn ? cleanupAnnenForelderBarn(vis, søknad.barn) : {}
     };
 };
 
