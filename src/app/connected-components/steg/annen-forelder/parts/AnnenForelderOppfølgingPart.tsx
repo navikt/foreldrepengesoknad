@@ -20,7 +20,7 @@ import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
 import { formaterNavn } from '../../../../util/domain/personUtil';
-import { AnnenForelderOppfølgingVisibility } from '../visibility/annenForelderVisibility';
+import { AnnenForelderStegVisibility } from '../visibility/annenForelderVisibility';
 import { Søker } from '../../../../types/søknad/Søker';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 
@@ -33,7 +33,7 @@ interface StateProps {
 interface AnnenForelderOppfølgingPartProps {
     registrertAnnenForelder?: RegistrertAnnenForelder;
     erFarEllerMedmor: boolean;
-    vis: AnnenForelderOppfølgingVisibility;
+    vis: AnnenForelderStegVisibility;
 }
 
 type Props = AnnenForelderOppfølgingPartProps & StateProps & InjectedIntlProps & DispatchProps;

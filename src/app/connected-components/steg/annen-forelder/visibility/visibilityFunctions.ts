@@ -23,12 +23,22 @@ const visOmsorgsovertakelse = (barn: Partial<Barn>) => {
     return omsorgsovertakelse !== undefined && omsorgsovertakelse.length > 0;
 };
 
-const visAnnenForelderKanIkkeOppgisValg = (gjelderAdopsjonAvEktefellesBarn: boolean): boolean => {
+const visAnnenForelderKanIkkeOppgisValg = (
+    annenForelderPersonaliaPartVisible: boolean,
+    gjelderAdopsjonAvEktefellesBarn: boolean
+): boolean => {
+    if (!annenForelderPersonaliaPartVisible) {
+        return false;
+    }
     return gjelderAdopsjonAvEktefellesBarn === false;
 };
 
-const visFødselsnummerInput = (annenForelder: Partial<AnnenForelder>) =>
-    annenForelder.navn !== undefined && annenForelder.navn !== '';
+const visFødselsnummerInput = (annenForelderPersonaliaPartVisible: boolean, annenForelder: Partial<AnnenForelder>) => {
+    if (!annenForelderPersonaliaPartVisible) {
+        return false;
+    }
+    return annenForelder.navn !== undefined && annenForelder.navn !== '';
+};
 
 const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = (søker: Partial<Søker>, erFarEllerMedmor: boolean): boolean => {
     return !erFarEllerMedmor && søker.erAleneOmOmsorg === true;
