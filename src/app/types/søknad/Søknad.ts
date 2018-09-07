@@ -7,6 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
+// import { RecursivePartial } from '../Partial';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -30,9 +31,14 @@ export interface SøknadenGjelderBarnValg {
     gjelderAnnetBarn?: boolean;
 }
 
+export interface UttaksplanSkjemadata {
+    startdatoPermisjon?: Date;
+}
+
 interface SkjemaEkstradata {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
+    uttaksplan: UttaksplanSkjemadata;
 }
 
 interface Søknad {
