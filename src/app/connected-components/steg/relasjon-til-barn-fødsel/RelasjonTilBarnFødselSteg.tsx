@@ -55,9 +55,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
     }
 
     cleanupSteg() {
-        const { barn, vis, søknadenGjelderBarnValg, dispatch } = this.props;
+        const { barn, søknadenGjelderBarnValg, dispatch } = this.props;
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
-        dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, vis, gjelderAnnetBarn)));
+        dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, gjelderAnnetBarn)));
     }
 
     render() {
