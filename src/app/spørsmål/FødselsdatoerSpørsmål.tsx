@@ -76,6 +76,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     }
 
     render() {
+        console.log(this.props.fødselsdatoer);
         const { collapsed } = this.props;
         return collapsed ? this.renderCollapsedFødselsdatoSpørsmål() : this.renderExpandedFødselsdatoSpørsmål();
     }

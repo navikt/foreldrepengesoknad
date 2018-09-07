@@ -32,17 +32,18 @@ class FødtBarnPartial extends React.Component<Props> {
         this.oppdaterAntallBarn = this.oppdaterAntallBarn.bind(this);
         props.dispatch(
             søknadActions.updateBarn({
-                fødselsdatoer: [props.barn.fødselsdatoer[0] || null]
+                fødselsdatoer: props.barn.fødselsdatoer !== undefined ? [props.barn.fødselsdatoer[0]] : new Array(1)
             })
         );
     }
 
     oppdaterAntallBarn(antall: number) {
+        const { barn } = this.props;
         this.props.dispatch(
             søknadActions.updateBarn({
-                ...this.props.barn,
+                ...barn,
                 antallBarn: antall,
-                fødselsdatoer: [this.props.barn.fødselsdatoer[0] || null]
+                fødselsdatoer: barn.fødselsdatoer !== undefined ? [barn.fødselsdatoer[0]] : new Array(1)
             })
         );
     }
@@ -60,7 +61,7 @@ class FødtBarnPartial extends React.Component<Props> {
                 <Block visible={vis.fødselsdatoer}>
                     <FødselsdatoerSpørsmål
                         collapsed={true}
-                        fødselsdatoer={barn.fødselsdatoer}
+                        fødselsdatoer={barn.fødselsdatoer || []}
                         onChange={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({
