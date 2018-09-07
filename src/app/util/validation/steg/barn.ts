@@ -20,6 +20,7 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
     const adoptertIUtlandetTruthy = adoptertIUtlandet !== undefined && adoptertIUtlandet;
 
     return (
+        fødselsdatoer &&
         fødselsdatoer.length > 0 &&
         fødselsdatoer[0] !== undefined &&
         adopsjonsdato !== undefined &&
