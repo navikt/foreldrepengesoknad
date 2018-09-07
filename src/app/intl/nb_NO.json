@@ -20,8 +20,11 @@
     "jegskalhaferie": "Jeg skal ha ferie",
     "jegskaliarbeid": "Jeg skal i arbeid",
     "pgasykdom": "På grunn av sykdom",
-
+    "skaltautforeldrepenger": "skal ta ut foreldrepenger",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
+
+    "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Hva er grunnen til at du skal utsette ditt uttak?",
+    "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Hvilken konto skal benyttes?",
 
     "søknad.pageheading": "Søknad om foreldrepenger",
 
@@ -369,6 +372,7 @@
     "kvittering.dinProfilLink": "Din profil",
 
     "stønadskontotype.MØDREKVOTE": "Mødrekvote",
+    "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
     "stønadskontotype.FEDREKVOTE": "Fedrekvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",

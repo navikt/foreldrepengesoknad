@@ -18,7 +18,8 @@ export enum StønadskontoType {
     /** Når det kun er en forsørger/forelder */
     'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
     /** Når det kun er en forsørger/forelder */
-    'SamtidigUttak' = 'SAMTIDIGUTTAK'
+    'SamtidigUttak' = 'SAMTIDIGUTTAK',
+    'Flerbarnsuker' = 'FLERBARNSUKER'
 }
 
 export enum UtsettelseÅrsakType {
@@ -27,6 +28,11 @@ export enum UtsettelseÅrsakType {
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
+}
+
+export enum OppholdÅrsakType {
+    'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
+    'UttakKvoteAnnenForelder' = 'UTTAK_KVOTE_ANNEN_FORELDER'
 }
 
 export interface Helligdag {
@@ -55,6 +61,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
+    årsak: OppholdÅrsakType;
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
