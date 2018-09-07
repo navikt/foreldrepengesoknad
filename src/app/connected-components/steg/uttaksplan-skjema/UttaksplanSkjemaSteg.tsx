@@ -15,7 +15,7 @@ import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8kna
 import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
 import Block from 'common/components/block/Block';
 import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } from './uttaksplanSkjemaVisibility';
-import StartdatoPermisjonSpørsmål from '../../../sp\u00F8rsm\u00E5l/StartdatoPermisjonSp\u00F8rsm\u00E5l';
+import StartdatoPermisjonSpørsmål from '../../../bolker/StartdatoPermisjonBolk';
 
 interface StateProps {
     stegProps: StegProps;
@@ -37,11 +37,25 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         onChange={(dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad }))}
                     />
                 </Block>
-                <Block visible={vis.startdatoPermisjonSpørsmål}>
+                <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
                     <StartdatoPermisjonSpørsmål
                         startdato={søknad.temp.uttaksplan.startdatoPermisjon}
-                        onChange={(startdatoPermisjon) =>
-                            dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata({ startdatoPermisjon }))
+                        skalIkkeHaUttakFørTermin={søknad.temp.uttaksplan.skalIkkeHaUttakFørTermin}
+                        onDatoChange={(dato) =>
+                            dispatch(
+                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                    startdatoPermisjon: dato,
+                                    skalIkkeHaUttakFørTermin: false
+                                })
+                            )
+                        }
+                        onSkalIkkeHaUttakChange={(skalIkkeHaUttak) =>
+                            dispatch(
+                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                    skalIkkeHaUttakFørTermin: skalIkkeHaUttak,
+                                    startdatoPermisjon: undefined
+                                })
+                            )
                         }
                     />
                 </Block>

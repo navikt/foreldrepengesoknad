@@ -274,7 +274,8 @@
     "spørsmål.dekningsgrad.label--aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere ved å velge 100 prosent",
 
-    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte permisjonen?",
+    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ha uttak før termin",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
