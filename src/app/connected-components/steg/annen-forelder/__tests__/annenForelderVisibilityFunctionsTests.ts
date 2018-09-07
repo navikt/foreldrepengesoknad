@@ -129,14 +129,18 @@ describe('AnnenForelder visibility tests', () => {
         });
 
         describe('AnnenForelderPersonaliaPartial', () => {
+            it('Should not render annenForelderKanIkkeOppgisValg when personaliaPartNotVisible', () => {
+                expect(func.visAnnenForelderKanIkkeOppgisValg(false, false)).toBeFalsy();
+                expect(func.visAnnenForelderKanIkkeOppgisValg(false, true)).toBeFalsy();
+            });
             it('Should not render annenForelderKanIkkeOppgisValg when barn.gjelderAdopsjonAvEktefellesBarn', () => {
-                expect(func.visAnnenForelderKanIkkeOppgisValg(false)).toBeTruthy();
-                expect(func.visAnnenForelderKanIkkeOppgisValg(true)).toBeFalsy();
+                expect(func.visAnnenForelderKanIkkeOppgisValg(true, false)).toBeTruthy();
+                expect(func.visAnnenForelderKanIkkeOppgisValg(true, true)).toBeFalsy();
             });
             it('Should only render fødselsnummerInput when navn has value', () => {
-                expect(func.visFødselsnummerInput({ navn: undefined })).toBeFalsy();
-                expect(func.visFødselsnummerInput({ navn: '' })).toBeFalsy();
-                expect(func.visFødselsnummerInput({ navn: 'a' })).toBeTruthy();
+                expect(func.visFødselsnummerInput(true, { navn: undefined })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { navn: '' })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { navn: 'a' })).toBeTruthy();
             });
         });
 

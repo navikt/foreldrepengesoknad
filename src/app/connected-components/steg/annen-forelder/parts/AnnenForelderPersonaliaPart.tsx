@@ -13,7 +13,7 @@ import NavnPåAnnenForelderSpørsmål from '../../../../spørsmål/NavnPåAnnenF
 import { AppState } from '../../../../redux/reducers';
 import Søker from '../../../../types/søknad/Søker';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { AnnenForelderStegPersonaliaVisibility } from '../visibility/annenForelderVisibility';
+import { AnnenForelderStegVisibility } from '../visibility/annenForelderVisibility';
 
 interface StateProps {
     søker: Søker;
@@ -23,7 +23,7 @@ interface StateProps {
 }
 interface AnnenForelderPersonaliaPartProps {
     søkersFødselsnummer: string;
-    vis: AnnenForelderStegPersonaliaVisibility;
+    vis: AnnenForelderStegVisibility;
 }
 
 type Props = StateProps & AnnenForelderPersonaliaPartProps & InjectedIntlProps & DispatchProps;

@@ -14,9 +14,7 @@ const getDefaultState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
         annenForelder: {},
-        barn: {
-            fødselsdatoer: []
-        },
+        barn: {},
         informasjonOmUtenlandsopphold: {
             tidligereOpphold: [],
             senereOpphold: []
