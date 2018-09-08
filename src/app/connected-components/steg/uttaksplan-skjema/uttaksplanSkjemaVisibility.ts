@@ -20,10 +20,10 @@ const getUttaksplanSkjemaStegVisibility = (søknad: Søknad): UttaksplanSkjemaSt
     const startdatoPermisjonSpørsmål = dekningsgradSpørsmål && søknad.dekningsgrad !== undefined;
     const fordelingFellesperiodeSpørsmål =
         startdatoPermisjonSpørsmål &&
-        uttaksplanSkjema.startdatoPermisjon !== undefined &&
+        uttaksplanSkjema.skalIkkeHaUttakFørTermin !== undefined &&
         !søknad.søker.erAleneOmOmsorg &&
         søknad.annenForelder.skalHaForeldrepenger;
-    const planlagtOppholdIUttakSpørsmål = uttaksplanSkjema.skalIkkeHaUttakFørTermin !== undefined;
+    const planlagtOppholdIUttakSpørsmål = false; // Egen brukerhistorie som ikke er med enda
 
     return {
         dekningsgradSpørsmål,

@@ -18,19 +18,25 @@ import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } fro
 import StartdatoPermisjonBolk from '../../../bolker/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../sp\u00F8rsm\u00E5l/PlanlagtOppholdIUttakSp\u00F8rsm\u00E5l';
 import FordelingFellesperiodeSpørsmål from '../../../sp\u00F8rsm\u00E5l/FordelingFellesperiodeSp\u00F8rsm\u00E5l';
+import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
+import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
+import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: SøknadPartial;
     vis: UttaksplanSkjemaStegVisibility;
+    permisjonsregler: Permisjonsregler;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     render() {
-        const { søknad, vis, stegProps, dispatch } = this.props;
+        const { søknad, vis, permisjonsregler, stegProps, søkerinfo, dispatch } = this.props;
         const { uttaksplanSkjema } = søknad.temp;
+        const antallUkerFellesperiode = getAntallUkerFellesperiode(permisjonsregler, søknad.dekningsgrad!);
+        const defaultAntallUkerAvFellesperiode = Math.round(antallUkerFellesperiode / 2);
         return (
             <Steg {...stegProps}>
                 <Block visible={vis.dekningsgradSpørsmål}>
@@ -64,14 +70,14 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 </Block>
                 <Block visible={vis.fordelingFellesperiodeSpørsmål}>
                     <FordelingFellesperiodeSpørsmål
-                        ukerFellesperiode={20}
+                        ukerFellesperiode={antallUkerFellesperiode}
                         ukerForelder1={
                             uttaksplanSkjema.fellesperiodeukerForelder1 !== undefined
                                 ? uttaksplanSkjema.fellesperiodeukerForelder1
-                                : 10
+                                : defaultAntallUkerAvFellesperiode
                         }
-                        navnForelder1="f1"
-                        navnForelder2="f2"
+                        navnForelder1={søkerinfo.person.fornavn}
+                        navnForelder2={søknad.annenForelder.navn}
                         onChange={(fellesperiodeukerForelder1) =>
                             dispatch(søknadActions.uttaksplanUpdateSkjemdata({ fellesperiodeukerForelder1 }))
                         }
@@ -107,7 +113,8 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     return {
         stegProps,
         søknad: state.søknad,
-        vis: getUttaksplanSkjemaStegVisibility(state.søknad)
+        vis: getUttaksplanSkjemaStegVisibility(state.søknad),
+        permisjonsregler: getPermisjonsregler()
     };
 };
 
