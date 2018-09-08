@@ -3,7 +3,8 @@ import Søknad, { SøkerRolle, Søkersituasjon } from '../../../types/s\u00F8kna
 export interface UttaksplanSkjemaStegVisibility {
     dekningsgradSpørsmål: boolean;
     startdatoPermisjonSpørsmål: boolean;
-    planlagtOppholdIUttak: boolean;
+    planlagtOppholdIUttakSpørsmål: boolean;
+    fordelingFellesperiodeSpørsmål: boolean;
 }
 
 const visDekningsgradSpørsmål = (rolle: SøkerRolle, situasjon: Søkersituasjon): boolean => {
@@ -17,12 +18,18 @@ const getUttaksplanSkjemaStegVisibility = (søknad: Søknad): UttaksplanSkjemaSt
     const { uttaksplanSkjema } = søknad.temp;
     const dekningsgradSpørsmål = visDekningsgradSpørsmål(søknad.søker.rolle, søknad.situasjon);
     const startdatoPermisjonSpørsmål = dekningsgradSpørsmål && søknad.dekningsgrad !== undefined;
-    const planlagtOppholdIUttak = uttaksplanSkjema.skalIkkeHaUttakFørTermin !== undefined;
+    const fordelingFellesperiodeSpørsmål =
+        startdatoPermisjonSpørsmål &&
+        uttaksplanSkjema.startdatoPermisjon !== undefined &&
+        !søknad.søker.erAleneOmOmsorg &&
+        søknad.annenForelder.skalHaForeldrepenger;
+    const planlagtOppholdIUttakSpørsmål = uttaksplanSkjema.skalIkkeHaUttakFørTermin !== undefined;
 
     return {
         dekningsgradSpørsmål,
         startdatoPermisjonSpørsmål,
-        planlagtOppholdIUttak
+        planlagtOppholdIUttakSpørsmål,
+        fordelingFellesperiodeSpørsmål
     };
 };
 

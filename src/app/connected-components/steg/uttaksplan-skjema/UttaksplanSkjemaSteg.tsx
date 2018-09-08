@@ -11,12 +11,13 @@ import isAvailable from '../util/isAvailable';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplaSkjema';
 import DekningsgradSpørsmål from '../../../sp\u00F8rsm\u00E5l/DekningsgradSp\u00F8rsm\u00E5l';
-import søknadActionCreators from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActions from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
 import { SøknadPartial } from '../../../types/s\u00F8knad/S\u00F8knad';
 import Block from 'common/components/block/Block';
 import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } from './uttaksplanSkjemaVisibility';
 import StartdatoPermisjonBolk from '../../../bolker/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../sp\u00F8rsm\u00E5l/PlanlagtOppholdIUttakSp\u00F8rsm\u00E5l';
+import FordelingFellesperiodeSpørsmål from '../../../sp\u00F8rsm\u00E5l/FordelingFellesperiodeSp\u00F8rsm\u00E5l';
 
 interface StateProps {
     stegProps: StegProps;
@@ -36,7 +37,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     <DekningsgradSpørsmål
                         dekningsgrad={søknad.dekningsgrad}
                         erAleneomsorg={søknad.søker.erAleneOmOmsorg}
-                        onChange={(dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad }))}
+                        onChange={(dekningsgrad) => dispatch(søknadActions.updateSøknad({ dekningsgrad }))}
                     />
                 </Block>
                 <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
@@ -45,7 +46,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         skalIkkeHaUttakFørTermin={uttaksplanSkjema.skalIkkeHaUttakFørTermin}
                         onDatoChange={(dato) =>
                             dispatch(
-                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                søknadActions.uttaksplanUpdateSkjemdata({
                                     startdatoPermisjon: dato,
                                     skalIkkeHaUttakFørTermin: false
                                 })
@@ -53,7 +54,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         }
                         onSkalIkkeHaUttakChange={(skalIkkeHaUttak) =>
                             dispatch(
-                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                søknadActions.uttaksplanUpdateSkjemdata({
                                     skalIkkeHaUttakFørTermin: skalIkkeHaUttak,
                                     startdatoPermisjon: undefined
                                 })
@@ -61,12 +62,27 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block visible={vis.planlagtOppholdIUttak}>
+                <Block visible={vis.fordelingFellesperiodeSpørsmål}>
+                    <FordelingFellesperiodeSpørsmål
+                        ukerFellesperiode={20}
+                        ukerForelder1={
+                            uttaksplanSkjema.fellesperiodeukerForelder1 !== undefined
+                                ? uttaksplanSkjema.fellesperiodeukerForelder1
+                                : 10
+                        }
+                        navnForelder1="f1"
+                        navnForelder2="f2"
+                        onChange={(fellesperiodeukerForelder1) =>
+                            dispatch(søknadActions.uttaksplanUpdateSkjemdata({ fellesperiodeukerForelder1 }))
+                        }
+                    />
+                </Block>
+                <Block visible={vis.planlagtOppholdIUttakSpørsmål}>
                     <PlanlagtOppholdIUttakSpørsmål
                         harPlanlagtOpphold={uttaksplanSkjema.harPlanlagtOppholdIUttak}
                         onChange={(harPlanlagtOppholdIUttak) =>
                             dispatch(
-                                søknadActionCreators.uttaksplanUpdateSkjemdata({
+                                søknadActions.uttaksplanUpdateSkjemdata({
                                     harPlanlagtOppholdIUttak
                                 })
                             )

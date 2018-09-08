@@ -279,6 +279,18 @@
 
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
+    "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
+    "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
+    "uttaksplan.skjema.fordeling.aria.fordeling":
+        "Hvor mange uker av fellesdelen skal {navnForelder1} ha av totalt {ukerFellesperiode} uker?",
+    "uttaksplan.skjema.fordeling.veiledning":
+        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnForelder1}.",
+    "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
+    "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
+    "uttaksplan.skjema.fordeling.sporsmal.ikonlabel": "Les mer om fordeling av fellesperioden",
+    "uttaksplan.skjema.fordeling.valgtVerdi":
+        "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
+
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
