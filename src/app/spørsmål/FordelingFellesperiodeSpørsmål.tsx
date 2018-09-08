@@ -58,7 +58,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<Props & Injecte
             )
         }
         valueLabelRenderer={(options) => (
-            <Ingress tag="p" className="m-text-center">
+            <Ingress tag="p" className="m-text-center fordelingFellesperiode-valgtVerdi">
                 <FormattedMessage
                     id="uttaksplan.skjema.fordeling.valgtVerdi"
                     values={{
@@ -69,6 +69,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<Props & Injecte
                 />
             </Ingress>
         )}
+        valueLabelPlacement="below"
     />
 );
 
