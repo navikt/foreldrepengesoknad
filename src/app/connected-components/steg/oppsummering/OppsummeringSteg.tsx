@@ -16,7 +16,6 @@ import Søknad from '../../../types/søknad/Søknad';
 import { apiActionCreators } from '../../../redux/actions';
 import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
-import summaryActionCreators from '../../../redux/actions/summary/summaryActionCreators';
 import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -28,7 +27,6 @@ interface StateProps {
     person: Person;
     søknad: Søknad;
     kvittering?: ForeldrepengesøknadResponse;
-    godkjenteSteg: {};
     stegProps: StegProps;
     perioder: Periode[];
 }
@@ -61,26 +59,15 @@ class OppsummeringSteg extends React.Component<Props> {
         );
     }
 
-    confirmSteg(stegID: StegID) {
-        const { dispatch } = this.props;
-        dispatch(summaryActionCreators.approveSteg(stegID));
-    }
-
     render() {
-        const { søknad, person, godkjenteSteg, stegProps, dispatch, intl } = this.props;
+        const { søknad, person, stegProps, dispatch, intl } = this.props;
         if (person === undefined) {
             return null;
         }
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                <OppsummeringWrapper
-                    className="blokk-m"
-                    person={person}
-                    søknad={søknad}
-                    godkjenteSteg={godkjenteSteg}
-                    confirmSteg={(stegID: StegID) => this.confirmSteg(stegID)}
-                />
+                <OppsummeringWrapper className="blokk-m" person={person} søknad={søknad} />
 
                 <MockUttaksplan
                     perioder={this.props.søknad.uttaksplan}
@@ -117,7 +104,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         person,
         søknad,
-        godkjenteSteg: state.summary.godkjenteSteg,
         perioder: state.søknad.uttaksplan,
         kvittering: state.api.kvittering,
         stegProps

@@ -23,7 +23,7 @@ const MannIkon = (props: any) => (
             transform="translate(0.000000, -11.000000)">
             <g id="⚙️/-ikon/-id-markering-/-mann" transform="translate(0.000000, 11.000000)">
                 <circle id="Oval" fill="#FFFFFF" cx="16" cy="16" r="16" />
-                <g id="mann" stroke-width="1">
+                <g id="mann" strokeWidth="1">
                     <g id="Layer_1">
                         <g id="Layer_1_1_">
                             <g id="Shape">
