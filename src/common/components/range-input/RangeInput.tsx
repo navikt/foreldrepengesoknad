@@ -24,7 +24,6 @@ interface Props {
     step?: number;
     inputId?: string;
     valueLabelRenderer?: RangeInputValueLabelRenderer;
-    valueLabelPlacement?: 'above' | 'below';
     ariaValueChangedMessage?: (value: number) => string;
     steppers?: {
         increaseLabel: string;
@@ -86,7 +85,6 @@ class RangeInput extends React.Component<Props, State> {
             steppers,
             ariaDescription,
             ariaValueChangedMessage,
-            valueLabelPlacement = 'above',
             ...rest
         } = this.props;
 
@@ -95,8 +93,7 @@ class RangeInput extends React.Component<Props, State> {
         const labelRenderer = valueLabelRenderer || defaultValueLabelRenderer;
         return (
             <SkjemaInputElement label={label} id={id}>
-                {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
-
+                {labelRenderer({ value, min, max })}
                 <div
                     className={classnames('rangeInput', {
                         'rangeInput--withSteppers': steppers !== undefined
@@ -137,7 +134,6 @@ class RangeInput extends React.Component<Props, State> {
                         </div>
                     )}
                 </div>
-                {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
             </SkjemaInputElement>
         );
     }
