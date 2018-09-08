@@ -6,6 +6,7 @@ import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
 
 interface StartdatoPermisjonSpørsmålProps {
+    familiehendelsesdato: Date;
     startdato?: Date;
     skalIkkeHaUttakFørTermin?: boolean;
     onDatoChange: (dato: Date) => void;
