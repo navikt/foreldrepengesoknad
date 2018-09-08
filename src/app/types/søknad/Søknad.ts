@@ -6,6 +6,8 @@ import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
+import { Dekningsgrad } from 'common/types';
+// import { RecursivePartial } from '../Partial';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -29,9 +31,16 @@ export interface SøknadenGjelderBarnValg {
     gjelderAnnetBarn?: boolean;
 }
 
+export interface UttaksplanSkjemadata {
+    startdatoPermisjon?: Date;
+    skalIkkeHaUttakFørTermin?: boolean;
+    harPlanlagtOppholdIUttak?: boolean;
+}
+
 interface SkjemaEkstradata {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
+    uttaksplanSkjema: UttaksplanSkjemadata;
 }
 
 interface Søknad {
@@ -45,6 +54,7 @@ interface Søknad {
     uttaksplan: Periode[];
     søker: Søker;
     vedlegg?: Attachment[];
+    dekningsgrad: Dekningsgrad;
     temp: SkjemaEkstradata;
 }
 
@@ -59,6 +69,7 @@ export interface SøknadPartial {
     uttaksplan: Periode[];
     søker: SøkerPartial;
     vedlegg?: Attachment[];
+    dekningsgrad?: Dekningsgrad;
     temp: SkjemaEkstradata;
 }
 
