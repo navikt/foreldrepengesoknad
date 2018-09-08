@@ -35,6 +35,7 @@ export interface UttaksplanSkjemadata {
     startdatoPermisjon?: Date;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
+    fellesperiodeukerForelder1?: number;
 }
 
 interface SkjemaEkstradata {
