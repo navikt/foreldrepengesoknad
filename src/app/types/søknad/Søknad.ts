@@ -7,7 +7,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
-// import { RecursivePartial } from '../Partial';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -35,6 +34,7 @@ export interface UttaksplanSkjemadata {
     startdatoPermisjon?: Date;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
+    fellesperiodeukerForelder1?: number;
 }
 
 interface SkjemaEkstradata {
