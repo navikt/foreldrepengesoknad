@@ -20,10 +20,12 @@ import PlanlagtOppholdIUttakSpørsmål from '../../../spørsm\u00E5l/PlanlagtOpp
 import FordelingFellesperiodeSpørsmål from '../../../spørsm\u00E5l/FordelingFellesperiodeSpørsm\u00E5l';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
+import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: SøknadPartial;
+    familiehendelsesdato: Date;
     antallUkerFellesperiode: number;
     vis: UttaksplanSkjemaStegVisibility;
 }
@@ -42,7 +44,15 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         }
     }
     render() {
-        const { søknad, vis, antallUkerFellesperiode, stegProps, søkerinfo, dispatch } = this.props;
+        const {
+            søknad,
+            vis,
+            antallUkerFellesperiode,
+            familiehendelsesdato,
+            stegProps,
+            søkerinfo,
+            dispatch
+        } = this.props;
         const { uttaksplanSkjema } = søknad.temp;
         return (
             <Steg {...stegProps}>
@@ -55,6 +65,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 </Block>
                 <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
                     <StartdatoPermisjonBolk
+                        familiehendelsesdato={familiehendelsesdato}
                         startdato={uttaksplanSkjema.startdatoPermisjon}
                         skalIkkeHaUttakFørTermin={uttaksplanSkjema.skalIkkeHaUttakFørTermin}
                         onDatoChange={(dato) =>
@@ -118,6 +129,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     return {
         stegProps,
         søknad: state.søknad,
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
         antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
         vis: getUttaksplanSkjemaStegVisibility(state.søknad)
     };
