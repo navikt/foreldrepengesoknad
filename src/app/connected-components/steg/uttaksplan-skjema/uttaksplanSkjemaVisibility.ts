@@ -1,4 +1,4 @@
-import Søknad, { SøkerRolle, Søkersituasjon } from '../../../types/s\u00F8knad/S\u00F8knad';
+import Søknad, { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 
 export interface UttaksplanSkjemaStegVisibility {
     dekningsgradSpørsmål: boolean;
