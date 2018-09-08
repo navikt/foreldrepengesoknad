@@ -1,4 +1,4 @@
-import Søknad, { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, UttaksplanSkjemadata } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -25,7 +25,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_SET_PERIODER' = 'uttaksplanSetPerioder',
     'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
     'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
-    'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode'
+    'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
+    'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata'
 }
 
 export interface UpdateSøknadenGjelder {
@@ -83,6 +84,11 @@ export interface UttaksplanDeletePeriode {
     periode: Periode;
 }
 
+export interface UttaksplanUpdateSkjemadata {
+    type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA;
+    payload: Partial<UttaksplanSkjemadata>;
+}
+
 export interface UttaksplanUpdatePeriode {
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE;
     periode: Periode;
@@ -138,4 +144,5 @@ export type SøknadAction =
     | UttaksplanSetPerioder
     | UttaksplanAddPeriode
     | UttaksplanDeletePeriode
-    | UttaksplanUpdatePeriode;
+    | UttaksplanUpdatePeriode
+    | UttaksplanUpdateSkjemadata;
