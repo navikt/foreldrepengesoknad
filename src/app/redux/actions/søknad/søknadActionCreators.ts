@@ -16,7 +16,8 @@ import {
     UttaksplanAddPeriode,
     UttaksplanDeletePeriode,
     UttaksplanUpdatePeriode,
-    UttaksplanUpdateSkjemadata
+    UttaksplanUpdateSkjemadata,
+    UttaksplanLagForslag
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -119,9 +120,14 @@ const uttaksplanDeletePeriode = (periode: Periode): UttaksplanDeletePeriode => (
     type: SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE,
     periode
 });
+
 const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => ({
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE,
     periode
+});
+
+const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
 });
 
 export default {
@@ -142,5 +148,6 @@ export default {
     uploadAttachmentFailed,
     deleteAttachment,
     deleteAttachmentSuccess,
-    deleteAttachmentFailed
+    deleteAttachmentFailed,
+    uttaksplanLagForslag
 };

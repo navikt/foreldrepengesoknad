@@ -10,7 +10,6 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
-import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
@@ -32,8 +31,7 @@ class UttaksplanSteg extends React.Component<Props> {
 
     componentWillMount() {
         if (!this.props.søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            const mockPerioder = lagMockUttaksplan(this.props.søknad);
-            this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
+            this.props.dispatch(søknadActions.uttaksplanLagForslag());
         }
     }
 
@@ -53,7 +51,8 @@ class UttaksplanSteg extends React.Component<Props> {
                         barn={søknad.barn}
                         uttaksplan={søknad.uttaksplan}
                         onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
-                        onRequestReset={() => null}
+                        onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
+                        onCreateSuggestion={() => dispatch(søknadActions.uttaksplanLagForslag())}
                         {...navn}
                     />
                 </Block>
