@@ -1,5 +1,5 @@
-import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
-import Søknad from '../../../types/s\u00F8knad/S\u00F8knad';
+import { Søkerinfo } from '../../../types/søkerinfo';
+import Søknad from '../../../types/søknad/Søknad';
 
 export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { uttaksplanSkjema } = søknad.temp;
