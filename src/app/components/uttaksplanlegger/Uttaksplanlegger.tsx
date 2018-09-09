@@ -8,8 +8,13 @@ import './uttaksplanlegger.less';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
+import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
+import { Barn } from '../../types/søknad/Barn';
 
 export interface Props {
+    søkersituasjon: Søkersituasjon;
+    barn: Barn;
     uttaksplan: Periode[];
     navnForelder1: string;
     navnForelder2?: string;
@@ -23,7 +28,7 @@ const BEM = BEMHelper('uttaksplanlegger');
 
 class Uttaksplanlegger extends React.Component<Props, {}> {
     render() {
-        const { uttaksplan, navnForelder1, navnForelder2, onAdd, onRequestReset } = this.props;
+        const { søkersituasjon, barn, uttaksplan, navnForelder1, navnForelder2, onAdd, onRequestReset } = this.props;
         return (
             <article className={BEM.className}>
                 <header className={BEM.element('header')}>
@@ -35,7 +40,9 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                             Nullstill
                         </LinkButton>
                     )}
-                    <span className={BEM.element('header__details')}>Termin den 3. oktober 2018</span>
+                    <span className={BEM.element('header__details')}>
+                        <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
+                    </span>
                 </header>
                 <Block>
                     <Periodeliste perioder={uttaksplan} navnForelder1={navnForelder1} navnForelder2={navnForelder2} />
