@@ -10,7 +10,7 @@ function* saveAppState() {
     try {
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
-        const { temp, ...søknad } = appState.søknad;
+        const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
         const cleanedAppState = {
             ...appState,
             søknad
