@@ -71,7 +71,9 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                                         sammen med veileder i toppen?
                                     </Normaltekst>
                                     <div className="m-text-center">
-                                        <Knapp onClick={() => onCreateSuggestion()}>Lag forslag til uttaksplan</Knapp>
+                                        <Knapp htmlType="button" onClick={() => onCreateSuggestion()}>
+                                            Lag forslag til uttaksplan
+                                        </Knapp>
                                     </div>
                                 </Veilederinfo>
                             </div>

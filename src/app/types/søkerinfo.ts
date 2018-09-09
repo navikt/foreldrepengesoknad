@@ -5,6 +5,10 @@ export interface Søkerinfo {
     person: Person;
     arbeidsforhold: Arbeidsforhold[];
     registrerteBarn: RegistrertBarn[];
+    søknadsinfo: {
+        erEndringssøknad?: boolean;
+        deltUttaksplan?: boolean;
+    };
 }
 
 export interface SøkerinfoProps {

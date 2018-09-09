@@ -40,5 +40,9 @@
             "fom": "2018-08-01",
             "tom": null
         }
-    ]
+    ],
+    "søknadsinfo": {
+        "erEndringssøknad": false,
+        "deltUttaksplan": false
+    }
 }
