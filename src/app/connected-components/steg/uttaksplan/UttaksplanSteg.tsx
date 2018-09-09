@@ -14,6 +14,7 @@ import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttakspl
 import søknadActions from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
+import Block from 'common/components/block/Block';
 
 interface StateProps {
     stegProps: StegProps;
@@ -46,11 +47,14 @@ class UttaksplanSteg extends React.Component<Props> {
         return (
             <Steg {...this.props.stegProps}>
                 <Veilederinfo maxWidth="30">Her velger du hvordan du ønsker å legge opp ditt uttak.</Veilederinfo>
-                <Uttaksplanlegger
-                    uttaksplan={søknad.uttaksplan}
-                    onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
-                    {...navn}
-                />
+                <Block>
+                    <Uttaksplanlegger
+                        uttaksplan={søknad.uttaksplan}
+                        onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
+                        onRequestReset={() => null}
+                        {...navn}
+                    />
+                </Block>
             </Steg>
         );
     }
