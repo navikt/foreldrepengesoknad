@@ -18,25 +18,42 @@ import getUttaksplanSkjemaStegVisibility, { UttaksplanSkjemaStegVisibility } fro
 import StartdatoPermisjonBolk from '../../../bolker/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../spørsm\u00E5l/PlanlagtOppholdIUttakSpørsm\u00E5l';
 import FordelingFellesperiodeSpørsmål from '../../../spørsm\u00E5l/FordelingFellesperiodeSpørsm\u00E5l';
-import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
+import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: SøknadPartial;
+    familiehendelsesdato: Date;
+    antallUkerFellesperiode: number;
     vis: UttaksplanSkjemaStegVisibility;
-    permisjonsregler: Permisjonsregler;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
+    componentWillMount() {
+        const defaultAntallUkerAvFellesperiode = Math.round(this.props.antallUkerFellesperiode / 2);
+        if (this.props.søknad.temp.uttaksplanSkjema.fellesperiodeukerForelder1 === undefined) {
+            this.props.dispatch(
+                søknadActions.uttaksplanUpdateSkjemdata({
+                    fellesperiodeukerForelder1: defaultAntallUkerAvFellesperiode
+                })
+            );
+        }
+    }
     render() {
-        const { søknad, vis, permisjonsregler, stegProps, søkerinfo, dispatch } = this.props;
+        const {
+            søknad,
+            vis,
+            antallUkerFellesperiode,
+            familiehendelsesdato,
+            stegProps,
+            søkerinfo,
+            dispatch
+        } = this.props;
         const { uttaksplanSkjema } = søknad.temp;
-        const antallUkerFellesperiode = getAntallUkerFellesperiode(permisjonsregler, søknad.dekningsgrad!);
-        const defaultAntallUkerAvFellesperiode = Math.round(antallUkerFellesperiode / 2);
         return (
             <Steg {...stegProps}>
                 <Block visible={vis.dekningsgradSpørsmål}>
@@ -48,6 +65,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 </Block>
                 <Block visible={vis.startdatoPermisjonSpørsmål} hasChildBlocks={true}>
                     <StartdatoPermisjonBolk
+                        familiehendelsesdato={familiehendelsesdato}
                         startdato={uttaksplanSkjema.startdatoPermisjon}
                         skalIkkeHaUttakFørTermin={uttaksplanSkjema.skalIkkeHaUttakFørTermin}
                         onDatoChange={(dato) =>
@@ -71,11 +89,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 <Block visible={vis.fordelingFellesperiodeSpørsmål}>
                     <FordelingFellesperiodeSpørsmål
                         ukerFellesperiode={antallUkerFellesperiode}
-                        ukerForelder1={
-                            uttaksplanSkjema.fellesperiodeukerForelder1 !== undefined
-                                ? uttaksplanSkjema.fellesperiodeukerForelder1
-                                : defaultAntallUkerAvFellesperiode
-                        }
+                        ukerForelder1={uttaksplanSkjema.fellesperiodeukerForelder1!}
                         navnForelder1={søkerinfo.person.fornavn}
                         navnForelder2={søknad.annenForelder.navn}
                         onChange={(fellesperiodeukerForelder1) =>
@@ -105,16 +119,19 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
-        renderFortsettKnapp: uttaksplanSkjemaErGyldig(),
+        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, props.søkerinfo),
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo)
     };
 
+    const permisjonsregler = getPermisjonsregler();
+
     return {
         stegProps,
         søknad: state.søknad,
-        vis: getUttaksplanSkjemaStegVisibility(state.søknad),
-        permisjonsregler: getPermisjonsregler()
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
+        antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
+        vis: getUttaksplanSkjemaStegVisibility(state.søknad)
     };
 };
 
