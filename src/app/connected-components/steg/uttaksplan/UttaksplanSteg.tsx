@@ -10,6 +10,10 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
+import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
+import søknadActions from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 
 interface StateProps {
     stegProps: StegProps;
@@ -25,10 +29,28 @@ class UttaksplanSteg extends React.Component<Props> {
         super(props);
     }
 
+    componentWillMount() {
+        if (!this.props.søknad.temp.uttaksplanSkjema.forslagLaget) {
+            const mockPerioder = lagMockUttaksplan(this.props.søknad);
+            this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
+        }
+    }
+
     render() {
+        const { søknad, søkerinfo, dispatch } = this.props;
+        const navn = {
+            navnForelder1: søkerinfo.person.fornavn,
+            navnForelder2: søknad.annenForelder ? søknad.annenForelder.navn : undefined
+        };
+
         return (
             <Steg {...this.props.stegProps}>
-                <h1>Uttaksplan</h1>
+                <Veilederinfo maxWidth="30">Her velger du hvordan du ønsker å legge opp ditt uttak.</Veilederinfo>
+                <Uttaksplanlegger
+                    uttaksplan={søknad.uttaksplan}
+                    onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
+                    {...navn}
+                />
             </Steg>
         );
     }
