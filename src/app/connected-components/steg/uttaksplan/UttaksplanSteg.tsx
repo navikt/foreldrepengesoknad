@@ -11,7 +11,7 @@ import { HistoryProps } from '../../../types/common';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
-import søknadActions from '../../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Block from 'common/components/block/Block';
@@ -49,6 +49,8 @@ class UttaksplanSteg extends React.Component<Props> {
                 <Veilederinfo maxWidth="30">Her velger du hvordan du ønsker å legge opp ditt uttak.</Veilederinfo>
                 <Block>
                     <Uttaksplanlegger
+                        søkersituasjon={søknad.situasjon}
+                        barn={søknad.barn}
                         uttaksplan={søknad.uttaksplan}
                         onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                         onRequestReset={() => null}

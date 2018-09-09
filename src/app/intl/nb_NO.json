@@ -290,6 +290,10 @@
     "uttaksplan.skjema.fordeling.sporsmal.ikonlabel": "Les mer om fordeling av fellesperioden",
     "uttaksplan.skjema.fordeling.valgtVerdi":
         "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
+    "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
+    "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Født den {dato}",
+    "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",
+    "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
