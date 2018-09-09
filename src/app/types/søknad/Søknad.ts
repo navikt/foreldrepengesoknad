@@ -38,9 +38,12 @@ export interface UttaksplanSkjemadata {
     forslagLaget?: boolean;
 }
 
-interface SkjemaEkstradata {
+interface SensitivSkjemaInfo {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
+}
+
+interface SkjemaEkstrainfo {
     uttaksplanSkjema: UttaksplanSkjemadata;
 }
 
@@ -56,7 +59,8 @@ interface Søknad {
     søker: Søker;
     vedlegg?: Attachment[];
     dekningsgrad: Dekningsgrad;
-    temp: SkjemaEkstradata;
+    ekstrainfo: SkjemaEkstrainfo;
+    sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
 export interface SøknadPartial {
@@ -71,7 +75,8 @@ export interface SøknadPartial {
     søker: SøkerPartial;
     vedlegg?: Attachment[];
     dekningsgrad?: Dekningsgrad;
-    temp: SkjemaEkstradata;
+    ekstrainfo: SkjemaEkstrainfo;
+    sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
 export enum AttachmentType {

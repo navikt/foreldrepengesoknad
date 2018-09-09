@@ -24,7 +24,9 @@ export const getAnnenForelderVisibility = (
     søkerinfo: Søkerinfo
 ): AnnenForelderStegVisibility | undefined => {
     const { annenForelder, søker, barn } = søknad;
-    const registrertAnnenForelder = søknad.temp ? søknad.temp.registrertAnnenForelder : undefined;
+    const registrertAnnenForelder = søknad.sensitivInfoIkkeLagre
+        ? søknad.sensitivInfoIkkeLagre.registrertAnnenForelder
+        : undefined;
     const { person } = søkerinfo;
 
     if (!søker || !barn || !annenForelder) {

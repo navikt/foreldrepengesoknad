@@ -136,7 +136,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { person, registrerteBarn = [] } = props.søkerinfo;
-    const { barn, temp, søker, annenForelder } = state.søknad;
+    const { barn, sensitivInfoIkkeLagre, søker, annenForelder } = state.søknad;
     const fødselsattest = (barn as FødtBarn).fødselsattest || [];
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
 
@@ -154,7 +154,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         annenForelder,
         person,
         registrerteBarn,
-        søknadenGjelderBarnValg: temp.søknadenGjelderBarnValg,
+        søknadenGjelderBarnValg: sensitivInfoIkkeLagre.søknadenGjelderBarnValg,
         barn,
         terminbekreftelse,
         fødselsattest,

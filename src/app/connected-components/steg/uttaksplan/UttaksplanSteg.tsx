@@ -31,7 +31,7 @@ class UttaksplanSteg extends React.Component<Props> {
     }
 
     componentWillMount() {
-        if (!this.props.søknad.temp.uttaksplanSkjema.forslagLaget) {
+        if (!this.props.søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
             const mockPerioder = lagMockUttaksplan(this.props.søknad);
             this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
         }

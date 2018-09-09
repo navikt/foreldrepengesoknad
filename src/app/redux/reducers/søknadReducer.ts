@@ -25,13 +25,15 @@ const getDefaultState = (): SøknadPartial => {
         },
         harGodkjentVilkår: false,
         harGodkjentOppsummering: false,
-        temp: {
+        ekstrainfo: {
+            uttaksplanSkjema: {
+                startdatoPermisjon: undefined
+            }
+        },
+        sensitivInfoIkkeLagre: {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
-            },
-            uttaksplanSkjema: {
-                startdatoPermisjon: undefined
             }
         },
         uttaksplan: []
@@ -81,18 +83,19 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
-            return {
+            const updatedState: SøknadPartial = {
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
                     : state.annenForelder,
-                temp: {
-                    ...state.temp,
+                sensitivInfoIkkeLagre: {
+                    ...state.sensitivInfoIkkeLagre,
                     søknadenGjelderBarnValg: action.payload,
                     registrertAnnenForelder
                 }
             };
+            return updatedState;
         }
 
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
@@ -125,10 +128,10 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA: {
             return {
                 ...state,
-                temp: {
-                    ...state.temp,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
                     uttaksplanSkjema: {
-                        ...state.temp.uttaksplanSkjema,
+                        ...state.ekstrainfo.uttaksplanSkjema,
                         ...action.payload
                     }
                 }

@@ -31,9 +31,9 @@ export const getRelasjonTilBarnFødselVisibility = (
     api: ApiState
 ): RelasjonTilBarnFødselStegVisibility => {
     const { søkerinfo } = api;
-    const { søker, barn, temp } = søknad;
+    const { søker, barn, sensitivInfoIkkeLagre } = søknad;
     const { person } = søkerinfo!;
-    const { gjelderAnnetBarn } = temp.søknadenGjelderBarnValg;
+    const { gjelderAnnetBarn } = sensitivInfoIkkeLagre.søknadenGjelderBarnValg;
 
     const søkerErFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
 
