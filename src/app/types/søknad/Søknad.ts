@@ -32,6 +32,7 @@ export interface SøknadenGjelderBarnValg {
 
 export interface UttaksplanSkjemadata {
     startdatoPermisjon?: Date;
+    morSinSisteUttaksdag?: Date;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
     fellesperiodeukerForelder1?: number;
