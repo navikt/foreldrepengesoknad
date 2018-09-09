@@ -26,7 +26,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_ADD_PERIODE' = 'uttaksplanAddPeriode',
     'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
-    'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata'
+    'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
+    'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag'
 }
 
 export interface UpdateSøknadenGjelder {
@@ -77,6 +78,10 @@ export interface UttaksplanSetPerioder {
 export interface UttaksplanAddPeriode {
     type: SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE;
     periode: Periode;
+}
+
+export interface UttaksplanLagForslag {
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG;
 }
 
 export interface UttaksplanDeletePeriode {
@@ -145,4 +150,5 @@ export type SøknadAction =
     | UttaksplanAddPeriode
     | UttaksplanDeletePeriode
     | UttaksplanUpdatePeriode
-    | UttaksplanUpdateSkjemadata;
+    | UttaksplanUpdateSkjemadata
+    | UttaksplanLagForslag;

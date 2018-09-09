@@ -1,5 +1,5 @@
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import { SøknadPartial } from '../../types/søknad/Søknad';
+import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
 import {
     getUniqeRegistrertAnnenForelderFromBarn,
@@ -9,6 +9,7 @@ import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
 import { guid } from 'nav-frontend-js-utils';
+import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -102,6 +103,19 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 uttaksplan: action.perioder
+            };
+
+        case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
+            return {
+                ...state,
+                uttaksplan: lagMockUttaksplan(state as Søknad),
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    uttaksplanSkjema: {
+                        ...state.ekstrainfo.uttaksplanSkjema,
+                        forslagLaget: true
+                    }
+                }
             };
 
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
