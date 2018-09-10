@@ -32,7 +32,6 @@ export interface SøkerinfoDTOArbeidsforhold {
 }
 
 export interface SøknadsinfoDTO {
-    erEndringssøknad: boolean;
     deltUttaksplan: boolean;
 }
 
