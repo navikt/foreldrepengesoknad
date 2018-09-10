@@ -32,7 +32,7 @@ const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
     </Block>
 );
 
-const mapStateToProps = (state: AppState, props: OwnProps): StateProps => ({
+const mapStateToProps = (state: AppState): StateProps => ({
     skjemadata: state.søknad.ekstrainfo.uttaksplanSkjema
 });
 

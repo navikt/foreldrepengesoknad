@@ -53,7 +53,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 <DekningsgradSpørsmål visible={vis.dekningsgradSpørsmål} />
                 <MorSinSisteUttaksdagSpørsmål visible={vis.morSinSisteUttaksdagSpørsmål} />
                 <StartdatoPermisjonBolk visible={vis.startdatoPermisjonSpørsmål} />
-                <MorSinSisteUttaksdagSpørsmål visible={vis.morSinSisteUttaksdagSpørsmål} />
                 <FordelingFellesperiodeSpørsmål
                     visible={vis.fordelingFellesperiodeSpørsmål}
                     ukerFellesperiode={antallUkerFellesperiode}
