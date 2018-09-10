@@ -9,6 +9,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import { Søkerinfo } from '../../../types/søkerinfo';
+import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplaSkjema';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
@@ -25,14 +26,24 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): 
             return harGodkjentVilkår(søknad) && søknadGjelderForeldreansvar(søknad);
         case StegID.ANNEN_FORELDER:
             return harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo);
-        case StegID.UTENLANDSOPPHOLD:
+        case StegID.UTTAKSPLAN_SKJEMA:
             return (
                 harGodkjentVilkår(søknad) && barnErGyldig(søknad, søkerinfo) && annenForelderErGyldig(søknad, søkerinfo)
             );
-        case StegID.UTTAKSPLAN_SKJEMA:
-            return true;
         case StegID.UTTAKSPLAN:
-            return true;
+            return (
+                harGodkjentVilkår(søknad) &&
+                barnErGyldig(søknad, søkerinfo) &&
+                annenForelderErGyldig(søknad, søkerinfo) &&
+                uttaksplanSkjemaErGyldig(søknad, søkerinfo)
+            );
+        case StegID.UTENLANDSOPPHOLD:
+            return (
+                harGodkjentVilkår(søknad) &&
+                barnErGyldig(søknad, søkerinfo) &&
+                annenForelderErGyldig(søknad, søkerinfo) &&
+                uttaksplanSkjemaErGyldig(søknad, søkerinfo)
+            );
         case StegID.ANDRE_INNTEKTER:
             return (
                 harGodkjentVilkår(søknad) &&

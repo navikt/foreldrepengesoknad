@@ -6,7 +6,6 @@ export interface Søkerinfo {
     arbeidsforhold: Arbeidsforhold[];
     registrerteBarn: RegistrertBarn[];
     søknadsinfo: {
-        erEndringssøknad?: boolean;
         deltUttaksplan?: boolean;
     };
 }
