@@ -52,7 +52,6 @@ class UttaksplanSteg extends React.Component<Props> {
                         uttaksplan={søknad.uttaksplan}
                         onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                         onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
-                        onCreateSuggestion={() => dispatch(søknadActions.uttaksplanLagForslag())}
                         {...navn}
                     />
                 </Block>
