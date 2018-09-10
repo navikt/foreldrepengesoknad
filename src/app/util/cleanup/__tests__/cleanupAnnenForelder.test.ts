@@ -75,7 +75,8 @@ const kvinnePerson: Person = {
 const søkerinfo: Søkerinfo = {
     person: kvinnePerson,
     arbeidsforhold: [],
-    registrerteBarn: []
+    registrerteBarn: [],
+    søknadsinfo: {}
 };
 
 const propsSetOutsideSteg: string[] = ['erForSyk'];

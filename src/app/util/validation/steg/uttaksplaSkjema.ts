@@ -5,7 +5,9 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
     const { uttaksplanSkjema } = søknad.ekstrainfo;
     return (
         søknad.dekningsgrad !== undefined &&
-        (uttaksplanSkjema.startdatoPermisjon !== undefined || uttaksplanSkjema.skalIkkeHaUttakFørTermin === true) &&
+        (uttaksplanSkjema.startdatoPermisjon !== undefined ||
+            uttaksplanSkjema.skalIkkeHaUttakFørTermin === true ||
+            uttaksplanSkjema.morSinSisteUttaksdag !== undefined) &&
         uttaksplanSkjema.fellesperiodeukerForelder1 !== undefined
     );
 };

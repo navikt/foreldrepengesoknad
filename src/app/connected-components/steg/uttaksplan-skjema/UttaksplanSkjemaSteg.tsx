@@ -21,6 +21,7 @@ import FordelingFellesperiodeSpørsmål from '../../../spørsm\u00E5l/FordelingF
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
+import MorSinSisteUttaksdagSpørsmål from '../../../spørsmål/MorSinSisteUttaksdagSpørsmål';
 
 interface StateProps {
     stegProps: StegProps;
@@ -86,6 +87,18 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         }
                     />
                 </Block>
+                <Block visible={vis.morSinSisteUttaksdagSpørsmål}>
+                    <MorSinSisteUttaksdagSpørsmål
+                        startdato={uttaksplanSkjema.morSinSisteUttaksdag}
+                        onChange={(morSinSisteUttaksdag) =>
+                            dispatch(
+                                søknadActions.uttaksplanUpdateSkjemdata({
+                                    morSinSisteUttaksdag
+                                })
+                            )
+                        }
+                    />
+                </Block>
                 <Block visible={vis.fordelingFellesperiodeSpørsmål}>
                     <FordelingFellesperiodeSpørsmål
                         ukerFellesperiode={antallUkerFellesperiode}
@@ -131,7 +144,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         søknad: state.søknad,
         familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
         antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
-        vis: getUttaksplanSkjemaStegVisibility(state.søknad)
+        vis: getUttaksplanSkjemaStegVisibility(state.søknad, props.søkerinfo)
     };
 };
 

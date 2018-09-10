@@ -44,5 +44,6 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
 export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => ({
     person: getPerson(søkerinfo),
     registrerteBarn: getRegistrerteBarn(søkerinfo),
-    arbeidsforhold: getArbeidsforhold(søkerinfo)
+    arbeidsforhold: getArbeidsforhold(søkerinfo),
+    søknadsinfo: søkerinfo.søknadsinfo
 });
