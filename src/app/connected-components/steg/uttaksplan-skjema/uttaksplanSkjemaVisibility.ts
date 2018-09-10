@@ -1,6 +1,6 @@
-import Søknad, { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
-import { Søkerinfo } from '../../../types/s\u00F8kerinfo';
+import { Søkerinfo } from '../../../types/søkerinfo';
 
 export interface UttaksplanSkjemaStegVisibility {
     dekningsgradSpørsmål: boolean;
@@ -8,48 +8,39 @@ export interface UttaksplanSkjemaStegVisibility {
     morSinSisteUttaksdagSpørsmål: boolean;
     planlagtOppholdIUttakSpørsmål: boolean;
     fordelingFellesperiodeSpørsmål: boolean;
+    harAnnenForelderSøktFPSpørsmål: boolean;
+    skalStarteRettEtterMorSpørsmål: boolean;
+    skalHaDelAvFellesperiodeSpørsmål: boolean;
 }
 
-const visDekningsgradSpørsmål = (rolle: SøkerRolle, situasjon: Søkersituasjon, søkerinfo: Søkerinfo): boolean => {
-    if (!søkerinfo.søknadsinfo.deltUttaksplan) {
-        return true;
-    }
-    if (situasjon === Søkersituasjon.FØDSEL) {
-        return rolle === SøkerRolle.MOR;
-    }
-    return false;
+const defaultVisibility = {
+    dekningsgradSpørsmål: false,
+    startdatoPermisjonSpørsmål: false,
+    morSinSisteUttaksdagSpørsmål: false,
+    planlagtOppholdIUttakSpørsmål: false,
+    fordelingFellesperiodeSpørsmål: false,
+    harAnnenForelderSøktFPSpørsmål: false,
+    skalStarteRettEtterMorSpørsmål: false,
+    skalHaDelAvFellesperiodeSpørsmål: false
 };
 
 const getUttaksplanSkjemaStegVisibility = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaStegVisibility => {
     const { uttaksplanSkjema } = søknad.ekstrainfo;
-    const { søknadsinfo } = søkerinfo;
-
     const søkerErFarEllerMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle);
-    const dekningsgradSpørsmål = visDekningsgradSpørsmål(søknad.søker.rolle, søknad.situasjon, søkerinfo);
-    const startdatoPermisjonSpørsmål =
-        søkerErFarEllerMedmor === false &&
-        !søknadsinfo.deltUttaksplan &&
-        dekningsgradSpørsmål &&
-        søknad.dekningsgrad !== undefined;
-    const morSinSisteUttaksdagSpørsmål =
-        søkerErFarEllerMedmor &&
-        !søknadsinfo.deltUttaksplan &&
-        dekningsgradSpørsmål &&
-        søknad.dekningsgrad !== undefined;
 
-    const fordelingFellesperiodeSpørsmål =
-        uttaksplanSkjema.skalIkkeHaUttakFørTermin !== undefined ||
-        søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined;
+    let vis: UttaksplanSkjemaStegVisibility = { ...defaultVisibility };
 
-    const planlagtOppholdIUttakSpørsmål = false; // Egen brukerhistorie som ikke er med enda
-
-    return {
-        dekningsgradSpørsmål,
-        startdatoPermisjonSpørsmål,
-        morSinSisteUttaksdagSpørsmål,
-        planlagtOppholdIUttakSpørsmål,
-        fordelingFellesperiodeSpørsmål
-    };
+    if (søkerErFarEllerMedmor && søknad.annenForelder.harRettPåForeldrepenger) {
+        vis = {
+            ...vis,
+            harAnnenForelderSøktFPSpørsmål: true,
+            dekningsgradSpørsmål: uttaksplanSkjema.harAnnenForelderSøktFP !== undefined,
+            morSinSisteUttaksdagSpørsmål: søknad.dekningsgrad !== undefined,
+            skalStarteRettEtterMorSpørsmål: uttaksplanSkjema.morSinSisteUttaksdag !== undefined,
+            skalHaDelAvFellesperiodeSpørsmål: uttaksplanSkjema.skalStarteRettEtterMor !== undefined
+        };
+    }
+    return vis;
 };
 
 export default getUttaksplanSkjemaStegVisibility;
