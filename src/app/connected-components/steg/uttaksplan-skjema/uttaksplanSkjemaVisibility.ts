@@ -15,7 +15,7 @@ const visDekningsgradSpørsmål = (rolle: SøkerRolle, situasjon: Søkersituasjo
 };
 
 const getUttaksplanSkjemaStegVisibility = (søknad: Søknad): UttaksplanSkjemaStegVisibility => {
-    const { uttaksplanSkjema } = søknad.temp;
+    const { uttaksplanSkjema } = søknad.ekstrainfo;
     const dekningsgradSpørsmål = visDekningsgradSpørsmål(søknad.søker.rolle, søknad.situasjon);
     const startdatoPermisjonSpørsmål = dekningsgradSpørsmål && søknad.dekningsgrad !== undefined;
     const fordelingFellesperiodeSpørsmål =

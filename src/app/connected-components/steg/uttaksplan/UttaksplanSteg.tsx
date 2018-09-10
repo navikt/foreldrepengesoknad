@@ -10,6 +10,10 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
+import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
+import Block from 'common/components/block/Block';
 
 interface StateProps {
     stegProps: StegProps;
@@ -25,10 +29,33 @@ class UttaksplanSteg extends React.Component<Props> {
         super(props);
     }
 
+    componentWillMount() {
+        if (!this.props.søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
+            this.props.dispatch(søknadActions.uttaksplanLagForslag());
+        }
+    }
+
     render() {
+        const { søknad, søkerinfo, dispatch } = this.props;
+        const navn = {
+            navnForelder1: søkerinfo.person.fornavn,
+            navnForelder2: søknad.annenForelder ? søknad.annenForelder.navn : undefined
+        };
+
         return (
             <Steg {...this.props.stegProps}>
-                <h1>Uttaksplan</h1>
+                <Veilederinfo maxWidth="30">Her velger du hvordan du ønsker å legge opp ditt uttak.</Veilederinfo>
+                <Block>
+                    <Uttaksplanlegger
+                        søkersituasjon={søknad.situasjon}
+                        barn={søknad.barn}
+                        uttaksplan={søknad.uttaksplan}
+                        onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
+                        onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
+                        onCreateSuggestion={() => dispatch(søknadActions.uttaksplanLagForslag())}
+                        {...navn}
+                    />
+                </Block>
             </Steg>
         );
     }

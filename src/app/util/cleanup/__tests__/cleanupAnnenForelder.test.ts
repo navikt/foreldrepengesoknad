@@ -47,17 +47,19 @@ const søknad: SøknadPartial = {
         erAleneOmOmsorg: false,
         andreInntekterSiste10Mnd: []
     },
+    uttaksplan: [],
     harGodkjentVilkår: false,
     harGodkjentOppsummering: false,
-    temp: {
+    sensitivInfoIkkeLagre: {
         søknadenGjelderBarnValg: {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
         },
-        registrertAnnenForelder,
-        uttaksplanSkjema: {}
+        registrertAnnenForelder
     },
-    uttaksplan: []
+    ekstrainfo: {
+        uttaksplanSkjema: {}
+    }
 };
 
 const kvinnePerson: Person = {

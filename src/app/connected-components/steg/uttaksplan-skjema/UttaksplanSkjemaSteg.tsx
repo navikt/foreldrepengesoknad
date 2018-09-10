@@ -35,7 +35,7 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     componentWillMount() {
         const defaultAntallUkerAvFellesperiode = Math.round(this.props.antallUkerFellesperiode / 2);
-        if (this.props.søknad.temp.uttaksplanSkjema.fellesperiodeukerForelder1 === undefined) {
+        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerForelder1 === undefined) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
                     fellesperiodeukerForelder1: defaultAntallUkerAvFellesperiode
@@ -53,7 +53,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             søkerinfo,
             dispatch
         } = this.props;
-        const { uttaksplanSkjema } = søknad.temp;
+        const { uttaksplanSkjema } = søknad.ekstrainfo;
         return (
             <Steg {...stegProps}>
                 <Block visible={vis.dekningsgradSpørsmål}>
