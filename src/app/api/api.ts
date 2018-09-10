@@ -4,11 +4,33 @@ import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
 import { cleanUpSøknad } from '../util/søknad/cleanup';
+import { Dekningsgrad } from 'common/types';
+import { formaterDato } from 'common/util/datoUtils';
 
 const apiBaseUrl = Environment.REST_API_URL;
+const uttakBaseUrl = Environment.UTTAK_API_URL;
 
 function getSøkerinfo() {
     return axios.get(`${apiBaseUrl}/sokerinfo`, {
+        timeout: 15 * 1000,
+        withCredentials: true
+    });
+}
+
+function getUttakskontoer(params: {
+    antallBarn: number;
+    morHarRett: boolean;
+    farHarRett: boolean;
+    dekningsgrad: Dekningsgrad;
+    familiehendelsesdato: Date;
+    erFødsel: boolean;
+}) {
+    const { antallBarn, farHarRett, morHarRett, dekningsgrad, familiehendelsesdato, erFødsel } = params;
+    const url = `${uttakBaseUrl}/konto?erFødsel=${erFødsel}&farHarRett=${farHarRett}&morHarRett=${morHarRett}&dekningsgrad=${dekningsgrad}&antallBarn=${antallBarn}&familiehendelsesdato=${formaterDato(
+        familiehendelsesdato,
+        'YYYMMDD'
+    )}`;
+    return axios.get(url, {
         timeout: 15 * 1000,
         withCredentials: true
     });
@@ -46,6 +68,7 @@ function deleteStoredAppState() {
 
 const Api = {
     getSøkerinfo,
+    getUttakskontoer,
     sendSøknad,
     getStoredAppState,
     storeAppState,
