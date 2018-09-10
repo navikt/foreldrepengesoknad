@@ -1,0 +1,31 @@
+.uttaksplanlegger {
+    padding: 2rem 2rem 1rem 2rem;
+    background-color: #efefef;
+    border-radius: 0.5rem;
+
+    &__header {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: baseline;
+        &__title {
+            padding-right: 1rem;
+            flex-grow: 0;
+        }
+        &__resetLink {
+            flex-grow: 1;
+        }
+        &__details {
+            align-self: flex-end;
+            white-space: nowrap;
+            text-align: right;
+            flex-grow: 2;
+        }
+    }
+    &__addFormContainer {
+        .knapp {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-bottom: 1rem;
+        }
+    }
+}
