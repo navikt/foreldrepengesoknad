@@ -62,6 +62,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
 export interface UtsettelsePgaArbeid extends Utsettelsesperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
     stillingsprosent: string;
+    samtidigGradertUttak: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {

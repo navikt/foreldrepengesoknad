@@ -44,9 +44,8 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
     handleOnSubmit(e: FormSubmitEvent) {
         e.preventDefault();
         e.stopPropagation();
-        const { onSubmit, periodetype } = this.props;
+        const { onSubmit } = this.props;
         const { periode } = this.state;
-        periode.type = periodetype;
         onSubmit(periode as Periode);
         this.updatePeriode(emptyPeriode);
     }

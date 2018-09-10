@@ -4,9 +4,11 @@ import {
     Oppholdsperiode,
     OppholdÅrsakType,
     Periode,
+    Periodetype,
     UtsettelsePgaArbeid,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { TidsperiodePartial } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -22,6 +24,7 @@ import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import AnnenForeldersUttakForm from './partials/AnnenForeldersUttakForm';
 import UtsettelsePgaArbeidForm from './partials/UtsettelsePgaArbeidForm';
+import { isStillingsprosentAbove0AndLessThan100 } from '../../util/validation/fields/stillingsprosent';
 
 interface UtsettelsesperiodeFormProps {
     periode: RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
@@ -129,7 +132,25 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 </Block>
                 <Block visible={årsak === UtsettelseÅrsakType.Arbeid}>
                     <UtsettelsePgaArbeidForm
-                        onChange={(v: UtsettelsePgaArbeid) => onChange(v)}
+                        onChange={(v: UtsettelsePgaArbeid) => {
+                            if (
+                                isStillingsprosentAbove0AndLessThan100(
+                                    (periode as UtsettelsePgaArbeid).stillingsprosent
+                                )
+                            ) {
+                                const uttaksperiode = {
+                                    ...v,
+                                    type: Periodetype.Uttak
+                                };
+                                onChange(uttaksperiode as Partial<Uttaksperiode>);
+                            } else {
+                                const utsettelsesperiode = {
+                                    ...v,
+                                    type: Periodetype.Utsettelse
+                                };
+                                onChange(utsettelsesperiode as Partial<Utsettelsesperiode>);
+                            }
+                        }}
                         periode={periode as RecursivePartial<UtsettelsePgaArbeid>}
                     />
                 </Block>
