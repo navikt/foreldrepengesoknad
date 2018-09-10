@@ -1,4 +1,4 @@
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Søkerinfo } from '../../../types/søkerinfo';
 
@@ -38,6 +38,16 @@ const getUttaksplanSkjemaStegVisibility = (søknad: Søknad, søkerinfo: Søkeri
             morSinSisteUttaksdagSpørsmål: søknad.dekningsgrad !== undefined,
             skalStarteRettEtterMorSpørsmål: uttaksplanSkjema.morSinSisteUttaksdag !== undefined,
             skalHaDelAvFellesperiodeSpørsmål: uttaksplanSkjema.skalStarteRettEtterMor !== undefined
+        };
+    } else if (!søkerErFarEllerMedmor && søknad.situasjon === Søkersituasjon.FØDSEL && søknad.søker.erAleneOmOmsorg) {
+        const harValgtStartdato =
+            uttaksplanSkjema.startdatoPermisjon !== undefined || uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
+        vis = {
+            ...vis,
+            dekningsgradSpørsmål: true,
+            startdatoPermisjonSpørsmål: søknad.dekningsgrad !== undefined,
+            fordelingFellesperiodeSpørsmål: harValgtStartdato,
+            planlagtOppholdIUttakSpørsmål: harValgtStartdato
         };
     }
     return vis;
