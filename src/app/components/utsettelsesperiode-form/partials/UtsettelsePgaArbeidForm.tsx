@@ -16,10 +16,13 @@ import {
     getAktuelleStønadskontoerForSøker,
     getVelgbareStønadskontotyper
 } from '../../../util/uttaksplan/aktuelleStønadskontoer';
+import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
+
+type PeriodePartial = RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>;
 
 interface UtsettelsePgaArbeidFormProps {
-    onChange: (v: RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>) => void;
-    periode: RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>;
+    onChange: (v: PeriodePartial) => void;
+    periode: PeriodePartial;
 }
 
 interface StateProps {
@@ -43,10 +46,19 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, søknad, onChange, intl } = this.props;
-        const stillingsprosent = (periode as UtsettelsePgaArbeid).stillingsprosent;
+        const { periode, søknad, intl, onChange } = this.props;
+
+        const utsettelsePgaArbeidPeriode = periode as UtsettelsePgaArbeid;
+        const { stillingsprosent, samtidigGradertUttak } = utsettelsePgaArbeidPeriode;
+
+        const uttaksperiode = periode as Uttaksperiode;
+        const { konto } = uttaksperiode;
+
         const aktuelleStønadskontoer = getAktuelleStønadskontoerForSøker(søknad);
-        const velgbareStønadskontor = getVelgbareStønadskontotyper(aktuelleStønadskontoer);
+        const velgbareStønadskontoer = getVelgbareStønadskontotyper(aktuelleStønadskontoer);
+        const harFlereVelgbareKontoerForGradering =
+            isStillingsprosentAbove0AndLessThan100(stillingsprosent) && velgbareStønadskontoer.length > 1;
+
         return (
             <React.Fragment>
                 <Block>
@@ -55,7 +67,8 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                         label={getMessage(intl, 'stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>
                             onChange({
-                                stillingsprosent: e.target.value
+                                stillingsprosent: e.target.value,
+                                konto: harFlereVelgbareKontoerForGradering === false ? velgbareStønadskontoer[0] : null
                             })
                         }
                         onBlur={this.handleStillingsprosentBlur}
@@ -64,13 +77,28 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={isStillingsprosentAbove0AndLessThan100(stillingsprosent)}>
+                <Block visible={harFlereVelgbareKontoerForGradering}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
-                            const updatedPeriode = periode as RecursivePartial<Uttaksperiode>;
-                            onChange({ ...updatedPeriode, konto: stønadskonto });
+                            onChange({ konto: stønadskonto });
                         }}
-                        velgbareStønadskontoer={velgbareStønadskontor}
+                        velgbareStønadskontoer={velgbareStønadskontoer}
+                        stønadskonto={konto}
+                    />
+                </Block>
+
+                <Block
+                    visible={
+                        isStillingsprosentAbove0AndLessThan100(stillingsprosent) &&
+                        !søknad.søker.erAleneOmOmsorg &&
+                        søknad.annenForelder.skalHaForeldrepenger &&
+                        søknad.annenForelder.harRettPåForeldrepenger
+                    }>
+                    <SkalDereHaGradertUttakSamtidigSpørsmål
+                        onChange={(v: boolean) => {
+                            onChange({ samtidigGradertUttak: v });
+                        }}
+                        samtidigGradertUttak={samtidigGradertUttak}
                     />
                 </Block>
             </React.Fragment>
