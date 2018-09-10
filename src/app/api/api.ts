@@ -4,14 +4,13 @@ import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
 import { cleanUpSøknad } from '../util/søknad/cleanup';
-import { Dekningsgrad } from 'common/types';
 import { formaterDato } from 'common/util/datoUtils';
 
 export interface GetTilgjengeligeStønadskontoerParams {
     antallBarn: number;
     morHarRett: boolean;
     farHarRett: boolean;
-    dekningsgrad: Dekningsgrad;
+    dekningsgrad: '100' | '80';
     familiehendelsesdato: Date;
     erFødsel: boolean;
 }
