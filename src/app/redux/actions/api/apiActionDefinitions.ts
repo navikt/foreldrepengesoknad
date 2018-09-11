@@ -1,5 +1,6 @@
 import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
+import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
@@ -10,7 +11,9 @@ export enum ApiActionKeys {
 
     'SEND_SØKNAD' = 'sendSøknad',
 
-    'UPDATE_API' = 'updateApi'
+    'UPDATE_API' = 'updateApi',
+
+    'GET_TILGJENGELIGE_STØNADSKONTOER' = 'getTilgjengeligeStønadskontoer'
 }
 
 interface UpdateApi {
@@ -20,6 +23,11 @@ interface UpdateApi {
 
 interface GetSøkerinfo {
     type: ApiActionKeys.GET_SØKERINFO;
+}
+
+export interface GetTilgjengeligeStønadskontoer {
+    type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER;
+    params: GetTilgjengeligeStønadskontoerParams;
 }
 
 export interface SendSøknad {
@@ -40,9 +48,10 @@ export interface StoreAppState {
 }
 
 export type ApiActionTypes =
+    | DeleteStoredAppState
     | GetSøkerinfo
+    | GetStoredAppState
+    | GetTilgjengeligeStønadskontoer
     | SendSøknad
     | StoreAppState
-    | GetStoredAppState
-    | DeleteStoredAppState
     | UpdateApi;

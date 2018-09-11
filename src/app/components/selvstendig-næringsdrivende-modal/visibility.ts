@@ -132,7 +132,10 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
         return kanInnhenteOpplsyningerFraRevisor !== undefined && module.kanInnhenteOpplysningerFraRevisor(næring);
     }
     if (harRegnskapsfører === false && harRevisor === false) {
-        return module.nyIArbeidslivet(næring) && nyIArbeidslivet !== undefined;
+        return (
+            (module.nyIArbeidslivet(næring) && nyIArbeidslivet !== undefined) ||
+            varigEndringAvNæringsinntektVisible(næring)
+        );
     }
     return false;
 };
