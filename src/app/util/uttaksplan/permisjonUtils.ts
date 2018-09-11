@@ -48,7 +48,7 @@ export function getGyldigTidsromForUtsettelse(
  */
 export function getAntallUkerFellesperiode(permisjonsregler: Permisjonsregler, dekningsgrad: Dekningsgrad) {
     const totaltAntallUker =
-        dekningsgrad === '80%' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
+        dekningsgrad === '80' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
     return (
         totaltAntallUker -
         permisjonsregler.antallUkerMødrekvote -
@@ -81,5 +81,5 @@ export const getAntallFeriedagerForForelder = (utsettelser: Utsettelsesperiode[]
  * @param dekningsgrad
  */
 export function getAntallUkerTotalt(permisjonsregler: Permisjonsregler, dekningsgrad: Dekningsgrad) {
-    return dekningsgrad === '80%' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
+    return dekningsgrad === '80' ? permisjonsregler.antallUkerTotalt80 : permisjonsregler.antallUkerTotalt100;
 }
