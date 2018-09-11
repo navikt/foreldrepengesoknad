@@ -4,13 +4,14 @@ import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/Ha
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
 import SkalStarteRettEtterMorSpørsmål from './enkeltspørsmål/SkalStarteRettEtterMorSpørsmål';
-import UtsettelseEtterMor from './enkeltspørsmål/UtsettelseEtterMor';
+import UtsettelseEtterMor from './enkeltspørsmål/UtsettelseEtterMorBolk';
 import SkalHaDelAvFellesperiodeSpørsmål from './enkeltspørsmål/SkalHaDelAvFellesperiodeSpørsmål';
 import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import StartdatoPermisjonBolk from './enkeltspørsmål/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOppholdIUttakSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../../../spørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
+import PlanlagtOppholdBolk from './enkeltsp\u00F8rsm\u00E5l/PlanlagtOppholdBolk';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -23,7 +24,6 @@ export interface Props extends ScenarioProps {
 
 const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
     <>
-        1
         <HarAnnenForelderSøktForeldrepengerSpørsmål />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
         <MorSinSisteUttaksdagSpørsmål visible={søknad.dekningsgrad !== undefined} />
@@ -33,7 +33,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
         <UtsettelseEtterMor visible={søknad.ekstrainfo.uttaksplanSkjema.skalStarteRettEtterMor === false} />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={
-                søknad.ekstrainfo.uttaksplanSkjema.skalStarteRettEtterMor === false ||
+                søknad.ekstrainfo.uttaksplanSkjema.skalStarteRettEtterMor === true ||
                 søknad.ekstrainfo.uttaksplanSkjema.utsettelseEtterMorSkjemaValid === true
             }
         />
@@ -51,8 +51,13 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
                 søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true
             }
         />
+        <PlanlagtOppholdBolk visible={søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true} />
         <FordelingFellesperiodeSpørsmål
-            visible={søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined}
+            visible={
+                søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
+                    ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
+                    : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
+            }
             ukerFellesperiode={antallUkerFellesperiode}
             navnForelder1={søkerinfo.person.fornavn}
             navnForelder2={søknad.annenForelder.navn}

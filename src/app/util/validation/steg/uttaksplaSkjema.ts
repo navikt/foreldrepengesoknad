@@ -11,15 +11,15 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return (
-                skjema.harAnnenForelderSøktFP !== undefined &&
-                søknad.dekningsgrad !== undefined &&
-                skjema.morSinSisteUttaksdag !== undefined &&
-                skjema.skalStarteRettEtterMor !== undefined &&
                 (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
                 skjema.skalHaDelAvFellesperiode !== undefined
             );
         case UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad:
-            return false;
+            return (
+                (skjema.harPlanlagtOppholdIUttak
+                    ? skjema.planlagtOppholdSkjemaValid === true
+                    : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerForelder1 !== undefined
+            );
         default:
             return true;
     }
