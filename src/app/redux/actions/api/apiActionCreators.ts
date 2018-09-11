@@ -1,6 +1,7 @@
 import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
 import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
+import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 
 export function getSøkerinfo(): ApiActionTypes {
     return {
@@ -18,6 +19,13 @@ export function sendSøknad(søknad: Søknad): ApiActionTypes {
 export function getStoredAppState(): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_STORED_APP_STATE
+    };
+}
+
+export function getTilgjengeligeStønadskonter(params: GetTilgjengeligeStønadskontoerParams): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER,
+        params
     };
 }
 
@@ -46,5 +54,6 @@ export default {
     getStoredAppState,
     deleteStoredAppState,
     storeAppState,
+    getTilgjengeligeStønadskonter,
     updateApi
 };
