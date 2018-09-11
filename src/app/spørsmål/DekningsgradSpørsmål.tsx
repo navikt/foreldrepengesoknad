@@ -32,14 +32,14 @@ const DekningsgradSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'spørsmål.dekningsgrad.100'),
-                    value: '100%'
+                    value: '100'
                 },
                 {
                     label: getMessage(intl, 'spørsmål.dekningsgrad.80'),
-                    value: '80%'
+                    value: '80'
                 }
             ]}
-            name="dekninsgrad"
+            name="dekningsgrad"
             infoboksTekst={getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')}
             onChange={(e, v: Dekningsgrad) => onChange(v)}
         />
