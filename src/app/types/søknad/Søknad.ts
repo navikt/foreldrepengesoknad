@@ -39,6 +39,8 @@ export interface UttaksplanSkjemadata {
     fellesperiodeukerForelder1?: number;
     forslagLaget?: boolean;
     harAnnenForelderSøktFP?: boolean;
+    skalHaDelAvFellesperiode?: boolean;
+    utsettelseEtterMorSkjemaValid?: boolean;
 }
 
 interface SensitivSkjemaInfo {
