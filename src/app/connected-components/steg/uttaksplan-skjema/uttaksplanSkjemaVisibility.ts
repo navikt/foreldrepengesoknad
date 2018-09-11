@@ -1,6 +1,6 @@
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import Søknad from '../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../types/søkerinfo';
+import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 
 export interface UttaksplanSkjemaStegVisibility {
     dekningsgradSpørsmål: boolean;
@@ -11,9 +11,10 @@ export interface UttaksplanSkjemaStegVisibility {
     harAnnenForelderSøktFPSpørsmål: boolean;
     skalStarteRettEtterMorSpørsmål: boolean;
     skalHaDelAvFellesperiodeSpørsmål: boolean;
+    utsettelseEtterMor: boolean;
 }
 
-const defaultVisibility = {
+const defaultVisibility: UttaksplanSkjemaStegVisibility = {
     dekningsgradSpørsmål: false,
     startdatoPermisjonSpørsmål: false,
     morSinSisteUttaksdagSpørsmål: false,
@@ -21,33 +22,35 @@ const defaultVisibility = {
     fordelingFellesperiodeSpørsmål: false,
     harAnnenForelderSøktFPSpørsmål: false,
     skalStarteRettEtterMorSpørsmål: false,
-    skalHaDelAvFellesperiodeSpørsmål: false
+    skalHaDelAvFellesperiodeSpørsmål: false,
+    utsettelseEtterMor: false
 };
 
 const getUttaksplanSkjemaStegVisibility = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaStegVisibility => {
     const { uttaksplanSkjema } = søknad.ekstrainfo;
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle);
-
     let vis: UttaksplanSkjemaStegVisibility = { ...defaultVisibility };
 
-    if (søkerErFarEllerMedmor && søknad.annenForelder.harRettPåForeldrepenger) {
+    const scenario = getUttaksplanSkjemaScenario(søknad, søkerinfo);
+    if (scenario === UttaksplanSkjemaScenario['1-farMedmor-fødsel-førsteganggsøknad-beggeHarRett']) {
         vis = {
             ...vis,
             harAnnenForelderSøktFPSpørsmål: true,
             dekningsgradSpørsmål: uttaksplanSkjema.harAnnenForelderSøktFP !== undefined,
             morSinSisteUttaksdagSpørsmål: søknad.dekningsgrad !== undefined,
             skalStarteRettEtterMorSpørsmål: uttaksplanSkjema.morSinSisteUttaksdag !== undefined,
+            utsettelseEtterMor: uttaksplanSkjema.skalStarteRettEtterMor === false,
             skalHaDelAvFellesperiodeSpørsmål: uttaksplanSkjema.skalStarteRettEtterMor !== undefined
         };
-    } else if (!søkerErFarEllerMedmor && søknad.situasjon === Søkersituasjon.FØDSEL && søknad.søker.erAleneOmOmsorg) {
+    } else if (scenario === UttaksplanSkjemaScenario['3-mor-fødsel-førsteganggsøknad']) {
         const harValgtStartdato =
             uttaksplanSkjema.startdatoPermisjon !== undefined || uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
         vis = {
             ...vis,
             dekningsgradSpørsmål: true,
             startdatoPermisjonSpørsmål: søknad.dekningsgrad !== undefined,
-            fordelingFellesperiodeSpørsmål: harValgtStartdato,
-            planlagtOppholdIUttakSpørsmål: harValgtStartdato
+            planlagtOppholdIUttakSpørsmål: harValgtStartdato,
+            fordelingFellesperiodeSpørsmål:
+                !søknad.søker.erAleneOmOmsorg && uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
         };
     }
     return vis;
