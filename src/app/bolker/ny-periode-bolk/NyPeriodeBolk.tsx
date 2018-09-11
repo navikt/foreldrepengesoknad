@@ -68,8 +68,10 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
     render() {
         return (
             <React.Fragment>
-                <Block margin="l">{this.renderPeriodeForm()}</Block>
-                <Block>
+                <Block margin="l" visible={this.state.formIsOpen}>
+                    {this.renderPeriodeForm()}
+                </Block>
+                <Block margin="none" visible={!this.state.formIsOpen}>
                     <Knapperad>
                         <Knapp onClick={this.openNyUtsettelsesperiodeForm} htmlType="button">
                             Utsett ditt uttak

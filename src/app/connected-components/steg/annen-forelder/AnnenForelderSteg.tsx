@@ -96,8 +96,8 @@ class AnnenForelderSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person, registrerteBarn } = props.søkerinfo;
-    const { søker, temp } = state.søknad;
-    const { registrertAnnenForelder } = temp;
+    const { søker, sensitivInfoIkkeLagre } = state.søknad;
+    const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
 
     const stegProps: StegProps = {

@@ -1,5 +1,5 @@
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
-import { SøknadPartial } from '../../types/søknad/Søknad';
+import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
 import {
     getUniqeRegistrertAnnenForelderFromBarn,
@@ -9,6 +9,7 @@ import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
 import { guid } from 'nav-frontend-js-utils';
+import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -25,7 +26,12 @@ const getDefaultState = (): SøknadPartial => {
         },
         harGodkjentVilkår: false,
         harGodkjentOppsummering: false,
-        temp: {
+        ekstrainfo: {
+            uttaksplanSkjema: {
+                startdatoPermisjon: undefined
+            }
+        },
+        sensitivInfoIkkeLagre: {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
@@ -78,24 +84,38 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
-            return {
+            const updatedState: SøknadPartial = {
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
                     : state.annenForelder,
-                temp: {
-                    ...state.temp,
+                sensitivInfoIkkeLagre: {
+                    ...state.sensitivInfoIkkeLagre,
                     søknadenGjelderBarnValg: action.payload,
                     registrertAnnenForelder
                 }
             };
+            return updatedState;
         }
 
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
             return {
                 ...state,
                 uttaksplan: action.perioder
+            };
+
+        case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
+            return {
+                ...state,
+                uttaksplan: lagMockUttaksplan(state as Søknad),
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    uttaksplanSkjema: {
+                        ...state.ekstrainfo.uttaksplanSkjema,
+                        forslagLaget: true
+                    }
+                }
             };
 
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
@@ -116,6 +136,19 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 uttaksplan: [...state.uttaksplan.filter((periode) => periode.id !== action.periode.id), action.periode]
+            };
+        }
+
+        case SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA: {
+            return {
+                ...state,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    uttaksplanSkjema: {
+                        ...state.ekstrainfo.uttaksplanSkjema,
+                        ...action.payload
+                    }
+                }
             };
         }
 

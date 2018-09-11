@@ -47,16 +47,19 @@ const søknad: SøknadPartial = {
         erAleneOmOmsorg: false,
         andreInntekterSiste10Mnd: []
     },
+    uttaksplan: [],
     harGodkjentVilkår: false,
     harGodkjentOppsummering: false,
-    temp: {
+    sensitivInfoIkkeLagre: {
         søknadenGjelderBarnValg: {
             valgteBarn: [],
             gjelderAnnetBarn: undefined
         },
         registrertAnnenForelder
     },
-    uttaksplan: []
+    ekstrainfo: {
+        uttaksplanSkjema: {}
+    }
 };
 
 const kvinnePerson: Person = {
@@ -72,7 +75,8 @@ const kvinnePerson: Person = {
 const søkerinfo: Søkerinfo = {
     person: kvinnePerson,
     arbeidsforhold: [],
-    registrerteBarn: []
+    registrerteBarn: [],
+    søknadsinfo: {}
 };
 
 const propsSetOutsideSteg: string[] = ['erForSyk'];

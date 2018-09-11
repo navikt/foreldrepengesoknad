@@ -4,7 +4,7 @@ import { ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { Søkerinfo } from '../../../types/søkerinfo';
 
 export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    const { annenForelder, søker, temp } = søknad;
+    const { annenForelder, søker, sensitivInfoIkkeLagre } = søknad;
 
     const {
         kanIkkeOppgis,
@@ -16,7 +16,8 @@ export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo):
     const { rolle, erAleneOmOmsorg } = søker;
     const { kjønn } = søkerinfo.person;
     const harOpplystOmSinPågåendeSak =
-        temp.registrertAnnenForelder && temp.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
+        sensitivInfoIkkeLagre.registrertAnnenForelder &&
+        sensitivInfoIkkeLagre.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
     const barn = søknad.barn as ForeldreansvarBarn;
     const vedleggOmsorgsovertakelse = barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
 

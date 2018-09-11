@@ -31,7 +31,12 @@ export interface SøkerinfoDTOArbeidsforhold {
     tom?: string;
 }
 
+export interface SøknadsinfoDTO {
+    deltUttaksplan: boolean;
+}
+
 export interface SøkerinfoDTO {
     søker: SøkerinfoDTOSøker;
     arbeidsforhold?: SøkerinfoDTOArbeidsforhold[];
+    søknadsinfo: SøknadsinfoDTO;
 }
