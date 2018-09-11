@@ -12,6 +12,7 @@ import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOpphold
 import FordelingFellesperiodeSpørsmål from '../../../spørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
+import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -70,13 +71,39 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     );
 };
 
+const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
+    const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    return (
+        <>
+            <HarAnnenForelderSøktForeldrepengerSpørsmål />
+            <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
+            <StartdatoAdopsjonBolk visible={søknad.dekningsgrad !== undefined} barn={søknad.barn} />
+            <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
+            <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
+            <FordelingFellesperiodeSpørsmål
+                visible={
+                    søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
+                        ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
+                        : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
+                }
+                ukerFellesperiode={antallUkerFellesperiode}
+                navnForelder1={søkerinfo.person.fornavn}
+                navnForelder2={søknad.annenForelder.navn}
+            />
+        </>
+    );
+};
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
+    console.log(scenario);
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return <Scenario1 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad:
             return <Scenario3 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad:
+            return <Scenario4 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }
