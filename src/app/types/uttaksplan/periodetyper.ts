@@ -65,3 +65,8 @@ export interface Oppholdsperiode extends PeriodeBase {
 }
 
 export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
+
+export interface TilgjengeligStønadskonto {
+    konto: StønadskontoType;
+    dager: number;
+}
