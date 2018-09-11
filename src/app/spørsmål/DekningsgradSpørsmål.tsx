@@ -16,10 +16,10 @@ const DekningsgradSpørsmål = (props: Props) => {
     const { onChange, erAleneomsorg, dekningsgrad, intl } = props;
 
     let checked;
-    if (dekningsgrad === '100%') {
-        checked = '100%';
-    } else if (dekningsgrad === '80%') {
-        checked = '80%';
+    if (dekningsgrad === '100') {
+        checked = '100';
+    } else if (dekningsgrad === '80') {
+        checked = '80';
     }
 
     const labelKey: string = erAleneomsorg ? 'spørsmål.dekningsgrad.label--aleneomsorg' : 'spørsmål.dekningsgrad.label';
