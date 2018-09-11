@@ -10,10 +10,10 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         const tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
-        Object.keys(stønadskontoer.kontoer).map((key) => {
+        Object.keys(stønadskontoer.kontoer).map((konto) => {
             tilgjengeligeStønadskontoer.push({
-                konto: key as StønadskontoType,
-                dager: stønadskontoer.kontoer[key]
+                konto: konto as StønadskontoType,
+                dager: stønadskontoer.kontoer[konto]
             });
         });
         yield apiActions.updateApi({
