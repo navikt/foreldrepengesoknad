@@ -45,5 +45,5 @@ export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => (
     person: getPerson(søkerinfo),
     registrerteBarn: getRegistrerteBarn(søkerinfo),
     arbeidsforhold: getArbeidsforhold(søkerinfo),
-    søknadsinfo: søkerinfo.søknadsinfo
+    søknadsinfo: søkerinfo.søknadsinfo || {}
 });
