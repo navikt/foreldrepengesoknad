@@ -4,7 +4,8 @@ import innsendingSaga from './innsendingSaga';
 import attachmentSaga from './attachmentSaga';
 import storageSaga from './storageSaga';
 import søknadSaga from './søknadSaga';
+import uttakSaga from './uttakSaga';
 
 export default function* rootSaga() {
-    yield all([søkerinfoSaga(), innsendingSaga(), attachmentSaga(), storageSaga(), søknadSaga()]);
+    yield all([søkerinfoSaga(), innsendingSaga(), attachmentSaga(), storageSaga(), søknadSaga(), uttakSaga()]);
 }
