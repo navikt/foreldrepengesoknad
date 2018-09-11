@@ -3,14 +3,14 @@ import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export enum UttaksplanSkjemaScenario {
-    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = '1',
-    's2_alleFødselAdopsjon_deltPlan' = '2',
-    's3_morFødselFørsteganggsøknad' = '3',
-    's4_morFarAdopsjonFørstegangssøknad' = '4',
-    's5_farMedmorAleneomsorgFødselAdopsjon' = '5',
-    's6_bareFarMedmorRettTilFpFødsel' = '6',
-    's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = '7',
-    's8_ukjent_x' = '8'
+    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's2_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
+    's2_alleFødselAdopsjon_deltPlan' = 's2_alleFødselAdopsjon_deltPlan',
+    's3_morFødselFørsteganggsøknad' = 's3_morFødselFørsteganggsøknad',
+    's4_morFarAdopsjonFørstegangssøknad' = 's4_morFarAdopsjonFørstegangssøknad',
+    's5_farMedmorAleneomsorgFødselAdopsjon' = 's5_farMedmorAleneomsorgFødselAdopsjon',
+    's6_bareFarMedmorRettTilFpFødsel' = 's6_bareFarMedmorRettTilFpFødsel',
+    's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = 's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan',
+    's8_ukjent_x' = 'ukjent'
 }
 
 export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaScenario => {
