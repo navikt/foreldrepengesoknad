@@ -27,7 +27,7 @@ function* getSøkerinfo(action: any) {
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
-        if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo) && 1 === 1) {
+        if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
             yield put(apiActions.getStoredAppState());
         } else {
             yield put(apiActions.deleteStoredAppState());
