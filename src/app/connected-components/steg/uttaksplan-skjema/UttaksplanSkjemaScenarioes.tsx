@@ -40,30 +40,35 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
     </>
 );
 
-const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => (
-    <>
-        3
-        <DekningsgradSpørsmål />
-        <StartdatoPermisjonBolk visible={søknad.dekningsgrad !== undefined} />
-        <PlanlagtOppholdIUttakSpørsmål
-            visible={
-                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
-                søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true
-            }
-        />
-        <PlanlagtOppholdBolk visible={søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true} />
-        <FordelingFellesperiodeSpørsmål
-            visible={
-                søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
-                    ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
-                    : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
-            }
-            ukerFellesperiode={antallUkerFellesperiode}
-            navnForelder1={søkerinfo.person.fornavn}
-            navnForelder2={søknad.annenForelder.navn}
-        />
-    </>
-);
+const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
+    const harSvartPåStartdato =
+        søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
+        søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
+    return (
+        <>
+            <DekningsgradSpørsmål />
+            <StartdatoPermisjonBolk visible={søknad.dekningsgrad !== undefined} />
+            {harSvartPåStartdato && (
+                <>
+                    <PlanlagtOppholdIUttakSpørsmål />
+                    <PlanlagtOppholdBolk
+                        visible={søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true}
+                    />
+                    <FordelingFellesperiodeSpørsmål
+                        visible={
+                            søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
+                                ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
+                                : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
+                        }
+                        ukerFellesperiode={antallUkerFellesperiode}
+                        navnForelder1={søkerinfo.person.fornavn}
+                        navnForelder2={søknad.annenForelder.navn}
+                    />
+                </>
+            )}
+        </>
+    );
+};
 
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
