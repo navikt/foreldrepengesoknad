@@ -26,6 +26,11 @@
 
     "stillingsprosent": "Stillingsprosent",
 
+    "orgnr": "Organisasjonsnummer",
+    "jegSkalJobbeSomSelvstendigNæringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
+    "jegSkalJobbeSomFrilans": "Jeg skal jobbe som frilans",
+    "hvorSkalDuJobbe.spørsmål": "Hvor skal du jobbe?",
+
     "jegskalhaferie": "Jeg skal ha ferie",
     "jegskaliarbeid": "Jeg skal i arbeid",
     "pgasykdom": "På grunn av sykdom",

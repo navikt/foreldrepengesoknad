@@ -1,22 +1,26 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
-import { InputChangeEvent } from '../../../types/dom/Events';
+import { InputChangeEvent } from '../../../../types/dom/Events';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
-import { StønadskontoType, UtsettelsePgaArbeid, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import {
+    StønadskontoType,
+    TilgjengeligStønadskonto,
+    UtsettelsePgaArbeid,
+    Uttaksperiode
+} from '../../../../types/uttaksplan/periodetyper';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { RecursivePartial } from '../../../types/Partial';
-import { isStillingsprosentAbove0AndLessThan100 } from '../../../util/validation/fields/stillingsprosent';
-import HvilkenKvoteSkalBenyttesSpørsmål from '../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
+import { RecursivePartial } from '../../../../types/Partial';
+import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import { connect } from 'react-redux';
-import { AppState } from '../../../redux/reducers';
-import Søknad from '../../../types/søknad/Søknad';
-import {
-    getAktuelleStønadskontoerForSøker,
-    getVelgbareStønadskontotyper
-} from '../../../util/uttaksplan/aktuelleStønadskontoer';
-import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
+import { AppState } from '../../../../redux/reducers/index';
+import Søknad from '../../../../types/søknad/Søknad';
+import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/aktuelleStønadskontoer';
+import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
+import visibility from './visibility';
+import { Søkerinfo } from '../../../../types/søkerinfo';
+import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 
 type PeriodePartial = RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>;
 
@@ -27,6 +31,8 @@ interface UtsettelsePgaArbeidFormProps {
 
 interface StateProps {
     søknad: Søknad;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    søkerinfo: Søkerinfo;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -46,18 +52,17 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, søknad, intl, onChange } = this.props;
+        const { periode, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
 
         const utsettelsePgaArbeidPeriode = periode as UtsettelsePgaArbeid;
         const { stillingsprosent, samtidigGradertUttak } = utsettelsePgaArbeidPeriode;
+        const { arbeidsforhold } = søkerinfo;
 
         const uttaksperiode = periode as Uttaksperiode;
         const { konto } = uttaksperiode;
 
-        const aktuelleStønadskontoer = getAktuelleStønadskontoerForSøker(søknad);
-        const velgbareStønadskontoer = getVelgbareStønadskontotyper(aktuelleStønadskontoer);
-        const harFlereVelgbareKontoerForGradering =
-            isStillingsprosentAbove0AndLessThan100(stillingsprosent) && velgbareStønadskontoer.length > 1;
+        const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+        const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
 
         return (
             <React.Fragment>
@@ -68,7 +73,7 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                         onChange={(e: InputChangeEvent) =>
                             onChange({
                                 stillingsprosent: e.target.value,
-                                konto: harFlereVelgbareKontoerForGradering === false ? velgbareStønadskontoer[0] : null
+                                konto: harFlereVelgbareKontoer === false ? velgbareStønadskontoer[0] : null
                             })
                         }
                         onBlur={this.handleStillingsprosentBlur}
@@ -77,7 +82,7 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={harFlereVelgbareKontoerForGradering}>
+                <Block visible={visibility.hvilkenKvoteSkalBenyttes(periode)}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
@@ -87,18 +92,20 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={
-                        isStillingsprosentAbove0AndLessThan100(stillingsprosent) &&
-                        !søknad.søker.erAleneOmOmsorg &&
-                        søknad.annenForelder.skalHaForeldrepenger &&
-                        søknad.annenForelder.harRettPåForeldrepenger
-                    }>
+                <Block visible={visibility.skalDereHaGradertUttakSamtidig(periode, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
                             onChange({ samtidigGradertUttak: v });
                         }}
                         samtidigGradertUttak={samtidigGradertUttak}
+                    />
+                </Block>
+
+                <Block>
+                    <HvorSkalDuJobbeSpørsmål
+                        arbeidsforhold={arbeidsforhold}
+                        onChange={(v: string) => onChange({ orgnr: v })}
+                        valgtArbeidsforhold={utsettelsePgaArbeidPeriode.orgnr}
                     />
                 </Block>
             </React.Fragment>
@@ -107,6 +114,10 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    return { søknad: state.søknad };
+    return {
+        søknad: state.søknad,
+        søkerinfo: state.api.søkerinfo!,
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+    };
 };
 export default connect(mapStateToProps)(injectIntl(UtsettelsePgaArbeidForm));

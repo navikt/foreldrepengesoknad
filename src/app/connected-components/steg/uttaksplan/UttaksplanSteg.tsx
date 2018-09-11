@@ -14,12 +14,16 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Block from 'common/components/block/Block';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
+import Spinner from 'nav-frontend-spinner';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     person: Person;
     perioder: Periode[];
+    isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
@@ -27,16 +31,18 @@ type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 class UttaksplanSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-    }
 
-    componentWillMount() {
-        if (!this.props.søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
+        const { søknad, person } = this.props;
+
+        if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
             this.props.dispatch(søknadActions.uttaksplanLagForslag());
         }
+
+        this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
     }
 
     render() {
-        const { søknad, søkerinfo, dispatch } = this.props;
+        const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const navn = {
             navnForelder1: søkerinfo.person.fornavn,
             navnForelder2: søknad.annenForelder ? søknad.annenForelder.navn : undefined
@@ -44,17 +50,25 @@ class UttaksplanSteg extends React.Component<Props> {
 
         return (
             <Steg {...this.props.stegProps}>
-                <Veilederinfo maxWidth="30">Her velger du hvordan du ønsker å legge opp ditt uttak.</Veilederinfo>
-                <Block>
-                    <Uttaksplanlegger
-                        søkersituasjon={søknad.situasjon}
-                        barn={søknad.barn}
-                        uttaksplan={søknad.uttaksplan}
-                        onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
-                        onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
-                        {...navn}
-                    />
-                </Block>
+                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                    <Spinner type="XXL" />
+                ) : (
+                    <React.Fragment>
+                        <Veilederinfo maxWidth="30">
+                            Her velger du hvordan du ønsker å legge opp ditt uttak.
+                        </Veilederinfo>
+                        <Block>
+                            <Uttaksplanlegger
+                                søkersituasjon={søknad.situasjon}
+                                barn={søknad.barn}
+                                uttaksplan={søknad.uttaksplan}
+                                onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
+                                onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
+                                {...navn}
+                            />
+                        </Block>
+                    </React.Fragment>
+                )}
             </Steg>
         );
     }
@@ -67,6 +81,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: true,
+        renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
@@ -75,7 +90,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknad,
         person: props.søkerinfo.person,
         stegProps,
-        perioder: søknad.uttaksplan
+        perioder: søknad.uttaksplan,
+        isLoadingTilgjengeligeStønadskontoer: state.api.isLoadingTilgjengeligeStønadskontoer
     };
 };
 

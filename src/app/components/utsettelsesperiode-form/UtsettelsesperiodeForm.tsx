@@ -23,7 +23,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import AnnenForeldersUttakForm from './partials/AnnenForeldersUttakForm';
-import UtsettelsePgaArbeidForm from './partials/UtsettelsePgaArbeidForm';
+import UtsettelsePgaArbeidForm from './partials/utsettelse-pga-arbeid-form/UtsettelsePgaArbeidForm';
 import { isStillingsprosentAbove0AndLessThan100 } from '../../util/validation/fields/stillingsprosent';
 
 interface UtsettelsesperiodeFormProps {

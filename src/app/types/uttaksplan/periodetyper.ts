@@ -57,12 +57,14 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+    orgnr: string;
 }
 
 export interface UtsettelsePgaArbeid extends Utsettelsesperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
     stillingsprosent: string;
     samtidigGradertUttak: boolean;
+    orgnr: string;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {

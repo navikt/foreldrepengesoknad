@@ -133,6 +133,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
         renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, props.søkerinfo),
+        renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo)
     };
