@@ -20,7 +20,7 @@ interface StateProps {
 
 type Props = StateProps & DispatchProps;
 
-const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100%', 13, 13, getPermisjonsregler());
+const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100', 13, 13, getPermisjonsregler());
 
 const mockUttak: Stønadskontouttak[] = [
     {
