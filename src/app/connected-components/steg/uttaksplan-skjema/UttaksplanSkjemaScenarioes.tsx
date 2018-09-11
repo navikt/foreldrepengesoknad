@@ -11,7 +11,7 @@ import StartdatoPermisjonBolk from './enkeltspørsmål/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOppholdIUttakSpørsmål';
 import FordelingFellesperiodeSpørsmål from '../../../spørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
-import PlanlagtOppholdBolk from './enkeltsp\u00F8rsm\u00E5l/PlanlagtOppholdBolk';
+import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
 
 export interface ScenarioProps {
     søknad: Søknad;
