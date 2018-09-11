@@ -30,7 +30,9 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
                         <Checkbox
                             checked={data.skalIkkeHaUttakFørTermin || false}
                             label={getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label')}
-                            onChange={(e) => onChange({ skalIkkeHaUttakFørTermin: e.target.checked })}
+                            onChange={(e) =>
+                                onChange({ skalIkkeHaUttakFørTermin: e.target.checked, startdatoPermisjon: undefined })
+                            }
                         />
                     </Block>
                 </>

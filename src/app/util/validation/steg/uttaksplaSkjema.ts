@@ -9,7 +9,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
     const scenario = getUttaksplanSkjemaScenario(søknad, søkerinfo);
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     switch (scenario) {
-        case UttaksplanSkjemaScenario['1-farMedmor-fødsel-førsteganggsøknad-beggeHarRett']:
+        case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return (
                 skjema.harAnnenForelderSøktFP !== undefined &&
                 søknad.dekningsgrad !== undefined &&
@@ -18,7 +18,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                 (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
                 skjema.skalHaDelAvFellesperiode !== undefined
             );
-        case UttaksplanSkjemaScenario['3-farMedmor-fødsel-førsteganggsøknad-beggeHarRett']:
+        case UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad:
             return false;
         default:
             return true;
