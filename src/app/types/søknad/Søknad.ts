@@ -6,6 +6,7 @@ import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
+import { Dekningsgrad } from 'common/types';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -29,9 +30,22 @@ export interface SøknadenGjelderBarnValg {
     gjelderAnnetBarn?: boolean;
 }
 
-interface SkjemaEkstradata {
+export interface UttaksplanSkjemadata {
+    startdatoPermisjon?: Date;
+    morSinSisteUttaksdag?: Date;
+    skalIkkeHaUttakFørTermin?: boolean;
+    harPlanlagtOppholdIUttak?: boolean;
+    fellesperiodeukerForelder1?: number;
+    forslagLaget?: boolean;
+}
+
+interface SensitivSkjemaInfo {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
+}
+
+interface SkjemaEkstrainfo {
+    uttaksplanSkjema: UttaksplanSkjemadata;
 }
 
 interface Søknad {
@@ -45,7 +59,9 @@ interface Søknad {
     uttaksplan: Periode[];
     søker: Søker;
     vedlegg?: Attachment[];
-    temp: SkjemaEkstradata;
+    dekningsgrad: Dekningsgrad;
+    ekstrainfo: SkjemaEkstrainfo;
+    sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
 export interface SøknadPartial {
@@ -59,7 +75,9 @@ export interface SøknadPartial {
     uttaksplan: Periode[];
     søker: SøkerPartial;
     vedlegg?: Attachment[];
-    temp: SkjemaEkstradata;
+    dekningsgrad?: Dekningsgrad;
+    ekstrainfo: SkjemaEkstrainfo;
+    sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
 export enum AttachmentType {
