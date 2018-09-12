@@ -9,7 +9,7 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { Checkbox, Input } from 'nav-frontend-skjema';
 import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
