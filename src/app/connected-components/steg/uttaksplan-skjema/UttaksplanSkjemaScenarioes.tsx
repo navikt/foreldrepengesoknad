@@ -106,7 +106,6 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
 
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
-    console.log(scenario);
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return <Scenario1 {...scenarioProps} />;
