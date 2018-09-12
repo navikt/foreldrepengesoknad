@@ -60,7 +60,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     orgnr: string;
 }
 
-export interface UtsettelsePgaArbeid extends Utsettelsesperiode {
+export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
     stillingsprosent: string;
     samtidigGradertUttak: boolean;

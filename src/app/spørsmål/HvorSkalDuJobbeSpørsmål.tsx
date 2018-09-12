@@ -10,7 +10,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string) => void;
     arbeidsforhold: Arbeidsforhold[];
-    valgtArbeidsforhold: string;
+    valgtArbeidsforhold?: string;
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
