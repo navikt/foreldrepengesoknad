@@ -9,7 +9,7 @@ import { HistoryProps } from '../../../types/common';
 import isAvailable from '../util/isAvailable';
 
 import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplaSkjema';
+import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
