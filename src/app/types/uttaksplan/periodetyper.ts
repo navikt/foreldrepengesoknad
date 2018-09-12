@@ -57,6 +57,16 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+    orgnr: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
+}
+
+export interface GradertUttaksperiode extends Uttaksperiode {
+    årsak: UtsettelseÅrsakType.Arbeid;
+    stillingsprosent: string;
+    samtidigGradertUttak: boolean;
+    orgnr: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {

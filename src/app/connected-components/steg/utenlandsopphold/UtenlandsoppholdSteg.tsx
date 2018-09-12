@@ -186,6 +186,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const stegProps: StegProps = {
         id: StegID.UTENLANDSOPPHOLD,
         renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
+        renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo)
     };

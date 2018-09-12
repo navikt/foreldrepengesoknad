@@ -17,6 +17,20 @@
 
     "tilbake": "Tilbake",
 
+    "heltid": "Heltid",
+    "deltid": "Deltid",
+
+    "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha gradert uttak samtidig?",
+    "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
+    "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken kvote skal benyttes?",
+
+    "stillingsprosent": "Stillingsprosent",
+
+    "orgnr": "Organisasjonsnummer",
+    "jegSkalJobbeSomSelvstendigNæringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
+    "jegSkalJobbeSomFrilans": "Jeg skal jobbe som frilans",
+    "hvorSkalDuJobbe.spørsmål": "Hvor skal du jobbe?",
+
     "jegskalhaferie": "Jeg skal ha ferie",
     "jegskaliarbeid": "Jeg skal i arbeid",
     "pgasykdom": "På grunn av sykdom",

@@ -22,6 +22,7 @@ import commonActionCreators from '../../redux/actions/common/commonActionCreator
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
+    renderFormTag?: boolean;
     history: History;
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
@@ -46,6 +47,7 @@ class Steg extends React.Component<Props & DispatchProps> {
         this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
+        this.renderContent = this.renderContent.bind(this);
     }
 
     getFormElement() {
@@ -97,8 +99,28 @@ class Steg extends React.Component<Props & DispatchProps> {
         );
     }
 
+    renderContent() {
+        const { id, renderFortsettKnapp, intl } = this.props;
+        return (
+            <React.Fragment>
+                <Block margin="xs">
+                    <BackButton
+                        text={getMessage(intl, 'tilbake')}
+                        hidden={this.shouldHideBackButton()}
+                        onClick={this.navigateToPreviousStep}
+                    />
+                </Block>
+                <Block>
+                    <Stegindikator id={id} />
+                </Block>
+                {this.props.children}
+                {renderFortsettKnapp === true && <FortsettKnapp>{stegConfig[id].fortsettKnappLabel}</FortsettKnapp>}
+            </React.Fragment>
+        );
+    }
+
     render() {
-        const { id, renderFortsettKnapp, dispatch, intl } = this.props;
+        const { renderFormTag, intl, dispatch } = this.props;
 
         const bem = BEMHelper('steg');
         const formProps = {
@@ -109,21 +131,13 @@ class Steg extends React.Component<Props & DispatchProps> {
 
         return (
             <React.Fragment>
-                <ValiderbarForm {...formProps} ref={this.stegFormRef}>
-                    <Block margin="xs">
-                        <BackButton
-                            text={getMessage(intl, 'tilbake')}
-                            hidden={this.shouldHideBackButton()}
-                            onClick={this.navigateToPreviousStep}
-                        />
-                    </Block>
-                    <Block>
-                        <Stegindikator id={id} />
-                    </Block>
-
-                    {this.props.children}
-                    {renderFortsettKnapp === true && <FortsettKnapp>{stegConfig[id].fortsettKnappLabel}</FortsettKnapp>}
-                </ValiderbarForm>
+                {renderFormTag ? (
+                    <ValiderbarForm {...formProps} ref={this.stegFormRef}>
+                        {this.renderContent()}
+                    </ValiderbarForm>
+                ) : (
+                    this.renderContent()
+                )}
                 <StegFooter onAvbryt={() => dispatch(commonActionCreators.visAvbrytSøknadDialog())} />
             </React.Fragment>
         );
