@@ -2,8 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 
-import Spinner from 'nav-frontend-spinner';
-
 import routeConfig from '../util/routing/routeConfig';
 import StegRoutes from './steg/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
@@ -17,12 +15,15 @@ import { Søkerinfo } from '../types/søkerinfo';
 import Workbench from '../dev/workbench/Workbench';
 
 import '../dev/dev.less';
+import Applikasjonsside from './sider/Applikasjonsside';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
     error: any;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
+    isSendSøknadInProgress: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -70,16 +71,15 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     render() {
-        const { søkerinfo, error, isLoadingAppState, isLoadingSøkerinfo } = this.props;
+        const { søkerinfo, isLoadingAppState, isLoadingSøkerinfo, isSendSøknadInProgress } = this.props;
 
-        if (
-            isLoadingAppState ||
-            isLoadingSøkerinfo ||
-            !søkerinfo ||
-            (error.response && error.response.status === 401)
-        ) {
-            return <Spinner type="XXL" />;
-        } else if (!søkerinfo && !isLoadingSøkerinfo) {
+        if (isLoadingAppState || isLoadingSøkerinfo || isSendSøknadInProgress) {
+            return (
+                <Applikasjonsside>
+                    <ApplicationSpinner />
+                </Applikasjonsside>
+            );
+        } else if (!søkerinfo) {
             return this.renderErrorRoute(GenerellFeil);
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
             return this.renderErrorRoute(() => <IkkeMyndig søkerinfo={søkerinfo!} />);
@@ -92,7 +92,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     søkerinfo: state.api.søkerinfo,
     error: state.api.error,
     isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
-    isLoadingAppState: state.api.isLoadingAppState
+    isLoadingAppState: state.api.isLoadingAppState,
+    isSendSøknadInProgress: state.api.søknadSendingInProgress
 });
 
 export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));
