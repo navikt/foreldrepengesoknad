@@ -7,13 +7,14 @@ import SkalStarteRettEtterMorSpørsmål from './enkeltspørsmål/SkalStarteRettE
 import UtsettelseEtterMor from './enkeltspørsmål/UtsettelseEtterMorBolk';
 import SkalHaDelAvFellesperiodeSpørsmål from './enkeltspørsmål/SkalHaDelAvFellesperiodeSpørsmål';
 import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
-import StartdatoPermisjonBolk from './enkeltspørsmål/StartdatoPermisjonBolk';
+import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOppholdIUttakSpørsmål';
 import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
 import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
 import { Adopsjonsbarn } from '../../../types/s\u00F8knad/Barn';
+import StartdatoUttakFarMedmorSpørsmål from './enkeltsp\u00F8rsm\u00E5l/StartdatoUttakFarMedmorSp\u00F8rsm\u00E5l';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -49,7 +50,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     return (
         <>
             <DekningsgradSpørsmål />
-            <StartdatoPermisjonBolk visible={søknad.dekningsgrad !== undefined} />
+            <StartdatoPermisjonMorBolk visible={søknad.dekningsgrad !== undefined} />
             {harSvartPåStartdato && (
                 <>
                     <PlanlagtOppholdIUttakSpørsmål />
@@ -104,6 +105,22 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     );
 };
 
+const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
+    const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    return (
+        <>
+            <DekningsgradSpørsmål />
+            <StartdatoUttakFarMedmorSpørsmål visible={søknad.dekningsgrad !== undefined} />
+            {skjema.startdatoPermisjon && (
+                <>
+                    <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
+                    <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
+                </>
+            )}
+        </>
+    );
+};
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -113,6 +130,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario3 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad:
             return <Scenario4 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
+            return <Scenario6 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

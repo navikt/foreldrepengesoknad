@@ -41,6 +41,12 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
         (beggeHarRett(søknad) || adoptertAleneOgBareEnHarRett(søknad))
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad;
+    } else if (
+        søknad.situasjon === Søkersituasjon.FØDSEL &&
+        søkerErFarEllerMedmor &&
+        søknad.annenForelder.harRettPåForeldrepenger === false
+    ) {
+        scenario = UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel;
     }
 
     return scenario;

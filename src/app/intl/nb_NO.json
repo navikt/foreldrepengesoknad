@@ -279,6 +279,7 @@
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
+    "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
