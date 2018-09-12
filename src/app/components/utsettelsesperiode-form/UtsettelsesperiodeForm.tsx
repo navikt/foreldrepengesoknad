@@ -31,6 +31,7 @@ import UtsettelsePgaDeltidsarbeidForm, {
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
 import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form.tsx/UtsettelsePgaFerieForm';
 import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
 
 interface UtsettelsesperiodeFormProps {
     periode: RecursivePartial<Periode>;
@@ -245,6 +246,24 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             forelder={Forelder.FORELDER_1}
                         />
                     </Block>
+                )}
+                {antallDager && (
+                    <>
+                        <Block visible={variant === Utsettelsesvariant.Ferie} hasChildBlocks={true}>
+                            <UtsettelsePgaFerieForm
+                                antallDager={antallDager}
+                                onChange={(p) => this.props.onChange(p)}
+                                forelder={Forelder.FORELDER_1}
+                            />
+                        </Block>
+                        <Block visible={variant === Utsettelsesvariant.Sykdom} hasChildBlocks={true}>
+                            <UtsettelsePgaSykdomForm
+                                onChange={(p) => this.props.onChange(p)}
+                                periode={periode as Periode}
+                                forelder={Forelder.FORELDER_1}
+                            />
+                        </Block>
+                    </>
                 )}
             </React.Fragment>
         );

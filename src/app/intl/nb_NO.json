@@ -440,6 +440,10 @@
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
 
+    "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
+
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.uttak": "{foreldernavn} sin kvote",
 
