@@ -24,7 +24,6 @@ export const cleanupAnnenForelder = (
         utenlandskFnr,
         harRettPåForeldrepenger,
         erInformertOmSøknaden,
-        skalHaForeldrepenger,
         erUfør,
         kanIkkeOppgis,
         ...rest
@@ -44,9 +43,6 @@ export const cleanupAnnenForelder = (
         fnr: kanOppgis(true) ? fnr : undefined,
         utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
         bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
-        skalHaForeldrepenger: kanOppgis(vis.skalFarEllerMedmorHaForeldrepengerSpørsmål)
-            ? skalHaForeldrepenger
-            : undefined,
         harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
         erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
         erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined

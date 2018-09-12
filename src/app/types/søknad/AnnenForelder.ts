@@ -6,7 +6,6 @@ interface AnnenForelder {
     kanIkkeOppgis: boolean;
     harRettPåForeldrepenger: boolean;
     erInformertOmSøknaden: boolean;
-    skalHaForeldrepenger: boolean;
     erForSyk: boolean;
     erUfør: boolean;
 }
