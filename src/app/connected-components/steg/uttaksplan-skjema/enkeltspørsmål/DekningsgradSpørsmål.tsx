@@ -57,7 +57,7 @@ const DekningsgradSpørsmål = (props: Props) => {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad: state.søknad.dekningsgrad,
-    erAleneomsorg: state.søknad.søker.erAleneOmOmsorg
+    erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));

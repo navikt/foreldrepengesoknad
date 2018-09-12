@@ -13,6 +13,10 @@ export function formaterDato(dato: Date, datoformat?: string): string {
     return format(dato, datoformat || 'dddd D. MMMM YYYY', { locale });
 }
 
+export function formaterDatoUtenDag(dato: Date): string {
+    return format(dato, 'D. MMMM YYYY', { locale });
+}
+
 export function år(dato: Date): string {
     return format(dato, 'YYYY', { locale });
 }
