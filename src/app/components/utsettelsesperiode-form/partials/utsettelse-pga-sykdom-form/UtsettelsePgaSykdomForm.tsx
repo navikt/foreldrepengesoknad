@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Periode, Periodetype, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 

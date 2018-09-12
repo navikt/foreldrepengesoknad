@@ -239,15 +239,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     />
                 </Block>
                 {antallDager && (
-                    <Block visible={variant === Utsettelsesvariant.Ferie} hasChildBlocks={true}>
-                        <UtsettelsePgaFerieForm
-                            antallDager={antallDager}
-                            onChange={(p) => this.props.onChange(p)}
-                            forelder={Forelder.FORELDER_1}
-                        />
-                    </Block>
-                )}
-                {antallDager && (
                     <>
                         <Block visible={variant === Utsettelsesvariant.Ferie} hasChildBlocks={true}>
                             <UtsettelsePgaFerieForm
