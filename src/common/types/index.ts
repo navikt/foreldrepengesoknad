@@ -1,6 +1,6 @@
 export * from '../intl/types';
 
-export type Dekningsgrad = '80%' | '100%';
+export type Dekningsgrad = '80' | '100';
 
 export type Forelder = 'forelder1' | 'forelder2';
 
