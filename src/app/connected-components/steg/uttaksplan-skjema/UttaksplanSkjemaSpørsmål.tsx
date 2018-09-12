@@ -28,7 +28,7 @@ const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
     dispatch
 }) => (
     <Block visible={visible} hasChildBlocks={harUnderspørsmål}>
-        {render(skjemadata, (data) => dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata(data)))}
+        {visible && render(skjemadata, (data) => dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata(data)))}
     </Block>
 );
 

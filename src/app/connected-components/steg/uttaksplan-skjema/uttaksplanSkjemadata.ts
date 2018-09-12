@@ -1,3 +1,9 @@
+export enum ValgalternativerAdopsjonStartdato {
+    'ankomst' = 'ankomst',
+    'omsorgsovertakelse' = 'omsorgsovertakelse',
+    'annen' = 'annen'
+}
+
 export interface UttaksplanSkjemadata {
     startdatoPermisjon?: Date;
     morSinSisteUttaksdag?: Date;
@@ -10,5 +16,5 @@ export interface UttaksplanSkjemadata {
     skalHaDelAvFellesperiode?: boolean;
     utsettelseEtterMorSkjemaValid?: boolean;
     planlagtOppholdSkjemaValid?: boolean;
-    valgtAdopsjonStartdato: string;
+    valgtAdopsjonStartdato: ValgalternativerAdopsjonStartdato;
 }

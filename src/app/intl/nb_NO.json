@@ -282,6 +282,12 @@
     "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
+    "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Barnets ankomstdato til Norge ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",
+    "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg annen dato",
+
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
     "uttaksplan.skjema.fordeling.aria.fordeling":

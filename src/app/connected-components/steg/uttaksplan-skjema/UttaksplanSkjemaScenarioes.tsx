@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
@@ -13,6 +13,7 @@ import FordelingFellesperiodeSpørsmål from '../../../spørsmål/FordelingFelle
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
 import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
+import { Adopsjonsbarn } from '../../../types/s\u00F8knad/Barn';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -77,7 +78,12 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
         <>
             <HarAnnenForelderSøktForeldrepengerSpørsmål />
             <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
-            <StartdatoAdopsjonBolk visible={søknad.dekningsgrad !== undefined} barn={søknad.barn} />
+            {søknad.situasjon === Søkersituasjon.ADOPSJON && (
+                <StartdatoAdopsjonBolk
+                    visible={søknad.dekningsgrad !== undefined}
+                    barn={søknad.barn as Adopsjonsbarn}
+                />
+            )}
             <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
             <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
             <FordelingFellesperiodeSpørsmål
