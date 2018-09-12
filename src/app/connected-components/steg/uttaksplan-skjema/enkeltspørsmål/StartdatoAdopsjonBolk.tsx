@@ -34,14 +34,15 @@ const getAlternativ = (
 
 const getStartdatoFromAlternativ = (
     alternativ: ValgalternativerAdopsjonStartdato,
-    barn: Adopsjonsbarn
+    barn: Adopsjonsbarn,
+    valgtVerdi?: Date
 ): Date | undefined => {
     if (alternativ === ValgalternativerAdopsjonStartdato.omsorgsovertakelse) {
         return barn.adopsjonsdato;
     } else if (alternativ === ValgalternativerAdopsjonStartdato.ankomst) {
         return barn.ankomstdato;
     }
-    return undefined;
+    return valgtVerdi;
 };
 
 const StartdatoAdopsjonBolk = (props: Props) => {
@@ -70,7 +71,7 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             onChange={(value: ValgalternativerAdopsjonStartdato) =>
                                 onChange({
                                     valgtAdopsjonStartdato: value,
-                                    startdatoPermisjon: getStartdatoFromAlternativ(value, barn)
+                                    startdatoPermisjon: getStartdatoFromAlternativ(value, barn, data.startdatoPermisjon)
                                 })
                             }
                         />
