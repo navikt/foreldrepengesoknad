@@ -75,7 +75,7 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
             return <Scenario1 {...scenarioProps} />;
-        case UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad:
+        case UttaksplanSkjemaScenario.s3_morFødsel:
             return <Scenario3 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
