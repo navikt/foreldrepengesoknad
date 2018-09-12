@@ -3,10 +3,10 @@ import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export enum UttaksplanSkjemaScenario {
-    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 'farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
+    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's2_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
     's2_alleFødselAdopsjon_deltPlan' = 's2_alleFødselAdopsjon_deltPlan',
-    's3_morFødselFørsteganggsøknad' = 's3_morFødselFørsteganggsøknad',
-    's4_morFarAdopsjonFørstegangssøknad' = 's4_morFarAdopsjonFørstegangssøknad',
+    's3_morFødsel' = 's3_morFødsel',
+    's4_morFarAdopsjon' = 's4_morFarAdopsjon',
     's5_farMedmorAleneomsorgFødselAdopsjon' = 's5_farMedmorAleneomsorgFødselAdopsjon',
     's6_bareFarMedmorRettTilFpFødsel' = 's6_bareFarMedmorRettTilFpFødsel',
     's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = 's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan',
@@ -35,12 +35,12 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
     ) {
         scenario = UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan;
     } else if (søkerErMor && søknad.situasjon === Søkersituasjon.FØDSEL) {
-        scenario = UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad;
+        scenario = UttaksplanSkjemaScenario.s3_morFødsel;
     } else if (
         søknad.situasjon === Søkersituasjon.ADOPSJON &&
         (beggeHarRett(søknad) || adoptertAleneOgBareEnHarRett(søknad))
     ) {
-        scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad;
+        scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     }
 
     return scenario;
