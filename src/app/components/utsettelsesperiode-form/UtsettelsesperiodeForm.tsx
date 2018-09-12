@@ -127,13 +127,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     updateUtsettelsePgaHeltidsarbeid(skjemadata: UtsettelsePgaHeltidsarbeidSkjemadata) {
         const { periode, onChange } = this.props;
         const { tidsperiode } = periode;
-        const { orgnr } = skjemadata;
+        const { orgnr, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende } = skjemadata;
         const utsettelsesperiode: RecursivePartial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
             årsak: UtsettelseÅrsakType.Arbeid,
             tidsperiode,
             forelder: Forelder.FORELDER_1,
-            orgnr
+            orgnr,
+            skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
         };
         onChange(utsettelsesperiode);
     }

@@ -8,6 +8,7 @@ import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSp�
 
 export interface UtsettelsePgaHeltidsarbeidSkjemadata {
     orgnr?: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
 interface UtsettelsePgaArbeidFormProps {
@@ -22,22 +23,8 @@ interface StateProps {
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
 
 class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-        this.handleOnChange = this.handleOnChange.bind(this);
-    }
-
-    handleOnChange(skjemadataProps: Partial<UtsettelsePgaHeltidsarbeidSkjemadata>) {
-        const { skjemadata, onChange } = this.props;
-
-        onChange({
-            ...skjemadata,
-            ...skjemadataProps
-        });
-    }
-
     render() {
-        const { skjemadata, søkerinfo } = this.props;
+        const { skjemadata, søkerinfo, onChange } = this.props;
         const { arbeidsforhold } = søkerinfo;
         const { orgnr } = skjemadata;
 
@@ -45,7 +32,9 @@ class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
             <Block>
                 <HvorSkalDuJobbeSpørsmål
                     arbeidsforhold={arbeidsforhold}
-                    onChange={(v: string) => this.handleOnChange({ orgnr: v })}
+                    onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
+                        onChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
+                    }
                     valgtArbeidsforhold={orgnr}
                 />
             </Block>

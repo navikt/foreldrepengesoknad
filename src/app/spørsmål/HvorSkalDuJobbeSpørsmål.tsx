@@ -8,7 +8,7 @@ import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 
 interface HvorSkalDuJobbeSpørsmålProps {
-    onChange: (orgnr: string) => void;
+    onChange: (orgnr: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) => void;
     arbeidsforhold: Arbeidsforhold[];
     valgtArbeidsforhold?: string;
 }
@@ -58,9 +58,9 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
         });
 
         if (value !== næringValue && value !== frilansValue) {
-            onChange(value);
+            onChange(value, false);
         } else {
-            onChange('');
+            onChange('', true);
         }
     }
 
@@ -98,7 +98,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
                 {selvstendigNæringsdrivendeValgt && (
                     <Input
                         label="Hva er organisasjonsnummeret på næringen?"
-                        onChange={(e: InputChangeEvent) => onChange(e.target.value)}
+                        onChange={(e: InputChangeEvent) => onChange(e.target.value, true)}
                         value={valgtArbeidsforhold}
                     />
                 )}

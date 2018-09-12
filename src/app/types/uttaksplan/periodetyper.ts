@@ -58,6 +58,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     forelder: Forelder;
     helligdager?: Helligdag[];
     orgnr: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
 
 export interface GradertUttaksperiode extends Uttaksperiode {
@@ -65,6 +66,7 @@ export interface GradertUttaksperiode extends Uttaksperiode {
     stillingsprosent: string;
     samtidigGradertUttak: boolean;
     orgnr: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
