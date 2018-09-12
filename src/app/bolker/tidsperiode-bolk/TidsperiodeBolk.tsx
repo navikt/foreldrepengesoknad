@@ -55,6 +55,14 @@ class TidsperiodeBolk extends React.Component<Props> {
             tidsperiode && tidsperiode.fom && tidsperiode.tom
                 ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
                 : undefined;
+
+        let tilAvgrensninger: Avgrensninger = {};
+        if (datoAvgrensninger && datoAvgrensninger.til) {
+            tilAvgrensninger = datoAvgrensninger.til;
+        } else if (tidsperiode.fom) {
+            tilAvgrensninger = { minDato: tidsperiode.fom };
+        }
+
         return (
             <div className={bem.className}>
                 <div className={bem.element('fra')}>
@@ -88,7 +96,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                             }}
                             dato={tidsperiode.tom}
                             disabled={false || sluttdatoDisabled}
-                            avgrensninger={datoAvgrensninger && datoAvgrensninger.til}
+                            avgrensninger={tilAvgrensninger}
                             validators={datoValidatorer && datoValidatorer.til}
                         />
                     </Block>
