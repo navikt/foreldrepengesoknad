@@ -7,6 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
+import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -30,27 +31,13 @@ export interface SøknadenGjelderBarnValg {
     gjelderAnnetBarn?: boolean;
 }
 
-export interface UttaksplanSkjemadata {
-    startdatoPermisjon?: Date;
-    morSinSisteUttaksdag?: Date;
-    skalStarteRettEtterMor?: boolean;
-    skalIkkeHaUttakFørTermin?: boolean;
-    harPlanlagtOppholdIUttak?: boolean;
-    fellesperiodeukerForelder1?: number;
-    forslagLaget?: boolean;
-    harAnnenForelderSøktFP?: boolean;
-    skalHaDelAvFellesperiode?: boolean;
-    utsettelseEtterMorSkjemaValid?: boolean;
-    planlagtOppholdSkjemaValid?: boolean;
-}
-
 interface SensitivSkjemaInfo {
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
 interface SkjemaEkstrainfo {
-    uttaksplanSkjema: UttaksplanSkjemadata;
+    uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
 }
 
 interface Søknad {
