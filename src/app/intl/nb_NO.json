@@ -268,6 +268,9 @@
     "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
     "dokumentasjon.mangler": "Dokumentasjon mangler",
 
+    "spørsmål.harAnnenForelderSøktFP.label": "Har den andre forelderen søkt om foreldrepenger/mottar foreldrepenger?",
+    "spørsmål.skalStarteRettEtterMorSpørsmål.label": "Skal du begynne rett etter at mor er ferdig?",
+    "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.dekningsgrad.100": "49 uker med 100% foreldrepenger",
     "spørsmål.dekningsgrad.80": "59 uker med 80% foreldrepenger",
     "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger ønsker dere?",
@@ -276,7 +279,7 @@
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
-    "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",

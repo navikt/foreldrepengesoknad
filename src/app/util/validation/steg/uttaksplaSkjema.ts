@@ -1,13 +1,26 @@
 import { Søkerinfo } from '../../../types/søkerinfo';
 import Søknad from '../../../types/søknad/Søknad';
+import {
+    getUttaksplanSkjemaScenario,
+    UttaksplanSkjemaScenario
+} from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
 
 export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    const { uttaksplanSkjema } = søknad.ekstrainfo;
-    return (
-        søknad.dekningsgrad !== undefined &&
-        (uttaksplanSkjema.startdatoPermisjon !== undefined ||
-            uttaksplanSkjema.skalIkkeHaUttakFørTermin === true ||
-            uttaksplanSkjema.morSinSisteUttaksdag !== undefined) &&
-        uttaksplanSkjema.fellesperiodeukerForelder1 !== undefined
-    );
+    const scenario = getUttaksplanSkjemaScenario(søknad, søkerinfo);
+    const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    switch (scenario) {
+        case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
+            return (
+                (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
+                skjema.skalHaDelAvFellesperiode !== undefined
+            );
+        case UttaksplanSkjemaScenario.s3_morFødsel:
+            return (
+                (skjema.harPlanlagtOppholdIUttak
+                    ? skjema.planlagtOppholdSkjemaValid === true
+                    : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerForelder1 !== undefined
+            );
+        default:
+            return true;
+    }
 };
