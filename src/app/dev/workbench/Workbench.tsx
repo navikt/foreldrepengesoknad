@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import Block from 'common/components/block/Block';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import NyPeriodeBolk from '../../bolker/ny-periode-bolk/NyPeriodeBolk';
+import { Forelder } from 'common/types';
 
 interface StateProps {
     søknad: Søknad;
@@ -30,7 +31,7 @@ const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.Mødrekvote,
         dagerGjennstående: 0,
-        forelder: 'forelder1'
+        forelder: Forelder.FORELDER_1
     },
     {
         konto: StønadskontoType.Fellesperiode,
@@ -39,7 +40,7 @@ const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.Fedrekvote,
         dagerGjennstående: 10,
-        forelder: 'forelder2'
+        forelder: Forelder.FORELDER_2
     }
 ];
 

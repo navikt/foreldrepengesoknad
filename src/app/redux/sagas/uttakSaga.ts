@@ -23,7 +23,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                error,
+                tilgjengeligeStønadskontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 0 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 0 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 0 },
+                    { konto: StønadskontoType.Flerbarnsuker, dager: 0 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 0 },
+                    { konto: StønadskontoType.Mødrekvote, dager: 0 }
+                ],
                 isLoadingTilgjengeligeStønadskontoer: false
             })
         );
