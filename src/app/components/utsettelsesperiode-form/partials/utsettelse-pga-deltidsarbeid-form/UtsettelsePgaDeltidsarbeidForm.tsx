@@ -21,6 +21,7 @@ export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     konto?: StønadskontoType;
     samtidigGradertUttak?: boolean;
     orgnr?: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
 interface UtsettelsePgaArbeidFormProps {
@@ -40,27 +41,18 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(this);
-        this.handleOnChange = this.handleOnChange.bind(this);
-    }
-
-    handleOnChange(skjemadataProps: Partial<UtsettelsePgaDeltidsarbeidSkjemadata>) {
-        const { skjemadata, onChange } = this.props;
-
-        onChange({
-            ...skjemadata,
-            ...skjemadataProps
-        });
     }
 
     handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
+        const { onChange } = this.props;
         const pst = getFloatFromString(e.target.value);
-        this.handleOnChange({
+        onChange({
             stillingsprosent: pst ? pst.toFixed(1) : e.target.value
         });
     }
 
     render() {
-        const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl } = this.props;
+        const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
         const { arbeidsforhold } = søkerinfo;
         const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = skjemadata;
 
@@ -74,7 +66,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>
-                            this.handleOnChange({
+                            onChange({
                                 stillingsprosent: e.target.value,
                                 konto: harFlereVelgbareKontoer === false ? velgbareStønadskontoer[0] : undefined
                             })
@@ -88,7 +80,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.hvilkenKvoteSkalBenyttes(skjemadata)}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
-                            this.handleOnChange({ konto: stønadskonto });
+                            onChange({ konto: stønadskonto });
                         }}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
@@ -98,7 +90,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.skalDereHaGradertUttakSamtidig(skjemadata, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
-                            this.handleOnChange({ samtidigGradertUttak: v });
+                            onChange({ samtidigGradertUttak: v });
                         }}
                         samtidigGradertUttak={samtidigGradertUttak}
                     />
@@ -107,7 +99,12 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.hvorSkalDuJobbe(skjemadata, søknad)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold}
-                        onChange={(v: string) => this.handleOnChange({ orgnr: v })}
+                        onChange={(orgnrValue: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
+                            onChange({
+                                orgnr: orgnrValue,
+                                skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
+                            })
+                        }
                         valgtArbeidsforhold={orgnr}
                     />
                 </Block>
