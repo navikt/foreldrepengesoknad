@@ -14,13 +14,13 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                 (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
                 skjema.skalHaDelAvFellesperiode !== undefined
             );
-        case UttaksplanSkjemaScenario.s3_morFødselFørsteganggsøknad:
+        case UttaksplanSkjemaScenario.s3_morFødsel:
             return (
                 (skjema.harPlanlagtOppholdIUttak
                     ? skjema.planlagtOppholdSkjemaValid === true
                     : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerForelder1 !== undefined
             );
-        case UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad:
+        case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
             return (
                 skjema.startdatoPermisjon !== undefined &&
                 (skjema.harPlanlagtOppholdIUttak === true
