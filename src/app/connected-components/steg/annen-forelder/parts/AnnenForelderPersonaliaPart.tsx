@@ -43,8 +43,8 @@ class AnnenForelderPersonaliaPart extends React.Component<Props> {
             })
         );
         dispatch(
-            søknadActions.updateSøker({
-                erAleneOmOmsorg: kanIkkeOppgis
+            søknadActions.updateAnnenForelder({
+                kanIkkeOppgis
             })
         );
     }

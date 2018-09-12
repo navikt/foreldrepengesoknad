@@ -13,16 +13,6 @@ export enum UttaksplanSkjemaScenario {
     's8_ukjent_x' = 'ukjent'
 }
 
-const harAnnenForelderRettPåForeldrepenger = (søknad: Søknad): boolean =>
-    søknad.annenForelder.harRettPåForeldrepenger === true || søknad.annenForelder.kanIkkeOppgis === true;
-
-const beggeHarRett = (søknad: Søknad): boolean => {
-    return harAnnenForelderRettPåForeldrepenger(søknad);
-};
-
-const adoptertAleneOgBareEnHarRett = (søknad: Søknad) =>
-    søknad.søker.erAleneOmOmsorg === true && søknad.annenForelder.harRettPåForeldrepenger === false;
-
 export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaScenario => {
     const søkerErFarEllerMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle);
     const søkerErMor = !søkerErFarEllerMedmor;
@@ -38,7 +28,8 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
         scenario = UttaksplanSkjemaScenario.s3_morFødsel;
     } else if (
         søknad.situasjon === Søkersituasjon.ADOPSJON &&
-        (beggeHarRett(søknad) || adoptertAleneOgBareEnHarRett(søknad))
+        ((søknad.annenForelder.kanIkkeOppgis !== true && søknad.annenForelder.harRettPåForeldrepenger) ||
+            søknad.annenForelder.kanIkkeOppgis === true)
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     } else if (
@@ -53,7 +44,11 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
         søknad.annenForelder.harRettPåForeldrepenger === false
     ) {
         scenario = UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel;
+    } else if (søknad.situasjon === Søkersituasjon.ADOPSJON) {
+        scenario = UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan;
     }
+
+    console.log(scenario);
 
     return scenario;
 };

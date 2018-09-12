@@ -141,6 +141,24 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     );
 };
 
+const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
+    <>
+        <HarAnnenForelderSøktForeldrepengerSpørsmål />
+        <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
+        <MorSinSisteUttaksdagSpørsmål visible={søknad.dekningsgrad !== undefined} />
+        <SkalStarteRettEtterMorSpørsmål
+            visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}
+        />
+        <UtsettelseEtterMor visible={søknad.ekstrainfo.uttaksplanSkjema.skalStarteRettEtterMor === false} />
+        <SkalHaDelAvFellesperiodeSpørsmål
+            visible={
+                søknad.ekstrainfo.uttaksplanSkjema.skalStarteRettEtterMor === true ||
+                søknad.ekstrainfo.uttaksplanSkjema.utsettelseEtterMorSkjemaValid === true
+            }
+        />
+    </>
+);
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -154,6 +172,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario5 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
             return <Scenario6 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan:
+            return <Scenario7 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

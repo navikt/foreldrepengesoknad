@@ -44,6 +44,12 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                     : skjema.harPlanlagtOppholdIUttak === false)
             );
 
+        case UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan:
+            return (
+                (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
+                skjema.skalHaDelAvFellesperiode !== undefined
+            );
+
         default:
             return true;
     }
