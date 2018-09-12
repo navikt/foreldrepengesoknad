@@ -48,7 +48,5 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
         scenario = UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan;
     }
 
-    console.log(scenario);
-
     return scenario;
 };
