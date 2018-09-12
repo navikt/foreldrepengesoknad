@@ -9,7 +9,7 @@ import SkalHaDelAvFellesperiodeSpørsmål from './enkeltspørsmål/SkalHaDelAvFe
 import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import StartdatoPermisjonBolk from './enkeltspørsmål/StartdatoPermisjonBolk';
 import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOppholdIUttakSpørsmål';
-import FordelingFellesperiodeSpørsmål from '../../../spørsmål/FordelingFellesperiodeSpørsmål';
+import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
 import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
@@ -84,18 +84,22 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
                     barn={søknad.barn as Adopsjonsbarn}
                 />
             )}
-            <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
-            <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
-            <FordelingFellesperiodeSpørsmål
-                visible={
-                    søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
-                        ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
-                        : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
-                }
-                ukerFellesperiode={antallUkerFellesperiode}
-                navnForelder1={søkerinfo.person.fornavn}
-                navnForelder2={søknad.annenForelder.navn}
-            />
+            {skjema.startdatoPermisjon && (
+                <>
+                    <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
+                    <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
+                    <FordelingFellesperiodeSpørsmål
+                        visible={
+                            søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak === true
+                                ? søknad.ekstrainfo.uttaksplanSkjema.planlagtOppholdSkjemaValid === true
+                                : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
+                        }
+                        ukerFellesperiode={antallUkerFellesperiode}
+                        navnForelder1={søkerinfo.person.fornavn}
+                        navnForelder2={søknad.annenForelder.navn}
+                    />
+                </>
+            )}
         </>
     );
 };
