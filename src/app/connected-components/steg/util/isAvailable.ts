@@ -9,7 +9,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import { Søkerinfo } from '../../../types/søkerinfo';
-import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplaSkjema';
+import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
