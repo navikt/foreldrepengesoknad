@@ -9,6 +9,7 @@ import { Periode } from '../../../types/uttaksplan/periodetyper';
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
 export enum SøknadActionKeys {
+    'AVBRYT_SØKNAD' = 'avbrytSøknad',
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
     'UPLOAD_ATTACHMENT' = 'uploadAttachment',
@@ -132,7 +133,12 @@ export interface DeleteAttachmentFailed {
     attachment: Attachment;
 }
 
+export interface AvbrytSøknad {
+    type: SøknadActionKeys.AVBRYT_SØKNAD;
+}
+
 export type SøknadAction =
+    | AvbrytSøknad
     | UpdateBarn
     | UpdateSøknadenGjelder
     | UpdateAnnenForelder

@@ -8,6 +8,19 @@ export function setSpråk(språkkode: Språkkode): CommonActionTypes {
     };
 }
 
+export function visAvbrytSøknadDialog(erSynlig?: boolean): CommonActionTypes {
+    return {
+        type: CommonActionKeys.VIS_AVBRYT_SØKNAD_DIALOG
+    };
+}
+export function skjulAvbrytSøknadDialog(erSynlig?: boolean): CommonActionTypes {
+    return {
+        type: CommonActionKeys.SKJUL_AVBRYT_SØKNAD_DIALOG
+    };
+}
+
 export default {
-    setSpråk
+    setSpråk,
+    visAvbrytSøknadDialog,
+    skjulAvbrytSøknadDialog
 };
