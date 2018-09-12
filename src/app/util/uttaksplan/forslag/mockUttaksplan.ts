@@ -23,30 +23,30 @@ export const lagMockUttaksplan = (søknad: Søknad): Array<Uttaksperiode | Utset
     if (famDato) {
         if (søknad.situasjon === Søkersituasjon.FØDSEL) {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                return opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
+                return opprettUttaksperioderAleneomsorgMor(famDato, '100', getPermisjonsregler());
             }
             if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                return opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
+                return opprettUttaksperioderToForeldreEttBarn(famDato, '100', 13, 13, getPermisjonsregler());
             }
         } else if (søknad.situasjon === Søkersituasjon.ADOPSJON) {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
+                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100', getPermisjonsregler());
                 perioder.shift();
                 return perioder;
             }
             if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
+                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, '100', 13, 13, getPermisjonsregler());
                 perioder.shift();
                 return perioder;
             }
         } else if (søknad.situasjon === Søkersituasjon.FORELDREANSVAR) {
             if (søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100%', getPermisjonsregler());
+                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, '100', getPermisjonsregler());
                 perioder.shift();
                 return perioder;
             }
             if (!søker.erAleneOmOmsorg && søker.rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, '100%', 13, 13, getPermisjonsregler());
+                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, '100', 13, 13, getPermisjonsregler());
                 perioder.shift();
                 return perioder;
             }

@@ -16,10 +16,10 @@ const DekningsgradSpørsmål = (props: Props) => {
     const { onChange, erAleneomsorg, dekningsgrad, intl } = props;
 
     let checked;
-    if (dekningsgrad === '100%') {
-        checked = '100%';
-    } else if (dekningsgrad === '80%') {
-        checked = '80%';
+    if (dekningsgrad === '100') {
+        checked = '100';
+    } else if (dekningsgrad === '80') {
+        checked = '80';
     }
 
     const labelKey: string = erAleneomsorg ? 'spørsmål.dekningsgrad.label--aleneomsorg' : 'spørsmål.dekningsgrad.label';
@@ -32,14 +32,14 @@ const DekningsgradSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'spørsmål.dekningsgrad.100'),
-                    value: '100%'
+                    value: '100'
                 },
                 {
                     label: getMessage(intl, 'spørsmål.dekningsgrad.80'),
-                    value: '80%'
+                    value: '80'
                 }
             ]}
-            name="dekninsgrad"
+            name="dekningsgrad"
             infoboksTekst={getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')}
             onChange={(e, v: Dekningsgrad) => onChange(v)}
         />
