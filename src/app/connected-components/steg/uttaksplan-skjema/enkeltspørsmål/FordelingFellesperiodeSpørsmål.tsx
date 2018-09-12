@@ -2,9 +2,7 @@ import * as React from 'react';
 import RangeInput from 'common/components/skjema/elements/range-input/RangeInput';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { Ingress, Element } from 'nav-frontend-typografi';
-import UttaksplanSkjemaSpørsmål, {
-    UttaksplanSkjemaspørsmålProps
-} from '../connected-components/steg/uttaksplan-skjema/UttaksplanSkjemaSpørsmål';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSp\u00F8rsm\u00E5l';
 
 export interface OwnProps {
     navnForelder1?: string;
@@ -50,7 +48,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                         { id: 'uttaksplan.skjema.fordeling.valgtVerdi' },
                         {
                             ukerForelder: value,
-                            ukerTpotalt: ukerFellesperiode,
+                            ukerTotalt: ukerFellesperiode,
                             navnForelder: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' })
                         }
                     )

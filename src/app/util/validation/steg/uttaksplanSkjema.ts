@@ -20,6 +20,30 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                     ? skjema.planlagtOppholdSkjemaValid === true
                     : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerForelder1 !== undefined
             );
+        case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
+            return (
+                skjema.startdatoPermisjon !== undefined &&
+                (skjema.harPlanlagtOppholdIUttak === true
+                    ? skjema.planlagtOppholdSkjemaValid === true
+                    : skjema.harPlanlagtOppholdIUttak === false)
+            );
+
+        case UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon:
+            return (
+                skjema.startdatoPermisjon !== undefined &&
+                (skjema.harPlanlagtOppholdIUttak === true
+                    ? skjema.planlagtOppholdSkjemaValid === true
+                    : skjema.harPlanlagtOppholdIUttak === false)
+            );
+
+        case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
+            return (
+                skjema.startdatoPermisjon !== undefined &&
+                (skjema.harPlanlagtOppholdIUttak === true
+                    ? skjema.planlagtOppholdSkjemaValid === true
+                    : skjema.harPlanlagtOppholdIUttak === false)
+            );
+
         default:
             return true;
     }
