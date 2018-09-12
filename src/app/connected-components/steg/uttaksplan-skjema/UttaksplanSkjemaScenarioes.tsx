@@ -13,8 +13,9 @@ import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFelles
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
 import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
-import { Adopsjonsbarn } from '../../../types/s\u00F8knad/Barn';
+import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/s\u00F8knad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltsp\u00F8rsm\u00E5l/StartdatoUttakFarMedmorSp\u00F8rsm\u00E5l';
+import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltsp\u00F8rsm\u00E5l/StartdatoUttakFarMedmorAleneomsorgSp\u00F8rsm\u00E5l';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -105,6 +106,25 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     );
 };
 
+const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
+    const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    return (
+        <>
+            <DekningsgradSpørsmål />
+            <StartdatoUttakFarMedmorAleneomsorgSpørsmål
+                barn={søknad.barn as ForeldreansvarBarn}
+                visible={søknad.dekningsgrad !== undefined}
+            />
+            {skjema.startdatoPermisjon && (
+                <>
+                    <PlanlagtOppholdIUttakSpørsmål visible={skjema.startdatoPermisjon !== undefined} />
+                    <PlanlagtOppholdBolk visible={skjema.harPlanlagtOppholdIUttak === true} />
+                </>
+            )}
+        </>
+    );
+};
+
 const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     return (
@@ -130,6 +150,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario3 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
             return <Scenario4 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon:
+            return <Scenario5 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
             return <Scenario6 {...scenarioProps} />;
         default:

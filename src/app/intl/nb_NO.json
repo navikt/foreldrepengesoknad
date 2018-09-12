@@ -289,6 +289,11 @@
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",
     "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg annen dato",
 
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.annen": "Annen dato",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
+
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
     "uttaksplan.skjema.fordeling.aria.fordeling":

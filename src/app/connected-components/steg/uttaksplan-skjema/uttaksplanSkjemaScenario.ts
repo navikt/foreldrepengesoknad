@@ -42,6 +42,12 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     } else if (
+        (søknad.situasjon === Søkersituasjon.FØDSEL || søknad.situasjon === Søkersituasjon.ADOPSJON) &&
+        søkerErFarEllerMedmor &&
+        søknad.søker.erAleneOmOmsorg === true
+    ) {
+        scenario = UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon;
+    } else if (
         søknad.situasjon === Søkersituasjon.FØDSEL &&
         søkerErFarEllerMedmor &&
         søknad.annenForelder.harRettPåForeldrepenger === false

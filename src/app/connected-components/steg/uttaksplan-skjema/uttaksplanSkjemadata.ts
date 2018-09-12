@@ -4,6 +4,11 @@ export enum ValgalternativerAdopsjonStartdato {
     'annen' = 'annen'
 }
 
+export enum ValgalternativerAleneomsorgFarMedmor {
+    'datoForAleneomsorg' = 'datoForAleneomsorg',
+    'annen' = 'annen'
+}
+
 export interface UttaksplanSkjemadata {
     startdatoPermisjon?: Date;
     morSinSisteUttaksdag?: Date;
@@ -16,5 +21,6 @@ export interface UttaksplanSkjemadata {
     skalHaDelAvFellesperiode?: boolean;
     utsettelseEtterMorSkjemaValid?: boolean;
     planlagtOppholdSkjemaValid?: boolean;
-    valgtAdopsjonStartdato: ValgalternativerAdopsjonStartdato;
+    valgtAdopsjonStartdato?: ValgalternativerAdopsjonStartdato;
+    valgtStartdatoAleneomsorgFarMedmor?: ValgalternativerAleneomsorgFarMedmor;
 }
