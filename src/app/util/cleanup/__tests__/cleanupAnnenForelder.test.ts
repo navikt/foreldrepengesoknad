@@ -130,6 +130,24 @@ describe('Cleanup AnnenForelder', () => {
                 });
             });
         });
+        describe('HAR aleneomsorg', () => {
+            it('far skal IKKE ha foreldrepenger', () => {
+                testVisibility = {
+                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                    harRettPåForeldrepengerSpørsmål: false
+                };
+                expect(cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr'])).toBeTruthy();
+            });
+            it('far SKAL ha foreldrepenger', () => {
+                testVisibility = {
+                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
+                    harRettPåForeldrepengerSpørsmål: true
+                };
+                expect(
+                    cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'harRettPåForeldrepenger'])
+                ).toBeTruthy();
+            });
+        });
     });
     it('Skal fjerne alt når annen forelder ikke kan oppgis', () => {
         testSøknad.annenForelder.kanIkkeOppgis = true;
