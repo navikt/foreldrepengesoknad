@@ -28,7 +28,6 @@ export interface StegProps {
     previousStegRoute?: StegID;
     onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     preSubmit?: () => void;
-    noFormTag?: boolean;
 }
 
 type Props = StegProps & InjectedIntlProps;

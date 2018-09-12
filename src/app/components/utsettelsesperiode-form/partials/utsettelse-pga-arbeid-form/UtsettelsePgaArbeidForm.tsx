@@ -101,7 +101,7 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block>
+                <Block visible={visibility.hvorSkalDuJobbe(periode, søknad)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold}
                         onChange={(v: string) => onChange({ orgnr: v })}

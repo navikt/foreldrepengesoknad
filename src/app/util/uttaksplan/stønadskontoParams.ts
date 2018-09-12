@@ -11,7 +11,7 @@ export const getStønadskontoParams = (søknad: Søknad, person: Person): GetTil
     const { harRettPåForeldrepenger } = annenForelder;
 
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
-    const dekningsgradValue = dekningsgrad === '80%' ? '80' : '100';
+    const dekningsgradValue = dekningsgrad === '80' ? '80' : '100';
     const erFarEllerMedmor = erFarEllerMedmorSjekk(person.kjønn, rolle);
     const morHarAleneomsorg = rolle === SøkerRolle.MOR && erAleneOmOmsorg === true;
     const morHarRett = rolle === SøkerRolle.MOR || (erFarEllerMedmor && harRettPåForeldrepenger === true);

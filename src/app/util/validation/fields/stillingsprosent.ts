@@ -24,6 +24,13 @@ export const isStillingsprosentAbove0AndLessThan100 = (stillingsprosent: string)
     }
     return false;
 };
+export const isStillingsprosent100 = (stillingsprosent: string): boolean => {
+    const pst = getFloatFromString(stillingsprosent);
+    if (pst) {
+        return pst === 100;
+    }
+    return false;
+};
 
 export const getStillingsprosentRegler = (stillingsprosent: string, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';

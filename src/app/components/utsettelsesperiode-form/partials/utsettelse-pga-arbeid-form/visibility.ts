@@ -1,7 +1,10 @@
 import VisibilityFunction from '../../../../types/dom/Visibility';
 import { RecursivePartial } from '../../../../types/Partial';
 import { UtsettelsePgaArbeid, Uttaksperiode } from '../../../../types/uttaksplan/periodetyper';
-import { isStillingsprosentAbove0AndLessThan100 } from '../../../../util/validation/fields/stillingsprosent';
+import {
+    isStillingsprosent100,
+    isStillingsprosentAbove0AndLessThan100
+} from '../../../../util/validation/fields/stillingsprosent';
 import Søknad from '../../../../types/søknad/Søknad';
 
 type PeriodePartial = RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>;
@@ -18,8 +21,8 @@ const skalDereHaGradertUttakSamtidigSynlig = (periode: PeriodePartial, søknad: 
     const { erAleneOmOmsorg } = søker;
     const { harRettPåForeldrepenger, skalHaForeldrepenger } = annenForelder;
 
-    if (hvilkenKvoteSkalBenyttesSynlig(periode)) {
-        return konto !== undefined;
+    if (module.hvilkenKvoteSkalBenyttes(periode)) {
+        return konto !== null && konto !== undefined;
     }
     if (stillingsprosent !== undefined) {
         return !erAleneOmOmsorg && skalHaForeldrepenger && harRettPåForeldrepenger;
@@ -27,7 +30,19 @@ const skalDereHaGradertUttakSamtidigSynlig = (periode: PeriodePartial, søknad: 
     return false;
 };
 
-export default {
-    hvilkenKvoteSkalBenyttes: hvilkenKvoteSkalBenyttesSynlig,
-    skalDereHaGradertUttakSamtidig: skalDereHaGradertUttakSamtidigSynlig
+const hvorSkalDuJobbeSynlig = (periode: PeriodePartial, søknad: Søknad) => {
+    const { stillingsprosent, samtidigGradertUttak } = periode as UtsettelsePgaArbeid;
+    if (isStillingsprosent100(stillingsprosent)) {
+        return true;
+    }
+
+    return module.skalDereHaGradertUttakSamtidig(periode, søknad) && samtidigGradertUttak !== undefined;
 };
+
+const module = {
+    hvilkenKvoteSkalBenyttes: hvilkenKvoteSkalBenyttesSynlig,
+    skalDereHaGradertUttakSamtidig: skalDereHaGradertUttakSamtidigSynlig,
+    hvorSkalDuJobbe: hvorSkalDuJobbeSynlig
+};
+
+export default module;
