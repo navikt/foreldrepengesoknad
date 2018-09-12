@@ -12,10 +12,10 @@ import PlanlagtOppholdIUttakSpørsmål from '../../../spørsmål/PlanlagtOpphold
 import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import PlanlagtOppholdBolk from './enkeltspørsmål/PlanlagtOppholdBolk';
-import StartdatoAdopsjonBolk from './enkeltsp\u00F8rsm\u00E5l/StartdatoAdopsjonBolk';
-import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/s\u00F8knad/Barn';
-import StartdatoUttakFarMedmorSpørsmål from './enkeltsp\u00F8rsm\u00E5l/StartdatoUttakFarMedmorSp\u00F8rsm\u00E5l';
-import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltsp\u00F8rsm\u00E5l/StartdatoUttakFarMedmorAleneomsorgSp\u00F8rsm\u00E5l';
+import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
+import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
+import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 
 export interface ScenarioProps {
     søknad: Søknad;

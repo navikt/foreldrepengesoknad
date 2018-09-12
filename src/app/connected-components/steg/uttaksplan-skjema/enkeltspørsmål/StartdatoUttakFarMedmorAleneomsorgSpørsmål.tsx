@@ -1,9 +1,7 @@
 import * as React from 'react';
-import FlervalgSpørsmål, {
-    FlervalgAlternativ
-} from '../../../../components/flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSp\u00F8rsm\u00E5l';
-import { ForeldreansvarBarn } from '../../../../types/s\u00F8knad/Barn';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../components/flervalg-spørsmål/FlervalgSpørsmål';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';

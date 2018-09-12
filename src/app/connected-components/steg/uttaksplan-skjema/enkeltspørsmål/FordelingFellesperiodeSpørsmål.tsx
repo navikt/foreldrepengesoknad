@@ -2,7 +2,7 @@ import * as React from 'react';
 import RangeInput from 'common/components/skjema/elements/range-input/RangeInput';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { Ingress, Element } from 'nav-frontend-typografi';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSp\u00F8rsm\u00E5l';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 
 export interface OwnProps {
     navnForelder1?: string;
