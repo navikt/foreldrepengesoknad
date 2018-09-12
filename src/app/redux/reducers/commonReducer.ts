@@ -2,24 +2,23 @@ import { CommonActionKeys, CommonActionTypes } from '../actions/common/commonAct
 import { Språkkode } from 'common/intl/types';
 
 const getDefaultState = (): CommonState => ({
-    språkkode: 'nb'
+    språkkode: 'nb',
+    avbrytSøknadDialogErSynlig: false
 });
 
 export interface CommonState {
     språkkode: Språkkode;
+    avbrytSøknadDialogErSynlig: boolean;
 }
-type CommonStatePartial = Partial<CommonState>;
 
-// Hjelper til med typesjekking
-const updateCommonState = (state: CommonState, newStatePartial: CommonStatePartial): CommonState => ({
-    ...state,
-    ...newStatePartial
-});
-
-const commonReducer = (state = getDefaultState(), action: CommonActionTypes) => {
+const commonReducer = (state = getDefaultState(), action: CommonActionTypes): CommonState => {
     switch (action.type) {
         case CommonActionKeys.SET_SPRÅK:
-            return updateCommonState(state, { språkkode: action.språkkode });
+            return { ...state, språkkode: action.språkkode };
+        case CommonActionKeys.VIS_AVBRYT_SØKNAD_DIALOG:
+            return { ...state, avbrytSøknadDialogErSynlig: true };
+        case CommonActionKeys.SKJUL_AVBRYT_SØKNAD_DIALOG:
+            return { ...state, avbrytSøknadDialogErSynlig: false };
     }
     return state;
 };

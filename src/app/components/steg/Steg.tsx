@@ -17,6 +17,7 @@ import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
+import commonActionCreators from '../../redux/actions/common/commonActionCreators';
 
 export interface StegProps {
     id: StegID;
@@ -97,7 +98,7 @@ class Steg extends React.Component<Props & DispatchProps> {
     }
 
     render() {
-        const { id, renderFortsettKnapp, intl } = this.props;
+        const { id, renderFortsettKnapp, dispatch, intl } = this.props;
 
         const bem = BEMHelper('steg');
         const formProps = {
@@ -123,7 +124,7 @@ class Steg extends React.Component<Props & DispatchProps> {
                     {this.props.children}
                     {renderFortsettKnapp === true && <FortsettKnapp>{stegConfig[id].fortsettKnappLabel}</FortsettKnapp>}
                 </ValiderbarForm>
-                <StegFooter />
+                <StegFooter onAvbryt={() => dispatch(commonActionCreators.visAvbrytSøknadDialog())} />
             </React.Fragment>
         );
     }

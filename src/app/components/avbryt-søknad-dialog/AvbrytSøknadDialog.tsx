@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
+import Block from 'common/components/block/Block';
 
 export interface Props {
     synlig: boolean;
@@ -8,21 +9,25 @@ export interface Props {
     onFortsettSøknad: () => void;
 }
 
-const AvbrytSkjemaDialog: React.StatelessComponent<Props> = ({ synlig, onAvbrytSøknad, onFortsettSøknad }) => (
+const AvbrytSøknadDialog: React.StatelessComponent<Props> = ({ synlig, onAvbrytSøknad, onFortsettSøknad }) => (
     <>
         <BekreftDialog
             isOpen={synlig}
-            avbrytLabel="Nei, fortsett søknad"
             bekreftLabel="Ja, avbryt søknad"
+            avbrytLabel="Nei"
             closeButton={false}
             contentLabel="Ønsker du å avbryte søknaden?"
             onBekreft={onAvbrytSøknad}
             onRequestClose={onFortsettSøknad}>
-            <Veilederinfo type="advarsel">
-                Ønsker du å avbryte søknaden? All informasjon i skjemaet vil bli slettet.
-            </Veilederinfo>
+            <Block margin="xs">
+                <Undertittel tag="h1">Avbryt søknad</Undertittel>
+            </Block>
+            <Block margin="xs">
+                <Normaltekst>Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.</Normaltekst>
+            </Block>
+            <Normaltekst>Ønsker du å avbryte søknaden?</Normaltekst>
         </BekreftDialog>
     </>
 );
 
-export default AvbrytSkjemaDialog;
+export default AvbrytSøknadDialog;

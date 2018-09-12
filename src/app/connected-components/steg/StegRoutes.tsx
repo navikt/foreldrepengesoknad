@@ -17,14 +17,30 @@ import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
+import AvbrytSøknadDialog from '../../components/avbryt-s\u00F8knad-dialog/AvbrytS\u00F8knadDialog';
+import { AppState } from '../../redux/reducers';
+import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import commonActionCreators from '../../redux/actions/common/commonActionCreators';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-type Props = SøkerinfoProps & RouteComponentProps<any> & DispatchProps & HistoryProps;
+interface StateProps {
+    avbrytDialogErSynlig: boolean;
+}
+
+type Props = StateProps & SøkerinfoProps & RouteComponentProps<any> & DispatchProps & HistoryProps;
 
 class StegRoutes extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.handleAvbrytSøknad = this.handleAvbrytSøknad.bind(this);
+    }
+    handleAvbrytSøknad() {
+        this.props.dispatch(søknadActionCreators.avbrytSøknad());
+        this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
+    }
     render() {
-        const { søkerinfo } = this.props;
+        const { søkerinfo, avbrytDialogErSynlig, dispatch } = this.props;
 
         return (
             <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
@@ -80,9 +96,18 @@ class StegRoutes extends React.Component<Props> {
                         key={StegID.OPPSUMMERING}
                     />
                 </Switch>
+                <AvbrytSøknadDialog
+                    synlig={avbrytDialogErSynlig}
+                    onAvbrytSøknad={() => this.handleAvbrytSøknad()}
+                    onFortsettSøknad={() => dispatch(commonActionCreators.skjulAvbrytSøknadDialog())}
+                />
             </Applikasjonsside>
         );
     }
 }
 
-export default connect()(withRouter(StegRoutes));
+const mapStateToProps = (state: AppState): StateProps => ({
+    avbrytDialogErSynlig: state.common.avbrytSøknadDialogErSynlig
+});
+
+export default connect(mapStateToProps)(withRouter(StegRoutes));
