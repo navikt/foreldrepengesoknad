@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Periode, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import { TidsperiodePartial } from 'common/types';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import EtikettLiten from 'nav-frontend-typografi/lib/etikett-liten';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';

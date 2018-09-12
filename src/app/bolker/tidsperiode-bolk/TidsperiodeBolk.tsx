@@ -7,6 +7,11 @@ import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
+import { getVarighetString } from 'common/util/intlUtils';
+import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
+
+import './tidsperiodeBolk.less';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 type TidsperiodeType = TidsperiodePartial | TidsperiodeMedValgfriSluttdatoPartial;
 
@@ -22,10 +27,11 @@ export interface DatoValidatorer {
 
 interface TidsperiodeBolkProps {
     tidsperiode: TidsperiodeType;
-    onChange: (tidsperiode: TidsperiodeType) => void;
     sluttdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
+    visVarighet?: boolean;
+    onChange: (tidsperiode: TidsperiodeType) => void;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -42,9 +48,13 @@ class TidsperiodeBolk extends React.Component<Props> {
     }
 
     render() {
-        const { tidsperiode, datoAvgrensninger, datoValidatorer, intl, sluttdatoDisabled } = this.props;
+        const { tidsperiode, datoAvgrensninger, datoValidatorer, visVarighet, intl, sluttdatoDisabled } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
 
+        const varighetIDager =
+            tidsperiode && tidsperiode.fom && tidsperiode.tom
+                ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
+                : undefined;
         return (
             <div className={bem.className}>
                 <div className={bem.element('fra')}>
@@ -83,6 +93,12 @@ class TidsperiodeBolk extends React.Component<Props> {
                         />
                     </Block>
                 </div>
+                {visVarighet &&
+                    varighetIDager !== undefined && (
+                        <Normaltekst className={bem.element('varighet')}>
+                            {getVarighetString(varighetIDager, intl)}
+                        </Normaltekst>
+                    )}
             </div>
         );
     }

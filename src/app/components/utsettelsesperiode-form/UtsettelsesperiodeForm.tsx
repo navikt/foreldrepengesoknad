@@ -10,7 +10,7 @@ import {
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, TidsperiodePartial } from 'common/types';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
@@ -29,6 +29,8 @@ import { RecursivePartial } from '../../types/Partial';
 import UtsettelsePgaDeltidsarbeidForm, {
     UtsettelsePgaDeltidsarbeidSkjemadata
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
+import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form.tsx/UtsettelsePgaFerieForm';
+import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 
 interface UtsettelsesperiodeFormProps {
     periode: RecursivePartial<Periode>;
@@ -189,6 +191,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { tidsperiode } = periode;
         const bem = BEMHelper('periodeForm');
 
+        const antallDager =
+            tidsperiode && tidsperiode.fom && tidsperiode.tom
+                ? Tidsperioden({ fom: tidsperiode.fom as Date, tom: tidsperiode.tom as Date }).getAntallUttaksdager()
+                : undefined;
         return (
             <React.Fragment>
                 <Block margin="s">
@@ -198,6 +204,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <TidsperiodeBolk
                         onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as TidsperiodePartial}
+                        visVarighet={true}
                     />
                 </Block>
                 <Block margin="s">
@@ -208,23 +215,32 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={gjelderOpphold}>
+                <Block visible={gjelderOpphold} hasChildBlocks={true}>
                     <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
                 </Block>
 
-                <Block visible={variant === Utsettelsesvariant.ArbeidHeltid}>
+                <Block visible={variant === Utsettelsesvariant.ArbeidHeltid} hasChildBlocks={true}>
                     <UtsettelsePgaHeltidsarbeidForm
                         onChange={this.updateUtsettelsePgaHeltidsarbeid}
                         skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
                     />
                 </Block>
 
-                <Block visible={variant === Utsettelsesvariant.ArbeidDeltid}>
+                <Block visible={variant === Utsettelsesvariant.ArbeidDeltid} hasChildBlocks={true}>
                     <UtsettelsePgaDeltidsarbeidForm
                         onChange={this.updateUtsettelsePgaDeltidsarbeid}
                         skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
                     />
                 </Block>
+                {antallDager && (
+                    <Block visible={variant === Utsettelsesvariant.Ferie} hasChildBlocks={true}>
+                        <UtsettelsePgaFerieForm
+                            antallDager={antallDager}
+                            onChange={(p) => this.props.onChange(p)}
+                            forelder={Forelder.FORELDER_1}
+                        />
+                    </Block>
+                )}
             </React.Fragment>
         );
     }

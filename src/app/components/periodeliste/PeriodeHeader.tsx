@@ -4,7 +4,7 @@ import BEMHelper from 'common/util/bem';
 import { måned, måned3bokstaver } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
@@ -13,6 +13,7 @@ import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
 import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 
 import './periodeheader.less';
+import getMessage from 'common/util/i18nUtils';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -36,12 +37,13 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
     return UttaksplanIkonKeys.advarsel; // Feilikon mangler
 };
 
-const getPeriodeTittel = (periode: Periode, foreldernavn: string): string => {
+const getPeriodeTittel = (periode: Periode, foreldernavn: string, intl: InjectedIntl): string => {
     if (periode.type === Periodetype.Uttak) {
-        return `${foreldernavn} sin kvote`;
+        return getMessage(intl, `periodeliste.uttak`, { foreldernavn });
     }
     if (periode.type === Periodetype.Utsettelse) {
-        return `Utsettelse - ${periode.årsak}`;
+        const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
+        return getMessage(intl, `periodeliste.utsettelsesårsak`, { årsak });
     }
     return '';
 };
@@ -76,7 +78,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                 {renderPeriodeIkon(periode)}
             </div>
             <div className={BEM.element('beskrivelse')}>
-                <Element tag="h1">{getPeriodeTittel(periode, foreldernavn)}</Element>
+                <Element tag="h1">{getPeriodeTittel(periode, foreldernavn, intl)}</Element>
                 <Normaltekst>
                     {getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl)}
                     <em className={BEM.element('hvem')}> - {foreldernavn}</em>
