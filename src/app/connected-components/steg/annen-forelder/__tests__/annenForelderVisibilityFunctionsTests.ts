@@ -18,7 +18,6 @@ const registrertAnnenForelder: RegistrertAnnenForelder = {
 const annenForelder: Partial<AnnenForelder> = {
     fnr: '123',
     navn: 'FAR FARSEN',
-    skalHaForeldrepenger: true,
     harRettPåForeldrepenger: true
 };
 const barn: Partial<Barn> = {
@@ -44,18 +43,6 @@ describe('AnnenForelder visibility tests', () => {
     });
     describe('Routing visibilities', () => {
         describe('visAnnenForelderErKjentPartial', () => {
-            it('Should not render skalFarEllerMedmorHaForeldrepengerSpørsmål when er alene om omsorg and not farEllerMedmor', () => {
-                expect(
-                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål({ erAleneOmOmsorg: true }, false)
-                ).toBeTruthy();
-                expect(
-                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål({ erAleneOmOmsorg: false }, false)
-                ).toBeFalsy();
-                expect(
-                    func.visSkalFarEllerMedmorHaForeldrepengerSpørsmål({ erAleneOmOmsorg: false }, true)
-                ).toBeFalsy();
-            });
-
             it('Should render ErMorUførSpørsmål depending on when harRettPåForeldrepenger', () => {
                 expect(func.visErMorUførSpørsmål({ harRettPåForeldrepenger: false }, true)).toBeTruthy();
                 expect(func.visErMorUførSpørsmål({ harRettPåForeldrepenger: false }, false)).toBeFalsy();

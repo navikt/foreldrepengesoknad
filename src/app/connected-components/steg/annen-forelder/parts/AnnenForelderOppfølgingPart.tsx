@@ -8,7 +8,6 @@ import søknadActions from '../../../../redux/actions/søknad/søknadActionCreat
 import { DispatchProps } from 'common/redux/types';
 import Block from 'common/components/block/Block';
 import ErAnnenForelderInformertSpørsmål from '../../../../spørsmål/ErAnnenForelderInformertSpørsmål';
-import SkalFarEllerMedmorHaForeldrepengerSpørsmål from '../../../../spørsmål/SkalFarEllerMedmorHaForeldrepengerSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
@@ -62,20 +61,6 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                                 })
                             )
                         }
-                    />
-                </Block>
-                <Block visible={vis.skalFarEllerMedmorHaForeldrepengerSpørsmål}>
-                    <Veilederinfo>Informasjon om deling av uttak og at den andre kan ta perm.</Veilederinfo>
-                    <SkalFarEllerMedmorHaForeldrepengerSpørsmål
-                        navn={navn}
-                        skalFarEllerMedmorHaForeldrepenger={annenForelder.skalHaForeldrepenger}
-                        onChange={(skalHaForeldrepenger: boolean) => {
-                            dispatch(
-                                søknadActions.updateAnnenForelder({
-                                    skalHaForeldrepenger
-                                })
-                            );
-                        }}
                     />
                 </Block>
                 <Block visible={vis.harRettPåForeldrepengerSpørsmål}>

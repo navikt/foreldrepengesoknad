@@ -40,19 +40,11 @@ const visFødselsnummerInput = (annenForelderPersonaliaPartVisible: boolean, ann
     return annenForelder.navn !== undefined && annenForelder.navn !== '';
 };
 
-const visSkalFarEllerMedmorHaForeldrepengerSpørsmål = (søker: Partial<Søker>, erFarEllerMedmor: boolean): boolean => {
-    return !erFarEllerMedmor && søker.erAleneOmOmsorg === true;
-};
-
 const visHarRettPåForeldrepengerSpørsmål = (
-    annenForelder: AnnenForelder,
     søker: Søker,
     harAnnenForelderOpplystOmSinPågåendeSak: boolean
 ): boolean => {
-    return (
-        annenForelder.skalHaForeldrepenger === true ||
-        (søker.erAleneOmOmsorg === false && !harAnnenForelderOpplystOmSinPågåendeSak)
-    );
+    return søker.erAleneOmOmsorg === false && !harAnnenForelderOpplystOmSinPågåendeSak;
 };
 
 const visErMorUførSpørsmål = (annenForelder: Partial<AnnenForelder>, erFarEllerMedmor: boolean): boolean => {
@@ -106,7 +98,6 @@ export const AnnenForelderVisibilityFunctions = {
     visHarRettPåForeldrepengerSpørsmål,
     visOmsorgsovertakelse,
     visRegistrertAnnenForelderBolk,
-    visSkalFarEllerMedmorHaForeldrepengerSpørsmål,
     visErMorUførSpørsmål,
     visErAnnenForelderInformertSpørsmål,
     visOmsorgsovertakelseDatoSpørsmål,

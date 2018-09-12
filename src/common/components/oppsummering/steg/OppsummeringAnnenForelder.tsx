@@ -22,7 +22,6 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
         bostedsland,
         kanIkkeOppgis,
         harRettPåForeldrepenger,
-        skalHaForeldrepenger,
         erInformertOmSøknaden,
         erForSyk,
         erUfør
@@ -79,12 +78,6 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}
                     text={harRettPåForeldrepenger ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                />
-            )}
-            {skalHaForeldrepenger !== undefined && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.skalHaForeldrepenger.label', { navn })}
-                    text={skalHaForeldrepenger ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
             {erInformertOmSøknaden !== undefined && (

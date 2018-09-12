@@ -19,7 +19,6 @@ const annenForelder: AnnenForelder = {
     harRettPåForeldrepenger: false,
     kanIkkeOppgis: false,
     navn: 'navnet',
-    skalHaForeldrepenger: false,
     utenlandskFnr: false
 };
 
@@ -129,33 +128,6 @@ describe('Cleanup AnnenForelder', () => {
                         ])
                     ).toBeTruthy();
                 });
-            });
-        });
-        describe('HAR aleneomsorg', () => {
-            it('far skal IKKE ha foreldrepenger', () => {
-                testVisibility = {
-                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                    skalFarEllerMedmorHaForeldrepengerSpørsmål: true,
-                    harRettPåForeldrepengerSpørsmål: false
-                };
-                expect(
-                    cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'skalHaForeldrepenger'])
-                ).toBeTruthy();
-            });
-            it('far SKAL ha foreldrepenger', () => {
-                testVisibility = {
-                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                    skalFarEllerMedmorHaForeldrepengerSpørsmål: true,
-                    harRettPåForeldrepengerSpørsmål: true
-                };
-                expect(
-                    cleanAndCheckProps(testSøknad, testVisibility, [
-                        'navn',
-                        'fnr',
-                        'skalHaForeldrepenger',
-                        'harRettPåForeldrepenger'
-                    ])
-                ).toBeTruthy();
             });
         });
     });
