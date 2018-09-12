@@ -30,7 +30,7 @@ import UtsettelsePgaDeltidsarbeidForm, {
     UtsettelsePgaDeltidsarbeidSkjemadata
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
 import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form.tsx/UtsettelsePgaFerieForm';
-import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 
 interface UtsettelsesperiodeFormProps {
     periode: RecursivePartial<Periode>;
@@ -191,10 +191,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { tidsperiode } = periode;
         const bem = BEMHelper('periodeForm');
 
-        const antallDager =
-            tidsperiode && tidsperiode.fom && tidsperiode.tom
-                ? Tidsperioden({ fom: tidsperiode.fom as Date, tom: tidsperiode.tom as Date }).getAntallUttaksdager()
-                : undefined;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
+
+        const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
 
         return (
             <React.Fragment>

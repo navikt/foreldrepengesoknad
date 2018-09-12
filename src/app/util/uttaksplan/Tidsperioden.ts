@@ -19,6 +19,17 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager)
 });
 
+export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
+    return tidsperiode.fom !== undefined && tidsperiode.tom !== undefined;
+}
+
+export function getValidTidsperiode(tidsperiode: any): Tidsperiode | undefined {
+    if (isValidTidsperiode(tidsperiode)) {
+        return tidsperiode;
+    }
+    return undefined;
+}
+
 /**
  * Returnerer ny Tidsperiode gitt gyldig uttaksdag-fom og antall uttaksdager
  * @param fom
