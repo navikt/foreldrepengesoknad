@@ -412,5 +412,11 @@
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.SYKDOM": "Sykdom",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
-    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn"
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+
+    "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
+    "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
+    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden"
 }
