@@ -3,10 +3,11 @@ import actions from '../../actions/søknad/søknadActionCreators';
 import { Periodetype, Uttaksperiode, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import { SøknadPartial } from '../../../types/søknad/Søknad';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
+import { Forelder } from 'common/types';
 
 let nyPeriode: Uttaksperiode = {
     type: Periodetype.Uttak,
-    forelder: 'forelder1',
+    forelder: Forelder.FORELDER_1,
     konto: StønadskontoType.Fedrekvote,
     tidsperiode: {
         fom: new Date(),
@@ -35,7 +36,7 @@ describe('Søknad - Uttaksplan reducer', () => {
         const periode1id = nyPeriode.id;
         const periode2id = state.uttaksplan[1].id;
         const periode2BeforeUpdate = JSON.stringify(state.uttaksplan[1]);
-        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...nyPeriode, forelder: 'forelder2' }));
+        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...nyPeriode, forelder: Forelder.FORELDER_2 }));
         const updatedPeriodeInState: Uttaksperiode = Periodene(state.uttaksplan).getPeriode(
             periode1id!
         ) as Uttaksperiode;

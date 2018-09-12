@@ -3,15 +3,9 @@ import getMessage from 'common/util/i18nUtils';
 import { InputChangeEvent } from '../../../../types/dom/Events';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
-import {
-    StønadskontoType,
-    TilgjengeligStønadskonto,
-    UtsettelsePgaArbeid,
-    Uttaksperiode
-} from '../../../../types/uttaksplan/periodetyper';
+import { StønadskontoType, TilgjengeligStønadskonto } from '../../../../types/uttaksplan/periodetyper';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { RecursivePartial } from '../../../../types/Partial';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers/index';
@@ -22,11 +16,16 @@ import visibility from './visibility';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 
-type PeriodePartial = RecursivePartial<UtsettelsePgaArbeid> | RecursivePartial<Uttaksperiode>;
+export interface UtsettelsePgaDeltidsarbeidSkjemadata {
+    stillingsprosent?: string;
+    konto?: StønadskontoType;
+    samtidigGradertUttak?: boolean;
+    orgnr?: string;
+}
 
 interface UtsettelsePgaArbeidFormProps {
-    onChange: (v: PeriodePartial) => void;
-    periode: PeriodePartial;
+    onChange: (v: UtsettelsePgaDeltidsarbeidSkjemadata) => void;
+    skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata;
 }
 
 interface StateProps {
@@ -37,29 +36,33 @@ interface StateProps {
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
 
-class UtsettelsePgaArbeidForm extends React.Component<Props> {
+class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
+    }
+
+    handleOnChange(skjemadataProps: Partial<UtsettelsePgaDeltidsarbeidSkjemadata>) {
+        const { skjemadata, onChange } = this.props;
+
+        onChange({
+            ...skjemadata,
+            ...skjemadataProps
+        });
     }
 
     handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
-        const { onChange } = this.props;
         const pst = getFloatFromString(e.target.value);
-        onChange({
+        this.handleOnChange({
             stillingsprosent: pst ? pst.toFixed(1) : e.target.value
         });
     }
 
     render() {
-        const { periode, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-
-        const utsettelsePgaArbeidPeriode = periode as UtsettelsePgaArbeid;
-        const { stillingsprosent, samtidigGradertUttak } = utsettelsePgaArbeidPeriode;
+        const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl } = this.props;
         const { arbeidsforhold } = søkerinfo;
-
-        const uttaksperiode = periode as Uttaksperiode;
-        const { konto } = uttaksperiode;
+        const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
@@ -71,9 +74,9 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>
-                            onChange({
+                            this.handleOnChange({
                                 stillingsprosent: e.target.value,
-                                konto: harFlereVelgbareKontoer === false ? velgbareStønadskontoer[0] : null
+                                konto: harFlereVelgbareKontoer === false ? velgbareStønadskontoer[0] : undefined
                             })
                         }
                         onBlur={this.handleStillingsprosentBlur}
@@ -82,30 +85,30 @@ class UtsettelsePgaArbeidForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.hvilkenKvoteSkalBenyttes(periode)}>
+                <Block visible={visibility.hvilkenKvoteSkalBenyttes(skjemadata)}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
-                            onChange({ konto: stønadskonto });
+                            this.handleOnChange({ konto: stønadskonto });
                         }}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
                 </Block>
 
-                <Block visible={visibility.skalDereHaGradertUttakSamtidig(periode, søknad)}>
+                <Block visible={visibility.skalDereHaGradertUttakSamtidig(skjemadata, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
-                            onChange({ samtidigGradertUttak: v });
+                            this.handleOnChange({ samtidigGradertUttak: v });
                         }}
                         samtidigGradertUttak={samtidigGradertUttak}
                     />
                 </Block>
 
-                <Block visible={visibility.hvorSkalDuJobbe(periode, søknad)}>
+                <Block visible={visibility.hvorSkalDuJobbe(skjemadata, søknad)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold}
-                        onChange={(v: string) => onChange({ orgnr: v })}
-                        valgtArbeidsforhold={utsettelsePgaArbeidPeriode.orgnr}
+                        onChange={(v: string) => this.handleOnChange({ orgnr: v })}
+                        valgtArbeidsforhold={orgnr}
                     />
                 </Block>
             </React.Fragment>
@@ -120,4 +123,4 @@ const mapStateToProps = (state: AppState): StateProps => {
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };
-export default connect(mapStateToProps)(injectIntl(UtsettelsePgaArbeidForm));
+export default connect(mapStateToProps)(injectIntl(UtsettelsePgaDeltidsarbeidForm));

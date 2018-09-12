@@ -10,7 +10,7 @@ export enum GradertUttak {
 }
 
 interface SkalDereHaGradertUttakSamtidigSpørsmålProps {
-    samtidigGradertUttak: boolean;
+    samtidigGradertUttak?: boolean;
     onChange: (samtidigGradertUttak: boolean) => void;
 }
 
