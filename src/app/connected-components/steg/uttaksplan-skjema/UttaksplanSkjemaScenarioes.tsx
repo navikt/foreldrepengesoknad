@@ -111,7 +111,7 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario1 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s3_morFødsel:
             return <Scenario3 {...scenarioProps} />;
-        case UttaksplanSkjemaScenario.s4_morFarAdopsjonFørstegangssøknad:
+        case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
             return <Scenario4 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
