@@ -26,8 +26,7 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
 
         this.state = {
-            formIsOpen: true,
-            periodetype: Periodetype.Utsettelse
+            formIsOpen: false
         };
     }
     openForm(periodetype: Periodetype) {
