@@ -1,7 +1,7 @@
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
-import { Tidsperiode, Dekningsgrad } from 'common/types';
+import { Tidsperiode, Dekningsgrad, Forelder } from 'common/types';
 import { Periodetype, StønadskontoType, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../Tidsperioden';
 import { getPermisjonStartdato } from '../permisjonUtils';
@@ -86,28 +86,28 @@ export function opprettUttaksperioderToForeldreEttBarn(
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getMødrekvoteFørTermin(familiehendelsedato, permisjonsregler)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Mødrekvote,
             tidsperiode: getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder2',
+            forelder: Forelder.FORELDER_2,
             konto: StønadskontoType.Fedrekvote,
             tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2)
         }
@@ -116,7 +116,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
         perioder.push({
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1)
         });
@@ -125,7 +125,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
         perioder.push({
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder2',
+            forelder: Forelder.FORELDER_2,
             konto: StønadskontoType.Fellesperiode,
             tidsperiode: getFellesperiodeForelder2(
                 familiehendelsedato,
