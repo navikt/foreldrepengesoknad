@@ -195,6 +195,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             tidsperiode && tidsperiode.fom && tidsperiode.tom
                 ? Tidsperioden({ fom: tidsperiode.fom as Date, tom: tidsperiode.tom as Date }).getAntallUttaksdager()
                 : undefined;
+
         return (
             <React.Fragment>
                 <Block margin="s">
@@ -204,6 +205,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <TidsperiodeBolk
                         onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as TidsperiodePartial}
+                        datoAvgrensninger={{
+                            til: {
+                                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
+                            }
+                        }}
                         visVarighet={true}
                     />
                 </Block>
