@@ -17,9 +17,9 @@ import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
-import AvbrytSøknadDialog from '../../components/avbryt-s\u00F8knad-dialog/AvbrytS\u00F8knadDialog';
+import AvbrytSøknadDialog from '../../components/avbryt-søknad-dialog/AvbrytSøknadDialog';
 import { AppState } from '../../redux/reducers';
-import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import commonActionCreators from '../../redux/actions/common/commonActionCreators';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
