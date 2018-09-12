@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Periode, Periodetype, Utsettelsesperiode, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
@@ -44,9 +44,8 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
     handleOnSubmit(e: FormSubmitEvent) {
         e.preventDefault();
         e.stopPropagation();
-        const { onSubmit, periodetype } = this.props;
+        const { onSubmit } = this.props;
         const { periode } = this.state;
-        periode.type = periodetype;
         onSubmit(periode as Periode);
         this.updatePeriode(emptyPeriode);
     }
@@ -58,10 +57,7 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
         return (
             <form className={`periodeForm periodeForm--${periodetype.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
                 {periodetype === Periodetype.Utsettelse && (
-                    <UtsettelsesperiodeForm
-                        periode={periode as Partial<Utsettelsesperiode>}
-                        onChange={this.updatePeriode}
-                    />
+                    <UtsettelsesperiodeForm periode={periode} onChange={this.updatePeriode} />
                 )}
                 {periodetype === Periodetype.Uttak && (
                     <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />

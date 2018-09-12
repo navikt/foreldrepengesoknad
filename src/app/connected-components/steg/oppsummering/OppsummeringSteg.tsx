@@ -98,6 +98,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering, // TODO check if all steps is approved.
+        renderFormTag: true,
         history: props.history
     };
 

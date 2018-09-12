@@ -178,6 +178,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
         renderFortsettKnapp: annenInntektErGyldig(søker),
+        renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo)
     };

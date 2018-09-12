@@ -1,6 +1,6 @@
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
-import { Dekningsgrad } from 'common/types';
+import { Dekningsgrad, Forelder } from 'common/types';
 import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { Uttaksperiode, Periodetype, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import { getAntallUkerTotalt, getPermisjonStartdato } from '../permisjonUtils';
@@ -24,14 +24,14 @@ export function opprettUttaksperioderAleneomsorgMor(
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getTidsperiode(getPermisjonStartdato(familiehendelsedato, permisjonsregler), dagerFørTermin)
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: 'forelder1',
+            forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), dagerEtterTermin)
         }

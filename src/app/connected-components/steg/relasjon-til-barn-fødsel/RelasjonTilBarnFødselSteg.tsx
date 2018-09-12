@@ -144,6 +144,7 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         id: StegID.RELASJON_TIL_BARN_FØDSEL,
         history: props.history,
         renderFortsettKnapp: barnErGyldig(state.søknad, props.søkerinfo),
+        renderFormTag: true,
         isAvailable: isAvailable(StegID.RELASJON_TIL_BARN_FØDSEL, state.søknad, props.søkerinfo)
     };
 

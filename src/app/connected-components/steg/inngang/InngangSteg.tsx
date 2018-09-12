@@ -123,6 +123,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.INNGANG,
         renderFortsettKnapp: inngangErGyldig(situasjon, kjønn, erRolleGyldig),
+        renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegRoute: resolveStegToRender(state)
