@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 
@@ -6,9 +7,15 @@ export interface Props {
     periode: Periode;
 }
 import './periodecontent.less';
+import EndrePeriodeForm from '../endre-periode-form/EndrePeriodForm';
+import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
-const BEM = BEMHelper('periodecontent');
+const bem = BEMHelper('periodecontent');
 
-const PeriodeContent: React.StatelessComponent<Props> = (props) => <div className={BEM.className}>Content</div>;
+const PeriodeContent: React.StatelessComponent<Props> = ({ periode }) => (
+    <div className={classnames(bem.className, bem.modifier(periode.type), bem.modifier(getPeriodeFarge(periode)))}>
+        <EndrePeriodeForm periode={periode} />
+    </div>
+);
 
 export default PeriodeContent;

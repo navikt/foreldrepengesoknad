@@ -22,6 +22,7 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnForelder1
         {perioder.map((p, idx) => (
             <div className={BEM.element('item')} key={idx}>
                 <ToggleItem
+                    expandedHeaderClassName="periodeheader--isOpen"
                     renderHeader={() => (
                         <PeriodeHeader
                             periode={p}
