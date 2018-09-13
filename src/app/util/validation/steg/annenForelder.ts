@@ -21,7 +21,7 @@ export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo):
         erInformertOmSøknaden !== undefined ||
         erUfør !== undefined ||
         (harRettPåForeldrepenger === false && !søkerErFarEllerMedmor) ||
-        (harRettPåForeldrepenger && !søkerErFarEllerMedmor) ||
+        (harRettPåForeldrepenger === true && !søkerErFarEllerMedmor && erInformertOmSøknaden) ||
         (harOpplystOmSinPågåendeSak && !søkerErFarEllerMedmor) ||
         (søkerErFarEllerMedmor && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelse);
 
