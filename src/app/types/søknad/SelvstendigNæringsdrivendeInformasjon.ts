@@ -1,4 +1,4 @@
-import { TidsperiodeMedValgfriSluttdatoPartial } from 'common/types';
+import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -9,7 +9,7 @@ export enum Næringstype {
 
 export class Næring {
     næringstyper: Næringstype[];
-    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
     næringsinntekt: string;
     pågående: boolean;
     navnPåNæringen: string;
