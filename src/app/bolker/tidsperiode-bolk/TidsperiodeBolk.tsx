@@ -2,7 +2,7 @@ import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { TidsperiodeMedValgfriSluttdatoPartial, TidsperiodePartial } from 'common/types';
+import { Tidsperiode } from 'common/types';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
@@ -12,8 +12,6 @@ import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 
 import './tidsperiodeBolk.less';
 import { Normaltekst } from 'nav-frontend-typografi';
-
-type TidsperiodeType = TidsperiodePartial | TidsperiodeMedValgfriSluttdatoPartial;
 
 export interface DatoAvgrensninger {
     fra?: Avgrensninger;
@@ -26,12 +24,12 @@ export interface DatoValidatorer {
 }
 
 interface TidsperiodeBolkProps {
-    tidsperiode: TidsperiodeType;
+    tidsperiode: Partial<Tidsperiode>;
     sluttdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
     visVarighet?: boolean;
-    onChange: (tidsperiode: TidsperiodeType) => void;
+    onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -42,7 +40,7 @@ class TidsperiodeBolk extends React.Component<Props> {
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
-    handleOnChange(tidsperiode: TidsperiodeType) {
+    handleOnChange(tidsperiode: Partial<Tidsperiode>) {
         const { onChange } = this.props;
         onChange(tidsperiode);
     }

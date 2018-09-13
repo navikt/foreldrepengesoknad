@@ -129,9 +129,11 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
-                    <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
-                        {stegConfig[id].fortsettKnappLabel}
-                    </FortsettKnapp>
+                    <Block>
+                        <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
+                            {stegConfig[id].fortsettKnappLabel}
+                        </FortsettKnapp>
+                    </Block>
                 )}
             </React.Fragment>
         );

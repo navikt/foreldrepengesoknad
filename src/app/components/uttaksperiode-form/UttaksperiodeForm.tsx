@@ -5,7 +5,6 @@ import {
     TilgjengeligStønadskonto,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { TidsperiodePartial } from 'common/types';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
@@ -16,6 +15,7 @@ import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSka
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/aktuelleStønadskontoer';
 import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm from './fellesperiode-uttak-form/FellesperiodeUttakForm';
+import { Tidsperiode } from 'common/types';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -39,8 +39,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             <React.Fragment>
                 <Block margin="s">
                     <TidsperiodeBolk
-                        onChange={(t: TidsperiodePartial) => onChange({ tidsperiode: t })}
-                        tidsperiode={tidsperiode as TidsperiodePartial}
+                        onChange={(t: Partial<Tidsperiode>) => onChange({ tidsperiode: t })}
+                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
                     />
                 </Block>
                 <Block margin="s">

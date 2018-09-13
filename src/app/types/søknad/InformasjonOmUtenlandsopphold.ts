@@ -1,4 +1,4 @@
-import { Tidsperiode, TidsperiodePartial } from 'common/types';
+import { Tidsperiode } from 'common/types';
 
 export interface Utenlandsopphold {
     land: string;
@@ -7,7 +7,7 @@ export interface Utenlandsopphold {
 
 interface UtenlandsoppholdSkjemadata {
     land: string;
-    tidsperiode: TidsperiodePartial;
+    tidsperiode: Partial<Tidsperiode>;
 }
 
 interface InformasjonOmUtenlandsopphold {
