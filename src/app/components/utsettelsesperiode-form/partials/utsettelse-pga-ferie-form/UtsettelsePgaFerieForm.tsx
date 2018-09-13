@@ -3,13 +3,13 @@ import UtsettelseFerieInfo from '../../../utsettelse-ferie-info/UtsettelseFerieI
 import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
 import { Periode, Periodetype, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
-import TidsperiodeBolk from '../../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { RecursivePartial } from '../../../../types/Partial';
 import { getValidTidsperiode, Tidsperioden } from '../../../../util/uttaksplan/Tidsperioden';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
+import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSpørsmål';
 
 export interface Props {
     tidsperiode?: Partial<Tidsperiode>;
@@ -39,18 +39,9 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
         return (
             <>
                 <Block>
-                    <TidsperiodeBolk
-                        onChange={(t: Partial<Tidsperiode>) => onChange({ tidsperiode: t })}
+                    <UtsettelseTidsperiodeSpørsmål
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        datoAvgrensninger={{
-                            fra: {
-                                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
-                            },
-                            til: {
-                                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
-                            }
-                        }}
-                        visVarighet={true}
+                        onChange={(t) => onChange({ tidsperiode: t })}
                     />
                 </Block>
                 {antallDager && (

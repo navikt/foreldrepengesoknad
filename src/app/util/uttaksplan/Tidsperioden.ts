@@ -23,7 +23,10 @@ export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode
     return tidsperiode.fom !== undefined && tidsperiode.tom !== undefined;
 }
 
-export function getValidTidsperiode(tidsperiode: any): Tidsperiode | undefined {
+export function getValidTidsperiode(tidsperiode: Partial<Tidsperiode> | undefined): Tidsperiode | undefined {
+    if (tidsperiode === undefined) {
+        return undefined;
+    }
     if (isValidTidsperiode(tidsperiode)) {
         return tidsperiode;
     }
