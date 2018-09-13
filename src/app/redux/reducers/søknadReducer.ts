@@ -134,12 +134,10 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         }
 
         case SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE: {
+            const filteredPerioder = state.uttaksplan.filter((periode) => periode.id !== action.periode.id);
             return {
                 ...state,
-                uttaksplan: [
-                    ...state.uttaksplan.filter((periode) => periode.id !== action.periode.id),
-                    action.periode
-                ].sort(sorterPerioder)
+                uttaksplan: [...filteredPerioder, action.periode].sort(sorterPerioder)
             };
         }
 
