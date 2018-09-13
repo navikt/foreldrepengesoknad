@@ -193,8 +193,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
         return (
             <React.Fragment>
-                <Block visible={periode.id === undefined} hasChildBlocks={true}>
-                    <Block margin="s">
+                <Block hasChildBlocks={true}>
+                    <Block margin="s" visible={periode.id === undefined}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             onChange={this.updateUtsettelsesvariant}
                             variant={variant}
