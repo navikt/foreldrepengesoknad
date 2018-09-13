@@ -211,16 +211,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={validTidsperiode !== undefined} hasChildBlocks={true}>
-                    {periode.id === undefined && (
-                        <Block margin="s">
-                            <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
-                                onChange={this.updateUtsettelsesvariant}
-                                variant={variant}
-                                radios={this.getUtsettelseÅrsakRadios()}
-                            />
-                        </Block>
-                    )}
+                <Block visible={validTidsperiode !== undefined && periode.id === undefined} hasChildBlocks={true}>
+                    <Block margin="s">
+                        <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
+                            onChange={this.updateUtsettelsesvariant}
+                            variant={variant}
+                            radios={this.getUtsettelseÅrsakRadios()}
+                        />
+                    </Block>
 
                     <Block visible={gjelderOpphold} hasChildBlocks={true}>
                         <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
