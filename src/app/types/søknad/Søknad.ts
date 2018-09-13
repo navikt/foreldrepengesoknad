@@ -74,6 +74,7 @@ export interface SøknadPartial {
 
 export enum AttachmentType {
     OMSORGSOVERTAKELSE = 'omsorgsovertakelse',
+    OMSORGSOVERTAKELSEDATO = 'omsorgsovertakelseDato',
     ADOPSJONSVEDTAK = 'adopsjonsvedtak',
     TERMINBEKREFTELSE = 'terminbekreftelse',
     FØDSELSATTEST = 'fødselsattest',
