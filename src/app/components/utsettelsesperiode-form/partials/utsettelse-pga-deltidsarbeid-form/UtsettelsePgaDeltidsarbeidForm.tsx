@@ -15,12 +15,16 @@ import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/Ska
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
+import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
+import { Tidsperiode } from 'common/types';
+import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
     konto?: StønadskontoType;
     samtidigGradertUttak?: boolean;
     orgnr?: string;
+    tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
@@ -53,14 +57,21 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
     render() {
         const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-        const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = skjemadata;
+        const { stillingsprosent, konto, samtidigGradertUttak, orgnr, tidsperiode } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
 
         return (
             <React.Fragment>
                 <Block>
+                    <UtsettelseTidsperiodeSpørsmål
+                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        onChange={(t) => onChange({ tidsperiode: t })}
+                    />
+                </Block>
+                <Block visible={validTidsperiode !== undefined}>
                     <Input
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}

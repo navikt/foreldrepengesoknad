@@ -1,6 +1,6 @@
 import { Alder } from '../../types/common';
 import * as moment from 'moment';
-import { TidsperiodePartial } from 'common/types';
+import { Tidsperiode } from 'common/types';
 
 export const getDateFromString = (dato?: string) => {
     if (dato) {
@@ -34,7 +34,7 @@ export const formatDate = (dato?: Date | string) => {
     return dato;
 };
 
-export const prettifyTidsperiode = (tidsperiode: TidsperiodePartial) => {
+export const prettifyTidsperiode = (tidsperiode: Partial<Tidsperiode>) => {
     return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) || 'pågående'}`;
 };
 

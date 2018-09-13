@@ -3,9 +3,13 @@ import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
+import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
+import { Tidsperiode } from 'common/types';
+import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface UtsettelsePgaHeltidsarbeidSkjemadata {
     orgnr?: string;
+    tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
@@ -20,18 +24,27 @@ type Props = UtsettelsePgaArbeidFormProps & InjectedIntlProps;
 class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
     render() {
         const { skjemadata, onChange, arbeidsforhold } = this.props;
-        const { orgnr } = skjemadata;
+        const { orgnr, tidsperiode } = skjemadata;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
 
         return (
-            <Block>
-                <HvorSkalDuJobbeSpørsmål
-                    arbeidsforhold={arbeidsforhold}
-                    onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
-                        onChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
-                    }
-                    valgtArbeidsforhold={orgnr}
-                />
-            </Block>
+            <>
+                <Block>
+                    <UtsettelseTidsperiodeSpørsmål
+                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        onChange={(t) => onChange({ tidsperiode: t })}
+                    />
+                </Block>
+                <Block visible={validTidsperiode !== undefined}>
+                    <HvorSkalDuJobbeSpørsmål
+                        arbeidsforhold={arbeidsforhold}
+                        onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
+                            onChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
+                        }
+                        valgtArbeidsforhold={orgnr}
+                    />
+                </Block>
+            </>
         );
     }
 }
