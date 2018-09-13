@@ -13,8 +13,8 @@ import Søknad from '../../../../types/søknad/Søknad';
 import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/aktuelleStønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
-import { Søkerinfo } from '../../../../types/søkerinfo';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
+import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
@@ -27,12 +27,12 @@ export interface UtsettelsePgaDeltidsarbeidSkjemadata {
 interface UtsettelsePgaArbeidFormProps {
     onChange: (v: UtsettelsePgaDeltidsarbeidSkjemadata) => void;
     skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 interface StateProps {
     søknad: Søknad;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    søkerinfo: Søkerinfo;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -52,8 +52,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-        const { arbeidsforhold } = søkerinfo;
+        const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
         const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
@@ -116,7 +115,6 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        søkerinfo: state.api.søkerinfo!,
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };
