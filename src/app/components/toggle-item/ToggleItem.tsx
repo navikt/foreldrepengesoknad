@@ -1,10 +1,13 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
 import ToggleArrow from './ToggleArrow';
 
 import './toggleItem.less';
 
 export interface Props {
+    expandedHeaderClassName?: string;
+    expandedContentClassName?: string;
     renderHeader: () => JSX.Element;
     renderContent: () => JSX.Element;
 }
@@ -29,11 +32,15 @@ class CollapsableItem extends React.Component<Props, State> {
         this.setState({ expanded: !this.state.expanded });
     }
     render() {
-        const { renderContent, renderHeader } = this.props;
+        const { renderContent, renderHeader, expandedHeaderClassName, expandedContentClassName } = this.props;
         const { expanded } = this.state;
 
         return (
-            <div className={BEM.className}>
+            <div
+                className={classnames(
+                    BEM.className,
+                    expanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
+                )}>
                 <a
                     href="#"
                     className={BEM.element('header')}
@@ -45,7 +52,13 @@ class CollapsableItem extends React.Component<Props, State> {
                         <ToggleArrow expanded={expanded} />
                     </div>
                 </a>
-                {expanded ? <div className={BEM.element('content')}>{renderContent()}</div> : undefined}
+                {expanded ? (
+                    <div className={classnames(BEM.element('content'), expandedContentClassName)}>
+                        {renderContent()}
+                    </div>
+                ) : (
+                    undefined
+                )}
             </div>
         );
     }

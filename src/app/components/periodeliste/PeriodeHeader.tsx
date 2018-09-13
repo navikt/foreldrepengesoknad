@@ -26,6 +26,7 @@ export interface Props {
     periode: Periode;
     advarsel?: Advarsel;
     foreldernavn: string;
+    isOpen?: boolean;
 }
 
 const BEM = BEMHelper('periodeheader');
@@ -70,10 +71,14 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     advarsel,
     foreldernavn,
+    isOpen,
     intl
 }) => {
     return (
-        <article className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal')}>
+        <article
+            className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
+                [BEM.modifier('apnet')]: isOpen
+            })}>
             <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
                 {renderPeriodeIkon(periode)}
             </div>
