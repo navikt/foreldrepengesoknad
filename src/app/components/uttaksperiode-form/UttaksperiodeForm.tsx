@@ -15,7 +15,7 @@ import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSka
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/aktuelleStønadskontoer';
 import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { Tidsperiode } from 'nav-datovelger';
+import { Tidsperiode } from 'common/types';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;

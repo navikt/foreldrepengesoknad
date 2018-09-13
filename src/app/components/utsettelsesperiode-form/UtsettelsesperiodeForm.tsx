@@ -130,12 +130,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     updateUtsettelsePgaHeltidsarbeid(skjemadata: UtsettelsePgaHeltidsarbeidSkjemadata) {
         const { periode, onChange } = this.props;
-        const { tidsperiode } = periode;
-        const { orgnr, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende } = skjemadata;
+        const { orgnr, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende, tidsperiode } = skjemadata;
         const utsettelsesperiode: RecursivePartial<Utsettelsesperiode> = {
             type: Periodetype.Utsettelse,
             årsak: UtsettelseÅrsakType.Arbeid,
-            tidsperiode,
+            tidsperiode: tidsperiode || periode.tidsperiode,
             forelder: Forelder.FORELDER_1,
             orgnr,
             skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
@@ -144,13 +143,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     updateUtsettelsePgaDeltidsarbeid(skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata) {
-        const { periode, onChange } = this.props;
-        const { tidsperiode } = periode;
+        const { onChange } = this.props;
+
         const gradertUttaksperiode: RecursivePartial<GradertUttaksperiode> = {
             type: Periodetype.Uttak,
             årsak: UtsettelseÅrsakType.Arbeid,
             forelder: Forelder.FORELDER_1,
-            tidsperiode,
             ...skjemadata
         };
         onChange(gradertUttaksperiode);
@@ -160,10 +158,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { periode } = this.props;
         if (periode.type === Periodetype.Utsettelse) {
             return {
-                orgnr: periode.orgnr
+                orgnr: periode.orgnr,
+                tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
             };
         }
-        return {};
+        return { tidsperiode: periode.tidsperiode as Partial<Tidsperiode> };
     }
 
     getSkjemadataForUtsettelsePgaDeltidsarbeid(): UtsettelsePgaDeltidsarbeidSkjemadata {
@@ -175,10 +174,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 stillingsprosent,
                 konto,
                 samtidigGradertUttak,
-                orgnr
+                orgnr,
+                tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
             };
         }
-        return {};
+        return {
+            tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
+        };
     }
 
     updateUtsettelsesvariant(variant: Utsettelsesvariant) {
@@ -221,7 +223,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block
                         visible={
                             variant === Utsettelsesvariant.Ferie ||
-                            (periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Ferie)
+                            (periode.id !== undefined &&
+                                periode.type === Periodetype.Utsettelse &&
+                                periode.årsak === UtsettelseÅrsakType.Ferie)
                         }
                         hasChildBlocks={true}>
                         <UtsettelsePgaFerieForm
