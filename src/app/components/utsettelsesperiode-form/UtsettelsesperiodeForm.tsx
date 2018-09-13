@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EtikettLiten } from 'nav-frontend-typografi';
 import {
     Oppholdsperiode,
     OppholdÅrsakType,
@@ -11,7 +10,6 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, TidsperiodePartial } from 'common/types';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import { connect } from 'react-redux';
@@ -34,6 +32,7 @@ import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsper
 import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
 
 interface UtsettelsesperiodeFormProps {
+    tittel?: string;
     periode: RecursivePartial<Periode>;
     onChange: (periode: RecursivePartial<Periode>) => void;
 }
@@ -190,22 +189,20 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { gjelderOpphold, variant } = this.state;
         const { periode, onChange } = this.props;
         const { tidsperiode } = periode;
-        const bem = BEMHelper('periodeForm');
 
         const validTidsperiode = getValidTidsperiode(tidsperiode);
-
         const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
 
         return (
             <React.Fragment>
                 <Block margin="s">
-                    <EtikettLiten className={bem.element('heading')}>Ny utsettelse</EtikettLiten>
-                </Block>
-                <Block margin="s">
                     <TidsperiodeBolk
                         onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as TidsperiodePartial}
                         datoAvgrensninger={{
+                            fra: {
+                                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
+                            },
                             til: {
                                 minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
                             }

@@ -7,7 +7,7 @@ export interface Props {
     periode: Periode;
 }
 import './periodecontent.less';
-import EndrePeriodeForm from '../endre-periode-form/EndrePeriodForm';
+import EndrePeriodeForm from '../endre-periode-form/EndrePeriodeForm';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
 const bem = BEMHelper('periodecontent');
