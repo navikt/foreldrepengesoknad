@@ -6,7 +6,6 @@ import {
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { TidsperiodePartial } from 'common/types';
-import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -15,7 +14,12 @@ import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/aktuelleStønadskontoer';
 import Block from 'common/components/block/Block';
-import FellesperiodeUttakForm from './fellesperiode-uttak-form/FellesperiodeUttakForm';
+import FellesperiodeUttakForm, {
+    FellesperiodeUttakSkjemadata
+} from './fellesperiode-uttak-form/FellesperiodeUttakForm';
+import { erForelder2 } from '../../util/domain/personUtil';
+import { Søkerinfo } from '../../types/søkerinfo';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -24,25 +28,42 @@ interface UttaksperiodeFormProps {
 
 interface StateProps {
     søknad: Søknad;
+    søkerinfo: Søkerinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
 
 class UttaksperiodeForm extends React.Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        this.getSkjemadataForFellesperiodeUttak = this.getSkjemadataForFellesperiodeUttak.bind(this);
+        this.updateFellesperiodeUttak = this.updateFellesperiodeUttak.bind(this);
+    }
+
+    getSkjemadataForFellesperiodeUttak(): FellesperiodeUttakSkjemadata {
+        const { tidsperiode, morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = this.props.periode;
+        return {
+            tidsperiode: tidsperiode as TidsperiodePartial,
+            vedlegg: vedlegg as Attachment[],
+            morsAktivitetIPerioden,
+            ønskerSamtidigUttak
+        };
+    }
+
+    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata) {
+        const { onChange } = this.props;
+        onChange(data);
+    }
+
     render() {
-        const { periode, tilgjengeligeStønadskontoer, onChange } = this.props;
-        const { tidsperiode, konto } = periode;
+        const { periode, tilgjengeligeStønadskontoer, onChange, søknad, søkerinfo } = this.props;
+        const { rolle } = søknad.søker;
+        const { konto } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
 
         return (
             <React.Fragment>
-                <Block margin="s">
-                    <TidsperiodeBolk
-                        onChange={(t: TidsperiodePartial) => onChange({ tidsperiode: t })}
-                        tidsperiode={tidsperiode as TidsperiodePartial}
-                    />
-                </Block>
                 <Block margin="s">
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
@@ -53,7 +74,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={konto === StønadskontoType.Fellesperiode}>
-                    <FellesperiodeUttakForm />
+                    <FellesperiodeUttakForm
+                        søkerErForelder2={erForelder2(søkerinfo.person.kjønn, rolle)}
+                        skjemadata={this.getSkjemadataForFellesperiodeUttak()}
+                        onChange={this.updateFellesperiodeUttak}
+                    />
                 </Block>
             </React.Fragment>
         );
@@ -63,6 +88,7 @@ class UttaksperiodeForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
+        søkerinfo: state.api.søkerinfo!,
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };

@@ -19,7 +19,7 @@ import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSp�
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
     konto?: StønadskontoType;
-    samtidigGradertUttak?: boolean;
+    ønskerSamtidigUttak?: boolean;
     orgnr?: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
@@ -54,7 +54,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     render() {
         const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
         const { arbeidsforhold } = søkerinfo;
-        const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = skjemadata;
+        const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
@@ -90,9 +90,9 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.skalDereHaGradertUttakSamtidig(skjemadata, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
-                            onChange({ samtidigGradertUttak: v });
+                            onChange({ ønskerSamtidigUttak: v });
                         }}
-                        samtidigGradertUttak={samtidigGradertUttak}
+                        samtidigGradertUttak={ønskerSamtidigUttak}
                     />
                 </Block>
 

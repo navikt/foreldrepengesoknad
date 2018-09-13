@@ -437,6 +437,15 @@
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
 
+    "morsAktivitet.Arbeid": "Arbeid",
+    "morsAktivitet.Utdanning": "Utdanning",
+    "morsAktivitet.Kvalifiseringsprogrammet": "Kvalifiseringsprogrammet",
+    "morsAktivitet.Introduksjonsprogrammet": "Introduksjonsprogrammet",
+    "morsAktivitet.TrengerHjelp": "For syk til å ta seg av barnet",
+    "morsAktivitet.Innlagt": "Innlagt på helseinstitusjon",
+    "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
+    "morsAktivitet.SamtidigUttak": "Samtidig uttak",
+
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
@@ -446,6 +455,10 @@
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+
+    "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",
+    "skalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål.spørsmål":
+        "Skal du være hjemme samtidig med den andre forelderen?",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",

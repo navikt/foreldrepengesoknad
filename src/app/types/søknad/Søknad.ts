@@ -77,7 +77,8 @@ export enum AttachmentType {
     ADOPSJONSVEDTAK = 'adopsjonsvedtak',
     TERMINBEKREFTELSE = 'terminbekreftelse',
     FØDSELSATTEST = 'fødselsattest',
-    ANNEN_INNTEKT_DOKUMENTASJON = 'anneninntektdokumentasjon'
+    ANNEN_INNTEKT_DOKUMENTASJON = 'anneninntektdokumentasjon',
+    MORS_AKTIVITET_DOKUMENTASJON = 'morsaktivitetdokumentasjon'
 }
 
 // TODO remove redundant skjemanummer when we know more about which to use
