@@ -55,6 +55,7 @@ export const getAnnenForelderVisibility = (
     const fødselsnummerInput = f.visFødselsnummerInput(annenForelderPersonaliaPart, annenForelder);
     const harRettPåForeldrepengerSpørsmål = f.visHarRettPåForeldrepengerSpørsmål(
         søker,
+        erFarEllerMedmor,
         annenForelderHarOpplystOmPågåendeSak
     );
     const erMorUførSpørsmål = f.visErMorUførSpørsmål(annenForelder, erFarEllerMedmor);
