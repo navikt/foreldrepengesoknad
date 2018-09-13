@@ -31,17 +31,18 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
         this.onChange = this.onChange.bind(this);
         this.onDelete = this.onDelete.bind(this);
     }
-    onChange(periode: Periode) {
+    onChange(p: Periode) {
         let updatedPeriode: Periode | undefined;
-        if (this.props.periode.type === Periodetype.Utsettelse) {
-            updatedPeriode = { ...this.props.periode, ...(periode as Utsettelsesperiode) };
-        } else if (this.props.periode.type === Periodetype.Uttak) {
-            updatedPeriode = { ...this.props.periode, ...(periode as Uttaksperiode) };
-        } else if (this.props.periode.type === Periodetype.Opphold) {
-            updatedPeriode = { ...this.props.periode, ...(periode as Oppholdsperiode) };
+        const { periode, dispatch } = this.props;
+        if (periode.type === Periodetype.Utsettelse) {
+            updatedPeriode = { ...periode, ...(p as Utsettelsesperiode) };
+        } else if (periode.type === Periodetype.Uttak) {
+            updatedPeriode = { ...periode, ...(p as Uttaksperiode) };
+        } else if (periode.type === Periodetype.Opphold) {
+            updatedPeriode = { ...periode, ...(p as Oppholdsperiode) };
         }
         if (updatedPeriode !== undefined) {
-            this.props.dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
+            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
         }
     }
     onDelete() {
