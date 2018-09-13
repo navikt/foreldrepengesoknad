@@ -1,4 +1,5 @@
 import { Tidsperiode, Forelder } from 'common/types';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -44,12 +45,15 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
+    vedlegg?: Attachment[];
 }
 
 export interface Uttaksperiode extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
+    morsAktivitetIPerioden?: MorsAktivitet;
+    ønskerSamtidigUttak: boolean;
 }
 
 export interface Utsettelsesperiode extends PeriodeBase {
@@ -64,7 +68,6 @@ export interface Utsettelsesperiode extends PeriodeBase {
 export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
     stillingsprosent: string;
-    samtidigGradertUttak: boolean;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
@@ -79,4 +82,15 @@ export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
     dager: number;
+}
+
+export enum MorsAktivitet {
+    'Arbeid' = 'ARBEID',
+    'Utdanning' = 'UTDANNING',
+    'Kvalifiseringsprogrammet' = 'KVALPROG',
+    'Introduksjonsprogrammet' = 'INTROPROG',
+    'TrengerHjelp' = 'TRENGER_HJELP',
+    'Innlagt' = 'INNLAGT',
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'SamtidigUttak' = 'SAMTIDIGUTTAK'
 }
