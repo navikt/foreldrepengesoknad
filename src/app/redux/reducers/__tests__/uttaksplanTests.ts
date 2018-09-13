@@ -33,19 +33,20 @@ describe('Søknad - Uttaksplan reducer', () => {
         expect(state.uttaksplan[0].id).not.toBe(state.uttaksplan[1].id);
     });
     it('should update an periode with new data, and keep other periods untouched', () => {
-        const periode1id = nyPeriode.id;
-        const periode2id = state.uttaksplan[1].id;
-        const periode2BeforeUpdate = JSON.stringify(state.uttaksplan[1]);
-        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...nyPeriode, forelder: Forelder.FORELDER_2 }));
+        const periode1: Uttaksperiode = state.uttaksplan[0] as Uttaksperiode;
+        const periode2: Uttaksperiode = state.uttaksplan[1] as Uttaksperiode;
+        const periode2BeforeUpdate = JSON.stringify(periode2);
+
+        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FORELDER_2 }));
         const updatedPeriodeInState: Uttaksperiode = Periodene(state.uttaksplan).getPeriode(
-            periode1id!
+            periode1.id!
         ) as Uttaksperiode;
         expect(state.uttaksplan.length).toBe(2);
         expect(updatedPeriodeInState).toBeDefined();
         expect(updatedPeriodeInState.forelder).toEqual('forelder2');
 
-        const periode2 = Periodene(state.uttaksplan).getPeriode(periode2id!) as Uttaksperiode;
-        expect(JSON.stringify(periode2)).toEqual(periode2BeforeUpdate);
+        const periode2AfterUpdate = Periodene(state.uttaksplan).getPeriode(periode2.id!) as Uttaksperiode;
+        expect(JSON.stringify(periode2AfterUpdate)).toEqual(periode2BeforeUpdate);
     });
     it('should delete a periode', () => {
         const len = state.uttaksplan.length;
