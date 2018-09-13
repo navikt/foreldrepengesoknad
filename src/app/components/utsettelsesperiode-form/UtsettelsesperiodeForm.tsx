@@ -206,6 +206,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as TidsperiodePartial}
                         datoAvgrensninger={{
+                            fra: {
+                                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
+                            },
                             til: {
                                 minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
                             }
