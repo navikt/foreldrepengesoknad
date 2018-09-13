@@ -51,6 +51,10 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
+        case SøknadActionKeys.AVBRYT_SØKNAD:
+            return {
+                ...getDefaultState()
+            };
         case SøknadActionKeys.UPDATE_BARN:
             return {
                 ...state,
