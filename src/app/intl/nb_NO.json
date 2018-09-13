@@ -455,6 +455,8 @@
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
+    "utsettelseskjema.ferie.utenArbeidsforhold":
+        "Du kan desverre ikke legge til utsettelse på grunn av ferie fordi du ikke har et aktivt arbeidsforhold",
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":

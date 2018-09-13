@@ -8,10 +8,13 @@ import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { RecursivePartial } from '../../../../types/Partial';
 import { getValidTidsperiode, Tidsperioden } from '../../../../util/uttaksplan/Tidsperioden';
 import Block from 'common/components/block/Block';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
     periode: RecursivePartial<Periode>;
     forelder: Forelder;
+    aktivtArbeidsforhold: boolean;
     onChange: (periode: RecursivePartial<Periode>) => void;
 }
 
@@ -21,10 +24,18 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
         props.onChange({ type: Periodetype.Utsettelse, forelder: props.forelder, årsak: UtsettelseÅrsakType.Ferie });
     }
     render() {
-        const { periode, onChange } = this.props;
+        const { periode, aktivtArbeidsforhold, onChange } = this.props;
         const { tidsperiode = { fom: undefined, tom: undefined } } = periode;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
         const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
+
+        if (!aktivtArbeidsforhold) {
+            return (
+                <Veilederinfo>
+                    <FormattedMessage id="utsettelseskjema.ferie.utenArbeidsforhold" />
+                </Veilederinfo>
+            );
+        }
 
         return (
             <>
