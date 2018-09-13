@@ -1,10 +1,8 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { connect } from 'react-redux';
-import { AppState } from '../../../../redux/reducers/index';
-import { Søkerinfo } from '../../../../types/søkerinfo';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
+import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 
 export interface UtsettelsePgaHeltidsarbeidSkjemadata {
     orgnr?: string;
@@ -14,18 +12,14 @@ export interface UtsettelsePgaHeltidsarbeidSkjemadata {
 interface UtsettelsePgaArbeidFormProps {
     onChange: (v: UtsettelsePgaHeltidsarbeidSkjemadata) => void;
     skjemadata: UtsettelsePgaHeltidsarbeidSkjemadata;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
-interface StateProps {
-    søkerinfo: Søkerinfo;
-}
-
-type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
+type Props = UtsettelsePgaArbeidFormProps & InjectedIntlProps;
 
 class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
     render() {
-        const { skjemadata, søkerinfo, onChange } = this.props;
-        const { arbeidsforhold } = søkerinfo;
+        const { skjemadata, onChange, arbeidsforhold } = this.props;
         const { orgnr } = skjemadata;
 
         return (
@@ -42,9 +36,4 @@ class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => {
-    return {
-        søkerinfo: state.api.søkerinfo!
-    };
-};
-export default connect(mapStateToProps)(injectIntl(UtsettelsePgaHeltidsarbeidForm));
+export default injectIntl(UtsettelsePgaHeltidsarbeidForm);

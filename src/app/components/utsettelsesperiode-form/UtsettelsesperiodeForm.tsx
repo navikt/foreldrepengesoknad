@@ -28,6 +28,9 @@ import UtsettelsePgaDeltidsarbeidForm, {
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
 import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form/UtsettelsePgaFerieForm';
 import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
+import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
+import DateValues from '../../util/validation/values';
+import Arbeidsforhold from '../../types/Arbeidsforhold';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -37,6 +40,7 @@ interface UtsettelsesperiodeFormProps {
 
 interface StateProps {
     søknad: Søknad;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 type Props = UtsettelsesperiodeFormProps & StateProps & InjectedIntlProps;
@@ -185,7 +189,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     render() {
         const { gjelderOpphold, variant } = this.state;
-        const { periode, onChange } = this.props;
+        const { periode, onChange, arbeidsforhold } = this.props;
 
         return (
             <React.Fragment>
@@ -204,12 +208,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelsePgaHeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaHeltidsarbeid}
                             skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
+                            arbeidsforhold={arbeidsforhold}
                         />
                     </Block>
                     <Block visible={variant === Utsettelsesvariant.ArbeidDeltid} hasChildBlocks={true}>
                         <UtsettelsePgaDeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaDeltidsarbeid}
                             skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
+                            arbeidsforhold={arbeidsforhold}
                         />
                     </Block>
                     <Block
@@ -222,6 +228,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             periode={periode}
                             onChange={(p) => this.props.onChange(p)}
                             forelder={Forelder.FORELDER_1}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
                         />
                     </Block>
                     <Block visible={variant === Utsettelsesvariant.Sykdom} hasChildBlocks={true}>
@@ -239,7 +246,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad
+        søknad: state.søknad,
+        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || []
     };
 };
 
