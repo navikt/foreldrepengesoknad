@@ -27,7 +27,7 @@ import { RecursivePartial } from '../../types/Partial';
 import UtsettelsePgaDeltidsarbeidForm, {
     UtsettelsePgaDeltidsarbeidSkjemadata
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
-import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form.tsx/UtsettelsePgaFerieForm';
+import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form/UtsettelsePgaFerieForm';
 import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
