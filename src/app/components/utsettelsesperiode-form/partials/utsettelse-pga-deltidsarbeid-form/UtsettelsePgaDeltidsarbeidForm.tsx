@@ -15,7 +15,6 @@ import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/Ska
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
 import { Tidsperiode } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
@@ -65,12 +64,6 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block>
-                    <UtsettelseTidsperiodeSpørsmål
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        onChange={(t) => onChange({ tidsperiode: t })}
-                    />
-                </Block>
                 <Block visible={validTidsperiode !== undefined}>
                     <Input
                         bredde="XS"
