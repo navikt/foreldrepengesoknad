@@ -7,6 +7,9 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
+import Block from 'common/components/block/Block';
+import { EtikettLiten } from 'nav-frontend-typografi';
+import BEMHelper from 'common/util/bem';
 
 interface Props {
     onSubmit: (periode: Periode) => void;
@@ -19,6 +22,18 @@ interface State {
 }
 
 const emptyPeriode: RecursivePartial<Periode> = { tidsperiode: {} };
+
+const bem = BEMHelper('periodeForm');
+
+const PeriodeFormTittel: React.StatelessComponent<{ tittel: string }> = ({ tittel }) => {
+    return (
+        <Block margin="s">
+            <EtikettLiten tag="h1" className={bem.element('heading')}>
+                {tittel}
+            </EtikettLiten>
+        </Block>
+    );
+};
 
 export default class NyPeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -57,10 +72,16 @@ export default class NyPeriodeForm extends React.Component<Props, State> {
         return (
             <form className={`periodeForm periodeForm--${periodetype.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
                 {periodetype === Periodetype.Utsettelse && (
-                    <UtsettelsesperiodeForm periode={periode} onChange={this.updatePeriode} />
+                    <>
+                        <PeriodeFormTittel tittel="Ny utsettelse" />
+                        <UtsettelsesperiodeForm periode={periode} onChange={this.updatePeriode} />
+                    </>
                 )}
                 {periodetype === Periodetype.Uttak && (
-                    <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />
+                    <>
+                        <PeriodeFormTittel tittel="Ny periode med uttak" />
+                        <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />
+                    </>
                 )}
 
                 <Knapperad>

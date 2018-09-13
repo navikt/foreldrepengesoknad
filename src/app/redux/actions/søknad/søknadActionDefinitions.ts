@@ -1,10 +1,11 @@
-import Søknad, { SøknadenGjelderBarnValg, UttaksplanSkjemadata } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
