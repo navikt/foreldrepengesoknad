@@ -16,6 +16,3 @@ export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;
 }
-
-export type TidsperiodePartial = Partial<Tidsperiode>;
-export type TidsperiodeMedValgfriSluttdatoPartial = Partial<TidsperiodeMedValgfriSluttdato>;

@@ -5,10 +5,11 @@ import Block from 'common/components/block/Block';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
+import { RecursivePartial } from '../../../../types/Partial';
 
 export interface OwnProps {
     forelder: Forelder;
-    periode: Partial<Periode>;
+    periode: RecursivePartial<Periode>;
     onChange: (periode: Partial<Periode>) => void;
 }
 
