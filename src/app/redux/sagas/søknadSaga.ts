@@ -2,7 +2,6 @@ import { takeEvery, all, put } from 'redux-saga/effects';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { SøknadActionKeys, UpdateSøkerAndStorage, AvbrytSøknad } from '../actions/søknad/søknadActionDefinitions';
-import commonActionCreators from '../actions/common/commonActionCreators';
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -10,7 +9,6 @@ function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
 }
 
 function* avbrytSøknadSaga(action: AvbrytSøknad) {
-    yield put(commonActionCreators.skjulAvbrytSøknadDialog());
     yield put(apiActions.storeAppState());
 }
 
