@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    Utsettelsesperiode,
+    Uttaksperiode,
+    Oppholdsperiode
+} from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import BEMHelper from 'common/util/bem';
 import { preventFormSubmit } from 'common/util/eventUtils';
@@ -7,12 +13,17 @@ import LinkButton from '../link-button/LinkButton';
 
 import './endrePeriodeForm.less';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { DispatchProps } from 'common/redux/types';
+import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
 
-export interface Props {
+export interface OwnProps {
     periode: Periode;
 }
 
 const bem = BEMHelper('endrePeriodeForm');
+
+type Props = OwnProps & DispatchProps;
 
 class EndrePeriodeForm extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -21,9 +32,21 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
         this.onDelete = this.onDelete.bind(this);
     }
     onChange(periode: Periode) {
-        console.log(periode);
+        let updatedPeriode: Periode | undefined;
+        if (this.props.periode.type === Periodetype.Utsettelse) {
+            updatedPeriode = { ...this.props.periode, ...(periode as Utsettelsesperiode) };
+        } else if (this.props.periode.type === Periodetype.Uttak) {
+            updatedPeriode = { ...this.props.periode, ...(periode as Uttaksperiode) };
+        } else if (this.props.periode.type === Periodetype.Opphold) {
+            updatedPeriode = { ...this.props.periode, ...(periode as Oppholdsperiode) };
+        }
+        if (updatedPeriode !== undefined) {
+            this.props.dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
+        }
     }
-    onDelete() {}
+    onDelete() {
+        this.props.dispatch(søknadActionCreators.uttaksplanDeletePeriode(this.props.periode));
+    }
     render() {
         const { periode } = this.props;
         return (
@@ -42,4 +65,5 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
         );
     }
 }
-export default EndrePeriodeForm;
+
+export default connect()(EndrePeriodeForm);
