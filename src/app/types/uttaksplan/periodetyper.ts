@@ -2,8 +2,8 @@ import { Tidsperiode, Forelder } from 'common/types';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
-    'Utsettelse' = 'UTSETTELSE',
-    'Opphold' = 'OPPHOLD'
+    'Utsettelse' = 'utsettelse',
+    'Opphold' = 'opphold'
 }
 
 export enum StønadskontoType {

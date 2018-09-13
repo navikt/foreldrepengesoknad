@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { EtikettLiten } from 'nav-frontend-typografi';
 import {
     Oppholdsperiode,
     OppholdÅrsakType,
@@ -10,8 +9,7 @@ import {
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, TidsperiodePartial } from 'common/types';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
-import BEMHelper from 'common/util/bem';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import Block from 'common/components/block/Block';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import { connect } from 'react-redux';
@@ -29,8 +27,12 @@ import { RecursivePartial } from '../../types/Partial';
 import UtsettelsePgaDeltidsarbeidForm, {
     UtsettelsePgaDeltidsarbeidSkjemadata
 } from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
+import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form.tsx/UtsettelsePgaFerieForm';
+import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
 
 interface UtsettelsesperiodeFormProps {
+    tittel?: string;
     periode: RecursivePartial<Periode>;
     onChange: (periode: RecursivePartial<Periode>) => void;
 }
@@ -187,43 +189,78 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { gjelderOpphold, variant } = this.state;
         const { periode, onChange } = this.props;
         const { tidsperiode } = periode;
-        const bem = BEMHelper('periodeForm');
+
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
+        const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
 
         return (
             <React.Fragment>
                 <Block margin="s">
-                    <EtikettLiten className={bem.element('heading')}>Ny utsettelse</EtikettLiten>
-                </Block>
-                <Block margin="s">
                     <TidsperiodeBolk
                         onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as TidsperiodePartial}
-                    />
-                </Block>
-                <Block margin="s">
-                    <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
-                        onChange={this.updateUtsettelsesvariant}
-                        variant={variant}
-                        radios={this.getUtsettelseÅrsakRadios()}
-                    />
-                </Block>
-
-                <Block visible={gjelderOpphold}>
-                    <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
-                </Block>
-
-                <Block visible={variant === Utsettelsesvariant.ArbeidHeltid}>
-                    <UtsettelsePgaHeltidsarbeidForm
-                        onChange={this.updateUtsettelsePgaHeltidsarbeid}
-                        skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
+                        datoAvgrensninger={{
+                            fra: {
+                                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
+                            },
+                            til: {
+                                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
+                            }
+                        }}
+                        visVarighet={true}
                     />
                 </Block>
 
-                <Block visible={variant === Utsettelsesvariant.ArbeidDeltid}>
-                    <UtsettelsePgaDeltidsarbeidForm
-                        onChange={this.updateUtsettelsePgaDeltidsarbeid}
-                        skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
-                    />
+                <Block visible={validTidsperiode !== undefined && periode.id === undefined} hasChildBlocks={true}>
+                    <Block margin="s">
+                        <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
+                            onChange={this.updateUtsettelsesvariant}
+                            variant={variant}
+                            radios={this.getUtsettelseÅrsakRadios()}
+                        />
+                    </Block>
+
+                    <Block visible={gjelderOpphold} hasChildBlocks={true}>
+                        <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
+                    </Block>
+
+                    <Block visible={variant === Utsettelsesvariant.ArbeidHeltid} hasChildBlocks={true}>
+                        <UtsettelsePgaHeltidsarbeidForm
+                            onChange={this.updateUtsettelsePgaHeltidsarbeid}
+                            skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
+                        />
+                    </Block>
+
+                    <Block visible={variant === Utsettelsesvariant.ArbeidDeltid} hasChildBlocks={true}>
+                        <UtsettelsePgaDeltidsarbeidForm
+                            onChange={this.updateUtsettelsePgaDeltidsarbeid}
+                            skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
+                        />
+                    </Block>
+                    {antallDager && (
+                        <>
+                            <Block
+                                visible={
+                                    variant === Utsettelsesvariant.Ferie ||
+                                    (periode.type === Periodetype.Utsettelse &&
+                                        periode.årsak === UtsettelseÅrsakType.Ferie)
+                                }
+                                hasChildBlocks={true}>
+                                <UtsettelsePgaFerieForm
+                                    antallDager={antallDager}
+                                    onChange={(p) => this.props.onChange(p)}
+                                    forelder={Forelder.FORELDER_1}
+                                />
+                            </Block>
+                            <Block visible={variant === Utsettelsesvariant.Sykdom} hasChildBlocks={true}>
+                                <UtsettelsePgaSykdomForm
+                                    onChange={(p) => this.props.onChange(p)}
+                                    periode={periode as Periode}
+                                    forelder={Forelder.FORELDER_1}
+                                />
+                            </Block>
+                        </>
+                    )}
                 </Block>
             </React.Fragment>
         );
