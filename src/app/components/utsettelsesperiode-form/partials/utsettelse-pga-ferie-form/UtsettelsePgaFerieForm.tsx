@@ -12,7 +12,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
 
 export interface Props {
-    periode: RecursivePartial<Periode>;
+    tidsperiode?: Partial<Tidsperiode>;
     forelder: Forelder;
     aktivtArbeidsforhold: boolean;
     onChange: (periode: RecursivePartial<Periode>) => void;
@@ -24,8 +24,7 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
         props.onChange({ type: Periodetype.Utsettelse, forelder: props.forelder, årsak: UtsettelseÅrsakType.Ferie });
     }
     render() {
-        const { periode, aktivtArbeidsforhold, onChange } = this.props;
-        const { tidsperiode = { fom: undefined, tom: undefined } } = periode;
+        const { tidsperiode, aktivtArbeidsforhold, onChange } = this.props;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
         const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
 

@@ -8,7 +8,7 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
-import { Forelder } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import Block from 'common/components/block/Block';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import { connect } from 'react-redux';
@@ -225,10 +225,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         }
                         hasChildBlocks={true}>
                         <UtsettelsePgaFerieForm
-                            periode={periode}
-                            onChange={(p) => this.props.onChange(p)}
-                            forelder={Forelder.FORELDER_1}
+                            tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
+                            forelder={Forelder.FORELDER_1}
+                            onChange={(p) => this.props.onChange(p)}
                         />
                     </Block>
                     <Block visible={variant === Utsettelsesvariant.Sykdom} hasChildBlocks={true}>
