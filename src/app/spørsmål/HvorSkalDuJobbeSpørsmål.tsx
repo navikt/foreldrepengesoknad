@@ -6,6 +6,7 @@ import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
+import Block from 'common/components/block/Block';
 
 interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) => void;
@@ -87,13 +88,16 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
 
         return (
             <>
-                <RadioPanelGruppeResponsive
-                    checked={this.getCheckedValue()}
-                    radios={this.getRadioOptions()}
-                    name="arbeidsgiver"
-                    onChange={this.handleOnChange}
-                    legend={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
-                />
+                <Block margin={selvstendigNæringsdrivendeValgt ? 'm' : 'none'}>
+                    <RadioPanelGruppeResponsive
+                        checked={this.getCheckedValue()}
+                        radios={this.getRadioOptions()}
+                        name="arbeidsgiver"
+                        twoColumns={true}
+                        onChange={this.handleOnChange}
+                        legend={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
+                    />
+                </Block>
 
                 {selvstendigNæringsdrivendeValgt && (
                     <Input

@@ -13,7 +13,7 @@ import {
 } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import NæringstypeSpørsmål from '../../spørsmål/NæringstypeSpørsmål';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import TidsperiodeBolk from '../../bolker/TidsperiodeBolk';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import Landvelger from '../landvelger/Landvelger';
 import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';

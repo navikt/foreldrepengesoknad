@@ -39,7 +39,6 @@ describe('UtsettelsePgaArbeidForm visibility', () => {
 
             it('it should be visible if stillingsprosent is defined, erAleneOmOmsorg is falsy, and annenForelder skalHaForeldrepenger and harRettPåForelderpenger', () => {
                 dummySøknad.annenForelder = {
-                    skalHaForeldrepenger: true,
                     harRettPåForeldrepenger: true
                 };
                 dummySøknad.søker = {

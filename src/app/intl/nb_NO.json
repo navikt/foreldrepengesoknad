@@ -187,8 +187,6 @@
 
     "erAnnenForelderInformert.spørsmål": "Er {navn} informert om søknaden min?",
 
-    "skalFarEllerMedmorHaForeldrepenger.spørsmål": "Skal {navn} ha foreldrepenger?",
-
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er arbeidsgiver nær venn eller familie?",
 
@@ -293,8 +291,20 @@
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
+    "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
+
+    "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Barnets ankomstdato til Norge ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",
+    "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg annen dato",
+
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.annen": "Annen dato",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
 
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
@@ -401,7 +411,6 @@
     "oppsummering.annenForelder.utenlandskFødselsnummer.label": "Utenlandsk fødselsnummer",
     "oppsummering.annenForelder.bostedsland.label": "og bor i...",
     "oppsummering.annenForelder.harRettPåForeldrepenger.label": "Har {navn} rett på foreldrepenger?",
-    "oppsummering.annenForelder.skalHaForeldrepenger.label": "Skal {navn} ha foreldrepenger?",
     "oppsummering.annenForelder.erInformertOmSøknaden.label": "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
@@ -432,5 +441,22 @@
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.tittel": "Avbryt søknad",
     "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
-    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden"
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
+
+    "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
+
+    "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "periodeliste.uttak": "{foreldernavn} sin kvote",
+
+    "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
+    "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+
+    "utsettelseskjema.veiledning.ferie":
+        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
+    "utsettelseskjema.ferievarsel.ulovlig":
+        "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
+    "utsettelseskjema.ferievarsel.kreveroverforing":
+        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år."
 }

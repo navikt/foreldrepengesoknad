@@ -8,7 +8,7 @@ import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../
 
 type Props = UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
-const StartdatoPermisjonSpørsmål = (props: Props) => {
+const StartdatoPermisjonMorBolk = (props: Props) => {
     const { visible, intl } = props;
 
     return (
@@ -41,4 +41,4 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
     );
 };
 
-export default injectIntl(StartdatoPermisjonSpørsmål);
+export default injectIntl(StartdatoPermisjonMorBolk);

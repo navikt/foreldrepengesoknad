@@ -1,6 +1,7 @@
 @import '../../../common/styles/variables';
 .toggleItem {
-    a.toggleItem__header {
+    .toggleItem__header {
+        display: block;
         position: relative;
         z-index: 2;
         display: flex;
@@ -25,6 +26,8 @@
             padding-right: 1rem;
         }
         /** Ekspanderbart panel styles */
+    }
+    a.toggleItem__header {
         &:hover {
             box-shadow: #b7b1a9 0 2px 1px 0;
             color: @navBla;

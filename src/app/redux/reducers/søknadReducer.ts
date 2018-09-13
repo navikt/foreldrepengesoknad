@@ -10,6 +10,7 @@ import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { formaterNavn } from '../../util/domain/personUtil';
 import { guid } from 'nav-frontend-js-utils';
 import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
+import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -112,7 +113,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
             return {
                 ...state,
-                uttaksplan: lagMockUttaksplan(state as Søknad),
+                uttaksplan: lagMockUttaksplan(state as Søknad).sort(sorterPerioder),
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
@@ -125,21 +126,22 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
             return {
                 ...state,
-                uttaksplan: [...state.uttaksplan, { ...action.periode, id: guid() }]
+                uttaksplan: [...state.uttaksplan, { ...action.periode, id: guid() }].sort(sorterPerioder)
             };
         }
 
         case SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE: {
             return {
                 ...state,
-                uttaksplan: state.uttaksplan.filter((periode) => periode.id !== action.periode.id)
+                uttaksplan: state.uttaksplan.filter((periode) => periode.id !== action.periode.id).sort(sorterPerioder)
             };
         }
 
         case SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE: {
+            const filteredPerioder = state.uttaksplan.filter((periode) => periode.id !== action.periode.id);
             return {
                 ...state,
-                uttaksplan: [...state.uttaksplan.filter((periode) => periode.id !== action.periode.id), action.periode]
+                uttaksplan: [...filteredPerioder, action.periode].sort(sorterPerioder)
             };
         }
 

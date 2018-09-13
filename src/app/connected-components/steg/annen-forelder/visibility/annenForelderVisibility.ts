@@ -9,7 +9,6 @@ export interface AnnenForelderStegVisibility {
     annenForelderOppfølgingPart: boolean;
     annenForelderKanIkkeOppgisValg: boolean;
     fødselsnummerInput: boolean;
-    skalFarEllerMedmorHaForeldrepengerSpørsmål: boolean;
     harRettPåForeldrepengerSpørsmål: boolean;
     erMorUførSpørsmål: boolean;
     erAnnenForelderInformertSpørsmål: boolean;
@@ -54,12 +53,7 @@ export const getAnnenForelderVisibility = (
 
     const annenForelderOppfølgingPart = f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder);
     const fødselsnummerInput = f.visFødselsnummerInput(annenForelderPersonaliaPart, annenForelder);
-    const skalFarEllerMedmorHaForeldrepengerSpørsmål = f.visSkalFarEllerMedmorHaForeldrepengerSpørsmål(
-        søker,
-        erFarEllerMedmor
-    );
     const harRettPåForeldrepengerSpørsmål = f.visHarRettPåForeldrepengerSpørsmål(
-        annenForelder,
         søker,
         annenForelderHarOpplystOmPågåendeSak
     );
@@ -80,7 +74,6 @@ export const getAnnenForelderVisibility = (
         annenForelderOppfølgingPart,
         annenForelderKanIkkeOppgisValg,
         fødselsnummerInput,
-        skalFarEllerMedmorHaForeldrepengerSpørsmål,
         harRettPåForeldrepengerSpørsmål,
         erMorUførSpørsmål,
         farEllerMedmorBolk,

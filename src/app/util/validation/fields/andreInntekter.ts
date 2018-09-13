@@ -1,6 +1,6 @@
 import DateValues from '../values';
 import { Tidsperiode, Avgrensninger } from 'nav-datovelger';
-import { DatoAvgrensninger } from '../../../bolker/TidsperiodeBolk';
+import { DatoAvgrensninger } from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 
 export const getAndreInntekterTidsperiodeAvgrensninger = (tidsperiode?: Partial<Tidsperiode>): DatoAvgrensninger => {
     return {

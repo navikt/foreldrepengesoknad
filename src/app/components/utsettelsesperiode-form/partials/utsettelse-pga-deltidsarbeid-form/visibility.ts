@@ -10,13 +10,13 @@ const skalDereHaGradertUttakSamtidigSynlig = (skjemadata: UtsettelsePgaDeltidsar
     const { konto, stillingsprosent } = skjemadata;
     const { søker, annenForelder } = søknad;
     const { erAleneOmOmsorg } = søker;
-    const { harRettPåForeldrepenger, skalHaForeldrepenger } = annenForelder;
+    const { harRettPåForeldrepenger } = annenForelder;
 
     if (module.hvilkenKvoteSkalBenyttes(skjemadata)) {
         return konto !== null && konto !== undefined;
     }
     if (stillingsprosent !== undefined) {
-        return !erAleneOmOmsorg && skalHaForeldrepenger && harRettPåForeldrepenger;
+        return !erAleneOmOmsorg && harRettPåForeldrepenger;
     }
     return false;
 };

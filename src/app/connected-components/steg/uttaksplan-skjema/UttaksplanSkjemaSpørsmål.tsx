@@ -1,10 +1,10 @@
 import { DispatchProps } from 'common/redux/types';
 import * as React from 'react';
-import { UttaksplanSkjemadata } from '../../../types/søknad/Søknad';
 import { AppState } from '../../../redux/reducers';
 import Block from 'common/components/block/Block';
 import { connect } from 'react-redux';
 import søknadActionCreators from '../../../redux/actions/søknad/søknadActionCreators';
+import { UttaksplanSkjemadata } from './uttaksplanSkjemadata';
 
 export interface UttaksplanSkjemaspørsmålProps {
     visible?: boolean;
@@ -28,7 +28,7 @@ const UttaksplanSkjemaSpørsmål: React.StatelessComponent<Props> = ({
     dispatch
 }) => (
     <Block visible={visible} hasChildBlocks={harUnderspørsmål}>
-        {render(skjemadata, (data) => dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata(data)))}
+        {visible && render(skjemadata, (data) => dispatch(søknadActionCreators.uttaksplanUpdateSkjemdata(data)))}
     </Block>
 );
 
