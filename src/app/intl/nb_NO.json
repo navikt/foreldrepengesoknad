@@ -435,5 +435,22 @@
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.SYKDOM": "Sykdom",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
-    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn"
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+
+    "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
+
+    "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "periodeliste.uttak": "{foreldernavn} sin kvote",
+
+    "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
+    "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+
+    "utsettelseskjema.veiledning.ferie":
+        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
+    "utsettelseskjema.ferievarsel.ulovlig":
+        "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
+    "utsettelseskjema.ferievarsel.kreveroverforing":
+        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år."
 }

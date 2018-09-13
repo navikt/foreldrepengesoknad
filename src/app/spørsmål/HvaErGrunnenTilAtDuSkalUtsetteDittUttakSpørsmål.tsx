@@ -19,6 +19,7 @@ const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={variant}
+            twoColumns={true}
             legend={getMessage(intl, 'hvaergrunnentilatduskalutsettedittuttak.spørsmål')}
             radios={radios}
             name="årsakTilUtsettelse"
