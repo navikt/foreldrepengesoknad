@@ -50,7 +50,7 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
     render() {
         const { periode } = this.props;
         return (
-            <form className={bem.className} action="#" onSubmit={preventFormSubmit}>
+            <form className={bem.className} onSubmit={preventFormSubmit}>
                 {periode.type === Periodetype.Utsettelse ? (
                     <UtsettelsesperiodeForm periode={periode} onChange={this.onChange} />
                 ) : (
