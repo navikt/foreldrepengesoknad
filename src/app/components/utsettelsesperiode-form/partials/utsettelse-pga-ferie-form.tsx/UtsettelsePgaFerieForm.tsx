@@ -4,6 +4,7 @@ import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregle
 import { Periode, Periodetype, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
     antallDager: number;
@@ -23,8 +24,7 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
             <>
                 {!aktivtArbeidsforhold ? (
                     <Veilederinfo>
-                        Du kan desverre ikke legge til utsettelse på grunn av ferie fordi du ikke har et aktivt
-                        arbeidsforhold
+                        <FormattedMessage id="utsettelseskjema.ferie.utenArbeidsforhold" />
                     </Veilederinfo>
                 ) : (
                     <UtsettelseFerieInfo
