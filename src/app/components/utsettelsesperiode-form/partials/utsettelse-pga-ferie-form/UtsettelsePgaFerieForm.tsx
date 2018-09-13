@@ -9,7 +9,6 @@ import { getValidTidsperiode, Tidsperioden } from '../../../../util/uttaksplan/T
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
-import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSpørsmål';
 
 export interface Props {
     tidsperiode?: Partial<Tidsperiode>;
@@ -24,7 +23,7 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
         props.onChange({ type: Periodetype.Utsettelse, forelder: props.forelder, årsak: UtsettelseÅrsakType.Ferie });
     }
     render() {
-        const { tidsperiode, aktivtArbeidsforhold, onChange } = this.props;
+        const { tidsperiode, aktivtArbeidsforhold } = this.props;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
         const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
 
@@ -38,12 +37,6 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
 
         return (
             <>
-                <Block>
-                    <UtsettelseTidsperiodeSpørsmål
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        onChange={(t) => onChange({ tidsperiode: t })}
-                    />
-                </Block>
                 {antallDager && (
                     <Block>
                         <UtsettelseFerieInfo
