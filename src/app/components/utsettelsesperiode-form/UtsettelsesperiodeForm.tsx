@@ -210,13 +210,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         visVarighet={true}
                     />
                 </Block>
-                <Block margin="s">
-                    <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
-                        onChange={this.updateUtsettelsesvariant}
-                        variant={variant}
-                        radios={this.getUtsettelseÅrsakRadios()}
-                    />
-                </Block>
+                {periode.id === undefined && (
+                    <Block margin="s">
+                        <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
+                            onChange={this.updateUtsettelsesvariant}
+                            variant={variant}
+                            radios={this.getUtsettelseÅrsakRadios()}
+                        />
+                    </Block>
+                )}
 
                 <Block visible={gjelderOpphold} hasChildBlocks={true}>
                     <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
@@ -237,7 +239,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 </Block>
                 {antallDager && (
                     <>
-                        <Block visible={variant === Utsettelsesvariant.Ferie} hasChildBlocks={true}>
+                        <Block
+                            visible={
+                                variant === Utsettelsesvariant.Ferie ||
+                                (periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Ferie)
+                            }
+                            hasChildBlocks={true}>
                             <UtsettelsePgaFerieForm
                                 antallDager={antallDager}
                                 onChange={(p) => this.props.onChange(p)}
