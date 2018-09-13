@@ -12,7 +12,7 @@ export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo):
         sensitivInfoIkkeLagre.registrertAnnenForelder &&
         sensitivInfoIkkeLagre.registrertAnnenForelder.harOpplystOmSinPågåendeSak;
     const barn = søknad.barn as ForeldreansvarBarn;
-    const vedleggOmsorgsovertakelse = barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
+    const vedleggOmsorgsovertakelseDato = barn.omsorgsovertakelseDato && barn.omsorgsovertakelseDato.length > 0;
 
     const søkerErFarEllerMedmor = erFarEllerMedmor(kjønn, rolle);
 
@@ -23,7 +23,7 @@ export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo):
         (harRettPåForeldrepenger === false && !søkerErFarEllerMedmor) ||
         (harRettPåForeldrepenger === true && !søkerErFarEllerMedmor && erInformertOmSøknaden) ||
         (harOpplystOmSinPågåendeSak && !søkerErFarEllerMedmor) ||
-        (søkerErFarEllerMedmor && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelse);
+        (søkerErFarEllerMedmor && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelseDato);
 
     return result !== undefined && result !== false;
 };

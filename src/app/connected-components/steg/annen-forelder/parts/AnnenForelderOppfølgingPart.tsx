@@ -133,8 +133,8 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                             </Block>
 
                             <AttachmentsUploaderPure
-                                attachments={barn.omsorgsovertakelse ? barn.omsorgsovertakelse : []}
-                                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                                attachments={barn.omsorgsovertakelseDato || []}
+                                attachmentType={AttachmentType.OMSORGSOVERTAKELSEDATO}
                                 onFilesSelect={(attachments: Attachment[]) => {
                                     attachments.forEach((attachment: Attachment) => {
                                         dispatch(søknadActions.uploadAttachment(attachment));
