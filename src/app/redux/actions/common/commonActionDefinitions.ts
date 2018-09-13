@@ -11,11 +11,4 @@ interface SetSpråk {
     språkkode: Språkkode;
 }
 
-interface VisAvbrytSøknadDialog {
-    type: CommonActionKeys.VIS_AVBRYT_SØKNAD_DIALOG;
-}
-interface SkjulAvbrytSøknadDialog {
-    type: CommonActionKeys.SKJUL_AVBRYT_SØKNAD_DIALOG;
-}
-
-export type CommonActionTypes = SetSpråk | VisAvbrytSøknadDialog | SkjulAvbrytSøknadDialog;
+export type CommonActionTypes = SetSpråk;
