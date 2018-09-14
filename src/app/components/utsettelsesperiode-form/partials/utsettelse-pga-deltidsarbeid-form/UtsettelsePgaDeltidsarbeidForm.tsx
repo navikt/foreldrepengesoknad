@@ -21,7 +21,7 @@ import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
     konto?: StønadskontoType;
-    samtidigGradertUttak?: boolean;
+    ønskerSamtidigUttak?: boolean;
     orgnr?: string;
     tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
@@ -56,7 +56,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
     render() {
         const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-        const { stillingsprosent, konto, samtidigGradertUttak, orgnr, tidsperiode } = skjemadata;
+        const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
@@ -93,9 +93,9 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.skalDereHaGradertUttakSamtidig(skjemadata, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
-                            onChange({ samtidigGradertUttak: v });
+                            onChange({ ønskerSamtidigUttak: v });
                         }}
-                        samtidigGradertUttak={samtidigGradertUttak}
+                        samtidigGradertUttak={ønskerSamtidigUttak}
                     />
                 </Block>
 

@@ -22,8 +22,8 @@ const skalDereHaGradertUttakSamtidigSynlig = (skjemadata: UtsettelsePgaDeltidsar
 };
 
 const hvorSkalDuJobbeSynlig = (skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata, søknad: Søknad) => {
-    const { samtidigGradertUttak } = skjemadata;
-    return module.skalDereHaGradertUttakSamtidig(skjemadata, søknad) && samtidigGradertUttak !== undefined;
+    const { ønskerSamtidigUttak } = skjemadata;
+    return module.skalDereHaGradertUttakSamtidig(skjemadata, søknad) && ønskerSamtidigUttak !== undefined;
 };
 
 const module = {

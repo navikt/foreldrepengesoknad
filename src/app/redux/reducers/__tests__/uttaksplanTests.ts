@@ -12,7 +12,8 @@ let nyPeriode: Uttaksperiode = {
     tidsperiode: {
         fom: new Date(),
         tom: new Date()
-    }
+    },
+    ønskerSamtidigUttak: false
 };
 
 describe('Søknad - Uttaksplan reducer', () => {

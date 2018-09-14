@@ -171,11 +171,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const { periode } = this.props;
         if (periode.type === Periodetype.Uttak) {
             const gradertPeriode = periode as GradertUttaksperiode;
-            const { stillingsprosent, konto, samtidigGradertUttak, orgnr } = gradertPeriode;
+            const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr } = gradertPeriode;
             return {
                 stillingsprosent,
                 konto,
-                samtidigGradertUttak,
+                ønskerSamtidigUttak,
                 orgnr,
                 tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
             };
