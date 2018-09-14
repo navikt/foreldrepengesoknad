@@ -68,15 +68,6 @@ describe('AnnenForelder visibility tests', () => {
                     )
                 ).toBeTruthy();
                 expect(
-                    func.visErAnnenForelderInformertSpørsmål(
-                        { erAleneOmOmsorg: true },
-                        { harRettPåForeldrepenger: false },
-                        true,
-                        true
-                    )
-                ).toBeFalsy();
-                expect(func.visErAnnenForelderInformertSpørsmål({ erAleneOmOmsorg: true }, {}, true, true)).toBeFalsy();
-                expect(
                     func.visErAnnenForelderInformertSpørsmål({ erAleneOmOmsorg: false }, {}, true, false)
                 ).toBeFalsy();
                 expect(
