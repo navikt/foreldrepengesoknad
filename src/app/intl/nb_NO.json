@@ -325,12 +325,12 @@
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
-    "vedlegg.lastoppknapp.terminbekreftelse.label": "Last opp terminbekreftelsen",
-    "vedlegg.lastoppknapp.omsorgsovertakelseDato.label": "Last opp dokumentasjon på omsorgsovertakelsedato",
-    "vedlegg.lastoppknapp.omsorgsovertakelse.label": "Last opp dokumentasjon på omsorgsovertakelse",
-    "vedlegg.lastoppknapp.fødselsattest.label": "Last opp fødselsattesten",
-    "vedlegg.lastoppknapp.anneninntektdokumentasjon.label": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.adopsjonsvedtak.label": "Last opp adopsjonsvedtak",
+    "vedlegg.lastoppknapp.terminbekreftelse": "Last opp terminbekreftelsen",
+    "vedlegg.lastoppknapp.omsorgsovertakelseDato": "Last opp dokumentasjon på omsorgsovertakelsedato",
+    "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
+    "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
+    "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.adopsjonsvedtak": "Last opp adopsjonsvedtak",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
