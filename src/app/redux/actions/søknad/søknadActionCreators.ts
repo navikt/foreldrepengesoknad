@@ -17,7 +17,8 @@ import {
     UttaksplanDeletePeriode,
     UttaksplanUpdatePeriode,
     UttaksplanUpdateSkjemadata,
-    UttaksplanLagForslag
+    UttaksplanLagForslag,
+    AvbrytSøknad
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -131,6 +132,10 @@ const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
 });
 
+const avbrytSøknad = (): AvbrytSøknad => ({
+    type: SøknadActionKeys.AVBRYT_SØKNAD
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -150,5 +155,6 @@ export default {
     deleteAttachment,
     deleteAttachmentSuccess,
     deleteAttachmentFailed,
-    uttaksplanLagForslag
+    uttaksplanLagForslag,
+    avbrytSøknad
 };

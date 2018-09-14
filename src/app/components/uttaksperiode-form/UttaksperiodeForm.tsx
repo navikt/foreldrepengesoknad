@@ -6,7 +6,7 @@ import {
     TilgjengeligStønadskonto,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { Forelder, TidsperiodePartial } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -73,8 +73,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             <React.Fragment>
                 <Block margin="s">
                     <TidsperiodeBolk
-                        onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
-                        tidsperiode={tidsperiode as TidsperiodePartial}
+                        onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
+                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
                     />
                 </Block>
                 <Block margin="s">

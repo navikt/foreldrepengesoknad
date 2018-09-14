@@ -4,6 +4,7 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import './bekreftDialog.less';
+import Knapperad from 'common/components/knapperad/Knapperad';
 
 export interface Props extends ModalProps {
     /** Kalles når bruker klikker bekreft-knapp  */
@@ -22,7 +23,7 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
         return (
             <Modal {...modalProps} className="bekreftDialog">
                 <div className="blokk-m">{children}</div>
-                <div className="bekreftDialog__knapperad">
+                <Knapperad>
                     <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
                         {this.props.bekreftLabel ||
                             intl.formatMessage({
@@ -37,7 +38,7 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
                                 id: 'komponent.bekreftDialog.avbrytLabel'
                             })}
                     </Knapp>
-                </div>
+                </Knapperad>
             </Modal>
         );
     }
