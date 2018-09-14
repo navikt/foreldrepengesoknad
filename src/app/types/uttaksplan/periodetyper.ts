@@ -52,6 +52,8 @@ export interface Uttaksperiode extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
+    morsAktivitetIPerioden?: MorsAktivitet;
+    ønskerSamtidigUttak: boolean;
 }
 
 interface UtsettelsesperiodeBase extends PeriodeBase {
@@ -89,7 +91,6 @@ export type Utsettelsesperiode =
 export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
     stillingsprosent: string;
-    samtidigGradertUttak: boolean;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
@@ -104,4 +105,15 @@ export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
     dager: number;
+}
+
+export enum MorsAktivitet {
+    'Arbeid' = 'ARBEID',
+    'Utdanning' = 'UTDANNING',
+    'Kvalifiseringsprogrammet' = 'KVALPROG',
+    'Introduksjonsprogrammet' = 'INTROPROG',
+    'TrengerHjelp' = 'TRENGER_HJELP',
+    'Innlagt' = 'INNLAGT',
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'SamtidigUttak' = 'SAMTIDIGUTTAK'
 }
