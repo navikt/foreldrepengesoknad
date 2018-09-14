@@ -14,6 +14,7 @@ import Block from 'common/components/block/Block';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import NyPeriodeBolk from '../../bolker/ny-periode-bolk/NyPeriodeBolk';
 import { Forelder } from 'common/types';
+import UttakIkon from '../../components/uttaksplan-ikon/ikoner/UttakIkon';
 
 interface StateProps {
     søknad: Søknad;
@@ -73,6 +74,7 @@ class Workbench extends React.Component<Props, State> {
                     </Block>
 
                     <NyPeriodeBolk onSubmit={this.handleOnSubmit} />
+                    <UttakIkon />
 
                     <Block margin="l">
                         <Uttaksoppsummering uttak={mockUttak} {...navn} />

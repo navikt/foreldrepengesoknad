@@ -60,7 +60,7 @@ const renderDagMnd = (dato: Date): JSX.Element => (
 
 const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
-        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
+        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} gradert={periode.gradert} />;
     } else if (periode.type === Periodetype.Utsettelse) {
         return <UtsettelseIkon årsak={periode.årsak} />;
     }
