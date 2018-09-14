@@ -1,0 +1,10 @@
+{
+    "kontoer": [
+        { "konto": "FORELDREPENGER", "dager": 0 },
+        { "konto": "FEDREKVOTE", "dager": 0 },
+        { "konto": "FELLESPERIODE", "dager": 0 },
+        { "konto": "FLERBARNSUKER", "dager": 0 },
+        { "konto": "FORELDREPENGER_FØR_FØDSEL", "dager": 0 },
+        { "konto": "MØDREKVOTE", "dager": 0 }
+    ]
+}

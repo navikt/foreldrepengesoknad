@@ -9,14 +9,8 @@ require('dotenv').config();
 
 const allowCrossDomain = function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET,PUT,POST,DELETE,OPTIONS'
-    );
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Content-Type,X-XSRF-TOKEN,Location'
-    );
+    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-XSRF-TOKEN,Location');
     res.setHeader('Access-Control-Expose-Headers', 'Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
@@ -40,25 +34,21 @@ router.post('/rest/engangsstonad', (req, res) => res.sendStatus(200));
 router.get('/rest/storage', (req, res) => {
     res.send(MockStorage.getSoknad());
 });
+
+router.get('/rest/konto', (req, res) => {
+    res.send(MockStorage.getStønadskontoer());
+});
+
 router.post('/rest/storage', (req, res) => {
     MockStorage.updateSoknad(req.body);
     return res.sendStatus(200);
 });
 
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });
-router.post(
-    '/rest/storage/vedlegg',
-    vedleggUpload.single('vedlegg'),
-    (req, res) => {
-        res.setHeader(
-            'Location',
-            `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${
-                req.body.id
-            }`
-        );
-        res.sendStatus(201);
-    }
-);
+router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
+    res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
+    res.sendStatus(201);
+});
 
 router.delete('/rest/storage/vedlegg/:id', (req, res) => {
     res.sendStatus(204);
