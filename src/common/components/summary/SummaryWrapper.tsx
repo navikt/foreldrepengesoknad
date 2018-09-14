@@ -2,20 +2,22 @@ import React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import getMessage from 'common/util/i18nUtils';
-import Person from '../../../app/types/Person';
 import Søknad from '../../../app/types/søknad/Søknad';
 import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonalia';
-import OppsummeringRelasjonTilBarnFødsel from 'common/components/oppsummering/steg/OppsummeringRelasjonTilBarnFødsel';
+import RelasjonTilBarnSummary from 'common/components/summary/steg/RelasjonTilBarnSummary';
 import { formaterNavn } from 'app/util/domain/personUtil';
-import OppsummeringAnnenForelder from 'common/components/oppsummering/steg/OppsummeringAnnenForelder';
+import AnnenForelderSummary from 'common/components/summary/steg/OppsummeringAnnenForelder';
 import Block from 'common/components/block/Block';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import { Søkerinfo } from '../../../app/types/søkerinfo';
+import { skalSøkerLasteOppTerminbekreftelse } from '../../../app/util/validation/steg/barn';
 
-import './oppsummering.less';
+import './summaryWrapper.less';
+import UtenlandsoppholdSummary from 'common/components/summary/steg/UtenlandsoppholdSummary';
 
 interface OppsummeringProps {
     className?: string;
-    person: Person;
+    søkerinfo: Søkerinfo;
     søknad: Søknad;
 }
 
@@ -25,7 +27,7 @@ interface State {
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
-class OppsummeringWrapper extends React.Component<Props, State> {
+class SummaryWrapper extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -35,11 +37,12 @@ class OppsummeringWrapper extends React.Component<Props, State> {
     }
 
     render() {
-        const { className, person, søknad, intl } = this.props;
+        const { className, søkerinfo, søknad, intl } = this.props;
+        const { person } = søkerinfo;
         return (
             <div className={className}>
                 <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
-                <div className="oppsummeringWrapper">
+                <div className="summaryWrapper">
                     <SøkerPersonalia
                         navn={formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
                         fnr={person.fnr}
@@ -53,7 +56,12 @@ class OppsummeringWrapper extends React.Component<Props, State> {
                             onClick={() =>
                                 this.setState({ relasjonTilBarnSummaryOpen: !this.state.relasjonTilBarnSummaryOpen })
                             }>
-                            <OppsummeringRelasjonTilBarnFødsel barn={søknad.barn} />
+                            <RelasjonTilBarnSummary
+                                barn={søknad.barn}
+                                annenForelder={søknad.annenForelder}
+                                situasjon={this.props.søknad.situasjon}
+                                skalLasteOppTerminbekreftelse={skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo)}
+                            />
                         </Ekspanderbartpanel>
                     </Block>
 
@@ -64,9 +72,22 @@ class OppsummeringWrapper extends React.Component<Props, State> {
                             onClick={() =>
                                 this.setState({ annenForelderSummaryOpen: !this.state.annenForelderSummaryOpen })
                             }>
-                            <OppsummeringAnnenForelder
+                            <AnnenForelderSummary
                                 annenForelder={søknad.annenForelder}
                                 erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
+                            />
+                        </Ekspanderbartpanel>
+                    </Block>
+                    <Block animated={false}>
+                        <Ekspanderbartpanel
+                            tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
+                            tittelProps={'undertittel'}
+                            onClick={() =>
+                                this.setState({ annenForelderSummaryOpen: !this.state.annenForelderSummaryOpen })
+                            }>
+                            <UtenlandsoppholdSummary
+                                informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
+                                erBarnetFødt={søknad.barn.erBarnetFødt}
                             />
                         </Ekspanderbartpanel>
                     </Block>
@@ -75,4 +96,4 @@ class OppsummeringWrapper extends React.Component<Props, State> {
         );
     }
 }
-export default injectIntl(OppsummeringWrapper);
+export default injectIntl(SummaryWrapper);

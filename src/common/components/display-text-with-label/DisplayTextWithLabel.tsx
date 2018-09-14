@@ -1,5 +1,5 @@
 import * as React from 'react';
-const { EtikettLiten, Element } = require('nav-frontend-typografi');
+import { EtikettLiten, Element } from 'nav-frontend-typografi';
 
 import './displayTextWithLabel.less';
 
