@@ -18,7 +18,7 @@ export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forel
     return forelder === 'forelder1' ? 'purple' : 'blue';
 };
 
-export const getUtsettelseFarge = (grader?: boolean): UttaksplanColor => {
+export const getUtsettelseFarge = (): UttaksplanColor => {
     return 'green';
 };
 
