@@ -32,7 +32,7 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
     });
 
     return (
-        <React.Fragment>
+        <div className="summary">
             {kanIkkeOppgis && (
                 <Element className="kanIkkeOppgis">
                     {getMessage(intl, 'oppsummering.annenForelder.kanIkkeOppgis')}
@@ -98,7 +98,7 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     text={erUfør ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-        </React.Fragment>
+        </div>
     );
 };
 export default injectIntl(AnnenForelderOppsummering);

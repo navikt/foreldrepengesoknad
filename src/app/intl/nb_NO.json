@@ -415,6 +415,15 @@
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
+    "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
+    "oppsummering.utenlandsopphold.iNorgeSiste12MndLabel": "De siste 12 månendene har jeg",
+    "oppsummering.utenlandsopphold.iNorgeSiste12MndTrue": "vært i norge",
+    "oppsummering.utenlandsopphold.iNorgeNeste12MndLabel": "De neste 12 månendene skal jeg være i",
+    "oppsummering.utenlandsopphold.iNorgeNeste12": "i norge",
+    "oppsummering.utenlandsopphold.fødselINorgeLabel": "Jeg skal føde barnet",
+    "oppsummering.utenlandsopphold.fødselINorgeTrue": "i norge",
+    "oppsummering.utenlandsopphold.fødselINorgeFalse": "i utlandet",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.referansenummer": "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",

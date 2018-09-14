@@ -32,8 +32,7 @@ const adopsjonsbarnErGyldig = (barn: Adopsjonsbarn) => {
 
 const foreldreansvarBarnErGyldig = (barn: ForeldreansvarBarn) => {
     const { fødselsdatoer, foreldreansvarsdato } = barn;
-
-    return foreldreansvarsdato && fødselsdatoer.length > 0;
+    return foreldreansvarsdato && fødselsdatoer && fødselsdatoer.length > 0;
 };
 
 const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boolean) => {
