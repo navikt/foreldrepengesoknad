@@ -160,6 +160,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             type: Periodetype.Uttak,
             årsak: UtsettelseÅrsakType.Arbeid,
             forelder: Forelder.FORELDER_1,
+            gradert: true,
             ...skjemadata
         };
         onChange(gradertUttaksperiode);
