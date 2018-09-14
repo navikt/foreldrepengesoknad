@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
     Periode,
+    Periodetype,
     StønadskontoType,
     TilgjengeligStønadskonto,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { TidsperiodePartial } from 'common/types';
+import { Forelder, TidsperiodePartial } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -17,9 +18,10 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { erForelder2 } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erForelder2 } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -42,28 +44,39 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     getSkjemadataForFellesperiodeUttak(): FellesperiodeUttakSkjemadata {
-        const { tidsperiode, morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = this.props.periode;
+        const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = this.props.periode;
         return {
-            tidsperiode: tidsperiode as TidsperiodePartial,
             vedlegg: vedlegg as Attachment[],
             morsAktivitetIPerioden,
             ønskerSamtidigUttak
         };
     }
 
-    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata) {
+    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erForelder2Value: boolean) {
         const { onChange } = this.props;
-        onChange(data);
+        onChange({
+            ...data,
+            forelder: erForelder2Value ? Forelder.FORELDER_2 : Forelder.FORELDER_1,
+            type: Periodetype.Uttak
+        });
     }
 
     render() {
         const { periode, tilgjengeligeStønadskontoer, onChange, søknad, søkerinfo } = this.props;
-        const { rolle } = søknad.søker;
-        const { konto } = periode;
+        const { søker, annenForelder } = søknad;
+        const { rolle } = søker;
+        const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+        const erForelder2Value = erForelder2(søkerinfo.person.kjønn, rolle);
 
         return (
             <React.Fragment>
+                <Block margin="s">
+                    <TidsperiodeBolk
+                        onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
+                        tidsperiode={tidsperiode as TidsperiodePartial}
+                    />
+                </Block>
                 <Block margin="s">
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
@@ -75,9 +88,12 @@ class UttaksperiodeForm extends React.Component<Props> {
                 </Block>
                 <Block visible={konto === StønadskontoType.Fellesperiode}>
                     <FellesperiodeUttakForm
-                        søkerErForelder2={erForelder2(søkerinfo.person.kjønn, rolle)}
+                        søkerErForelder2={erForelder2Value}
+                        annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
-                        onChange={this.updateFellesperiodeUttak}
+                        onChange={(data: FellesperiodeUttakSkjemadata) =>
+                            this.updateFellesperiodeUttak(data, erForelder2Value)
+                        }
                     />
                 </Block>
             </React.Fragment>
