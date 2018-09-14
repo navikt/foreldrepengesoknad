@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { TidsperiodePartial } from 'common/types';
-import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import Block from 'common/components/block/Block';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
@@ -12,7 +10,6 @@ import AttachmentsUploader from 'common/storage/attachment/components/Attachment
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 
 export interface FellesperiodeUttakSkjemadata {
-    tidsperiode?: TidsperiodePartial;
     morsAktivitetIPerioden?: MorsAktivitet;
     vedlegg?: Attachment[];
     ønskerSamtidigUttak?: boolean;
@@ -22,6 +19,7 @@ interface FellesperiodeUttakFormProps {
     skjemadata: FellesperiodeUttakSkjemadata;
     onChange: (skjemadata: FellesperiodeUttakSkjemadata) => void;
     søkerErForelder2: boolean;
+    annenForelderSkalHaForeldrepenger: boolean;
 }
 
 type Props = FellesperiodeUttakFormProps & InjectedIntlProps;
@@ -62,18 +60,11 @@ class FellesperiodeUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, onChange } = this.props;
-        const { tidsperiode, morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
+        const { annenForelderSkalHaForeldrepenger, søkerErForelder2, skjemadata, onChange } = this.props;
+        const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
         return (
             <>
-                <Block margin="s">
-                    <TidsperiodeBolk
-                        onChange={(v: TidsperiodePartial) => onChange({ tidsperiode: v })}
-                        tidsperiode={tidsperiode as TidsperiodePartial}
-                    />
-                </Block>
-
-                <Block margin="none" /*visible={søkerErForelder2}*/>
+                <Block margin="none" visible={annenForelderSkalHaForeldrepenger && søkerErForelder2}>
                     <Block margin="s">
                         <HvaSkalMorGjøreSpørsmål
                             morsAktivitetIPerioden={morsAktivitetIPerioden}
@@ -96,7 +87,12 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                     </Block>
                 </Block>
 
-                <Block>
+                <Block
+                    visible={
+                        søkerErForelder2 && annenForelderSkalHaForeldrepenger
+                            ? morsAktivitetIPerioden !== undefined
+                            : true
+                    }>
                     <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
                         skalVæreHjemmeSamtidig={ønskerSamtidigUttak}
                         onChange={(v: boolean) => onChange({ ønskerSamtidigUttak: v })}
