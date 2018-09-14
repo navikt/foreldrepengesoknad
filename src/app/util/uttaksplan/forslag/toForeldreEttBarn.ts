@@ -2,7 +2,7 @@ import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { Tidsperiode, Dekningsgrad, Forelder } from 'common/types';
-import { Periodetype, StønadskontoType, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { Periodetype, StønadskontoType, Periode } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../Tidsperioden';
 import { getPermisjonStartdato } from '../permisjonUtils';
 import { sorterPerioder } from '../Periodene';
@@ -80,9 +80,10 @@ export function opprettUttaksperioderToForeldreEttBarn(
     fellesukerForelder1: number,
     fellesukerForelder2: number,
     permisjonsregler: Permisjonsregler
-): Uttaksperiode[] {
+): Periode[] {
     familiehendelsedato = normaliserDato(familiehendelsedato);
-    const perioder: Uttaksperiode[] = [
+
+    const perioder: Periode[] = [
         {
             id: guid(),
             type: Periodetype.Uttak,
@@ -112,6 +113,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2)
         }
     ];
+
     if (fellesukerForelder1 > 0) {
         perioder.push({
             id: guid(),
@@ -121,6 +123,7 @@ export function opprettUttaksperioderToForeldreEttBarn(
             tidsperiode: getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1)
         });
     }
+
     if (fellesukerForelder2 > 0) {
         perioder.push({
             id: guid(),
@@ -135,5 +138,6 @@ export function opprettUttaksperioderToForeldreEttBarn(
             )
         });
     }
+
     return perioder.sort(sorterPerioder);
 }

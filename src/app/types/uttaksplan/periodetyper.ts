@@ -1,4 +1,5 @@
 import { Tidsperiode, Forelder } from 'common/types';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -44,6 +45,7 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
+    vedlegg?: Attachment[];
 }
 
 export interface Uttaksperiode extends PeriodeBase {
@@ -52,14 +54,37 @@ export interface Uttaksperiode extends PeriodeBase {
     forelder: Forelder;
 }
 
-export interface Utsettelsesperiode extends PeriodeBase {
+interface UtsettelsesperiodeBase extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+}
+
+export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Arbeid;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
+export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Ferie;
+}
+export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Sykdom;
+}
+export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonBarnet;
+}
+export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonSøker;
+}
+
+export type Utsettelsesperiode =
+    | UtsettelsePgaArbeidPeriode
+    | UtsettelsePgaFerie
+    | UtsettelsePgaSykdom
+    | UtsettelsePgaInnleggelseSøker
+    | UtsettelsePgaInnleggelseBarnet;
 
 export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;

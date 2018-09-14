@@ -77,7 +77,8 @@ export enum AttachmentType {
     ADOPSJONSVEDTAK = 'adopsjonsvedtak',
     TERMINBEKREFTELSE = 'terminbekreftelse',
     FØDSELSATTEST = 'fødselsattest',
-    ANNEN_INNTEKT_DOKUMENTASJON = 'anneninntektdokumentasjon'
+    ANNEN_INNTEKT_DOKUMENTASJON = 'anneninntektdokumentasjon',
+    UTSETTELSE_SYKDOM = 'utsettelseSykdomUttaksplan'
 }
 
 // TODO remove redundant skjemanummer when we know more about which to use
@@ -94,7 +95,11 @@ export enum Skjemanummer {
     TERMINBEKREFTELSE = 'I000062',
     DOK_ETTERLØNN = 'I000044',
     DOK_MILITÆR_SILVIL_TJENESTE = 'I000039',
-    INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG = 'I000007'
+    INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG = 'I000007',
+    DOK_MORS_UTDANNING_ARBEID_SYKDOM = 'I000038',
+    DOK_INNLEGGELSE = 'I000037'
 }
+
+//
 
 export default Søknad;
