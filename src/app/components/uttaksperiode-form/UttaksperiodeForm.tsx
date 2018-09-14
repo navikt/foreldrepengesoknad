@@ -8,7 +8,7 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
-import Søknad from '../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
@@ -18,10 +18,11 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erForelder2 } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erForelder2 } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -61,12 +62,22 @@ class UttaksperiodeForm extends React.Component<Props> {
         });
     }
 
+    updateEgenPeriodeUttak(ønskerSamtidigUttak: boolean, erForelder2Value: boolean) {
+        const { onChange } = this.props;
+        onChange({
+            ønskerSamtidigUttak,
+            forelder: erForelder2Value ? Forelder.FORELDER_2 : Forelder.FORELDER_1,
+            type: Periodetype.Uttak
+        });
+    }
+
     render() {
         const { periode, tilgjengeligeStønadskontoer, onChange, søknad, søkerinfo } = this.props;
         const { søker, annenForelder } = søknad;
         const { rolle } = søker;
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+
         const erForelder2Value = erForelder2(søkerinfo.person.kjønn, rolle);
 
         return (
@@ -93,6 +104,20 @@ class UttaksperiodeForm extends React.Component<Props> {
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                         onChange={(data: FellesperiodeUttakSkjemadata) =>
                             this.updateFellesperiodeUttak(data, erForelder2Value)
+                        }
+                    />
+                </Block>
+                <Block
+                    visible={
+                        (konto === StønadskontoType.Mødrekvote &&
+                            (rolle === SøkerRolle.MOR || erForelder2Value === false)) ||
+                        (konto === StønadskontoType.Fedrekvote &&
+                            (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || erForelder2Value === true))
+                    }>
+                    <EgenDelUttakForm
+                        ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                        onChange={(ønskerSamtidigUttak) =>
+                            this.updateEgenPeriodeUttak(ønskerSamtidigUttak, erForelder2Value)
                         }
                     />
                 </Block>
