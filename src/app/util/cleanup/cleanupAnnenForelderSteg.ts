@@ -1,7 +1,6 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
 import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
-import { Søkerinfo } from '../../types/søkerinfo';
 import Søknad from '../../types/søknad/Søknad';
 
 interface CleanedAnnenForelderSteg {
@@ -65,8 +64,7 @@ export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn:
 
 const cleanupAnnenForelderSteg = (
     vis: AnnenForelderStegVisibility,
-    søknad: Partial<Søknad>,
-    søkerinfo: Søkerinfo
+    søknad: Partial<Søknad>
 ): CleanedAnnenForelderSteg => {
     return {
         annenForelder: cleanupAnnenForelder(vis, søknad),

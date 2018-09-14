@@ -386,9 +386,9 @@
         "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
 
     "oppsummering.relasjonTilBarn": "Relasjon til barn",
-    "oppsummering.termindato": "med termindato den",
-    "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
-    "oppsummering.terminbekreftelseDato": "Som er datert den",
+    "oppsummering.termindato.label": "med termindato den",
+    "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
+    "oppsummering.terminbekreftelseDato.label": "Som er datert den",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.tvillinger": "tvillinger",
@@ -400,6 +400,14 @@
     "oppsummering.antallBarn.7": "Syv",
     "oppsummering.antallBarn.8": "Åtte",
     "oppsummering.antallBarn.9": "Ni",
+
+    "oppsummering.fødselsdato.label": "fødselsdato:",
+    "oppsummering.adopsjonAvEktefellesBarn.label": "adopsjonavektefellesbarn",
+    "oppsummering.adopsjonsdato.label": "adopsjonsdato:",
+    "oppsummering.adoptertIUtlandet.label": "adoptertIUtlandet:",
+    "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse:",
+
+    "oppsummering.ankomstdato.label": "ankomstdato:",
 
     "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
@@ -414,6 +422,15 @@
     "oppsummering.annenForelder.erInformertOmSøknaden.label": "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
+
+    "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
+    "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
+    "oppsummering.iNorgeSiste12MndTrue": "vært i norge",
+    "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
+    "oppsummering.iNorgeNeste12": "i norge",
+    "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
+    "oppsummering.fødselINorgeTrue": "i norge",
+    "oppsummering.fødselINorgeFalse": "i utlandet",
 
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
