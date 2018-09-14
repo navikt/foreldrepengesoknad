@@ -52,6 +52,7 @@ export interface Uttaksperiode extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
+    gradert?: boolean;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak: boolean;
 }
@@ -90,6 +91,7 @@ export type Utsettelsesperiode =
 
 export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
+    gradert: true;
     stillingsprosent: string;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
