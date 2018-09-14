@@ -19,8 +19,8 @@ const BEM = BEMHelper('periodeliste');
 
 const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnForelder1, navnForelder2 }) => (
     <div className={BEM.className}>
-        {perioder.map((p, idx) => (
-            <div className={BEM.element('item')} key={idx}>
+        {perioder.map((p) => (
+            <div className={BEM.element('item')} key={p.id}>
                 <ToggleItem
                     expandedHeaderClassName="periodeheader--isOpen"
                     renderHeader={() => (

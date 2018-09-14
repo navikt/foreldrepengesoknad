@@ -446,6 +446,12 @@
     "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
     "morsAktivitet.SamtidigUttak": "Samtidig uttak",
 
+    "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
+    "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
+    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
+
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
@@ -462,6 +468,8 @@
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
+    "utsettelseskjema.ferie.utenArbeidsforhold":
+        "Du kan desverre ikke legge til utsettelse på grunn av ferie fordi du ikke har et aktivt arbeidsforhold",
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":

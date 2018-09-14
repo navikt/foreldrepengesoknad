@@ -5,7 +5,6 @@ import { Søkerinfo } from '../../../types/søkerinfo';
 
 export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
     const { annenForelder, søker, sensitivInfoIkkeLagre } = søknad;
-
     const { kanIkkeOppgis, harRettPåForeldrepenger, erUfør, erInformertOmSøknaden } = annenForelder;
     const { rolle, erAleneOmOmsorg } = søker;
     const { kjønn } = søkerinfo.person;
@@ -15,13 +14,16 @@ export const annenForelderErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo):
     const barn = søknad.barn as ForeldreansvarBarn;
     const vedleggOmsorgsovertakelse = barn.omsorgsovertakelse && barn.omsorgsovertakelse.length > 0;
 
+    const søkerErFarEllerMedmor = erFarEllerMedmor(kjønn, rolle);
+
     const result =
         kanIkkeOppgis === true ||
         erInformertOmSøknaden !== undefined ||
         erUfør !== undefined ||
-        (harRettPåForeldrepenger === false && !erFarEllerMedmor(kjønn, rolle)) ||
-        (harOpplystOmSinPågåendeSak && !erFarEllerMedmor(kjønn, rolle)) ||
-        (erFarEllerMedmor(kjønn, rolle) && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelse);
+        (harRettPåForeldrepenger === false && !søkerErFarEllerMedmor) ||
+        (harRettPåForeldrepenger === true && !søkerErFarEllerMedmor && erInformertOmSøknaden) ||
+        (harOpplystOmSinPågåendeSak && !søkerErFarEllerMedmor) ||
+        (søkerErFarEllerMedmor && erAleneOmOmsorg && barn.foreldreansvarsdato && vedleggOmsorgsovertakelse);
 
     return result !== undefined && result !== false;
 };

@@ -13,26 +13,29 @@ import Søknad from '../../../../types/søknad/Søknad';
 import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/aktuelleStønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
-import { Søkerinfo } from '../../../../types/søkerinfo';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
+import Arbeidsforhold from '../../../../types/Arbeidsforhold';
+import { Tidsperiode } from 'common/types';
+import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
     konto?: StønadskontoType;
     ønskerSamtidigUttak?: boolean;
     orgnr?: string;
+    tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
 interface UtsettelsePgaArbeidFormProps {
     onChange: (v: UtsettelsePgaDeltidsarbeidSkjemadata) => void;
     skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
 interface StateProps {
     søknad: Søknad;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    søkerinfo: Søkerinfo;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -52,16 +55,16 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, søknad, søkerinfo, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-        const { arbeidsforhold } = søkerinfo;
-        const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr } = skjemadata;
+        const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
+        const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
 
         return (
             <React.Fragment>
-                <Block>
+                <Block visible={validTidsperiode !== undefined}>
                     <Input
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}
@@ -116,7 +119,6 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        søkerinfo: state.api.søkerinfo!,
         tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };

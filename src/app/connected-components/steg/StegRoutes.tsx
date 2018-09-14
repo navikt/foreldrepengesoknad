@@ -11,8 +11,6 @@ import AndreInntekterSteg from './andre-inntekter/AndreInntekterSteg';
 import UttaksplanSteg from './uttaksplan/UttaksplanSteg';
 import AnnenForelderSteg from './annen-forelder/AnnenForelderSteg';
 import InngangSteg from './inngang/InngangSteg';
-import { connect } from 'react-redux';
-import { DispatchProps } from 'common/redux/types';
 import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
@@ -20,7 +18,7 @@ import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-type Props = SøkerinfoProps & RouteComponentProps<any> & DispatchProps & HistoryProps;
+type Props = SøkerinfoProps & RouteComponentProps<any> & HistoryProps;
 
 class StegRoutes extends React.Component<Props> {
     render() {
@@ -85,4 +83,4 @@ class StegRoutes extends React.Component<Props> {
     }
 }
 
-export default connect()(withRouter(StegRoutes));
+export default withRouter(StegRoutes);

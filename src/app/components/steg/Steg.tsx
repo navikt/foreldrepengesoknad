@@ -17,6 +17,8 @@ import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
+import AvbrytSøknadDialog from '../avbryt-s\u00F8knad-dialog/AvbrytS\u00F8knadDialog';
+import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
 
 export interface StegProps {
     id: StegID;
@@ -30,9 +32,13 @@ export interface StegProps {
     preSubmit?: () => void;
 }
 
+interface State {
+    visAvbrytDialog: boolean;
+}
+
 type Props = StegProps & InjectedIntlProps;
 
-class Steg extends React.Component<Props & DispatchProps> {
+class Steg extends React.Component<Props & DispatchProps, State> {
     private stegFormRef: React.RefObject<ValiderbarForm>;
 
     constructor(props: Props & DispatchProps) {
@@ -43,10 +49,19 @@ class Steg extends React.Component<Props & DispatchProps> {
             history.push(routeConfig.APP_ROUTE_PREFIX);
         }
 
+        this.state = {
+            visAvbrytDialog: false
+        };
+
         this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
+    }
+
+    handleAvbrytSøknad() {
+        this.props.dispatch(søknadActionCreators.avbrytSøknad());
+        this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
     getFormElement() {
@@ -114,9 +129,11 @@ class Steg extends React.Component<Props & DispatchProps> {
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
-                    <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
-                        {stegConfig[id].fortsettKnappLabel}
-                    </FortsettKnapp>
+                    <Block>
+                        <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
+                            {stegConfig[id].fortsettKnappLabel}
+                        </FortsettKnapp>
+                    </Block>
                 )}
             </React.Fragment>
         );
@@ -124,6 +141,7 @@ class Steg extends React.Component<Props & DispatchProps> {
 
     render() {
         const { renderFormTag, intl } = this.props;
+        const { visAvbrytDialog } = this.state;
 
         const bem = BEMHelper('steg');
         const formProps = {
@@ -141,7 +159,12 @@ class Steg extends React.Component<Props & DispatchProps> {
                 ) : (
                     this.renderContent()
                 )}
-                <StegFooter />
+                <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
+                <AvbrytSøknadDialog
+                    synlig={visAvbrytDialog}
+                    onAvbrytSøknad={() => this.handleAvbrytSøknad()}
+                    onFortsettSøknad={() => this.setState({ visAvbrytDialog: false })}
+                />
             </React.Fragment>
         );
     }

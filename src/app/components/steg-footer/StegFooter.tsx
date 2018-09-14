@@ -4,7 +4,11 @@ import LinkButton from '../link-button/LinkButton';
 
 import './stegFooter.less';
 
-const StegFooter: React.StatelessComponent = () => {
+interface Props {
+    onAvbryt: () => void;
+}
+
+const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt }) => {
     const bem = BEMHelper('stegFooter');
 
     return (
@@ -13,6 +17,7 @@ const StegFooter: React.StatelessComponent = () => {
             <LinkButton
                 onClick={(e) => {
                     e.preventDefault();
+                    onAvbryt();
                 }}>
                 Avbryt søknad
             </LinkButton>

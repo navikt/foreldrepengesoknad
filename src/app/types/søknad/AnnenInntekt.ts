@@ -1,5 +1,5 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { TidsperiodeMedValgfriSluttdato, TidsperiodeMedValgfriSluttdatoPartial } from 'common/types';
+import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export enum AnnenInntektType {
     'SLUTTPAKKE' = 'ETTERLØNN_ARBEIDSGIVER',
@@ -47,7 +47,7 @@ export type AnnenInntekt =
 
 export interface AnnenInntektPartialInterface {
     type: AnnenInntektType;
-    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
     pågående: boolean;
     vedlegg: Attachment[];
 }

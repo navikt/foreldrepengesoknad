@@ -1,50 +1,45 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { connect } from 'react-redux';
-import { AppState } from '../../../../redux/reducers/index';
-import { Søkerinfo } from '../../../../types/søkerinfo';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
+import Arbeidsforhold from '../../../../types/Arbeidsforhold';
+import { Tidsperiode } from 'common/types';
+import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface UtsettelsePgaHeltidsarbeidSkjemadata {
     orgnr?: string;
+    tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
 }
 
 interface UtsettelsePgaArbeidFormProps {
     onChange: (v: UtsettelsePgaHeltidsarbeidSkjemadata) => void;
     skjemadata: UtsettelsePgaHeltidsarbeidSkjemadata;
+    arbeidsforhold: Arbeidsforhold[];
 }
 
-interface StateProps {
-    søkerinfo: Søkerinfo;
-}
-
-type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
+type Props = UtsettelsePgaArbeidFormProps & InjectedIntlProps;
 
 class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
     render() {
-        const { skjemadata, søkerinfo, onChange } = this.props;
-        const { arbeidsforhold } = søkerinfo;
-        const { orgnr } = skjemadata;
+        const { skjemadata, onChange, arbeidsforhold } = this.props;
+        const { orgnr, tidsperiode } = skjemadata;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
 
         return (
-            <Block>
-                <HvorSkalDuJobbeSpørsmål
-                    arbeidsforhold={arbeidsforhold}
-                    onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
-                        onChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
-                    }
-                    valgtArbeidsforhold={orgnr}
-                />
-            </Block>
+            <>
+                <Block visible={validTidsperiode !== undefined}>
+                    <HvorSkalDuJobbeSpørsmål
+                        arbeidsforhold={arbeidsforhold}
+                        onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
+                            onChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
+                        }
+                        valgtArbeidsforhold={orgnr}
+                    />
+                </Block>
+            </>
         );
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => {
-    return {
-        søkerinfo: state.api.søkerinfo!
-    };
-};
-export default connect(mapStateToProps)(injectIntl(UtsettelsePgaHeltidsarbeidForm));
+export default injectIntl(UtsettelsePgaHeltidsarbeidForm);

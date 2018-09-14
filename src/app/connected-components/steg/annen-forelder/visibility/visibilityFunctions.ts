@@ -42,9 +42,13 @@ const visFødselsnummerInput = (annenForelderPersonaliaPartVisible: boolean, ann
 
 const visHarRettPåForeldrepengerSpørsmål = (
     søker: Søker,
+    erFarEllerMedmor: boolean,
     harAnnenForelderOpplystOmSinPågåendeSak: boolean
 ): boolean => {
-    return søker.erAleneOmOmsorg === false && !harAnnenForelderOpplystOmSinPågåendeSak;
+    return (
+        (søker.erAleneOmOmsorg === false && !harAnnenForelderOpplystOmSinPågåendeSak) ||
+        (!erFarEllerMedmor && søker.erAleneOmOmsorg === true)
+    );
 };
 
 const visErMorUførSpørsmål = (annenForelder: Partial<AnnenForelder>, erFarEllerMedmor: boolean): boolean => {

@@ -3,11 +3,18 @@ import UtsettelseFerieInfo from '../../../utsettelse-ferie-info/UtsettelseFerieI
 import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
 import { Periode, Periodetype, UtsettelseÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
+import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { RecursivePartial } from '../../../../types/Partial';
+import { getValidTidsperiode, Tidsperioden } from '../../../../util/uttaksplan/Tidsperioden';
+import Block from 'common/components/block/Block';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
-    antallDager: number;
+    tidsperiode?: Partial<Tidsperiode>;
     forelder: Forelder;
-    onChange: (periode: Partial<Periode>) => void;
+    aktivtArbeidsforhold: boolean;
+    onChange: (periode: RecursivePartial<Periode>) => void;
 }
 
 class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
@@ -16,14 +23,29 @@ class UtsettelsePgaFerieForm extends React.Component<Props, {}> {
         props.onChange({ type: Periodetype.Utsettelse, forelder: props.forelder, årsak: UtsettelseÅrsakType.Ferie });
     }
     render() {
-        const { antallDager } = this.props;
+        const { tidsperiode, aktivtArbeidsforhold } = this.props;
+        const validTidsperiode = getValidTidsperiode(tidsperiode);
+        const antallDager = validTidsperiode ? Tidsperioden(validTidsperiode).getAntallUttaksdager() : undefined;
+
+        if (!aktivtArbeidsforhold) {
+            return (
+                <Veilederinfo>
+                    <FormattedMessage id="utsettelseskjema.ferie.utenArbeidsforhold" />
+                </Veilederinfo>
+            );
+        }
+
         return (
             <>
-                <UtsettelseFerieInfo
-                    forelderNavn="Frode"
-                    feriedager={antallDager}
-                    permisjonsregler={getPermisjonsregler()}
-                />
+                {antallDager && (
+                    <Block>
+                        <UtsettelseFerieInfo
+                            forelderNavn="Frode"
+                            feriedager={antallDager}
+                            permisjonsregler={getPermisjonsregler()}
+                        />
+                    </Block>
+                )}
             </>
         );
     }

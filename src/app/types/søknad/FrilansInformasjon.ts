@@ -1,8 +1,8 @@
-import { TidsperiodeMedValgfriSluttdatoPartial } from 'common/types';
+import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export interface FrilansOppdrag {
     navnPåArbeidsgiver: string;
-    tidsperiode: TidsperiodeMedValgfriSluttdatoPartial;
+    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
     pågående: boolean;
 }
 
