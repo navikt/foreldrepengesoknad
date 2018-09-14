@@ -62,10 +62,8 @@ const visErAnnenForelderInformertSpørsmål = (
     erFarEllerMedmor: boolean
 ): boolean => {
     return (
-        (søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true) ||
-        (søker.erAleneOmOmsorg === false &&
-            harAnnenForelderOpplystOmSinPågåendeSak === true &&
-            erFarEllerMedmor === true)
+        annenForelder.harRettPåForeldrepenger === true ||
+        (harAnnenForelderOpplystOmSinPågåendeSak === true && erFarEllerMedmor === true)
     );
 };
 
