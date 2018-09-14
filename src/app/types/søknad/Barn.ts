@@ -22,7 +22,6 @@ export interface Adopsjonsbarn extends BarnBase {
     ankomstdato?: Date;
     adoptertIUtlandet?: boolean;
     omsorgsovertakelse: Attachment[];
-    adopsjonsvedtak: Attachment[];
     adopsjonAvEktefellesBarn: boolean;
 }
 
