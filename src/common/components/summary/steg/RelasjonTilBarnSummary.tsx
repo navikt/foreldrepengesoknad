@@ -229,7 +229,7 @@ class RelasjonTilBarnSummary extends React.Component<Props> {
     }
 
     render() {
-        return <div className="summary">{this.renderPartial()}</div>;
+        return this.renderPartial();
     }
 }
 export default injectIntl(RelasjonTilBarnSummary);

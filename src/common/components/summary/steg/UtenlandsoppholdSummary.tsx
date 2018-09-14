@@ -24,7 +24,7 @@ const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProp
     } = props.informasjonOmUtenlandsopphold;
 
     return (
-        <div className="summary">
+        <React.Fragment>
             {iNorgeSiste12Mnd ? (
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}
@@ -56,7 +56,7 @@ const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProp
                         }
                     />
                 )}
-        </div>
+        </React.Fragment>
     );
 };
 export default injectIntl(UtenlandsoppholdSummary);
