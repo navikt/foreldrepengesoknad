@@ -1,6 +1,6 @@
 import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
-import { Uttaksperiode, Utsettelsesperiode } from '../../../types/uttaksplan/periodetyper';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
 import { opprettUttaksperioderToForeldreEttBarn } from './toForeldreEttBarn';
@@ -16,7 +16,7 @@ const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date |
     return undefined;
 };
 
-export const lagMockUttaksplan = (søknad: Søknad): Array<Uttaksperiode | Utsettelsesperiode> => {
+export const lagMockUttaksplan = (søknad: Søknad): Periode[] => {
     const { søker, barn, situasjon } = søknad;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
 

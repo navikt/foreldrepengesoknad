@@ -452,6 +452,7 @@
     "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
 
+    "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",

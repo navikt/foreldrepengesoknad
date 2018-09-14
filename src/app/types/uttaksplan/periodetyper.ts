@@ -56,14 +56,37 @@ export interface Uttaksperiode extends PeriodeBase {
     ønskerSamtidigUttak: boolean;
 }
 
-export interface Utsettelsesperiode extends PeriodeBase {
+interface UtsettelsesperiodeBase extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+}
+
+export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Arbeid;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
+export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Ferie;
+}
+export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Sykdom;
+}
+export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonBarnet;
+}
+export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonSøker;
+}
+
+export type Utsettelsesperiode =
+    | UtsettelsePgaArbeidPeriode
+    | UtsettelsePgaFerie
+    | UtsettelsePgaSykdom
+    | UtsettelsePgaInnleggelseSøker
+    | UtsettelsePgaInnleggelseBarnet;
 
 export interface GradertUttaksperiode extends Uttaksperiode {
     årsak: UtsettelseÅrsakType.Arbeid;
