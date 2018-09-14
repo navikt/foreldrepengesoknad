@@ -89,28 +89,32 @@ export function opprettUttaksperioderToForeldreEttBarn(
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getMødrekvoteFørTermin(familiehendelsedato, permisjonsregler)
+            tidsperiode: getMødrekvoteFørTermin(familiehendelsedato, permisjonsregler),
+            ønskerSamtidigUttak: false
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
+            tidsperiode: getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler),
+            ønskerSamtidigUttak: false
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler)
+            tidsperiode: getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler),
+            ønskerSamtidigUttak: false
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_2,
             konto: StønadskontoType.Fedrekvote,
-            tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2)
+            tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerForelder1, fellesukerForelder2),
+            ønskerSamtidigUttak: false
         }
     ];
 
@@ -120,7 +124,8 @@ export function opprettUttaksperioderToForeldreEttBarn(
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1)
+            tidsperiode: getFellesperiodeForelder1(familiehendelsedato, permisjonsregler, fellesukerForelder1),
+            ønskerSamtidigUttak: false
         });
     }
 
@@ -135,7 +140,8 @@ export function opprettUttaksperioderToForeldreEttBarn(
                 permisjonsregler,
                 fellesukerForelder1,
                 fellesukerForelder2
-            )
+            ),
+            ønskerSamtidigUttak: false
         });
     }
 

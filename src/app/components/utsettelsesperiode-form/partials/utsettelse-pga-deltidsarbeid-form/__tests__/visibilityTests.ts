@@ -58,7 +58,7 @@ describe('UtsettelsePgaArbeidForm visibility', () => {
     describe('hvorSkalDuJobbeSynlig', () => {
         it('should be visible if skalDereHaGradertUttakSamtidig is visible and answered', () => {
             fns.skalDereHaGradertUttakSamtidig = jest.fn(() => true);
-            expect(fns.hvorSkalDuJobbe({ samtidigGradertUttak: true }, dummySøknad as Søknad)).toBe(true);
+            expect(fns.hvorSkalDuJobbe({ ønskerSamtidigUttak: true }, dummySøknad as Søknad)).toBe(true);
         });
 
         it('should be hidden if skalDereHaGradertUttakSamtidig is visible but unanswered', () => {
