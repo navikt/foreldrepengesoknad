@@ -59,6 +59,15 @@ interface State {
     variant?: Utsettelsesvariant;
 }
 
+const periodeErOpprettetSykdomsperiode = (periode: RecursivePartial<Periode>): boolean => {
+    return (
+        periode.id !== undefined &&
+        periode.type === Periodetype.Utsettelse &&
+        (periode.årsak === UtsettelseÅrsakType.Sykdom ||
+            periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
+            periode.årsak === UtsettelseÅrsakType.InstitusjonSøker)
+    );
+};
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -245,14 +254,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         />
                     </Block>
                     <Block
-                        visible={
-                            variant === Utsettelsesvariant.Sykdom ||
-                            (periode.id !== undefined &&
-                                periode.type === Periodetype.Utsettelse &&
-                                (periode.årsak === UtsettelseÅrsakType.Sykdom ||
-                                    periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-                                    periode.årsak === UtsettelseÅrsakType.InstitusjonSøker))
-                        }
+                        visible={variant === Utsettelsesvariant.Sykdom || periodeErOpprettetSykdomsperiode(periode)}
                         hasChildBlocks={true}>
                         <UtsettelsePgaSykdomForm
                             onChange={(p) => this.props.onChange(p)}
