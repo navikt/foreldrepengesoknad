@@ -5,6 +5,7 @@ import CustomSVG from 'common/components/custom-svg/CustomSVG';
 import BEMHelper from 'common/util/bem';
 
 const uploadIcon = require('./upload.svg').default;
+import { AttachmentType } from '../../../../app/types/søknad/Søknad';
 
 import './attachment.less';
 
@@ -12,6 +13,7 @@ interface AttachmentInputProps {
     id: string;
     onFilesSelect: (files: File[]) => void;
     onClick: () => void;
+    attachmentType: AttachmentType;
 }
 
 type Props = AttachmentInputProps & InjectedIntlProps;
@@ -76,7 +78,7 @@ class AttachmentInput extends React.Component<Props> {
     }
 
     render() {
-        const { id, onClick, intl } = this.props;
+        const { id, onClick, attachmentType, intl } = this.props;
         const inputId = `${id}-input`;
 
         const BEM = BEMHelper('attachmentButton');
@@ -98,7 +100,7 @@ class AttachmentInput extends React.Component<Props> {
                     <CustomSVG iconRef={uploadIcon} size={22} />
                 </div>
                 <Element className={BEM.element('label')}>
-                    <FormattedMessage id="vedlegg.lastoppknapp.label" />
+                    <FormattedMessage id={`vedlegg.lastoppknapp.${attachmentType}.label`} />
                 </Element>
                 <input
                     id={inputId}
