@@ -93,6 +93,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                             onFilesSelect(files.map((f) => mapFileToAttachment(f, attachmentType, skjemanummer)));
                         }}
                         onClick={this.hideErrorMessage}
+                        attachmentType={attachmentType}
                     />
                 </Block>
                 <CSSTransition

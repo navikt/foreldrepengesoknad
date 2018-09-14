@@ -32,10 +32,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
             <Block margin="xs">
                 <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
             </Block>
-            <Block
-                header={{
-                    title: getMessage(intl, 'vedlegg.tittel.terminbekreftelse')
-                }}>
+            <Block>
                 <AttachmentsUploaderPure
                     attachments={terminbekreftelse}
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}

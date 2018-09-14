@@ -160,16 +160,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block
-                    visible={visibility.spørsmålOmVedlegg(barn)}
-                    header={{
-                        title: getMessage(
-                            intl,
-                            barn.adopsjonAvEktefellesBarn
-                                ? 'attachments.tittel.stebarnsadopsjon'
-                                : 'attachments.tittel.omsorgsovertakelse'
-                        )
-                    }}>
+                <Block visible={visibility.spørsmålOmVedlegg(barn)}>
                     <Block margin="xs">
                         <Veilederinfo>
                             {getMessage(

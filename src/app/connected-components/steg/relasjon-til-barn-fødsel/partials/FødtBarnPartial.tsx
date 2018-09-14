@@ -77,10 +77,7 @@ class FødtBarnPartial extends React.Component<Props> {
                         <Block margin="xs">
                             <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.fødselsattest')}</Veilederinfo>
                         </Block>
-                        <Block
-                            header={{
-                                title: getMessage(intl, 'vedlegg.tittel.fødselsattest')
-                            }}>
+                        <Block>
                             <AttachmentsUploaderPure
                                 attachments={fødselsattest}
                                 attachmentType={AttachmentType.FØDSELSATTEST}
