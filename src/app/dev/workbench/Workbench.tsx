@@ -74,7 +74,6 @@ class Workbench extends React.Component<Props, State> {
                     </Block>
 
                     <NyPeriodeBolk onSubmit={this.handleOnSubmit} />
-                    <UttakIkon />
 
                     <Block margin="l">
                         <Uttaksoppsummering uttak={mockUttak} {...navn} />
