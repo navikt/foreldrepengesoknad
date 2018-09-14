@@ -94,7 +94,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                             : true
                     }>
                     <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
-                        skalVæreHjemmeSamtidig={ønskerSamtidigUttak}
+                        ønskerSamtidigUttak={ønskerSamtidigUttak}
                         onChange={(v) => onChange({ ønskerSamtidigUttak: v })}
                     />
                 </Block>
