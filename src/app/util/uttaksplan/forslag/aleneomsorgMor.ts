@@ -26,14 +26,16 @@ export function opprettUttaksperioderAleneomsorgMor(
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getTidsperiode(getPermisjonStartdato(familiehendelsedato, permisjonsregler), dagerFørTermin)
+            tidsperiode: getTidsperiode(getPermisjonStartdato(familiehendelsedato, permisjonsregler), dagerFørTermin),
+            ønskerSamtidigUttak: false
         },
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FORELDER_1,
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), dagerEtterTermin)
+            tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), dagerEtterTermin),
+            ønskerSamtidigUttak: false
         }
     ];
     return perioder.sort(sorterPerioder);
