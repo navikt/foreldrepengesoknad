@@ -16,10 +16,12 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 dager: stønadskontoer.kontoer[konto]
             });
         });
-        yield apiActions.updateApi({
-            isLoadingTilgjengeligeStønadskontoer: false,
-            tilgjengeligeStønadskontoer
-        });
+        yield put(
+            apiActions.updateApi({
+                isLoadingTilgjengeligeStønadskontoer: false,
+                tilgjengeligeStønadskontoer
+            })
+        );
     } catch (error) {
         yield put(
             apiActions.updateApi({

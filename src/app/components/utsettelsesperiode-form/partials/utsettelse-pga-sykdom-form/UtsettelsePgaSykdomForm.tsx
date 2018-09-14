@@ -6,7 +6,6 @@ import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-spørs
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import { RecursivePartial } from '../../../../types/Partial';
-import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface OwnProps {
@@ -40,12 +39,6 @@ class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
         return (
             <>
-                <Block>
-                    <UtsettelseTidsperiodeSpørsmål
-                        tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
-                        onChange={(t) => onChange({ tidsperiode: t })}
-                    />
-                </Block>
                 <Block visible={validTidsperiode !== undefined}>
                     <FlervalgSpørsmål
                         navn="utsttelsePgaSykdomÅrsak"

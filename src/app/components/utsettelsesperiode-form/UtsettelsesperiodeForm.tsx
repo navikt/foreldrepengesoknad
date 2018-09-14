@@ -31,6 +31,8 @@ import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/Utset
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
+import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
+import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -192,11 +194,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     render() {
         const { gjelderOpphold, variant } = this.state;
         const { periode, onChange, arbeidsforhold } = this.props;
+        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
             <React.Fragment>
                 <Block hasChildBlocks={true}>
-                    <Block margin="s" visible={periode.id === undefined}>
+                    <Block>
+                        <UtsettelseTidsperiodeSpørsmål
+                            tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
+                            onChange={(t) => onChange({ tidsperiode: t })}
+                        />
+                    </Block>
+                    <Block margin="s" visible={periode.id === undefined && validTidsperiode !== undefined}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             onChange={this.updateUtsettelsesvariant}
                             variant={variant}
