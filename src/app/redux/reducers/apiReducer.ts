@@ -1,5 +1,5 @@
 import { ApiActionKeys, ApiActionTypes } from '../actions/api/apiActionDefinitions';
-import { ForeldrepengesøknadResponse } from '../../types/ForeldrepengesøknadResponse';
+import { Kvittering } from '../../types/Kvittering';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 
@@ -10,7 +10,7 @@ export interface ApiState {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     søknadSendingInProgress: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    kvittering?: ForeldrepengesøknadResponse;
+    kvittering?: Kvittering;
     error: any;
 }
 
