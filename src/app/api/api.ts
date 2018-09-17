@@ -29,14 +29,19 @@ function getSøkerinfo() {
 
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const { antallBarn, farHarRett, morHarRett, dekningsgrad, familiehendelsesdato, erFødsel } = params;
-    const url = `${uttakBaseUrl}/konto?erFodsel=${erFødsel}&farHarRett=${farHarRett}&morHarRett=${morHarRett}&dekningsgrad=${dekningsgrad}&antallBarn=${antallBarn}&familiehendelsesdato=${formaterDato(
-        familiehendelsesdato,
-        'YYYYMMDD'
-    )}`;
 
-    return axios.get(url, {
+    const urlParams = {
+        erFodsel: erFødsel,
+        farHarRett,
+        morHarRett,
+        dekningsgrad,
+        antallBarn,
+        familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD')
+    };
+
+    return axios.get(`${uttakBaseUrl}/konto`, {
         timeout: 15 * 1000,
-        withCredentials: true
+        params: urlParams
     });
 }
 
