@@ -7,7 +7,7 @@ import { Forelder } from 'common/types';
 
 let nyPeriode: Uttaksperiode = {
     type: Periodetype.Uttak,
-    forelder: Forelder.FORELDER_1,
+    forelder: Forelder.MOR,
     konto: StønadskontoType.Fedrekvote,
     tidsperiode: {
         fom: new Date(),
@@ -38,7 +38,7 @@ describe('Søknad - Uttaksplan reducer', () => {
         const periode2: Uttaksperiode = state.uttaksplan[1] as Uttaksperiode;
         const periode2BeforeUpdate = JSON.stringify(periode2);
 
-        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FORELDER_2 }));
+        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FARMEDMOR }));
         const updatedPeriodeInState: Uttaksperiode = Periodene(state.uttaksplan).getPeriode(
             periode1.id!
         ) as Uttaksperiode;
