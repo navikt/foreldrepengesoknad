@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -24,6 +24,7 @@ interface StateProps {
     søknad: Søknad;
     person: Person;
     perioder: Periode[];
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
@@ -37,7 +38,7 @@ class UttaksplanSteg extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person } = this.props;
+        const { søknad, person, dispatch, tilgjengeligeStønadskontoer } = this.props;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -47,10 +48,12 @@ class UttaksplanSteg extends React.Component<Props, State> {
         };
 
         if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            this.props.dispatch(søknadActions.uttaksplanLagForslag());
+            dispatch(søknadActions.uttaksplanLagForslag());
         }
-
-        this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+        if (tilgjengeligeStønadskontoer.length === 0) {
+            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+        }
+        dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
     }
 
     showBekreftDialog(callback: () => void) {
@@ -120,7 +123,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         person: props.søkerinfo.person,
         stegProps,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer: state.api.isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer: state.api.isLoadingTilgjengeligeStønadskontoer,
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };
 
