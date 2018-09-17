@@ -31,7 +31,7 @@ const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.Mødrekvote,
         dagerGjennstående: 0,
-        forelder: Forelder.FORELDER_1
+        forelder: Forelder.MOR
     },
     {
         konto: StønadskontoType.Fellesperiode,
@@ -40,7 +40,7 @@ const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.Fedrekvote,
         dagerGjennstående: 10,
-        forelder: Forelder.FORELDER_2
+        forelder: Forelder.FARMEDMOR
     }
 ];
 

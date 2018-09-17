@@ -58,7 +58,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { onChange } = this.props;
         onChange({
             ...data,
-            forelder: erForelder2Value ? Forelder.FORELDER_2 : Forelder.FORELDER_1,
+            forelder: erForelder2Value ? Forelder.FARMEDMOR : Forelder.MOR,
             type: Periodetype.Uttak
         });
     }

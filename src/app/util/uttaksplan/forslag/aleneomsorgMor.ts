@@ -24,7 +24,7 @@ export function opprettUttaksperioderAleneomsorgMor(
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FORELDER_1,
+            forelder: Forelder.MOR,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: getTidsperiode(getPermisjonStartdato(familiehendelsedato, permisjonsregler), dagerFørTermin),
             vedlegg: [],
@@ -33,7 +33,7 @@ export function opprettUttaksperioderAleneomsorgMor(
         {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FORELDER_1,
+            forelder: Forelder.MOR,
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), dagerEtterTermin),
             vedlegg: [],
