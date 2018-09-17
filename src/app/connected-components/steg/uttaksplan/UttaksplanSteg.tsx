@@ -14,6 +14,9 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Block from 'common/components/block/Block';
+import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
+import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
+import BekreftGåTilUttaksplanSkjemaDialog from './BekreftG\u00E5TilUttaksplanSkjemaDialog';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
@@ -24,9 +27,44 @@ interface StateProps {
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
+interface State {
+    bekreftDialogSynlig: boolean;
+}
+
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
-class UttaksplanSteg extends React.Component<Props> {
+class UttaksplanSteg extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+
+        const { søknad, person } = this.props;
+        this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
+        this.showBekreftDialog = this.showBekreftDialog.bind(this);
+        this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
+
+        this.state = {
+            bekreftDialogSynlig: false
+        };
+
+        if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
+            this.props.dispatch(søknadActions.uttaksplanLagForslag());
+        }
+
+        this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+    }
+
+    showBekreftDialog(callback: () => void) {
+        this.setState({ bekreftDialogSynlig: true });
+    }
+
+    hideBekreftDialog() {
+        this.setState({ bekreftDialogSynlig: false });
+    }
+
+    onBekreftGåTilbake() {
+        this.setState({ bekreftDialogSynlig: false });
+        this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
+    }
     render() {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const navn = {
@@ -35,7 +73,7 @@ class UttaksplanSteg extends React.Component<Props> {
         };
 
         return (
-            <Steg {...this.props.stegProps}>
+            <Steg {...this.props.stegProps} confirmNavigateToPreviousStep={this.showBekreftDialog}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
@@ -55,6 +93,11 @@ class UttaksplanSteg extends React.Component<Props> {
                         </Block>
                     </React.Fragment>
                 )}
+                <BekreftGåTilUttaksplanSkjemaDialog
+                    synlig={this.state.bekreftDialogSynlig}
+                    onGåTilbake={this.onBekreftGåTilbake}
+                    onBliVærende={this.hideBekreftDialog}
+                />
             </Steg>
         );
     }

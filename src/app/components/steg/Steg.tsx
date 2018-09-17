@@ -30,6 +30,7 @@ export interface StegProps {
     previousStegRoute?: StegID;
     onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     preSubmit?: () => void;
+    confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
 interface State {
@@ -57,6 +58,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
+        this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
     }
 
     handleAvbrytSøknad() {
@@ -84,9 +86,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
     navigateToNextStep(): void {
         const { id, nesteStegRoute } = this.props;
-
         const nextStepPathname = nesteStegRoute ? nesteStegRoute : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
-
         this.props.history.push(nextStepPathname);
     }
 
@@ -105,6 +105,17 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(previousStegPathname);
     }
 
+    handleNavigateToPreviousStepClick() {
+        const { confirmNavigateToPreviousStep } = this.props;
+        if (confirmNavigateToPreviousStep === undefined) {
+            this.navigateToPreviousStep();
+            return;
+        }
+        confirmNavigateToPreviousStep(() => {
+            this.navigateToPreviousStep();
+        });
+    }
+
     shouldHideBackButton(): boolean {
         const activeStegId = this.props.id;
         return (
@@ -121,7 +132,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
                         hidden={this.shouldHideBackButton()}
-                        onClick={this.navigateToPreviousStep}
+                        onClick={this.handleNavigateToPreviousStepClick}
                     />
                 </Block>
                 <Block>
