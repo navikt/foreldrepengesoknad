@@ -40,6 +40,7 @@ class UttaksplanSteg extends React.Component<Props, State> {
         const { søknad, person } = this.props;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
+        this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
 
         this.state = {
             bekreftDialogSynlig: false
@@ -95,8 +96,8 @@ class UttaksplanSteg extends React.Component<Props, State> {
                 )}
                 <BekreftGåTilUttaksplanSkjemaDialog
                     synlig={this.state.bekreftDialogSynlig}
-                    onGåTilbake={this.hideBekreftDialog}
-                    onBliVærende={this.onBekreftGåTilbake}
+                    onGåTilbake={this.onBekreftGåTilbake}
+                    onBliVærende={this.hideBekreftDialog}
                 />
             </Steg>
         );

@@ -20,19 +20,19 @@ const BekreftGåTilUttaksplanSkjemaDialog: React.StatelessComponent<Props & Inje
     <>
         <BekreftDialog
             isOpen={synlig}
-            bekreftLabel={getMessage(intl, 'avbrytSøknadDialog.avbrytSøknadLabel')}
-            avbrytLabel={getMessage(intl, 'avbrytSøknadDialog.fortsettSøknadLabel')}
+            bekreftLabel={getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.okLabel')}
+            avbrytLabel={getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel')}
+            contentLabel={getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.tittel')}
             closeButton={false}
-            contentLabel={getMessage(intl, 'avbrytSøknadDialog.tittel')}
             onBekreft={onGåTilbake}
             onRequestClose={onBliVærende}>
             <Block margin="xs">
-                <Undertittel tag="h1">{getMessage(intl, 'avbrytSøknadDialog.tittel')}</Undertittel>
+                <Undertittel tag="h1">{getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.tittel')}</Undertittel>
             </Block>
             <Block margin="xs">
-                <Normaltekst>{getMessage(intl, 'avbrytSøknadDialog.intro')}</Normaltekst>
+                <Normaltekst>{getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.intro')}</Normaltekst>
             </Block>
-            <Normaltekst>{getMessage(intl, 'avbrytSøknadDialog.spørsmål')}</Normaltekst>
+            <Normaltekst>{getMessage(intl, 'bekreftGåTilUttaksplanSkjemaDialog.spørsmål')}</Normaltekst>
         </BekreftDialog>
     </>
 );
