@@ -57,7 +57,7 @@ const stegConfig: StegConfig = {
     },
     [StegID.UTTAKSPLAN_SKJEMA]: {
         tittel: 'Informasjon om uttaket',
-        fortsettKnappLabel: 'Gå til uttaksplan',
+        fortsettKnappLabel: 'Lag forslag til uttaksplan',
         nesteSteg: StegID.UTTAKSPLAN,
         index: 3
     },

@@ -13,7 +13,8 @@ export enum ApiActionKeys {
 
     'UPDATE_API' = 'updateApi',
 
-    'GET_TILGJENGELIGE_STØNADSKONTOER' = 'getTilgjengeligeStønadskontoer'
+    'GET_TILGJENGELIGE_STØNADSKONTOER' = 'getTilgjengeligeStønadskontoer',
+    'GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG' = 'getTilgjengeligeStønadskontoerAndLagUttaksplanForslag'
 }
 
 interface UpdateApi {
@@ -27,6 +28,11 @@ interface GetSøkerinfo {
 
 export interface GetTilgjengeligeStønadskontoer {
     type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER;
+    params: GetTilgjengeligeStønadskontoerParams;
+}
+
+export interface GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag {
+    type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG;
     params: GetTilgjengeligeStønadskontoerParams;
 }
 
@@ -52,6 +58,7 @@ export type ApiActionTypes =
     | GetSøkerinfo
     | GetStoredAppState
     | GetTilgjengeligeStønadskontoer
+    | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag
     | SendSøknad
     | StoreAppState
     | UpdateApi;
