@@ -45,6 +45,7 @@ function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskon
     yield put(søknadActionCreators.uttaksplanSetPerioder([]));
     yield all([getStønadskontoer(action)]);
     yield put(søknadActionCreators.uttaksplanLagForslag());
+    yield put(apiActions.storeAppState());
 }
 
 export default function* søknadskontoerSaga() {
