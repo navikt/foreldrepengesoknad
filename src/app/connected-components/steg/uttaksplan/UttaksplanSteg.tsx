@@ -17,6 +17,7 @@ import Block from 'common/components/block/Block';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import Spinner from 'nav-frontend-spinner';
+import BekreftGåTilUttaksplanSkjemaDialog from './BekreftG\u00E5TilUttaksplanSkjemaDialog';
 
 interface StateProps {
     stegProps: StegProps;
@@ -26,19 +27,42 @@ interface StateProps {
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
+interface State {
+    bekreftDialogSynlig: boolean;
+}
+
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
-class UttaksplanSteg extends React.Component<Props> {
+class UttaksplanSteg extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
         const { søknad, person } = this.props;
+        this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
+        this.showBekreftDialog = this.showBekreftDialog.bind(this);
+
+        this.state = {
+            bekreftDialogSynlig: false
+        };
 
         if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
             this.props.dispatch(søknadActions.uttaksplanLagForslag());
         }
 
         this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+    }
+
+    showBekreftDialog(callback: () => void) {
+        this.setState({ bekreftDialogSynlig: true });
+    }
+
+    hideBekreftDialog() {
+        this.setState({ bekreftDialogSynlig: false });
+    }
+
+    onBekreftGåTilbake() {
+        this.setState({ bekreftDialogSynlig: false });
+        this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
     }
 
     render() {
@@ -49,7 +73,7 @@ class UttaksplanSteg extends React.Component<Props> {
         };
 
         return (
-            <Steg {...this.props.stegProps}>
+            <Steg {...this.props.stegProps} confirmNavigateToPreviousStep={this.showBekreftDialog}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <Spinner type="XXL" />
                 ) : (
@@ -69,6 +93,11 @@ class UttaksplanSteg extends React.Component<Props> {
                         </Block>
                     </React.Fragment>
                 )}
+                <BekreftGåTilUttaksplanSkjemaDialog
+                    synlig={this.state.bekreftDialogSynlig}
+                    onGåTilbake={this.hideBekreftDialog}
+                    onBliVærende={this.onBekreftGåTilbake}
+                />
             </Steg>
         );
     }

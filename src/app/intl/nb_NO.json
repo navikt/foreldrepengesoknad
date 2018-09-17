@@ -465,9 +465,16 @@
 
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
-    "avbrytSøknadDialog.tittel": "Avbryt søknad",
-    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
+    "avbrytSøknadDialog.tittel": "Bekreft navigasjon",
+    "avbrytSøknadDialog.intro": "Dersom du går tilbake til forrige steg, vil ",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
+
+    "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
+    "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
+    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Avbryt søknad",
+    "bekreftGåTilUttaksplanSkjemaDialog.intro":
+        "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
+    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å avbryte søknaden",
 
     "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
