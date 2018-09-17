@@ -17,6 +17,8 @@ import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUt
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
+import { apiActionCreators } from '../../../redux/actions';
+import { getStønadskontoParams } from '../../../util/uttaksplan/st\u00F8nadskontoParams';
 
 interface StateProps {
     stegProps: StegProps;
@@ -40,10 +42,18 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søkerinfo, antallUkerFellesperiode } = this.props;
+        const { stegProps, dispatch, søkerinfo, antallUkerFellesperiode } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
-            <Steg {...stegProps}>
+            <Steg
+                {...stegProps}
+                preSubmit={() =>
+                    dispatch(
+                        apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
+                            getStønadskontoParams(søknad, søkerinfo.person)
+                        )
+                    )
+                }>
                 <UttaksplanSkjemaScenarioes
                     scenario={getUttaksplanSkjemaScenario(søknad, this.props.søkerinfo)}
                     søkerinfo={søkerinfo}

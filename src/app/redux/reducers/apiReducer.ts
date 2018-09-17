@@ -39,11 +39,6 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiState
                 ...state,
                 isLoadingSøkerinfo: true
             };
-        case ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER:
-            return {
-                ...state,
-                isLoadingTilgjengeligeStønadskontoer: true
-            };
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {
                 ...state,

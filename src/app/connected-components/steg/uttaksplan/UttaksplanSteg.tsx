@@ -16,8 +16,8 @@ import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanleg
 import Block from 'common/components/block/Block';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
-import Spinner from 'nav-frontend-spinner';
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftG\u00E5TilUttaksplanSkjemaDialog';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
     stegProps: StegProps;
@@ -65,7 +65,6 @@ class UttaksplanSteg extends React.Component<Props, State> {
         this.setState({ bekreftDialogSynlig: false });
         this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
     }
-
     render() {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const navn = {
@@ -76,7 +75,7 @@ class UttaksplanSteg extends React.Component<Props, State> {
         return (
             <Steg {...this.props.stegProps} confirmNavigateToPreviousStep={this.showBekreftDialog}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
-                    <Spinner type="XXL" />
+                    <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
                         <Veilederinfo maxWidth="30">
