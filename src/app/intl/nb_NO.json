@@ -441,11 +441,11 @@
         " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
 
-    "stønadskontotype.MØDREKVOTE": "Mødrekvote",
+    "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
     "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
-    "stønadskontotype.FEDREKVOTE": "Fedrekvote",
+    "stønadskontotype.FEDREKVOTE": "Far sin kvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
-    "stønadskontotype.FELLESPERIODE": "Fellesperiode",
+    "stønadskontotype.FELLESPERIODE": "Fellesdel",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",

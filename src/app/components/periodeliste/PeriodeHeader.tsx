@@ -14,6 +14,7 @@ import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 
 import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
+import { getStønadskontoNavn } from '../../util/uttaksplan';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -40,7 +41,7 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
 
 const getPeriodeTittel = (periode: Periode, foreldernavn: string, intl: InjectedIntl): string => {
     if (periode.type === Periodetype.Uttak) {
-        return getMessage(intl, `periodeliste.uttak`, { foreldernavn });
+        return getStønadskontoNavn(periode.konto, intl);
     }
     if (periode.type === Periodetype.Utsettelse) {
         const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
