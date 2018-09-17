@@ -23,6 +23,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
+import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -77,8 +78,8 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { rolle } = søker;
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
-
         const erForelder2Value = erForelder2(søkerinfo.person.kjønn, rolle);
+        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
             <React.Fragment>
@@ -86,9 +87,10 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <TidsperiodeBolk
                         onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        visVarighet={true}
                     />
                 </Block>
-                <Block margin="s">
+                <Block margin="s" visible={validTidsperiode !== undefined}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });

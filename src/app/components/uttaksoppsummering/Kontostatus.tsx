@@ -5,7 +5,7 @@ import BEMHelper from 'common/util/bem';
 
 import { getVarighetString } from 'common/util/intlUtils';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { getStønadskontoNavn, getForelderNavn } from '../../util/uttaksplan';
+import { getStønadskontoNavn } from '../../util/uttaksplan';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 
 import './kontostatus.less';
@@ -24,7 +24,7 @@ const getTittel = ({ uttak, intl, navnForelder1, navnForelder2 }: Props & Inject
     if (uttak.konto === StønadskontoType.ForeldrepengerFørFødsel || !uttak.forelder) {
         return kontonavn;
     }
-    return `${getForelderNavn(uttak.forelder, navnForelder1, navnForelder2)} sin kvote`;
+    return getStønadskontoNavn(uttak.konto, intl);
 };
 
 const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({
