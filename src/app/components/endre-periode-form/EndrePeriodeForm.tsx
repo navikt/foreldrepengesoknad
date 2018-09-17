@@ -16,6 +16,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 
 export interface OwnProps {
     periode: Periode;
@@ -55,7 +56,7 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
                 {periode.type === Periodetype.Utsettelse ? (
                     <UtsettelsesperiodeForm periode={periode} onChange={this.onChange} />
                 ) : (
-                    <div>Uttaksperiode</div>
+                    <UttaksperiodeForm periode={periode as Uttaksperiode} onChange={this.onChange} />
                 )}
                 <div className={bem.element('footer')}>
                     <LinkButton onClick={this.onDelete}>
