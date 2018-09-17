@@ -13,19 +13,17 @@ export interface Stønadskontouttak {
 
 export interface Props {
     uttak: Stønadskontouttak[];
-    navnForelder1: string;
-    navnForelder2?: string;
+    navnMor: string;
+    navnFarMedmor?: string;
 }
 
-const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnForelder1, navnForelder2 }) => (
+const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnMor, navnFarMedmor }) => (
     <section>
         <Undertittel tag="h1" className="blokk-xs">
             Gjenstående uttak
         </Undertittel>
         <TilesList>
-            {uttak.map((u, idx) => (
-                <Kontostatus key={idx} uttak={u} navnForelder1={navnForelder1} navnForelder2={navnForelder2} />
-            ))}
+            {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnMor={navnMor} navFarMedmor={navnFarMedmor} />)}
         </TilesList>
     </section>
 );

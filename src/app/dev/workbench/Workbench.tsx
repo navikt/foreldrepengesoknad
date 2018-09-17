@@ -61,8 +61,8 @@ class Workbench extends React.Component<Props, State> {
 
     render() {
         const navn = {
-            navnForelder1: 'Amalie',
-            navnForelder2: 'Henrik'
+            navnMor: 'Amalie',
+            navnFarMedmor: 'Henrik'
         };
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>

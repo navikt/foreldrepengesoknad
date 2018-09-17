@@ -18,7 +18,7 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erForelder2 } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erFarMedmor } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -54,11 +54,11 @@ class UttaksperiodeForm extends React.Component<Props> {
         };
     }
 
-    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erForelder2Value: boolean) {
+    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erFarMedmorVerdi: boolean) {
         const { onChange } = this.props;
         onChange({
             ...data,
-            forelder: erForelder2Value ? Forelder.FARMEDMOR : Forelder.MOR,
+            forelder: erFarMedmorVerdi ? Forelder.FARMEDMOR : Forelder.MOR,
             type: Periodetype.Uttak
         });
     }
@@ -78,12 +78,12 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
-        const søkerErForelder2 = erForelder2(søkerinfo.person.kjønn, rolle);
+        const søkerErFarMedmor = erFarMedmor(søkerinfo.person.kjønn, rolle);
 
         const erUttakAvEgenKvote =
-            (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErForelder2 === false)) ||
+            (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErFarMedmor === false)) ||
             (konto === StønadskontoType.Fedrekvote &&
-                (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || søkerErForelder2 === true));
+                (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || søkerErFarMedmor === true));
 
         return (
             <React.Fragment>
@@ -105,11 +105,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                 </Block>
                 <Block visible={konto === StønadskontoType.Fellesperiode}>
                     <FellesperiodeUttakForm
-                        søkerErForelder2={søkerErForelder2}
+                        søkerErFarMedmor={søkerErFarMedmor}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                         onChange={(data: FellesperiodeUttakSkjemadata) =>
-                            this.updateFellesperiodeUttak(data, søkerErForelder2)
+                            this.updateFellesperiodeUttak(data, søkerErFarMedmor)
                         }
                     />
                 </Block>
