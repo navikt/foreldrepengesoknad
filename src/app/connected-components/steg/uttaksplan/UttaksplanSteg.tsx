@@ -14,9 +14,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Block from 'common/components/block/Block';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
-import Spinner from 'nav-frontend-spinner';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
     stegProps: StegProps;
@@ -29,18 +27,6 @@ interface StateProps {
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
 class UttaksplanSteg extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-
-        const { søknad, person } = this.props;
-
-        if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            this.props.dispatch(søknadActions.uttaksplanLagForslag());
-        }
-
-        this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
-    }
-
     render() {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const navn = {
@@ -51,7 +37,7 @@ class UttaksplanSteg extends React.Component<Props> {
         return (
             <Steg {...this.props.stegProps}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
-                    <Spinner type="XXL" />
+                    <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
                         <Veilederinfo maxWidth="30">
