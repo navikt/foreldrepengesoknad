@@ -16,8 +16,8 @@ export interface Props {
     søkersituasjon: Søkersituasjon;
     barn: Barn;
     uttaksplan: Periode[];
-    navnForelder1: string;
-    navnForelder2?: string;
+    navnMor: string;
+    navnFarMedmor?: string;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -28,7 +28,7 @@ const BEM = BEMHelper('uttaksplanlegger');
 
 class Uttaksplanlegger extends React.Component<Props, {}> {
     render() {
-        const { søkersituasjon, barn, uttaksplan, navnForelder1, navnForelder2, onAdd, onRequestReset } = this.props;
+        const { søkersituasjon, barn, uttaksplan, navnMor, navnFarMedmor, onAdd, onRequestReset } = this.props;
         return (
             <article className={BEM.className}>
                 <header className={BEM.element('header')}>
@@ -46,7 +46,7 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                     </span>
                 </header>
                 <Block visible={uttaksplan.length > 0}>
-                    <Periodeliste perioder={uttaksplan} navnForelder1={navnForelder1} navnForelder2={navnForelder2} />
+                    <Periodeliste perioder={uttaksplan} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />
                 </Block>
                 <div className={BEM.element('addFormContainer')}>
                     <NyPeriodeBolk onSubmit={onAdd} />

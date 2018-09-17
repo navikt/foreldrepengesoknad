@@ -44,7 +44,7 @@ describe('Søknad - Uttaksplan reducer', () => {
         ) as Uttaksperiode;
         expect(state.uttaksplan.length).toBe(2);
         expect(updatedPeriodeInState).toBeDefined();
-        expect(updatedPeriodeInState.forelder).toEqual('forelder2');
+        expect(updatedPeriodeInState.forelder).toEqual('farMedmor');
 
         const periode2AfterUpdate = Periodene(state.uttaksplan).getPeriode(periode2.id!) as Uttaksperiode;
         expect(JSON.stringify(periode2AfterUpdate)).toEqual(periode2BeforeUpdate);

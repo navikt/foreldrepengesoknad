@@ -65,8 +65,8 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
                                 : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
                         }
                         ukerFellesperiode={antallUkerFellesperiode}
-                        navnForelder1={søkerinfo.person.fornavn}
-                        navnForelder2={søknad.annenForelder.navn}
+                        navnMor={søkerinfo.person.fornavn}
+                        navnFarMedmor={søknad.annenForelder.navn}
                     />
                 </>
             )}
@@ -97,8 +97,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
                                 : søknad.ekstrainfo.uttaksplanSkjema.harPlanlagtOppholdIUttak !== undefined
                         }
                         ukerFellesperiode={antallUkerFellesperiode}
-                        navnForelder1={søkerinfo.person.fornavn}
-                        navnForelder2={søknad.annenForelder.navn}
+                        navnMor={søkerinfo.person.fornavn}
+                        navnFarMedmor={søknad.annenForelder.navn}
                     />
                 </>
             )}

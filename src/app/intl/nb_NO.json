@@ -309,9 +309,9 @@
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
     "uttaksplan.skjema.fordeling.aria.fordeling":
-        "Hvor mange uker av fellesdelen skal {navnForelder1} ha av totalt {ukerFellesperiode} uker?",
+        "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.fordeling.veiledning":
-        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnForelder1}.",
+        "Av perioden med foreldrepenger må mor ta ut {pakrevdMor} uker, og den andre forelderen {pakrevdFarMedmor} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnFarMedmor} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnMor}.",
     "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
     "uttaksplan.skjema.fordeling.sporsmal.ikonlabel": "Les mer om fordeling av fellesperioden",

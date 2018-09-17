@@ -6,7 +6,7 @@ import AnnenForelder from '../../types/søknad/AnnenForelder';
 export const erFarEllerMedmor = (kjønn: Kjønn, søkerRolle: SøkerRolle): boolean =>
     kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR;
 
-export const erForelder2 = (kjønn: Kjønn, rolle: SøkerRolle): boolean =>
+export const erFarMedmor = (kjønn: Kjønn, rolle: SøkerRolle): boolean =>
     rolle === SøkerRolle.FORESATT2 || erFarEllerMedmor(kjønn, rolle);
 
 export const annenForelderSkalHaForeldrepenger = (annenForelder: AnnenForelder): boolean => {
