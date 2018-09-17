@@ -4,6 +4,7 @@ import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/a
 import Api from '../../api/api';
 import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -39,6 +40,17 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     }
 }
 
+function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
+    yield all([getStønadskontoer(action)]);
+    yield put(søknadActionCreators.uttaksplanLagForslag());
+}
+
 export default function* søknadskontoerSaga() {
-    yield all([takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER, getStønadskontoer)]);
+    yield all([
+        takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER, getStønadskontoer),
+        takeEvery(
+            ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
+            getStønadskontoerAndLagUttaksplan
+        )
+    ]);
 }
