@@ -1,5 +1,5 @@
 import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { default as apiActions } from '../actions/api/apiActionCreators';
+import { default as apiActions, updateApi } from '../actions/api/apiActionCreators';
 import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
@@ -8,6 +8,7 @@ import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreat
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
+        yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         const tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
@@ -41,6 +42,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 }
 
 function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
+    yield put(søknadActionCreators.uttaksplanSetPerioder([]));
     yield all([getStønadskontoer(action)]);
     yield put(søknadActionCreators.uttaksplanLagForslag());
 }

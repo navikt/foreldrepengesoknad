@@ -14,7 +14,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanlegger';
 import Block from 'common/components/block/Block';
-import Spinner from 'nav-frontend-spinner';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
     stegProps: StegProps;
@@ -37,7 +37,7 @@ class UttaksplanSteg extends React.Component<Props> {
         return (
             <Steg {...this.props.stegProps}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
-                    <Spinner type="XXL" />
+                    <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
                         <Veilederinfo maxWidth="30">
