@@ -110,11 +110,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         if (confirmNavigateToPreviousStep === undefined) {
             this.navigateToPreviousStep();
             return;
-        } else {
-            confirmNavigateToPreviousStep(() => {
-                this.navigateToPreviousStep();
-            });
         }
+        confirmNavigateToPreviousStep(() => {
+            this.navigateToPreviousStep();
+        });
     }
 
     shouldHideBackButton(): boolean {
