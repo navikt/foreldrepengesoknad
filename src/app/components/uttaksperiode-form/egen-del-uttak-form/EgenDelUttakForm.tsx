@@ -16,7 +16,7 @@ class EgenDelUttakForm extends React.Component<Props> {
         return (
             <Block>
                 <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
-                    skalVæreHjemmeSamtidig={ønskerSamtidigUttak}
+                    ønskerSamtidigUttak={ønskerSamtidigUttak}
                     onChange={(v) => onChange(v)}
                 />
             </Block>
