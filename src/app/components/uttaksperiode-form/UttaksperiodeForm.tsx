@@ -87,6 +87,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <TidsperiodeBolk
                         onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        visVarighet={true}
                     />
                 </Block>
                 <Block margin="s" visible={validTidsperiode !== undefined}>
