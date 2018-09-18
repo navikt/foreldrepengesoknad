@@ -10,7 +10,7 @@ import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKv
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers/index';
 import Søknad from '../../../../types/søknad/Søknad';
-import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/aktuelleStønadskontoer';
+import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/stønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
