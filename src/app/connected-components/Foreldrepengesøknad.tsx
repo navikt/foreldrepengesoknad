@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
-import moment from 'moment';
 
 import routeConfig from '../util/routing/routeConfig';
 import StegRoutes from './steg/StegRoutes';
@@ -28,8 +27,6 @@ interface StateProps {
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
-
-moment.locale('nb');
 
 class Foreldrepengesøknad extends React.Component<Props> {
     componentWillMount() {
