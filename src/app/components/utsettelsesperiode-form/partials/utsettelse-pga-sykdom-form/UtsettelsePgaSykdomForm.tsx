@@ -15,7 +15,7 @@ import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType, Skjemanummer } from '../../../../types/s\u00F8knad/S\u00F8knad';
+import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
 
 export interface OwnProps {
     forelder: Forelder;

@@ -13,6 +13,7 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
         return false;
     }
+
     const { registrerteBarn } = søkerinfo;
     return !(registrerteBarn && registrerteBarn.length > 0);
 }

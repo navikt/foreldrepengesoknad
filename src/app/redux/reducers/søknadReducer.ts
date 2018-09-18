@@ -113,7 +113,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
             return {
                 ...state,
-                uttaksplan: lagMockUttaksplan(state as Søknad).sort(sorterPerioder),
+                uttaksplan: lagMockUttaksplan(state as Søknad, action.tilgjengeligeStønadskontoer).sort(sorterPerioder),
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {

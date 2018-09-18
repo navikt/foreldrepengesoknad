@@ -1,7 +1,7 @@
 import { Permisjonsregler } from '../../types/uttaksplan/permisjonsregler';
 import { Tidsperiode, Dekningsgrad, Forelder } from 'common/types';
 import { Utsettelsesperiode, UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
-import { getPakrevdMødrekvoteEtterTermin } from './forslag/toForeldreEttBarn';
+import { getPakrevdMødrekvoteEtterTermin } from './forslag/util';
 import { Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 
