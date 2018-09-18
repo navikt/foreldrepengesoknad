@@ -31,7 +31,7 @@ import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/Utset
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsm\u00E5l';
+import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 
 interface UtsettelsesperiodeFormProps {
