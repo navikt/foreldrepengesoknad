@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-import * as locale from 'date-fns/locale/nb';
 import moment from 'moment';
 
 export const normaliserDato = (dato: Date): Date => {
@@ -10,39 +8,41 @@ export const normaliserDato = (dato: Date): Date => {
 };
 
 export function formaterDato(dato: Date, datoformat?: string): string {
-    return format(dato, datoformat || 'dddd D. MMMM YYYY', { locale });
+    return moment(dato).format(datoformat || 'dddd D. MMMM YYYY');
 }
 
 export function formaterDatoUtenDag(dato: Date): string {
-    return format(dato, 'D. MMMM YYYY', { locale });
+    return moment(dato).format('D. MMMM YYYY');
 }
 
 export function år(dato: Date): string {
-    return format(dato, 'YYYY', { locale });
+    return moment(dato).format('YYYY');
 }
 
 export function måned(dato: Date): string {
-    return format(dato, 'MMMM', { locale });
+    return moment(dato).format('MMMM');
 }
 
 export function måned3bokstaver(dato: Date): string {
-    return format(dato, 'MMM', { locale }).substr(0, 3);
+    return moment(dato)
+        .format('MMM')
+        .substr(0, 3);
 }
 
 export function mnd(dato: Date): string {
-    return format(dato, 'MMM', { locale });
+    return moment(dato).format('MMM');
 }
 
 export function ukedag(dato: Date): string {
-    return format(dato, 'dddd', { locale });
+    return moment(dato).format('dddd');
 }
 
 export function ukedagKort(dato: Date): string {
-    return format(dato, 'ddd', { locale });
+    return moment(dato).format('ddd');
 }
 
 export function dagIMåned(dato: Date): string {
-    return format(dato, 'D.', { locale });
+    return moment(dato).format('D.');
 }
 
 export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {

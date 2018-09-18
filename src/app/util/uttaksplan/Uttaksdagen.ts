@@ -1,4 +1,4 @@
-import { addDays, getISODay, isSameDay, isBefore } from 'date-fns';
+import moment from 'moment';
 import { Tidsperioden } from './Tidsperioden';
 
 /**
@@ -28,7 +28,7 @@ export const Uttaksdagen = (dato: Date) => ({
  * @param dato
  */
 function getUkedag(dato: Date) {
-    return getISODay(dato);
+    return moment(dato).isoWeekday();
 }
 
 /**
@@ -44,7 +44,11 @@ function erUttaksdag(dato: Date): boolean {
  * @param dato
  */
 function getUttaksdagFørDato(dato: Date): Date {
-    return getUttaksdagTilOgMedDato(addDays(dato, -1));
+    return getUttaksdagTilOgMedDato(
+        moment(dato)
+            .subtract(-1, 'day')
+            .toDate()
+    );
 }
 
 /**
@@ -54,9 +58,13 @@ function getUttaksdagFørDato(dato: Date): Date {
 function getUttaksdagTilOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return addDays(dato, -1);
+            return moment(dato)
+                .subtract(1, 'days')
+                .toDate();
         case 7:
-            return addDays(dato, -2);
+            return moment(dato)
+                .subtract(2, 'days')
+                .toDate();
         default:
             return dato;
     }
@@ -67,7 +75,11 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
  * @param termin
  */
 function getUttaksdagEtterDato(dato: Date): Date {
-    return getUttaksdagFraOgMedDato(addDays(dato, 1));
+    return getUttaksdagFraOgMedDato(
+        moment(dato)
+            .add(1, 'days')
+            .toDate()
+    );
 }
 
 /**
@@ -77,9 +89,13 @@ function getUttaksdagEtterDato(dato: Date): Date {
 function getUttaksdagFraOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
-            return addDays(dato, 2);
+            return moment(dato)
+                .add(2, 'days')
+                .toDate();
         case 7:
-            return addDays(dato, 1);
+            return moment(dato)
+                .add(1, 'days')
+                .toDate();
         default:
             return dato;
     }
@@ -95,7 +111,9 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller <= uttaksdager) {
-        const tellerdato = addDays(dato, dagteller++);
+        const tellerdato = moment(dato)
+            .add(dagteller++, 'days')
+            .toDate();
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;
@@ -114,7 +132,9 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
-        const tellerdato = addDays(dato, --dagteller);
+        const tellerdato = moment(dato)
+            .subtract(--dagteller, 'days')
+            .toDate();
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
             uttaksdageteller++;
@@ -130,10 +150,10 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
  * @param til
  */
 function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
-    if (isSameDay(fom, tom)) {
+    if (moment(fom).isSame(tom, 'day')) {
         return 0;
     }
-    if (isBefore(fom, tom)) {
+    if (moment(fom).isBefore(tom, 'day')) {
         return Tidsperioden({ fom, tom }).getAntallUttaksdager() - 1;
     }
     return (
