@@ -17,8 +17,8 @@ import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
-import AvbrytSøknadDialog from '../avbryt-s\u00F8knad-dialog/AvbrytS\u00F8knadDialog';
-import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 
 export interface StegProps {
     id: StegID;

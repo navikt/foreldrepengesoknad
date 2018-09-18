@@ -16,7 +16,7 @@ import './endrePeriodeForm.less';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
-import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import Block from 'common/components/block/Block';
 

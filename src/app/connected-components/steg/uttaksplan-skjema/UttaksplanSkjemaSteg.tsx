@@ -18,7 +18,7 @@ import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
-import { getStønadskontoParams } from '../../../util/uttaksplan/st\u00F8nadskontoParams';
+import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 
 interface StateProps {
     stegProps: StegProps;

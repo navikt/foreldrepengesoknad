@@ -31,7 +31,7 @@ import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/Inf
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 
 const updateBarn = (
@@ -128,8 +128,9 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
     periode
 });
 
-const uttaksplanLagForslag = (): UttaksplanLagForslag => ({
-    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG
+const uttaksplanLagForslag = (tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): UttaksplanLagForslag => ({
+    type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
+    tilgjengeligeStønadskontoer
 });
 
 const avbrytSøknad = (): AvbrytSøknad => ({
