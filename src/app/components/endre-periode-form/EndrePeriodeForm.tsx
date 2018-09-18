@@ -66,9 +66,9 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
                         kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
                     />
                 )}
-                <Block visible={!erForeldrepengerFørFødselPeriode}>
+                <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
                     <div className={bem.element('footer')}>
-                        <LinkButton onClick={this.onDelete}>
+                        <LinkButton onClick={this.onDelete} className={bem.element('slettPeriode')}>
                             <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
                         </LinkButton>
                     </div>

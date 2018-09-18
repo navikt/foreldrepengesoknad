@@ -1,3 +1,5 @@
+@import './../../../common/styles/mixins.less';
+
 .uttaksplanlegger {
     padding: 2rem 2rem 1rem 2rem;
     background-color: #efefef;
@@ -11,7 +13,7 @@
             padding-right: 1rem;
             flex-grow: 0;
         }
-        &__resetLink {
+        &__reset {
             flex-grow: 1;
         }
         &__details {
@@ -20,6 +22,10 @@
             text-align: right;
             flex-grow: 2;
         }
+    }
+    &__resetLink {
+        flex-grow: 1;
+        .deleteButton();
     }
     &__addFormContainer {
         .knapp {

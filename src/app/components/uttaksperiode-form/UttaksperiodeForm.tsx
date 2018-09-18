@@ -4,7 +4,9 @@ import {
     Periodetype,
     StønadskontoType,
     TilgjengeligStønadskonto,
-    Uttaksperiode
+    Uttaksperiode,
+    ForeldrepengerFørFødselUttaksperiode,
+    isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -27,6 +29,7 @@ import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import ForeldrepengerFørFødselUttakForm from './foreldrepenger-f\u00F8r-f\u00F8dsel-uttak-form/ForeldrepengerF\u00F8rF\u00F8dselUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -48,6 +51,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         super(props);
         this.getSkjemadataForFellesperiodeUttak = this.getSkjemadataForFellesperiodeUttak.bind(this);
         this.updateFellesperiodeUttak = this.updateFellesperiodeUttak.bind(this);
+        this.getTidsperiodeDisabledProps = this.getTidsperiodeDisabledProps.bind(this);
     }
 
     getSkjemadataForFellesperiodeUttak(): FellesperiodeUttakSkjemadata {
@@ -74,6 +78,30 @@ class UttaksperiodeForm extends React.Component<Props> {
             ønskerSamtidigUttak,
             type: Periodetype.Uttak
         });
+    }
+
+    updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
+        const { onChange } = this.props;
+        onChange({
+            skalIkkeHaUttakFørTermin,
+            type: Periodetype.Uttak,
+            tidsperiode: {
+                fom: undefined,
+                tom: undefined
+            }
+        });
+    }
+
+    getTidsperiodeDisabledProps(): { startdatoDisabled?: boolean; sluttdatoDisabled?: boolean } | undefined {
+        const { periode } = this.props;
+        if (isForeldrepengerFørFødselUttaksperiode(periode as Periode)) {
+            const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
+            return {
+                startdatoDisabled: skalIkkeHaUttak,
+                sluttdatoDisabled: skalIkkeHaUttak
+            };
+        }
+        return undefined;
     }
 
     render() {
@@ -105,6 +133,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
                         visVarighet={true}
+                        {...this.getTidsperiodeDisabledProps()}
                         datoAvgrensninger={
                             periode.konto
                                 ? getDatoavgrensningerForStønadskonto(
@@ -139,6 +168,16 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <EgenDelUttakForm
                         ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                         onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
+                    />
+                </Block>
+                <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)}>
+                    <ForeldrepengerFørFødselUttakForm
+                        skalIkkeHaUttakFørTermin={
+                            (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
+                        }
+                        onChange={(skalIkkeHaUttakFørTermin) =>
+                            this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
+                        }
                     />
                 </Block>
             </React.Fragment>
