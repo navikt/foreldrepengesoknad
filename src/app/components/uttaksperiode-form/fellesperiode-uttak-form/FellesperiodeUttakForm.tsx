@@ -18,7 +18,7 @@ export interface FellesperiodeUttakSkjemadata {
 interface FellesperiodeUttakFormProps {
     skjemadata: FellesperiodeUttakSkjemadata;
     onChange: (skjemadata: FellesperiodeUttakSkjemadata) => void;
-    søkerErForelder2: boolean;
+    søkerErFarMedmor: boolean;
     annenForelderSkalHaForeldrepenger: boolean;
 }
 
@@ -60,11 +60,11 @@ class FellesperiodeUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { annenForelderSkalHaForeldrepenger, søkerErForelder2, skjemadata, onChange } = this.props;
+        const { annenForelderSkalHaForeldrepenger, søkerErFarMedmor, skjemadata, onChange } = this.props;
         const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
         return (
             <>
-                <Block margin="none" visible={annenForelderSkalHaForeldrepenger && søkerErForelder2}>
+                <Block margin="none" visible={annenForelderSkalHaForeldrepenger && søkerErFarMedmor}>
                     <Block margin="s">
                         <HvaSkalMorGjøreSpørsmål
                             morsAktivitetIPerioden={morsAktivitetIPerioden}
@@ -89,7 +89,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
 
                 <Block
                     visible={
-                        søkerErForelder2 && annenForelderSkalHaForeldrepenger
+                        søkerErFarMedmor && annenForelderSkalHaForeldrepenger
                             ? morsAktivitetIPerioden !== undefined
                             : true
                     }>

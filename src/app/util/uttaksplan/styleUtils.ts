@@ -15,7 +15,7 @@ export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forel
                 return 'purpleBlue';
         }
     }
-    return forelder === 'forelder1' ? 'purple' : 'blue';
+    return forelder === Forelder.MOR ? 'purple' : 'blue';
 };
 
 export const getUtsettelseFarge = (): UttaksplanColor => {

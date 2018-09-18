@@ -146,7 +146,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             type: Periodetype.Utsettelse,
             årsak: UtsettelseÅrsakType.Arbeid,
             tidsperiode: tidsperiode || periode.tidsperiode,
-            forelder: Forelder.FORELDER_1,
+            forelder: Forelder.MOR,
             orgnr,
             skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
         };
@@ -159,7 +159,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const gradertUttaksperiode: RecursivePartial<GradertUttaksperiode> = {
             type: Periodetype.Uttak,
             årsak: UtsettelseÅrsakType.Arbeid,
-            forelder: Forelder.FORELDER_1,
+            forelder: Forelder.MOR,
             gradert: true,
             ...skjemadata
         };
@@ -250,7 +250,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelsePgaFerieForm
                             tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
-                            forelder={Forelder.FORELDER_1}
+                            forelder={Forelder.MOR}
                             onChange={(p) => this.props.onChange(p)}
                         />
                     </Block>
@@ -260,7 +260,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelsePgaSykdomForm
                             onChange={(p) => this.props.onChange(p)}
                             periode={periode}
-                            forelder={Forelder.FORELDER_1}
+                            forelder={Forelder.MOR}
                         />
                     </Block>
                 </Block>
