@@ -3,7 +3,7 @@ import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/S�
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
-import { opprettUttaksperioderMorToForeldreEttBarn } from './toForeldreEttBarn';
+import { opprettUttaksperioderToForeldreEttBarnMor } from './toForeldreEttBarnMor';
 import { opprettUttaksperioderAleneomsorgFarEllerMedmor } from './aleneomsorgFarEllerMedmor';
 
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date | undefined => {
@@ -21,9 +21,13 @@ export const lagMockUttaksplan = (
     søknad: Søknad,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Periode[] => {
-    const { søker, barn, situasjon } = søknad;
+    const { søker, barn, situasjon, ekstrainfo } = søknad;
+    const {
+        uttaksplanSkjema: { fellesperiodeukerMor }
+    } = ekstrainfo;
     const { erAleneOmOmsorg, rolle } = søker;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
+    const fellesUkerMor = fellesperiodeukerMor || 0;
 
     if (famDato) {
         if (situasjon === Søkersituasjon.FØDSEL) {
@@ -40,9 +44,17 @@ export const lagMockUttaksplan = (
             }
             if (!erAleneOmOmsorg) {
                 if (rolle === SøkerRolle.MOR) {
-                    return opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
+                    return opprettUttaksperioderToForeldreEttBarnMor(
+                        famDato,
+                        fellesUkerMor,
+                        tilgjengeligeStønadskontoer
+                    );
                 } else {
-                    return opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
+                    return opprettUttaksperioderToForeldreEttBarnMor(
+                        famDato,
+                        fellesUkerMor,
+                        tilgjengeligeStønadskontoer
+                    );
                 }
             }
         } else if (situasjon === Søkersituasjon.ADOPSJON) {
@@ -56,7 +68,7 @@ export const lagMockUttaksplan = (
                 return perioder;
             }
             if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
+                const perioder = opprettUttaksperioderToForeldreEttBarnMor(famDato, 13, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }
@@ -71,7 +83,7 @@ export const lagMockUttaksplan = (
                 return perioder;
             }
             if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
+                const perioder = opprettUttaksperioderToForeldreEttBarnMor(famDato, 13, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }
