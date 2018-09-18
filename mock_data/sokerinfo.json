@@ -1,9 +1,9 @@
 {
     "søker": {
-        "fnr": "28019400133",
-        "fornavn": "FAR",
-        "etternavn": "FARSEN",
-        "kjønn": "M",
+        "fnr": "25059710888",
+        "fornavn": "MOR",
+        "etternavn": "MORSEN",
+        "kjønn": "K",
         "fødselsdato": "1997-05-25",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
@@ -15,9 +15,9 @@
                 "kjønn": "K",
                 "fødselsdato": "2018-03-29",
                 "annenForelder": {
-                    "fnr": "25059710888",
-                    "fornavn": "MOR",
-                    "etternavn": "MORSEN",
+                    "fnr": "28019400133",
+                    "fornavn": "FAR",
+                    "etternavn": "FARSEN",
                     "fødselsdato": "1994-01-28"
                 }
             }
