@@ -34,7 +34,7 @@ const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ utta
         </div>
         <div className={BEM.element('content')}>
             <div className={BEM.element('konto')}>{getTittel({ uttak, navnMor, navFarMedmor, intl })}</div>
-            <strong className={BEM.element('dager')}>{getVarighetString(uttak.dagerGjennstående, intl)}</strong>
+            <strong className={BEM.element('dager')}>{getVarighetString(uttak.dagerGjenstående, intl)}</strong>
         </div>
     </Normaltekst>
 );

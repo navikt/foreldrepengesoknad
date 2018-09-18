@@ -21,25 +21,25 @@ interface StateProps {
 
 type Props = StateProps & DispatchProps;
 
-const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100', 13, 13, getPermisjonsregler());
+const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), 13, 13, getPermisjonsregler());
 
 const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.ForeldrepengerFørFødsel,
-        dagerGjennstående: 10
+        dagerGjenstående: 10
     },
     {
         konto: StønadskontoType.Mødrekvote,
-        dagerGjennstående: 0,
+        dagerGjenstående: 0,
         forelder: Forelder.MOR
     },
     {
         konto: StønadskontoType.Fellesperiode,
-        dagerGjennstående: 0
+        dagerGjenstående: 0
     },
     {
         konto: StønadskontoType.Fedrekvote,
-        dagerGjennstående: 10,
+        dagerGjenstående: 10,
         forelder: Forelder.FARMEDMOR
     }
 ];
