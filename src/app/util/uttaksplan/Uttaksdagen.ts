@@ -133,7 +133,7 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
         const tellerdato = moment(dato)
-            .subtract(--dagteller, 'days')
+            .add(--dagteller, 'days')
             .toDate();
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
