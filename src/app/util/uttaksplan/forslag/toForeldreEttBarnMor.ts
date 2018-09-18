@@ -13,11 +13,11 @@ import { Uttaksdagen } from '../Uttaksdagen';
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderToForeldreEttBarnMor(
-    familiehendelsedato: Date,
+    test: Date,
     fellesukerMor: number,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Periode[] {
-    familiehendelsedato = normaliserDato(familiehendelsedato);
+    const familiehendelsedato = normaliserDato(test);
     const perioder: Periode[] = [];
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel
@@ -46,19 +46,16 @@ export function opprettUttaksperioderToForeldreEttBarnMor(
     }
 
     if (mkKonto !== undefined) {
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
-
         const periodeMødrekvote: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: {
-                fom: familiehendelsedato,
-                tom: currentTomDate
-            },
+            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
             ønskerSamtidigUttak: false
         };
+
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
 
         perioder.push(periodeMødrekvote);
     }
