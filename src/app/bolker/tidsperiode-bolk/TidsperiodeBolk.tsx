@@ -25,6 +25,7 @@ export interface DatoValidatorer {
 
 interface TidsperiodeBolkProps {
     tidsperiode: Partial<Tidsperiode>;
+    startdatoDisabled?: boolean;
     sluttdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
@@ -46,7 +47,15 @@ class TidsperiodeBolk extends React.Component<Props> {
     }
 
     render() {
-        const { tidsperiode, datoAvgrensninger, datoValidatorer, visVarighet, intl, sluttdatoDisabled } = this.props;
+        const {
+            tidsperiode,
+            datoAvgrensninger,
+            datoValidatorer,
+            visVarighet,
+            intl,
+            startdatoDisabled,
+            sluttdatoDisabled
+        } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
 
         const varighetIDager =
@@ -74,6 +83,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                     fom
                                 });
                             }}
+                            disabled={startdatoDisabled}
                             dato={tidsperiode.fom}
                             avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
                             validators={datoValidatorer && datoValidatorer.fra}

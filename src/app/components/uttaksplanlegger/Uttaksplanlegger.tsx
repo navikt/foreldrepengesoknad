@@ -37,9 +37,11 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                     </Systemtittel>
                     {onRequestReset &&
                         uttaksplan.length > 0 && (
-                            <LinkButton className={'header__resetLink'} onClick={() => onRequestReset()}>
-                                Nullstill
-                            </LinkButton>
+                            <div className={BEM.element('header__reset')}>
+                                <LinkButton className={BEM.element('resetLink')} onClick={() => onRequestReset()}>
+                                    Nullstill
+                                </LinkButton>
+                            </div>
                         )}
                     <span className={BEM.element('header__details')}>
                         <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
