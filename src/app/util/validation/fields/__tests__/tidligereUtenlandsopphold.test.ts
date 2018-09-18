@@ -10,7 +10,7 @@ describe('Tidligere utenlandsopphold-avgrensninger', () => {
         });
 
         it('should set maksDato to tilDato if specified', () => {
-            const tilDato = moment().add(1, 'day');
+            const tilDato = moment().add(1, 'days');
             const maksDato = moment(getFraAvgrensninger(tilDato.toDate()).maksDato);
             expect(moment(maksDato).isSame(tilDato)).toBe(true);
         });
@@ -28,7 +28,7 @@ describe('Tidligere utenlandsopphold-avgrensninger', () => {
         });
 
         it('should set minDato to fraDato if specified', () => {
-            const fraDato = moment().subtract(1, 'day');
+            const fraDato = moment().subtract(1, 'days');
             const minDato = moment(getTilAvgrensninger(fraDato.toDate()).minDato);
             expect(minDato.isSame(fraDato)).toBe(true);
         });

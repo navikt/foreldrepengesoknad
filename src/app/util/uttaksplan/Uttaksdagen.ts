@@ -46,7 +46,7 @@ function erUttaksdag(dato: Date): boolean {
 function getUttaksdagFørDato(dato: Date): Date {
     return getUttaksdagTilOgMedDato(
         moment(dato)
-            .subtract(-1, 'day')
+            .subtract(1, 'days')
             .toDate()
     );
 }

@@ -18,8 +18,8 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
             år++;
         }
     }
-    const start = moment(tidsperiode.fom).subtract(1, 'day');
-    const slutt = moment(tidsperiode.tom).add(1, 'day');
+    const start = moment(tidsperiode.fom).subtract(1, 'days');
+    const slutt = moment(tidsperiode.tom).add(1, 'days');
     return days
         .filter((d) => d.type === 'public')
         .filter((d) => moment(d.date).isAfter(start) && moment(d.date).isBefore(slutt));
