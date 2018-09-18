@@ -16,19 +16,17 @@ type Props = HvilkenKvoteSkalBenyttesSpørsmålProps & InjectedIntlProps;
 
 const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
     const { stønadskonto, velgbareStønadskontoer, intl, onChange } = props;
-
-    const radios: RadioProps[] = [
-        { label: getMessage(intl, 'stønadskontotype.FEDREKVOTE'), value: StønadskontoType.Fedrekvote },
-        { label: getMessage(intl, 'stønadskontotype.MØDREKVOTE'), value: StønadskontoType.Mødrekvote },
-        { label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'), value: StønadskontoType.Fellesperiode },
-        { label: getMessage(intl, 'stønadskontotype.FLERBARNSUKER'), value: StønadskontoType.Flerbarnsuker }
-    ].filter((v) => velgbareStønadskontoer.indexOf(v.value) >= 0);
+    const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
+        label: getMessage(intl, `stønadskontotype.${konto}`),
+        value: `${konto}`
+    }));
 
     return (
         <RadioPanelGruppeResponsive
             checked={stønadskonto}
             radios={radios}
             name=""
+            twoColumns={true}
             legend={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
             onChange={(e: InputChangeEvent, v: StønadskontoType) => onChange(v)}
         />

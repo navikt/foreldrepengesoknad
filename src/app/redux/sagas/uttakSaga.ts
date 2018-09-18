@@ -6,6 +6,7 @@ import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
+import { getStønadskontoSortOrder } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -19,10 +20,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 dager: stønadskontoer.kontoer[konto]
             });
         });
+
         yield put(
             apiActions.updateApi({
                 isLoadingTilgjengeligeStønadskontoer: false,
-                tilgjengeligeStønadskontoer
+                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
+                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
+                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
+                )
             })
         );
     } catch (error) {
