@@ -80,7 +80,9 @@ const webpackConfig = {
         }),
         new SpriteLoaderPlugin({
             plainSprite: true
-        })
+        }),
+
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb|nn|en/)
     ]
 };
 
