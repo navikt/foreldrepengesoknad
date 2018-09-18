@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import moment from 'moment';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
@@ -36,7 +36,7 @@ function erUttak(periode: Periode): boolean {
 function erPerioderSammenhengende(p1: Periode, p2: Periode) {
     const p1NesteUttaksdato = Uttaksdagen(p1.tidsperiode.tom).neste();
     const p2Startdato = p2.tidsperiode.fom;
-    return isSameDay(p1NesteUttaksdato, p2Startdato);
+    return moment(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
 /**

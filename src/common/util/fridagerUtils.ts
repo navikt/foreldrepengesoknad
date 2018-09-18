@@ -1,5 +1,5 @@
+import moment from 'moment';
 import DateHolidays, { Holiday } from 'date-holidays';
-import { isBefore, isAfter, addDays, startOfMonth, endOfMonth, isEqual } from 'date-fns';
 import { normaliserDato } from 'common/util/datoUtils';
 import { Tidsperiode } from 'common/types';
 
@@ -18,16 +18,20 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
             år++;
         }
     }
-    const start = addDays(tidsperiode.fom, -1);
-    const slutt = addDays(tidsperiode.tom, 1);
-    return days.filter((d) => d.type === 'public').filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
+    const start = moment(tidsperiode.fom).subtract(1, 'day');
+    const slutt = moment(tidsperiode.tom).add(1, 'day');
+    return days
+        .filter((d) => d.type === 'public')
+        .filter((d) => moment(d.date).isAfter(start) && moment(d.date).isBefore(slutt));
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
     const days: Holiday[] = holidays.getHolidays(måned.getFullYear());
-    const start = startOfMonth(måned);
-    const slutt = endOfMonth(måned);
-    return days.filter((d) => d.type === 'public').filter((d) => isAfter(d.date, start) && isBefore(d.date, slutt));
+    const start = moment(måned).startOf('month');
+    const slutt = moment(måned).endOf('month');
+    return days
+        .filter((d) => d.type === 'public')
+        .filter((d) => moment(d.date).isAfter(start) && moment(d.date).isBefore(slutt));
 };
 
 /* Default - hente ut helligdager i default tidsrom */
@@ -38,6 +42,6 @@ export const fridager = getOffentligeFridager({
 
 export const erFridag = (dato: Date): string | undefined => {
     const d = normaliserDato(dato);
-    const fridag = fridager.find((fr) => isEqual(new Date(fr.date), d));
+    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(d, 'day'));
     return fridag ? fridag.name : undefined;
 };
