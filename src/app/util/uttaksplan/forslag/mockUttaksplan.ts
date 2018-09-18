@@ -3,7 +3,7 @@ import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/S�
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
 import { getPermisjonsregler } from '../permisjonsregler';
-import { opprettUttaksperioderToForeldreEttBarn } from './toForeldreEttBarn';
+import { opprettUttaksperioderMorToForeldreEttBarn } from './toForeldreEttBarn';
 import { opprettUttaksperioderAleneomsorgFarEllerMedmor } from './aleneomsorgFarEllerMedmor';
 
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date | undefined => {
@@ -40,9 +40,9 @@ export const lagMockUttaksplan = (
             }
             if (!erAleneOmOmsorg) {
                 if (rolle === SøkerRolle.MOR) {
-                    return opprettUttaksperioderToForeldreEttBarn(famDato, 13, 13, getPermisjonsregler());
+                    return opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
                 } else {
-                    return opprettUttaksperioderToForeldreEttBarn(famDato, 13, 13, getPermisjonsregler());
+                    return opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
                 }
             }
         } else if (situasjon === Søkersituasjon.ADOPSJON) {
@@ -56,7 +56,7 @@ export const lagMockUttaksplan = (
                 return perioder;
             }
             if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, 13, 13, getPermisjonsregler());
+                const perioder = opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }
@@ -71,7 +71,7 @@ export const lagMockUttaksplan = (
                 return perioder;
             }
             if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarn(famDato, 13, 13, getPermisjonsregler());
+                const perioder = opprettUttaksperioderMorToForeldreEttBarn(famDato, 13, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }

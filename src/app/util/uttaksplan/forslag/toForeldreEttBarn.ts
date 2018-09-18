@@ -1,87 +1,79 @@
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
-import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
-import { Periodetype, StønadskontoType, Periode } from '../../../types/uttaksplan/periodetyper';
+import {
+    Periodetype,
+    StønadskontoType,
+    Periode,
+    TilgjengeligStønadskonto
+} from '../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { sorterPerioder } from '../Periodene';
-import {
-    getMødrekvoteFørTermin,
-    getPakrevdMødrekvoteEtterTermin,
-    getFrivilligMødrekvoteEtterTermin,
-    getFedrekvote,
-    getFellesperiodeMor,
-    getFellesperiodeFarMedmor
-} from './util';
+import { getTidsperiode } from '../Tidsperioden';
+import { Uttaksdagen } from '../Uttaksdagen';
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
-export function opprettUttaksperioderToForeldreEttBarn(
+export function opprettUttaksperioderMorToForeldreEttBarn(
     familiehendelsedato: Date,
     fellesukerMor: number,
-    fellesukerFarMedmor: number,
-    permisjonsregler: Permisjonsregler
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Periode[] {
     familiehendelsedato = normaliserDato(familiehendelsedato);
+    const perioder: Periode[] = [];
+    const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+        (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel
+    );
+    const mkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+        (konto) => konto.konto === StønadskontoType.Mødrekvote
+    );
+    let currentTomDate: Date = familiehendelsedato;
 
-    const perioder: Periode[] = [
-        {
+    if (fpFørFødselKonto !== undefined) {
+        const startdatoFpFørFødsel = Uttaksdagen(currentTomDate).trekkFra(fpFørFødselKonto.dager);
+
+        const periodeFørFødsel: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
-            tidsperiode: getMødrekvoteFørTermin(familiehendelsedato, permisjonsregler),
+            tidsperiode: {
+                fom: startdatoFpFørFødsel,
+                tom: Uttaksdagen(currentTomDate).forrige()
+            },
             ønskerSamtidigUttak: false
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler),
-            ønskerSamtidigUttak: false
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler),
-            ønskerSamtidigUttak: false
-        },
-        {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
-            konto: StønadskontoType.Fedrekvote,
-            tidsperiode: getFedrekvote(familiehendelsedato, permisjonsregler, fellesukerMor, fellesukerFarMedmor),
-            ønskerSamtidigUttak: false
-        }
-    ];
+        };
 
-    if (fellesukerMor > 0) {
-        perioder.push({
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeMor(familiehendelsedato, permisjonsregler, fellesukerMor),
-            ønskerSamtidigUttak: false
-        });
+        perioder.push(periodeFørFødsel);
     }
 
-    if (fellesukerFarMedmor > 0) {
-        perioder.push({
+    if (mkKonto !== undefined) {
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
+
+        const periodeMødrekvote: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
-            forelder: Forelder.FARMEDMOR,
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getFellesperiodeFarMedmor(
-                familiehendelsedato,
-                permisjonsregler,
-                fellesukerMor,
-                fellesukerFarMedmor
-            ),
+            forelder: Forelder.MOR,
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: {
+                fom: familiehendelsedato,
+                tom: currentTomDate
+            },
             ønskerSamtidigUttak: false
-        });
+        };
+
+        perioder.push(periodeMødrekvote);
+    }
+
+    if (fellesukerMor > 0) {
+        const periodeFellesperiodeMor: Periode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.MOR,
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesukerMor * 5),
+            ønskerSamtidigUttak: false
+        };
+
+        perioder.push(periodeFellesperiodeMor);
     }
 
     return perioder.sort(sorterPerioder);
