@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { addLocaleData, IntlProvider as Provider } from 'react-intl';
+import moment from 'moment';
 import * as nb from 'react-intl/locale-data/nb';
 import * as nn from 'react-intl/locale-data/nn';
 
@@ -14,6 +15,8 @@ import { Språkkode } from 'common/intl/types';
 interface StateProps {
     språkkode: Språkkode;
 }
+
+moment.locale('nb');
 
 class IntlProvider extends React.Component<StateProps> {
     constructor(props: StateProps) {
