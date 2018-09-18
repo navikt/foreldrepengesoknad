@@ -20,6 +20,8 @@ import Block from 'common/components/block/Block';
 import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 
+import './steg.less';
+
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
