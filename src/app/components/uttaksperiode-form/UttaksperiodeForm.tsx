@@ -13,7 +13,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/aktuelleStønadskontoer';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata

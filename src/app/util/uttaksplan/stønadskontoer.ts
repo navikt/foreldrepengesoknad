@@ -10,3 +10,15 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.Mødrekvote
         )
         .map((kontoType) => kontoType.konto);
+
+export const getStønadskontoSortOrder = (konto: StønadskontoType): number => stønadskontoSortOrder[konto];
+
+export const stønadskontoSortOrder = {
+    [StønadskontoType.ForeldrepengerFørFødsel]: 1,
+    [StønadskontoType.Mødrekvote]: 2,
+    [StønadskontoType.Fedrekvote]: 3,
+    [StønadskontoType.Fellesperiode]: 4,
+    [StønadskontoType.Foreldrepenger]: 5,
+    [StønadskontoType.SamtidigUttak]: 6,
+    [StønadskontoType.Flerbarnsuker]: 7
+};
