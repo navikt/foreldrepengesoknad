@@ -1,10 +1,11 @@
-import { takeEvery, all, put, call } from 'redux-saga/effects';
+import { takeEvery, all, put, call, select } from 'redux-saga/effects';
 import { default as apiActions, updateApi } from '../actions/api/apiActionCreators';
 import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../actions/søknad/søknadActionCreators';
+import { AppState } from '../reducers';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -44,7 +45,10 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
     yield put(søknadActionCreators.uttaksplanSetPerioder([]));
     yield all([getStønadskontoer(action)]);
-    yield put(søknadActionCreators.uttaksplanLagForslag());
+    const tilgjengeligeKontoer: TilgjengeligStønadskonto[] = yield select(
+        (state: AppState) => state.api.tilgjengeligeStønadskontoer
+    );
+    yield put(søknadActionCreators.uttaksplanLagForslag(tilgjengeligeKontoer));
     yield put(apiActions.storeAppState());
 }
 

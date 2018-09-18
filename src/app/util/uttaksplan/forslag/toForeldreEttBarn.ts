@@ -1,81 +1,21 @@
 import { normaliserDato } from 'common/util/datoUtils';
 import { guid } from 'nav-frontend-js-utils';
 import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
-import { Tidsperiode, Dekningsgrad, Forelder } from 'common/types';
 import { Periodetype, StønadskontoType, Periode } from '../../../types/uttaksplan/periodetyper';
-import { getTidsperiode } from '../Tidsperioden';
-import { getPermisjonStartdato } from '../permisjonUtils';
+import { Forelder } from 'common/types';
 import { sorterPerioder } from '../Periodene';
-import { Uttaksdagen } from '../Uttaksdagen';
-
-const UTTAKSDAGER_I_UKE = 5;
-
-function getMødrekvoteFørTermin(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Tidsperiode {
-    return getTidsperiode(
-        getPermisjonStartdato(familiehendelsedato, permisjonsregler),
-        permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE
-    );
-}
-
-export function getPakrevdMødrekvoteEtterTermin(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler
-): Tidsperiode {
-    return getTidsperiode(
-        Uttaksdagen(familiehendelsedato).denneEllerNeste(),
-        permisjonsregler.antallUkerMødrekvoteEtterFødsel * UTTAKSDAGER_I_UKE
-    );
-}
-
-function getFrivilligMødrekvoteEtterTermin(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Tidsperiode {
-    const startdato = Uttaksdagen(getPakrevdMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom).neste();
-    return getTidsperiode(
-        startdato,
-        (permisjonsregler.antallUkerMødrekvote - permisjonsregler.antallUkerMødrekvoteEtterFødsel) * UTTAKSDAGER_I_UKE
-    );
-}
-
-function getFellesperiodeMor(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerMor: number
-): Tidsperiode {
-    const startdato = Uttaksdagen(getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom).neste();
-    return getTidsperiode(startdato, fellesukerMor * UTTAKSDAGER_I_UKE);
-}
-
-function getFellesperiodeFarMedmor(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerMor: number,
-    fellesukerFarMedmor: number
-): Tidsperiode {
-    const startdato = Uttaksdagen(
-        fellesukerMor === 0
-            ? getFrivilligMødrekvoteEtterTermin(familiehendelsedato, permisjonsregler).tom
-            : getFellesperiodeMor(familiehendelsedato, permisjonsregler, fellesukerMor).tom
-    ).neste();
-    return getTidsperiode(startdato, fellesukerFarMedmor * UTTAKSDAGER_I_UKE);
-}
-
-function getFedrekvote(
-    familiehendelsedato: Date,
-    permisjonsregler: Permisjonsregler,
-    fellesukerMor: number,
-    fellesukerFarMedmor: number
-): Tidsperiode {
-    const startdato = Uttaksdagen(
-        fellesukerFarMedmor === 0
-            ? getFellesperiodeMor(familiehendelsedato, permisjonsregler, fellesukerMor).tom
-            : getFellesperiodeFarMedmor(familiehendelsedato, permisjonsregler, fellesukerMor, fellesukerFarMedmor).tom
-    ).neste();
-    return getTidsperiode(startdato, permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE);
-}
+import {
+    getMødrekvoteFørTermin,
+    getPakrevdMødrekvoteEtterTermin,
+    getFrivilligMødrekvoteEtterTermin,
+    getFedrekvote,
+    getFellesperiodeMor,
+    getFellesperiodeFarMedmor
+} from './util';
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderToForeldreEttBarn(
     familiehendelsedato: Date,
-    dekningsgrad: Dekningsgrad,
     fellesukerMor: number,
     fellesukerFarMedmor: number,
     permisjonsregler: Permisjonsregler

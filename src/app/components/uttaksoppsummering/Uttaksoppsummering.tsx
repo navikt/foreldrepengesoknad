@@ -7,7 +7,7 @@ import { Forelder } from 'common/types';
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
-    dagerGjennstående: number;
+    dagerGjenstående: number;
     forelder?: Forelder;
 }
 
