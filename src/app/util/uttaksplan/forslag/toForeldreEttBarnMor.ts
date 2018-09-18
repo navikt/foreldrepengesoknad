@@ -12,7 +12,7 @@ import { getTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
-export function opprettUttaksperioderMorToForeldreEttBarn(
+export function opprettUttaksperioderToForeldreEttBarnMor(
     familiehendelsedato: Date,
     fellesukerMor: number,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
