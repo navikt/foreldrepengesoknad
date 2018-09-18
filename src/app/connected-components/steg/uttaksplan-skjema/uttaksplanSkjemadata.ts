@@ -15,7 +15,7 @@ export interface UttaksplanSkjemadata {
     skalStarteRettEtterMor?: boolean;
     skalIkkeHaUttakFørTermin?: boolean;
     harPlanlagtOppholdIUttak?: boolean;
-    fellesperiodeukerForelder1?: number;
+    fellesperiodeukerMor?: number;
     forslagLaget?: boolean;
     harAnnenForelderSøktFP?: boolean;
     skalHaDelAvFellesperiode?: boolean;

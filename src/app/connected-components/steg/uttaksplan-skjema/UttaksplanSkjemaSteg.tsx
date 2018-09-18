@@ -32,10 +32,10 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     componentWillMount() {
         const defaultAntallUkerAvFellesperiode = Math.round(this.props.antallUkerFellesperiode / 2);
-        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerForelder1 === undefined) {
+        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerMor === undefined) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
-                    fellesperiodeukerForelder1: defaultAntallUkerAvFellesperiode
+                    fellesperiodeukerMor: defaultAntallUkerAvFellesperiode
                 })
             );
         }

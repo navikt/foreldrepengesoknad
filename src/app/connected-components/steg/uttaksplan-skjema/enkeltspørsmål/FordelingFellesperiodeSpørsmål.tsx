@@ -5,14 +5,14 @@ import { Ingress, Element } from 'nav-frontend-typografi';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 
 export interface OwnProps {
-    navnForelder1?: string;
-    navnForelder2?: string;
+    navnMor?: string;
+    navnFarMedmor?: string;
     ukerFellesperiode: number;
 }
 
 const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
     OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps
-> = ({ visible, navnForelder1, navnForelder2, ukerFellesperiode, intl }) => (
+> = ({ visible, navnMor, navnFarMedmor, ukerFellesperiode, intl }) => (
     <UttaksplanSkjemaSpørsmål
         visible={visible}
         render={(data, onChange) => (
@@ -21,25 +21,25 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                 ariaDescription={intl.formatMessage(
                     { id: 'uttaksplan.skjema.fordeling.aria.fordeling' },
                     {
-                        navnForelder1,
+                        navnMor,
                         ukerFellesperiode
                     }
                 )}
-                value={data.fellesperiodeukerForelder1!}
+                value={data.fellesperiodeukerMor!}
                 min={0}
                 max={ukerFellesperiode}
-                onChange={(fellesperiodeukerForelder1) => onChange({ fellesperiodeukerForelder1 })}
+                onChange={(fellesperiodeukerMor) => onChange({ fellesperiodeukerMor })}
                 steppers={{
                     reduceLabel: intl.formatMessage(
                         { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                         {
-                            navn: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' })
+                            navn: navnMor || intl.formatMessage({ id: 'uttaksplan.mor' })
                         }
                     ),
                     increaseLabel: intl.formatMessage(
                         { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
                         {
-                            navn: navnForelder2 || intl.formatMessage({ id: 'uttaksplan.forelder2' })
+                            navn: navnFarMedmor || intl.formatMessage({ id: 'uttaksplan.farMedmor' })
                         }
                     )
                 }}
@@ -49,7 +49,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                         {
                             ukerForelder: value,
                             ukerTotalt: ukerFellesperiode,
-                            navnForelder: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' })
+                            navnForelder: navnMor || intl.formatMessage({ id: 'uttaksplan.mor' })
                         }
                     )
                 }
@@ -60,7 +60,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                             values={{
                                 ukerForelder: options.value,
                                 ukerTotalt: options.max,
-                                navnForelder: navnForelder1 || intl.formatMessage({ id: 'uttaksplan.forelder1' })
+                                navnForelder: navnMor || intl.formatMessage({ id: 'uttaksplan.mor' })
                             }}
                         />
                     </Ingress>

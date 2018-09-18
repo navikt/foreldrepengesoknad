@@ -2,7 +2,7 @@ import { RegistrertAnnenForelder, RegistrertBarn } from '../../../types/Person';
 import { getUniqeRegistrertAnnenForelderFromBarn } from './barn';
 import { Kjønn } from '../../../types/common';
 
-const forelder1: RegistrertAnnenForelder = {
+const mor: RegistrertAnnenForelder = {
     fnr: '1',
     fornavn: '',
     etternavn: '',
@@ -10,7 +10,7 @@ const forelder1: RegistrertAnnenForelder = {
     kjønn: Kjønn.MANN
 };
 
-const forelder2: RegistrertAnnenForelder = {
+const farMedmor: RegistrertAnnenForelder = {
     fnr: '2',
     fornavn: '',
     etternavn: '',
@@ -28,12 +28,12 @@ const barn: RegistrertBarn = {
 
 const barnMedForelder: RegistrertBarn = {
     ...barn,
-    annenForelder: forelder1
+    annenForelder: mor
 };
 
 const barnMedUlikForelder: RegistrertBarn = {
     ...barn,
-    annenForelder: forelder2
+    annenForelder: farMedmor
 };
 
 describe('barn.steg.validation', () => {

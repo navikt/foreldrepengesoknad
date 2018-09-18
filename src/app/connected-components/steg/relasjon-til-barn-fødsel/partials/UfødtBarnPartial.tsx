@@ -49,7 +49,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                 </Block>
 
                 {annenForelder.erForSyk === false && (
-                    <Veilederinfo type="feil">{getMessage(intl, 'annenForelder.forelder1IkkeSyk')}</Veilederinfo>
+                    <Veilederinfo type="feil">{getMessage(intl, 'annenForelder.morIkkeSyk')}</Veilederinfo>
                 )}
 
                 {erMorEllerMorErForSyk && (

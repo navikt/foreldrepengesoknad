@@ -18,7 +18,7 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erForelder2 } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erFarMedmor } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -54,20 +54,19 @@ class UttaksperiodeForm extends React.Component<Props> {
         };
     }
 
-    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erForelder2Value: boolean) {
+    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erFarMedmorVerdi: boolean) {
         const { onChange } = this.props;
         onChange({
             ...data,
-            forelder: erForelder2Value ? Forelder.FORELDER_2 : Forelder.FORELDER_1,
+            forelder: erFarMedmorVerdi ? Forelder.FARMEDMOR : Forelder.MOR,
             type: Periodetype.Uttak
         });
     }
 
-    updateEgenPeriodeUttak(ønskerSamtidigUttak: boolean, erForelder2Value: boolean) {
+    updateEgenPeriodeUttak(ønskerSamtidigUttak: boolean) {
         const { onChange } = this.props;
         onChange({
             ønskerSamtidigUttak,
-            forelder: erForelder2Value ? Forelder.FORELDER_2 : Forelder.FORELDER_1,
             type: Periodetype.Uttak
         });
     }
@@ -78,8 +77,13 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { rolle } = søker;
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
-        const erForelder2Value = erForelder2(søkerinfo.person.kjønn, rolle);
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
+        const søkerErFarMedmor = erFarMedmor(søkerinfo.person.kjønn, rolle);
+
+        const erUttakAvEgenKvote =
+            (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErFarMedmor === false)) ||
+            (konto === StønadskontoType.Fedrekvote &&
+                (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || søkerErFarMedmor === true));
 
         return (
             <React.Fragment>
@@ -101,26 +105,18 @@ class UttaksperiodeForm extends React.Component<Props> {
                 </Block>
                 <Block visible={konto === StønadskontoType.Fellesperiode}>
                     <FellesperiodeUttakForm
-                        søkerErForelder2={erForelder2Value}
+                        søkerErFarMedmor={søkerErFarMedmor}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                         onChange={(data: FellesperiodeUttakSkjemadata) =>
-                            this.updateFellesperiodeUttak(data, erForelder2Value)
+                            this.updateFellesperiodeUttak(data, søkerErFarMedmor)
                         }
                     />
                 </Block>
-                <Block
-                    visible={
-                        (konto === StønadskontoType.Mødrekvote &&
-                            (rolle === SøkerRolle.MOR || erForelder2Value === false)) ||
-                        (konto === StønadskontoType.Fedrekvote &&
-                            (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || erForelder2Value === true))
-                    }>
+                <Block visible={erUttakAvEgenKvote}>
                     <EgenDelUttakForm
                         ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
-                        onChange={(ønskerSamtidigUttak) =>
-                            this.updateEgenPeriodeUttak(ønskerSamtidigUttak, erForelder2Value)
-                        }
+                        onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
                     />
                 </Block>
             </React.Fragment>

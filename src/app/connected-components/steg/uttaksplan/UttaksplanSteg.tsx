@@ -71,8 +71,8 @@ class UttaksplanSteg extends React.Component<Props, State> {
     render() {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const navn = {
-            navnForelder1: søkerinfo.person.fornavn,
-            navnForelder2: søknad.annenForelder ? søknad.annenForelder.navn : undefined
+            navnMor: søkerinfo.person.fornavn,
+            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.navn : undefined
         };
 
         return (

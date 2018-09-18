@@ -77,7 +77,7 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
                             Utsett ditt uttak
                         </Knapp>
                         <Knapp onClick={this.openNyUttaksperiodeForm} htmlType="button">
-                            Legg til periode med foreldrepenger
+                            Legg til periode med uttak
                         </Knapp>
                     </Knapperad>
                 </Block>
