@@ -45,7 +45,7 @@ class CollapsableItem extends React.Component<Props, State> {
                     href="#"
                     className={BEM.element('header')}
                     onClick={this.toggleExpanded}
-                    tabIndex={1}
+                    tabIndex={0}
                     aria-expanded={expanded}>
                     <div className={BEM.element('header__content')}>{renderHeader()}</div>
                     <div className={BEM.element('header__arrow')}>

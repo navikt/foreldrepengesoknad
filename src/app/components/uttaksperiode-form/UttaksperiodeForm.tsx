@@ -24,15 +24,20 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
+import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
+    kanEndreStønadskonto?: boolean;
     onChange: (periode: RecursivePartial<Periode>) => void;
 }
 
 interface StateProps {
     søknad: Søknad;
     søkerinfo: Søkerinfo;
+    familiehendelsesdato: Date;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
@@ -72,7 +77,15 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, tilgjengeligeStønadskontoer, onChange, søknad, søkerinfo } = this.props;
+        const {
+            periode,
+            tilgjengeligeStønadskontoer,
+            onChange,
+            søknad,
+            søkerinfo,
+            kanEndreStønadskonto,
+            familiehendelsesdato
+        } = this.props;
         const { søker, annenForelder } = søknad;
         const { rolle } = søker;
         const { konto, tidsperiode } = periode;
@@ -92,9 +105,18 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
                         visVarighet={true}
+                        datoAvgrensninger={
+                            periode.konto
+                                ? getDatoavgrensningerForStønadskonto(
+                                      periode.konto,
+                                      familiehendelsesdato,
+                                      getPermisjonsregler()
+                                  )
+                                : undefined
+                        }
                     />
                 </Block>
-                <Block margin="s" visible={validTidsperiode !== undefined}>
+                <Block margin="s" visible={validTidsperiode !== undefined && kanEndreStønadskonto}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
@@ -125,10 +147,12 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
+    const { situasjon, barn } = state.søknad;
     return {
         søknad: state.søknad,
         søkerinfo: state.api.søkerinfo!,
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        familiehendelsesdato: getFamiliehendelsedato(barn, situasjon)
     };
 };
 
