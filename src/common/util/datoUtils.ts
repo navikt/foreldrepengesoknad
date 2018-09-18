@@ -3,7 +3,7 @@ import moment from 'moment';
 export const normaliserDato = (dato: Date): Date => {
     return moment
         .utc(dato)
-        .startOf('day')
+        .set('hours', 12)
         .toDate();
 };
 
