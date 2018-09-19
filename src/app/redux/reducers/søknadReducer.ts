@@ -7,7 +7,6 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
-import { formaterNavn } from '../../util/domain/personUtil';
 import { guid } from 'nav-frontend-js-utils';
 import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
@@ -45,7 +44,8 @@ const getDefaultState = (): SøknadPartial => {
 const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): AnnenForelderPartial => {
     return {
         fnr: registertForelder.fnr,
-        navn: formaterNavn(registertForelder.fornavn, registertForelder.etternavn, registertForelder.mellomnavn)
+        fornavn: registertForelder.fornavn,
+        etternavn: registertForelder.etternavn
     };
 };
 
