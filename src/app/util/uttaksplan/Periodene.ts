@@ -21,6 +21,9 @@ export const Periodene = (perioder: Periode[]) => ({
  * @param p2
  */
 export function sorterPerioder(p1: Periode, p2: Periode) {
+    if (p1.tidsperiode.fom === undefined || p2.tidsperiode.fom === undefined) {
+        return p1.tidsperiode.fom === undefined ? -1 : 1;
+    }
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom) ? -1 : 1;
 }
 
