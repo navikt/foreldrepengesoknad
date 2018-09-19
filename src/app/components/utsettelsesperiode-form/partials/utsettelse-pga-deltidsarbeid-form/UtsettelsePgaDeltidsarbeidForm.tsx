@@ -16,7 +16,6 @@ import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSp�
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { Tidsperiode } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
-import { UttaksplanInfo } from '../../../../util/uttaksplan/uttaksplanInfo';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
@@ -35,7 +34,6 @@ interface UtsettelsePgaArbeidFormProps {
 
 interface StateProps {
     søknad: Søknad;
-    uttaksplanInfo: UttaksplanInfo;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -55,10 +53,10 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, søknad, arbeidsforhold, uttaksplanInfo, intl, onChange } = this.props;
+        const { skjemadata, søknad, arbeidsforhold, intl, onChange } = this.props;
         const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
-        const { navnPåForeldre, velgbareStønadskontoer } = uttaksplanInfo;
+        const { navnPåForeldre, velgbareStønadskontoer } = søknad.ekstrainfo.uttaksplanInfo!;
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
 
@@ -119,8 +117,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad,
-        uttaksplanInfo: state.søknad.ekstrainfo.uttaksplanInfo
+        søknad: state.søknad
     };
 };
 export default connect(mapStateToProps)(injectIntl(UtsettelsePgaDeltidsarbeidForm));
