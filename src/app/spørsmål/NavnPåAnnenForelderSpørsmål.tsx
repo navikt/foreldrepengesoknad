@@ -3,9 +3,12 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Input } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
+import { Row, Column } from 'nav-frontend-grid';
+import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
 
 interface NavnPåAnnenForelderSpørsmålProps {
-    navn?: string;
+    fornavn?: string;
+    etternavn?: string;
     kanIkkeOppgis?: boolean;
     onChange: (annenForelder: AnnenForelderPartial) => void;
 }
@@ -13,16 +16,33 @@ interface NavnPåAnnenForelderSpørsmålProps {
 type Props = NavnPåAnnenForelderSpørsmålProps & InjectedIntlProps;
 
 const NavnPåAnnenForelderSpørsmål = (props: Props) => {
-    const { kanIkkeOppgis, navn, onChange, intl } = props;
+    const { kanIkkeOppgis, fornavn, etternavn, onChange, intl } = props;
 
     return (
-        <Input
-            disabled={kanIkkeOppgis}
-            label={getMessage(intl, 'annenForelder.spørsmål.navn')}
-            name="navn"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ navn: e.target.value })}
-            value={navn === undefined ? '' : navn}
-        />
+        <SkjemaInputElement label={getMessage(intl, 'annenForelder.spørsmål.navn')}>
+            <Row>
+                <Column xs="8" sm="6">
+                    <Input
+                        disabled={kanIkkeOppgis}
+                        label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
+                        name="fornavn"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ fornavn: e.target.value })}
+                        value={fornavn === undefined ? '' : fornavn}
+                        className={'skjemaelement--undersporsmal'}
+                    />
+                </Column>
+                <Column xs="8" sm="6">
+                    <Input
+                        disabled={kanIkkeOppgis}
+                        label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
+                        name="etternavn"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ etternavn: e.target.value })}
+                        value={etternavn === undefined ? '' : etternavn}
+                        className={'skjemaelement--undersporsmal'}
+                    />
+                </Column>
+            </Row>
+        </SkjemaInputElement>
     );
 };
 
