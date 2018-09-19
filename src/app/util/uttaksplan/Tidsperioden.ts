@@ -72,6 +72,9 @@ export function erSammeEllerSenereDato(d1: Date, d2: Date) {
  * Summerer antall uttaksdager i angitt tidsperiode
  */
 function getAntallUttaksdagerITidsperiode(tidsperiode: Tidsperiode, taBortFridager?: boolean): number {
+    if (!tidsperiode.fom || !tidsperiode.tom) {
+        return 0;
+    }
     if (tidsperiode.fom > tidsperiode.tom) {
         return -1;
     }
