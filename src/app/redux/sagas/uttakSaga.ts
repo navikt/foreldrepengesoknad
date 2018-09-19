@@ -6,7 +6,7 @@ import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
-import { getStønadskontoSortOrder } from '../../util/uttaksplan/st\u00F8nadskontoer';
+import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {

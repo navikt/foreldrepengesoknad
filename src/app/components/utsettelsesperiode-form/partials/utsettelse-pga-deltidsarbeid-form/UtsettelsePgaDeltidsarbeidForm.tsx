@@ -18,7 +18,7 @@ import Arbeidsforhold from '../../../../types/Arbeidsforhold';
 import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import { getNavnPåForeldre } from '../../../../util/uttaksplan';
-import { Søkerinfo } from '../../../../types/s\u00F8kerinfo';
+import { Søkerinfo } from '../../../../types/søkerinfo';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
