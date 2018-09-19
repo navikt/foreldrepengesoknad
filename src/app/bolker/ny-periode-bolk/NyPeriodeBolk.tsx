@@ -68,7 +68,7 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
     render() {
         return (
             <React.Fragment>
-                <Block margin="l" visible={this.state.formIsOpen}>
+                <Block margin="xs" visible={this.state.formIsOpen}>
                     {this.renderPeriodeForm()}
                 </Block>
                 <Block margin="none" visible={!this.state.formIsOpen}>
