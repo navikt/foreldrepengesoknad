@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { normaliserDato } from 'common/util/datoUtils';
 
 export interface DatoInputProps extends DatovelgerProps {
+    onChange: (dato?: Date) => void;
     label: string | React.ReactNode;
     feil?: Feil;
 }
@@ -23,7 +24,7 @@ class DatoInput extends React.Component<Props, {}> {
                     input={{
                         placeholder: 'dd.mm.åååå'
                     }}
-                    onChange={(dato) => onChange(normaliserDato(dato))}
+                    onChange={(dato) => onChange(dato ? normaliserDato(dato) : undefined)}
                 />
             </SkjemaInputElement>
         );
