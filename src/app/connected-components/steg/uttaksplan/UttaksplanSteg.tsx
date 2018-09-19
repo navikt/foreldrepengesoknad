@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -20,11 +20,9 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
-import { getNavnPåForeldre } from '../../../util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     søknad: Søknad;
     person: Person;
     uttaksStatus: Stønadskontouttak[];
@@ -42,7 +40,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person, dispatch, tilgjengeligeStønadskontoer } = this.props;
+        const { søknad, person, dispatch } = this.props;
+        const { uttaksplanInfo } = søknad.ekstrainfo;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -52,9 +51,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         };
 
         if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
+            dispatch(søknadActions.uttaksplanLagForslag(uttaksplanInfo.tilgjengeligeStønadskontoer));
         }
-        if (tilgjengeligeStønadskontoer.length === 0) {
+        if (uttaksplanInfo.tilgjengeligeStønadskontoer.length === 0) {
             dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
         }
         dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
@@ -74,8 +73,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     render() {
-        const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
-        const navnPåForeldre = getNavnPåForeldre(søknad, søkerinfo.person);
+        const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
+        const { uttaksplanInfo } = søknad.ekstrainfo;
+        const navnPåForeldre = uttaksplanInfo.navnPåForeldre;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
@@ -135,7 +135,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     return {
         søknad,
-        tilgjengeligeStønadskontoer,
         person: props.søkerinfo.person,
         stegProps,
         uttaksStatus,

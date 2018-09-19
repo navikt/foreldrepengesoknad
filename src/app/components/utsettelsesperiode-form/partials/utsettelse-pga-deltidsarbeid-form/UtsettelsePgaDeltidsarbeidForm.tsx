@@ -1,24 +1,22 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { InputChangeEvent } from '../../../../types/dom/Events';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
-import { StønadskontoType, TilgjengeligStønadskonto } from '../../../../types/uttaksplan/periodetyper';
+import { StønadskontoType } from '../../../../types/uttaksplan/periodetyper';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers/index';
 import Søknad from '../../../../types/søknad/Søknad';
-import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/stønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import { Tidsperiode, NavnPåForeldre } from 'common/types';
+import { Tidsperiode } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
-import { getNavnPåForeldre } from '../../../../util/uttaksplan';
-import { Søkerinfo } from '../../../../types/søkerinfo';
+import { UttaksplanInfo } from '../../../../util/uttaksplan/uttaksplanInfo';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
@@ -37,9 +35,7 @@ interface UtsettelsePgaArbeidFormProps {
 
 interface StateProps {
     søknad: Søknad;
-    søkerinfo: Søkerinfo;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    navnPåForeldre: NavnPåForeldre;
+    uttaksplanInfo: UttaksplanInfo;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -59,18 +55,10 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const {
-            skjemadata,
-            søknad,
-            arbeidsforhold,
-            tilgjengeligeStønadskontoer,
-            søkerinfo,
-            intl,
-            onChange
-        } = this.props;
+        const { skjemadata, søknad, arbeidsforhold, uttaksplanInfo, intl, onChange } = this.props;
         const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
-        const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+        const { navnPåForeldre, velgbareStønadskontoer } = uttaksplanInfo;
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
 
@@ -97,7 +85,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
                         }}
-                        navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
+                        navnPåForeldre={navnPåForeldre}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
@@ -132,9 +120,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        søkerinfo: state.api.søkerinfo!,
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person)
+        uttaksplanInfo: state.søknad.ekstrainfo.uttaksplanInfo
     };
 };
 export default connect(mapStateToProps)(injectIntl(UtsettelsePgaDeltidsarbeidForm));
