@@ -65,7 +65,7 @@ export function opprettUttaksperioderToForeldreEttBarnMor(
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
-            konto: StønadskontoType.Mødrekvote,
+            konto: StønadskontoType.Fellesperiode,
             tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesukerMor * 5),
             ønskerSamtidigUttak: false
         };
