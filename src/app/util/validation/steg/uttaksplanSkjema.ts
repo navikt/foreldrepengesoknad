@@ -15,7 +15,10 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                 skjema.skalHaDelAvFellesperiode !== undefined
             );
         case UttaksplanSkjemaScenario.s3_morFødsel:
-            return skjema.fellesperiodeukerMor !== undefined;
+            const harSvartPåStartdato =
+                søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
+                søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
+            return harSvartPåStartdato && skjema.fellesperiodeukerMor !== undefined;
         case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
             return skjema.startdatoPermisjon !== undefined;
 
