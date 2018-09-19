@@ -170,7 +170,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         {this.renderContent()}
                     </ValiderbarForm>
                 ) : (
-                    this.renderContent()
+                    <div className={bem.className}>{this.renderContent()}</div>
                 )}
                 <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
                 <AvbrytSøknadDialog
