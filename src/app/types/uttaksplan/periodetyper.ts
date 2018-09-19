@@ -48,7 +48,7 @@ export interface PeriodeBase {
     vedlegg?: Attachment[];
 }
 
-export interface Uttaksperiode extends PeriodeBase {
+export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
@@ -56,6 +56,13 @@ export interface Uttaksperiode extends PeriodeBase {
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak: boolean;
 }
+
+export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
+    konto: StønadskontoType.ForeldrepengerFørFødsel;
+    skalIkkeHaUttakFørTermin: boolean;
+}
+
+export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
 
 interface UtsettelsesperiodeBase extends PeriodeBase {
     type: Periodetype.Utsettelse;
@@ -89,7 +96,7 @@ export type Utsettelsesperiode =
     | UtsettelsePgaInnleggelseSøker
     | UtsettelsePgaInnleggelseBarnet;
 
-export interface GradertUttaksperiode extends Uttaksperiode {
+export interface GradertUttaksperiode extends UttaksperiodeBase {
     årsak: UtsettelseÅrsakType.Arbeid;
     gradert: true;
     stillingsprosent: string;
@@ -118,4 +125,10 @@ export enum MorsAktivitet {
     'Innlagt' = 'INNLAGT',
     'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
     'SamtidigUttak' = 'SAMTIDIGUTTAK'
+}
+
+export function isForeldrepengerFørFødselUttaksperiode(
+    periode: Periode
+): periode is ForeldrepengerFørFødselUttaksperiode {
+    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
