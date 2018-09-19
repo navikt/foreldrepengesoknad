@@ -48,7 +48,7 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                   registrertAnnenForelder.etternavn,
                   registrertAnnenForelder.mellomnavn
               )
-            : annenForelder.navn;
+            : formaterNavn(annenForelder.fornavn!, annenForelder.etternavn!);
 
         return (
             <React.Fragment>

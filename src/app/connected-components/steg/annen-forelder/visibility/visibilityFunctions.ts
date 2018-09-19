@@ -15,7 +15,10 @@ const visAnnenForelderOppfølgingPart = (
     annenForelder: Partial<AnnenForelder>,
     registrertAnnenForelder: RegistrertAnnenForelder | undefined
 ): boolean => {
-    return ((annenForelder.navn && annenForelder.fnr) || registrertAnnenForelder) !== undefined;
+    return (
+        ((annenForelder.fornavn && annenForelder.etternavn && annenForelder.fnr) || registrertAnnenForelder) !==
+        undefined
+    );
 };
 
 const visOmsorgsovertakelse = (barn: Partial<Barn>) => {
@@ -37,7 +40,12 @@ const visFødselsnummerInput = (annenForelderPersonaliaPartVisible: boolean, ann
     if (!annenForelderPersonaliaPartVisible) {
         return false;
     }
-    return annenForelder.navn !== undefined && annenForelder.navn !== '';
+    return (
+        annenForelder.fornavn !== undefined &&
+        annenForelder.fornavn !== '' &&
+        annenForelder.etternavn !== undefined &&
+        annenForelder.etternavn !== ''
+    );
 };
 
 const visHarRettPåForeldrepengerSpørsmål = (

@@ -76,7 +76,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
         const navn = {
             navnMor: søkerinfo.person.fornavn,
-            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.navn : undefined
+            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.fornavn : undefined
         };
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 

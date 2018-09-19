@@ -17,7 +17,8 @@ export const cleanupAnnenForelder = (
         return {};
     }
     const {
-        navn,
+        fornavn,
+        etternavn,
         fnr,
         bostedsland,
         utenlandskFnr,
@@ -38,7 +39,8 @@ export const cleanupAnnenForelder = (
     const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
         kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
-        navn: kanOppgis(true) ? navn : undefined,
+        fornavn: kanOppgis(true) ? fornavn : undefined,
+        etternavn: kanOppgis(true) ? etternavn : undefined,
         fnr: kanOppgis(true) ? fnr : undefined,
         utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
         bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
