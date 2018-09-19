@@ -1,4 +1,5 @@
-import { AttachmentType, Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface Attachment {
     id: string;

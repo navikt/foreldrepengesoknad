@@ -22,13 +22,13 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
-import getMessage from 'common/util/i18nUtils';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface StateProps {
     barn: ForeldreansvarBarnPartial;
@@ -102,11 +102,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
                     <Veilederinfo type="advarsel">Barn over 15 år er registrert.</Veilederinfo>
                 </Block>
 
-                <Block
-                    header={{
-                        title: getMessage(intl, 'attachments.tittel.foreldreansvar')
-                    }}
-                    visible={visibility.vedlegg(barn)}>
+                <Block visible={visibility.vedlegg(barn)}>
                     <Veilederinfo>
                         <FormattedMessage id="vedlegg.veileder.omsorgsovertakelse" />
                     </Veilederinfo>

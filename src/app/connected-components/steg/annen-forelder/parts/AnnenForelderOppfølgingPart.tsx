@@ -12,7 +12,7 @@ import getMessage from 'common/util/i18nUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
@@ -22,6 +22,7 @@ import { formaterNavn } from '../../../../util/domain/personUtil';
 import { AnnenForelderStegVisibility } from '../visibility/annenForelderVisibility';
 import { Søker } from '../../../../types/søknad/Søker';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 interface StateProps {
     barn: Partial<ForeldreansvarBarn>;
@@ -133,8 +134,8 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                             </Block>
 
                             <AttachmentsUploaderPure
-                                attachments={barn.omsorgsovertakelse ? barn.omsorgsovertakelse : []}
-                                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+                                attachments={barn.omsorgsovertakelseDato || []}
+                                attachmentType={AttachmentType.OMSORGSOVERTAKELSEDATO}
                                 onFilesSelect={(attachments: Attachment[]) => {
                                     attachments.forEach((attachment: Attachment) => {
                                         dispatch(søknadActions.uploadAttachment(attachment));

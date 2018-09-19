@@ -9,9 +9,10 @@ import { isAttachmentWithError, mapFileToAttachment } from './util';
 import { CSSTransition } from 'react-transition-group';
 import { guid } from 'nav-frontend-js-utils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType, Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
@@ -93,6 +94,7 @@ class AttachmentOverview extends React.Component<Props, State> {
                             onFilesSelect(files.map((f) => mapFileToAttachment(f, attachmentType, skjemanummer)));
                         }}
                         onClick={this.hideErrorMessage}
+                        attachmentType={attachmentType}
                     />
                 </Block>
                 <CSSTransition

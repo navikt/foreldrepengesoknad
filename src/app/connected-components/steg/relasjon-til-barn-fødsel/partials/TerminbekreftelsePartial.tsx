@@ -4,7 +4,7 @@ import {
     getTerminbekreftelseDatoRegler
 } from '../../../../util/validation/fields/terminbekreftelsedato';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
-import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -15,6 +15,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface OwnProps {
     barn: UfødtBarn;
@@ -32,10 +33,7 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
             <Block margin="xs">
                 <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.terminbekreftelsen')}</Veilederinfo>
             </Block>
-            <Block
-                header={{
-                    title: getMessage(intl, 'vedlegg.tittel.terminbekreftelse')
-                }}>
+            <Block>
                 <AttachmentsUploaderPure
                     attachments={terminbekreftelse}
                     attachmentType={AttachmentType.TERMINBEKREFTELSE}
