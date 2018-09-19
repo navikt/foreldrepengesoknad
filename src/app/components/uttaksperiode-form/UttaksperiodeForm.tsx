@@ -3,32 +3,28 @@ import {
     Periode,
     Periodetype,
     StønadskontoType,
-    TilgjengeligStønadskonto,
     Uttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
     isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
-import Søknad, { SøkerRolle } from '../../types/søknad/Søknad';
+import Søknad from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor } from '../../util/domain/personUtil';
-import { Søkerinfo } from '../../types/søkerinfo';
+import { annenForelderSkalHaForeldrepenger } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
-import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 
 interface UttaksperiodeFormProps {
@@ -39,9 +35,6 @@ interface UttaksperiodeFormProps {
 
 interface StateProps {
     søknad: Søknad;
-    søkerinfo: Søkerinfo;
-    familiehendelsesdato: Date;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
@@ -105,26 +98,16 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     render() {
-        const {
-            periode,
-            tilgjengeligeStønadskontoer,
-            onChange,
-            søknad,
-            søkerinfo,
-            kanEndreStønadskonto,
-            familiehendelsesdato
-        } = this.props;
-        const { søker, annenForelder } = søknad;
-        const { rolle } = søker;
+        const { periode, onChange, søknad, kanEndreStønadskonto } = this.props;
+        const { annenForelder } = søknad;
         const { konto, tidsperiode } = periode;
-        const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+        const { uttaksplanInfo } = søknad.ekstrainfo;
+        const { velgbareStønadskontoer, søkerErFarEllerMedmor, navnPåForeldre } = uttaksplanInfo;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
-        const søkerErFarMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, rolle);
 
         const erUttakAvEgenKvote =
-            (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErFarMedmor === false)) ||
-            (konto === StønadskontoType.Fedrekvote &&
-                (erFarEllerMedmor(søkerinfo.person.kjønn, rolle) === true || søkerErFarMedmor === true));
+            (konto === StønadskontoType.Mødrekvote && !søkerErFarEllerMedmor) ||
+            (konto === StønadskontoType.Fedrekvote && søkerErFarEllerMedmor);
 
         return (
             <React.Fragment>
@@ -138,7 +121,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                             periode.konto
                                 ? getDatoavgrensningerForStønadskonto(
                                       periode.konto,
-                                      familiehendelsesdato,
+                                      uttaksplanInfo.familiehendelsesdato,
                                       getPermisjonsregler()
                                   )
                                 : undefined
@@ -150,18 +133,18 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
                         }}
-                        navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
+                        navnPåForeldre={navnPåForeldre}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
                 </Block>
                 <Block visible={konto === StønadskontoType.Fellesperiode}>
                     <FellesperiodeUttakForm
-                        søkerErFarMedmor={søkerErFarMedmor}
+                        søkerErFarMedmor={søkerErFarEllerMedmor}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                         onChange={(data: FellesperiodeUttakSkjemadata) =>
-                            this.updateFellesperiodeUttak(data, søkerErFarMedmor)
+                            this.updateFellesperiodeUttak(data, søkerErFarEllerMedmor)
                         }
                     />
                 </Block>
@@ -187,12 +170,8 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const { situasjon, barn } = state.søknad;
     return {
-        søknad: state.søknad,
-        søkerinfo: state.api.søkerinfo!,
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
-        familiehendelsesdato: getFamiliehendelsedato(barn, situasjon)
+        søknad: state.søknad
     };
 };
 
