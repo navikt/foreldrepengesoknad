@@ -25,7 +25,7 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
         <RadioPanelGruppeResponsive
             checked={stønadskonto}
             radios={radios}
-            name=""
+            name="kvote"
             twoColumns={true}
             legend={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
             onChange={(e: InputChangeEvent, v: StønadskontoType) => onChange(v)}

@@ -19,8 +19,28 @@ export const getPeriodeForelderNavn = (periode: Periode, navnMor: string, navnFa
     return 'Ingen forelder registrert';
 };
 
-export const getStønadskontoNavn = (konto: StønadskontoType, intl: InjectedIntl) =>
-    intl.formatMessage({ id: `stønadskontotype.${konto}` });
+export const getStønadskontoNavn = (
+    intl: InjectedIntl,
+    konto: StønadskontoType,
+    navnMor: string,
+    navnFarMedmor?: string
+) => {
+    let navn;
+    switch (konto) {
+        case StønadskontoType.Mødrekvote:
+            navn = navnMor;
+            break;
+        case StønadskontoType.Fedrekvote:
+            navn = navnFarMedmor;
+            break;
+        default:
+            navn = undefined;
+    }
+    if (navn) {
+        return intl.formatMessage({ id: `stønadskontotype.foreldernavn.kvote` }, { navn });
+    }
+    return intl.formatMessage({ id: `stønadskontotype.${konto}` });
+};
 
 export const getFamiliehendelsedato = (barn: Barn, situasjon: Søkersituasjon): Date => {
     switch (situasjon) {

@@ -13,8 +13,6 @@ export interface Props {
 
 import './periodeliste.less';
 
-import { getPeriodeForelderNavn } from '../../util/uttaksplan';
-
 const BEM = BEMHelper('periodeliste');
 
 const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnMor, navnFarMedmor }) => (
@@ -23,9 +21,7 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnMor, navn
             <div className={BEM.element('item')} key={p.id}>
                 <ToggleItem
                     expandedHeaderClassName="periodeheader--isOpen"
-                    renderHeader={() => (
-                        <PeriodeHeader periode={p} foreldernavn={getPeriodeForelderNavn(p, navnMor, navnFarMedmor)} />
-                    )}
+                    renderHeader={() => <PeriodeHeader periode={p} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />}
                     renderContent={() => <PeriodeContent periode={p} />}
                 />
             </div>

@@ -1,10 +1,8 @@
 {
     "kontoer": {
-        "FORELDREPENGER": 0,
-        "FEDREKVOTE": 0,
-        "FELLESPERIODE": 0,
-        "FLERBARNSUKER": 0,
-        "FORELDREPENGER_FØR_FØDSEL": 0,
-        "MØDREKVOTE": 0
+        "FORELDREPENGER": 15,
+        "MØDREKVOTE": 75,
+        "FEDREKVOTE": 75,
+        "FELLESPERIODE": 75
     }
 }

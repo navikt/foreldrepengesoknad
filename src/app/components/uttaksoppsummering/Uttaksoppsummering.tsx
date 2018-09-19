@@ -23,7 +23,7 @@ const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnMor, n
             Gjenstående uttak
         </Undertittel>
         <TilesList>
-            {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnMor={navnMor} navFarMedmor={navnFarMedmor} />)}
+            {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />)}
         </TilesList>
     </section>
 );

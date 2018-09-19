@@ -457,6 +457,7 @@
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesdel",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
+    "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "utsettelsesårsak.ARBEID": "Arbeid",
@@ -492,7 +493,6 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
-    "periodeliste.uttak": "{foreldernavn} sin kvote",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
