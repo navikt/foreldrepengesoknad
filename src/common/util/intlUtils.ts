@@ -2,20 +2,15 @@ import { InjectedIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'common/util/datoUtils';
 
 export const getVarighetString = (antallDager: number, intl: InjectedIntl): string => {
-    const { uker, dager } = getUkerOgDagerFromDager(antallDager);
+    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
     const dagerStr = intl.formatMessage(
         { id: 'common.varighet.dager' },
         {
             dager
         }
     );
-
-    if (uker === 0 && dager === 0) {
-        return dagerStr;
-    }
-
     if (uker === 0) {
-        return `${tallTilTekst(dager, intl)} ${dagerStr}`;
+        return dagerStr;
     }
     const ukerStr = intl.formatMessage({ id: 'common.varighet.uker' }, { uker });
     if (dager > 0) {
