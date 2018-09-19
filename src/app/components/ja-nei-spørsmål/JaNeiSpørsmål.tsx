@@ -19,7 +19,7 @@ interface JaNeiSpørsmålProps {
 type Props = JaNeiSpørsmålProps & InjectedIntlProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, valgtVerdi, intl, ...otherProps } = props;
+    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, intl } = props;
 
     let checked;
     if (valgtVerdi === true) {
@@ -30,7 +30,7 @@ const JaNeiSpørsmål = (props: Props) => {
 
     return (
         <RadioPanelGruppeResponsive
-            name={name}
+            name={navn}
             checked={checked}
             legend={spørsmål}
             infoboksTekst={hjelpetekst}
@@ -47,7 +47,6 @@ const JaNeiSpørsmål = (props: Props) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: ValgAlternativer) =>
                 onChange(v === ValgAlternativer.JA)
             }
-            {...otherProps}
         />
     );
 };
