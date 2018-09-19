@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentOverview from 'common/storage/attachment/components/AttachmentOverview';
-import { AttachmentType, Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface AttachmentsUploaderProps {
     attachments: Attachment[];
