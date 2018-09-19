@@ -28,7 +28,7 @@ import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-f\u00F8r-f\u00F8dsel-uttak-form/ForeldrepengerF\u00F8rF\u00F8dselUttakForm';
 
 interface UttaksperiodeFormProps {
@@ -150,6 +150,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
                         }}
+                        navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
