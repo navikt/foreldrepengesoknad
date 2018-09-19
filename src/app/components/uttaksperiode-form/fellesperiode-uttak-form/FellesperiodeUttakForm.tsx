@@ -64,7 +64,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
         const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
         return (
             <>
-                <Block margin="none" visible={annenForelderSkalHaForeldrepenger && søkerErFarMedmor}>
+                <Block hasChildBlocks={true} visible={annenForelderSkalHaForeldrepenger && søkerErFarMedmor}>
                     <Block margin="s">
                         <HvaSkalMorGjøreSpørsmål
                             morsAktivitetIPerioden={morsAktivitetIPerioden}
