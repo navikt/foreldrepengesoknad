@@ -56,7 +56,6 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 }>
                 <UttaksplanSkjemaScenarioes
                     scenario={getUttaksplanSkjemaScenario(søknad, this.props.søkerinfo)}
-                    søkerinfo={søkerinfo}
                     søknad={søknad}
                     antallUkerFellesperiode={antallUkerFellesperiode}
                 />

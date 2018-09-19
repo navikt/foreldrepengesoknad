@@ -1,16 +1,15 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { InputChangeEvent } from '../../../../types/dom/Events';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
-import { StønadskontoType, TilgjengeligStønadskonto } from '../../../../types/uttaksplan/periodetyper';
+import { StønadskontoType } from '../../../../types/uttaksplan/periodetyper';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers/index';
 import Søknad from '../../../../types/søknad/Søknad';
-import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/stønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
@@ -35,7 +34,6 @@ interface UtsettelsePgaArbeidFormProps {
 
 interface StateProps {
     søknad: Søknad;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -55,10 +53,10 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
+        const { skjemadata, søknad, arbeidsforhold, intl, onChange } = this.props;
         const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
-        const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
+        const { navnPåForeldre, velgbareStønadskontoer } = søknad.ekstrainfo.uttaksplanInfo!;
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
 
@@ -85,6 +83,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
                         }}
+                        navnPåForeldre={navnPåForeldre}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
@@ -118,8 +117,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad,
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+        søknad: state.søknad
     };
 };
 export default connect(mapStateToProps)(injectIntl(UtsettelsePgaDeltidsarbeidForm));
