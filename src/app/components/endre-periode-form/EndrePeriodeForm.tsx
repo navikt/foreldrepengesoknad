@@ -4,7 +4,8 @@ import {
     Periodetype,
     Utsettelsesperiode,
     Uttaksperiode,
-    Oppholdsperiode
+    Oppholdsperiode,
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import BEMHelper from 'common/util/bem';
@@ -15,7 +16,9 @@ import './endrePeriodeForm.less';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
-import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
+import Block from 'common/components/block/Block';
 
 export interface OwnProps {
     periode: Periode;
@@ -50,18 +53,26 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
     }
     render() {
         const { periode } = this.props;
+        const erForeldrepengerFørFødselPeriode =
+            periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
             <form className={bem.className} onSubmit={preventFormSubmit}>
                 {periode.type === Periodetype.Utsettelse ? (
                     <UtsettelsesperiodeForm periode={periode} onChange={this.onChange} />
                 ) : (
-                    <div>Uttaksperiode</div>
+                    <UttaksperiodeForm
+                        periode={periode as Uttaksperiode}
+                        onChange={this.onChange}
+                        kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
+                    />
                 )}
-                <div className={bem.element('footer')}>
-                    <LinkButton onClick={this.onDelete}>
-                        <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
-                    </LinkButton>
-                </div>
+                <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
+                    <div className={bem.element('footer')}>
+                        <LinkButton onClick={this.onDelete} className={bem.element('slettPeriode')}>
+                            <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
+                        </LinkButton>
+                    </div>
+                </Block>
             </form>
         );
     }

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import DocumentTitle from 'react-document-title';
 import Søknad from '../../types/søknad/Søknad';
-import { opprettUttaksperioderToForeldreEttBarn } from '../../util/uttaksplan/forslag/toForeldreEttBarn';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
-import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
-import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, StønadskontoType, TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 import { DispatchProps } from 'common/redux/types';
 import Applikasjonsside from '../../connected-components/sider/Applikasjonsside';
 import Periodeliste from '../../components/periodeliste/Periodeliste';
@@ -14,6 +12,7 @@ import Block from 'common/components/block/Block';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import NyPeriodeBolk from '../../bolker/ny-periode-bolk/NyPeriodeBolk';
 import { Forelder } from 'common/types';
+import { opprettUttaksperioderToForeldreEttBarnMor } from '../../util/uttaksplan/forslag/toForeldreEttBarnMor';
 
 interface StateProps {
     søknad: Søknad;
@@ -21,26 +20,37 @@ interface StateProps {
 
 type Props = StateProps & DispatchProps;
 
-const perioder = opprettUttaksperioderToForeldreEttBarn(new Date(), '100', 13, 13, getPermisjonsregler());
+const tilgjengligStønadskontoer: TilgjengeligStønadskonto[] = [
+    {
+        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        dager: 15
+    },
+    {
+        konto: StønadskontoType.Mødrekvote,
+        dager: 75
+    }
+];
+
+const perioder = opprettUttaksperioderToForeldreEttBarnMor(new Date(), 13, tilgjengligStønadskontoer);
 
 const mockUttak: Stønadskontouttak[] = [
     {
         konto: StønadskontoType.ForeldrepengerFørFødsel,
-        dagerGjennstående: 10
+        dagerGjenstående: 10
     },
     {
         konto: StønadskontoType.Mødrekvote,
-        dagerGjennstående: 0,
-        forelder: Forelder.FORELDER_1
+        dagerGjenstående: 0,
+        forelder: Forelder.MOR
     },
     {
         konto: StønadskontoType.Fellesperiode,
-        dagerGjennstående: 0
+        dagerGjenstående: 0
     },
     {
         konto: StønadskontoType.Fedrekvote,
-        dagerGjennstående: 10,
-        forelder: Forelder.FORELDER_2
+        dagerGjenstående: 10,
+        forelder: Forelder.FARMEDMOR
     }
 ];
 
@@ -61,8 +71,8 @@ class Workbench extends React.Component<Props, State> {
 
     render() {
         const navn = {
-            navnForelder1: 'Amalie',
-            navnForelder2: 'Henrik'
+            navnMor: 'Amalie',
+            navnFarMedmor: 'Henrik'
         };
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>

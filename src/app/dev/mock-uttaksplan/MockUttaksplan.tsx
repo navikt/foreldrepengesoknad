@@ -4,8 +4,8 @@ import Periodeliste from '../../components/periodeliste/Periodeliste';
 
 export interface Props {
     perioder: Periode[];
-    navnForelder1: string;
-    navnForelder2?: string;
+    navnMor: string;
+    navnFarMedmor?: string;
 }
 
 const MockUttaksplan: React.StatelessComponent<Props> = (props) => (

@@ -1,4 +1,5 @@
 import { Tidsperiode, Forelder } from 'common/types';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -44,27 +45,61 @@ export interface PeriodeBase {
     id?: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
+    vedlegg?: Attachment[];
 }
 
-export interface Uttaksperiode extends PeriodeBase {
+export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
+    gradert?: boolean;
+    morsAktivitetIPerioden?: MorsAktivitet;
+    ønskerSamtidigUttak: boolean;
 }
 
-export interface Utsettelsesperiode extends PeriodeBase {
+export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
+    konto: StønadskontoType.ForeldrepengerFørFødsel;
+    skalIkkeHaUttakFørTermin: boolean;
+}
+
+export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
+
+interface UtsettelsesperiodeBase extends PeriodeBase {
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+}
+
+export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Arbeid;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
+export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Ferie;
+}
+export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.Sykdom;
+}
+export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonBarnet;
+}
+export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
+    årsak: UtsettelseÅrsakType.InstitusjonSøker;
+}
 
-export interface GradertUttaksperiode extends Uttaksperiode {
+export type Utsettelsesperiode =
+    | UtsettelsePgaArbeidPeriode
+    | UtsettelsePgaFerie
+    | UtsettelsePgaSykdom
+    | UtsettelsePgaInnleggelseSøker
+    | UtsettelsePgaInnleggelseBarnet;
+
+export interface GradertUttaksperiode extends UttaksperiodeBase {
     årsak: UtsettelseÅrsakType.Arbeid;
+    gradert: true;
     stillingsprosent: string;
-    samtidigGradertUttak: boolean;
     orgnr: string;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
 }
@@ -79,4 +114,21 @@ export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
     dager: number;
+}
+
+export enum MorsAktivitet {
+    'Arbeid' = 'ARBEID',
+    'Utdanning' = 'UTDANNING',
+    'Kvalifiseringsprogrammet' = 'KVALPROG',
+    'Introduksjonsprogrammet' = 'INTROPROG',
+    'TrengerHjelp' = 'TRENGER_HJELP',
+    'Innlagt' = 'INNLAGT',
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'SamtidigUttak' = 'SAMTIDIGUTTAK'
+}
+
+export function isForeldrepengerFørFødselUttaksperiode(
+    periode: Periode
+): periode is ForeldrepengerFørFødselUttaksperiode {
+    return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }

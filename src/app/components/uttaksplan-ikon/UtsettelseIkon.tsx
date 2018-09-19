@@ -6,6 +6,7 @@ import IconBox from '../icon-box/IconBox';
 
 export interface Props {
     årsak: UtsettelseÅrsakType;
+    gradert?: boolean;
 }
 
 const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
@@ -16,14 +17,13 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
             return UttaksplanIkonKeys.arbeid;
         case UtsettelseÅrsakType.InstitusjonBarnet:
         case UtsettelseÅrsakType.InstitusjonSøker:
-            return UttaksplanIkonKeys.sykehus;
         case UtsettelseÅrsakType.Sykdom:
             return UttaksplanIkonKeys.sykdom;
     }
 };
 
-const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak }) => (
-    <IconBox color={getUtsettelseFarge()}>
+const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak, gradert }) => (
+    <IconBox color={getUtsettelseFarge()} stripes={gradert}>
         <UttaksplanIkon ikon={getIkonForKonto(årsak)} />
     </IconBox>
 );

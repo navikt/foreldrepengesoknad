@@ -4,7 +4,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
@@ -84,6 +84,7 @@ export interface UttaksplanAddPeriode {
 
 export interface UttaksplanLagForslag {
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 export interface UttaksplanDeletePeriode {

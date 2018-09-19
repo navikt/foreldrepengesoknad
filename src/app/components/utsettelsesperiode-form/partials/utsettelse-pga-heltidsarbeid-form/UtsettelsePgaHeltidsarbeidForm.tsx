@@ -3,7 +3,6 @@ import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
 import { Tidsperiode } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
@@ -29,12 +28,6 @@ class UtsettelsePgaHeltidsarbeidForm extends React.Component<Props> {
 
         return (
             <>
-                <Block>
-                    <UtsettelseTidsperiodeSpørsmål
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        onChange={(t) => onChange({ tidsperiode: t })}
-                    />
-                </Block>
                 <Block visible={validTidsperiode !== undefined}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold}

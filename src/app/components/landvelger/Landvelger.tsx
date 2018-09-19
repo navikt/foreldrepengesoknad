@@ -3,6 +3,7 @@ import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import Select from 'common/components/skjema/wrappers/Select';
 import { Validator } from 'common/lib/validation/types';
+import { SelectChangeEvent } from '../../types/dom/Events';
 
 interface StateProps {
     defaultValue?: string;
@@ -48,7 +49,7 @@ class Landvelger extends React.Component<Props> {
             <Select
                 {...restProps}
                 infotekst={infotekst}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value, e)}
+                onChange={(e: SelectChangeEvent) => onChange(e.target.value, e)}
                 validators={validators}>
                 <option value="" />
                 {this.getCountryOptions()}

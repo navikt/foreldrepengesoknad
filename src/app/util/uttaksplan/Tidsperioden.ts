@@ -1,7 +1,7 @@
+import moment from 'moment';
 import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
-import { isSameDay, isAfter, isBefore } from 'date-fns';
 import { Uttaksdagen } from './Uttaksdagen';
 
 /**
@@ -61,11 +61,11 @@ export function getAntallUttaksdagerITidsperioder(tidsperioder: Tidsperiode[], t
 }
 
 export function erSammeEllerTidligereDato(d1: Date, d2: Date) {
-    return isSameDay(d1, d2) || isBefore(d1, d2);
+    return moment(d1).isSameOrBefore(d2, 'day');
 }
 
 export function erSammeEllerSenereDato(d1: Date, d2: Date) {
-    return isSameDay(d1, d2) || isAfter(d1, d2);
+    return moment(d1).isSameOrAfter(d2, 'day');
 }
 
 /**
@@ -136,5 +136,5 @@ function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: Tidsperiode, tidsperi
  * @param tidsperiode2
  */
 function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean {
-    return isAfter(tidsperiode1.fom, tidsperiode2.tom) || isBefore(tidsperiode1.tom, tidsperiode2.fom);
+    return moment(tidsperiode1.fom).isAfter(tidsperiode2.tom) || moment(tidsperiode1.tom).isBefore(tidsperiode2.fom);
 }

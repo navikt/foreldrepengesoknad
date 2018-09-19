@@ -5,16 +5,16 @@ import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
 
-export const getForelderNavn = (forelder: Forelder, navnForelder1: string, navnForelder2?: string): string => {
-    if (navnForelder2) {
-        return forelder === 'forelder1' ? navnForelder1 : navnForelder2;
+export const getForelderNavn = (forelder: Forelder, navnMor: string, navnFarMedmor?: string): string => {
+    if (navnFarMedmor) {
+        return forelder === Forelder.MOR ? navnMor : navnFarMedmor;
     }
-    return forelder === 'forelder1' ? navnForelder1 : forelder;
+    return forelder === Forelder.MOR ? navnMor : forelder;
 };
 
-export const getPeriodeForelderNavn = (periode: Periode, navnForelder1: string, navnForelder2?: string): string => {
+export const getPeriodeForelderNavn = (periode: Periode, navnMor: string, navnFarMedmor?: string): string => {
     if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) {
-        return getForelderNavn(periode.forelder, navnForelder1, navnForelder2);
+        return getForelderNavn(periode.forelder, navnMor, navnFarMedmor);
     }
     return 'Ingen forelder registrert';
 };
