@@ -111,7 +111,12 @@ describe('Cleanup AnnenForelder', () => {
                         harRettPåForeldrepengerSpørsmål: true
                     };
                     expect(
-                        cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'harRettPåForeldrepenger'])
+                        cleanAndCheckProps(testSøknad, testVisibility, [
+                            'fornavn',
+                            'etternavn',
+                            'fnr',
+                            'harRettPåForeldrepenger'
+                        ])
                     ).toBeTruthy();
                 });
                 it('far HAR rett på foreldrepenger', () => {
@@ -122,7 +127,8 @@ describe('Cleanup AnnenForelder', () => {
                     };
                     expect(
                         cleanAndCheckProps(testSøknad, testVisibility, [
-                            'navn',
+                            'fornavn',
+                            'etternavn',
                             'fnr',
                             'harRettPåForeldrepenger',
                             'erInformertOmSøknaden'
@@ -137,7 +143,7 @@ describe('Cleanup AnnenForelder', () => {
                     ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
                     harRettPåForeldrepengerSpørsmål: false
                 };
-                expect(cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr'])).toBeTruthy();
+                expect(cleanAndCheckProps(testSøknad, testVisibility, ['fornavn', 'etternavn', 'fnr'])).toBeTruthy();
             });
             it('far SKAL ha foreldrepenger', () => {
                 testVisibility = {
@@ -145,7 +151,12 @@ describe('Cleanup AnnenForelder', () => {
                     harRettPåForeldrepengerSpørsmål: true
                 };
                 expect(
-                    cleanAndCheckProps(testSøknad, testVisibility, ['navn', 'fnr', 'harRettPåForeldrepenger'])
+                    cleanAndCheckProps(testSøknad, testVisibility, [
+                        'fornavn',
+                        'etternavn',
+                        'fnr',
+                        'harRettPåForeldrepenger'
+                    ])
                 ).toBeTruthy();
             });
         });
