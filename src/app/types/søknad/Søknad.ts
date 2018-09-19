@@ -1,10 +1,10 @@
 import AnnenForelder, { AnnenForelderPartial } from './AnnenForelder';
 
 import InformasjonOmUtenlandsopphold, { InformasjonOmUtenlandsoppholdPartial } from './InformasjonOmUtenlandsopphold';
-import { BarnPartial, Barn } from './Barn';
+import { Barn, BarnPartial } from './Barn';
 import Søker, { SøkerPartial } from './Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { RegistrertBarn, RegistrertAnnenForelder } from '../Person';
+import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
@@ -70,16 +70,6 @@ export interface SøknadPartial {
     dekningsgrad?: Dekningsgrad;
     ekstrainfo: SkjemaEkstrainfo;
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
-}
-
-export enum AttachmentType {
-    OMSORGSOVERTAKELSE = 'omsorgsovertakelse',
-    ADOPSJONSVEDTAK = 'adopsjonsvedtak',
-    TERMINBEKREFTELSE = 'terminbekreftelse',
-    FØDSELSATTEST = 'fødselsattest',
-    ANNEN_INNTEKT_DOKUMENTASJON = 'anneninntektdokumentasjon',
-    UTSETTELSE_SYKDOM = 'utsettelseSykdomUttaksplan',
-    MORS_AKTIVITET_DOKUMENTASJON = 'morsaktivitetdokumentasjon'
 }
 
 // TODO remove redundant skjemanummer when we know more about which to use

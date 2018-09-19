@@ -1,6 +1,7 @@
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Operation } from '../types/Operation';
 import { SøknadPartial } from '../../types/søknad/Søknad';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export const editAttachmentInState = (attachment: Attachment, state: SøknadPartial): SøknadPartial => {
     return updateAttachmentState(attachment, state, Operation.EDIT);
@@ -73,11 +74,12 @@ const stateWithUpdatedAndreInntekterAttachments = (
 const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, operation: Operation): SøknadPartial => {
     const { type } = attachment;
     const isAttachmentForBarn =
-        type === 'terminbekreftelse' ||
-        type === 'fødselsattest' ||
-        type === 'omsorgsovertakelse' ||
-        type === 'adopsjonsvedtak';
-    const isAttachmentForAnnenInntekt = type === 'anneninntektdokumentasjon';
+        type === AttachmentType.TERMINBEKREFTELSE ||
+        type === AttachmentType.FØDSELSATTEST ||
+        type === AttachmentType.OMSORGSOVERTAKELSE ||
+        type === AttachmentType.OMSORGSOVERTAKELSEDATO ||
+        type === AttachmentType.ADOPSJONSVEDTAK;
+    const isAttachmentForAnnenInntekt = type === AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON;
 
     if (isAttachmentForBarn) {
         return stateWithUpdatedBarnAttachments(attachment, state, operation);

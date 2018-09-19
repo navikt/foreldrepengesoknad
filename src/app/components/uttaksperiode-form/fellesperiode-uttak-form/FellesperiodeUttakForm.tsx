@@ -4,10 +4,10 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from '../../../types/søknad/Søknad';
 import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAktivitetSkjemanummer';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface FellesperiodeUttakSkjemadata {
     morsAktivitetIPerioden?: MorsAktivitet;
