@@ -8,7 +8,12 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    TilgjengeligStønadskonto,
+    StønadskontoType,
+    Uttaksperiode
+} from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -20,6 +25,7 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
+import { Perioden } from '../../../util/uttaksplan/Perioden';
 
 interface StateProps {
     stegProps: StegProps;
@@ -125,6 +131,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     const uttaksStatus: Stønadskontouttak[] = tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let forelder: Forelder | undefined;
+        let dagerGjenstående = konto.dager;
+        const uttaksplanPeriode = søknad.uttaksplan.find((p: Uttaksperiode) => p.konto === konto.konto);
 
         if (konto.konto === StønadskontoType.Mødrekvote) {
             forelder = Forelder.MOR;
@@ -134,9 +142,13 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
             forelder = Forelder.FARMEDMOR;
         }
 
+        if (uttaksplanPeriode) {
+            dagerGjenstående = dagerGjenstående - Perioden(uttaksplanPeriode).getAntallUttaksdager();
+        }
+
         return {
             konto: konto.konto,
-            dagerGjenstående: konto.dager,
+            dagerGjenstående,
             forelder: forelder ? forelder : undefined
         };
     });
