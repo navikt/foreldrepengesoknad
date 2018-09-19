@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -24,6 +24,7 @@ import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     person: Person;
     uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
@@ -40,8 +41,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person, dispatch } = this.props;
-        const uttaksplanInfo = søknad.ekstrainfo.uttaksplanInfo!;
+        const { søknad, person, tilgjengeligeStønadskontoer, dispatch } = this.props;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -50,13 +50,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             bekreftDialogSynlig: false
         };
 
-        if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            dispatch(søknadActions.uttaksplanLagForslag(uttaksplanInfo.tilgjengeligeStønadskontoer));
+        if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
+            dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
         }
-        if (uttaksplanInfo.tilgjengeligeStønadskontoer.length === 0) {
+        if (tilgjengeligeStønadskontoer.length === 0) {
             dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
         }
-        dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
     }
 
     showBekreftDialog() {
@@ -74,14 +73,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     render() {
         const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
-        const uttaksplanInfo = søknad.ekstrainfo.uttaksplanInfo!;
+        const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
             <Steg
                 {...this.props.stegProps}
                 confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
@@ -134,6 +133,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     return {
         søknad,
+        tilgjengeligeStønadskontoer,
         person: props.søkerinfo.person,
         stegProps,
         uttaksStatus,
