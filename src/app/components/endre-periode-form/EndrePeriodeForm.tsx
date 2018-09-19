@@ -13,26 +13,37 @@ import { preventFormSubmit } from 'common/util/eventUtils';
 import LinkButton from '../link-button/LinkButton';
 
 import './endrePeriodeForm.less';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import Block from 'common/components/block/Block';
+import BekreftDialog from 'common/components/dialog/BekreftDialog';
+import getMessage from 'common/util/i18nUtils';
 
 export interface OwnProps {
     periode: Periode;
 }
 
+interface State {
+    visBekreftSlettDialog: boolean;
+}
 const bem = BEMHelper('endrePeriodeForm');
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps & DispatchProps & InjectedIntlProps;
 
-class EndrePeriodeForm extends React.Component<Props, {}> {
+class EndrePeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.onRequestDelete = this.onRequestDelete.bind(this);
+        this.onCancelDelete = this.onCancelDelete.bind(this);
         this.onDelete = this.onDelete.bind(this);
+
+        this.state = {
+            visBekreftSlettDialog: false
+        };
     }
     onChange(p: Periode) {
         let updatedPeriode: Periode | undefined;
@@ -51,8 +62,14 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
     onDelete() {
         this.props.dispatch(søknadActionCreators.uttaksplanDeletePeriode(this.props.periode));
     }
+    onRequestDelete() {
+        this.setState({ visBekreftSlettDialog: true });
+    }
+    onCancelDelete() {
+        this.setState({ visBekreftSlettDialog: false });
+    }
     render() {
-        const { periode } = this.props;
+        const { periode, intl } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
@@ -68,14 +85,24 @@ class EndrePeriodeForm extends React.Component<Props, {}> {
                 )}
                 <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
                     <div className={bem.element('footer')}>
-                        <LinkButton onClick={this.onDelete} className={bem.element('slettPeriode')}>
+                        <LinkButton onClick={this.onRequestDelete} className={bem.element('slettPeriode')}>
                             <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
                         </LinkButton>
                     </div>
                 </Block>
+                <BekreftDialog
+                    tittel={getMessage(intl, `endrePeriodeForm.bekreftSlettDialog.${periode.type}.tittel`)}
+                    contentLabel={getMessage(intl, `endrePeriodeForm.bekreftSlettDialog.${periode.type}.tittel`)}
+                    isOpen={this.state.visBekreftSlettDialog}
+                    onBekreft={this.onDelete}
+                    onRequestClose={this.onCancelDelete}
+                    bekreftLabel={getMessage(intl, 'ja')}
+                    avbrytLabel={getMessage(intl, 'nei')}>
+                    <FormattedMessage id="endrePeriodeForm.bekreftSlettDialog.uttak.melding" />
+                </BekreftDialog>
             </form>
         );
     }
 }
 
-export default connect()(EndrePeriodeForm);
+export default connect()(injectIntl(EndrePeriodeForm));

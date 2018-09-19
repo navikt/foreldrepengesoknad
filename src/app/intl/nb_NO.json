@@ -496,6 +496,13 @@
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+    "endrePeriodeForm.slett.opphold": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette denne utsettelsen?",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett uttaksperiode",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne uttaksperioden?",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
     "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",
