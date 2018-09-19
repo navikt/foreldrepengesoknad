@@ -15,6 +15,7 @@ import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
 import { getStønadskontoNavn, getPeriodeForelderNavn } from '../../util/uttaksplan';
+import { NavnPåForeldre } from 'common/types';
 
 export type AdvarselType = 'advarsel' | 'feil';
 
@@ -26,8 +27,7 @@ interface Advarsel {
 export interface Props {
     periode: Periode;
     advarsel?: Advarsel;
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
     isOpen?: boolean;
 }
 
@@ -40,9 +40,9 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
     return UttaksplanIkonKeys.advarsel; // Feilikon mangler
 };
 
-const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnMor: string, navnFarMedmor?: string): string => {
+const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, foreldernavn: NavnPåForeldre): string => {
     if (periode.type === Periodetype.Uttak) {
-        return getStønadskontoNavn(intl, periode.konto, navnMor, navnFarMedmor);
+        return getStønadskontoNavn(intl, periode.konto, foreldernavn);
     }
     if (periode.type === Periodetype.Utsettelse) {
         const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
@@ -72,13 +72,12 @@ const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     advarsel,
-    navnMor,
-    navnFarMedmor,
+    navnPåForeldre,
     isOpen,
     intl
 }) => {
     const tidsperiode = getValidTidsperiode(periode.tidsperiode);
-    const foreldernavn = getPeriodeForelderNavn(periode, navnMor, navnFarMedmor);
+    const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     return (
         <article
             className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
@@ -88,7 +87,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                 {renderPeriodeIkon(periode)}
             </div>
             <div className={BEM.element('beskrivelse')}>
-                <Element tag="h1">{getPeriodeTittel(intl, periode, navnMor, navnFarMedmor)}</Element>
+                <Element tag="h1">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
                 {tidsperiode && (
                     <Normaltekst>
                         {getVarighetString(Tidsperioden(tidsperiode).getAntallUttaksdager(), intl)}

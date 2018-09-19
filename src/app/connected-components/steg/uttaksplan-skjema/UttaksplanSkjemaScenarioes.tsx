@@ -12,6 +12,7 @@ import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
 import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
+import { getNavnPåForeldre } from '../../../util/uttaksplan';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -22,11 +23,14 @@ export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo }) => (
     <>
-        <HarAnnenForelderSøktForeldrepengerSpørsmål />
+        <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
-        <MorSinSisteUttaksdagSpørsmål visible={søknad.dekningsgrad !== undefined} />
+        <MorSinSisteUttaksdagSpørsmål
+            visible={søknad.dekningsgrad !== undefined}
+            navnMor={getNavnPåForeldre(søknad, søkerinfo.person).mor}
+        />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}
         />
@@ -48,18 +52,19 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
             <FordelingFellesperiodeSpørsmål
                 visible={harSvartPåStartdato}
                 ukerFellesperiode={antallUkerFellesperiode}
-                navnMor={søkerinfo.person.fornavn}
-                navnFarMedmor={søknad.annenForelder.fornavn}
+                navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
             />
         </>
     );
 };
 
 const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo, antallUkerFellesperiode }) => {
+    /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    const navnPåForeldre = getNavnPåForeldre(søknad, søkerinfo.person);
     return (
         <>
-            <HarAnnenForelderSøktForeldrepengerSpørsmål />
+            <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
             <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
             {søknad.situasjon === Søkersituasjon.ADOPSJON && (
                 <StartdatoAdopsjonBolk
@@ -70,8 +75,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
             <FordelingFellesperiodeSpørsmål
                 visible={skjema.startdatoPermisjon !== undefined}
                 ukerFellesperiode={antallUkerFellesperiode}
-                navnMor={søkerinfo.person.fornavn}
-                navnFarMedmor={søknad.annenForelder.fornavn}
+                navnPåForeldre={navnPåForeldre}
             />
         </>
     );
@@ -98,11 +102,14 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
     );
 };
 
-const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
+const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinfo }) => (
     <>
-        <HarAnnenForelderSøktForeldrepengerSpørsmål />
+        <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
-        <MorSinSisteUttaksdagSpørsmål visible={søknad.dekningsgrad !== undefined} />
+        <MorSinSisteUttaksdagSpørsmål
+            visible={søknad.dekningsgrad !== undefined}
+            navnMor={getNavnPåForeldre(søknad, søkerinfo.person).mor}
+        />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}
         />

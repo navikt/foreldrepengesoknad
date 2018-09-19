@@ -15,8 +15,9 @@ import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/Ska
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, NavnPåForeldre } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
+import { getNavnPåForeldre } from '../../../../util/uttaksplan';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
@@ -36,6 +37,7 @@ interface UtsettelsePgaArbeidFormProps {
 interface StateProps {
     søknad: Søknad;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    navnPåForeldre: NavnPåForeldre;
 }
 
 type Props = UtsettelsePgaArbeidFormProps & StateProps & InjectedIntlProps;
@@ -119,7 +121,8 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person)
     };
 };
 export default connect(mapStateToProps)(injectIntl(UtsettelsePgaDeltidsarbeidForm));

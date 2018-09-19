@@ -20,6 +20,7 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
+import { getNavnPåForeldre } from '../../../util/uttaksplan';
 
 interface StateProps {
     stegProps: StegProps;
@@ -74,10 +75,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     render() {
         const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
-        const navn = {
-            navnMor: søkerinfo.person.fornavn,
-            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.fornavn : undefined
-        };
+        const navnPåForeldre = getNavnPåForeldre(søknad, søkerinfo.person);
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
@@ -98,11 +96,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 uttaksplan={søknad.uttaksplan}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
-                                {...navn}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
                         <Block margin="l">
-                            <Uttaksoppsummering uttak={uttaksStatus} {...navn} />
+                            <Uttaksoppsummering uttak={uttaksStatus} navnPåForeldre={navnPåForeldre} />
                         </Block>
                     </React.Fragment>
                 )}

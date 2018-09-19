@@ -7,21 +7,21 @@ import PeriodeContent from './PeriodeContent';
 
 export interface Props {
     perioder: Periode[];
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 import './periodeliste.less';
+import { NavnPåForeldre } from 'common/types';
 
 const BEM = BEMHelper('periodeliste');
 
-const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnMor, navnFarMedmor }) => (
+const Periodeliste: React.StatelessComponent<Props> = ({ perioder, navnPåForeldre }) => (
     <div className={BEM.className}>
         {perioder.map((p) => (
             <div className={BEM.element('item')} key={p.id}>
                 <ToggleItem
                     expandedHeaderClassName="periodeheader--isOpen"
-                    renderHeader={() => <PeriodeHeader periode={p} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />}
+                    renderHeader={() => <PeriodeHeader periode={p} navnPåForeldre={navnPåForeldre} />}
                     renderContent={() => <PeriodeContent periode={p} />}
                 />
             </div>
