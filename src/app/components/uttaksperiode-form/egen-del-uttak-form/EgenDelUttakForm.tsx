@@ -1,24 +1,33 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Block from 'common/components/block/Block';
 
 interface EgenDelUttakFormProps {
     ønskerSamtidigUttak?: boolean;
     onChange: (ønskerSamtidigUttak: boolean) => void;
 }
 
-type Props = EgenDelUttakFormProps & InjectedIntlProps;
-
-class EgenDelUttakForm extends React.Component<Props> {
+class EgenDelUttakForm extends React.Component<EgenDelUttakFormProps> {
     render() {
         const { ønskerSamtidigUttak, onChange } = this.props;
         return (
-            <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
-                ønskerSamtidigUttak={ønskerSamtidigUttak}
-                onChange={(v) => onChange(v)}
-            />
+            <>
+                <Block margin={ønskerSamtidigUttak ? 's' : 'm'}>
+                    <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
+                        ønskerSamtidigUttak={ønskerSamtidigUttak}
+                        onChange={(v) => onChange(v)}
+                    />
+                </Block>
+                {ønskerSamtidigUttak && (
+                    <Veilederinfo>
+                        <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst" />
+                    </Veilederinfo>
+                )}
+            </>
         );
     }
 }
 
-export default injectIntl(EgenDelUttakForm);
+export default EgenDelUttakForm;
