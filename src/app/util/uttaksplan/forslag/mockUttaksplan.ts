@@ -2,7 +2,6 @@ import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
-import { getPermisjonsregler } from '../permisjonsregler';
 import { opprettUttaksperioderToForeldreEttBarnMor } from './toForeldreEttBarnMor';
 import { opprettUttaksperioderAleneomsorgFarEllerMedmor } from './aleneomsorgFarEllerMedmor';
 
@@ -33,11 +32,7 @@ export const lagMockUttaksplan = (
         if (situasjon === Søkersituasjon.FØDSEL) {
             if (erAleneOmOmsorg) {
                 if (rolle === SøkerRolle.MOR) {
-                    return opprettUttaksperioderAleneomsorgMor(
-                        famDato,
-                        getPermisjonsregler(),
-                        tilgjengeligeStønadskontoer
-                    );
+                    return opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
                 } else {
                     return opprettUttaksperioderAleneomsorgFarEllerMedmor(famDato, tilgjengeligeStønadskontoer);
                 }
@@ -59,11 +54,7 @@ export const lagMockUttaksplan = (
             }
         } else if (situasjon === Søkersituasjon.ADOPSJON) {
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(
-                    famDato,
-                    getPermisjonsregler(),
-                    tilgjengeligeStønadskontoer
-                );
+                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }
@@ -74,11 +65,7 @@ export const lagMockUttaksplan = (
             }
         } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(
-                    famDato,
-                    getPermisjonsregler(),
-                    tilgjengeligeStønadskontoer
-                );
+                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
                 perioder.shift();
                 return perioder;
             }
