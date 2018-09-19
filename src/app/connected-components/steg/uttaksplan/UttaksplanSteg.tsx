@@ -8,12 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import {
-    Periode,
-    TilgjengeligStønadskonto,
-    StønadskontoType,
-    Uttaksperiode
-} from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -24,8 +19,7 @@ import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoPa
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
-import { Forelder } from 'common/types';
-import { Perioden } from '../../../util/uttaksplan/Perioden';
+import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 
 interface StateProps {
     stegProps: StegProps;
@@ -129,29 +123,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     } = state;
     const { søkerinfo, history } = props;
 
-    const uttaksStatus: Stønadskontouttak[] = tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
-        let forelder: Forelder | undefined;
-        let dagerGjenstående = konto.dager;
-        const uttaksplanPeriode = søknad.uttaksplan.find((p: Uttaksperiode) => p.konto === konto.konto);
-
-        if (konto.konto === StønadskontoType.Mødrekvote) {
-            forelder = Forelder.MOR;
-        }
-
-        if (konto.konto === StønadskontoType.Fedrekvote) {
-            forelder = Forelder.FARMEDMOR;
-        }
-
-        if (uttaksplanPeriode) {
-            dagerGjenstående = dagerGjenstående - Perioden(uttaksplanPeriode).getAntallUttaksdager();
-        }
-
-        return {
-            konto: konto.konto,
-            dagerGjenstående,
-            forelder: forelder ? forelder : undefined
-        };
-    });
+    const uttaksStatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
+        tilgjengeligeStønadskontoer,
+        søknad.uttaksplan
+    );
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: true,
