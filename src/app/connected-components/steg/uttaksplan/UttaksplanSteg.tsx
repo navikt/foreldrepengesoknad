@@ -59,7 +59,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
     }
 
-    showBekreftDialog(callback: () => void) {
+    showBekreftDialog() {
         this.setState({ bekreftDialogSynlig: true });
     }
 
@@ -78,9 +78,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             navnMor: søkerinfo.person.fornavn,
             navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.navn : undefined
         };
+        const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
-            <Steg {...this.props.stegProps} confirmNavigateToPreviousStep={this.showBekreftDialog}>
+            <Steg
+                {...this.props.stegProps}
+                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
