@@ -1,23 +1,23 @@
 {
     "søker": {
         "fnr": "25059710888",
-        "fornavn": "MOR",
-        "etternavn": "MORSEN",
+        "fornavn": "s:Hedda",
+        "etternavn": "Gabler",
         "kjønn": "K",
         "fødselsdato": "1997-05-25",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "BARN",
-                "etternavn": "MORSEN",
+                "fornavn": "b:Amalie",
+                "etternavn": "Skraam",
                 "fnr": "29031857021",
                 "kjønn": "K",
                 "fødselsdato": "2018-03-29",
                 "annenForelder": {
                     "fnr": "28019400133",
-                    "fornavn": "FAR",
-                    "etternavn": "FARSEN",
+                    "fornavn": "af:Henriette",
+                    "etternavn": "Ibsen",
                     "fødselsdato": "1994-01-28"
                 }
             }

@@ -23,8 +23,8 @@ import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 
 interface StateProps {
     stegProps: StegProps;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     søknad: Søknad;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     person: Person;
     uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
@@ -41,7 +41,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person, dispatch, tilgjengeligeStønadskontoer } = this.props;
+        const { søknad, person, tilgjengeligeStønadskontoer, dispatch } = this.props;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -50,13 +50,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             bekreftDialogSynlig: false
         };
 
-        if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
+        if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
             dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
         }
         if (tilgjengeligeStønadskontoer.length === 0) {
             dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
         }
-        dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
     }
 
     showBekreftDialog() {
@@ -73,18 +72,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     render() {
-        const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
-        const navn = {
-            navnMor: søkerinfo.person.fornavn,
-            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.fornavn : undefined
-        };
+        const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
+        const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
             <Steg
                 {...this.props.stegProps}
                 confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
@@ -98,11 +94,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 uttaksplan={søknad.uttaksplan}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
-                                {...navn}
+                                navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                             />
                         </Block>
                         <Block margin="l">
-                            <Uttaksoppsummering uttak={uttaksStatus} {...navn} />
+                            <Uttaksoppsummering uttak={uttaksStatus} navnPåForeldre={uttaksplanInfo.navnPåForeldre} />
                         </Block>
                     </React.Fragment>
                 )}

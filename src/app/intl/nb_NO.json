@@ -285,7 +285,7 @@
     "dokumentasjon.vedlagt": "Dokumentasjon er vedlagt",
     "dokumentasjon.mangler": "Dokumentasjon mangler",
 
-    "spørsmål.harAnnenForelderSøktFP.label": "Har den andre forelderen søkt om foreldrepenger/mottar foreldrepenger?",
+    "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} søkt om foreldrepenger/mottar foreldrepenger?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label": "Skal du begynne rett etter at mor er ferdig?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.dekningsgrad.100": "49 uker med 100% foreldrepenger",
@@ -299,7 +299,7 @@
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg hadde ikke noe uttak før termin",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
-    "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
@@ -457,6 +457,7 @@
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesdel",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
+    "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "utsettelsesårsak.ARBEID": "Arbeid",
@@ -492,10 +493,16 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
-    "periodeliste.uttak": "{foreldernavn} sin kvote",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+    "endrePeriodeForm.slett.opphold": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette denne utsettelsen?",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett uttaksperiode",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne uttaksperioden?",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett utsettelse",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
     "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",

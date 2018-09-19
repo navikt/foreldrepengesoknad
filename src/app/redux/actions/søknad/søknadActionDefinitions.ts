@@ -6,6 +6,7 @@ import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
@@ -29,7 +30,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
-    'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag'
+    'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
+    'UTTAKSPLAN_SET_AGGREGERT_INFO' = 'uttaksplanSetAggregertInfo'
 }
 
 export interface UpdateSøknadenGjelder {
@@ -102,6 +104,11 @@ export interface UttaksplanUpdatePeriode {
     periode: Periode;
 }
 
+export interface UttaksplanSetAggregertInfo {
+    type: SøknadActionKeys.UTTAKSPLAN_SET_AGGREGERT_INFO;
+    info: UttaksplanInfo;
+}
+
 export interface UploadAttachment {
     type: SøknadActionKeys.UPLOAD_ATTACHMENT;
     payload: Attachment;
@@ -159,4 +166,5 @@ export type SøknadAction =
     | UttaksplanDeletePeriode
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
-    | UttaksplanLagForslag;
+    | UttaksplanLagForslag
+    | UttaksplanSetAggregertInfo;
