@@ -18,7 +18,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
             return (
                 (skjema.harPlanlagtOppholdIUttak
                     ? skjema.planlagtOppholdSkjemaValid === true
-                    : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerForelder1 !== undefined
+                    : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerMor !== undefined
             );
         case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
             return (

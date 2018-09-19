@@ -1,4 +1,5 @@
 @import './../../../common/styles/variables.less';
+@import './../../../common/styles/mixins.less';
 @import './../../../../node_modules/nav-frontend-lenker-style/src/lenker-mixins';
 
 @breakpoint: 400px;
@@ -34,19 +35,7 @@
         min-height: 1rem;
 
         &__deleteButton {
-            .lenke-mixin();
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            color: @redError;
-
-            &:hover {
-                border-bottom-color: @redError;
-            }
-
-            &:active {
-                border-bottom-color: @redError;
-            }
+            .deleteButton();
 
             @media (max-width: @breakpoint) {
                 display: block;

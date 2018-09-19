@@ -28,6 +28,14 @@ export function getTilgjengeligeStønadskonter(params: GetTilgjengeligeStønadsk
         params
     };
 }
+export function getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
+    params: GetTilgjengeligeStønadskontoerParams
+): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
+        params
+    };
+}
 
 export function deleteStoredAppState(): ApiActionTypes {
     return {
@@ -55,5 +63,6 @@ export default {
     deleteStoredAppState,
     storeAppState,
     getTilgjengeligeStønadskonter,
+    getTilgjengeligeStønadskonterAndLagUttaksplanForslag,
     updateApi
 };

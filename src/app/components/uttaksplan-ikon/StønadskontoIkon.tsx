@@ -8,10 +8,11 @@ import IconBox from '../icon-box/IconBox';
 export interface Props {
     konto: StønadskontoType;
     forelder?: Forelder;
+    gradert?: boolean;
 }
 
-const StønadskontoIkon: React.StatelessComponent<Props> = ({ konto, forelder }) => (
-    <IconBox color={getStønadskontoFarge(konto, forelder)}>
+const StønadskontoIkon: React.StatelessComponent<Props> = ({ konto, forelder, gradert }) => (
+    <IconBox color={getStønadskontoFarge(konto, forelder)} stripes={gradert}>
         <UttaksplanIkon ikon={UttaksplanIkonKeys.uttak} />
     </IconBox>
 );

@@ -10,19 +10,18 @@ import HvilkenKvoteSkalBenyttesSpørsmål from '../../../../spørsmål/HvilkenKv
 import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers/index';
 import Søknad from '../../../../types/søknad/Søknad';
-import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/aktuelleStønadskontoer';
+import { getVelgbareStønadskontotyper } from '../../../../util/uttaksplan/stønadskontoer';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import visibility from './visibility';
 import HvorSkalDuJobbeSpørsmål from '../../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import Arbeidsforhold from '../../../../types/Arbeidsforhold';
-import UtsettelseTidsperiodeSpørsmål from '../UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
 import { Tidsperiode } from 'common/types';
 import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 
 export interface UtsettelsePgaDeltidsarbeidSkjemadata {
     stillingsprosent?: string;
     konto?: StønadskontoType;
-    samtidigGradertUttak?: boolean;
+    ønskerSamtidigUttak?: boolean;
     orgnr?: string;
     tidsperiode?: Partial<Tidsperiode>;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
@@ -57,7 +56,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
     render() {
         const { skjemadata, søknad, arbeidsforhold, tilgjengeligeStønadskontoer, intl, onChange } = this.props;
-        const { stillingsprosent, konto, samtidigGradertUttak, orgnr, tidsperiode } = skjemadata;
+        const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
@@ -65,12 +64,6 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <Block>
-                    <UtsettelseTidsperiodeSpørsmål
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        onChange={(t) => onChange({ tidsperiode: t })}
-                    />
-                </Block>
                 <Block visible={validTidsperiode !== undefined}>
                     <Input
                         bredde="XS"
@@ -100,9 +93,9 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
                 <Block visible={visibility.skalDereHaGradertUttakSamtidig(skjemadata, søknad)}>
                     <SkalDereHaGradertUttakSamtidigSpørsmål
                         onChange={(v: boolean) => {
-                            onChange({ samtidigGradertUttak: v });
+                            onChange({ ønskerSamtidigUttak: v });
                         }}
-                        samtidigGradertUttak={samtidigGradertUttak}
+                        samtidigGradertUttak={ønskerSamtidigUttak}
                     />
                 </Block>
 

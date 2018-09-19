@@ -290,7 +290,9 @@
     "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere ved å velge 100 prosent",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
+    "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når startet du ditt uttak før termin?",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg hadde ikke noe uttak før termin",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er mor sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
@@ -309,9 +311,9 @@
     "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
     "uttaksplan.skjema.fordeling.sporsmal": "Hvordan vil dere dele fellesdel?",
     "uttaksplan.skjema.fordeling.aria.fordeling":
-        "Hvor mange uker av fellesdelen skal {navnForelder1} ha av totalt {ukerFellesperiode} uker?",
+        "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.fordeling.veiledning":
-        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnForelder1}.",
+        "Av perioden med foreldrepenger må mor ta ut {pakrevdMor} uker, og den andre forelderen {pakrevdFarMedmor} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnFarMedmor} tar foreldrepenger fra fellesdelen er det aktivitetskrav til {navnMor}.",
     "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
     "uttaksplan.skjema.fordeling.sporsmal.ikonlabel": "Les mer om fordeling av fellesperioden",
@@ -388,9 +390,9 @@
         "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
 
     "oppsummering.relasjonTilBarn": "Relasjon til barn",
-    "oppsummering.termindato": "med termindato den",
-    "oppsummering.terminbekreftelse": "Det er vedlagt en terminbekreftelse",
-    "oppsummering.terminbekreftelseDato": "Som er datert den",
+    "oppsummering.termindato.label": "med termindato den",
+    "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
+    "oppsummering.terminbekreftelseDato.label": "Som er datert den",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
     "oppsummering.ettBarn": "ett barn",
     "oppsummering.tvillinger": "tvillinger",
@@ -402,6 +404,14 @@
     "oppsummering.antallBarn.7": "Syv",
     "oppsummering.antallBarn.8": "Åtte",
     "oppsummering.antallBarn.9": "Ni",
+
+    "oppsummering.fødselsdato.label": "fødselsdato:",
+    "oppsummering.adopsjonAvEktefellesBarn.label": "adopsjonavektefellesbarn",
+    "oppsummering.adopsjonsdato.label": "adopsjonsdato:",
+    "oppsummering.adoptertIUtlandet.label": "adoptertIUtlandet:",
+    "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse:",
+
+    "oppsummering.ankomstdato.label": "ankomstdato:",
 
     "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
@@ -417,6 +427,15 @@
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
+    "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
+    "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
+    "oppsummering.iNorgeSiste12MndTrue": "vært i norge",
+    "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
+    "oppsummering.iNorgeNeste12": "i norge",
+    "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
+    "oppsummering.fødselINorgeTrue": "i norge",
+    "oppsummering.fødselINorgeFalse": "i utlandet",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.referansenummer": "Vi mottok søknaden med referansenummer {referansenr} den {1} kl. {0}.",
@@ -426,11 +445,11 @@
         " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
 
-    "stønadskontotype.MØDREKVOTE": "Mødrekvote",
+    "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
     "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
-    "stønadskontotype.FEDREKVOTE": "Fedrekvote",
+    "stønadskontotype.FEDREKVOTE": "Far sin kvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
-    "stønadskontotype.FELLESPERIODE": "Fellesperiode",
+    "stønadskontotype.FELLESPERIODE": "Fellesdel",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
@@ -439,12 +458,29 @@
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
 
+    "morsAktivitet.Arbeid": "Arbeid",
+    "morsAktivitet.Utdanning": "Utdanning",
+    "morsAktivitet.Kvalifiseringsprogrammet": "Kvalifiseringsprogrammet",
+    "morsAktivitet.Introduksjonsprogrammet": "Introduksjonsprogrammet",
+    "morsAktivitet.TrengerHjelp": "For syk til å ta seg av barnet",
+    "morsAktivitet.Innlagt": "Innlagt på helseinstitusjon",
+    "morsAktivitet.ArbeidOgUtdanning": "Arbeid og utdanning",
+    "morsAktivitet.SamtidigUttak": "Samtidig uttak",
+
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
-    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+    "avbrytSøknadDialog.tittel": "Bekreft navigasjon",
     "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
 
+    "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
+    "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
+    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Uttaksplan vil bli nullstillt",
+    "bekreftGåTilUttaksplanSkjemaDialog.intro":
+        "Dersom du går tilbake til forrige steg vil uttaksplanen bli nullstillt, og du må lage uttaksplanen på nytt.",
+    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
+
+    "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
@@ -454,6 +490,10 @@
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
+
+    "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",
+    "skalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål.spørsmål":
+        "Skal du være hjemme samtidig med den andre forelderen?",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",

@@ -7,12 +7,13 @@ import { Forelder } from 'common/types';
 
 let nyPeriode: Uttaksperiode = {
     type: Periodetype.Uttak,
-    forelder: Forelder.FORELDER_1,
+    forelder: Forelder.MOR,
     konto: StønadskontoType.Fedrekvote,
     tidsperiode: {
         fom: new Date(),
         tom: new Date()
-    }
+    },
+    ønskerSamtidigUttak: false
 };
 
 describe('Søknad - Uttaksplan reducer', () => {
@@ -37,13 +38,13 @@ describe('Søknad - Uttaksplan reducer', () => {
         const periode2: Uttaksperiode = state.uttaksplan[1] as Uttaksperiode;
         const periode2BeforeUpdate = JSON.stringify(periode2);
 
-        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FORELDER_2 }));
+        state = søknadReducer(state, actions.uttaksplanUpdatePeriode({ ...periode1, forelder: Forelder.FARMEDMOR }));
         const updatedPeriodeInState: Uttaksperiode = Periodene(state.uttaksplan).getPeriode(
             periode1.id!
         ) as Uttaksperiode;
         expect(state.uttaksplan.length).toBe(2);
         expect(updatedPeriodeInState).toBeDefined();
-        expect(updatedPeriodeInState.forelder).toEqual('forelder2');
+        expect(updatedPeriodeInState.forelder).toEqual('farMedmor');
 
         const periode2AfterUpdate = Periodene(state.uttaksplan).getPeriode(periode2.id!) as Uttaksperiode;
         expect(JSON.stringify(periode2AfterUpdate)).toEqual(periode2BeforeUpdate);

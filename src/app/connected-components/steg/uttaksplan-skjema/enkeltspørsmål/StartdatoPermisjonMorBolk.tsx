@@ -6,10 +6,21 @@ import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 
-type Props = UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+interface OwnProps {
+    barnetErFødt: boolean;
+}
+
+type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
 const StartdatoPermisjonMorBolk = (props: Props) => {
-    const { visible, intl } = props;
+    const { barnetErFødt, visible, intl } = props;
+    const spørsmålNår = barnetErFødt
+        ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.label')
+        : getMessage(intl, 'spørsmål.startdatoPermisjon.label');
+
+    const spørsmålHaddeIkke = barnetErFødt
+        ? getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label')
+        : getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label');
 
     return (
         <UttaksplanSkjemaSpørsmål
@@ -20,7 +31,7 @@ const StartdatoPermisjonMorBolk = (props: Props) => {
                     <Block margin="xs">
                         <DatoInput
                             id="permisjonStartdato"
-                            label={getMessage(intl, 'spørsmål.startdatoPermisjon.label')}
+                            label={spørsmålNår}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
@@ -29,7 +40,7 @@ const StartdatoPermisjonMorBolk = (props: Props) => {
                     <Block>
                         <Checkbox
                             checked={data.skalIkkeHaUttakFørTermin || false}
-                            label={getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label')}
+                            label={spørsmålHaddeIkke}
                             onChange={(e) =>
                                 onChange({ skalIkkeHaUttakFørTermin: e.target.checked, startdatoPermisjon: undefined })
                             }

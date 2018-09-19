@@ -17,8 +17,10 @@ import apiActionCreators from '../../redux/actions/api/apiActionCreators';
 import StegFooter from '../steg-footer/StegFooter';
 import BackButton from 'common/components/back-button/BackButton';
 import Block from 'common/components/block/Block';
-import AvbrytSøknadDialog from '../avbryt-s\u00F8knad-dialog/AvbrytS\u00F8knadDialog';
-import søknadActionCreators from '../../redux/actions/s\u00F8knad/s\u00F8knadActionCreators';
+import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+
+import './steg.less';
 
 export interface StegProps {
     id: StegID;
@@ -30,6 +32,7 @@ export interface StegProps {
     previousStegRoute?: StegID;
     onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
     preSubmit?: () => void;
+    confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
 interface State {
@@ -57,6 +60,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
+        this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
     }
 
     handleAvbrytSøknad() {
@@ -84,9 +88,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
     navigateToNextStep(): void {
         const { id, nesteStegRoute } = this.props;
-
         const nextStepPathname = nesteStegRoute ? nesteStegRoute : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
-
         this.props.history.push(nextStepPathname);
     }
 
@@ -105,6 +107,17 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(previousStegPathname);
     }
 
+    handleNavigateToPreviousStepClick() {
+        const { confirmNavigateToPreviousStep } = this.props;
+        if (confirmNavigateToPreviousStep === undefined) {
+            this.navigateToPreviousStep();
+            return;
+        }
+        confirmNavigateToPreviousStep(() => {
+            this.navigateToPreviousStep();
+        });
+    }
+
     shouldHideBackButton(): boolean {
         const activeStegId = this.props.id;
         return (
@@ -121,7 +134,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
                         hidden={this.shouldHideBackButton()}
-                        onClick={this.navigateToPreviousStep}
+                        onClick={this.handleNavigateToPreviousStepClick}
                     />
                 </Block>
                 <Block>
@@ -157,7 +170,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         {this.renderContent()}
                     </ValiderbarForm>
                 ) : (
-                    this.renderContent()
+                    <div className={bem.className}>{this.renderContent()}</div>
                 )}
                 <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
                 <AvbrytSøknadDialog

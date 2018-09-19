@@ -16,12 +16,10 @@ import Søknad from '../../../types/søknad/Søknad';
 import { apiActionCreators } from '../../../redux/actions';
 import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
-import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
+import OppsummeringWrapper from 'common/components/summary/SummaryWrapper';
 import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
-import { lagMockUttaksplan } from '../../../util/uttaksplan/forslag/mockUttaksplan';
-import MockUttaksplan from '../../../dev/mock-uttaksplan/MockUttaksplan';
 
 interface StateProps {
     person: Person;
@@ -36,11 +34,6 @@ class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.sendSøknad = this.sendSøknad.bind(this);
-    }
-
-    componentDidMount() {
-        const mockPerioder = lagMockUttaksplan(this.props.søknad);
-        this.props.dispatch(søknadActions.uttaksplanSetPerioder(mockPerioder));
     }
 
     componentDidUpdate(previousProps: Props, newProps: Props) {
@@ -60,20 +53,15 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, person, stegProps, dispatch, intl } = this.props;
+        const { søknad, søkerinfo, stegProps, dispatch, intl } = this.props;
+        const { person } = søkerinfo;
         if (person === undefined) {
             return null;
         }
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                <OppsummeringWrapper className="blokk-m" person={person} søknad={søknad} />
-
-                <MockUttaksplan
-                    perioder={this.props.søknad.uttaksplan}
-                    navnForelder1={person.fornavn}
-                    navnForelder2={søknad.annenForelder ? søknad.annenForelder.navn : undefined}
-                />
+                <OppsummeringWrapper className="blokk-m" søkerinfo={søkerinfo} søknad={søknad} />
 
                 <BekreftCheckboksPanel
                     className="blokk-m"

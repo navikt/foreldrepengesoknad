@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -16,42 +16,76 @@ import Uttaksplanlegger from '../../../components/uttaksplanlegger/Uttaksplanleg
 import Block from 'common/components/block/Block';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
-import Spinner from 'nav-frontend-spinner';
+import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
+import { Forelder } from 'common/types';
 
 interface StateProps {
     stegProps: StegProps;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     søknad: Søknad;
     person: Person;
+    uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
+interface UttaksplanStegState {
+    bekreftDialogSynlig: boolean;
+}
+
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
-class UttaksplanSteg extends React.Component<Props> {
+class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person } = this.props;
+        const { søknad, person, dispatch, tilgjengeligeStønadskontoer } = this.props;
+        this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
+        this.showBekreftDialog = this.showBekreftDialog.bind(this);
+        this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
+
+        this.state = {
+            bekreftDialogSynlig: false
+        };
 
         if (!søknad.ekstrainfo.uttaksplanSkjema.forslagLaget) {
-            this.props.dispatch(søknadActions.uttaksplanLagForslag());
+            dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
         }
+        if (tilgjengeligeStønadskontoer.length === 0) {
+            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+        }
+        dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+    }
 
-        this.props.dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+    showBekreftDialog() {
+        this.setState({ bekreftDialogSynlig: true });
+    }
+
+    hideBekreftDialog() {
+        this.setState({ bekreftDialogSynlig: false });
+    }
+
+    onBekreftGåTilbake() {
+        this.setState({ bekreftDialogSynlig: false });
+        this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
     }
 
     render() {
-        const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
+        const { søknad, søkerinfo, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
         const navn = {
-            navnForelder1: søkerinfo.person.fornavn,
-            navnForelder2: søknad.annenForelder ? søknad.annenForelder.navn : undefined
+            navnMor: søkerinfo.person.fornavn,
+            navnFarMedmor: søknad.annenForelder ? søknad.annenForelder.navn : undefined
         };
+        const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
-            <Steg {...this.props.stegProps}>
+            <Steg
+                {...this.props.stegProps}
+                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
                 {isLoadingTilgjengeligeStønadskontoer === true ? (
-                    <Spinner type="XXL" />
+                    <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
                         <Veilederinfo maxWidth="30">
@@ -67,17 +101,45 @@ class UttaksplanSteg extends React.Component<Props> {
                                 {...navn}
                             />
                         </Block>
+                        <Block margin="l">
+                            <Uttaksoppsummering uttak={uttaksStatus} {...navn} />
+                        </Block>
                     </React.Fragment>
                 )}
+                <BekreftGåTilUttaksplanSkjemaDialog
+                    synlig={this.state.bekreftDialogSynlig}
+                    onGåTilbake={this.onBekreftGåTilbake}
+                    onBliVærende={this.hideBekreftDialog}
+                />
             </Steg>
         );
     }
 }
 
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
-    const { søknad } = state;
+    const {
+        søknad,
+        api: { tilgjengeligeStønadskontoer }
+    } = state;
     const { søkerinfo, history } = props;
 
+    const uttaksStatus: Stønadskontouttak[] = tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
+        let forelder: Forelder | undefined;
+
+        if (konto.konto === StønadskontoType.Mødrekvote) {
+            forelder = Forelder.MOR;
+        }
+
+        if (konto.konto === StønadskontoType.Fedrekvote) {
+            forelder = Forelder.FARMEDMOR;
+        }
+
+        return {
+            konto: konto.konto,
+            dagerGjenstående: konto.dager,
+            forelder: forelder ? forelder : undefined
+        };
+    });
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: true,
@@ -88,8 +150,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     return {
         søknad,
+        tilgjengeligeStønadskontoer,
         person: props.søkerinfo.person,
         stegProps,
+        uttaksStatus,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer: state.api.isLoadingTilgjengeligeStønadskontoer
     };

@@ -17,6 +17,8 @@ import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUt
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
+import { apiActionCreators } from '../../../redux/actions';
+import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 
 interface StateProps {
     stegProps: StegProps;
@@ -30,20 +32,28 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class UttaksplanSkjemaSteg extends React.Component<Props> {
     componentWillMount() {
         const defaultAntallUkerAvFellesperiode = Math.round(this.props.antallUkerFellesperiode / 2);
-        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerForelder1 === undefined) {
+        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerMor === undefined) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
-                    fellesperiodeukerForelder1: defaultAntallUkerAvFellesperiode
+                    fellesperiodeukerMor: defaultAntallUkerAvFellesperiode
                 })
             );
         }
     }
 
     render() {
-        const { stegProps, søkerinfo, antallUkerFellesperiode } = this.props;
+        const { stegProps, dispatch, søkerinfo, antallUkerFellesperiode } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
-            <Steg {...stegProps}>
+            <Steg
+                {...stegProps}
+                preSubmit={() =>
+                    dispatch(
+                        apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
+                            getStønadskontoParams(søknad, søkerinfo.person)
+                        )
+                    )
+                }>
                 <UttaksplanSkjemaScenarioes
                     scenario={getUttaksplanSkjemaScenario(søknad, this.props.søkerinfo)}
                     søkerinfo={søkerinfo}

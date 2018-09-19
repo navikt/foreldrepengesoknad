@@ -1,12 +1,16 @@
-import { takeEvery, all, put, call } from 'redux-saga/effects';
-import { default as apiActions } from '../actions/api/apiActionCreators';
+import { takeEvery, all, put, call, select } from 'redux-saga/effects';
+import { default as apiActions, updateApi } from '../actions/api/apiActionCreators';
 import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import søknadActionCreators from '../actions/søknad/søknadActionCreators';
+import { AppState } from '../reducers';
+import { getStønadskontoSortOrder } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
+        yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         const tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
@@ -16,10 +20,16 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 dager: stønadskontoer.kontoer[konto]
             });
         });
-        yield apiActions.updateApi({
-            isLoadingTilgjengeligeStønadskontoer: false,
-            tilgjengeligeStønadskontoer
-        });
+
+        yield put(
+            apiActions.updateApi({
+                isLoadingTilgjengeligeStønadskontoer: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
+                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
+                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
+                )
+            })
+        );
     } catch (error) {
         yield put(
             apiActions.updateApi({
@@ -37,6 +47,22 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     }
 }
 
+function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
+    yield put(søknadActionCreators.uttaksplanSetPerioder([]));
+    yield all([getStønadskontoer(action)]);
+    const tilgjengeligeKontoer: TilgjengeligStønadskonto[] = yield select(
+        (state: AppState) => state.api.tilgjengeligeStønadskontoer
+    );
+    yield put(søknadActionCreators.uttaksplanLagForslag(tilgjengeligeKontoer));
+    yield put(apiActions.storeAppState());
+}
+
 export default function* søknadskontoerSaga() {
-    yield all([takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER, getStønadskontoer)]);
+    yield all([
+        takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER, getStønadskontoer),
+        takeEvery(
+            ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
+            getStønadskontoerAndLagUttaksplan
+        )
+    ]);
 }
