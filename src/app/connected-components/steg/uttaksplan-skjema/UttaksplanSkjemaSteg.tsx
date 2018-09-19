@@ -14,15 +14,17 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
-import { getFamiliehendelsedato } from '../../../util/uttaksplan';
+import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
+import { NavnPåForeldre } from 'common/types';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: SøknadPartial;
+    navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
     antallUkerFellesperiode: number;
 }
@@ -42,7 +44,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, dispatch, søkerinfo, antallUkerFellesperiode } = this.props;
+        const { stegProps, dispatch, søkerinfo, antallUkerFellesperiode, navnPåForeldre } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
             <Steg
@@ -57,6 +59,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 <UttaksplanSkjemaScenarioes
                     scenario={getUttaksplanSkjemaScenario(søknad, this.props.søkerinfo)}
                     søknad={søknad}
+                    navnPåForeldre={navnPåForeldre}
                     antallUkerFellesperiode={antallUkerFellesperiode}
                 />
             </Steg>
@@ -80,6 +83,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     return {
         stegProps,
         søknad: state.søknad,
+        navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
         familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
         antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!)
     };
