@@ -35,7 +35,8 @@ class AnnenForelderPersonaliaPart extends React.Component<Props> {
 
         dispatch(
             søknadActions.updateAnnenForelder({
-                navn: undefined,
+                fornavn: undefined,
+                etternavn: undefined,
                 fnr: undefined,
                 utenlandskFnr: undefined,
                 kanIkkeOppgis,
@@ -51,13 +52,14 @@ class AnnenForelderPersonaliaPart extends React.Component<Props> {
 
     render() {
         const { søkersFødselsnummer, annenForelder, situasjon, dispatch, intl, vis } = this.props;
-        const { kanIkkeOppgis, navn } = annenForelder;
+        const { kanIkkeOppgis, fornavn, etternavn } = annenForelder;
 
         return (
             <React.Fragment>
                 <Block margin="xs">
                     <NavnPåAnnenForelderSpørsmål
-                        navn={navn}
+                        fornavn={fornavn}
+                        etternavn={etternavn}
                         kanIkkeOppgis={kanIkkeOppgis}
                         onChange={(annenForelderPartial: Partial<AnnenForelder>) =>
                             dispatch(søknadActions.updateAnnenForelder(annenForelderPartial))

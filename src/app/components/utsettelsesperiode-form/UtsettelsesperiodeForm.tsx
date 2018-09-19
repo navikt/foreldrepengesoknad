@@ -34,6 +34,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { formaterNavn } from '../../util/domain/personUtil';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -134,7 +135,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         return [
             ...defaultRadios,
             {
-                label: `${annenForelder.navn} ${getMessage(intl, 'skaltautforeldrepenger')}`,
+                label: `${formaterNavn(annenForelder.fornavn, annenForelder.etternavn)} ${getMessage(
+                    intl,
+                    'skaltautforeldrepenger'
+                )}`,
                 value: ''
             }
         ];

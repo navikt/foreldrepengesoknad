@@ -1,5 +1,6 @@
 interface AnnenForelder {
-    navn: string;
+    fornavn: string;
+    etternavn: string;
     fnr: string;
     utenlandskFnr: boolean;
     bostedsland: string;

@@ -17,7 +17,8 @@ const registrertAnnenForelder: RegistrertAnnenForelder = {
 
 const annenForelder: Partial<AnnenForelder> = {
     fnr: '123',
-    navn: 'FAR FARSEN',
+    fornavn: 'FAR',
+    etternavn: 'FARSEN',
     harRettPåForeldrepenger: true
 };
 const barn: Partial<Barn> = {
@@ -36,9 +37,12 @@ describe('AnnenForelder visibility tests', () => {
         });
         it('Should show visAnnenForelderOppfølging when registrertAnnenForelder is undefined and when defined name/fnr', () => {
             expect(func.visAnnenForelderOppfølgingPart(annenForelder!, undefined)).toBeTruthy();
-            expect(func.visAnnenForelderOppfølgingPart({ navn: 'abc', fnr: '123' }, undefined)).toBeTruthy();
-            expect(func.visAnnenForelderOppfølgingPart({ navn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
-            expect(func.visAnnenForelderOppfølgingPart({ navn: '', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart({ fornavn: 'abc', fnr: '123' }, undefined)).toBeTruthy();
+            expect(func.visAnnenForelderOppfølgingPart({ fornavn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart({ fornavn: '', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart({ etternavn: 'abc', fnr: '123' }, undefined)).toBeTruthy();
+            expect(func.visAnnenForelderOppfølgingPart({ etternavn: 'asd', fnr: '' }!, undefined)).toBeFalsy();
+            expect(func.visAnnenForelderOppfølgingPart({ etternavn: '', fnr: '' }!, undefined)).toBeFalsy();
         });
     });
     describe('Routing visibilities', () => {
@@ -116,9 +120,12 @@ describe('AnnenForelder visibility tests', () => {
                 expect(func.visAnnenForelderKanIkkeOppgisValg(true, true)).toBeFalsy();
             });
             it('Should only render fødselsnummerInput when navn has value', () => {
-                expect(func.visFødselsnummerInput(true, { navn: undefined })).toBeFalsy();
-                expect(func.visFødselsnummerInput(true, { navn: '' })).toBeFalsy();
-                expect(func.visFødselsnummerInput(true, { navn: 'a' })).toBeTruthy();
+                expect(func.visFødselsnummerInput(true, { fornavn: undefined })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { fornavn: '' })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { fornavn: 'a' })).toBeTruthy();
+                expect(func.visFødselsnummerInput(true, { etternavn: undefined })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { etternavn: '' })).toBeFalsy();
+                expect(func.visFødselsnummerInput(true, { etternavn: 'a' })).toBeTruthy();
             });
         });
 

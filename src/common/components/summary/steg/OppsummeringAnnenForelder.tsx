@@ -6,6 +6,7 @@ import { Element } from 'nav-frontend-typografi';
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
+import { formaterNavn } from 'app/util/domain/personUtil';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
@@ -16,7 +17,8 @@ type Props = AnnenForelderOppsummeringProps & InjectedIntlProps;
 const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
     const { erAleneOmOmsorg, intl } = props;
     const {
-        navn,
+        fornavn,
+        etternavn,
         fnr,
         utenlandskFnr,
         bostedsland,
@@ -30,6 +32,8 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
     const erAleneOmOmsorgLabel = getMessage(intl, 'oppsummering.annenForelder.aleneOmOmsorg.label', {
         personligPronomen: erAleneOmOmsorg ? getMessage(intl, 'jeg') : getMessage(intl, 'vi')
     });
+
+    const navn = fornavn && etternavn ? formaterNavn(fornavn, etternavn) : undefined;
 
     return (
         <React.Fragment>

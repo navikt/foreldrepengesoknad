@@ -18,7 +18,8 @@ const annenForelder: AnnenForelder = {
     fnr: '123',
     harRettPåForeldrepenger: false,
     kanIkkeOppgis: false,
-    navn: 'navnet',
+    fornavn: 'fornavnet',
+    etternavn: 'etternavnet',
     utenlandskFnr: false
 };
 

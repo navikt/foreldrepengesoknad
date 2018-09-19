@@ -65,6 +65,8 @@
     "annenForelder.spørsmål.kanOppgis": "Jeg kan ikke oppgi navnet til den andre forelderen",
     "annenForelder.spørsmål.adoptererAlene": "Jeg adopterer alene",
     "annenForelder.spørsmål.navn": "Hva heter den andre forelderen?",
+    "annenForelder.spørsmål.fornavn": "Fornavn:",
+    "annenForelder.spørsmål.etternavn": "Etternavn:",
     "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
     "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
 
