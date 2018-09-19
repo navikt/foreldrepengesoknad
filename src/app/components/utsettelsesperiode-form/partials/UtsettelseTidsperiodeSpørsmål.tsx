@@ -4,15 +4,21 @@ import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
+    familiehendelsesdato: Date;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({ onChange, tidsperiode }) => (
+const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
+    onChange,
+    familiehendelsesdato,
+    tidsperiode
+}) => (
     <TidsperiodeBolk
         onChange={(t: Partial<Tidsperiode>) => onChange(t)}
         tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
         datoAvgrensninger={{
             fra: {
+                minDato: familiehendelsesdato,
                 maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
             },
             til: {
