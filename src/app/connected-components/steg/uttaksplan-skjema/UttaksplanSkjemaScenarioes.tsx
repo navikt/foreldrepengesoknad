@@ -48,15 +48,15 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, søkerinf
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
         søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
-    const barnetErFødt = søknad.barn.erBarnetFødt;
-    const visOppholdOgFordeling =
-        (barnetErFødt && !søknad.dekningsgrad !== undefined) || (!barnetErFødt && harSvartPåStartdato);
 
     return (
         <>
             <DekningsgradSpørsmål />
-            {!barnetErFødt && <StartdatoPermisjonMorBolk visible={søknad.dekningsgrad !== undefined} />}
-            {visOppholdOgFordeling && (
+            <StartdatoPermisjonMorBolk
+                visible={søknad.dekningsgrad !== undefined}
+                barnetErFødt={søknad.barn.erBarnetFødt}
+            />
+            {harSvartPåStartdato && (
                 <>
                     <PlanlagtOppholdIUttakSpørsmål />
                     <PlanlagtOppholdBolk
