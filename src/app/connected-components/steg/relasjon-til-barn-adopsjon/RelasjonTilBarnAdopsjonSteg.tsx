@@ -17,7 +17,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { AttachmentType, Skjemanummer } from '../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
@@ -29,6 +29,7 @@ import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { apiActionCreators } from '../../../redux/actions';
 import { søknadStegPath } from '../StegRoutes';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 interface StateProps {
     barn: Adopsjonsbarn;

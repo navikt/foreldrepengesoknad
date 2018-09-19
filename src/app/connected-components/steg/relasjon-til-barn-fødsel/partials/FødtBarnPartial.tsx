@@ -11,10 +11,11 @@ import getMessage from 'common/util/i18nUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import Block from 'common/components/block/Block';
-import { AttachmentType, Skjemanummer } from '../../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 interface StateProps {
     barn: FødtBarn;
