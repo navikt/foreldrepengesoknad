@@ -38,8 +38,8 @@ class SøknadSendtSide extends React.Component<Props> {
                 id={kvittering.saksNr ? 'kvittering.saksNr' : 'kvittering.referanseId'}
                 values={{
                     id: kvittering.saksNr ? kvittering.saksNr : kvittering.referanseId,
-                    0: moment(kvittering.mottattDato).format('HH:mm'),
-                    1: moment(kvittering.mottattDato).format('LL')
+                    timeOfDay: moment(kvittering.mottattDato).format('HH:mm'),
+                    date: moment(kvittering.mottattDato).format('LL')
                 }}
             />
         );
