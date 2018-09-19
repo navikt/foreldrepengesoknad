@@ -64,31 +64,31 @@
 
     "annenForelder.spørsmål.kanOppgis": "Jeg kan ikke oppgi navnet til den andre forelderen",
     "annenForelder.spørsmål.adoptererAlene": "Jeg adopterer alene",
-    "annenForelder.spørsmål.navn": "Den andre forelderen heter...",
+    "annenForelder.spørsmål.navn": "Hva heter den andre forelderen?",
     "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
     "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
 
-    "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
-    "annenInntekt.spørsmål": "Har du hatt annen inntekt de siste 10 månedene?",
-    "annenInntekt.alternativ.hatt": "hatt annen inntekt",
-    "annenInntekt.alternativ.ikkeHatt": "ikke hatt annen inntekt",
+    "annenInntekt.modal.pågående": "Jeg jobber fortsatt i utlandet",
+    "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
+    "annenInntekt.alternativ.hatt": "ja",
+    "annenInntekt.alternativ.ikkeHatt": "nei",
     "annenInntekt.leggTilInntekt": "Legg til inntekt",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
-    "annenInntekt.modal.tittel": "Legg til inntekt",
+    "annenInntekt.modal.tittel": "Legg til inntektskilde",
     "annenInntekt.modal.select.spørsmål": "Jeg har hatt inntekt i forbindelse med...",
-    "annenInntekt.modal.land": "Hvilket land gjelder det?",
-    "annenInntekt.spørsmål.arbeidsgiver": "Navn på arbeidsgiver...",
-    "annenInntekt.spørsmål.næringsinntekt": "Næringsinntekt sålangt i år (før skatt)",
+    "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
+    "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
+    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt?",
 
     "annenInntekt.arbeidsforhold.infotekst":
         "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
-    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Vi fant ingen registrerte arbeidsforhold.",
-    "annenInntekt.arbeidsforhold.label": "Registrerte arbeidsforhold",
+    "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
+    "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Ytelser fra NAV",
-    "annenInntekt.ytelser.tekst": "Eventuelle ytelser du mottar fra NAV vil tas hensyn til i saksbehandlingen",
+    "annenInntekt.ytelser.tekst": "Vi har oversikt over hvilke ytelser du får fra NAV.",
 
     "inntektstype.etterlønn_arbeidsgiver": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektstype.etterlønn_arbeidsgiver_info":
@@ -112,10 +112,10 @@
     "antallBarn.alternativ.ettbarn": "ett barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
-    "antallBarn.select.tekst": "Antall barn...",
+    "antallBarn.select.tekst": "Hvor mange barn venter du?",
     "antallBarn.select.velg": "Velg",
 
-    "fødselsdatoer.fødsel": "Det eldste barnet ble født den...",
+    "fødselsdatoer.fødsel": "Når ble barnet født?",
     "fødselsdatoer.flere.1": "Første barnet ble født den...",
     "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
     "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
@@ -141,37 +141,39 @@
 
     "morForSykSpørsmål.spørsmål": "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
 
-    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål": "Er du selvstendig næringsdrivende?",
+    "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
+        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
-    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste 10 månedene?",
+    "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
-        "Har du i de 10 siste månedene hatt oppdrag for nære venner eller familie?",
+        "Har du hatt oppdrag for nær venn eller familie de ti siste månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
-    "frilans.oppstart": "Når begynte du som frilanser?",
+    "frilans.oppstart": "Når startet du?",
     "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
     "frilansOppdrag.modal.pågående": "Pågående oppdrag",
     "frilansOppdrag.oppfølgingsspørsmål": "Oppdrag for nære venner eller familie siste 10 måneder",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Næringsinntekt etter endring",
-    "varigEndringAvNæringsinntekt.dato.label": "Dato for endring",
-    "varigEndringAvNæringsinntekt.forklaring.label": "Forklaring",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen",
+    "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
+    "varigEndringAvNæringsinntekt.forklaring.label":
+        "Her skriver du hva som har endret seg i virksomheten eller arbeidssituasjonen din",
 
-    "jobberFremdelesSomFrilans.spørsmål": "Jobber du fremdeles som frilans?",
+    "jobberFremdelesSomFrilans.spørsmål": "Jobber du fortsatt som frilanser?",
 
     "næringstype.spørsmål": "Hvilken type virksomhet har du?",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
-    "selvstendigNæringsdrivende.modal.navn": "Navn på virksomheten",
-    "selvstendigNæringsdrivende.modal.orgnr": "Organisasjonsnummer",
+    "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
+    "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten registrert i?",
-    "selvstendigNæringsdrivende.modal.stillingsprosent": "Stillingsprosent",
+    "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
     "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
     "varigEndringAvNæringsinntekt.spørsmål":
-        "Har du hatt en varig endring av næringsinntekten din de siste 4 kalenderårene?",
+        "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
 
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
@@ -179,7 +181,7 @@
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
     "næringsrelasjon.navn": "Navn på personen",
     "næringsrelasjon.tlfnr": "Telefonnummer til personen",
-    "næringsrelasjon.nærVennEllerFamilie": "Er du en nær venn eller familie av denne personen?",
+    "næringsrelasjon.nærVennEllerFamilie": "Er dere nære venner eller i familie?",
 
     "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
 
@@ -188,12 +190,13 @@
     "erAnnenForelderInformert.spørsmål": "Er {navn} informert om søknaden min?",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
-    "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er arbeidsgiver nær venn eller familie?",
+    "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
 
     "riktigBarn.spørsmål": "Jeg vil søke om foreldrepenger for",
-    "kanInnhenteOpplysningerFraRevisor.spørsmål": "Samtykker du til uthenting av opplsysninger fra revisor?",
+    "kanInnhenteOpplysningerFraRevisor.spørsmål":
+        "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
-    "annenForelder.aleneOmOmsorg": "Jeg har aleneomsorgen",
+    "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
     "annenForelder.bostedsland": "og bor i...",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
@@ -211,15 +214,15 @@
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
 
-    "boddINorgeSiste12Mnd.spørsmål": "De siste 12 månedene har jeg...",
+    "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
     "boddINorgeSiste12Mnd.alternativ.boddIUtlandet": "bodd i utlandet helt eller delvis",
 
-    "iNorgeNeste12Mnd.spørsmål": "De neste 12 månedene skal jeg...",
+    "iNorgeNeste12Mnd.spørsmål": "Hvor skal du bo de neste 12 månedene?",
     "iNorgeNeste12Mnd.alternativ.boINorge": "kun bo i Norge",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bo i utlandet helt eller delvis",
 
-    "søkerrolle.spørsmål": "Jeg søker som ...",
+    "søkerrolle.spørsmål": "Hva søker du som?",
     "søkerrolle.rolle.MOR": "Mor",
     "søkerrolle.rolle.FAR": "Far",
     "søkerrolle.rolle.FAR2": "Far 2",
@@ -228,7 +231,7 @@
     "søkerrolle.rolle.FORESATT": "Foresatt",
     "søkerrolle.rolle.FORESATT2": "Foresatt 2",
 
-    "søkersituasjon.spørsmål": "Jeg søker om foreldrepenger ved...",
+    "søkersituasjon.spørsmål": "Velg det som gjelder for deg",
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
     "søkersituasjon.alternativ.stebarn": "Stebarnadopsjon",
@@ -254,12 +257,12 @@
 
     "ankomstdato.spørsmål": "Når ankommer barnet Norge?",
 
-    "termindato.spørsmål": "Når er termindato?",
+    "termindato.spørsmål": "Når er termindatoen?",
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
     "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
-    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge ved fødselen?",
+    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
 
     "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
     "stebarnsadopsjonsdato.spørsmål": "Når er er dato for stebarnsadopsjon?",
@@ -269,8 +272,8 @@
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
-    "utenlandsopphold.select.spørsmål.tidligereOpphold": "Jeg bodde i...",
-    "utenlandsopphold.select.spørsmål.senereOpphold": "Jeg skal bo i...",
+    "utenlandsopphold.select.spørsmål.tidligereOpphold": "Hvilket land bodde du i?",
+    "utenlandsopphold.select.spørsmål.senereOpphold": "Hvilket land skal du bo i?",
 
     "slett.utenlandsopphold": "Slett opphold",
     "slett.oppdrag": "Slett oppdrag",
@@ -351,7 +354,7 @@
 
     "harJobbetForNærVennEllerFamilieSiste12Mnd.spørsmål":
         "Har du de siste 12 månedene jobbet for en nær venn eller familie?",
-    "driverFosterhjem.spørsmål": "Driver du fosterhjem?",
+    "driverFosterhjem.spørsmål": "Har du inntekt som fosterforelder?",
 
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
