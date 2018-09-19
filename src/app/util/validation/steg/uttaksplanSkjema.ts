@@ -15,40 +15,18 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinf
                 skjema.skalHaDelAvFellesperiode !== undefined
             );
         case UttaksplanSkjemaScenario.s3_morFødsel:
-            return (
-                (skjema.harPlanlagtOppholdIUttak
-                    ? skjema.planlagtOppholdSkjemaValid === true
-                    : skjema.harPlanlagtOppholdIUttak === false) && skjema.fellesperiodeukerMor !== undefined
-            );
+            return skjema.fellesperiodeukerMor !== undefined;
         case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
-            return (
-                skjema.startdatoPermisjon !== undefined &&
-                (skjema.harPlanlagtOppholdIUttak === true
-                    ? skjema.planlagtOppholdSkjemaValid === true
-                    : skjema.harPlanlagtOppholdIUttak === false)
-            );
+            return skjema.startdatoPermisjon !== undefined;
 
         case UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon:
-            return (
-                skjema.startdatoPermisjon !== undefined &&
-                (skjema.harPlanlagtOppholdIUttak === true
-                    ? skjema.planlagtOppholdSkjemaValid === true
-                    : skjema.harPlanlagtOppholdIUttak === false)
-            );
+            return skjema.startdatoPermisjon !== undefined;
 
         case UttaksplanSkjemaScenario.s6_bareFarMedmorRettTilFpFødsel:
-            return (
-                skjema.startdatoPermisjon !== undefined &&
-                (skjema.harPlanlagtOppholdIUttak === true
-                    ? skjema.planlagtOppholdSkjemaValid === true
-                    : skjema.harPlanlagtOppholdIUttak === false)
-            );
+            return skjema.startdatoPermisjon !== undefined;
 
         case UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan:
-            return (
-                (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
-                skjema.skalHaDelAvFellesperiode !== undefined
-            );
+            return skjema.skalHaDelAvFellesperiode !== undefined;
 
         default:
             return true;
