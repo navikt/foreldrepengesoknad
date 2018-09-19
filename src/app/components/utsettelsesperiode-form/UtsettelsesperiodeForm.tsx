@@ -33,6 +33,7 @@ import DateValues from '../../util/validation/values';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -203,7 +204,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     render() {
         const { gjelderOpphold, variant } = this.state;
-        const { periode, onChange, arbeidsforhold } = this.props;
+        const { periode, onChange, arbeidsforhold, søknad } = this.props;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
@@ -212,6 +213,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
+                            familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(t) => onChange({ tidsperiode: t })}
                         />
                     </Block>
