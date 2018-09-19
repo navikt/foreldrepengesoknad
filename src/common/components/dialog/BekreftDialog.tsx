@@ -5,8 +5,10 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import './bekreftDialog.less';
 import Knapperad from 'common/components/knapperad/Knapperad';
+import { Systemtittel } from 'nav-frontend-typografi';
 
 export interface Props extends ModalProps {
+    tittel?: string;
     /** Kalles når bruker klikker bekreft-knapp  */
     onBekreft: () => void;
     /** Kalles når bruker klikker avbryt. Dersom denne ikke settes, brukes onRequestClose fra nav-frontend-modal */
@@ -19,9 +21,10 @@ export interface Props extends ModalProps {
 
 class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
     render() {
-        const { onAvbryt, onBekreft, avbrytLabel, bekreftLabel, intl, children, ...modalProps } = this.props;
+        const { tittel, onAvbryt, onBekreft, avbrytLabel, bekreftLabel, intl, children, ...modalProps } = this.props;
         return (
             <Modal {...modalProps} className="bekreftDialog">
+                {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}
                 <div className="blokk-m">{children}</div>
                 <Knapperad>
                     <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
