@@ -164,7 +164,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block visible={erUttakAvEgenKvote}>
+                <Block visible={erUttakAvEgenKvote} hasChildBlocks={true}>
                     <EgenDelUttakForm
                         ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                         onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
