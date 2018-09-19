@@ -29,3 +29,5 @@ fasitResources:
     resourceType: baseurl
   - alias: loginservice
     resourceType: restservice
+  - alias: loadbalancer:foreldrepengesoknad
+    resourceType: loadbalancerconfig
