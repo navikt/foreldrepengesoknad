@@ -7,6 +7,11 @@ export enum Forelder {
     'FARMEDMOR' = 'farMedmor'
 }
 
+export interface NavnPåForeldre {
+    mor: string;
+    farMedmor: string;
+}
+
 export interface Tidsperiode {
     fom: Date;
     tom: Date;

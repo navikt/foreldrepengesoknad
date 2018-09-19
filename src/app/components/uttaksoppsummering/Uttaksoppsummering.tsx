@@ -3,7 +3,7 @@ import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { Undertittel } from 'nav-frontend-typografi';
 import Kontostatus from './Kontostatus';
 import TilesList from '../tiles-list/TilesList';
-import { Forelder } from 'common/types';
+import { Forelder, NavnPåForeldre } from 'common/types';
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
@@ -13,17 +13,16 @@ export interface Stønadskontouttak {
 
 export interface Props {
     uttak: Stønadskontouttak[];
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
 }
 
-const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnMor, navnFarMedmor }) => (
+const Uttaksoppsummering: React.StatelessComponent<Props> = ({ uttak, navnPåForeldre }) => (
     <section>
         <Undertittel tag="h1" className="blokk-xs">
             Gjenstående uttak
         </Undertittel>
         <TilesList>
-            {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />)}
+            {uttak.map((u, idx) => <Kontostatus key={idx} uttak={u} navnPåForeldre={navnPåForeldre} />)}
         </TilesList>
     </section>
 );

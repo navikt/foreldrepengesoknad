@@ -11,13 +11,13 @@ import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn } from '../../types/søknad/Barn';
+import { NavnPåForeldre } from 'common/types';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
     barn: Barn;
     uttaksplan: Periode[];
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -28,7 +28,7 @@ const BEM = BEMHelper('uttaksplanlegger');
 
 class Uttaksplanlegger extends React.Component<Props, {}> {
     render() {
-        const { søkersituasjon, barn, uttaksplan, navnMor, navnFarMedmor, onAdd, onRequestReset } = this.props;
+        const { søkersituasjon, barn, uttaksplan, navnPåForeldre, onAdd, onRequestReset } = this.props;
         return (
             <article className={BEM.className}>
                 <header className={BEM.element('header')}>
@@ -48,7 +48,7 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                     </span>
                 </header>
                 <Block visible={uttaksplan.length > 0}>
-                    <Periodeliste perioder={uttaksplan} navnMor={navnMor} navnFarMedmor={navnFarMedmor} />
+                    <Periodeliste perioder={uttaksplan} navnPåForeldre={navnPåForeldre} />
                 </Block>
                 <div className={BEM.element('addFormContainer')}>
                     <NyPeriodeBolk onSubmit={onAdd} />

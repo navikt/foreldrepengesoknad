@@ -20,7 +20,7 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erFarMedmor } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -119,7 +119,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
-        const søkerErFarMedmor = erFarMedmor(søkerinfo.person.kjønn, rolle);
+        const søkerErFarMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, rolle);
 
         const erUttakAvEgenKvote =
             (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErFarMedmor === false)) ||

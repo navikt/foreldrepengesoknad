@@ -9,22 +9,22 @@ import { getStønadskontoNavn } from '../../util/uttaksplan';
 
 import './kontostatus.less';
 import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
+import { NavnPåForeldre } from 'common/types';
 
 export interface Props {
     uttak: Stønadskontouttak;
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const BEM = BEMHelper('kontostatus');
 
-const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, navnMor, navnFarMedmor, intl }) => (
+const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, navnPåForeldre, intl }) => (
     <Normaltekst className={BEM.className} tag="div">
         <div className={BEM.element('ikon')}>
             <StønadskontoIkon konto={uttak.konto} />
         </div>
         <div className={BEM.element('content')}>
-            <div className={BEM.element('konto')}>{getStønadskontoNavn(intl, uttak.konto, navnMor, navnFarMedmor)}</div>
+            <div className={BEM.element('konto')}>{getStønadskontoNavn(intl, uttak.konto, navnPåForeldre)}</div>
             <strong className={BEM.element('dager')}>{getVarighetString(uttak.dagerGjenstående, intl)}</strong>
         </div>
     </Normaltekst>
