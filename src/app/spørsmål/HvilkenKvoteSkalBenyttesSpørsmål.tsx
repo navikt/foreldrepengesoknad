@@ -5,19 +5,22 @@ import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
 import { InputChangeEvent } from '../types/dom/Events';
+import { getStønadskontoNavn } from '../util/uttaksplan';
+import { NavnPåForeldre } from 'common/types';
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
     stønadskonto?: StønadskontoType;
+    navnPåForeldre: NavnPåForeldre;
     velgbareStønadskontoer: StønadskontoType[];
 }
 
 type Props = HvilkenKvoteSkalBenyttesSpørsmålProps & InjectedIntlProps;
 
 const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
-    const { stønadskonto, velgbareStønadskontoer, intl, onChange } = props;
+    const { stønadskonto, navnPåForeldre, velgbareStønadskontoer, intl, onChange } = props;
     const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
-        label: getMessage(intl, `stønadskontotype.${konto}`),
+        label: getStønadskontoNavn(intl, konto, navnPåForeldre),
         value: `${konto}`
     }));
 
@@ -25,7 +28,7 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
         <RadioPanelGruppeResponsive
             checked={stønadskonto}
             radios={radios}
-            name=""
+            name="kvote"
             twoColumns={true}
             legend={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
             onChange={(e: InputChangeEvent, v: StønadskontoType) => onChange(v)}

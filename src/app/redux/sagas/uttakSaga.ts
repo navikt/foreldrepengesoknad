@@ -6,7 +6,8 @@ import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
-import { getStønadskontoSortOrder } from '../../util/uttaksplan/st\u00F8nadskontoer';
+import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
+import { getAggregertUttaksplanInfo } from '../../util/uttaksplan/uttaksplanInfo';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -20,6 +21,18 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 dager: stønadskontoer.kontoer[konto]
             });
         });
+
+        const stateSelector = (state: AppState) => state;
+        const appState: AppState = yield select(stateSelector);
+        yield put(
+            søknadActionCreators.uttaksplanSetAggregertInfo(
+                getAggregertUttaksplanInfo(
+                    appState.søknad,
+                    appState.api.søkerinfo!,
+                    appState.api.tilgjengeligeStønadskontoer
+                )
+            )
+        );
 
         yield put(
             apiActions.updateApi({
