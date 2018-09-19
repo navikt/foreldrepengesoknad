@@ -19,7 +19,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
             navn="omsorgsfordeling"
             hjelpetekst="Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen."
             onChange={onChange}
-            valgtVerdi={!aleneOmOmsorg}
+            valgtVerdi={aleneOmOmsorg === undefined ? undefined : !aleneOmOmsorg}
         />
     );
 };
