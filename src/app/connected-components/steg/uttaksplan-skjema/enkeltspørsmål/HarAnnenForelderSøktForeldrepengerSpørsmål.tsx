@@ -3,15 +3,23 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import JaNeiSpørsmål from '../../../../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
-const HarAnnenForelderSøktForeldrepengerSpørsmål: React.StatelessComponent<
-    UttaksplanSkjemaspørsmålProps & InjectedIntlProps
-> = ({ visible = true, intl }) => (
+interface OwnProps {
+    navnAnnenForelder: string;
+}
+
+type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
+
+const HarAnnenForelderSøktForeldrepengerSpørsmål: React.StatelessComponent<Props> = ({
+    visible = true,
+    navnAnnenForelder,
+    intl
+}) => (
     <UttaksplanSkjemaSpørsmål
         visible={visible}
         render={(data, onChange) => (
             <JaNeiSpørsmål
                 navn="harAnnenForelderSøktFP"
-                spørsmål={intl.formatMessage({ id: 'spørsmål.harAnnenForelderSøktFP.label' })}
+                spørsmål={intl.formatMessage({ id: 'spørsmål.harAnnenForelderSøktFP.label' }, { navnAnnenForelder })}
                 valgtVerdi={data.harAnnenForelderSøktFP}
                 onChange={(harAnnenForelderSøktFP) => onChange({ harAnnenForelderSøktFP })}
             />

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import Periodeliste from '../../components/periodeliste/Periodeliste';
+import { NavnPåForeldre } from 'common/types';
 
 export interface Props {
     perioder: Periode[];
-    navnMor: string;
-    navnFarMedmor?: string;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 const MockUttaksplan: React.StatelessComponent<Props> = (props) => (

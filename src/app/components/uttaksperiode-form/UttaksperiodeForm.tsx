@@ -20,7 +20,7 @@ import Block from 'common/components/block/Block';
 import FellesperiodeUttakForm, {
     FellesperiodeUttakSkjemadata
 } from './fellesperiode-uttak-form/FellesperiodeUttakForm';
-import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor, erFarMedmor } from '../../util/domain/personUtil';
+import { annenForelderSkalHaForeldrepenger, erFarEllerMedmor } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -28,8 +28,8 @@ import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import ForeldrepengerFørFødselUttakForm from './foreldrepenger-f\u00F8r-f\u00F8dsel-uttak-form/ForeldrepengerF\u00F8rF\u00F8dselUttakForm';
+import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
+import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -119,7 +119,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { konto, tidsperiode } = periode;
         const velgbareStønadskontoer = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
-        const søkerErFarMedmor = erFarMedmor(søkerinfo.person.kjønn, rolle);
+        const søkerErFarMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, rolle);
 
         const erUttakAvEgenKvote =
             (konto === StønadskontoType.Mødrekvote && (rolle === SøkerRolle.MOR || søkerErFarMedmor === false)) ||
@@ -150,6 +150,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(stønadskonto: StønadskontoType) => {
                             onChange({ konto: stønadskonto });
                         }}
+                        navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
                         velgbareStønadskontoer={velgbareStønadskontoer}
                         stønadskonto={konto}
                     />
