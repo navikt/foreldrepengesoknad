@@ -41,7 +41,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         super(props);
 
         const { søknad, person, dispatch } = this.props;
-        const { uttaksplanInfo } = søknad.ekstrainfo;
+        const uttaksplanInfo = søknad.ekstrainfo.uttaksplanInfo!;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -74,8 +74,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
     render() {
         const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
-        const { uttaksplanInfo } = søknad.ekstrainfo;
-        const navnPåForeldre = uttaksplanInfo.navnPåForeldre;
+        const uttaksplanInfo = søknad.ekstrainfo.uttaksplanInfo!;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
@@ -96,11 +95,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 uttaksplan={søknad.uttaksplan}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
-                                navnPåForeldre={navnPåForeldre}
+                                navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                             />
                         </Block>
                         <Block margin="l">
-                            <Uttaksoppsummering uttak={uttaksStatus} navnPåForeldre={navnPåForeldre} />
+                            <Uttaksoppsummering uttak={uttaksStatus} navnPåForeldre={uttaksplanInfo.navnPåForeldre} />
                         </Block>
                     </React.Fragment>
                 )}

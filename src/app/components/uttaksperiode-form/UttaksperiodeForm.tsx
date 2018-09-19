@@ -102,7 +102,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { annenForelder } = søknad;
         const { konto, tidsperiode } = periode;
         const { uttaksplanInfo } = søknad.ekstrainfo;
-        const { velgbareStønadskontoer, søkerErFarEllerMedmor, navnPåForeldre } = uttaksplanInfo;
+        const { velgbareStønadskontoer, søkerErFarEllerMedmor, navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         const erUttakAvEgenKvote =
@@ -121,7 +121,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                             periode.konto
                                 ? getDatoavgrensningerForStønadskonto(
                                       periode.konto,
-                                      uttaksplanInfo.familiehendelsesdato,
+                                      familiehendelsesdato,
                                       getPermisjonsregler()
                                   )
                                 : undefined

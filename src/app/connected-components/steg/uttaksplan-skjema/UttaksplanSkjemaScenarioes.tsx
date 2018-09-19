@@ -26,7 +26,7 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
         <MorSinSisteUttaksdagSpørsmål
             visible={søknad.dekningsgrad !== undefined}
-            navnMor={søknad.ekstrainfo.uttaksplanInfo.navnPåForeldre.mor}
+            navnMor={søknad.ekstrainfo.uttaksplanInfo!.navnPåForeldre.mor}
         />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}
@@ -49,7 +49,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
             <FordelingFellesperiodeSpørsmål
                 visible={harSvartPåStartdato}
                 ukerFellesperiode={antallUkerFellesperiode}
-                navnPåForeldre={uttaksplanInfo.navnPåForeldre}
+                navnPåForeldre={uttaksplanInfo!.navnPåForeldre}
             />
         </>
     );
@@ -72,7 +72,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
             <FordelingFellesperiodeSpørsmål
                 visible={skjema.startdatoPermisjon !== undefined}
                 ukerFellesperiode={antallUkerFellesperiode}
-                navnPåForeldre={uttaksplanInfo.navnPåForeldre}
+                navnPåForeldre={uttaksplanInfo!.navnPåForeldre}
             />
         </>
     );
@@ -105,7 +105,7 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
         <MorSinSisteUttaksdagSpørsmål
             visible={søknad.dekningsgrad !== undefined}
-            navnMor={søknad.ekstrainfo.uttaksplanInfo.navnPåForeldre.mor}
+            navnMor={søknad.ekstrainfo.uttaksplanInfo!.navnPåForeldre.mor}
         />
         <SkalHaDelAvFellesperiodeSpørsmål
             visible={søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag !== undefined}

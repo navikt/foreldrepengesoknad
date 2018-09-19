@@ -39,7 +39,7 @@ interface SensitivSkjemaInfo {
 
 interface SkjemaEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
-    uttaksplanInfo: UttaksplanInfo;
+    uttaksplanInfo?: UttaksplanInfo;
 }
 
 interface Søknad {
