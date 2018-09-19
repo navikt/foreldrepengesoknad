@@ -22,18 +22,8 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             });
         });
 
-        yield put(
-            apiActions.updateApi({
-                isLoadingTilgjengeligeStønadskontoer: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
-                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
-                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
-                )
-            })
-        );
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
-
         yield put(
             søknadActionCreators.uttaksplanSetAggregertInfo(
                 getAggregertUttaksplanInfo(
@@ -42,6 +32,16 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                     appState.api.tilgjengeligeStønadskontoer
                 )
             )
+        );
+
+        yield put(
+            apiActions.updateApi({
+                isLoadingTilgjengeligeStønadskontoer: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
+                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
+                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
+                )
+            })
         );
     } catch (error) {
         yield put(
