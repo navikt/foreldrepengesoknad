@@ -8,7 +8,7 @@ import Lenke from 'nav-frontend-lenker';
 import Person from '../../../types/Person';
 import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
-import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
+import { Kvittering } from '../../../types/Kvittering';
 import SpotlightLetter from 'common/components/ikoner/SpotlightLetter';
 import Applikasjonsside from '../Applikasjonsside';
 
@@ -16,7 +16,7 @@ import './søknadSendtSide.less';
 
 interface StateProps {
     person: Person;
-    kvittering: ForeldrepengesøknadResponse;
+    kvittering: Kvittering;
 }
 
 type Props = StateProps & InjectedIntlProps & DispatchProp;
@@ -31,15 +31,15 @@ class SøknadSendtSide extends React.Component<Props> {
         );
     }
 
-    buildReferansenummerMessage() {
+    buildReferenceNumberMessage() {
         const { kvittering } = this.props;
         return (
             <FormattedMessage
-                id="kvittering.referansenummer"
+                id={kvittering.saksNr ? 'kvittering.saksNr' : 'kvittering.referanseId'}
                 values={{
-                    referansenr: kvittering.referanseId,
-                    0: moment(kvittering.mottattDato).format('HH:mm'),
-                    1: moment(kvittering.mottattDato).format('LL')
+                    id: kvittering.saksNr ? kvittering.saksNr : kvittering.referanseId,
+                    timeOfDay: moment(kvittering.mottattDato).format('HH:mm'),
+                    date: moment(kvittering.mottattDato).format('LL')
                 }}
             />
         );
@@ -88,7 +88,7 @@ class SøknadSendtSide extends React.Component<Props> {
                         {this.buildHeadlineMessage()}
                     </Innholdstittel>
 
-                    <Ingress className="blokk-xs">{this.buildReferansenummerMessage()}</Ingress>
+                    <Ingress className="blokk-xs">{this.buildReferenceNumberMessage()}</Ingress>
                     <Ingress className="blokk-xs">{this.buildDittNavMessage()}</Ingress>
 
                     {person.bankkonto &&

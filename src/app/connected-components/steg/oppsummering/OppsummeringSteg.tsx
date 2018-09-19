@@ -17,14 +17,14 @@ import { apiActionCreators } from '../../../redux/actions';
 import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
 import OppsummeringWrapper from 'common/components/summary/SummaryWrapper';
-import { ForeldrepengesøknadResponse } from '../../../types/ForeldrepengesøknadResponse';
+import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 interface StateProps {
     person: Person;
     søknad: Søknad;
-    kvittering?: ForeldrepengesøknadResponse;
+    kvittering?: Kvittering;
     stegProps: StegProps;
     perioder: Periode[];
 }
