@@ -55,10 +55,10 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                 <Block>
                     <AleneOmOmsorgsSpørsmål
                         aleneOmOmsorg={søker.erAleneOmOmsorg}
-                        onChange={(erAleneOmOmsorg) =>
+                        onChange={(deltOmsorg) =>
                             dispatch(
                                 søknadActions.updateSøker({
-                                    erAleneOmOmsorg
+                                    erAleneOmOmsorg: !deltOmsorg
                                 })
                             )
                         }
