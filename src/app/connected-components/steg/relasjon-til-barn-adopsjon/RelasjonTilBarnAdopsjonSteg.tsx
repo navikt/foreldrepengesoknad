@@ -91,6 +91,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmAdopsjonsdato(barn)}>
                     <DatoInput
+                        name="adopsjonsdato"
                         id="adopsjonsdato"
                         label={getMessage(
                             intl,

@@ -22,7 +22,6 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
     };
     render() {
         const validForm: ValidFormContext = this.context.validForm;
-        console.log(validForm);
         const { barnetErFødt, familiehendelsesdato, visible, intl } = this.props;
         const spørsmålNår = barnetErFødt
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.label')
@@ -40,6 +39,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                     <>
                         <Block margin="xs">
                             <ValiderbarDatoInput
+                                name="permisjonStartdato"
                                 id="permisjonStartdato"
                                 label={spørsmålNår}
                                 onChange={(startdatoPermisjon: Date | undefined) => onChange({ startdatoPermisjon })}

@@ -6,8 +6,8 @@ import SkjemaelementFeilmelding from '../errors/SkjemaelementFeilmelding';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 
 export interface ValiderbartSkjemaelementProps {
+    name: string;
     id?: string;
-    name?: string;
     optional?: boolean;
     validators?: Validator[];
     feil?: SkjemaelementFeilmelding;

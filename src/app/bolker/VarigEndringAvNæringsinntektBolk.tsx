@@ -58,6 +58,7 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     visible={hattVarigEndringAvNæringsinntektSiste4Kalenderår === true}>
                     <Block>
                         <DatoInput
+                            name="næring-datoForEndring"
                             id="datoForEndring"
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.dato.label')}
                             onChange={(dato: Date) => {

@@ -15,6 +15,7 @@ const MorSinSisteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ visib
         visible={visible}
         render={(data, onChange) => (
             <DatoInput
+                name="morSinSisteUttaksdag"
                 id="morSinSisteUttaksdag"
                 label={getMessage(intl, 'spørsmål.morSinSisteUttaksdag.label', { navnMor })}
                 onChange={(morSinSisteUttaksdag: Date) => onChange({ morSinSisteUttaksdag })}

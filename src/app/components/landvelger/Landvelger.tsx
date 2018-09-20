@@ -47,6 +47,7 @@ class Landvelger extends React.Component<Props> {
         const { validators, onChange, infotekst, ...restProps } = this.props;
         return (
             <Select
+                name="land"
                 {...restProps}
                 infotekst={infotekst}
                 onChange={(e: SelectChangeEvent) => onChange(e.target.value, e)}
