@@ -47,7 +47,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                 name="fødsesdato"
                 dato={fødselsdatoer[0]}
                 onChange={(d: Date) => this.onDatoChange(d, 0)}
-                label={<Labeltekst intlId="fødselsdatoer.fødsel" />}
+                label={<Labeltekst intlId="fødselsdatoer.fødsel.flereBarn" />}
                 avgrensninger={this.getFødselsdatoAvgrensninger()}
                 validators={getFødselsdatoRegler(fødselsdatoer[0], intl)}
             />
