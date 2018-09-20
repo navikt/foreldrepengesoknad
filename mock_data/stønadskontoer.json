@@ -1,6 +1,6 @@
 {
     "kontoer": {
-        "FORELDREPENGER": 15,
+        "FORELDREPENGER_FØR_FØDSEL": 15,
         "MØDREKVOTE": 75,
         "FEDREKVOTE": 75,
         "FELLESPERIODE": 75
