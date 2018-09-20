@@ -23,7 +23,7 @@ export const getUtsettelseFarge = (): UttaksplanColor => {
 };
 
 export const getPeriodeFarge = (periode: Periode): UttaksplanColor | undefined => {
-    if (periode.type === Periodetype.Uttak) {
+    if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
         return getStønadskontoFarge(periode.konto, periode.forelder);
     }
     if (periode.type === Periodetype.Utsettelse) {

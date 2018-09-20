@@ -4,7 +4,8 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 export enum Periodetype {
     'Uttak' = 'uttak',
     'Utsettelse' = 'utsettelse',
-    'Opphold' = 'opphold'
+    'Opphold' = 'opphold',
+    'Overføring' = 'overføring'
 }
 
 export enum StønadskontoType {
@@ -34,6 +35,13 @@ export enum UtsettelseÅrsakType {
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
     'UttakKvoteAnnenForelder' = 'UTTAK_KVOTE_ANNEN_FORELDER'
+}
+
+export enum OverføringÅrsakType {
+    'insititusjonsoppholdAnnenForelder' = 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+    'sykdomAnnenForelder' = 'SYKDOM_ANNEN_FORELDER',
+    'aleneomsorg' = 'ALENEOMSORG',
+    'ikkeRettAnnenForelder' = 'IKKE_RETT_ANNEN_FORELDER'
 }
 
 export interface Helligdag {
@@ -109,7 +117,14 @@ export interface Oppholdsperiode extends PeriodeBase {
     årsak: OppholdÅrsakType;
 }
 
-export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode;
+export interface Overføringsperiode extends PeriodeBase {
+    type: Periodetype.Overføring;
+    konto: StønadskontoType;
+    forelder: Forelder;
+    årsak: OverføringÅrsakType;
+}
+
+export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode | Overføringsperiode;
 
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
