@@ -110,7 +110,6 @@ class FrilanserBolk extends React.Component<Props> {
                     <FrilansOppdragBolk
                         renderSpørsmål={this.renderOppdragSiste10MndSpørsmål}
                         showOppdragsPerioderContent={visibility.oppdragPerioderVisible(søker)}
-                        oppfølgingsspørsmål={getMessage(intl, 'frilansOppdrag.oppfølgingsspørsmål')}
                         oppdragListe={oppdragForNæreVennerEllerFamilieSiste10Mnd || []}
                         onChange={(oppdragListe: FrilansOppdrag[]) =>
                             this.handleFrilansinformasjonOnChange({

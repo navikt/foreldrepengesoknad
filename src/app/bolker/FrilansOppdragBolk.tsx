@@ -13,7 +13,6 @@ import getMessage from 'common/util/i18nUtils';
 
 interface FrilansOppdragBolkProps {
     renderSpørsmål: () => JSX.Element;
-    oppfølgingsspørsmål: string;
     showOppdragsPerioderContent: boolean;
     oppdragListe: FrilansOppdrag[];
     onChange: (oppdrag: FrilansOppdrag[]) => void;
@@ -92,7 +91,7 @@ export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBo
     }
 
     render() {
-        const { oppdragListe, oppfølgingsspørsmål, renderSpørsmål, showOppdragsPerioderContent } = this.props;
+        const { oppdragListe, renderSpørsmål, showOppdragsPerioderContent } = this.props;
 
         const { oppdragToEdit } = this.state;
         const ListElement = injectIntl(FrilansOppdragListeElement);
@@ -103,7 +102,6 @@ export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBo
                 {showOppdragsPerioderContent && (
                     <React.Fragment>
                         <Block margin="xs">
-                            <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={oppdragListe}
                                 renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (
