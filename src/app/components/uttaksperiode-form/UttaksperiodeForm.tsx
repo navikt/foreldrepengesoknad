@@ -208,6 +208,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <OverføringUttakForm
                         skjemadata={this.getSkjemadataForOverføring()}
                         navnAnnenForelder={søknad.annenForelder.fornavn}
+                        søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                         onChange={(skjemadata) => this.updateOverføringUttak(skjemadata)}
                     />
                 </Block>
