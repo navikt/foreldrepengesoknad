@@ -15,7 +15,11 @@ export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåFore
 };
 
 export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
-    if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Uttak) {
+    if (
+        periode.type === Periodetype.Utsettelse ||
+        periode.type === Periodetype.Uttak ||
+        periode.type === Periodetype.Overføring
+    ) {
         return getForelderNavn(periode.forelder, navnPåForeldre);
     }
     return 'Ingen forelder registrert';

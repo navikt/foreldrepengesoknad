@@ -316,6 +316,9 @@
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
+    "nyPeriodeForm.utsettelse.tittel": "Ny utsettelse",
+    "nyPeriodeForm.uttak.tittel": "Ny periode med uttak",
+
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Dato omsorgsovertakelse ({dato})",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Barnets ankomstdato til Norge ({dato})",
@@ -347,6 +350,9 @@
     "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
+    "uttaksplan.overføring.årsak.spørsmål": "Hva er årsaken til at du ønsker å overta {annenForelderNavn} sin del?",
+    "uttaksplan.overføring.vedlegg.info": "Informasjon",
+
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.lastoppknapp.arialabel": "Trykk for å laste opp vedlegg",
@@ -355,7 +361,7 @@
     "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.adopsjonsvedtak": "Last opp adopsjonsvedtak",
+    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
@@ -477,6 +483,11 @@
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
+    "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "Innlagt helseinstitusjon",
+    "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
+    "overføringsårsaktype.ALENEOMSORG": "Blitt alene om omsorgen",
+    "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
+
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.SYKDOM": "Sykdom",
@@ -515,12 +526,15 @@
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
     "endrePeriodeForm.slett.opphold": "Slett utsettelse",
+    "endrePeriodeForm.slett.overføring": "Slett uttaksperiode",
     "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett utsettelse",
     "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette denne utsettelsen?",
     "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett uttaksperiode",
     "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne uttaksperioden?",
     "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett utsettelse",
     "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett uttaksperiode",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette denne uttaksperioden?",
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
     "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",

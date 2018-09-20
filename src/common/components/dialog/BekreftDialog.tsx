@@ -24,24 +24,28 @@ class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
         const { tittel, onAvbryt, onBekreft, avbrytLabel, bekreftLabel, intl, children, ...modalProps } = this.props;
         return (
             <Modal {...modalProps} className="bekreftDialog">
-                {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}
-                <div className="blokk-m">{children}</div>
-                <Knapperad>
-                    <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
-                        {this.props.bekreftLabel ||
-                            intl.formatMessage({
-                                id: 'komponent.bekreftDialog.bekreftLabel'
-                            })}
-                    </Hovedknapp>
-                    <Knapp
-                        onClick={() => (onAvbryt ? onAvbryt() : this.props.onRequestClose())}
-                        className="bekreftDialog__avbrytKnapp">
-                        {this.props.avbrytLabel ||
-                            intl.formatMessage({
-                                id: 'komponent.bekreftDialog.avbrytLabel'
-                            })}
-                    </Knapp>
-                </Knapperad>
+                {this.props.isOpen && (
+                    <>
+                        {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}
+                        <div className="blokk-m">{children}</div>
+                        <Knapperad>
+                            <Hovedknapp onClick={() => onBekreft()} className="bekreftDialog__bekreftKnapp">
+                                {this.props.bekreftLabel ||
+                                    intl.formatMessage({
+                                        id: 'komponent.bekreftDialog.bekreftLabel'
+                                    })}
+                            </Hovedknapp>
+                            <Knapp
+                                onClick={() => (onAvbryt ? onAvbryt() : this.props.onRequestClose())}
+                                className="bekreftDialog__avbrytKnapp">
+                                {this.props.avbrytLabel ||
+                                    intl.formatMessage({
+                                        id: 'komponent.bekreftDialog.avbrytLabel'
+                                    })}
+                            </Knapp>
+                        </Knapperad>
+                    </>
+                )}
             </Modal>
         );
     }

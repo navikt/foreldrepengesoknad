@@ -5,7 +5,8 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     Oppholdsperiode,
-    StønadskontoType
+    StønadskontoType,
+    Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import BEMHelper from 'common/util/bem';
@@ -21,6 +22,7 @@ import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import Block from 'common/components/block/Block';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import getMessage from 'common/util/i18nUtils';
+import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 
 export interface OwnProps {
     periode: Periode;
@@ -52,11 +54,19 @@ class EndrePeriodeForm extends React.Component<Props, State> {
             updatedPeriode = { ...periode, ...(p as Utsettelsesperiode) };
         } else if (periode.type === Periodetype.Uttak) {
             updatedPeriode = { ...periode, ...(p as Uttaksperiode) };
+        } else if (periode.type === Periodetype.Overføring) {
+            updatedPeriode = {
+                ...periode,
+                ...(p as Overføringsperiode)
+            };
         } else if (periode.type === Periodetype.Opphold) {
             updatedPeriode = { ...periode, ...(p as Oppholdsperiode) };
         }
         if (updatedPeriode !== undefined) {
-            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
+            if (updatedPeriode.type !== this.props.periode.type) {
+                updatedPeriode.vedlegg = [];
+            }
+            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(cleanupPeriode(updatedPeriode)));
         }
     }
     onDelete() {
