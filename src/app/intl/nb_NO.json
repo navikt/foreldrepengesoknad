@@ -55,6 +55,9 @@
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
+    "velkommen.foreldreansvar.veileder": "Søknad som gjelder foreldreansvar må sendes inn på papir",
+    "velkommen.foreldreansvar.papirsøknadLenke": "Papirsøknad",
+
     "personalia.år": "{år} år",
 
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",

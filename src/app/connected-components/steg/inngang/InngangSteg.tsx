@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { AppState } from '../../../redux/reducers';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
@@ -24,6 +24,9 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
 import { resolveStegToRender } from '../util/navigation';
 import visibility from './visibility';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import Lenke from 'nav-frontend-lenker';
+import lenker from '../../../util/routing/lenker';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -33,7 +36,7 @@ export interface StateProps {
     søker: Søker;
 }
 
-export type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -95,7 +98,17 @@ class InngangSteg extends React.Component<Props, {}> {
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
-                <Block visible={visibility.søkerRolleSpørsmål(roller)}>
+                <Block visible={visibility.papirsøknadInfo(situasjon)}>
+                    <Veilederinfo>
+                        <Block>
+                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                        </Block>
+                        <Lenke href={lenker.papirsøknadForeldreansvar}>
+                            <FormattedMessage id="velkommen.foreldreansvar.papirsøknadLenke" />
+                        </Lenke>
+                    </Veilederinfo>
+                </Block>
+                <Block visible={visibility.søkerRolleSpørsmål({ roller, situasjon })}>
                     <SøkerrolleSpørsmål
                         rolle={rolle}
                         roller={roller}
@@ -138,4 +151,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps>(mapStateToProps)(injectIntl(InngangSteg));
+export default connect<StateProps>(mapStateToProps)(InngangSteg);
