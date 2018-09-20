@@ -137,7 +137,6 @@ class AndreInntekterSteg extends React.Component<Props> {
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
                     <SelvstendigNæringsdrivendeBolk
-                        oppfølgingsspørsmål={getMessage(intl, 'selvstendigNæringsdrivende.oppfølgingsspørsmål')}
                         renderSpørsmål={this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål}
                         showNæringsPerioderContent={søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true}
                         næringListe={søker.selvstendigNæringsdrivendeInformasjon || []}
@@ -151,7 +150,6 @@ class AndreInntekterSteg extends React.Component<Props> {
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.andreInntekterBolk(søker)}>
                     <AndreInntekterBolk
-                        oppfølgingsspørsmål={getMessage(intl, 'annenInntekt.oppfølgingsspørsmål')}
                         renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
                         showAndreInntekterPeriodeContent={harHattAnnenInntektSiste10Mnd}
                         andreInntekterSiste10Mnd={søker.andreInntekterSiste10Mnd || []}

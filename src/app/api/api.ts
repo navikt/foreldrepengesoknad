@@ -28,12 +28,23 @@ function getSøkerinfo() {
 }
 
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
-    const { antallBarn, farHarRett, morHarRett, dekningsgrad, familiehendelsesdato, erFødsel } = params;
+    const {
+        antallBarn,
+        farHarRett,
+        morHarRett,
+        dekningsgrad,
+        familiehendelsesdato,
+        erFødsel,
+        morHarAleneomsorg,
+        farHarAleneomsorg
+    } = params;
 
     const urlParams = {
         erFodsel: erFødsel,
         farHarRett,
         morHarRett,
+        morHarAleneomsorg: morHarAleneomsorg || false,
+        farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
         antallBarn,
         familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD')

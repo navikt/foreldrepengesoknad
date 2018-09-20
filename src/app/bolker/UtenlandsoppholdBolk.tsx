@@ -17,7 +17,6 @@ import getMessage from 'common/util/i18nUtils';
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
     showUtenlandsoppholdContent: boolean;
-    oppfølgingsspørsmål: string;
     opphold: Utenlandsopphold[];
     oppholdType: UtenlandsoppholdType;
     onChange: (perioder: Utenlandsopphold[]) => void;
@@ -98,7 +97,6 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
         const {
             renderSpørsmål,
             showUtenlandsoppholdContent,
-            oppfølgingsspørsmål,
             opphold,
             oppholdType,
             utenlandsoppholdModalProps
@@ -112,7 +110,6 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
                 {showUtenlandsoppholdContent && (
                     <React.Fragment>
                         <Block margin="xs">
-                            <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={opphold}
                                 renderElement={(oppholdToRender: Utenlandsopphold, index: number) => (

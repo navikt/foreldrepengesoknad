@@ -9,6 +9,7 @@ export enum NæringRegistrertINorge {
 }
 
 interface ErNæringenRegistrertINorgeSpørsmålProps {
+    navnPåNæringen: string;
     registrertINorge?: boolean;
     onChange: (registrertINorge: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -16,7 +17,7 @@ interface ErNæringenRegistrertINorgeSpørsmålProps {
 type Props = ErNæringenRegistrertINorgeSpørsmålProps & InjectedIntlProps;
 
 const ErNæringenRegistrertINorgeSpørsmål = (props: Props) => {
-    const { onChange, registrertINorge, intl, ...otherProps } = props;
+    const { onChange, registrertINorge, navnPåNæringen, intl, ...otherProps } = props;
 
     let checked;
     if (registrertINorge === true) {
@@ -28,7 +29,7 @@ const ErNæringenRegistrertINorgeSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'erNæringenRegistrertINorge.spørsmål')}
+            legend={getMessage(intl, 'erNæringenRegistrertINorge.spørsmål', { navnPåNæringen })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

@@ -181,6 +181,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         onChange={(v: TidsperiodeMedValgfriSluttdato) => this.updateNæring({ tidsperiode: v })}
                         sluttdatoDisabled={pågående}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(tidsperiode)}
+                        datoInputLabelProps={{
+                            fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
+                            tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen })
+                        }}
                     />
                 </Block>
 
@@ -216,6 +220,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.næringRegistrertINorge(næring)}>
                     <ErNæringenRegistrertINorgeSpørsmål
+                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
                         registrertINorge={registrertINorge}
                         onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
                     />
@@ -282,6 +287,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 regnskapsfører: v as Næringsrelasjon
                             })
                         }
+                        næringsrelasjonsType="regnskapsfører"
                     />
                 </Block>
 
@@ -304,6 +310,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 revisor: v as Næringsrelasjon
                             })
                         }
+                        næringsrelasjonsType="revisor"
                     />
                 </Block>
 

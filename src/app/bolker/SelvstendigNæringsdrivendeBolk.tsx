@@ -13,7 +13,6 @@ import getMessage from 'common/util/i18nUtils';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     renderSpørsmål: () => JSX.Element;
-    oppfølgingsspørsmål: string;
     showNæringsPerioderContent: boolean;
     næringListe: Næring[];
     onChange: (næring: Næring[]) => void;
@@ -95,7 +94,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const { næringListe, oppfølgingsspørsmål, renderSpørsmål, showNæringsPerioderContent } = this.props;
+        const { næringListe, renderSpørsmål, showNæringsPerioderContent } = this.props;
 
         const { næringToEdit } = this.state;
         const ListElement = injectIntl(NæringListeElement);
@@ -106,7 +105,6 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                 {showNæringsPerioderContent && (
                     <React.Fragment>
                         <Block margin="xs">
-                            <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={næringListe}
                                 renderElement={(updatedNæring: Næring, index: number) => (
