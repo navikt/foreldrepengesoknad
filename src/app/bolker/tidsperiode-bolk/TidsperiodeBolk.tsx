@@ -32,6 +32,10 @@ interface TidsperiodeBolkProps {
     datoValidatorer?: DatoValidatorer;
     visVarighet?: boolean;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
+    datoInputLabelProps?: {
+        fom: string;
+        tom: string;
+    };
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -55,7 +59,8 @@ class TidsperiodeBolk extends React.Component<Props> {
             visVarighet,
             intl,
             startdatoDisabled,
-            sluttdatoDisabled
+            sluttdatoDisabled,
+            datoInputLabelProps
         } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
 
@@ -78,7 +83,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <DatoInput
                             name="fraDatoInput"
                             id="fraDatoInput"
-                            label={getMessage(intl, 'fraogmed')}
+                            label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
                             onChange={(fom: Date) => {
                                 this.handleOnChange({
                                     ...tidsperiode,
@@ -98,7 +103,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <DatoInput
                             name="tilDatoInput"
                             id="tilDatoInput"
-                            label={getMessage(intl, 'tilogmed')}
+                            label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
                             onChange={(tom: Date | undefined) => {
                                 this.handleOnChange({
                                     ...tidsperiode,
