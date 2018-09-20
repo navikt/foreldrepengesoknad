@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -59,7 +60,7 @@ class TidsperiodeBolk extends React.Component<Props> {
         const bem = BEMHelper('tidsperiodeBolk');
 
         const varighetIDager =
-            tidsperiode && tidsperiode.fom && tidsperiode.tom
+            tidsperiode && tidsperiode.fom && tidsperiode.tom && moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom)
                 ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
                 : undefined;
 
@@ -96,7 +97,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <DatoInput
                             id="tilDatoInput"
                             label={getMessage(intl, 'tilogmed')}
-                            onChange={(tom: Date) => {
+                            onChange={(tom: Date | undefined) => {
                                 this.handleOnChange({
                                     ...tidsperiode,
                                     tom
