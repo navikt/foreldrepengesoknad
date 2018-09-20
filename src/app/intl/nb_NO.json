@@ -180,6 +180,9 @@
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
 
+    "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
+    "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
+
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
     "harRevisor.spørsmål": "Har du revisor?",
