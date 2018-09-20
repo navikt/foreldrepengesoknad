@@ -24,6 +24,10 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Kjønn, HistoryProps } from '../../../types/common';
 import { resolveStegToRender } from '../util/navigation';
 import visibility from './visibility';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import getMessage from 'common/util/i18nUtils';
+import Lenke from 'nav-frontend-lenker';
+import lenker from '../../../util/routing/lenker';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -87,7 +91,7 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { roller, situasjon, søker, dispatch, stegProps } = this.props;
+        const { roller, situasjon, søker, dispatch, stegProps, intl } = this.props;
         const { rolle } = søker;
 
         return (
@@ -95,7 +99,15 @@ class InngangSteg extends React.Component<Props, {}> {
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
-                <Block visible={visibility.søkerRolleSpørsmål(roller)}>
+                <Block visible={visibility.papirsøknadInfo(situasjon)}>
+                    <Veilederinfo>
+                        <Block>{getMessage(intl, 'velkommen.foreldreansvar.veileder')}</Block>
+                        <Lenke href={lenker.papirsøknadForeldreansvar}>
+                            {getMessage(intl, 'velkommen.foreldreansvar.papirsøknadLenke')}
+                        </Lenke>
+                    </Veilederinfo>
+                </Block>
+                <Block visible={visibility.søkerRolleSpørsmål({ roller, situasjon })}>
                     <SøkerrolleSpørsmål
                         rolle={rolle}
                         roller={roller}
