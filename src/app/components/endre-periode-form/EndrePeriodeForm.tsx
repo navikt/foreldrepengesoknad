@@ -5,7 +5,8 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     Oppholdsperiode,
-    StønadskontoType
+    StønadskontoType,
+    Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import BEMHelper from 'common/util/bem';
@@ -52,6 +53,8 @@ class EndrePeriodeForm extends React.Component<Props, State> {
             updatedPeriode = { ...periode, ...(p as Utsettelsesperiode) };
         } else if (periode.type === Periodetype.Uttak) {
             updatedPeriode = { ...periode, ...(p as Uttaksperiode) };
+        } else if (periode.type === Periodetype.Overføring) {
+            updatedPeriode = { ...periode, ...(p as Overføringsperiode) };
         } else if (periode.type === Periodetype.Opphold) {
             updatedPeriode = { ...periode, ...(p as Oppholdsperiode) };
         }

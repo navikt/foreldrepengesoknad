@@ -21,7 +21,15 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 dager: stønadskontoer.kontoer[konto]
             });
         });
-
+        yield put(
+            apiActions.updateApi({
+                isLoadingTilgjengeligeStønadskontoer: false,
+                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
+                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
+                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
+                )
+            })
+        );
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
         yield put(
@@ -32,16 +40,6 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                     appState.api.tilgjengeligeStønadskontoer
                 )
             )
-        );
-
-        yield put(
-            apiActions.updateApi({
-                isLoadingTilgjengeligeStønadskontoer: false,
-                tilgjengeligeStønadskontoer: tilgjengeligeStønadskontoer.sort(
-                    (a: TilgjengeligStønadskonto, b: TilgjengeligStønadskonto) =>
-                        getStønadskontoSortOrder(a.konto) > getStønadskontoSortOrder(b.konto) ? 1 : -1
-                )
-            })
         );
     } catch (error) {
         yield put(
