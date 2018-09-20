@@ -12,6 +12,7 @@ import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 import { NavnPåForeldre } from 'common/types';
+import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -42,6 +43,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
             <DekningsgradSpørsmål />
             <StartdatoPermisjonMorBolk
                 visible={søknad.dekningsgrad !== undefined}
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                 barnetErFødt={søknad.barn.erBarnetFødt}
             />
             <FordelingFellesperiodeSpørsmål
