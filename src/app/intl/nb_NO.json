@@ -333,7 +333,8 @@
     "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
-    "overføringsårsak.spørsmål": "Hva er årsaken til at du ønsker å overta {anneForeldersNavn} sin del?",
+    "uttaksplan.overføring.årsak.spørsmål": "Hva er årsaken til at du ønsker å overta {annenForelderNavn} sin del?",
+    "uttaksplan.overføring.vedlegg.info": "Informasjon",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
@@ -343,7 +344,7 @@
     "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.adopsjonsvedtak": "Last opp adopsjonsvedtak",
+    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
@@ -508,12 +509,15 @@
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
     "endrePeriodeForm.slett.opphold": "Slett utsettelse",
+    "endrePeriodeForm.slett.overføring": "Slett uttaksperiode",
     "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett utsettelse",
     "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette denne utsettelsen?",
     "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett uttaksperiode",
     "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne uttaksperioden?",
     "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett utsettelse",
     "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett uttaksperiode",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette denne uttaksperioden?",
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
     "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",

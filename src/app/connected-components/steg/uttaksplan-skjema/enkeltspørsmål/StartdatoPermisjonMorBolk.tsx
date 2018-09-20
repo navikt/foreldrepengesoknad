@@ -7,7 +7,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
-import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoF\u00F8rTerminValidation';
+import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoFørTerminValidation';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 
 interface OwnProps {

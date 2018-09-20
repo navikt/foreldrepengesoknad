@@ -4,7 +4,7 @@ import { Søkerinfo } from '../../types/søkerinfo';
 import { getNavnPåForeldre, getFamiliehendelsedato } from '.';
 import { erFarEllerMedmor } from '../domain/personUtil';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import { getVelgbareStønadskontotyper } from './st\u00F8nadskontoer';
+import { getVelgbareStønadskontotyper } from './stønadskontoer';
 import { Kjønn } from '../../types/common';
 
 export interface UttaksplanInfo {
