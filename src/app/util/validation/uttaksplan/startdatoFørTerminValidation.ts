@@ -33,7 +33,9 @@ const getValidators = (
             test: () =>
                 moment(dato).isSameOrAfter(avgrensninger.minDato) &&
                 moment(dato).isSameOrBefore(avgrensninger.maksDato),
-            failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom')
+            failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom', {
+                uker: getPermisjonsregler().maksAntallUkerForeldrepengerFørFødsel
+            })
         });
     }
     return validators;
