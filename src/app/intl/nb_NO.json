@@ -73,7 +73,7 @@
     "annenForelder.spørsmål.fnr": "Hva er fødselsnummeret eller D-nummeret til { navn }? ",
     "annenForelder.spørsmål.utenlandskFnr": "{navn} har utenlandsk fødselsnummer",
 
-    "annenInntekt.modal.pågående": "Jeg jobber fortsatt i utlandet",
+    "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
     "annenInntekt.alternativ.hatt": "ja",
     "annenInntekt.alternativ.ikkeHatt": "nei",
