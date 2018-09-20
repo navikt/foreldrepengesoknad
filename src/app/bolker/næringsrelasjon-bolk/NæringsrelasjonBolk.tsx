@@ -13,6 +13,7 @@ interface NæringsrelasjonBolkProps {
     renderSpørsmål: () => JSX.Element;
     oppfølgingsspørsmålSynlig: boolean;
     onChange: (updatedProps: NæringsrelasjonPartial) => void;
+    næringsrelasjonsType: 'revisor' | 'regnskapsfører';
 }
 
 type Props = NæringsrelasjonBolkProps & InjectedIntlProps;
@@ -32,8 +33,9 @@ class NæringsrelasjonBolk extends React.Component<Props> {
     }
 
     render() {
-        const { næringsrelasjon, renderSpørsmål, oppfølgingsspørsmålSynlig, intl } = this.props;
+        const { næringsrelasjon, renderSpørsmål, oppfølgingsspørsmålSynlig, næringsrelasjonsType, intl } = this.props;
         const { navn, telefonnummer, erNærVennEllerFamilie } = næringsrelasjon;
+
         return (
             <React.Fragment>
                 {renderSpørsmål()}
@@ -42,7 +44,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                         <Block>
                             <Input
                                 value={navn || ''}
-                                label={getMessage(intl, 'næringsrelasjon.navn')}
+                                label={getMessage(intl, 'næringsrelasjon.navn', { næringsrelasjonsType })}
                                 onChange={(e: InputChangeEvent) =>
                                     this.handleOnChange({
                                         navn: e.target.value
@@ -53,7 +55,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                         <Block visible={visibility.tlfnr(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
-                                label={getMessage(intl, 'næringsrelasjon.tlfnr')}
+                                label={getMessage(intl, 'næringsrelasjon.tlfnr', { næringsrelasjonsType })}
                                 onChange={(e: InputChangeEvent) =>
                                     this.handleOnChange({
                                         telefonnummer: e.target.value
