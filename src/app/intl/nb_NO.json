@@ -313,6 +313,9 @@
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
+    "nyPeriodeForm.utsettelse.tittel": "Ny utsettelse",
+    "nyPeriodeForm.uttak.tittel": "Ny periode med uttak",
+
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Dato omsorgsovertakelse ({dato})",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Barnets ankomstdato til Norge ({dato})",
