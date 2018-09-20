@@ -51,14 +51,17 @@ const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, foreldernavn: Na
     return '';
 };
 
-const renderDagMnd = (dato: Date): JSX.Element => (
-    <div className={BEM.element('dagmnd')}>
-        <span className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</span>
-        <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
-            <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
-        </EtikettLiten>
-    </div>
-);
+const renderDagMnd = (dato: Date): JSX.Element =>
+    dato ? (
+        <div className={BEM.element('dagmnd')}>
+            <span className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</span>
+            <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
+                <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
+            </EtikettLiten>
+        </div>
+    ) : (
+        <div className={BEM.element('dagmnd')}>-</div>
+    );
 
 const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
@@ -76,7 +79,12 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     isOpen,
     intl
 }) => {
-    const tidsperiode = getValidTidsperiode(periode.tidsperiode);
+    const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
+    const visDatoer = periode.tidsperiode.fom || periode.tidsperiode.tom;
+    const varighetString = getVarighetString(
+        gyldigTidsperiode ? Tidsperioden(gyldigTidsperiode).getAntallUttaksdager() : 0,
+        intl
+    );
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     return (
         <article
@@ -88,9 +96,9 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             </div>
             <div className={BEM.element('beskrivelse')}>
                 <Element tag="h1">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
-                {tidsperiode && (
+                {visDatoer && (
                     <Normaltekst>
-                        {getVarighetString(Tidsperioden(tidsperiode).getAntallUttaksdager(), intl)}
+                        {varighetString}
                         <em className={BEM.element('hvem')}> - {foreldernavn}</em>
                     </Normaltekst>
                 )}
@@ -100,7 +108,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                     <UttaksplanIkon ikon={getIkonForAdvarsel(advarsel)} />
                 </div>
             )}
-            {tidsperiode && (
+            {visDatoer && (
                 <div className={BEM.element('tidsrom')}>
                     {renderDagMnd(periode.tidsperiode.fom)}
                     -

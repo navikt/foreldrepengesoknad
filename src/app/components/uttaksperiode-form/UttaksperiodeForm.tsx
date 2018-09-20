@@ -138,7 +138,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         stønadskonto={konto}
                     />
                 </Block>
-                <Block visible={konto === StønadskontoType.Fellesperiode}>
+                <Block visible={konto === StønadskontoType.Fellesperiode} hasChildBlocks={true}>
                     <FellesperiodeUttakForm
                         søkerErFarMedmor={søkerErFarEllerMedmor}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
@@ -154,7 +154,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
                     />
                 </Block>
-                <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)}>
+                <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)} hasChildBlocks={true}>
                     <ForeldrepengerFørFødselUttakForm
                         skalIkkeHaUttakFørTermin={
                             (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
