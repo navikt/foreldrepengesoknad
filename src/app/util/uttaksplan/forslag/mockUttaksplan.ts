@@ -22,7 +22,7 @@ export const lagMockUttaksplan = (
 ): Periode[] => {
     const { søker, barn, situasjon, ekstrainfo } = søknad;
     const {
-        uttaksplanSkjema: { fellesperiodeukerMor }
+        uttaksplanSkjema: { fellesperiodeukerMor, startdatoPermisjon }
     } = ekstrainfo;
     const { erAleneOmOmsorg, rolle } = søker;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
@@ -32,7 +32,11 @@ export const lagMockUttaksplan = (
         if (situasjon === Søkersituasjon.FØDSEL) {
             if (erAleneOmOmsorg) {
                 if (rolle === SøkerRolle.MOR) {
-                    return opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
+                    return opprettUttaksperioderAleneomsorgMor(
+                        famDato,
+                        tilgjengeligeStønadskontoer,
+                        startdatoPermisjon
+                    );
                 } else {
                     return opprettUttaksperioderAleneomsorgFarEllerMedmor(famDato, tilgjengeligeStønadskontoer);
                 }
@@ -42,7 +46,8 @@ export const lagMockUttaksplan = (
                     return opprettUttaksperioderToForeldreEttBarnMor(
                         famDato,
                         fellesUkerMor,
-                        tilgjengeligeStønadskontoer
+                        tilgjengeligeStønadskontoer,
+                        startdatoPermisjon
                     );
                 } else {
                     return opprettUttaksperioderToForeldreEttBarnMor(
@@ -54,7 +59,11 @@ export const lagMockUttaksplan = (
             }
         } else if (situasjon === Søkersituasjon.ADOPSJON) {
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
+                const perioder = opprettUttaksperioderAleneomsorgMor(
+                    famDato,
+                    tilgjengeligeStønadskontoer,
+                    startdatoPermisjon
+                );
                 perioder.shift();
                 return perioder;
             }
@@ -65,7 +74,11 @@ export const lagMockUttaksplan = (
             }
         } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(famDato, tilgjengeligeStønadskontoer);
+                const perioder = opprettUttaksperioderAleneomsorgMor(
+                    famDato,
+                    tilgjengeligeStønadskontoer,
+                    startdatoPermisjon
+                );
                 perioder.shift();
                 return perioder;
             }
