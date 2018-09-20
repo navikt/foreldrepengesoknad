@@ -30,6 +30,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
         const { intl, onChange } = this.props;
         return (
             <Select
+                name="hvaSkalMorGjøre.spørsmål"
                 label={getMessage(intl, 'hvaSkalMorGjøre.spørsmål')}
                 onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}>
                 <option value="" />

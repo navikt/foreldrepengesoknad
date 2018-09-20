@@ -101,6 +101,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
 
                 {selvstendigNæringsdrivendeValgt && (
                     <Input
+                        name="næringOrgnr"
                         label="Hva er organisasjonsnummeret på næringen?"
                         onChange={(e: InputChangeEvent) => onChange(e.target.value, true)}
                         value={valgtArbeidsforhold}
