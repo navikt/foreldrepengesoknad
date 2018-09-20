@@ -12,6 +12,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 interface Props {
     skjemadata: OverføringUttakFormSkjemadata;
     navnAnnenForelder: string;
+    søkerErFarEllerMedmor: boolean;
     onChange: (skjemadata: OverføringUttakFormSkjemadata) => void;
 }
 
@@ -44,8 +45,10 @@ class OverføringUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { onChange, skjemadata, navnAnnenForelder } = this.props;
-        const visVedlegg = skjemadata.årsak !== undefined && skjemadata.årsak !== OverføringÅrsakType.aleneomsorg;
+        const { onChange, søkerErFarEllerMedmor, skjemadata, navnAnnenForelder } = this.props;
+        const visVedlegg =
+            (skjemadata.årsak !== undefined && skjemadata.årsak !== OverføringÅrsakType.aleneomsorg) ||
+            (skjemadata.årsak === OverføringÅrsakType.aleneomsorg && søkerErFarEllerMedmor === true);
         const vedleggList = skjemadata.vedlegg || [];
         return (
             <>
