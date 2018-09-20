@@ -14,10 +14,12 @@ import { Uttaksdagen } from '../Uttaksdagen';
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderAleneomsorgMor(
     familiehendelsedato: Date,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    startdatoPermisjon?: Date
 ): Periode[] {
     familiehendelsedato = normaliserDato(familiehendelsedato);
     const perioder: Periode[] = [];
+    const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel
     );
@@ -25,8 +27,9 @@ export function opprettUttaksperioderAleneomsorgMor(
         (konto) => konto.konto === StønadskontoType.Foreldrepenger
     );
 
-    if (fpFørFødselKonto !== undefined) {
-        const startdatoFpFørFødsel = Uttaksdagen(familiehendelsedato).trekkFra(fpFørFødselKonto.dager);
+    if (fpFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && startdatoPermisjon) {
+        const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(familiehendelsedato);
+        const startdatoFpFørFødsel = Uttaksdagen(familiehendelsedato).trekkFra(dagerFørFødsel);
 
         const periodeFørFødsel: Periode = {
             id: guid(),
