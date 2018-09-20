@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { AppState } from '../../../redux/reducers';
 import { Utenlandsopphold, UtenlandsoppholdType } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
-import getMessage from 'common/util/i18nUtils';
 import UtenlandsoppholdBolk from '../../../bolker/UtenlandsoppholdBolk';
 import Block from 'common/components/block/Block';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -105,7 +104,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, dispatch, intl } = this.props;
+        const { søknad, stegProps, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold, barn } = søknad;
 
         return (
@@ -116,7 +115,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                         showUtenlandsoppholdContent={visibility.harBoddINorgeSiste12MndContent(
                             informasjonOmUtenlandsopphold
                         )}
-                        oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.tidligereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.tidligereOpphold}
                         oppholdType={'tidligereOpphold'}
                         onChange={(opphold: Utenlandsopphold[]) =>
@@ -143,7 +141,6 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                         showUtenlandsoppholdContent={visibility.skalBoINorgeNeste12MndContent(
                             informasjonOmUtenlandsopphold
                         )}
-                        oppfølgingsspørsmål={getMessage(intl, 'utenlandsopphold.select.spørsmål.senereOpphold')}
                         opphold={søknad.informasjonOmUtenlandsopphold.senereOpphold}
                         oppholdType={'senereOpphold'}
                         onChange={(opphold: Utenlandsopphold[]) =>

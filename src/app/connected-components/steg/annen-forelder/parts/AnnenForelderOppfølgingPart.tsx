@@ -18,7 +18,6 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../../redux/reducers';
 import AleneOmOmsorgsSpørsmål from '../../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { RegistrertAnnenForelder } from '../../../../types/Person';
-import { formaterNavn } from '../../../../util/domain/personUtil';
 import { AnnenForelderStegVisibility } from '../visibility/annenForelderVisibility';
 import { Søker } from '../../../../types/søknad/Søker';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
@@ -42,13 +41,7 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
     render() {
         const { barn, annenForelder, søker, registrertAnnenForelder, vis, dispatch, intl } = this.props;
 
-        const navn = registrertAnnenForelder
-            ? formaterNavn(
-                  registrertAnnenForelder.fornavn,
-                  registrertAnnenForelder.etternavn,
-                  registrertAnnenForelder.mellomnavn
-              )
-            : formaterNavn(annenForelder.fornavn!, annenForelder.etternavn!);
+        const navn = registrertAnnenForelder ? registrertAnnenForelder.fornavn : annenForelder.fornavn;
 
         return (
             <React.Fragment>
@@ -93,7 +86,9 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                 </Block>
 
                 <Block visible={annenForelder.harRettPåForeldrepenger === true}>
-                    <Veilederinfo>Informasjon om rettigheter og deling av uttaksplan</Veilederinfo>
+                    <Veilederinfo>
+                        {getMessage(intl, 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan', { navn })}
+                    </Veilederinfo>
                 </Block>
 
                 <Block visible={vis.erAnnenForelderInformertSpørsmål}>

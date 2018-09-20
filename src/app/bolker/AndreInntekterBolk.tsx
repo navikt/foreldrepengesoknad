@@ -14,7 +14,6 @@ import getMessage from 'common/util/i18nUtils';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
-    oppfølgingsspørsmål: string;
     showAndreInntekterPeriodeContent: boolean;
     andreInntekterSiste10Mnd: AnnenInntekt[];
     onChange: (andreInntekterSiste10Mnd: AnnenInntekt[]) => void;
@@ -93,12 +92,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
     }
 
     render() {
-        const {
-            oppfølgingsspørsmål,
-            renderSpørsmål,
-            showAndreInntekterPeriodeContent,
-            andreInntekterSiste10Mnd
-        } = this.props;
+        const { renderSpørsmål, showAndreInntekterPeriodeContent, andreInntekterSiste10Mnd } = this.props;
 
         const { annenInntektToEdit } = this.state;
         const ListElement = injectIntl(AndreInntekterListeElement);
@@ -109,7 +103,6 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                 {showAndreInntekterPeriodeContent && (
                     <React.Fragment>
                         <Block margin="xs">
-                            <h4>{oppfølgingsspørsmål}</h4>
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(annenInntekt: AnnenInntekt, index: number) => (
