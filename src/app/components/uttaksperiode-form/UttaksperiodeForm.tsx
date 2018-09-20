@@ -187,6 +187,16 @@ class UttaksperiodeForm extends React.Component<Props> {
                         stønadskonto={konto}
                     />
                 </Block>
+                <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)} hasChildBlocks={true}>
+                    <ForeldrepengerFørFødselUttakForm
+                        skalIkkeHaUttakFørTermin={
+                            (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
+                        }
+                        onChange={(skalIkkeHaUttakFørTermin) =>
+                            this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
+                        }
+                    />
+                </Block>
                 {validTidsperiode !== undefined && (
                     <>
                         <Block visible={konto === StønadskontoType.Fellesperiode} hasChildBlocks={true}>
@@ -214,18 +224,6 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 navnAnnenForelder={søknad.annenForelder.fornavn}
                                 søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                                 onChange={(skjemadata) => this.updateOverføringUttak(skjemadata)}
-                            />
-                        </Block>
-                        <Block
-                            visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)}
-                            hasChildBlocks={true}>
-                            <ForeldrepengerFørFødselUttakForm
-                                skalIkkeHaUttakFørTermin={
-                                    (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
-                                }
-                                onChange={(skalIkkeHaUttakFørTermin) =>
-                                    this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
-                                }
                             />
                         </Block>
                     </>
