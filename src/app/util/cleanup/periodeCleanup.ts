@@ -1,4 +1,9 @@
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    ForeldrepengerFørFødselUttaksperiode,
+    isForeldrepengerFørFødselUttaksperiode
+} from '../../types/uttaksplan/periodetyper';
 
 export const cleanupPeriode = (periode: Periode): Periode => {
     if (periode.type === Periodetype.Overføring) {
@@ -13,7 +18,7 @@ export const cleanupPeriode = (periode: Periode): Periode => {
         };
     }
     if (periode.type === Periodetype.Uttak) {
-        return {
+        const uttaksperiode: Partial<Periode> = {
             type: Periodetype.Uttak,
             id: periode.id,
             konto: periode.konto,
@@ -24,6 +29,11 @@ export const cleanupPeriode = (periode: Periode): Periode => {
             morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
             ønskerSamtidigUttak: periode.ønskerSamtidigUttak
         };
+        if (isForeldrepengerFørFødselUttaksperiode(periode)) {
+            (uttaksperiode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin =
+                periode.skalIkkeHaUttakFørTermin;
+        }
+        return uttaksperiode as Periode;
     }
     return periode;
 };
