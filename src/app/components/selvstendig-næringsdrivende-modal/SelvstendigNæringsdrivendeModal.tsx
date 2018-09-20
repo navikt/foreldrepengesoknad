@@ -283,6 +283,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 regnskapsfører: v as Næringsrelasjon
                             })
                         }
+                        næringsrelasjonsType="regnskapsfører"
                     />
                 </Block>
 
@@ -305,6 +306,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 revisor: v as Næringsrelasjon
                             })
                         }
+                        næringsrelasjonsType="revisor"
                     />
                 </Block>
 
