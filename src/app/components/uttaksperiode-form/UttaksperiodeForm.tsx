@@ -27,9 +27,7 @@ import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
-import OverføringUttakForm, {
-    OverføringUttakFormSkjemadata
-} from './overf\u00F8ring-uttak-form/Overf\u00F8ringUttakForm';
+import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -75,6 +73,17 @@ class UttaksperiodeForm extends React.Component<Props> {
         };
     }
 
+    getSkjemadataForOverføring(): OverføringUttakFormSkjemadata {
+        const { periode } = this.props;
+        if (periode.type === Periodetype.Overføring) {
+            return {
+                årsak: periode.årsak,
+                vedlegg: periode.vedlegg as Attachment[]
+            };
+        }
+        return {};
+    }
+
     updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erFarMedmorVerdi: boolean) {
         const { onChange } = this.props;
         onChange({
@@ -87,8 +96,8 @@ class UttaksperiodeForm extends React.Component<Props> {
     updateEgenPeriodeUttak(ønskerSamtidigUttak: boolean) {
         const { onChange } = this.props;
         onChange({
-            ønskerSamtidigUttak,
-            type: Periodetype.Uttak
+            type: Periodetype.Uttak,
+            ønskerSamtidigUttak
         });
     }
 
@@ -108,7 +117,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { onChange } = this.props;
         onChange({
             type: Periodetype.Overføring,
-            årsak: skjemadata.årsak,
+            ...skjemadata,
             forelder: this.props.søknad.ekstrainfo.uttaksplanInfo!.søkerErFarEllerMedmor
                 ? Forelder.FARMEDMOR
                 : Forelder.MOR
@@ -197,9 +206,9 @@ class UttaksperiodeForm extends React.Component<Props> {
                     )}
                 <Block visible={erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor)} hasChildBlocks={true}>
                     <OverføringUttakForm
+                        skjemadata={this.getSkjemadataForOverføring()}
                         navnAnnenForelder={søknad.annenForelder.fornavn}
-                        overføringsårsak={(periode as Overføringsperiode).årsak}
-                        onChange={(årsak) => this.updateOverføringUttak(årsak)}
+                        onChange={(skjemadata) => this.updateOverføringUttak(skjemadata)}
                     />
                 </Block>
                 <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)} hasChildBlocks={true}>
