@@ -187,41 +187,49 @@ class UttaksperiodeForm extends React.Component<Props> {
                         stønadskonto={konto}
                     />
                 </Block>
-                <Block visible={konto === StønadskontoType.Fellesperiode} hasChildBlocks={true}>
-                    <FellesperiodeUttakForm
-                        søkerErFarMedmor={søkerErFarEllerMedmor}
-                        annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
-                        skjemadata={this.getSkjemadataForFellesperiodeUttak()}
-                        onChange={(data: FellesperiodeUttakSkjemadata) =>
-                            this.updateFellesperiodeUttak(data, søkerErFarEllerMedmor)
-                        }
-                    />
-                </Block>
-                {periode.type === Periodetype.Uttak &&
-                    erUttakAvEgenKvote(konto, søkerErFarEllerMedmor) && (
-                        <EgenDelUttakForm
-                            ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
-                            onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
-                        />
-                    )}
-                <Block visible={erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor)} hasChildBlocks={true}>
-                    <OverføringUttakForm
-                        skjemadata={this.getSkjemadataForOverføring()}
-                        navnAnnenForelder={søknad.annenForelder.fornavn}
-                        søkerErFarEllerMedmor={søkerErFarEllerMedmor}
-                        onChange={(skjemadata) => this.updateOverføringUttak(skjemadata)}
-                    />
-                </Block>
-                <Block visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)} hasChildBlocks={true}>
-                    <ForeldrepengerFørFødselUttakForm
-                        skalIkkeHaUttakFørTermin={
-                            (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
-                        }
-                        onChange={(skalIkkeHaUttakFørTermin) =>
-                            this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
-                        }
-                    />
-                </Block>
+                {validTidsperiode !== undefined && (
+                    <>
+                        <Block visible={konto === StønadskontoType.Fellesperiode} hasChildBlocks={true}>
+                            <FellesperiodeUttakForm
+                                søkerErFarMedmor={søkerErFarEllerMedmor}
+                                annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
+                                skjemadata={this.getSkjemadataForFellesperiodeUttak()}
+                                onChange={(data: FellesperiodeUttakSkjemadata) =>
+                                    this.updateFellesperiodeUttak(data, søkerErFarEllerMedmor)
+                                }
+                            />
+                        </Block>
+                        {periode.type === Periodetype.Uttak &&
+                            erUttakAvEgenKvote(konto, søkerErFarEllerMedmor) && (
+                                <EgenDelUttakForm
+                                    ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                                    onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
+                                />
+                            )}
+                        <Block
+                            visible={erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor)}
+                            hasChildBlocks={true}>
+                            <OverføringUttakForm
+                                skjemadata={this.getSkjemadataForOverføring()}
+                                navnAnnenForelder={søknad.annenForelder.fornavn}
+                                søkerErFarEllerMedmor={søkerErFarEllerMedmor}
+                                onChange={(skjemadata) => this.updateOverføringUttak(skjemadata)}
+                            />
+                        </Block>
+                        <Block
+                            visible={isForeldrepengerFørFødselUttaksperiode(periode as Periode)}
+                            hasChildBlocks={true}>
+                            <ForeldrepengerFørFødselUttakForm
+                                skalIkkeHaUttakFørTermin={
+                                    (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin
+                                }
+                                onChange={(skalIkkeHaUttakFørTermin) =>
+                                    this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
+                                }
+                            />
+                        </Block>
+                    </>
+                )}
             </React.Fragment>
         );
     }
