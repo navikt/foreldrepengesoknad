@@ -20,6 +20,9 @@
     "heltid": "Heltid",
     "deltid": "Deltid",
 
+    "regnskapsfører": "regnskapsfører",
+    "revisor": "revisor",
+
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha gradert uttak samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken kvote skal benyttes?",
@@ -187,8 +190,8 @@
 
     "harRevisor.spørsmål": "Har du revisor?",
     "harRegnskapsfører.spørsmål": "Har du regnskapsfører?",
-    "næringsrelasjon.navn": "Navn på personen",
-    "næringsrelasjon.tlfnr": "Telefonnummer til personen",
+    "næringsrelasjon.navn": "Oppgi navnet til {næringsrelasjonsType}",
+    "næringsrelasjon.tlfnr": "Oppgi telefonnummeret til {næringsrelasjonsType}",
     "næringsrelasjon.nærVennEllerFamilie": "Er dere nære venner eller i familie?",
 
     "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Norge?",
