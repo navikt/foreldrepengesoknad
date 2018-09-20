@@ -6,8 +6,9 @@ import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
-import StartdatoFørTerminValidation from '../../../../util/validation/uttaksplan/startdatoF\u00F8rTerminValidation';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
+import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoF\u00F8rTerminValidation';
+import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -45,11 +46,11 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                                 onChange={(startdatoPermisjon: Date | undefined) => onChange({ startdatoPermisjon })}
                                 dato={data.startdatoPermisjon}
                                 disabled={data.skalIkkeHaUttakFørTermin}
-                                avgrensninger={StartdatoFørTerminValidation.getDatoavgrensninger(familiehendelsesdato)}
+                                avgrensninger={uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato)}
                                 dayPickerProps={{
                                     month: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
                                 }}
-                                validators={StartdatoFørTerminValidation.getValidators(
+                                validators={startdatoFørTerminValidators(
                                     intl,
                                     data.startdatoPermisjon,
                                     familiehendelsesdato,

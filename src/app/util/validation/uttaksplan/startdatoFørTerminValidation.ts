@@ -1,21 +1,11 @@
 import { InjectedIntl } from 'react-intl';
 import moment from 'moment';
 import { Validator } from 'common/lib/validation/types';
-import { Avgrensninger } from 'nav-datovelger';
-import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import getMessage from 'common/util/i18nUtils';
 import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
+import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 
-const getDatoavgrensninger = (familiehendelsesdato: Date): Avgrensninger => {
-    const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
-    const minDato = Uttaksdagen(maksDato).trekkFra(getPermisjonsregler().maksAntallUkerForeldrepengerFørFødsel * 5);
-    return {
-        minDato,
-        maksDato
-    };
-};
-
-const getValidators = (
+const startdatoFørTerminValidators = (
     intl: InjectedIntl,
     dato: Date | undefined,
     familiehendelsesdato: Date,
@@ -28,7 +18,7 @@ const getValidators = (
         }
     ];
     if (ingenUttakFørTermin !== true) {
-        const avgrensninger = getDatoavgrensninger(familiehendelsesdato);
+        const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         validators.push({
             test: () =>
                 moment(dato).isSameOrAfter(avgrensninger.minDato) &&
@@ -41,9 +31,4 @@ const getValidators = (
     return validators;
 };
 
-const StartdatoFørTerminValidation = {
-    getValidators,
-    getDatoavgrensninger
-};
-
-export default StartdatoFørTerminValidation;
+export default startdatoFørTerminValidators;
