@@ -41,7 +41,7 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
 };
 
 const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, foreldernavn: NavnPåForeldre): string => {
-    if (periode.type === Periodetype.Uttak) {
+    if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
         return getStønadskontoNavn(intl, periode.konto, foreldernavn);
     }
     if (periode.type === Periodetype.Utsettelse) {
@@ -66,6 +66,8 @@ const renderDagMnd = (dato: Date): JSX.Element =>
 const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
         return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} gradert={periode.gradert} />;
+    } else if (periode.type === Periodetype.Overføring) {
+        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
     } else if (periode.type === Periodetype.Utsettelse) {
         return <UtsettelseIkon årsak={periode.årsak} />;
     }
