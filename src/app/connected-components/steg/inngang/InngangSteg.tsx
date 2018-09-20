@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { AppState } from '../../../redux/reducers';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
@@ -25,7 +25,6 @@ import { Kjønn, HistoryProps } from '../../../types/common';
 import { resolveStegToRender } from '../util/navigation';
 import visibility from './visibility';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import getMessage from 'common/util/i18nUtils';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
 
@@ -37,7 +36,7 @@ export interface StateProps {
     søker: Søker;
 }
 
-export type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
+export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
     constructor(props: Props) {
@@ -91,7 +90,7 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { roller, situasjon, søker, dispatch, stegProps, intl } = this.props;
+        const { roller, situasjon, søker, dispatch, stegProps } = this.props;
         const { rolle } = søker;
 
         return (
@@ -101,9 +100,11 @@ class InngangSteg extends React.Component<Props, {}> {
                 </Block>
                 <Block visible={visibility.papirsøknadInfo(situasjon)}>
                     <Veilederinfo>
-                        <Block>{getMessage(intl, 'velkommen.foreldreansvar.veileder')}</Block>
+                        <Block>
+                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                        </Block>
                         <Lenke href={lenker.papirsøknadForeldreansvar}>
-                            {getMessage(intl, 'velkommen.foreldreansvar.papirsøknadLenke')}
+                            <FormattedMessage id="velkommen.foreldreansvar.papirsøknadLenke" />
                         </Lenke>
                     </Veilederinfo>
                 </Block>
@@ -150,4 +151,4 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 };
 
-export default connect<StateProps>(mapStateToProps)(injectIntl(InngangSteg));
+export default connect<StateProps>(mapStateToProps)(InngangSteg);
