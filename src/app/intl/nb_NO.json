@@ -45,7 +45,7 @@
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.bobletittel": "Hei, {name}!",
-    "velkommen.bobletekst": "Husk at hvis barnet ikke er født ennå, må du legge ved en terminbekreftelse.",
+    "velkommen.bobletekst": "Jeg skal hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
     "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
     "velkommen.dinePlikter": "dine plikter",
@@ -67,20 +67,23 @@
     "annenForelder.spørsmål.navn": "Hva heter den andre forelderen?",
     "annenForelder.spørsmål.fornavn": "Fornavn:",
     "annenForelder.spørsmål.etternavn": "Etternavn:",
-    "annenForelder.spørsmål.fnr": "og har fødselsnummer...",
-    "annenForelder.spørsmål.utenlandskFnr": "Utenlandsk fødselsnummer",
+    "annenForelder.spørsmål.fnr": "Hva er fødselsnummeret eller D-nummeret til { navn }? ",
+    "annenForelder.spørsmål.utenlandskFnr": "{navn} har utenlandsk fødselsnummer",
 
     "annenInntekt.modal.pågående": "Jeg jobber fortsatt i utlandet",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
     "annenInntekt.alternativ.hatt": "ja",
     "annenInntekt.alternativ.ikkeHatt": "nei",
-    "annenInntekt.leggTilInntekt": "Legg til inntekt",
+    "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
     "annenInntekt.modal.select.spørsmål": "Jeg har hatt inntekt i forbindelse med...",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt?",
+
+    "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
+    "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
 
     "annenInntekt.arbeidsforhold.infotekst":
         "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
@@ -118,6 +121,7 @@
     "antallBarn.select.velg": "Velg",
 
     "fødselsdatoer.fødsel": "Når ble barnet født?",
+    "fødselsdatoer.fødsel.flereBarn": "Når ble det første barnet født?",
     "fødselsdatoer.flere.1": "Første barnet ble født den...",
     "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
     "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
@@ -152,10 +156,9 @@
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
         "Oppdrag for nære venner og/eller familie de siste 10 månedene",
     "frilans.oppstart": "Når startet du?",
-    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
+    "frilansOppdrag.leggTilOppdrag": "Legg til virksomhet",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
-    "frilansOppdrag.modal.pågående": "Pågående oppdrag",
-    "frilansOppdrag.oppfølgingsspørsmål": "Oppdrag for nære venner eller familie siste 10 måneder",
+    "frilansOppdrag.modal.pågående": "Jeg har fortsatt oppdraget",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen",
@@ -185,11 +188,11 @@
     "næringsrelasjon.tlfnr": "Telefonnummer til personen",
     "næringsrelasjon.nærVennEllerFamilie": "Er dere nære venner eller i familie?",
 
-    "erNæringenRegistrertINorge.spørsmål": "Er næringen registrert i Norge?",
+    "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Norge?",
 
-    "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett på foreldrepenger?",
+    "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepenger og skal ta de ut?",
 
-    "erAnnenForelderInformert.spørsmål": "Er {navn} informert om søknaden min?",
+    "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
@@ -199,7 +202,7 @@
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
-    "annenForelder.bostedsland": "og bor i...",
+    "annenForelder.bostedsland": "Hvor bor { navn }?",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
     "annenForelder.label.registrertForelder":
@@ -215,6 +218,8 @@
     "annenForelder.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
+    "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
+        "Når vi har behandlet søknaden din vil {navn} kunne logge seg på Ditt NAV og se hvilken periode du skal ha foreldrepenger og eventuelle opphold. ",
 
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
@@ -361,7 +366,7 @@
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
-        "Du kan ikke søke om engangsstønad for barn som er eldre enn tre år.",
+        "Du kan ikke søke om foreldrepenger for barn som er eldre enn tre år.",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidligst søke når du er i 26. svangerskapsuke",
@@ -392,7 +397,7 @@
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":
-        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til engangsstønad.",
+        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til foreldrepenger.",
 
     "oppsummering.relasjonTilBarn": "Relasjon til barn",
     "oppsummering.termindato.label": "med termindato den",

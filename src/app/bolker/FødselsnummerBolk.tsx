@@ -11,6 +11,7 @@ import Input from 'common/components/skjema/wrappers/Input';
 import { InputChangeEvent, SelectChangeEvent } from '../types/dom/Events';
 
 interface FødselsnummerSpørsmålProps {
+    navn: string;
     kanIkkeOppgis: boolean;
     søkersFødselsnummer: string;
     fnr: string;
@@ -22,14 +23,14 @@ interface FødselsnummerSpørsmålProps {
 type Props = FødselsnummerSpørsmålProps & InjectedIntlProps;
 
 const FødselsnummerBolk = (props: Props) => {
-    const { kanIkkeOppgis, fnr, utenlandskFnr, søkersFødselsnummer, bostedsland, onChange, intl } = props;
+    const { kanIkkeOppgis, fnr, utenlandskFnr, søkersFødselsnummer, bostedsland, navn, onChange, intl } = props;
 
     return (
         <React.Fragment>
             <Block margin="xs">
                 <Input
                     disabled={kanIkkeOppgis || false}
-                    label={getMessage(intl, 'annenForelder.spørsmål.fnr')}
+                    label={getMessage(intl, 'annenForelder.spørsmål.fnr', { navn })}
                     name="fødselsnummer"
                     onChange={(e: InputChangeEvent) => onChange({ fnr: e.target.value }, e)}
                     value={fnr || ''}
@@ -43,14 +44,14 @@ const FødselsnummerBolk = (props: Props) => {
                 <Checkbox
                     disabled={kanIkkeOppgis}
                     checked={utenlandskFnr || false}
-                    label={getMessage(intl, 'annenForelder.spørsmål.utenlandskFnr')}
+                    label={getMessage(intl, 'annenForelder.spørsmål.utenlandskFnr', { navn })}
                     onChange={(e: InputChangeEvent) => onChange({ utenlandskFnr: e.target.checked }, e)}
                 />
             </Block>
 
             <Block visible={utenlandskFnr === true}>
                 <Landvelger
-                    label={<Labeltekst intlId={'annenForelder.bostedsland'} />}
+                    label={<Labeltekst intlId={'annenForelder.bostedsland'} intlValue={{ navn }} />}
                     onChange={(land: string, e: SelectChangeEvent) => onChange({ bostedsland: land }, e)}
                     defaultValue={bostedsland}
                 />

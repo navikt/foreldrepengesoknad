@@ -83,6 +83,7 @@ class AnnenForelderPersonaliaPart extends React.Component<Props> {
                     <FødselsnummerBolk
                         kanIkkeOppgis={kanIkkeOppgis}
                         søkersFødselsnummer={søkersFødselsnummer}
+                        navn={fornavn}
                         fnr={annenForelder.fnr}
                         utenlandskFnr={annenForelder.utenlandskFnr}
                         bostedsland={annenForelder.bostedsland}

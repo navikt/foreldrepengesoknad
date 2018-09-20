@@ -213,6 +213,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.næringRegistrertINorge(næring)}>
                     <ErNæringenRegistrertINorgeSpørsmål
+                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
                         registrertINorge={registrertINorge}
                         onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
                     />
