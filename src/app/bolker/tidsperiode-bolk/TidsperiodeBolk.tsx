@@ -81,6 +81,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                 <div className={bem.element('fra')}>
                     <Block margin="none">
                         <DatoInput
+                            name="fraDatoInput"
                             id="fraDatoInput"
                             label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
                             onChange={(fom: Date) => {
@@ -100,6 +101,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                 <div className={bem.element('til')}>
                     <Block margin="none">
                         <DatoInput
+                            name="tilDatoInput"
                             id="tilDatoInput"
                             label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
                             onChange={(tom: Date | undefined) => {

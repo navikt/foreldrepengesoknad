@@ -12,6 +12,14 @@ export interface ValiderbarFormProps {
     noSummary?: boolean;
 }
 
+export interface ValidFormContext {
+    register: (component: React.Component) => void;
+    unregister: (component: React.Component) => void;
+    onChange: (e: any, component: React.ComponentType) => void;
+    onBlur: (e: any, component: React.ComponentType) => void;
+    validateField: (componentId: string) => void;
+}
+
 interface ValiderbarFormState {
     results: ValidationResult[];
     valid: boolean;
@@ -22,6 +30,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     static childContextTypes = {
         validForm: PT.object
     };
+
     components: any[];
 
     constructor(props: ValiderbarFormProps) {
@@ -43,7 +52,8 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
                 register: this.registerComponent.bind(this),
                 unregister: this.unRegisterComponent.bind(this),
                 onChange: this.onChange.bind(this),
-                onBlur: this.onBlur.bind(this)
+                onBlur: this.onBlur.bind(this),
+                validateField: this.validateField.bind(this)
             }
         };
     }
@@ -77,6 +87,24 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     validateOne(component: React.ComponentType) {
         const index = this.components.indexOf(component);
         if (index !== -1) {
+            setTimeout(() => {
+                const results = this.state.results.slice();
+                const fieldResult = this.components[index].validate();
+                results[index] = fieldResult;
+                const valid = results.every((result) => result.valid === true);
+
+                this.setState({
+                    results,
+                    valid,
+                    failedSubmit: this.state.failedSubmit && !valid
+                });
+            });
+        }
+    }
+
+    validateField(componentId: string) {
+        const index = this.components.findIndex((c) => c.props.id === componentId);
+        if (index >= 0) {
             setTimeout(() => {
                 const results = this.state.results.slice();
                 const fieldResult = this.components[index].validate();

@@ -8,9 +8,11 @@ import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
+import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 
 interface OwnProps {
     barn: Adopsjonsbarn;
+    familiehendelsesdato: Date;
 }
 
 type Props = UttaksplanSkjemaspørsmålProps & OwnProps & InjectedIntlProps;
@@ -44,7 +46,7 @@ const getStartdatoFromAlternativ = (
 };
 
 const StartdatoAdopsjonBolk = (props: Props) => {
-    const { visible, barn, intl } = props;
+    const { visible, barn, familiehendelsesdato, intl } = props;
 
     const alternativer: FlervalgAlternativ[] = [];
     if (barn.adoptertIUtlandet && barn.ankomstdato) {
@@ -80,6 +82,9 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
+                            avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonVedAdopsjon(
+                                familiehendelsesdato
+                            )}
                         />
                     </Block>
                 </>

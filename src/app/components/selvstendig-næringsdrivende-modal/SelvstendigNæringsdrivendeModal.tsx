@@ -145,6 +145,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.navnPåNæringen(næring)}>
                     <Input
+                        name="selvstendigNæringsdrivende-navn"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.navn')}
                         required={true}
                         onChange={(e: InputChangeEvent) =>
@@ -158,6 +159,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.organisasjonsnummer(næring)}>
                     <Input
+                        name="selvstendigNæringsdrivende-orgnr"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
                         onChange={(e: InputChangeEvent) =>
                             this.updateNæring({
@@ -204,6 +206,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.næringsinntekt(næring)}>
                     <Input
+                        name="selvstendigNæringsdrivende-næringsinntekt"
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(e: InputChangeEvent) => {
                             const næringPartial: NæringPartial = {
@@ -233,6 +236,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.stillingsprosent(næring)}>
                     <Input
+                        name="selvstendigNæringsdrivende-stillingsprosent"
                         bredde="XS"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>

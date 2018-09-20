@@ -109,6 +109,7 @@ class AnnenForelderOppfølgingPart extends React.Component<Props> {
                     <React.Fragment>
                         <Block visible={vis.omsorgsovertakelseDatoSpørsmål}>
                             <DatoInput
+                                name="omsorgsovertakelseDato"
                                 id="omsorgsovertakelseDato"
                                 label={getMessage(intl, 'omsorgsovertakelseDato.spørsmål')}
                                 onChange={(foreldreansvarsdato: Date) => {

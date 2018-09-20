@@ -91,6 +91,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmAdopsjonsdato(barn)}>
                     <DatoInput
+                        name="adopsjonsdato"
                         id="adopsjonsdato"
                         label={getMessage(
                             intl,
@@ -107,7 +108,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.spørsmålOmAntallBarn(barn)}>
+                <Block visible={visibility.spørsmålOmAntallBarn(barn)} hasChildBlocks={true}>
                     <AntallBarnBolk
                         spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
                         inputName="antallBarn"
@@ -116,7 +117,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.spørsmålOmFødselsdatoer(barn)}>
+                <Block visible={visibility.spørsmålOmFødselsdatoer(barn)} hasChildBlocks={true}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         fødselsdatoAvgrensninger={{

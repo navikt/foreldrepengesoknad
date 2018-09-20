@@ -41,6 +41,7 @@ class InntektstypeVelger extends React.Component<InntektstypeVelgerProps & Injec
         const { validators, onChange, ...restProps } = this.props;
         return (
             <Select
+                name="inntektstype"
                 {...restProps}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value, e)}
                 validators={validators}>
