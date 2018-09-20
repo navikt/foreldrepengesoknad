@@ -11,16 +11,12 @@ interface OverføringsårsakSpørsmålProps {
 
 type Props = OverføringsårsakSpørsmålProps & InjectedIntlProps;
 
-const getOverføringsÅrsakNavn = (årsak: OverføringÅrsakType, annenForelderNavn: string, intl: InjectedIntl): string => {
-    return intl.formatMessage({ id: `overføringsårsaktype.${årsak}` }, { annenForelderNavn });
-};
-
 const getOverføringsårsakAlternativ = (
     årsak: OverføringÅrsakType,
     annenForelderNavn: string,
     intl: InjectedIntl
 ): FlervalgAlternativ => ({
-    label: getOverføringsÅrsakNavn(årsak, annenForelderNavn, intl),
+    label: intl.formatMessage({ id: `overføringsårsaktype.${årsak}` }, { annenForelderNavn }),
     value: årsak
 });
 
