@@ -7,25 +7,16 @@ export interface Props {
     tittelProps: string;
     children: React.ReactNode;
 }
-interface State {
-    isOpen: boolean;
-}
 
-class Summary extends React.Component<Props, State> {
+class Summary extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.state = {
-            isOpen: false
-        };
     }
     render() {
         const { tittel, tittelProps, children } = this.props;
         return (
             <Block animated={false}>
-                <Ekspanderbartpanel
-                    tittel={tittel}
-                    tittelProps={tittelProps}
-                    onClick={() => this.setState({ isOpen: !this.state.isOpen })}>
+                <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
                     <div className="summary">{children}</div>
                 </Ekspanderbartpanel>
             </Block>
