@@ -64,6 +64,7 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
             <React.Fragment>
                 <Block visible={validTidsperiode !== undefined}>
                     <Input
+                        name="utsettelse-stillingsprosent"
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}
                         onChange={(e: InputChangeEvent) =>

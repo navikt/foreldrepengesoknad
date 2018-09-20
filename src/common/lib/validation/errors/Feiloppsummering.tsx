@@ -30,6 +30,7 @@ class Feiloppsummering extends React.Component<Props, {}> {
             const link = '#' + error.name;
             return (
                 <li key={error.name}>
+                    ({error.name})
                     <a className="feil-oppsummering-boks__lenke" href={link}>
                         {error.text}
                     </a>
