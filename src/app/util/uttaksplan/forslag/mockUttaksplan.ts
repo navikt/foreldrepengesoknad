@@ -2,7 +2,6 @@ import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '
 import Søknad, { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { opprettUttaksperioderAleneomsorgMor } from './aleneomsorgMor';
-import { getPermisjonsregler } from '../permisjonsregler';
 import { opprettUttaksperioderToForeldreEttBarnMor } from './toForeldreEttBarnMor';
 import { opprettUttaksperioderAleneomsorgFarEllerMedmor } from './aleneomsorgFarEllerMedmor';
 
@@ -23,7 +22,7 @@ export const lagMockUttaksplan = (
 ): Periode[] => {
     const { søker, barn, situasjon, ekstrainfo } = søknad;
     const {
-        uttaksplanSkjema: { fellesperiodeukerMor }
+        uttaksplanSkjema: { fellesperiodeukerMor, startdatoPermisjon }
     } = ekstrainfo;
     const { erAleneOmOmsorg, rolle } = søker;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
@@ -35,8 +34,8 @@ export const lagMockUttaksplan = (
                 if (rolle === SøkerRolle.MOR) {
                     return opprettUttaksperioderAleneomsorgMor(
                         famDato,
-                        getPermisjonsregler(),
-                        tilgjengeligeStønadskontoer
+                        tilgjengeligeStønadskontoer,
+                        startdatoPermisjon
                     );
                 } else {
                     return opprettUttaksperioderAleneomsorgFarEllerMedmor(famDato, tilgjengeligeStønadskontoer);
@@ -47,7 +46,8 @@ export const lagMockUttaksplan = (
                     return opprettUttaksperioderToForeldreEttBarnMor(
                         famDato,
                         fellesUkerMor,
-                        tilgjengeligeStønadskontoer
+                        tilgjengeligeStønadskontoer,
+                        startdatoPermisjon
                     );
                 } else {
                     return opprettUttaksperioderToForeldreEttBarnMor(
@@ -61,8 +61,8 @@ export const lagMockUttaksplan = (
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
                 const perioder = opprettUttaksperioderAleneomsorgMor(
                     famDato,
-                    getPermisjonsregler(),
-                    tilgjengeligeStønadskontoer
+                    tilgjengeligeStønadskontoer,
+                    startdatoPermisjon
                 );
                 perioder.shift();
                 return perioder;
@@ -76,8 +76,8 @@ export const lagMockUttaksplan = (
             if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
                 const perioder = opprettUttaksperioderAleneomsorgMor(
                     famDato,
-                    getPermisjonsregler(),
-                    tilgjengeligeStønadskontoer
+                    tilgjengeligeStønadskontoer,
+                    startdatoPermisjon
                 );
                 perioder.shift();
                 return perioder;
