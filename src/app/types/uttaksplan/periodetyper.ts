@@ -138,8 +138,7 @@ export enum MorsAktivitet {
     'Introduksjonsprogrammet' = 'INTROPROG',
     'TrengerHjelp' = 'TRENGER_HJELP',
     'Innlagt' = 'INNLAGT',
-    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
-    'SamtidigUttak' = 'SAMTIDIGUTTAK'
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING'
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(
