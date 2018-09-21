@@ -9,14 +9,14 @@ enum AnnenForelder {
 }
 
 interface RettPåForeldrepengerSpørsmålProps {
-    navn?: string;
+    navnAnnenForelder?: string;
     harAnnenForelderRettPåForeldrepenger?: boolean;
     onChange: (harAnnenForelderRettPåForeldrepenger: boolean) => void;
 }
 
 type Props = RettPåForeldrepengerSpørsmålProps & InjectedIntlProps;
 const RettPåForeldrepengerSpørsmål = (props: Props) => {
-    const { onChange, harAnnenForelderRettPåForeldrepenger, navn, intl } = props;
+    const { onChange, harAnnenForelderRettPåForeldrepenger, navnAnnenForelder, intl } = props;
 
     let checked;
     if (harAnnenForelderRettPåForeldrepenger === true) {
@@ -28,7 +28,7 @@ const RettPåForeldrepengerSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
-            legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', { navn })}
+            legend={getMessage(intl, 'annenForelderRettPåForeldrepenger.spørsmål', { navn: navnAnnenForelder })}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

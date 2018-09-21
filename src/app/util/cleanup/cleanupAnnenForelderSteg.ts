@@ -1,6 +1,6 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
-import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
+import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+import { Barn } from '../../types/søknad/Barn';
 import Søknad from '../../types/søknad/Søknad';
 
 interface CleanedAnnenForelderSteg {
@@ -12,56 +12,58 @@ export const cleanupAnnenForelder = (
     vis: AnnenForelderStegVisibility,
     søknad: Partial<Søknad>
 ): Partial<AnnenForelder> => {
-    const { annenForelder } = søknad;
-    if (!annenForelder) {
-        return {};
-    }
-    const {
-        fornavn,
-        etternavn,
-        fnr,
-        bostedsland,
-        utenlandskFnr,
-        harRettPåForeldrepenger,
-        erInformertOmSøknaden,
-        erUfør,
-        kanIkkeOppgis,
-        ...rest
-    } = annenForelder;
+    return {};
+    // const { annenForelder } = søknad;
+    // if (!annenForelder) {
+    //     return {};
+    // }
+    // const {
+    //     fornavn,
+    //     etternavn,
+    //     fnr,
+    //     bostedsland,
+    //     utenlandskFnr,
+    //     harRettPåForeldrepenger,
+    //     erInformertOmSøknaden,
+    //     erUfør,
+    //     kanIkkeOppgis,
+    //     ...rest
+    // } = annenForelder;
 
-    const kanOppgis = (visProp: boolean) => {
-        if (kanIkkeOppgis === true) {
-            return false;
-        }
-        return visProp;
-    };
+    // const kanOppgis = (visProp: boolean) => {
+    //     if (kanIkkeOppgis === true) {
+    //         return false;
+    //     }
+    //     return visProp;
+    // };
 
-    const cleanedAnnenForelder: Partial<AnnenForelder> = {
-        ...rest,
-        kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
-        fornavn: kanOppgis(true) ? fornavn : undefined,
-        etternavn: kanOppgis(true) ? etternavn : undefined,
-        fnr: kanOppgis(true) ? fnr : undefined,
-        utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
-        bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
-        harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
-        erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
-        erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
-    };
-    return cleanedAnnenForelder;
+    // const cleanedAnnenForelder: Partial<AnnenForelder> = {
+    //     ...rest,
+    //     kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
+    //     fornavn: kanOppgis(true) ? fornavn : undefined,
+    //     etternavn: kanOppgis(true) ? etternavn : undefined,
+    //     fnr: kanOppgis(true) ? fnr : undefined,
+    //     utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
+    //     bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
+    //     harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
+    //     erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
+    //     erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
+    // };
+    // return cleanedAnnenForelder;
 };
 
 export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (!vis.omsorgsovertakelseDatoSpørsmål) {
-        return {
-            ...barn,
-            foreldreansvarsdato: undefined
-        };
-    }
-    return {
-        ...barn,
-        foreldreansvarsdato: (barn as ForeldreansvarBarn).foreldreansvarsdato
-    };
+    return {};
+    // if (!vis.omsorgsovertakelseDatoSpørsmål) {
+    //     return {
+    //         ...barn,
+    //         foreldreansvarsdato: undefined
+    //     };
+    // }
+    // return {
+    //     ...barn,
+    //     foreldreansvarsdato: (barn as ForeldreansvarBarn).foreldreansvarsdato
+    // };
 };
 
 const cleanupAnnenForelderSteg = (
