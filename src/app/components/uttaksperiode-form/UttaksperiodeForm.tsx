@@ -28,6 +28,7 @@ import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
+import FlerbarnsukerUttakForm from './flerbarnsuker-uttak-form/FlerbarnsukerUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -124,6 +125,14 @@ class UttaksperiodeForm extends React.Component<Props> {
         });
     }
 
+    updateFlerbarnsukerUttak(ønskerSamtidigUttak: boolean) {
+        const { onChange } = this.props;
+        onChange({
+            type: Periodetype.Uttak,
+            ønskerSamtidigUttak
+        });
+    }
+
     updateStønadskontoType(konto: StønadskontoType) {
         const uttaksplanInfo = this.props.søknad.ekstrainfo.uttaksplanInfo!;
 
@@ -172,6 +181,14 @@ class UttaksperiodeForm extends React.Component<Props> {
             );
         }
         if (validTidsperiode) {
+            if (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Flerbarnsuker) {
+                return (
+                    <FlerbarnsukerUttakForm
+                        ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                        onChange={(ønskerSamtidigUttak) => this.updateFlerbarnsukerUttak(ønskerSamtidigUttak)}
+                    />
+                );
+            }
             if (periode.konto === StønadskontoType.Fellesperiode) {
                 return (
                     <FellesperiodeUttakForm
