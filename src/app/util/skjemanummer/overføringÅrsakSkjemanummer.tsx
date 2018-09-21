@@ -1,5 +1,5 @@
 import { OverføringÅrsakType } from '../../types/uttaksplan/periodetyper';
-import { Skjemanummer } from '../../types/s\u00F8knad/S\u00F8knad';
+import { Skjemanummer } from '../../types/søknad/Søknad';
 
 export const getOverføringÅrsakSkjemanummer = (årsak: OverføringÅrsakType): Skjemanummer => {
     switch (årsak) {

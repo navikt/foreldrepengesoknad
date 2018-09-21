@@ -1,8 +1,8 @@
 import Søknad from '../../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../../types/søkerinfo';
-import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
-import { Søker } from '../../../../types/s\u00F8knad/S\u00F8ker';
-import { Barn, ForeldreansvarBarn } from '../../../../types/s\u00F8knad/Barn';
+import AnnenForelder from '../../../../types/søknad/AnnenForelder';
+import { Søker } from '../../../../types/søknad/Søker';
+import { Barn, ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
 import { QuestionConfig, Questions, questionIsAnswered } from '../../../../util/questions/Question';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';

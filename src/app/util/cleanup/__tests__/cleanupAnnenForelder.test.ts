@@ -10,7 +10,7 @@ import {
     AnnenForelderStegVisibility,
     AnnenForelderSpørsmålKeys
 } from '../../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
-import { Barn, ForeldreansvarBarn } from '../../../types/s\u00F8knad/Barn';
+import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 
 const annenForelder: AnnenForelder = {
     bostedsland: 'landet',

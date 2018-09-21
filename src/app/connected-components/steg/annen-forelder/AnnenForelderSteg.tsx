@@ -18,10 +18,10 @@ import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelder
 import { default as søknadActions } from '../../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../util/navigation';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
-import AnnenForelderSpørsmål from './AnnenForelderSp\u00F8rsm\u00E5l';
-import { Barn } from '../../../types/s\u00F8knad/Barn';
-import AnnenForelder from '../../../types/s\u00F8knad/AnnenForelder';
-import { Søker } from '../../../types/s\u00F8knad/S\u00F8ker';
+import AnnenForelderSpørsmål from './AnnenForelderSpørsmål';
+import { Barn } from '../../../types/søknad/Barn';
+import AnnenForelder from '../../../types/søknad/AnnenForelder';
+import { Søker } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
