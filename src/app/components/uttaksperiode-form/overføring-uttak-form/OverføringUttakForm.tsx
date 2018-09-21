@@ -5,9 +5,9 @@ import Block from 'common/components/block/Block';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
-import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overf\u00F8ring\u00C5rsakSkjemanummer';
 
 interface Props {
     skjemadata: OverføringUttakFormSkjemadata;
@@ -76,7 +76,7 @@ class OverføringUttakForm extends React.Component<Props> {
                             this.updateVedleggList(vedleggList);
                         }}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
-                        skjemanummer={Skjemanummer.DOK_OVERFØRING}
+                        skjemanummer={getOverføringÅrsakSkjemanummer(skjemadata.årsak!)}
                     />
                 </Block>
             </>
