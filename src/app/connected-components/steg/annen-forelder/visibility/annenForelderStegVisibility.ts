@@ -4,7 +4,8 @@ import AnnenForelder from '../../../../types/s\u00F8knad/AnnenForelder';
 import { Søker } from '../../../../types/s\u00F8knad/S\u00F8ker';
 import { Barn, ForeldreansvarBarn } from '../../../../types/s\u00F8knad/Barn';
 import Person from '../../../../types/Person';
-import { QuestionConfig, Questions, questionHasValidInput } from '../../../../util/questions/Question';
+import { QuestionConfig, Questions, questionIsAnswered } from '../../../../util/questions/Question';
+import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 
 export interface AnnenForelderStegVisibility {
     navnPåAnnenForelder: boolean;
@@ -16,6 +17,7 @@ export interface AnnenForelderStegVisibility {
     erAnnenForelderInformert: boolean;
     omsorgsovertakelseDato: boolean;
     personaliaRegistrertAnnenForelder: boolean;
+    isComplete: boolean;
 }
 
 interface AnnenForelderSpørsmålPayload {
@@ -23,6 +25,8 @@ interface AnnenForelderSpørsmålPayload {
     barn: Barn;
     annenForelder: AnnenForelder;
     person: Person;
+    søkerErFarEllerMedmor: boolean;
+    annenForelderErRegistrert: boolean;
 }
 
 enum AnnenForelderSpørsmål {
@@ -38,44 +42,48 @@ enum AnnenForelderSpørsmål {
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload> = {
     [AnnenForelderSpørsmål.navnPåAnnenForelder]: {
-        getValue: ({ annenForelder }) => annenForelder.fornavn
+        getValue: ({ annenForelder }) => annenForelder.fornavn,
+        ownDependency: (props) => props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmål.annenForelderKanIkkeOppgis]: {
-        getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis
+        isOptional: true,
+        getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis,
+        ownDependency: (props) => props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmål.fødselsnummer]: {
         getValue: ({ annenForelder }) => annenForelder.fnr,
-        dependsOnQuestion: {
-            question: AnnenForelderSpørsmål.navnPåAnnenForelder,
-            check: (verdi) => questionHasValidInput(verdi)
+        ownDependency: (props) => {
+            return props.annenForelderErRegistrert === false && questionIsAnswered(props.annenForelder.fornavn);
         }
     },
     [AnnenForelderSpørsmål.deltOmsorg]: {
         getValue: ({ søker }) => søker.erAleneOmOmsorg,
-        dependsOnQuestion: {
-            question: AnnenForelderSpørsmål.fødselsnummer,
-            check: (verdi) => questionHasValidInput(verdi)
-        },
-        dependency: (props) =>
-            (props.annenForelder.utenlandskFnr !== true && questionHasValidInput(props.annenForelder.fnr)) ||
-            (props.annenForelder.utenlandskFnr && props.annenForelder.bostedsland !== undefined)
+        ownDependency: (props) =>
+            props.annenForelderErRegistrert ||
+            ((props.annenForelder.utenlandskFnr !== true && questionIsAnswered(props.annenForelder.fnr)) ||
+                (props.annenForelder.utenlandskFnr && props.annenForelder.bostedsland !== undefined))
+    },
+    [AnnenForelderSpørsmål.harRettPåForeldrepenger]: {
+        getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
+        parentQuestion: AnnenForelderSpørsmål.deltOmsorg,
+        ownDependency: (props) => props.søker.erAleneOmOmsorg === false
+    },
+    [AnnenForelderSpørsmål.erMorUfør]: {
+        getValue: ({ annenForelder }) => annenForelder.erUfør,
+        parentQuestion: AnnenForelderSpørsmål.harRettPåForeldrepenger,
+        ownDependency: (props) => props.annenForelder.harRettPåForeldrepenger === false
     },
     [AnnenForelderSpørsmål.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
-        dependency: (props) => {
+        parentQuestion: AnnenForelderSpørsmål.deltOmsorg,
+        ownDependency: (props) => {
             return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
         }
     },
-    [AnnenForelderSpørsmål.erMorUfør]: { getValue: ({ annenForelder }) => annenForelder.erUfør },
-    [AnnenForelderSpørsmål.harRettPåForeldrepenger]: {
-        getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
-        dependsOnQuestion: {
-            question: AnnenForelderSpørsmål.deltOmsorg,
-            check: (verdi) => verdi === false
-        }
-    },
     [AnnenForelderSpørsmål.omsorgsovertakelseDato]: {
-        getValue: ({ barn }) => (barn as ForeldreansvarBarn).foreldreansvarsdato
+        getValue: ({ barn }) => (barn as ForeldreansvarBarn).foreldreansvarsdato,
+        parentQuestion: AnnenForelderSpørsmål.deltOmsorg,
+        ownDependency: (props) => props.søker.erAleneOmOmsorg === true
     }
 };
 
@@ -98,61 +106,25 @@ export const getAnnenForelderStegVisibility = (
         søker,
         barn,
         annenForelder,
-        person
+        person,
+        søkerErFarEllerMedmor: erFarEllerMedmor(person.kjønn, søker.rolle),
+        annenForelderErRegistrert: registrertAnnenForelder !== undefined
     };
-
-    // /* Data */
-    // const erFarEllerMedmor = df.getErFarEllerMedmor(søker, person);
-    // const annenForelderHarOpplystOmPågåendeSak = df.getHarAnnenForelderOpplystOmSinPågåendeSak(
-    //     registrertAnnenForelder!
-    // );
-    // const gjelderAdopsjonAvEktefellesBarn = df.getGjelderAdopsjonAvEktefellesBarn(barn);
-
-    // /* Visibility */
-    // const farEllerMedmorBolk = f.visFarEllerMedmorBolk(erFarEllerMedmor);
-
-    // const registrertAnnenForelderBolk = f.visRegistrertAnnenForelderBolk(registrertAnnenForelder);
-
-    // const annenForelderPersonaliaPart = f.visAnnenForelderPersonaliaPart(registrertAnnenForelder);
-
-    // const annenForelderKanIkkeOppgisValg = f.visAnnenForelderKanIkkeOppgisValg(
-    //     annenForelderPersonaliaPart,
-    //     gjelderAdopsjonAvEktefellesBarn
-    // );
-
-    // const annenForelderOppfølgingPart = f.visAnnenForelderOppfølgingPart(annenForelder, registrertAnnenForelder);
-    // const fødselsnummerInput = f.visFødselsnummerInput(annenForelderPersonaliaPart, annenForelder);
-    // const harRettPåForeldrepengerSpørsmål = f.visHarRettPåForeldrepengerSpørsmål(
-    //     søker,
-    //     erFarEllerMedmor,
-    //     annenForelderHarOpplystOmPågåendeSak
-    // );
-    // const erMorUførSpørsmål = f.visErMorUførSpørsmål(annenForelder, erFarEllerMedmor);
-    // const erAnnenForelderInformertSpørsmål = f.visErAnnenForelderInformertSpørsmål(
-    //     søker,
-    //     annenForelder,
-    //     annenForelderHarOpplystOmPågåendeSak,
-    //     erFarEllerMedmor
-    // );
-    // const omsorgsovertakelseDatoSpørsmål = f.visOmsorgsovertakelseDatoSpørsmål(farEllerMedmorBolk, søker);
-    // const omsorgsovertakelseVedleggSpørsmål = f.visOmsorgsovertakelseVedleggSpørsmål(farEllerMedmorBolk, søker, barn);
-    // const infoOmOmsorgsovertakelse = f.visInfoOmOmsorgsovertakelse(barn);
-
-    const kanOppgiInfo = annenForelder.kanIkkeOppgis !== true;
-    const spørOmPersonalia = registrertAnnenForelder === undefined;
 
     const skalVises = (question: AnnenForelderSpørsmål): boolean => {
         return questions.check(question, payload);
     };
+
     return {
-        navnPåAnnenForelder: spørOmPersonalia,
-        annenForelderKanIkkeOppgis: spørOmPersonalia,
+        navnPåAnnenForelder: skalVises(AnnenForelderSpørsmål.navnPåAnnenForelder),
+        annenForelderKanIkkeOppgis: skalVises(AnnenForelderSpørsmål.annenForelderKanIkkeOppgis),
         fødselsnummer: skalVises(AnnenForelderSpørsmål.fødselsnummer),
-        deltOmsorg: kanOppgiInfo && skalVises(AnnenForelderSpørsmål.deltOmsorg),
-        erAnnenForelderInformert: kanOppgiInfo && skalVises(AnnenForelderSpørsmål.erAnnenForelderInformert),
-        erMorUfør: kanOppgiInfo && skalVises(AnnenForelderSpørsmål.erMorUfør),
-        harRettPåForeldrepenger: kanOppgiInfo && skalVises(AnnenForelderSpørsmål.harRettPåForeldrepenger),
-        omsorgsovertakelseDato: kanOppgiInfo && skalVises(AnnenForelderSpørsmål.omsorgsovertakelseDato),
-        personaliaRegistrertAnnenForelder: kanOppgiInfo
+        deltOmsorg: skalVises(AnnenForelderSpørsmål.deltOmsorg),
+        erAnnenForelderInformert: skalVises(AnnenForelderSpørsmål.erAnnenForelderInformert),
+        erMorUfør: skalVises(AnnenForelderSpørsmål.erMorUfør),
+        harRettPåForeldrepenger: skalVises(AnnenForelderSpørsmål.harRettPåForeldrepenger),
+        omsorgsovertakelseDato: skalVises(AnnenForelderSpørsmål.omsorgsovertakelseDato),
+        personaliaRegistrertAnnenForelder: annenForelder.kanIkkeOppgis !== true,
+        isComplete: questions.allQuestionsAnswered(payload)
     };
 };
