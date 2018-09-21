@@ -103,20 +103,22 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     }
 
     validateField(componentId: string) {
-        const index = this.components.findIndex((c) => c.props.id === componentId);
-        if (index >= 0) {
-            setTimeout(() => {
-                const results = this.state.results.slice();
-                const fieldResult = this.components[index].validate();
-                results[index] = fieldResult;
-                const valid = results.every((result) => result.valid === true);
+        if (this.state.failedSubmit) {
+            const index = this.components.findIndex((c) => c.props.id === componentId);
+            if (index >= 0) {
+                setTimeout(() => {
+                    const results = this.state.results.slice();
+                    const fieldResult = this.components[index].validate();
+                    results[index] = fieldResult;
+                    const valid = results.every((result) => result.valid === true);
 
-                this.setState({
-                    results,
-                    valid,
-                    failedSubmit: this.state.failedSubmit && !valid
+                    this.setState({
+                        results,
+                        valid,
+                        failedSubmit: this.state.failedSubmit && !valid
+                    });
                 });
-            });
+            }
         }
     }
 
