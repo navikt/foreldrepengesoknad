@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import {
@@ -138,7 +137,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
                     <InntektstypeVelger
-                        label={<Labeltekst intlId="annenInntekt.modal.select.spørsmål" />}
+                        label={''}
                         onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
                         defaultValue={annenInntekt.type}
                     />
