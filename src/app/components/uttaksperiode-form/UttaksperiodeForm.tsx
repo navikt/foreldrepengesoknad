@@ -202,6 +202,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         <Block visible={konto === StønadskontoType.Fellesperiode} hasChildBlocks={true}>
                             <FellesperiodeUttakForm
                                 søkerErFarMedmor={søkerErFarEllerMedmor}
+                                navnPåForeldre={navnPåForeldre}
                                 annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                                 skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                                 onChange={(data: FellesperiodeUttakSkjemadata) =>
