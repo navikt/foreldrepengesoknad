@@ -53,11 +53,13 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                 barnetErFødt={søknad.barn.erBarnetFødt}
             />
-            <FordelingFellesperiodeSpørsmål
-                visible={harSvartPåStartdato}
-                ukerFellesperiode={antallUkerFellesperiode}
-                navnPåForeldre={navnPåForeldre}
-            />
+            {søknad.søker.erAleneOmOmsorg === false && (
+                <FordelingFellesperiodeSpørsmål
+                    visible={harSvartPåStartdato}
+                    ukerFellesperiode={antallUkerFellesperiode}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            )}
         </>
     );
 };
@@ -76,11 +78,13 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                     barn={søknad.barn as Adopsjonsbarn}
                 />
             )}
-            <FordelingFellesperiodeSpørsmål
-                visible={skjema.startdatoPermisjon !== undefined}
-                ukerFellesperiode={antallUkerFellesperiode}
-                navnPåForeldre={navnPåForeldre}
-            />
+            {søknad.søker.erAleneOmOmsorg === false && (
+                <FordelingFellesperiodeSpørsmål
+                    visible={skjema.startdatoPermisjon !== undefined}
+                    ukerFellesperiode={antallUkerFellesperiode}
+                    navnPåForeldre={navnPåForeldre}
+                />
+            )}
         </>
     );
 };
