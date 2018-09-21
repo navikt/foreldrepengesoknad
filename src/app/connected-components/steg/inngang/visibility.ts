@@ -12,7 +12,12 @@ const papirsøknadInfoVisible: VisibilityFunction<Søkersituasjon | undefined> =
 const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisibleData> = (
     data: SøkerRolleSpørsmålVisibleData
 ) => {
-    return data.roller.length > 0 && data.situasjon !== Søkersituasjon.FORELDREANSVAR && data.situasjon !== undefined;
+    return (
+        data.roller.length > 0 &&
+        data.situasjon !== Søkersituasjon.FORELDREANSVAR &&
+        data.situasjon !== Søkersituasjon.ADOPSJON &&
+        data.situasjon !== undefined
+    );
 };
 
 export default {

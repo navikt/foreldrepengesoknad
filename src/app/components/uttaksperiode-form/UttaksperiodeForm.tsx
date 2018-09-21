@@ -165,7 +165,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         const { periode, søknad } = this.props;
         const { annenForelder } = søknad;
         const { uttaksplanInfo } = søknad.ekstrainfo;
-        const { søkerErFarEllerMedmor } = uttaksplanInfo!;
+        const { søkerErFarEllerMedmor, navnPåForeldre } = uttaksplanInfo!;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         if (periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
@@ -193,6 +193,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                 return (
                     <FellesperiodeUttakForm
                         søkerErFarMedmor={søkerErFarEllerMedmor}
+                        navnPåForeldre={navnPåForeldre}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
                         skjemadata={this.getSkjemadataForFellesperiodeUttak()}
                         onChange={(data: FellesperiodeUttakSkjemadata) =>
