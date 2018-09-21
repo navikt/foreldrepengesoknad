@@ -59,9 +59,11 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmål.deltOmsorg]: {
         getValue: ({ søker }) => søker.erAleneOmOmsorg,
         ownDependency: (props) =>
-            props.annenForelderErRegistrert ||
+            props.annenForelderErRegistrert === true ||
             ((props.annenForelder.utenlandskFnr !== true && questionIsAnswered(props.annenForelder.fnr)) ||
-                (props.annenForelder.utenlandskFnr && props.annenForelder.bostedsland !== undefined))
+                (props.annenForelder.utenlandskFnr === true &&
+                    questionIsAnswered(props.annenForelder.bostedsland) &&
+                    questionIsAnswered(props.annenForelder.fnr)))
     },
     [AnnenForelderSpørsmål.harRettPåForeldrepenger]: {
         getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
@@ -115,6 +117,7 @@ export const getAnnenForelderStegVisibility = (
         return questions.check(question, payload);
     };
 
+    console.log(payload);
     return {
         navnPåAnnenForelder: skalVises(AnnenForelderSpørsmål.navnPåAnnenForelder),
         annenForelderKanIkkeOppgis: skalVises(AnnenForelderSpørsmål.annenForelderKanIkkeOppgis),

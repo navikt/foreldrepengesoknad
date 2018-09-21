@@ -127,7 +127,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={annenForelder.harRettPåForeldrepenger === true}>
+                <Block visible={vis.harRettPåForeldrepenger && annenForelder.harRettPåForeldrepenger === true}>
                     <Veilederinfo>
                         {getMessage(intl, 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan', {
                             navn: annenForelder.fornavn

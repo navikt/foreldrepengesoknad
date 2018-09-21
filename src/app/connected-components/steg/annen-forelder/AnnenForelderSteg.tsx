@@ -7,7 +7,6 @@ import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import { RegistrertAnnenForelder } from '../../../types/Person';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
-import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import isAvailable from '../util/isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
@@ -133,16 +132,16 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
 
+    const vis = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
+
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: annenForelderErGyldig(state.søknad, props.søkerinfo),
+        renderFortsettKnapp: vis !== undefined && vis.isComplete,
         renderFormTag: true,
         previousStegRoute: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
-
-    const vis = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
 
     return {
         søknad: state.søknad,
