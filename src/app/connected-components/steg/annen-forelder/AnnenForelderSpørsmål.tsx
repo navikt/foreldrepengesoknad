@@ -80,7 +80,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.annenForelderKanIkkeOppgis}>
+                <Block visible={vis.kanIkkeOppgis}>
                     <Checkbox
                         checked={kanIkkeOppgis || false}
                         label={

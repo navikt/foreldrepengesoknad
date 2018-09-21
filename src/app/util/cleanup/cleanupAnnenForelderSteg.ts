@@ -31,7 +31,7 @@ export const cleanupAnnenForelder = (
 
     const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
-        kanIkkeOppgis: vis.annenForelderKanIkkeOppgis ? kanIkkeOppgis : undefined,
+        kanIkkeOppgis,
         fornavn: vis.navnPåAnnenForelder ? fornavn : undefined,
         etternavn: vis.navnPåAnnenForelder ? etternavn : undefined,
         fnr: vis.fødselsnummer ? fnr : undefined,
@@ -45,7 +45,7 @@ export const cleanupAnnenForelder = (
 };
 
 export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (!vis.omsorgsovertakelseDato) {
+    if (vis.omsorgsovertakelseDato === false) {
         return {
             ...barn,
             foreldreansvarsdato: undefined
