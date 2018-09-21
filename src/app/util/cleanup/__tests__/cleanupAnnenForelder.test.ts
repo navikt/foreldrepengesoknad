@@ -6,9 +6,9 @@ import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
 import { cleanupAnnenForelder } from '../cleanupAnnenForelderSteg';
 
 import {
-    getAnnenForelderVisibility,
+    getAnnenForelderStegVisibility,
     AnnenForelderStegVisibility
-} from '../../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
+} from '../../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
 const annenForelder: AnnenForelder = {
     bostedsland: 'landet',
@@ -107,8 +107,8 @@ describe('Cleanup AnnenForelder', () => {
             describe('Har IKKE aleneomsorg', () => {
                 it('far har IKKE rett på foreldrepenger', () => {
                     testVisibility = {
-                        ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                        harRettPåForeldrepengerSpørsmål: true
+                        ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
+                        harRettPåForeldrepenger: true
                     };
                     expect(
                         cleanAndCheckProps(testSøknad, testVisibility, [
@@ -121,9 +121,9 @@ describe('Cleanup AnnenForelder', () => {
                 });
                 it('far HAR rett på foreldrepenger', () => {
                     testVisibility = {
-                        ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                        harRettPåForeldrepengerSpørsmål: true,
-                        erAnnenForelderInformertSpørsmål: true
+                        ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
+                        harRettPåForeldrepenger: true,
+                        erAnnenForelderInformert: true
                     };
                     expect(
                         cleanAndCheckProps(testSøknad, testVisibility, [
@@ -140,15 +140,15 @@ describe('Cleanup AnnenForelder', () => {
         describe('HAR aleneomsorg', () => {
             it('far skal IKKE ha foreldrepenger', () => {
                 testVisibility = {
-                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                    harRettPåForeldrepengerSpørsmål: false
+                    ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
+                    harRettPåForeldrepenger: false
                 };
                 expect(cleanAndCheckProps(testSøknad, testVisibility, ['fornavn', 'etternavn', 'fnr'])).toBeTruthy();
             });
             it('far SKAL ha foreldrepenger', () => {
                 testVisibility = {
-                    ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-                    harRettPåForeldrepengerSpørsmål: true
+                    ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
+                    harRettPåForeldrepenger: true
                 };
                 expect(
                     cleanAndCheckProps(testSøknad, testVisibility, [
@@ -164,8 +164,8 @@ describe('Cleanup AnnenForelder', () => {
     it('Skal fjerne alt når annen forelder ikke kan oppgis', () => {
         testSøknad.annenForelder.kanIkkeOppgis = true;
         testVisibility = {
-            ...getAnnenForelderVisibility(testSøknad as Søknad, søkerinfo)!,
-            annenForelderKanIkkeOppgisValg: true
+            ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
+            annenForelderKanIkkeOppgis: true
         };
         expect(cleanAndCheckProps(testSøknad, testVisibility, ['kanIkkeOppgis'])).toBeTruthy();
     });

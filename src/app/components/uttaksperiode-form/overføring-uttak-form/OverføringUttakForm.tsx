@@ -7,7 +7,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overf\u00F8ring\u00C5rsakSkjemanummer';
+import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføring\u00C5rsakSkjemanummer';
 
 interface Props {
     skjemadata: OverføringUttakFormSkjemadata;
