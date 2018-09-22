@@ -83,7 +83,6 @@
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
-    "annenInntekt.modal.select.spørsmål": "Jeg har hatt inntekt i forbindelse med...",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt?",
@@ -312,7 +311,10 @@
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når startet du ditt uttak før termin?",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
     "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg hadde ikke noe uttak før termin",
+    "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
+    "spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
+
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
@@ -362,6 +364,7 @@
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak",
+    "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktivitet",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
@@ -537,9 +540,10 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette denne uttaksperioden?",
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
-    "hvaSkalMorGjøre.spørsmål": "Hva skal mor gjøre i denne perioden?",
-    "skalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål.spørsmål":
-        "Skal du være hjemme samtidig med den andre forelderen?",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder": "Informasjon når mors aktivitet er valgt",
+    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
+    "uttakplan.fellesdel.samtidigUttak.veileder": "Informasjon ved samtidig uttak",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",

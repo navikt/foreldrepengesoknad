@@ -8,6 +8,7 @@ import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAkt
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { NavnPåForeldre } from 'common/types';
 
 export interface FellesperiodeUttakSkjemadata {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -17,9 +18,10 @@ export interface FellesperiodeUttakSkjemadata {
 
 interface FellesperiodeUttakFormProps {
     skjemadata: FellesperiodeUttakSkjemadata;
-    onChange: (skjemadata: FellesperiodeUttakSkjemadata) => void;
+    navnPåForeldre: NavnPåForeldre;
     søkerErFarMedmor: boolean;
     annenForelderSkalHaForeldrepenger: boolean;
+    onChange: (skjemadata: FellesperiodeUttakSkjemadata) => void;
 }
 
 type Props = FellesperiodeUttakFormProps & InjectedIntlProps;
@@ -60,13 +62,21 @@ class FellesperiodeUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { annenForelderSkalHaForeldrepenger, søkerErFarMedmor, skjemadata, onChange } = this.props;
+        const {
+            annenForelderSkalHaForeldrepenger,
+            søkerErFarMedmor,
+            navnPåForeldre,
+            skjemadata,
+            onChange
+        } = this.props;
         const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
+
         return (
             <>
                 <Block hasChildBlocks={true} visible={annenForelderSkalHaForeldrepenger && søkerErFarMedmor}>
-                    <Block margin="s">
+                    <Block hasChildBlocks={true}>
                         <HvaSkalMorGjøreSpørsmål
+                            navnPåForeldre={navnPåForeldre}
                             morsAktivitetIPerioden={morsAktivitetIPerioden}
                             onChange={(v) => onChange({ morsAktivitetIPerioden: v })}
                         />
@@ -88,6 +98,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                 </Block>
 
                 <Block
+                    hasChildBlocks={true}
                     visible={
                         søkerErFarMedmor && annenForelderSkalHaForeldrepenger
                             ? morsAktivitetIPerioden !== undefined

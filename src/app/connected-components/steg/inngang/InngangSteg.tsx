@@ -98,16 +98,6 @@ class InngangSteg extends React.Component<Props, {}> {
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
-                <Block visible={visibility.papirsøknadInfo(situasjon)}>
-                    <Veilederinfo>
-                        <Block>
-                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
-                        </Block>
-                        <Lenke href={lenker.papirsøknadForeldreansvar}>
-                            <FormattedMessage id="velkommen.foreldreansvar.papirsøknadLenke" />
-                        </Lenke>
-                    </Veilederinfo>
-                </Block>
                 <Block visible={visibility.søkerRolleSpørsmål({ roller, situasjon })}>
                     <SøkerrolleSpørsmål
                         rolle={rolle}
@@ -120,6 +110,16 @@ class InngangSteg extends React.Component<Props, {}> {
                             )
                         }
                     />
+                </Block>
+                <Block visible={visibility.papirsøknadInfo(situasjon)}>
+                    <Veilederinfo>
+                        <Block>
+                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                        </Block>
+                        <Lenke href={lenker.papirsøknadForeldreansvar}>
+                            <FormattedMessage id="velkommen.foreldreansvar.papirsøknadLenke" />
+                        </Lenke>
+                    </Veilederinfo>
                 </Block>
             </Steg>
         );

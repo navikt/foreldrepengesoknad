@@ -10,6 +10,7 @@ export interface UttaksplanSkjemaspørsmålProps {
     visible?: boolean;
     harUnderspørsmål?: boolean;
 }
+
 interface OwnProps extends UttaksplanSkjemaspørsmålProps {
     render: (data: Partial<UttaksplanSkjemadata>, onChange: (skjemadata: Partial<UttaksplanSkjemadata>) => void) => {};
 }
