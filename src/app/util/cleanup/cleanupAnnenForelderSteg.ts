@@ -45,7 +45,7 @@ export const cleanupAnnenForelder = (
 };
 
 export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (vis.omsorgsovertakelseDato === false) {
+    if (vis.foreldreansvarsdato === false) {
         return {
             ...barn,
             foreldreansvarsdato: undefined
