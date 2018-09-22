@@ -142,7 +142,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
                     />
                 </Block>
-                <Block visible={vis.omsorgsovertakelseDato}>
+                <Block visible={vis.foreldreansvarsdato}>
                     <DatoInput
                         name="omsorgsovertakelseDato"
                         id="omsorgsovertakelseDato"
@@ -153,9 +153,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                 </Block>
 
                 <Block
-                    visible={
-                        vis.omsorgsovertakelseDato && (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined
-                    }>
+                    visible={vis.foreldreansvarsdato && (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined}>
                     <Block margin="xs">
                         <Veilederinfo>
                             <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />

@@ -15,7 +15,7 @@ export interface AnnenForelderStegVisibility {
     harRettPåForeldrepenger: boolean;
     erMorUfør: boolean;
     erAnnenForelderInformert: boolean;
-    omsorgsovertakelseDato: boolean;
+    foreldreansvarsdato: boolean;
     personaliaRegistrertAnnenForelder: boolean;
     isComplete: boolean;
 }
@@ -134,7 +134,7 @@ export const getAnnenForelderStegVisibility = (
         erAnnenForelderInformert: skalVises(AnnenForelderSpørsmålKeys.erAnnenForelderInformert),
         erMorUfør: skalVises(AnnenForelderSpørsmålKeys.erMorUfør),
         harRettPåForeldrepenger: skalVises(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger),
-        omsorgsovertakelseDato: skalVises(AnnenForelderSpørsmålKeys.omsorgsovertakelseDato),
+        foreldreansvarsdato: skalVises(AnnenForelderSpørsmålKeys.omsorgsovertakelseDato),
         personaliaRegistrertAnnenForelder: annenForelder.kanIkkeOppgis !== true,
         isComplete: questions.allQuestionsAnswered(payload)
     };

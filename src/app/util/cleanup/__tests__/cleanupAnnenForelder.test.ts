@@ -125,7 +125,7 @@ describe('Cleanup AnnenForelder', () => {
             it('when erFarEllerMedmor', () => {
                 testVisibility = {
                     ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-                    omsorgsovertakelseDato: true,
+                    foreldreansvarsdato: true,
                     harRettPåForeldrepenger: false
                 };
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
@@ -141,7 +141,7 @@ describe('Cleanup AnnenForelder', () => {
             it('when er mor', () => {
                 testVisibility = {
                     ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-                    omsorgsovertakelseDato: false,
+                    foreldreansvarsdato: false,
                     harRettPåForeldrepenger: false
                 };
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
