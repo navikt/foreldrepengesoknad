@@ -105,14 +105,15 @@ export const getAnnenForelderStegVisibility = (
     søkerinfo: Søkerinfo
 ): AnnenForelderStegVisibility | undefined => {
     const { annenForelder, søker, barn } = søknad;
-    const registrertAnnenForelder = søknad.sensitivInfoIkkeLagre
-        ? søknad.sensitivInfoIkkeLagre.registrertAnnenForelder
-        : undefined;
     const { person } = søkerinfo;
 
     if (!søker || !barn || !annenForelder || !person) {
         return;
     }
+    const registrertAnnenForelder = søknad.sensitivInfoIkkeLagre
+        ? søknad.sensitivInfoIkkeLagre.registrertAnnenForelder
+        : undefined;
+
     const payload: AnnenForelderSpørsmålPayload = {
         søker,
         barn,
@@ -123,7 +124,7 @@ export const getAnnenForelderStegVisibility = (
     };
 
     const skalVises = (question: AnnenForelderSpørsmålKeys): boolean => {
-        return questions.check(question, payload);
+        return questions.isVisible(question, payload);
     };
 
     return {
@@ -136,6 +137,6 @@ export const getAnnenForelderStegVisibility = (
         harRettPåForeldrepenger: skalVises(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger),
         foreldreansvarsdato: skalVises(AnnenForelderSpørsmålKeys.omsorgsovertakelseDato),
         personaliaRegistrertAnnenForelder: annenForelder.kanIkkeOppgis !== true,
-        isComplete: questions.allQuestionsAnswered(payload)
+        isComplete: questions.allQuestionsAreAnswered(payload)
     };
 };
