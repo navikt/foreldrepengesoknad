@@ -12,9 +12,9 @@ export interface AnnenForelderStegVisibility {
     kanIkkeOppgis: boolean;
     fødselsnummer: boolean;
     deltOmsorg: boolean;
-    harRettPåForeldrepenger: boolean;
-    erMorUfør: boolean;
     erAnnenForelderInformert: boolean;
+    erMorUfør: boolean;
+    harRettPåForeldrepenger: boolean;
     foreldreansvarsdato: boolean;
     personaliaRegistrertAnnenForelder: boolean;
     isComplete: boolean;
@@ -37,7 +37,7 @@ export enum AnnenForelderSpørsmålKeys {
     'erAnnenForelderInformert' = 'erAnnenForelderInformert',
     'erMorUfør' = 'erMorUfør',
     'harRettPåForeldrepenger' = 'harRettPåForeldrepenger',
-    'omsorgsovertakelseDato' = 'omsorgsovertakelseDato'
+    'foreldreansvarsdato' = 'foreldreansvarsdato'
 }
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload> = {
@@ -91,7 +91,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
             return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
         }
     },
-    [AnnenForelderSpørsmålKeys.omsorgsovertakelseDato]: {
+    [AnnenForelderSpørsmålKeys.foreldreansvarsdato]: {
         getValue: ({ barn }) => (barn as ForeldreansvarBarn).foreldreansvarsdato,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         ownDependency: (props) => props.søker.erAleneOmOmsorg === true
@@ -135,7 +135,7 @@ export const getAnnenForelderStegVisibility = (
         erAnnenForelderInformert: skalVises(AnnenForelderSpørsmålKeys.erAnnenForelderInformert),
         erMorUfør: skalVises(AnnenForelderSpørsmålKeys.erMorUfør),
         harRettPåForeldrepenger: skalVises(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger),
-        foreldreansvarsdato: skalVises(AnnenForelderSpørsmålKeys.omsorgsovertakelseDato),
+        foreldreansvarsdato: skalVises(AnnenForelderSpørsmålKeys.foreldreansvarsdato),
         personaliaRegistrertAnnenForelder: annenForelder.kanIkkeOppgis !== true,
         isComplete: questions.allQuestionsAreAnswered(payload)
     };
