@@ -4,21 +4,8 @@ import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { Søker } from '../../../../types/søknad/Søker';
 import { Barn, ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
-import { QuestionConfig, Questions, questionIsAnswered } from '../../../../util/questions/Question';
+import { QuestionConfig, Questions, questionIsAnswered, QuestionVisibility } from '../../../../util/questions/Question';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
-
-export interface AnnenForelderStegVisibility {
-    navnPåAnnenForelder: boolean;
-    kanIkkeOppgis: boolean;
-    fødselsnummer: boolean;
-    deltOmsorg: boolean;
-    erAnnenForelderInformert: boolean;
-    erMorUfør: boolean;
-    harRettPåForeldrepenger: boolean;
-    foreldreansvarsdato: boolean;
-    personaliaRegistrertAnnenForelder: boolean;
-    isComplete: boolean;
-}
 
 interface AnnenForelderSpørsmålPayload {
     søker: Søker;
@@ -40,7 +27,9 @@ export enum AnnenForelderSpørsmålKeys {
     'foreldreansvarsdato' = 'foreldreansvarsdato'
 }
 
-const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload> = {
+export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
+
+const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         getValue: ({ annenForelder }) => annenForelder.fornavn,
         ownDependency: (props) =>
@@ -94,21 +83,19 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.foreldreansvarsdato]: {
         getValue: ({ barn }) => (barn as ForeldreansvarBarn).foreldreansvarsdato,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        ownDependency: (props) => props.søker.erAleneOmOmsorg === true
+        ownDependency: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
     }
 };
-
-const questions = Questions(annenForelderSpørsmålConfig);
 
 export const getAnnenForelderStegVisibility = (
     søknad: Partial<Søknad>,
     søkerinfo: Søkerinfo
-): AnnenForelderStegVisibility | undefined => {
+): QuestionVisibility<AnnenForelderSpørsmålKeys> | undefined => {
     const { annenForelder, søker, barn } = søknad;
     const { person } = søkerinfo;
 
     if (!søker || !barn || !annenForelder || !person) {
-        return;
+        return undefined;
     }
     const registrertAnnenForelder = søknad.sensitivInfoIkkeLagre
         ? søknad.sensitivInfoIkkeLagre.registrertAnnenForelder
@@ -123,20 +110,5 @@ export const getAnnenForelderStegVisibility = (
         annenForelderErRegistrert: registrertAnnenForelder !== undefined
     };
 
-    const skalVises = (question: AnnenForelderSpørsmålKeys): boolean => {
-        return questions.isVisible(question, payload);
-    };
-
-    return {
-        navnPåAnnenForelder: skalVises(AnnenForelderSpørsmålKeys.navnPåAnnenForelder),
-        kanIkkeOppgis: skalVises(AnnenForelderSpørsmålKeys.kanIkkeOppgis),
-        fødselsnummer: skalVises(AnnenForelderSpørsmålKeys.fødselsnummer),
-        deltOmsorg: skalVises(AnnenForelderSpørsmålKeys.deltOmsorg),
-        erAnnenForelderInformert: skalVises(AnnenForelderSpørsmålKeys.erAnnenForelderInformert),
-        erMorUfør: skalVises(AnnenForelderSpørsmålKeys.erMorUfør),
-        harRettPåForeldrepenger: skalVises(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger),
-        foreldreansvarsdato: skalVises(AnnenForelderSpørsmålKeys.foreldreansvarsdato),
-        personaliaRegistrertAnnenForelder: annenForelder.kanIkkeOppgis !== true,
-        isComplete: questions.allQuestionsAreAnswered(payload)
-    };
+    return Questions(annenForelderSpørsmålConfig).getVisbility(payload);
 };

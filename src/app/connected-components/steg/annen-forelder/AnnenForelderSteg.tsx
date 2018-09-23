@@ -35,7 +35,7 @@ interface StateProps {
     erSøkerFarEllerMedmor: boolean;
     registrertAnnenForelder?: RegistrertAnnenForelder;
     stegProps: StegProps;
-    vis?: AnnenForelderStegVisibility;
+    visibility?: AnnenForelderStegVisibility;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -52,8 +52,8 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 
     cleanupSteg() {
-        if (this.props.vis) {
-            const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.vis, this.props.søknad);
+        if (this.props.visibility) {
+            const { annenForelder, barn } = cleanupAnnenForelderSteg(this.props.visibility, this.props.søknad);
             this.props.dispatch(søknadActions.updateAnnenForelder(annenForelder));
             this.props.dispatch(søknadActions.updateBarn(barn));
         }
@@ -91,18 +91,18 @@ class AnnenForelderSteg extends React.Component<Props> {
             antallBarn,
             situasjon,
             stegProps,
-            vis,
+            visibility,
             intl
         } = this.props;
 
-        if (søkersFødselsnummer && vis) {
+        if (søkersFødselsnummer && visibility) {
             return (
                 <Steg {...stegProps} preSubmit={this.cleanupSteg}>
                     <Block
                         header={{
                             title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
                         }}
-                        visible={vis.personaliaRegistrertAnnenForelder}>
+                        visible={registrertAnnenForelder !== undefined}>
                         {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
                     </Block>
                     <AnnenForelderSpørsmål
@@ -112,7 +112,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                         søknad={this.props.søknad}
                         barn={barn}
                         situasjon={situasjon}
-                        vis={vis}
+                        visibility={visibility}
                         onSøkerChange={this.onSøkerChange}
                         onBarnChange={this.onBarnChange}
                         onAnnenForelderChange={this.onAnnenForelderChange}
@@ -132,11 +132,11 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
     const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
 
-    const vis = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
+    const visibility = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: vis !== undefined && vis.isComplete,
+        renderFortsettKnapp: visibility !== undefined && visibility.areAllQuestionsAnswered(),
         renderFormTag: true,
         previousStegRoute: resolveStegToRender(state),
         history: props.history,
@@ -147,7 +147,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søknad: state.søknad,
         stegProps,
         situasjon,
-        vis,
+        visibility,
         søker,
         barn,
         annenForelder,

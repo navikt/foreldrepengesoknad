@@ -2,7 +2,7 @@ import { Kjønn } from '../../../types/common';
 import Person, { RegistrertAnnenForelder } from '../../../types/Person';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import AnnenForelder from '../../../types/søknad/AnnenForelder';
-import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadPartial, SøkerRolle } from '../../../types/søknad/Søknad';
 import { cleanupAnnenForelder, cleanupAnnenForelderBarn } from '../cleanupAnnenForelderSteg';
 
 import {
@@ -46,6 +46,7 @@ const søknad: SøknadPartial = {
         senereOpphold: []
     },
     søker: {
+        rolle: SøkerRolle.MOR,
         erAleneOmOmsorg: false,
         andreInntekterSiste10Mnd: []
     },
@@ -123,11 +124,10 @@ describe('Cleanup AnnenForelder', () => {
                 };
             });
             it('when erFarEllerMedmor', () => {
-                testVisibility = {
-                    ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-                    foreldreansvarsdato: true,
-                    harRettPåForeldrepenger: false
-                };
+                testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
+                    ...søkerinfo,
+                    person: { ...søkerinfo.person, kjønn: Kjønn.MANN }
+                })!;
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
                 const b: Barn = cleanupAnnenForelderBarn(
                     testVisibility,
@@ -139,11 +139,10 @@ describe('Cleanup AnnenForelder', () => {
                 expect(b.foreldreansvarsdato).toBeDefined();
             });
             it('when er mor', () => {
-                testVisibility = {
-                    ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-                    foreldreansvarsdato: false,
-                    harRettPåForeldrepenger: false
-                };
+                testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
+                    ...søkerinfo,
+                    person: { ...søkerinfo.person, kjønn: Kjønn.KVINNE }
+                })!;
                 const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
                 const b: Barn = cleanupAnnenForelderBarn(
                     testVisibility,

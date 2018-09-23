@@ -18,7 +18,7 @@ import RettPåForeldrepengerSpørsmål from '../../../spørsmål/RettPåForeldre
 import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
+import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -26,7 +26,7 @@ export interface OwnProps {
     søker: Søker;
     søknad: Partial<Søknad>;
     situasjon: Søkersituasjon;
-    vis: AnnenForelderStegVisibility;
+    visibility: AnnenForelderStegVisibility;
     barn: Barn;
     onBarnChange: (barn: Partial<Barn>) => void;
     onAnnenForelderChange: (barn: Partial<AnnenForelder>) => void;
@@ -59,7 +59,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
             annenForelder,
             barn,
             situasjon,
-            vis,
+            visibility,
             onAnnenForelderChange,
             onBarnChange,
             onSøkerChange,
@@ -67,11 +67,12 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
             onFilesSelect,
             intl
         } = this.props;
+
         const { kanIkkeOppgis, fornavn, etternavn } = annenForelder!;
 
         return (
             <>
-                <Block margin="xs" visible={vis.navnPåAnnenForelder}>
+                <Block margin="xs" visible={visibility.isVisible(AnnenForelderSpørsmålKeys.navnPåAnnenForelder)}>
                     <NavnPåAnnenForelderSpørsmål
                         fornavn={fornavn}
                         etternavn={etternavn}
@@ -80,7 +81,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.kanIkkeOppgis}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.kanIkkeOppgis)}>
                     <Checkbox
                         checked={kanIkkeOppgis || false}
                         label={
@@ -92,7 +93,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.fødselsnummer} hasChildBlocks={true}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer)} hasChildBlocks={true}>
                     <FødselsnummerBolk
                         kanIkkeOppgis={kanIkkeOppgis}
                         søkersFødselsnummer={søkerFnr}
@@ -104,14 +105,14 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.deltOmsorg}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg)}>
                     <AleneOmOmsorgSpørsmål
                         aleneOmOmsorg={søker.erAleneOmOmsorg}
                         onChange={(deltOmsorg) => onSøkerChange({ erAleneOmOmsorg: !deltOmsorg })}
                     />
                 </Block>
 
-                <Block visible={vis.harRettPåForeldrepenger}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)}>
                     <RettPåForeldrepengerSpørsmål
                         navnAnnenForelder={annenForelder.fornavn}
                         harAnnenForelderRettPåForeldrepenger={annenForelder.harRettPåForeldrepenger}
@@ -119,7 +120,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.erMorUfør}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør)}>
                     <ErMorUførSpørsmål
                         navn={annenForelder.fornavn}
                         erUfør={annenForelder.erUfør}
@@ -127,7 +128,11 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                <Block visible={vis.harRettPåForeldrepenger && annenForelder.harRettPåForeldrepenger === true}>
+                <Block
+                    visible={
+                        visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
+                        annenForelder.harRettPåForeldrepenger === true
+                    }>
                     <Veilederinfo>
                         {getMessage(intl, 'annenForelder.veileder.rettigheterOgDelingAvUttaksplan', {
                             navn: annenForelder.fornavn
@@ -135,14 +140,14 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     </Veilederinfo>
                 </Block>
 
-                <Block visible={vis.erAnnenForelderInformert}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)}>
                     <ErAnnenForelderInformertSpørsmål
                         navn={annenForelder.fornavn}
                         erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
                         onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
                     />
                 </Block>
-                <Block visible={vis.foreldreansvarsdato}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato)}>
                     <DatoInput
                         name="omsorgsovertakelseDato"
                         id="omsorgsovertakelseDato"
@@ -153,7 +158,10 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                 </Block>
 
                 <Block
-                    visible={vis.foreldreansvarsdato && (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined}>
+                    visible={
+                        visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato) &&
+                        (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined
+                    }>
                     <Block margin="xs">
                         <Veilederinfo>
                             <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
