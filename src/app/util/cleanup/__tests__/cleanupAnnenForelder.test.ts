@@ -1,175 +1,159 @@
-// import { Kjønn } from '../../../types/common';
-// import Person, { RegistrertAnnenForelder } from '../../../types/Person';
-// import { Søkerinfo } from '../../../types/søkerinfo';
-// import AnnenForelder from '../../../types/søknad/AnnenForelder';
-// import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
-// import { cleanupAnnenForelder } from '../cleanupAnnenForelderSteg';
+import { Kjønn } from '../../../types/common';
+import Person, { RegistrertAnnenForelder } from '../../../types/Person';
+import { Søkerinfo } from '../../../types/søkerinfo';
+import AnnenForelder from '../../../types/søknad/AnnenForelder';
+import Søknad, { SøknadPartial, SøkerRolle } from '../../../types/søknad/Søknad';
+import { cleanupAnnenForelder, cleanupAnnenForelderBarn } from '../cleanupAnnenForelderSteg';
 
-// import {
-//     getAnnenForelderStegVisibility,
-//     AnnenForelderStegVisibility
-// } from '../../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+import {
+    getAnnenForelderStegVisibility,
+    AnnenForelderStegVisibility,
+    AnnenForelderSpørsmålKeys
+} from '../../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 
-// const annenForelder: AnnenForelder = {
-//     bostedsland: 'landet',
-//     erForSyk: false,
-//     erUfør: false,
-//     erInformertOmSøknaden: false,
-//     fnr: '123',
-//     harRettPåForeldrepenger: false,
-//     kanIkkeOppgis: false,
-//     fornavn: 'fornavnet',
-//     etternavn: 'etternavnet',
-//     utenlandskFnr: false
-// };
+const annenForelder: AnnenForelder = {
+    bostedsland: 'landet',
+    erForSyk: false,
+    erUfør: false,
+    erInformertOmSøknaden: false,
+    fnr: '123',
+    harRettPåForeldrepenger: false,
+    kanIkkeOppgis: false,
+    fornavn: 'fornavnet',
+    etternavn: 'etternavnet',
+    utenlandskFnr: false
+};
 
-// const registrertAnnenForelder: RegistrertAnnenForelder = {
-//     fnr: '123',
-//     etternavn: 'etternavnet',
-//     fornavn: 'fornavnet',
-//     fødselsdato: new Date(),
-//     harOpplystOmSinPågåendeSak: false,
-//     kjønn: Kjønn.MANN
-// };
+const registrertAnnenForelder: RegistrertAnnenForelder = {
+    fnr: '123',
+    etternavn: 'etternavnet',
+    fornavn: 'fornavnet',
+    fødselsdato: new Date(),
+    harOpplystOmSinPågåendeSak: false,
+    kjønn: Kjønn.MANN
+};
 
-// const søknad: SøknadPartial = {
-//     type: 'foreldrepenger',
-//     annenForelder,
-//     barn: {
-//         fødselsdatoer: [],
-//         omsorgsovertakelse: new Date()
-//     },
-//     informasjonOmUtenlandsopphold: {
-//         tidligereOpphold: [],
-//         senereOpphold: []
-//     },
-//     søker: {
-//         erAleneOmOmsorg: false,
-//         andreInntekterSiste10Mnd: []
-//     },
-//     uttaksplan: [],
-//     harGodkjentVilkår: false,
-//     harGodkjentOppsummering: false,
-//     sensitivInfoIkkeLagre: {
-//         søknadenGjelderBarnValg: {
-//             valgteBarn: [],
-//             gjelderAnnetBarn: undefined
-//         },
-//         registrertAnnenForelder
-//     },
-//     ekstrainfo: {
-//         uttaksplanSkjema: {}
-//     }
-// };
+const søknad: SøknadPartial = {
+    type: 'foreldrepenger',
+    annenForelder,
+    barn: {
+        fødselsdatoer: [],
+        foreldreansvarsdato: new Date()
+    },
+    informasjonOmUtenlandsopphold: {
+        tidligereOpphold: [],
+        senereOpphold: []
+    },
+    søker: {
+        rolle: SøkerRolle.MOR,
+        erAleneOmOmsorg: false,
+        andreInntekterSiste10Mnd: []
+    },
+    uttaksplan: [],
+    harGodkjentVilkår: false,
+    harGodkjentOppsummering: false,
+    sensitivInfoIkkeLagre: {
+        søknadenGjelderBarnValg: {
+            valgteBarn: [],
+            gjelderAnnetBarn: undefined
+        },
+        registrertAnnenForelder
+    },
+    ekstrainfo: {
+        uttaksplanSkjema: {}
+    }
+};
 
-// const kvinnePerson: Person = {
-//     fnr: '123',
-//     ikkeNordiskEøsLand: false,
-//     erMyndig: true,
-//     fornavn: 'fornavnet',
-//     etternavn: 'etternavnet',
-//     fødselsdato: new Date(2000, 1, 1),
-//     kjønn: Kjønn.KVINNE
-// };
+const kvinnePerson: Person = {
+    fnr: '123',
+    ikkeNordiskEøsLand: false,
+    erMyndig: true,
+    fornavn: 'fornavnet',
+    etternavn: 'etternavnet',
+    fødselsdato: new Date(2000, 1, 1),
+    kjønn: Kjønn.KVINNE
+};
 
-// const søkerinfo: Søkerinfo = {
-//     person: kvinnePerson,
-//     arbeidsforhold: [],
-//     registrerteBarn: [],
-//     søknadsinfo: {}
-// };
+const søkerinfo: Søkerinfo = {
+    person: kvinnePerson,
+    arbeidsforhold: [],
+    registrerteBarn: [],
+    søknadsinfo: {}
+};
 
-// const propsSetOutsideSteg: string[] = ['erForSyk'];
+const propsSetOutsideSteg: string[] = ['erForSyk'];
 
-// const hasOnlyIncludedProps = (annenForelderProps: Partial<AnnenForelder>, propsToInclude: string[]): boolean => {
-//     const props = Object.getOwnPropertyNames(annenForelderProps);
-//     const propsWithValue = props.filter((p) => annenForelderProps[p] !== undefined);
-//     return JSON.stringify(propsToInclude.sort()) === JSON.stringify(propsWithValue.sort());
-// };
+const hasOnlyIncludedProps = (annenForelderProps: Partial<AnnenForelder>, propsToInclude: string[]): boolean => {
+    const props = Object.getOwnPropertyNames(annenForelderProps);
+    const propsWithValue = props.filter((p) => annenForelderProps[p] !== undefined);
+    return JSON.stringify(propsToInclude.sort()) === JSON.stringify(propsWithValue.sort());
+};
 
-// const runCleanUpAnnenForelder = (s: SøknadPartial, visibility: AnnenForelderStegVisibility): Partial<AnnenForelder> => {
-//     return cleanupAnnenForelder(visibility, s as Søknad);
-// };
-
-// const cleanAndCheckProps = (s: SøknadPartial, visibility: AnnenForelderStegVisibility, props: string[]) => {
-//     return hasOnlyIncludedProps(runCleanUpAnnenForelder(søknad, visibility), [...props, ...propsSetOutsideSteg]);
-// };
-
-// let testSøknad: SøknadPartial;
-// let testVisibility: AnnenForelderStegVisibility;
+let testSøknad: SøknadPartial;
+let testVisibility: AnnenForelderStegVisibility;
 
 describe('Cleanup AnnenForelder', () => {
-    // testSøknad = { ...søknad };
+    testSøknad = { ...søknad };
 
-    // describe('Alenemor, fødsel', () => {
-    //     describe('Med registrert annen forelder', () => {
-    //         testSøknad = { ...søknad };
-    //         describe('Har IKKE aleneomsorg', () => {
-    //             it('far har IKKE rett på foreldrepenger', () => {
-    //                 testVisibility = {
-    //                     ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-    //                     harRettPåForeldrepenger: true
-    //                 };
-    //                 expect(
-    //                     cleanAndCheckProps(testSøknad, testVisibility, [
-    //                         'fornavn',
-    //                         'etternavn',
-    //                         'fnr',
-    //                         'harRettPåForeldrepenger'
-    //                     ])
-    //                 ).toBeTruthy();
-    //             });
-    //             it('far HAR rett på foreldrepenger', () => {
-    //                 testVisibility = {
-    //                     ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-    //                     harRettPåForeldrepenger: true,
-    //                     erAnnenForelderInformert: true
-    //                 };
-    //                 expect(
-    //                     cleanAndCheckProps(testSøknad, testVisibility, [
-    //                         'fornavn',
-    //                         'etternavn',
-    //                         'fnr',
-    //                         'harRettPåForeldrepenger',
-    //                         'erInformertOmSøknaden'
-    //                     ])
-    //                 ).toBeTruthy();
-    //             });
-    //         });
-    //     });
-    //     describe('HAR aleneomsorg', () => {
-    //         it('far skal IKKE ha foreldrepenger', () => {
-    //             testVisibility = {
-    //                 ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-    //                 harRettPåForeldrepenger: false
-    //             };
-    //             expect(cleanAndCheckProps(testSøknad, testVisibility, ['fornavn', 'etternavn', 'fnr'])).toBeTruthy();
-    //         });
-    //         it('far SKAL ha foreldrepenger', () => {
-    //             testVisibility = {
-    //                 ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-    //                 harRettPåForeldrepenger: true
-    //             };
-    //             expect(
-    //                 cleanAndCheckProps(testSøknad, testVisibility, [
-    //                     'fornavn',
-    //                     'etternavn',
-    //                     'fnr',
-    //                     'harRettPåForeldrepenger'
-    //                 ])
-    //             ).toBeTruthy();
-    //         });
-    //     });
-    // });
-    // it('Skal fjerne alt når annen forelder ikke kan oppgis', () => {
-    //     testSøknad.annenForelder.kanIkkeOppgis = true;
-    //     testVisibility = {
-    //         ...getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!,
-    //         annenForelderKanIkkeOppgis: true
-    //     };
-    //     expect(cleanAndCheckProps(testSøknad, testVisibility, ['kanIkkeOppgis'])).toBeTruthy();
-    // });
-    it('Skal fjerne alt når annen forelder ikke kan oppgis', () => {
-        expect(true).toBeTruthy();
+    describe('Annen forelder kan ikke oppgis', () => {
+        beforeEach(() => {
+            testSøknad = { ...søknad };
+        });
+        it('Cleans everything when annen forelder kan ikke oppgis', () => {
+            testSøknad = { ...søknad, annenForelder: { ...testSøknad.annenForelder, kanIkkeOppgis: true } };
+            testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, søkerinfo)!;
+            const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
+            expect(
+                hasOnlyIncludedProps(af, [AnnenForelderSpørsmålKeys.kanIkkeOppgis, ...propsSetOutsideSteg])
+            ).toBeTruthy();
+        });
+        describe('Cleans data when erAleneomsorg', () => {
+            beforeEach(() => {
+                testSøknad = {
+                    ...søknad,
+                    annenForelder: { ...testSøknad.annenForelder, kanIkkeOppgis: undefined },
+                    søker: {
+                        ...søknad.søker,
+                        erAleneOmOmsorg: true
+                    },
+                    barn: {
+                        ...søknad.barn,
+                        foreldreansvarsdato: new Date()
+                    }
+                };
+            });
+            it('when erFarEllerMedmor', () => {
+                testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
+                    ...søkerinfo,
+                    person: { ...søkerinfo.person, kjønn: Kjønn.MANN }
+                })!;
+                const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
+                const b: Barn = cleanupAnnenForelderBarn(
+                    testVisibility,
+                    testSøknad.barn as ForeldreansvarBarn
+                ) as ForeldreansvarBarn;
+                expect(af.harRettPåForeldrepenger).toBeUndefined();
+                expect(af.erUfør).toBeUndefined();
+                expect(af.erInformertOmSøknaden).toBeUndefined();
+                expect(b.foreldreansvarsdato).toBeDefined();
+            });
+            it('when er mor', () => {
+                testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
+                    ...søkerinfo,
+                    person: { ...søkerinfo.person, kjønn: Kjønn.KVINNE }
+                })!;
+                const af: AnnenForelder = cleanupAnnenForelder(testVisibility, testSøknad as Søknad) as AnnenForelder;
+                const b: Barn = cleanupAnnenForelderBarn(
+                    testVisibility,
+                    testSøknad.barn as ForeldreansvarBarn
+                ) as ForeldreansvarBarn;
+                expect(af.harRettPåForeldrepenger).toBeUndefined();
+                expect(af.erUfør).toBeUndefined();
+                expect(af.erInformertOmSøknaden).toBeUndefined();
+                expect(af.harRettPåForeldrepenger).toBeUndefined();
+                expect(b.foreldreansvarsdato).toBeUndefined();
+            });
+        });
     });
 });

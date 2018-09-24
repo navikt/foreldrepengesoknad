@@ -4,7 +4,10 @@ import moment from 'moment';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 
 export const erFarEllerMedmor = (kjønn: Kjønn, søkerRolle: SøkerRolle): boolean =>
-    kjønn === Kjønn.MANN || søkerRolle === SøkerRolle.MEDMOR || søkerRolle === SøkerRolle.FORESATT2;
+    kjønn === Kjønn.MANN ||
+    søkerRolle === SøkerRolle.FAR ||
+    søkerRolle === SøkerRolle.MEDMOR ||
+    søkerRolle === SøkerRolle.FORESATT2;
 
 export const annenForelderSkalHaForeldrepenger = (annenForelder: AnnenForelder): boolean => {
     const { kanIkkeOppgis, harRettPåForeldrepenger } = annenForelder;
