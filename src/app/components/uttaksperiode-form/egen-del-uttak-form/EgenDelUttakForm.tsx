@@ -20,11 +20,11 @@ class EgenDelUttakForm extends React.Component<EgenDelUttakFormProps> {
                         onChange={(v) => onChange(v)}
                     />
                 </Block>
-                {ønskerSamtidigUttak && (
+                <Block margin="none" visible={ønskerSamtidigUttak}>
                     <Veilederinfo>
                         <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst" />
                     </Veilederinfo>
-                )}
+                </Block>
             </>
         );
     }
