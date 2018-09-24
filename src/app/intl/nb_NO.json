@@ -500,6 +500,9 @@
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
 
+    "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesdel",
+    "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
+
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.Utdanning": "Utdanning",
     "morsAktivitet.Kvalifiseringsprogrammet": "Kvalifiseringsprogrammet",

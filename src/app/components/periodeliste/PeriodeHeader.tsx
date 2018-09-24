@@ -5,7 +5,7 @@ import { måned, måned3bokstaver } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
@@ -14,7 +14,12 @@ import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 
 import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
-import { getStønadskontoNavn, getPeriodeForelderNavn } from '../../util/uttaksplan';
+import {
+    getStønadskontoNavn,
+    getPeriodeForelderNavn,
+    getOppholdskontoNavn,
+    getForelderNavn
+} from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 
 export type AdvarselType = 'advarsel' | 'feil';
@@ -26,8 +31,8 @@ interface Advarsel {
 
 export interface Props {
     periode: Periode;
-    advarsel?: Advarsel;
     navnPåForeldre: NavnPåForeldre;
+    advarsel?: Advarsel;
     isOpen?: boolean;
 }
 
@@ -40,15 +45,17 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
     return UttaksplanIkonKeys.advarsel; // Feilikon mangler
 };
 
-const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, foreldernavn: NavnPåForeldre): string => {
-    if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
-        return getStønadskontoNavn(intl, periode.konto, foreldernavn);
+const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
+    switch (periode.type) {
+        case Periodetype.Uttak:
+        case Periodetype.Overføring:
+            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+        case Periodetype.Utsettelse:
+            const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
+            return getMessage(intl, `periodeliste.utsettelsesårsak`, { årsak });
+        case Periodetype.Opphold:
+            return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
     }
-    if (periode.type === Periodetype.Utsettelse) {
-        const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
-        return getMessage(intl, `periodeliste.utsettelsesårsak`, { årsak });
-    }
-    return '';
 };
 
 const renderDagMnd = (dato: Date): JSX.Element =>
@@ -70,6 +77,8 @@ const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
         return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
     } else if (periode.type === Periodetype.Utsettelse) {
         return <UtsettelseIkon årsak={periode.årsak} />;
+    } else if (periode.type === Periodetype.Opphold) {
+        return <StønadskontoIkon konto={StønadskontoType.Foreldrepenger} forelder={periode.forelder} />;
     }
     return undefined;
 };

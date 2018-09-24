@@ -28,11 +28,11 @@ const UtsettelsePgaUttakAnnenForelderForm: React.StatelessComponent<Props> = ({
             alternativer={[
                 {
                     label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
-                    value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+                    value: OppholdÅrsakType.UttakKvoteAnnenForelder
                 },
                 {
                     label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
-                    value: OppholdÅrsakType.UttakKvoteAnnenForelder
+                    value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
                 }
             ]}
         />
