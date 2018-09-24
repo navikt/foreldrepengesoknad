@@ -115,6 +115,7 @@ export interface GradertUttaksperiode extends UttaksperiodeBase {
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
+    forelder: Forelder;
 }
 
 export interface Overføringsperiode extends PeriodeBase {

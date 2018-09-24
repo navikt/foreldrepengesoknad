@@ -1,9 +1,13 @@
 import { Forelder } from 'common/types';
-import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, StønadskontoType, Oppholdsperiode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanColor } from '../../types/uttaksplan/colors';
 
+const getForelderFarge = (forelder: Forelder) => {
+    return forelder === Forelder.MOR ? 'purple' : 'blue';
+};
+
 export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forelder): UttaksplanColor => {
-    if (!forelder) {
+    if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
                 return 'blue';
@@ -13,13 +17,19 @@ export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forel
                 return 'purple';
             case StønadskontoType.Fellesperiode:
                 return 'purpleBlue';
+            default:
+                return '';
         }
     }
-    return forelder === Forelder.MOR ? 'purple' : 'blue';
+    return getForelderFarge(forelder);
 };
 
 export const getUtsettelseFarge = (): UttaksplanColor => {
     return 'green';
+};
+
+export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
+    return getForelderFarge(periode.forelder);
 };
 
 export const getPeriodeFarge = (periode: Periode): UttaksplanColor | undefined => {
@@ -28,6 +38,9 @@ export const getPeriodeFarge = (periode: Periode): UttaksplanColor | undefined =
     }
     if (periode.type === Periodetype.Utsettelse) {
         return getUtsettelseFarge();
+    }
+    if (periode.type === Periodetype.Opphold) {
+        return getOppholdFarge(periode);
     }
     return undefined;
 };

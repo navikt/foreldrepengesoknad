@@ -84,7 +84,7 @@ class EndrePeriodeForm extends React.Component<Props, State> {
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
             <form className={bem.className} onSubmit={preventFormSubmit}>
-                {periode.type === Periodetype.Utsettelse ? (
+                {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
                     <UtsettelsesperiodeForm periode={periode} onChange={this.onChange} />
                 ) : (
                     <UttaksperiodeForm
