@@ -7,6 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
+import { AxiosError } from 'axios';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
@@ -138,7 +139,7 @@ export interface DeleteAttachmentSuccess {
 
 export interface DeleteAttachmentFailed {
     type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED;
-    error: any;
+    error: AxiosError;
     attachment: Attachment;
 }
 
