@@ -58,6 +58,21 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
+const getUtsettelsesvariantFromPeriode = (periode: RecursivePartial<Periode>): Utsettelsesvariant | undefined => {
+    if (periode.type === Periodetype.Utsettelse) {
+        if (periode.årsak === UtsettelseÅrsakType.Ferie) {
+            return Utsettelsesvariant.Ferie;
+        } else if (periode.årsak === UtsettelseÅrsakType.Sykdom) {
+            return Utsettelsesvariant.Sykdom;
+        } else if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
+            return Utsettelsesvariant.ArbeidHeltid;
+        }
+    } else if (periode.type === Periodetype.Opphold) {
+        return Utsettelsesvariant.UttakAnnenForelder;
+    }
+    return undefined;
+};
+
 interface State {
     variant?: Utsettelsesvariant;
 }
@@ -84,7 +99,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         this.getSkjemadataForUtsettelsePgaDeltidsarbeid = this.getSkjemadataForUtsettelsePgaDeltidsarbeid.bind(this);
 
         this.state = {
-            variant: undefined
+            variant: props.periode ? getUtsettelsesvariantFromPeriode(props.periode) : undefined
         };
     }
 
