@@ -49,43 +49,7 @@ export const lagMockUttaksplan = (
                         tilgjengeligeStønadskontoer,
                         startdatoPermisjon
                     );
-                } else {
-                    return opprettUttaksperioderToForeldreEttBarnMor(
-                        famDato,
-                        fellesUkerMor,
-                        tilgjengeligeStønadskontoer
-                    );
                 }
-            }
-        } else if (situasjon === Søkersituasjon.ADOPSJON) {
-            if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(
-                    famDato,
-                    tilgjengeligeStønadskontoer,
-                    startdatoPermisjon
-                );
-                perioder.shift();
-                return perioder;
-            }
-            if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarnMor(famDato, 13, tilgjengeligeStønadskontoer);
-                perioder.shift();
-                return perioder;
-            }
-        } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
-            if (erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderAleneomsorgMor(
-                    famDato,
-                    tilgjengeligeStønadskontoer,
-                    startdatoPermisjon
-                );
-                perioder.shift();
-                return perioder;
-            }
-            if (!erAleneOmOmsorg && rolle === SøkerRolle.MOR) {
-                const perioder = opprettUttaksperioderToForeldreEttBarnMor(famDato, 13, tilgjengeligeStønadskontoer);
-                perioder.shift();
-                return perioder;
             }
         }
     }
