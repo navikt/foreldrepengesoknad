@@ -11,7 +11,7 @@ import isAvailable from '../util/isAvailable';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttaksplanSkjema';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
-import Søknad, { SøknadPartial } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadPartial, Søkersituasjon } from '../../../types/søknad/Søknad';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../util/uttaksplan';
@@ -73,6 +73,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
         renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, props.søkerinfo),
+        fortsettKnappLabel: state.søknad.situasjon !== Søkersituasjon.FØDSEL ? 'Fortsett' : undefined,
         renderFormTag: true,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN_SKJEMA, state.søknad, props.søkerinfo)
