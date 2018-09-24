@@ -347,6 +347,9 @@
         "Startdato må velges, eller du må krysse av for ingen uttak før termin",
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
+
+    "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut",
+
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Født den {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",
@@ -496,6 +499,9 @@
     "utsettelsesårsak.SYKDOM": "Sykdom",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+
+    "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesdel",
+    "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
 
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.Utdanning": "Utdanning",
