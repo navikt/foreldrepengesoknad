@@ -111,7 +111,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                             onChange={(v) => onChange({ ønskerSamtidigUttak: v })}
                         />
                     </Block>
-                    <Block margin="none" visible={ønskerSamtidigUttak}>
+                    <Block margin="none" visible={ønskerSamtidigUttak === true}>
                         <Veilederinfo>
                             <FormattedMessage id="fellesperiodeDelUttakForm.samtidigUttak.veiledertekst" />
                         </Veilederinfo>
