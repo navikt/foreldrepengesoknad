@@ -39,20 +39,20 @@ function* getSøkerinfo(action: any) {
                 ? redirectToLogin()
                 : yield put(
                       apiActions.updateApi({
-                          isLoadingSøkerinfo: false,
                           error
                       })
                   );
         } else {
             yield put(
                 apiActions.updateApi({
-                    isLoadingSøkerinfo: false,
-                    error: {
-                        networkError: true
-                    }
+                    error
                 })
             );
         }
+    } finally {
+        apiActions.updateApi({
+            isLoadingSøkerinfo: false
+        });
     }
 }
 
