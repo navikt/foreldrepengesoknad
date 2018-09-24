@@ -1,10 +1,10 @@
 {
     "søker": {
-        "fnr": "25059710888",
-        "fornavn": "s:Hedda",
-        "etternavn": "Gabler",
-        "kjønn": "K",
-        "fødselsdato": "1997-05-25",
+        "fnr": "28019400133",
+        "fornavn": "af:Espen",
+        "etternavn": "Ibsen",
+        "fødselsdato": "1994-01-28",
+        "kjønn": "M",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
@@ -15,10 +15,10 @@
                 "kjønn": "K",
                 "fødselsdato": "2018-03-29",
                 "annenForelder": {
-                    "fnr": "28019400133",
-                    "fornavn": "af:Henriette",
-                    "etternavn": "Ibsen",
-                    "fødselsdato": "1994-01-28"
+                    "fnr": "25059710888",
+                    "fornavn": "s:Hedda",
+                    "etternavn": "Gabler",
+                    "fødselsdato": "1997-05-25"
                 }
             }
         ]

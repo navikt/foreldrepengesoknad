@@ -97,9 +97,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                             />
                         </Block>
-                        <Block margin="l">
-                            <Uttaksoppsummering uttak={uttaksStatus} navnPåForeldre={uttaksplanInfo.navnPåForeldre} />
-                        </Block>
+                        {uttaksStatus.length > 0 && (
+                            <Block margin="l">
+                                <Uttaksoppsummering
+                                    uttak={uttaksStatus}
+                                    navnPåForeldre={uttaksplanInfo.navnPåForeldre}
+                                />
+                            </Block>
+                        )}
                     </React.Fragment>
                 )}
                 <BekreftGåTilUttaksplanSkjemaDialog
