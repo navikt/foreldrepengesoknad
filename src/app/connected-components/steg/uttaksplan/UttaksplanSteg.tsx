@@ -115,7 +115,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
         søknad,
-        api: { tilgjengeligeStønadskontoer }
+        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const { søkerinfo, history } = props;
 
@@ -125,7 +125,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     );
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: true,
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
@@ -138,7 +138,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         stegProps,
         uttaksStatus,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer: state.api.isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer
     };
 };
 
