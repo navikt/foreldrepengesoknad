@@ -33,7 +33,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import { formaterNavn } from '../../util/domain/personUtil';
+import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
 import UtsettelsePgaUttakAnnenForelderForm from './partials/utsettelse-pga-uttakAnnenForelder-form/UtsettelsePgaUttakAnnenForelderForm';
 
 interface UtsettelsesperiodeFormProps {
@@ -45,6 +45,7 @@ interface UtsettelsesperiodeFormProps {
 interface StateProps {
     søknad: Søknad;
     arbeidsforhold: Arbeidsforhold[];
+    søkerErFarEllerMedmor: boolean;
 }
 
 type Props = UtsettelsesperiodeFormProps & StateProps & InjectedIntlProps;
@@ -190,7 +191,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         const oppholdsperiode: RecursivePartial<Oppholdsperiode> = {
             type: Periodetype.Opphold,
             tidsperiode: { ...periode.tidsperiode },
-            årsak
+            årsak,
+            forelder: this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR
         };
         onChange(oppholdsperiode);
     }
@@ -277,7 +279,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || []
+        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
+        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle)
     };
 };
 
