@@ -17,7 +17,6 @@ import Søknad from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import AnnenForeldersUttakForm from './partials/AnnenForeldersUttakForm';
 import {
     UtsettelsePgaHeltidsarbeidSkjemadata,
     default as UtsettelsePgaHeltidsarbeidForm
@@ -35,6 +34,7 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { formaterNavn } from '../../util/domain/personUtil';
+import UtsettelsePgaUttakAnnenForelderForm from './partials/utsettelse-pga-uttakAnnenForelder-form/UtsettelsePgaUttakAnnenForelderForm';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -53,11 +53,11 @@ export enum Utsettelsesvariant {
     Ferie = 'ferie',
     ArbeidHeltid = 'arbeidHeltid',
     ArbeidDeltid = 'arbeidDeltid',
-    Sykdom = 'sykdom'
+    Sykdom = 'sykdom',
+    UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
 interface State {
-    gjelderOpphold: boolean;
     variant?: Utsettelsesvariant;
 }
 
@@ -74,32 +74,17 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.handleOnChange = this.handleOnChange.bind(this);
         this.updateUtsettelsesvariant = this.updateUtsettelsesvariant.bind(this);
         this.getUtsettelseÅrsakRadios = this.getUtsettelseÅrsakRadios.bind(this);
         this.updateUtsettelsePgaHeltidsarbeid = this.updateUtsettelsePgaHeltidsarbeid.bind(this);
         this.updateUtsettelsePgaDeltidsarbeid = this.updateUtsettelsePgaDeltidsarbeid.bind(this);
+        this.updateUtsettelsePgaUttakAnnenForelder = this.updateUtsettelsePgaUttakAnnenForelder.bind(this);
         this.getSkjemadataForUtsettelsePgaHeltidsarbeid = this.getSkjemadataForUtsettelsePgaHeltidsarbeid.bind(this);
         this.getSkjemadataForUtsettelsePgaDeltidsarbeid = this.getSkjemadataForUtsettelsePgaDeltidsarbeid.bind(this);
 
         this.state = {
-            gjelderOpphold: false
+            variant: undefined
         };
-    }
-
-    handleOnChange(årsak: UtsettelseÅrsakType | OppholdÅrsakType) {
-        const { onChange } = this.props;
-        if (
-            årsak === UtsettelseÅrsakType.Arbeid ||
-            årsak === UtsettelseÅrsakType.Ferie ||
-            årsak === UtsettelseÅrsakType.Sykdom
-        ) {
-            const updatedPeriode = { årsak };
-            onChange(updatedPeriode as Periode);
-            this.setState({ gjelderOpphold: false });
-        } else {
-            this.setState({ gjelderOpphold: true });
-        }
     }
 
     getUtsettelseÅrsakRadios(): RadioProps[] {
@@ -139,7 +124,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     intl,
                     'skaltautforeldrepenger'
                 )}`,
-                value: ''
+                value: Utsettelsesvariant.UttakAnnenForelder
             }
         ];
     }
@@ -200,6 +185,16 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         };
     }
 
+    updateUtsettelsePgaUttakAnnenForelder(årsak: OppholdÅrsakType) {
+        const { periode, onChange } = this.props;
+        const oppholdsperiode: RecursivePartial<Oppholdsperiode> = {
+            type: Periodetype.Opphold,
+            tidsperiode: { ...periode.tidsperiode },
+            årsak
+        };
+        onChange(oppholdsperiode);
+    }
+
     updateUtsettelsesvariant(variant: Utsettelsesvariant) {
         this.setState({
             variant
@@ -207,7 +202,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { gjelderOpphold, variant } = this.state;
+        const { variant } = this.state;
         const { periode, onChange, arbeidsforhold, søknad } = this.props;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
@@ -228,9 +223,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             radios={this.getUtsettelseÅrsakRadios()}
                         />
                     </Block>
-                    <Block visible={gjelderOpphold} hasChildBlocks={true}>
-                        <AnnenForeldersUttakForm onChange={(v: Oppholdsperiode) => onChange(v)} />
-                    </Block>
                     <Block visible={variant === Utsettelsesvariant.ArbeidHeltid} hasChildBlocks={true}>
                         <UtsettelsePgaHeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaHeltidsarbeid}
@@ -243,6 +235,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             onChange={this.updateUtsettelsePgaDeltidsarbeid}
                             skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
                             arbeidsforhold={arbeidsforhold}
+                        />
+                    </Block>
+                    <Block visible={variant === Utsettelsesvariant.UttakAnnenForelder}>
+                        <UtsettelsePgaUttakAnnenForelderForm
+                            onChange={this.updateUtsettelsePgaUttakAnnenForelder}
+                            oppholdsårsak={(periode as Oppholdsperiode).årsak}
+                            navnAnnenForelder={søknad.annenForelder.fornavn}
                         />
                     </Block>
                     <Block
