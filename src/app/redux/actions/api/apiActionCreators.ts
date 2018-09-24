@@ -2,6 +2,7 @@ import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
 import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
+import { History } from 'history';
 
 export function getSøkerinfo(): ApiActionTypes {
     return {
@@ -9,10 +10,11 @@ export function getSøkerinfo(): ApiActionTypes {
     };
 }
 
-export function sendSøknad(søknad: Søknad): ApiActionTypes {
+export function sendSøknad(søknad: Søknad, history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.SEND_SØKNAD,
-        søknad
+        søknad,
+        history
     };
 }
 
