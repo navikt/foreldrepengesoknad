@@ -108,9 +108,9 @@
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.lønn_under_utdanning": "Lønn ved permisjon for videreutdanning eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "TODO",
-    "inntektstype.ventelønn": "Ventelønn",
+    "inntektstype.ventelønn": "Vartpenger og ventelønn",
     "inntektstype.ventelønn_info":
-        "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden ventelønnen gjelder for.",
+        "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
         "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise arbeidsperioden, stillingsprosenten og inntekten din.",
@@ -198,7 +198,7 @@
 
     "erNæringenRegistrertINorge.spørsmål": "Er {navnPåNæringen} registrert i Norge?",
 
-    "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepenger og skal ta de ut?",
+    "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett på foreldrepenger?",
 
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
 
