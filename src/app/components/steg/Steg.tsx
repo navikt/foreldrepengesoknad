@@ -25,6 +25,7 @@ import './steg.less';
 export interface StegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
+    fortsettKnappLabel?: string;
     renderFormTag?: boolean;
     history: History;
     isAvailable?: boolean;
@@ -127,7 +128,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     renderContent() {
-        const { id, renderFortsettKnapp, intl } = this.props;
+        const { id, renderFortsettKnapp, fortsettKnappLabel, intl } = this.props;
         return (
             <React.Fragment>
                 <Block margin="xs">
@@ -144,7 +145,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
-                            {stegConfig[id].fortsettKnappLabel}
+                            {fortsettKnappLabel || stegConfig[id].fortsettKnappLabel}
                         </FortsettKnapp>
                     </Block>
                 )}
