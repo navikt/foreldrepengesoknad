@@ -5,6 +5,7 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
 import { AppState } from '../reducers';
+import { SøknadActionKeys } from '../actions/s\u00F8knad/s\u00F8knadActionDefinitions';
 
 function* saveAppState() {
     try {
@@ -68,6 +69,11 @@ export default function* storageSaga() {
     yield all([
         takeEvery(ApiActionKeys.STORE_APP_STATE, saveAppState),
         takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
-        takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState)
+        takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
+        takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
     ]);
 }
