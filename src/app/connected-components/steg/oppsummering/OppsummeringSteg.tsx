@@ -14,7 +14,6 @@ import getMessage from 'common/util/i18nUtils';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
 import { apiActionCreators } from '../../../redux/actions';
-import routeConfig from '../../../util/routing/routeConfig';
 import { StegID } from '../../../util/routing/stegConfig';
 import OppsummeringWrapper from 'common/components/summary/SummaryWrapper';
 import { Kvittering } from '../../../types/Kvittering';
@@ -36,19 +35,16 @@ class OppsummeringSteg extends React.Component<Props> {
         this.sendSøknad = this.sendSøknad.bind(this);
     }
 
-    componentDidUpdate(previousProps: Props, newProps: Props) {
-        if (this.props.kvittering) {
-            this.props.history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
-        }
-    }
-
     sendSøknad() {
         const { søknad, perioder, dispatch } = this.props;
         dispatch(
-            apiActionCreators.sendSøknad({
-                ...søknad,
-                uttaksplan: [...(perioder || [])]
-            })
+            apiActionCreators.sendSøknad(
+                {
+                    ...søknad,
+                    uttaksplan: [...(perioder || [])]
+                },
+                this.props.history
+            )
         );
     }
 
