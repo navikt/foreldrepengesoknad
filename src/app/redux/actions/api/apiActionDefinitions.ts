@@ -1,6 +1,7 @@
 import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
+import { History } from 'history';
 
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
@@ -39,6 +40,7 @@ export interface GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag {
 export interface SendSøknad {
     type: ApiActionKeys.SEND_SØKNAD;
     søknad: Søknad;
+    history: History;
 }
 
 export interface GetStoredAppState {
