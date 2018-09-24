@@ -32,18 +32,16 @@ export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørs
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         getValue: ({ annenForelder }) => annenForelder.fornavn,
-        ownDependency: (props) =>
-            props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: true,
         getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis,
-        ownDependency: (props) =>
-            props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         getValue: ({ annenForelder }) => annenForelder.fnr,
-        ownDependency: (props) => {
+        condition: (props) => {
             return (
                 props.annenForelder.kanIkkeOppgis !== true &&
                 props.annenForelderErRegistrert === false &&
@@ -53,7 +51,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     },
     [AnnenForelderSpørsmålKeys.deltOmsorg]: {
         getValue: ({ søker }) => søker.erAleneOmOmsorg,
-        ownDependency: (props) =>
+        condition: (props) =>
             props.annenForelder.kanIkkeOppgis !== true &&
             (props.annenForelderErRegistrert === true ||
                 ((props.annenForelder.utenlandskFnr !== true && questionIsAnswered(props.annenForelder.fnr)) ||
@@ -64,26 +62,26 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.harRettPåForeldrepenger]: {
         getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        ownDependency: (props) => {
+        condition: (props) => {
             return props.søker.erAleneOmOmsorg === false;
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
         getValue: ({ annenForelder }) => annenForelder.erUfør,
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
-        ownDependency: (props) => props.annenForelder.harRettPåForeldrepenger === false
+        condition: (props) => props.annenForelder.harRettPåForeldrepenger === false
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        ownDependency: (props) => {
+        condition: (props) => {
             return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
         }
     },
     [AnnenForelderSpørsmålKeys.foreldreansvarsdato]: {
         getValue: ({ barn }) => (barn as ForeldreansvarBarn).foreldreansvarsdato,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        ownDependency: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
+        condition: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
     }
 };
 

@@ -8,7 +8,7 @@ export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
         getValue: (props: Payload) => QuestionValue;
         parentQuestion?: QuestionKeys;
-        ownDependency?: (props: Payload) => boolean;
+        condition?: (props: Payload) => boolean;
         isOptional?: boolean;
     };
 }
@@ -19,12 +19,12 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     payload: Payload
 ): boolean => {
     const config = questions[question as any];
-    const ownDependencyIsMet = config.ownDependency ? config.ownDependency(payload) : true;
-    if (ownDependencyIsMet === false) {
+    const conditionIsMet = config.condition ? config.condition(payload) : true;
+    if (conditionIsMet === false) {
         return false;
     }
     if (config.parentQuestion === undefined) {
-        return ownDependencyIsMet;
+        return conditionIsMet;
     } else {
         const parentHasValidValue = questionIsAnswered(questions[config.parentQuestion as any].getValue(payload));
         return parentHasValidValue && isQuestionVisible(questions, config.parentQuestion, payload);
