@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -9,6 +9,7 @@ import AttachmentsUploader from 'common/storage/attachment/components/Attachment
 import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { NavnPåForeldre } from 'common/types';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface FellesperiodeUttakSkjemadata {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -104,10 +105,17 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                             ? morsAktivitetIPerioden !== undefined
                             : true
                     }>
-                    <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
-                        ønskerSamtidigUttak={ønskerSamtidigUttak}
-                        onChange={(v) => onChange({ ønskerSamtidigUttak: v })}
-                    />
+                    <Block margin={ønskerSamtidigUttak ? 's' : 'm'}>
+                        <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
+                            ønskerSamtidigUttak={ønskerSamtidigUttak}
+                            onChange={(v) => onChange({ ønskerSamtidigUttak: v })}
+                        />
+                    </Block>
+                    <Block margin="none" visible={ønskerSamtidigUttak === true}>
+                        <Veilederinfo>
+                            <FormattedMessage id="fellesperiodeDelUttakForm.samtidigUttak.veiledertekst" />
+                        </Veilederinfo>
+                    </Block>
                 </Block>
             </>
         );
