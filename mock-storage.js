@@ -49,10 +49,23 @@ const getStønadskontoer = function() {
         }
     }
 };
+const getSoknadSendt = function() {
+    const fileName = getFilePath('soknad_sendt.json');
+    if (!fs.existsSync(fileName)) {
+        return {};
+    } else {
+        try {
+            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+        } catch (err) {
+            return {};
+        }
+    }
+};
 
 module.exports = {
     updateSoknad,
     getSoknad,
     getSokerInfo,
-    getStønadskontoer
+    getStønadskontoer,
+    getSoknadSendt
 };
