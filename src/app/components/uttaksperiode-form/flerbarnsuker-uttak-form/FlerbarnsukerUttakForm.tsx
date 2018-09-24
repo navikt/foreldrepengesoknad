@@ -21,7 +21,7 @@ class FlerbarnsukerUttakForm extends React.Component<Props, {}> {
                         onChange={onChange}
                     />
                 </Block>
-                <Block margin="xs" visible={visVeileder}>
+                <Block margin="none" visible={visVeileder}>
                     <Veilederinfo>
                         <FormattedMessage id="uttak.flerbarnsuker.samtidigUttak.veileder" />
                     </Veilederinfo>
