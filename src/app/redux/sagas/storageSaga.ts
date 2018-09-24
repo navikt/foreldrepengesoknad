@@ -5,7 +5,7 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
 import { AppState } from '../reducers';
-import { SøknadActionKeys } from '../actions/s\u00F8knad/s\u00F8knadActionDefinitions';
+import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 
 function* saveAppState() {
     try {

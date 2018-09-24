@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FlervalgSpørsmål from '../../../flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
+import FlervalgSpørsmål from '../../../flervalg-spørsmål/FlervalgSpørsmål';
 import { OppholdÅrsakType } from '../../../../types/uttaksplan/periodetyper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
