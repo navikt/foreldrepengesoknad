@@ -1,7 +1,10 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { AnnenForelderStegVisibility } from '../../connected-components/steg/annen-forelder/visibility/annenForelderVisibility';
 import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
 import Søknad from '../../types/søknad/Søknad';
+import {
+    AnnenForelderStegVisibility,
+    AnnenForelderSpørsmålKeys
+} from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
 interface CleanedAnnenForelderSteg {
     annenForelder: Partial<AnnenForelder>;
@@ -9,7 +12,7 @@ interface CleanedAnnenForelderSteg {
 }
 
 export const cleanupAnnenForelder = (
-    vis: AnnenForelderStegVisibility,
+    visibility: AnnenForelderStegVisibility,
     søknad: Partial<Søknad>
 ): Partial<AnnenForelder> => {
     const { annenForelder } = søknad;
@@ -29,30 +32,33 @@ export const cleanupAnnenForelder = (
         ...rest
     } = annenForelder;
 
-    const kanOppgis = (visProp: boolean) => {
-        if (kanIkkeOppgis === true) {
-            return false;
-        }
-        return visProp;
-    };
-
     const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
-        kanIkkeOppgis: vis.annenForelderKanIkkeOppgisValg ? kanIkkeOppgis : undefined,
-        fornavn: kanOppgis(true) ? fornavn : undefined,
-        etternavn: kanOppgis(true) ? etternavn : undefined,
-        fnr: kanOppgis(true) ? fnr : undefined,
-        utenlandskFnr: kanOppgis(annenForelder.utenlandskFnr) ? utenlandskFnr : undefined,
-        bostedsland: kanOppgis(annenForelder.utenlandskFnr) ? bostedsland : undefined,
-        harRettPåForeldrepenger: kanOppgis(vis.harRettPåForeldrepengerSpørsmål) ? harRettPåForeldrepenger : undefined,
-        erInformertOmSøknaden: kanOppgis(vis.erAnnenForelderInformertSpørsmål) ? erInformertOmSøknaden : undefined,
-        erUfør: kanOppgis(vis.erMorUførSpørsmål) ? erUfør : undefined
+        kanIkkeOppgis,
+        fornavn: visibility.isVisible(AnnenForelderSpørsmålKeys.navnPåAnnenForelder) ? fornavn : undefined,
+        etternavn: visibility.isVisible(AnnenForelderSpørsmålKeys.navnPåAnnenForelder) ? etternavn : undefined,
+        fnr: visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer) ? fnr : undefined,
+        utenlandskFnr:
+            visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer) && annenForelder.utenlandskFnr
+                ? utenlandskFnr
+                : undefined,
+        bostedsland:
+            visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer) && annenForelder.utenlandskFnr
+                ? bostedsland
+                : undefined,
+        harRettPåForeldrepenger: visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)
+            ? harRettPåForeldrepenger
+            : undefined,
+        erInformertOmSøknaden: visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)
+            ? erInformertOmSøknaden
+            : undefined,
+        erUfør: visibility.isVisible(AnnenForelderSpørsmålKeys.erMorUfør) ? erUfør : undefined
     };
     return cleanedAnnenForelder;
 };
 
-export const cleanupAnnenForelderBarn = (vis: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (!vis.omsorgsovertakelseDatoSpørsmål) {
+export const cleanupAnnenForelderBarn = (visibility: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
+    if (visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato) === false) {
         return {
             ...barn,
             foreldreansvarsdato: undefined
