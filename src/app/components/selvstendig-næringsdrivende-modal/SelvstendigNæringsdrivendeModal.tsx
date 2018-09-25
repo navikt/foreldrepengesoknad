@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -31,6 +31,11 @@ import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organ
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
+import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Skjemanummer } from '../../types/søknad/Søknad';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -81,6 +86,30 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 ...næringProperties
             }
         });
+    }
+
+    updateVedleggList(vedlegg: Attachment[]) {
+        const { næring } = this.state;
+        this.setState({
+            næring: {
+                ...næring,
+                vedlegg
+            }
+        });
+    }
+
+    updateVedleggItem(vedlegg: Attachment) {
+        const { næring } = this.state;
+        if (næring && næring.vedlegg) {
+            const index = næring.vedlegg.indexOf(vedlegg);
+            næring.vedlegg[index] = vedlegg;
+            this.setState({
+                næring: {
+                    ...næring,
+                    vedlegg: næring.vedlegg
+                }
+            });
+        }
     }
 
     onSubmit(): void {
@@ -216,6 +245,31 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
+                    />
+                </Block>
+
+                <Block visible={visibility.næringRegistrertINorge(næring)}>
+                    <Veilederinfo>
+                        Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være
+                        kopi personinntektsskjema, næringsoppgave eller resultatregnskap.
+                    </Veilederinfo>
+                    <AttachmentsUploader
+                        attachments={næring.vedlegg || []}
+                        onFilesUploadStart={(attachments: Attachment[]) => {
+                            this.updateVedleggList([...(næring.vedlegg || []), ...attachments]);
+                        }}
+                        onFileUploadFinish={(vedlegg: Attachment) => this.updateVedleggItem(vedlegg)}
+                        onFileDeleteStart={(vedlegg: Attachment) => {
+                            this.updateVedleggItem(vedlegg);
+                        }}
+                        onFileDeleteFinish={(vedlegg: Attachment) => {
+                            const vedleggList = næring.vedlegg || [];
+                            const index = vedleggList.indexOf(vedlegg);
+                            vedleggList.splice(index, 1);
+                            this.updateVedleggList(vedleggList);
+                        }}
+                        attachmentType={AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON}
+                        skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER}
                     />
                 </Block>
 
