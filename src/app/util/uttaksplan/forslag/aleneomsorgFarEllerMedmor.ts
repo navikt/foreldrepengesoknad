@@ -10,13 +10,13 @@ export function opprettUttaksperioderAleneomsorgFarEllerMedmor(
     familiehendelsedato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Uttaksperiode[] {
-    familiehendelsedato = normaliserDato(familiehendelsedato);
+    familiehendelsedato = normaliserDato(Uttaksdagen(familiehendelsedato).denneEllerNeste());
     const perioder: Uttaksperiode[] = tilgjengeligeStønadskontoer.map((konto): Uttaksperiode => ({
         id: guid(),
         type: Periodetype.Uttak,
         forelder: Forelder.FARMEDMOR,
         konto: konto.konto,
-        tidsperiode: getTidsperiode(Uttaksdagen(familiehendelsedato).denneEllerNeste(), konto.dager),
+        tidsperiode: getTidsperiode(familiehendelsedato, konto.dager),
         vedlegg: [],
         ønskerSamtidigUttak: false
     }));

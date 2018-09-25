@@ -7,7 +7,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { HistoryProps, Kjønn } from '../../../types/common';
+import { HistoryProps } from '../../../types/common';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
@@ -20,7 +20,6 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -30,7 +29,6 @@ interface StateProps {
     uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
-    kjønn: Kjønn;
 }
 
 interface UttaksplanStegState {
@@ -74,7 +72,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     render() {
-        const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus, kjønn } = this.props;
+        const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
@@ -99,14 +97,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                             />
                         </Block>
-                        {erFarEllerMedmor(kjønn, søknad.søker.rolle) === false && (
-                            <Block margin="l">
-                                <Uttaksoppsummering
-                                    uttak={uttaksStatus}
-                                    navnPåForeldre={uttaksplanInfo.navnPåForeldre}
-                                />
-                            </Block>
-                        )}
+                        {søknad.uttaksplan &&
+                            søknad.uttaksplan.length > 0 && (
+                                <Block margin="l">
+                                    <Uttaksoppsummering
+                                        uttak={uttaksStatus}
+                                        navnPåForeldre={uttaksplanInfo.navnPåForeldre}
+                                    />
+                                </Block>
+                            )}
                     </React.Fragment>
                 )}
                 <BekreftGåTilUttaksplanSkjemaDialog
@@ -125,7 +124,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const { søkerinfo, history } = props;
-    const kjønn = søkerinfo.person.kjønn;
 
     const uttaksStatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
@@ -145,7 +143,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         person: props.søkerinfo.person,
         stegProps,
         uttaksStatus,
-        kjønn,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer
     };
