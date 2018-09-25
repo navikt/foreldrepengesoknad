@@ -18,6 +18,7 @@ export class Næring {
     registrertILand: string;
     stillingsprosent: string;
     nyIArbeidslivet?: boolean;
+    oppstartsdato?: Date;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
     harRegnskapsfører: boolean;
