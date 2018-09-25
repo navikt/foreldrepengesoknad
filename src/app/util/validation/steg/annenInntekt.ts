@@ -18,7 +18,12 @@ const frilansErGyldig = (frilansInformasjon: FrilansInformasjon): boolean => {
             driverFosterhjem !== undefined;
     }
 
-    return oppstart !== undefined && jobberFremdelesSomFrilans !== undefined && oppdragGyldig;
+    return (
+        oppstart !== undefined &&
+        jobberFremdelesSomFrilans !== undefined &&
+        oppdragGyldig &&
+        driverFosterhjem !== undefined
+    );
 };
 
 export const annenInntektErGyldig = (søker: Søker): boolean => {
