@@ -81,6 +81,7 @@ interface UtsettelsesperiodeBase extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     helligdager?: Helligdag[];
+    morsAktivitetIPerioden?: MorsAktivitet;
 }
 
 export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {

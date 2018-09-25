@@ -7,7 +7,7 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode } from 'common/types';
+import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import Block from 'common/components/block/Block';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import { connect } from 'react-redux';
@@ -27,10 +27,11 @@ import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
-import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
 import UtsettelsePgaUttakAnnenForelderForm from './partials/utsettelse-pga-uttakAnnenForelder-form/UtsettelsePgaUttakAnnenForelderForm';
+import AktivitetskravMorPart from './partials/aktivitetskrav-mor-part/AktivitetskravMorPart';
+import { getUtsettelsesperiodeVisibility, UtsettelseSpørsmålKeys } from './utsettelsesperiodeVisibility';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -42,6 +43,7 @@ interface StateProps {
     søknad: Søknad;
     arbeidsforhold: Arbeidsforhold[];
     søkerErFarEllerMedmor: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 type Props = UtsettelsesperiodeFormProps & StateProps & InjectedIntlProps;
@@ -72,15 +74,15 @@ interface State {
     variant?: Utsettelsesvariant;
 }
 
-const periodeErOpprettetSykdomsperiode = (periode: RecursivePartial<Periode>): boolean => {
-    return (
-        periode.id !== undefined &&
-        periode.type === Periodetype.Utsettelse &&
-        (periode.årsak === UtsettelseÅrsakType.Sykdom ||
-            periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-            periode.årsak === UtsettelseÅrsakType.InstitusjonSøker)
-    );
-};
+// const periodeErOpprettetSykdomsperiode = (periode: RecursivePartial<Periode>): boolean => {
+//     return (
+//         periode.id !== undefined &&
+//         periode.type === Periodetype.Utsettelse &&
+//         (periode.årsak === UtsettelseÅrsakType.Sykdom ||
+//             periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
+//             periode.årsak === UtsettelseÅrsakType.InstitusjonSøker)
+//     );
+// };
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -178,9 +180,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     render() {
         const { variant } = this.state;
-        const { periode, onChange, arbeidsforhold, søknad } = this.props;
-        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
+        const { periode, onChange, arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor } = this.props;
+        // const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
+        const visibility = getUtsettelsesperiodeVisibility(
+            periode,
+            variant,
+            søknad.søker.erAleneOmOmsorg,
+            søkerErFarEllerMedmor
+        );
 
+        if (!visibility) {
+            return null;
+        }
         return (
             <React.Fragment>
                 <Block hasChildBlocks={true}>
@@ -191,21 +202,28 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             onChange={(t) => onChange({ tidsperiode: t })}
                         />
                     </Block>
-                    <Block margin="s" visible={periode.id === undefined && validTidsperiode !== undefined}>
+                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             onChange={this.updateUtsettelsesvariant}
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                         />
                     </Block>
-                    <Block visible={variant === Utsettelsesvariant.ArbeidHeltid} hasChildBlocks={true}>
+                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
+                        <UtsettelsePgaFerieForm
+                            tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
+                            forelder={Forelder.MOR}
+                        />
+                    </Block>
+                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)} hasChildBlocks={true}>
                         <UtsettelsePgaHeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaHeltidsarbeid}
                             skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
                             arbeidsforhold={arbeidsforhold}
                         />
                     </Block>
-                    <Block visible={variant === Utsettelsesvariant.UttakAnnenForelder}>
+                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
                         <UtsettelsePgaUttakAnnenForelderForm
                             onChange={this.updateUtsettelsePgaUttakAnnenForelder}
                             oppholdsårsak={(periode as Oppholdsperiode).årsak}
@@ -213,27 +231,20 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         />
                     </Block>
                     <Block
-                        visible={
-                            variant === Utsettelsesvariant.Ferie ||
-                            (periode.id !== undefined &&
-                                periode.type === Periodetype.Utsettelse &&
-                                periode.årsak === UtsettelseÅrsakType.Ferie)
-                        }
-                        hasChildBlocks={true}>
-                        <UtsettelsePgaFerieForm
-                            tidsperiode={periode.tidsperiode as Partial<Tidsperiode>}
-                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
-                            forelder={Forelder.MOR}
-                            onChange={(p) => this.props.onChange(p)}
-                        />
-                    </Block>
-                    <Block
-                        visible={variant === Utsettelsesvariant.Sykdom || periodeErOpprettetSykdomsperiode(periode)}
+                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)}
+                        // visible={variant === Utsettelsesvariant.Sykdom || periodeErOpprettetSykdomsperiode(periode)}
                         hasChildBlocks={true}>
                         <UtsettelsePgaSykdomForm
                             onChange={(p) => this.props.onChange(p)}
-                            periode={periode}
+                            periode={periode as Utsettelsesperiode}
                             forelder={Forelder.MOR}
+                        />
+                    </Block>
+                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)}>
+                        <AktivitetskravMorPart
+                            navnPåForeldre={navnPåForeldre}
+                            periode={periode as Utsettelsesperiode}
+                            onChange={(p) => this.props.onChange(p as Utsettelsesperiode)}
                         />
                     </Block>
                 </Block>
@@ -246,7 +257,8 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle)
+        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle),
+        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
     };
 };
 

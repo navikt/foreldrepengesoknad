@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    Periode,
-    Periodetype,
-    UtsettelseÅrsakType,
-    Utsettelsesperiode
-} from '../../../../types/uttaksplan/periodetyper';
+import { Periodetype, UtsettelseÅrsakType, Utsettelsesperiode } from '../../../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import Block from 'common/components/block/Block';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-spørsmål/FlervalgSpørsmål';
@@ -20,8 +15,8 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface OwnProps {
     forelder: Forelder;
-    periode: RecursivePartial<Periode>;
-    onChange: (periode: RecursivePartial<Periode>) => void;
+    periode: RecursivePartial<Utsettelsesperiode>;
+    onChange: (periode: RecursivePartial<Utsettelsesperiode>) => void;
 }
 
 type SykdomÅrsak =
@@ -47,7 +42,7 @@ class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
 
     updateVedleggList(vedlegg: Attachment[]) {
         if (this.props.periode.type === Periodetype.Utsettelse) {
-            const periode: RecursivePartial<Periode> = {
+            const periode: RecursivePartial<Utsettelsesperiode> = {
                 ...this.props.periode,
                 vedlegg
             };
@@ -57,7 +52,7 @@ class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
 
     updateVedleggItem(vedlegg: Attachment) {
         const vedleggList = (this.props.periode.vedlegg || []) as Attachment[];
-        const periode: RecursivePartial<Periode> = {
+        const periode: RecursivePartial<Utsettelsesperiode> = {
             ...this.props.periode,
             vedlegg: [...vedleggList.filter((v) => v.id !== vedlegg.id), ...[vedlegg]]
         };

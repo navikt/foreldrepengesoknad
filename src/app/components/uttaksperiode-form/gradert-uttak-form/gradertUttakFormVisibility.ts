@@ -32,6 +32,7 @@ const gradertUttakSpørsmålConfig: QuestionConfig<GradertUttakSpørsmålPayload
     [GradertUttakSpørsmålKeys.samtidigGradertUttak]: {
         getValue: ({ periode }) => periode.ønskerSamtidigUttak,
         condition: ({ annenForelderHarRett, erAleneOmOmsorg, periode }) =>
+            periode.gradert === true &&
             erAleneOmOmsorg === false &&
             annenForelderHarRett &&
             (periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true || periode.orgnr !== undefined)
