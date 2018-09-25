@@ -72,16 +72,6 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-// const periodeErOpprettetSykdomsperiode = (periode: RecursivePartial<Periode>): boolean => {
-//     return (
-//         periode.id !== undefined &&
-//         periode.type === Periodetype.Utsettelse &&
-//         (periode.årsak === UtsettelseÅrsakType.Sykdom ||
-//             periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-//             periode.årsak === UtsettelseÅrsakType.InstitusjonSøker)
-//     );
-// };
-
 const getVariantFromUtsettelseÅrsakType = (årsak: UtsettelseÅrsakType | undefined): Utsettelsesvariant | undefined => {
     if (årsak === UtsettelseÅrsakType.Sykdom) {
         return Utsettelsesvariant.Arbeid;
