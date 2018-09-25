@@ -32,12 +32,12 @@ export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørs
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         getValue: ({ annenForelder }) => annenForelder.fornavn,
-        condition: (props) => props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: true,
         getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis,
-        condition: (props) => props.annenForelder.kanIkkeOppgis !== true && props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         getValue: ({ annenForelder }) => annenForelder.fnr,
@@ -63,13 +63,17 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => {
-            return props.søker.erAleneOmOmsorg === false;
+            return (
+                props.søker.erAleneOmOmsorg === false ||
+                (props.søker.erAleneOmOmsorg && props.søkerErFarEllerMedmor === false)
+            );
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
         getValue: ({ annenForelder }) => annenForelder.erUfør,
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
-        condition: (props) => props.annenForelder.harRettPåForeldrepenger === false
+        condition: (props) =>
+            props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === false
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
