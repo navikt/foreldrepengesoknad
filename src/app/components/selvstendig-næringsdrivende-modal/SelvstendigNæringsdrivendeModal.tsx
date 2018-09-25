@@ -30,6 +30,7 @@ import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organisasjonsnummer';
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
+import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -259,6 +260,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 nyIArbeidslivet: v
                             })
                         }
+                    />
+                </Block>
+                <Block visible={visibility.oppstartsdato(næring)}>
+                    <DatoInput
+                        name="oppstartsdato"
+                        id="oppstartsdato"
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.oppstartsdato')}
+                        onChange={(oppstartsdato: Date) => {
+                            this.updateNæring({ oppstartsdato });
+                        }}
+                        dato={næring.oppstartsdato}
                     />
                 </Block>
                 <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>
