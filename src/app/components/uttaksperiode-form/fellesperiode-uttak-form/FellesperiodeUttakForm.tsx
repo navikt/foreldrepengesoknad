@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../../types/Partial';
-import AktivitetskravMorPart from '../../utsettelsesperiode-form/partials/aktivitetskrav-mor-part/AktivitetskravMorPart';
+import HvaSkalMorGjøreSpørsmål from '../../utsettelsesperiode-form/partials/AktivitetskravMorPart';
 
 interface FellesperiodeUttakFormProps {
     periode: RecursivePartial<Uttaksperiode>;
@@ -20,7 +20,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
         const { annenForelderSkalHaForeldrepenger, søkerErFarMedmor, navnPåForeldre, periode, onChange } = this.props;
 
         if (annenForelderSkalHaForeldrepenger && søkerErFarMedmor) {
-            return <AktivitetskravMorPart periode={periode} navnPåForeldre={navnPåForeldre} onChange={onChange} />;
+            return <HvaSkalMorGjøreSpørsmål periode={periode} navnPåForeldre={navnPåForeldre} onChange={onChange} />;
         }
         return null;
     }

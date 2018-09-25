@@ -19,6 +19,9 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     payload: Payload
 ): boolean => {
     const config = questions[question as any];
+    if (!config) {
+        return false;
+    }
     const conditionIsMet = config.condition ? config.condition(payload) : true;
     if (conditionIsMet === false) {
         return false;

@@ -1,30 +1,29 @@
 import * as React from 'react';
-import { Periodetype, UtsettelseÅrsakType, Utsettelsesperiode } from '../../../../types/uttaksplan/periodetyper';
-import { Forelder, Tidsperiode } from 'common/types';
+import { UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
-import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../flervalg-spørsmål/FlervalgSpørsmål';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmål/FlervalgSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl, injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import { RecursivePartial } from '../../../../types/Partial';
-import { getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { Skjemanummer } from '../../../../types/søknad/Søknad';
+import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface OwnProps {
     forelder: Forelder;
-    periode: RecursivePartial<Utsettelsesperiode>;
-    onChange: (periode: RecursivePartial<Utsettelsesperiode>) => void;
+    sykdomsårsak?: Sykdomsårsak;
+    vedlegg: Attachment[];
+    onChange: (payload: { sykdomsårsak?: Sykdomsårsak; vedlegg?: Attachment[] }) => void;
 }
 
-type SykdomÅrsak =
+export type Sykdomsårsak =
     | UtsettelseÅrsakType.Sykdom
     | UtsettelseÅrsakType.InstitusjonSøker
     | UtsettelseÅrsakType.InstitusjonBarnet;
 
-const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): FlervalgAlternativ => {
+const getSykdomAlternativ = (intl: InjectedIntl, årsak: Sykdomsårsak): FlervalgAlternativ => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
         value: årsak
@@ -33,51 +32,35 @@ const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): 
 
 type Props = OwnProps & InjectedIntlProps;
 
-class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
+class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
     constructor(props: Props) {
         super(props);
-        props.onChange({ type: Periodetype.Utsettelse, forelder: props.forelder });
         this.handleSykdomÅrsakChange = this.handleSykdomÅrsakChange.bind(this);
     }
 
     updateVedleggList(vedlegg: Attachment[]) {
-        if (this.props.periode.type === Periodetype.Utsettelse) {
-            const periode: RecursivePartial<Utsettelsesperiode> = {
-                ...this.props.periode,
-                vedlegg
-            };
-            this.props.onChange(periode);
-        }
+        this.props.onChange({ vedlegg });
     }
 
     updateVedleggItem(vedlegg: Attachment) {
-        const vedleggList = (this.props.periode.vedlegg || []) as Attachment[];
-        const periode: RecursivePartial<Utsettelsesperiode> = {
-            ...this.props.periode,
-            vedlegg: [...vedleggList.filter((v) => v.id !== vedlegg.id), ...[vedlegg]]
-        };
-        this.props.onChange(periode);
+        this.props.onChange({ vedlegg: [...this.props.vedlegg.filter((v) => v.id !== vedlegg.id), ...[vedlegg]] });
     }
 
-    handleSykdomÅrsakChange(sykdomÅrsak: SykdomÅrsak) {
-        const periodePartial: Partial<Utsettelsesperiode> = {};
-        periodePartial.årsak = sykdomÅrsak as UtsettelseÅrsakType;
-        this.props.onChange(periodePartial);
+    handleSykdomÅrsakChange(sykdomsårsak: Sykdomsårsak) {
+        this.props.onChange({ sykdomsårsak });
     }
 
     render() {
-        const { intl, periode } = this.props;
-        const sykdomÅrsak = periode.type === Periodetype.Utsettelse ? periode.årsak : undefined;
-        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
-        const vedleggList = (periode.vedlegg || []) as Attachment[];
+        const { intl, sykdomsårsak } = this.props;
+        const vedleggList = [...this.props.vedlegg];
         return (
             <>
-                <Block visible={validTidsperiode !== undefined}>
+                <Block>
                     <FlervalgSpørsmål
                         navn="utsttelsePgaSykdomÅrsak"
                         spørsmål={getMessage(intl, 'utsettelse.sykdom.alternativer.spørsmål')}
-                        valgtVerdi={sykdomÅrsak}
-                        onChange={(årsak: SykdomÅrsak) => this.handleSykdomÅrsakChange(årsak)}
+                        valgtVerdi={sykdomsårsak}
+                        onChange={(årsak: Sykdomsårsak) => this.handleSykdomÅrsakChange(årsak)}
                         toKolonner={true}
                         alternativer={[
                             getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom),
@@ -86,7 +69,7 @@ class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
                         ]}
                     />
                 </Block>
-                <Block visible={sykdomÅrsak !== undefined}>
+                <Block visible={sykdomsårsak !== undefined}>
                     <Veilederinfo>
                         <FormattedMessage id="utsettelse.sykdom.vedlegg.info" />
                     </Veilederinfo>
@@ -112,4 +95,4 @@ class UtsettelsePgaSykdomForm extends React.Component<Props, {}> {
         );
     }
 }
-export default injectIntl(UtsettelsePgaSykdomForm);
+export default injectIntl(UtsettelsePgaSykdomPart);

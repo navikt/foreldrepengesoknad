@@ -5,10 +5,10 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { NavnPåForeldre } from 'common/types';
-import { Utsettelsesperiode, Uttaksperiode } from '../../../../types/uttaksplan/periodetyper';
-import { RecursivePartial } from '../../../../types/Partial';
-import HvaSkalMorGjøreSpørsmål from '../../../../sp\u00F8rsm\u00E5l/HvaSkalMorGj\u00F8reSp\u00F8rsm\u00E5l';
-import { getMorsAktivitetSkjemanummer } from '../../../../util/skjemanummer/morsAktivitetSkjemanummer';
+import { Utsettelsesperiode, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { RecursivePartial } from '../../../types/Partial';
+import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
+import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAktivitetSkjemanummer';
 
 interface OwnProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Utsettelsesperiode>;
