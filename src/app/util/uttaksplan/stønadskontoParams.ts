@@ -9,13 +9,13 @@ export const getStønadskontoParams = (søknad: Søknad, person: Person): GetTil
     const { erAleneOmOmsorg, rolle } = søker;
     const { antallBarn } = barn;
     const { harRettPåForeldrepenger } = annenForelder;
+    const erFarEllerMedmor = erFarEllerMedmorSjekk(person.kjønn, rolle);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const dekningsgradValue = dekningsgrad === '80' ? '80' : '100';
-    const erFarEllerMedmor = erFarEllerMedmorSjekk(person.kjønn, rolle);
-    const morHarAleneomsorg = rolle === SøkerRolle.MOR && erAleneOmOmsorg === true;
+    const morHarAleneomsorg = !erFarEllerMedmor && (erAleneOmOmsorg || søknad.annenForelder.kanIkkeOppgis);
     const morHarRett = rolle === SøkerRolle.MOR || (erFarEllerMedmor && harRettPåForeldrepenger === true);
-    const farEllerMedmorHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg === true;
+    const farEllerMedmorHarAleneomsorg = erFarEllerMedmor && (erAleneOmOmsorg || søknad.annenForelder.kanIkkeOppgis);
     const farEllerMedmorHarRett = erFarEllerMedmor || (rolle === SøkerRolle.MOR && harRettPåForeldrepenger === true);
 
     return {
