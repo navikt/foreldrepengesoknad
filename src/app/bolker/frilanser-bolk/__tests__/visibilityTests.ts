@@ -114,11 +114,6 @@ describe('Frilanser-bolk', () => {
             expect(fns.driverDuFosterhjemVisible(søker as Søker)).toBe(true);
         });
 
-        it('should be hidden if jobberFremdelesSomFrilans !== true', () => {
-            søker.frilansInformasjon.jobberFremdelesSomFrilans = false;
-            expect(fns.driverDuFosterhjemVisible(søker as Søker)).toBe(false);
-        });
-
         it('should be hidden if oppdragBolkVisible is false', () => {
             fns.oppdragBolkVisible = jest.fn(() => false);
             expect(fns.driverDuFosterhjemVisible(søker as Søker)).toBe(false);
