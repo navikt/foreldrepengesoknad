@@ -9,6 +9,6 @@ const dateStringToDateObjectMapper = (key: string, value: string) => {
 
 export const storageParser = (storageResponse: string) => {
     if (storageResponse) {
-        JSON.parse(storageResponse, dateStringToDateObjectMapper);
+        return JSON.parse(storageResponse, dateStringToDateObjectMapper);
     }
 };
