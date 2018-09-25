@@ -20,7 +20,7 @@ const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) =
     const createNæringstypeOptions = () => {
         return næringstypeValues.map((næringstype: Næringstype) => {
             return {
-                label: næringstype,
+                label: getMessage(intl, `næringstype.${næringstype.toLocaleLowerCase()}`),
                 value: næringstype,
                 checked: næringstyper.indexOf(næringstype) >= 0
             };
