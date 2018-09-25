@@ -50,10 +50,9 @@ const frilansOppdragErUtfylt: VisibilityFunction<FrilansInformasjon> = (frilansI
 const driverDuFosterhjemVisible: VisibilityFunction<Søker> = (søker: Søker) => {
     const { frilansInformasjon } = søker;
     if (frilansInformasjon !== undefined) {
-        const { jobberFremdelesSomFrilans } = frilansInformasjon;
         const oppdragUtfylt = module.frilansOppdragErUtfylt(frilansInformasjon);
         const oppdragBolkIsVisible = module.oppdragBolkVisible(søker);
-        return oppdragUtfylt && oppdragBolkIsVisible && jobberFremdelesSomFrilans === true;
+        return oppdragUtfylt && oppdragBolkIsVisible;
     }
     return false;
 };
