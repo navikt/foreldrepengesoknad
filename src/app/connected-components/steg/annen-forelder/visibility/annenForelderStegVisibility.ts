@@ -32,10 +32,11 @@ export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørs
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         getValue: ({ annenForelder }) => annenForelder.fornavn,
-        condition: (props) => props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelderErRegistrert === false,
+        isOptional: (props) => props.annenForelder.kanIkkeOppgis === true
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
-        isOptional: true,
+        isOptional: () => true,
         getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis,
         condition: (props) => props.annenForelderErRegistrert === false
     },
