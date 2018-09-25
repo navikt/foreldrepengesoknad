@@ -544,7 +544,10 @@
     "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
     "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett uttaksperiode",
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette denne uttaksperioden?",
+
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
+
+    "uttaksperiode.gradert.skalDuHarGradering": "Ønsker du å kombinere uttaket med arbeid i denne perioden?",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder": "Informasjon når mors aktivitet er valgt",

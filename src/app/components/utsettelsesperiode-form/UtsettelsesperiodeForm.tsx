@@ -4,7 +4,6 @@ import {
     OppholdÅrsakType,
     Periode,
     Periodetype,
-    GradertUttaksperiode,
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
@@ -22,9 +21,6 @@ import {
     default as UtsettelsePgaHeltidsarbeidForm
 } from './partials/utsettelse-pga-heltidsarbeid-form/UtsettelsePgaHeltidsarbeidForm';
 import { RecursivePartial } from '../../types/Partial';
-import UtsettelsePgaDeltidsarbeidForm, {
-    UtsettelsePgaDeltidsarbeidSkjemadata
-} from './partials/utsettelse-pga-deltidsarbeid-form/UtsettelsePgaDeltidsarbeidForm';
 import UtsettelsePgaFerieForm from './partials/utsettelse-pga-ferie-form/UtsettelsePgaFerieForm';
 import UtsettelsePgaSykdomForm from './partials/utsettelse-pga-sykdom-form/UtsettelsePgaSykdomForm';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
@@ -53,7 +49,6 @@ type Props = UtsettelsesperiodeFormProps & StateProps & InjectedIntlProps;
 export enum Utsettelsesvariant {
     Ferie = 'ferie',
     ArbeidHeltid = 'arbeidHeltid',
-    ArbeidDeltid = 'arbeidDeltid',
     Sykdom = 'sykdom',
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
@@ -93,10 +88,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         this.updateUtsettelsesvariant = this.updateUtsettelsesvariant.bind(this);
         this.getUtsettelseÅrsakRadios = this.getUtsettelseÅrsakRadios.bind(this);
         this.updateUtsettelsePgaHeltidsarbeid = this.updateUtsettelsePgaHeltidsarbeid.bind(this);
-        this.updateUtsettelsePgaDeltidsarbeid = this.updateUtsettelsePgaDeltidsarbeid.bind(this);
         this.updateUtsettelsePgaUttakAnnenForelder = this.updateUtsettelsePgaUttakAnnenForelder.bind(this);
         this.getSkjemadataForUtsettelsePgaHeltidsarbeid = this.getSkjemadataForUtsettelsePgaHeltidsarbeid.bind(this);
-        this.getSkjemadataForUtsettelsePgaDeltidsarbeid = this.getSkjemadataForUtsettelsePgaDeltidsarbeid.bind(this);
 
         this.state = {
             variant: props.periode ? getUtsettelsesvariantFromPeriode(props.periode) : undefined
@@ -118,10 +111,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             {
                 label: 'Jeg skal jobbe heltid',
                 value: Utsettelsesvariant.ArbeidHeltid
-            },
-            {
-                label: 'Jeg skal jobbe deltid',
-                value: Utsettelsesvariant.ArbeidDeltid
             },
             {
                 label: getMessage(intl, 'pgasykdom'),
@@ -159,19 +148,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         onChange(utsettelsesperiode);
     }
 
-    updateUtsettelsePgaDeltidsarbeid(skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata) {
-        const { onChange } = this.props;
-
-        const gradertUttaksperiode: RecursivePartial<GradertUttaksperiode> = {
-            type: Periodetype.Uttak,
-            årsak: UtsettelseÅrsakType.Arbeid,
-            forelder: Forelder.MOR,
-            gradert: true,
-            ...skjemadata
-        };
-        onChange(gradertUttaksperiode);
-    }
-
     getSkjemadataForUtsettelsePgaHeltidsarbeid(): UtsettelsePgaHeltidsarbeidSkjemadata {
         const { periode } = this.props;
         if (periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Arbeid) {
@@ -181,24 +157,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             };
         }
         return { tidsperiode: periode.tidsperiode as Partial<Tidsperiode> };
-    }
-
-    getSkjemadataForUtsettelsePgaDeltidsarbeid(): UtsettelsePgaDeltidsarbeidSkjemadata {
-        const { periode } = this.props;
-        if (periode.type === Periodetype.Uttak) {
-            const gradertPeriode = periode as GradertUttaksperiode;
-            const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr } = gradertPeriode;
-            return {
-                stillingsprosent,
-                konto,
-                ønskerSamtidigUttak,
-                orgnr,
-                tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
-            };
-        }
-        return {
-            tidsperiode: periode.tidsperiode as Partial<Tidsperiode>
-        };
     }
 
     updateUtsettelsePgaUttakAnnenForelder(årsak: OppholdÅrsakType) {
@@ -244,13 +202,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelsePgaHeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaHeltidsarbeid}
                             skjemadata={this.getSkjemadataForUtsettelsePgaHeltidsarbeid()}
-                            arbeidsforhold={arbeidsforhold}
-                        />
-                    </Block>
-                    <Block visible={variant === Utsettelsesvariant.ArbeidDeltid} hasChildBlocks={true}>
-                        <UtsettelsePgaDeltidsarbeidForm
-                            onChange={this.updateUtsettelsePgaDeltidsarbeid}
-                            skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
                             arbeidsforhold={arbeidsforhold}
                         />
                     </Block>

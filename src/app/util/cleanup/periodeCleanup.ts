@@ -27,7 +27,11 @@ export const cleanupPeriode = (periode: Periode): Periode => {
             tidsperiode: periode.tidsperiode,
             gradert: periode.gradert,
             morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
-            ønskerSamtidigUttak: periode.ønskerSamtidigUttak
+            ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
+            stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
+            skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
+                periode.gradert === true ? periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende : undefined,
+            orgnr: periode.gradert === true ? periode.orgnr : undefined
         };
         if (isForeldrepengerFørFødselUttaksperiode(periode)) {
             (uttaksperiode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin =
