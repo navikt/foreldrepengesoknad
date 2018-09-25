@@ -29,6 +29,7 @@ import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/utta
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
 import FlerbarnsukerUttakForm from './flerbarnsuker-uttak-form/FlerbarnsukerUttakForm';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -38,6 +39,7 @@ interface UttaksperiodeFormProps {
 
 interface StateProps {
     søknad: Søknad;
+    velgbareStønadskontoer: StønadskontoType[];
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
@@ -223,10 +225,10 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, onChange, søknad, kanEndreStønadskonto } = this.props;
+        const { periode, onChange, søknad, kanEndreStønadskonto, velgbareStønadskontoer } = this.props;
         const { tidsperiode } = periode;
         const { uttaksplanInfo } = søknad.ekstrainfo;
-        const { velgbareStønadskontoer, navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
+        const { navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
@@ -270,7 +272,8 @@ class UttaksperiodeForm extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad
+        søknad: state.søknad,
+        velgbareStønadskontoer: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer!)
     };
 };
 
