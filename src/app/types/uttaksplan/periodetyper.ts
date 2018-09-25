@@ -1,5 +1,6 @@
 import { Tidsperiode, Forelder } from 'common/types';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { RecursivePartial } from '../Partial';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -60,9 +61,12 @@ export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
-    gradert?: boolean;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak: boolean;
+    gradert?: boolean;
+    stillingsprosent?: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
+    orgnr?: string;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -104,14 +108,6 @@ export type Utsettelsesperiode =
     | UtsettelsePgaInnleggelseSøker
     | UtsettelsePgaInnleggelseBarnet;
 
-export interface GradertUttaksperiode extends UttaksperiodeBase {
-    årsak: UtsettelseÅrsakType.Arbeid;
-    gradert: true;
-    stillingsprosent: string;
-    orgnr: string;
-    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
-}
-
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
     årsak: OppholdÅrsakType;
@@ -143,7 +139,7 @@ export enum MorsAktivitet {
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(
-    periode: Periode
+    periode: Periode | RecursivePartial<Periode>
 ): periode is ForeldrepengerFørFødselUttaksperiode {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
