@@ -13,12 +13,12 @@ import { Uttaksdagen } from '../Uttaksdagen';
 
 /** Oppretter default stønadsperioder ut fra familiehendelsedato ++ */
 export function opprettUttaksperioderToForeldreEttBarnMor(
-    test: Date,
+    famDato: Date,
     fellesukerMor: number,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon?: Date
 ): Periode[] {
-    const familiehendelsedato = normaliserDato(test);
+    const familiehendelsedato = normaliserDato(Uttaksdagen(famDato).denneEllerNeste());
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
