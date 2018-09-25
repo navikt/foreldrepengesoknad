@@ -27,7 +27,7 @@ export const cleanupPeriode = (periode: Periode): Periode => {
             tidsperiode: periode.tidsperiode,
             gradert: periode.gradert,
             morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
-            ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
+            ønskerSamtidigUttak: periode.gradert === true ? periode.ønskerSamtidigUttak : undefined,
             stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
             skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
                 periode.gradert === true ? periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende : undefined,
