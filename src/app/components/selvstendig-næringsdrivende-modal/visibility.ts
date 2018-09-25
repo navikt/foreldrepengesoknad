@@ -71,6 +71,10 @@ const nyIArbeidslivetVisible: VisibilityFunction<NæringPartial> = (næring: Næ
     );
 };
 
+const oppstartsdatoVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
+    return næring.nyIArbeidslivet === true && module.nyIArbeidslivet(næring);
+};
+
 const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { stillingsprosent } = næring;
     return (
@@ -150,6 +154,7 @@ const module = {
     næringRegistrertILand: næringRegistrertILandVisible,
     stillingsprosent: stillingsprosentVisible,
     nyIArbeidslivet: nyIArbeidslivetVisible,
+    oppstartsdato: oppstartsdatoVisible,
     varigEndringAvNæringsinntekt: varigEndringAvNæringsinntektVisible,
     regnskapsførerBolk: regnskapsførerBolkVisible,
     revisorBolk: revisorBolkVisible,
