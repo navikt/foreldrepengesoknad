@@ -25,14 +25,16 @@ const gradertUttakSpørsmålConfig: QuestionConfig<GradertUttakSpørsmålPayload
         parentQuestion: GradertUttakSpørsmålKeys.skalHaGradering,
         condition: ({ periode }) => periode.gradert === true
     },
-    [GradertUttakSpørsmålKeys.samtidigGradertUttak]: {
-        getValue: ({ periode }) => periode.ønskerSamtidigUttak,
-        parentQuestion: GradertUttakSpørsmålKeys.stillingsprosent,
-        condition: ({ annenForelderHarRett, erAleneOmOmsorg }) => erAleneOmOmsorg === false && annenForelderHarRett
-    },
     [GradertUttakSpørsmålKeys.hvorSkalDuJobbe]: {
         getValue: ({ periode }) => periode.orgnr,
-        parentQuestion: GradertUttakSpørsmålKeys.samtidigGradertUttak
+        parentQuestion: GradertUttakSpørsmålKeys.stillingsprosent
+    },
+    [GradertUttakSpørsmålKeys.samtidigGradertUttak]: {
+        getValue: ({ periode }) => periode.ønskerSamtidigUttak,
+        condition: ({ annenForelderHarRett, erAleneOmOmsorg, periode }) =>
+            erAleneOmOmsorg === false &&
+            annenForelderHarRett &&
+            (periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true || periode.orgnr !== undefined)
     }
 };
 
