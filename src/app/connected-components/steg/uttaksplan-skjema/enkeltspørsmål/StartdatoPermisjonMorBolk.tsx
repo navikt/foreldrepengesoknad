@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -24,7 +25,7 @@ interface OwnProps {
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
 const getAntallUttaksdager = (fom: Date | undefined, tom: Date | undefined): number | undefined => {
-    if (fom !== undefined && tom !== undefined) {
+    if (fom !== undefined && tom !== undefined && moment(fom).isBefore(tom)) {
         return Tidsperioden({
             fom,
             tom: Uttaksdagen(tom).forrige()
@@ -63,7 +64,14 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
         const visVeileder =
             antallDager !== undefined && antallDager > permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
 
-        const varighet = getVarighet(data.startdatoPermisjon, familiehendelsesdato, intl);
+        const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
+            permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+        );
+
+        const startdato =
+            data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon || defaultStartdato : undefined;
+
+        const varighet = getVarighet(startdato, familiehendelsesdato, intl);
         const varighetString =
             varighet !== undefined
                 ? barnetErFødt
@@ -80,11 +88,11 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         onChange={(startdatoPermisjon: Date | undefined) => {
                             onChange({ startdatoPermisjon });
                         }}
-                        dato={data.startdatoPermisjon}
+                        dato={startdato}
                         disabled={data.skalIkkeHaUttakFørTermin}
                         avgrensninger={uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato)}
                         dayPickerProps={{
-                            month: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
+                            initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
                         }}
                         validators={startdatoFørTerminValidators(
                             intl,
