@@ -1,5 +1,6 @@
 import { Tidsperiode, Forelder } from 'common/types';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { RecursivePartial } from '../Partial';
 
 export enum Periodetype {
     'Uttak' = 'uttak',
@@ -138,7 +139,7 @@ export enum MorsAktivitet {
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(
-    periode: Periode
+    periode: Periode | RecursivePartial<Periode>
 ): periode is ForeldrepengerFørFødselUttaksperiode {
     return periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
 }
