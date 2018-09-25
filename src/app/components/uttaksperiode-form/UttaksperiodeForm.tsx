@@ -27,6 +27,7 @@ import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-ut
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import GradertUttakForm from './gradert-uttak-form/GradertUttakForm';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -37,6 +38,7 @@ interface UttaksperiodeFormProps {
 interface StateProps {
     søknad: Søknad;
     arbeidsforhold?: Arbeidsforhold[];
+    velgbareStønadskontotyper: StønadskontoType[];
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
@@ -167,10 +169,17 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, onChange, søknad, kanEndreStønadskonto, arbeidsforhold } = this.props;
+        const {
+            periode,
+            onChange,
+            søknad,
+            kanEndreStønadskonto,
+            arbeidsforhold,
+            velgbareStønadskontotyper
+        } = this.props;
         const { tidsperiode } = periode;
         const { uttaksplanInfo } = søknad.ekstrainfo;
-        const { velgbareStønadskontoer, navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
+        const { navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
@@ -196,7 +205,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
-                        velgbareStønadskontoer={velgbareStønadskontoer}
+                        velgbareStønadskontoer={velgbareStønadskontotyper}
                         stønadskonto={periode.konto}
                     />
                 </Block>
@@ -224,7 +233,8 @@ class UttaksperiodeForm extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
-        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold
+        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,
+        velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer)
     };
 };
 
