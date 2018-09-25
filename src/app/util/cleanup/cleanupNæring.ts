@@ -17,6 +17,7 @@ const cleanupNæring = (næring: Næring): Næring => {
     const newNæring = {
         registrertILand: visibility.næringRegistrertILand(næring) ? registrertILand : undefined,
         nyIArbeidslivet: visibility.nyIArbeidslivet(næring) ? nyIArbeidslivet : undefined,
+        oppstartsdato: visibility.oppstartsdato(næring),
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: visibility.varigEndringAvNæringsinntekt(næring)
             ? hattVarigEndringAvNæringsinntektSiste4Kalenderår
             : undefined,
