@@ -77,15 +77,6 @@ class GradertUttakForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.samtidigGradertUttak)}>
-                    <SkalDereHaGradertUttakSamtidigSpørsmål
-                        onChange={(ønskerSamtidigUttak: boolean) => {
-                            onChange({ ønskerSamtidigUttak });
-                        }}
-                        samtidigGradertUttak={periode.ønskerSamtidigUttak}
-                    />
-                </Block>
-
                 <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
@@ -96,6 +87,14 @@ class GradertUttakForm extends React.Component<Props> {
                             })
                         }
                         valgtArbeidsforhold={periode.orgnr}
+                    />
+                </Block>
+                <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.samtidigGradertUttak)}>
+                    <SkalDereHaGradertUttakSamtidigSpørsmål
+                        onChange={(ønskerSamtidigUttak: boolean) => {
+                            onChange({ ønskerSamtidigUttak });
+                        }}
+                        samtidigGradertUttak={periode.ønskerSamtidigUttak}
                     />
                 </Block>
             </>
