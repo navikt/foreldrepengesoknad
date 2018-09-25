@@ -11,15 +11,16 @@ const selvstendigNæringsdrivendeBolkVisible: VisibilityFunction<Søker> = (søk
     }
 
     if (frilansInformasjon !== undefined) {
-        const { driverFosterhjem, jobberFremdelesSomFrilans } = frilansInformasjon;
+        const { driverFosterhjem } = frilansInformasjon;
 
-        if (jobberFremdelesSomFrilans === true) {
-            return driverDuFosterhjemVisible(søker) && driverFosterhjem !== undefined;
-        } else {
-            const frilansOppdragUtfylt = frilansOppdragErUtfylt(frilansInformasjon);
-            const oppdragBolkIsVisible = oppdragBolkVisible(søker);
-            return frilansOppdragUtfylt && oppdragBolkIsVisible;
-        }
+        const frilansOppdragUtfylt = frilansOppdragErUtfylt(frilansInformasjon);
+        const oppdragBolkIsVisible = oppdragBolkVisible(søker);
+        return (
+            frilansOppdragUtfylt &&
+            oppdragBolkIsVisible &&
+            driverDuFosterhjemVisible(søker) &&
+            driverFosterhjem !== undefined
+        );
     }
     return false;
 };

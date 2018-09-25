@@ -21,17 +21,18 @@ export const lagMockUttaksplan = (
     søknad: Søknad,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Periode[] => {
-    const { søker, barn, situasjon, ekstrainfo } = søknad;
+    const { søker, barn, situasjon, ekstrainfo, annenForelder } = søknad;
     const {
         uttaksplanSkjema: { fellesperiodeukerMor, startdatoPermisjon, morSinSisteUttaksdag }
     } = ekstrainfo;
     const { erAleneOmOmsorg, rolle } = søker;
+    const { kanIkkeOppgis } = annenForelder;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
     const fellesUkerMor = fellesperiodeukerMor || 0;
 
     if (famDato) {
         if (situasjon === Søkersituasjon.FØDSEL) {
-            if (erAleneOmOmsorg) {
+            if (erAleneOmOmsorg || kanIkkeOppgis) {
                 if (rolle === SøkerRolle.MOR) {
                     return opprettUttaksperioderAleneomsorgMor(
                         famDato,
@@ -60,7 +61,7 @@ export const lagMockUttaksplan = (
         }
 
         if (situasjon === Søkersituasjon.ADOPSJON) {
-            if (erAleneOmOmsorg) {
+            if (erAleneOmOmsorg || kanIkkeOppgis) {
                 if (rolle === SøkerRolle.MOR) {
                     return opprettUttaksperioderAleneomsorgMor(
                         famDato,
