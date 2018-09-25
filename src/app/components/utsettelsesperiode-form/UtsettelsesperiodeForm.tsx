@@ -6,7 +6,8 @@ import {
     Periodetype,
     GradertUttaksperiode,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import Block from 'common/components/block/Block';
@@ -35,6 +36,7 @@ import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
 import UtsettelsePgaUttakAnnenForelderForm from './partials/utsettelse-pga-uttakAnnenForelder-form/UtsettelsePgaUttakAnnenForelderForm';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 interface UtsettelsesperiodeFormProps {
     tittel?: string;
@@ -45,6 +47,7 @@ interface UtsettelsesperiodeFormProps {
 interface StateProps {
     søknad: Søknad;
     arbeidsforhold: Arbeidsforhold[];
+    velgbareStønadskontoer: StønadskontoType[];
     søkerErFarEllerMedmor: boolean;
 }
 
@@ -220,7 +223,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     render() {
         const { variant } = this.state;
-        const { periode, onChange, arbeidsforhold, søknad } = this.props;
+        const { periode, onChange, arbeidsforhold, søknad, velgbareStønadskontoer } = this.props;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Partial<Tidsperiode>);
 
         return (
@@ -250,6 +253,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block visible={variant === Utsettelsesvariant.ArbeidDeltid} hasChildBlocks={true}>
                         <UtsettelsePgaDeltidsarbeidForm
                             onChange={this.updateUtsettelsePgaDeltidsarbeid}
+                            velgbareStønadskontoer={velgbareStønadskontoer}
                             skjemadata={this.getSkjemadataForUtsettelsePgaDeltidsarbeid()}
                             arbeidsforhold={arbeidsforhold}
                         />
@@ -295,7 +299,8 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle)
+        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle),
+        velgbareStønadskontoer: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer!)
     };
 };
 

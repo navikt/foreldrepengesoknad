@@ -29,6 +29,7 @@ export interface UtsettelsePgaDeltidsarbeidSkjemadata {
 interface UtsettelsePgaArbeidFormProps {
     onChange: (v: UtsettelsePgaDeltidsarbeidSkjemadata) => void;
     skjemadata: UtsettelsePgaDeltidsarbeidSkjemadata;
+    velgbareStønadskontoer: StønadskontoType[];
     arbeidsforhold: Arbeidsforhold[];
 }
 
@@ -53,10 +54,10 @@ class UtsettelsePgaDeltidsarbeidForm extends React.Component<Props> {
     }
 
     render() {
-        const { skjemadata, søknad, arbeidsforhold, intl, onChange } = this.props;
+        const { skjemadata, søknad, arbeidsforhold, velgbareStønadskontoer, intl, onChange } = this.props;
         const { stillingsprosent, konto, ønskerSamtidigUttak, orgnr, tidsperiode } = skjemadata;
 
-        const { navnPåForeldre, velgbareStønadskontoer } = søknad.ekstrainfo.uttaksplanInfo!;
+        const { navnPåForeldre } = søknad.ekstrainfo.uttaksplanInfo!;
         const harFlereVelgbareKontoer = velgbareStønadskontoer.length > 1;
         const validTidsperiode = getValidTidsperiode(tidsperiode);
 

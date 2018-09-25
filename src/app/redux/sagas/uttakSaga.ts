@@ -34,11 +34,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         const appState: AppState = yield select(stateSelector);
         yield put(
             søknadActionCreators.uttaksplanSetAggregertInfo(
-                getAggregertUttaksplanInfo(
-                    appState.søknad,
-                    appState.api.søkerinfo!,
-                    appState.api.tilgjengeligeStønadskontoer
-                )
+                getAggregertUttaksplanInfo(appState.søknad, appState.api.søkerinfo!)
             )
         );
     } catch (error) {
