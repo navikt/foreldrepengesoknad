@@ -8,7 +8,7 @@ import { InputChangeEvent } from '../../../types/dom/Events';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-sp\u00F8rsm\u00E5l/JaNeiSp\u00F8rsm\u00E5l';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
-import { GradertUttakSpørsmålVisibility, GradertUttakSpørsmålKeys } from './visibility';
+import { GradertUttakSpørsmålKeys, getGradertUttakSpørsmålVisibility } from './gradertUttakFormVisibility';
 import { RecursivePartial } from '../../../types/Partial';
 import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../sp\u00F8rsm\u00E5l/SkalDereHaGradertUttakSamtidigSp\u00F8rsm\u00E5l';
 import HvorSkalDuJobbeSpørsmål from '../../../sp\u00F8rsm\u00E5l/HvorSkalDuJobbeSp\u00F8rsm\u00E5l';
@@ -16,13 +16,14 @@ import HvorSkalDuJobbeSpørsmål from '../../../sp\u00F8rsm\u00E5l/HvorSkalDuJob
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
     periode: RecursivePartial<Uttaksperiode>;
+    annenForelderHarRettPåForeldrepenger: boolean;
+    erAleneOmOmsorg: boolean;
     arbeidsforhold?: Arbeidsforhold[];
-    visibility: GradertUttakSpørsmålVisibility;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
-class GraderingFormPart extends React.Component<Props> {
+class GradertUttakForm extends React.Component<Props> {
     handleStillingsprosentChange(stillingsprosent: string) {
         const { onChange } = this.props;
         const pst = getFloatFromString(stillingsprosent);
@@ -32,7 +33,20 @@ class GraderingFormPart extends React.Component<Props> {
     }
 
     render() {
-        const { visibility, periode, arbeidsforhold, intl, onChange } = this.props;
+        const {
+            erAleneOmOmsorg,
+            annenForelderHarRettPåForeldrepenger,
+            periode,
+            arbeidsforhold,
+            intl,
+            onChange
+        } = this.props;
+
+        const visibility = getGradertUttakSpørsmålVisibility(
+            periode as Uttaksperiode,
+            annenForelderHarRettPåForeldrepenger,
+            erAleneOmOmsorg
+        );
 
         return (
             <>
@@ -89,10 +103,4 @@ class GraderingFormPart extends React.Component<Props> {
     }
 }
 
-// const mapStateToProps = (state: AppState): StateProps => {
-//     return {
-//         søknad: state.søknad
-//     };
-// };
-
-export default injectIntl(GraderingFormPart);
+export default injectIntl(GradertUttakForm);

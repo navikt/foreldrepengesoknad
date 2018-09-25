@@ -4,7 +4,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
 
-export enum GradertUttak {
+export enum GradertUttakValues {
     'SKAL_HA_SAMTIDIG_GRADERT_UTTAK' = 'skalHaSamtidigGradertUttak',
     'SKAL_IKKE_HA_SAMTIDIG_GRADERT_UTTAK' = 'skalIkkeHaSamtidigGradertUttak'
 }
@@ -21,9 +21,9 @@ const SkalDereHaGradertUttakSamtidigSpørsmål = (props: Props) => {
 
     let checked;
     if (samtidigGradertUttak === true) {
-        checked = GradertUttak.SKAL_HA_SAMTIDIG_GRADERT_UTTAK;
+        checked = GradertUttakValues.SKAL_HA_SAMTIDIG_GRADERT_UTTAK;
     } else if (samtidigGradertUttak === false) {
-        checked = GradertUttak.SKAL_IKKE_HA_SAMTIDIG_GRADERT_UTTAK;
+        checked = GradertUttakValues.SKAL_IKKE_HA_SAMTIDIG_GRADERT_UTTAK;
     }
 
     return (
@@ -33,15 +33,17 @@ const SkalDereHaGradertUttakSamtidigSpørsmål = (props: Props) => {
             radios={[
                 {
                     label: getMessage(intl, 'ja'),
-                    value: GradertUttak.SKAL_HA_SAMTIDIG_GRADERT_UTTAK
+                    value: GradertUttakValues.SKAL_HA_SAMTIDIG_GRADERT_UTTAK
                 },
                 {
                     label: getMessage(intl, 'nei'),
-                    value: GradertUttak.SKAL_IKKE_HA_SAMTIDIG_GRADERT_UTTAK
+                    value: GradertUttakValues.SKAL_IKKE_HA_SAMTIDIG_GRADERT_UTTAK
                 }
             ]}
             legend={getMessage(intl, 'skalDereHaGradertUttakSamtidig.spørsmål')}
-            onChange={(e: InputChangeEvent, v: string) => onChange(v === GradertUttak.SKAL_HA_SAMTIDIG_GRADERT_UTTAK)}
+            onChange={(e: InputChangeEvent, v: string) =>
+                onChange(v === GradertUttakValues.SKAL_HA_SAMTIDIG_GRADERT_UTTAK)
+            }
         />
     );
 };
