@@ -40,7 +40,6 @@ const isAllQuestionsAnswered = <Payload, QuestionKeys>(
         const question = questions[key];
         if (isQuestionVisible<Payload, QuestionKeys>(questions, key as any, payload)) {
             const isOptional = question.isOptional !== undefined ? question.isOptional(payload) === true : false;
-            console.log(key, isOptional);
             const answered = questionIsAnswered(question.getValue(payload)) || isOptional;
             allQuestionsHasAnswers = allQuestionsHasAnswers === true && answered;
         }
