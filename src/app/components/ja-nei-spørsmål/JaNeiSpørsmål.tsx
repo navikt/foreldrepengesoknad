@@ -13,13 +13,14 @@ interface JaNeiSpørsmålProps {
     spørsmål: string;
     hjelpetekst?: string;
     valgtVerdi?: boolean;
+    toKolonner?: boolean;
     onChange: (valgt: boolean) => void;
 }
 
 type Props = JaNeiSpørsmålProps & InjectedIntlProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, intl } = props;
+    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, toKolonner = true, intl } = props;
 
     let checked;
     if (valgtVerdi === true) {
@@ -34,6 +35,7 @@ const JaNeiSpørsmål = (props: Props) => {
             checked={checked}
             legend={spørsmål}
             infoboksTekst={hjelpetekst}
+            twoColumns={toKolonner}
             radios={[
                 {
                     label: getMessage(intl, 'ja'),

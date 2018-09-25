@@ -1,28 +1,21 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import HvaSkalMorGjøreSpørsmål from '../../../spørsmål/HvaSkalMorGjøreSpørsmål';
-import { MorsAktivitet } from '../../../types/uttaksplan/periodetyper';
+import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getMorsAktivitetSkjemanummer } from '../../../util/skjemanummer/morsAktivitetSkjemanummer';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
-import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { NavnPåForeldre } from 'common/types';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-
-export interface FellesperiodeUttakSkjemadata {
-    morsAktivitetIPerioden?: MorsAktivitet;
-    vedlegg?: Attachment[];
-    ønskerSamtidigUttak?: boolean;
-}
+import { RecursivePartial } from '../../../types/Partial';
 
 interface FellesperiodeUttakFormProps {
-    skjemadata: FellesperiodeUttakSkjemadata;
+    periode: RecursivePartial<Uttaksperiode>;
     navnPåForeldre: NavnPåForeldre;
     søkerErFarMedmor: boolean;
     annenForelderSkalHaForeldrepenger: boolean;
-    onChange: (skjemadata: FellesperiodeUttakSkjemadata) => void;
+    onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
 }
 
 type Props = FellesperiodeUttakFormProps & InjectedIntlProps;
@@ -36,8 +29,8 @@ class FellesperiodeUttakForm extends React.Component<Props> {
     }
 
     updateVedleggItem(vedleggItem: Attachment) {
-        const { skjemadata } = this.props;
-        let vedleggList: Attachment[] = skjemadata.vedlegg || [];
+        const { periode } = this.props;
+        let vedleggList: Attachment[] = (periode.vedlegg as Attachment[]) || [];
         const index = vedleggList.indexOf(vedleggItem);
         if (index >= 0) {
             vedleggList[index] = vedleggItem;
@@ -48,29 +41,25 @@ class FellesperiodeUttakForm extends React.Component<Props> {
     }
 
     deleteVedleggItem(vedleggItem: Attachment) {
-        const { skjemadata } = this.props;
-        const vedleggList: Attachment[] = skjemadata.vedlegg!;
+        const { periode } = this.props;
+        const vedleggList: Attachment[] = (periode.vedlegg as Attachment[]) || [];
         const index = vedleggList.indexOf(vedleggItem);
         vedleggList.splice(index, 1);
         this.updateVedleggList(vedleggList);
     }
 
     updateVedleggList(vedlegg: Attachment[]) {
-        const { onChange } = this.props;
+        const { onChange, periode } = this.props;
         onChange({
+            ...periode,
             vedlegg
         });
     }
 
     render() {
-        const {
-            annenForelderSkalHaForeldrepenger,
-            søkerErFarMedmor,
-            navnPåForeldre,
-            skjemadata,
-            onChange
-        } = this.props;
-        const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = skjemadata;
+        const { annenForelderSkalHaForeldrepenger, søkerErFarMedmor, navnPåForeldre, periode, onChange } = this.props;
+        const { morsAktivitetIPerioden } = periode;
+        const vedlegg = periode.vedlegg as Attachment[];
 
         return (
             <>
@@ -79,7 +68,7 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                         <HvaSkalMorGjøreSpørsmål
                             navnPåForeldre={navnPåForeldre}
                             morsAktivitetIPerioden={morsAktivitetIPerioden}
-                            onChange={(v) => onChange({ morsAktivitetIPerioden: v })}
+                            onChange={(v) => onChange({ ...periode, morsAktivitetIPerioden: v })}
                         />
                     </Block>
 
@@ -95,26 +84,6 @@ class FellesperiodeUttakForm extends React.Component<Props> {
                             attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                             skjemanummer={getMorsAktivitetSkjemanummer()}
                         />
-                    </Block>
-                </Block>
-
-                <Block
-                    hasChildBlocks={true}
-                    visible={
-                        søkerErFarMedmor && annenForelderSkalHaForeldrepenger
-                            ? morsAktivitetIPerioden !== undefined
-                            : true
-                    }>
-                    <Block margin={ønskerSamtidigUttak ? 's' : 'm'}>
-                        <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
-                            ønskerSamtidigUttak={ønskerSamtidigUttak}
-                            onChange={(v) => onChange({ ønskerSamtidigUttak: v })}
-                        />
-                    </Block>
-                    <Block margin="none" visible={ønskerSamtidigUttak === true}>
-                        <Veilederinfo>
-                            <FormattedMessage id="fellesperiodeDelUttakForm.samtidigUttak.veiledertekst" />
-                        </Veilederinfo>
                     </Block>
                 </Block>
             </>

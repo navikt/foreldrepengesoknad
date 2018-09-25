@@ -16,19 +16,17 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import FellesperiodeUttakForm, {
-    FellesperiodeUttakSkjemadata
-} from './fellesperiode-uttak-form/FellesperiodeUttakForm';
+import FellesperiodeUttakForm from './fellesperiode-uttak-form/FellesperiodeUttakForm';
 import { annenForelderSkalHaForeldrepenger } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import EgenDelUttakForm from './egen-del-uttak-form/EgenDelUttakForm';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
-import FlerbarnsukerUttakForm from './flerbarnsuker-uttak-form/FlerbarnsukerUttakForm';
+import Arbeidsforhold from '../../types/Arbeidsforhold';
+import GradertUttakForm from './gradert-uttak-form/GradertUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -38,6 +36,7 @@ interface UttaksperiodeFormProps {
 
 interface StateProps {
     søknad: Søknad;
+    arbeidsforhold?: Arbeidsforhold[];
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
@@ -49,29 +48,12 @@ const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | undefined, søk
     );
 };
 
-const erUttakAvEgenKvote = (konto: StønadskontoType | undefined, søkerErFarEllerMedmor: boolean) => {
-    return (
-        (konto === StønadskontoType.Mødrekvote && !søkerErFarEllerMedmor) ||
-        (konto === StønadskontoType.Fedrekvote && søkerErFarEllerMedmor)
-    );
-};
-
 class UttaksperiodeForm extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.getSkjemadataForFellesperiodeUttak = this.getSkjemadataForFellesperiodeUttak.bind(this);
-        this.updateFellesperiodeUttak = this.updateFellesperiodeUttak.bind(this);
         this.getTidsperiodeDisabledProps = this.getTidsperiodeDisabledProps.bind(this);
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
-    }
-
-    getSkjemadataForFellesperiodeUttak(): FellesperiodeUttakSkjemadata {
-        const { morsAktivitetIPerioden, vedlegg, ønskerSamtidigUttak } = this.props.periode as Uttaksperiode;
-        return {
-            vedlegg: vedlegg as Attachment[],
-            morsAktivitetIPerioden,
-            ønskerSamtidigUttak
-        };
+        this.updatePeriodeGradering = this.updatePeriodeGradering.bind(this);
     }
 
     getSkjemadataForOverføring(): OverføringUttakFormSkjemadata {
@@ -83,23 +65,6 @@ class UttaksperiodeForm extends React.Component<Props> {
             };
         }
         return {};
-    }
-
-    updateFellesperiodeUttak(data: FellesperiodeUttakSkjemadata, erFarMedmorVerdi: boolean) {
-        const { onChange } = this.props;
-        onChange({
-            ...data,
-            forelder: erFarMedmorVerdi ? Forelder.FARMEDMOR : Forelder.MOR,
-            type: Periodetype.Uttak
-        });
-    }
-
-    updateEgenPeriodeUttak(ønskerSamtidigUttak: boolean) {
-        const { onChange } = this.props;
-        onChange({
-            type: Periodetype.Uttak,
-            ønskerSamtidigUttak
-        });
     }
 
     updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
@@ -114,6 +79,10 @@ class UttaksperiodeForm extends React.Component<Props> {
         });
     }
 
+    updatePeriodeGradering(periode: RecursivePartial<Uttaksperiode>) {
+        this.props.onChange({ ...periode });
+    }
+
     updateOverføringUttak(skjemadata: OverføringUttakFormSkjemadata) {
         const { onChange } = this.props;
         onChange({
@@ -122,14 +91,6 @@ class UttaksperiodeForm extends React.Component<Props> {
             forelder: this.props.søknad.ekstrainfo.uttaksplanInfo!.søkerErFarEllerMedmor
                 ? Forelder.FARMEDMOR
                 : Forelder.MOR
-        });
-    }
-
-    updateFlerbarnsukerUttak(ønskerSamtidigUttak: boolean) {
-        const { onChange } = this.props;
-        onChange({
-            type: Periodetype.Uttak,
-            ønskerSamtidigUttak
         });
     }
 
@@ -161,7 +122,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         return undefined;
     }
 
-    renderStønadskontoForm() {
+    renderStønadskontoFormParts() {
         const { periode, søknad } = this.props;
         const { annenForelder } = søknad;
         const { uttaksplanInfo } = søknad.ekstrainfo;
@@ -181,31 +142,14 @@ class UttaksperiodeForm extends React.Component<Props> {
             );
         }
         if (validTidsperiode) {
-            if (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Flerbarnsuker) {
-                return (
-                    <FlerbarnsukerUttakForm
-                        ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
-                        onChange={(ønskerSamtidigUttak) => this.updateFlerbarnsukerUttak(ønskerSamtidigUttak)}
-                    />
-                );
-            }
-            if (periode.konto === StønadskontoType.Fellesperiode) {
+            if (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.Fellesperiode) {
                 return (
                     <FellesperiodeUttakForm
                         søkerErFarMedmor={søkerErFarEllerMedmor}
                         navnPåForeldre={navnPåForeldre}
                         annenForelderSkalHaForeldrepenger={annenForelderSkalHaForeldrepenger(annenForelder)}
-                        skjemadata={this.getSkjemadataForFellesperiodeUttak()}
-                        onChange={(data: FellesperiodeUttakSkjemadata) =>
-                            this.updateFellesperiodeUttak(data, søkerErFarEllerMedmor)
-                        }
-                    />
-                );
-            } else if (periode.type === Periodetype.Uttak && erUttakAvEgenKvote(periode.konto, søkerErFarEllerMedmor)) {
-                return (
-                    <EgenDelUttakForm
-                        ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
-                        onChange={(ønskerSamtidigUttak) => this.updateEgenPeriodeUttak(ønskerSamtidigUttak)}
+                        periode={periode}
+                        onChange={this.props.onChange}
                     />
                 );
             } else if (erUttakAvAnnenForeldersKvote(periode.konto, søkerErFarEllerMedmor)) {
@@ -223,7 +167,7 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, onChange, søknad, kanEndreStønadskonto } = this.props;
+        const { periode, onChange, søknad, kanEndreStønadskonto, arbeidsforhold } = this.props;
         const { tidsperiode } = periode;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const { velgbareStønadskontoer, navnPåForeldre, familiehendelsesdato } = uttaksplanInfo!;
@@ -258,11 +202,20 @@ class UttaksperiodeForm extends React.Component<Props> {
                 </Block>
                 <Block
                     hasChildBlocks={true}
-                    visible={
-                        validTidsperiode !== undefined || isForeldrepengerFørFødselUttaksperiode(periode as Periode)
-                    }>
-                    {this.renderStønadskontoForm()}
+                    visible={validTidsperiode !== undefined || isForeldrepengerFørFødselUttaksperiode(periode)}>
+                    {this.renderStønadskontoFormParts()}
                 </Block>
+
+                {periode.type === Periodetype.Uttak &&
+                    periode.konto !== StønadskontoType.ForeldrepengerFørFødsel && (
+                        <GradertUttakForm
+                            periode={periode}
+                            annenForelderHarRettPåForeldrepenger={søknad.annenForelder.harRettPåForeldrepenger}
+                            erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
+                            arbeidsforhold={arbeidsforhold}
+                            onChange={this.props.onChange}
+                        />
+                    )}
             </React.Fragment>
         );
     }
@@ -270,7 +223,8 @@ class UttaksperiodeForm extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
     return {
-        søknad: state.søknad
+        søknad: state.søknad,
+        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold
     };
 };
 
