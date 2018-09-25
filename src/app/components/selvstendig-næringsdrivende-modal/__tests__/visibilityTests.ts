@@ -123,6 +123,28 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
         });
     });
 
+    describe('Oppstartsdato', () => {
+        it('should be visible if nyIArbeidslivet is true and visible', () => {
+            fns.nyIArbeidslivet = jest.fn(() => true);
+            expect(fns.oppstartsdato({ nyIArbeidslivet: true })).toBe(true);
+        });
+
+        it('should not be visible if nyIArbeidslivet is true and not visible', () => {
+            fns.nyIArbeidslivet = jest.fn(() => false);
+            expect(fns.oppstartsdato({ nyIArbeidslivet: true })).toBe(false);
+        });
+
+        it('should not be visible if nyIArbeidslivet is false and visible', () => {
+            fns.nyIArbeidslivet = jest.fn(() => true);
+            expect(fns.oppstartsdato({ nyIArbeidslivet: false })).toBe(false);
+        });
+
+        it('should not be visible if nyIArbeidslivet is false and not visible', () => {
+            fns.nyIArbeidslivet = jest.fn(() => false);
+            expect(fns.oppstartsdato({ nyIArbeidslivet: false })).toBe(false);
+        });
+    });
+
     describe('Regnskapsfører-bolk', () => {
         beforeEach(() => {
             fns.nyIArbeidslivet = jest.fn(() => true);
