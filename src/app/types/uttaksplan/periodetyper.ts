@@ -60,9 +60,12 @@ export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
     forelder: Forelder;
-    gradert?: boolean;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak: boolean;
+    gradert?: boolean;
+    stillingsprosent?: string;
+    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
+    orgnr?: string;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -103,14 +106,6 @@ export type Utsettelsesperiode =
     | UtsettelsePgaSykdom
     | UtsettelsePgaInnleggelseSøker
     | UtsettelsePgaInnleggelseBarnet;
-
-export interface GradertUttaksperiode extends UttaksperiodeBase {
-    årsak: UtsettelseÅrsakType.Arbeid;
-    gradert: true;
-    stillingsprosent: string;
-    orgnr: string;
-    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
-}
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;
