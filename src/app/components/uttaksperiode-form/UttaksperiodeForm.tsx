@@ -26,8 +26,7 @@ import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/utta
 import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-uttak-form/ForeldrepengerFørFødselUttakForm';
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-import GraderingFormPart from './gradering-form-part/GraderingFormPart';
-import { getGradertUttakSpørsmålVisibility } from './gradering-form-part/visibility';
+import GradertUttakForm from './gradert-uttak-form/GradertUttakForm';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -209,13 +208,10 @@ class UttaksperiodeForm extends React.Component<Props> {
 
                 {periode.type === Periodetype.Uttak &&
                     periode.konto !== StønadskontoType.ForeldrepengerFørFødsel && (
-                        <GraderingFormPart
-                            visibility={getGradertUttakSpørsmålVisibility(
-                                periode as Uttaksperiode,
-                                søknad.annenForelder.harRettPåForeldrepenger,
-                                søknad.søker.erAleneOmOmsorg
-                            )}
+                        <GradertUttakForm
                             periode={periode}
+                            annenForelderHarRettPåForeldrepenger={søknad.annenForelder.harRettPåForeldrepenger}
+                            erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             arbeidsforhold={arbeidsforhold}
                             onChange={this.props.onChange}
                         />
