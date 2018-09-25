@@ -13,9 +13,12 @@ function* sendSøknad(action: SendSøknad) {
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
         }
-        yield put(apiActions.updateApi({ kvittering, søknadSendingInProgress: false }));
+        yield put(apiActions.updateApi({ kvittering }));
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
+        action.history.push(`${routeConfig.APP_ROUTE_PREFIX}`);
+    } finally {
+        yield put(apiActions.updateApi({ søknadSendingInProgress: false }));
     }
 }
 

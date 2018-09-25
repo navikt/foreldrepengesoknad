@@ -6,6 +6,7 @@ import { default as søknadActions } from '../actions/søknad/søknadActionCreat
 import { default as commonActions } from '../actions/common/commonActionCreators';
 import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
+import { AxiosResponse } from 'axios';
 
 function* saveAppState() {
     try {
@@ -34,31 +35,30 @@ function* applyStoredStateToApp(state: AppState) {
 
 function* getAppState(action: any) {
     try {
-        const response = yield call(Api.getStoredAppState, action.params);
+        const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
         const state: AppState = response.data;
-        yield applyStoredStateToApp(state);
+        if (state) {
+            yield applyStoredStateToApp(state);
+        }
     } catch (error) {
-        yield put(
-            apiActions.updateApi({
-                error,
-                isLoadingAppState: false
-            })
-        );
+        yield put(apiActions.updateApi({ error }));
+    } finally {
+        yield put(apiActions.updateApi({ isLoadingAppState: false }));
     }
 }
 
 function* deleteStoredAppState() {
     try {
         yield call(Api.deleteStoredAppState);
-        yield put(
-            apiActions.updateApi({
-                isLoadingAppState: false
-            })
-        );
     } catch (error) {
         yield put(
             apiActions.updateApi({
-                error,
+                error
+            })
+        );
+    } finally {
+        yield put(
+            apiActions.updateApi({
                 isLoadingAppState: false
             })
         );
