@@ -17,10 +17,11 @@ import Workbench from '../dev/workbench/Workbench';
 import '../dev/dev.less';
 import Applikasjonsside from './sider/Applikasjonsside';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import { AxiosError } from 'axios';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
-    error: any;
+    error?: AxiosError;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     isSendSøknadInProgress: boolean;
@@ -71,7 +72,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     render() {
-        const { søkerinfo, isLoadingAppState, isLoadingSøkerinfo, isSendSøknadInProgress } = this.props;
+        const { søkerinfo, isLoadingAppState, isLoadingSøkerinfo, isSendSøknadInProgress, error } = this.props;
 
         if (isLoadingAppState || isLoadingSøkerinfo || isSendSøknadInProgress) {
             return (
@@ -79,7 +80,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                     <ApplicationSpinner />
                 </Applikasjonsside>
             );
-        } else if (!søkerinfo) {
+        } else if (!søkerinfo || error) {
             return this.renderErrorRoute(GenerellFeil);
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
             return this.renderErrorRoute(() => <IkkeMyndig søkerinfo={søkerinfo!} />);
