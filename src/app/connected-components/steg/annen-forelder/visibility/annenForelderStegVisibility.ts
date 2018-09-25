@@ -63,13 +63,17 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => {
-            return props.søker.erAleneOmOmsorg === false;
+            return (
+                props.søker.erAleneOmOmsorg === false ||
+                (props.søker.erAleneOmOmsorg && props.søkerErFarEllerMedmor === false)
+            );
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
         getValue: ({ annenForelder }) => annenForelder.erUfør,
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
-        condition: (props) => props.annenForelder.harRettPåForeldrepenger === false
+        condition: (props) =>
+            props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === false
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,

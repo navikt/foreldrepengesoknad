@@ -148,10 +148,9 @@ describe('Cleanup AnnenForelder', () => {
                     testVisibility,
                     testSøknad.barn as ForeldreansvarBarn
                 ) as ForeldreansvarBarn;
-                expect(af.harRettPåForeldrepenger).toBeUndefined();
                 expect(af.erUfør).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
-                expect(af.harRettPåForeldrepenger).toBeUndefined();
+                expect(af.harRettPåForeldrepenger).toBeDefined();
                 expect(b.foreldreansvarsdato).toBeUndefined();
             });
         });
