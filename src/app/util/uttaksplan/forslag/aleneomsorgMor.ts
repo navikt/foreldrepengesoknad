@@ -17,7 +17,7 @@ export function opprettUttaksperioderAleneomsorgMor(
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon?: Date
 ): Periode[] {
-    familiehendelsedato = normaliserDato(familiehendelsedato);
+    familiehendelsedato = normaliserDato(Uttaksdagen(familiehendelsedato).denneEllerNeste());
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(

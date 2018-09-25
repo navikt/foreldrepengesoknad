@@ -37,6 +37,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
             <>
                 <Block margin={visVeileder ? 's' : 'm'}>
                     <Select
+                        value={morsAktivitetIPerioden}
                         name="hvaSkalMorGjøre.spørsmål"
                         label={getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål', {
                             navnMor: navnPåForeldre.mor
