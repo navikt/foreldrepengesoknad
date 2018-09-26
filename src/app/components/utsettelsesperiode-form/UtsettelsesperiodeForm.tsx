@@ -6,9 +6,11 @@ import {
     Periodetype,
     Oppholdsperiode,
     UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    UtsettelseSykdomÅrsakType,
+    Utsettelsesårsakstyper
 } from '../../types/uttaksplan/periodetyper';
-import UtsettelsePgaSykdomPart, { Sykdomsårsak } from './partials/UtsettelsePgaSykdomPart';
+import UtsettelsePgaSykdomPart from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/Oppholds\u00E5rsakSp\u00F8rsm\u00E5l';
 import HvorSkalDuJobbeSpørsmål from '../../sp\u00F8rsm\u00E5l/HvorSkalDuJobbeSp\u00F8rsm\u00E5l';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
@@ -44,7 +46,7 @@ export interface UtsettelsperiodeFormdata {
     variant?: Utsettelsesvariant;
     morsAktivitetIPerioden?: MorsAktivitet;
     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
-    sykdomsårsak?: Sykdomsårsak;
+    sykdomsårsak?: UtsettelseSykdomÅrsakType;
     oppholdsårsak?: OppholdÅrsakType;
     orgnr?: string;
     vedlegg: Attachment[];
@@ -70,11 +72,13 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-const getVariantFromUtsettelseÅrsakType = (årsak: UtsettelseÅrsakType | undefined): Utsettelsesvariant | undefined => {
+const getVariantFromUtsettelseÅrsakType = (
+    årsak: Utsettelsesårsakstyper | undefined
+): Utsettelsesvariant | undefined => {
     switch (årsak) {
-        case UtsettelseÅrsakType.Sykdom:
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.InstitusjonSøker:
+        case UtsettelseSykdomÅrsakType.Sykdom:
+        case UtsettelseSykdomÅrsakType.InstitusjonBarnet:
+        case UtsettelseSykdomÅrsakType.InstitusjonSøker:
             return Utsettelsesvariant.Sykdom;
         case UtsettelseÅrsakType.Ferie:
             return Utsettelsesvariant.Ferie;
@@ -114,7 +118,7 @@ const getFormdataFromPeriode = (periode: RecursivePartial<Periode>): Utsettelspe
                     periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende;
             }
             if (variant === Utsettelsesvariant.Sykdom) {
-                formdata.sykdomsårsak = periode.årsak as Sykdomsårsak;
+                formdata.sykdomsårsak = periode.årsak as UtsettelseSykdomÅrsakType;
             }
             return formdata;
         }
@@ -218,13 +222,16 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
                 });
             } else if (formdata.variant === Utsettelsesvariant.Sykdom) {
-                if (formdata.sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
-                    this.props.onChange({ årsak: UtsettelseÅrsakType.Sykdom });
-                } else if (formdata.sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
-                    this.props.onChange({ årsak: UtsettelseÅrsakType.InstitusjonBarnet });
-                } else if (formdata.sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
-                    this.props.onChange({ årsak: UtsettelseÅrsakType.InstitusjonSøker });
+                if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.Sykdom) {
+                    per.årsak = UtsettelseSykdomÅrsakType.Sykdom;
+                } else if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.InstitusjonBarnet) {
+                    per.årsak = UtsettelseSykdomÅrsakType.InstitusjonBarnet;
+                } else if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.InstitusjonSøker) {
+                    per.årsak = UtsettelseSykdomÅrsakType.InstitusjonSøker;
+                } else {
+                    per.årsak = UtsettelseSykdomÅrsakType.Sykdom;
                 }
+                this.props.onChange(per);
             }
         }
     }

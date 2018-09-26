@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import { UtsettelseSykdomÅrsakType } from '../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmål/FlervalgSpørsmål';
@@ -13,17 +13,12 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export interface OwnProps {
     forelder: Forelder;
-    sykdomsårsak?: Sykdomsårsak;
+    sykdomsårsak?: UtsettelseSykdomÅrsakType;
     vedlegg: Attachment[];
-    onChange: (payload: { sykdomsårsak?: Sykdomsårsak; vedlegg?: Attachment[] }) => void;
+    onChange: (payload: { sykdomsårsak?: UtsettelseSykdomÅrsakType; vedlegg?: Attachment[] }) => void;
 }
 
-export type Sykdomsårsak =
-    | UtsettelseÅrsakType.Sykdom
-    | UtsettelseÅrsakType.InstitusjonSøker
-    | UtsettelseÅrsakType.InstitusjonBarnet;
-
-const getSykdomAlternativ = (intl: InjectedIntl, årsak: Sykdomsårsak): FlervalgAlternativ => {
+const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseSykdomÅrsakType): FlervalgAlternativ => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
         value: årsak
@@ -46,7 +41,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
         this.props.onChange({ vedlegg: [...this.props.vedlegg.filter((v) => v.id !== vedlegg.id), ...[vedlegg]] });
     }
 
-    handleSykdomÅrsakChange(sykdomsårsak: Sykdomsårsak) {
+    handleSykdomÅrsakChange(sykdomsårsak: UtsettelseSykdomÅrsakType) {
         this.props.onChange({ sykdomsårsak });
     }
 
@@ -60,12 +55,12 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                         navn="utsttelsePgaSykdomÅrsak"
                         spørsmål={getMessage(intl, 'utsettelse.sykdom.alternativer.spørsmål')}
                         valgtVerdi={sykdomsårsak}
-                        onChange={(årsak: Sykdomsårsak) => this.handleSykdomÅrsakChange(årsak)}
+                        onChange={(årsak: UtsettelseSykdomÅrsakType) => this.handleSykdomÅrsakChange(årsak)}
                         toKolonner={true}
                         alternativer={[
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonSøker),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet)
+                            getSykdomAlternativ(intl, UtsettelseSykdomÅrsakType.Sykdom),
+                            getSykdomAlternativ(intl, UtsettelseSykdomÅrsakType.InstitusjonSøker),
+                            getSykdomAlternativ(intl, UtsettelseSykdomÅrsakType.InstitusjonBarnet)
                         ]}
                     />
                 </Block>
