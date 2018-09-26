@@ -1,23 +1,27 @@
 import * as React from 'react';
-import { UtsettelseÅrsakType } from '../../types/uttaksplan/periodetyper';
+import {
+    UtsettelseÅrsakType,
+    Utsettelsesårsaker,
+    UtsettelseSykdomÅrsakType
+} from '../../types/uttaksplan/periodetyper';
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import { getUtsettelseFarge } from '../../util/uttaksplan/styleUtils';
 import IconBox from '../icon-box/IconBox';
 
 export interface Props {
-    årsak: UtsettelseÅrsakType;
+    årsak: Utsettelsesårsaker;
     gradert?: boolean;
 }
 
-const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
+const getIkonForKonto = (årsak: Utsettelsesårsaker): UttaksplanIkonKeys => {
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
             return UttaksplanIkonKeys.ferie;
         case UtsettelseÅrsakType.Arbeid:
             return UttaksplanIkonKeys.arbeid;
-        case UtsettelseÅrsakType.InstitusjonBarnet:
-        case UtsettelseÅrsakType.InstitusjonSøker:
-        case UtsettelseÅrsakType.Sykdom:
+        case UtsettelseSykdomÅrsakType.InstitusjonBarnet:
+        case UtsettelseSykdomÅrsakType.InstitusjonSøker:
+        case UtsettelseSykdomÅrsakType.Sykdom:
             return UttaksplanIkonKeys.sykdom;
     }
 };

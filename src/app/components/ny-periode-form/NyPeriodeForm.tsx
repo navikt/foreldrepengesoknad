@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
+import UtsettelsesperiodeForm, {
+    UtsettelseperiodeFormPeriodeType
+} from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
-import Knapperad from 'common/components/knapperad/Knapperad';
-import { Knapp, Hovedknapp } from 'nav-frontend-knapper';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
@@ -12,8 +12,9 @@ import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Tidsperiode } from 'nav-datovelger';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import NyPeriodeKnapperad from './NyPeriodeKnapperad';
 
 interface OwnProps {
     onSubmit: (periode: Periode) => void;
@@ -26,8 +27,6 @@ interface State {
 }
 
 type Props = OwnProps & InjectedIntlProps;
-
-const emptyPeriode: RecursivePartial<Periode> = { tidsperiode: {} };
 
 const bem = BEMHelper('periodeForm');
 
@@ -44,8 +43,14 @@ const PeriodeFormTittel: React.StatelessComponent<{ tittel: string }> = ({ titte
 class NyPeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+
+        const periode: RecursivePartial<Periode> = {
+            type: Periodetype.Utsettelse,
+            tidsperiode: {}
+        };
+
         this.state = {
-            periode: emptyPeriode
+            periode
         };
 
         this.updatePeriode = this.updatePeriode.bind(this);
@@ -68,40 +73,34 @@ class NyPeriodeForm extends React.Component<Props, State> {
         const { onSubmit } = this.props;
         const { periode } = this.state;
         onSubmit(periode as Periode);
-        this.updatePeriode(emptyPeriode);
+        this.updatePeriode({ tidsperiode: {} });
     }
 
     render() {
-        const { periodetype, intl, onCancel } = this.props;
+        const { intl, onCancel } = this.props;
         const { periode } = this.state;
         const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Tidsperiode);
         const periodeKanLeggesTil = periode.type !== undefined && validTidsperiode !== undefined;
 
         return (
-            <form className={`periodeForm periodeForm--${periodetype.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
-                {periodetype === Periodetype.Utsettelse && (
+            <form className={`periodeForm periodeForm--${periode.type!.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
+                {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
-                        <UtsettelsesperiodeForm periode={periode} onChange={this.updatePeriode} />
+                        <UtsettelsesperiodeForm
+                            periode={periode as UtsettelseperiodeFormPeriodeType}
+                            onChange={this.updatePeriode}
+                            onCancel={onCancel}
+                        />
                     </>
                 )}
-                {periodetype === Periodetype.Uttak && (
+                {periode.type === Periodetype.Uttak && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />
+                        <NyPeriodeKnapperad periodeKanLeggesTil={periodeKanLeggesTil} onCancel={onCancel} />
                     </>
                 )}
-
-                <Knapperad>
-                    <Knapp htmlType="button" onClick={onCancel}>
-                        <FormattedMessage id="avbryt" />
-                    </Knapp>
-                    {periodeKanLeggesTil && (
-                        <Hovedknapp htmlType="submit">
-                            <FormattedMessage id="leggtil" />
-                        </Hovedknapp>
-                    )}
-                </Knapperad>
             </form>
         );
     }

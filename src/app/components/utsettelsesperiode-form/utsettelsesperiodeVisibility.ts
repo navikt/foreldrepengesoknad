@@ -1,7 +1,13 @@
 import { QuestionConfig, Questions } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Utsettelsesvariant, UtsettelsperiodeFormdata } from './UtsettelsesperiodeForm';
+import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelsesperiodeForm';
 import { Tidsperiode } from 'nav-datovelger';
+import { RecursivePartial } from '../../types/Partial';
+import {
+    UtsettelsePgaArbeidPeriode,
+    UtsettelseÅrsakType,
+    Utsettelsesperiode
+} from '../../types/uttaksplan/periodetyper';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -14,59 +20,61 @@ export enum UtsettelseSpørsmålKeys {
 }
 
 export interface UtsettelsesPayload {
-    formdata: UtsettelsperiodeFormdata;
+    variant: Utsettelsesvariant | undefined;
+    periode: UtsettelseperiodeFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
 }
 
 const Sp = UtsettelseSpørsmålKeys;
 
-const harRegistrertArbeidOk = (formdata: UtsettelsperiodeFormdata) =>
-    (formdata.variant === Utsettelsesvariant.Arbeid && formdata.orgnr !== undefined) ||
-    formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true;
-const harRegistrerSykdomOk = (formdata: UtsettelsperiodeFormdata) =>
-    formdata.variant === Utsettelsesvariant.Sykdom && formdata.sykdomsårsak !== undefined;
+const harRegistrertArbeidOk = (variant: Utsettelsesvariant, periode: RecursivePartial<UtsettelsePgaArbeidPeriode>) =>
+    (variant === Utsettelsesvariant.Arbeid && periode.orgnr !== undefined) ||
+    periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true;
 
 export const utsettelsesperiodeVisibilityConfig: QuestionConfig<UtsettelsesPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        getValue: ({ formdata }) => getValidTidsperiode(formdata.tidsperiode as Tidsperiode)
+        getValue: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode)
     },
     [Sp.variant]: {
-        getValue: ({ formdata }) => formdata.variant,
+        getValue: ({ variant }) => variant,
         parentQuestion: Sp.tidsperiode
     },
     [Sp.sykdomsårsak]: {
-        getValue: ({ formdata }) => formdata.sykdomsårsak,
-        parentQuestion: Sp.variant,
-        condition: ({ formdata }) => formdata.variant === Utsettelsesvariant.Sykdom
+        getValue: ({ periode }) => periode.årsak,
+        condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
         getValue: () => true,
-        condition: ({ formdata }) => formdata.variant === Utsettelsesvariant.Ferie
+        condition: ({ variant }) => variant === Utsettelsesvariant.Ferie
     },
     [Sp.arbeidsplass]: {
-        getValue: ({ formdata }) =>
-            formdata.orgnr !== undefined || formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende !== undefined,
-        condition: ({ formdata }) => formdata.variant === Utsettelsesvariant.Arbeid
+        getValue: ({ periode }) =>
+            periode.årsak === UtsettelseÅrsakType.Arbeid &&
+            (periode.orgnr !== undefined || periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende !== undefined),
+        condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.morsAktivitet]: {
-        getValue: ({ formdata }) => formdata.morsAktivitetIPerioden,
-        condition: ({ formdata, søkerErAleneOmOmsorg, søkerErFarEllerMedmor }) =>
-            (formdata.variant === Utsettelsesvariant.Ferie ||
-                harRegistrertArbeidOk(formdata) ||
-                harRegistrerSykdomOk(formdata)) &&
-            søkerErAleneOmOmsorg === false &&
-            søkerErFarEllerMedmor === true
+        getValue: ({ periode }) => (periode as Utsettelsesperiode).morsAktivitetIPerioden,
+        condition: ({ variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor }) =>
+            variant === Utsettelsesvariant.Ferie ||
+            (periode.årsak === UtsettelseÅrsakType.Arbeid &&
+                variant !== undefined &&
+                harRegistrertArbeidOk(variant, periode) &&
+                søkerErAleneOmOmsorg === false &&
+                søkerErFarEllerMedmor === true)
     }
 };
 
 export const getUtsettelsesperiodeVisibility = (
-    formdata: UtsettelsperiodeFormdata,
+    variant: Utsettelsesvariant | undefined,
+    periode: UtsettelseperiodeFormPeriodeType,
     søkerErAleneOmOmsorg: boolean,
     søkerErFarEllerMedmor: boolean
 ) => {
     return Questions(utsettelsesperiodeVisibilityConfig).getVisbility({
-        formdata,
+        variant,
+        periode,
         søkerErAleneOmOmsorg,
         søkerErFarEllerMedmor
     });
