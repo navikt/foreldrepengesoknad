@@ -71,16 +71,18 @@ export enum Utsettelsesvariant {
 }
 
 const getVariantFromUtsettelseÅrsakType = (årsak: UtsettelseÅrsakType | undefined): Utsettelsesvariant | undefined => {
-    if (årsak === UtsettelseÅrsakType.Sykdom) {
-        return Utsettelsesvariant.Sykdom;
+    switch (årsak) {
+        case UtsettelseÅrsakType.Sykdom:
+        case UtsettelseÅrsakType.InstitusjonBarnet:
+        case UtsettelseÅrsakType.InstitusjonSøker:
+            return Utsettelsesvariant.Sykdom;
+        case UtsettelseÅrsakType.Ferie:
+            return Utsettelsesvariant.Ferie;
+        case UtsettelseÅrsakType.Arbeid:
+            return Utsettelsesvariant.Arbeid;
+        default:
+            return undefined;
     }
-    if (årsak === UtsettelseÅrsakType.Ferie) {
-        return Utsettelsesvariant.Ferie;
-    }
-    if (årsak === UtsettelseÅrsakType.Arbeid) {
-        return Utsettelsesvariant.Arbeid;
-    }
-    return undefined;
 };
 
 const getFormdataFromPeriode = (periode: RecursivePartial<Periode>): UtsettelsperiodeFormdata => {
