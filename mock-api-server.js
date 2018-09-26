@@ -48,6 +48,10 @@ router.post('/rest/soknad', (req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
+router.delete('/rest/storage', (req, res) => {
+    res.sendStatus(204);
+});
+
 const vedleggUpload = multer({ dest: './dist/vedlegg/' });
 router.post('/rest/storage/vedlegg', vedleggUpload.single('vedlegg'), (req, res) => {
     res.setHeader('Location', `http://localhost:8080/foreldrepengesoknad/dist/vedlegg/${req.body.id}`);
