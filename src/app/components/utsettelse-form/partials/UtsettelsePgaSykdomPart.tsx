@@ -9,7 +9,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import VedleggSpørsmål from '../../vedlegg-sp\u00F8rsm\u00E5l/VedleggSp\u00F8rsm\u00E5l';
+import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakSykdomType;

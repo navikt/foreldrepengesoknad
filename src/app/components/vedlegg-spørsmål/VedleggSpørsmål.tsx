@@ -3,7 +3,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Skjemanummer } from '../../types/s\u00F8knad/S\u00F8knad';
+import { Skjemanummer } from '../../types/søknad/Søknad';
 
 interface OwnProps {
     vedlegg?: Attachment[];

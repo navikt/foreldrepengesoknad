@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføring\u00C5rsakSkjemanummer';
-import VedleggSpørsmål from '../../vedlegg-sp\u00F8rsm\u00E5l/VedleggSp\u00F8rsm\u00E5l';
+import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 
 interface Props {
     skjemadata: OverføringUttakFormSkjemadata;

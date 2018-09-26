@@ -7,21 +7,21 @@ import {
     UtsettelseÅrsakSykdomType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
-import OppholdsårsakSpørsmål from './partials/Oppholds\u00E5rsakSp\u00F8rsm\u00E5l';
-import HvorSkalDuJobbeSpørsmål from '../../sp\u00F8rsm\u00E5l/HvorSkalDuJobbeSp\u00F8rsm\u00E5l';
+import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
+import HvorSkalDuJobbeSpørsmål from '../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
 import { UtsettelseSpørsmålKeys, getUtsettelseFormVisibility } from './utsettelseFormConfig';
-import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../sp\u00F8rsm\u00E5l/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSp\u00F8rsm\u00E5l';
+import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
-import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp\u00F8rsm\u00E5l';
+import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
-import HvaSkalMorGjøreSpørsmål from '../../sp\u00F8rsm\u00E5l/HvaSkalMorGj\u00F8reSp\u00F8rsm\u00E5l';
+import HvaSkalMorGjøreSpørsmål from '../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
+import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
