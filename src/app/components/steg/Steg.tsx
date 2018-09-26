@@ -130,7 +130,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     renderContent() {
         const { id, renderFortsettKnapp, fortsettKnappLabel, intl } = this.props;
         return (
-            <React.Fragment>
+            <>
                 <Block margin="xs">
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
@@ -149,7 +149,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                         </FortsettKnapp>
                     </Block>
                 )}
-            </React.Fragment>
+            </>
         );
     }
 

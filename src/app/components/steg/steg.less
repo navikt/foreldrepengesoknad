@@ -1,3 +1,12 @@
+@import '../../styles/variables.less';
+
 .steg {
     padding: 2rem 0 1rem 0;
+
+    @media (max-width: @tablet-breakpoint) {
+        max-width: 100%;
+    }
+    @media (max-width: @mobile-breakpoint) {
+        padding: 1rem;
+    }
 }

@@ -1,13 +1,15 @@
 import Søknad from '../../../types/søknad/Søknad';
 
 export const utenlandsoppholdErGyldig = (søknad: Søknad): boolean => {
-    const { informasjonOmUtenlandsopphold } = søknad;
+    const {
+        iNorgeSiste12Mnd,
+        iNorgeNeste12Mnd,
+        tidligereOpphold,
+        senereOpphold
+    } = søknad.informasjonOmUtenlandsopphold;
+
     return (
-        informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === true ||
-        (informasjonOmUtenlandsopphold.iNorgeSiste12Mnd === false &&
-            informasjonOmUtenlandsopphold.tidligereOpphold.length > 0) ||
-        (informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === true ||
-            (informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false &&
-                informasjonOmUtenlandsopphold.senereOpphold.length > 0))
+        (iNorgeSiste12Mnd === true || (iNorgeSiste12Mnd === false && tidligereOpphold.length > 0)) &&
+        (iNorgeNeste12Mnd === true || (iNorgeNeste12Mnd === false && senereOpphold.length > 0))
     );
 };
