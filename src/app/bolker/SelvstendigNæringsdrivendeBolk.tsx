@@ -154,11 +154,20 @@ const NæringListeElement: React.StatelessComponent<NæringListeElementProps & I
     ...rest
 }) => {
     const deleteLinkText = getMessage(intl, 'slett.næring');
+
+    const harVedlegg = næring.vedlegg && næring.vedlegg.length > 0;
+    const dokVedlagt = getMessage(intl, 'dokumentasjon.vedlagt');
+    const dokMangler = getMessage(intl, 'dokumentasjon.mangler');
+
     return (
         <InteractiveListElement
             title={næring.navnPåNæringen}
             text={prettifyTidsperiode(næring.tidsperiode)}
             deleteLinkText={deleteLinkText}
+            etikettProps={{
+                type: harVedlegg ? 'suksess' : 'fokus',
+                children: harVedlegg ? dokVedlagt : dokMangler
+            }}
             {...rest}
         />
     );
