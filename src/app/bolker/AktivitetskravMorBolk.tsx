@@ -5,9 +5,9 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { NavnPåForeldre } from 'common/types';
 import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
-import HvaSkalMorGjøreSpørsmål from '../sp\u00F8rsm\u00E5l/HvaSkalMorGj\u00F8reSp\u00F8rsm\u00E5l';
+import HvaSkalMorGjøreSpørsmål from '../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { getMorsAktivitetSkjemanummer } from '../util/skjemanummer/morsAktivitetSkjemanummer';
-import VedleggSpørsmål from '../components/vedlegg-sp\u00F8rsm\u00E5l/VedleggSp\u00F8rsm\u00E5l';
+import VedleggSpørsmål from '../components/vedlegg-spørsmål/VedleggSpørsmål';
 
 export interface AktivitetskravMorChangeEvent {
     morsAktivitetIPerioden?: MorsAktivitet;
