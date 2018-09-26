@@ -1,6 +1,6 @@
 import { QuestionConfig, Questions } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelsesperiodeForm';
+import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
 import { RecursivePartial } from '../../types/Partial';
 import {
@@ -19,7 +19,7 @@ export enum UtsettelseSpørsmålKeys {
     'ferieinfo' = 'ferieinfo'
 }
 
-export interface UtsettelsesPayload {
+export interface UtsettelseFormPayload {
     variant: Utsettelsesvariant | undefined;
     periode: UtsettelseperiodeFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
@@ -32,7 +32,7 @@ const harRegistrertArbeidOk = (variant: Utsettelsesvariant, periode: RecursivePa
     (variant === Utsettelsesvariant.Arbeid && periode.orgnr !== undefined) ||
     periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true;
 
-export const utsettelsesperiodeVisibilityConfig: QuestionConfig<UtsettelsesPayload, UtsettelseSpørsmålKeys> = {
+export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
         getValue: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode)
     },
@@ -66,13 +66,13 @@ export const utsettelsesperiodeVisibilityConfig: QuestionConfig<UtsettelsesPaylo
     }
 };
 
-export const getUtsettelsesperiodeVisibility = (
+export const getUtsettelseFormVisibility = (
     variant: Utsettelsesvariant | undefined,
     periode: UtsettelseperiodeFormPeriodeType,
     søkerErAleneOmOmsorg: boolean,
     søkerErFarEllerMedmor: boolean
 ) => {
-    return Questions(utsettelsesperiodeVisibilityConfig).getVisbility({
+    return Questions(utsettelseFormConfig).getVisbility({
         variant,
         periode,
         søkerErAleneOmOmsorg,

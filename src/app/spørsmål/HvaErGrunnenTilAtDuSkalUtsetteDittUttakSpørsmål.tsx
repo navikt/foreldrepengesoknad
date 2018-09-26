@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
-import { Utsettelsesvariant } from '../components/utsettelsesperiode-form/UtsettelsesperiodeForm';
+import { Utsettelsesvariant } from '../components/utsettelse-form/UtsettelseForm';
 
 interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
     variant?: Utsettelsesvariant;
