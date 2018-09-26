@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm, {
-    UtsettelseperiodeFormPeriodeType
-} from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
+import UtsettelsesperiodeForm, { UtsettelseperiodeFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';

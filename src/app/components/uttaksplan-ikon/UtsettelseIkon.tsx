@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     UtsettelseÅrsakType,
     Utsettelsesårsaker,
-    UtsettelseSykdomÅrsakType
+    UtsettelseÅrsakSykdomType
 } from '../../types/uttaksplan/periodetyper';
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import { getUtsettelseFarge } from '../../util/uttaksplan/styleUtils';
@@ -19,9 +19,9 @@ const getIkonForKonto = (årsak: Utsettelsesårsaker): UttaksplanIkonKeys => {
             return UttaksplanIkonKeys.ferie;
         case UtsettelseÅrsakType.Arbeid:
             return UttaksplanIkonKeys.arbeid;
-        case UtsettelseSykdomÅrsakType.InstitusjonBarnet:
-        case UtsettelseSykdomÅrsakType.InstitusjonSøker:
-        case UtsettelseSykdomÅrsakType.Sykdom:
+        case UtsettelseÅrsakSykdomType.InstitusjonBarnet:
+        case UtsettelseÅrsakSykdomType.InstitusjonSøker:
+        case UtsettelseÅrsakSykdomType.Sykdom:
             return UttaksplanIkonKeys.sykdom;
     }
 };

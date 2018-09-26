@@ -30,13 +30,13 @@ export enum UtsettelseÅrsakType {
     'Arbeid' = 'ARBEID'
 }
 
-export enum UtsettelseSykdomÅrsakType {
+export enum UtsettelseÅrsakSykdomType {
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
-export type Utsettelsesårsaker = UtsettelseÅrsakType | UtsettelseSykdomÅrsakType;
+export type Utsettelsesårsaker = UtsettelseÅrsakType | UtsettelseÅrsakSykdomType;
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
@@ -98,13 +98,13 @@ export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
     årsak: UtsettelseÅrsakType.Ferie;
 }
 export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
-    årsak: UtsettelseSykdomÅrsakType.Sykdom;
+    årsak: UtsettelseÅrsakSykdomType.Sykdom;
 }
 export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
-    årsak: UtsettelseSykdomÅrsakType.InstitusjonBarnet;
+    årsak: UtsettelseÅrsakSykdomType.InstitusjonBarnet;
 }
 export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
-    årsak: UtsettelseSykdomÅrsakType.InstitusjonSøker;
+    årsak: UtsettelseÅrsakSykdomType.InstitusjonSøker;
 }
 
 export type Utsettelsesperiode =

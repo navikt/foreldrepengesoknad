@@ -8,7 +8,7 @@ import {
     StønadskontoType,
     Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm from '../utsettelsesperiode-form/UtsettelsesperiodeForm';
+import UtsettelsesperiodeForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import LinkButton from '../link-button/LinkButton';

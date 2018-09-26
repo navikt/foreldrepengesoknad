@@ -2,12 +2,12 @@ import * as React from 'react';
 import { OverføringÅrsakType } from '../../../types/uttaksplan/periodetyper';
 import OverføringsårsakSpørsmål from '../../../spørsmål/OverføringsårsakSpørsmål';
 import Block from 'common/components/block/Block';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføring\u00C5rsakSkjemanummer';
+import VedleggSpørsmål from '../../vedlegg-sp\u00F8rsm\u00E5l/VedleggSp\u00F8rsm\u00E5l';
 
 interface Props {
     skjemadata: OverføringUttakFormSkjemadata;
@@ -22,28 +22,6 @@ export interface OverføringUttakFormSkjemadata {
 }
 
 class OverføringUttakForm extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-        this.updateVedleggList = this.updateVedleggList.bind(this);
-        this.updateVedleggItem = this.updateVedleggItem.bind(this);
-    }
-
-    updateVedleggList(vedlegg: Attachment[]) {
-        const { årsak } = this.props.skjemadata;
-        this.props.onChange({
-            vedlegg,
-            årsak
-        });
-    }
-
-    updateVedleggItem(updatedVedlegg: Attachment) {
-        const vedleggList = this.props.skjemadata.vedlegg || [];
-        this.props.onChange({
-            årsak: this.props.skjemadata.årsak,
-            vedlegg: [...vedleggList.filter((v) => v.id !== updatedVedlegg.id), ...[updatedVedlegg]]
-        });
-    }
-
     render() {
         const { onChange, søkerErFarEllerMedmor, skjemadata, navnAnnenForelder } = this.props;
         const visVedlegg =
@@ -63,20 +41,11 @@ class OverføringUttakForm extends React.Component<Props> {
                     <Veilederinfo>
                         <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />
                     </Veilederinfo>
-                    <AttachmentsUploader
-                        attachments={vedleggList}
-                        onFilesUploadStart={(attachments) => this.updateVedleggList(attachments)}
-                        onFileUploadFinish={(v) => this.updateVedleggItem(v)}
-                        onFileDeleteStart={(v: Attachment) => {
-                            this.updateVedleggItem(v);
-                        }}
-                        onFileDeleteFinish={(v: Attachment) => {
-                            const index = vedleggList.indexOf(v);
-                            vedleggList.splice(index, 1);
-                            this.updateVedleggList(vedleggList);
-                        }}
+                    <VedleggSpørsmål
+                        vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
                         skjemanummer={getOverføringÅrsakSkjemanummer(skjemadata.årsak!)}
+                        onChange={(vedlegg) => onChange({ årsak: this.props.skjemadata.årsak, vedlegg })}
                     />
                 </Block>
             </>
