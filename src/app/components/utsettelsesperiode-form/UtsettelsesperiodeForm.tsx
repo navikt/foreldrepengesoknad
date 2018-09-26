@@ -186,7 +186,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 tidsperiode: formdata.tidsperiode,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR,
                 vedlegg: formdata.vedlegg,
-                årsak: formdata.oppholdsårsak
+                årsak: undefined
             };
             this.props.onChange(periode);
         } else {
@@ -210,16 +210,19 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             } else if (formdata.variant === Utsettelsesvariant.Arbeid) {
                 this.props.onChange({
                     ...per,
-                    årsak: UtsettelseÅrsakType.Ferie,
+                    årsak: UtsettelseÅrsakType.Arbeid,
                     orgnr: formdata.orgnr,
                     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
                         formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
                 });
             } else if (formdata.variant === Utsettelsesvariant.Sykdom) {
-                this.props.onChange({
-                    ...per,
-                    årsak: UtsettelseÅrsakType[formdata.sykdomsårsak!]
-                });
+                if (formdata.sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
+                    this.props.onChange({ årsak: UtsettelseÅrsakType.Sykdom });
+                } else if (formdata.sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+                    this.props.onChange({ årsak: UtsettelseÅrsakType.InstitusjonBarnet });
+                } else if (formdata.sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
+                    this.props.onChange({ årsak: UtsettelseÅrsakType.InstitusjonSøker });
+                }
             }
         }
     }
