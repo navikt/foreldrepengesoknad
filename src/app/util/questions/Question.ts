@@ -1,4 +1,4 @@
-export type QuestionValue = string | number | boolean | Date | undefined;
+export type QuestionValue = any;
 
 export const questionIsAnswered = (value: QuestionValue) => {
     return value !== undefined && value !== '';
@@ -19,6 +19,9 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     payload: Payload
 ): boolean => {
     const config = questions[question as any];
+    if (!config) {
+        return false;
+    }
     const conditionIsMet = config.condition ? config.condition(payload) : true;
     if (conditionIsMet === false) {
         return false;
