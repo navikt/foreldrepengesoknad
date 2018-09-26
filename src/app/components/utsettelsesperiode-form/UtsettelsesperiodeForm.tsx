@@ -72,7 +72,7 @@ export enum Utsettelsesvariant {
 
 const getVariantFromUtsettelseÅrsakType = (årsak: UtsettelseÅrsakType | undefined): Utsettelsesvariant | undefined => {
     if (årsak === UtsettelseÅrsakType.Sykdom) {
-        return Utsettelsesvariant.Arbeid;
+        return Utsettelsesvariant.Sykdom;
     }
     if (årsak === UtsettelseÅrsakType.Ferie) {
         return Utsettelsesvariant.Ferie;
