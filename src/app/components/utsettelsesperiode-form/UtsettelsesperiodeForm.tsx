@@ -6,9 +6,7 @@ import {
     Periodetype,
     Oppholdsperiode,
     UtsettelseÅrsakType,
-    UtsettelsePgaSykdom,
-    UtsettelsePgaInnleggelseBarnet,
-    UtsettelsePgaInnleggelseSøker
+    Utsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { Sykdomsårsak } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/Oppholds\u00E5rsakSp\u00F8rsm\u00E5l';
@@ -62,7 +60,7 @@ interface StateProps {
 type Props = OwnProps & StateProps & InjectedIntlProps;
 
 interface State {
-    form: UtsettelsperiodeFormdata;
+    formdata: UtsettelsperiodeFormdata;
 }
 
 export enum Utsettelsesvariant {
@@ -92,6 +90,7 @@ const getFormdataFromPeriode = (periode: RecursivePartial<Periode>): Utsettelspe
             ? { fom: validTidsperiode.fom as Date, tom: validTidsperiode.tom as Date }
             : {};
         const vedlegg = (periode.vedlegg as Attachment[]) || [];
+
         if (periode.type === Periodetype.Opphold) {
             return {
                 tidsperiode,
@@ -132,7 +131,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
         this.handleFormChange = this.handleFormChange.bind(this);
         this.state = {
-            form: props.periode ? getFormdataFromPeriode(props.periode) : defaultFormData
+            formdata: props.periode ? getFormdataFromPeriode(props.periode) : defaultFormData
         };
     }
 
@@ -174,10 +173,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     handleFormChange(formdataChange: Partial<UtsettelsperiodeFormdata>) {
-        const formdata = { ...this.state.form, ...formdataChange };
+        const formdata = { ...this.state.formdata, ...formdataChange };
         this.setState({
-            form: {
-                ...this.state.form,
+            formdata: {
+                ...this.state.formdata,
                 ...formdata
             }
         });
@@ -193,48 +192,46 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         } else {
             const type = Periodetype.Utsettelse;
             const forelder = this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
-            const tidsperiode: Partial<Tidsperiode> = formdata.tidsperiode;
+            const { tidsperiode, morsAktivitetIPerioden, vedlegg } = formdata;
+
+            const per: RecursivePartial<Utsettelsesperiode> = {
+                type,
+                forelder,
+                tidsperiode,
+                morsAktivitetIPerioden,
+                vedlegg
+            };
 
             if (formdata.variant === Utsettelsesvariant.Ferie) {
                 this.props.onChange({
-                    type,
-                    forelder,
-                    årsak: UtsettelseÅrsakType.Ferie,
-                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden,
-                    tidsperiode
+                    ...per,
+                    årsak: UtsettelseÅrsakType.Ferie
                 });
             } else if (formdata.variant === Utsettelsesvariant.Arbeid) {
                 this.props.onChange({
-                    type,
-                    forelder,
-                    årsak: UtsettelseÅrsakType.Arbeid,
+                    ...per,
+                    årsak: UtsettelseÅrsakType.Ferie,
                     orgnr: formdata.orgnr,
                     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
-                        formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende,
-                    vedlegg: formdata.vedlegg,
-                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden,
-                    tidsperiode
+                        formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
                 });
             } else if (formdata.variant === Utsettelsesvariant.Sykdom) {
-                const periode:
-                    | RecursivePartial<UtsettelsePgaSykdom>
-                    | RecursivePartial<UtsettelsePgaInnleggelseBarnet>
-                    | RecursivePartial<UtsettelsePgaInnleggelseSøker> = {
-                    type: Periodetype.Utsettelse,
-                    forelder,
-                    årsak: UtsettelseÅrsakType[formdata.sykdomsårsak!],
-                    tidsperiode,
-                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden
-                };
-                this.props.onChange(periode);
+                this.props.onChange({
+                    ...per,
+                    årsak: UtsettelseÅrsakType[formdata.sykdomsårsak!]
+                });
             }
         }
     }
 
     render() {
         const { arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor } = this.props;
-        const { form } = this.state;
-        const visibility = getUtsettelsesperiodeVisibility(form, søknad.søker.erAleneOmOmsorg, søkerErFarEllerMedmor);
+        const { formdata } = this.state;
+        const visibility = getUtsettelsesperiodeVisibility(
+            formdata,
+            søknad.søker.erAleneOmOmsorg,
+            søkerErFarEllerMedmor
+        );
 
         if (visibility === undefined) {
             return null;
@@ -245,21 +242,21 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 <Block hasChildBlocks={true}>
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
-                            tidsperiode={form.tidsperiode}
+                            tidsperiode={formdata.tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(tidsperiode) => this.handleFormChange({ tidsperiode })}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
-                            variant={form.variant}
+                            variant={formdata.variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(variant) => this.handleFormChange({ variant })}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
-                            tidsperiode={form.tidsperiode}
+                            tidsperiode={formdata.tidsperiode}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
                             forelder={Forelder.MOR}
                         />
@@ -267,7 +264,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
                         <HvorSkalDuJobbeSpørsmål
                             arbeidsforhold={arbeidsforhold}
-                            valgtArbeidsforhold={form.orgnr}
+                            valgtArbeidsforhold={formdata.orgnr}
                             onChange={(v: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
                                 this.handleFormChange({ orgnr: v, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende })
                             }
@@ -276,22 +273,22 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
                         <OppholdsårsakSpørsmål
                             onChange={(oppholdsårsak) => this.handleFormChange({ oppholdsårsak })}
-                            oppholdsårsak={form.oppholdsårsak}
+                            oppholdsårsak={formdata.oppholdsårsak}
                             navnAnnenForelder={søknad.annenForelder.fornavn}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)} hasChildBlocks={true}>
                         <UtsettelsePgaSykdomPart
                             onChange={(payload) => this.handleFormChange(payload)}
-                            vedlegg={form.vedlegg}
-                            sykdomsårsak={form.sykdomsårsak}
+                            vedlegg={formdata.vedlegg}
+                            sykdomsårsak={formdata.sykdomsårsak}
                             forelder={Forelder.MOR}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)} hasChildBlocks={true}>
                         <HvaSkalMorGjøreSpørsmål
                             navnPåForeldre={navnPåForeldre}
-                            morsAktivitetIPerioden={form.morsAktivitetIPerioden}
+                            morsAktivitetIPerioden={formdata.morsAktivitetIPerioden}
                             onChange={(morsAktivitetIPerioden) => this.handleFormChange({ morsAktivitetIPerioden })}
                         />
                     </Block>
