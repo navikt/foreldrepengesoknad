@@ -23,33 +23,27 @@ describe('GradertUttakForm visibility', () => {
         expect(visibility.isVisible(GradertUttakSpørsmålKeys.stillingsprosent)).toBeTruthy();
     });
 
-    it('Should render samtidig uttak when stillingsprosent has value', () => {
-        expect(getVisibility({ gradert: false }).isVisible(GradertUttakSpørsmålKeys.samtidigGradertUttak)).toBeFalsy();
+    it('Should render arbeidsforhold when stillingsprosent has value', () => {
+        expect(getVisibility({ gradert: false }).isVisible(GradertUttakSpørsmålKeys.hvorSkalDuJobbe)).toBeFalsy();
         expect(
             getVisibility({ gradert: true, stillingsprosent: undefined }).isVisible(
-                GradertUttakSpørsmålKeys.samtidigGradertUttak
+                GradertUttakSpørsmålKeys.hvorSkalDuJobbe
             )
         ).toBeFalsy();
         expect(
-            getVisibility({ gradert: true, stillingsprosent: '1' }).isVisible(
-                GradertUttakSpørsmålKeys.samtidigGradertUttak
-            )
+            getVisibility({ gradert: true, stillingsprosent: '1' }).isVisible(GradertUttakSpørsmålKeys.hvorSkalDuJobbe)
         ).toBeTruthy();
     });
-    it('Should render arbeidsforhold when samtidig uttak is answered', () => {
+
+    it('Should render samtidig uttak when arbeidsforhold is answered', () => {
         expect(
-            getVisibility({ gradert: true, stillingsprosent: '1', ønskerSamtidigUttak: undefined }).isVisible(
-                GradertUttakSpørsmålKeys.hvorSkalDuJobbe
+            getVisibility({ gradert: true, stillingsprosent: '1', orgnr: undefined }).isVisible(
+                GradertUttakSpørsmålKeys.samtidigGradertUttak
             )
         ).toBeFalsy();
         expect(
-            getVisibility({ gradert: true, stillingsprosent: '1', ønskerSamtidigUttak: false }).isVisible(
-                GradertUttakSpørsmålKeys.hvorSkalDuJobbe
-            )
-        ).toBeTruthy();
-        expect(
-            getVisibility({ gradert: true, stillingsprosent: '1', ønskerSamtidigUttak: true }).isVisible(
-                GradertUttakSpørsmålKeys.hvorSkalDuJobbe
+            getVisibility({ gradert: true, stillingsprosent: '1', orgnr: '123' }).isVisible(
+                GradertUttakSpørsmålKeys.samtidigGradertUttak
             )
         ).toBeTruthy();
     });
