@@ -27,11 +27,16 @@ export enum StønadskontoType {
 
 export enum UtsettelseÅrsakType {
     'Ferie' = 'LOVBESTEMT_FERIE',
-    'Arbeid' = 'ARBEID',
+    'Arbeid' = 'ARBEID'
+}
+
+export enum UtsettelseSykdomÅrsakType {
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
+
+export type Utsettelsesårsaker = UtsettelseÅrsakType | UtsettelseSykdomÅrsakType;
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
@@ -78,7 +83,7 @@ export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksp
 
 interface UtsettelsesperiodeBase extends PeriodeBase {
     type: Periodetype.Utsettelse;
-    årsak: UtsettelseÅrsakType;
+    årsak: Utsettelsesårsaker;
     forelder: Forelder;
     helligdager?: Helligdag[];
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -93,13 +98,13 @@ export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
     årsak: UtsettelseÅrsakType.Ferie;
 }
 export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakType.Sykdom;
+    årsak: UtsettelseSykdomÅrsakType.Sykdom;
 }
 export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakType.InstitusjonBarnet;
+    årsak: UtsettelseSykdomÅrsakType.InstitusjonBarnet;
 }
 export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakType.InstitusjonSøker;
+    årsak: UtsettelseSykdomÅrsakType.InstitusjonSøker;
 }
 
 export type Utsettelsesperiode =

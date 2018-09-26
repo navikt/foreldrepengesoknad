@@ -12,7 +12,7 @@ import UtsettelsesperiodeForm from '../utsettelsesperiode-form/Utsettelsesperiod
 import BEMHelper from 'common/util/bem';
 import { preventFormSubmit } from 'common/util/eventUtils';
 import LinkButton from '../link-button/LinkButton';
-
+import { RecursivePartial } from '../../types/Partial';
 import './endrePeriodeForm.less';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
@@ -47,7 +47,7 @@ class EndrePeriodeForm extends React.Component<Props, State> {
             visBekreftSlettDialog: false
         };
     }
-    onChange(p: Periode) {
+    onChange(p: RecursivePartial<Periode>) {
         let updatedPeriode: Periode | undefined;
         const { periode, dispatch } = this.props;
         if (periode.type === Periodetype.Utsettelse) {
