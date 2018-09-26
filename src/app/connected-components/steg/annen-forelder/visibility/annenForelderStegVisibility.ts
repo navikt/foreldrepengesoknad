@@ -74,7 +74,9 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         getValue: ({ annenForelder }) => annenForelder.erUfør,
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
         condition: (props) =>
-            props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === false
+            props.søker.erAleneOmOmsorg === false &&
+            props.annenForelder.harRettPåForeldrepenger === false &&
+            erFarEllerMedmor(props.person.kjønn, props.søker.rolle)
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
