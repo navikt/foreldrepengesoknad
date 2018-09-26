@@ -193,13 +193,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         } else {
             const type = Periodetype.Utsettelse;
             const forelder = this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
+            const tidsperiode: Partial<Tidsperiode> = formdata.tidsperiode;
 
             if (formdata.variant === Utsettelsesvariant.Ferie) {
                 this.props.onChange({
                     type,
                     forelder,
                     årsak: UtsettelseÅrsakType.Ferie,
-                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden
+                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden,
+                    tidsperiode
                 });
             } else if (formdata.variant === Utsettelsesvariant.Arbeid) {
                 this.props.onChange({
@@ -210,17 +212,18 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
                         formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende,
                     vedlegg: formdata.vedlegg,
-                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden
+                    morsAktivitetIPerioden: formdata.morsAktivitetIPerioden,
+                    tidsperiode
                 });
             } else if (formdata.variant === Utsettelsesvariant.Sykdom) {
                 const periode:
-                    | Partial<UtsettelsePgaSykdom>
-                    | Partial<UtsettelsePgaInnleggelseBarnet>
-                    | Partial<UtsettelsePgaInnleggelseSøker> = {
+                    | RecursivePartial<UtsettelsePgaSykdom>
+                    | RecursivePartial<UtsettelsePgaInnleggelseBarnet>
+                    | RecursivePartial<UtsettelsePgaInnleggelseSøker> = {
                     type: Periodetype.Utsettelse,
                     forelder,
                     årsak: UtsettelseÅrsakType[formdata.sykdomsårsak!],
-                    tidsperiode: formdata.tidsperiode as Tidsperiode,
+                    tidsperiode,
                     morsAktivitetIPerioden: formdata.morsAktivitetIPerioden
                 };
                 this.props.onChange(periode);
