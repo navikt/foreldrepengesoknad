@@ -3,12 +3,7 @@ import {
     Periode,
     MorsAktivitet,
     OppholdÅrsakType,
-    Periodetype,
-    Oppholdsperiode,
-    UtsettelseÅrsakType,
-    Utsettelsesperiode,
-    UtsettelseSykdomÅrsakType,
-    Utsettelsesårsakstyper
+    UtsettelseSykdomÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/Oppholds\u00E5rsakSp\u00F8rsm\u00E5l';
@@ -33,7 +28,7 @@ import { RecursivePartial } from '../../types/Partial';
 import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
-import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { default as formUtils } from './utils';
 
 interface OwnProps {
     tittel?: string;
@@ -72,72 +67,13 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-const getVariantFromUtsettelseÅrsakType = (
-    årsak: Utsettelsesårsakstyper | undefined
-): Utsettelsesvariant | undefined => {
-    switch (årsak) {
-        case UtsettelseSykdomÅrsakType.Sykdom:
-        case UtsettelseSykdomÅrsakType.InstitusjonBarnet:
-        case UtsettelseSykdomÅrsakType.InstitusjonSøker:
-            return Utsettelsesvariant.Sykdom;
-        case UtsettelseÅrsakType.Ferie:
-            return Utsettelsesvariant.Ferie;
-        case UtsettelseÅrsakType.Arbeid:
-            return Utsettelsesvariant.Arbeid;
-        default:
-            return undefined;
-    }
-};
-
-const getFormdataFromPeriode = (periode: RecursivePartial<Periode>): UtsettelsperiodeFormdata => {
-    if (periode.id !== undefined) {
-        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Tidsperiode);
-        const tidsperiode = validTidsperiode
-            ? { fom: validTidsperiode.fom as Date, tom: validTidsperiode.tom as Date }
-            : {};
-        const vedlegg = (periode.vedlegg as Attachment[]) || [];
-
-        if (periode.type === Periodetype.Opphold) {
-            return {
-                tidsperiode,
-                oppholdsårsak: periode.årsak,
-                vedlegg,
-                variant: Utsettelsesvariant.UttakAnnenForelder
-            };
-        } else if (periode.type === Periodetype.Utsettelse) {
-            const variant = getVariantFromUtsettelseÅrsakType(periode.årsak);
-            const formdata: UtsettelsperiodeFormdata = {
-                tidsperiode,
-                variant,
-                vedlegg,
-                morsAktivitetIPerioden: periode.morsAktivitetIPerioden
-            };
-            if (periode.årsak === UtsettelseÅrsakType.Arbeid) {
-                formdata.orgnr = periode.orgnr;
-                formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende =
-                    periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende;
-            }
-            if (variant === Utsettelsesvariant.Sykdom) {
-                formdata.sykdomsårsak = periode.årsak as UtsettelseSykdomÅrsakType;
-            }
-            return formdata;
-        }
-    }
-    return defaultFormData;
-};
-
-const defaultFormData: UtsettelsperiodeFormdata = {
-    tidsperiode: {},
-    vedlegg: []
-};
-
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
         this.handleFormChange = this.handleFormChange.bind(this);
         this.state = {
-            formdata: props.periode ? getFormdataFromPeriode(props.periode) : defaultFormData
+            formdata: props.periode ? formUtils.getFormdataFromPeriode(props.periode) : formUtils.defaultFormData
         };
     }
 
@@ -179,61 +115,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     handleFormChange(formdataChange: Partial<UtsettelsperiodeFormdata>) {
+        const { onChange, søkerErFarEllerMedmor } = this.props;
         const formdata = { ...this.state.formdata, ...formdataChange };
         this.setState({
-            formdata: {
-                ...this.state.formdata,
-                ...formdata
-            }
+            formdata
         });
-        if (formdata.variant === Utsettelsesvariant.UttakAnnenForelder) {
-            const periode: RecursivePartial<Oppholdsperiode> = {
-                type: Periodetype.Opphold,
-                tidsperiode: formdata.tidsperiode,
-                forelder: this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR,
-                vedlegg: formdata.vedlegg,
-                årsak: undefined
-            };
-            this.props.onChange(periode);
-        } else {
-            const type = Periodetype.Utsettelse;
-            const forelder = this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR;
-            const { tidsperiode, morsAktivitetIPerioden, vedlegg } = formdata;
-
-            const per: RecursivePartial<Utsettelsesperiode> = {
-                type,
-                forelder,
-                tidsperiode,
-                morsAktivitetIPerioden,
-                vedlegg
-            };
-
-            if (formdata.variant === Utsettelsesvariant.Ferie) {
-                this.props.onChange({
-                    ...per,
-                    årsak: UtsettelseÅrsakType.Ferie
-                });
-            } else if (formdata.variant === Utsettelsesvariant.Arbeid) {
-                this.props.onChange({
-                    ...per,
-                    årsak: UtsettelseÅrsakType.Arbeid,
-                    orgnr: formdata.orgnr,
-                    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
-                        formdata.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
-                });
-            } else if (formdata.variant === Utsettelsesvariant.Sykdom) {
-                if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.Sykdom) {
-                    per.årsak = UtsettelseSykdomÅrsakType.Sykdom;
-                } else if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.InstitusjonBarnet) {
-                    per.årsak = UtsettelseSykdomÅrsakType.InstitusjonBarnet;
-                } else if (formdata.sykdomsårsak === UtsettelseSykdomÅrsakType.InstitusjonSøker) {
-                    per.årsak = UtsettelseSykdomÅrsakType.InstitusjonSøker;
-                } else {
-                    per.årsak = UtsettelseSykdomÅrsakType.Sykdom;
-                }
-                this.props.onChange(per);
-            }
-        }
+        onChange(formUtils.getPeriodeFromFormdata(formdata, søkerErFarEllerMedmor));
     }
 
     render() {
