@@ -30,13 +30,6 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 )
             })
         );
-        const stateSelector = (state: AppState) => state;
-        const appState: AppState = yield select(stateSelector);
-        yield put(
-            søknadActionCreators.uttaksplanSetAggregertInfo(
-                getAggregertUttaksplanInfo(appState.søknad, appState.api.søkerinfo!)
-            )
-        );
     } catch (error) {
         yield put(
             apiActions.updateApi({
@@ -50,6 +43,14 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 ],
                 isLoadingTilgjengeligeStønadskontoer: false
             })
+        );
+    } finally {
+        const stateSelector = (state: AppState) => state;
+        const appState: AppState = yield select(stateSelector);
+        yield put(
+            søknadActionCreators.uttaksplanSetAggregertInfo(
+                getAggregertUttaksplanInfo(appState.søknad, appState.api.søkerinfo!)
+            )
         );
     }
 }
