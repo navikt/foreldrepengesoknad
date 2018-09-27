@@ -27,7 +27,7 @@ import ForeldrepengerFørFødselUttakForm from './foreldrepenger-før-fødsel-ut
 import OverføringUttakForm, { OverføringUttakFormSkjemadata } from './overføring-uttak-form/OverføringUttakForm';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import GradertUttakForm from './gradert-uttak-form/GradertUttakForm';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;

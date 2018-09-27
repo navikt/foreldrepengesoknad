@@ -1,6 +1,6 @@
 import * as React from 'react';
-import FlervalgSpørsmål from '../../../flervalg-spørsmål/FlervalgSpørsmål';
-import { OppholdÅrsakType } from '../../../../types/uttaksplan/periodetyper';
+import FlervalgSpørsmål from '../../flervalg-spørsmål/FlervalgSpørsmål';
+import { OppholdÅrsakType } from '../../../types/uttaksplan/periodetyper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
@@ -12,7 +12,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const UtsettelsePgaUttakAnnenForelderForm: React.StatelessComponent<Props> = ({
+const HvaErÅrsakTilOppholdSpørsmål: React.StatelessComponent<Props> = ({
     oppholdsårsak,
     onChange,
     navnAnnenForelder,
@@ -39,4 +39,4 @@ const UtsettelsePgaUttakAnnenForelderForm: React.StatelessComponent<Props> = ({
     </>
 );
 
-export default injectIntl(UtsettelsePgaUttakAnnenForelderForm);
+export default injectIntl(HvaErÅrsakTilOppholdSpørsmål);

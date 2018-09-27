@@ -6,12 +6,12 @@ import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { InputChangeEvent } from '../../../types/dom/Events';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
-import JaNeiSpørsmål from '../../ja-nei-sp\u00F8rsm\u00E5l/JaNeiSp\u00F8rsm\u00E5l';
+import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { GradertUttakSpørsmålKeys, getGradertUttakSpørsmålVisibility } from './gradertUttakFormVisibility';
 import { RecursivePartial } from '../../../types/Partial';
-import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../sp\u00F8rsm\u00E5l/SkalDereHaGradertUttakSamtidigSp\u00F8rsm\u00E5l';
-import HvorSkalDuJobbeSpørsmål from '../../../sp\u00F8rsm\u00E5l/HvorSkalDuJobbeSp\u00F8rsm\u00E5l';
+import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
+import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
