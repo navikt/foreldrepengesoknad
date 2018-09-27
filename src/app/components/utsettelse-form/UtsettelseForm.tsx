@@ -13,7 +13,11 @@ import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
-import { UtsettelseSpørsmålKeys, getUtsettelseFormVisibility } from './utsettelseFormConfig';
+import {
+    UtsettelseSpørsmålKeys,
+    getUtsettelseFormVisibility,
+    UtsettelseSpørsmålVisibility
+} from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
@@ -81,9 +85,9 @@ const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType): Utset
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-
         this.onVariantChange = this.onVariantChange.bind(this);
         this.onSykdomÅrsakChange = this.onSykdomÅrsakChange.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.state = {
             variant: getVariantFromPeriode(props.periode)
         };
@@ -126,18 +130,17 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         ];
     }
 
-    onVariantChange(variant: Utsettelsesvariant) {
-        const { onChange } = this.props;
+    onVariantChange(variant: Utsettelsesvariant, visibility: UtsettelseSpørsmålVisibility) {
         if (variant !== this.state.variant) {
             if (variant === Utsettelsesvariant.UttakAnnenForelder) {
-                onChange({ type: Periodetype.Opphold, årsak: undefined });
+                this.onChange({ type: Periodetype.Opphold, årsak: undefined }, visibility);
             } else {
                 if (variant === Utsettelsesvariant.Arbeid) {
-                    onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid });
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid }, visibility);
                 } else if (variant === Utsettelsesvariant.Ferie) {
-                    onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie });
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie }, visibility);
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    onChange({ type: Periodetype.Utsettelse, årsak: undefined });
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined }, visibility);
                 }
             }
         }
@@ -168,16 +171,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
+    onChange(periode: UtsettelseperiodeFormPeriodeType, visibility: UtsettelseSpørsmålVisibility) {
+        this.props.onChange(periode);
+    }
+
     render() {
-        const {
-            periode,
-            arbeidsforhold,
-            søknad,
-            navnPåForeldre,
-            søkerErFarEllerMedmor,
-            onChange,
-            onCancel
-        } = this.props;
+        const { periode, arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor, onCancel } = this.props;
         const { variant } = this.state;
 
         const visibility = getUtsettelseFormVisibility(
@@ -190,7 +189,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         if (visibility === undefined) {
             return null;
         }
-
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
         return (
             <React.Fragment>
@@ -199,14 +197,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                            onChange={(p) => onChange({ tidsperiode: p })}
+                            onChange={(p) => this.onChange({ tidsperiode: p }, visibility)}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
-                            onChange={(v) => this.onVariantChange(v)}
+                            onChange={(v) => this.onVariantChange(v, visibility)}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
@@ -227,10 +225,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             v: string,
                                             skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean
                                         ) =>
-                                            onChange({
-                                                orgnr: v,
-                                                skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
-                                            })
+                                            this.onChange(
+                                                {
+                                                    orgnr: v,
+                                                    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
+                                                },
+                                                visibility
+                                            )
                                         }
                                     />
                                 </Block>
@@ -252,7 +253,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 <HvaSkalMorGjøreSpørsmål
                                     navnPåForeldre={navnPåForeldre}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                    onChange={(morsAktivitetIPerioden) => onChange({ morsAktivitetIPerioden })}
+                                    onChange={(morsAktivitetIPerioden) =>
+                                        this.onChange({ morsAktivitetIPerioden }, visibility)
+                                    }
                                 />
                             </Block>
                         </>
@@ -260,7 +263,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     {periode.type === Periodetype.Opphold && (
                         <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
                             <OppholdsårsakSpørsmål
-                                onChange={(oppholdsårsak) => onChange({ årsak: oppholdsårsak })}
+                                onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak }, visibility)}
                                 oppholdsårsak={periode.årsak}
                                 navnAnnenForelder={søknad.annenForelder.fornavn}
                             />

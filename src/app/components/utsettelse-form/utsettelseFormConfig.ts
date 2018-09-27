@@ -1,13 +1,8 @@
-import { QuestionConfig, Questions } from '../../util/questions/Question';
+import { QuestionConfig, Questions, QuestionVisibility, questionIsAnswered } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
-import { RecursivePartial } from '../../types/Partial';
-import {
-    UtsettelsePgaArbeidPeriode,
-    UtsettelseÅrsakType,
-    Utsettelsesperiode
-} from '../../types/uttaksplan/periodetyper';
+import { UtsettelseÅrsakType, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -26,36 +21,38 @@ export interface UtsettelseFormPayload {
     søkerErFarEllerMedmor: boolean;
 }
 
+export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørsmålKeys>;
+
 const Sp = UtsettelseSpørsmålKeys;
 
-const harRegistrertArbeidOk = (variant: Utsettelsesvariant, periode: RecursivePartial<UtsettelsePgaArbeidPeriode>) =>
-    (variant === Utsettelsesvariant.Arbeid && periode.orgnr !== undefined) ||
-    periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true;
+const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
+    periode.årsak === UtsettelseÅrsakType.Arbeid &&
+    variant === Utsettelsesvariant.Arbeid &&
+    (questionIsAnswered(periode.orgnr) ||
+        questionIsAnswered(periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende));
 
 export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        getValue: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode)
+        isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
     },
     [Sp.variant]: {
-        getValue: ({ variant }) => variant,
+        isAnswered: ({ variant }) => questionIsAnswered(variant),
         parentQuestion: Sp.tidsperiode
     },
     [Sp.sykdomsårsak]: {
-        getValue: ({ periode }) => periode.årsak,
+        isAnswered: ({ periode }) => questionIsAnswered(periode.årsak),
         condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
-        getValue: () => true,
+        isAnswered: () => true,
         condition: ({ variant }) => variant === Utsettelsesvariant.Ferie
     },
     [Sp.arbeidsplass]: {
-        getValue: ({ periode }) =>
-            periode.årsak === UtsettelseÅrsakType.Arbeid &&
-            (periode.orgnr !== undefined || periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende !== undefined),
+        isAnswered: ({ variant, periode }) => harRegistrertArbeidOk(variant, periode),
         condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.morsAktivitet]: {
-        getValue: ({ periode }) => (periode as Utsettelsesperiode).morsAktivitetIPerioden,
+        isAnswered: ({ periode }) => questionIsAnswered((periode as Utsettelsesperiode).morsAktivitetIPerioden),
         condition: ({ variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor }) =>
             variant === Utsettelsesvariant.Ferie ||
             (periode.årsak === UtsettelseÅrsakType.Arbeid &&
@@ -71,7 +68,7 @@ export const getUtsettelseFormVisibility = (
     periode: UtsettelseperiodeFormPeriodeType,
     søkerErAleneOmOmsorg: boolean,
     søkerErFarEllerMedmor: boolean
-) => {
+): UtsettelseSpørsmålVisibility => {
     return Questions(utsettelseFormConfig).getVisbility({
         variant,
         periode,
