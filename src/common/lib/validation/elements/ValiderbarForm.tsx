@@ -6,8 +6,8 @@ import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
 export interface ValiderbarFormProps {
+    className?: string;
     onSubmit?: (evt: FormSubmitEvent) => void;
-    children: React.ReactNode;
     summaryTitle?: string;
     noSummary?: boolean;
 }
