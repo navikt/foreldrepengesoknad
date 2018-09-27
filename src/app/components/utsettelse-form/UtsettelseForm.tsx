@@ -133,14 +133,22 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     onVariantChange(variant: Utsettelsesvariant, visibility: UtsettelseSpørsmålVisibility) {
         if (variant !== this.state.variant) {
             if (variant === Utsettelsesvariant.UttakAnnenForelder) {
-                this.onChange({ type: Periodetype.Opphold, årsak: undefined }, visibility);
+                const forelder = this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
+                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder }, visibility);
             } else {
+                const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
                 if (variant === Utsettelsesvariant.Arbeid) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid }, visibility);
+                    this.onChange(
+                        { type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid, forelder },
+                        visibility
+                    );
                 } else if (variant === Utsettelsesvariant.Ferie) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie }, visibility);
+                    this.onChange(
+                        { type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie, forelder },
+                        visibility
+                    );
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined }, visibility);
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder }, visibility);
                 }
             }
         }
@@ -191,7 +199,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
         return (
-            <React.Fragment>
+            <>
                 <Block hasChildBlocks={true}>
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
@@ -276,7 +284,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         onCancel={onCancel}
                     />
                 )}
-            </React.Fragment>
+            </>
         );
     }
 }
