@@ -3,7 +3,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 abstract class BarnBase {
     antallBarn: number;
     erBarnetFødt: boolean;
-    dokumantasjonAvAleneomsorg: Attachment[];
+    dokumentasjonAvAleneomsorg: Attachment[];
     datoForAleneomsorg: Date;
 }
 

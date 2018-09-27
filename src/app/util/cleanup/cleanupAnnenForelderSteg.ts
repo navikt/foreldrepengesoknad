@@ -61,7 +61,8 @@ export const cleanupAnnenForelderBarn = (visibility: AnnenForelderStegVisibility
     if (visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) === false) {
         return {
             ...barn,
-            datoForAleneomsorg: undefined
+            datoForAleneomsorg: undefined,
+            dokumentasjonAvAleneomsorg: undefined
         };
     }
     return {
