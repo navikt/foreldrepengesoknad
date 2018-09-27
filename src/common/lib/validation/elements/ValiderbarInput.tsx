@@ -8,7 +8,15 @@ import {
 export type ValiderbarInputProps = ValiderbartSkjemaelementProps & NavFrontendInputProps;
 
 const ValiderbarInput: React.StatelessComponent<ValiderbarInputProps> = (props: ValiderbarInputProps) => {
-    return <ValiderbartSkjemaelement component={Input} {...props} />;
+    const { validators, optional, validateOnBlur, validateOnChange, ...inputProps } = props;
+    return (
+        <ValiderbartSkjemaelement
+            {...props}
+            render={(onChange, onBlur, feil) => (
+                <Input {...inputProps} onChange={onChange} onBlur={onBlur} feil={feil} />
+            )}
+        />
+    );
 };
 
 export default ValiderbarInput;

@@ -31,17 +31,17 @@ export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørs
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
-        getValue: ({ annenForelder }) => annenForelder.fornavn,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.fornavn),
         condition: (props) => props.annenForelderErRegistrert === false,
         isOptional: (props) => props.annenForelder.kanIkkeOppgis === true
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: () => true,
-        getValue: ({ annenForelder }) => annenForelder.kanIkkeOppgis,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.kanIkkeOppgis),
         condition: (props) => props.annenForelderErRegistrert === false
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
-        getValue: ({ annenForelder }) => annenForelder.fnr,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.fnr),
         condition: (props) => {
             return (
                 props.annenForelder.kanIkkeOppgis !== true &&
@@ -51,7 +51,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         }
     },
     [AnnenForelderSpørsmålKeys.deltOmsorg]: {
-        getValue: ({ søker }) => søker.erAleneOmOmsorg,
+        isAnswered: ({ søker }) => questionIsAnswered(søker.erAleneOmOmsorg),
         condition: (props) =>
             props.annenForelder.kanIkkeOppgis !== true &&
             (props.annenForelderErRegistrert === true ||
@@ -61,7 +61,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
                         questionIsAnswered(props.annenForelder.fnr))))
     },
     [AnnenForelderSpørsmålKeys.harRettPåForeldrepenger]: {
-        getValue: ({ annenForelder }) => annenForelder.harRettPåForeldrepenger,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.harRettPåForeldrepenger),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => {
             return (
@@ -71,7 +71,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
-        getValue: ({ annenForelder }) => annenForelder.erUfør,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.erUfør),
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
         condition: (props) =>
             props.søker.erAleneOmOmsorg === false &&
@@ -79,14 +79,14 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
             erFarEllerMedmor(props.person.kjønn, props.søker.rolle)
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
-        getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
+        isAnswered: ({ annenForelder }) => questionIsAnswered(annenForelder.erInformertOmSøknaden),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => {
             return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
         }
     },
     [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
-        getValue: ({ barn }) => barn.datoForAleneomsorg,
+        isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
     }
