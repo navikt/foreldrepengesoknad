@@ -51,6 +51,7 @@ class SummaryWrapper extends React.Component<Props> {
                         <AnnenForelderSummary
                             annenForelder={søknad.annenForelder}
                             erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
+                            barn={søknad.barn}
                         />
                     </Summary>
 
