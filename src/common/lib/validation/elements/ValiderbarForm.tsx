@@ -11,6 +11,7 @@ export interface ValiderbarFormProps {
     summaryTitle?: string;
     noSummary?: boolean;
     validateBeforeSubmit?: boolean;
+    onValidationResult?: (result: ValidationResult[]) => void;
 }
 
 export interface ValidFormContext {
@@ -93,18 +94,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     validateOne(component: React.ComponentType) {
         const index = this.components.indexOf(component);
         if (index !== -1) {
-            setTimeout(() => {
-                const results = this.state.results.slice();
-                const fieldResult = this.components[index].validate();
-                results[index] = fieldResult;
-                const valid = results.every((result) => result.valid === true);
-
-                this.setState({
-                    results,
-                    valid,
-                    failedSubmit: this.state.failedSubmit && !valid
-                });
-            });
+            this.validateComponentAtIndex(index);
         }
     }
 
@@ -112,20 +102,27 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
         if (this.shouldValidate()) {
             const index = this.components.findIndex((c) => c.props.id === componentId);
             if (index >= 0) {
-                setTimeout(() => {
-                    const results = this.state.results.slice();
-                    const fieldResult = this.components[index].validate();
-                    results[index] = fieldResult;
-                    const valid = results.every((result) => result.valid === true);
-
-                    this.setState({
-                        results,
-                        valid,
-                        failedSubmit: this.state.failedSubmit && !valid
-                    });
-                });
+                this.validateComponentAtIndex(index);
             }
         }
+    }
+
+    validateComponentAtIndex(index: number) {
+        setTimeout(() => {
+            const results = this.state.results.slice();
+            const fieldResult = this.components[index].validate();
+            results[index] = fieldResult;
+            const valid = results.every((result) => result.valid === true);
+
+            this.setState({
+                results,
+                valid,
+                failedSubmit: this.state.failedSubmit && !valid
+            });
+            if (this.props.onValidationResult) {
+                this.props.onValidationResult(results);
+            }
+        });
     }
 
     validateAll() {
@@ -137,7 +134,9 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
             valid,
             failedSubmit: this.state.failedSubmit && !valid
         });
-
+        if (this.props.onValidationResult) {
+            this.props.onValidationResult(results);
+        }
         return valid;
     }
 
@@ -174,7 +173,14 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     }
 
     render() {
-        const { onSubmit, noSummary = false, summaryTitle, validateBeforeSubmit, ...other } = this.props;
+        const {
+            onSubmit,
+            noSummary = false,
+            summaryTitle,
+            validateBeforeSubmit,
+            onValidationResult,
+            ...other
+        } = this.props;
         let summaryBox;
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (
