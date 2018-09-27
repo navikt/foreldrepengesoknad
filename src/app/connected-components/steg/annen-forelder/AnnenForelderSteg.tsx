@@ -130,7 +130,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person, registrerteBarn } = props.søkerinfo;
     const { søker, barn, annenForelder, situasjon, sensitivInfoIkkeLagre } = state.søknad;
     const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
-    const erSøkerFarEllerMedmor = erFarEllerMedmor(person!.kjønn, søker.rolle);
+    const erSøkerFarEllerMedmor = erFarEllerMedmor(søker.rolle);
 
     const visibility = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
 

@@ -1,12 +1,11 @@
-import { Søkerinfo } from '../../../types/søkerinfo';
 import Søknad from '../../../types/søknad/Søknad';
 import {
     getUttaksplanSkjemaScenario,
     UttaksplanSkjemaScenario
 } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
 
-export const uttaksplanSkjemaErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    const scenario = getUttaksplanSkjemaScenario(søknad, søkerinfo);
+export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
+    const scenario = getUttaksplanSkjemaScenario(søknad);
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:

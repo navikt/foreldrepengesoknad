@@ -1,4 +1,3 @@
-import { Søkerinfo } from '../../../types/søkerinfo';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
@@ -13,8 +12,8 @@ export enum UttaksplanSkjemaScenario {
     's8_ukjent_x' = 'ukjent'
 }
 
-export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaScenario => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle);
+export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaScenario => {
+    const søkerErFarEllerMedmor = erFarEllerMedmor(søknad.søker.rolle);
     const søkerErMor = !søkerErFarEllerMedmor;
 
     let scenario = UttaksplanSkjemaScenario.s8_ukjent_x;

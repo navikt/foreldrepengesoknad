@@ -44,7 +44,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, dispatch, søkerinfo, antallUkerFellesperiode, navnPåForeldre } = this.props;
+        const { stegProps, dispatch, antallUkerFellesperiode, navnPåForeldre } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
             <Steg
@@ -52,12 +52,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                 preSubmit={() =>
                     dispatch(
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
-                            getStønadskontoParams(søknad, søkerinfo.person)
+                            getStønadskontoParams(søknad)
                         )
                     )
                 }>
                 <UttaksplanSkjemaScenarioes
-                    scenario={getUttaksplanSkjemaScenario(søknad, this.props.søkerinfo)}
+                    scenario={getUttaksplanSkjemaScenario(søknad)}
                     søknad={søknad}
                     navnPåForeldre={navnPåForeldre}
                     antallUkerFellesperiode={antallUkerFellesperiode}
@@ -72,7 +72,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN_SKJEMA,
-        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad, props.søkerinfo),
+        renderFortsettKnapp: uttaksplanSkjemaErGyldig(state.søknad),
         fortsettKnappLabel: state.søknad.situasjon !== Søkersituasjon.FØDSEL ? 'Fortsett' : undefined,
         renderFormTag: true,
         history,

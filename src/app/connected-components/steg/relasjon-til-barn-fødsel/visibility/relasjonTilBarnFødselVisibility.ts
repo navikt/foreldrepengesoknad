@@ -32,10 +32,9 @@ export const getRelasjonTilBarnFødselVisibility = (
 ): RelasjonTilBarnFødselStegVisibility => {
     const { søkerinfo } = api;
     const { søker, barn, sensitivInfoIkkeLagre } = søknad;
-    const { person } = søkerinfo!;
     const { gjelderAnnetBarn } = sensitivInfoIkkeLagre.søknadenGjelderBarnValg;
 
-    const søkerErFarEllerMedmor = erFarEllerMedmor(person.kjønn, søker.rolle);
+    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
 
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo!);
     const registrerteBarn = søkerinfo!.registrerteBarn || [];

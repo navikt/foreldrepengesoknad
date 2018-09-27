@@ -76,7 +76,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         condition: (props) =>
             props.søker.erAleneOmOmsorg === false &&
             props.annenForelder.harRettPåForeldrepenger === false &&
-            erFarEllerMedmor(props.person.kjønn, props.søker.rolle)
+            props.søkerErFarEllerMedmor
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         getValue: ({ annenForelder }) => annenForelder.erInformertOmSøknaden,
@@ -111,7 +111,7 @@ export const getAnnenForelderStegVisibility = (
         barn,
         annenForelder,
         person,
-        søkerErFarEllerMedmor: erFarEllerMedmor(person.kjønn, søker.rolle),
+        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
         annenForelderErRegistrert: registrertAnnenForelder !== undefined
     };
 

@@ -1,13 +1,9 @@
-import { Kjønn } from '../../types/common';
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import moment from 'moment';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 
-export const erFarEllerMedmor = (kjønn: Kjønn, søkerRolle: SøkerRolle): boolean =>
-    kjønn === Kjønn.MANN ||
-    søkerRolle === SøkerRolle.FAR ||
-    søkerRolle === SøkerRolle.MEDMOR ||
-    søkerRolle === SøkerRolle.FORESATT2;
+export const erFarEllerMedmor = (søkerRolle: SøkerRolle): boolean =>
+    søkerRolle === SøkerRolle.FAR || søkerRolle === SøkerRolle.MEDMOR || søkerRolle === SøkerRolle.FORESATT2;
 
 export const annenForelderSkalHaForeldrepenger = (annenForelder: AnnenForelder): boolean => {
     const { kanIkkeOppgis, harRettPåForeldrepenger } = annenForelder;
