@@ -510,6 +510,7 @@
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesdel",
     "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
+    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut ...",
 
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.Utdanning": "Utdanning",

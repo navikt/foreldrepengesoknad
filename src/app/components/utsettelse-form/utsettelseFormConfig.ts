@@ -2,7 +2,7 @@ import { QuestionConfig, Questions, QuestionVisibility, questionIsAnswered } fro
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
-import { UtsettelseÅrsakType, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
+import { UtsettelseÅrsakType, Utsettelsesperiode, Oppholdsperiode } from '../../types/uttaksplan/periodetyper';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -60,6 +60,10 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
                 harRegistrertArbeidOk(variant, periode) &&
                 søkerErAleneOmOmsorg === false &&
                 søkerErFarEllerMedmor === true)
+    },
+    [Sp.oppholdsårsak]: {
+        isAnswered: ({ periode }) => questionIsAnswered((periode as Oppholdsperiode).årsak),
+        condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     }
 };
 
