@@ -14,7 +14,9 @@ import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 const getDefaultState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
-        annenForelder: {},
+        annenForelder: {
+            kanIkkeOppgis: false
+        },
         barn: {},
         informasjonOmUtenlandsopphold: {
             tidligereOpphold: [],
