@@ -69,7 +69,10 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     return (
         <>
-            <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
+            <HarAnnenForelderSøktForeldrepengerSpørsmål
+                visible={søknad.annenForelder.harRettPåForeldrepenger}
+                navnAnnenForelder={søknad.annenForelder.fornavn}
+            />
             <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
             {søknad.situasjon === Søkersituasjon.ADOPSJON && (
                 <StartdatoAdopsjonBolk
