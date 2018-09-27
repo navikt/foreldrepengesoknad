@@ -1,5 +1,5 @@
 import AnnenForelder from '../../types/søknad/AnnenForelder';
-import { Barn, ForeldreansvarBarn } from '../../types/søknad/Barn';
+import { Barn } from '../../types/søknad/Barn';
 import Søknad from '../../types/søknad/Søknad';
 import {
     AnnenForelderStegVisibility,
@@ -58,15 +58,15 @@ export const cleanupAnnenForelder = (
 };
 
 export const cleanupAnnenForelderBarn = (visibility: AnnenForelderStegVisibility, barn: Barn): Partial<Barn> => {
-    if (visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato) === false) {
+    if (visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) === false) {
         return {
             ...barn,
-            foreldreansvarsdato: undefined
+            datoForAleneomsorg: undefined
         };
     }
     return {
         ...barn,
-        foreldreansvarsdato: (barn as ForeldreansvarBarn).foreldreansvarsdato
+        datoForAleneomsorg: barn.datoForAleneomsorg
     };
 };
 

@@ -15,7 +15,7 @@ import getMessage from 'common/util/i18nUtils';
 import AleneOmOmsorgSpørsmål from '../../../spørsmål/AleneOmOmsorgSpørsmål';
 import { Søker } from '../../../types/søknad/Søker';
 import RettPåForeldrepengerSpørsmål from '../../../spørsmål/RettPåForeldrepengerSpørsmål';
-import { Barn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { Barn } from '../../../types/søknad/Barn';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
@@ -147,33 +147,32 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
                     />
                 </Block>
-                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato)}>
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
                     <DatoInput
-                        name="omsorgsovertakelseDato"
-                        id="omsorgsovertakelseDato"
-                        label={getMessage(intl, 'omsorgsovertakelseDato.spørsmål')}
-                        onChange={(foreldreansvarsdato: Date | undefined) => onBarnChange({ foreldreansvarsdato })}
-                        dato={(barn as ForeldreansvarBarn).foreldreansvarsdato}
+                        name="datoForAleneomsorg"
+                        id="datoForAleneomsorg"
+                        label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
+                        onChange={(datoForAleneomsorg: Date | undefined) => onBarnChange({ datoForAleneomsorg })}
+                        dato={barn.datoForAleneomsorg}
                     />
                 </Block>
-
                 <Block
                     visible={
-                        visibility.isVisible(AnnenForelderSpørsmålKeys.foreldreansvarsdato) &&
-                        (barn as ForeldreansvarBarn).foreldreansvarsdato !== undefined
+                        visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) &&
+                        barn.datoForAleneomsorg !== undefined
                     }>
                     <Block margin="xs">
                         <Veilederinfo>
-                            <FormattedMessage id="far.omsorgsovertakelse.vedlegg.veileder" />
+                            <FormattedMessage id="far.dokumantasjonAvAleneomsorg.vedlegg.veileder" />
                         </Veilederinfo>
                     </Block>
 
                     <AttachmentsUploaderPure
-                        attachments={barn.omsorgsovertakelseDato || []}
-                        attachmentType={AttachmentType.OMSORGSOVERTAKELSEDATO}
+                        attachments={barn.dokumantasjonAvAleneomsorg || []}
+                        attachmentType={AttachmentType.ALENEOMSORG}
                         onFilesSelect={onFilesSelect}
                         onFileDelete={onFileDelete}
-                        skjemanummer={Skjemanummer.OMSORGSOVERTAKELSESDATO}
+                        skjemanummer={Skjemanummer.ANNET}
                     />
                 </Block>
             </>
