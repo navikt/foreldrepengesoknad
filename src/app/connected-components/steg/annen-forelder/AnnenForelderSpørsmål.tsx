@@ -168,7 +168,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     </Block>
 
                     <AttachmentsUploaderPure
-                        attachments={barn.dokumantasjonAvAleneomsorg || []}
+                        attachments={barn.dokumentasjonAvAleneomsorg || []}
                         attachmentType={AttachmentType.ALENEOMSORG}
                         onFilesSelect={onFilesSelect}
                         onFileDelete={onFileDelete}
