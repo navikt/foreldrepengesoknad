@@ -7,15 +7,21 @@ import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { formaterNavn } from 'app/util/domain/personUtil';
+import Barn from '../../../../app/types/søknad/Barn';
+import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import { createListOfAttachmentPreviewLinks, missingAttachmentEtikettProps } from 'common/components/summary/util';
+import EtikettBase from 'nav-frontend-etiketter';
+import { formatDate } from '../../../../app/util/dates/dates';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
+    barn: Barn;
     erAleneOmOmsorg: boolean;
 }
 
 type Props = AnnenForelderOppsummeringProps & InjectedIntlProps;
 const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
-    const { erAleneOmOmsorg, intl } = props;
+    const { erAleneOmOmsorg, barn, intl } = props;
     const {
         fornavn,
         etternavn,
@@ -28,6 +34,8 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
         erForSyk,
         erUfør
     } = props.annenForelder;
+
+    const { datoForAleneomsorg, dokumentasjonAvAleneomsorg } = barn;
 
     const erAleneOmOmsorgLabel = getMessage(intl, 'oppsummering.annenForelder.aleneOmOmsorg.label', {
         personligPronomen: erAleneOmOmsorg ? getMessage(intl, 'jeg') : getMessage(intl, 'vi')
@@ -68,16 +76,38 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                         text={countries.getName(bostedsland, 'nb')}
                     />
                 )}
-            {erAleneOmOmsorg !== undefined && (
+            {erAleneOmOmsorg !== undefined &&
+                !kanIkkeOppgis && (
+                    <DisplayTextWithLabel
+                        label={erAleneOmOmsorgLabel}
+                        text={
+                            erAleneOmOmsorg
+                                ? getMessage(intl, 'oppsummering.annenForelder.aleneomsorg')
+                                : getMessage(intl, 'oppsummering.annenForelder.deltOmsorg')
+                        }
+                    />
+                )}
+            {datoForAleneomsorg && (
                 <DisplayTextWithLabel
-                    label={erAleneOmOmsorgLabel}
-                    text={
-                        erAleneOmOmsorg
-                            ? getMessage(intl, 'oppsummering.annenForelder.aleneomsorg')
-                            : getMessage(intl, 'oppsummering.annenForelder.deltOmsorg')
-                    }
+                    label={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
+                    text={formatDate(datoForAleneomsorg) || ''}
                 />
             )}
+            {dokumentasjonAvAleneomsorg &&
+                dokumentasjonAvAleneomsorg.length > 0 && (
+                    <DisplayContentWithLabel
+                        label={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}>
+                        {createListOfAttachmentPreviewLinks(dokumentasjonAvAleneomsorg)}
+                    </DisplayContentWithLabel>
+                )}
+            {dokumentasjonAvAleneomsorg === undefined ||
+                (dokumentasjonAvAleneomsorg.length === 0 &&
+                    erAleneOmOmsorg && (
+                        <DisplayContentWithLabel
+                            label={getMessage(intl, "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label'")}>
+                            <EtikettBase {...missingAttachmentEtikettProps(intl)} />
+                        </DisplayContentWithLabel>
+                    ))}
             {harRettPåForeldrepenger !== undefined && (
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}
