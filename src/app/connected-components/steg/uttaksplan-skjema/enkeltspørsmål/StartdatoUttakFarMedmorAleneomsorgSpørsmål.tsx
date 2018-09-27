@@ -38,7 +38,7 @@ const getStartdatoFromAlternativ = (
     valgtVerdi?: Date
 ): Date | undefined => {
     if (alternativ === ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg) {
-        return barn.foreldreansvarsdato;
+        return barn.datoForAleneomsorg;
     }
     return valgtVerdi;
 };
@@ -47,7 +47,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
     const { visible, barn, familiehendelsesdato, intl } = props;
 
     const alternativer: FlervalgAlternativ[] = [
-        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, barn.foreldreansvarsdato),
+        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, barn.datoForAleneomsorg),
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen)
     ];
 

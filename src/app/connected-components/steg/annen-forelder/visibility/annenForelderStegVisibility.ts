@@ -2,7 +2,7 @@ import Søknad from '../../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { Søker } from '../../../../types/søknad/Søker';
-import { Barn, ForeldreansvarBarn } from '../../../../types/søknad/Barn';
+import { Barn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
 import { QuestionConfig, Questions, questionIsAnswered, QuestionVisibility } from '../../../../util/questions/Question';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
@@ -24,7 +24,7 @@ export enum AnnenForelderSpørsmålKeys {
     'erAnnenForelderInformert' = 'erAnnenForelderInformert',
     'erMorUfør' = 'erMorUfør',
     'harRettPåForeldrepenger' = 'harRettPåForeldrepenger',
-    'foreldreansvarsdato' = 'foreldreansvarsdato'
+    'datoForAleneomsorg' = 'datoForAleneomsorg'
 }
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
@@ -85,8 +85,8 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
             return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
         }
     },
-    [AnnenForelderSpørsmålKeys.foreldreansvarsdato]: {
-        isAnswered: ({ barn }) => questionIsAnswered((barn as ForeldreansvarBarn).foreldreansvarsdato),
+    [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
+        isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
     }
