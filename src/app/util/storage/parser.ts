@@ -1,8 +1,9 @@
 import * as moment from 'moment';
+import { normaliserDato } from 'common/util/datoUtils';
 
 const dateStringToDateObjectMapper = (key: string, value: string) => {
     if (moment(value, moment.ISO_8601).isValid()) {
-        return new Date(value);
+        return normaliserDato(new Date(value));
     }
     return value;
 };
