@@ -6,12 +6,18 @@ import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import Block from 'common/components/block/Block';
-import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 
 import './endrePeriodeForm.less';
 
+import {
+    EndrePeriodeChangeEvent,
+    EndrePeriodeRequestDeleteEvent
+} from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+
 export interface OwnProps {
     periode: Periode;
+    onChange: EndrePeriodeChangeEvent;
+    onRequestDelete: EndrePeriodeRequestDeleteEvent;
 }
 
 const bem = BEMHelper('endrePeriodeForm');
@@ -20,33 +26,28 @@ type Props = OwnProps & InjectedIntlProps;
 
 class EndrePeriodeForm extends React.Component<Props> {
     render() {
-        const { periode } = this.props;
+        const { periode, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
-            <EndrePeriodeFormRenderer
-                periode={periode}
-                render={(onChange, onRequestDelete) => (
-                    <>
-                        {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
-                            <UtsettelsesperiodeForm periode={periode} onChange={onChange} />
-                        ) : (
-                            <UttaksperiodeForm
-                                periode={periode as Uttaksperiode}
-                                onChange={onChange}
-                                kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
-                            />
-                        )}
-                        <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
-                            <div className={bem.element('footer')}>
-                                <LinkButton onClick={onRequestDelete} className={bem.element('slettPeriode')}>
-                                    <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
-                                </LinkButton>
-                            </div>
-                        </Block>
-                    </>
+            <>
+                {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
+                    <UtsettelsesperiodeForm periode={periode} onChange={onChange} />
+                ) : (
+                    <UttaksperiodeForm
+                        periode={periode as Uttaksperiode}
+                        onChange={onChange}
+                        kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
+                    />
                 )}
-            />
+                <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
+                    <div className={bem.element('footer')}>
+                        <LinkButton onClick={onRequestDelete} className={bem.element('slettPeriode')}>
+                            <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
+                        </LinkButton>
+                    </div>
+                </Block>
+            </>
         );
     }
 }

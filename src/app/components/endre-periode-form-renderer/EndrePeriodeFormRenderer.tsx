@@ -20,8 +20,11 @@ import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 
 export interface OwnProps {
     periode: Periode;
-    render: (onChange: (periode: RecursivePartial<Periode>) => void, onRequestDelete: () => void) => {};
+    render: (onChange: EndrePeriodeChangeEvent, onRequestDelete: () => void) => {};
 }
+
+export type EndrePeriodeChangeEvent = (periode: RecursivePartial<Periode>) => void;
+export type EndrePeriodeRequestDeleteEvent = () => void;
 
 interface State {
     visBekreftSlettDialog: boolean;
