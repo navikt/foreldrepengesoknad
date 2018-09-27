@@ -3,7 +3,8 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 abstract class BarnBase {
     antallBarn: number;
     erBarnetFødt: boolean;
-    omsorgsovertakelseDato: Attachment[];
+    dokumantasjonAvAleneomsorg: Attachment[];
+    datoForAleneomsorg: Date;
 }
 
 export interface UfødtBarn extends BarnBase {
