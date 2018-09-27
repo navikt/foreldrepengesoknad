@@ -6,13 +6,12 @@ import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
 import Block from 'common/components/block/Block';
-
-import './endrePeriodeForm.less';
-
 import {
     EndrePeriodeChangeEvent,
     EndrePeriodeRequestDeleteEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+
+import './endrePeriodeFormContent.less';
 
 export interface OwnProps {
     periode: Periode;
@@ -24,7 +23,7 @@ const bem = BEMHelper('endrePeriodeForm');
 
 type Props = OwnProps & InjectedIntlProps;
 
-class EndrePeriodeForm extends React.Component<Props> {
+class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
         const { periode, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
@@ -52,4 +51,4 @@ class EndrePeriodeForm extends React.Component<Props> {
     }
 }
 
-export default injectIntl(EndrePeriodeForm);
+export default injectIntl(EndrePeriodeFormContent);
