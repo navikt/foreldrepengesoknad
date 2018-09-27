@@ -29,7 +29,7 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     if (config.parentQuestion === undefined) {
         return conditionIsMet;
     } else {
-        const parentHasValidValue = questionIsAnswered(questions[config.parentQuestion as any].isAnswered(payload));
+        const parentHasValidValue = questions[config.parentQuestion as any].isAnswered(payload);
         return parentHasValidValue && isQuestionVisible(questions, config.parentQuestion, payload);
     }
 };
