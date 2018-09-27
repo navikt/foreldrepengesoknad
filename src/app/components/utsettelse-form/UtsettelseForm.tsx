@@ -282,7 +282,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        søkerErFarEllerMedmor: erFarEllerMedmor(state.api.søkerinfo!.person.kjønn, state.søknad.søker.rolle),
+        søkerErFarEllerMedmor: erFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
     };
 };

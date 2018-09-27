@@ -16,7 +16,7 @@ export const getAggregertUttaksplanInfo = (søknad: Søknad, søkerinfo: Søkeri
     return {
         familiehendelsesdato: getFamiliehendelsedato(søknad.barn, søknad.situasjon),
         navnPåForeldre: getNavnPåForeldre(søknad, søkerinfo.person),
-        søkerErFarEllerMedmor: erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle),
+        søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle),
         søkerKjønn: søkerinfo.person.kjønn
     };
 };
