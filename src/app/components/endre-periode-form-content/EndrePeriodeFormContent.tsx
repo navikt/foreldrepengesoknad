@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Periode, Periodetype, Uttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm from '../utsettelse-form/UtsettelseForm';
+import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
@@ -31,7 +31,7 @@ class EndrePeriodeFormContent extends React.Component<Props> {
         return (
             <>
                 {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
-                    <UtsettelsesperiodeForm periode={periode} onChange={onChange} />
+                    <UtsettelseForm periode={periode} onChange={onChange} />
                 ) : (
                     <UttaksperiodeForm
                         periode={periode as Uttaksperiode}
