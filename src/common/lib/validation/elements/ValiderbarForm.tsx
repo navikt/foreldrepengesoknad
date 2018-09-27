@@ -10,6 +10,7 @@ export interface ValiderbarFormProps {
     onSubmit?: (evt: FormSubmitEvent) => void;
     summaryTitle?: string;
     noSummary?: boolean;
+    validateBeforeSubmit?: boolean;
 }
 
 export interface ValidFormContext {
@@ -44,6 +45,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
 
         this.components = [];
         this.onSubmit = this.onSubmit.bind(this);
+        this.shouldValidate = this.shouldValidate.bind(this);
     }
 
     getChildContext() {
@@ -58,14 +60,18 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
         };
     }
 
+    shouldValidate() {
+        return this.state.failedSubmit || this.props.validateBeforeSubmit;
+    }
+
     onChange(e: any, component: React.ComponentType) {
-        if (this.state.failedSubmit) {
+        if (this.shouldValidate()) {
             this.validateOne(component);
         }
     }
 
     onBlur(e: any, component: React.ComponentType) {
-        if (this.state.failedSubmit) {
+        if (this.shouldValidate()) {
             this.validateOne(component);
         }
     }
@@ -103,7 +109,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     }
 
     validateField(componentId: string) {
-        if (this.state.failedSubmit) {
+        if (this.shouldValidate()) {
             const index = this.components.findIndex((c) => c.props.id === componentId);
             if (index >= 0) {
                 setTimeout(() => {
@@ -168,7 +174,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     }
 
     render() {
-        const { onSubmit, noSummary = false, summaryTitle, ...other } = this.props;
+        const { onSubmit, noSummary = false, summaryTitle, validateBeforeSubmit, ...other } = this.props;
         let summaryBox;
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (

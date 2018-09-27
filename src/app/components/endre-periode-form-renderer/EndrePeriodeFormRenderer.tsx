@@ -8,7 +8,6 @@ import {
     Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import { preventFormSubmit } from 'common/util/eventUtils';
 import { RecursivePartial } from '../../types/Partial';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
@@ -17,6 +16,7 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import getMessage from 'common/util/i18nUtils';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
+import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface OwnProps {
     periode: Periode;
@@ -78,7 +78,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     render() {
         const { periode, render, intl } = this.props;
         return (
-            <form className={bem.className} onSubmit={preventFormSubmit}>
+            <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
                 {render(this.onChange, this.onRequestDelete)}
                 <BekreftDialog
                     tittel={getMessage(intl, `endrePeriodeForm.bekreftSlettDialog.${periode.type}.tittel`)}
@@ -90,7 +90,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                     avbrytLabel={getMessage(intl, 'nei')}>
                     <FormattedMessage id="endrePeriodeForm.bekreftSlettDialog.uttak.melding" />
                 </BekreftDialog>
-            </form>
+            </ValiderbarForm>
         );
     }
 }
