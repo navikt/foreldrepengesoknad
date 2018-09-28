@@ -30,6 +30,11 @@ export enum UtsettelseÅrsakType {
     'Arbeid' = 'ARBEID'
 }
 
+export enum SelvstendigNæringsdrivendeEllerFrilans {
+    'frilans' = 'FRILANS',
+    'selvstendignæringsdrivende' = 'SELVSTENDIG_NÆRINGSDRIVENDE'
+}
+
 export enum UtsettelseÅrsakSykdomType {
     'Sykdom' = 'SYKDOM',
     'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
@@ -70,8 +75,8 @@ export interface UttaksperiodeBase extends PeriodeBase {
     ønskerSamtidigUttak: boolean;
     gradert?: boolean;
     stillingsprosent?: string;
-    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende?: boolean;
     orgnr?: string;
+    selvstendigNæringsdrivendeEllerFrilans?: SelvstendigNæringsdrivendeEllerFrilans;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -92,11 +97,13 @@ interface UtsettelsesperiodeBase extends PeriodeBase {
 export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {
     årsak: UtsettelseÅrsakType.Arbeid;
     orgnr: string;
-    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean;
+    selvstendigNæringsdrivendeEllerFrilans?: SelvstendigNæringsdrivendeEllerFrilans;
 }
+
 export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
     årsak: UtsettelseÅrsakType.Ferie;
 }
+
 export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
     årsak: UtsettelseÅrsakSykdomType.Sykdom;
 }

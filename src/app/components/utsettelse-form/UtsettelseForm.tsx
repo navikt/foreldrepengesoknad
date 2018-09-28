@@ -134,21 +134,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         if (variant !== this.state.variant) {
             if (variant === Utsettelsesvariant.UttakAnnenForelder) {
                 const forelder = this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
-                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder }, visibility);
+                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder });
             } else {
                 const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
                 if (variant === Utsettelsesvariant.Arbeid) {
-                    this.onChange(
-                        { type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid, forelder },
-                        visibility
-                    );
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid, forelder });
                 } else if (variant === Utsettelsesvariant.Ferie) {
-                    this.onChange(
-                        { type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie, forelder },
-                        visibility
-                    );
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie, forelder });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder }, visibility);
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder });
                 }
             }
         }
@@ -179,7 +173,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
-    onChange(periode: UtsettelseperiodeFormPeriodeType, visibility: UtsettelseSpørsmålVisibility) {
+    onChange(periode: UtsettelseperiodeFormPeriodeType) {
         this.props.onChange(periode);
     }
 
@@ -205,7 +199,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                            onChange={(p) => this.onChange({ tidsperiode: p }, visibility)}
+                            onChange={(p) => this.onChange({ tidsperiode: p })}
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
@@ -229,17 +223,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     <HvorSkalDuJobbeSpørsmål
                                         arbeidsforhold={arbeidsforhold}
                                         valgtArbeidsforhold={periode.orgnr}
-                                        onChange={(
-                                            v: string,
-                                            skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean
-                                        ) =>
-                                            this.onChange(
-                                                {
-                                                    orgnr: v,
-                                                    skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
-                                                },
-                                                visibility
-                                            )
+                                        frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
+                                        onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
+                                            this.onChange({
+                                                orgnr,
+                                                selvstendigNæringsdrivendeEllerFrilans
+                                            })
                                         }
                                     />
                                 </Block>
@@ -261,9 +250,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 <HvaSkalMorGjøreSpørsmål
                                     navnPåForeldre={navnPåForeldre}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                    onChange={(morsAktivitetIPerioden) =>
-                                        this.onChange({ morsAktivitetIPerioden }, visibility)
-                                    }
+                                    onChange={(morsAktivitetIPerioden) => this.onChange({ morsAktivitetIPerioden })}
                                 />
                             </Block>
                         </>
@@ -271,7 +258,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     {periode.type === Periodetype.Opphold && (
                         <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
                             <OppholdsårsakSpørsmål
-                                onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak }, visibility)}
+                                onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak })}
                                 oppholdsårsak={periode.årsak}
                                 navnAnnenForelder={søknad.annenForelder.fornavn}
                             />
