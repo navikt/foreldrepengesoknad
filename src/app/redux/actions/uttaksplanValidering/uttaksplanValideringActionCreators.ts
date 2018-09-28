@@ -4,6 +4,12 @@ import {
     ValiderUtsettelsePayload
 } from './uttaksplanValideringActionDefinitions';
 
+export function validerUttaksplanAction(): UttaksplanValideringActionTypes {
+    return {
+        type: UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN
+    };
+}
+
 export function validerUtsettelseAction(payload: ValiderUtsettelsePayload): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.VALIDER_UTSETTELSE,
@@ -11,6 +17,15 @@ export function validerUtsettelseAction(payload: ValiderUtsettelsePayload): Utta
     };
 }
 
+export function validerUtsettelserAction(payload: ValiderUtsettelsePayload[]): UttaksplanValideringActionTypes {
+    return {
+        type: UttaksplanValideringActionKeys.VALIDER_UTSETTELSER,
+        payload
+    };
+}
+
 export default {
-    validerUtsettelseAction
+    validerUttaksplanAction,
+    validerUtsettelseAction,
+    validerUtsettelserAction
 };

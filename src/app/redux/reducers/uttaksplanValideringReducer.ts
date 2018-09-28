@@ -1,6 +1,7 @@
 import {
     UttaksplanValideringActionTypes,
-    UttaksplanValideringActionKeys
+    UttaksplanValideringActionKeys,
+    ValiderUtsettelsePayload
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { validerUtsettelsePeriode } from '../../util/validation/periode/utsettelse';
@@ -36,6 +37,14 @@ const updatePeriodeValidering = (
     };
 };
 
+const validerPerioder = (payload: ValiderUtsettelsePayload[]): PeriodeValidering => {
+    const validering: PeriodeValidering = {};
+    payload.forEach((p) => {
+        validering[p.periode.id!] = { feil: validerUtsettelsePeriode(p) };
+    });
+    return validering;
+};
+
 const uttaksplanValideringReducer = (
     state = getDefaultState(),
     action: UttaksplanValideringActionTypes
@@ -53,6 +62,12 @@ const uttaksplanValideringReducer = (
                     )
                 };
             }
+            return state;
+        case UttaksplanValideringActionKeys.VALIDER_UTSETTELSER:
+            return {
+                ...state,
+                perioder: validerPerioder(action.payload)
+            };
     }
     return state;
 };
