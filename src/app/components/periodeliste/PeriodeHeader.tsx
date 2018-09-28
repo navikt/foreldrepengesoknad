@@ -53,8 +53,12 @@ const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre:
         case Periodetype.Overføring:
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
         case Periodetype.Utsettelse:
-            const årsak = getMessage(intl, `utsettelsesårsak.${periode.årsak}`);
-            return getMessage(intl, `periodeliste.utsettelsesårsak`, { årsak });
+            if (periode.årsak) {
+                return getMessage(intl, `periodeliste.utsettelsesårsak`, {
+                    årsak: getMessage(intl, `utsettelsesårsak.${periode.årsak}`)
+                });
+            }
+            return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
         case Periodetype.Opphold:
             return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
     }
@@ -72,15 +76,28 @@ const renderDagMnd = (dato: Date): JSX.Element =>
         <div className={BEM.element('dagmnd')}>-</div>
     );
 
-const renderPeriodeIkon = (periode: Periode): JSX.Element | undefined => {
+const renderPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): JSX.Element | undefined => {
     if (periode.type === Periodetype.Uttak) {
-        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} gradert={periode.gradert} />;
+        return (
+            <StønadskontoIkon
+                konto={periode.konto}
+                forelder={periode.forelder}
+                gradert={periode.gradert}
+                navnPåForeldre={navnPåForeldre}
+            />
+        );
     } else if (periode.type === Periodetype.Overføring) {
-        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} />;
+        return <StønadskontoIkon konto={periode.konto} forelder={periode.forelder} navnPåForeldre={navnPåForeldre} />;
     } else if (periode.type === Periodetype.Utsettelse) {
         return <UtsettelseIkon årsak={periode.årsak} />;
     } else if (periode.type === Periodetype.Opphold) {
-        return <StønadskontoIkon konto={StønadskontoType.Foreldrepenger} forelder={periode.forelder} />;
+        return (
+            <StønadskontoIkon
+                konto={StønadskontoType.Foreldrepenger}
+                forelder={periode.forelder}
+                navnPåForeldre={navnPåForeldre}
+            />
+        );
     }
     return undefined;
 };
@@ -106,7 +123,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                 [BEM.modifier('apnet')]: isOpen
             })}>
             <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
-                {renderPeriodeIkon(periode)}
+                {renderPeriodeIkon(periode, navnPåForeldre)}
             </div>
             <div className={BEM.element('beskrivelse')}>
                 <Element tag="h1">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
@@ -120,10 +137,16 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             {advarsel && (
                 <div className={BEM.element('advarsel')}>
                     <AriaText id={advarselId}>
-                        {advarsel.tittel ? advarsel.tittel : undefined}
+                        {advarsel.tittel ? <strong>{advarsel.tittel}</strong> : undefined}
                         {advarsel.beskrivelse}
                     </AriaText>
-                    <UttaksplanIkon ikon={getIkonForAdvarsel(advarsel)} aria-labeledby={advarselId} />
+                    <span role="presentation">
+                        <UttaksplanIkon
+                            ikon={getIkonForAdvarsel(advarsel)}
+                            aria-labeledby={advarselId}
+                            title={advarsel.beskrivelse}
+                        />
+                    </span>
                 </div>
             )}
             {visDatoer && (

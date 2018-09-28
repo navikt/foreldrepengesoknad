@@ -7,6 +7,8 @@ import {
 import UttaksplanIkon, { UttaksplanIkonKeys } from './UttaksplanIkon';
 import { getUtsettelseFarge } from '../../util/uttaksplan/styleUtils';
 import IconBox from '../icon-box/IconBox';
+import getMessage from 'common/util/i18nUtils';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface Props {
     årsak: Utsettelsesårsaker;
@@ -26,10 +28,10 @@ const getIkonForKonto = (årsak: Utsettelsesårsaker): UttaksplanIkonKeys => {
     }
 };
 
-const UtsettelseIkon: React.StatelessComponent<Props> = ({ årsak, gradert }) => (
+const UtsettelseIkon: React.StatelessComponent<Props & InjectedIntlProps> = ({ årsak, gradert, intl }) => (
     <IconBox color={getUtsettelseFarge()} stripes={gradert}>
-        <UttaksplanIkon ikon={getIkonForKonto(årsak)} />
+        <UttaksplanIkon ikon={getIkonForKonto(årsak)} title={getMessage(intl, `utsettelsesårsak.${årsak}`)} />
     </IconBox>
 );
 
-export default UtsettelseIkon;
+export default injectIntl(UtsettelseIkon);

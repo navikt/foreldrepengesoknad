@@ -541,6 +541,7 @@
     "utsettelse.sykdom.vedlegg.info": "Informasjon vedlegg sykdom",
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",

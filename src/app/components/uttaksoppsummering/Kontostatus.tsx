@@ -21,7 +21,7 @@ const BEM = BEMHelper('kontostatus');
 const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ uttak, navnPåForeldre, intl }) => (
     <Normaltekst className={BEM.className} tag="div">
         <div className={BEM.element('ikon')}>
-            <StønadskontoIkon konto={uttak.konto} />
+            <StønadskontoIkon konto={uttak.konto} navnPåForeldre={navnPåForeldre} />
         </div>
         <div className={BEM.element('content')}>
             <div className={BEM.element('konto')}>{getStønadskontoNavn(intl, uttak.konto, navnPåForeldre)}</div>
