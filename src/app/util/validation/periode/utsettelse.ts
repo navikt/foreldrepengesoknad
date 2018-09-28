@@ -1,8 +1,8 @@
 import { getUtsettelseFormVisibility } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { ValiderUtsettelsePayload } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { PeriodeValideringErrorKey, Valideringsfeil } from '../../../redux/reducers/uttaksplanValideringReducer';
 
-export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Feil[] | undefined => {
+export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Valideringsfeil[] | undefined => {
     const { variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
     const visibility = getUtsettelseFormVisibility(variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor);
     if (visibility.areAllQuestionsAnswered()) {
@@ -10,7 +10,7 @@ export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Fei
     }
     return [
         {
-            feilmelding: 'Ikke alle felter er fylt ut'
+            feilKey: PeriodeValideringErrorKey.FORM_INCOMPLETE
         }
     ];
 };

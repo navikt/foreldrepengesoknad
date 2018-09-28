@@ -10,7 +10,9 @@ import EndrePeriodeFormContent from '../endre-periode-form-content/EndrePeriodeF
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
 import './periodeliste.less';
-import { PeriodeValidering, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import { UttaksplanValidering, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 export interface Props {
     perioder: Periode[];
@@ -20,18 +22,27 @@ export interface Props {
 
 const bem = BEMHelper('periodeliste');
 
-const getAdvarselForPeriode = (periode: Periode, validering: PeriodeValidering): Advarsel | undefined => {
+const getAdvarselForPeriode = (
+    periode: Periode,
+    validering: UttaksplanValidering,
+    intl: InjectedIntl
+): Advarsel | undefined => {
     const v = validering[periode.id!];
-    if (v && v.feil !== undefined) {
+    if (v && v.valideringsfeil !== undefined && v.valideringsfeil.length > 0) {
         return {
             type: 'feil',
-            beskrivelse: v.feil[0].feilmelding
+            beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${v.valideringsfeil[0].feilKey}`)
         };
     }
     return undefined;
 };
 
-const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanValidering, navnPåForeldre }) => (
+const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    perioder,
+    uttaksplanValidering,
+    navnPåForeldre,
+    intl
+}) => (
     <div className={bem.className}>
         {perioder.map((p) => (
             <div className={bem.element('item')} key={p.id}>
@@ -44,7 +55,7 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanVal
                                 <PeriodeHeader
                                     periode={p}
                                     navnPåForeldre={navnPåForeldre}
-                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.perioder)}
+                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.validering, intl)}
                                 />
                             )}
                             renderContent={() => (
@@ -69,4 +80,4 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanVal
     </div>
 );
 
-export default Periodeliste;
+export default injectIntl(Periodeliste);

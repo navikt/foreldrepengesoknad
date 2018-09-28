@@ -3,44 +3,51 @@ import {
     UttaksplanValideringActionKeys,
     ValiderUtsettelsePayload
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { validerUtsettelsePeriode } from '../../util/validation/periode/utsettelse';
 
-export interface UttaksplanValideringState {
-    perioder: PeriodeValidering;
+export enum PeriodeValideringErrorKey {
+    'FORM_INCOMPLETE' = 'formIncomplete'
 }
 
-export interface PeriodeValidering {
-    [key: string]: PeriodeValideringInfo | undefined;
+export interface UttaksplanValideringState {
+    validering: UttaksplanValidering;
+}
+
+export interface UttaksplanValidering {
+    [periodeId: string]: PeriodeValideringInfo | undefined;
 }
 
 interface PeriodeValideringInfo {
-    feil?: Feil[];
+    valideringsfeil?: Valideringsfeil[];
+}
+
+export interface Valideringsfeil {
+    feilKey: PeriodeValideringErrorKey;
 }
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        perioder: {}
+        validering: {}
     };
 };
 
 const updatePeriodeValidering = (
-    perioder: PeriodeValidering,
+    perioder: UttaksplanValidering,
     periodeId: string,
-    feil: Feil[] | undefined
-): PeriodeValidering => {
+    valideringsfeil: Valideringsfeil[] | undefined
+): UttaksplanValidering => {
     return {
         ...perioder,
         [periodeId]: {
-            feil
+            valideringsfeil
         }
     };
 };
 
-const validerPerioder = (payload: ValiderUtsettelsePayload[]): PeriodeValidering => {
-    const validering: PeriodeValidering = {};
+const validerPerioder = (payload: ValiderUtsettelsePayload[]): UttaksplanValidering => {
+    const validering: UttaksplanValidering = {};
     payload.forEach((p) => {
-        validering[p.periode.id!] = { feil: validerUtsettelsePeriode(p) };
+        validering[p.periode.id!] = { valideringsfeil: validerUtsettelsePeriode(p) };
     });
     return validering;
 };
@@ -55,8 +62,8 @@ const uttaksplanValideringReducer = (
             if (periode.id) {
                 return {
                     ...state,
-                    perioder: updatePeriodeValidering(
-                        state.perioder,
+                    validering: updatePeriodeValidering(
+                        state.validering,
                         periode.id,
                         validerUtsettelsePeriode(action.payload)
                     )
@@ -66,7 +73,7 @@ const uttaksplanValideringReducer = (
         case UttaksplanValideringActionKeys.VALIDER_UTSETTELSER:
             return {
                 ...state,
-                perioder: validerPerioder(action.payload)
+                validering: validerPerioder(action.payload)
             };
     }
     return state;
