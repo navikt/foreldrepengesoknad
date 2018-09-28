@@ -6,10 +6,11 @@ import {
     getBarnInfoFraRegistrertBarnValg
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
+import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { guid } from 'nav-frontend-js-utils';
 import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
+import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -51,6 +52,16 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
     };
 };
 
+const handleGjelderAnnetBarn = (
+    annenForelder: AnnenForelderPartial,
+    gjelderAnnetBarn?: boolean
+): AnnenForelderPartial => {
+    if (gjelderAnnetBarn) {
+        return { fnr: undefined, fornavn: undefined, etternavn: undefined };
+    }
+    return annenForelder;
+};
+
 const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
@@ -90,13 +101,14 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
+            const gjelderAnnetBarn = action.payload.gjelderAnnetBarn;
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
             const updatedState: SøknadPartial = {
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
-                    : state.annenForelder,
+                    : handleGjelderAnnetBarn(state.annenForelder, gjelderAnnetBarn),
                 sensitivInfoIkkeLagre: {
                     ...state.sensitivInfoIkkeLagre,
                     søknadenGjelderBarnValg: action.payload,
