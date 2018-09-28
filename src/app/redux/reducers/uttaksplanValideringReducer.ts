@@ -9,16 +9,18 @@ export enum PeriodeValideringErrorKey {
     'FORM_INCOMPLETE' = 'formIncomplete'
 }
 
+interface PeriodeInfo {
+    valideringsfeil?: Valideringsfeil[];
+    advarsler?: string[];
+    informasjon?: string[];
+}
+
 export interface UttaksplanValideringState {
     validering: UttaksplanValidering;
 }
 
 export interface UttaksplanValidering {
-    [periodeId: string]: PeriodeValideringInfo | undefined;
-}
-
-interface PeriodeValideringInfo {
-    valideringsfeil?: Valideringsfeil[];
+    [periodeId: string]: PeriodeInfo | undefined;
 }
 
 export interface Valideringsfeil {
