@@ -26,6 +26,7 @@ function* validerPeriode(action: UttaksplanUpdatePeriode | UttaksplanAddPeriode)
     if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) {
         const variant = getVariantFromPeriode(periode);
         const payload: ValiderUtsettelsePayload = {
+            perioder: søknad.uttaksplan,
             periode,
             variant,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
@@ -46,6 +47,7 @@ function* validerUttaksplan() {
         if (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) {
             const variant = getVariantFromPeriode(periode);
             const payload: ValiderUtsettelsePayload = {
+                perioder: søknad.uttaksplan,
                 periode,
                 variant,
                 søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,

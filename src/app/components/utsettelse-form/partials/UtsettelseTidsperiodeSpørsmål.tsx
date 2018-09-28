@@ -25,6 +25,10 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
                 minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
             }
         }}
+        datoValidatorer={{
+            fra: [{ test: () => tidsperiode.fom !== undefined, failText: 'Påkrevd' }],
+            til: [{ test: () => tidsperiode.tom !== undefined, failText: 'Påkrevd' }]
+        }}
         visVarighet={true}
     />
 );

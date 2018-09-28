@@ -36,11 +36,12 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
         isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
     },
     [Sp.variant]: {
-        isAnswered: ({ variant }) => questionIsAnswered(variant),
-        parentQuestion: Sp.tidsperiode
+        isAnswered: ({ variant }) => questionIsAnswered(variant)
+        // parentQuestion: Sp.tidsperiode
     },
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered(periode.årsak),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
@@ -49,6 +50,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) => harRegistrertArbeidOk(variant, periode),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.morsAktivitet]: {
@@ -63,6 +65,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered((periode as Oppholdsperiode).årsak),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     }
 };

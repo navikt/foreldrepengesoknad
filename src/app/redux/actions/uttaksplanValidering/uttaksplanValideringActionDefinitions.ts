@@ -2,6 +2,7 @@ import {
     Utsettelsesvariant,
     UtsettelseperiodeFormPeriodeType
 } from '../../../components/utsettelse-form/UtsettelseForm';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 export enum UttaksplanValideringActionKeys {
     'VALIDER_UTSETTELSE' = 'validerUtsettelse',
@@ -9,7 +10,11 @@ export enum UttaksplanValideringActionKeys {
     'VALIDER_UTTAKSPLAN' = 'validerUttaksplan'
 }
 
-export interface ValiderUtsettelsePayload {
+export interface ValiderPeriodePayload {
+    perioder: Periode[];
+}
+
+export interface ValiderUtsettelsePayload extends ValiderPeriodePayload {
     variant?: Utsettelsesvariant;
     periode: UtsettelseperiodeFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
