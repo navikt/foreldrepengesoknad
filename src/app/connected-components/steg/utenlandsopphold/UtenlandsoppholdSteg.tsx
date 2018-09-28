@@ -56,16 +56,18 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <SkalBoINorgeNeste12MndSpørsmål
-                iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
-                onChange={(iNorgeNeste12Mnd: boolean) =>
-                    dispatch(
-                        søknadActions.updateUtenlandsopphold({
-                            iNorgeNeste12Mnd
-                        })
-                    )
-                }
-            />
+            <Block>
+                <SkalBoINorgeNeste12MndSpørsmål
+                    iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
+                    onChange={(iNorgeNeste12Mnd: boolean) =>
+                        dispatch(
+                            søknadActions.updateUtenlandsopphold({
+                                iNorgeNeste12Mnd
+                            })
+                        )
+                    }
+                />
+            </Block>
         );
     }
 
