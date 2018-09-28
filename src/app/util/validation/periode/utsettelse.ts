@@ -10,8 +10,7 @@ export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Fei
     }
     return [
         {
-            tittel: 'whoa',
-            feilmelding: 'Ikke alle felter er gylt ut'
+            feilmelding: 'Ikke alle felter er fylt ut'
         }
     ];
 };
