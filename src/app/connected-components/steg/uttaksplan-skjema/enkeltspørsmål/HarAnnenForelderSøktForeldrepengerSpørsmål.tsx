@@ -10,7 +10,7 @@ interface OwnProps {
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
 const HarAnnenForelderSøktForeldrepengerSpørsmål: React.StatelessComponent<Props> = ({
-    visible = true,
+    visible,
     navnAnnenForelder,
     intl
 }) => (

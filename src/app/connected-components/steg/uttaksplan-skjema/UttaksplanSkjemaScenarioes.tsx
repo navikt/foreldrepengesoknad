@@ -69,22 +69,28 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     return (
         <>
-            <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
-            <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
+            <HarAnnenForelderSøktForeldrepengerSpørsmål
+                visible={søknad.annenForelder.harRettPåForeldrepenger}
+                navnAnnenForelder={søknad.annenForelder.fornavn}
+            />
+            <DekningsgradSpørsmål
+                visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
+            />
             {søknad.situasjon === Søkersituasjon.ADOPSJON && (
                 <StartdatoAdopsjonBolk
                     familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                    visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== undefined}
+                    visible={søknad.dekningsgrad !== undefined}
                     barn={søknad.barn as Adopsjonsbarn}
                 />
             )}
-            {søknad.søker.erAleneOmOmsorg === false && (
-                <FordelingFellesperiodeSpørsmål
-                    visible={skjema.startdatoPermisjon !== undefined}
-                    ukerFellesperiode={antallUkerFellesperiode}
-                    navnPåForeldre={navnPåForeldre}
-                />
-            )}
+            {søknad.søker.erAleneOmOmsorg === false &&
+                søknad.annenForelder.harRettPåForeldrepenger && (
+                    <FordelingFellesperiodeSpørsmål
+                        visible={skjema.startdatoPermisjon !== undefined}
+                        ukerFellesperiode={antallUkerFellesperiode}
+                        navnPåForeldre={navnPåForeldre}
+                    />
+                )}
         </>
     );
 };
