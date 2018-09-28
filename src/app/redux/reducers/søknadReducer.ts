@@ -57,7 +57,7 @@ const handleGjelderAnnetBarn = (
     gjelderAnnetBarn?: boolean
 ): AnnenForelderPartial => {
     if (gjelderAnnetBarn) {
-        return { fnr: undefined, fornavn: undefined, etternavn: undefined };
+        return { ...annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined };
     }
     return annenForelder;
 };
