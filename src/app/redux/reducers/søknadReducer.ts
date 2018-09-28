@@ -6,11 +6,10 @@ import {
     getBarnInfoFraRegistrertBarnValg
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
+import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { guid } from 'nav-frontend-js-utils';
 import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
-import { annenForelderErGyldig } from '../../util/validation/steg/annenForelder';
 
 const getDefaultState = (): SøknadPartial => {
     return {

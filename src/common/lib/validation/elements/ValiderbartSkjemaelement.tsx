@@ -12,9 +12,9 @@ export interface ValiderbartSkjemaelementProps {
     label?: ReactNode;
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
-    onChange?: ValiderEvent;
-    onBlur?: ValiderEvent;
-    onValidate?: ValiderEvent;
+    onChange?: any;
+    onBlur?: any;
+    onValidate?: any;
 }
 
 export interface Props extends ValiderbartSkjemaelementProps {
@@ -72,7 +72,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         }
 
         if (this.props.onChange) {
-            this.props.onChange(e);
+            const args = Array.prototype.slice.call(arguments);
+            this.props.onChange(...args);
         }
     }
 
@@ -90,7 +91,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         }
 
         if (this.props.onBlur) {
-            this.props.onBlur(e);
+            const args = Array.prototype.slice.call(arguments);
+            this.props.onBlur(...args);
         }
     }
 
