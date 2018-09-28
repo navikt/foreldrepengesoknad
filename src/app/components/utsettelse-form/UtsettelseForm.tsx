@@ -63,7 +63,7 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType): Utsettelsesvariant | undefined => {
+export const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType): Utsettelsesvariant | undefined => {
     if (periode.type === Periodetype.Opphold) {
         return Utsettelsesvariant.UttakAnnenForelder;
     } else {

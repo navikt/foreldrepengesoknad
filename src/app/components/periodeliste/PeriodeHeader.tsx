@@ -21,10 +21,12 @@ import {
     getForelderNavn
 } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import AriaText from 'common/components/aria/AriaText';
 
-export type AdvarselType = 'advarsel' | 'feil';
+type AdvarselType = 'advarsel' | 'feil';
 
-interface Advarsel {
+export interface Advarsel {
+    tittel?: string;
     beskrivelse: string;
     type: AdvarselType;
 }
@@ -97,6 +99,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
         intl
     );
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
+    const advarselId = `advarsel__${periode.id}`;
     return (
         <article
             className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
@@ -116,7 +119,11 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             </div>
             {advarsel && (
                 <div className={BEM.element('advarsel')}>
-                    <UttaksplanIkon ikon={getIkonForAdvarsel(advarsel)} />
+                    <AriaText id={advarselId}>
+                        {advarsel.tittel ? advarsel.tittel : undefined}
+                        {advarsel.beskrivelse}
+                    </AriaText>
+                    <UttaksplanIkon ikon={getIkonForAdvarsel(advarsel)} aria-labeledby={advarselId} />
                 </div>
             )}
             {visDatoer && (
