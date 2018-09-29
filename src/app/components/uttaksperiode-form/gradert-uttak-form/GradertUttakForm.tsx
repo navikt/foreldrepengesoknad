@@ -80,12 +80,13 @@ class GradertUttakForm extends React.Component<Props> {
                 <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
-                        onChange={(orgnrValue: string, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) =>
+                        onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
                             onChange({
-                                orgnr: orgnrValue,
-                                skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
+                                orgnr,
+                                selvstendigNæringsdrivendeEllerFrilans
                             })
                         }
+                        frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
                         valgtArbeidsforhold={periode.orgnr}
                     />
                 </Block>

@@ -28,8 +28,7 @@ const Sp = UtsettelseSpørsmålKeys;
 const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
     periode.årsak === UtsettelseÅrsakType.Arbeid &&
     variant === Utsettelsesvariant.Arbeid &&
-    (questionIsAnswered(periode.orgnr) ||
-        questionIsAnswered(periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende));
+    (questionIsAnswered(periode.orgnr) || questionIsAnswered(periode.selvstendigNæringsdrivendeEllerFrilans));
 
 export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
