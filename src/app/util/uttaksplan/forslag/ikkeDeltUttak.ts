@@ -59,12 +59,57 @@ const ikkeDeltUttakAdopsjon = (
     }
 };
 
+const ikkeDeltUttakFødselMor = (
+    famDato: Date,
+    foreldrepengerKonto: TilgjengeligStønadskonto,
+    startdatoPermisjon: Date | undefined
+) => {
+    famDato = normaliserDato(Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste());
+    const perioder: Uttaksperiode[] = [
+        {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.MOR,
+            konto: foreldrepengerKonto.konto,
+            tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
+            vedlegg: [],
+            ønskerSamtidigUttak: false
+        }
+    ];
+    return perioder;
+};
+
+const ikkeDeltUttakFødselFarMedmor = (
+    famDato: Date,
+    foreldrepengerKonto: TilgjengeligStønadskonto,
+    startdatoPermisjon: Date | undefined
+) => {
+    famDato = normaliserDato(Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste());
+    const perioder: Uttaksperiode[] = [
+        {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.FARMEDMOR,
+            konto: foreldrepengerKonto.konto,
+            tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
+            vedlegg: [],
+            ønskerSamtidigUttak: false
+        }
+    ];
+    return perioder;
+};
+
 const ikkeDeltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: TilgjengeligStønadskonto
+    foreldrepengerKonto: TilgjengeligStønadskonto,
+    startdatoPermisjon: Date | undefined
 ) => {
-    return [];
+    if (!erFarEllerMedmor) {
+        return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon);
+    } else {
+        return ikkeDeltUttakFødselFarMedmor(famDato, foreldrepengerKonto, startdatoPermisjon);
+    }
 };
 
 export const ikkeDeltUttak = (
@@ -79,7 +124,7 @@ export const ikkeDeltUttak = (
     }
 
     if (situasjon === Søkersituasjon.FØDSEL) {
-        return ikkeDeltUttakFødsel(famDato, erFarEllerMedmor, foreldrepengerKonto);
+        return ikkeDeltUttakFødsel(famDato, erFarEllerMedmor, foreldrepengerKonto, startdatoPermisjon);
     }
 
     return [];

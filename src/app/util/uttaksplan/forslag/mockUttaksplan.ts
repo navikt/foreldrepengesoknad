@@ -2,6 +2,7 @@ import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
+import { deltUttak } from './deltUttak';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date | undefined => {
@@ -37,7 +38,7 @@ export const lagMockUttaksplan = (
 
     if (famDato) {
         if (erDeltUttak) {
-            return [];
+            return deltUttak(situasjon, famDato, erFarEllerMedmor(søknad.søker.rolle));
         } else {
             return ikkeDeltUttak(
                 situasjon,
