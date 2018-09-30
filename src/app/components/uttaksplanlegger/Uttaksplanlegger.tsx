@@ -12,11 +12,13 @@ import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn } from '../../types/søknad/Barn';
 import { NavnPåForeldre } from 'common/types';
+import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
     barn: Barn;
     uttaksplan: Periode[];
+    uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
@@ -28,7 +30,15 @@ const BEM = BEMHelper('uttaksplanlegger');
 
 class Uttaksplanlegger extends React.Component<Props, {}> {
     render() {
-        const { søkersituasjon, barn, uttaksplan, navnPåForeldre, onAdd, onRequestReset } = this.props;
+        const {
+            søkersituasjon,
+            barn,
+            uttaksplan,
+            uttaksplanValidering,
+            navnPåForeldre,
+            onAdd,
+            onRequestReset
+        } = this.props;
         return (
             <article className={BEM.className}>
                 <header className={BEM.element('header')}>
@@ -48,7 +58,11 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                     </span>
                 </header>
                 <Block visible={uttaksplan.length > 0}>
-                    <Periodeliste perioder={uttaksplan} navnPåForeldre={navnPåForeldre} />
+                    <Periodeliste
+                        perioder={uttaksplan}
+                        navnPåForeldre={navnPåForeldre}
+                        uttaksplanValidering={uttaksplanValidering}
+                    />
                 </Block>
                 <div className={BEM.element('addFormContainer')}>
                     <NyPeriodeBolk onSubmit={onAdd} />
