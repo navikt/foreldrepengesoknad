@@ -77,10 +77,6 @@ const uttaksplanValideringReducer = (
                 ...state,
                 validering: validerUtsettelser(action.payload)
             };
-        case UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN:
-            return {
-                ...state
-            };
     }
     return state;
 };

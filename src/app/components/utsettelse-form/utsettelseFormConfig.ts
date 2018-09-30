@@ -37,7 +37,6 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.variant]: {
         isAnswered: ({ variant }) => questionIsAnswered(variant)
-        // parentQuestion: Sp.tidsperiode
     },
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered(periode.årsak),

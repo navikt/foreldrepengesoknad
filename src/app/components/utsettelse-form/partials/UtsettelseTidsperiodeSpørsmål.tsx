@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
@@ -8,10 +10,11 @@ export interface Props {
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
+const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
     onChange,
     familiehendelsesdato,
-    tidsperiode
+    tidsperiode,
+    intl
 }) => (
     <TidsperiodeBolk
         onChange={(t: Partial<Tidsperiode>) => onChange(t)}
@@ -26,11 +29,11 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props> = ({
             }
         }}
         datoValidatorer={{
-            fra: [{ test: () => tidsperiode.fom !== undefined, failText: 'Påkrevd' }],
-            til: [{ test: () => tidsperiode.tom !== undefined, failText: 'Påkrevd' }]
+            fra: [{ test: () => tidsperiode.fom !== undefined, failText: getMessage(intl, 'påkrevd') }],
+            til: [{ test: () => tidsperiode.tom !== undefined, failText: getMessage(intl, 'påkrevd') }]
         }}
         visVarighet={true}
     />
 );
 
-export default UtsettelseTidsperiodeSpørsmål;
+export default injectIntl(UtsettelseTidsperiodeSpørsmål);

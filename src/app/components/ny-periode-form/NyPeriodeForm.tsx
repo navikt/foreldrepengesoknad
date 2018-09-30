@@ -17,7 +17,7 @@ import NyPeriodeKnapperad from './NyPeriodeKnapperad';
 interface OwnProps {
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
-    periodetype: Periodetype.Uttak | Periodetype.Utsettelse;
+    periodetype: Periodetype;
 }
 
 interface State {
