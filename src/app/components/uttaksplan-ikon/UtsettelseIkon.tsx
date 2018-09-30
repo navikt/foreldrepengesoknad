@@ -30,7 +30,10 @@ const getIkonForKonto = (årsak: Utsettelsesårsaker): UttaksplanIkonKeys => {
 
 const UtsettelseIkon: React.StatelessComponent<Props & InjectedIntlProps> = ({ årsak, gradert, intl }) => (
     <IconBox color={getUtsettelseFarge()} stripes={gradert}>
-        <UttaksplanIkon ikon={getIkonForKonto(årsak)} title={getMessage(intl, `utsettelsesårsak.${årsak}`)} />
+        <UttaksplanIkon
+            ikon={getIkonForKonto(årsak)}
+            title={getMessage(intl, `utsettelsesårsak.${årsak || 'ukjent'}`)}
+        />
     </IconBox>
 );
 
