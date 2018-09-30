@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
+import getMessage from 'common/util/i18nUtils';
 
 export interface FlervalgAlternativ {
     label: string;
@@ -20,7 +21,7 @@ interface FlervalgSpørsmålProps {
 type Props = FlervalgSpørsmålProps & InjectedIntlProps;
 
 const FlervalgSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, valgtVerdi, alternativer, toKolonner = false } = props;
+    const { onChange, spørsmål, hjelpetekst, valgtVerdi, alternativer, toKolonner = false, intl } = props;
 
     return (
         <RadioPanelGruppe
@@ -34,7 +35,7 @@ const FlervalgSpørsmål = (props: Props) => {
             validators={[
                 {
                     test: () => valgtVerdi !== undefined,
-                    failText: 'shoo'
+                    failText: getMessage(intl, 'radiopanelgruppe.required.feilmelding')
                 }
             ]}
         />

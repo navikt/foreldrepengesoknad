@@ -425,6 +425,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
     "valideringsfeil.stillingsprosent.under0": "Stillingsprosenten må være over 0",
 
+    "radiopanelgruppe.required.feilmelding": "Påkrevd",
+
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":
