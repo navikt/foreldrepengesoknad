@@ -35,7 +35,7 @@ const gradertUttakSpørsmålConfig: QuestionConfig<GradertUttakSpørsmålPayload
             periode.gradert === true &&
             erAleneOmOmsorg === false &&
             annenForelderHarRett &&
-            (periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende === true || periode.orgnr !== undefined)
+            (periode.selvstendigNæringsdrivendeEllerFrilans !== undefined || periode.orgnr !== undefined)
     }
 };
 

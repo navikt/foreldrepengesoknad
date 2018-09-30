@@ -223,13 +223,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     <HvorSkalDuJobbeSpørsmål
                                         arbeidsforhold={arbeidsforhold}
                                         valgtArbeidsforhold={periode.orgnr}
-                                        onChange={(
-                                            v: string,
-                                            skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean
-                                        ) =>
+                                        frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
+                                        onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
                                             onChange({
-                                                orgnr: v,
-                                                skalJobbeSomFrilansEllerSelvstendigNæringsdrivende
+                                                orgnr,
+                                                selvstendigNæringsdrivendeEllerFrilans
                                             })
                                         }
                                     />
