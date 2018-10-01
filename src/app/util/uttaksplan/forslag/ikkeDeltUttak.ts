@@ -125,14 +125,20 @@ const ikkeDeltUttakFødselMor = (
     return perioder.sort(sorterPerioder);
 };
 
-const ikkeDeltUttakFødselFarMedmor = (famDato: Date, foreldrepengerKonto: TilgjengeligStønadskonto) => {
+const ikkeDeltUttakFødselFarMedmor = (
+    famDato: Date,
+    foreldrepengerKonto: TilgjengeligStønadskonto,
+    startdatoPermisjon: Date | undefined
+) => {
+    const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+
     const perioder: Periode[] = [
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false
         }
@@ -151,7 +157,7 @@ const ikkeDeltUttakFødsel = (
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakFødselMor(famDato, foreldrepengerKonto, startdatoPermisjon, foreldrePengerFørFødselKonto!);
     } else {
-        return ikkeDeltUttakFødselFarMedmor(famDato, foreldrepengerKonto);
+        return ikkeDeltUttakFødselFarMedmor(famDato, foreldrepengerKonto, startdatoPermisjon);
     }
 };
 
