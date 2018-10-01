@@ -29,8 +29,8 @@ export const cleanupPeriode = (periode: Periode): Periode => {
             morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
             ønskerSamtidigUttak: periode.gradert === true ? periode.ønskerSamtidigUttak : undefined,
             stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
-            skalJobbeSomFrilansEllerSelvstendigNæringsdrivende:
-                periode.gradert === true ? periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende : undefined,
+            selvstendigNæringsdrivendeEllerFrilans:
+                periode.gradert === true ? periode.selvstendigNæringsdrivendeEllerFrilans : undefined,
             orgnr: periode.gradert === true ? periode.orgnr : undefined
         };
         if (isForeldrepengerFørFødselUttaksperiode(periode)) {
