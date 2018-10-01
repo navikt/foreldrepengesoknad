@@ -106,7 +106,10 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
-                    ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
+                    ? {
+                          ...state.annenForelder,
+                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
+                      }
                     : handleGjelderAnnetBarn(state.annenForelder, gjelderAnnetBarn),
                 sensitivInfoIkkeLagre: {
                     ...state.sensitivInfoIkkeLagre,
