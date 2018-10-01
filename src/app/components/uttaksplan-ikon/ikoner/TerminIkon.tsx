@@ -1,7 +1,9 @@
-import React, { SVGProps } from 'react';
+import React from 'react';
+import { UttaksplanIkonProps } from '../types';
 
-const TerminIkon = (props: SVGProps<any>) => (
+const TerminIkon = (props: UttaksplanIkonProps) => (
     <svg width={24} height={24} viewBox="0 0 24 24" {...props}>
+        <title>{props.title}</title>
         <path
             fill="none"
             fillRule="evenodd"

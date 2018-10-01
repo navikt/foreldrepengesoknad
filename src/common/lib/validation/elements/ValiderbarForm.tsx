@@ -11,7 +11,8 @@ export interface ValiderbarFormProps {
     summaryTitle?: string;
     noSummary?: boolean;
     validateBeforeSubmit?: boolean;
-    onValidationResult?: (result: ValidationResult[]) => void;
+    onValidationResult?: (result: SummaryError[]) => void;
+    runValidationOnRegister?: boolean;
 }
 
 export interface ValidFormContext {
@@ -20,6 +21,7 @@ export interface ValidFormContext {
     onChange: (e: any, component: React.ComponentType) => void;
     onBlur: (e: any, component: React.ComponentType) => void;
     validateField: (componentId: string) => void;
+    validateAll: () => void;
 }
 
 interface ValiderbarFormState {
@@ -38,15 +40,15 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     constructor(props: ValiderbarFormProps) {
         super(props);
 
+        this.components = [];
+        this.onSubmit = this.onSubmit.bind(this);
+        this.shouldValidate = this.shouldValidate.bind(this);
+
         this.state = {
             results: [],
             valid: true,
             failedSubmit: false
         };
-
-        this.components = [];
-        this.onSubmit = this.onSubmit.bind(this);
-        this.shouldValidate = this.shouldValidate.bind(this);
     }
 
     getChildContext() {
@@ -56,7 +58,8 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
                 unregister: this.unRegisterComponent.bind(this),
                 onChange: this.onChange.bind(this),
                 onBlur: this.onBlur.bind(this),
-                validateField: this.validateField.bind(this)
+                validateField: this.validateField.bind(this),
+                validateAll: this.validateAll.bind(this)
             }
         };
     }
@@ -120,7 +123,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
                 failedSubmit: this.state.failedSubmit && !valid
             });
             if (this.props.onValidationResult) {
-                this.props.onValidationResult(results);
+                this.props.onValidationResult(this.mapResultsToErrorSummary());
             }
         });
     }
@@ -135,14 +138,17 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
             failedSubmit: this.state.failedSubmit && !valid
         });
         if (this.props.onValidationResult) {
-            this.props.onValidationResult(results);
+            this.props.onValidationResult(this.mapResultsToErrorSummary());
         }
         return valid;
     }
 
-    registerComponent(component: React.Component) {
+    registerComponent(component: React.ComponentType) {
         if (this.components.indexOf(component) === -1) {
             this.components.push(component);
+            if (this.props.runValidationOnRegister) {
+                this.validateOne(component);
+            }
         }
     }
 
@@ -179,6 +185,7 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
             summaryTitle,
             validateBeforeSubmit,
             onValidationResult,
+            runValidationOnRegister,
             ...other
         } = this.props;
         let summaryBox;

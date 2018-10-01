@@ -42,11 +42,18 @@ class NyPeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        const { periodetype } = props;
         const periode: RecursivePartial<Periode> = {
-            type: Periodetype.Utsettelse,
             tidsperiode: {}
         };
-
+        if (
+            periodetype === Periodetype.Utsettelse ||
+            periodetype === Periodetype.Uttak ||
+            periodetype === Periodetype.Opphold ||
+            periodetype === Periodetype.Overføring
+        ) {
+            periode.type = periodetype;
+        }
         this.state = {
             periode
         };
@@ -92,7 +99,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                         />
                     </>
                 )}
-                {periode.type === Periodetype.Uttak && (
+                {(periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />

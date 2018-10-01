@@ -1,7 +1,9 @@
-import React, { SVGProps } from 'react';
+import React from 'react';
+import { UttaksplanIkonProps } from '../types';
 
-const SykdomIkon = (props: SVGProps<any>) => (
+const SykdomIkon = (props: UttaksplanIkonProps) => (
     <svg xmlnsXlink="http://www.w3.org/1999/xlink" width={32} height={32} {...props}>
+        <title>{props.title}</title>
         <defs>
             <rect id="a" width={32} height={32} rx={10} />
             <path

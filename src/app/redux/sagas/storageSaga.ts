@@ -4,6 +4,7 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
+import { default as uttaksplanValideringActions } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
@@ -26,6 +27,7 @@ function* saveAppState() {
 function* applyStoredStateToApp(state: AppState) {
     yield put(søknadActions.updateSøknad(state.søknad));
     yield put(commonActions.setSpråk(state.common.språkkode));
+    yield put(uttaksplanValideringActions.validerUttaksplanAction());
     yield put(
         apiActions.updateApi({
             isLoadingAppState: false
