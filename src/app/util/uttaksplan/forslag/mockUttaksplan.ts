@@ -20,23 +20,23 @@ export const lagMockUttaksplan = (
     søknad: Søknad,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
 ): Periode[] => {
-    // const { søker, barn, situasjon, ekstrainfo, annenForelder } = søknad;
-    // const {
-    //     uttaksplanSkjema: { fellesperiodeukerMor, startdatoPermisjon, morSinSisteUttaksdag }
-    // } = ekstrainfo;
-    // const { erAleneOmOmsorg, rolle } = søker;
-    // const { kanIkkeOppgis } = annenForelder;
-    // const fellesUkerMor = fellesperiodeukerMor || 0;
     const { barn, situasjon, ekstrainfo } = søknad;
     const { uttaksplanSkjema } = ekstrainfo;
-    const { startdatoPermisjon } = uttaksplanSkjema;
+    const { startdatoPermisjon, fellesperiodeukerMor } = uttaksplanSkjema;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
     const erDeltUttak: boolean =
         tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Foreldrepenger) === undefined;
 
     if (famDato) {
         if (erDeltUttak) {
-            return deltUttak(situasjon, famDato, erFarEllerMedmor(søknad.søker.rolle));
+            return deltUttak(
+                situasjon,
+                famDato,
+                erFarEllerMedmor(søknad.søker.rolle),
+                tilgjengeligeStønadskontoer,
+                startdatoPermisjon,
+                fellesperiodeukerMor
+            );
         } else {
             return ikkeDeltUttak(
                 situasjon,

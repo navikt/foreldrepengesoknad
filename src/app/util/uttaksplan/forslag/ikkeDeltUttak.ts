@@ -94,6 +94,18 @@ const ikkeDeltUttakFødselMor = (
         };
 
         perioder.push(periodeFørFødsel);
+    } else {
+        const periodeFørFødsel: Periode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.MOR,
+            konto: foreldrePengerFørFødselKonto.konto,
+            tidsperiode: {} as any,
+            vedlegg: [],
+            ønskerSamtidigUttak: false
+        };
+
+        perioder.push(periodeFørFødsel);
     }
 
     if (foreldrepengerKonto !== undefined) {

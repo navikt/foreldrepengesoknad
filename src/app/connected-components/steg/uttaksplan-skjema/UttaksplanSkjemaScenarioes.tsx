@@ -25,7 +25,10 @@ export interface Props extends ScenarioProps {
 
 const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre }) => (
     <>
-        <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
+        <HarAnnenForelderSøktForeldrepengerSpørsmål
+            visible={søknad.annenForelder.harRettPåForeldrepenger}
+            navnAnnenForelder={søknad.annenForelder.fornavn}
+        />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
         <MorSinSisteUttaksdagSpørsmål
             visible={

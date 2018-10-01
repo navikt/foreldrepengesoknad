@@ -2,7 +2,7 @@ import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export enum UttaksplanSkjemaScenario {
-    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's2_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
+    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
     's2_alleFødselAdopsjon_deltPlan' = 's2_alleFødselAdopsjon_deltPlan',
     's3_morFødsel' = 's3_morFødsel',
     's4_morFarAdopsjon' = 's4_morFarAdopsjon',
