@@ -10,7 +10,7 @@ import EndrePeriodeFormContent from '../endre-periode-form-content/EndrePeriodeF
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
 import './periodeliste.less';
-import { UttaksplanValidering, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import { UttaksplanValideringState, Periodevalidering } from '../../redux/reducers/uttaksplanValideringReducer';
 import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
@@ -24,15 +24,17 @@ const bem = BEMHelper('periodeliste');
 
 const getAdvarselForPeriode = (
     periode: Periode,
-    validering: UttaksplanValidering,
+    periodevalidering: Periodevalidering,
     intl: InjectedIntl
 ): Advarsel | undefined => {
-    const v = validering[periode.id!];
-    if (v && v.valideringsfeil !== undefined && v.valideringsfeil.length > 0) {
-        return {
-            type: 'feil',
-            beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${v.valideringsfeil[0].feilKey}`)
-        };
+    if (periodevalidering !== undefined) {
+        const v = periodevalidering[periode.id!];
+        if (v && v !== undefined && v.length > 0) {
+            return {
+                type: 'feil',
+                beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${v[0].feilKey}`)
+            };
+        }
     }
     return undefined;
 };
@@ -55,7 +57,7 @@ const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
                                 <PeriodeHeader
                                     periode={p}
                                     navnPåForeldre={navnPåForeldre}
-                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.validering, intl)}
+                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.periodevalidering, intl)}
                                 />
                             )}
                             renderContent={() => (

@@ -1,12 +1,9 @@
-import {
-    Utsettelsesvariant,
-    UtsettelseperiodeFormPeriodeType
-} from '../../../components/utsettelse-form/UtsettelseForm';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { PeriodeValideringsfeil } from '../../reducers/uttaksplanValideringReducer';
 
 export enum UttaksplanValideringActionKeys {
-    'VALIDER_UTSETTELSE' = 'validerUtsettelse',
-    'VALIDER_UTSETTELSER' = 'validerUtsettelser',
+    'SET_VALIDERT_PERIODE' = 'setValidertPeriode',
+    'SET_VALIDERTE_PERIODER' = 'setValidertePerioder',
     'VALIDER_UTTAKSPLAN' = 'validerUttaksplan'
 }
 
@@ -14,25 +11,23 @@ export interface ValiderPeriodePayload {
     perioder: Periode[];
 }
 
-export interface ValiderUtsettelsePayload extends ValiderPeriodePayload {
-    variant?: Utsettelsesvariant;
-    periode: UtsettelseperiodeFormPeriodeType;
-    søkerErAleneOmOmsorg: boolean;
-    søkerErFarEllerMedmor: boolean;
+export interface ValidertPeriode {
+    periodeId: string;
+    valideringsfeil: PeriodeValideringsfeil[] | undefined;
 }
 
-export interface ValiderUtsettelse {
-    type: UttaksplanValideringActionKeys.VALIDER_UTSETTELSE;
-    payload: ValiderUtsettelsePayload;
-}
-
-export interface ValiderUtsettelser {
-    type: UttaksplanValideringActionKeys.VALIDER_UTSETTELSER;
-    payload: ValiderUtsettelsePayload[];
-}
-
-export interface ValiderUttaksplan {
+export interface ValiderUttaksplanAction {
     type: UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN;
 }
 
-export type UttaksplanValideringActionTypes = ValiderUtsettelse | ValiderUtsettelser | ValiderUttaksplan;
+export interface SetValidertPeriode {
+    type: UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE;
+    validertPeriode: ValidertPeriode;
+}
+
+export interface SetValidertePerioder {
+    type: UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER;
+    validertePerioder: ValidertPeriode[];
+}
+
+export type UttaksplanValideringActionTypes = SetValidertPeriode | SetValidertePerioder | ValiderUttaksplanAction;
