@@ -34,7 +34,7 @@ const validerUtsettelseEllerOpphold = (
         periode,
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(api.søkerinfo!.person.kjønn, søknad.søker.rolle)
+        søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle)
     });
 };
 
