@@ -1,57 +1,29 @@
 import {
     UttaksplanValideringActionTypes,
     UttaksplanValideringActionKeys,
-    ValiderUtsettelsePayload
+    ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { validerUtsettelsePeriode } from '../../util/validation/periode/utsettelse';
 
 export enum PeriodeValideringErrorKey {
     'FORM_INCOMPLETE' = 'formIncomplete'
 }
 
-interface PeriodeInfo {
-    valideringsfeil?: Valideringsfeil[];
-    advarsler?: string[];
-    informasjon?: string[];
+export interface Periodevalidering {
+    [periodeId: string]: PeriodeValideringsfeil[] | undefined;
 }
 
 export interface UttaksplanValideringState {
-    validering: UttaksplanValidering;
+    periodevalidering: Periodevalidering;
 }
 
-export interface UttaksplanValidering {
-    [periodeId: string]: PeriodeInfo | undefined;
-}
-
-export interface Valideringsfeil {
+export interface PeriodeValideringsfeil {
     feilKey: PeriodeValideringErrorKey;
 }
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        validering: {}
+        periodevalidering: {}
     };
-};
-
-const updatePeriodeValidering = (
-    perioder: UttaksplanValidering,
-    periodeId: string,
-    valideringsfeil: Valideringsfeil[] | undefined
-): UttaksplanValidering => {
-    return {
-        ...perioder,
-        [periodeId]: {
-            valideringsfeil
-        }
-    };
-};
-
-const validerUtsettelser = (payload: ValiderUtsettelsePayload[]): UttaksplanValidering => {
-    const validering: UttaksplanValidering = {};
-    payload.forEach((p) => {
-        validering[p.periode.id!] = { valideringsfeil: validerUtsettelsePeriode(p) };
-    });
-    return validering;
 };
 
 const uttaksplanValideringReducer = (
@@ -59,23 +31,25 @@ const uttaksplanValideringReducer = (
     action: UttaksplanValideringActionTypes
 ): UttaksplanValideringState => {
     switch (action.type) {
-        case UttaksplanValideringActionKeys.VALIDER_UTSETTELSE:
-            const { periode } = action.payload;
-            if (periode.id) {
-                return {
-                    ...state,
-                    validering: updatePeriodeValidering(
-                        state.validering,
-                        periode.id,
-                        validerUtsettelsePeriode(action.payload)
-                    )
-                };
-            }
-            return state;
-        case UttaksplanValideringActionKeys.VALIDER_UTSETTELSER:
+        case UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE:
             return {
                 ...state,
-                validering: validerUtsettelser(action.payload)
+                periodevalidering: {
+                    ...state.periodevalidering,
+                    [action.validertPeriode.periodeId]: action.validertPeriode.valideringsfeil
+                }
+            };
+        case UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER:
+            let periodevalidering = {};
+            action.validertePerioder.forEach((p: ValidertPeriode) => {
+                periodevalidering = {
+                    ...periodevalidering,
+                    [p.periodeId]: p.valideringsfeil
+                };
+            });
+            return {
+                ...state,
+                periodevalidering
             };
     }
     return state;

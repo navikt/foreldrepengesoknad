@@ -1,8 +1,23 @@
-import { PeriodeValideringErrorKey, Valideringsfeil } from '../../../redux/reducers/uttaksplanValideringReducer';
+import {
+    PeriodeValideringErrorKey,
+    PeriodeValideringsfeil,
+    Periodevalidering
+} from '../../../redux/reducers/uttaksplanValideringReducer';
 import { getUtsettelseFormVisibility } from '../../../components/utsettelse-form/utsettelseFormConfig';
-import { ValiderUtsettelsePayload } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { ValiderPeriodePayload } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import {
+    Utsettelsesvariant,
+    UtsettelseperiodeFormPeriodeType
+} from '../../../components/utsettelse-form/UtsettelseForm';
 
-export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Valideringsfeil[] | undefined => {
+export interface ValiderUtsettelsePayload extends ValiderPeriodePayload {
+    variant?: Utsettelsesvariant;
+    periode: UtsettelseperiodeFormPeriodeType;
+    søkerErAleneOmOmsorg: boolean;
+    søkerErFarEllerMedmor: boolean;
+}
+
+export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): PeriodeValideringsfeil[] | undefined => {
     const { variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
     const visibility = getUtsettelseFormVisibility(variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor);
     if (visibility.areAllQuestionsAnswered()) {
@@ -13,4 +28,12 @@ export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Val
             feilKey: PeriodeValideringErrorKey.FORM_INCOMPLETE
         }
     ];
+};
+
+export const validerUtsettelsePerioder = (payload: ValiderUtsettelsePayload[]): Periodevalidering => {
+    const validering: Periodevalidering = {};
+    payload.forEach((p) => {
+        validering[p.periode.id!] = validerUtsettelsePeriode(p);
+    });
+    return validering;
 };
