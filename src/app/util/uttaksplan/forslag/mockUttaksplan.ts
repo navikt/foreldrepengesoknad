@@ -31,10 +31,8 @@ export const lagMockUttaksplan = (
     const { uttaksplanSkjema } = ekstrainfo;
     const { startdatoPermisjon } = uttaksplanSkjema;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
-    const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Foreldrepenger
-    );
-    const erDeltUttak: boolean = foreldrepengerKonto === undefined;
+    const erDeltUttak: boolean =
+        tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Foreldrepenger) === undefined;
 
     if (famDato) {
         if (erDeltUttak) {
@@ -44,72 +42,11 @@ export const lagMockUttaksplan = (
                 situasjon,
                 famDato,
                 erFarEllerMedmor(søknad.søker.rolle),
-                foreldrepengerKonto!,
+                tilgjengeligeStønadskontoer,
                 startdatoPermisjon
             );
         }
     }
-
-    // if (famDato) {
-    //     if (situasjon === Søkersituasjon.FØDSEL) {
-    //         if (erAleneOmOmsorg || kanIkkeOppgis) {
-    //             if (rolle === SøkerRolle.MOR) {
-    //                 return opprettUttaksperioderAleneomsorgMor(
-    //                     famDato,
-    //                     tilgjengeligeStønadskontoer,
-    //                     startdatoPermisjon
-    //                 );
-    //             } else {
-    //                 return opprettUttaksperioderAleneomsorgFarEllerMedmor(famDato, tilgjengeligeStønadskontoer);
-    //             }
-    //         }
-    //         if (!erAleneOmOmsorg) {
-    //             if (rolle === SøkerRolle.MOR) {
-    //                 return opprettUttaksperioderToForeldreEttBarnMor(
-    //                     famDato,
-    //                     fellesUkerMor,
-    //                     tilgjengeligeStønadskontoer,
-    //                     startdatoPermisjon
-    //                 );
-    //             } else {
-    //                 return opprettUttaksperioderToForeldreEttBarnFarEllerMedmor(
-    //                     tilgjengeligeStønadskontoer,
-    //                     morSinSisteUttaksdag
-    //                 );
-    //             }
-    //         }
-    //     }
-
-    //     if (situasjon === Søkersituasjon.ADOPSJON) {
-    //         if (erAleneOmOmsorg || kanIkkeOppgis) {
-    //             if (rolle === SøkerRolle.MOR) {
-    //                 return opprettUttaksperioderAleneomsorgMor(
-    //                     famDato,
-    //                     tilgjengeligeStønadskontoer,
-    //                     startdatoPermisjon
-    //                 );
-    //             } else {
-    //                 return opprettUttaksperioderAleneomsorgFarEllerMedmor(famDato, tilgjengeligeStønadskontoer);
-    //             }
-    //         }
-
-    //         if (!erAleneOmOmsorg) {
-    //             if (rolle === SøkerRolle.MOR) {
-    //                 return opprettUttaksperioderToForeldreEttBarnMor(
-    //                     famDato,
-    //                     fellesUkerMor,
-    //                     tilgjengeligeStønadskontoer,
-    //                     startdatoPermisjon
-    //                 );
-    //             } else {
-    //                 return opprettUttaksperioderToForeldreEttBarnFarEllerMedmor(
-    //                     tilgjengeligeStønadskontoer,
-    //                     morSinSisteUttaksdag
-    //                 );
-    //             }
-    //         }
-    //     }
-    // }
 
     return [];
 };
