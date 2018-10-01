@@ -1,26 +1,24 @@
 import React, { ReactNode } from 'react';
-import { Input, Textarea, Select } from 'nav-frontend-skjema';
 import { Validator } from '../types/index';
 import PT from 'prop-types';
-import SkjemaelementFeilmelding from '../errors/SkjemaelementFeilmelding';
-import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+
+type ValiderEvent = (evt: any) => void;
 
 export interface ValiderbartSkjemaelementProps {
     name: string;
-    id?: string;
     optional?: boolean;
     validators?: Validator[];
-    feil?: SkjemaelementFeilmelding;
     label?: ReactNode;
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
-    onChange?: (evt: any) => void;
-    onBlur?: (evt: any) => void;
-    onValidate?: (evt: any) => void;
+    onChange?: any;
+    onBlur?: any;
+    onValidate?: any;
 }
 
 export interface Props extends ValiderbartSkjemaelementProps {
-    component: any;
+    render: (onChange: ValiderEvent, onBlur: ValiderEvent, feil: Feil | undefined) => {};
 }
 
 export interface ValiderbartSkjemaelementState {
@@ -74,7 +72,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         }
 
         if (this.props.onChange) {
-            this.props.onChange(e);
+            const args = Array.prototype.slice.call(arguments);
+            this.props.onChange(...args);
         }
     }
 
@@ -92,7 +91,8 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         }
 
         if (this.props.onBlur) {
-            this.props.onBlur(e);
+            const args = Array.prototype.slice.call(arguments);
+            this.props.onBlur(...args);
         }
     }
 
@@ -143,52 +143,9 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
     }
 
     render() {
-        const {
-            component,
-            onChange,
-            onBlur,
-            onValidate,
-            validateOnChange,
-            validateOnBlur,
-            feil,
-            optional,
-            validators,
-            ...other
-        } = this.props;
-
+        const { render } = this.props;
         const failedVerdict = !this.state.valid ? { feilmelding: this.getFirstFailedVerdict().failText } : undefined;
-
-        const elementRef: any = {};
-        switch (component) {
-            case Input:
-                elementRef.inputRef = (node: any) => {
-                    this.element = node;
-                };
-                break;
-            case Select:
-                elementRef.selectRef = (node: any) => {
-                    this.element = node;
-                };
-                break;
-            case Textarea:
-                elementRef.textareaRef = (node: any) => {
-                    this.element = node;
-                };
-                break;
-            case DatoInput:
-                elementRef.datoinputRef = (node: any) => {
-                    this.element = node;
-                };
-        }
-
-        return (
-            <this.props.component
-                onChange={this.onChange}
-                onBlur={this.onBlur}
-                feil={feil || failedVerdict}
-                {...other}
-            />
-        );
+        return render(this.onChange, this.onBlur, failedVerdict);
     }
 }
 export default ValiderbartSkjemaelement;

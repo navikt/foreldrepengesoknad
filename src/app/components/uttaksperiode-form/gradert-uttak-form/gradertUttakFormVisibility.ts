@@ -1,4 +1,4 @@
-import { QuestionConfig, Questions, QuestionVisibility } from '../../../util/questions/Question';
+import { QuestionConfig, Questions, QuestionVisibility, questionIsAnswered } from '../../../util/questions/Question';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 
 interface GradertUttakSpørsmålPayload {
@@ -18,19 +18,19 @@ export type GradertUttakSpørsmålVisibility = QuestionVisibility<GradertUttakSp
 
 const gradertUttakSpørsmålConfig: QuestionConfig<GradertUttakSpørsmålPayload, GradertUttakSpørsmålKeys> = {
     [GradertUttakSpørsmålKeys.skalHaGradering]: {
-        getValue: ({ periode }) => periode.gradert
+        isAnswered: ({ periode }) => questionIsAnswered(periode.gradert)
     },
     [GradertUttakSpørsmålKeys.stillingsprosent]: {
-        getValue: ({ periode }) => periode.stillingsprosent,
+        isAnswered: ({ periode }) => questionIsAnswered(periode.stillingsprosent),
         parentQuestion: GradertUttakSpørsmålKeys.skalHaGradering,
         condition: ({ periode }) => periode.gradert === true
     },
     [GradertUttakSpørsmålKeys.hvorSkalDuJobbe]: {
-        getValue: ({ periode }) => periode.orgnr,
+        isAnswered: ({ periode }) => questionIsAnswered(periode.orgnr),
         parentQuestion: GradertUttakSpørsmålKeys.stillingsprosent
     },
     [GradertUttakSpørsmålKeys.samtidigGradertUttak]: {
-        getValue: ({ periode }) => periode.ønskerSamtidigUttak,
+        isAnswered: ({ periode }) => questionIsAnswered(periode.ønskerSamtidigUttak),
         condition: ({ annenForelderHarRett, erAleneOmOmsorg, periode }) =>
             periode.gradert === true &&
             erAleneOmOmsorg === false &&

@@ -77,8 +77,8 @@ const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, op
         type === AttachmentType.TERMINBEKREFTELSE ||
         type === AttachmentType.FØDSELSATTEST ||
         type === AttachmentType.OMSORGSOVERTAKELSE ||
-        type === AttachmentType.OMSORGSOVERTAKELSEDATO ||
-        type === AttachmentType.ADOPSJONSVEDTAK;
+        type === AttachmentType.ADOPSJONSVEDTAK ||
+        type === AttachmentType.ALENEOMSORG;
     const isAttachmentForAnnenInntekt = type === AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON;
 
     if (isAttachmentForBarn) {

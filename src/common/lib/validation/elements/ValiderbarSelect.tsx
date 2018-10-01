@@ -1,14 +1,19 @@
 import React from 'react';
 import { Select, SelectProps } from 'nav-frontend-skjema';
-import {
-    default as ValiderbartSkjemaelement,
+import ValiderbartSkjemaelement, {
     ValiderbartSkjemaelementProps
 } from 'common/lib/validation/elements/ValiderbartSkjemaelement';
 
 export type ValiderbarSelectProps = ValiderbartSkjemaelementProps & SelectProps;
 
 const ValiderbarSelect: React.StatelessComponent<ValiderbarSelectProps> = (props: ValiderbarSelectProps) => {
-    return <ValiderbartSkjemaelement component={Select} {...props} />;
+    const { validators, optional, validateOnBlur, validateOnChange, ...rest } = props;
+    return (
+        <ValiderbartSkjemaelement
+            {...props}
+            render={(onChange, onBlur, feil) => <Select {...rest} onChange={onChange} onBlur={onBlur} feil={feil} />}
+        />
+    );
 };
 
 export default ValiderbarSelect;
