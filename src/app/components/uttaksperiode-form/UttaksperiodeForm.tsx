@@ -201,7 +201,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                         }
                     />
                 </Block>
-                <Block margin="s" visible={validTidsperiode !== undefined && kanEndreStønadskonto}>
+                <Block
+                    margin="s"
+                    visible={
+                        validTidsperiode !== undefined && kanEndreStønadskonto && velgbareStønadskontotyper.length > 0
+                    }>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={navnPåForeldre}
