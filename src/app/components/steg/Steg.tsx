@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import stegConfig, { StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import ValiderbarForm, { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
+import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
@@ -158,7 +158,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         const { visAvbrytDialog } = this.state;
 
         const bem = BEMHelper('steg');
-        const formProps = {
+        const formProps: ValiderbarFormProps = {
             className: bem.className,
             summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
             onSubmit: this.handleOnSubmit

@@ -1,4 +1,4 @@
-export type QuestionValue = any;
+export type QuestionValue = string | number | Date | boolean | undefined;
 
 export const questionIsAnswered = (value: QuestionValue) => {
     return value !== undefined && value !== '';
@@ -6,7 +6,7 @@ export const questionIsAnswered = (value: QuestionValue) => {
 
 export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
-        getValue: (props: Payload) => QuestionValue;
+        isAnswered: (props: Payload) => boolean;
         parentQuestion?: QuestionKeys;
         condition?: (props: Payload) => boolean;
         isOptional?: (props: Payload) => boolean;
@@ -29,7 +29,7 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     if (config.parentQuestion === undefined) {
         return conditionIsMet;
     } else {
-        const parentHasValidValue = questionIsAnswered(questions[config.parentQuestion as any].getValue(payload));
+        const parentHasValidValue = questions[config.parentQuestion as any].isAnswered(payload);
         return parentHasValidValue && isQuestionVisible(questions, config.parentQuestion, payload);
     }
 };
@@ -43,8 +43,7 @@ const isAllQuestionsAnswered = <Payload, QuestionKeys>(
         const question = questions[key];
         if (isQuestionVisible<Payload, QuestionKeys>(questions, key as any, payload)) {
             const isOptional = question.isOptional !== undefined ? question.isOptional(payload) === true : false;
-            const answered = questionIsAnswered(question.getValue(payload)) || isOptional;
-            allQuestionsHasAnswers = allQuestionsHasAnswers === true && answered;
+            allQuestionsHasAnswers = allQuestionsHasAnswers === true && (question.isAnswered(payload) || isOptional);
         }
     });
     return allQuestionsHasAnswers;

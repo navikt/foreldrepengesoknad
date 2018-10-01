@@ -119,7 +119,7 @@ describe('Cleanup AnnenForelder', () => {
                     },
                     barn: {
                         ...søknad.barn,
-                        foreldreansvarsdato: new Date()
+                        datoForAleneomsorg: new Date()
                     }
                 };
             });
@@ -137,7 +137,7 @@ describe('Cleanup AnnenForelder', () => {
                 expect(af.harRettPåForeldrepenger).toBeUndefined();
                 expect(af.erUfør).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
-                expect(b.foreldreansvarsdato).toBeDefined();
+                expect(b.datoForAleneomsorg).toBeDefined();
             });
             it('when er mor', () => {
                 testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
@@ -152,7 +152,7 @@ describe('Cleanup AnnenForelder', () => {
                 expect(af.erUfør).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
                 expect(af.harRettPåForeldrepenger).toBeDefined();
-                expect(b.foreldreansvarsdato).toBeUndefined();
+                expect(b.datoForAleneomsorg).toBeUndefined();
             });
         });
     });

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
@@ -7,6 +6,7 @@ import { StønadskontoType } from '../types/uttaksplan/periodetyper';
 import { InputChangeEvent } from '../types/dom/Events';
 import { getStønadskontoNavn } from '../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
@@ -25,13 +25,19 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
     }));
 
     return (
-        <RadioPanelGruppeResponsive
+        <RadioPanelGruppe
             checked={stønadskonto}
             radios={radios}
             name="kvote"
             twoColumns={true}
             legend={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
             onChange={(e: InputChangeEvent, v: StønadskontoType) => onChange(v)}
+            validators={[
+                {
+                    test: () => stønadskonto !== undefined,
+                    failText: 'Påkrevd'
+                }
+            ]}
         />
     );
 };

@@ -51,6 +51,16 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
     };
 };
 
+const handleGjelderAnnetBarn = (
+    annenForelder: AnnenForelderPartial,
+    gjelderAnnetBarn?: boolean
+): AnnenForelderPartial => {
+    if (gjelderAnnetBarn) {
+        return { ...annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined };
+    }
+    return annenForelder;
+};
+
 const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
@@ -90,13 +100,14 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
+            const gjelderAnnetBarn = action.payload.gjelderAnnetBarn;
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
             const updatedState: SøknadPartial = {
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
-                    : state.annenForelder,
+                    : handleGjelderAnnetBarn(state.annenForelder, gjelderAnnetBarn),
                 sensitivInfoIkkeLagre: {
                     ...state.sensitivInfoIkkeLagre,
                     søknadenGjelderBarnValg: action.payload,

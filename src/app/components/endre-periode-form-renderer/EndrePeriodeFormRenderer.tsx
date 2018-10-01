@@ -5,28 +5,26 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     Oppholdsperiode,
-    StønadskontoType,
     Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
-import { preventFormSubmit } from 'common/util/eventUtils';
-import LinkButton from '../link-button/LinkButton';
 import { RecursivePartial } from '../../types/Partial';
-import './endrePeriodeForm.less';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
-import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
-import Block from 'common/components/block/Block';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import getMessage from 'common/util/i18nUtils';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
+import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface OwnProps {
     periode: Periode;
+    render: (onChange: EndrePeriodeChangeEvent, onRequestDelete: () => void) => {};
 }
+
+export type EndrePeriodeChangeEvent = (periode: RecursivePartial<Periode>) => void;
+export type EndrePeriodeRequestDeleteEvent = () => void;
 
 interface State {
     visBekreftSlettDialog: boolean;
@@ -35,14 +33,13 @@ const bem = BEMHelper('endrePeriodeForm');
 
 type Props = OwnProps & DispatchProps & InjectedIntlProps;
 
-class EndrePeriodeForm extends React.Component<Props, State> {
+class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.onRequestDelete = this.onRequestDelete.bind(this);
         this.onCancelDelete = this.onCancelDelete.bind(this);
         this.onDelete = this.onDelete.bind(this);
-
         this.state = {
             visBekreftSlettDialog: false
         };
@@ -79,27 +76,10 @@ class EndrePeriodeForm extends React.Component<Props, State> {
         this.setState({ visBekreftSlettDialog: false });
     }
     render() {
-        const { periode, intl } = this.props;
-        const erForeldrepengerFørFødselPeriode =
-            periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+        const { periode, render, intl } = this.props;
         return (
-            <form className={bem.className} onSubmit={preventFormSubmit}>
-                {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
-                    <UtsettelsesperiodeForm periode={periode} onChange={this.onChange} />
-                ) : (
-                    <UttaksperiodeForm
-                        periode={periode as Uttaksperiode}
-                        onChange={this.onChange}
-                        kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
-                    />
-                )}
-                <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">
-                    <div className={bem.element('footer')}>
-                        <LinkButton onClick={this.onRequestDelete} className={bem.element('slettPeriode')}>
-                            <FormattedMessage id={`endrePeriodeForm.slett.${periode.type}`} />
-                        </LinkButton>
-                    </div>
-                </Block>
+            <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
+                {render(this.onChange, this.onRequestDelete)}
                 <BekreftDialog
                     tittel={getMessage(intl, `endrePeriodeForm.bekreftSlettDialog.${periode.type}.tittel`)}
                     contentLabel={getMessage(intl, `endrePeriodeForm.bekreftSlettDialog.${periode.type}.tittel`)}
@@ -110,9 +90,9 @@ class EndrePeriodeForm extends React.Component<Props, State> {
                     avbrytLabel={getMessage(intl, 'nei')}>
                     <FormattedMessage id="endrePeriodeForm.bekreftSlettDialog.uttak.melding" />
                 </BekreftDialog>
-            </form>
+            </ValiderbarForm>
         );
     }
 }
 
-export default connect()(injectIntl(EndrePeriodeForm));
+export default connect()(injectIntl(EndrePeriodeFormRenderer));

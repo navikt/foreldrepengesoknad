@@ -14,26 +14,28 @@ interface BarnBolkProps {
 }
 
 type Props = BarnBolkProps & InjectedIntlProps;
-
 class BarnBolk extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onGjelderRegistrertBarnChange = this.onGjelderRegistrertBarnChange.bind(this);
         this.onGjelderAnnetBarnChange = this.onGjelderAnnetBarnChange.bind(this);
     }
-    onGjelderAnnetBarnChange(checked: boolean) {
+
+    onGjelderAnnetBarnChange(checked: boolean): void {
         this.props.onChange({
             gjelderAnnetBarn: checked,
             valgteBarn: []
         });
     }
-    onGjelderRegistrertBarnChange(barn: RegistrertBarn, checked: boolean) {
+
+    onGjelderRegistrertBarnChange(barn: RegistrertBarn, checked: boolean): void {
         const { valgteBarn } = this.props.søknadenGjelderBarnValg;
         this.props.onChange({
             gjelderAnnetBarn: false,
             valgteBarn: checked ? [...valgteBarn, barn] : valgteBarn.filter((b) => b.fnr !== barn.fnr)
         });
     }
+
     render() {
         const { søknadenGjelderBarnValg, registrerteBarn, intl } = this.props;
 

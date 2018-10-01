@@ -122,10 +122,11 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
                                 )}
                             />
                         </Block>
-
-                        <Knapp onClick={() => this.openModal()} htmlType="button">
-                            <FormattedMessage id="utenlandsopphold.leggTilLand" />
-                        </Knapp>
+                        <Block margin="xs">
+                            <Knapp onClick={() => this.openModal()} htmlType="button">
+                                <FormattedMessage id="utenlandsopphold.leggTilLand" />
+                            </Knapp>
+                        </Block>
                     </React.Fragment>
                 )}
 
