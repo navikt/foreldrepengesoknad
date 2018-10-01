@@ -17,6 +17,8 @@
 
     "tilbake": "Tilbake",
 
+    "påkrevd": "Påkrevd",
+
     "heltid": "Heltid",
     "deltid": "Deltid",
 
@@ -425,6 +427,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
     "valideringsfeil.stillingsprosent.under0": "Stillingsprosenten må være over 0",
 
+    "radiopanelgruppe.required.feilmelding": "Påkrevd",
+
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":
@@ -507,6 +511,7 @@
     "utsettelsesårsak.SYKDOM": "Sykdom",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+    "utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesdel",
     "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
@@ -541,6 +546,7 @@
     "utsettelse.sykdom.vedlegg.info": "Informasjon vedlegg sykdom",
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
+    "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
@@ -571,5 +577,7 @@
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år."
+        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år.",
+
+    "uttaksplan.validering.feil.formIncomplete": "Informasjon mangler om perioden"
 }

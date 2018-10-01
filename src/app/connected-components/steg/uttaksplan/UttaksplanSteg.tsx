@@ -19,6 +19,7 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
+import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
 
 interface StateProps {
     stegProps: StegProps;
@@ -26,6 +27,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
+    uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
@@ -70,7 +72,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     render() {
-        const { søknad, isLoadingTilgjengeligeStønadskontoer, dispatch, uttaksStatus } = this.props;
+        const {
+            søknad,
+            uttaksplanValidering,
+            isLoadingTilgjengeligeStønadskontoer,
+            dispatch,
+            uttaksStatus
+        } = this.props;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
@@ -90,6 +98,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 søkersituasjon={søknad.situasjon}
                                 barn={søknad.barn}
                                 uttaksplan={søknad.uttaksplan}
+                                uttaksplanValidering={uttaksplanValidering}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
                                 navnPåForeldre={uttaksplanInfo.navnPåForeldre}
@@ -140,6 +149,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksStatus,
+        uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer
     };

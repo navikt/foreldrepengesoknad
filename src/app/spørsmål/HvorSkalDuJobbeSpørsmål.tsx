@@ -1,65 +1,43 @@
 import * as React from 'react';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
-import { InputChangeEvent } from '../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
+import FlervalgSpørsmål from '../components/flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
+import { SelvstendigNæringsdrivendeEllerFrilans } from '../types/uttaksplan/periodetyper';
 
 interface HvorSkalDuJobbeSpørsmålProps {
-    onChange: (orgnr: string | undefined, skalJobbeSomFrilansEllerSelvstendigNæringsdrivende: boolean) => void;
+    onChange: (
+        orgnr: string | undefined,
+        frilansEllerSelvstendigNæringsdrivende: SelvstendigNæringsdrivendeEllerFrilans | undefined
+    ) => void;
+    frilansEllerSelvstendig?: SelvstendigNæringsdrivendeEllerFrilans;
     arbeidsforhold: Arbeidsforhold[];
     valgtArbeidsforhold?: string;
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
 
-interface State {
-    selvstendigNæringsdrivendeValgt: boolean;
-    frilansValgt: boolean;
-}
+const erFrilansEllerSelvstendig = (value: string): boolean => {
+    return (
+        value === SelvstendigNæringsdrivendeEllerFrilans.selvstendignæringsdrivende ||
+        value === SelvstendigNæringsdrivendeEllerFrilans.frilans
+    );
+};
 
-const næringValue = 'NÆRING';
-const frilansValue = 'FRILANS';
-
-class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
+class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-
-        this.state = {
-            selvstendigNæringsdrivendeValgt: false,
-            frilansValgt: false
-        };
-
         this.handleOnChange = this.handleOnChange.bind(this);
         this.getRadioOptions = this.getRadioOptions.bind(this);
-        this.getCheckedValue = this.getCheckedValue.bind(this);
     }
 
-    getCheckedValue() {
-        const { valgtArbeidsforhold } = this.props;
-        const { selvstendigNæringsdrivendeValgt, frilansValgt } = this.state;
-        if (selvstendigNæringsdrivendeValgt) {
-            return næringValue;
-        }
-        if (frilansValgt) {
-            return frilansValue;
-        }
-        return valgtArbeidsforhold;
-    }
-
-    handleOnChange(e: InputChangeEvent, value: string) {
+    handleOnChange(value: string) {
         const { onChange } = this.props;
-
-        this.setState({
-            selvstendigNæringsdrivendeValgt: value === næringValue,
-            frilansValgt: value === frilansValue
-        });
-
-        if (value !== næringValue && value !== frilansValue) {
-            onChange(value, false);
+        if (erFrilansEllerSelvstendig(value)) {
+            onChange(undefined, value as SelvstendigNæringsdrivendeEllerFrilans);
         } else {
-            onChange(undefined, true);
+            onChange(value, undefined);
         }
     }
 
@@ -75,23 +53,28 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props, State> {
                         : v.arbeidsgiverId
                 }`
             })),
-            { label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'), value: næringValue },
-            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: frilansValue }
+            {
+                label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
+                value: SelvstendigNæringsdrivendeEllerFrilans.selvstendignæringsdrivende
+            },
+            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: SelvstendigNæringsdrivendeEllerFrilans.frilans }
         ];
     }
 
     render() {
-        const { intl } = this.props;
+        const { intl, valgtArbeidsforhold, frilansEllerSelvstendig } = this.props;
+
+        const value = valgtArbeidsforhold !== undefined ? valgtArbeidsforhold : frilansEllerSelvstendig;
 
         return (
             <>
-                <RadioPanelGruppeResponsive
-                    checked={this.getCheckedValue()}
-                    radios={this.getRadioOptions()}
-                    name="arbeidsgiver"
-                    twoColumns={true}
+                <FlervalgSpørsmål
+                    navn="arbeidsgiver"
+                    alternativer={this.getRadioOptions()}
+                    valgtVerdi={value}
+                    toKolonner={true}
+                    spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                     onChange={this.handleOnChange}
-                    legend={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 />
             </>
         );

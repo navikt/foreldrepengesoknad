@@ -28,19 +28,18 @@ const Sp = UtsettelseSpørsmålKeys;
 const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
     periode.årsak === UtsettelseÅrsakType.Arbeid &&
     variant === Utsettelsesvariant.Arbeid &&
-    (questionIsAnswered(periode.orgnr) ||
-        questionIsAnswered(periode.skalJobbeSomFrilansEllerSelvstendigNæringsdrivende));
+    (questionIsAnswered(periode.orgnr) || questionIsAnswered(periode.selvstendigNæringsdrivendeEllerFrilans));
 
 export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, UtsettelseSpørsmålKeys> = {
     [Sp.tidsperiode]: {
         isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
     },
     [Sp.variant]: {
-        isAnswered: ({ variant }) => questionIsAnswered(variant),
-        parentQuestion: Sp.tidsperiode
+        isAnswered: ({ variant }) => questionIsAnswered(variant)
     },
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered(periode.årsak),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
@@ -49,6 +48,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) => harRegistrertArbeidOk(variant, periode),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.morsAktivitet]: {
@@ -63,6 +63,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered((periode as Oppholdsperiode).årsak),
+        parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     }
 };
