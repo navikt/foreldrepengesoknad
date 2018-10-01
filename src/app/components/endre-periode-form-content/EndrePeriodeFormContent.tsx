@@ -4,7 +4,7 @@ import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
+import UttaksperiodeForm from '../uttaksperiode-form/UttakForm';
 import Block from 'common/components/block/Block';
 import {
     EndrePeriodeChangeEvent,
