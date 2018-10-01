@@ -217,8 +217,7 @@ class UttaksperiodeForm extends React.Component<Props> {
 
                 {validTidsperiode &&
                     periode.type === Periodetype.Uttak &&
-                    (periode.konto !== StønadskontoType.ForeldrepengerFørFødsel &&
-                        (periode.konto !== undefined) !== undefined) && (
+                    (periode.konto && periode.konto !== StønadskontoType.ForeldrepengerFørFødsel) && (
                         <GradertUttakForm
                             periode={periode}
                             annenForelderHarRettPåForeldrepenger={søknad.annenForelder.harRettPåForeldrepenger}
