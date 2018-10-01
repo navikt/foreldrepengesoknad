@@ -9,10 +9,7 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     switch (scenario) {
         case UttaksplanSkjemaScenario.s1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan:
-            return (
-                (skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true) &&
-                skjema.skalHaDelAvFellesperiode !== undefined
-            );
+            return skjema.skalStarteRettEtterMor === false ? skjema.utsettelseEtterMorSkjemaValid === true : true;
         case UttaksplanSkjemaScenario.s3_morFødsel:
             const harSvartPåStartdato =
                 søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
