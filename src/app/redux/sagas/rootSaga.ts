@@ -5,7 +5,16 @@ import attachmentSaga from './attachmentSaga';
 import storageSaga from './storageSaga';
 import søknadSaga from './søknadSaga';
 import uttakSaga from './uttakSaga';
+import uttaksplanValideringSaga from './uttaksplanValideringSaga';
 
 export default function* rootSaga() {
-    yield all([søkerinfoSaga(), innsendingSaga(), attachmentSaga(), storageSaga(), søknadSaga(), uttakSaga()]);
+    yield all([
+        søkerinfoSaga(),
+        innsendingSaga(),
+        attachmentSaga(),
+        storageSaga(),
+        søknadSaga(),
+        uttakSaga(),
+        uttaksplanValideringSaga()
+    ]);
 }

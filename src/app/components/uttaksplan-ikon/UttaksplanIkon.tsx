@@ -18,22 +18,23 @@ export enum UttaksplanIkonKeys {
 
 export interface Props {
     ikon: UttaksplanIkonKeys;
+    title: string;
 }
 
-const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon }) => {
+const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon, title }) => {
     switch (ikon) {
         case 'arbeid':
-            return <ArbeidIkon />;
+            return <ArbeidIkon title={title} />;
         case 'ferie':
-            return <FerieIkon />;
+            return <FerieIkon title={title} />;
         case 'sykdom':
-            return <SykdomIkon />;
+            return <SykdomIkon title={title} />;
         case 'termin':
-            return <TerminIkon />;
+            return <TerminIkon title={title} />;
         case 'advarsel':
-            return <AdvarselIkon />;
+            return <AdvarselIkon title={title} />;
         default:
-            return <UttakIkon />;
+            return <UttakIkon title={title} />;
     }
 };
 
