@@ -8,7 +8,7 @@ import {
 import { RegistrertAnnenForelder } from '../../types/Person';
 import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { guid } from 'nav-frontend-js-utils';
-import { lagMockUttaksplan } from '../../util/uttaksplan/forslag/mockUttaksplan';
+import { lagUttaksplan } from '../../util/uttaksplan/forslag/uttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 
 const getDefaultState = (): SøknadPartial => {
@@ -126,7 +126,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG:
             return {
                 ...state,
-                uttaksplan: lagMockUttaksplan(state as Søknad, action.tilgjengeligeStønadskontoer).sort(sorterPerioder),
+                uttaksplan: lagUttaksplan(state as Søknad, action.tilgjengeligeStønadskontoer).sort(sorterPerioder),
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     uttaksplanSkjema: {
