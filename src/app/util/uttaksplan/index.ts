@@ -65,7 +65,7 @@ export const getFamiliehendelsedato = (barn: Barn, situasjon: Søkersituasjon): 
 };
 
 export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåForeldre => {
-    const erFarMedmor = erFarEllerMedmor(søker.kjønn, søknad.søker.rolle);
+    const erFarMedmor = erFarEllerMedmor(søknad.søker.rolle);
     return {
         mor: erFarMedmor ? søknad.annenForelder.fornavn : søker.fornavn,
         farMedmor: erFarMedmor ? søker.fornavn : søknad.annenForelder.fornavn
