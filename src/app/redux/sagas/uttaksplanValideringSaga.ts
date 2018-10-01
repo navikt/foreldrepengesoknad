@@ -28,7 +28,7 @@ const validerUtsettelseEllerOpphold = (
     periode: UtsettelseperiodeFormPeriodeType,
     state: AppState
 ): PeriodeValideringsfeil[] | undefined => {
-    const { søknad, api } = state;
+    const { søknad } = state;
     return validerUtsettelsePeriode({
         perioder: søknad.uttaksplan,
         periode,
