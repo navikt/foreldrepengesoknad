@@ -11,7 +11,7 @@ import ErBarnetFødtSpørsmål from '../../../spørsmål/ErBarnetFødtSpørsmål
 import { AppState } from '../../../redux/reducers';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { DispatchProps } from 'common/redux/types';
-import Person, { RegistrertBarn } from '../../../types/Person';
+import { RegistrertBarn } from '../../../types/Person';
 import Barn, { FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import Søker from '../../../types/søknad/Søker';
 
@@ -34,7 +34,6 @@ import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 
 interface RelasjonTilBarnFødselStegProps {
-    person: Person;
     barn: Barn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
@@ -65,7 +64,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             barn,
             søker,
             annenForelder,
-            person,
             fødselsattest,
             terminbekreftelse,
             registrerteBarn,
@@ -112,7 +110,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         />
                     )}
                     {barn.erBarnetFødt === false &&
-                        erFarEllerMedmor(person.kjønn, søker.rolle) && (
+                        erFarEllerMedmor(søker.rolle) && (
                             <Veilederinfo>
                                 Info. kan ikke søke før etter at barnet er født, unntak ved sykdom
                             </Veilederinfo>
@@ -123,7 +121,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             barn={barn as UfødtBarn}
                             annenForelder={annenForelder}
                             søker={søker}
-                            erFarEllerMedmor={erFarEllerMedmor(person.kjønn, søker.rolle)}
+                            erFarEllerMedmor={erFarEllerMedmor(søker.rolle)}
                             terminbekreftelse={terminbekreftelse || []}
                             vis={vis.ufødt}
                         />
@@ -135,7 +133,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
-    const { person, registrerteBarn = [] } = props.søkerinfo;
+    const { registrerteBarn = [] } = props.søkerinfo;
     const { barn, sensitivInfoIkkeLagre, søker, annenForelder } = state.søknad;
     const fødselsattest = (barn as FødtBarn).fødselsattest || [];
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
@@ -153,7 +151,6 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
     return {
         søker,
         annenForelder,
-        person,
         registrerteBarn,
         søknadenGjelderBarnValg: sensitivInfoIkkeLagre.søknadenGjelderBarnValg,
         barn,

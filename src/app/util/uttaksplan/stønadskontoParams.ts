@@ -1,15 +1,14 @@
 import Søknad, { SøkerRolle, Søkersituasjon } from '../../types/søknad/Søknad';
 import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
 import { erFarEllerMedmor as erFarEllerMedmorSjekk } from '../domain/personUtil';
-import Person from '../../types/Person';
 import { getFamiliehendelsedato } from './index';
 
-export const getStønadskontoParams = (søknad: Søknad, person: Person): GetTilgjengeligeStønadskontoerParams => {
+export const getStønadskontoParams = (søknad: Søknad): GetTilgjengeligeStønadskontoerParams => {
     const { barn, situasjon, dekningsgrad, søker, annenForelder } = søknad;
     const { erAleneOmOmsorg, rolle } = søker;
     const { antallBarn } = barn;
     const { harRettPåForeldrepenger } = annenForelder;
-    const erFarEllerMedmor = erFarEllerMedmorSjekk(person.kjønn, rolle);
+    const erFarEllerMedmor = erFarEllerMedmorSjekk(rolle);
 
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const dekningsgradValue = dekningsgrad === '80' ? '80' : '100';

@@ -1,9 +1,8 @@
-import { Søkerinfo } from '../../../types/søkerinfo';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export enum UttaksplanSkjemaScenario {
-    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's2_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
+    's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan' = 's1_farMedmorFødselFørsteganggsøknadBeggeHarRett_ikkeDeltPlan',
     's2_alleFødselAdopsjon_deltPlan' = 's2_alleFødselAdopsjon_deltPlan',
     's3_morFødsel' = 's3_morFødsel',
     's4_morFarAdopsjon' = 's4_morFarAdopsjon',
@@ -13,8 +12,8 @@ export enum UttaksplanSkjemaScenario {
     's8_ukjent_x' = 'ukjent'
 }
 
-export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søkerinfo): UttaksplanSkjemaScenario => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søkerinfo.person.kjønn, søknad.søker.rolle);
+export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaScenario => {
+    const søkerErFarEllerMedmor = erFarEllerMedmor(søknad.søker.rolle);
     const søkerErMor = !søkerErFarEllerMedmor;
 
     let scenario = UttaksplanSkjemaScenario.s8_ukjent_x;
@@ -28,7 +27,7 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad, søkerinfo: Søker
         scenario = UttaksplanSkjemaScenario.s3_morFødsel;
     } else if (
         søknad.situasjon === Søkersituasjon.ADOPSJON &&
-        ((søknad.annenForelder.kanIkkeOppgis !== true && søknad.annenForelder.harRettPåForeldrepenger) ||
+        ((søknad.annenForelder.kanIkkeOppgis !== true && søknad.annenForelder.harRettPåForeldrepenger !== undefined) ||
             søknad.annenForelder.kanIkkeOppgis === true)
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;

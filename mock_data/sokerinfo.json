@@ -1,22 +1,22 @@
 {
     "søker": {
         "fnr": "28019400133",
-        "fornavn": "af:Espen",
+        "fornavn": "Amalie",
         "etternavn": "Ibsen",
         "fødselsdato": "1994-01-28",
-        "kjønn": "M",
+        "kjønn": "K",
         "land": "NO",
         "ikkeNordiskEøsLand": false,
         "barn": [
             {
-                "fornavn": "b:Amalie",
+                "fornavn": "Amalie",
                 "etternavn": "Skraam",
                 "fnr": "29031857021",
                 "kjønn": "K",
                 "fødselsdato": "2018-03-29",
                 "annenForelder": {
                     "fnr": "25059710888",
-                    "fornavn": "s:Hedda",
+                    "fornavn": "Espen",
                     "etternavn": "Gabler",
                     "fødselsdato": "1997-05-25"
                 }

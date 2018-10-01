@@ -112,7 +112,7 @@ describe('Cleanup AnnenForelder', () => {
             beforeEach(() => {
                 testSøknad = {
                     ...søknad,
-                    annenForelder: { ...testSøknad.annenForelder, kanIkkeOppgis: undefined },
+                    annenForelder: { ...testSøknad.annenForelder, kanIkkeOppgis: false },
                     søker: {
                         ...søknad.søker,
                         erAleneOmOmsorg: true
@@ -124,6 +124,7 @@ describe('Cleanup AnnenForelder', () => {
                 };
             });
             it('when erFarEllerMedmor', () => {
+                testSøknad.søker.rolle = SøkerRolle.FAR;
                 testVisibility = getAnnenForelderStegVisibility(testSøknad as Søknad, {
                     ...søkerinfo,
                     person: { ...søkerinfo.person, kjønn: Kjønn.MANN }

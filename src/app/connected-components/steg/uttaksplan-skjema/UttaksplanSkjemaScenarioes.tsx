@@ -25,7 +25,10 @@ export interface Props extends ScenarioProps {
 
 const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre }) => (
     <>
-        <HarAnnenForelderSøktForeldrepengerSpørsmål navnAnnenForelder={søknad.annenForelder.fornavn} />
+        <HarAnnenForelderSøktForeldrepengerSpørsmål
+            visible={søknad.annenForelder.harRettPåForeldrepenger}
+            navnAnnenForelder={søknad.annenForelder.fornavn}
+        />
         <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
         <MorSinSisteUttaksdagSpørsmål
             visible={
@@ -73,21 +76,24 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 visible={søknad.annenForelder.harRettPåForeldrepenger}
                 navnAnnenForelder={søknad.annenForelder.fornavn}
             />
-            <DekningsgradSpørsmål visible={skjema.harAnnenForelderSøktFP !== undefined} />
+            <DekningsgradSpørsmål
+                visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
+            />
             {søknad.situasjon === Søkersituasjon.ADOPSJON && (
                 <StartdatoAdopsjonBolk
                     familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                    visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== undefined}
+                    visible={søknad.dekningsgrad !== undefined}
                     barn={søknad.barn as Adopsjonsbarn}
                 />
             )}
-            {søknad.søker.erAleneOmOmsorg === false && (
-                <FordelingFellesperiodeSpørsmål
-                    visible={skjema.startdatoPermisjon !== undefined}
-                    ukerFellesperiode={antallUkerFellesperiode}
-                    navnPåForeldre={navnPåForeldre}
-                />
-            )}
+            {søknad.søker.erAleneOmOmsorg === false &&
+                søknad.annenForelder.harRettPåForeldrepenger && (
+                    <FordelingFellesperiodeSpørsmål
+                        visible={skjema.startdatoPermisjon !== undefined}
+                        ukerFellesperiode={antallUkerFellesperiode}
+                        navnPåForeldre={navnPåForeldre}
+                    />
+                )}
         </>
     );
 };

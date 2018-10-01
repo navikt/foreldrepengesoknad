@@ -5,7 +5,6 @@ import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
-import Person from '../../../types/Person';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
@@ -25,7 +24,6 @@ interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    person: Person;
     uttaksStatus: Stønadskontouttak[];
     perioder: Periode[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -41,7 +39,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, person, tilgjengeligeStønadskontoer, dispatch } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, dispatch } = this.props;
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -54,7 +52,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
         }
         if (tilgjengeligeStønadskontoer.length === 0) {
-            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad, person)));
+            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad)));
         }
     }
 
@@ -140,7 +138,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     return {
         søknad,
         tilgjengeligeStønadskontoer,
-        person: props.søkerinfo.person,
         stegProps,
         uttaksStatus,
         perioder: søknad.uttaksplan,
