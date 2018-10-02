@@ -5,6 +5,9 @@ import {
 } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
 
 export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
+    if (søknad.dekningsgrad === undefined) {
+        return false;
+    }
     const scenario = getUttaksplanSkjemaScenario(søknad);
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     switch (scenario) {

@@ -54,7 +54,8 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 barnetErFødt={søknad.barn.erBarnetFødt}
             />
             {søknad.søker.erAleneOmOmsorg === false &&
-                søknad.annenForelder.harRettPåForeldrepenger && (
+                søknad.annenForelder.harRettPåForeldrepenger &&
+                søknad.dekningsgrad !== undefined && (
                     <FordelingFellesperiodeSpørsmål
                         visible={harSvartPåStartdato}
                         ukerFellesperiode={antallUkerFellesperiode}

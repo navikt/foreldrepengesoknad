@@ -64,12 +64,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
         const visVeileder =
             antallDager !== undefined && antallDager > permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
 
-        const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
-            permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
-        );
-
-        const startdato =
-            data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon || defaultStartdato : undefined;
+        const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
 
         const varighet = getVarighet(startdato, familiehendelsesdato, intl);
         const varighetString =
