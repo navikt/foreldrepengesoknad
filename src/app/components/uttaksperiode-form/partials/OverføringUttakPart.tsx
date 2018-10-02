@@ -1,39 +1,36 @@
 import * as React from 'react';
-import { OverføringÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import { OverføringÅrsakType, Overføringsperiode } from '../../../types/uttaksplan/periodetyper';
 import OverføringsårsakSpørsmål from '../../../spørsmål/OverføringsårsakSpørsmål';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføring\u00C5rsakSkjemanummer';
+import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
+import { RecursivePartial } from '../../../types/Partial';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 
 interface Props {
-    skjemadata: OverføringUttakFormSkjemadata;
-    navnAnnenForelder: string;
-    søkerErFarEllerMedmor: boolean;
-    onChange: (skjemadata: OverføringUttakFormSkjemadata) => void;
-}
-
-export interface OverføringUttakFormSkjemadata {
     årsak?: OverføringÅrsakType;
     vedlegg?: Attachment[];
+    navnAnnenForelder: string;
+    søkerErFarEllerMedmor: boolean;
+    onChange: (periode: RecursivePartial<Overføringsperiode>) => void;
 }
 
-class OverføringUttakForm extends React.Component<Props> {
+class OverføringUttakPart extends React.Component<Props> {
     render() {
-        const { onChange, søkerErFarEllerMedmor, skjemadata, navnAnnenForelder } = this.props;
+        const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder } = this.props;
         const visVedlegg =
-            (skjemadata.årsak !== undefined && skjemadata.årsak !== OverføringÅrsakType.aleneomsorg) ||
-            (skjemadata.årsak === OverføringÅrsakType.aleneomsorg && søkerErFarEllerMedmor === true);
-        const vedleggList = skjemadata.vedlegg || [];
+            (årsak !== undefined && årsak !== OverføringÅrsakType.aleneomsorg) ||
+            (årsak === OverføringÅrsakType.aleneomsorg && søkerErFarEllerMedmor === true);
+        const vedleggList = vedlegg || [];
         return (
             <>
                 <Block margin="s">
                     <OverføringsårsakSpørsmål
                         annenForelderNavn={navnAnnenForelder}
-                        årsak={skjemadata.årsak}
+                        årsak={årsak}
                         onChange={(å) => onChange({ årsak: å })}
                     />
                 </Block>
@@ -44,8 +41,8 @@ class OverføringUttakForm extends React.Component<Props> {
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
-                        skjemanummer={getOverføringÅrsakSkjemanummer(skjemadata.årsak!)}
-                        onChange={(vedlegg) => onChange({ årsak: this.props.skjemadata.årsak, vedlegg })}
+                        skjemanummer={getOverføringÅrsakSkjemanummer(årsak!)}
+                        onChange={(v) => onChange({ vedlegg: v })}
                     />
                 </Block>
             </>
@@ -53,4 +50,4 @@ class OverføringUttakForm extends React.Component<Props> {
     }
 }
 
-export default OverføringUttakForm;
+export default OverføringUttakPart;

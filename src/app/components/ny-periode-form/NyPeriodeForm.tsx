@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm, { UtsettelseperiodeFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
-import UttaksperiodeForm from '../uttaksperiode-form/UttaksperiodeForm';
+import UttaksperiodeForm from '../uttaksperiode-form/UttakForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
 import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
-import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Tidsperiode } from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import NyPeriodeKnapperad from './NyPeriodeKnapperad';
 
 interface OwnProps {
     onSubmit: (periode: Periode) => void;
@@ -84,8 +81,6 @@ class NyPeriodeForm extends React.Component<Props, State> {
     render() {
         const { intl, onCancel } = this.props;
         const { periode } = this.state;
-        const validTidsperiode = getValidTidsperiode(periode.tidsperiode as Tidsperiode);
-        const periodeKanLeggesTil = periode.type !== undefined && validTidsperiode !== undefined;
 
         return (
             <form className={`periodeForm periodeForm--${periode.type!.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
@@ -102,8 +97,12 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 {(periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
-                        <UttaksperiodeForm periode={periode as Partial<Uttaksperiode>} onChange={this.updatePeriode} />
-                        <NyPeriodeKnapperad periodeKanLeggesTil={periodeKanLeggesTil} onCancel={onCancel} />
+                        <UttaksperiodeForm
+                            periode={periode as Partial<Uttaksperiode>}
+                            kanEndreStønadskonto={true}
+                            onChange={this.updatePeriode}
+                            onCancel={onCancel}
+                        />
                     </>
                 )}
             </form>

@@ -15,11 +15,12 @@ import Søknad, { SøknadPartial, Søkersituasjon } from '../../../types/søknad
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../util/uttaksplan';
-import { getUttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
+import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import { NavnPåForeldre } from 'common/types';
+import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
     stegProps: StegProps;
@@ -27,6 +28,7 @@ interface StateProps {
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
     antallUkerFellesperiode: number;
+    scenario: UttaksplanSkjemaScenario;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -44,7 +46,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, dispatch, antallUkerFellesperiode, navnPåForeldre } = this.props;
+        const { stegProps, dispatch, antallUkerFellesperiode, navnPåForeldre, scenario } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
             <Steg
@@ -57,7 +59,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                     )
                 }>
                 <UttaksplanSkjemaScenarioes
-                    scenario={getUttaksplanSkjemaScenario(søknad)}
+                    scenario={scenario}
                     søknad={søknad}
                     navnPåForeldre={navnPåForeldre}
                     antallUkerFellesperiode={antallUkerFellesperiode}
@@ -80,13 +82,27 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     };
 
     const permisjonsregler = getPermisjonsregler();
-
+    const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
+    const scenario = getUttaksplanSkjemaScenario(state.søknad);
+    const søknad = { ...state.søknad };
+    const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
+    if (
+        scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
+        skjemadata.skalIkkeHaUttakFørTermin !== true &&
+        skjemadata.startdatoPermisjon === undefined
+    ) {
+        const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
+            permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+        );
+        søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
+    }
     return {
         stegProps,
-        søknad: state.søknad,
+        søknad,
+        familiehendelsesdato,
         navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
-        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
-        antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!)
+        antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
+        scenario
     };
 };
 

@@ -7,7 +7,8 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.Flerbarnsuker ||
                 kontoType.konto === StønadskontoType.Fellesperiode ||
                 kontoType.konto === StønadskontoType.Fedrekvote ||
-                kontoType.konto === StønadskontoType.Mødrekvote
+                kontoType.konto === StønadskontoType.Mødrekvote ||
+                kontoType.konto === StønadskontoType.Foreldrepenger
         )
         .map((kontoType) => kontoType.konto);
 
