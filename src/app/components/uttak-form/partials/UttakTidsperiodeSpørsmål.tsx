@@ -11,11 +11,13 @@ import {
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { UttakFormPeriodeType } from '../UttakForm';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface Props {
     periode: UttakFormPeriodeType;
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
+    feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
@@ -37,6 +39,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     periode,
     familiehendelsesdato,
     tidsperiode,
+    feil,
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
@@ -64,8 +67,9 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     }
                 ]
             }}
-            {...getTidsperiodeDisabledProps(periode)}
             visVarighet={true}
+            feil={feil}
+            {...getTidsperiodeDisabledProps(periode)}
         />
     );
 };

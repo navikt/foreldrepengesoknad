@@ -10,7 +10,6 @@ import {
     EndrePeriodeRequestDeleteEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import AlertStripe from 'nav-frontend-alertstriper';
 import UttakForm from '../uttak-form/UttakForm';
 
 import './endrePeriodeFormContent.less';
@@ -31,24 +30,21 @@ class EndrePeriodeFormContent extends React.Component<Props> {
         const { periode, validertPeriode, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+        const harOverlappendePerioder = validertPeriode && validertPeriode.overlappendePerioder.length > 0;
         return (
             <>
-                {validertPeriode &&
-                    validertPeriode.overlappendePerioder.length > 0 && (
-                        <Block margin="s">
-                            <AlertStripe type="info" solid={true}>
-                                <FormattedMessage id="periodeliste.overlappendePeriode" />
-                            </AlertStripe>
-                        </Block>
-                    )}
-
                 {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
-                    <UtsettelseForm periode={periode} onChange={onChange} />
+                    <UtsettelseForm
+                        periode={periode}
+                        onChange={onChange}
+                        harOverlappendePerioder={harOverlappendePerioder}
+                    />
                 ) : (
                     <UttakForm
                         periode={periode as Uttaksperiode}
                         onChange={onChange}
                         kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
+                        harOverlappendePerioder={harOverlappendePerioder}
                     />
                 )}
                 <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">

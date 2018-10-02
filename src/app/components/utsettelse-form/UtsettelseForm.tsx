@@ -189,7 +189,16 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor, onCancel } = this.props;
+        const {
+            periode,
+            arbeidsforhold,
+            søknad,
+            navnPåForeldre,
+            søkerErFarEllerMedmor,
+            harOverlappendePerioder,
+            onCancel,
+            intl
+        } = this.props;
         const { variant } = this.state;
 
         const visibility = getUtsettelseFormVisibility(
@@ -211,6 +220,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(p) => this.onChange({ tidsperiode: p })}
+                            feil={
+                                harOverlappendePerioder
+                                    ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
+                                    : undefined
+                            }
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
