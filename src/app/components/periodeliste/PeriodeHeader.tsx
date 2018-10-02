@@ -104,7 +104,7 @@ const renderPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): 
     return undefined;
 };
 
-const getAdvarselForPeriode = (periode: Periode, validertPeriode: ValidertPeriode): Advarsel | undefined => {
+const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedIntl): Advarsel | undefined => {
     if (validertPeriode === undefined) {
         return;
     }
@@ -112,13 +112,13 @@ const getAdvarselForPeriode = (periode: Periode, validertPeriode: ValidertPeriod
     if (validertPeriode.valideringsfeil.length > 0) {
         return {
             type: 'feil',
-            beskrivelse: `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`
+            beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`)
         };
     }
     if (validertPeriode.overlappendePerioder.length > 0) {
         return {
             type: 'feil',
-            beskrivelse: `periodeliste.overlappendePeriode`
+            beskrivelse: getMessage(intl, `periodeliste.overlappendePeriode`)
         };
     }
     return undefined;
@@ -139,7 +139,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const advarselId = `advarsel__${periode.id}`;
-    const advarsel = getAdvarselForPeriode(periode, validertPeriode);
+    const advarsel = getAdvarselForPeriode(validertPeriode, intl);
     return (
         <article
             className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
@@ -159,10 +159,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             </div>
             {advarsel && (
                 <div className={BEM.element('advarsel')}>
-                    <AriaText id={advarselId}>
-                        {advarsel.tittel ? <strong>{advarsel.tittel}</strong> : undefined}
-                        {advarsel.beskrivelse}
-                    </AriaText>
+                    <AriaText id={advarselId}>{advarsel.beskrivelse}</AriaText>
                     <span role="presentation">
                         <UttaksplanIkon
                             ikon={getIkonForAdvarsel(advarsel)}

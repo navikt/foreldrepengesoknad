@@ -117,11 +117,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             periode.type === Periodetype.Uttak &&
             periode.konto === StønadskontoType.Fellesperiode &&
             periode.morsAktivitetIPerioden !== undefined,
+        parentQuestion: Sp.tidsperiode,
         condition: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak && questionIsAnswered(periode.ønskerSamtidigUttak),
+        parentQuestion: Sp.tidsperiode,
         condition: (payload) => visSamtidigUttak(payload)
     },
     [Sp.overføringsårsak]: {
