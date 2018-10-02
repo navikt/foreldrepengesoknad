@@ -1,11 +1,11 @@
 import { getVariantFromPeriode } from '../../../components/utsettelse-form/UtsettelseForm';
 import { validerUtsettelseForm } from './utsettelseForm';
 import { erFarEllerMedmor } from '../../domain/personUtil';
-import { getVelgbareStønadskontotyper } from '../../uttaksplan/st\u00F8nadskontoer';
+import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
 import { validerUttakForm } from './uttakForm';
-import { Søker } from '../../../types/s\u00F8knad/S\u00F8ker';
+import { Søker } from '../../../types/søknad/Søker';
 import { TilgjengeligStønadskonto, Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
-import AnnenForelder from '../../../types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from '../../../types/søknad/AnnenForelder';
 
 export const validerPeriodeForm = (
     periode: Periode,
