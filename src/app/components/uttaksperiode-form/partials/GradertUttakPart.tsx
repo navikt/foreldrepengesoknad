@@ -11,6 +11,7 @@ import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../uttakFormConfig';
+import { getStillingsprosentRegler } from '../../../util/validation/fields/stillingsprosent';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -59,6 +60,7 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         value={periode.stillingsprosent || ''}
                         maxLength={4}
+                        validators={getStillingsprosentRegler(periode.stillingsprosent || '', intl)}
                     />
                 </Block>
 

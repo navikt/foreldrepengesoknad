@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
+import FlervalgSpørsmål from '../flervalg-spørsmål/FlervalgSpørsmål';
 
 enum ValgAlternativer {
     'JA' = 'ja',
@@ -30,13 +30,13 @@ const JaNeiSpørsmål = (props: Props) => {
     }
 
     return (
-        <RadioPanelGruppeResponsive
-            name={navn}
-            checked={checked}
-            legend={spørsmål}
-            infoboksTekst={hjelpetekst}
-            twoColumns={toKolonner}
-            radios={[
+        <FlervalgSpørsmål
+            navn={navn}
+            valgtVerdi={checked}
+            spørsmål={spørsmål}
+            hjelpetekst={hjelpetekst}
+            toKolonner={toKolonner}
+            alternativer={[
                 {
                     label: getMessage(intl, 'ja'),
                     value: ValgAlternativer.JA
@@ -46,9 +46,7 @@ const JaNeiSpørsmål = (props: Props) => {
                     value: ValgAlternativer.NEI
                 }
             ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: ValgAlternativer) =>
-                onChange(v === ValgAlternativer.JA)
-            }
+            onChange={(v: ValgAlternativer) => onChange(v === ValgAlternativer.JA)}
         />
     );
 };

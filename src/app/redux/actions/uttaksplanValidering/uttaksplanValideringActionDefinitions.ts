@@ -1,14 +1,9 @@
-import { Periode } from '../../../types/uttaksplan/periodetyper';
 import { PeriodeValideringsfeil } from '../../reducers/uttaksplanValideringReducer';
 
 export enum UttaksplanValideringActionKeys {
     'SET_VALIDERT_PERIODE' = 'setValidertPeriode',
     'SET_VALIDERTE_PERIODER' = 'setValidertePerioder',
     'VALIDER_UTTAKSPLAN' = 'validerUttaksplan'
-}
-
-export interface ValiderPeriodePayload {
-    perioder: Periode[];
 }
 
 export interface ValidertPeriode {

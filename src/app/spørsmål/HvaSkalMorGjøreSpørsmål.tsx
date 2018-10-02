@@ -42,7 +42,13 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         label={getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål', {
                             navnMor: navnPåForeldre.mor
                         })}
-                        onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}>
+                        onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
+                        validators={[
+                            {
+                                test: () => morsAktivitetIPerioden !== undefined,
+                                failText: getMessage(intl, 'påkrevd')
+                            }
+                        ]}>
                         <option value="" />
                         {this.renderOptions()}
                     </Select>
