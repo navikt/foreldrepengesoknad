@@ -6,6 +6,7 @@ import { Periodene } from '../../../util/uttaksplan/Periodene';
 import { Forelder } from 'common/types';
 
 let nyPeriode: Uttaksperiode = {
+    id: '',
     type: Periodetype.Uttak,
     forelder: Forelder.MOR,
     konto: StønadskontoType.Fedrekvote,
