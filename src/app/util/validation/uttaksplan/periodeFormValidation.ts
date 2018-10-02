@@ -9,7 +9,7 @@ import {
     getUtsettelseFormVisibility,
     UtsettelseFormPayload
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
-import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttaksperiode-form/uttakFormConfig';
+import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const { variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
