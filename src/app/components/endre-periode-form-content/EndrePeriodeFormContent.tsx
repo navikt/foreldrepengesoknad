@@ -17,7 +17,7 @@ import AlertStripe from 'nav-frontend-alertstriper';
 
 export interface OwnProps {
     periode: Periode;
-    periodevalidering: ValidertPeriode | undefined;
+    validertPeriode: ValidertPeriode | undefined;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
 }
@@ -28,13 +28,13 @@ type Props = OwnProps & InjectedIntlProps;
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
-        const { periode, periodevalidering, onChange, onRequestDelete } = this.props;
+        const { periode, validertPeriode, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
             <>
-                {periodevalidering &&
-                    periodevalidering.overlappendePerioder.length > 0 && (
+                {validertPeriode &&
+                    validertPeriode.overlappendePerioder.length > 0 && (
                         <Block margin="s">
                             <AlertStripe type="info" solid={true}>
                                 <FormattedMessage id="periodeliste.overlappendePeriode" />
