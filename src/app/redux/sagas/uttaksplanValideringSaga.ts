@@ -87,21 +87,13 @@ function* validerUttaksplan() {
     const validertePerioder: ValidertPeriode[] = [];
     appState.søknad.uttaksplan.forEach((periode) => {
         const periodeId = periode.id;
-        if (
-            periodeId !== undefined &&
-            (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold)
-        ) {
+        if (periodeId !== undefined) {
             validertePerioder.push({
                 periodeId,
-                valideringsfeil: validerUtsettelseEllerOpphold(periode, appState)
-            });
-        } else if (
-            periodeId !== undefined &&
-            (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring)
-        ) {
-            validertePerioder.push({
-                periodeId,
-                valideringsfeil: validerUttakEllerOverføring(periode, appState)
+                valideringsfeil:
+                    periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold
+                        ? validerUtsettelseEllerOpphold(periode, appState)
+                        : validerUttakEllerOverføring(periode, appState)
             });
         }
     });
