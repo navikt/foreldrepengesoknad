@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import FlervalgSpørsmål from '../components/flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
+import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørsmål';
 import { SelvstendigNæringsdrivendeEllerFrilans } from '../types/uttaksplan/periodetyper';
 
 interface HvorSkalDuJobbeSpørsmålProps {

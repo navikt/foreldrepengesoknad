@@ -1,5 +1,5 @@
 import * as React from 'react';
-import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../sp\u00F8rsm\u00E5l/SkalDuV\u00E6reHjemmeSamtidigMedDenAndreForelderenSp\u00F8rsm\u00E5l';
+import SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål from '../../../spørsmål/SkalDuV\u00E6reHjemmeSamtidigMedDenAndreForelderenSpørsmål';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 

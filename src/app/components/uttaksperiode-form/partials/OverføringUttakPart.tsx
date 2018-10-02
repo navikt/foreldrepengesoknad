@@ -7,8 +7,8 @@ import { FormattedMessage } from 'react-intl';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { getOverføringÅrsakSkjemanummer } from '../../../util/skjemanummer/overføringÅrsakSkjemanummer';
-import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 import { RecursivePartial } from '../../../types/Partial';
+import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 
 interface Props {
     årsak?: OverføringÅrsakType;
@@ -42,7 +42,7 @@ class OverføringUttakPart extends React.Component<Props> {
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
                         skjemanummer={getOverføringÅrsakSkjemanummer(årsak!)}
-                        onChange={(v) => onChange({ vedlegg })}
+                        onChange={(v) => onChange({ vedlegg: v })}
                     />
                 </Block>
             </>
