@@ -32,7 +32,7 @@ const getTidsperiodeDisabledProps = (
     return undefined;
 };
 
-const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlProps> = ({
     onChange,
     periode,
     familiehendelsesdato,
@@ -70,4 +70,4 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
     );
 };
 
-export default injectIntl(UtsettelseTidsperiodeSpørsmål);
+export default injectIntl(UttakTidsperiodeSpørsmål);
