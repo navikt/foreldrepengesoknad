@@ -26,8 +26,7 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    const { variant, /*periode,*/ søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
-    // const skalBesvares = søkerErFarEllerMedmor && søkerErAleneOmOmsorg === false;
+    const { variant, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
 
     if (variant === undefined) {
         return false;
@@ -40,13 +39,6 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
     }
 
     return false;
-
-    // variant === Utsettelsesvariant.Ferie ||
-    // (periode.årsak === UtsettelseÅrsakType.Arbeid &&
-    //     variant !== undefined &&
-    //     harRegistrertArbeidOk(variant, periode) &&
-    //     søkerErAleneOmOmsorg === false &&
-    //     søkerErFarEllerMedmor === true)
 };
 
 const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
