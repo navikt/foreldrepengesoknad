@@ -61,7 +61,7 @@ export interface Helligdag {
 }
 
 export interface PeriodeBase {
-    id?: string;
+    id: string;
     type: Periodetype;
     tidsperiode: Tidsperiode;
     vedlegg?: Attachment[];
