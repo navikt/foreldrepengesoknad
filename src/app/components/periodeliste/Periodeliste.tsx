@@ -8,11 +8,10 @@ import { NavnPåForeldre } from 'common/types';
 import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import EndrePeriodeFormContent from '../endre-periode-form-content/EndrePeriodeFormContent';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
+import { UttaksplanValideringState, Periodevalidering } from '../../redux/reducers/uttaksplanValideringReducer';
 
 import './periodeliste.less';
-import { UttaksplanValideringState, Periodevalidering } from '../../redux/reducers/uttaksplanValideringReducer';
-import { InjectedIntl, injectIntl, InjectedIntlProps } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
+import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 
 export interface Props {
     perioder: Periode[];
@@ -22,29 +21,35 @@ export interface Props {
 
 const bem = BEMHelper('periodeliste');
 
-const getAdvarselForPeriode = (
-    periode: Periode,
-    periodevalidering: Periodevalidering,
-    intl: InjectedIntl
-): Advarsel | undefined => {
-    if (periodevalidering !== undefined) {
-        const v = periodevalidering[periode.id!];
-        if (v && v !== undefined && v.length > 0) {
-            return {
-                type: 'feil',
-                beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${v[0].feilKey}`)
-            };
-        }
+const getSkjemaFeil = (validertPeriode: ValidertPeriode): string | undefined => {
+    if (validertPeriode.valideringsfeil.length > 0) {
+        return `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`;
     }
     return undefined;
 };
 
-const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
-    perioder,
-    uttaksplanValidering,
-    navnPåForeldre,
-    intl
-}) => (
+const getAdvarselForPeriode = (periode: Periode, periodevalidering: Periodevalidering): Advarsel | undefined => {
+    const validertPeriode = periodevalidering[periode.id];
+    if (!validertPeriode) {
+        return;
+    }
+    const skjemafeil = getSkjemaFeil(validertPeriode);
+    if (skjemafeil !== undefined) {
+        return {
+            type: 'feil',
+            beskrivelse: 'Skjemaet inneholder feil'
+        };
+    }
+    if (validertPeriode.overlappendePerioder.length > 0) {
+        return {
+            type: 'feil',
+            beskrivelse: 'Periode overlapper'
+        };
+    }
+    return undefined;
+};
+
+const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanValidering, navnPåForeldre }) => (
     <div className={bem.className}>
         {perioder.map((p) => (
             <div className={bem.element('item')} key={p.id}>
@@ -57,7 +62,7 @@ const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
                                 <PeriodeHeader
                                     periode={p}
                                     navnPåForeldre={navnPåForeldre}
-                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.periodevalidering, intl)}
+                                    advarsel={getAdvarselForPeriode(p, uttaksplanValidering.periodevalidering)}
                                 />
                             )}
                             renderContent={() => (
@@ -69,6 +74,7 @@ const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
                                     )}>
                                     <EndrePeriodeFormContent
                                         periode={p}
+                                        periodevalidering={uttaksplanValidering.periodevalidering[p.id]}
                                         onChange={onChange}
                                         onRequestDelete={onRequestDelete}
                                     />
@@ -82,4 +88,4 @@ const Periodeliste: React.StatelessComponent<Props & InjectedIntlProps> = ({
     </div>
 );
 
-export default injectIntl(Periodeliste);
+export default Periodeliste;
