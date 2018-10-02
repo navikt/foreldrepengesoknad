@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, select } from 'redux-saga/effects';
+import { takeEvery, all, call, put, select, throttle } from 'redux-saga/effects';
 import Api from '../../api/api';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
@@ -67,15 +67,17 @@ function* deleteStoredAppState() {
     }
 }
 
+const THROTTLE_INTERVAL_MS = 2500;
+
 export default function* storageSaga() {
     yield all([
-        takeEvery(ApiActionKeys.STORE_APP_STATE, saveAppState),
         takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
         takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
-        takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
+        throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
+        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
     ]);
 }
