@@ -14,6 +14,7 @@ export interface Periodevalidering {
 
 export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
+    erGyldig: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -22,9 +23,16 @@ export interface PeriodeValideringsfeil {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        periodevalidering: {}
+        periodevalidering: {},
+        erGyldig: true
     };
 };
+
+const erUttaksplanGyldig = (periodevalidering: Periodevalidering) =>
+    Object.keys(periodevalidering).find(
+        (key) =>
+            periodevalidering[key].overlappendePerioder.length > 0 || periodevalidering[key].valideringsfeil.length > 0
+    ) === undefined;
 
 const uttaksplanValideringReducer = (
     state = getDefaultState(),
@@ -32,17 +40,20 @@ const uttaksplanValideringReducer = (
 ): UttaksplanValideringState => {
     switch (action.type) {
         case UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE:
+            const periodevalidering = {
+                ...state.periodevalidering,
+                [action.periodeId]: action.validertPeriode
+            };
             return {
                 ...state,
-                periodevalidering: {
-                    ...state.periodevalidering,
-                    [action.periodeId]: action.validertPeriode
-                }
+                periodevalidering,
+                erGyldig: erUttaksplanGyldig(periodevalidering)
             };
         case UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER:
             return {
                 ...state,
-                periodevalidering: action.validertePerioder
+                periodevalidering: action.validertePerioder,
+                erGyldig: erUttaksplanGyldig(action.validertePerioder)
             };
     }
     return state;
