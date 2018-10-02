@@ -97,13 +97,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     componentDidMount() {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
     onChange(periode: UtsettelseperiodeFormPeriodeType) {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
         this.props.onChange(periode);
     }

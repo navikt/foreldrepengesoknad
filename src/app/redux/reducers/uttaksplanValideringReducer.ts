@@ -3,19 +3,17 @@ import {
     UttaksplanValideringActionKeys,
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Periode } from '../../types/uttaksplan/periodetyper';
 
 export enum PeriodeValideringErrorKey {
     'FORM_INCOMPLETE' = 'formIncomplete'
 }
 
 export interface Periodevalidering {
-    [periodeId: string]: PeriodeValideringsfeil[] | undefined;
+    [periodeId: string]: ValidertPeriode;
 }
 
 export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
-    overlappendePerioder: Periode[];
 }
 
 export interface PeriodeValideringsfeil {
@@ -24,8 +22,7 @@ export interface PeriodeValideringsfeil {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        periodevalidering: {},
-        overlappendePerioder: []
+        periodevalidering: {}
     };
 };
 
@@ -39,20 +36,13 @@ const uttaksplanValideringReducer = (
                 ...state,
                 periodevalidering: {
                     ...state.periodevalidering,
-                    [action.validertPeriode.periodeId]: action.validertPeriode.valideringsfeil
+                    [action.periodeId]: action.validertPeriode
                 }
             };
         case UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER:
-            let periodevalidering = {};
-            action.validertePerioder.forEach((p: ValidertPeriode) => {
-                periodevalidering = {
-                    ...periodevalidering,
-                    [p.periodeId]: p.valideringsfeil
-                };
-            });
             return {
                 ...state,
-                periodevalidering
+                periodevalidering: action.validertePerioder
             };
     }
     return state;

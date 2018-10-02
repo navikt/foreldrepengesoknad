@@ -12,9 +12,12 @@ import {
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 
 import './endrePeriodeFormContent.less';
+import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export interface OwnProps {
     periode: Periode;
+    periodevalidering: ValidertPeriode | undefined;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
 }
@@ -25,11 +28,20 @@ type Props = OwnProps & InjectedIntlProps;
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
-        const { periode, onChange, onRequestDelete } = this.props;
+        const { periode, periodevalidering, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         return (
             <>
+                {periodevalidering &&
+                    periodevalidering.overlappendePerioder.length > 0 && (
+                        <Block margin="s">
+                            <AlertStripe type="info" solid={true}>
+                                <FormattedMessage id="periodeliste.overlappendePeriode" />
+                            </AlertStripe>
+                        </Block>
+                    )}
+
                 {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
                     <UtsettelseForm periode={periode} onChange={onChange} />
                 ) : (

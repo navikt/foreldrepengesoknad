@@ -73,14 +73,14 @@ class UttaksperiodeForm extends React.Component<Props> {
 
     componentDidMount() {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
     onChange(periode: UttaksFormPeriodeType) {
         this.props.onChange(periode);
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
