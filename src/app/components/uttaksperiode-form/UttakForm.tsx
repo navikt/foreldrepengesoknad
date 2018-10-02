@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PT from 'prop-types';
 import {
     Periode,
     Periodetype,
@@ -18,12 +19,9 @@ import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSka
 import Block from 'common/components/block/Block';
 import { erFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
-import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
-import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
+import { getUttakFormVisibility, UttakSpørsmålKeys, UttaksFormPeriodeType } from './uttakFormConfig';
 import { getNavnPåForeldre } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -31,6 +29,7 @@ import SamtidigUttakPart from './partials/SamtidigUttakPart';
 import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselPart';
 import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
+import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSp\u00F8rsm\u00E5l';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -59,16 +58,34 @@ const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | undefined, søk
 };
 
 class UttaksperiodeForm extends React.Component<Props> {
+    static contextTypes = {
+        validForm: PT.object
+    };
+    context: any;
+
     constructor(props: Props) {
         super(props);
         this.getTidsperiodeDisabledProps = this.getTidsperiodeDisabledProps.bind(this);
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
         this.updatePeriodeGradering = this.updatePeriodeGradering.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.context.validForm) {
+            setTimeout(() => this.context.validForm.validateAll(), 0);
+        }
+    }
+
+    onChange(periode: UttaksFormPeriodeType) {
+        this.props.onChange(periode);
+        if (this.context.validForm) {
+            setTimeout(() => this.context.validForm.validateAll(), 0);
+        }
     }
 
     updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
-        const { onChange } = this.props;
-        onChange({
+        this.onChange({
             skalIkkeHaUttakFørTermin,
             type: Periodetype.Uttak,
             tidsperiode: {
@@ -79,12 +96,11 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     updatePeriodeGradering(periode: RecursivePartial<Uttaksperiode>) {
-        this.props.onChange({ ...periode });
+        this.onChange({ ...periode });
     }
 
     updateOverføringUttak(periode: RecursivePartial<Overføringsperiode>) {
-        const { onChange } = this.props;
-        onChange({
+        this.onChange({
             type: Periodetype.Overføring,
             ...periode,
             forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
@@ -93,12 +109,12 @@ class UttaksperiodeForm extends React.Component<Props> {
 
     updateStønadskontoType(konto: StønadskontoType) {
         if (erUttakAvAnnenForeldersKvote(konto, this.props.søkerErFarEllerMedmor)) {
-            this.props.onChange({
+            this.onChange({
                 type: Periodetype.Overføring,
                 konto
             });
         } else {
-            this.props.onChange({
+            this.onChange({
                 type: Periodetype.Uttak,
                 konto
             });
@@ -128,8 +144,7 @@ class UttaksperiodeForm extends React.Component<Props> {
             familiehendelsesdato,
             arbeidsforhold,
             annenForelderHarRett,
-            onCancel,
-            onChange
+            onCancel
         } = this.props;
 
         const visibility = getUttakFormVisibility(
@@ -149,20 +164,11 @@ class UttaksperiodeForm extends React.Component<Props> {
         return (
             <React.Fragment>
                 <Block>
-                    <TidsperiodeBolk
-                        onChange={(v: Partial<Tidsperiode>) => onChange({ tidsperiode: v })}
+                    <UttakTidsperiodeSpørsmål
+                        periode={periode}
+                        familiehendelsesdato={familiehendelsesdato}
+                        onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
-                        visVarighet={true}
-                        datoAvgrensninger={
-                            periode.konto
-                                ? getDatoavgrensningerForStønadskonto(
-                                      periode.konto,
-                                      familiehendelsesdato,
-                                      getPermisjonsregler()
-                                  )
-                                : undefined
-                        }
-                        {...this.getTidsperiodeDisabledProps()}
                     />
                 </Block>
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.kvote)}>
@@ -195,12 +201,12 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 vedlegg={periode.vedlegg as Attachment[]}
                                 morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
                                 navnPåForeldre={navnPåForeldre}
-                                onChange={(periodeData) => onChange(periodeData)}
+                                onChange={(periodeData) => this.onChange(periodeData)}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
-                                onChange={(ønskerSamtidigUttak) => onChange({ ønskerSamtidigUttak })}
+                                onChange={(ønskerSamtidigUttak) => this.onChange({ ønskerSamtidigUttak })}
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                             />
                         </Block>
@@ -227,7 +233,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                             visibility={visibility}
                             periode={periode}
                             arbeidsforhold={arbeidsforhold}
-                            onChange={this.props.onChange}
+                            onChange={this.onChange}
                         />
                     </Block>
                 )}

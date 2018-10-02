@@ -3,10 +3,9 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import { StønadskontoType } from '../types/uttaksplan/periodetyper';
-import { InputChangeEvent } from '../types/dom/Events';
 import { getStønadskontoNavn } from '../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import RadioPanelGruppe from 'common/components/skjema/wrappers/RadioPanelGruppe';
+import FlervalgSpørsmål from '../components/flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
@@ -25,19 +24,13 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
     }));
 
     return (
-        <RadioPanelGruppe
-            checked={stønadskonto}
-            radios={radios}
-            name="kvote"
-            twoColumns={true}
-            legend={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
-            onChange={(e: InputChangeEvent, v: StønadskontoType) => onChange(v)}
-            validators={[
-                {
-                    test: () => stønadskonto !== undefined,
-                    failText: 'Påkrevd'
-                }
-            ]}
+        <FlervalgSpørsmål
+            valgtVerdi={stønadskonto}
+            alternativer={radios}
+            navn="kvote"
+            toKolonner={true}
+            spørsmål={getMessage(intl, 'hvilkenkvoteskalbenyttes.spørsmål')}
+            onChange={(v: StønadskontoType) => onChange(v)}
         />
     );
 };
