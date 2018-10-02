@@ -29,7 +29,7 @@ import SamtidigUttakPart from './partials/SamtidigUttakPart';
 import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselPart';
 import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
-import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSp\u00F8rsm\u00E5l';
+import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;

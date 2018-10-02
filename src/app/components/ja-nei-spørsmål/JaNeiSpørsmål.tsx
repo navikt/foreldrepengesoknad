@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import FlervalgSpørsmål from '../flervalg-sp\u00F8rsm\u00E5l/FlervalgSp\u00F8rsm\u00E5l';
+import FlervalgSpørsmål from '../flervalg-spørsmål/FlervalgSpørsmål';
 
 enum ValgAlternativer {
     'JA' = 'ja',
