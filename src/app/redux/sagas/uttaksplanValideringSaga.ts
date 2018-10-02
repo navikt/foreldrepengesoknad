@@ -24,7 +24,7 @@ import {
 import { PeriodeValideringsfeil } from '../reducers/uttaksplanValideringReducer';
 import { UttaksFormPeriodeType } from '../../components/uttaksperiode-form/uttakFormConfig';
 import { validerUttakPeriode } from '../../util/validation/periode/uttak';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 
 const validerUtsettelseEllerOpphold = (
     periode: UtsettelseperiodeFormPeriodeType,
