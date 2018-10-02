@@ -1,8 +1,4 @@
-import {
-    PeriodeValideringErrorKey,
-    PeriodeValideringsfeil,
-    Periodevalidering
-} from '../../../redux/reducers/uttaksplanValideringReducer';
+import { PeriodeValideringErrorKey, PeriodeValideringsfeil } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { getUtsettelseFormVisibility } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { ValiderPeriodePayload } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import {
@@ -28,12 +24,4 @@ export const validerUtsettelsePeriode = (payload: ValiderUtsettelsePayload): Per
             feilKey: PeriodeValideringErrorKey.FORM_INCOMPLETE
         }
     ];
-};
-
-export const validerUtsettelsePerioder = (payload: ValiderUtsettelsePayload[]): Periodevalidering => {
-    const validering: Periodevalidering = {};
-    payload.forEach((p) => {
-        validering[p.periode.id!] = validerUtsettelsePeriode(p);
-    });
-    return validering;
 };

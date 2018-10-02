@@ -19,10 +19,12 @@ import {
 import { validerUtsettelsePeriode } from '../../util/validation/periode/utsettelse';
 import {
     UttaksplanValideringActionKeys,
-    ValiderUttaksplanAction,
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { PeriodeValideringsfeil } from '../reducers/uttaksplanValideringReducer';
+import { UttaksFormPeriodeType } from '../../components/uttaksperiode-form/uttakFormConfig';
+import { validerUttakPeriode } from '../../util/validation/periode/uttak';
+import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/st\u00F8nadskontoer';
 
 const validerUtsettelseEllerOpphold = (
     periode: UtsettelseperiodeFormPeriodeType,
@@ -33,6 +35,22 @@ const validerUtsettelseEllerOpphold = (
         perioder: søknad.uttaksplan,
         periode,
         variant: getVariantFromPeriode(periode),
+        søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
+        søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle)
+    });
+};
+
+const validerUttakEllerOverføring = (
+    periode: UttaksFormPeriodeType,
+    state: AppState
+): PeriodeValideringsfeil[] | undefined => {
+    const { søknad } = state;
+    return validerUttakPeriode({
+        perioder: søknad.uttaksplan,
+        periode,
+        velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
+        kanEndreStøndskonto: false,
+        annenForelderHarRett: søknad.annenForelder.harRettPåForeldrepenger,
         søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
         søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle)
     });
@@ -50,10 +68,20 @@ function* validerPeriode(action: UttaksplanUpdatePeriode | UttaksplanAddPeriode)
                 valideringsfeil: validerUtsettelseEllerOpphold(periode, appState)
             })
         );
+    } else if (
+        periodeId !== undefined &&
+        (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring)
+    ) {
+        yield put(
+            setValidertPeriode({
+                periodeId,
+                valideringsfeil: validerUttakEllerOverføring(periode, appState)
+            })
+        );
     }
 }
 
-function* validerUttaksplan(action: ValiderUttaksplanAction) {
+function* validerUttaksplan() {
     const stateSelector = (state: AppState) => state;
     const appState: AppState = yield select(stateSelector);
     const validertePerioder: ValidertPeriode[] = [];
@@ -66,6 +94,14 @@ function* validerUttaksplan(action: ValiderUttaksplanAction) {
             validertePerioder.push({
                 periodeId,
                 valideringsfeil: validerUtsettelseEllerOpphold(periode, appState)
+            });
+        } else if (
+            periodeId !== undefined &&
+            (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring)
+        ) {
+            validertePerioder.push({
+                periodeId,
+                valideringsfeil: validerUttakEllerOverføring(periode, appState)
             });
         }
     });

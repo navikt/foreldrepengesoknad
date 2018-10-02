@@ -6,7 +6,8 @@ import {
     Overføringsperiode,
     StønadskontoType,
     Periodetype,
-    OverføringÅrsakType
+    OverføringÅrsakType,
+    isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../types/Partial';
 
@@ -105,7 +106,9 @@ const visGradering = (payload: UttakFormPayload): boolean => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isAnswered: ({ periode }) => getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined
+        isAnswered: ({ periode }) =>
+            getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
+            (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.kvote]: {
         isAnswered: ({ periode }) => questionIsAnswered(periode.konto),
