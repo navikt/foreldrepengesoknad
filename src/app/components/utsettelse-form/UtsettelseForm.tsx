@@ -20,7 +20,6 @@ import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
-import HvaSkalMorGjøreSpørsmål from '../../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
@@ -32,6 +31,7 @@ import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
+import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 
 export type UtsettelseperiodeFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -257,10 +257,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             <Block
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.morsAktivitet)}
                                 hasChildBlocks={true}>
-                                <HvaSkalMorGjøreSpørsmål
+                                <AktivitetskravMorBolk
                                     navnPåForeldre={navnPåForeldre}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                    onChange={(morsAktivitetIPerioden) => this.onChange({ morsAktivitetIPerioden })}
+                                    vedlegg={periode.vedlegg as Attachment[]}
+                                    onChange={(periodeData) => this.onChange(periodeData)}
                                 />
                             </Block>
                         </>
