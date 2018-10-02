@@ -8,16 +8,14 @@ import { InputChangeEvent } from '../../../types/dom/Events';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
-import { GradertUttakSpørsmålKeys, getGradertUttakSpørsmålVisibility } from './gradertUttakFormVisibility';
 import { RecursivePartial } from '../../../types/Partial';
-import SkalDereHaGradertUttakSamtidigSpørsmål from '../../../spørsmål/SkalDereHaGradertUttakSamtidigSpørsmål';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
+import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../uttakFormConfig';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
     periode: RecursivePartial<Uttaksperiode>;
-    annenForelderHarRettPåForeldrepenger: boolean;
-    erAleneOmOmsorg: boolean;
+    visibility: UttakSpørsmålVisibility;
     arbeidsforhold?: Arbeidsforhold[];
 }
 
@@ -33,20 +31,7 @@ class GradertUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const {
-            erAleneOmOmsorg,
-            annenForelderHarRettPåForeldrepenger,
-            periode,
-            arbeidsforhold,
-            intl,
-            onChange
-        } = this.props;
-
-        const visibility = getGradertUttakSpørsmålVisibility(
-            periode as Uttaksperiode,
-            annenForelderHarRettPåForeldrepenger,
-            erAleneOmOmsorg
-        );
+        const { periode, arbeidsforhold, visibility, intl, onChange } = this.props;
 
         return (
             <>
@@ -59,7 +44,7 @@ class GradertUttakForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.stillingsprosent)}>
+                <Block visible={visibility.isVisible(UttakSpørsmålKeys.stillingsprosent)}>
                     <Input
                         name="utsettelse-stillingsprosent"
                         bredde="XS"
@@ -77,7 +62,7 @@ class GradertUttakForm extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.hvorSkalDuJobbe)}>
+                <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
                         onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
@@ -88,14 +73,6 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
                         valgtArbeidsforhold={periode.orgnr}
-                    />
-                </Block>
-                <Block visible={visibility.isVisible(GradertUttakSpørsmålKeys.samtidigGradertUttak)}>
-                    <SkalDereHaGradertUttakSamtidigSpørsmål
-                        onChange={(ønskerSamtidigUttak: boolean) => {
-                            onChange({ ønskerSamtidigUttak });
-                        }}
-                        samtidigGradertUttak={periode.ønskerSamtidigUttak}
                     />
                 </Block>
             </>

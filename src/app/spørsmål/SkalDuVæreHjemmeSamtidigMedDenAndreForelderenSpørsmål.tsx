@@ -17,7 +17,7 @@ const SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål: React.StatelessC
 }) => (
     <>
         <JaNeiSpørsmål
-            navn="samtidigGradertUttak"
+            navn="samtidigUttak"
             spørsmål={getMessage(intl, 'uttaksplan.fellesdel.samtidigUttak.spørsmål')}
             valgtVerdi={ønskerSamtidigUttak}
             onChange={(v) => onChange(v)}

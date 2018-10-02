@@ -25,6 +25,22 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 
 const Sp = UtsettelseSpørsmålKeys;
 
+const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
+    const { variant, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
+
+    if (variant === undefined) {
+        return false;
+    }
+    if (variant === Utsettelsesvariant.Ferie) {
+        return true;
+    }
+    if (søkerErFarEllerMedmor && søkerErAleneOmOmsorg) {
+        return true;
+    }
+
+    return false;
+};
+
 const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
     periode.årsak === UtsettelseÅrsakType.Arbeid &&
     variant === Utsettelsesvariant.Arbeid &&
@@ -53,13 +69,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionIsAnswered((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        condition: ({ variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor }) =>
-            variant === Utsettelsesvariant.Ferie ||
-            (periode.årsak === UtsettelseÅrsakType.Arbeid &&
-                variant !== undefined &&
-                harRegistrertArbeidOk(variant, periode) &&
-                søkerErAleneOmOmsorg === false &&
-                søkerErFarEllerMedmor === true)
+        condition: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
     },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered((periode as Oppholdsperiode).årsak),
