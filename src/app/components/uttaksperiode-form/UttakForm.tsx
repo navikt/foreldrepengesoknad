@@ -22,7 +22,6 @@ import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { getDatoavgrensningerForStønadskonto } from '../../util/uttaksplan/uttaksperiodeUtils';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
-// import GradertUttakForm from './gradert-uttak-form/GradertUttakForm';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
 import { getNavnPåForeldre } from '../../util/uttaksplan';
@@ -31,6 +30,7 @@ import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
 import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselPart';
 import OverføringUttakPart from './partials/OverføringUttakPart';
+import GradertUttakPart from './partials/GradertUttakPart';
 
 interface UttaksperiodeFormProps {
     periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
@@ -46,6 +46,7 @@ interface StateProps {
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
+    annenForelderHarRett: boolean;
 }
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
@@ -125,6 +126,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             søkerErFarEllerMedmor,
             navnPåForeldre,
             familiehendelsesdato,
+            arbeidsforhold,
+            annenForelderHarRett,
             onCancel,
             onChange
         } = this.props;
@@ -134,7 +137,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
             søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor
+            søkerErFarEllerMedmor,
+            annenForelderHarRett
         );
 
         if (visibility === undefined) {
@@ -203,7 +207,10 @@ class UttaksperiodeForm extends React.Component<Props> {
                     </>
                 )}
                 {periode.type === Periodetype.Overføring && (
-                    <Block visible={visibility.isVisible(UttakSpørsmålKeys.overføringsårsak)} hasChildBlocks={true}>
+                    <Block
+                        visible={visibility.isVisible(UttakSpørsmålKeys.overføringsårsak)}
+                        hasChildBlocks={true}
+                        margin="none">
                         <OverføringUttakPart
                             navnAnnenForelder={søknad.annenForelder.fornavn}
                             årsak={periode.årsak}
@@ -214,18 +221,16 @@ class UttaksperiodeForm extends React.Component<Props> {
                     </Block>
                 )}
 
-                {/* 
-                {validTidsperiode &&
-                    periode.type === Periodetype.Uttak &&
-                    (periode.konto && periode.konto !== StønadskontoType.ForeldrepengerFørFødsel) && (
-                        <GradertUttakForm
+                {periode.type === Periodetype.Uttak && (
+                    <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
+                        <GradertUttakPart
+                            visibility={visibility}
                             periode={periode}
-                            annenForelderHarRettPåForeldrepenger={søknad.annenForelder.harRettPåForeldrepenger}
-                            erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             arbeidsforhold={arbeidsforhold}
                             onChange={this.props.onChange}
                         />
-                    )} */}
+                    </Block>
+                )}
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
@@ -244,7 +249,8 @@ const mapStateToProps = (state: AppState): StateProps => {
         velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
         søkerErFarEllerMedmor: erFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        familiehendelsesdato: state.søknad.ekstrainfo.uttaksplanInfo!.familiehendelsesdato
+        familiehendelsesdato: state.søknad.ekstrainfo.uttaksplanInfo!.familiehendelsesdato,
+        annenForelderHarRett: state.søknad.annenForelder.harRettPåForeldrepenger
     };
 };
 
