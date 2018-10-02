@@ -1,10 +1,7 @@
 import { PeriodeValideringErrorKey, PeriodeValideringsfeil } from '../../../redux/reducers/uttaksplanValideringReducer';
-import { ValiderPeriodePayload } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { getUttakFormVisibility, UttakFormPayload } from '../../../components/uttaksperiode-form/uttakFormConfig';
 
-export type ValiderUttakPayload = ValiderPeriodePayload & UttakFormPayload;
-
-export const validerUttakPeriode = (payload: ValiderUttakPayload): PeriodeValideringsfeil[] | undefined => {
+export const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] | undefined => {
     const {
         periode,
         søkerErAleneOmOmsorg,

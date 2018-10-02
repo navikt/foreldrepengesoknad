@@ -3,6 +3,7 @@ import {
     UttaksplanValideringActionKeys,
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 
 export enum PeriodeValideringErrorKey {
     'FORM_INCOMPLETE' = 'formIncomplete'
@@ -14,6 +15,7 @@ export interface Periodevalidering {
 
 export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
+    overlappendePerioder: Periode[];
 }
 
 export interface PeriodeValideringsfeil {
@@ -22,7 +24,8 @@ export interface PeriodeValideringsfeil {
 
 const getDefaultState = (): UttaksplanValideringState => {
     return {
-        periodevalidering: {}
+        periodevalidering: {},
+        overlappendePerioder: []
     };
 };
 
