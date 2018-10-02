@@ -5,105 +5,47 @@ import {
     UttaksplanAddPeriode
 } from '../actions/søknad/søknadActionDefinitions';
 import { AppState } from '../reducers';
-import { erFarEllerMedmor } from '../../util/domain/personUtil';
 import {
     validerUttaksplanAction,
     setValidertPeriode,
     setValidertePerioder
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
-import { Periodetype } from '../../types/uttaksplan/periodetyper';
-import {
-    getVariantFromPeriode,
-    UtsettelseperiodeFormPeriodeType
-} from '../../components/utsettelse-form/UtsettelseForm';
-import { validerUtsettelsePeriode } from '../../util/validation/periode/utsettelse';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import {
     UttaksplanValideringActionKeys,
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { PeriodeValideringsfeil } from '../reducers/uttaksplanValideringReducer';
-import { UttaksFormPeriodeType } from '../../components/uttaksperiode-form/uttakFormConfig';
-import { validerUttakPeriode } from '../../util/validation/periode/uttak';
-import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
+import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 
-const validerUtsettelseEllerOpphold = (
-    periode: UtsettelseperiodeFormPeriodeType,
-    state: AppState
-): PeriodeValideringsfeil[] | undefined => {
-    const { søknad } = state;
-    return validerUtsettelsePeriode({
-        perioder: søknad.uttaksplan,
-        periode,
-        variant: getVariantFromPeriode(periode),
-        søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle)
-    });
+const stateSelector = (state: AppState) => state;
+
+const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
+    const { søker, annenForelder } = appState.søknad;
+    const { tilgjengeligeStønadskontoer } = appState.api;
+    return {
+        periodeId: periode.id,
+        valideringsfeil: validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer)
+    };
 };
 
-const validerUttakEllerOverføring = (
-    periode: UttaksFormPeriodeType,
-    state: AppState
-): PeriodeValideringsfeil[] | undefined => {
-    const { søknad } = state;
-    return validerUttakPeriode({
-        perioder: søknad.uttaksplan,
-        periode,
-        velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
-        kanEndreStøndskonto: false,
-        annenForelderHarRett: søknad.annenForelder.harRettPåForeldrepenger,
-        søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søknad.søker.rolle)
-    });
-};
-
-function* validerPeriode(action: UttaksplanUpdatePeriode | UttaksplanAddPeriode) {
-    const stateSelector = (state: AppState) => state;
+function* validerPeriodeSaga(action: UttaksplanUpdatePeriode | UttaksplanAddPeriode) {
     const appState: AppState = yield select(stateSelector);
-    const { periode } = action;
-    const periodeId = periode.id;
-    if (periodeId !== undefined && (periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold)) {
-        yield put(
-            setValidertPeriode({
-                periodeId,
-                valideringsfeil: validerUtsettelseEllerOpphold(periode, appState)
-            })
-        );
-    } else if (
-        periodeId !== undefined &&
-        (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring)
-    ) {
-        yield put(
-            setValidertPeriode({
-                periodeId,
-                valideringsfeil: validerUttakEllerOverføring(periode, appState)
-            })
-        );
-    }
+    yield put(setValidertPeriode(validerPeriode(appState, action.periode)));
 }
 
-function* validerUttaksplan() {
-    const stateSelector = (state: AppState) => state;
+function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const validertePerioder: ValidertPeriode[] = [];
     appState.søknad.uttaksplan.forEach((periode) => {
-        const periodeId = periode.id;
-        if (periodeId !== undefined) {
-            validertePerioder.push({
-                periodeId,
-                valideringsfeil:
-                    periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold
-                        ? validerUtsettelseEllerOpphold(periode, appState)
-                        : validerUttakEllerOverføring(periode, appState)
-            });
-        }
+        validertePerioder.push(validerPeriode(appState, periode));
     });
     yield put(setValidertePerioder(validertePerioder));
 }
 
 export default function* storageSaga() {
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerPeriode)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerPeriode)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerPeriodeSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerPeriodeSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanAction)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanAction)]);
-    yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplan)]);
+    yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
 }
