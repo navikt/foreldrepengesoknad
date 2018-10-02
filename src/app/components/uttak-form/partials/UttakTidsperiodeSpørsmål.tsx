@@ -10,17 +10,17 @@ import {
 } from '../../../types/uttaksplan/periodetyper';
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
-import { UttaksFormPeriodeType } from '../uttakFormConfig';
+import { UttakFormPeriodeType } from '../UttakForm';
 
 export interface Props {
-    periode: UttaksFormPeriodeType;
+    periode: UttakFormPeriodeType;
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
 const getTidsperiodeDisabledProps = (
-    periode: UttaksFormPeriodeType
+    periode: UttakFormPeriodeType
 ): { startdatoDisabled?: boolean; sluttdatoDisabled?: boolean } | undefined => {
     if (isForeldrepengerFørFødselUttaksperiode(periode as Periode)) {
         const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;

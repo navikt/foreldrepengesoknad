@@ -4,16 +4,16 @@ import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import UttaksperiodeForm from '../uttaksperiode-form/UttakForm';
 import Block from 'common/components/block/Block';
 import {
     EndrePeriodeChangeEvent,
     EndrePeriodeRequestDeleteEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
-
-import './endrePeriodeFormContent.less';
 import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import AlertStripe from 'nav-frontend-alertstriper';
+import UttakForm from '../uttak-form/UttakForm';
+
+import './endrePeriodeFormContent.less';
 
 export interface OwnProps {
     periode: Periode;
@@ -45,7 +45,7 @@ class EndrePeriodeFormContent extends React.Component<Props> {
                 {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
                     <UtsettelseForm periode={periode} onChange={onChange} />
                 ) : (
-                    <UttaksperiodeForm
+                    <UttakForm
                         periode={periode as Uttaksperiode}
                         onChange={onChange}
                         kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}

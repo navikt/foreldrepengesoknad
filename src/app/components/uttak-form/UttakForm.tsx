@@ -21,7 +21,7 @@ import { erFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
-import { getUttakFormVisibility, UttakSpørsmålKeys, UttaksFormPeriodeType } from './uttakFormConfig';
+import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
 import { getNavnPåForeldre } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -31,9 +31,12 @@ import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
 import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 
+export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
+
 interface UttaksperiodeFormProps {
-    periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
+    periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
+    harOverlappendePerioder?: boolean;
     onChange: (periode: RecursivePartial<Periode>) => void;
     onCancel?: () => void;
 }
@@ -77,7 +80,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         }
     }
 
-    onChange(periode: UttaksFormPeriodeType) {
+    onChange(periode: UttakFormPeriodeType) {
         this.props.onChange(periode);
         if (this.context.validForm) {
             this.context.validForm.validateAll();
