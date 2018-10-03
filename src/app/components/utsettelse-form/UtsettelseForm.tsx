@@ -201,12 +201,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         } = this.props;
         const { variant } = this.state;
 
-        const visibility = getUtsettelseFormVisibility(
+        const visibility = getUtsettelseFormVisibility({
             variant,
             periode,
-            søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor
-        );
+            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
+            søkerErFarEllerMedmor,
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+        });
 
         if (visibility === undefined) {
             return null;
