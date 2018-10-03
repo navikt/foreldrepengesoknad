@@ -22,7 +22,6 @@ import NæringsrelasjonBolk from '../../bolker/næringsrelasjon-bolk/Næringsrel
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
-import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
 import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
@@ -178,9 +177,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         name="selvstendigNæringsdrivende-navn"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.navn')}
                         required={true}
-                        onChange={(e: InputChangeEvent) =>
+                        onChange={(v: string) =>
                             this.updateNæring({
-                                navnPåNæringen: e.target.value
+                                navnPåNæringen: v
                             })
                         }
                         value={navnPåNæringen || ''}
@@ -191,9 +190,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     <Input
                         name="selvstendigNæringsdrivende-orgnr"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
-                        onChange={(e: InputChangeEvent) =>
+                        onChange={(v: string) =>
                             this.updateNæring({
-                                organisasjonsnummer: e.target.value
+                                organisasjonsnummer: v
                             })
                         }
                         maxLength={9}
@@ -238,9 +237,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     <Input
                         name="selvstendigNæringsdrivende-næringsinntekt"
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
-                        onChange={(e: InputChangeEvent) => {
+                        onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: e.target.value
+                                næringsinntekt: v
                             };
                             this.updateNæring(næringPartial);
                         }}
@@ -294,9 +293,9 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         name="selvstendigNæringsdrivende-stillingsprosent"
                         bredde="XS"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
-                        onChange={(e: InputChangeEvent) =>
+                        onChange={(v: string) =>
                             this.updateNæring({
-                                stillingsprosent: e.target.value
+                                stillingsprosent: v
                             })
                         }
                         onBlur={this.handleStillingsprosentBlur}
