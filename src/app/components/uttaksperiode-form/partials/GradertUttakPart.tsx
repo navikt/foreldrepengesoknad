@@ -4,7 +4,6 @@ import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { InputChangeEvent } from '../../../types/dom/Events';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
 import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
@@ -50,9 +49,9 @@ class GradertUttakForm extends React.Component<Props> {
                         name="utsettelse-stillingsprosent"
                         bredde="XS"
                         label={getMessage(intl, 'stillingsprosent')}
-                        onChange={(e: InputChangeEvent) =>
+                        onChange={(v: string) =>
                             onChange({
-                                stillingsprosent: e.target.value
+                                stillingsprosent: v
                             })
                         }
                         onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
