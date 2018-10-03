@@ -22,12 +22,6 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
         throttled: true
     };
 
-    static getDerivedStateFromProps(props: InputWrapperProps) {
-        return {
-            value: props.value
-        };
-    }
-
     constructor(props: InputWrapperProps) {
         super(props);
 
@@ -66,6 +60,7 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
                 label={<InputLabel label={label} infotekst={infotekst} inputId={id} />}
                 onChange={this.handleOnChange}
                 value={value}
+                autoComplete="false"
             />
         );
     }
