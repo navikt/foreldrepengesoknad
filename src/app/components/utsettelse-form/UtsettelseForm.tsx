@@ -102,10 +102,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     onChange(periode: UtsettelseFormPeriodeType) {
+        this.props.onChange(periode);
         if (this.context.validForm) {
             this.context.validForm.validateAll();
         }
-        this.props.onChange(periode);
     }
 
     getUtsettelseÅrsakRadios(): RadioProps[] {
