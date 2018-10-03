@@ -2,14 +2,12 @@ import { QuestionConfig, Questions, QuestionVisibility, questionIsAnswered } fro
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Tidsperiode } from 'nav-datovelger';
 import {
-    Uttaksperiode,
-    Overføringsperiode,
     StønadskontoType,
     Periodetype,
     OverføringÅrsakType,
     isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { RecursivePartial } from '../../types/Partial';
+import { UttakFormPeriodeType } from './UttakForm';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -23,10 +21,8 @@ export enum UttakSpørsmålKeys {
     'hvorSkalDuJobbe' = 'hvorSkalDuJobbe'
 }
 
-export type UttaksFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
-
 export interface UttakFormPayload {
-    periode: UttaksFormPeriodeType;
+    periode: UttakFormPeriodeType;
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStøndskonto: boolean;
     søkerErAleneOmOmsorg: boolean;
@@ -121,11 +117,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             periode.type === Periodetype.Uttak &&
             periode.konto === StønadskontoType.Fellesperiode &&
             periode.morsAktivitetIPerioden !== undefined,
+        parentQuestion: Sp.tidsperiode,
         condition: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak && questionIsAnswered(periode.ønskerSamtidigUttak),
+        parentQuestion: Sp.tidsperiode,
         condition: (payload) => visSamtidigUttak(payload)
     },
     [Sp.overføringsårsak]: {
@@ -153,7 +151,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
 };
 
 export const getUttakFormVisibility = (
-    periode: UttaksFormPeriodeType,
+    periode: UttakFormPeriodeType,
     velgbareStønadskontotyper: StønadskontoType[],
     kanEndreStøndskonto: boolean,
     søkerErAleneOmOmsorg: boolean,

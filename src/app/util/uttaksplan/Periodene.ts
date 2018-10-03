@@ -6,12 +6,14 @@ import {
     Utsettelsesperiode,
     Oppholdsperiode
 } from '../../types/uttaksplan/periodetyper';
+import { Tidsperiode } from 'common/types';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
     getOpphold: () => getOpphold(perioder),
     getUttak: () => getUttaksperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
+    finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     sort: () => perioder.sort(sorterPerioder)
 });
 
@@ -53,4 +55,33 @@ function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
  */
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Opphold) as Oppholdsperiode[];
+}
+
+/**
+ * Finner perioder som berører tidsperiode
+ * @param perioder Alle perioder
+ * @param tidsperiode
+ */
+function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
+    return perioder.filter((p) => {
+        if (p.id === periode.id) {
+            return;
+        }
+        const { fom, tom } = p.tidsperiode;
+        if (!fom || !tom) {
+            return false;
+        }
+        return (
+            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode)
+        );
+    });
+}
+
+function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolean {
+    const m = moment(dato);
+    const { fom, tom } = tidsperiode;
+    if (!fom || !tom) {
+        return false;
+    }
+    return m.isSame(fom, 'day') || m.isSame(tom, 'day') || m.isBetween(fom, tom, 'days');
 }

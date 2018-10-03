@@ -4,17 +4,19 @@ import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import UttaksperiodeForm from '../uttaksperiode-form/UttakForm';
 import Block from 'common/components/block/Block';
 import {
     EndrePeriodeChangeEvent,
     EndrePeriodeRequestDeleteEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import UttakForm from '../uttak-form/UttakForm';
 
 import './endrePeriodeFormContent.less';
 
 export interface OwnProps {
     periode: Periode;
+    validertPeriode: ValidertPeriode | undefined;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
 }
@@ -25,18 +27,24 @@ type Props = OwnProps & InjectedIntlProps;
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
-        const { periode, onChange, onRequestDelete } = this.props;
+        const { periode, validertPeriode, onChange, onRequestDelete } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
+        const harOverlappendePerioder = validertPeriode && validertPeriode.overlappendePerioder.length > 0;
         return (
             <>
                 {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
-                    <UtsettelseForm periode={periode} onChange={onChange} />
+                    <UtsettelseForm
+                        periode={periode}
+                        onChange={onChange}
+                        harOverlappendePerioder={harOverlappendePerioder}
+                    />
                 ) : (
-                    <UttaksperiodeForm
+                    <UttakForm
                         periode={periode as Uttaksperiode}
                         onChange={onChange}
                         kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
+                        harOverlappendePerioder={harOverlappendePerioder}
                     />
                 )}
                 <Block visible={!erForeldrepengerFørFødselPeriode} margin="xs">

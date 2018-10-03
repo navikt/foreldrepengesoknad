@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
-import UtsettelsesperiodeForm, { UtsettelseperiodeFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
-import UttaksperiodeForm from '../uttaksperiode-form/UttakForm';
+import UtsettelsesperiodeForm, { UtsettelseFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
@@ -10,6 +9,7 @@ import { EtikettLiten } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import UttakForm from '../uttak-form/UttakForm';
 
 interface OwnProps {
     onSubmit: (periode: Periode) => void;
@@ -88,7 +88,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
                         <UtsettelsesperiodeForm
-                            periode={periode as UtsettelseperiodeFormPeriodeType}
+                            periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
                         />
@@ -97,7 +97,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 {(periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
-                        <UttaksperiodeForm
+                        <UttakForm
                             periode={periode as Partial<Uttaksperiode>}
                             kanEndreStønadskonto={true}
                             onChange={this.updatePeriode}

@@ -22,6 +22,7 @@ import {
 } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import AriaText from 'common/components/aria/AriaText';
+import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 
 type AdvarselType = 'advarsel' | 'feil';
 
@@ -33,6 +34,7 @@ export interface Advarsel {
 
 export interface Props {
     periode: Periode;
+    validertPeriode: ValidertPeriode;
     navnPåForeldre: NavnPåForeldre;
     advarsel?: Advarsel;
     isOpen?: boolean;
@@ -102,10 +104,30 @@ const renderPeriodeIkon = (periode: Periode, navnPåForeldre: NavnPåForeldre): 
     return undefined;
 };
 
+const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedIntl): Advarsel | undefined => {
+    if (validertPeriode === undefined) {
+        return;
+    }
+
+    if (validertPeriode.valideringsfeil.length > 0) {
+        return {
+            type: 'feil',
+            beskrivelse: getMessage(intl, `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`)
+        };
+    }
+    if (validertPeriode.overlappendePerioder.length > 0) {
+        return {
+            type: 'feil',
+            beskrivelse: getMessage(intl, `periodeliste.overlappendePeriode`)
+        };
+    }
+    return undefined;
+};
+
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
-    advarsel,
     navnPåForeldre,
+    validertPeriode,
     isOpen,
     intl
 }) => {
@@ -117,6 +139,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     );
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const advarselId = `advarsel__${periode.id}`;
+    const advarsel = getAdvarselForPeriode(validertPeriode, intl);
     return (
         <article
             className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
@@ -136,10 +159,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             </div>
             {advarsel && (
                 <div className={BEM.element('advarsel')}>
-                    <AriaText id={advarselId}>
-                        {advarsel.tittel ? <strong>{advarsel.tittel}</strong> : undefined}
-                        {advarsel.beskrivelse}
-                    </AriaText>
+                    <AriaText id={advarselId}>{advarsel.beskrivelse}</AriaText>
                     <span role="presentation">
                         <UttaksplanIkon
                             ikon={getIkonForAdvarsel(advarsel)}

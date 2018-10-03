@@ -3,19 +3,18 @@ import {
     UttaksplanValideringActionKeys,
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { Periode } from '../../types/uttaksplan/periodetyper';
 
 export enum PeriodeValideringErrorKey {
     'FORM_INCOMPLETE' = 'formIncomplete'
 }
 
 export interface Periodevalidering {
-    [periodeId: string]: PeriodeValideringsfeil[] | undefined;
+    [periodeId: string]: ValidertPeriode;
 }
 
 export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
-    overlappendePerioder: Periode[];
+    erGyldig: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -25,9 +24,15 @@ export interface PeriodeValideringsfeil {
 const getDefaultState = (): UttaksplanValideringState => {
     return {
         periodevalidering: {},
-        overlappendePerioder: []
+        erGyldig: true
     };
 };
+
+const erUttaksplanGyldig = (periodevalidering: Periodevalidering) =>
+    Object.keys(periodevalidering).find(
+        (key) =>
+            periodevalidering[key].overlappendePerioder.length > 0 || periodevalidering[key].valideringsfeil.length > 0
+    ) === undefined;
 
 const uttaksplanValideringReducer = (
     state = getDefaultState(),
@@ -35,24 +40,20 @@ const uttaksplanValideringReducer = (
 ): UttaksplanValideringState => {
     switch (action.type) {
         case UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE:
+            const periodevalidering = {
+                ...state.periodevalidering,
+                [action.periodeId]: action.validertPeriode
+            };
             return {
                 ...state,
-                periodevalidering: {
-                    ...state.periodevalidering,
-                    [action.validertPeriode.periodeId]: action.validertPeriode.valideringsfeil
-                }
+                periodevalidering,
+                erGyldig: erUttaksplanGyldig(periodevalidering)
             };
         case UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER:
-            let periodevalidering = {};
-            action.validertePerioder.forEach((p: ValidertPeriode) => {
-                periodevalidering = {
-                    ...periodevalidering,
-                    [p.periodeId]: p.valideringsfeil
-                };
-            });
             return {
                 ...state,
-                periodevalidering
+                periodevalidering: action.validertePerioder,
+                erGyldig: erUttaksplanGyldig(action.validertePerioder)
             };
     }
     return state;

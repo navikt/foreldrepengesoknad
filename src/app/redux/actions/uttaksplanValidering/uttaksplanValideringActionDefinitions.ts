@@ -1,4 +1,5 @@
 import { PeriodeValideringsfeil } from '../../reducers/uttaksplanValideringReducer';
+import { Periode } from '../../../types/uttaksplan/periodetyper';
 
 export enum UttaksplanValideringActionKeys {
     'SET_VALIDERT_PERIODE' = 'setValidertPeriode',
@@ -7,8 +8,8 @@ export enum UttaksplanValideringActionKeys {
 }
 
 export interface ValidertPeriode {
-    periodeId: string;
-    valideringsfeil: PeriodeValideringsfeil[] | undefined;
+    valideringsfeil: PeriodeValideringsfeil[];
+    overlappendePerioder: Periode[];
 }
 
 export interface ValiderUttaksplanAction {
@@ -17,12 +18,13 @@ export interface ValiderUttaksplanAction {
 
 export interface SetValidertPeriode {
     type: UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE;
+    periodeId: string;
     validertPeriode: ValidertPeriode;
 }
 
 export interface SetValidertePerioder {
     type: UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER;
-    validertePerioder: ValidertPeriode[];
+    validertePerioder: { [periodeId: string]: ValidertPeriode };
 }
 
 export type UttaksplanValideringActionTypes = SetValidertPeriode | SetValidertePerioder | ValiderUttaksplanAction;

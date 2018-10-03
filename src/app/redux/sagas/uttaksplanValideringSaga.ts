@@ -1,13 +1,8 @@
 import { takeEvery, all, put, select } from 'redux-saga/effects';
-import {
-    SøknadActionKeys,
-    UttaksplanUpdatePeriode,
-    UttaksplanAddPeriode
-} from '../actions/søknad/søknadActionDefinitions';
+import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AppState } from '../reducers';
 import {
     validerUttaksplanAction,
-    setValidertPeriode,
     setValidertePerioder
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { Periode } from '../../types/uttaksplan/periodetyper';
@@ -16,6 +11,8 @@ import {
     ValidertPeriode
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
+import { Periodene } from '../../util/uttaksplan/Periodene';
+import { Periodevalidering } from '../reducers/uttaksplanValideringReducer';
 
 const stateSelector = (state: AppState) => state;
 
@@ -23,28 +20,23 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     const { søker, annenForelder } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
     return {
-        periodeId: periode.id,
-        valideringsfeil: validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer)
+        valideringsfeil: validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer) || [],
+        overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };
 
-function* validerPeriodeSaga(action: UttaksplanUpdatePeriode | UttaksplanAddPeriode) {
-    const appState: AppState = yield select(stateSelector);
-    yield put(setValidertPeriode(validerPeriode(appState, action.periode)));
-}
-
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const validertePerioder: ValidertPeriode[] = [];
+    const validertePerioder: Periodevalidering = {};
     appState.søknad.uttaksplan.forEach((periode) => {
-        validertePerioder.push(validerPeriode(appState, periode));
+        validertePerioder[periode.id] = validerPeriode(appState, periode);
     });
     yield put(setValidertePerioder(validertePerioder));
 }
 
 export default function* storageSaga() {
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerPeriodeSaga)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerPeriodeSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanAction)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanAction)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
