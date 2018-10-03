@@ -12,8 +12,7 @@ import {
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
-    const { variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
-    const visibility = getUtsettelseFormVisibility(variant, periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor);
+    const visibility = getUtsettelseFormVisibility(payload);
     if (visibility.areAllQuestionsAnswered()) {
         return undefined;
     }
@@ -25,22 +24,7 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
 };
 
 const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] | undefined => {
-    const {
-        periode,
-        søkerErAleneOmOmsorg,
-        søkerErFarEllerMedmor,
-        velgbareStønadskontotyper,
-        annenForelderHarRett,
-        kanEndreStøndskonto
-    } = payload;
-    const visibility = getUttakFormVisibility(
-        periode,
-        velgbareStønadskontotyper,
-        kanEndreStøndskonto,
-        søkerErAleneOmOmsorg,
-        søkerErFarEllerMedmor,
-        annenForelderHarRett
-    );
+    const visibility = getUttakFormVisibility(payload);
     if (visibility.areAllQuestionsAnswered()) {
         return undefined;
     }
@@ -61,7 +45,7 @@ export const validerPeriodeForm = (
         return validerUttakForm({
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
-            kanEndreStøndskonto: false,
+            kanEndreStønadskonto: false,
             annenForelderHarRett: annenForelder.harRettPåForeldrepenger,
             søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle)
@@ -71,6 +55,7 @@ export const validerPeriodeForm = (
         periode,
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle)
+        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
+        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger
     });
 };

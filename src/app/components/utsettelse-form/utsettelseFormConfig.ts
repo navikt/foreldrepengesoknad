@@ -19,6 +19,7 @@ export interface UtsettelseFormPayload {
     periode: UtsettelseFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
+    annenForelderHarRettPåForeldrepenger: boolean;
 }
 
 export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørsmålKeys>;
@@ -30,9 +31,6 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
 
     if (variant === undefined) {
         return false;
-    }
-    if (variant === Utsettelsesvariant.Ferie) {
-        return true;
     }
     if (søkerErFarEllerMedmor && søkerErAleneOmOmsorg) {
         return true;
@@ -67,27 +65,17 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
         parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
-    [Sp.morsAktivitet]: {
-        isAnswered: ({ periode }) => questionIsAnswered((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        condition: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
-    },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionIsAnswered((periode as Oppholdsperiode).årsak),
         parentQuestion: Sp.variant,
         condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
+    },
+    [Sp.morsAktivitet]: {
+        isAnswered: ({ periode }) => questionIsAnswered((periode as Utsettelsesperiode).morsAktivitetIPerioden),
+        condition: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
     }
 };
 
-export const getUtsettelseFormVisibility = (
-    variant: Utsettelsesvariant | undefined,
-    periode: UtsettelseFormPeriodeType,
-    søkerErAleneOmOmsorg: boolean,
-    søkerErFarEllerMedmor: boolean
-): UtsettelseSpørsmålVisibility => {
-    return Questions(utsettelseFormConfig).getVisbility({
-        variant,
-        periode,
-        søkerErAleneOmOmsorg,
-        søkerErFarEllerMedmor
-    });
+export const getUtsettelseFormVisibility = (payload: UtsettelseFormPayload): UtsettelseSpørsmålVisibility => {
+    return Questions(utsettelseFormConfig).getVisbility(payload);
 };

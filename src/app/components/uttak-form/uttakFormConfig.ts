@@ -24,7 +24,7 @@ export enum UttakSpørsmålKeys {
 export interface UttakFormPayload {
     periode: UttakFormPeriodeType;
     velgbareStønadskontotyper: StønadskontoType[];
-    kanEndreStøndskonto: boolean;
+    kanEndreStønadskonto: boolean;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRett: boolean;
@@ -109,8 +109,8 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.kvote]: {
         isAnswered: ({ periode }) => questionIsAnswered(periode.konto),
         parentQuestion: Sp.tidsperiode,
-        condition: ({ kanEndreStøndskonto, velgbareStønadskontotyper }) =>
-            kanEndreStøndskonto === true && velgbareStønadskontotyper.length > 0
+        condition: ({ kanEndreStønadskonto, velgbareStønadskontotyper }) =>
+            kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
@@ -150,20 +150,6 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     }
 };
 
-export const getUttakFormVisibility = (
-    periode: UttakFormPeriodeType,
-    velgbareStønadskontotyper: StønadskontoType[],
-    kanEndreStøndskonto: boolean,
-    søkerErAleneOmOmsorg: boolean,
-    søkerErFarEllerMedmor: boolean,
-    annenForelderHarRett: boolean
-): UttakSpørsmålVisibility => {
-    return Questions(uttaksperiodeFormConfig).getVisbility({
-        periode,
-        velgbareStønadskontotyper,
-        kanEndreStøndskonto,
-        søkerErAleneOmOmsorg,
-        søkerErFarEllerMedmor,
-        annenForelderHarRett
-    });
+export const getUttakFormVisibility = (payload: UttakFormPayload): UttakSpørsmålVisibility => {
+    return Questions(uttaksperiodeFormConfig).getVisbility(payload);
 };
