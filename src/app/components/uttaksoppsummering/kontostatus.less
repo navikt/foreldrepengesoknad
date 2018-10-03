@@ -1,3 +1,5 @@
+@import '../../../common/styles/variables.less';
+
 .kontostatus {
     display: flex;
     flex-wrap: nowrap;
@@ -8,5 +10,11 @@
     }
     &__content {
         flex-grow: 1;
+    }
+    &__kontoOvertrukket {
+        color: @redError;
+    }
+    &__dagerOvertrukket {
+        color: @redError;
     }
 }
