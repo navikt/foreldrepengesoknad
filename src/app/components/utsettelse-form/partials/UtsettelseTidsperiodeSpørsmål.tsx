@@ -3,10 +3,12 @@ import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
+    feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
@@ -14,6 +16,7 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
     onChange,
     familiehendelsesdato,
     tidsperiode,
+    feil,
     intl
 }) => (
     <TidsperiodeBolk
@@ -32,6 +35,7 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
             fra: [{ test: () => tidsperiode.fom !== undefined, failText: getMessage(intl, 'påkrevd') }],
             til: [{ test: () => tidsperiode.tom !== undefined, failText: getMessage(intl, 'påkrevd') }]
         }}
+        feil={feil}
         visVarighet={true}
     />
 );

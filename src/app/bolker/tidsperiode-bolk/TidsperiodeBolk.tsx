@@ -13,6 +13,8 @@ import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 
 import './tidsperiodeBolk.less';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { SkjemaGruppe } from 'nav-frontend-skjema';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface DatoAvgrensninger {
     fra?: Avgrensninger;
@@ -31,6 +33,7 @@ interface TidsperiodeBolkProps {
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
     visVarighet?: boolean;
+    feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
     datoInputLabelProps?: {
         fom: string;
@@ -57,6 +60,7 @@ class TidsperiodeBolk extends React.Component<Props> {
             datoAvgrensninger,
             datoValidatorer,
             visVarighet,
+            feil,
             intl,
             startdatoDisabled,
             sluttdatoDisabled,
@@ -77,53 +81,55 @@ class TidsperiodeBolk extends React.Component<Props> {
         }
 
         return (
-            <div className={bem.className}>
-                <div className={bem.element('fra')}>
-                    <Block margin="none">
-                        <DatoInput
-                            name="fraDatoInput"
-                            id="fraDatoInput"
-                            label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
-                            onChange={(fom: Date) => {
-                                this.handleOnChange({
-                                    ...tidsperiode,
-                                    fom
-                                });
-                            }}
-                            disabled={startdatoDisabled}
-                            dato={tidsperiode.fom}
-                            avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
-                            validators={datoValidatorer && datoValidatorer.fra}
-                        />
-                    </Block>
-                </div>
+            <SkjemaGruppe feil={feil}>
+                <div className={bem.className}>
+                    <div className={bem.element('fra')}>
+                        <Block margin="none">
+                            <DatoInput
+                                name="fraDatoInput"
+                                id="fraDatoInput"
+                                label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
+                                onChange={(fom: Date) => {
+                                    this.handleOnChange({
+                                        ...tidsperiode,
+                                        fom
+                                    });
+                                }}
+                                disabled={startdatoDisabled}
+                                dato={tidsperiode.fom}
+                                avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
+                                validators={datoValidatorer && datoValidatorer.fra}
+                            />
+                        </Block>
+                    </div>
 
-                <div className={bem.element('til')}>
-                    <Block margin="none">
-                        <DatoInput
-                            name="tilDatoInput"
-                            id="tilDatoInput"
-                            label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
-                            onChange={(tom: Date | undefined) => {
-                                this.handleOnChange({
-                                    ...tidsperiode,
-                                    tom
-                                });
-                            }}
-                            dato={tidsperiode.tom}
-                            disabled={false || sluttdatoDisabled}
-                            avgrensninger={tilAvgrensninger}
-                            validators={datoValidatorer && datoValidatorer.til}
-                        />
-                    </Block>
+                    <div className={bem.element('til')}>
+                        <Block margin="none">
+                            <DatoInput
+                                name="tilDatoInput"
+                                id="tilDatoInput"
+                                label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
+                                onChange={(tom: Date | undefined) => {
+                                    this.handleOnChange({
+                                        ...tidsperiode,
+                                        tom
+                                    });
+                                }}
+                                dato={tidsperiode.tom}
+                                disabled={false || sluttdatoDisabled}
+                                avgrensninger={tilAvgrensninger}
+                                validators={datoValidatorer && datoValidatorer.til}
+                            />
+                        </Block>
+                    </div>
+                    {visVarighet &&
+                        varighetIDager !== undefined && (
+                            <Normaltekst className={bem.element('varighet')}>
+                                {getVarighetString(varighetIDager, intl)}
+                            </Normaltekst>
+                        )}
                 </div>
-                {visVarighet &&
-                    varighetIDager !== undefined && (
-                        <Normaltekst className={bem.element('varighet')}>
-                            {getVarighetString(varighetIDager, intl)}
-                        </Normaltekst>
-                    )}
-            </div>
+            </SkjemaGruppe>
         );
     }
 }

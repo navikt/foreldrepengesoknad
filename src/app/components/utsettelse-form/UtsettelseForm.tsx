@@ -33,11 +33,12 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 
-export type UtsettelseperiodeFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
+export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
 interface OwnProps {
-    periode: UtsettelseperiodeFormPeriodeType;
-    onChange: (periode: UtsettelseperiodeFormPeriodeType) => void;
+    periode: UtsettelseFormPeriodeType;
+    harOverlappendePerioder?: boolean;
+    onChange: (periode: UtsettelseFormPeriodeType) => void;
     onCancel?: () => void;
 }
 
@@ -61,7 +62,7 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-export const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType): Utsettelsesvariant | undefined => {
+export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
     if (periode.type === Periodetype.Opphold) {
         return Utsettelsesvariant.UttakAnnenForelder;
     } else {
@@ -97,13 +98,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     componentDidMount() {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
-    onChange(periode: UtsettelseperiodeFormPeriodeType) {
+    onChange(periode: UtsettelseFormPeriodeType) {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
         this.props.onChange(periode);
     }
@@ -188,7 +189,16 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor, onCancel } = this.props;
+        const {
+            periode,
+            arbeidsforhold,
+            søknad,
+            navnPåForeldre,
+            søkerErFarEllerMedmor,
+            harOverlappendePerioder,
+            onCancel,
+            intl
+        } = this.props;
         const { variant } = this.state;
 
         const visibility = getUtsettelseFormVisibility(
@@ -210,6 +220,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(p) => this.onChange({ tidsperiode: p })}
+                            feil={
+                                harOverlappendePerioder
+                                    ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
+                                    : undefined
+                            }
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>

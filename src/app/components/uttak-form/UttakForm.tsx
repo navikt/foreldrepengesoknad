@@ -21,7 +21,7 @@ import { erFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
-import { getUttakFormVisibility, UttakSpørsmålKeys, UttaksFormPeriodeType } from './uttakFormConfig';
+import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
 import { getNavnPåForeldre } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -30,10 +30,15 @@ import ForeldrepengerFørFødselPart from './partials/ForeldrepengerFørFødselP
 import OverføringUttakPart from './partials/OverføringUttakPart';
 import GradertUttakPart from './partials/GradertUttakPart';
 import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
+import getMessage from 'common/util/i18nUtils';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+
+export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
 interface UttaksperiodeFormProps {
-    periode: RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
+    periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
+    harOverlappendePerioder?: boolean;
     onChange: (periode: RecursivePartial<Periode>) => void;
     onCancel?: () => void;
 }
@@ -73,14 +78,14 @@ class UttaksperiodeForm extends React.Component<Props> {
 
     componentDidMount() {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
-    onChange(periode: UttaksFormPeriodeType) {
+    onChange(periode: UttakFormPeriodeType) {
         this.props.onChange(periode);
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
@@ -144,7 +149,9 @@ class UttaksperiodeForm extends React.Component<Props> {
             familiehendelsesdato,
             arbeidsforhold,
             annenForelderHarRett,
-            onCancel
+            harOverlappendePerioder,
+            onCancel,
+            intl
         } = this.props;
 
         const visibility = getUttakFormVisibility(
@@ -160,15 +167,19 @@ class UttaksperiodeForm extends React.Component<Props> {
             return null;
         }
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
+        const feil: Feil | undefined = harOverlappendePerioder
+            ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
+            : undefined;
 
         return (
             <React.Fragment>
-                <Block>
+                <Block margin={periode.konto === StønadskontoType.ForeldrepengerFørFødsel ? 'xs' : 'm'}>
                     <UttakTidsperiodeSpørsmål
                         periode={periode}
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        feil={feil}
                     />
                 </Block>
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.kvote)}>
@@ -182,17 +193,14 @@ class UttaksperiodeForm extends React.Component<Props> {
                 {periode.type === Periodetype.Uttak && (
                     <>
                         {periode.konto === StønadskontoType.ForeldrepengerFørFødsel && (
-                            <Block>
-                                <ForeldrepengerFørFødselPart
-                                    skalIkkeHaUttakFørTermin={
-                                        (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin ||
-                                        false
-                                    }
-                                    onChange={(skalIkkeHaUttakFørTermin) =>
-                                        this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
-                                    }
-                                />
-                            </Block>
+                            <ForeldrepengerFørFødselPart
+                                skalIkkeHaUttakFørTermin={
+                                    (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin || false
+                                }
+                                onChange={(skalIkkeHaUttakFørTermin) =>
+                                    this.updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin)
+                                }
+                            />
                         )}
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}

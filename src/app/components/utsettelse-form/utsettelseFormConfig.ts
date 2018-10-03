@@ -1,6 +1,6 @@
 import { QuestionConfig, Questions, QuestionVisibility, questionIsAnswered } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Utsettelsesvariant, UtsettelseperiodeFormPeriodeType } from './UtsettelseForm';
+import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
 import { UtsettelseÅrsakType, Utsettelsesperiode, Oppholdsperiode } from '../../types/uttaksplan/periodetyper';
 
@@ -16,7 +16,7 @@ export enum UtsettelseSpørsmålKeys {
 
 export interface UtsettelseFormPayload {
     variant: Utsettelsesvariant | undefined;
-    periode: UtsettelseperiodeFormPeriodeType;
+    periode: UtsettelseFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
 }
@@ -41,7 +41,7 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
     return false;
 };
 
-const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseperiodeFormPeriodeType) =>
+const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: UtsettelseFormPeriodeType) =>
     periode.årsak === UtsettelseÅrsakType.Arbeid &&
     variant === Utsettelsesvariant.Arbeid &&
     (questionIsAnswered(periode.orgnr) || questionIsAnswered(periode.selvstendigNæringsdrivendeEllerFrilans));
@@ -80,7 +80,7 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
 
 export const getUtsettelseFormVisibility = (
     variant: Utsettelsesvariant | undefined,
-    periode: UtsettelseperiodeFormPeriodeType,
+    periode: UtsettelseFormPeriodeType,
     søkerErAleneOmOmsorg: boolean,
     søkerErFarEllerMedmor: boolean
 ): UtsettelseSpørsmålVisibility => {
