@@ -3,6 +3,7 @@ import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Utsettelsesvariant, UtsettelseFormPeriodeType } from './UtsettelseForm';
 import { Tidsperiode } from 'nav-datovelger';
 import { UtsettelseÅrsakType, Utsettelsesperiode, Oppholdsperiode } from '../../types/uttaksplan/periodetyper';
+import aktivitetskravMorUtil from '../../util/domain/aktivitetskravMor';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -27,15 +28,23 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    const { variant, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
+    const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger } = payload;
+    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+        søkerErFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger
+    );
 
-    if (variant === undefined) {
+    if (variant === undefined || erRelevant === false) {
         return false;
     }
-    if (søkerErFarEllerMedmor && søkerErAleneOmOmsorg) {
+    if (
+        variant === Utsettelsesvariant.Ferie ||
+        (variant === Utsettelsesvariant.Arbeid && questionIsAnswered(Sp.arbeidsplass)) ||
+        (variant === Utsettelsesvariant.Sykdom && questionIsAnswered(Sp.sykdomsårsak)) ||
+        (variant === Utsettelsesvariant.UttakAnnenForelder && questionIsAnswered(Sp.oppholdsårsak))
+    ) {
         return true;
     }
-
     return false;
 };
 
