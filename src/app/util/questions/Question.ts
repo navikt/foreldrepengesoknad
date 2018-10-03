@@ -1,6 +1,6 @@
 export type QuestionValue = string | number | Date | boolean | undefined;
 
-export const questionIsAnswered = (value: QuestionValue) => {
+export const questionValueIsOk = (value: QuestionValue) => {
     return value !== undefined && value !== '';
 };
 
