@@ -1,6 +1,6 @@
 const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelderHarRettPåFP: boolean): boolean {
-        return søkerErFarEllerMedmor && annenForelderHarRettPåFP;
+        return søkerErFarEllerMedmor === true && annenForelderHarRettPåFP === true;
     }
 };
 
