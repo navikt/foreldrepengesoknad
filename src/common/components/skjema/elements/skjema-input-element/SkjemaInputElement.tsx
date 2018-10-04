@@ -24,7 +24,7 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
                     {label}
                 </label>
             ) : (
-                { label }
+                label
             )}
             <div
                 className={classnames({
