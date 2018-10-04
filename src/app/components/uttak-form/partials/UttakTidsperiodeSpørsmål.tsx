@@ -29,7 +29,7 @@ const getTidsperiodeDisabledProps = (
         const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
         return {
             startdatoDisabled: skalIkkeHaUttak,
-            sluttdatoDisabled: skalIkkeHaUttak
+            sluttdatoDisabled: true
         };
     }
     return undefined;

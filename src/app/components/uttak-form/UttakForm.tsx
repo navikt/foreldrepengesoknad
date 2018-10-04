@@ -32,6 +32,7 @@ import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -90,7 +91,7 @@ class UttaksperiodeForm extends React.Component<Props> {
             type: Periodetype.Uttak,
             tidsperiode: {
                 fom: undefined,
-                tom: undefined
+                tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(this.props.familiehendelsesdato).forrige()
             }
         });
     }
