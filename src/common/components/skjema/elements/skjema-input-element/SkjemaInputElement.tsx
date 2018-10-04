@@ -1,12 +1,12 @@
 import * as React from 'react';
 const { guid } = require('nav-frontend-js-utils');
 import classnames from 'classnames';
-import SkjemaelementFeilmelding from './SkjemaelementFeilmelding';
-import { Feil } from './types';
+import SkjemaelementFeilmelding from 'common/lib/validation/errors/SkjemaelementFeilmelding';
+import { SkjemaelementFeil } from 'nav-frontend-skjema/src/skjemaelement-feilmelding';
 
 export interface Props {
     label: string | React.ReactNode;
-    feil?: Feil;
+    feil?: SkjemaelementFeil;
     id?: string;
     children: React.ReactNode;
 }

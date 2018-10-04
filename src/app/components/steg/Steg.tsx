@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import stegConfig, { StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
@@ -31,7 +30,7 @@ export interface StegProps {
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
     previousStegRoute?: StegID;
-    onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
+    onSubmit?: (event: FormSubmitEvent) => void;
     preSubmit?: () => void;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
@@ -43,8 +42,6 @@ interface State {
 type Props = StegProps & InjectedIntlProps;
 
 class Steg extends React.Component<Props & DispatchProps, State> {
-    private stegFormRef: React.RefObject<ValiderbarForm>;
-
     constructor(props: Props & DispatchProps) {
         super(props);
 
@@ -57,7 +54,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             visAvbrytDialog: false
         };
 
-        this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
@@ -69,15 +65,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
-    getFormElement() {
-        const el = this.stegFormRef.current;
-        return ReactDOM.findDOMNode(el as React.ReactInstance);
-    }
-
     handleOnSubmit(event: FormSubmitEvent): void {
         const { onSubmit, dispatch, preSubmit } = this.props;
         if (onSubmit) {
-            onSubmit(event, this.getFormElement());
+            onSubmit(event);
         } else {
             if (preSubmit) {
                 preSubmit();
@@ -167,9 +158,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         return (
             <React.Fragment>
                 {renderFormTag ? (
-                    <ValiderbarForm {...formProps} ref={this.stegFormRef}>
-                        {this.renderContent()}
-                    </ValiderbarForm>
+                    <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
                     <div className={bem.className}>{this.renderContent()}</div>
                 )}

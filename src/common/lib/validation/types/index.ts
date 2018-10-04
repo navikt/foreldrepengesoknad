@@ -1,15 +1,27 @@
+export interface ValidatorFailTextIntl {
+    intlKey: string;
+    values?: { [key: string]: string | number | boolean | Date | null | undefined };
+}
+
+export type ValidatorFailText = string | ValidatorFailTextIntl;
+
 export interface Validator {
     test: (value?: any) => boolean;
-    failText: string;
+    failText: ValidatorFailText;
 }
 
 export interface SummaryError {
     name: string;
-    text: string;
+    text: ValidatorFailText;
+}
+
+export interface ValidationTestVerdict {
+    verdict: boolean;
+    failText: ValidatorFailText;
 }
 
 export interface ValidationResult {
     name: string;
-    tests: any[];
+    tests: ValidationTestVerdict[];
     valid: boolean;
 }

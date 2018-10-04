@@ -29,7 +29,6 @@ import {
     getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
 } from '../../../util/validation/fields/senereUtenlandsopphold';
 import { default as visibility } from './visibility';
-import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -95,14 +94,12 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         dispatch(søknadActions.updateUtenlandsopphold({ [oppholdType]: opphold }));
     }
 
-    handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
+    handleOnSubmit() {
         const { dispatch, history, søknad } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
-        if (event.target === stegForm) {
-            dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
-            dispatch(apiActionCreators.storeAppState());
-            history.push(`${søknadStegPath(stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg)}`);
-        }
+        dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(`${søknadStegPath(stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg)}`);
     }
 
     render() {

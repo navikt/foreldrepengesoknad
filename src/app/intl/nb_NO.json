@@ -580,7 +580,8 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder": "Informasjon når mors aktivitet er valgt",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
-    "uttakplan.fellesdel.samtidigUttak.veileder": "Informasjon ved samtidig uttak",
+    "uttaksplan.fellesdel.samtidigUttak.veileder": "Informasjon ved samtidig uttak",
+    "uttaksplan.varighet.uttak": "{varighet} med uttak",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
@@ -591,5 +592,8 @@
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år.",
 
-    "uttaksplan.validering.feil.formIncomplete": "Informasjon mangler om perioden"
+    "uttaksplan.validering.feil.skjemaIkkeKomplett": "Informasjon mangler om perioden",
+    "uttaksplan.validering.feil.ugyldigTidsperiode": "Tidsperioden er ikke gyldig",
+    "uttaksplan.validering.datoErIkkeUttaksdag": "Dato må være en ukedag",
+    "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

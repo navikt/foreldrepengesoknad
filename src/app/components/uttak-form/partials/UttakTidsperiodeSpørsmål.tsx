@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
 import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
@@ -12,6 +11,8 @@ import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/u
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
+import { getVarighetString } from 'common/util/intlUtils';
 
 export interface Props {
     periode: UttakFormPeriodeType;
@@ -43,7 +44,6 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
-
     return (
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
@@ -53,21 +53,11 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     ? getDatoavgrensningerForStønadskonto(periode.konto, familiehendelsesdato, getPermisjonsregler())
                     : undefined
             }
-            datoValidatorer={{
-                fra: [
-                    {
-                        test: () => (skalIkkeHaUttak === true ? true : tidsperiode.fom !== undefined),
-                        failText: getMessage(intl, 'påkrevd')
-                    }
-                ],
-                til: [
-                    {
-                        test: () => (skalIkkeHaUttak === true ? true : tidsperiode.tom !== undefined),
-                        failText: getMessage(intl, 'påkrevd')
-                    }
-                ]
-            }}
+            datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode)}
             visVarighet={true}
+            varighetRenderer={(dager) =>
+                intl.formatMessage({ id: 'uttaksplan.varighet.uttak' }, { varighet: getVarighetString(dager, intl) })
+            }
             feil={feil}
             {...getTidsperiodeDisabledProps(periode)}
         />

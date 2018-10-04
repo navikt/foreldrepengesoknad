@@ -112,6 +112,9 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
 
     runValidation() {
         if (!this.props.validators || !this.props.validators.length) {
+            this.setState({
+                valid: true
+            });
             return {
                 valid: true
             };
