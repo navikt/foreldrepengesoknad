@@ -29,6 +29,7 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanVal
                     render={(onChange, onRequestDelete) => (
                         <ToggleItem
                             expandedHeaderClassName="periodeheader--isOpen"
+                            expandedContentClassName="blokk-s"
                             renderHeader={() => (
                                 <PeriodeHeader
                                     periode={p}
