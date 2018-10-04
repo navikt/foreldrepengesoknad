@@ -203,7 +203,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={visibility.tidsperiode(næring)} margin="none">
+                <Block visible={visibility.tidsperiode(næring)} margin="xxs">
                     <TidsperiodeBolk
                         tidsperiode={tidsperiode || {}}
                         onChange={(v: TidsperiodeMedValgfriSluttdato) => this.updateNæring({ tidsperiode: v })}
