@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import stegConfig, { StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
@@ -31,7 +30,7 @@ export interface StegProps {
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
     previousStegRoute?: StegID;
-    onSubmit?: (event: FormSubmitEvent, stegFormRef: Element | null | Text) => void;
+    onSubmit?: (event: FormSubmitEvent) => void;
     preSubmit?: () => void;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
@@ -66,14 +65,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
-    getFormElement() {
-        return ReactDOM.findDOMNode(this);
-    }
-
     handleOnSubmit(event: FormSubmitEvent): void {
         const { onSubmit, dispatch, preSubmit } = this.props;
         if (onSubmit) {
-            onSubmit(event, this.getFormElement());
+            onSubmit(event);
         } else {
             if (preSubmit) {
                 preSubmit();

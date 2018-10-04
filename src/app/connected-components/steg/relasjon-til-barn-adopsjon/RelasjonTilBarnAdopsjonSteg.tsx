@@ -25,7 +25,6 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
 import visibility from './visibility';
-import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { apiActionCreators } from '../../../redux/actions';
 import { søknadStegPath } from '../StegRoutes';
@@ -62,13 +61,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
         );
     }
 
-    handleOnSubmit(event: FormSubmitEvent, stegForm: Element) {
+    handleOnSubmit() {
         const { dispatch, history, barn } = this.props;
-        if (event.target === stegForm) {
-            dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
-            dispatch(apiActionCreators.storeAppState());
-            history.push(`${søknadStegPath(stegConfig[StegID.RELASJON_TIL_BARN_ADOPSJON].nesteSteg)}`);
-        }
+        dispatch(søknadActions.updateBarn(cleanupAdopsjonsSteg(barn)));
+        dispatch(apiActionCreators.storeAppState());
+        history.push(`${søknadStegPath(stegConfig[StegID.RELASJON_TIL_BARN_ADOPSJON].nesteSteg)}`);
     }
 
     render() {
