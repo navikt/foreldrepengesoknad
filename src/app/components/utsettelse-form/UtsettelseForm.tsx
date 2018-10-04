@@ -5,8 +5,7 @@ import {
     Periodetype,
     Oppholdsperiode,
     UtsettelseÅrsakType,
-    Utsettelsesperiode,
-    UtsettelseÅrsakSykdomType
+    Utsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -33,11 +32,12 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 
-export type UtsettelseperiodeFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
+export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
 interface OwnProps {
-    periode: UtsettelseperiodeFormPeriodeType;
-    onChange: (periode: UtsettelseperiodeFormPeriodeType) => void;
+    periode: UtsettelseFormPeriodeType;
+    harOverlappendePerioder?: boolean;
+    onChange: (periode: UtsettelseFormPeriodeType) => void;
     onCancel?: () => void;
 }
 
@@ -61,7 +61,7 @@ export enum Utsettelsesvariant {
     UttakAnnenForelder = 'uttakAnnenForelder'
 }
 
-export const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType): Utsettelsesvariant | undefined => {
+export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utsettelsesvariant | undefined => {
     if (periode.type === Periodetype.Opphold) {
         return Utsettelsesvariant.UttakAnnenForelder;
     } else {
@@ -70,9 +70,9 @@ export const getVariantFromPeriode = (periode: UtsettelseperiodeFormPeriodeType)
                 return Utsettelsesvariant.Arbeid;
             case UtsettelseÅrsakType.Ferie:
                 return Utsettelsesvariant.Ferie;
-            case UtsettelseÅrsakSykdomType.Sykdom:
-            case UtsettelseÅrsakSykdomType.InstitusjonBarnet:
-            case UtsettelseÅrsakSykdomType.InstitusjonSøker:
+            case UtsettelseÅrsakType.Sykdom:
+            case UtsettelseÅrsakType.InstitusjonBarnet:
+            case UtsettelseÅrsakType.InstitusjonSøker:
                 return Utsettelsesvariant.Sykdom;
             default:
                 return undefined;
@@ -97,15 +97,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
 
     componentDidMount() {
         if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
+            this.context.validForm.validateAll();
         }
     }
 
-    onChange(periode: UtsettelseperiodeFormPeriodeType) {
-        if (this.context.validForm) {
-            setTimeout(() => this.context.validForm.validateAll(), 0);
-        }
+    onChange(periode: UtsettelseFormPeriodeType) {
         this.props.onChange(periode);
+        if (this.context.validForm) {
+            this.context.validForm.validateAll();
+        }
     }
 
     getUtsettelseÅrsakRadios(): RadioProps[] {
@@ -167,19 +167,19 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     onSykdomÅrsakChange({ sykdomsårsak, vedlegg }: UtsettelsePgaSykdomChangePayload) {
-        if (sykdomsårsak === UtsettelseÅrsakSykdomType.InstitusjonBarnet) {
+        if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
             this.onChange({
-                årsak: UtsettelseÅrsakSykdomType.InstitusjonBarnet,
+                årsak: UtsettelseÅrsakType.InstitusjonBarnet,
                 vedlegg
             });
-        } else if (sykdomsårsak === UtsettelseÅrsakSykdomType.InstitusjonSøker) {
+        } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonSøker) {
             this.onChange({
-                årsak: UtsettelseÅrsakSykdomType.InstitusjonSøker,
+                årsak: UtsettelseÅrsakType.InstitusjonSøker,
                 vedlegg
             });
-        } else if (sykdomsårsak === UtsettelseÅrsakSykdomType.Sykdom) {
+        } else if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
             this.onChange({
-                årsak: UtsettelseÅrsakSykdomType.Sykdom,
+                årsak: UtsettelseÅrsakType.Sykdom,
                 vedlegg
             });
         } else {
@@ -188,15 +188,25 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, arbeidsforhold, søknad, navnPåForeldre, søkerErFarEllerMedmor, onCancel } = this.props;
+        const {
+            periode,
+            arbeidsforhold,
+            søknad,
+            navnPåForeldre,
+            søkerErFarEllerMedmor,
+            harOverlappendePerioder,
+            onCancel,
+            intl
+        } = this.props;
         const { variant } = this.state;
 
-        const visibility = getUtsettelseFormVisibility(
+        const visibility = getUtsettelseFormVisibility({
             variant,
             periode,
-            søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor
-        );
+            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
+            søkerErFarEllerMedmor,
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+        });
 
         if (visibility === undefined) {
             return null;
@@ -210,6 +220,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             tidsperiode={tidsperiode}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(p) => this.onChange({ tidsperiode: p })}
+                            feil={
+                                harOverlappendePerioder
+                                    ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
+                                    : undefined
+                            }
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
@@ -249,7 +264,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 <UtsettelsePgaSykdomPart
                                     onChange={this.onSykdomÅrsakChange}
                                     vedlegg={(periode.vedlegg as Attachment[]) || []}
-                                    sykdomsårsak={periode.årsak as UtsettelseÅrsakSykdomType}
+                                    sykdomsårsak={periode.årsak}
                                     forelder={Forelder.MOR}
                                 />
                             </Block>

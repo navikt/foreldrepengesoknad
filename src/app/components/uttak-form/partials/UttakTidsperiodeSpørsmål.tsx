@@ -10,17 +10,19 @@ import {
 } from '../../../types/uttaksplan/periodetyper';
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
-import { UttaksFormPeriodeType } from '../uttakFormConfig';
+import { UttakFormPeriodeType } from '../UttakForm';
+import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface Props {
-    periode: UttaksFormPeriodeType;
+    periode: UttakFormPeriodeType;
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
+    feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
 
 const getTidsperiodeDisabledProps = (
-    periode: UttaksFormPeriodeType
+    periode: UttakFormPeriodeType
 ): { startdatoDisabled?: boolean; sluttdatoDisabled?: boolean } | undefined => {
     if (isForeldrepengerFørFødselUttaksperiode(periode as Periode)) {
         const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
@@ -37,6 +39,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     periode,
     familiehendelsesdato,
     tidsperiode,
+    feil,
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
@@ -64,8 +67,9 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     }
                 ]
             }}
-            {...getTidsperiodeDisabledProps(periode)}
             visVarighet={true}
+            feil={feil}
+            {...getTidsperiodeDisabledProps(periode)}
         />
     );
 };
