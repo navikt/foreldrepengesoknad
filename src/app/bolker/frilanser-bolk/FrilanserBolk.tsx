@@ -11,6 +11,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import visibility from './visibility';
+import { notInFutureAvgrensning } from '../../util/validation/fields/common';
+import { getFrilansOppstartRules } from '../../util/validation/fields/frilans';
 
 interface FrilanserBolkProps {
     søker: Søker;
@@ -93,6 +95,8 @@ class FrilanserBolk extends React.Component<Props> {
                             })
                         }
                         dato={oppstartsdato}
+                        avgrensninger={notInFutureAvgrensning}
+                        validators={getFrilansOppstartRules(oppstartsdato, intl)}
                     />
                 </Block>
 
