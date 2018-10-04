@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Input } from 'nav-frontend-skjema';
 import { AnnenForelderPartial } from '../types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
 import { Row, Column } from 'nav-frontend-grid';
 import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
+import Input from 'common/components/skjema/wrappers/Input';
 
 interface NavnPåAnnenForelderSpørsmålProps {
     fornavn?: string;
@@ -26,9 +26,10 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         disabled={kanIkkeOppgis}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
                         name="fornavn"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ fornavn: e.target.value })}
+                        onChange={(v: string) => onChange({ fornavn: v })}
                         value={fornavn === undefined ? '' : fornavn}
                         className={'skjemaelement--undersporsmal'}
+                        throttled={false}
                     />
                 </Column>
                 <Column xs="8" sm="6">
@@ -36,7 +37,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         disabled={kanIkkeOppgis}
                         label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}
                         name="etternavn"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange({ etternavn: e.target.value })}
+                        onChange={(v: string) => onChange({ etternavn: v })}
                         value={etternavn === undefined ? '' : etternavn}
                         className={'skjemaelement--undersporsmal'}
                     />
