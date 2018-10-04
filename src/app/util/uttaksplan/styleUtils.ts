@@ -16,6 +16,7 @@ export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forel
             case StønadskontoType.ForeldrepengerFørFødsel:
                 return 'purple';
             case StønadskontoType.Fellesperiode:
+            case StønadskontoType.Flerbarnsdager:
                 return 'purpleBlue';
             default:
                 return '';
