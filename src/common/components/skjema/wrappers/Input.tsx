@@ -22,6 +22,12 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
         throttled: true
     };
 
+    static getDerivedStateFromProps(props: InputWrapperProps) {
+        return {
+            value: props.value
+        };
+    }
+
     constructor(props: InputWrapperProps) {
         super(props);
 
