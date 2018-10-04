@@ -1,27 +1,31 @@
 import * as React from 'react';
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { Feil } from '../skjema-input-element/types';
-import NavDatovelger, { DatovelgerProps } from 'nav-datovelger';
+import NavDatovelger from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { normaliserDato } from 'common/util/datoUtils';
 
 import BEMHelper from 'common/util/bem';
 
-export interface DatoInputProps extends DatovelgerProps {
-    onChange: (dato?: Date) => void;
-    label: string | React.ReactNode;
+export interface DatoInputProps extends DatovelgerCommonProps {
+    name: string;
+    label: React.ReactNode;
+    dato?: Date;
     postfix?: string;
     feil?: Feil;
+    onChange: (dato?: Date) => void;
 }
 
 export type Props = DatoInputProps & InjectedIntlProps;
+
 import './datoInput.less';
+import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 
 const bem = BEMHelper('datoInput');
 
 class DatoInput extends React.Component<Props, {}> {
     render() {
-        const { label, postfix, feil, intl, onChange, ...rest } = this.props;
+        const { id, label, postfix, feil, intl, onChange, ...rest } = this.props;
 
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
@@ -29,9 +33,12 @@ class DatoInput extends React.Component<Props, {}> {
                     <div className={bem.element('datovelger')}>
                         <NavDatovelger.Datovelger
                             {...rest}
+                            id={id ? id : name}
                             locale={intl.locale}
                             input={{
-                                placeholder: 'dd.mm.åååå'
+                                id,
+                                placeholder: 'dd.mm.åååå',
+                                name
                             }}
                             onChange={(dato) => onChange(dato ? normaliserDato(dato) : undefined)}
                         />
