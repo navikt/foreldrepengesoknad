@@ -3,7 +3,7 @@ import { Periode, Periodetype, Uttaksperiode, StønadskontoType } from '../../ty
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import {
     EndrePeriodeChangeEvent,
@@ -14,7 +14,7 @@ import UttakForm from '../uttak-form/UttakForm';
 
 import './endrePeriodeFormContent.less';
 
-export interface OwnProps {
+export interface Props {
     periode: Periode;
     validertPeriode: ValidertPeriode | undefined;
     onChange: EndrePeriodeChangeEvent;
@@ -22,8 +22,6 @@ export interface OwnProps {
 }
 
 const bem = BEMHelper('endrePeriodeForm');
-
-type Props = OwnProps & InjectedIntlProps;
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
@@ -59,4 +57,4 @@ class EndrePeriodeFormContent extends React.Component<Props> {
     }
 }
 
-export default injectIntl(EndrePeriodeFormContent);
+export default EndrePeriodeFormContent;
