@@ -183,6 +183,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             })
                         }
                         value={navnPåNæringen || ''}
+                        throttled={false}
                     />
                 </Block>
 
@@ -195,12 +196,10 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                                 organisasjonsnummer: v
                             })
                         }
-                        maxLength={9}
-                        minLength={9}
-                        pattern="[0-9]{9}"
                         required={true}
                         value={organisasjonsnummer || ''}
-                        validators={getOrganisasjonsnummerRegler(organisasjonsnummer || '', intl)}
+                        validators={getOrganisasjonsnummerRegler(organisasjonsnummer || '', registrertINorge, intl)}
+                        throttled={false}
                     />
                 </Block>
 
