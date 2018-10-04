@@ -44,6 +44,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
+    const initialMonth = isForeldrepengerFørFødselUttaksperiode(periode) ? familiehendelsesdato : undefined;
     return (
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
@@ -59,6 +60,8 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                 intl.formatMessage({ id: 'uttaksplan.varighet.uttak' }, { varighet: getVarighetString(dager, intl) })
             }
             feil={feil}
+            defaultMånedFom={initialMonth}
+            defaultMånedTom={initialMonth}
             {...getTidsperiodeDisabledProps(periode)}
         />
     );
