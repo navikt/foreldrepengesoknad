@@ -118,7 +118,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                     });
                                 }}
                                 dato={tidsperiode.tom}
-                                disabled={false || sluttdatoDisabled}
+                                disabled={sluttdatoDisabled}
                                 avgrensninger={tilAvgrensninger}
                                 validators={datoValidatorer && datoValidatorer.til}
                             />
