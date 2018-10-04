@@ -64,7 +64,7 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
         if (søkerErFarEllerMedmor && periode.konto === StønadskontoType.Fellesperiode && aktivitetskravMorOk) {
             return true;
         }
-        if (periode.konto === StønadskontoType.Flerbarnsuker && aktivitetskravMorOk) {
+        if (periode.konto === StønadskontoType.Flerbarnsdager && aktivitetskravMorOk) {
             return true;
         }
     }

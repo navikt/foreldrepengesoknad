@@ -22,7 +22,7 @@ export enum StønadskontoType {
     'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
     /** Når det kun er en forsørger/forelder */
     'SamtidigUttak' = 'SAMTIDIGUTTAK',
-    'Flerbarnsuker' = 'FLERBARNSUKER'
+    'Flerbarnsdager' = 'FLERBARNSDAGER'
 }
 
 export enum UtsettelseÅrsakType {
