@@ -27,21 +27,16 @@ export enum StønadskontoType {
 
 export enum UtsettelseÅrsakType {
     'Ferie' = 'LOVBESTEMT_FERIE',
-    'Arbeid' = 'ARBEID'
+    'Arbeid' = 'ARBEID',
+    'Sykdom' = 'SYKDOM',
+    'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
+    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
 export enum SelvstendigNæringsdrivendeEllerFrilans {
     'frilans' = 'FRILANS',
     'selvstendignæringsdrivende' = 'SELVSTENDIG_NÆRINGSDRIVENDE'
 }
-
-export enum UtsettelseÅrsakSykdomType {
-    'Sykdom' = 'SYKDOM',
-    'InstitusjonSøker' = 'INSTITUSJONSOPPHOLD_SØKER',
-    'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
-}
-
-export type Utsettelsesårsaker = UtsettelseÅrsakType | UtsettelseÅrsakSykdomType;
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
@@ -86,40 +81,14 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
 
-interface UtsettelsesperiodeBase extends PeriodeBase {
+export interface Utsettelsesperiode extends PeriodeBase {
     type: Periodetype.Utsettelse;
-    årsak: Utsettelsesårsaker;
+    årsak: UtsettelseÅrsakType;
     forelder: Forelder;
-    helligdager?: Helligdag[];
     morsAktivitetIPerioden?: MorsAktivitet;
-}
-
-export interface UtsettelsePgaArbeidPeriode extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakType.Arbeid;
-    orgnr: string;
+    orgnr?: string;
     selvstendigNæringsdrivendeEllerFrilans?: SelvstendigNæringsdrivendeEllerFrilans;
 }
-
-export interface UtsettelsePgaFerie extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakType.Ferie;
-}
-
-export interface UtsettelsePgaSykdom extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakSykdomType.Sykdom;
-}
-export interface UtsettelsePgaInnleggelseBarnet extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakSykdomType.InstitusjonBarnet;
-}
-export interface UtsettelsePgaInnleggelseSøker extends UtsettelsesperiodeBase {
-    årsak: UtsettelseÅrsakSykdomType.InstitusjonSøker;
-}
-
-export type Utsettelsesperiode =
-    | UtsettelsePgaArbeidPeriode
-    | UtsettelsePgaFerie
-    | UtsettelsePgaSykdom
-    | UtsettelsePgaInnleggelseSøker
-    | UtsettelsePgaInnleggelseBarnet;
 
 export interface Oppholdsperiode extends PeriodeBase {
     type: Periodetype.Opphold;

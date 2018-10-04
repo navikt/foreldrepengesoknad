@@ -15,7 +15,6 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import getMessage from 'common/util/i18nUtils';
-import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 
 export interface OwnProps {
@@ -63,7 +62,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             if (updatedPeriode.type !== this.props.periode.type) {
                 updatedPeriode.vedlegg = [];
             }
-            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(cleanupPeriode(updatedPeriode)));
+            dispatch(søknadActionCreators.uttaksplanUpdatePeriode(updatedPeriode));
         }
     }
     onDelete() {

@@ -154,14 +154,14 @@ class UttaksperiodeForm extends React.Component<Props> {
             intl
         } = this.props;
 
-        const visibility = getUttakFormVisibility(
+        const visibility = getUttakFormVisibility({
             periode,
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
-            søknad.søker.erAleneOmOmsorg,
+            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
             annenForelderHarRett
-        );
+        });
 
         if (visibility === undefined) {
             return null;

@@ -6,10 +6,12 @@ import {
     getBarnInfoFraRegistrertBarnValg
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
+import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { guid } from 'nav-frontend-js-utils';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/uttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
+import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
+import { Søker } from '../../types/søknad/Søker';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -157,7 +159,10 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             const filteredPerioder = state.uttaksplan.filter((periode) => periode.id !== action.periode.id);
             return {
                 ...state,
-                uttaksplan: [...filteredPerioder, action.periode].sort(sorterPerioder)
+                uttaksplan: [
+                    ...filteredPerioder,
+                    cleanupPeriode(action.periode, state.søker as Søker, state.annenForelder as AnnenForelder)
+                ].sort(sorterPerioder)
             };
         }
 

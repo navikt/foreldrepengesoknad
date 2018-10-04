@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UtsettelseÅrsakSykdomType } from '../../../types/uttaksplan/periodetyper';
+import { UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import Block from 'common/components/block/Block';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmål/FlervalgSpørsmål';
@@ -12,18 +12,18 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
 
 export interface UtsettelsePgaSykdomChangePayload {
-    sykdomsårsak: UtsettelseÅrsakSykdomType;
+    sykdomsårsak: UtsettelseÅrsakType;
     vedlegg: Attachment[];
 }
 
 export interface OwnProps {
     forelder: Forelder;
-    sykdomsårsak?: UtsettelseÅrsakSykdomType;
+    sykdomsårsak?: UtsettelseÅrsakType;
     vedlegg: Attachment[];
     onChange: (payload: UtsettelsePgaSykdomChangePayload) => void;
 }
 
-const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakSykdomType): FlervalgAlternativ => {
+const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): FlervalgAlternativ => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
         value: årsak
@@ -43,18 +43,18 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                         navn="utsttelsePgaSykdomÅrsak"
                         spørsmål={getMessage(intl, 'utsettelse.sykdom.alternativer.spørsmål')}
                         valgtVerdi={sykdomsårsak}
-                        onChange={(årsak: UtsettelseÅrsakSykdomType) =>
+                        onChange={(årsak: UtsettelseÅrsakType) =>
                             onChange({ sykdomsårsak: årsak, vedlegg: vedleggList })
                         }
                         toKolonner={true}
                         alternativer={[
-                            getSykdomAlternativ(intl, UtsettelseÅrsakSykdomType.Sykdom),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakSykdomType.InstitusjonSøker),
-                            getSykdomAlternativ(intl, UtsettelseÅrsakSykdomType.InstitusjonBarnet)
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.Sykdom),
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonSøker),
+                            getSykdomAlternativ(intl, UtsettelseÅrsakType.InstitusjonBarnet)
                         ]}
                     />
                 </Block>
-                {sykdomsårsak !== undefined && ( // Not set on block visible because of onChange event below
+                {sykdomsårsak !== undefined && (
                     <Block>
                         <Veilederinfo>
                             <FormattedMessage id="utsettelse.sykdom.vedlegg.info" />
