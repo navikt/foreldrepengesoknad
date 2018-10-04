@@ -8,6 +8,7 @@ import {
     isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
+import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -34,14 +35,6 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 
 const Sp = UttakSpørsmålKeys;
 
-const erUttakEgenKvote = (payload: UttakFormPayload): boolean => {
-    const { søkerErFarEllerMedmor, periode } = payload;
-    if (søkerErFarEllerMedmor) {
-        return periode.konto === StønadskontoType.Fedrekvote;
-    }
-    return periode.konto === StønadskontoType.Mødrekvote;
-};
-
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     const { periode, søkerErFarEllerMedmor } = payload;
     if (søkerErFarEllerMedmor && periode.konto !== undefined && periode.konto === StønadskontoType.Fellesperiode) {
@@ -55,7 +48,7 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     if (periode.type === Periodetype.Overføring || periode.konto === undefined) {
         return false;
     } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
-        const erEgenKonto = erUttakEgenKvote(payload);
+        const erEgenKonto = erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor);
         const aktivitetskravMor = visAktivitetskravMor(payload);
         const aktivitetskravMorOk =
             (aktivitetskravMor && questionValueIsOk(periode.morsAktivitetIPerioden)) || aktivitetskravMor === false;
@@ -94,7 +87,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     if (periode.type !== Periodetype.Uttak) {
         return false;
     }
-    if (erUttakEgenKvote(payload) && periode.ønskerSamtidigUttak === true) {
+    if (erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak === true) {
         return true;
     }
     return periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true;
@@ -128,7 +121,9 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
-        condition: (payload) => payload.periode.type === Periodetype.Overføring && erUttakEgenKvote(payload) === false
+        condition: (payload) =>
+            payload.periode.type === Periodetype.Overføring &&
+            erUttakEgenKvote(payload.periode.konto, payload.søkerErFarEllerMedmor) === false
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,
