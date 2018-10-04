@@ -43,8 +43,6 @@ interface State {
 type Props = StegProps & InjectedIntlProps;
 
 class Steg extends React.Component<Props & DispatchProps, State> {
-    private stegFormRef: React.RefObject<ValiderbarForm>;
-
     constructor(props: Props & DispatchProps) {
         super(props);
 
@@ -57,7 +55,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
             visAvbrytDialog: false
         };
 
-        this.stegFormRef = React.createRef();
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
@@ -70,8 +67,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     getFormElement() {
-        const el = this.stegFormRef.current;
-        return ReactDOM.findDOMNode(el as React.ReactInstance);
+        return ReactDOM.findDOMNode(this);
     }
 
     handleOnSubmit(event: FormSubmitEvent): void {
@@ -167,9 +163,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         return (
             <React.Fragment>
                 {renderFormTag ? (
-                    <ValiderbarForm {...formProps} ref={this.stegFormRef}>
-                        {this.renderContent()}
-                    </ValiderbarForm>
+                    <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
                     <div className={bem.className}>{this.renderContent()}</div>
                 )}

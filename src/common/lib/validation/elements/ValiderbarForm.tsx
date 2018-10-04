@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PT from 'prop-types';
-import { ValidationResult, SummaryError } from '../types/index';
+import { ValidationResult, SummaryError, ValidatorFailText, ValidatorFailTextIntl } from '../types/index';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
@@ -30,14 +31,16 @@ interface ValiderbarFormState {
     failedSubmit: boolean;
 }
 
-class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarFormState> {
+type Props = ValiderbarFormProps & InjectedIntlProps;
+
+export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> {
     static childContextTypes = {
         validForm: PT.object
     };
 
     components: any[];
 
-    constructor(props: ValiderbarFormProps) {
+    constructor(props: Props) {
         super(props);
 
         this.components = [];
@@ -171,11 +174,23 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
         });
     }
 
+    getFailedText(failText: ValidatorFailText): string {
+        if (typeof failText === 'string') {
+            return failText;
+        }
+        const intlText = failText as ValidatorFailTextIntl;
+        return this.props.intl.formatMessage({ id: intlText.intlKey }, intlText.values);
+    }
+
     mapResultsToErrorSummary(): SummaryError[] {
-        return this.state.results.filter((result) => !result.valid).map((result) => ({
-            name: result.name,
-            text: result.tests.find((test: any) => !test.verdict).failText
-        }));
+        return this.state.results.filter((result) => !result.valid).map((result) => {
+            const failedTest = result.tests.find((test: any) => !test.verdict);
+            const text = failedTest !== undefined ? this.getFailedText(failedTest.failText) : 'Ukjent feil';
+            return {
+                name: result.name,
+                text
+            };
+        });
     }
 
     render() {
@@ -204,4 +219,4 @@ class ValiderbarForm extends React.Component<ValiderbarFormProps, ValiderbarForm
     }
 }
 
-export default ValiderbarForm;
+export default injectIntl(ValiderbarForm);
