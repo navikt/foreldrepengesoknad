@@ -142,7 +142,7 @@ const deltUttakFødselMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5),
+            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).denneEllerNeste(), fellesperiodeukerMor * 5),
             ønskerSamtidigUttak: false
         };
 
