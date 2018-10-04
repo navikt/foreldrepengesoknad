@@ -88,7 +88,7 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 
 const visGradering = (payload: UttakFormPayload): boolean => {
     const { periode } = payload;
-    if (periode.type !== Periodetype.Uttak) {
+    if (periode.type !== Periodetype.Uttak || periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return false;
     }
     if (erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined) {
