@@ -584,5 +584,5 @@
 
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Informasjon mangler om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Tidsperioden er ikke gyldig",
-    "uttaksplan.validering.måVæreUttaksdag": "Dato må være en ukedag"
+    "uttaksplan.validering.datoErIkkeUttaksdag": "Dato må være en ukedag"
 }
