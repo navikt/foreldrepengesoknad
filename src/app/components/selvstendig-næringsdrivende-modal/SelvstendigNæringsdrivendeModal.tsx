@@ -318,8 +318,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={visibility.oppstartsdato(næring)}>
                     <DatoInput
-                        name="oppstartsdato"
                         id="oppstartsdato"
+                        name="oppstartsdato"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.oppstartsdato')}
                         onChange={(oppstartsdato: Date) => {
                             this.updateNæring({ oppstartsdato });
