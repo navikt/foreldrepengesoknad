@@ -78,6 +78,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                         }>
                         <DatoInput
                             id="annenStartdatoAdopsjon"
+                            name="annenStartdatoAdopsjon"
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}

@@ -15,6 +15,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
             render={(data, onChange) => (
                 <DatoInput
                     id="permisjonStartdato"
+                    name="permisjonStartdato"
                     label={getMessage(intl, 'spørsmål.startdatoPermisjonFarMedmor.label')}
                     onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
                     dato={data.startdatoPermisjon}
