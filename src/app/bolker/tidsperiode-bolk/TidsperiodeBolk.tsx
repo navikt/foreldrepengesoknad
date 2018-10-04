@@ -41,6 +41,8 @@ interface TidsperiodeBolkProps {
         fom: string;
         tom: string;
     };
+    defaultMånedFom?: Date;
+    defaultMånedTom?: Date;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -67,6 +69,8 @@ class TidsperiodeBolk extends React.Component<Props> {
             varighetRenderer,
             startdatoDisabled,
             sluttdatoDisabled,
+            defaultMånedFom,
+            defaultMånedTom,
             datoInputLabelProps
         } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
@@ -101,6 +105,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 dato={tidsperiode.fom}
                                 avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
                                 validators={datoValidatorer && datoValidatorer.fra}
+                                dayPickerProps={{ initialMonth: defaultMånedFom }}
                             />
                         </Block>
                     </div>
@@ -121,6 +126,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 disabled={sluttdatoDisabled}
                                 avgrensninger={tilAvgrensninger}
                                 validators={datoValidatorer && datoValidatorer.til}
+                                dayPickerProps={{ initialMonth: defaultMånedTom }}
                             />
                         </Block>
                     </div>
