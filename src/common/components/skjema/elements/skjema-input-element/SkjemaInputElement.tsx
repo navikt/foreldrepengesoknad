@@ -14,6 +14,7 @@ export interface Props {
 const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
     const { label, id, feil, children } = props;
     const inputId = id || guid();
+    console.log(typeof label, label);
     return (
         <div
             className={classnames('skjemaelement', {
