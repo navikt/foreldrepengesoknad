@@ -19,9 +19,13 @@ const SkjemaInputElement: React.StatelessComponent<Props> = (props: Props) => {
             className={classnames('skjemaelement', {
                 'skjemaelement--harFeil': feil !== undefined
             })}>
-            <label className="skjemaelement__label" htmlFor={inputId}>
-                {label}
-            </label>
+            {typeof label === 'string' ? (
+                <label className="skjemaelement__label" htmlFor={inputId}>
+                    {label}
+                </label>
+            ) : (
+                { label }
+            )}
             <div
                 className={classnames({
                     'skjema__feilomrade--harFeil': feil !== undefined
