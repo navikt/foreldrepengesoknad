@@ -310,7 +310,7 @@
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.dekningsgrad.100": "49 uker med 100% foreldrepenger",
     "spørsmål.dekningsgrad.80": "59 uker med 80% foreldrepenger",
-    "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger ønsker dere?",
+    "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label--aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere ved å velge 100 prosent",
 
@@ -356,6 +356,8 @@
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut",
+    "uttaksplan.skjema.informasjonTilFarMedmor":
+        "Dere må velge den samme lengden på perioden med foreldrepenger. Du må oppgi den samme lengden som {navn} valgte i sin søknad.",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Født den {dato}",
