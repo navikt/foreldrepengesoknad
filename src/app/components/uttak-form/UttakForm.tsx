@@ -6,7 +6,6 @@ import {
     StønadskontoType,
     Uttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    isForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
@@ -32,6 +31,7 @@ import GradertUttakPart from './partials/GradertUttakPart';
 import UttakTidsperiodeSpørsmål from './partials/UttakTidsperiodeSpørsmål';
 import getMessage from 'common/util/i18nUtils';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -55,13 +55,6 @@ interface StateProps {
 
 type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
 
-const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | undefined, søkerErFarEllerMedmor: boolean): boolean => {
-    return (
-        (konto === StønadskontoType.Mødrekvote && søkerErFarEllerMedmor) ||
-        (konto === StønadskontoType.Fedrekvote && !søkerErFarEllerMedmor)
-    );
-};
-
 class UttaksperiodeForm extends React.Component<Props> {
     static contextTypes = {
         validForm: PT.object
@@ -70,9 +63,9 @@ class UttaksperiodeForm extends React.Component<Props> {
 
     constructor(props: Props) {
         super(props);
-        this.getTidsperiodeDisabledProps = this.getTidsperiodeDisabledProps.bind(this);
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
-        this.updatePeriodeGradering = this.updatePeriodeGradering.bind(this);
+        this.updateForeldrepengerFørFødselUttak = this.updateForeldrepengerFørFødselUttak.bind(this);
+        this.updateOverføringUttak = this.updateOverføringUttak.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -100,10 +93,6 @@ class UttaksperiodeForm extends React.Component<Props> {
         });
     }
 
-    updatePeriodeGradering(periode: RecursivePartial<Uttaksperiode>) {
-        this.onChange({ ...periode });
-    }
-
     updateOverføringUttak(periode: RecursivePartial<Overføringsperiode>) {
         this.onChange({
             type: Periodetype.Overføring,
@@ -116,26 +105,16 @@ class UttaksperiodeForm extends React.Component<Props> {
         if (erUttakAvAnnenForeldersKvote(konto, this.props.søkerErFarEllerMedmor)) {
             this.onChange({
                 type: Periodetype.Overføring,
-                konto
+                konto,
+                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
             });
         } else {
             this.onChange({
                 type: Periodetype.Uttak,
-                konto
+                konto,
+                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
             });
         }
-    }
-
-    getTidsperiodeDisabledProps(): { startdatoDisabled?: boolean; sluttdatoDisabled?: boolean } | undefined {
-        const { periode } = this.props;
-        if (isForeldrepengerFørFødselUttaksperiode(periode as Periode)) {
-            const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
-            return {
-                startdatoDisabled: skalIkkeHaUttak,
-                sluttdatoDisabled: skalIkkeHaUttak
-            };
-        }
-        return undefined;
     }
 
     render() {
