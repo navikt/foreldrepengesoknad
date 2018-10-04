@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
@@ -20,6 +20,9 @@ import ApplicationSpinner from 'common/components/application-spinner/Applicatio
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
+import { FormattedMessage } from 'react-intl';
+import Lenke from 'nav-frontend-lenker';
+import lenker from '../../../util/routing/lenker';
 
 interface StateProps {
     stegProps: StegProps;
@@ -36,6 +39,30 @@ interface UttaksplanStegState {
 }
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
+
+const getVeilederInfoText = (søknad: Søknad) => {
+    if (
+        (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
+        søknad.annenForelder.kanIkkeOppgis !== true &&
+        søknad.annenForelder.harRettPåForeldrepenger === true
+    ) {
+        return (
+            <FormattedMessage
+                id="uttaksplan.informasjonFarMedmorDeltUttak"
+                values={{
+                    navn: søknad.annenForelder.fornavn,
+                    link: (
+                        <Lenke href={lenker.viktigeFrister} target="_blank">
+                            <FormattedMessage id="uttaksplan.fristerLinkTekst" />
+                        </Lenke>
+                    )
+                }}
+            />
+        );
+    } else {
+        return <FormattedMessage id="uttaksplan.informasjonTilSøker" />;
+    }
+};
 
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
@@ -90,9 +117,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederinfo maxWidth="30">
-                            Her velger du hvordan du ønsker å legge opp ditt uttak.
-                        </Veilederinfo>
+                        <Veilederinfo maxWidth="30">{getVeilederInfoText(søknad)}</Veilederinfo>
                         <Block>
                             <Uttaksplanlegger
                                 søkersituasjon={søknad.situasjon}

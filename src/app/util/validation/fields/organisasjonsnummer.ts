@@ -11,16 +11,28 @@ const er9Tall = (orgnr: string): boolean => {
     return onlyNumbersRegExp.test(orgnr) && orgnr.length === 9;
 };
 
-export const getOrganisasjonsnummerRegler = (organisasjonsnummer: string, intl: InjectedIntl): Validator[] => {
+export const getOrganisasjonsnummerRegler = (
+    organisasjonsnummer: string,
+    registrertINorge: boolean | undefined,
+    intl: InjectedIntl
+): Validator[] => {
     const intlKey = 'valideringsfeil.organisasjonsnummer';
+    if (registrertINorge === true) {
+        return [
+            {
+                test: () => harVerdi(organisasjonsnummer),
+                failText: getMessage(intl, `${intlKey}.required`)
+            },
+            {
+                test: () => er9Tall(organisasjonsnummer),
+                failText: getMessage(intl, `${intlKey}.er9tall`)
+            }
+        ];
+    }
     return [
         {
             test: () => harVerdi(organisasjonsnummer),
             failText: getMessage(intl, `${intlKey}.required`)
-        },
-        {
-            test: () => er9Tall(organisasjonsnummer),
-            failText: getMessage(intl, `${intlKey}.er9tall`)
         }
     ];
 };

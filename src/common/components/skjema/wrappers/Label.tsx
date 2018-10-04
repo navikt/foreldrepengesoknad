@@ -10,7 +10,7 @@ export type SkjemaLabelProps = CommonSkjemaelementProps & {
 
 const InputLabel: React.StatelessComponent<SkjemaLabelProps> = ({ label, infotekst, inputId }) => {
     return (
-        <label htmlFor={inputId} className="skjemaelement__label">
+        <label className="skjemaelement__label" htmlFor={inputId}>
             {label}
             {infotekst && <Infoboks tekst={infotekst} />}
         </label>
