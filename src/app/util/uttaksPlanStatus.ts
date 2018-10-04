@@ -10,7 +10,7 @@ export const beregnGjenståendeUttaksdager = (
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let forelder: Forelder | undefined;
         let dagerGjenstående = konto.dager;
-        const uttaksplanPeriode = uttaksplan.find((p: Uttaksperiode) => p.konto === konto.konto);
+        const uttaksplanPerioder = uttaksplan.filter((p: Uttaksperiode) => p.konto === konto.konto);
 
         if (konto.konto === StønadskontoType.Mødrekvote) {
             forelder = Forelder.MOR;
@@ -20,8 +20,10 @@ export const beregnGjenståendeUttaksdager = (
             forelder = Forelder.FARMEDMOR;
         }
 
-        if (uttaksplanPeriode) {
-            dagerGjenstående = dagerGjenstående - Perioden(uttaksplanPeriode).getAntallUttaksdager();
+        if (uttaksplanPerioder) {
+            uttaksplanPerioder.forEach((p: Periode) => {
+                dagerGjenstående = dagerGjenstående - Perioden(p).getAntallUttaksdager();
+            });
         }
 
         return {
