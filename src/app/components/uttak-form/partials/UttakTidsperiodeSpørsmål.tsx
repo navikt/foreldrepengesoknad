@@ -53,7 +53,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     ? getDatoavgrensningerForStønadskonto(periode.konto, familiehendelsesdato, getPermisjonsregler())
                     : undefined
             }
-            datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, intl)}
+            datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode)}
             visVarighet={true}
             varighetRenderer={(dager) =>
                 intl.formatMessage({ id: 'uttaksplan.varighet.uttak' }, { varighet: getVarighetString(dager, intl) })

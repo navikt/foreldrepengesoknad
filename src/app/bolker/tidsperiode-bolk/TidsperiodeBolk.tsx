@@ -82,7 +82,6 @@ class TidsperiodeBolk extends React.Component<Props> {
         } else if (tidsperiode.fom) {
             tilAvgrensninger = { minDato: tidsperiode.fom };
         }
-
         return (
             <SkjemaGruppe feil={feil}>
                 <div className={bem.className}>
