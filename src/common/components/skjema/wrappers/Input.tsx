@@ -19,7 +19,7 @@ interface InputWrapperState {
 
 export default class Input extends React.Component<InputWrapperProps, InputWrapperState> {
     static defaultProps = {
-        throttled: true
+        throttled: false
     };
 
     static getDerivedStateFromProps(props: InputWrapperProps) {
