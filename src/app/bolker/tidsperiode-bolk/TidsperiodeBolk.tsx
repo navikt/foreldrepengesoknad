@@ -17,6 +17,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 
 export interface DatoAvgrensninger {
+    helgedagerIkkeTillatt?: boolean;
     fra?: Avgrensninger;
     til?: Avgrensninger;
 }
@@ -32,8 +33,9 @@ interface TidsperiodeBolkProps {
     sluttdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
-    visVarighet?: boolean;
     feil?: Feil;
+    visVarighet?: boolean;
+    varighetRenderer?: (varighetIDager: number) => React.ReactNode;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
     datoInputLabelProps?: {
         fom: string;
@@ -62,6 +64,7 @@ class TidsperiodeBolk extends React.Component<Props> {
             visVarighet,
             feil,
             intl,
+            varighetRenderer,
             startdatoDisabled,
             sluttdatoDisabled,
             datoInputLabelProps
@@ -125,7 +128,9 @@ class TidsperiodeBolk extends React.Component<Props> {
                     {visVarighet &&
                         varighetIDager !== undefined && (
                             <Normaltekst className={bem.element('varighet')}>
-                                {getVarighetString(varighetIDager, intl)}
+                                {varighetRenderer
+                                    ? varighetRenderer(varighetIDager)
+                                    : getVarighetString(varighetIDager, intl)}
                             </Normaltekst>
                         )}
                 </div>
