@@ -94,10 +94,10 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     if (periode.type !== Periodetype.Uttak) {
         return false;
     }
-    if (erUttakEgenKvote(payload) && periode.ønskerSamtidigUttak === true) {
+    if (erUttakEgenKvote(payload) && periode.ønskerSamtidigUttak !== undefined) {
         return true;
     }
-    return periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true;
+    return periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak !== undefined;
 };
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {

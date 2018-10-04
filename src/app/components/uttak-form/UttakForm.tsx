@@ -218,6 +218,14 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                             />
                         </Block>
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
+                            <GradertUttakPart
+                                visibility={visibility}
+                                periode={periode}
+                                arbeidsforhold={arbeidsforhold}
+                                onChange={this.onChange}
+                            />
+                        </Block>
                     </>
                 )}
                 {periode.type === Periodetype.Overføring && (
@@ -235,16 +243,6 @@ class UttaksperiodeForm extends React.Component<Props> {
                     </Block>
                 )}
 
-                {periode.type === Periodetype.Uttak && (
-                    <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
-                        <GradertUttakPart
-                            visibility={visibility}
-                            periode={periode}
-                            arbeidsforhold={arbeidsforhold}
-                            onChange={this.onChange}
-                        />
-                    </Block>
-                )}
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
