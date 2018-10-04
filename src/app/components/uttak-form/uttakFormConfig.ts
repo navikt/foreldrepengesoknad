@@ -45,7 +45,11 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     const { periode, søkerErFarEllerMedmor } = payload;
-    if (periode.type === Periodetype.Overføring || periode.konto === undefined) {
+    if (
+        periode.konto === undefined ||
+        periode.type === Periodetype.Overføring ||
+        periode.konto === StønadskontoType.ForeldrepengerFørFødsel
+    ) {
         return false;
     } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
         const erEgenKonto = erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor);
