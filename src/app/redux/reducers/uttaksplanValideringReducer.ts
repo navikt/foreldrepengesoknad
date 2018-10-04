@@ -5,7 +5,10 @@ import {
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 
 export enum PeriodeValideringErrorKey {
-    'FORM_INCOMPLETE' = 'formIncomplete'
+    'PÅKREVD_VERDI_MANGLER' = 'påkrevd',
+    'SKJEMA_IKKE_KOMPLETT' = 'skjemaIkkeKomplett',
+    'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
+    'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttagsdag'
 }
 
 export interface Periodevalidering {

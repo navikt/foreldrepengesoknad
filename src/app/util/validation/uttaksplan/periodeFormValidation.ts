@@ -10,6 +10,7 @@ import {
     UtsettelseFormPayload
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
+import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
@@ -18,21 +19,22 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
     }
     return [
         {
-            feilKey: PeriodeValideringErrorKey.FORM_INCOMPLETE
+            feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT
         }
     ];
 };
 
 const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUttakFormVisibility(payload);
-    if (visibility.areAllQuestionsAnswered()) {
-        return undefined;
+    const valideringsfeil: PeriodeValideringsfeil[] = [];
+
+    if (visibility.areAllQuestionsAnswered() === false) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT });
     }
-    return [
-        {
-            feilKey: PeriodeValideringErrorKey.FORM_INCOMPLETE
-        }
-    ];
+    if (uttakTidsperiodeErGyldig(payload.periode) === false) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
+    }
+    return valideringsfeil.length === 0 ? undefined : valideringsfeil;
 };
 
 export const validerPeriodeForm = (
