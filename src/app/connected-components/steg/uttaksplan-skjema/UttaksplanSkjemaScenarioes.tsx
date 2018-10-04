@@ -13,6 +13,8 @@ import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttak
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 import { NavnPåForeldre } from 'common/types';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { FormattedMessage } from 'react-intl';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -23,21 +25,12 @@ export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåForeldre }) => (
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({ navnPåForeldre }) => (
     <>
-        <HarAnnenForelderSøktForeldrepengerSpørsmål
-            visible={søknad.annenForelder.harRettPåForeldrepenger}
-            navnAnnenForelder={søknad.annenForelder.fornavn}
-        />
-        <DekningsgradSpørsmål visible={søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined} />
-        <MorSinSisteUttaksdagSpørsmål
-            visible={
-                søknad.dekningsgrad !== undefined &&
-                søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP !== undefined
-            }
-            navnMor={navnPåForeldre.mor}
-            familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-        />
+        <Veilederinfo>
+            <FormattedMessage id="uttaksplan.skjema.informasjonTilFarMedmor" values={{ navn: navnPåForeldre.mor }} />
+        </Veilederinfo>
+        <DekningsgradSpørsmål />
     </>
 );
 
