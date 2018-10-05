@@ -1,8 +1,8 @@
 import {
     UttaksplanValideringActionTypes,
-    UttaksplanValideringActionKeys,
-    ValidertPeriode
+    UttaksplanValideringActionKeys
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 
 export enum PeriodeValideringErrorKey {
     'PÅKREVD_VERDI_MANGLER' = 'påkrevd',
@@ -22,6 +22,12 @@ export interface UttaksplanValideringState {
 
 export interface PeriodeValideringsfeil {
     feilKey: PeriodeValideringErrorKey;
+}
+
+export interface ValidertPeriode {
+    periodeId: string;
+    valideringsfeil: PeriodeValideringsfeil[];
+    overlappendePerioder: Periode[];
 }
 
 const getDefaultState = (): UttaksplanValideringState => {

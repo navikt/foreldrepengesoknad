@@ -1,15 +1,9 @@
-import { PeriodeValideringsfeil } from '../../reducers/uttaksplanValideringReducer';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
+import { ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
 
 export enum UttaksplanValideringActionKeys {
     'SET_VALIDERT_PERIODE' = 'setValidertPeriode',
     'SET_VALIDERTE_PERIODER' = 'setValidertePerioder',
     'VALIDER_UTTAKSPLAN' = 'validerUttaksplan'
-}
-
-export interface ValidertPeriode {
-    valideringsfeil: PeriodeValideringsfeil[];
-    overlappendePerioder: Periode[];
 }
 
 export interface ValiderUttaksplanAction {
