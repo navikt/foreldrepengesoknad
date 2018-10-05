@@ -6,6 +6,7 @@ import getMessage from 'common/util/i18nUtils';
 import InjectedIntl = ReactIntl.InjectedIntl;
 import { Tidsperiode } from 'common/types';
 import { harTidsperiodeOverlapp } from '../common/dateIntervals';
+import { dateIs1YearBeforeAtEarliest, valueIsDefinedRule } from './common';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || today.toDate();
@@ -30,20 +31,16 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const startM = moment(fom);
-    const sluttM = moment(tom);
-
     return [
+        valueIsDefinedRule(fom, getMessage(intl, `${intlKey}.tidligere`)),
+        dateIs1YearBeforeAtEarliest(fom, getMessage(intl, `${intlKey}.tidligere`)),
         {
-            test: () => fom !== undefined,
-            failText: getMessage(intl, `${intlKey}.tidligere`)
-        },
-        {
-            test: () => startM.isBetween(date1YearAgo, today.endOf('day')),
-            failText: getMessage(intl, `${intlKey}.tidligere`)
-        },
-        {
-            test: () => (tom ? startM.startOf('day').isSameOrBefore(sluttM) : true),
+            test: () =>
+                tom
+                    ? moment(fom)
+                          .startOf('day')
+                          .isSameOrBefore(moment(tom))
+                    : true,
             failText: getMessage(intl, `${intlKey}.førTilDato`)
         },
         {
@@ -60,20 +57,16 @@ export const getTidligereUtenlandsoppholdTildatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const startM = moment(tom);
-    const sluttM = moment(fom);
-
     return [
+        valueIsDefinedRule(tom, getMessage(intl, `${intlKey}.tidligere`)),
+        dateIs1YearBeforeAtEarliest(tom, getMessage(intl, `${intlKey}.tidligere`)),
         {
-            test: () => fom !== undefined,
-            failText: getMessage(intl, `${intlKey}.tidligere`)
-        },
-        {
-            test: () => sluttM.isBetween(date1YearAgo, today.endOf('day')),
-            failText: getMessage(intl, `${intlKey}.tidligere`)
-        },
-        {
-            test: () => (tom ? sluttM.endOf('day').isSameOrAfter(startM) : true),
+            test: () =>
+                tom
+                    ? moment(tom)
+                          .endOf('day')
+                          .isSameOrAfter(moment(fom))
+                    : true,
             failText: getMessage(intl, `${intlKey}.etterFraDato`)
         },
         {

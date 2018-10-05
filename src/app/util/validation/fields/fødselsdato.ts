@@ -1,33 +1,22 @@
-import moment from 'moment';
 import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
-import { Fødselsdato } from '../../../types/common';
+import { ValiderbarDato } from '../../../types/common';
 import getMessage from 'common/util/i18nUtils';
-import { date3YearsAgo, today, tomorrow } from '../values';
+import { date3YearsAgo } from '../values';
+import { dateIs3YearsAgoOrLater, dateIsNotInFutureRule, notInFutureAvgrensning, valueIsDefinedRule } from './common';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),
-    maksDato: today.toDate()
+    ...notInFutureAvgrensning
 };
 
-export const getFødselsdatoRegler = (fødselsdato: Fødselsdato, intl: InjectedIntl): Validator[] => {
-    const date = moment(fødselsdato);
+export const getFødselsdatoRegler = (fødselsdato: ValiderbarDato, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.fodselsdato';
-
     return [
-        {
-            test: () => fødselsdato !== undefined,
-            failText: getMessage(intl, `${intlKey}.duMåOppgi`)
-        },
-        {
-            test: () => date.isBefore(tomorrow),
-            failText: getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)
-        },
-        {
-            test: () => date.isSameOrAfter(date3YearsAgo),
-            failText: getMessage(intl, `${intlKey}.ikkeMerEnn3ÅrTilbake`)
-        }
+        valueIsDefinedRule(fødselsdato, getMessage(intl, `${intlKey}.duMåOppgi`)),
+        dateIsNotInFutureRule(fødselsdato, getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)),
+        dateIs3YearsAgoOrLater(fødselsdato, getMessage(intl, `${intlKey}.ikkeMerEnn3ÅrTilbake`))
     ];
 };
 
