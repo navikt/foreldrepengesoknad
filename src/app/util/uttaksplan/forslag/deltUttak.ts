@@ -31,8 +31,7 @@ const deltUttakAdopsjonMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
-            ønskerSamtidigUttak: false
+            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager)
         };
 
         currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
@@ -46,8 +45,7 @@ const deltUttakAdopsjonMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5),
-            ønskerSamtidigUttak: false
+            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5)
         };
 
         perioder.push(periodeFellesperiodeMor);
@@ -103,8 +101,7 @@ const deltUttakFødselMor = (
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
                 tom: Uttaksdagen(currentTomDate).forrige()
-            },
-            ønskerSamtidigUttak: false
+            }
         };
 
         perioder.push(periodeFørFødsel);
@@ -115,8 +112,7 @@ const deltUttakFødselMor = (
             forelder: Forelder.MOR,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             tidsperiode: {} as any,
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         };
         perioder.push(periodeFørFødsel);
     }
@@ -127,8 +123,7 @@ const deltUttakFødselMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
-            ønskerSamtidigUttak: false
+            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager)
         };
 
         currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
@@ -142,8 +137,7 @@ const deltUttakFødselMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).denneEllerNeste(), fellesperiodeukerMor * 5),
-            ønskerSamtidigUttak: false
+            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).denneEllerNeste(), fellesperiodeukerMor * 5)
         };
 
         perioder.push(periodeFellesperiodeMor);
