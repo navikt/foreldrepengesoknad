@@ -42,20 +42,6 @@ const getVarighet = (fom: Date | undefined, tom: Date | undefined, intl: Injecte
     return antallDager !== undefined ? getVarighetString(antallDager, intl) : undefined;
 };
 
-const skalIkkeHaUttakFørPermisjon = (
-    skalIkkeHaUttak: boolean,
-    permisjonsregler: Permisjonsregler,
-    familiehendelsesdato: Date,
-    onChange: UttaksplanSkjemaSpørsmålChange
-) => {
-    onChange({
-        skalIkkeHaUttakFørTermin: skalIkkeHaUttak,
-        startdatoPermisjon: skalIkkeHaUttak
-            ? undefined
-            : getDefaultPermisjonStartdato(familiehendelsesdato, permisjonsregler)
-    });
-};
-
 class StartdatoPermisjonMorBolk extends React.Component<Props> {
     renderContent(data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void) {
         const { barnetErFødt, familiehendelsesdato, intl } = this.props;
@@ -111,12 +97,12 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         checked={data.skalIkkeHaUttakFørTermin || false}
                         label={spørsmålHaddeIkke}
                         onChange={(e) => {
-                            skalIkkeHaUttakFørPermisjon(
-                                e.target.checked,
-                                permisjonsregler,
-                                familiehendelsesdato,
-                                onChange
-                            );
+                            onChange({
+                                skalIkkeHaUttakFørTermin: e.target.checked,
+                                startdatoPermisjon: e.target.checked
+                                    ? undefined
+                                    : getDefaultPermisjonStartdato(familiehendelsesdato, permisjonsregler)
+                            });
                         }}
                     />
                 </Block>
