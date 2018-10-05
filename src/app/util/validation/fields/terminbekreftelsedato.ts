@@ -3,7 +3,8 @@ import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
-import { date1YearAgo, fjortenUkerPluss3Number, today, tomorrow } from '../values';
+import { date1YearAgo, fjortenUkerPluss3Number, today } from '../values';
+import { dateIsNotInFutureRule, valueIsDefinedRule } from './common';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 
@@ -26,14 +27,8 @@ export const getTerminbekreftelseDatoRegler = (
     const termindatoM = moment(termindato).startOf('day');
 
     return [
-        {
-            test: () => terminbekreftelseDato !== undefined,
-            failText: getMessage(intl, `${intlKey}.duMåOppgi`)
-        },
-        {
-            test: () => moment.max(terminbekreftelsedatoM, tomorrow) === tomorrow,
-            failText: getMessage(intl, `${intlKey}.forSen`)
-        },
+        valueIsDefinedRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.duMåOppgi`)),
+        dateIsNotInFutureRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.forSen`)),
         {
             test: () =>
                 moment
