@@ -4,7 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import { date1YearAgo, fjortenUkerPluss3Number, today } from '../values';
-import { dateIsNotInFutureRule, valueIsDefinedRule } from './common';
+import { dateIsNotInFutureRule, hasValueRule } from './common';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 
@@ -27,7 +27,7 @@ export const getTerminbekreftelseDatoRegler = (
     const termindatoM = moment(termindato).startOf('day');
 
     return [
-        valueIsDefinedRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.duMåOppgi`)),
+        hasValueRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.duMåOppgi`)),
         dateIsNotInFutureRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.forSen`)),
         {
             test: () =>

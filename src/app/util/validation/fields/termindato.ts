@@ -4,7 +4,7 @@ import { Avgrensninger } from 'nav-datovelger/src/datovelger/types/index';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { date21DaysAgo, fjortenUkerPluss3, fjortenUkerPluss3Number, today } from '../values';
-import { valueIsDefinedRule } from './common';
+import { hasValueRule } from './common';
 import { DateValue } from '../../../types/common';
 
 export const termindatoAvgrensninger: Avgrensninger = {
@@ -17,7 +17,7 @@ export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Valida
     const termindato = moment(dato);
 
     return [
-        valueIsDefinedRule(dato, getMessage(intl, `${intlKey}.duMåOppgi`)),
+        hasValueRule(dato, getMessage(intl, `${intlKey}.duMåOppgi`)),
         {
             test: () => moment.max(termindato, date21DaysAgo) === termindato,
             failText: getMessage(intl, `${intlKey}.forTidlig`)

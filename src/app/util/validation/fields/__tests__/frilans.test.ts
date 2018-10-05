@@ -1,25 +1,23 @@
-import { getFødselsdatoRegler } from '../fødselsdato';
-import { InjectedIntl } from 'react-intl';
+import * as commonRules from './../common';
 import * as getMessage from 'common/util/i18nUtils';
 import { today } from '../../values';
-import * as commonRules from './../common';
+import { getFrilansOppstartRules } from '../frilans';
+import { InjectedIntl } from 'react-intl';
 const intl = {} as InjectedIntl;
 
 const todaysDate = today.toDate();
 const someString = '';
 
-describe('Fødselsdato validation', () => {
+describe('Frilans oppstartsdato validation', () => {
     beforeEach(() => {
         (getMessage.default as any) = jest.fn(() => someString);
         (commonRules as any).hasValueRule = jest.fn();
         (commonRules as any).dateIsNotInFutureRule = jest.fn();
-        (commonRules as any).dateIs3YearsAgoOrLater = jest.fn();
     });
 
     it('should call correct validators with given date and string', () => {
-        getFødselsdatoRegler(todaysDate, intl);
+        getFrilansOppstartRules(todaysDate, intl);
         expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
         expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
-        expect(commonRules.dateIs3YearsAgoOrLater).toHaveBeenCalledWith(todaysDate, expect.any(String));
     });
 });

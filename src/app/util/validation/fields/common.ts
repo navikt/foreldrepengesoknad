@@ -4,7 +4,7 @@ import { date1YearAgo, date1YearAhead, date3YearsAgo, today, tomorrow } from '..
 import { Avgrensninger } from 'nav-datovelger';
 import { DateValue } from '../../../types/common';
 
-export const valueIsDefinedRule = (v: any, failText: string): Validator => ({
+export const hasValueRule = (v: any, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
     failText
 });
