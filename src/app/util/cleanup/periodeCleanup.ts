@@ -53,7 +53,8 @@ const cleanupUttak = (periode: Uttaksperiode): Uttaksperiode => {
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
         selvstendigNæringsdrivendeEllerFrilans:
             periode.gradert === true ? periode.selvstendigNæringsdrivendeEllerFrilans : undefined,
-        orgnr: periode.gradert === true ? periode.orgnr : undefined
+        orgnr: periode.gradert === true ? periode.orgnr : undefined,
+        trekkdager: periode.trekkdager
     };
     if (isForeldrepengerFørFødselUttaksperiode(periode)) {
         (uttaksperiode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin =
