@@ -1,7 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
-import { ValiderbarDato } from '../../../types/common';
+import { DateValue } from '../../../types/common';
 import getMessage from 'common/util/i18nUtils';
 import { date3YearsAgo } from '../values';
 import { dateIs3YearsAgoOrLater, dateIsNotInFutureRule, notInFutureAvgrensning, valueIsDefinedRule } from './common';
@@ -11,7 +11,7 @@ export const fødselsdatoAvgrensninger: Avgrensninger = {
     ...notInFutureAvgrensning
 };
 
-export const getFødselsdatoRegler = (fødselsdato: ValiderbarDato, intl: InjectedIntl): Validator[] => {
+export const getFødselsdatoRegler = (fødselsdato: DateValue, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.fodselsdato';
     return [
         valueIsDefinedRule(fødselsdato, getMessage(intl, `${intlKey}.duMåOppgi`)),

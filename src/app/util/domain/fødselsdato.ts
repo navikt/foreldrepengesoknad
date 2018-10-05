@@ -1,7 +1,7 @@
 import { getDateFromString } from '../dates/dates';
-import { ValiderbarDato } from '../../types/common';
+import { DateValue } from '../../types/common';
 
-const fødselsdatoerToString = (datoer: ValiderbarDato[]): string[] => {
+const fødselsdatoerToString = (datoer: DateValue[]): string[] => {
     return datoer.map((dato) => (dato !== undefined ? dato.toISOString() : ''));
 };
 
