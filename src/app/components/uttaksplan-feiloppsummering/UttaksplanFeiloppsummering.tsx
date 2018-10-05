@@ -2,19 +2,21 @@ import * as React from 'react';
 import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
 import { SummaryError } from 'common/lib/validation/types';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
-export interface Props {
+interface OwnProps {
     uttaksplanValidering: UttaksplanValideringState;
     erSynlig?: boolean;
 }
 
 type UttaksplanValideringFeil = SummaryError<ValidertPeriode>;
 
-export interface Props {}
+export type Props = OwnProps & InjectedIntlProps;
 
 class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
     render() {
-        const { uttaksplanValidering, erSynlig } = this.props;
+        const { uttaksplanValidering, erSynlig, intl } = this.props;
         if (erSynlig === false) {
             return null;
         }
@@ -26,8 +28,8 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         const feil: UttaksplanValideringFeil[] = validertePerioder.map((validertPeriode): UttaksplanValideringFeil => {
             const feilKey: string =
                 validertPeriode.valideringsfeil.length > 0
-                    ? validertPeriode.valideringsfeil[0].feilKey
-                    : 'overlappendePerioder';
+                    ? getMessage(intl, validertPeriode.valideringsfeil[0].feilKey)
+                    : getMessage(intl, 'uttaksplan.validering.periodeoverlapp');
             return {
                 name: validertPeriode.periodeId,
                 payload: validertPeriode,
@@ -45,4 +47,4 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         );
     }
 }
-export default UttaksplanFeiloppsummering;
+export default injectIntl(UttaksplanFeiloppsummering);
