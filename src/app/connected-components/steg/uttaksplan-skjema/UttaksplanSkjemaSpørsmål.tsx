@@ -11,8 +11,10 @@ export interface UttaksplanSkjemaspørsmålProps {
     harUnderspørsmål?: boolean;
 }
 
+export type UttaksplanSkjemaSpørsmålChange = (skjemadata: Partial<UttaksplanSkjemadata>) => void;
+
 interface OwnProps extends UttaksplanSkjemaspørsmålProps {
-    render: (data: Partial<UttaksplanSkjemadata>, onChange: (skjemadata: Partial<UttaksplanSkjemadata>) => void) => {};
+    render: (data: Partial<UttaksplanSkjemadata>, onChange: UttaksplanSkjemaSpørsmålChange) => {};
 }
 
 interface StateProps {
