@@ -6,7 +6,7 @@ import getMessage from 'common/util/i18nUtils';
 import InjectedIntl = ReactIntl.InjectedIntl;
 import { Tidsperiode } from 'common/types';
 import { harTidsperiodeOverlapp } from '../common/dateIntervals';
-import { dateIs1YearBeforeAtEarliest, valueIsDefinedRule } from './common';
+import { dateIs1YearBeforeAtEarliest, hasValueRule } from './common';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || today.toDate();
@@ -32,7 +32,7 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
     return [
-        valueIsDefinedRule(fom, getMessage(intl, `${intlKey}.tidligere`)),
+        hasValueRule(fom, getMessage(intl, `${intlKey}.tidligere`)),
         dateIs1YearBeforeAtEarliest(fom, getMessage(intl, `${intlKey}.tidligere`)),
         {
             test: () =>
@@ -58,7 +58,7 @@ export const getTidligereUtenlandsoppholdTildatoRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
     return [
-        valueIsDefinedRule(tom, getMessage(intl, `${intlKey}.tidligere`)),
+        hasValueRule(tom, getMessage(intl, `${intlKey}.tidligere`)),
         dateIs1YearBeforeAtEarliest(tom, getMessage(intl, `${intlKey}.tidligere`)),
         {
             test: () =>

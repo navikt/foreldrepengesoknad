@@ -2,7 +2,7 @@ import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { valueIsDefinedRule } from './common';
+import { hasValueRule } from './common';
 
 const isStillingsprosentMax100Percent = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
@@ -23,7 +23,7 @@ const isStillingsprosentAbove0 = (stillingsprosent: string): boolean => {
 export const getStillingsprosentRegler = (stillingsprosent: string, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
-        valueIsDefinedRule(stillingsprosent, getMessage(intl, `${intlKey}.required`)),
+        hasValueRule(stillingsprosent, getMessage(intl, `${intlKey}.required`)),
         {
             test: () => getFloatFromString(stillingsprosent) !== undefined,
             failText: getMessage(intl, `${intlKey}.ugyldigTall`)

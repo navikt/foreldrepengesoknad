@@ -6,7 +6,7 @@ import { InjectedIntl } from 'react-intl';
 import * as moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { harTidsperiodeOverlapp } from '../common/dateIntervals';
-import { dateIs1YearAheadAtLatest, valueIsDefinedRule } from './common';
+import { dateIs1YearAheadAtLatest, hasValueRule } from './common';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || date1YearAhead.toDate();
@@ -35,7 +35,7 @@ export const getSenereUtenlandsoppholdFradatoRegler = (
     const tildatoM = moment(tom);
 
     return [
-        valueIsDefinedRule(fom, getMessage(intl, `${intlKey}.senere`)),
+        hasValueRule(fom, getMessage(intl, `${intlKey}.senere`)),
         dateIs1YearAheadAtLatest(fom, getMessage(intl, `${intlKey}.senere`)),
         {
             test: () => (tom ? fradatoM.startOf('day').isSameOrBefore(tildatoM) : true),
@@ -59,7 +59,7 @@ export const getSenereUtenlandsoppholdTildatoRegler = (
     const sluttM = moment(fom);
 
     return [
-        valueIsDefinedRule(tom, getMessage(intl, `${intlKey}.senere`)),
+        hasValueRule(tom, getMessage(intl, `${intlKey}.senere`)),
         dateIs1YearAheadAtLatest(tom, getMessage(intl, `${intlKey}.senere`)),
         {
             test: () => (tom ? sluttM.endOf('day').isSameOrAfter(startM) : true),
