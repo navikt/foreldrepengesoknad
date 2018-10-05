@@ -16,7 +16,7 @@ import { Uttaksdagen } from './Uttaksdagen';
  * @param familiehendelsedato
  * @param permisjonsregler
  */
-export function getPermisjonStartdato(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Date {
+export function getDefaultPermisjonStartdato(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Date {
     return Uttaksdagen(
         familiehendelsedato // Siste uttaksdag i denne perioden er dagen før termin
     ).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);

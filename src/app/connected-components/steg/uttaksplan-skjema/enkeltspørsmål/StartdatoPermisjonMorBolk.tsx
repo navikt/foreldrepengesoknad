@@ -1,13 +1,14 @@
 import * as React from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
-import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
+import UttaksplanSkjemaSpørsmål, {
+    UttaksplanSkjemaspørsmålProps,
+    UttaksplanSkjemaSpørsmålChange
+} from '../UttaksplanSkjemaSpørsmål';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
-import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoFørTerminValidation';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { Tidsperioden } from '../../../../util/uttaksplan/Tidsperioden';
@@ -16,6 +17,8 @@ import { UttaksplanSkjemadata } from '../uttaksplanSkjemadata';
 import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
+import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
+import { Permisjonsregler } from '../../../../types/uttaksplan/permisjonsregler';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -40,16 +43,7 @@ const getVarighet = (fom: Date | undefined, tom: Date | undefined, intl: Injecte
 };
 
 class StartdatoPermisjonMorBolk extends React.Component<Props> {
-    static contextTypes = {
-        validForm: PropTypes.object
-    };
-
-    constructor(props: Props) {
-        super(props);
-    }
-
     renderContent(data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void) {
-        const validForm: ValidFormContext = this.context.validForm;
         const { barnetErFødt, familiehendelsesdato, intl } = this.props;
         const spørsmålNår = barnetErFødt
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.label')
@@ -105,9 +99,10 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         onChange={(e) => {
                             onChange({
                                 skalIkkeHaUttakFørTermin: e.target.checked,
-                                startdatoPermisjon: undefined
+                                startdatoPermisjon: e.target.checked
+                                    ? undefined
+                                    : getDefaultPermisjonStartdato(familiehendelsesdato, permisjonsregler)
                             });
-                            validForm.validateField('permisjonStartdato');
                         }}
                     />
                 </Block>
