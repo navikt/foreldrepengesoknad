@@ -2,13 +2,13 @@ import { Permisjonsregler } from '../../../types/uttaksplan/permisjonsregler';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { getTidsperiode } from '../Tidsperioden';
-import { getPermisjonStartdato } from '../permisjonUtils';
+import { getDefaultPermisjonStartdato } from '../permisjonUtils';
 
 const UTTAKSDAGER_I_UKE = 5;
 
 export function getMødrekvoteFørTermin(familiehendelsedato: Date, permisjonsregler: Permisjonsregler): Tidsperiode {
     return getTidsperiode(
-        getPermisjonStartdato(familiehendelsedato, permisjonsregler),
+        getDefaultPermisjonStartdato(familiehendelsedato, permisjonsregler),
         permisjonsregler.antallUkerForeldrepengerFørFødsel * UTTAKSDAGER_I_UKE
     );
 }
