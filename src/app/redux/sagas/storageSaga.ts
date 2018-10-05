@@ -25,14 +25,16 @@ function* saveAppState() {
 }
 
 function* applyStoredStateToApp(state: AppState) {
-    yield put(søknadActions.updateSøknad(state.søknad));
-    yield put(commonActions.setSpråk(state.common.språkkode));
-    yield put(uttaksplanValideringActions.validerUttaksplanAction());
-    yield put(
-        apiActions.updateApi({
-            isLoadingAppState: false
-        })
-    );
+    if (Object.keys(state).length !== 0) {
+        yield put(søknadActions.updateSøknad(state.søknad));
+        yield put(commonActions.setSpråk(state.common.språkkode));
+        yield put(uttaksplanValideringActions.validerUttaksplanAction());
+        yield put(
+            apiActions.updateApi({
+                isLoadingAppState: false
+            })
+        );
+    }
 }
 
 function* getAppState(action: any) {
