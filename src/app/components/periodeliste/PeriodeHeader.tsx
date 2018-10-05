@@ -22,7 +22,7 @@ import {
 } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import AriaText from 'common/components/aria/AriaText';
-import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
 
 type AdvarselType = 'advarsel' | 'feil';
 

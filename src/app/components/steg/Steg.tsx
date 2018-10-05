@@ -30,8 +30,10 @@ export interface StegProps {
     isAvailable?: boolean;
     nesteStegRoute?: StegID;
     previousStegRoute?: StegID;
-    onSubmit?: (event: FormSubmitEvent) => void;
+    errorSummaryRenderer?: () => React.ReactNode;
+    onSubmit?: (event?: FormSubmitEvent) => void;
     preSubmit?: () => void;
+    requestNavigateToNextStep?: () => boolean;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
@@ -55,6 +57,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleFortsett = this.handleFortsett.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
@@ -65,15 +68,24 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
-    handleOnSubmit(event: FormSubmitEvent): void {
-        const { onSubmit, dispatch, preSubmit } = this.props;
+    handleOnSubmit(event?: FormSubmitEvent) {
+        const { onSubmit, dispatch, preSubmit, requestNavigateToNextStep } = this.props;
         if (onSubmit) {
             onSubmit(event);
         } else {
             if (preSubmit) {
                 preSubmit();
             }
-            dispatch(apiActionCreators.storeAppState());
+            if (requestNavigateToNextStep === undefined || requestNavigateToNextStep()) {
+                dispatch(apiActionCreators.storeAppState());
+                this.navigateToNextStep();
+            }
+        }
+    }
+
+    handleFortsett() {
+        const { requestNavigateToNextStep } = this.props;
+        if (requestNavigateToNextStep === undefined || requestNavigateToNextStep()) {
             this.navigateToNextStep();
         }
     }
@@ -119,9 +131,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     renderContent() {
-        const { id, renderFortsettKnapp, fortsettKnappLabel, intl } = this.props;
+        const { id, renderFortsettKnapp, fortsettKnappLabel, errorSummaryRenderer, intl } = this.props;
         return (
             <>
+                {errorSummaryRenderer ? errorSummaryRenderer() : null}
                 <Block margin="xs">
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
@@ -135,7 +148,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {this.props.children}
                 {renderFortsettKnapp === true && (
                     <Block>
-                        <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.navigateToNextStep()}>
+                        <FortsettKnapp onClick={this.props.renderFormTag ? undefined : () => this.handleFortsett()}>
                             {fortsettKnappLabel || stegConfig[id].fortsettKnappLabel}
                         </FortsettKnapp>
                     </Block>
@@ -174,4 +187,5 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props) => props;
+
 export default injectIntl(connect(mapStateToProps)(Steg));

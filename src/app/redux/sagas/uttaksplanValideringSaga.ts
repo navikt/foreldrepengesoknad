@@ -6,13 +6,10 @@ import {
     setValidertePerioder
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { Periode } from '../../types/uttaksplan/periodetyper';
-import {
-    UttaksplanValideringActionKeys,
-    ValidertPeriode
-} from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { Periodene } from '../../util/uttaksplan/Periodene';
-import { Periodevalidering } from '../reducers/uttaksplanValideringReducer';
+import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValideringReducer';
 
 const stateSelector = (state: AppState) => state;
 
@@ -20,6 +17,7 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     const { søker, annenForelder } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
     return {
+        periodeId: periode.id,
         valideringsfeil: validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer) || [],
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };

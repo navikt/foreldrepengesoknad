@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import lenker from '../../../util/routing/lenker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
@@ -22,7 +23,7 @@ import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
-import lenker from '../../../util/routing/lenker';
+import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 
 interface StateProps {
     stegProps: StegProps;
@@ -112,7 +113,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         return (
             <Steg
                 {...this.props.stegProps}
-                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
+                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}
+                errorSummaryRenderer={() => (
+                    <UttaksplanFeiloppsummering uttaksplanValidering={uttaksplanValidering} erSynlig={true} />
+                )}>
                 {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (
                     <ApplicationSpinner />
                 ) : (
@@ -152,8 +156,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
-        uttaksplanValidering,
         søknad,
+        uttaksplanValidering,
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const { søkerinfo, history } = props;
@@ -165,7 +169,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && uttaksplanValidering.erGyldig,
+        requestNavigateToNextStep: () => {
+            return uttaksplanValidering.erGyldig;
+        },
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
