@@ -1,13 +1,13 @@
 import { getFødselsdatoRegler } from '../fødselsdato';
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { ValiderbarDato } from '../../../../types/common';
+import { DateValue } from '../../../../types/common';
 import { date3YearsAgo, dateMoreThan3YearsAgo, today, tomorrow } from '../../values';
 
 const intl = {} as InjectedIntl;
-const callMåOppgis = (fødselsdato: ValiderbarDato) => getFødselsdatoRegler(fødselsdato, intl)[0].test();
-const callIdagEllerTidligere = (fødselsdato: ValiderbarDato) => getFødselsdatoRegler(fødselsdato, intl)[1].test();
-const callIkkeMerEnn3ÅrSiden = (fødselsdato: ValiderbarDato) => getFødselsdatoRegler(fødselsdato, intl)[2].test();
+const callMåOppgis = (fødselsdato: DateValue) => getFødselsdatoRegler(fødselsdato, intl)[0].test();
+const callIdagEllerTidligere = (fødselsdato: DateValue) => getFødselsdatoRegler(fødselsdato, intl)[1].test();
+const callIkkeMerEnn3ÅrSiden = (fødselsdato: DateValue) => getFødselsdatoRegler(fødselsdato, intl)[2].test();
 
 describe('Fødselsdato validation', () => {
     beforeEach(() => {

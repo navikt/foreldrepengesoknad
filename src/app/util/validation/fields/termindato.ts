@@ -5,14 +5,14 @@ import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { date21DaysAgo, fjortenUkerPluss3, fjortenUkerPluss3Number, today } from '../values';
 import { valueIsDefinedRule } from './common';
-import { ValiderbarDato } from '../../../types/common';
+import { DateValue } from '../../../types/common';
 
 export const termindatoAvgrensninger: Avgrensninger = {
     minDato: date21DaysAgo.toDate(),
     maksDato: fjortenUkerPluss3.toDate()
 };
 
-export const getTermindatoRegler = (dato: ValiderbarDato, intl: InjectedIntl): Validator[] => {
+export const getTermindatoRegler = (dato: DateValue, intl: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.termindato';
     const termindato = moment(dato);
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
-import { ValiderbarDato } from '../types/common';
+import { DateValue } from '../types/common';
 import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fields/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Avgrensninger } from 'nav-datovelger';
 
 export interface FødselsdatoerSpørsmålProps {
-    fødselsdatoer: ValiderbarDato[];
-    onChange: (fødselsdatoer: ValiderbarDato[]) => void;
+    fødselsdatoer: DateValue[];
+    onChange: (fødselsdatoer: DateValue[]) => void;
     collapsed?: boolean;
     fødselsdatoAvgrensninger?: Avgrensninger;
 }
@@ -26,7 +26,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(this);
     }
 
-    onDatoChange(dato: ValiderbarDato, idx: number) {
+    onDatoChange(dato: DateValue, idx: number) {
         const datoer = [...this.props.fødselsdatoer];
         datoer[idx] = dato;
         this.props.onChange(datoer);
@@ -58,7 +58,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         const { fødselsdatoer, intl } = this.props;
         return (
             <React.Fragment>
-                {fødselsdatoer.map((dato: ValiderbarDato, idx: number) => (
+                {fødselsdatoer.map((dato: DateValue, idx: number) => (
                     <div className="blokk-m" key={getKey(idx)}>
                         <DatoInput
                             id={getKey(idx)}
