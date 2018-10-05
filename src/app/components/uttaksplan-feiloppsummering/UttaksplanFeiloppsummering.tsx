@@ -10,32 +10,39 @@ export interface Props {
 
 type UttaksplanValideringFeil = SummaryError<ValidertPeriode>;
 
-const UttaksplanFeiloppsummering: React.StatelessComponent<Props> = ({ uttaksplanValidering, erSynlig }) => {
-    const { periodevalidering } = uttaksplanValidering;
-    const validertePerioder: ValidertPeriode[] = Object.keys(periodevalidering)
-        .map((key) => periodevalidering[key])
-        .filter((p) => p.valideringsfeil.length > 0 || p.overlappendePerioder.length > 0);
+export interface Props {}
 
-    const feil: UttaksplanValideringFeil[] = validertePerioder.map((validertPeriode): UttaksplanValideringFeil => {
-        const feilKey: string =
-            validertPeriode.valideringsfeil.length > 0
-                ? validertPeriode.valideringsfeil[0].feilKey
-                : 'overlappendePerioder';
-        return {
-            name: validertPeriode.periodeId,
-            payload: validertPeriode,
-            text: feilKey
-        };
-    });
+class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
+    render() {
+        const { uttaksplanValidering, erSynlig } = this.props;
+        if (erSynlig === false) {
+            return null;
+        }
+        const { periodevalidering } = uttaksplanValidering;
+        const validertePerioder: ValidertPeriode[] = Object.keys(periodevalidering)
+            .map((key) => periodevalidering[key])
+            .filter((p) => p.valideringsfeil.length > 0 || p.overlappendePerioder.length > 0);
 
-    return (
-        <Feiloppsummering
-            show={erSynlig === true && uttaksplanValidering.erGyldig === false}
-            title="Det er en feil her ja"
-            onErrorClick={(error: UttaksplanValideringFeil) => console.log(error)}
-            errors={feil}
-        />
-    );
-};
+        const feil: UttaksplanValideringFeil[] = validertePerioder.map((validertPeriode): UttaksplanValideringFeil => {
+            const feilKey: string =
+                validertPeriode.valideringsfeil.length > 0
+                    ? validertPeriode.valideringsfeil[0].feilKey
+                    : 'overlappendePerioder';
+            return {
+                name: validertPeriode.periodeId,
+                payload: validertPeriode,
+                text: feilKey
+            };
+        });
 
+        return (
+            <Feiloppsummering
+                show={erSynlig === true && uttaksplanValidering.erGyldig === false}
+                title="Det er en feil her ja"
+                onErrorClick={(error: UttaksplanValideringFeil) => console.log(error)}
+                errors={feil}
+            />
+        );
+    }
+}
 export default UttaksplanFeiloppsummering;
