@@ -20,6 +20,7 @@ const cls = (show: boolean, className?: string) =>
 class Feiloppsummering extends React.Component<Props, {}> {
     element: HTMLElement | null;
     componentDidMount() {
+        console.log(this.element);
         if (this.element) {
             this.element.focus();
         }
