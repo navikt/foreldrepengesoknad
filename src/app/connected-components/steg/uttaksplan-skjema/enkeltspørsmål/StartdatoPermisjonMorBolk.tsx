@@ -4,10 +4,7 @@ import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
-import UttaksplanSkjemaSpørsmål, {
-    UttaksplanSkjemaspørsmålProps,
-    UttaksplanSkjemaSpørsmålChange
-} from '../UttaksplanSkjemaSpørsmål';
+import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoFørTerminValidation';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
@@ -18,7 +15,6 @@ import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregle
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
-import { Permisjonsregler } from '../../../../types/uttaksplan/permisjonsregler';
 
 interface OwnProps {
     barnetErFødt: boolean;
