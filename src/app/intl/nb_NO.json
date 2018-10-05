@@ -592,5 +592,6 @@
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Informasjon mangler om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Tidsperioden er ikke gyldig",
     "uttaksplan.validering.datoErIkkeUttaksdag": "Dato må være en ukedag",
+    "uttaksplan.validering.periodeoverlapp": "Perioden overlapper en annen periode",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

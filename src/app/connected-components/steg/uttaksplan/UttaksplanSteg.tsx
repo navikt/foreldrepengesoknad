@@ -69,7 +69,7 @@ const getVeilederInfoText = (søknad: Søknad) => {
 };
 
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
-    feilOppsummering: UttaksplanFeiloppsummering | null;
+    feilOppsummering: React.Component | null;
 
     constructor(props: Props) {
         super(props);
