@@ -74,10 +74,10 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
                 <Block margin="none" visible={!this.state.formIsOpen}>
                     <Knapperad>
                         <Knapp onClick={this.openNyUtsettelsesperiodeForm} htmlType="button">
-                            Utsett ditt uttak
+                            Legg til opphold
                         </Knapp>
                         <Knapp onClick={this.openNyUttaksperiodeForm} htmlType="button">
-                            Legg til periode med uttak
+                            Legg til periode
                         </Knapp>
                     </Knapperad>
                 </Block>

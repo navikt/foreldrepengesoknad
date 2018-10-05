@@ -359,9 +359,6 @@
     "uttaksplan.skjema.informasjonTilFarMedmor":
         "Dere må velge den samme lengden på perioden med foreldrepenger. Du må oppgi den samme lengden som {navn} valgte i sin søknad.",
 
-    "uttaksplan.skjema.informasjonTilFarMedmor":
-        "Dere må velge den samme lengden på perioden med foreldrepenger. Du må oppgi den samme lengden som {navn} valgte i sin søknad.",
-
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Født den {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",

@@ -43,13 +43,13 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
             <article className={BEM.className}>
                 <header className={BEM.element('header')}>
                     <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                        Din uttaksplan
+                        Din plan
                     </Systemtittel>
                     {onRequestReset &&
                         uttaksplan.length > 0 && (
                             <div className={BEM.element('header__reset')}>
                                 <LinkButton className={BEM.element('resetLink')} onClick={() => onRequestReset()}>
-                                    Nullstill
+                                    Slett plan
                                 </LinkButton>
                             </div>
                         )}
