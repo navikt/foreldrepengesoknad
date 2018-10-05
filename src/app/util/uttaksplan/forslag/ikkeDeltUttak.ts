@@ -26,8 +26,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         }
     ];
     return perioder;
@@ -46,8 +45,7 @@ const ikkeDeltUttakAdopsjonMor = (
             forelder: Forelder.MOR,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         }
     ];
     return perioder;
@@ -89,8 +87,7 @@ const ikkeDeltUttakFødselMor = (
                 fom: startdatoFpFørFødsel,
                 tom: Uttaksdagen(famDato).forrige()
             },
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         };
 
         perioder.push(periodeFørFødsel);
@@ -101,8 +98,7 @@ const ikkeDeltUttakFødselMor = (
             forelder: Forelder.MOR,
             konto: foreldrePengerFørFødselKonto.konto,
             tidsperiode: {} as any,
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         };
 
         perioder.push(periodeFørFødsel);
@@ -115,8 +111,7 @@ const ikkeDeltUttakFødselMor = (
             forelder: Forelder.MOR,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         };
 
         perioder.push(foreldrepengerPeriode);
@@ -139,8 +134,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager),
-            vedlegg: [],
-            ønskerSamtidigUttak: false
+            vedlegg: []
         }
     ];
 
