@@ -67,6 +67,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     konto: StønadskontoType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
+    trekkdager?: number;
     ønskerSamtidigUttak?: boolean;
     gradert?: boolean;
     stillingsprosent?: string;
@@ -118,6 +119,10 @@ export enum MorsAktivitet {
     'TrengerHjelp' = 'TRENGER_HJELP',
     'Innlagt' = 'INNLAGT',
     'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING'
+}
+
+export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
+    return periode.type === Periodetype.Uttak;
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(

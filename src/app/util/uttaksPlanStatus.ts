@@ -1,4 +1,10 @@
-import { TilgjengeligStønadskonto, Periode, Uttaksperiode, StønadskontoType } from '../types/uttaksplan/periodetyper';
+import {
+    TilgjengeligStønadskonto,
+    Periode,
+    Uttaksperiode,
+    StønadskontoType,
+    isUttaksperiode
+} from '../types/uttaksplan/periodetyper';
 import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
@@ -22,7 +28,14 @@ export const beregnGjenståendeUttaksdager = (
 
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
-                dagerGjenstående = dagerGjenstående - Perioden(p).getAntallUttaksdager();
+                if (isUttaksperiode(p)) {
+                    dagerGjenstående =
+                        p.trekkdager !== undefined
+                            ? dagerGjenstående - p.trekkdager
+                            : dagerGjenstående - Perioden(p).getAntallUttaksdager();
+                } else {
+                    dagerGjenstående = dagerGjenstående - Perioden(p).getAntallUttaksdager();
+                }
             });
         }
 
