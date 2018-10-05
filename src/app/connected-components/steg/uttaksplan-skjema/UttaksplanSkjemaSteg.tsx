@@ -20,7 +20,7 @@ import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
 import { apiActionCreators } from '../../../redux/actions';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import { NavnPåForeldre } from 'common/types';
-import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
+// import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 interface StateProps {
     stegProps: StegProps;
@@ -85,17 +85,17 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
     const scenario = getUttaksplanSkjemaScenario(state.søknad);
     const søknad = { ...state.søknad };
-    const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
-    if (
-        scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
-        skjemadata.skalIkkeHaUttakFørTermin !== true &&
-        skjemadata.startdatoPermisjon === undefined
-    ) {
-        const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
-            permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
-        );
-        søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
-    }
+    // const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
+    // if (
+    //     scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
+    //     skjemadata.skalIkkeHaUttakFørTermin !== true &&
+    //     skjemadata.startdatoPermisjon === undefined
+    // ) {
+    //     const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
+    //         permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+    //     );
+    //     søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
+    // }
     return {
         stegProps,
         søknad,
