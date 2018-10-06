@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Validator } from '../types/index';
+import { Validator, ValidationResult } from '../types/index';
 import PT from 'prop-types';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { runValidators } from 'common/lib/validation/utils/runValidFormValidation';
 
 type ValiderEvent = (evt: any) => void;
 
@@ -110,37 +111,29 @@ class ValiderbartSkjemaelement extends React.Component<Props, ValiderbartSkjemae
         return result;
     }
 
-    runValidation() {
+    runValidation(): ValidationResult {
         if (!this.props.validators || !this.props.validators.length) {
             this.setState({
                 valid: true
             });
             return {
-                valid: true
+                valid: true,
+                name: this.props.name,
+                tests: []
             };
         }
 
-        let valid = true;
-        const testsCopy = this.props.validators.map((validator) => {
-            const validatorResult = {
-                verdict: validator.test(this.element),
-                failText: validator.failText
-            };
-
-            if (!validatorResult.verdict) {
-                valid = false;
-            }
-            return validatorResult;
-        });
+        const results = runValidators(this.props.validators, this.props.name);
+        const tests = results.tests.slice();
+        const valid = results.valid;
 
         this.setState({
-            tests: testsCopy.slice(),
+            tests,
             valid
         });
-
         return {
             name: this.props.name,
-            tests: testsCopy.slice(),
+            tests,
             valid
         };
     }

@@ -26,7 +26,6 @@ const bem = BEMHelper('datoInput');
 class DatoInput extends React.Component<Props, {}> {
     render() {
         const { id, label, postfix, feil, intl, onChange, ...rest } = this.props;
-
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
                 <div className={bem.className}>
