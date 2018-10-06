@@ -8,10 +8,10 @@ export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
 
 export interface ValiderbarFormProps {
     className?: string;
-    onSubmit?: (evt: FormSubmitEvent) => void;
     summaryTitle?: string;
     noSummary?: boolean;
     validateBeforeSubmit?: boolean;
+    onSubmit?: (evt: FormSubmitEvent) => void;
     onValidationResult?: (result: SummaryError[]) => void;
     runValidationOnRegister?: boolean;
 }
@@ -197,24 +197,15 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
     }
 
     render() {
-        const {
-            onSubmit,
-            noSummary = false,
-            summaryTitle,
-            validateBeforeSubmit,
-            onValidationResult,
-            runValidationOnRegister,
-            ...other
-        } = this.props;
+        const { noSummary = false, summaryTitle } = this.props;
         let summaryBox;
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (
                 <Feiloppsummering title={summaryTitle || ''} show={true} errors={this.mapResultsToErrorSummary()} />
             );
         }
-
         return (
-            <form onSubmit={this.onSubmit} {...other}>
+            <form onSubmit={this.onSubmit}>
                 {summaryBox}
                 {this.props.children}
             </form>

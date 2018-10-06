@@ -9,12 +9,12 @@ import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValid
 
 const erUtfyltTest = (dato: Date | undefined, skalIkkeHaUttak: boolean): Validator => ({
     test: () => (skalIkkeHaUttak ? true : dato !== undefined),
-    failText: { intlKey: `uttaksplan.validering.${PeriodeValideringErrorKey.PÅKREVD_VERDI_MANGLER}` }
+    failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.PÅKREVD_VERDI_MANGLER}` }
 });
 
 const erUttaksdagTest = (dato: Date | undefined) => ({
     test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
-    failText: { intlKey: `uttaksplan.validering.${PeriodeValideringErrorKey.DATO_IKKE_UTTAKSDAG}` }
+    failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.DATO_IKKE_UTTAKSDAG}` }
 });
 
 export const getUttakTidsperiodeValidatorer = (
