@@ -3,6 +3,8 @@ import { Holiday } from 'date-holidays';
 import { Tidsperiode } from 'common/types';
 import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
+import { InjectedIntl } from 'react-intl';
+import { formaterDatoUtenDag } from 'common/util/datoUtils';
 
 /**
  * Wrapper en Tidsperiode med uttaksdager-funksjonalitet
@@ -16,7 +18,8 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     getAntallUttaksdager: (taBortFridager?: boolean) => getAntallUttaksdagerITidsperiode(tidsperiode, taBortFridager),
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => flyttTidsperiode(tidsperiode, fom),
-    setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager)
+    setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager),
+    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl)
 });
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
@@ -140,4 +143,8 @@ function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: Tidsperiode, tidsperi
  */
 function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean {
     return moment(tidsperiode1.fom).isAfter(tidsperiode2.tom) || moment(tidsperiode1.tom).isBefore(tidsperiode2.fom);
+}
+
+function tidsperiodeToString(tidsperiode: Tidsperiode, intl: InjectedIntl) {
+    return `${formaterDatoUtenDag(tidsperiode.fom)} - ${formaterDatoUtenDag(tidsperiode.tom)}`;
 }

@@ -20,6 +20,8 @@ export interface Props {
 
 const bem = BEMHelper('periodeliste');
 
+export const getPeriodelisteItemId = (periodeId: string): string => `periode-${periodeId}`;
+
 const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanValidering, navnPåForeldre }) => (
     <div className={bem.className}>
         {perioder.map((p) => (
@@ -28,6 +30,7 @@ const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanVal
                     periode={p}
                     render={(onChange, onRequestDelete) => (
                         <ToggleItem
+                            id={getPeriodelisteItemId(p.id)}
                             expandedHeaderClassName="periodeheader--isOpen"
                             renderHeader={() => (
                                 <PeriodeHeader
