@@ -115,17 +115,18 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                                 Info. kan ikke søke før etter at barnet er født, unntak ved sykdom
                             </Veilederinfo>
                         )}
-                    {vis.ufødtBarnPart && (
-                        <UfødtBarnPartial
-                            dispatch={dispatch}
-                            barn={barn as UfødtBarn}
-                            annenForelder={annenForelder}
-                            søker={søker}
-                            erFarEllerMedmor={erFarEllerMedmor(søker.rolle)}
-                            terminbekreftelse={terminbekreftelse || []}
-                            vis={vis.ufødt}
-                        />
-                    )}
+                    {vis.ufødtBarnPart &&
+                        !erFarEllerMedmor(søker.rolle) && (
+                            <UfødtBarnPartial
+                                dispatch={dispatch}
+                                barn={barn as UfødtBarn}
+                                annenForelder={annenForelder}
+                                søker={søker}
+                                erFarEllerMedmor={erFarEllerMedmor(søker.rolle)}
+                                terminbekreftelse={terminbekreftelse || []}
+                                vis={vis.ufødt}
+                            />
+                        )}
                 </Block>
             </Steg>
         );
