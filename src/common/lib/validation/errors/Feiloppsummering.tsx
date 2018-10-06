@@ -9,7 +9,6 @@ interface Props {
     show: boolean;
     className?: string;
     errors: SummaryError[];
-    onErrorClick?: (error: SummaryError) => void;
 }
 
 const cls = (show: boolean, className?: string) =>
@@ -25,16 +24,13 @@ class Feiloppsummering extends React.Component<Props, {}> {
         }
     }
     render() {
-        const { className, show, errors, title, onErrorClick, ...other } = this.props;
+        const { className, show, errors, title, ...other } = this.props;
 
         const listItems = errors.map((error) => {
-            const link = onErrorClick === undefined ? '#' + error.name : undefined;
+            const link = '#' + error.name;
             return (
                 <li key={error.name}>
-                    <a
-                        className="feil-oppsummering-boks__lenke"
-                        href={link}
-                        onClick={onErrorClick ? () => onErrorClick(error) : undefined}>
+                    <a className="feil-oppsummering-boks__lenke" href={link}>
                         {error.text}
                     </a>
                 </li>

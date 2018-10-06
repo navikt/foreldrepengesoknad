@@ -6,6 +6,7 @@ import ToggleArrow from './ToggleArrow';
 import './toggleItem.less';
 
 export interface Props {
+    id?: string;
     expandedHeaderClassName?: string;
     expandedContentClassName?: string;
     renderHeader: () => JSX.Element;
@@ -32,7 +33,7 @@ class CollapsableItem extends React.Component<Props, State> {
         this.setState({ expanded: !this.state.expanded });
     }
     render() {
-        const { renderContent, renderHeader, expandedHeaderClassName, expandedContentClassName } = this.props;
+        const { id, renderContent, renderHeader, expandedHeaderClassName, expandedContentClassName } = this.props;
         const { expanded } = this.state;
 
         return (
@@ -42,6 +43,7 @@ class CollapsableItem extends React.Component<Props, State> {
                     expanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
                 )}>
                 <a
+                    id={id}
                     href="#"
                     className={BEM.element('header')}
                     onClick={this.toggleExpanded}

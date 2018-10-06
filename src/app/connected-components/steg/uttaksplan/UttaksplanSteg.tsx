@@ -25,6 +25,7 @@ import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanVal
 import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
+import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
 
 interface StateProps {
     stegProps: StegProps;
@@ -78,6 +79,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
+        this.handleOnPeriodeErrorClick = this.handleOnPeriodeErrorClick.bind(this);
 
         this.state = {
             bekreftDialogSynlig: false,
@@ -106,6 +108,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
     }
 
+    handleOnPeriodeErrorClick(periodeId: string) {
+        const el = document.getElementById(getPeriodelisteItemId(periodeId));
+        if (el) {
+            el.focus();
+        }
+    }
     render() {
         const {
             søknad,
@@ -142,6 +150,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         ref={(c) => (this.feilOppsummering = c)}
                         uttaksplanValidering={uttaksplanValidering}
                         erSynlig={visFeiloppsummering}
+                        uttaksplan={søknad.uttaksplan}
+                        onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
                 )}>
                 {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (

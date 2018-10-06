@@ -14,12 +14,7 @@ import UtsettelseIkon from '../uttaksplan-ikon/UtsettelseIkon';
 
 import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
-import {
-    getStønadskontoNavn,
-    getPeriodeForelderNavn,
-    getOppholdskontoNavn,
-    getForelderNavn
-} from '../../util/uttaksplan';
+import { getPeriodeForelderNavn, getPeriodeTittel } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
 import AriaText from 'common/components/aria/AriaText';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -47,23 +42,6 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
         return UttaksplanIkonKeys.advarsel;
     }
     return UttaksplanIkonKeys.advarsel; // Feilikon mangler
-};
-
-const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
-    switch (periode.type) {
-        case Periodetype.Uttak:
-        case Periodetype.Overføring:
-            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
-        case Periodetype.Utsettelse:
-            if (periode.årsak) {
-                return getMessage(intl, `periodeliste.utsettelsesårsak`, {
-                    årsak: getMessage(intl, `utsettelsesårsak.${periode.årsak}`)
-                });
-            }
-            return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
-        case Periodetype.Opphold:
-            return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
-    }
 };
 
 const renderDagMnd = (dato: Date): JSX.Element =>
