@@ -556,6 +556,7 @@
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodeliste.overlappendePeriode": "Tidsperioden er i konflikt med andre perioder",
+    "periodeliste.hullMellomPerioder": "{dager} mangler uttak eller utsettelse",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
@@ -594,5 +595,6 @@
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Tidsperioden er ikke gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Dato må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
+    "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

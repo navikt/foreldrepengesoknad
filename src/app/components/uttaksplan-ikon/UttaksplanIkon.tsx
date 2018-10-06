@@ -4,7 +4,7 @@ import ArbeidIkon from './ikoner/ArbeidIkon';
 import SykdomIkon from './ikoner/SykdomIkon';
 import UttakIkon from './ikoner/UttakIkon';
 import TerminIkon from './ikoner/TerminIkon';
-import AdvarselIkon from './ikoner/AdvarselIkon';
+import AdvarselIkonÅpen from './ikoner/AdvarselIkonÅpen';
 
 export enum UttaksplanIkonKeys {
     'arbeid' = 'arbeid',
@@ -32,7 +32,7 @@ const UttaksplanIkon: React.StatelessComponent<Props> = ({ ikon, title }) => {
         case 'termin':
             return <TerminIkon title={title} />;
         case 'advarsel':
-            return <AdvarselIkon title={title} />;
+            return <AdvarselIkonÅpen title={title} />;
         default:
             return <UttakIkon title={title} />;
     }
