@@ -19,7 +19,7 @@ export interface ValiderbartSkjemaelementProps {
 }
 
 export interface Props extends ValiderbartSkjemaelementProps {
-    render: (onChange: ValiderEvent, onBlur: ValiderEvent, feil: Feil | undefined) => {};
+    render: (onChange: ValiderEvent, onBlur: ValiderEvent, feil: Feil | undefined) => JSX.Element;
 }
 
 export interface ValiderbartSkjemaelementState {
