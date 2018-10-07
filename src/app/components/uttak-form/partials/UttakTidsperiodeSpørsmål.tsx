@@ -18,6 +18,7 @@ export interface Props {
     periode: UttakFormPeriodeType;
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
+    ugyldigeTidsperioder: Tidsperiode[];
     feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
@@ -40,6 +41,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     periode,
     familiehendelsesdato,
     tidsperiode,
+    ugyldigeTidsperioder,
     feil,
     intl
 }) => {
@@ -51,8 +53,20 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
             datoAvgrensninger={
                 periode.konto
-                    ? getDatoavgrensningerForStønadskonto(periode.konto, familiehendelsesdato, getPermisjonsregler())
-                    : undefined
+                    ? getDatoavgrensningerForStønadskonto(
+                          periode.konto,
+                          familiehendelsesdato,
+                          getPermisjonsregler(),
+                          ugyldigeTidsperioder
+                      )
+                    : {
+                          fra: {
+                              ugyldigeTidsperioder
+                          },
+                          til: {
+                              ugyldigeTidsperioder
+                          }
+                      }
             }
             datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode)}
             visVarighet={true}
