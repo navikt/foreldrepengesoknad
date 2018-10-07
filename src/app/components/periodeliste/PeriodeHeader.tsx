@@ -128,12 +128,10 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             </div>
             <div className={BEM.element('beskrivelse')}>
                 <Element tag="h1">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
-                {visDatoer && (
-                    <Normaltekst>
-                        {varighetString}
-                        <em className={BEM.element('hvem')}> - {foreldernavn}</em>
-                    </Normaltekst>
-                )}
+                <Normaltekst>
+                    {varighetString}
+                    <em className={BEM.element('hvem')}> - {foreldernavn}</em>
+                </Normaltekst>
             </div>
             {advarsel && (
                 <div className={BEM.element('advarsel')}>
