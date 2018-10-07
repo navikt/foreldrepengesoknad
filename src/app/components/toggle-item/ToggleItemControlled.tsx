@@ -6,20 +6,18 @@ import ToggleArrow from './ToggleArrow';
 import './toggleItem.less';
 
 export interface Props {
-    id?: string;
+    id: string;
+    isExpanded: boolean;
     expandedHeaderClassName?: string;
     expandedContentClassName?: string;
+    onToggle: () => void;
     renderHeader: () => JSX.Element;
     renderContent: () => JSX.Element;
 }
 
-interface State {
-    expanded: boolean;
-}
-
 const BEM = BEMHelper('toggleItem');
 
-class ToggleItem extends React.Component<Props, State> {
+class ToggleItemControlled extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.toggleExpanded = this.toggleExpanded.bind(this);
@@ -30,17 +28,23 @@ class ToggleItem extends React.Component<Props, State> {
     toggleExpanded(evt: React.MouseEvent<HTMLElement>) {
         evt.stopPropagation();
         evt.preventDefault();
-        this.setState({ expanded: !this.state.expanded });
+        this.props.onToggle();
     }
     render() {
-        const { id, renderContent, renderHeader, expandedHeaderClassName, expandedContentClassName } = this.props;
-        const { expanded } = this.state;
+        const {
+            id,
+            isExpanded,
+            renderContent,
+            renderHeader,
+            expandedHeaderClassName,
+            expandedContentClassName
+        } = this.props;
 
         return (
             <div
                 className={classnames(
                     BEM.className,
-                    expanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
+                    isExpanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
                 )}>
                 <a
                     id={id}
@@ -48,13 +52,13 @@ class ToggleItem extends React.Component<Props, State> {
                     className={BEM.element('header')}
                     onClick={this.toggleExpanded}
                     tabIndex={0}
-                    aria-expanded={expanded}>
+                    aria-expanded={isExpanded}>
                     <div className={BEM.element('header__content')}>{renderHeader()}</div>
                     <div className={BEM.element('header__arrow')}>
-                        <ToggleArrow expanded={expanded} />
+                        <ToggleArrow expanded={isExpanded} />
                     </div>
                 </a>
-                {expanded ? (
+                {isExpanded ? (
                     <div className={classnames(BEM.element('content'), expandedContentClassName)}>
                         {renderContent()}
                     </div>
@@ -66,4 +70,4 @@ class ToggleItem extends React.Component<Props, State> {
     }
 }
 
-export default ToggleItem;
+export default ToggleItemControlled;
