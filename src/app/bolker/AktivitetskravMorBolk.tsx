@@ -39,7 +39,7 @@ class AktivitetskravMorBolk extends React.Component<Props> {
                 <Block margin="s" visible={morsAktivitetIPerioden !== undefined}>
                     <VedleggSpørsmål
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                        skjemanummer={getMorsAktivitetSkjemanummer()}
+                        skjemanummer={getMorsAktivitetSkjemanummer(this.props.morsAktivitetIPerioden)}
                         vedlegg={vedlegg}
                         onChange={(v) => onChange({ vedlegg: v })}
                     />
