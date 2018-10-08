@@ -38,7 +38,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: () => true,
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.kanIkkeOppgis),
-        condition: (props) => props.annenForelderErRegistrert === false
+        condition: (props) => props.annenForelderErRegistrert === false && !props.søkerErFarEllerMedmor
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fnr),
