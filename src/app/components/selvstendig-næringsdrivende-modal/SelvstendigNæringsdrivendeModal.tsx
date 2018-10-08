@@ -22,11 +22,11 @@ import NæringsrelasjonBolk from '../../bolker/næringsrelasjon-bolk/Næringsrel
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
-import { getStillingsprosentRegler } from '../../util/validation/fields/stillingsprosent';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
+import { getStillingsprosentRegler } from '../../util/validation/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { getOrganisasjonsnummerRegler } from '../../util/validation/fields/organisasjonsnummer';
+import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
