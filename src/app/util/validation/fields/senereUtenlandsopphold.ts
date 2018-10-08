@@ -31,14 +31,16 @@ export const getSenereUtenlandsoppholdFradatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const fradatoM = moment(fom);
-    const tildatoM = moment(tom);
-
     return [
         hasValueRule(fom, getMessage(intl, `${intlKey}.senere`)),
         dateIs1YearAheadAtLatest(fom, getMessage(intl, `${intlKey}.senere`)),
         {
-            test: () => (tom ? fradatoM.startOf('day').isSameOrBefore(tildatoM) : true),
+            test: () =>
+                fom && tom
+                    ? moment(fom)
+                          .startOf('day')
+                          .isSameOrBefore(moment(tom))
+                    : true,
             failText: getMessage(intl, `${intlKey}.førTilDato`)
         },
         {
@@ -49,20 +51,22 @@ export const getSenereUtenlandsoppholdFradatoRegler = (
 };
 
 export const getSenereUtenlandsoppholdTildatoRegler = (
-    fom: Date | undefined,
     tom: Date | undefined,
+    fom: Date | undefined,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
-    const startM = moment(tom);
-    const sluttM = moment(fom);
-
     return [
         hasValueRule(tom, getMessage(intl, `${intlKey}.senere`)),
         dateIs1YearAheadAtLatest(tom, getMessage(intl, `${intlKey}.senere`)),
         {
-            test: () => (tom ? sluttM.endOf('day').isSameOrAfter(startM) : true),
+            test: () =>
+                fom && tom
+                    ? moment(tom)
+                          .endOf('day')
+                          .isSameOrAfter(moment(fom))
+                    : true,
             failText: getMessage(intl, `${intlKey}.etterFraDato`)
         },
         {
