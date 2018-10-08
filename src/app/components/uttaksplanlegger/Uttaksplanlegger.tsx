@@ -20,7 +20,6 @@ export interface Props {
     uttaksplan: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
-    barnetErFødt: boolean;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -37,7 +36,6 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
             uttaksplan,
             uttaksplanValidering,
             navnPåForeldre,
-            barnetErFødt,
             onAdd,
             onRequestReset
         } = this.props;
@@ -64,7 +62,6 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                         perioder={uttaksplan}
                         navnPåForeldre={navnPåForeldre}
                         uttaksplanValidering={uttaksplanValidering}
-                        barnetErFødt={barnetErFødt}
                     />
                 </Block>
                 <div className={BEM.element('addFormContainer')}>
