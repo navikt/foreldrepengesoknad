@@ -9,10 +9,10 @@ import {
     EndrePeriodeChangeEvent,
     EndrePeriodeRequestDeleteEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
-import { ValidertPeriode } from '../../redux/actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import UttakForm from '../uttak-form/UttakForm';
 
 import './endrePeriodeFormContent.less';
+import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
 
 export interface Props {
     periode: Periode;

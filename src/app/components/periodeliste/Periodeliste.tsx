@@ -1,21 +1,18 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import moment from 'moment';
+import classnames from 'classnames';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
-import ToggleItem from '../toggle-item/ToggleItem';
-import PeriodeHeader from './PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
 import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
-import EndrePeriodeFormContent from '../endre-periode-form-content/EndrePeriodeFormContent';
-import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 
 import './periodeliste.less';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import { getVarighetString } from 'common/util/intlUtils';
+import ToggleList from '../toggle-list/ToggleList';
+import PeriodelisteItem from './PeriodelisteItem';
+import PeriodelisteHull from './PeriodelisteHull';
 
 export interface OwnProps {
     perioder: Periode[];
@@ -23,9 +20,15 @@ export interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+interface State {
+    toggleState: {};
+}
 
-const bem = BEMHelper('periodeliste');
+type Props = OwnProps;
+
+export const periodelisteBem = BEMHelper('periodeliste');
+
+export const getPeriodelisteItemId = (periodeId: string): string => `periode-${periodeId}`;
 
 const getAntallUttaksdagerTilNestePeriode = (periode: Periode, idx: number, perioder: Periode[]): number => {
     if (idx < perioder.length - 1) {
@@ -41,57 +44,60 @@ const getAntallUttaksdagerTilNestePeriode = (periode: Periode, idx: number, peri
     return 0;
 };
 
-const Periodeliste: React.StatelessComponent<Props> = ({ perioder, uttaksplanValidering, navnPåForeldre, intl }) => (
-    <div className={bem.className}>
-        {perioder.map((p, idx) => {
-            const uttaksdagerTilNestePeriode = getAntallUttaksdagerTilNestePeriode(p, idx, perioder);
-            return (
-                <React.Fragment key={p.id}>
-                    <div className={bem.element('item')}>
-                        <EndrePeriodeFormRenderer
-                            periode={p}
-                            render={(onChange, onRequestDelete) => (
-                                <ToggleItem
-                                    expandedHeaderClassName="periodeheader--isOpen"
-                                    expandedContentClassName="blokk-s"
-                                    renderHeader={() => (
-                                        <PeriodeHeader
-                                            periode={p}
-                                            navnPåForeldre={navnPåForeldre}
-                                            validertPeriode={uttaksplanValidering.periodevalidering[p.id]}
-                                        />
-                                    )}
-                                    renderContent={() => (
-                                        <div
-                                            className={classnames(
-                                                bem.element('content'),
-                                                bem.element('content', p.type),
-                                                bem.element('content', getPeriodeFarge(p))
-                                            )}>
-                                            <EndrePeriodeFormContent
-                                                periode={p}
-                                                validertPeriode={uttaksplanValidering.periodevalidering[p.id]}
+class Periodeliste extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            toggleState: []
+        };
+    }
+    render() {
+        const { perioder, uttaksplanValidering, navnPåForeldre } = this.props;
+        return (
+            <ToggleList
+                render={(onToggle, isOpen) => (
+                    <div className={periodelisteBem.className}>
+                        {perioder.map((periode, idx) => {
+                            const uttaksdagerTilNestePeriode = getAntallUttaksdagerTilNestePeriode(
+                                periode,
+                                idx,
+                                perioder
+                            );
+                            const isExpanded = isOpen(periode.id);
+                            return (
+                                <div
+                                    key={periode.id}
+                                    className={classnames(
+                                        periodelisteBem.element('item', isExpanded ? 'expanded' : undefined),
+                                        uttaksdagerTilNestePeriode > 0
+                                            ? periodelisteBem.element('item', 'with-gap')
+                                            : undefined
+                                    )}>
+                                    <EndrePeriodeFormRenderer
+                                        periode={periode}
+                                        render={(onChange, onRequestDelete) => (
+                                            <PeriodelisteItem
+                                                key={periode.id}
+                                                periode={periode}
+                                                navnPåForeldre={navnPåForeldre}
+                                                validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                                isExpanded={isExpanded}
+                                                onToggle={onToggle}
                                                 onChange={onChange}
                                                 onRequestDelete={onRequestDelete}
                                             />
-                                        </div>
+                                        )}
+                                    />
+                                    {uttaksdagerTilNestePeriode > 0 && (
+                                        <PeriodelisteHull antallDager={uttaksdagerTilNestePeriode} />
                                     )}
-                                />
-                            )}
-                        />
+                                </div>
+                            );
+                        })}
                     </div>
-                    {uttaksdagerTilNestePeriode > 0 && (
-                        <div className={bem.element('hull')}>
-                            <FormattedMessage
-                                id="periodeliste.hullMellomPerioder"
-                                values={{ dager: getVarighetString(uttaksdagerTilNestePeriode, intl) }}
-                            />
-                        </div>
-                    )}
-                </React.Fragment>
-            );
-        })}
-    </div>
-);
-
-export default injectIntl(Periodeliste);
+                )}
+            />
+        );
+    }
+}
+export default Periodeliste;
