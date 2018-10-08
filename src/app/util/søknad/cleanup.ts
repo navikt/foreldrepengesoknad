@@ -1,6 +1,8 @@
 import Søknad from '../../types/søknad/Søknad';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
+import { Periode } from '../../types/uttaksplan/periodetyper';
+import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 
 const isArrayOfAttachments = (object: object) => {
     return Array.isArray(object) && object.some((element) => element.filename);
@@ -26,5 +28,6 @@ const cleanUpAttachments = (object: object): Attachment[] => {
 
 export const cleanUpSøknad = (søknad: Søknad): Søknad => {
     søknad.vedlegg = cleanUpAttachments(søknad);
+    søknad.uttaksplan = søknad.uttaksplan.filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode));
     return søknad;
 };
