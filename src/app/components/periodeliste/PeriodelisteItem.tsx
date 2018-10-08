@@ -17,6 +17,7 @@ export interface Props {
     periode: Periode;
     isExpanded: boolean;
     navnPåForeldre: NavnPåForeldre;
+    barnetErFødt: boolean;
     validertPeriode: ValidertPeriode;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
@@ -27,6 +28,7 @@ const PeriodelisteItem: React.StatelessComponent<Props> = ({
     periode,
     navnPåForeldre,
     validertPeriode,
+    barnetErFødt,
     isExpanded,
     onRequestDelete,
     onChange,
@@ -39,7 +41,12 @@ const PeriodelisteItem: React.StatelessComponent<Props> = ({
             onToggle={() => onToggle(periode.id)}
             expandedHeaderClassName="periodeheader--isOpen"
             renderHeader={() => (
-                <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} validertPeriode={validertPeriode} />
+                <PeriodeHeader
+                    periode={periode}
+                    navnPåForeldre={navnPåForeldre}
+                    validertPeriode={validertPeriode}
+                    barnetErFødt={barnetErFødt}
+                />
             )}
             renderContent={() => (
                 <div

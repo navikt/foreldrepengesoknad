@@ -164,6 +164,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 søkersituasjon={søknad.situasjon}
                                 barn={søknad.barn}
                                 uttaksplan={søknad.uttaksplan}
+                                barnetErFødt={søknad.barn.erBarnetFødt}
                                 uttaksplanValidering={uttaksplanValidering}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
