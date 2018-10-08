@@ -25,7 +25,7 @@ import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';

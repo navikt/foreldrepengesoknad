@@ -1,6 +1,6 @@
-import * as commonRules from './../common';
+import * as commonRules from '../common';
 import * as getMessage from 'common/util/i18nUtils';
-import { today } from '../../values';
+import { today } from '../values';
 import { getFrilansOppstartRules } from '../frilans';
 import { InjectedIntl } from 'react-intl';
 const intl = {} as InjectedIntl;

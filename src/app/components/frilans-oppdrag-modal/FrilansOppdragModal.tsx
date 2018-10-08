@@ -12,7 +12,7 @@ import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;

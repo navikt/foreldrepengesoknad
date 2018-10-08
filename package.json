@@ -17,7 +17,7 @@
         "start": "node ./src/build/scripts/start-dev.js",
         "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
         "precommit": "pretty-quick --staged",
-        "jest": "jest --verbose --config ./jest/jest.config.js",
+        "jest": "jest --config ./jest/jest.config.js",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js"
     },
     "keywords": [],

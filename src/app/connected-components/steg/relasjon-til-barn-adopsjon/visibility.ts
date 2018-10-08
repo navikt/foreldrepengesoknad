@@ -1,5 +1,5 @@
 import { Adopsjonsbarn } from '../../../types/søknad/Barn';
-import { fødselsdatoerErFyltUt } from '../../../util/validation/fields/fødselsdato';
+import { fødselsdatoerErFyltUt } from '../../../util/validation/fødselsdato';
 
 export const utfyltAdoptertIUtlandet = (barn: Partial<Adopsjonsbarn>): boolean => {
     return (

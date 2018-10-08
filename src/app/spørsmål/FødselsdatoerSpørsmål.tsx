@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { DateValue } from '../types/common';
-import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fields/fødselsdato';
+import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/validation/fødselsdato';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Avgrensninger } from 'nav-datovelger';

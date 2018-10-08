@@ -1,5 +1,5 @@
 import fns from './../visibility';
-import * as util from '../../../../util/validation/fields/fødselsdato';
+import * as util from '../../../../util/validation/fødselsdato';
 
 describe('Relasjon til barn adopsjon', () => {
     it('Skal vise felt om adopsjonsdato gitt valg om type adopsjon', () => {

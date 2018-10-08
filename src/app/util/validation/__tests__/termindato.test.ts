@@ -1,7 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
 import { getTermindatoRegler } from '../termindato';
-import { date21DaysAgo, date22DaysAgo, fjortenUkerPluss3, fjortenUkerPluss4, today } from '../../values';
+import { date21DaysAgo, date22DaysAgo, fjortenUkerPluss3, fjortenUkerPluss4, today } from '../values';
 import * as commonRules from '../common';
 
 const intl = {} as InjectedIntl;

@@ -21,13 +21,13 @@ import {
     getTilAvgrensninger as tilAvgrensningerTidligerePerioder,
     getTidligereUtenlandsoppholdFradatoRegler as fraReglerTidligerePerioder,
     getTidligereUtenlandsoppholdTildatoRegler as tilReglerTidligerePerioder
-} from '../../../util/validation/fields/tidligereUtenlandsopphold';
+} from '../../../util/validation/tidligereUtenlandsopphold';
 import {
     getFraAvgrensninger as fraAvgrensningerSenerePerioder,
     getTilAvgrensninger as tilAvgrensningerSenerePerioder,
     getSenereUtenlandsoppholdFradatoRegler as fraReglerSenerePerioder,
     getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
-} from '../../../util/validation/fields/senereUtenlandsopphold';
+} from '../../../util/validation/senereUtenlandsopphold';
 import { default as visibility } from './visibility';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { søknadStegPath } from '../StegRoutes';

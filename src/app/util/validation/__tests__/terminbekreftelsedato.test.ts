@@ -1,10 +1,10 @@
 import moment from 'moment';
 import * as getMessage from 'common/util/i18nUtils';
-import { fjortenUkerPluss3Number, today } from '../../values';
+import { fjortenUkerPluss3Number, today } from '../values';
 import { getTerminbekreftelseDatoRegler } from '../terminbekreftelsedato';
 import * as commonRules from '../common';
 import { InjectedIntl } from 'react-intl';
-import { DateValue } from '../../../../types/common';
+import { DateValue } from '../../../types/common';
 const intl = {} as InjectedIntl;
 
 const todaysDate = today.toDate();
@@ -19,7 +19,7 @@ describe('Terminbekreftelsedato validation', () => {
         (getMessage.default as any) = jest.fn(() => someString);
         (commonRules as any).hasValueRule = jest.fn();
         (commonRules as any).dateIsNotInFutureRule = jest.fn();
-        (commonRules as any).dateIs3YearsAgoOrLater = jest.fn();
+        (commonRules as any).dateIs3YearsAgoOrLaterRule = jest.fn();
     });
 
     it('should call correct validators with given date and string', () => {

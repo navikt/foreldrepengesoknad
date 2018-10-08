@@ -1,10 +1,10 @@
 import { InjectedIntl } from 'react-intl';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
-import { DateValue } from '../../../types/common';
+import { DateValue } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
-import { date3YearsAgo } from '../values';
-import { dateIs3YearsAgoOrLater, dateIsNotInFutureRule, notInFutureAvgrensning, hasValueRule } from './common';
+import { date3YearsAgo } from './values';
+import { dateIs3YearsAgoOrLaterRule, dateIsNotInFutureRule, notInFutureAvgrensning, hasValueRule } from './common';
 
 export const fødselsdatoAvgrensninger: Avgrensninger = {
     minDato: date3YearsAgo.toDate(),
@@ -16,7 +16,7 @@ export const getFødselsdatoRegler = (fødselsdato: DateValue, intl: InjectedInt
     return [
         hasValueRule(fødselsdato, getMessage(intl, `${intlKey}.duMåOppgi`)),
         dateIsNotInFutureRule(fødselsdato, getMessage(intl, `${intlKey}.måVæreIdagEllerTidligere`)),
-        dateIs3YearsAgoOrLater(fødselsdato, getMessage(intl, `${intlKey}.ikkeMerEnn3ÅrTilbake`))
+        dateIs3YearsAgoOrLaterRule(fødselsdato, getMessage(intl, `${intlKey}.ikkeMerEnn3ÅrTilbake`))
     ];
 };
 

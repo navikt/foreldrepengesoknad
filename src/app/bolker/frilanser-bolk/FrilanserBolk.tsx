@@ -11,8 +11,8 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import visibility from './visibility';
-import { notInFutureAvgrensning } from '../../util/validation/fields/common';
-import { getFrilansOppstartRules } from '../../util/validation/fields/frilans';
+import { notInFutureAvgrensning } from '../../util/validation/common';
+import { getFrilansOppstartRules } from '../../util/validation/frilans';
 
 interface FrilanserBolkProps {
     søker: Søker;
