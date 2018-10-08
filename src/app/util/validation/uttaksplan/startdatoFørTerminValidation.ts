@@ -21,8 +21,8 @@ const startdatoFørTerminValidators = (
         const avgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         validators.push({
             test: () =>
-                moment(dato).isSameOrAfter(avgrensninger.minDato) &&
-                moment(dato).isSameOrBefore(avgrensninger.maksDato),
+                moment(dato).isSameOrAfter(avgrensninger.minDato, 'day') &&
+                moment(dato).isSameOrBefore(avgrensninger.maksDato, 'day'),
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom', {
                 uker: getPermisjonsregler().maksAntallUkerForeldrepengerFørFødsel
             })

@@ -1,9 +1,9 @@
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
-import { Uttaksdagen } from './Uttaksdagen';
 import { Permisjonsregler } from '../../types/uttaksplan/permisjonsregler';
 import { Avgrensninger } from 'nav-datovelger';
 import { Tidsperiode } from 'common/types';
+import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
 
 const fellesUttakAvgrensninger: Avgrensninger = {
     helgedagerIkkeTillatt: true
@@ -16,11 +16,7 @@ export function getDatoavgrensningerForStønadskonto(
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger | undefined {
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
-        return getDatoavgrensningerForForeldrepengerFørFødsel(
-            familiehendelsesdato,
-            permisjonsregler,
-            ugyldigeTidsperioder
-        );
+        return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato, ugyldigeTidsperioder);
     }
     return {
         fra: {
@@ -33,13 +29,11 @@ export function getDatoavgrensningerForStønadskonto(
 
 function getDatoavgrensningerForForeldrepengerFørFødsel(
     familiehendelsesdato: Date,
-    permisjonsregler: Permisjonsregler,
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger {
     const avgrensninger: Avgrensninger = {
         ...fellesUttakAvgrensninger,
-        minDato: Uttaksdagen(familiehendelsesdato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5),
-        maksDato: Uttaksdagen(familiehendelsesdato).forrige(),
+        ...uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato),
         ugyldigeTidsperioder
     };
     return {
