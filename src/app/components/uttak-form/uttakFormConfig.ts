@@ -44,7 +44,7 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor } = payload;
+    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
     if (
         periode.konto === undefined ||
         periode.type === Periodetype.Overføring ||
@@ -56,19 +56,30 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
         const aktivitetskravMor = visAktivitetskravMor(payload);
         const aktivitetskravMorOk =
             (aktivitetskravMor && questionValueIsOk(periode.morsAktivitetIPerioden)) || aktivitetskravMor === false;
-        if (periode.konto === StønadskontoType.Fellesperiode && søkerErFarEllerMedmor === true && aktivitetskravMorOk) {
+        const erDeltUttak = !søkerErAleneOmOmsorg && annenForelderHarRett;
+        if (
+            periode.konto === StønadskontoType.Fellesperiode &&
+            søkerErFarEllerMedmor === true &&
+            aktivitetskravMorOk &&
+            erDeltUttak
+        ) {
             return true;
         }
-        if (periode.konto === StønadskontoType.Fellesperiode && søkerErFarEllerMedmor === false) {
+        if (periode.konto === StønadskontoType.Fellesperiode && søkerErFarEllerMedmor === false && erDeltUttak) {
             return true;
         }
-        if (erEgenKonto && aktivitetskravMorOk) {
+        if (erEgenKonto && aktivitetskravMorOk && erDeltUttak) {
             return true;
         }
-        if (søkerErFarEllerMedmor && periode.konto === StønadskontoType.Fellesperiode && aktivitetskravMorOk) {
+        if (
+            søkerErFarEllerMedmor &&
+            periode.konto === StønadskontoType.Fellesperiode &&
+            aktivitetskravMorOk &&
+            erDeltUttak
+        ) {
             return true;
         }
-        if (periode.konto === StønadskontoType.Flerbarnsdager && aktivitetskravMorOk) {
+        if (periode.konto === StønadskontoType.Flerbarnsdager && aktivitetskravMorOk && erDeltUttak) {
             return true;
         }
     }
