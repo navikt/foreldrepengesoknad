@@ -197,7 +197,7 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
     }
 
     render() {
-        const { noSummary = false, summaryTitle } = this.props;
+        const { noSummary = false, summaryTitle, className } = this.props;
         let summaryBox;
         if (this.state.failedSubmit && !this.state.valid && !noSummary) {
             summaryBox = (
@@ -205,7 +205,7 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
             );
         }
         return (
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit} className={className}>
                 {summaryBox}
                 {this.props.children}
             </form>

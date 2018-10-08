@@ -1,4 +1,4 @@
-import { Forelder, NavnPåForeldre } from 'common/types';
+import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { Periode, Periodetype, StønadskontoType, OppholdÅrsakType } from '../../types/uttaksplan/periodetyper';
 import { InjectedIntl } from 'react-intl';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
@@ -88,3 +88,6 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
     }
 };
+
+export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
+    uttaksplan.filter((p) => p.id !== periodeId).map((p) => p.tidsperiode);

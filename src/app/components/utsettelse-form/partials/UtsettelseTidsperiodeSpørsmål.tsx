@@ -8,6 +8,7 @@ import { Feil } from 'common/components/skjema/elements/skjema-input-element/typ
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
+    ugyldigeTidsperioder: Tidsperiode[];
     feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
@@ -17,6 +18,7 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
     familiehendelsesdato,
     tidsperiode,
     feil,
+    ugyldigeTidsperioder,
     intl
 }) => (
     <TidsperiodeBolk
@@ -25,10 +27,12 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
         datoAvgrensninger={{
             fra: {
                 minDato: familiehendelsesdato,
-                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined
+                maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
+                ugyldigeTidsperioder
             },
             til: {
-                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined
+                minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
+                ugyldigeTidsperioder
             }
         }}
         datoValidatorer={{
