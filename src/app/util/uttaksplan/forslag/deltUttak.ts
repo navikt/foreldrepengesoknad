@@ -3,13 +3,14 @@ import {
     TilgjengeligStønadskonto,
     Periode,
     StønadskontoType,
-    Periodetype
+    Periodetype,
+    UttaksperiodeBase
 } from '../../../types/uttaksplan/periodetyper';
 import { normaliserDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { guid } from 'nav-frontend-js-utils';
 import { Forelder } from 'common/types';
-import { getTidsperiode } from '../Tidsperioden';
+import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
 
 const deltUttakAdopsjonMor = (
@@ -91,7 +92,27 @@ const deltUttakFødselMor = (
 
     if (fpFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && startdatoPermisjon) {
         const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(currentTomDate);
-        const startdatoFpFørFødsel = Uttaksdagen(currentTomDate).trekkFra(dagerFørFødsel);
+        const merEnnTreUkerPermisjonFørFødsel = dagerFørFødsel > 15;
+        const startdatoFpFørFødsel = Uttaksdagen(famDato).trekkFra(
+            merEnnTreUkerPermisjonFørFødsel ? 15 : dagerFørFødsel
+        );
+
+        if (merEnnTreUkerPermisjonFørFødsel) {
+            const ekstraPeriodeFørFødsel: Periode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.MOR,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: {
+                    fom: startdatoPermisjon,
+                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 16)
+                },
+                vedlegg: [],
+                ønskerSamtidigUttak: false
+            };
+
+            perioder.push(ekstraPeriodeFørFødsel);
+        }
 
         const periodeFørFødsel: Periode = {
             id: guid(),
@@ -132,12 +153,24 @@ const deltUttakFødselMor = (
     }
 
     if (fellesperiodeukerMor !== undefined && fellesperiodeukerMor > 0) {
+        const ekstraPermisjonFørFødsel = perioder.find(
+            (p: UttaksperiodeBase) => p.konto === StønadskontoType.Fellesperiode
+        );
+
+        let trekkEkstraPermisjonDager = 0;
+        if (ekstraPermisjonFørFødsel) {
+            trekkEkstraPermisjonDager = Tidsperioden(ekstraPermisjonFørFødsel.tidsperiode).getAntallUttaksdager();
+        }
+
         const periodeFellesperiodeMor: Periode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).denneEllerNeste(), fellesperiodeukerMor * 5)
+            tidsperiode: getTidsperiode(
+                Uttaksdagen(currentTomDate).denneEllerNeste(),
+                fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager
+            )
         };
 
         perioder.push(periodeFellesperiodeMor);
