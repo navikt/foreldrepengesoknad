@@ -9,7 +9,7 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode, StønadskontoType, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -26,12 +26,14 @@ import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
+    søkerrolle: SøkerRolle;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
-    uttaksStatus: Stønadskontouttak[];
+    uttaksstatus: Stønadskontouttak[];
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -76,6 +78,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         super(props);
 
         const { søknad, tilgjengeligeStønadskontoer, dispatch } = this.props;
+
+        this.getUttaksstatus = this.getUttaksstatus.bind(this);
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -114,14 +118,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             el.focus();
         }
     }
+
+    getUttaksstatus() {
+        const { uttaksstatus, søkerrolle } = this.props;
+        if (erFarEllerMedmor(søkerrolle)) {
+            return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
+        }
+        return uttaksstatus;
+    }
+
     render() {
-        const {
-            søknad,
-            uttaksplanValidering,
-            isLoadingTilgjengeligeStønadskontoer,
-            dispatch,
-            uttaksStatus
-        } = this.props;
+        const { søknad, uttaksplanValidering, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
         const { visFeiloppsummering } = this.state;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
@@ -174,7 +181,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             søknad.uttaksplan.length > 0 && (
                                 <Block margin="l">
                                     <Uttaksoppsummering
-                                        uttak={uttaksStatus}
+                                        uttak={this.getUttaksstatus()}
                                         navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                                     />
                                 </Block>
@@ -198,7 +205,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     } = state;
     const { søkerinfo, history } = props;
 
-    const uttaksStatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
+    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
         tilgjengeligeStønadskontoer,
         søknad.uttaksplan
     );
@@ -215,10 +222,11 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknad,
         tilgjengeligeStønadskontoer,
         stegProps,
-        uttaksStatus,
+        uttaksstatus,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        søkerrolle: søknad.søker.rolle
     };
 };
 
