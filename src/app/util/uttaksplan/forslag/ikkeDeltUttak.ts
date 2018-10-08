@@ -123,7 +123,8 @@ const ikkeDeltUttakFødselMor = (
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
-            konto: foreldrePengerFørFødselKonto.konto,
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
             vedlegg: [],
             ønskerSamtidigUttak: false
