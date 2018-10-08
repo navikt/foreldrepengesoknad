@@ -71,3 +71,20 @@ export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåFor
         farMedmor: erFarMedmor ? søker.fornavn : søknad.annenForelder.fornavn
     };
 };
+
+export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
+    switch (periode.type) {
+        case Periodetype.Uttak:
+        case Periodetype.Overføring:
+            return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+        case Periodetype.Utsettelse:
+            if (periode.årsak) {
+                return getMessage(intl, `periodeliste.utsettelsesårsak`, {
+                    årsak: getMessage(intl, `utsettelsesårsak.${periode.årsak}`)
+                });
+            }
+            return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
+        case Periodetype.Opphold:
+            return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
+    }
+};

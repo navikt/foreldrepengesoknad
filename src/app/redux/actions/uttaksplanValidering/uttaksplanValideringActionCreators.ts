@@ -1,9 +1,8 @@
 import {
     UttaksplanValideringActionKeys,
-    UttaksplanValideringActionTypes,
-    ValidertPeriode
+    UttaksplanValideringActionTypes
 } from './uttaksplanValideringActionDefinitions';
-import { Periodevalidering } from '../../reducers/uttaksplanValideringReducer';
+import { Periodevalidering, ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
 
 export function setValidertPeriode(
     periodeId: string,

@@ -10,9 +10,10 @@ export interface Validator {
     failText: ValidatorFailText;
 }
 
-export interface SummaryError {
+export interface SummaryError<T = any> {
     name: string;
     text: ValidatorFailText;
+    payload?: T;
 }
 
 export interface ValidationTestVerdict {

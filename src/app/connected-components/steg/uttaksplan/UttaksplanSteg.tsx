@@ -1,5 +1,7 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import lenker from '../../../util/routing/lenker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
@@ -22,7 +24,8 @@ import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
-import lenker from '../../../util/routing/lenker';
+import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
+import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
 
 interface StateProps {
     stegProps: StegProps;
@@ -36,6 +39,8 @@ interface StateProps {
 
 interface UttaksplanStegState {
     bekreftDialogSynlig: boolean;
+    visFeiloppsummering: boolean;
+    harKlikketFortsett: boolean;
 }
 
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
@@ -65,6 +70,8 @@ const getVeilederInfoText = (søknad: Søknad) => {
 };
 
 class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
+    feilOppsummering: React.Component | null;
+
     constructor(props: Props) {
         super(props);
 
@@ -72,9 +79,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
+        this.handleOnPeriodeErrorClick = this.handleOnPeriodeErrorClick.bind(this);
 
         this.state = {
-            bekreftDialogSynlig: false
+            bekreftDialogSynlig: false,
+            visFeiloppsummering: false,
+            harKlikketFortsett: false
         };
 
         if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
@@ -98,6 +108,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
     }
 
+    handleOnPeriodeErrorClick(periodeId: string) {
+        const el = document.getElementById(getPeriodelisteItemId(periodeId));
+        if (el) {
+            el.focus();
+        }
+    }
     render() {
         const {
             søknad,
@@ -106,13 +122,38 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             dispatch,
             uttaksStatus
         } = this.props;
+        const { visFeiloppsummering } = this.state;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
             <Steg
                 {...this.props.stegProps}
-                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}>
+                requestNavigateToNextStep={() => {
+                    this.setState({
+                        harKlikketFortsett: true,
+                        visFeiloppsummering: uttaksplanValidering.erGyldig === false
+                    });
+                    setTimeout(() => {
+                        if (this.feilOppsummering) {
+                            const el = ReactDOM.findDOMNode(this.feilOppsummering);
+                            if (el) {
+                                (el as HTMLElement).focus();
+                            }
+                        }
+                    });
+                    return uttaksplanValidering.erGyldig;
+                }}
+                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}
+                errorSummaryRenderer={() => (
+                    <UttaksplanFeiloppsummering
+                        ref={(c) => (this.feilOppsummering = c)}
+                        uttaksplanValidering={uttaksplanValidering}
+                        erSynlig={visFeiloppsummering}
+                        uttaksplan={søknad.uttaksplan}
+                        onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
+                    />
+                )}>
                 {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (
                     <ApplicationSpinner />
                 ) : (
@@ -152,7 +193,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
-        uttaksplanValidering,
         søknad,
         api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
     } = state;
@@ -165,7 +205,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
-        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true && uttaksplanValidering.erGyldig,
+        renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
         renderFormTag: false,
         history,
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
