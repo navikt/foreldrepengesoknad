@@ -9,7 +9,7 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -26,6 +26,7 @@ import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -35,6 +36,7 @@ interface StateProps {
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    erDeltUttak: boolean;
 }
 
 interface UttaksplanStegState {
@@ -120,7 +122,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             dispatch,
-            uttaksStatus
+            uttaksStatus,
+            erDeltUttak
         } = this.props;
         const { visFeiloppsummering } = this.state;
         const { uttaksplanInfo } = søknad.ekstrainfo;
@@ -171,7 +174,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
                         {søknad.uttaksplan &&
-                            søknad.uttaksplan.length > 0 && (
+                            søknad.uttaksplan.length > 0 &&
+                            !(erDeltUttak && erFarEllerMedmor(søknad.søker.rolle)) && (
                                 <Block margin="l">
                                     <Uttaksoppsummering
                                         uttak={uttaksStatus}
@@ -203,6 +207,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknad.uttaksplan
     );
 
+    const erDeltUttak: boolean =
+        tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Foreldrepenger) === undefined;
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
@@ -218,7 +225,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksStatus,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        erDeltUttak
     };
 };
 
