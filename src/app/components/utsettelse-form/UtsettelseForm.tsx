@@ -18,7 +18,7 @@ import { UtsettelseSpørsmålKeys, getUtsettelseFormVisibility } from './utsette
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
-import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
+import { getFamiliehendelsedato, getNavnPåForeldre, getTidsperioderIUttaksplan } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
@@ -208,6 +208,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
         });
 
+        const ugyldigeTidsperioder = getTidsperioderIUttaksplan(søknad.uttaksplan, periode.id);
+
         if (visibility === undefined) {
             return null;
         }
@@ -218,6 +220,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block>
                         <UtsettelseTidsperiodeSpørsmål
                             tidsperiode={tidsperiode}
+                            ugyldigeTidsperioder={ugyldigeTidsperioder}
                             familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                             onChange={(p) => this.onChange({ tidsperiode: p })}
                             feil={

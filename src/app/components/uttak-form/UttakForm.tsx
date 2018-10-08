@@ -21,7 +21,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
-import { getNavnPåForeldre } from '../../util/uttaksplan';
+import { getNavnPåForeldre, getTidsperioderIUttaksplan } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
@@ -33,6 +33,8 @@ import getMessage from 'common/util/i18nUtils';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
+import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
+import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -90,7 +92,10 @@ class UttaksperiodeForm extends React.Component<Props> {
             skalIkkeHaUttakFørTermin,
             type: Periodetype.Uttak,
             tidsperiode: {
-                fom: undefined,
+                fom:
+                    skalIkkeHaUttakFørTermin === false
+                        ? getDefaultPermisjonStartdato(this.props.familiehendelsesdato, getPermisjonsregler())
+                        : undefined,
                 tom: skalIkkeHaUttakFørTermin ? undefined : Uttaksdagen(this.props.familiehendelsesdato).forrige()
             }
         });
@@ -148,6 +153,8 @@ class UttaksperiodeForm extends React.Component<Props> {
         if (visibility === undefined) {
             return null;
         }
+        const ugyldigeTidsperioder = getTidsperioderIUttaksplan(søknad.uttaksplan, periode.id);
+
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
         const feil: Feil | undefined = harOverlappendePerioder
             ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
@@ -158,6 +165,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                 <Block margin={periode.konto === StønadskontoType.ForeldrepengerFørFødsel ? 'xs' : 'm'}>
                     <UttakTidsperiodeSpørsmål
                         periode={periode}
+                        ugyldigeTidsperioder={ugyldigeTidsperioder}
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode as Partial<Tidsperiode>}

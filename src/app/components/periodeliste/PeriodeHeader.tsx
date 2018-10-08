@@ -5,7 +5,12 @@ import { måned, måned3bokstaver } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
-import { Periode, Periodetype, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    StønadskontoType,
+    isForeldrepengerFørFødselUttaksperiode
+} from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
@@ -111,10 +116,15 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
 }) => {
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
     const visDatoer = periode.tidsperiode.fom || periode.tidsperiode.tom;
-    const varighetString = getVarighetString(
-        gyldigTidsperiode ? Tidsperioden(gyldigTidsperiode).getAntallUttaksdager() : 0,
-        intl
-    );
+    let varighetString;
+    if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true) {
+        varighetString = getMessage(intl, 'periodeliste.header.skalIkkeHaUttakFørTermin');
+    } else {
+        varighetString = getVarighetString(
+            gyldigTidsperiode ? Tidsperioden(gyldigTidsperiode).getAntallUttaksdager() : 0,
+            intl
+        );
+    }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
     const advarselId = `advarsel__${periode.id}`;
     const advarsel = getAdvarselForPeriode(validertPeriode, intl);
