@@ -35,7 +35,7 @@ const deltUttakAdopsjonMor = (
             tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager)
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager - 1);
 
         perioder.push(periodeMødrekvote);
     }

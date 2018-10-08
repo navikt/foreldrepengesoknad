@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
 import MorSinSisteUttaksdagSpørsmål from './enkeltspørsmål/MorSinSisteUttaksdagSpørsmål';
@@ -68,20 +68,26 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 visible={søknad.annenForelder.harRettPåForeldrepenger}
                 navnAnnenForelder={søknad.annenForelder.fornavn}
             />
+            {skjema.harAnnenForelderSøktFP === true && (
+                <Veilederinfo>
+                    <FormattedMessage
+                        id="uttaksplan.skjema.informasjonTilFarMedmor"
+                        values={{ navn: navnPåForeldre.mor }}
+                    />
+                </Veilederinfo>
+            )}
             <DekningsgradSpørsmål
                 visible={skjema.harAnnenForelderSøktFP !== undefined || !søknad.annenForelder.harRettPåForeldrepenger}
             />
-            {søknad.situasjon === Søkersituasjon.ADOPSJON && (
-                <StartdatoAdopsjonBolk
-                    familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                    visible={søknad.dekningsgrad !== undefined}
-                    barn={søknad.barn as Adopsjonsbarn}
-                />
-            )}
+            <StartdatoAdopsjonBolk
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== true}
+                barn={søknad.barn as Adopsjonsbarn}
+            />
             {søknad.søker.erAleneOmOmsorg === false &&
                 søknad.annenForelder.harRettPåForeldrepenger && (
                     <FordelingFellesperiodeSpørsmål
-                        visible={skjema.startdatoPermisjon !== undefined}
+                        visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
                         ukerFellesperiode={antallUkerFellesperiode}
                         navnPåForeldre={navnPåForeldre}
                     />
