@@ -170,7 +170,7 @@ const ikkeDeltUttakFødselFarMedmor = (
 
     let oppbrukteDagerPgaSenSøknad = 0;
 
-    if (startDato && moment(trekkDagerEtterDenneDatoen).isBefore(startDato)) {
+    if (startDato && moment(trekkDagerEtterDenneDatoen).isBefore(startDato, 'day')) {
         oppbrukteDagerPgaSenSøknad = Uttaksdagen(trekkDagerEtterDenneDatoen).getUttaksdagerFremTilDato(startDato);
     }
 

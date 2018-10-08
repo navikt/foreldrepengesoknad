@@ -26,7 +26,7 @@ interface OwnProps {
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
 const getAntallUttaksdager = (fom: Date | undefined, tom: Date | undefined): number | undefined => {
-    if (fom !== undefined && tom !== undefined && moment(fom).isBefore(tom)) {
+    if (fom !== undefined && tom !== undefined && moment(fom).isBefore(tom, 'day')) {
         return Tidsperioden({
             fom,
             tom: Uttaksdagen(tom).forrige()
