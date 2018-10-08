@@ -1,7 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import { dateIsNotInFutureRule, hasValueRule } from './common';
 import getMessage from 'common/util/i18nUtils';
-import { DateValue } from '../../../types/common';
+import { DateValue } from '../../types/common';
 
 export const getFrilansOppstartRules = (oppstartsdato: DateValue, intl: InjectedIntl) => {
     const intlKey = 'valideringsfeil.frilansOppstart';

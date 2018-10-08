@@ -39,6 +39,18 @@ export const dateMoreThan3YearsAgo = moment()
     .subtract(1, 'days')
     .startOf('day');
 
+export const dateMoreThan1YearAhead = moment()
+    .add(1, 'years')
+    .add(1, 'day')
+    .startOf('day');
+
+export const dateMoreThan1YearAgo = moment()
+    .subtract(1, 'years')
+    .subtract(1, 'day')
+    .startOf('day');
+
+export const date5DaysAhead = moment().add(5, 'days');
+
 export const getDate10MonthsAgo = moment().subtract(10, 'months');
 
 export const fjortenUkerPluss3Number = 14 * 7 + 3;
@@ -53,7 +65,9 @@ const DateValues = {
     date1YearAhead,
     date3YearsAgo,
     date4YearsAgo,
-    date15YearsAgo
+    date15YearsAgo,
+    dateMoreThan1YearAhead,
+    dateMoreThan1YearAgo
 };
 
 export default DateValues;
