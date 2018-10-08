@@ -18,6 +18,7 @@ export interface OwnProps {
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
+    barnetErFødt: boolean;
 }
 
 interface State {
@@ -52,7 +53,7 @@ class Periodeliste extends React.Component<Props, State> {
         };
     }
     render() {
-        const { perioder, uttaksplanValidering, navnPåForeldre } = this.props;
+        const { perioder, uttaksplanValidering, navnPåForeldre, barnetErFødt } = this.props;
         return (
             <ToggleList
                 render={(onToggle, isOpen) => (
@@ -80,6 +81,7 @@ class Periodeliste extends React.Component<Props, State> {
                                                 key={periode.id}
                                                 periode={periode}
                                                 navnPåForeldre={navnPåForeldre}
+                                                barnetErFødt={barnetErFødt}
                                                 validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
                                                 isExpanded={isExpanded}
                                                 onToggle={onToggle}
