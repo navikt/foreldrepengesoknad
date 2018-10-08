@@ -1,6 +1,7 @@
-import { Alder } from '../../types/common';
-import * as moment from 'moment';
+import { Alder, DateValue } from '../../types/common';
 import { Tidsperiode } from 'common/types';
+import { date1YearAgo, date1YearAhead, date3YearsAgo, today, tomorrow } from '../validation/values';
+const moment = require('moment');
 
 export const getDateFromString = (dato?: string) => {
     if (dato) {
@@ -43,4 +44,51 @@ export const findOldestDate = (dateArray: Date[]): Date | undefined => {
         return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
     }
     return undefined;
+};
+
+export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow);
+export const dateIs3YearsAgoOrLater = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo);
+export const dateIs1YearAheadAtLatest = (date: DateValue): boolean => {
+    return moment(date)
+        .startOf('day')
+        .isBetween(today.startOf('day'), date1YearAhead.endOf('day'));
+};
+export const dateIs1YearBeforeAtEarliest = (date: DateValue): boolean => {
+    return moment(date)
+        .endOf('day')
+        .isBetween(date1YearAgo.startOf('day'), today.endOf('day'));
+};
+export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return moment(date)
+            .startOf('day')
+            .isSameOrBefore(moment(otherDate));
+    }
+    return true;
+};
+export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
+    if (date && otherDate) {
+        return moment(date)
+            .endOf('day')
+            .isSameOrAfter(moment(otherDate));
+    }
+    return true;
+};
+export const timeintervalsOverlap = (
+    timeinterval: Partial<Tidsperiode>,
+    otherTimeintervals: Tidsperiode[]
+): boolean => {
+    if (timeinterval.fom && timeinterval.tom) {
+        return otherTimeintervals.some((t: Tidsperiode) => {
+            const fom = moment(timeinterval.fom).startOf('day');
+            const tom = moment(timeinterval.tom).endOf('day');
+            return (
+                fom.isBetween(t.fom, t.tom) ||
+                tom.isBetween(t.fom, t.tom) ||
+                (fom.isBefore(t.fom) && tom.isSameOrAfter(t.fom)) ||
+                (tom.isAfter(t.tom) && fom.isSameOrBefore(t.tom))
+            );
+        });
+    }
+    return true;
 };

@@ -4,7 +4,7 @@ import {
     søknadGjelderAdopsjon,
     søknadGjelderForeldreansvar,
     søknadGjelderFødsel
-} from '../../../util/validation/fields/situasjon';
+} from '../../../util/validation/situasjon';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
 import { annenForelderErGyldig } from '../../../util/validation/steg/annenForelder';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';

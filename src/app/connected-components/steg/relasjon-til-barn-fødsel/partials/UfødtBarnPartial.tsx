@@ -10,7 +10,7 @@ import getMessage from 'common/util/i18nUtils';
 import Søker from '../../../../types/søknad/Søker';
 import { AnnenForelderPartial } from '../../../../types/søknad/AnnenForelder';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/fields/termindato';
+import { getTermindatoRegler, termindatoAvgrensninger } from '../../../../util/validation/termindato';
 import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';

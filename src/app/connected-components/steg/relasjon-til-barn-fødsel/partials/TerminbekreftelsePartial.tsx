@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     getTerminbekreftelsedatoAvgrensninger,
     getTerminbekreftelseDatoRegler
-} from '../../../../util/validation/fields/terminbekreftelsedato';
+} from '../../../../util/validation/terminbekreftelsedato';
 import søknadActions from '../../../../redux/actions/søknad/søknadActionCreators';
 import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { UfødtBarn } from '../../../../types/søknad/Barn';
