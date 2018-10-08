@@ -10,9 +10,9 @@ import {
     tomorrow
 } from '../../validation/values';
 import {
-    dateIs1YearAheadAtLatest,
-    dateIs1YearBeforeAtEarliest,
-    dateIs3YearsAgoOrLater,
+    dateIs1YearAheadOrLess,
+    dateIs1YearAgoOrLess,
+    dateIs3YearsAgoOrLess,
     dateIsNotInFuture,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
@@ -25,19 +25,19 @@ describe('dateUtils', () => {
         expect(dateIsNotInFuture(today.toDate())).toBe(true);
     });
 
-    it('dateIs3YearsAgoOrLater', () => {
-        expect(dateIs3YearsAgoOrLater(dateMoreThan3YearsAgo.toDate())).toBe(false);
-        expect(dateIs3YearsAgoOrLater(date3YearsAgo.toDate())).toBe(true);
+    it('dateIs3YearsAgoOrLess', () => {
+        expect(dateIs3YearsAgoOrLess(dateMoreThan3YearsAgo.toDate())).toBe(false);
+        expect(dateIs3YearsAgoOrLess(date3YearsAgo.toDate())).toBe(true);
     });
 
-    it('dateIs1YearAheadAtLatest', () => {
-        expect(dateIs1YearAheadAtLatest(dateMoreThan1YearAhead.toDate())).toBe(false);
-        expect(dateIs1YearAheadAtLatest(date1YearAhead.toDate())).toBe(true);
+    it('dateIs1YearAheadOrLess', () => {
+        expect(dateIs1YearAheadOrLess(dateMoreThan1YearAhead.toDate())).toBe(false);
+        expect(dateIs1YearAheadOrLess(date1YearAhead.toDate())).toBe(true);
     });
 
-    it('dateIs1YearBeforeAtEarliest', () => {
-        expect(dateIs1YearBeforeAtEarliest(dateMoreThan1YearAgo.toDate())).toBe(false);
-        expect(dateIs1YearBeforeAtEarliest(date1YearAgo.toDate())).toBe(true);
+    it('dateIs1YearAgoOrLess', () => {
+        expect(dateIs1YearAgoOrLess(dateMoreThan1YearAgo.toDate())).toBe(false);
+        expect(dateIs1YearAgoOrLess(date1YearAgo.toDate())).toBe(true);
     });
 
     it('dateIsSameOrBefore', () => {

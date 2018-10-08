@@ -1,6 +1,5 @@
 import moment from 'moment';
 import DateHolidays, { Holiday } from 'date-holidays';
-import { normaliserDato } from 'common/util/datoUtils';
 import { Tidsperiode } from 'common/types';
 
 const holidays = DateHolidays('no');
@@ -41,7 +40,6 @@ export const fridager = getOffentligeFridager({
 });
 
 export const erFridag = (dato: Date): string | undefined => {
-    const d = normaliserDato(dato);
-    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(d, 'day'));
+    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(dato, 'day'));
     return fridag ? fridag.name : undefined;
 };

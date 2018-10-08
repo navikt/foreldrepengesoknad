@@ -5,8 +5,12 @@ import { date21DaysAgo, date22DaysAgo, fjortenUkerPluss3, fjortenUkerPluss4, tod
 import * as commonRules from '../common';
 
 const intl = {} as InjectedIntl;
-const callIkkeMerEnn3UkerSiden = (termindato: Date) => getTermindatoRegler(termindato, intl)[1].test();
-const callIUke26Pluss3 = (termindato: Date) => getTermindatoRegler(termindato, intl)[2].test();
+const callIkkeMerEnn3UkerSiden = (termindato: Date) => {
+    return getTermindatoRegler(termindato, intl)[1].test();
+};
+const callIUke26Pluss3 = (termindato: Date) => {
+    return getTermindatoRegler(termindato, intl)[2].test();
+};
 
 const someString = '';
 const todaysDate = today.toDate();

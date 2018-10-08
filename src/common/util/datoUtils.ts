@@ -1,9 +1,5 @@
 import moment from 'moment';
 
-export const normaliserDato = (dato: Date): Date => {
-    return moment.utc([dato.getFullYear(), dato.getMonth(), dato.getDate(), 12, 0, 0, 0]).toDate();
-};
-
 export function formaterDato(dato: Date, datoformat?: string): string {
     return moment(dato).format(datoformat || 'dddd D. MMMM YYYY');
 }
