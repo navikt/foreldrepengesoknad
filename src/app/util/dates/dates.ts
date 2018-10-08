@@ -46,15 +46,15 @@ export const findOldestDate = (dateArray: Date[]): Date | undefined => {
     return undefined;
 };
 
-export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow);
-export const dateIs3YearsAgoOrLess = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo);
+export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow, 'day');
+export const dateIs3YearsAgoOrLess = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo, 'day');
 export const dateIs1YearAheadOrLess = (date: DateValue): boolean => {
     const m = moment(date);
-    return m.isSame(today) || m.isSame(date1YearAhead) || m.isBetween(today, date1YearAhead, 'day');
+    return m.isSame(today, 'day') || m.isSame(date1YearAhead, 'day') || m.isBetween(today, date1YearAhead, 'day');
 };
 export const dateIs1YearAgoOrLess = (date: DateValue): boolean => {
     const m = moment(date);
-    return m.isSame(today) || m.isSame(date1YearAgo) || m.isBetween(date1YearAgo, today, 'day');
+    return m.isSame(today, 'day') || m.isSame(date1YearAgo, 'day') || m.isBetween(date1YearAgo, today, 'day');
 };
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
@@ -77,10 +77,13 @@ export const timeintervalsOverlap = (
             const fom = moment(timeinterval.fom).startOf('day');
             const tom = moment(timeinterval.tom).endOf('day');
             return (
-                fom.isBetween(t.fom, t.tom) ||
-                tom.isBetween(t.fom, t.tom) ||
-                (fom.isBefore(t.fom) && tom.isSameOrAfter(t.fom)) ||
-                (tom.isAfter(t.tom) && fom.isSameOrBefore(t.tom))
+                fom.isSame(t.fom, 'day') ||
+                fom.isSame(t.tom, 'day') ||
+                (tom.isSame(t.fom, 'day') || tom.isSame(t.tom, 'day')) ||
+                fom.isBetween(t.fom, t.tom, 'day') ||
+                tom.isBetween(t.fom, t.tom, 'day') ||
+                (fom.isBefore(t.fom, 'day') && tom.isSameOrAfter(t.fom, 'day')) ||
+                (tom.isAfter(t.tom, 'day') && fom.isSameOrBefore(t.tom, 'day'))
             );
         });
     }
