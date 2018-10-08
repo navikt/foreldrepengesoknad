@@ -132,6 +132,7 @@ const deltUttakFødselMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
+            skalIkkeHaUttakFørTermin: true,
             tidsperiode: {} as any,
             vedlegg: []
         };
