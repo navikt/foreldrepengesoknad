@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn, Barn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { fødselsdatoerErFyltUt } from '../fields/fødselsdato';
+import { fødselsdatoerErFyltUt } from '../fødselsdato';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import DateValues from '../values';

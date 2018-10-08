@@ -19,7 +19,7 @@ import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { Skjemanummer } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
-import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/fields/andreInntekter';
+import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';

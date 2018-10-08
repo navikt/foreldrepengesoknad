@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { getFraAvgrensninger, getTilAvgrensninger } from '../tidligereUtenlandsopphold';
-import { date1YearAgo, today } from '../../values';
+import { date1YearAgo, today } from '../values';
 
 describe('Tidligere utenlandsopphold-avgrensninger', () => {
     describe('getFraAvgrensninger', () => {

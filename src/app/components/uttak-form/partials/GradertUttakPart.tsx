@@ -10,7 +10,7 @@ import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../uttakFormConfig';
-import { getStillingsprosentRegler } from '../../../util/validation/fields/stillingsprosent';
+import { getStillingsprosentRegler } from '../../../util/validation/stillingsprosent';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;

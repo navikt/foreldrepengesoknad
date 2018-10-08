@@ -1,6 +1,6 @@
 import { History } from 'history';
 
-export type Fødselsdato = Date | undefined;
+export type DateValue = Date | undefined;
 
 export interface Alder {
     år: number;
