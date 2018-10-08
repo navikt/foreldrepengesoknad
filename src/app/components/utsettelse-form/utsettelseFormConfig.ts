@@ -37,7 +37,7 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
     const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
     const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
         søkerErFarEllerMedmor,
-        annenForelderHarRettPåForeldrepenger
+        annenForelderHarRettPåForeldrepenger === false
     );
 
     if (variant === undefined || erRelevant === false) {
