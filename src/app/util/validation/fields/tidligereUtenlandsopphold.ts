@@ -36,7 +36,7 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
         dateIs1YearBeforeAtEarliest(fom, getMessage(intl, `${intlKey}.tidligere`)),
         {
             test: () =>
-                tom
+                fom && tom
                     ? moment(fom)
                           .startOf('day')
                           .isSameOrBefore(moment(tom))
@@ -51,18 +51,19 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
 };
 
 export const getTidligereUtenlandsoppholdTildatoRegler = (
-    fom: Date | undefined,
     tom: Date | undefined,
+    fom: Date | undefined,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.utenlandsopphold';
+
     return [
         hasValueRule(tom, getMessage(intl, `${intlKey}.tidligere`)),
         dateIs1YearBeforeAtEarliest(tom, getMessage(intl, `${intlKey}.tidligere`)),
         {
             test: () =>
-                tom
+                fom && tom
                     ? moment(tom)
                           .endOf('day')
                           .isSameOrAfter(moment(fom))
