@@ -23,8 +23,8 @@ export const getTerminbekreftelseDatoRegler = (
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.terminbekreftelseDato';
-    const terminbekreftelsedatoM = moment(terminbekreftelseDato).startOf('day');
-    const termindatoM = moment(termindato).startOf('day');
+    const terminbekreftelsedatoM = moment(terminbekreftelseDato);
+    const termindatoM = moment(termindato);
 
     return [
         hasValueRule(terminbekreftelseDato, getMessage(intl, `${intlKey}.duMåOppgi`)),
@@ -33,7 +33,7 @@ export const getTerminbekreftelseDatoRegler = (
             test: () =>
                 moment
                     .max(termindatoM.subtract(fjortenUkerPluss3Number, 'days'), terminbekreftelsedatoM)
-                    .isSame(terminbekreftelsedatoM),
+                    .isSame(terminbekreftelsedatoM, 'day'),
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke26`)
         }
     ];

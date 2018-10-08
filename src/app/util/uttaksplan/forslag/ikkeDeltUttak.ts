@@ -8,7 +8,6 @@ import {
     Periode,
     UttaksperiodeBase
 } from '../../../types/uttaksplan/periodetyper';
-import { normaliserDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Forelder } from 'common/types';
 import { guid } from 'nav-frontend-js-utils';
@@ -22,7 +21,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined
 ) => {
-    famDato = normaliserDato(Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste());
+    famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
         {
             id: guid(),
@@ -42,7 +41,7 @@ const ikkeDeltUttakAdopsjonMor = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: Date | undefined
 ) => {
-    famDato = normaliserDato(Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste());
+    famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
         {
             id: guid(),
@@ -76,7 +75,7 @@ const ikkeDeltUttakFødselMor = (
     startdatoPermisjon: Date | undefined,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto
 ) => {
-    famDato = normaliserDato(Uttaksdagen(famDato).denneEllerNeste());
+    famDato = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
 

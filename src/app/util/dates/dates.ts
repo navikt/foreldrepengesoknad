@@ -11,8 +11,8 @@ export const getDateFromString = (dato?: string) => {
 };
 
 export const getAlderFraDato = (fødselsdato: Date): Alder => {
-    const idag = moment().startOf('day');
-    const dato = moment(fødselsdato).startOf('day');
+    const idag = moment();
+    const dato = moment(fødselsdato);
 
     const år = idag.diff(dato, 'year');
     dato.add(år, 'years');
@@ -47,30 +47,24 @@ export const findOldestDate = (dateArray: Date[]): Date | undefined => {
 };
 
 export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow);
-export const dateIs3YearsAgoOrLater = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo);
-export const dateIs1YearAheadAtLatest = (date: DateValue): boolean => {
-    return moment(date)
-        .startOf('day')
-        .isBetween(today.startOf('day'), date1YearAhead.endOf('day'));
+export const dateIs3YearsAgoOrLess = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo);
+export const dateIs1YearAheadOrLess = (date: DateValue): boolean => {
+    const m = moment(date);
+    return m.isSame(today) || m.isSame(date1YearAhead) || m.isBetween(today, date1YearAhead, 'day');
 };
-export const dateIs1YearBeforeAtEarliest = (date: DateValue): boolean => {
-    return moment(date)
-        .endOf('day')
-        .isBetween(date1YearAgo.startOf('day'), today.endOf('day'));
+export const dateIs1YearAgoOrLess = (date: DateValue): boolean => {
+    const m = moment(date);
+    return m.isSame(today) || m.isSame(date1YearAgo) || m.isBetween(date1YearAgo, today, 'day');
 };
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
-        return moment(date)
-            .startOf('day')
-            .isSameOrBefore(moment(otherDate));
+        return moment(date).isSameOrBefore(moment(otherDate, 'day'));
     }
     return true;
 };
 export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {
-        return moment(date)
-            .endOf('day')
-            .isSameOrAfter(moment(otherDate));
+        return moment(date).isSameOrAfter(otherDate, 'day');
     }
     return true;
 };
