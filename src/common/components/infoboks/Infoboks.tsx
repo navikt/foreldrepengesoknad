@@ -8,6 +8,7 @@ import './infoboks.less';
 
 interface InfoboksProps {
     tekst: string;
+    children?: React.ReactNode;
     stil?: Stil;
 }
 
@@ -33,7 +34,7 @@ class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
     }
 
     render() {
-        const { tekst, stil = 'info' } = this.props;
+        const { tekst, children, stil = 'info' } = this.props;
         const { isExpanded } = this.state;
 
         const ikon = isExpanded ? <LukkInfoIkon /> : <InfoIkon />;
@@ -54,7 +55,7 @@ class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>
-                    <div className="infoboks__wrapper">{tekst}</div>
+                    <div className="infoboks__wrapper">{children || tekst}</div>
                 </Collapse>
             </React.Fragment>
         );
