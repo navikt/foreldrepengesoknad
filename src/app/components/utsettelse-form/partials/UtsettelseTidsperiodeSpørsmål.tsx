@@ -8,7 +8,7 @@ import { Feil } from 'common/components/skjema/elements/skjema-input-element/typ
 export interface Props {
     tidsperiode: Partial<Tidsperiode>;
     familiehendelsesdato: Date;
-    ugyldigeTidsperioder: Tidsperiode[];
+    ugyldigeTidsperioder?: Tidsperiode[];
     feil?: Feil;
     onChange: (tidsperiode: Partial<Tidsperiode>) => void;
 }
