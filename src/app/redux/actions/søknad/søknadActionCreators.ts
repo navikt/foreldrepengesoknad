@@ -33,7 +33,7 @@ import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
-import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../../connected-components/steg-forstegangssoknad/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
 
 const updateBarn = (

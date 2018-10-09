@@ -5,7 +5,7 @@ import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/Inf
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
-import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../../connected-components/steg-forstegangssoknad/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
 import { AxiosError } from 'axios';
 

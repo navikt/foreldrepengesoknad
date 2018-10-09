@@ -2,7 +2,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import {
     getUttaksplanSkjemaScenario,
     UttaksplanSkjemaScenario
-} from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemaScenario';
+} from '../../../connected-components/steg-forstegangssoknad/uttaksplan-skjema/uttaksplanSkjemaScenario';
 
 export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
     if (søknad.dekningsgrad === undefined) {

@@ -7,7 +7,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
-import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { UttaksplanSkjemadata } from '../../connected-components/steg-forstegangssoknad/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../util/uttaksplan/uttaksplanInfo';
 
 type Foreldrepenger = 'foreldrepenger';

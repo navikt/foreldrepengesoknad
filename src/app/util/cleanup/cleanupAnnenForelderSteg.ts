@@ -4,7 +4,7 @@ import Søknad from '../../types/søknad/Søknad';
 import {
     AnnenForelderStegVisibility,
     AnnenForelderSpørsmålKeys
-} from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
+} from '../../connected-components/steg-forstegangssoknad/annen-forelder/visibility/annenForelderStegVisibility';
 
 interface CleanedAnnenForelderSteg {
     annenForelder: Partial<AnnenForelder>;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 
 import routeConfig from '../util/routing/routeConfig';
-import StegRoutes from './steg/StegRoutes';
+import StegRoutes from './steg-forstegangssoknad/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
@@ -27,9 +27,24 @@ interface StateProps {
     isSendSøknadInProgress: boolean;
 }
 
+export enum Søknadsapp {
+    'førstegangssøknad' = 'førstegangssøknad',
+    'endringssøknad' = 'endringssøknad'
+}
+
+interface State {
+    app: Søknadsapp;
+}
+
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
-class Foreldrepengesøknad extends React.Component<Props> {
+class Foreldrepengesøknad extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            app: Søknadsapp.førstegangssøknad
+        };
+    }
     componentWillMount() {
         const { dispatch, søkerinfo } = this.props;
         if (!søkerinfo) {
