@@ -25,11 +25,11 @@
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
-    "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha gradert uttak samtidig?",
+    "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
-    "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken kvote skal benyttes?",
+    "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken del av foreldrepengene skal du ta ut?",
 
-    "stillingsprosent": "Stillingsprosent",
+    "stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
 
     "orgnr": "Organisasjonsnummer",
     "jegSkalJobbeSomSelvstendigNæringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
@@ -42,8 +42,8 @@
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
     "validering.oppsummeringstittel": "Du må rette opp i følgende feil:",
 
-    "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Hva er grunnen til at du skal utsette ditt uttak?",
-    "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Hvilken konto skal benyttes?",
+    "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Hvorfor skal du ha opphold?",
+    "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Hvilken del av foreldrepengene skal { navn } bruke?",
 
     "søknad.pageheading": "Søknad om foreldrepenger",
 
@@ -80,8 +80,8 @@
 
     "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
-    "annenInntekt.alternativ.hatt": "ja",
-    "annenInntekt.alternativ.ikkeHatt": "nei",
+    "annenInntekt.alternativ.hatt": "Ja",
+    "annenInntekt.alternativ.ikkeHatt": "Nei",
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.oppfølgingsspørsmål": "Perioder med annen inntekt",
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
