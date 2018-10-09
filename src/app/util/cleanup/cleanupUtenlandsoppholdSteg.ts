@@ -1,4 +1,4 @@
-import visibility from './../../connected-components/steg/utenlandsopphold/visibility';
+import visibility from './../../connected-components/steg-forstegangssoknad/utenlandsopphold/visibility';
 import InformasjonOmUtenlandsopphold from '../../types/søknad/InformasjonOmUtenlandsopphold';
 
 const cleanupUtenlandsOppholdSteg = (

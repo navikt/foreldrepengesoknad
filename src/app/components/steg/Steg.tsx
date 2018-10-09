@@ -5,7 +5,7 @@ import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
+import { søknadStegPath } from '../../connected-components/steg-forstegangssoknad/StegRoutes';
 import Stegindikator from '../stegindikator/Stegindikator';
 import routeConfig from '../../util/routing/routeConfig';
 import { connect } from 'react-redux';

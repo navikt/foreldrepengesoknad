@@ -4,7 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 import UttaksplanSkjemaSpørsmål, {
     UttaksplanSkjemaspørsmålProps
-} from '../connected-components/steg/uttaksplan-skjema/UttaksplanSkjemaSpørsmål';
+} from '../connected-components/steg-forstegangssoknad/uttaksplan-skjema/UttaksplanSkjemaSpørsmål';
 
 type Props = UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 

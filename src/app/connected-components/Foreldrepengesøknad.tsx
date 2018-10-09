@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 
 import routeConfig from '../util/routing/routeConfig';
-import StegRoutes from './steg/StegRoutes';
+import StegRoutes from './steg-forstegangssoknad/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
