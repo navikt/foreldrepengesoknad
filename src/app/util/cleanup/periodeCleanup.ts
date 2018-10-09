@@ -4,7 +4,6 @@ import {
     Overføringsperiode,
     Periode,
     Periodetype,
-    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode
