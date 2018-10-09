@@ -1,9 +1,10 @@
 import {
-    Periode,
-    Periodetype,
     ForeldrepengerFørFødselUttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode,
+    Periode,
+    Periodetype,
+    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode
@@ -27,6 +28,7 @@ const cleanupUtsettelse = (
 
     return {
         type: Periodetype.Utsettelse,
+        konto: periode.konto,
         id: periode.id,
         årsak: periode.årsak,
         tidsperiode: periode.tidsperiode,

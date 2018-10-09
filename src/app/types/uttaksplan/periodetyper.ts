@@ -83,7 +83,7 @@ export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBas
 export type Uttaksperiode = UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode;
 
 export interface Utsettelsesperiode extends PeriodeBase {
-    konto?: StønadskontoType;
+    konto: StønadskontoType;
     type: Periodetype.Utsettelse;
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
