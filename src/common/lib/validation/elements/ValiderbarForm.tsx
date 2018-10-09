@@ -17,12 +17,14 @@ export interface ValiderbarFormProps {
 }
 
 export interface ValidFormContext {
-    register: (component: React.Component) => void;
-    unregister: (component: React.Component) => void;
-    onChange: (e: any, component: React.ComponentType) => void;
-    onBlur: (e: any, component: React.ComponentType) => void;
-    validateField: (componentId: string) => void;
-    validateAll: () => void;
+    validForm: {
+        register: (component: React.Component) => void;
+        unregister: (component: React.Component) => void;
+        onChange: (e: any, component: React.ComponentType) => void;
+        onBlur: (e: any, component: React.ComponentType) => void;
+        validateField: (componentId: string, forceValidation?: boolean) => void;
+        validateAll: () => void;
+    };
 }
 
 interface ValiderbarFormState {
@@ -104,8 +106,8 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
         }
     }
 
-    validateField(componentId: string) {
-        if (this.shouldValidate()) {
+    validateField(componentId: string, forceValidate: boolean | undefined) {
+        if (this.shouldValidate() || forceValidate) {
             const index = this.components.findIndex((c) => c.props.id === componentId);
             if (index >= 0) {
                 this.validateComponentAtIndex(index);
