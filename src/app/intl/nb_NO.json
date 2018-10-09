@@ -562,6 +562,7 @@
     "periodeliste.hullMellomPerioder": "{dager} mangler uttak eller utsettelse",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
+    "periodeliste.lukk": "Lukk",
 
     "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
     "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
