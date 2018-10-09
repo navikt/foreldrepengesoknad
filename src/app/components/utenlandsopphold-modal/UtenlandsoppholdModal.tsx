@@ -175,6 +175,7 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
                     </Block>
                     <Block>
                         <TidsperiodeBolk
+                            kalenderplassering="fullskjerm"
                             datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
                             datoValidatorer={this.getTidsperiodeValidatorer()}
                             tidsperiode={(oppholdToEdit && oppholdToEdit.tidsperiode) || {}}

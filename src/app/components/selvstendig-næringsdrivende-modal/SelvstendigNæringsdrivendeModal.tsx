@@ -213,6 +213,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
                             tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen })
                         }}
+                        kalenderplassering="fullskjerm"
                     />
                 </Block>
 
@@ -323,6 +324,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             this.updateNæring({ oppstartsdato });
                         }}
                         dato={næring.oppstartsdato}
+                        kalender={{ plassering: 'fullskjerm' }}
                     />
                 </Block>
                 <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>
