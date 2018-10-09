@@ -41,7 +41,9 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         condition: (props) => props.annenForelderErRegistrert === false && !props.søkerErFarEllerMedmor
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
-        isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fnr),
+        isAnswered: ({ annenForelder }) =>
+            questionValueIsOk(annenForelder.fnr) ||
+            (annenForelder.utenlandskFnr === true && annenForelder.bostedsland !== undefined),
         condition: (props) => {
             return (
                 props.annenForelder.kanIkkeOppgis !== true &&
