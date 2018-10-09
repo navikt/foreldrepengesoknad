@@ -28,6 +28,7 @@ const SkalBoINorgeNeste12MndSpørsmål = (props: Props) => {
     return (
         <RadioPanelGruppeResponsive
             checked={checked}
+            twoColumns={true}
             legend={getMessage(intl, 'iNorgeNeste12Mnd.spørsmål')}
             radios={[
                 {
