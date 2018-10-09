@@ -43,6 +43,7 @@ const BoddINorgeSiste12MndSpørsmål = (props: Props) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: BoddINorgeSiste12Mnd) =>
                 onChange(v === BoddINorgeSiste12Mnd.BODD_I_NORGE_SISTE_12, e)
             }
+            twoColumns={true}
             {...otherProps}
         />
     );

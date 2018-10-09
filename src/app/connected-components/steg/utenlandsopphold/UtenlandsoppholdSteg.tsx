@@ -105,7 +105,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
 
     render() {
         const { søknad, stegProps, dispatch } = this.props;
-        const { informasjonOmUtenlandsopphold, barn } = søknad;
+        const { informasjonOmUtenlandsopphold, barn, situasjon } = søknad;
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
@@ -172,7 +172,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.bleBarnetFødtINorge(informasjonOmUtenlandsopphold, barn)}>
+                <Block visible={visibility.bleBarnetFødtINorge(informasjonOmUtenlandsopphold, barn, situasjon)}>
                     <BleBarnetFødtINorgeSpørsmål
                         fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
                         onChange={(fødselINorge: boolean) => {

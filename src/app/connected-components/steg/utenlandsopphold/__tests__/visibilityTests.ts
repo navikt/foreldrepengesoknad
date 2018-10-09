@@ -1,4 +1,5 @@
 import { default as fns } from './../visibility';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 describe('Utenlandsopphold visbility tester', () => {
     it('Skal vise landevelger for siste 12 måneder om søker har sagt at de har hatt utenlandsopphold', () => {
@@ -30,5 +31,25 @@ describe('Utenlandsopphold visbility tester', () => {
         expect(
             fns.skalBarnetBliFødtINorge({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: false }, { erBarnetFødt: true })
         ).toBe(false);
+    });
+
+    it('Dersom søknad er for et barn som er født skal spørsmål om barn ble født i Norge stilles', () => {
+        expect(
+            fns.bleBarnetFødtINorge(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                { erBarnetFødt: true },
+                Søkersituasjon.FØDSEL
+            )
+        ).toBe(true);
+        expect(
+            fns.bleBarnetFødtINorge(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                { erBarnetFødt: false },
+                Søkersituasjon.FØDSEL
+            )
+        ).toBe(false);
+        expect(
+            fns.bleBarnetFødtINorge({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, {}, Søkersituasjon.ADOPSJON)
+        ).toBe(true);
     });
 });

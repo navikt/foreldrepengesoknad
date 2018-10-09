@@ -1,5 +1,6 @@
 import InformasjonOmUtenlandsopphold from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { Barn } from '../../../types/søknad/Barn';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const harBoddINorgeSiste12MndContentVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
@@ -26,12 +27,13 @@ const skalBarnetBliFødtINorgeVisible = (
 
 const bleBarnetFødtINorgeVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>,
-    barn: Partial<Barn>
+    barn: Partial<Barn>,
+    situasjon: Søkersituasjon
 ): boolean => {
     return (
         skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
         informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined &&
-        barn.erBarnetFødt === true
+        (barn.erBarnetFødt === true || situasjon === Søkersituasjon.ADOPSJON)
     );
 };
 
