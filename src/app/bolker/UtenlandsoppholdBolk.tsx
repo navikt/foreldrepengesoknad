@@ -105,11 +105,11 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
 
         const ListElement = injectIntl(OppholdListeElement);
         return (
-            <React.Fragment>
+            <>
                 {renderSpørsmål()}
                 {showUtenlandsoppholdContent && (
-                    <React.Fragment>
-                        <Block margin="xs">
+                    <>
+                        <Block margin="xs" visible={opphold && opphold.length > 0}>
                             <List
                                 data={opphold}
                                 renderElement={(oppholdToRender: Utenlandsopphold, index: number) => (
@@ -122,12 +122,12 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
                                 )}
                             />
                         </Block>
-                        <Block margin="xs">
+                        <Block margin="l">
                             <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="utenlandsopphold.leggTilLand" />
                             </Knapp>
                         </Block>
-                    </React.Fragment>
+                    </>
                 )}
 
                 <UtenlandsoppholdModal
@@ -142,7 +142,7 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
                     onEdit={this.onEdit}
                     {...utenlandsoppholdModalProps || {}}
                 />
-            </React.Fragment>
+            </>
         );
     }
 }

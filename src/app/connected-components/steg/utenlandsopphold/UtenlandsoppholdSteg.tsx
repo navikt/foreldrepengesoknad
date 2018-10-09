@@ -55,7 +55,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Block>
+            <Block margin={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? 'm' : 'xs'}>
                 <SkalBoINorgeNeste12MndSpørsmål
                     iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
                     onChange={(iNorgeNeste12Mnd: boolean) =>
@@ -74,7 +74,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Block>
+            <Block margin={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? 'm' : 'xs'}>
                 <BoddINorgeSiste12MndSpørsmål
                     iNorgeSiste12={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd}
                     onChange={(iNorgeSiste12Mnd: boolean) =>
