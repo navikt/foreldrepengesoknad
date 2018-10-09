@@ -4,10 +4,8 @@ import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformas
 export const erMindreEnn4ÅrSidenOppstart = (næring: Næring): boolean => {
     const { tidsperiode } = næring;
 
-    const date4YearsAgo = moment()
-        .subtract(4, 'years')
-        .startOf('day');
-    const startdato = moment(tidsperiode.fom).startOf('day');
+    const date4YearsAgo = moment().subtract(4, 'years');
+    const startdato = moment(tidsperiode.fom);
 
-    return date4YearsAgo.isSameOrBefore(startdato);
+    return date4YearsAgo.isSameOrBefore(startdato, 'day');
 };

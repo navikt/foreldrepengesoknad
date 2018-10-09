@@ -1,6 +1,5 @@
 import moment from 'moment';
 import DateHolidays, { Holiday } from 'date-holidays';
-import { normaliserDato } from 'common/util/datoUtils';
 import { Tidsperiode } from 'common/types';
 
 const holidays = DateHolidays('no');
@@ -22,7 +21,7 @@ export const getOffentligeFridager = (tidsperiode: Tidsperiode): Holiday[] => {
     const slutt = moment(tidsperiode.tom).add(1, 'days');
     return days
         .filter((d) => d.type === 'public')
-        .filter((d) => moment(d.date).isAfter(start) && moment(d.date).isBefore(slutt));
+        .filter((d) => moment(d.date).isAfter(start, 'day') && moment(d.date).isBefore(slutt, 'day'));
 };
 
 export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
@@ -31,7 +30,7 @@ export const getOffentligeFridagerIMåned = (måned: Date): Holiday[] => {
     const slutt = moment(måned).endOf('month');
     return days
         .filter((d) => d.type === 'public')
-        .filter((d) => moment(d.date).isAfter(start) && moment(d.date).isBefore(slutt));
+        .filter((d) => moment(d.date).isAfter(start, 'day') && moment(d.date).isBefore(slutt, 'day'));
 };
 
 /* Default - hente ut helligdager i default tidsrom */
@@ -41,7 +40,6 @@ export const fridager = getOffentligeFridager({
 });
 
 export const erFridag = (dato: Date): string | undefined => {
-    const d = normaliserDato(dato);
-    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(d, 'day'));
+    const fridag = fridager.find((fr) => moment(new Date(fr.date)).isSame(dato, 'day'));
     return fridag ? fridag.name : undefined;
 };

@@ -76,7 +76,10 @@ class TidsperiodeBolk extends React.Component<Props> {
         const bem = BEMHelper('tidsperiodeBolk');
 
         const varighetIDager =
-            tidsperiode && tidsperiode.fom && tidsperiode.tom && moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom)
+            tidsperiode &&
+            tidsperiode.fom &&
+            tidsperiode.tom &&
+            moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
                 ? Tidsperioden({ fom: tidsperiode.fom, tom: tidsperiode.tom }).getAntallUttaksdager()
                 : undefined;
 

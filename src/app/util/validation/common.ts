@@ -4,9 +4,9 @@ import { Avgrensninger } from 'nav-datovelger';
 import { DateValue } from '../../types/common';
 import { Tidsperiode } from 'common/types/index';
 import {
-    dateIs1YearAheadAtLatest,
-    dateIs1YearBeforeAtEarliest,
-    dateIs3YearsAgoOrLater,
+    dateIs1YearAheadOrLess,
+    dateIs1YearAgoOrLess,
+    dateIs3YearsAgoOrLess,
     dateIsNotInFuture,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
@@ -24,17 +24,17 @@ export const dateIsNotInFutureRule = (date: DateValue, failText: string): Valida
 });
 
 export const dateIs3YearsAgoOrLaterRule = (date: DateValue, failText: string): Validator => ({
-    test: () => dateIs3YearsAgoOrLater(date),
+    test: () => dateIs3YearsAgoOrLess(date),
     failText
 });
 
 export const dateIs1YearAheadAtLatestRule = (date: DateValue, failText: string): Validator => ({
-    test: () => dateIs1YearAheadAtLatest(date),
+    test: () => dateIs1YearAheadOrLess(date),
     failText
 });
 
 export const dateIs1YearBeforeAtEarliestRule = (date: DateValue, failText: string): Validator => ({
-    test: () => dateIs1YearBeforeAtEarliest(date),
+    test: () => dateIs1YearAgoOrLess(date),
     failText
 });
 

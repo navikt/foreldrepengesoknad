@@ -78,18 +78,18 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Tidsperiode, taBortFridag
     if (!tidsperiode.fom || !tidsperiode.tom) {
         return 0;
     }
-    if (tidsperiode.fom > tidsperiode.tom) {
+    const fom = moment(tidsperiode.fom);
+    const tom = moment(tidsperiode.tom);
+    if (fom.isAfter(tom, 'day')) {
         return -1;
     }
-    const fom = new Date(tidsperiode.fom.getTime());
-    const tom = new Date(tidsperiode.tom.getTime());
     let antall = 0;
     let fridager = 0;
-    while (fom <= tom) {
-        if (Uttaksdagen(fom).erUttaksdag()) {
+    while (fom.isSameOrBefore(tom, 'day')) {
+        if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
-        fom.setDate(fom.getDate() + 1);
+        fom.add(1, 'day');
     }
     if (taBortFridager) {
         fridager = getUttaksdagerSomErFridager(tidsperiode).length;
@@ -142,7 +142,10 @@ function erTidsperiodeOmsluttetAvTidsperiode(tidsperiode1: Tidsperiode, tidsperi
  * @param tidsperiode2
  */
 function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean {
-    return moment(tidsperiode1.fom).isAfter(tidsperiode2.tom) || moment(tidsperiode1.tom).isBefore(tidsperiode2.fom);
+    return (
+        moment(tidsperiode1.fom).isAfter(tidsperiode2.tom, 'day') ||
+        moment(tidsperiode1.tom).isBefore(tidsperiode2.fom, 'day')
+    );
 }
 
 function tidsperiodeToString(tidsperiode: Tidsperiode, intl: InjectedIntl) {

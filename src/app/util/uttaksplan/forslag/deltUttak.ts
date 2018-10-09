@@ -6,7 +6,6 @@ import {
     Periodetype,
     UttaksperiodeBase
 } from '../../../types/uttaksplan/periodetyper';
-import { normaliserDato } from 'common/util/datoUtils';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { guid } from 'nav-frontend-js-utils';
 import { Forelder } from 'common/types';
@@ -19,7 +18,7 @@ const deltUttakAdopsjonMor = (
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined
 ): Periode[] => {
-    const familiehendelsedato = normaliserDato(Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste());
+    const familiehendelsedato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Periode[] = [];
     const mkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Mødrekvote
@@ -79,7 +78,7 @@ const deltUttakFødselMor = (
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined
 ): Periode[] => {
-    const familiehendelsedato = normaliserDato(Uttaksdagen(famDato).denneEllerNeste());
+    const familiehendelsedato = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
     const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
