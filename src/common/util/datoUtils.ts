@@ -1,7 +1,9 @@
 import moment from 'moment';
 
 export const normaliserDato = (dato: Date): Date => {
-    return moment.utc([dato.getFullYear(), dato.getMonth(), dato.getDate(), 12, 0, 0, 0]).toDate();
+    // Tidssoneforskyvning kan forekomme
+    // return moment.utc([dato.getFullYear(), dato.getMonth(), dato.getDate(), 12, 0, 0, 0]).toDate();
+    return dato;
 };
 
 export function formaterDato(dato: Date, datoformat?: string): string {
