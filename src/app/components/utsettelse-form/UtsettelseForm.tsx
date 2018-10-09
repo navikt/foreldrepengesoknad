@@ -5,7 +5,8 @@ import {
     Periodetype,
     Oppholdsperiode,
     UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Utsettelsesperiode,
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -31,6 +32,7 @@ import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
+import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -102,6 +104,10 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     onChange(periode: UtsettelseFormPeriodeType) {
+        if (periode.type === Periodetype.Utsettelse) {
+            (periode as Utsettelsesperiode).konto = getEgenKvote(this.props.søkerErFarEllerMedmor);
+        }
+
         this.props.onChange(periode);
         if (this.context.validForm) {
             this.context.validForm.validateAll();
