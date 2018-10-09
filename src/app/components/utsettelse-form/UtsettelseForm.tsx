@@ -5,8 +5,7 @@ import {
     Periodetype,
     Oppholdsperiode,
     UtsettelseÅrsakType,
-    Utsettelsesperiode,
-    StønadskontoType
+    Utsettelsesperiode
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
