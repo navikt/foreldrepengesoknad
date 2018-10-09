@@ -24,7 +24,7 @@ const bem = BEMHelper('datoInput');
 
 class DatoInput extends React.Component<Props, {}> {
     render() {
-        const { id, label, postfix, feil, intl, onChange, ...rest } = this.props;
+        const { id, label, postfix, feil, intl, onChange, kalender, ...rest } = this.props;
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
                 <div className={bem.className}>
@@ -33,6 +33,7 @@ class DatoInput extends React.Component<Props, {}> {
                             {...rest}
                             id={id ? id : name}
                             locale={intl.locale}
+                            kalender={kalender}
                             input={{
                                 id,
                                 placeholder: 'dd.mm.åååå',

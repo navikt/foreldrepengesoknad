@@ -107,6 +107,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                             onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
                                 this.updateOppdrag({ tidsperiode })
                             }
+                            kalenderplassering="fullskjerm"
                             sluttdatoDisabled={oppdrag.pågående}
                             datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(oppdrag.tidsperiode)}
                         />

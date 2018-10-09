@@ -187,6 +187,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         }
                         sluttdatoDisabled={annenInntekt.pågående}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(annenInntekt.tidsperiode)}
+                        kalenderplassering="fullskjerm"
                     />
                     <Checkbox
                         checked={annenInntekt.pågående || false}
