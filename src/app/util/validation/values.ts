@@ -1,53 +1,34 @@
 import moment from 'moment';
 
-export const today = moment().startOf('day');
+export const today = moment();
 
-export const tomorrow = moment()
-    .add(1, 'days')
-    .startOf('day');
+export const tomorrow = moment().add(1, 'days');
 
-export const date21DaysAgo = moment()
-    .subtract(21, 'days')
-    .startOf('day');
+export const date21DaysAgo = moment().subtract(21, 'days');
 
-export const date22DaysAgo = moment()
-    .subtract(22, 'days')
-    .startOf('day');
+export const date22DaysAgo = moment().subtract(22, 'days');
 
-export const date1YearAgo = moment()
-    .subtract(1, 'years')
-    .startOf('day');
+export const date1YearAgo = moment().subtract(1, 'years');
 
-export const date1YearAhead = moment()
-    .add(1, 'years')
-    .startOf('day');
+export const date1YearAhead = moment().add(1, 'years');
 
-export const date3YearsAgo = moment()
-    .subtract(3, 'years')
-    .startOf('day');
+export const date3YearsAgo = moment().subtract(3, 'years');
 
-export const date4YearsAgo = moment()
-    .subtract(4, 'years')
-    .startOf('day');
+export const date4YearsAgo = moment().subtract(4, 'years');
 
-export const date15YearsAgo = moment()
-    .subtract(15, 'years')
-    .startOf('day');
+export const date15YearsAgo = moment().subtract(15, 'years');
 
 export const dateMoreThan3YearsAgo = moment()
     .subtract(3, 'years')
-    .subtract(1, 'days')
-    .startOf('day');
+    .subtract(1, 'days');
 
 export const dateMoreThan1YearAhead = moment()
     .add(1, 'years')
-    .add(1, 'day')
-    .startOf('day');
+    .add(1, 'day');
 
 export const dateMoreThan1YearAgo = moment()
     .subtract(1, 'years')
-    .subtract(1, 'day')
-    .startOf('day');
+    .subtract(1, 'day');
 
 export const date5DaysAhead = moment().add(5, 'days');
 

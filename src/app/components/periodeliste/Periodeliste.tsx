@@ -34,7 +34,7 @@ const getAntallUttaksdagerTilNestePeriode = (periode: Periode, idx: number, peri
     if (idx < perioder.length - 1) {
         const fom = periode.tidsperiode.tom && Uttaksdagen(periode.tidsperiode.tom).neste();
         const tom = perioder[idx + 1].tidsperiode.fom && Uttaksdagen(perioder[idx + 1].tidsperiode.fom).forrige();
-        if (fom && tom && moment(fom).isSameOrBefore(tom)) {
+        if (fom && tom && moment(fom).isSameOrBefore(tom, 'day')) {
             return Tidsperioden({
                 fom,
                 tom
