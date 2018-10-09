@@ -1,15 +1,16 @@
 import * as React from 'react';
 import {
+    Oppholdsperiode,
+    Overføringsperiode,
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    Uttaksperiode,
-    Oppholdsperiode,
-    Overføringsperiode
+    UtsettelseÅrsakType,
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { RecursivePartial } from '../../types/Partial';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
@@ -44,10 +45,20 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         };
     }
     onChange(p: RecursivePartial<Periode>) {
+        console.log(
+            (p as Utsettelsesperiode).årsak === UtsettelseÅrsakType.Arbeid &&
+                (p as Utsettelsesperiode).selvstendigNæringsdrivendeEllerFrilans === undefined
+        );
         let updatedPeriode: Periode | undefined;
         const { periode, dispatch } = this.props;
         if (periode.type === Periodetype.Utsettelse) {
-            updatedPeriode = { ...periode, ...(p as Utsettelsesperiode) };
+            updatedPeriode = {
+                ...periode,
+                ...(p as Utsettelsesperiode),
+                erArbeidstaker:
+                    (p as Utsettelsesperiode).årsak === UtsettelseÅrsakType.Arbeid &&
+                    (p as Utsettelsesperiode).selvstendigNæringsdrivendeEllerFrilans === undefined
+            };
         } else if (periode.type === Periodetype.Uttak) {
             updatedPeriode = { ...periode, ...(p as Uttaksperiode) };
         } else if (periode.type === Periodetype.Overføring) {
