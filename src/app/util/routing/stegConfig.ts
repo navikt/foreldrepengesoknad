@@ -1,4 +1,5 @@
 import Søknad from '../../types/søknad/Søknad';
+import { EndringStegID } from './stegConfigEndringssoknad';
 
 export enum StegID {
     'INNGANG' = 'inngang',
@@ -14,13 +15,13 @@ export enum StegID {
 }
 
 export interface StegConfig {
-    [key: string]: StegConfigItem<StegID>;
+    [key: string]: StegConfigItem;
 }
 
-export interface StegConfigItem<T> {
+export interface StegConfigItem {
     tittel: string;
     fortsettKnappLabel: string;
-    nesteSteg?: T;
+    nesteSteg?: StegID | EndringStegID;
     isAvilable?: (søknad: Søknad) => boolean;
     index: number;
 }

@@ -7,7 +7,7 @@ export enum EndringStegID {
 }
 
 export interface EndringStegConfig {
-    [key: string]: StegConfigItem<EndringStegID>;
+    [key: string]: StegConfigItem;
 }
 
 const stegConfig: EndringStegConfig = {
