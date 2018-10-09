@@ -31,7 +31,6 @@ import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
-    søkerrolle: SøkerRolle;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
     perioder: Periode[];
@@ -79,7 +78,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 
         const { søknad, tilgjengeligeStønadskontoer, dispatch } = this.props;
 
-        this.getUttaksstatus = this.getUttaksstatus.bind(this);
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftDialog = this.showBekreftDialog.bind(this);
         this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
@@ -119,16 +117,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
-    getUttaksstatus() {
-        const { uttaksstatus, søkerrolle } = this.props;
-        if (erFarEllerMedmor(søkerrolle)) {
-            return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
-        }
-        return uttaksstatus;
-    }
-
     render() {
-        const { søknad, uttaksplanValidering, isLoadingTilgjengeligeStønadskontoer, dispatch } = this.props;
+        const {
+            søknad,
+            uttaksplanValidering,
+            isLoadingTilgjengeligeStønadskontoer,
+            uttaksstatus,
+            dispatch
+        } = this.props;
         const { visFeiloppsummering } = this.state;
         const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
@@ -181,7 +177,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             søknad.uttaksplan.length > 0 && (
                                 <Block margin="l">
                                     <Uttaksoppsummering
-                                        uttak={this.getUttaksstatus()}
+                                        uttak={uttaksstatus}
                                         navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                                     />
                                 </Block>
@@ -198,6 +194,18 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
+const getUttaksstatus = (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    uttaksplan: Periode[],
+    søkerrolle: SøkerRolle
+) => {
+    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan);
+    if (erFarEllerMedmor(søkerrolle)) {
+        return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
+    }
+    return uttaksstatus;
+};
+
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
         søknad,
@@ -205,9 +213,10 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     } = state;
     const { søkerinfo, history } = props;
 
-    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
+    const uttaksstatus: Stønadskontouttak[] = getUttaksstatus(
         tilgjengeligeStønadskontoer,
-        søknad.uttaksplan
+        søknad.uttaksplan,
+        søknad.søker.rolle
     );
 
     const stegProps: StegProps = {
@@ -225,8 +234,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksstatus,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer,
-        søkerrolle: søknad.søker.rolle
+        isLoadingTilgjengeligeStønadskontoer
     };
 };
 
