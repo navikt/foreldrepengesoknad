@@ -3,7 +3,6 @@ import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { Feil } from '../skjema-input-element/types';
 import NavDatovelger from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { normaliserDato } from 'common/util/datoUtils';
 
 import BEMHelper from 'common/util/bem';
 
@@ -39,7 +38,7 @@ class DatoInput extends React.Component<Props, {}> {
                                 placeholder: 'dd.mm.åååå',
                                 name
                             }}
-                            onChange={(dato) => onChange(dato ? normaliserDato(dato) : undefined)}
+                            onChange={(dato) => onChange(dato ? dato : undefined)}
                         />
                     </div>
                     {postfix ? <div className={bem.element('postfix')}>{postfix}</div> : undefined}
