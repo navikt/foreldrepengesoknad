@@ -10,6 +10,10 @@ export const erUttakAvAnnenForeldersKvote = (
     );
 };
 
+export const getEgenKvote = (erSøkerFarEllerMedmor: boolean) => {
+    return erSøkerFarEllerMedmor ? StønadskontoType.Fedrekvote : StønadskontoType.Mødrekvote;
+};
+
 export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErFarEllerMedmor: boolean): boolean => {
     return erUttakAvAnnenForeldersKvote(konto, søkerErFarEllerMedmor) === false;
 };
