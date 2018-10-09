@@ -13,7 +13,7 @@ import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
-import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
+import { default as SkalBarnetBliFødtINorgeSpørsmål } from '../../../spørsmål/SkalBarnetBliFødtINorgeSpørsmål';
 import isAvailable from '../util/isAvailable';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import {
@@ -33,6 +33,7 @@ import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
+import BleBarnetFødtINorgeSpørsmål from '../../../spørsmål/BleBarnetFødtINorgeSpørsmål';
 
 interface StateProps {
     søknad: Søknad;
@@ -158,8 +159,21 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.væreINorgeVedFødselSpørsmål(informasjonOmUtenlandsopphold, barn)}>
-                    <VæreINorgeVedFødselSpørsmål
+                <Block visible={visibility.skalBarnetBliFødtINorge(informasjonOmUtenlandsopphold, barn)}>
+                    <SkalBarnetBliFødtINorgeSpørsmål
+                        fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
+                        onChange={(fødselINorge: boolean) => {
+                            dispatch(
+                                søknadActions.updateUtenlandsopphold({
+                                    fødselINorge
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+
+                <Block visible={visibility.bleBarnetFødtINorge(informasjonOmUtenlandsopphold, barn)}>
+                    <BleBarnetFødtINorgeSpørsmål
                         fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
                         onChange={(fødselINorge: boolean) => {
                             dispatch(
