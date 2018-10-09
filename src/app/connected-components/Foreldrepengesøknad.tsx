@@ -27,9 +27,24 @@ interface StateProps {
     isSendSøknadInProgress: boolean;
 }
 
+export enum Søknadsapp {
+    'førstegangssøknad' = 'førstegangssøknad',
+    'endringssøknad' = 'endringssøknad'
+}
+
+interface State {
+    app: Søknadsapp;
+}
+
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
-class Foreldrepengesøknad extends React.Component<Props> {
+class Foreldrepengesøknad extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            app: Søknadsapp.førstegangssøknad
+        };
+    }
     componentWillMount() {
         const { dispatch, søkerinfo } = this.props;
         if (!søkerinfo) {
