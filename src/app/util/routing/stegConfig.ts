@@ -14,13 +14,13 @@ export enum StegID {
 }
 
 export interface StegConfig {
-    [key: string]: StegConfigItem;
+    [key: string]: StegConfigItem<StegID>;
 }
 
-export interface StegConfigItem {
+export interface StegConfigItem<T> {
     tittel: string;
     fortsettKnappLabel: string;
-    nesteSteg?: StegID;
+    nesteSteg?: T;
     isAvilable?: (søknad: Søknad) => boolean;
     index: number;
 }
