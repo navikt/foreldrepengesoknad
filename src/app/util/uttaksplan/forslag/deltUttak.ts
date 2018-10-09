@@ -162,18 +162,20 @@ const deltUttakFødselMor = (
             trekkEkstraPermisjonDager = Tidsperioden(ekstraPermisjonFørFødsel.tidsperiode).getAntallUttaksdager();
         }
 
-        const periodeFellesperiodeMor: Periode = {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(
-                Uttaksdagen(currentTomDate).denneEllerNeste(),
-                fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager
-            )
-        };
+        if (fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager > 0) {
+            const periodeFellesperiodeMor: Periode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.MOR,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: getTidsperiode(
+                    Uttaksdagen(currentTomDate).denneEllerNeste(),
+                    fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager
+                )
+            };
 
-        perioder.push(periodeFellesperiodeMor);
+            perioder.push(periodeFellesperiodeMor);
+        }
     }
 
     return perioder.sort(sorterPerioder);
