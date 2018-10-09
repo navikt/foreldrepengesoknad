@@ -14,7 +14,7 @@ const isFødselsnummerFormatValid = (fnr: string): boolean => {
 };
 
 const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
-    return fnr !== undefined && fnr !== '' && fnr.length <= MAKS_FNR_LENGTH;
+    return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
 };
 
 export const getFødselsnummerRegler = (
@@ -28,7 +28,7 @@ export const getFødselsnummerRegler = (
         {
             test: () =>
                 (!utenlandskFnr && isFødselsnummerFormatValid(fnr)) ||
-                (utenlandskFnr && isUtenlandskFødselsnummerValid(fnr)),
+                (utenlandskFnr === true && isUtenlandskFødselsnummerValid(fnr)),
             failText: getMessage(intl, `${intlKey}.ugyldigFødselsnummer`)
         },
         {

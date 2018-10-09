@@ -44,9 +44,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
     static contextTypes = {
         validForm: PropTypes.object
     };
-    context: {
-        validForm: ValidFormContext;
-    };
+    context: ValidFormContext;
 
     renderContent(data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void) {
         const { barnetErFødt, familiehendelsesdato, intl } = this.props;
