@@ -31,10 +31,15 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, SøknadPartial } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
+
+const setSøknad = (payload: SøknadPartial) => ({
+    type: SøknadActionKeys.SET_SØKNAD,
+    payload
+});
 
 const updateBarn = (
     payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
@@ -165,5 +170,6 @@ export default {
     deleteAttachmentSuccess,
     deleteAttachmentFailed,
     uttaksplanLagForslag,
-    avbrytSøknad
+    avbrytSøknad,
+    setSøknad
 };
