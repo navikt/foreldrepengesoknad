@@ -1,4 +1,4 @@
-import Søknad, { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, SøknadPartial } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
 export enum SøknadActionKeys {
+    'SET_SØKNAD' = 'setSøknad',
     'AVBRYT_SØKNAD' = 'avbrytSøknad',
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
@@ -33,6 +34,11 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
     'UTTAKSPLAN_SET_AGGREGERT_INFO' = 'uttaksplanSetAggregertInfo'
+}
+
+export interface SetSøknad {
+    type: SøknadActionKeys.SET_SØKNAD;
+    payload: SøknadPartial;
 }
 
 export interface UpdateSøknadenGjelder {
@@ -148,6 +154,7 @@ export interface AvbrytSøknad {
 }
 
 export type SøknadAction =
+    | SetSøknad
     | AvbrytSøknad
     | UpdateBarn
     | UpdateSøknadenGjelder
