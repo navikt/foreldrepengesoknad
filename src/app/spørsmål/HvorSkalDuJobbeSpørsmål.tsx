@@ -1,17 +1,14 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import Arbeidsforhold from '../types/Arbeidsforhold';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
 import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørsmål';
-import { SelvstendigNæringsdrivendeEllerFrilans } from '../types/uttaksplan/periodetyper';
+import { Arbeidsform } from '../types/uttaksplan/periodetyper';
 
 interface HvorSkalDuJobbeSpørsmålProps {
-    onChange: (
-        orgnr: string | undefined,
-        frilansEllerSelvstendigNæringsdrivende: SelvstendigNæringsdrivendeEllerFrilans | undefined
-    ) => void;
-    frilansEllerSelvstendig?: SelvstendigNæringsdrivendeEllerFrilans;
+    onChange: (orgnr: string | undefined, frilansEllerSelvstendigNæringsdrivende: Arbeidsform | undefined) => void;
+    frilansEllerSelvstendig?: Arbeidsform;
     arbeidsforhold: Arbeidsforhold[];
     valgtArbeidsforhold?: string;
 }
@@ -19,10 +16,7 @@ interface HvorSkalDuJobbeSpørsmålProps {
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
 
 const erFrilansEllerSelvstendig = (value: string): boolean => {
-    return (
-        value === SelvstendigNæringsdrivendeEllerFrilans.selvstendignæringsdrivende ||
-        value === SelvstendigNæringsdrivendeEllerFrilans.frilans
-    );
+    return value === Arbeidsform.selvstendignæringsdrivende || value === Arbeidsform.frilans;
 };
 
 class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
@@ -35,9 +29,9 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     handleOnChange(value: string) {
         const { onChange } = this.props;
         if (erFrilansEllerSelvstendig(value)) {
-            onChange(undefined, value as SelvstendigNæringsdrivendeEllerFrilans);
+            onChange(undefined, value as Arbeidsform);
         } else {
-            onChange(value, undefined);
+            onChange(value, Arbeidsform.arbeidstaker);
         }
     }
 
@@ -55,9 +49,9 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
-                value: SelvstendigNæringsdrivendeEllerFrilans.selvstendignæringsdrivende
+                value: Arbeidsform.selvstendignæringsdrivende
             },
-            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: SelvstendigNæringsdrivendeEllerFrilans.frilans }
+            { label: getMessage(intl, 'jegSkalJobbeSomFrilans'), value: Arbeidsform.frilans }
         ];
     }
 
