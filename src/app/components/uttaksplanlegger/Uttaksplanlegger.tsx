@@ -13,6 +13,7 @@ import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn } from '../../types/søknad/Barn';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
@@ -55,7 +56,7 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
                                         <LinkButton
                                             className={BEM.element('resetLink')}
                                             onClick={() => onRequestReset()}>
-                                            Slett plan
+                                            <FormattedMessage id="uttaksplan.slettPlan" />
                                         </LinkButton>
                                     </div>
                                 )}
