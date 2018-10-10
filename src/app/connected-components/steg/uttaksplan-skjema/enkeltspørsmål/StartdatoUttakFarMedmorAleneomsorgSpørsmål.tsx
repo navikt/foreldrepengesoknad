@@ -6,9 +6,10 @@ import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import { ValgalternativerAleneomsorgFarMedmor } from '../uttaksplanSkjemadata';
-import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
+import startdatoFarMedmorValidation from '../../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
 
 interface OwnProps {
     barn: ForeldreansvarBarn;
@@ -76,16 +77,17 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                         visible={
                             data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen
                         }>
-                        <DatoInput
+                        <ValiderbarDatoInput
                             id="annenStartdatoAdopsjon"
                             name="annenStartdatoAdopsjon"
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
-                            onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
+                            onChange={(startdatoPermisjon: Date | undefined) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
                             avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonVedAdopsjon(
                                 familiehendelsesdato
                             )}
+                            validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
                         />
                     </Block>
                 </>

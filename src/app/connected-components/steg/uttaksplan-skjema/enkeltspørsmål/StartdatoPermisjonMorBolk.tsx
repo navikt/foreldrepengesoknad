@@ -70,6 +70,8 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                     ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.varighet', { varighet })
                     : getMessage(intl, 'spørsmål.startdatoPermisjon.varighet', { varighet })
                 : undefined;
+
+        const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         return (
             <>
                 <Block margin="xs">
@@ -82,7 +84,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         }}
                         dato={startdato}
                         disabled={data.skalIkkeHaUttakFørTermin}
-                        avgrensninger={uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato)}
+                        avgrensninger={datoAvgrensninger}
                         dayPickerProps={{
                             initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
                         }}

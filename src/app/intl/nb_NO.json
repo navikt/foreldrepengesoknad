@@ -355,8 +355,10 @@
 
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Startdato må velges, eller du må krysse av for ingen uttak før termin",
+    "uttaksplan.skjema.validering.startdatoFarMedmor": "Startdato må velges",
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
+    "uttaksplan.skjema.validering.startdatoHelg": "Startdato kan ikke være på en lørdag eller søndag",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut",
     "uttaksplan.skjema.informasjonTilFarMedmor":
