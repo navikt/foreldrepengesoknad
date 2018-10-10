@@ -13,7 +13,7 @@ import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import { Søker } from '../../types/søknad/Søker';
 
-export const getDefaultSøknadState = (): SøknadPartial => {
+const getDefaultState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
         annenForelder: {
@@ -63,11 +63,11 @@ const handleGjelderAnnetBarn = (
     return annenForelder;
 };
 
-const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
+const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
-                ...getDefaultSøknadState()
+                ...getDefaultState()
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
@@ -76,7 +76,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         case SøknadActionKeys.SET_SØKNAD:
             return {
-                ...getDefaultSøknadState(),
+                ...getDefaultState(),
                 ...action.payload
             };
         case SøknadActionKeys.UPDATE_BARN:
