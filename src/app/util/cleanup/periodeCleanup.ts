@@ -36,7 +36,8 @@ const cleanupUtsettelse = (
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
         selvstendigNæringsdrivendeEllerFrilans: UtsettelseÅrsakType.Arbeid
             ? periode.selvstendigNæringsdrivendeEllerFrilans
-            : undefined
+            : undefined,
+        erArbeidstaker: periode.erArbeidstaker
     };
 };
 
