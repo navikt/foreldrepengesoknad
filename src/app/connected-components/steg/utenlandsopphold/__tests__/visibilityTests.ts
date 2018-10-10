@@ -58,8 +58,23 @@ describe('Utenlandsopphold visbility tester', () => {
     });
 
     it('Dersom søknad er for et barn som er adoptert skal spørsmål om søker befant seg i Norge på omsorgsovertakelsesdato stilles', () => {
-        expect(fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(Søkersituasjon.ADOPSJON)).toBe(true);
-        expect(fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(Søkersituasjon.FØDSEL)).toBe(false);
-        expect(fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(Søkersituasjon.FORELDREANSVAR)).toBe(false);
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.ADOPSJON
+            )
+        ).toBe(true);
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.FØDSEL
+            )
+        ).toBe(false);
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.FORELDREANSVAR
+            )
+        ).toBe(false);
     });
 });

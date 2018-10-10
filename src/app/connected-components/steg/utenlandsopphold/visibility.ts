@@ -40,13 +40,20 @@ const varDuINorgeDaBarnetBleFødtVisible = (
 ): boolean => {
     return (
         skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
-        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined &&
+        oppholdErOk(informasjonOmUtenlandsopphold.iNorgeNeste12Mnd, informasjonOmUtenlandsopphold.senereOpphold) &&
         barn.erBarnetFødt === true
     );
 };
 
-const befinnerDuDegINorgePåDatoForOmsorgsovertakelseVisible = (søkersituasjon: Søkersituasjon) => {
-    return søkersituasjon === Søkersituasjon.ADOPSJON;
+const befinnerDuDegINorgePåDatoForOmsorgsovertakelseVisible = (
+    informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>,
+    søkersituasjon: Søkersituasjon
+) => {
+    return (
+        skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
+        oppholdErOk(informasjonOmUtenlandsopphold.iNorgeNeste12Mnd, informasjonOmUtenlandsopphold.senereOpphold) &&
+        søkersituasjon === Søkersituasjon.ADOPSJON
+    );
 };
 
 export default {

@@ -187,7 +187,11 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(situasjon)}>
+                <Block
+                    visible={visibility.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                        informasjonOmUtenlandsopphold,
+                        situasjon
+                    )}>
                     <INorgePåHendelsestidspunktetSpørsmål
                         spørsmålstekst={getMessage(intl, 'befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål')}
                         iNorgePåHendelsestidspunktet={søknad.informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet}
