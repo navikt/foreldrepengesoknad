@@ -44,7 +44,6 @@ const SkalBoINorgeNeste12MndSpørsmål = (props: Props) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: SkalBoINorgeNeste12Mnd) =>
                 onChange(v === SkalBoINorgeNeste12Mnd.SKAL_BO_I_NORGE_NESTE_12, e)
             }
-            twoColumns={true}
             {...otherProps}
         />
     );
