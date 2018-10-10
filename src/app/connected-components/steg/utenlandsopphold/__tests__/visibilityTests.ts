@@ -1,5 +1,5 @@
 import { default as fns } from './../visibility';
-import { Utenlandsopphold } from '../../../../types/s\u00F8knad/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold } from '../../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 const opphold: Utenlandsopphold = {
