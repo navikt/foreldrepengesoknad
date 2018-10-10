@@ -3,24 +3,24 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
-interface SkalBarnetBliFødtINorgeSpørsmålProps {
+interface VarDuINorgePåFødselstidspunktetSpørsmålProps {
     fødselINorge?: boolean;
     onChange: (fødselINorge: boolean) => void;
 }
 
-type Props = SkalBarnetBliFødtINorgeSpørsmålProps & InjectedIntlProps;
+type Props = VarDuINorgePåFødselstidspunktetSpørsmålProps & InjectedIntlProps;
 
-const SkalBarnetBliFødtINorgeSpørsmål = (props: Props) => {
+const VarDuINorgePåFødselstidspunktetSpørsmål = (props: Props) => {
     const { onChange, fødselINorge, intl } = props;
 
     return (
         <JaNeiSpørsmål
-            spørsmål={getMessage(intl, 'væreINorgeVedFødsel.spørsmål')}
-            navn="skalBarnetBliFødtINorge"
+            spørsmål={getMessage(intl, 'varDuINorgePåFødselstidspunktet.spørsmål')}
+            navn="varDuINorgePåFødselstidspunktet"
             onChange={onChange}
             valgtVerdi={fødselINorge}
         />
     );
 };
 
-export default injectIntl(SkalBarnetBliFødtINorgeSpørsmål);
+export default injectIntl(VarDuINorgePåFødselstidspunktetSpørsmål);

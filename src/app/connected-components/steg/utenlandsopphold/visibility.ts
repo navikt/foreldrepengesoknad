@@ -14,7 +14,7 @@ const skalBoINorgeNeste12MndContentVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
 ): boolean => informasjonOmUtenlandsopphold.iNorgeNeste12Mnd === false;
 
-const skalBarnetBliFødtINorgeVisible = (
+const skalVæreINorgeVedFødselVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>,
     barn: Partial<Barn>
 ): boolean => {
@@ -25,22 +25,26 @@ const skalBarnetBliFødtINorgeVisible = (
     );
 };
 
-const bleBarnetFødtINorgeVisible = (
+const varDuINorgeDaBarnetBleFødtVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>,
-    barn: Partial<Barn>,
-    situasjon: Søkersituasjon
+    barn: Partial<Barn>
 ): boolean => {
     return (
         skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
         informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined &&
-        (barn.erBarnetFødt === true || situasjon === Søkersituasjon.ADOPSJON)
+        barn.erBarnetFødt === true
     );
+};
+
+const befinnerDuDegINorgePåDatoForOmsorgsovertakelseVisible = (søkersituasjon: Søkersituasjon) => {
+    return søkersituasjon === Søkersituasjon.ADOPSJON;
 };
 
 export default {
     harBoddINorgeSiste12MndContent: harBoddINorgeSiste12MndContentVisible,
     skalBoINorgeNeste12MndContent: skalBoINorgeNeste12MndContentVisible,
     skalBoINorgeNeste12MndBlock: skalBoINorgeNeste12MndBlockVisible,
-    skalBarnetBliFødtINorge: skalBarnetBliFødtINorgeVisible,
-    bleBarnetFødtINorge: bleBarnetFødtINorgeVisible
+    skalVæreINorgeVedFødsel: skalVæreINorgeVedFødselVisible,
+    varDuINorgeDaBarnetBleFødt: varDuINorgeDaBarnetBleFødtVisible,
+    befinnerDuDegINorgePåDatoForOmsorgsovertakelse: befinnerDuDegINorgePåDatoForOmsorgsovertakelseVisible
 };

@@ -284,8 +284,10 @@
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
     "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
-    "væreINorgeVedFødsel.spørsmål": "Vil barnet bli født i Norge?",
-    "bleBarnetFødtINorge.spørsmål": "Ble barnet født i Norge?",
+    "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål":
+        "Befinner du deg i Norge på datoen for omsorgsovertakelse?",
+    "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
+    "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge når barnet ble født?",
 
     "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
     "stebarnsadopsjonsdato.spørsmål": "Når er er dato for stebarnsadopsjon?",
