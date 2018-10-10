@@ -1,5 +1,6 @@
 import { default as fns } from './../visibility';
-import { Utenlandsopphold } from '../../../../types/s\u00F8knad/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold } from '../../../../types/søknad/InformasjonOmUtenlandsopphold';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 const opphold: Utenlandsopphold = {
     land: 'abc',
@@ -29,21 +30,51 @@ describe('Utenlandsopphold visbility tester', () => {
         expect(fns.skalBoINorgeNeste12MndContent({ iNorgeNeste12Mnd: true })).toBe(false);
     });
 
-    it('Dersom søknad er for et barn som ikke er født skal spørsmål om opphold i Norge under fødsel vises', () => {
+    it('Dersom søknad er for et barn som er født skal spørsmål om søker skal være i Norge på fødselsdato stilles', () => {
         expect(
-            fns.væreINorgeVedFødselSpørsmål({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: false })
+            fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: false })
         ).toBe(true);
         expect(
-            fns.væreINorgeVedFødselSpørsmål(
+            fns.skalVæreINorgeVedFødsel(
                 { iNorgeSiste12Mnd: true, senereOpphold: [opphold], iNorgeNeste12Mnd: false },
                 { erBarnetFødt: false }
             )
         ).toBe(true);
         expect(
-            fns.væreINorgeVedFødselSpørsmål({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: true })
+            fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: true })
         ).toBe(false);
         expect(
-            fns.væreINorgeVedFødselSpørsmål({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: false }, { erBarnetFødt: true })
+            fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: false }, { erBarnetFødt: true })
+        ).toBe(false);
+    });
+
+    it('Dersom søknad er for et barn som er født skal spørsmål om søker befant seg i Norge på fødselsdato stilles', () => {
+        expect(
+            fns.varDuINorgeDaBarnetBleFødt({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: true })
+        ).toBe(true);
+        expect(
+            fns.varDuINorgeDaBarnetBleFødt({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: false })
+        ).toBe(false);
+    });
+
+    it('Dersom søknad er for et barn som er adoptert skal spørsmål om søker befant seg i Norge på omsorgsovertakelsesdato stilles', () => {
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.ADOPSJON
+            )
+        ).toBe(true);
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.FØDSEL
+            )
+        ).toBe(false);
+        expect(
+            fns.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                { iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true },
+                Søkersituasjon.FORELDREANSVAR
+            )
         ).toBe(false);
     });
 });
