@@ -1,10 +1,7 @@
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AppState } from '../reducers';
-import {
-    validerUttaksplanAction,
-    setValidertePerioder
-} from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { setValidertePerioder } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
@@ -36,7 +33,7 @@ export default function* storageSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerUttaksplanSaga)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanAction)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanAction)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanSaga)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
 }

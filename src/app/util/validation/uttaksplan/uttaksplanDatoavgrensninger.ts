@@ -25,7 +25,7 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Avgren
 const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
     const permisjonsregler = getPermisjonsregler();
     const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
-    const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
+    const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5 - 1);
     return {
         minDato,
         maksDato
