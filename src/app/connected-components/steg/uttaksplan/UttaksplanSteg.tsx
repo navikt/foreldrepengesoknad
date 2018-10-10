@@ -27,6 +27,7 @@ import Lenke from 'nav-frontend-lenker';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 
 interface StateProps {
     stegProps: StegProps;
@@ -39,7 +40,8 @@ interface StateProps {
 }
 
 interface UttaksplanStegState {
-    bekreftDialogSynlig: boolean;
+    bekreftGåTilbakeDialogSynlig: boolean;
+    bekreftSlettUttaksplanDialogSynlig: boolean;
     visFeiloppsummering: boolean;
     harKlikketFortsett: boolean;
 }
@@ -79,12 +81,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         const { søknad, tilgjengeligeStønadskontoer, dispatch } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
-        this.showBekreftDialog = this.showBekreftDialog.bind(this);
-        this.hideBekreftDialog = this.hideBekreftDialog.bind(this);
+        this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
+        this.hideBekreftGåTilbakeDialog = this.hideBekreftGåTilbakeDialog.bind(this);
         this.handleOnPeriodeErrorClick = this.handleOnPeriodeErrorClick.bind(this);
+        this.hideBekreftSlettUttaksplanDialog = this.hideBekreftSlettUttaksplanDialog.bind(this);
+        this.showBekreftSlettUttaksplanDialog = this.showBekreftSlettUttaksplanDialog.bind(this);
+        this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
 
         this.state = {
-            bekreftDialogSynlig: false,
+            bekreftGåTilbakeDialogSynlig: false,
+            bekreftSlettUttaksplanDialogSynlig: false,
             visFeiloppsummering: false,
             harKlikketFortsett: false
         };
@@ -97,17 +103,30 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
-    showBekreftDialog() {
-        this.setState({ bekreftDialogSynlig: true });
+    showBekreftGåTilbakeDialog() {
+        this.setState({ bekreftGåTilbakeDialogSynlig: true });
     }
 
-    hideBekreftDialog() {
-        this.setState({ bekreftDialogSynlig: false });
+    hideBekreftGåTilbakeDialog() {
+        this.setState({ bekreftGåTilbakeDialogSynlig: false });
+    }
+
+    showBekreftSlettUttaksplanDialog() {
+        this.setState({ bekreftSlettUttaksplanDialogSynlig: true });
+    }
+
+    hideBekreftSlettUttaksplanDialog() {
+        this.setState({ bekreftSlettUttaksplanDialogSynlig: false });
     }
 
     onBekreftGåTilbake() {
-        this.setState({ bekreftDialogSynlig: false });
+        this.setState({ bekreftGåTilbakeDialogSynlig: false });
         this.props.history.push(StegID.UTTAKSPLAN_SKJEMA);
+    }
+
+    onBekreftSlettUttaksplan() {
+        this.setState({ bekreftSlettUttaksplanDialogSynlig: false });
+        this.props.dispatch(søknadActions.uttaksplanSetPerioder([]));
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
@@ -147,7 +166,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     });
                     return uttaksplanValidering.erGyldig;
                 }}
-                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftDialog : undefined}
+                confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftGåTilbakeDialog : undefined}
                 errorSummaryRenderer={() => (
                     <UttaksplanFeiloppsummering
                         ref={(c) => (this.feilOppsummering = c)}
@@ -169,7 +188,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 uttaksplan={søknad.uttaksplan}
                                 uttaksplanValidering={uttaksplanValidering}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
-                                onRequestReset={() => dispatch(søknadActions.uttaksplanSetPerioder([]))}
+                                onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 navnPåForeldre={uttaksplanInfo.navnPåForeldre}
                             />
                         </Block>
@@ -185,9 +204,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     </React.Fragment>
                 )}
                 <BekreftGåTilUttaksplanSkjemaDialog
-                    synlig={this.state.bekreftDialogSynlig}
+                    synlig={this.state.bekreftGåTilbakeDialogSynlig}
                     onGåTilbake={this.onBekreftGåTilbake}
-                    onBliVærende={this.hideBekreftDialog}
+                    onBliVærende={this.hideBekreftGåTilbakeDialog}
+                />
+                <BekreftSlettUttaksplanDialog
+                    synlig={this.state.bekreftSlettUttaksplanDialogSynlig}
+                    onSlett={this.onBekreftSlettUttaksplan}
+                    onAngre={this.hideBekreftSlettUttaksplanDialog}
                 />
             </Steg>
         );
