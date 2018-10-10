@@ -13,18 +13,23 @@
 
     .radioPanelGruppe--responsive {
         @panelBottomMargin: 0.5rem;
-        @panelRightMargin: 1rem;
+        @panelHorizontalMargin: 0.5rem;
         display: flex;
         flex-wrap: wrap;
         margin-bottom: -1 * @panelBottomMargin;
-        margin-right: -1 * @panelRightMargin;
+        margin-left: -1 * @panelHorizontalMargin;
+        margin-right: -1 * @panelHorizontalMargin;
 
         .radioPanel {
-            margin: 0 @panelRightMargin @panelBottomMargin 0;
+            margin: 0 @panelHorizontalMargin @panelBottomMargin @panelHorizontalMargin;
             &__label {
                 flex-grow: 1;
                 flex-shrink: 0;
             }
+        }
+        .skjemaelement__feilmelding {
+            margin-left: @panelHorizontalMargin;
+            margin-right: @panelHorizontalMargin;
         }
 
         @media screen and (max-width: 576px) {
