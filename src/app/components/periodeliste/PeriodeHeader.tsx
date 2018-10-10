@@ -46,7 +46,7 @@ const getIkonForAdvarsel = (advarsel: Advarsel): UttaksplanIkonKeys => {
     if (advarsel.type === 'advarsel') {
         return UttaksplanIkonKeys.advarsel;
     }
-    return UttaksplanIkonKeys.advarsel; // Feilikon mangler
+    return UttaksplanIkonKeys.feil;
 };
 
 const renderDagMnd = (dato: Date): JSX.Element =>
