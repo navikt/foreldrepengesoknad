@@ -33,7 +33,8 @@ export enum UtsettelseÅrsakType {
     'InstitusjonBarnet' = 'INSTITUSJONSOPPHOLD_BARNET'
 }
 
-export enum SelvstendigNæringsdrivendeEllerFrilans {
+export enum Arbeidsform {
+    'arbeidstaker' = 'ARBEIDSTAKER',
     'frilans' = 'FRILANS',
     'selvstendignæringsdrivende' = 'SELVSTENDIG_NÆRINGSDRIVENDE'
 }
@@ -72,7 +73,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     gradert?: boolean;
     stillingsprosent?: string;
     orgnr?: string;
-    selvstendigNæringsdrivendeEllerFrilans?: SelvstendigNæringsdrivendeEllerFrilans;
+    selvstendigNæringsdrivendeEllerFrilans?: Arbeidsform;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
@@ -89,7 +90,8 @@ export interface Utsettelsesperiode extends PeriodeBase {
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     orgnr?: string;
-    selvstendigNæringsdrivendeEllerFrilans?: SelvstendigNæringsdrivendeEllerFrilans;
+    erArbeidstaker: boolean;
+    selvstendigNæringsdrivendeEllerFrilans?: Arbeidsform;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {

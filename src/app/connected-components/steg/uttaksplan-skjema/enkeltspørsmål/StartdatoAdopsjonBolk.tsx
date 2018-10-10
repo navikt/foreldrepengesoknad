@@ -67,7 +67,7 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             spørsmål={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.spørsmål')}
                             valgtVerdi={data.valgtAdopsjonStartdato}
                             alternativer={alternativer}
-                            toKolonner={alternativer.length === 2}
+                            toKolonner={true}
                             onChange={(value: ValgalternativerAdopsjonStartdato) =>
                                 onChange({
                                     valgtAdopsjonStartdato: value,
