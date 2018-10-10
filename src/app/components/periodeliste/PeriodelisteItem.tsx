@@ -12,6 +12,7 @@ import {
     EndrePeriodeRequestDeleteEvent,
     EndrePeriodeChangeEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import { onToggleItemProp } from '../toggle-list/ToggleList';
 
 export interface Props {
     periode: Periode;
@@ -20,7 +21,7 @@ export interface Props {
     validertPeriode: ValidertPeriode;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
-    onToggle: (periodeId: string) => void;
+    onToggle: onToggleItemProp;
 }
 
 const PeriodelisteItem: React.StatelessComponent<Props> = ({
@@ -32,9 +33,10 @@ const PeriodelisteItem: React.StatelessComponent<Props> = ({
     onChange,
     onToggle
 }) => {
+    const id = getPeriodelisteItemId(periode.id);
     return (
         <ToggleItemControlled
-            id={getPeriodelisteItemId(periode.id)}
+            id={id}
             isExpanded={isExpanded}
             onToggle={() => onToggle(periode.id)}
             expandedHeaderClassName="periodeheader--isOpen"
@@ -53,6 +55,15 @@ const PeriodelisteItem: React.StatelessComponent<Props> = ({
                         validertPeriode={validertPeriode}
                         onChange={onChange}
                         onRequestDelete={onRequestDelete}
+                        onRequestClose={() => {
+                            onToggle(periode.id);
+                            if (isExpanded) {
+                                const el = document.getElementById(id);
+                                if (el) {
+                                    el.focus();
+                                }
+                            }
+                        }}
                     />
                 </div>
             )}

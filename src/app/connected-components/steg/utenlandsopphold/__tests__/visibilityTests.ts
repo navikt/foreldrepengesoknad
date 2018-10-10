@@ -1,5 +1,11 @@
 import { default as fns } from './../visibility';
+import { Utenlandsopphold } from '../../../../types/s\u00F8knad/InformasjonOmUtenlandsopphold';
 import { Søkersituasjon } from '../../../../types/søknad/Søknad';
+
+const opphold: Utenlandsopphold = {
+    land: 'abc',
+    tidsperiode: { fom: new Date(), tom: new Date() }
+};
 
 describe('Utenlandsopphold visbility tester', () => {
     it('Skal vise landevelger for siste 12 måneder om søker har sagt at de har hatt utenlandsopphold', () => {
@@ -9,7 +15,13 @@ describe('Utenlandsopphold visbility tester', () => {
 
     it('Skal bo i Norge neste 12 måneder spørsmål skal være skjult gitt at forrige 12 måneder ikke er besvart', () => {
         expect(fns.skalBoINorgeNeste12MndBlock({ iNorgeSiste12Mnd: undefined })).toBe(false);
-        expect(fns.skalBoINorgeNeste12MndBlock({ iNorgeSiste12Mnd: false })).toBe(true);
+        expect(fns.skalBoINorgeNeste12MndBlock({ iNorgeSiste12Mnd: false, tidligereOpphold: [] })).toBe(false);
+        expect(
+            fns.skalBoINorgeNeste12MndBlock({
+                iNorgeSiste12Mnd: false,
+                tidligereOpphold: [opphold]
+            })
+        ).toBe(true);
         expect(fns.skalBoINorgeNeste12MndBlock({ iNorgeSiste12Mnd: true })).toBe(true);
     });
 
@@ -23,7 +35,10 @@ describe('Utenlandsopphold visbility tester', () => {
             fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: false })
         ).toBe(true);
         expect(
-            fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: false }, { erBarnetFødt: false })
+            fns.skalVæreINorgeVedFødsel(
+                { iNorgeSiste12Mnd: true, senereOpphold: [opphold], iNorgeNeste12Mnd: false },
+                { erBarnetFødt: false }
+            )
         ).toBe(true);
         expect(
             fns.skalVæreINorgeVedFødsel({ iNorgeSiste12Mnd: true, iNorgeNeste12Mnd: true }, { erBarnetFødt: true })

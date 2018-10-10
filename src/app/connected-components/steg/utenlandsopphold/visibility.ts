@@ -1,6 +1,13 @@
-import InformasjonOmUtenlandsopphold from '../../../types/søknad/InformasjonOmUtenlandsopphold';
+import InformasjonOmUtenlandsopphold, { Utenlandsopphold } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { Barn } from '../../../types/søknad/Barn';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
+
+const oppholdErOk = (boddINorge: boolean | undefined, opphold: Utenlandsopphold[] | undefined): boolean => {
+    if (boddINorge !== false) {
+        return boddINorge !== undefined;
+    }
+    return opphold !== undefined && opphold.length > 0;
+};
 
 const harBoddINorgeSiste12MndContentVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
@@ -8,7 +15,9 @@ const harBoddINorgeSiste12MndContentVisible = (
 
 const skalBoINorgeNeste12MndBlockVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
-): boolean => informasjonOmUtenlandsopphold.iNorgeSiste12Mnd !== undefined;
+): boolean => {
+    return oppholdErOk(informasjonOmUtenlandsopphold.iNorgeSiste12Mnd, informasjonOmUtenlandsopphold.tidligereOpphold);
+};
 
 const skalBoINorgeNeste12MndContentVisible = (
     informasjonOmUtenlandsopphold: Partial<InformasjonOmUtenlandsopphold>
@@ -20,7 +29,7 @@ const skalVæreINorgeVedFødselVisible = (
 ): boolean => {
     return (
         skalBoINorgeNeste12MndBlockVisible(informasjonOmUtenlandsopphold) &&
-        informasjonOmUtenlandsopphold.iNorgeNeste12Mnd !== undefined &&
+        oppholdErOk(informasjonOmUtenlandsopphold.iNorgeNeste12Mnd, informasjonOmUtenlandsopphold.senereOpphold) &&
         barn.erBarnetFødt === false
     );
 };
