@@ -4,6 +4,7 @@ import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
+import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 
 const startdatoFørTerminValidators = (
     intl: InjectedIntl,
@@ -15,6 +16,10 @@ const startdatoFørTerminValidators = (
         {
             test: () => dato === undefined || ingenUttakFørTermin !== true,
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoFørTermin')
+        },
+        {
+            test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
+            failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoHelg')
         }
     ];
     if (ingenUttakFørTermin !== true) {
