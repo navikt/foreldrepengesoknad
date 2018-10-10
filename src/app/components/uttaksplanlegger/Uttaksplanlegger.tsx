@@ -28,6 +28,8 @@ export interface Props {
 
 const BEM = BEMHelper('uttaksplanlegger');
 
+export const uttaksplanleggerDomId = 'uttaksplanlegger';
+
 class Uttaksplanlegger extends React.Component<Props, {}> {
     render() {
         const {
@@ -40,7 +42,7 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
             onRequestReset
         } = this.props;
         return (
-            <article className={BEM.className}>
+            <article className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
                 <header className={BEM.element('header')}>
                     <Systemtittel tag="h1" className={BEM.element('header__title')}>
                         Din plan

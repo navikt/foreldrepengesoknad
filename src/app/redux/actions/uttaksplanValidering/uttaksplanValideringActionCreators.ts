@@ -2,23 +2,16 @@ import {
     UttaksplanValideringActionKeys,
     UttaksplanValideringActionTypes
 } from './uttaksplanValideringActionDefinitions';
-import { Periodevalidering, ValidertPeriode } from '../../reducers/uttaksplanValideringReducer';
+import { Periodevalidering } from '../../reducers/uttaksplanValideringReducer';
 
-export function setValidertPeriode(
-    periodeId: string,
-    validertPeriode: ValidertPeriode
+export function setUttaksplanValidering(
+    validertePerioder: Periodevalidering,
+    inneholderPerioder: boolean
 ): UttaksplanValideringActionTypes {
     return {
-        type: UttaksplanValideringActionKeys.SET_VALIDERT_PERIODE,
-        periodeId,
-        validertPeriode
-    };
-}
-
-export function setValidertePerioder(validertePerioder: Periodevalidering): UttaksplanValideringActionTypes {
-    return {
-        type: UttaksplanValideringActionKeys.SET_VALIDERTE_PERIODER,
-        validertePerioder
+        type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
+        validertePerioder,
+        inneholderPerioder
     };
 }
 
@@ -29,7 +22,6 @@ export function validerUttaksplanAction() {
 }
 
 export default {
-    setValidertPeriode,
-    setValidertePerioder,
+    setUttaksplanValidering,
     validerUttaksplanAction
 };
