@@ -5,6 +5,8 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import NyPeriodeForm from '../../components/ny-periode-form/NyPeriodeForm';
 
+import './nyPeriodeBolk.less';
+
 interface Props {
     onSubmit: (periode: Periode) => void;
 }
@@ -69,7 +71,7 @@ export default class NyPeriodeBolk extends React.Component<Props, State> {
         return (
             <React.Fragment>
                 <Block margin="xs" visible={this.state.formIsOpen}>
-                    {this.renderPeriodeForm()}
+                    <div className="nyPeriodeForm">{this.renderPeriodeForm()}</div>
                 </Block>
                 <Block margin="none" visible={!this.state.formIsOpen}>
                     <Knapperad>
