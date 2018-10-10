@@ -605,5 +605,6 @@
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Dato må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
+    "uttaksplan.validering.feil.tomUttaksplan": "Uttaksplanen inneholder ikke noen tellende perioder",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
