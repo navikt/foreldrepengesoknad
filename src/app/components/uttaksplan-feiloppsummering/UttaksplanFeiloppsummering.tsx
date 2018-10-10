@@ -7,6 +7,7 @@ import getMessage from 'common/util/i18nUtils';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { getPeriodelisteItemId } from '../periodeliste/Periodeliste';
+import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -59,6 +60,13 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 text: feilmelding
             };
         });
+
+        if (uttaksplanValidering.inneholderPerioder === false) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'uttaksplan.validering.feil.tomUttaksplan')
+            });
+        }
 
         return (
             <Feiloppsummering

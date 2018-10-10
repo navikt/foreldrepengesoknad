@@ -61,10 +61,12 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                       )
                     : {
                           fra: {
-                              ugyldigeTidsperioder
+                              ugyldigeTidsperioder,
+                              helgedagerIkkeTillatt: true
                           },
                           til: {
-                              ugyldigeTidsperioder
+                              ugyldigeTidsperioder,
+                              helgedagerIkkeTillatt: true
                           }
                       }
             }

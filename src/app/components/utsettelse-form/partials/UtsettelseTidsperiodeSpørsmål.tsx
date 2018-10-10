@@ -28,11 +28,13 @@ const UtsettelseTidsperiodeSpørsmål: React.StatelessComponent<Props & Injected
             fra: {
                 minDato: familiehendelsesdato,
                 maksDato: tidsperiode ? (tidsperiode.tom as Date) : undefined,
-                ugyldigeTidsperioder
+                ugyldigeTidsperioder,
+                helgedagerIkkeTillatt: true
             },
             til: {
                 minDato: tidsperiode ? (tidsperiode.fom as Date) : undefined,
-                ugyldigeTidsperioder
+                ugyldigeTidsperioder,
+                helgedagerIkkeTillatt: true
             }
         }}
         datoValidatorer={{
