@@ -553,6 +553,7 @@
         "Dersom du går tilbake til forrige steg vil uttaksplanen bli nullstillt, og du må lage uttaksplanen på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
+    "uttaksplan.slettPlan": "Slett plan",
     "bekreftSlettUttaksplanDialog.tittel": "Slett uttaksplan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.avbrytLabel": "Nei, avbryt",
