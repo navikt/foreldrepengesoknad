@@ -28,7 +28,6 @@ function* validerUttaksplanSaga() {
     uttaksplan.forEach((periode) => {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
         if (periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined) {
-            // ForeldrepengerFørFødsel & skalIkkeHaUttakFørPermisjon skal ikke telles med
             antallAktivePerioder++;
         }
     });
