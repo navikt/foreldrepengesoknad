@@ -27,7 +27,6 @@ import visibility from './visibility';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
-import { getDefaultSøknadState } from '../../../redux/reducers/søknadReducer';
 
 export interface StateProps {
     kjønn: Kjønn;
@@ -86,14 +85,11 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     cleanupSøknad() {
-        const { valgtRolle, situasjon, dispatch } = this.props;
+        const { valgtRolle, situasjon, søker, dispatch } = this.props;
         if (situasjon !== this.initiellSituasjon || valgtRolle !== this.initiellSøkerrolle) {
             dispatch(
                 søknadActions.setSøknad({
-                    ...getDefaultSøknadState(),
-                    søker: {
-                        rolle: valgtRolle
-                    },
+                    søker,
                     situasjon,
                     harGodkjentVilkår: true
                 })
