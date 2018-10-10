@@ -27,11 +27,13 @@ import visibility from './visibility';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
+import { getDefaultSøknadState } from '../../../redux/reducers/søknadReducer';
 
 export interface StateProps {
     kjønn: Kjønn;
     situasjon?: Søkersituasjon;
-    roller: SøkerRolle[];
+    valgtRolle: SøkerRolle;
+    velgbareRoller: SøkerRolle[];
     stegProps: StegProps;
     søker: Søker;
 }
@@ -39,11 +41,18 @@ export interface StateProps {
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
 
 class InngangSteg extends React.Component<Props, {}> {
+    initiellSituasjon: Søkersituasjon | undefined;
+    initiellSøkerrolle: SøkerRolle | undefined;
+
     constructor(props: Props) {
         super(props);
 
-        this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(this);
+        this.cleanupSøknad = this.cleanupSøknad.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(this);
+
+        this.initiellSituasjon = props.situasjon;
+        this.initiellSøkerrolle = props.valgtRolle;
     }
 
     resolveSøkerRolle(situasjon: Søkersituasjon) {
@@ -76,7 +85,25 @@ class InngangSteg extends React.Component<Props, {}> {
         );
     }
 
+    cleanupSøknad() {
+        const { valgtRolle, situasjon, dispatch } = this.props;
+        if (situasjon !== this.initiellSituasjon || valgtRolle !== this.initiellSøkerrolle) {
+            dispatch(
+                søknadActions.setSøknad({
+                    ...getDefaultSøknadState(),
+                    søker: {
+                        rolle: valgtRolle
+                    },
+                    situasjon,
+                    harGodkjentVilkår: true
+                })
+            );
+        }
+    }
+
     handleOnSubmit() {
+        this.cleanupSøknad();
+
         const { dispatch, history, situasjon } = this.props;
         dispatch(apiActionCreators.storeAppState());
 
@@ -90,7 +117,7 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     render() {
-        const { roller, situasjon, søker, dispatch, stegProps } = this.props;
+        const { velgbareRoller, situasjon, søker, dispatch, stegProps } = this.props;
         const { rolle } = søker;
 
         return (
@@ -98,10 +125,10 @@ class InngangSteg extends React.Component<Props, {}> {
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
-                <Block visible={visibility.søkerRolleSpørsmål({ roller, situasjon })}>
+                <Block visible={visibility.søkerRolleSpørsmål({ velgbareRoller, situasjon })}>
                     <SøkerrolleSpørsmål
                         rolle={rolle}
-                        roller={roller}
+                        roller={velgbareRoller}
                         onChange={(nyRolle: SøkerRolle) =>
                             dispatch(
                                 søknadActions.updateSøker({
@@ -130,8 +157,9 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const kjønn = props.søkerinfo.person.kjønn;
     const situasjon = state.søknad.situasjon;
     const søker = state.søknad.søker;
-    const roller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
-    const erRolleGyldig = roller.some((r) => r === søker.rolle);
+    const valgtRolle = state.søknad.søker.rolle;
+    const velgbareRoller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
+    const erRolleGyldig = velgbareRoller.some((r) => r === søker.rolle);
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
@@ -146,7 +174,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         kjønn,
         søker,
         situasjon,
-        roller,
+        valgtRolle,
+        velgbareRoller,
         stegProps
     };
 };

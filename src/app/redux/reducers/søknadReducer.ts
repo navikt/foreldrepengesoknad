@@ -13,7 +13,7 @@ import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import { Søker } from '../../types/søknad/Søker';
 
-const getDefaultState = (): SøknadPartial => {
+export const getDefaultSøknadState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
         annenForelder: {
@@ -63,11 +63,21 @@ const handleGjelderAnnetBarn = (
     return annenForelder;
 };
 
-const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
+const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
-                ...getDefaultState()
+                ...getDefaultSøknadState()
+            };
+        case SøknadActionKeys.UPDATE_SØKNAD:
+            return {
+                ...state,
+                ...action.payload
+            };
+        case SøknadActionKeys.SET_SØKNAD:
+            return {
+                ...getDefaultSøknadState(),
+                ...action.payload
             };
         case SøknadActionKeys.UPDATE_BARN:
             return {
@@ -94,11 +104,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                     ...state.søker,
                     ...action.payload
                 }
-            };
-        case SøknadActionKeys.UPDATE_SØKNAD:
-            return {
-                ...state,
-                ...action.payload
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
