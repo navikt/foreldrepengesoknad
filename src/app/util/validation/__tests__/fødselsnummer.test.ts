@@ -40,7 +40,6 @@ describe('Fødselsnummer validation', () => {
 
     it('should return false if fødselsnummer is an empty string', () => {
         expect(callFødselsnummerValidator('', false, SØKER_FNR)).toEqual(false);
-        expect(callFødselsnummerValidator('', true, SØKER_FNR)).toEqual(false);
     });
 
     it('should return false for fødselsnummer matching applicants fødselsnummer', () => {
