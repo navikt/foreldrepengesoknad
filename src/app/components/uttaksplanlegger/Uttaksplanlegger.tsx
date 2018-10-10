@@ -42,29 +42,35 @@ class Uttaksplanlegger extends React.Component<Props, {}> {
             onRequestReset
         } = this.props;
         return (
-            <article className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
-                <header className={BEM.element('header')}>
-                    <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                        Din plan
-                    </Systemtittel>
-                    {onRequestReset &&
-                        uttaksplan.length > 0 && (
-                            <div className={BEM.element('header__reset')}>
-                                <LinkButton className={BEM.element('resetLink')} onClick={() => onRequestReset()}>
-                                    Slett plan
-                                </LinkButton>
-                            </div>
-                        )}
-                    <span className={BEM.element('header__details')}>
-                        <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
-                    </span>
-                </header>
-                <Block visible={uttaksplan.length > 0}>
-                    <Periodeliste
-                        perioder={uttaksplan}
-                        navnPåForeldre={navnPåForeldre}
-                        uttaksplanValidering={uttaksplanValidering}
-                    />
+            <article>
+                <Block>
+                    <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
+                        <header className={BEM.element('header')}>
+                            <Systemtittel tag="h1" className={BEM.element('header__title')}>
+                                Din plan
+                            </Systemtittel>
+                            {onRequestReset &&
+                                uttaksplan.length > 0 && (
+                                    <div className={BEM.element('header__reset')}>
+                                        <LinkButton
+                                            className={BEM.element('resetLink')}
+                                            onClick={() => onRequestReset()}>
+                                            Slett plan
+                                        </LinkButton>
+                                    </div>
+                                )}
+                            <span className={BEM.element('header__details')}>
+                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
+                            </span>
+                        </header>
+                        <Block visible={uttaksplan.length > 0}>
+                            <Periodeliste
+                                perioder={uttaksplan}
+                                navnPåForeldre={navnPåForeldre}
+                                uttaksplanValidering={uttaksplanValidering}
+                            />
+                        </Block>
+                    </div>
                 </Block>
                 <div className={BEM.element('addFormContainer')}>
                     <NyPeriodeBolk onSubmit={onAdd} />

@@ -10,7 +10,7 @@ export interface VeilederInfoProps {
     visVeileder?: boolean;
     stil?: 'kompakt' | 'normal' | 'kunTekst';
     type?: Infotype;
-    maxWidth?: '30';
+    maxWidth?: '30' | '45';
 }
 
 const getAnsiktFromType = (type: Infotype): Ansiktstype => {
