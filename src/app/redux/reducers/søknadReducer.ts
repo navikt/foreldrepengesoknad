@@ -69,6 +69,16 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...getDefaultState()
             };
+        case SøknadActionKeys.UPDATE_SØKNAD:
+            return {
+                ...state,
+                ...action.payload
+            };
+        case SøknadActionKeys.SET_SØKNAD:
+            return {
+                ...getDefaultState(),
+                ...action.payload
+            };
         case SøknadActionKeys.UPDATE_BARN:
             return {
                 ...state,
@@ -94,11 +104,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                     ...state.søker,
                     ...action.payload
                 }
-            };
-        case SøknadActionKeys.UPDATE_SØKNAD:
-            return {
-                ...state,
-                ...action.payload
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
             const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
