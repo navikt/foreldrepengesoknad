@@ -34,7 +34,7 @@ function* validerUttaksplanSaga() {
     yield put(setUttaksplanValidering(validertePerioder, antallAktivePerioder > 0));
 }
 
-export default function* storageSaga() {
+export default function* uttaksplanValideringSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerUttaksplanSaga)]);

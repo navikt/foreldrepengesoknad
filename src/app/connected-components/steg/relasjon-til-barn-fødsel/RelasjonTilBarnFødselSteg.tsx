@@ -40,7 +40,6 @@ interface RelasjonTilBarnFødselStegProps {
     registrerteBarn: RegistrertBarn[];
     søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     terminbekreftelse: Attachment[];
-    fødselsattest: Attachment[];
     stegProps: StegProps;
     vis: RelasjonTilBarnFødselStegVisibility;
 }
@@ -64,7 +63,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             barn,
             søker,
             annenForelder,
-            fødselsattest,
             terminbekreftelse,
             registrerteBarn,
             søknadenGjelderBarnValg,
@@ -103,7 +101,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         <FødtBarnPartial
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
-                            fødselsattest={fødselsattest || []}
                             gjelderAnnetBarn={gjelderAnnetBarn}
                             registrerteBarn={registrerteBarn}
                             vis={vis.født}
@@ -136,7 +133,6 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { registrerteBarn = [] } = props.søkerinfo;
     const { barn, sensitivInfoIkkeLagre, søker, annenForelder } = state.søknad;
-    const fødselsattest = (barn as FødtBarn).fødselsattest || [];
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
 
     const stegProps: StegProps = {
@@ -156,7 +152,6 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         søknadenGjelderBarnValg: sensitivInfoIkkeLagre.søknadenGjelderBarnValg,
         barn,
         terminbekreftelse,
-        fødselsattest,
         stegProps,
         vis
     };
