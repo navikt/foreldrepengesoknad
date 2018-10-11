@@ -11,18 +11,14 @@ import SøknadSendtSide from './sider/søknad-sendt/SøknadSendtSide';
 import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
 import { Søkerinfo } from '../types/søkerinfo';
-import Applikasjonsside from './sider/Applikasjonsside';
-import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
-import { AxiosError } from 'axios';
+import LoadingScreen from '../components/loading-screen/LoadingScreen';
 
 interface StateProps {
     søkerinfo?: Søkerinfo;
-    error?: AxiosError;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     isSendSøknadInProgress: boolean;
     søknadHasBeenReceived: boolean;
-    harGodkjentOppsummering: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -39,16 +35,13 @@ class Foreldrepengesøknad extends React.Component<Props> {
         return (
             <Switch>
                 {routes}
+                <Route path={routeConfig.GENERELL_FEIL_URL} component={GenerellFeil} />
                 <Redirect to={`${routeConfig.APP_ROUTE_PREFIX}velkommen`} />
             </Switch>
         );
     }
 
-    renderErrorRoute(component: React.ComponentType) {
-        return this.renderRoutes([<Route key="feil" path={routeConfig.APP_ROUTE_PREFIX} component={component} />]);
-    }
-
-    renderSøknadRoutes(søkerinfo: Søkerinfo, harGodkjentOppsummering: boolean) {
+    renderSøknadRoutes(søkerinfo: Søkerinfo) {
         const routes = [
             <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
@@ -61,22 +54,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
                 key="velkommen"
             />
         ];
-
-        if (harGodkjentOppsummering) {
-            return this.renderRoutes([
-                ...routes,
-                <Route
-                    path={`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`}
-                    component={SøknadSendtSide}
-                    key="søknadsendt"
-                />
-            ]);
-        }
         return this.renderRoutes(routes);
-    }
-
-    renderAppAfterSøknadWasReceived() {
-        return <Route component={SøknadSendtSide} />;
     }
 
     render() {
@@ -85,36 +63,29 @@ class Foreldrepengesøknad extends React.Component<Props> {
             isLoadingAppState,
             isLoadingSøkerinfo,
             isSendSøknadInProgress,
-            søknadHasBeenReceived,
-            harGodkjentOppsummering,
-            error
+            søknadHasBeenReceived
         } = this.props;
 
         if (isLoadingAppState || isLoadingSøkerinfo || isSendSøknadInProgress) {
-            return (
-                <Applikasjonsside>
-                    <ApplicationSpinner />
-                </Applikasjonsside>
-            );
-        } else if (!søkerinfo || error) {
-            return this.renderErrorRoute(GenerellFeil);
+            return <LoadingScreen />;
+        } else if (!søkerinfo && !isLoadingSøkerinfo) {
+            return <Route component={GenerellFeil} />;
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
-            return this.renderErrorRoute(() => <IkkeMyndig søkerinfo={søkerinfo!} />);
+            return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo!} />} />;
         } else if (søknadHasBeenReceived) {
-            return this.renderAppAfterSøknadWasReceived();
+            return <Route component={SøknadSendtSide} />;
         }
-        return this.renderSøknadRoutes(søkerinfo, harGodkjentOppsummering);
+
+        return this.renderSøknadRoutes(søkerinfo!);
     }
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
     søkerinfo: state.api.søkerinfo,
-    error: state.api.error,
     isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
     isLoadingAppState: state.api.isLoadingAppState,
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
-    søknadHasBeenReceived: state.api.søknadHasBeenReceived,
-    harGodkjentOppsummering: state.søknad.harGodkjentOppsummering
+    søknadHasBeenReceived: state.api.søknadHasBeenReceived
 });
 
 export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));
