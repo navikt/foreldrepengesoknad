@@ -32,7 +32,7 @@ const stegConfig: StegConfig = {
         index: 0
     },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
-        tittel: 'Relasjon til barn (adopsjon) header',
+        tittel: 'Informasjon om barnet',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
