@@ -1,16 +1,15 @@
 import { InjectedIntl } from 'react-intl';
-import moment from 'moment';
 import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import { DateValue } from '../../types/common';
 import getMessage from 'common/util/i18nUtils';
 import { date3YearsAgo, date15YearsAnd3MonthsAgo } from './values';
 import {
+    dateIs15YearsAnd3MonthsAgoOrLaterRule,
     dateIs3YearsAgoOrLaterRule,
     dateIsNotInFutureRule,
     notInFutureAvgrensning,
-    hasValueRule,
-    dateIs15YearsAnd3MonthsAgoOrLaterRule
+    hasValueRule
 } from './common';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 
@@ -46,13 +45,3 @@ export const getFødselsdatoRegler = (
 
 export const fødselsdatoerErFyltUt = (fødselsdatoer: Date[] | undefined): boolean =>
     fødselsdatoer !== undefined && fødselsdatoer.length > 0 && fødselsdatoer.findIndex((d) => d === undefined) === -1;
-
-export const fødselsdatoErFørEllerLikAdopsjonsdato = (
-    fødselsdatoer: Date[] | undefined,
-    adopsjonsdato: Date
-): boolean => {
-    if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
-        return moment(fødselsdatoer[0]).isSameOrBefore(adopsjonsdato, 'day');
-    }
-    return false;
-};
