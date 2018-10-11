@@ -36,6 +36,11 @@ import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/pe
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
 
+const setSøknad = (payload: UpdateSøknadActionPayload) => ({
+    type: SøknadActionKeys.SET_SØKNAD,
+    payload
+});
+
 const updateBarn = (
     payload: FødtBarnPartial | UfødtBarnPartial | AdopsjonsbarnPartial | ForeldreansvarBarnPartial
 ): UpdateBarn => ({
@@ -165,5 +170,6 @@ export default {
     deleteAttachmentSuccess,
     deleteAttachmentFailed,
     uttaksplanLagForslag,
-    avbrytSøknad
+    avbrytSøknad,
+    setSøknad
 };

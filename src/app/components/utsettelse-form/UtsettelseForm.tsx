@@ -2,10 +2,11 @@ import * as React from 'react';
 import PT from 'prop-types';
 
 import {
-    Periodetype,
+    Arbeidsform,
     Oppholdsperiode,
-    UtsettelseÅrsakType,
-    Utsettelsesperiode
+    Periodetype,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -14,7 +15,7 @@ import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
 import DateValues from '../../util/validation/values';
-import { UtsettelseSpørsmålKeys, getUtsettelseFormVisibility } from './utsettelseFormConfig';
+import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
 import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSpørsmål';
@@ -26,7 +27,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
-import { formaterNavn, erFarEllerMedmor } from '../../util/domain/personUtil';
+import { erFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -154,15 +155,24 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         if (variant !== this.state.variant) {
             if (variant === Utsettelsesvariant.UttakAnnenForelder) {
                 const forelder = this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
-                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder });
+                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder, erArbeidstaker: false });
             } else {
                 const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
                 if (variant === Utsettelsesvariant.Arbeid) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Arbeid, forelder });
+                    this.onChange({
+                        type: Periodetype.Utsettelse,
+                        årsak: UtsettelseÅrsakType.Arbeid,
+                        forelder
+                    });
                 } else if (variant === Utsettelsesvariant.Ferie) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: UtsettelseÅrsakType.Ferie, forelder });
+                    this.onChange({
+                        type: Periodetype.Utsettelse,
+                        årsak: UtsettelseÅrsakType.Ferie,
+                        forelder,
+                        erArbeidstaker: false
+                    });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder });
+                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder, erArbeidstaker: false });
                 }
             }
         }
@@ -254,10 +264,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         arbeidsforhold={arbeidsforhold}
                                         valgtArbeidsforhold={periode.orgnr}
                                         frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
-                                        onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
+                                        onChange={(orgnr, arbeidsform) =>
                                             this.onChange({
                                                 orgnr,
-                                                selvstendigNæringsdrivendeEllerFrilans
+                                                selvstendigNæringsdrivendeEllerFrilans:
+                                                    arbeidsform !== Arbeidsform.arbeidstaker ? arbeidsform : undefined,
+                                                erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
                                             })
                                         }
                                     />

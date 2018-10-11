@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-export type ToggleListRenderProps = (
-    onToggleItem: (id: string) => void,
-    isOpen: (id: string) => boolean
-) => JSX.Element;
+export type onToggleItemProp = (id: string, open?: boolean) => void;
+
+export type ToggleListRenderProps = (onToggleItem: onToggleItemProp, isOpen: (id: string) => boolean) => JSX.Element;
 
 export interface Props {
     render: ToggleListRenderProps;

@@ -1,10 +1,7 @@
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AppState } from '../reducers';
-import {
-    validerUttaksplanAction,
-    setValidertePerioder
-} from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
@@ -25,18 +22,23 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
 
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
+    const { uttaksplan } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    appState.søknad.uttaksplan.forEach((periode) => {
+    let antallAktivePerioder = 0;
+    uttaksplan.forEach((periode) => {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
+        if (periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined) {
+            antallAktivePerioder++;
+        }
     });
-    yield put(setValidertePerioder(validertePerioder));
+    yield put(setUttaksplanValidering(validertePerioder, antallAktivePerioder > 0));
 }
 
-export default function* storageSaga() {
+export default function* uttaksplanValideringSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, validerUttaksplanSaga)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanAction)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanAction)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanSaga)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
 }

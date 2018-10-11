@@ -285,7 +285,10 @@
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsen datert?",
     "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
+    "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål":
+        "Befinner du deg i Norge på datoen for omsorgsovertakelse?",
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
+    "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge når barnet ble født?",
 
     "adopsjonsdato.spørsmål": "Oppgi datoen for omsorgsovertakelse?",
     "stebarnsadopsjonsdato.spørsmål": "Oppgi datoen for stebarnsadopsjon?",
@@ -356,8 +359,13 @@
 
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
+
+
+    "uttaksplan.skjema.validering.startdatoFarMedmor": "Startdato må velges",
+
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
+    "uttaksplan.skjema.validering.startdatoHelg": "Startdato kan ikke være på en lørdag eller søndag",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut",
     "uttaksplan.skjema.informasjonTilFarMedmor":
@@ -414,6 +422,9 @@
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
         "Du kan ikke søke om foreldrepenger for barn som er eldre enn tre år.",
+    "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
+        "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder ({dato}).",
+    "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdato kan ikke være etter adopsjonsdato",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",
     "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidligst søke når du er i 26. svangerskapsuke",
@@ -439,7 +450,7 @@
     "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
-    "valideringsfeil.stillingsprosent.under0": "Stillingsprosenten må være over 0",
+    "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
 
     "radiopanelgruppe.required.feilmelding": "Påkrevd",
 
@@ -565,6 +576,7 @@
     "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
+    "periodeliste.lukk": "Lukk",
 
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "endrePeriodeForm.slett.utsettelse": "Slett opphold",
@@ -604,5 +616,6 @@
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Dato må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
+    "uttaksplan.validering.feil.tomUttaksplan": "Uttaksplanen inneholder ikke noen tellende perioder",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

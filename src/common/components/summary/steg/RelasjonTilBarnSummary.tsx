@@ -154,7 +154,7 @@ class RelasjonTilBarnSummary extends React.Component<Props> {
 
     renderOppsummeringFødtBarn() {
         const { barn, intl } = this.props;
-        const { fødselsdatoer, fødselsattest } = barn as FødtBarn;
+        const { fødselsdatoer } = barn as FødtBarn;
 
         return (
             <React.Fragment>
@@ -162,17 +162,24 @@ class RelasjonTilBarnSummary extends React.Component<Props> {
                     label={getMessage(intl, 'oppsummering.fødselsdato.label')}
                     text={formatDate(fødselsdatoer[0]) || ''}
                 />
-                {fødselsattest && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.fødselsattest.label')}
-                        text={fødselsattest.map((vedlegg) => vedlegg.filename)}
-                    />
-                )}
-                {fødselsattest === undefined && (
-                    <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.fødselsattest.label')}>
-                        <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                    </DisplayContentWithLabel>
-                )}
+                {/*
+                    // This has been commented out as users won't have to upload birth certificate
+                    // in the first version of Foreldrepengesøknad, but it will be required
+                    // once we start fetching data from TPS about registered children later on.
+                    // PS! Please remove this comment once this is in place.
+
+                    {fødselsattest && (
+                        <DisplayTextWithLabel
+                            label={getMessage(intl, 'oppsummering.fødselsattest.label')}
+                            text={fødselsattest.map((vedlegg) => vedlegg.filename)}
+                        />
+                    )}
+                    {fødselsattest === undefined && (
+                        <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.fødselsattest.label')}>
+                            <EtikettBase {...this.missingAttachmentEtikettProps()} />
+                        </DisplayContentWithLabel>
+                    )}
+                */}
             </React.Fragment>
         );
     }

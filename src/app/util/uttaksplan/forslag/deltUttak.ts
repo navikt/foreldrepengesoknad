@@ -11,11 +11,12 @@ import { guid } from 'nav-frontend-js-utils';
 import { Forelder } from 'common/types';
 import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
+import { DateValue } from '../../../types/common';
 
 const deltUttakAdopsjonMor = (
     famDato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined
 ): Periode[] => {
     const familiehendelsedato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
@@ -62,7 +63,7 @@ const deltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -75,7 +76,7 @@ const deltUttakAdopsjon = (
 const deltUttakFødselMor = (
     famDato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined
 ): Periode[] => {
     const familiehendelsedato = Uttaksdagen(famDato).denneEllerNeste();
@@ -189,7 +190,7 @@ const deltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -204,7 +205,7 @@ export const deltUttak = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined
 ) => {
     if (situasjon === Søkersituasjon.ADOPSJON) {

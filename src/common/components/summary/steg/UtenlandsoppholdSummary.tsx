@@ -16,7 +16,7 @@ interface Props {
 const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
     const { intl, erBarnetFødt } = props;
     const {
-        fødselINorge,
+        iNorgePåHendelsestidspunktet,
         iNorgeNeste12Mnd,
         iNorgeSiste12Mnd,
         tidligereOpphold,
@@ -46,11 +46,11 @@ const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProp
                 </DisplayContentWithLabel>
             )}
             {erBarnetFødt === false &&
-                fødselINorge !== undefined && (
+                iNorgePåHendelsestidspunktet !== undefined && (
                     <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.fødselINorge.label')}
+                        label={getMessage(intl, 'oppsummering.iNorgePåHendelsestidspunktet.label')}
                         text={
-                            fødselINorge
+                            iNorgePåHendelsestidspunktet
                                 ? getMessage(intl, 'oppsummering.fødselINorgeTrue')
                                 : getMessage(intl, 'oppsummering.fødselINorgeFalse')
                         }

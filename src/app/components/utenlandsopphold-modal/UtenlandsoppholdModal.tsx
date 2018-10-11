@@ -19,6 +19,7 @@ import { Avgrensninger } from 'nav-datovelger';
 import { Validator } from 'common/lib/validation/types/index';
 import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
+import { DateValue } from '../../types/common';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;
@@ -26,8 +27,8 @@ export interface AvgrensningGetters {
 }
 
 export interface ValidatorGetters {
-    getFraRegler?: (d1: Date | undefined, d2: Date | undefined, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
-    getTilRegler?: (d1: Date | undefined, d2: Date | undefined, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
+    getFraRegler?: (d1: DateValue, d2: DateValue, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
+    getTilRegler?: (d1: DateValue, d2: DateValue, list: Tidsperiode[], intl: InjectedIntl) => Validator[];
 }
 
 interface Props extends ModalProps {
@@ -175,6 +176,7 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
                     </Block>
                     <Block>
                         <TidsperiodeBolk
+                            kalenderplassering="fullskjerm"
                             datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
                             datoValidatorer={this.getTidsperiodeValidatorer()}
                             tidsperiode={(oppholdToEdit && oppholdToEdit.tidsperiode) || {}}

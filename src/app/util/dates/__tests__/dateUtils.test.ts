@@ -7,7 +7,9 @@ import {
     dateMoreThan1YearAhead,
     dateMoreThan3YearsAgo,
     today,
-    tomorrow
+    tomorrow,
+    date15YearsAnd3MonthsAgo,
+    dateMoreThan15YearsAnd3MonthsAgo
 } from '../../validation/values';
 import {
     dateIs1YearAheadOrLess,
@@ -16,7 +18,8 @@ import {
     dateIsNotInFuture,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
-    timeintervalsOverlap
+    timeintervalsOverlap,
+    dateIs15YearsAnd3MonthsAgoOrLess
 } from '../dates';
 
 describe('dateUtils', () => {
@@ -28,6 +31,11 @@ describe('dateUtils', () => {
     it('dateIs3YearsAgoOrLess', () => {
         expect(dateIs3YearsAgoOrLess(dateMoreThan3YearsAgo.toDate())).toBe(false);
         expect(dateIs3YearsAgoOrLess(date3YearsAgo.toDate())).toBe(true);
+    });
+
+    it('dateIs15YearsAnd15yearsAnd3MonthsAgoOrLess', () => {
+        expect(dateIs15YearsAnd3MonthsAgoOrLess(dateMoreThan15YearsAnd3MonthsAgo.toDate())).toBe(false);
+        expect(dateIs15YearsAnd3MonthsAgoOrLess(date15YearsAnd3MonthsAgo.toDate())).toBe(true);
     });
 
     it('dateIs1YearAheadOrLess', () => {

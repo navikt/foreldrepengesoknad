@@ -13,7 +13,7 @@ import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
-import VæreINorgeVedFødselSpørsmål from '../../../spørsmål/VæreINorgeVedFødselSpørsmål';
+import { default as INorgePåHendelsestidspunktetSpørsmål } from '../../../spørsmål/INorgePåHendelsestidspunktetSpørsmål';
 import isAvailable from '../util/isAvailable';
 import { utenlandsoppholdErGyldig } from '../../../util/validation/steg/utenlandsopphold';
 import {
@@ -33,6 +33,7 @@ import { søknadStegPath } from '../StegRoutes';
 import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
+import getMessage from 'common/util/i18nUtils';
 
 interface StateProps {
     søknad: Søknad;
@@ -55,7 +56,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Block>
+            <Block margin={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd ? 'm' : 'xs'}>
                 <SkalBoINorgeNeste12MndSpørsmål
                     iNorgeNeste12={informasjonOmUtenlandsopphold.iNorgeNeste12Mnd}
                     onChange={(iNorgeNeste12Mnd: boolean) =>
@@ -74,7 +75,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { søknad, dispatch } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         return (
-            <Block>
+            <Block margin={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd ? 'm' : 'xs'}>
                 <BoddINorgeSiste12MndSpørsmål
                     iNorgeSiste12={informasjonOmUtenlandsopphold.iNorgeSiste12Mnd}
                     onChange={(iNorgeSiste12Mnd: boolean) =>
@@ -103,8 +104,8 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, stegProps, dispatch } = this.props;
-        const { informasjonOmUtenlandsopphold, barn } = søknad;
+        const { søknad, stegProps, dispatch, intl } = this.props;
+        const { informasjonOmUtenlandsopphold, barn, situasjon } = søknad;
 
         return (
             <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
@@ -158,13 +159,46 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.væreINorgeVedFødselSpørsmål(informasjonOmUtenlandsopphold, barn)}>
-                    <VæreINorgeVedFødselSpørsmål
-                        fødselINorge={søknad.informasjonOmUtenlandsopphold.fødselINorge}
-                        onChange={(fødselINorge: boolean) => {
+                <Block visible={visibility.skalVæreINorgeVedFødsel(informasjonOmUtenlandsopphold, barn)}>
+                    <INorgePåHendelsestidspunktetSpørsmål
+                        spørsmålstekst={getMessage(intl, 'væreINorgeVedFødsel.spørsmål')}
+                        iNorgePåHendelsestidspunktet={søknad.informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet}
+                        onChange={(iNorgePåHendelsestidspunktet: boolean) => {
                             dispatch(
                                 søknadActions.updateUtenlandsopphold({
-                                    fødselINorge
+                                    iNorgePåHendelsestidspunktet
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+
+                <Block visible={visibility.varDuINorgeDaBarnetBleFødt(informasjonOmUtenlandsopphold, barn)}>
+                    <INorgePåHendelsestidspunktetSpørsmål
+                        spørsmålstekst={getMessage(intl, 'varDuINorgeDaBarnetBleFødt.spørsmål')}
+                        iNorgePåHendelsestidspunktet={søknad.informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet}
+                        onChange={(iNorgePåHendelsestidspunktet: boolean) => {
+                            dispatch(
+                                søknadActions.updateUtenlandsopphold({
+                                    iNorgePåHendelsestidspunktet
+                                })
+                            );
+                        }}
+                    />
+                </Block>
+
+                <Block
+                    visible={visibility.befinnerDuDegINorgePåDatoForOmsorgsovertakelse(
+                        informasjonOmUtenlandsopphold,
+                        situasjon
+                    )}>
+                    <INorgePåHendelsestidspunktetSpørsmål
+                        spørsmålstekst={getMessage(intl, 'befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål')}
+                        iNorgePåHendelsestidspunktet={søknad.informasjonOmUtenlandsopphold.iNorgePåHendelsestidspunktet}
+                        onChange={(iNorgePåHendelsestidspunktet: boolean) => {
+                            dispatch(
+                                søknadActions.updateUtenlandsopphold({
+                                    iNorgePåHendelsestidspunktet
                                 })
                             );
                         }}

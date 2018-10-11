@@ -3,7 +3,7 @@ import { SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 
 interface SøkerRolleSpørsmålVisibleData {
     situasjon?: Søkersituasjon;
-    roller: SøkerRolle[];
+    velgbareRoller: SøkerRolle[];
 }
 const papirsøknadInfoVisible: VisibilityFunction<Søkersituasjon | undefined> = (situasjon?: Søkersituasjon) => {
     return situasjon === Søkersituasjon.FORELDREANSVAR;
@@ -13,7 +13,7 @@ const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisi
     data: SøkerRolleSpørsmålVisibleData
 ) => {
     return (
-        data.roller.length > 0 &&
+        data.velgbareRoller.length > 0 &&
         data.situasjon !== Søkersituasjon.FORELDREANSVAR &&
         data.situasjon !== Søkersituasjon.ADOPSJON &&
         data.situasjon !== undefined

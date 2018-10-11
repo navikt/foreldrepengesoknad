@@ -8,18 +8,12 @@ import FødselsdatoerSpørsmål from '../../../../spørsmål/FødselsdatoerSpør
 
 import { DispatchProps } from 'common/redux/types/index';
 import getMessage from 'common/util/i18nUtils';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import Block from 'common/components/block/Block';
-import { Skjemanummer } from '../../../../types/søknad/Søknad';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 interface StateProps {
     barn: FødtBarn;
-    fødselsattest: Attachment[];
     registrerteBarn: RegistrertBarn[];
     gjelderAnnetBarn?: boolean;
     vis: RelasjonTilBarnFødtVisibility;
@@ -50,7 +44,7 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, fødselsattest, vis } = this.props;
+        const { intl, dispatch, barn, vis } = this.props;
         return (
             <React.Fragment>
                 <AntallBarnBolk
@@ -73,28 +67,35 @@ class FødtBarnPartial extends React.Component<Props> {
                     />
                 </Block>
 
-                {vis.fødselsattest ? (
-                    <React.Fragment>
-                        <Block margin="xs">
-                            <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.fødselsattest')}</Veilederinfo>
-                        </Block>
-                        <Block>
-                            <AttachmentsUploaderPure
-                                attachments={fødselsattest}
-                                attachmentType={AttachmentType.FØDSELSATTEST}
-                                skjemanummer={Skjemanummer.FØDSELSATTEST}
-                                onFilesSelect={(attachments: Attachment[]) => {
-                                    attachments.forEach((attachment: Attachment) => {
-                                        dispatch(søknadActions.uploadAttachment(attachment));
-                                    });
-                                }}
-                                onFileDelete={(attachment: Attachment) =>
-                                    dispatch(søknadActions.deleteAttachment(attachment))
-                                }
-                            />
-                        </Block>
-                    </React.Fragment>
-                ) : null}
+                {/*
+                    // This has been commented out as users won't have to upload birth certificate
+                    // in the first version of Foreldrepengesøknad, but it will be required
+                    // once we start fetching data from TPS about registered children later on.
+                    // PS! Please remove this comment once this is in place.
+
+                    {vis.fødselsattest ? (
+                        <React.Fragment>
+                            <Block margin="xs">
+                                <Veilederinfo>{getMessage(intl, 'vedlegg.veileder.fødselsattest')}</Veilederinfo>
+                            </Block>
+                            <Block>
+                                <AttachmentsUploaderPure
+                                    attachments={fødselsattest}
+                                    attachmentType={AttachmentType.FØDSELSATTEST}
+                                    skjemanummer={Skjemanummer.FØDSELSATTEST}
+                                    onFilesSelect={(attachments: Attachment[]) => {
+                                        attachments.forEach((attachment: Attachment) => {
+                                            dispatch(søknadActions.uploadAttachment(attachment));
+                                        });
+                                    }}
+                                    onFileDelete={(attachment: Attachment) =>
+                                        dispatch(søknadActions.deleteAttachment(attachment))
+                                    }
+                                />
+                            </Block>
+                        </React.Fragment>
+                    ) : null}
+                */}
             </React.Fragment>
         );
     }
