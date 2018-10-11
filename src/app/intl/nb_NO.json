@@ -57,8 +57,9 @@
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
-    "velkommen.foreldreansvar.veileder": "Søknad som gjelder foreldreansvar må sendes inn på papir",
-    "velkommen.foreldreansvar.papirsøknadLenke": "Papirsøknad",
+    "velkommen.foreldreansvar.veileder":
+        "Skal du søke om foreldrepenger ved overtakelse av foreldreansvaret du sende inn på søknaden i posten.",
+    "velkommen.foreldreansvar.papirsøknadLenke": "Her finner du papirsøknaden",
 
     "personalia.år": "{år} år",
 
@@ -108,14 +109,14 @@
     "inntektstype.militær_eller_siviltjeneste": "Militæret, sivilforsvar eller sivilforsvarstjeneste",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
-    "inntektstype.lønn_under_utdanning": "Lønn ved permisjon for videreutdanning eller etterutdanning",
-    "inntektstype.lønn_under_utdanning_info": "TODO",
+    "inntektstype.lønn_under_utdanning": "Lønn ved permisjon for videre- eller etterutdanning",
+    "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.ventelønn": "Vartpenger og ventelønn",
     "inntektstype.ventelønn_info":
         "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
-    "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
+    "inntektstype.jobb_i_utlandet": "Jobb i EØS-land",
     "inntektstype.jobb_i_utlandet_info":
-        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise arbeidsperioden, stillingsprosenten og inntekten din.",
+        "Siden du har opptjening fra et annet EØS-land så kan det ta litt lenger tid å behandlesøknaden din, siden vi må innhente dokumnetasjon.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
@@ -127,17 +128,17 @@
     "antallBarn.select.tekst": "Hvor mange barn venter du?",
     "antallBarn.select.velg": "Velg",
 
-    "fødselsdatoer.fødsel": "Når ble barnet født?",
-    "fødselsdatoer.fødsel.flereBarn": "Når ble det første barnet født?",
-    "fødselsdatoer.flere.1": "Første barnet ble født den...",
-    "fødselsdatoer.flere.2": "Det andre barnet ble født den...",
-    "fødselsdatoer.flere.3": "Det tredje barnet ble født den...",
-    "fødselsdatoer.flere.4": "Det fjerde barnet ble født den...",
-    "fødselsdatoer.flere.5": "Det femte barnet ble født den...",
-    "fødselsdatoer.flere.6": "Det sjette barnet ble født den...",
-    "fødselsdatoer.flere.7": "Det syvende barnet ble født den...",
-    "fødselsdatoer.flere.8": "Det åttende barnet ble født den...",
-    "fødselsdatoer.flere.9": "Det niende barnet ble født den...",
+    "fødselsdatoer.fødsel": "Når er barnet født?",
+    "fødselsdatoer.fødsel.flereBarn": "Når ble det eldste barnet født?",
+    "fødselsdatoer.flere.1": "Når er barnet født?",
+    "fødselsdatoer.flere.2": "Når er det andre barnet født?",
+    "fødselsdatoer.flere.3": "Når er det tredje barnet født?",
+    "fødselsdatoer.flere.4": "Når er det fjerde barnet født?",
+    "fødselsdatoer.flere.5": "Når er det femte barnet født?",
+    "fødselsdatoer.flere.6": "Når er det sjette barnet født?",
+    "fødselsdatoer.flere.7": "Når er det syvende barnet født?",
+    "fødselsdatoer.flere.8": "Når er det åttende barnet født?",
+    "fødselsdatoer.flere.9": "Når er det niende barnet født?",
 
     "stebarnsadopsjon.adopsjonsdato": "Adopsjonsdato",
     "stebarnsadopsjon.antallBarn": "Antall barn",
@@ -152,18 +153,18 @@
     "begynnsøknad.label": "Begynn med søknaden",
     "fortsettknapp.label": "Fortsett",
 
-    "morForSykSpørsmål.spørsmål": "Er forelder 1 for syk til å ta seg av barnet eller innlagt?",
+    "morForSykSpørsmål.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt?",
 
     "harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.spørsmål":
-        "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
+        "Har du jobbet som selvstendig næringsdrivende de siste ti månedene?",
 
     "harDuJobbetSomFrilansSiste10Mnd.spørsmål": "Har du jobbet som frilanser de siste ti månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.spørsmål":
         "Har du hatt oppdrag for nær venn eller familie de ti siste månedene?",
     "harJobbetForNærVennEllerFamilieSiste10Mnd.oppfølgingsspørsmål":
-        "Oppdrag for nære venner og/eller familie de siste 10 månedene",
-    "frilans.oppstart": "Når startet du?",
-    "frilansOppdrag.leggTilOppdrag": "Legg til virksomhet",
+        "Oppdrag for nære venner og/eller familie de siste ti månedene",
+    "frilans.oppstart": "Når startet du som frilanser?",
+    "frilansOppdrag.leggTilOppdrag": "Legg til oppdrag",
     "frilansOppdrag.modal.tittel": "Frilansoppdrag",
     "frilansOppdrag.modal.pågående": "Jeg har fortsatt oppdraget",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
@@ -171,23 +172,23 @@
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her skriver du hva som har endret seg i virksomheten eller arbeidssituasjonen din",
+        "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
 
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fortsatt som frilanser?",
 
     "næringstype.spørsmål": "Hvilken type virksomhet har du?",
     "næringstype.fiske": "Fiske",
-    "næringstype.jordbruk_skogbruk": "Jordbruk / Skogbruk",
-    "næringstype.dagmamma": "Dagmamma",
-    "næringstype.annen": "Annet",
+    "næringstype.jordbruk_skogbruk": "Jordbruk",
+    "næringstype.dagmamma": "Dagmamma eller familiebarnehage i eget hjem",
+    "næringstype.annen": "Annen type virksomet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
-    "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten registrert i?",
+    "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
-    "nyIArbeidslivet.spørsmål": "Er du helt ny i arbeidslivet?",
+    "nyIArbeidslivet.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
@@ -262,7 +263,7 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
-    "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden adopsjon av ektefellesbarn/stebarnsadopsjon?",
+    "adopsjonAvEktefellesBarn.spørsmål": "Søker du om foreldrepenger ved stebarnsadopsjon?",
 
     "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
     "attachments.tittel.stebarnsadopsjon": "Stebarnsadopsjon",
@@ -277,11 +278,11 @@
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
 
-    "ankomstdato.spørsmål": "Når ankommer barnet Norge?",
+    "ankomstdato.spørsmål": "Når kom barnet til Norge?",
 
     "termindato.spørsmål": "Når er termindatoen?",
 
-    "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsesdato?",
+    "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsen datert?",
     "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
     "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål":
@@ -289,9 +290,9 @@
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge når barnet ble født?",
 
-    "adopsjonsdato.spørsmål": "Når er er dato for omsorgsovertakelse?",
-    "stebarnsadopsjonsdato.spørsmål": "Når er er dato for stebarnsadopsjon?",
-    "adoptertIUtlandet.spørsmål": "Adoptert i utlandet?",
+    "adopsjonsdato.spørsmål": "Oppgi datoen for omsorgsovertakelse?",
+    "stebarnsadopsjonsdato.spørsmål": "Oppgi datoen for stebarnsadopsjon?",
+    "adoptertIUtlandet.spørsmål": "Har du adoptert fra utlandet?",
 
     "tidsintervall": "{fom} - {tom}",
 
@@ -302,6 +303,7 @@
 
     "slett.utenlandsopphold": "Slett opphold",
     "slett.oppdrag": "Slett oppdrag",
+
     "slett.næring": "Slett næring",
     "slett.periode": "Slett periode",
 
@@ -309,32 +311,34 @@
     "dokumentasjon.mangler": "Dokumentasjon mangler",
 
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} søkt om foreldrepenger/mottar foreldrepenger?",
-    "spørsmål.skalStarteRettEtterMorSpørsmål.label": "Skal du begynne rett etter at mor er ferdig?",
+    "spørsmål.skalStarteRettEtterMorSpørsmål.label":
+        "Skal du begynne rett etter at mor er ferdig med sine foreldrepenger?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
-    "spørsmål.dekningsgrad.100": "49 uker med 100% foreldrepenger",
-    "spørsmål.dekningsgrad.80": "59 uker med 80% foreldrepenger",
+    "spørsmål.dekningsgrad.100": "49 uker med 100 prosent foreldrepenger",
+    "spørsmål.dekningsgrad.80": "59 uker med 80 prosent foreldrepenger",
     "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label--aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
-    "spørsmål.dekningsgrad.hjelpetekst": "Den totale utbetalingen blir høyere ved å velge 100 prosent",
+    "spørsmål.dekningsgrad.hjelpetekst":
+        "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke senere gjøre om dette valget.",
 
-    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt uttak før termin?",
-    "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når startet du ditt uttak før termin?",
-    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha uttak før termin",
-    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg hadde ikke noe uttak før termin",
+    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt perioden før termin?",
+    "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før terminen",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg tok ikke ut foreldrepenger før terminen",
     "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
-    "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte ditt uttak?",
+    "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte perioden?",
 
-    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag?",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag med foreldrepenger?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe opphold i uttaket ditt?",
 
-    "nyPeriodeForm.utsettelse.tittel": "Ny utsettelse",
-    "nyPeriodeForm.uttak.tittel": "Ny periode med uttak",
+    "nyPeriodeForm.utsettelse.tittel": "Legg til opphold",
+    "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
 
-    "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte permisjonen din?",
-    "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Dato omsorgsovertakelse ({dato})",
-    "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Barnets ankomstdato til Norge ({dato})",
-    "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",
+    "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte perioden med foreldrepenger?",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakelsen ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Ankomst til Norge ({dato})",
+    "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen en dato",
     "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg annen dato",
 
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
@@ -354,8 +358,11 @@
         "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
 
     "uttaksplan.skjema.validering.startdatoFørTermin":
-        "Startdato må velges, eller du må krysse av for ingen uttak før termin",
+        "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
+
+
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Startdato må velges",
+
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
     "uttaksplan.skjema.validering.startdatoHelg": "Startdato kan ikke være på en lørdag eller søndag",
@@ -365,16 +372,16 @@
         "Dere må velge den samme lengden på perioden med foreldrepenger. Du må oppgi den samme lengden som {navn} valgte i sin søknad.",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
-    "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Født den {dato}",
-    "uttaksplan.familiehendelsesdato.adopsjon": "Adopsjonsdato den {dato}",
+    "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født den {dato}",
+    "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert den {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
-    "uttaksplan.overføring.årsak.spørsmål": "Hva er årsaken til at du ønsker å overta {annenForelderNavn} sin del?",
-    "uttaksplan.overføring.vedlegg.info": "Informasjon",
+    "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
+    "uttaksplan.overføring.vedlegg.info": "Du må laste opp dokumentasjon",
 
     "uttaksplan.informasjonTilSøker": "Her kan planlegge hvordan du skal ta ut foreldrepengeperioden din.",
     "uttaksplan.informasjonFarMedmorDeltUttak":
-        "Her kan du planlegge hvordan du ønsker å ta ut foreldrepengeperioden din. Husk at dersom du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte. Du kan lese mer om viktige frister her: {link}",
+        "Her kan du søke om foreldrepenger og legg inn opphold. Husk at dersom du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte. Du kan lese mer om viktige frister her: {link}",
     "uttaksplan.fristerLinkTekst": "nav.no",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
@@ -440,7 +447,7 @@
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
     "valideringsfeil.organisasjonsnummer.required": "Organisasjonsnummer må fylles ut",
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
-    "valideringsfeil.stillingsprosent.required": "Stillingsprosent er påkrevd",
+    "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
@@ -450,10 +457,10 @@
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.samtykke":
-        "De opplysninger jeg har oppgitt er riktige og jeg har ikke holdt tilbake opplysninger som har betydning for min rett til foreldrepenger.",
+        "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om. Jeg plikter å gi de opplysningene og levere dokumentene som er nødvendige for at NAV skal kunne vurdere om jeg har rett til foreldrepenger. Jeg har lest orienteringen på nav.no og gjort meg kjent med mine plikter.",
 
-    "oppsummering.relasjonTilBarn": "Relasjon til barn",
-    "oppsummering.termindato.label": "med termindato den",
+    "oppsummering.relasjonTilBarn": "Informasjon om barnet",
+    "oppsummering.termindato.label": "termindato",
     "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato.label": "Som er datert den",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
@@ -469,9 +476,9 @@
     "oppsummering.antallBarn.9": "Ni",
 
     "oppsummering.fødselsdato.label": "fødselsdato:",
-    "oppsummering.adopsjonAvEktefellesBarn.label": "adopsjonavektefellesbarn",
+    "oppsummering.adopsjonAvEktefellesBarn.label": "stebarnsadopsjon",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato:",
-    "oppsummering.adoptertIUtlandet.label": "adoptertIUtlandet:",
+    "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet:",
     "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse:",
 
     "oppsummering.ankomstdato.label": "ankomstdato:",
@@ -481,12 +488,12 @@
     "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
     "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
     "oppsummering.annenForelder.kanIkkeOppgis": "Jeg kan ikke oppgi den andre forelderen",
-    "oppsummering.annenForelder.navn.label": "Den andre forelderen heter...",
-    "oppsummering.annenForelder.fødselsnummer.label": "og har fødselsnummer eller D-nummer...",
+    "oppsummering.annenForelder.navn.label": "Den andre forelderen heter",
+    "oppsummering.annenForelder.fødselsnummer.label": "og har fødselsnummer eller D-nummer",
     "oppsummering.annenForelder.utenlandskFødselsnummer.label": "Utenlandsk fødselsnummer",
-    "oppsummering.annenForelder.bostedsland.label": "og bor i...",
-    "oppsummering.annenForelder.datoForAleneomsorg.label": "Dato for aleneomsorg...",
-    "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label": "Dokumentasjon av aleneomsorg...",
+    "oppsummering.annenForelder.bostedsland.label": "og bor i",
+    "oppsummering.annenForelder.datoForAleneomsorg.label": "Dato for aleneomsorg",
+    "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label": "Dokumentasjon av aleneomsorg",
     "oppsummering.annenForelder.harRettPåForeldrepenger.label": "Har {navn} rett på foreldrepenger?",
     "oppsummering.annenForelder.erInformertOmSøknaden.label": "Er {navn} informert om søknaden?",
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
@@ -494,11 +501,10 @@
 
     "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
-    "oppsummering.iNorgeSiste12MndTrue": "vært i norge",
+    "oppsummering.iNorgeSiste12MndTrue": "vært i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
-    "oppsummering.iNorgeNeste12": "i norge",
     "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
-    "oppsummering.fødselINorgeTrue": "i norge",
+    "oppsummering.fødselINorgeTrue": "i Norge",
     "oppsummering.fødselINorgeFalse": "i utlandet",
 
     "kvittering.sectionheading": "Søknad mottatt",
@@ -508,21 +514,21 @@
     "kvittering.dittNav": "Du kan følge med på søknaden på {dittNavLink}.",
     "kvittering.dittNavLink": "Ditt NAV",
     "kvittering.kontonummer":
-        " Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
+        "Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
 
     "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
     "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
     "stønadskontotype.FEDREKVOTE": "Far sin kvote",
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
-    "stønadskontotype.FELLESPERIODE": "Fellesdel",
+    "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "Innlagt helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
-    "overføringsårsaktype.ALENEOMSORG": "Blitt alene om omsorgen",
+    "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
 
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
@@ -532,7 +538,7 @@
     "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
     "utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
-    "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesdel",
+    "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesperioden",
     "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
     "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut ...",
 
@@ -548,14 +554,14 @@
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.tittel": "Bekreft navigasjon",
-    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i skjemaet bli slettet.",
-    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden",
+    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i planen bli slettet.",
+    "avbrytSøknadDialog.spørsmål": "vil du å avbryte søknaden",
 
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
-    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Uttaksplan vil bli nullstillt",
+    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din vil bli nullstillt",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
-        "Dersom du går tilbake til forrige steg vil uttaksplanen bli nullstillt, og du må lage uttaksplanen på nytt.",
+        "Dersom du går tilbake til forrige steg vil planen din bli nullstillt, og du må lag planen på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
     "uttaksplan.slettPlan": "Slett plan",
@@ -572,39 +578,39 @@
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
-    "periodeliste.overlappendePeriode": "Tidsperioden er i konflikt med andre perioder",
-    "periodeliste.hullMellomPerioder": "{dager} mangler uttak eller utsettelse",
+    "periodeliste.overlappendePeriode": "Perioden med foreldrepenger er i konflikt med andre perioder",
+    "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.lukk": "Lukk",
 
-    "endrePeriodeForm.slett.uttak": "Slett uttaksperiode",
-    "endrePeriodeForm.slett.utsettelse": "Slett utsettelse",
-    "endrePeriodeForm.slett.opphold": "Slett utsettelse",
-    "endrePeriodeForm.slett.overføring": "Slett uttaksperiode",
-    "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett utsettelse",
-    "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette denne utsettelsen?",
-    "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett uttaksperiode",
-    "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne uttaksperioden?",
-    "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett utsettelse",
-    "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette denne utsettelsen?",
-    "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett uttaksperiode",
-    "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette denne uttaksperioden?",
+    "endrePeriodeForm.slett.uttak": "Slett periode",
+    "endrePeriodeForm.slett.utsettelse": "Slett opphold",
+    "endrePeriodeForm.slett.opphold": "Slettopphold",
+    "endrePeriodeForm.slett.overføring": "Slett periode",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.tittel": "Slett opphold",
+    "endrePeriodeForm.bekreftSlettDialog.utsettelse.melding": "Ønsker du å slette oppholdet?",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.tittel": "Slett perioden",
+    "endrePeriodeForm.bekreftSlettDialog.uttak.melding": "Ønsker du å slette denne perioden?",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.tittel": "Slett oppholdet",
+    "endrePeriodeForm.bekreftSlettDialog.opphold.melding": "Ønsker du å slette oppholdet?",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett perioden",
+    "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst": "Informasjon om samtidig uttak",
 
-    "uttaksperiode.gradert.skalDuHarGradering": "Ønsker du å kombinere uttaket med arbeid i denne perioden?",
+    "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder": "Informasjon når mors aktivitet er valgt",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
-    "uttaksplan.fellesdel.samtidigUttak.veileder": "Informasjon ved samtidig uttak",
+    "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med uttak",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan desverre ikke legge til utsettelse på grunn av ferie fordi du ikke har et aktivt arbeidsforhold",
+        "Du kan desverre ikke legge tilet opphold på grunn av ferie fordi du ikke er registert som arbeidstaker",
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
@@ -612,7 +618,7 @@
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneholder feil",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Informasjon mangler om perioden",
-    "uttaksplan.validering.feil.ugyldigTidsperiode": "Tidsperioden er ikke gyldig",
+    "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Dato må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
