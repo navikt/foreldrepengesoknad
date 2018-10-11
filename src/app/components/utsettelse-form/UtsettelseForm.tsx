@@ -155,7 +155,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         if (variant !== this.state.variant) {
             if (variant === Utsettelsesvariant.UttakAnnenForelder) {
                 const forelder = this.props.søkerErFarEllerMedmor ? Forelder.MOR : Forelder.FARMEDMOR;
-                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder, erArbeidstaker: false });
+                this.onChange({ type: Periodetype.Opphold, årsak: undefined, forelder });
             } else {
                 const forelder = this.props.søkerErFarEllerMedmor === false ? Forelder.MOR : Forelder.FARMEDMOR;
                 if (variant === Utsettelsesvariant.Arbeid) {
