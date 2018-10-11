@@ -18,6 +18,7 @@ import NyPeriodeForm from '../ny-periode-form/NyPeriodeForm';
 import FocusContainer from '../focus-container/FocusContainer';
 
 import './uttaksplanlegger.less';
+import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
@@ -136,6 +137,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                             />
+                        </Block>
+                        <Block visible={uttaksplan.length === 0} margin="l">
+                            <TomUttaksplanInfo />
                         </Block>
                         <Block visible={formIsOpen}>
                             {periodetype !== undefined && (
