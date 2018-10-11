@@ -184,16 +184,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         }
 
-        case SøknadActionKeys.UTTAKSPLAN_SET_AGGREGERT_INFO: {
-            return {
-                ...state,
-                ekstrainfo: {
-                    ...state.ekstrainfo,
-                    uttaksplanInfo: action.info
-                }
-            };
-        }
-
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;

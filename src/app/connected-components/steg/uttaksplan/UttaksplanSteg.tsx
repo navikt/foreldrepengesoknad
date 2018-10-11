@@ -28,6 +28,8 @@ import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsu
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
+import { getNavnPåForeldre } from '../../../util/uttaksplan';
+import { NavnPåForeldre } from 'common/types';
 
 interface StateProps {
     stegProps: StegProps;
@@ -37,6 +39,7 @@ interface StateProps {
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }
 
 interface UttaksplanStegState {
@@ -142,10 +145,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
+            navnPåForeldre,
             dispatch
         } = this.props;
         const { visFeiloppsummering } = this.state;
-        const { uttaksplanInfo } = søknad.ekstrainfo;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
 
         return (
@@ -176,7 +179,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
                 )}>
-                {isLoadingTilgjengeligeStønadskontoer === true || !uttaksplanInfo ? (
+                {isLoadingTilgjengeligeStønadskontoer === true ? (
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
@@ -189,16 +192,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 uttaksplanValidering={uttaksplanValidering}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
-                                navnPåForeldre={uttaksplanInfo.navnPåForeldre}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </Block>
                         {søknad.uttaksplan &&
                             søknad.uttaksplan.length > 0 && (
                                 <Block margin="l">
-                                    <Uttaksoppsummering
-                                        uttak={uttaksstatus}
-                                        navnPåForeldre={uttaksplanInfo.navnPåForeldre}
-                                    />
+                                    <Uttaksoppsummering uttak={uttaksstatus} navnPåForeldre={navnPåForeldre} />
                                 </Block>
                             )}
                     </React.Fragment>
@@ -251,11 +251,14 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
 
+    const navnPåForeldre = getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person);
+
     return {
         søknad,
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksstatus,
+        navnPåForeldre,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer
