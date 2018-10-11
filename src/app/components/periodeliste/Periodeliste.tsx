@@ -13,6 +13,7 @@ import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteItem from './PeriodelisteItem';
 import PeriodelisteHull from './PeriodelisteHull';
+import { focusElement } from '../../util/focusUtils';
 
 export interface OwnProps {
     perioder: Periode[];
@@ -45,11 +46,28 @@ const getAntallUttaksdagerTilNestePeriode = (periode: Periode, idx: number, peri
 };
 
 class Periodeliste extends React.Component<Props, State> {
+    focusOnPeriodeId: string | undefined;
     constructor(props: Props) {
         super(props);
         this.state = {
             toggleState: []
         };
+    }
+    componentWillReceiveProps(nextProps: Props) {
+        const { perioder } = this.props;
+        const nyePerioder = nextProps.perioder;
+        if (perioder.length === nyePerioder.length - 1) {
+            const nyPeriode = nyePerioder.find((p) => perioder.find((p2) => p2.id === p.id) === undefined);
+            if (nyPeriode) {
+                this.focusOnPeriodeId = nyPeriode.id;
+            }
+        }
+    }
+    componentDidUpdate() {
+        if (this.focusOnPeriodeId) {
+            focusElement(getPeriodelisteItemId(this.focusOnPeriodeId));
+            this.focusOnPeriodeId = undefined;
+        }
     }
     render() {
         const { perioder, uttaksplanValidering, navnPåForeldre } = this.props;
