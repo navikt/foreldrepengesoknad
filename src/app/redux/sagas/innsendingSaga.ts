@@ -13,7 +13,8 @@ function* sendSøknad(action: SendSøknad) {
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
         }
-        yield put(apiActions.updateApi({ kvittering }));
+        yield put(apiActions.updateApi({ kvittering, søknadHasBeenReceived: true }));
+        yield put(apiActions.deleteStoredAppState());
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
         action.history.push(`${routeConfig.APP_ROUTE_PREFIX}`);
