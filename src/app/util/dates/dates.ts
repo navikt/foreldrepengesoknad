@@ -1,6 +1,13 @@
 import { Alder, DateValue } from '../../types/common';
 import { Tidsperiode } from 'common/types';
-import { date1YearAgo, date1YearAhead, date3YearsAgo, today, tomorrow } from '../validation/values';
+import {
+    date1YearAgo,
+    date1YearAhead,
+    date3YearsAgo,
+    today,
+    tomorrow,
+    date15YearsAnd3MonthsAgo
+} from '../validation/values';
 const moment = require('moment');
 
 export const getDateFromString = (dato?: string) => {
@@ -39,7 +46,7 @@ export const prettifyTidsperiode = (tidsperiode: Partial<Tidsperiode>) => {
     return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) || 'pågående'}`;
 };
 
-export const findOldestDate = (dateArray: Date[]): Date | undefined => {
+export const findOldestDate = (dateArray: Date[]): DateValue => {
     if (dateArray.length > 0) {
         return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
     }
@@ -48,6 +55,8 @@ export const findOldestDate = (dateArray: Date[]): Date | undefined => {
 
 export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow, 'day');
 export const dateIs3YearsAgoOrLess = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo, 'day');
+export const dateIs15YearsAnd3MonthsAgoOrLess = (date: DateValue): boolean =>
+    moment(date).isSameOrAfter(date15YearsAnd3MonthsAgo, 'day');
 export const dateIs1YearAheadOrLess = (date: DateValue): boolean => {
     const m = moment(date);
     return m.isSame(today, 'day') || m.isSame(date1YearAhead, 'day') || m.isBetween(today, date1YearAhead, 'day');
