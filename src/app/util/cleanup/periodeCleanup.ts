@@ -1,6 +1,7 @@
 import {
     ForeldrepengerFørFødselUttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
+    Oppholdsperiode,
     Overføringsperiode,
     Periode,
     Periodetype,
@@ -77,6 +78,17 @@ const cleanupOverføring = (periode: Overføringsperiode): Overføringsperiode =
     };
 };
 
+const cleanupOpphold = (periode: Oppholdsperiode): Oppholdsperiode => {
+    return {
+        type: Periodetype.Opphold,
+        id: periode.id,
+        tidsperiode: periode.tidsperiode,
+        vedlegg: periode.vedlegg,
+        årsak: periode.årsak,
+        forelder: periode.forelder
+    };
+};
+
 export const cleanupPeriode = (periode: Periode, søker: Søker, annenForelder: AnnenForelder): Periode => {
     switch (periode.type) {
         case Periodetype.Overføring:
@@ -85,6 +97,8 @@ export const cleanupPeriode = (periode: Periode, søker: Søker, annenForelder: 
             return cleanupUtsettelse(periode, søker, annenForelder);
         case Periodetype.Uttak:
             return cleanupUttak(periode);
+        case Periodetype.Opphold:
+            return cleanupOpphold(periode);
     }
     return periode;
 };
