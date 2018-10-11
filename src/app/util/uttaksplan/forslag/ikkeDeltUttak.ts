@@ -13,13 +13,14 @@ import { Forelder } from 'common/types';
 import { guid } from 'nav-frontend-js-utils';
 import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
+import { DateValue } from '../../../types/common';
 
 const ANTALL_DAGER_FORBEHOLDT_MOR_ETTER_FØDSEL = 30;
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: DateValue
 ) => {
     famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
@@ -39,7 +40,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 const ikkeDeltUttakAdopsjonMor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: DateValue
 ) => {
     famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
@@ -60,7 +61,7 @@ const ikkeDeltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: DateValue
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon);
@@ -72,7 +73,7 @@ const ikkeDeltUttakAdopsjon = (
 const ikkeDeltUttakFødselMor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto
 ) => {
     famDato = Uttaksdagen(famDato).denneEllerNeste();
@@ -161,7 +162,7 @@ const ikkeDeltUttakFødselMor = (
 const ikkeDeltUttakFødselFarMedmor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: DateValue
 ) => {
     const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const trekkDagerEtterDenneDatoen = Uttaksdagen(Uttaksdagen(famDato).denneEllerNeste()).leggTil(
@@ -193,7 +194,7 @@ const ikkeDeltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: Date | undefined,
+    startdatoPermisjon: DateValue,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined
 ) => {
     if (!erFarEllerMedmor) {
@@ -208,7 +209,7 @@ export const ikkeDeltUttak = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    startdatoPermisjon: Date | undefined
+    startdatoPermisjon: DateValue
 ) => {
     const foreldrepengerKonto = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.Foreldrepenger

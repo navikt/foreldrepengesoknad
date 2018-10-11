@@ -6,13 +6,14 @@ import { Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../../
 import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
+import { DateValue } from '../../../types/common';
 
-const erUtfyltTest = (dato: Date | undefined, skalIkkeHaUttak: boolean): Validator => ({
+const erUtfyltTest = (dato: DateValue, skalIkkeHaUttak: boolean): Validator => ({
     test: () => (skalIkkeHaUttak ? true : dato !== undefined),
     failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.PÅKREVD_VERDI_MANGLER}` }
 });
 
-const erUttaksdagTest = (dato: Date | undefined) => ({
+const erUttaksdagTest = (dato: DateValue) => ({
     test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
     failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.DATO_IKKE_UTTAKSDAG}` }
 });

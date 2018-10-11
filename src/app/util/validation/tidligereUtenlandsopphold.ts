@@ -11,6 +11,7 @@ import {
     hasValueRule,
     timeintervalsDoNotOverlapRule
 } from './common';
+import { DateValue } from '../../types/common';
 
 export const getFraAvgrensninger = (tilDate?: Date): Avgrensninger => {
     const maksDato = tilDate || today.toDate();
@@ -29,8 +30,8 @@ export const getTilAvgrensninger = (fraDate?: Date): Avgrensninger => {
 };
 
 export const getTidligereUtenlandsoppholdFradatoRegler = (
-    fom: Date | undefined,
-    tom: Date | undefined,
+    fom: DateValue,
+    tom: DateValue,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
@@ -44,8 +45,8 @@ export const getTidligereUtenlandsoppholdFradatoRegler = (
 };
 
 export const getTidligereUtenlandsoppholdTildatoRegler = (
-    tom: Date | undefined,
-    fom: Date | undefined,
+    tom: DateValue,
+    fom: DateValue,
     ugyldigePerioder: Tidsperiode[],
     intl: InjectedIntl
 ): Validator[] => {
