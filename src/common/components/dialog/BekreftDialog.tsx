@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import Modal, { ModalProps } from 'nav-frontend-modal';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -6,6 +7,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import './bekreftDialog.less';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Systemtittel } from 'nav-frontend-typografi';
+import BEMHelper from 'common/util/bem';
 
 export interface Props extends ModalProps {
     tittel?: string;
@@ -17,13 +19,29 @@ export interface Props extends ModalProps {
     bekreftLabel?: string;
     /** Label for avbryt-knapp. Default hentes fra intl: komponent.bekreftDialog.avbrytLabel */
     avbrytLabel?: string;
+    /** Maks bredde */
+    størrelse?: undefined | '30';
 }
+
+const bem = BEMHelper('bekreftDialog');
 
 class BekreftDialog extends React.Component<Props & InjectedIntlProps, {}> {
     render() {
-        const { tittel, onAvbryt, onBekreft, avbrytLabel, bekreftLabel, intl, children, ...modalProps } = this.props;
+        const {
+            tittel,
+            onAvbryt,
+            onBekreft,
+            avbrytLabel,
+            bekreftLabel,
+            intl,
+            children,
+            størrelse,
+            ...modalProps
+        } = this.props;
         return (
-            <Modal {...modalProps} className="bekreftDialog">
+            <Modal
+                {...modalProps}
+                className={classnames(bem.className, størrelse ? bem.modifier(`size-${størrelse}`) : undefined)}>
                 {this.props.isOpen && (
                     <>
                         {tittel && <Systemtittel className="blokk-s">{tittel}</Systemtittel>}
