@@ -29,12 +29,12 @@ export const getStillingsprosentRegler = (stillingsprosent: string, intl: Inject
             failText: getMessage(intl, `${intlKey}.ugyldigTall`)
         },
         {
-            test: () => isStillingsprosentMax100Percent(stillingsprosent),
-            failText: getMessage(intl, `${intlKey}.over100prosent`)
+            test: () => isStillingsprosentAbove0(stillingsprosent),
+            failText: getMessage(intl, `${intlKey}.under1`)
         },
         {
-            test: () => isStillingsprosentAbove0(stillingsprosent),
-            failText: getMessage(intl, `${intlKey}.under0`)
+            test: () => isStillingsprosentMax100Percent(stillingsprosent),
+            failText: getMessage(intl, `${intlKey}.over100prosent`)
         }
     ];
 };

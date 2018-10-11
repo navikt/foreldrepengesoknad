@@ -15,6 +15,8 @@ import './tidsperiodeBolk.less';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
+import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
+import { DateValue } from '../../types/common';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
@@ -43,6 +45,7 @@ interface TidsperiodeBolkProps {
     };
     defaultMånedFom?: Date;
     defaultMånedTom?: Date;
+    kalenderplassering?: KalenderPlassering;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -71,7 +74,8 @@ class TidsperiodeBolk extends React.Component<Props> {
             sluttdatoDisabled,
             defaultMånedFom,
             defaultMånedTom,
-            datoInputLabelProps
+            datoInputLabelProps,
+            kalenderplassering
         } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
 
@@ -109,6 +113,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
                                 validators={datoValidatorer && datoValidatorer.fra}
                                 dayPickerProps={{ initialMonth: defaultMånedFom }}
+                                kalender={{ plassering: kalenderplassering }}
                             />
                         </Block>
                     </div>
@@ -119,7 +124,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 name="tilDatoInput"
                                 id="tilDatoInput"
                                 label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
-                                onChange={(tom: Date | undefined) => {
+                                onChange={(tom: DateValue) => {
                                     this.handleOnChange({
                                         ...tidsperiode,
                                         tom
@@ -130,6 +135,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 avgrensninger={tilAvgrensninger}
                                 validators={datoValidatorer && datoValidatorer.til}
                                 dayPickerProps={{ initialMonth: defaultMånedTom }}
+                                kalender={{ plassering: kalenderplassering }}
                             />
                         </Block>
                     </div>

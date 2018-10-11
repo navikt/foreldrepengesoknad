@@ -39,7 +39,6 @@ const FødselsnummerBolk = (props: Props) => {
                             onChange={(v: string) => onChange({ fnr: v })}
                             value={fnr || ''}
                             validators={getFødselsnummerRegler(fnr, utenlandskFnr, søkersFødselsnummer, intl)}
-                            infotekst="Dette er en test"
                             autoComplete="off"
                         />
                     </Block>

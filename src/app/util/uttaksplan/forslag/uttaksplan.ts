@@ -4,8 +4,9 @@ import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { erFarEllerMedmor } from '../../domain/personUtil';
+import { DateValue } from '../../../types/common';
 
-const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): Date | undefined => {
+const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): DateValue => {
     if (situasjon === Søkersituasjon.FØDSEL) {
         return barn.erBarnetFødt ? (barn as FødtBarn).fødselsdatoer[0] : (barn as UfødtBarn).termindato;
     } else if (situasjon === Søkersituasjon.ADOPSJON) {

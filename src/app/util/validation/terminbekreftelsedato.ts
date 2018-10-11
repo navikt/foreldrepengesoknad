@@ -5,6 +5,7 @@ import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import { date1YearAgo, fjortenUkerPluss3Number, today } from './values';
 import { dateIsNotInFutureRule, hasValueRule } from './common';
+import { DateValue } from '../../types/common';
 
 export const fjortenUkerPluss3 = 14 * 7 + 3;
 
@@ -18,8 +19,8 @@ export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgren
 });
 
 export const getTerminbekreftelseDatoRegler = (
-    terminbekreftelseDato: Date | undefined,
-    termindato: Date | undefined,
+    terminbekreftelseDato: DateValue,
+    termindato: DateValue,
     intl: InjectedIntl
 ): Validator[] => {
     const intlKey = 'valideringsfeil.terminbekreftelseDato';
