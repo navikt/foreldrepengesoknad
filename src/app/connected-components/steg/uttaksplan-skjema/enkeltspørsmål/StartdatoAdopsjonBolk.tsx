@@ -9,6 +9,7 @@ import { ValgalternativerAdopsjonStartdato } from '../uttaksplanSkjemadata';
 import DatoInput from 'common/components/skjema/elements/dato-input/DatoInput';
 import getMessage from 'common/util/i18nUtils';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
+import { DateValue } from '../../../../types/common';
 
 interface OwnProps {
     barn: Adopsjonsbarn;
@@ -36,7 +37,7 @@ const getStartdatoFromAlternativ = (
     alternativ: ValgalternativerAdopsjonStartdato,
     barn: Adopsjonsbarn,
     valgtVerdi?: Date
-): Date | undefined => {
+): DateValue => {
     if (alternativ === ValgalternativerAdopsjonStartdato.omsorgsovertakelse) {
         return barn.adopsjonsdato;
     } else if (alternativ === ValgalternativerAdopsjonStartdato.ankomst) {
