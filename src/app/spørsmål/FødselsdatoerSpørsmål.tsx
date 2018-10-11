@@ -13,6 +13,7 @@ export interface FødselsdatoerSpørsmålProps {
     collapsed?: boolean;
     datoavgrensninger?: Avgrensninger;
     datovalidatorer?: Validator[];
+    gjelderAdopsjon?: boolean;
 }
 
 type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
@@ -44,7 +45,10 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
 
     getValidatorer(): Validator[] {
         const { fødselsdatoer, datovalidatorer, intl } = this.props;
-        return [...(datovalidatorer || []), ...getFødselsdatoRegler(fødselsdatoer[0], intl)];
+        return [
+            ...(datovalidatorer || []),
+            ...getFødselsdatoRegler(fødselsdatoer[0], this.props.gjelderAdopsjon === true, intl)
+        ];
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
