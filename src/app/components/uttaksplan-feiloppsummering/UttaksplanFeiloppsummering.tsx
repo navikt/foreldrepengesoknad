@@ -8,10 +8,14 @@ import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { getPeriodelisteItemId } from '../periodeliste/Periodeliste';
 import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
+import { Stønadskontouttak } from '../uttaksoppsummering/Uttaksoppsummering';
+import { getStønadskontoNavn } from '../../util/uttaksplan';
+import { NavnPåForeldre } from 'common/types';
 
 interface OwnProps {
     uttaksplan: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
+    navnPåForeldre: NavnPåForeldre;
     erSynlig?: boolean;
     onErrorClick: (periodeId: string) => void;
 }
@@ -32,7 +36,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         }
     }
     render() {
-        const { uttaksplanValidering, erSynlig, uttaksplan, intl } = this.props;
+        const { uttaksplanValidering, erSynlig, uttaksplan, navnPåForeldre, intl } = this.props;
         if (erSynlig === false) {
             return null;
         }
@@ -65,6 +69,17 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             feil.push({
                 name: uttaksplanleggerDomId,
                 text: getMessage(intl, 'uttaksplan.validering.feil.tomUttaksplan')
+            });
+        }
+
+        if (uttaksplanValidering.stønadskontoerMedForMyeUttak.length > 0) {
+            uttaksplanValidering.stønadskontoerMedForMyeUttak.forEach((uttak: Stønadskontouttak) => {
+                feil.push({
+                    name: uttaksplanleggerDomId,
+                    text: getMessage(intl, 'uttaksplan.validering.feil.forMyeUttak', {
+                        konto: getStønadskontoNavn(intl, uttak.konto, navnPåForeldre, true)
+                    })
+                });
             });
         }
 

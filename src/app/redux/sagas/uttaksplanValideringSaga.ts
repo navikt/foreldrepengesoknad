@@ -7,6 +7,8 @@ import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValideringReducer';
+import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
+import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 
 const stateSelector = (state: AppState) => state;
 
@@ -20,7 +22,11 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     };
 };
 
-function* validerUttaksplanSaga() {
+const getStønadskonterMedFormMyeUttak = (uttak: Stønadskontouttak[]) => {
+    return uttak.filter((u) => u.dagerGjenstående < 0);
+};
+
+function* validerUttaksplanSaga(action: any) {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
@@ -31,7 +37,18 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder++;
         }
     });
-    yield put(setUttaksplanValidering(validertePerioder, antallAktivePerioder > 0));
+    const uttaksstatus = getUttaksstatus(
+        appState.api.tilgjengeligeStønadskontoer,
+        uttaksplan,
+        appState.søknad.søker.rolle
+    );
+    yield put(
+        setUttaksplanValidering(
+            validertePerioder,
+            antallAktivePerioder > 0,
+            getStønadskonterMedFormMyeUttak(uttaksstatus)
+        )
+    );
 }
 
 export default function* uttaksplanValideringSaga() {
