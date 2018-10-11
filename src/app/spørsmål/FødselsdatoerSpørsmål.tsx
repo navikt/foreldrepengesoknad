@@ -5,12 +5,15 @@ import { fødselsdatoAvgrensninger, getFødselsdatoRegler } from '../util/valida
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { Avgrensninger } from 'nav-datovelger';
+import { Validator } from 'common/lib/validation/types';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
     onChange: (fødselsdatoer: DateValue[]) => void;
     collapsed?: boolean;
-    fødselsdatoAvgrensninger?: Avgrensninger;
+    datoavgrensninger?: Avgrensninger;
+    datovalidatorer?: Validator[];
+    gjelderAdopsjon?: boolean;
 }
 
 type Props = FødselsdatoerSpørsmålProps & InjectedIntlProps;
@@ -24,6 +27,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
         this.renderCollapsedFødselsdatoSpørsmål = this.renderCollapsedFødselsdatoSpørsmål.bind(this);
         this.renderExpandedFødselsdatoSpørsmål = this.renderExpandedFødselsdatoSpørsmål.bind(this);
         this.getFødselsdatoAvgrensninger = this.getFødselsdatoAvgrensninger.bind(this);
+        this.getValidatorer = this.getValidatorer.bind(this);
     }
 
     onDatoChange(dato: DateValue, idx: number) {
@@ -35,12 +39,20 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     getFødselsdatoAvgrensninger() {
         return {
             ...fødselsdatoAvgrensninger,
-            ...this.props.fødselsdatoAvgrensninger
+            ...this.props.datoavgrensninger
         };
     }
 
+    getValidatorer(): Validator[] {
+        const { fødselsdatoer, datovalidatorer, intl } = this.props;
+        return [
+            ...(datovalidatorer || []),
+            ...getFødselsdatoRegler(fødselsdatoer[0], this.props.gjelderAdopsjon === true, intl)
+        ];
+    }
+
     renderCollapsedFødselsdatoSpørsmål() {
-        const { fødselsdatoer, intl } = this.props;
+        const { fødselsdatoer } = this.props;
         return (
             <DatoInput
                 id="fødselsdatoe"
@@ -49,13 +61,13 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                 onChange={(d: Date) => this.onDatoChange(d, 0)}
                 label={<Labeltekst intlId="fødselsdatoer.fødsel.flereBarn" />}
                 avgrensninger={this.getFødselsdatoAvgrensninger()}
-                validators={getFødselsdatoRegler(fødselsdatoer[0], intl)}
+                validators={this.getValidatorer()}
             />
         );
     }
 
     renderExpandedFødselsdatoSpørsmål() {
-        const { fødselsdatoer, intl } = this.props;
+        const { fødselsdatoer } = this.props;
         return (
             <React.Fragment>
                 {fødselsdatoer.map((dato: DateValue, idx: number) => (
@@ -67,7 +79,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
                             onChange={(d: Date) => this.onDatoChange(d, idx)}
                             label={<Labeltekst intlId={`fødselsdatoer.flere.${idx + 1}`} />}
                             avgrensninger={this.getFødselsdatoAvgrensninger()}
-                            validators={getFødselsdatoRegler(dato, intl)}
+                            validators={this.getValidatorer()}
                         />
                     </div>
                 ))}

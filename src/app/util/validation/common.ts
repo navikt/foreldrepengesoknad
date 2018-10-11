@@ -10,7 +10,8 @@ import {
     dateIsNotInFuture,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
-    timeintervalsOverlap
+    timeintervalsOverlap,
+    dateIs15YearsAnd3MonthsAgoOrLess
 } from '../dates/dates';
 
 export const hasValueRule = (v: any, failText: string): Validator => ({
@@ -25,6 +26,11 @@ export const dateIsNotInFutureRule = (date: DateValue, failText: string): Valida
 
 export const dateIs3YearsAgoOrLaterRule = (date: DateValue, failText: string): Validator => ({
     test: () => dateIs3YearsAgoOrLess(date),
+    failText
+});
+
+export const dateIs15YearsAnd3MonthsAgoOrLaterRule = (date: DateValue, failText: string): Validator => ({
+    test: () => dateIs15YearsAnd3MonthsAgoOrLess(date),
     failText
 });
 
