@@ -564,6 +564,8 @@
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
     "uttaksplan.slettPlan": "Slett plan",
+    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioden enda...",
+
     "bekreftSlettUttaksplanDialog.tittel": "Slett uttaksplan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.avbrytLabel": "Nei, avbryt",
