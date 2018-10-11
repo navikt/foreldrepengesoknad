@@ -29,7 +29,6 @@ import cleanupAdopsjonsSteg from '../../../util/cleanup/cleanupAdopsjonsSteg';
 import { apiActionCreators } from '../../../redux/actions';
 import { søknadStegPath } from '../StegRoutes';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { fødselsdatoErFørEllerLikAdopsjonsdato } from '../../../util/validation/f\u00F8dselsdato';
 
 interface StateProps {
     barn: Adopsjonsbarn;
@@ -122,13 +121,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
                             maksDato: barn.adopsjonsdato
                         }}
-                        datovalidatorer={[
-                            {
-                                test: () =>
-                                    fødselsdatoErFørEllerLikAdopsjonsdato(barn.fødselsdatoer, barn.adopsjonsdato),
-                                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato')
-                            }
-                        ]}
+                        gjelderAdopsjon={true}
                         onChange={(fødselsdatoer: Date[]) =>
                             dispatch(
                                 søknadActions.updateBarn({

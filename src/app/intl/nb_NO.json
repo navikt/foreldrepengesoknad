@@ -413,6 +413,8 @@
     "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
         "Du kan ikke søke om foreldrepenger for barn som er eldre enn tre år.",
+    "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
+        "Du kan ikke søke om foreldrepenger for barn som er eldre enn 15 år og 3 måneder ({dato}).",
     "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdato kan ikke være etter adopsjonsdato",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må oppgi termindato",

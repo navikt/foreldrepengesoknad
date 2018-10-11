@@ -17,7 +17,7 @@ describe('Fødselsdato validation', () => {
     });
 
     it('should call correct validators with given date and string', () => {
-        getFødselsdatoRegler(todaysDate, intl);
+        getFødselsdatoRegler(todaysDate, false, intl);
         expect(commonRules.hasValueRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
         expect(commonRules.dateIsNotInFutureRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
         expect(commonRules.dateIs3YearsAgoOrLaterRule).toHaveBeenCalledWith(todaysDate, expect.any(String));
