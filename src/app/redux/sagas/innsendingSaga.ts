@@ -17,7 +17,7 @@ function* sendSøknad(action: SendSøknad) {
         yield put(apiActions.deleteStoredAppState());
     } catch (error) {
         yield put(apiActions.updateApi({ error }));
-        action.history.push(`${routeConfig.APP_ROUTE_PREFIX}`);
+        action.history.push(`${routeConfig.GENERELL_FEIL_URL}`);
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));
     }

@@ -8,6 +8,7 @@ import { ApiStatePartial } from '../reducers/apiReducer';
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
+import routeConfig from '../../util/routing/routeConfig';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -43,6 +44,7 @@ function* getSøkerinfo(action: any) {
                       })
                   );
         } else {
+            action.history.push(`${routeConfig.GENERELL_FEIL_URL}`);
             yield put(
                 apiActions.updateApi({
                     error
