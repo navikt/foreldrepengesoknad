@@ -6,6 +6,7 @@ import { StønadskontoerDTO } from '../../api/types/stønadskontoerDTO';
 import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
+import { default as uttaksplanValideringActions } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
@@ -29,6 +30,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 )
             })
         );
+        yield put(uttaksplanValideringActions.validerUttaksplanAction());
     } catch (error) {
         yield put(
             apiActions.updateApi({
