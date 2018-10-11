@@ -8,6 +8,30 @@ import {
 import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
+import { getFloatFromString } from 'common/util/numberUtils';
+
+const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
+    if (isUttaksperiode(p)) {
+        const periodeErGradert = p.stillingsprosent !== undefined;
+        const periodeHarTrekkdagerPgaSenSøknad = p.trekkdager !== undefined;
+
+        if (periodeErGradert && periodeHarTrekkdagerPgaSenSøknad) {
+            const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
+
+            return p.trekkdager! + Math.floor(dager * graderingsProsent);
+        } else if (periodeErGradert) {
+            const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
+
+            return Math.floor(dager * graderingsProsent);
+        } else if (periodeHarTrekkdagerPgaSenSøknad) {
+            return dager + p.trekkdager!;
+        } else {
+            return dager;
+        }
+    }
+
+    return dager;
+};
 
 export const beregnGjenståendeUttaksdager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
@@ -28,14 +52,7 @@ export const beregnGjenståendeUttaksdager = (
 
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
-                if (isUttaksperiode(p)) {
-                    dagerGjenstående =
-                        p.trekkdager !== undefined
-                            ? dagerGjenstående - p.trekkdager
-                            : dagerGjenstående - Perioden(p).getAntallUttaksdager();
-                } else {
-                    dagerGjenstående = dagerGjenstående - Perioden(p).getAntallUttaksdager();
-                }
+                dagerGjenstående = dagerGjenstående - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);
             });
         }
 
