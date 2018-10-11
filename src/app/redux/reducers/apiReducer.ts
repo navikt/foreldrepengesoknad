@@ -10,6 +10,7 @@ export interface ApiState {
     isLoadingAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     søknadSendingInProgress: boolean;
+    søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     kvittering?: Kvittering;
     error?: AxiosError;
@@ -22,6 +23,7 @@ const getDefaultState = (): ApiState => ({
     isLoadingAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     søknadSendingInProgress: false,
+    søknadHasBeenReceived: false,
     tilgjengeligeStønadskontoer: [],
     error: undefined
 });
