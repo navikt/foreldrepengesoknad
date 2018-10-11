@@ -2,8 +2,9 @@ import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types';
 import getMessage from 'common/util/i18nUtils';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
+import { DateValue } from '../../../types/common';
 
-const startdatoFarMedmorValidation = (intl: InjectedIntl, dato: Date | undefined): Validator[] => {
+const startdatoFarMedmorValidation = (intl: InjectedIntl, dato: DateValue): Validator[] => {
     const validators: Validator[] = [
         {
             test: () => dato !== undefined,

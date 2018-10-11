@@ -16,6 +16,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
+import { DateValue } from '../../types/common';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
@@ -123,7 +124,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 name="tilDatoInput"
                                 id="tilDatoInput"
                                 label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
-                                onChange={(tom: Date | undefined) => {
+                                onChange={(tom: DateValue) => {
                                     this.handleOnChange({
                                         ...tidsperiode,
                                         tom

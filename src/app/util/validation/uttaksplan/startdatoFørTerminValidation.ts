@@ -5,10 +5,11 @@ import getMessage from 'common/util/i18nUtils';
 import { getPermisjonsregler } from '../../uttaksplan/permisjonsregler';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
+import { DateValue } from '../../../types/common';
 
 const startdatoFørTerminValidators = (
     intl: InjectedIntl,
-    dato: Date | undefined,
+    dato: DateValue,
     familiehendelsesdato: Date,
     ingenUttakFørTermin: boolean | undefined
 ): Validator[] => {
