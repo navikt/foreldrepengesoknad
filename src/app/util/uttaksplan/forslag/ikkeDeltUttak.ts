@@ -181,7 +181,6 @@ const ikkeDeltUttakFødselFarMedmor = (
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager - oppbrukteDagerPgaSenSøknad),
-            trekkdager: foreldrepengerKonto.dager,
             vedlegg: [],
             ønskerSamtidigUttak: false
         }
