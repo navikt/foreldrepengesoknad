@@ -18,8 +18,7 @@ import {
     UttaksplanUpdatePeriode,
     UttaksplanUpdateSkjemadata,
     UttaksplanLagForslag,
-    AvbrytSøknad,
-    UttaksplanSetAggregertInfo
+    AvbrytSøknad
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -34,7 +33,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
-import { UttaksplanInfo } from '../../../util/uttaksplan/uttaksplanInfo';
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
@@ -135,11 +133,6 @@ const uttaksplanUpdatePeriode = (periode: Periode): UttaksplanUpdatePeriode => (
     periode
 });
 
-const uttaksplanSetAggregertInfo = (info: UttaksplanInfo): UttaksplanSetAggregertInfo => ({
-    type: SøknadActionKeys.UTTAKSPLAN_SET_AGGREGERT_INFO,
-    info
-});
-
 const uttaksplanLagForslag = (tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): UttaksplanLagForslag => ({
     type: SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG,
     tilgjengeligeStønadskontoer
@@ -162,7 +155,6 @@ export default {
     uttaksplanDeletePeriode,
     uttaksplanUpdatePeriode,
     uttaksplanUpdateSkjemdata,
-    uttaksplanSetAggregertInfo,
     uploadAttachment,
     uploadAttachmentSuccess,
     uploadAttachmentFailed,

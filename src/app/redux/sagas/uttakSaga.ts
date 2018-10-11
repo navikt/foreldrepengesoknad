@@ -7,7 +7,6 @@ import { TilgjengeligStønadskonto, StønadskontoType } from '../../types/uttaks
 import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
 import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
-import { getAggregertUttaksplanInfo } from '../../util/uttaksplan/uttaksplanInfo';
 
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
@@ -36,14 +35,6 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 tilgjengeligeStønadskontoer: [],
                 isLoadingTilgjengeligeStønadskontoer: false
             })
-        );
-    } finally {
-        const stateSelector = (state: AppState) => state;
-        const appState: AppState = yield select(stateSelector);
-        yield put(
-            søknadActionCreators.uttaksplanSetAggregertInfo(
-                getAggregertUttaksplanInfo(appState.søknad, appState.api.søkerinfo!)
-            )
         );
     }
 }
