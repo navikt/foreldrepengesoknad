@@ -119,7 +119,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
                         datoavgrensninger={{
-                            minDato: DateValues.date15YearsAgo.toDate(),
+                            minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
                             maksDato: barn.adopsjonsdato
                         }}
                         datovalidatorer={[
