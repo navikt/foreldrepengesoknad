@@ -622,5 +622,6 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
     "uttaksplan.validering.feil.tomUttaksplan": "Uttaksplanen inneholder ikke noen tellende perioder",
+    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
