@@ -191,7 +191,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     />
                     <Checkbox
                         checked={annenInntekt.pågående || false}
-                        label={getMessage(intl, 'annenInntekt.modal.pågående')}
+                        label={getMessage(intl, 'pågående')}
                         onChange={() => {
                             this.updateAnnenInntekt({
                                 pågående: !annenInntekt.pågående,
