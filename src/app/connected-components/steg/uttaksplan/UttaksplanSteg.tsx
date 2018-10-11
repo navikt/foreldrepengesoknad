@@ -142,6 +142,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
+            tilgjengeligeStønadskontoer,
             dispatch
         } = this.props;
         const { visFeiloppsummering } = this.state;
@@ -193,7 +194,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         </Block>
                         {søknad.uttaksplan &&
-                            søknad.uttaksplan.length > 0 && (
+                            tilgjengeligeStønadskontoer.length > 0 && (
                                 <Block margin="l">
                                     <Uttaksoppsummering
                                         uttak={uttaksstatus}
