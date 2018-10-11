@@ -39,7 +39,7 @@ export const prettifyTidsperiode = (tidsperiode: Partial<Tidsperiode>) => {
     return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom) || 'pågående'}`;
 };
 
-export const findOldestDate = (dateArray: Date[]): Date | undefined => {
+export const findOldestDate = (dateArray: Date[]): DateValue => {
     if (dateArray.length > 0) {
         return moment.max(dateArray.map((date: Date) => moment(date))).toDate();
     }

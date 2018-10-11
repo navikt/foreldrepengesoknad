@@ -5,6 +5,7 @@ import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import startdatoFarMedmorValidation from '../../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
+import { DateValue } from '../../../../types/common';
 
 interface OwnProps {
     familiehendelsesdato: Date;
@@ -23,7 +24,7 @@ const StartdatoPermisjonSpørsmål = (props: Props) => {
                     id="permisjonStartdato"
                     name="permisjonStartdato"
                     label={getMessage(intl, 'spørsmål.startdatoPermisjonFarMedmor.label')}
-                    onChange={(startdatoPermisjon: Date | undefined) => onChange({ startdatoPermisjon })}
+                    onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
                     dato={data.startdatoPermisjon}
                     disabled={data.skalIkkeHaUttakFørTermin}
                     avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonFarMedmor(familiehendelsesdato)}

@@ -19,6 +19,7 @@ import { Barn } from '../../../types/søknad/Barn';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
+import { DateValue } from '../../../types/common';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -152,7 +153,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         name="datoForAleneomsorg"
                         id="datoForAleneomsorg"
                         label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
-                        onChange={(datoForAleneomsorg: Date | undefined) => onBarnChange({ datoForAleneomsorg })}
+                        onChange={(datoForAleneomsorg: DateValue) => onBarnChange({ datoForAleneomsorg })}
                         dato={barn.datoForAleneomsorg}
                     />
                 </Block>

@@ -10,6 +10,7 @@ import getMessage from 'common/util/i18nUtils';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import startdatoFarMedmorValidation from '../../../../util/validation/uttaksplan/startdatoFarMedmorValidation';
+import { DateValue } from '../../../../types/common';
 
 interface OwnProps {
     barn: ForeldreansvarBarn;
@@ -37,7 +38,7 @@ const getStartdatoFromAlternativ = (
     alternativ: ValgalternativerAleneomsorgFarMedmor,
     barn: ForeldreansvarBarn,
     valgtVerdi?: Date
-): Date | undefined => {
+): DateValue => {
     if (alternativ === ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg) {
         return barn.datoForAleneomsorg;
     }
@@ -81,7 +82,7 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             id="annenStartdatoAdopsjon"
                             name="annenStartdatoAdopsjon"
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
-                            onChange={(startdatoPermisjon: Date | undefined) => onChange({ startdatoPermisjon })}
+                            onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
                             avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonVedAdopsjon(

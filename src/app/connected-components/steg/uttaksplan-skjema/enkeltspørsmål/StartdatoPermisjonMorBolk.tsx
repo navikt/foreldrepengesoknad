@@ -17,6 +17,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
+import { DateValue } from '../../../../types/common';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -25,7 +26,7 @@ interface OwnProps {
 
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
-const getAntallUttaksdager = (fom: Date | undefined, tom: Date | undefined): number | undefined => {
+const getAntallUttaksdager = (fom: DateValue, tom: DateValue): number | undefined => {
     if (fom !== undefined && tom !== undefined && moment(fom).isBefore(tom, 'day')) {
         return Tidsperioden({
             fom,
@@ -35,7 +36,7 @@ const getAntallUttaksdager = (fom: Date | undefined, tom: Date | undefined): num
     return undefined;
 };
 
-const getVarighet = (fom: Date | undefined, tom: Date | undefined, intl: InjectedIntl): string | undefined => {
+const getVarighet = (fom: DateValue, tom: DateValue, intl: InjectedIntl): string | undefined => {
     const antallDager = getAntallUttaksdager(fom, tom);
     return antallDager !== undefined ? getVarighetString(antallDager, intl) : undefined;
 };
@@ -79,7 +80,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         name="permisjonStartdato"
                         id="permisjonStartdato"
                         label={spørsmålNår}
-                        onChange={(startdatoPermisjon: Date | undefined) => {
+                        onChange={(startdatoPermisjon: DateValue) => {
                             onChange({ startdatoPermisjon });
                         }}
                         dato={startdato}
