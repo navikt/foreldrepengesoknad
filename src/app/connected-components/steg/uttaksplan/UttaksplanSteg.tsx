@@ -9,7 +9,7 @@ import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, StønadskontoType, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -20,14 +20,15 @@ import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoPa
 import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjemaDialog';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
-import { beregnGjenståendeUttaksdager } from '../../../util/uttaksPlanStatus';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
+import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
+import { getNavnPåForeldre } from '../../../util/uttaksplan';
+import { NavnPåForeldre } from 'common/types';
 
 interface StateProps {
     stegProps: StegProps;
@@ -35,6 +36,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
     perioder: Periode[];
+    navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
@@ -143,6 +145,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
             tilgjengeligeStønadskontoer,
+            navnPåForeldre,
             dispatch
         } = this.props;
         const { visFeiloppsummering } = this.state;
@@ -174,6 +177,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         uttaksplanValidering={uttaksplanValidering}
                         erSynlig={visFeiloppsummering}
                         uttaksplan={søknad.uttaksplan}
+                        navnPåForeldre={navnPåForeldre}
                         onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
                 )}>
@@ -219,18 +223,6 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 }
 
-const getUttaksstatus = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    uttaksplan: Periode[],
-    søkerrolle: SøkerRolle
-) => {
-    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan);
-    if (erFarEllerMedmor(søkerrolle)) {
-        return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
-    }
-    return uttaksstatus;
-};
-
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
         søknad,
@@ -257,6 +249,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksstatus,
+        navnPåForeldre: getNavnPåForeldre(søknad, søkerinfo.person),
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer

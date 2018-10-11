@@ -360,7 +360,6 @@
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
 
-
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Startdato må velges",
 
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
@@ -623,5 +622,6 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
     "uttaksplan.validering.feil.tomUttaksplan": "Uttaksplanen inneholder ikke noen tellende perioder",
+    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
