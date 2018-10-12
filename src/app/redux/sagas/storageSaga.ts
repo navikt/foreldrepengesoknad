@@ -10,18 +10,14 @@ import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 
 function* saveAppState() {
-    try {
-        const stateSelector = (state: AppState) => state;
-        const appState: AppState = yield select(stateSelector);
-        const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
-        const cleanedAppState = {
-            ...appState,
-            søknad
-        };
-        yield call(Api.storeAppState, cleanedAppState);
-    } catch (error) {
-        yield put(apiActions.updateApi({ error }));
-    }
+    const stateSelector = (state: AppState) => state;
+    const appState: AppState = yield select(stateSelector);
+    const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
+    const cleanedAppState = {
+        ...appState,
+        søknad
+    };
+    yield call(Api.storeAppState, cleanedAppState);
 }
 
 function* applyStoredStateToApp(state: AppState) {
@@ -44,8 +40,6 @@ function* getAppState(action: any) {
         if (state) {
             yield applyStoredStateToApp(state);
         }
-    } catch (error) {
-        yield put(apiActions.updateApi({ error }));
     } finally {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
     }
@@ -54,12 +48,6 @@ function* getAppState(action: any) {
 function* deleteStoredAppState() {
     try {
         yield call(Api.deleteStoredAppState);
-    } catch (error) {
-        yield put(
-            apiActions.updateApi({
-                error
-            })
-        );
     } finally {
         yield put(
             apiActions.updateApi({

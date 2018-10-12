@@ -110,7 +110,6 @@ const deleteAttachmentSuccess = (attachment: Attachment): DeleteAttachmentSucces
 
 const deleteAttachmentFailed = (error: any, attachment: Attachment): DeleteAttachmentFailed => ({
     type: SøknadActionKeys.DELETE_ATTACHMENT_FAILED,
-    error,
     attachment
 });
 
