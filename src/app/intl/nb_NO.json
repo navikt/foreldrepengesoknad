@@ -360,7 +360,6 @@
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må oppgi når du skal starte foreldrepengene, eller krysse av for at du ikke skal ha foreldrepenger før termindato",
 
-
     "uttaksplan.skjema.validering.startdatoFarMedmor": "Startdato må velges",
 
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
@@ -449,7 +448,7 @@
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
     "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
-    "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent kan være maks 100",
+    "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
 
     "radiopanelgruppe.required.feilmelding": "Påkrevd",
@@ -565,6 +564,8 @@
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
     "uttaksplan.slettPlan": "Slett plan",
+    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioden enda...",
+
     "bekreftSlettUttaksplanDialog.tittel": "Slett uttaksplan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.avbrytLabel": "Nei, avbryt",
@@ -623,5 +624,6 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
     "uttaksplan.validering.feil.tomUttaksplan": "Uttaksplanen inneholder ikke noen tellende perioder",
+    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

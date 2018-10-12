@@ -21,7 +21,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
-import { getNavnPåForeldre, getTidsperioderIUttaksplan } from '../../util/uttaksplan';
+import { getNavnPåForeldre, getTidsperioderIUttaksplan, getFamiliehendelsedato } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
@@ -251,7 +251,7 @@ const mapStateToProps = (state: AppState): StateProps => {
         velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
         søkerErFarEllerMedmor: erFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        familiehendelsesdato: state.søknad.ekstrainfo.uttaksplanInfo!.familiehendelsesdato,
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
         annenForelderHarRett: state.søknad.annenForelder.harRettPåForeldrepenger
     };
 };

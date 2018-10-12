@@ -4,10 +4,10 @@ import getMessage from 'common/util/i18nUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { hasValueRule } from './common';
 
-const isStillingsprosentMax100Percent = (stillingsprosent: string): boolean => {
+const isStillingsprosentLessThan100Percent = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
     if (pst) {
-        return pst <= 100;
+        return pst < 100;
     }
     return false;
 };
@@ -33,7 +33,7 @@ export const getStillingsprosentRegler = (stillingsprosent: string, intl: Inject
             failText: getMessage(intl, `${intlKey}.under1`)
         },
         {
-            test: () => isStillingsprosentMax100Percent(stillingsprosent),
+            test: () => isStillingsprosentLessThan100Percent(stillingsprosent),
             failText: getMessage(intl, `${intlKey}.over100prosent`)
         }
     ];

@@ -3,6 +3,7 @@ import {
     UttaksplanValideringActionKeys
 } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 
 export enum PeriodeValideringErrorKey {
     'PÅKREVD_VERDI_MANGLER' = 'påkrevd',
@@ -18,6 +19,7 @@ export interface Periodevalidering {
 export interface UttaksplanValideringState {
     periodevalidering: Periodevalidering;
     inneholderPerioder: boolean;
+    stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
 }
 
@@ -35,6 +37,7 @@ const getDefaultState = (): UttaksplanValideringState => {
     return {
         periodevalidering: {},
         inneholderPerioder: false,
+        stønadskontoerMedForMyeUttak: [],
         erGyldig: true
     };
 };
@@ -55,7 +58,11 @@ const uttaksplanValideringReducer = (
                 ...state,
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
-                erGyldig: periodeneErGyldige(action.validertePerioder) && action.inneholderPerioder
+                stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
+                erGyldig:
+                    periodeneErGyldige(action.validertePerioder) &&
+                    action.inneholderPerioder &&
+                    action.stønadskontoerMedForMyeUttak.length === 0
             };
     }
     return state;

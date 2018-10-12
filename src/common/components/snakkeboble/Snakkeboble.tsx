@@ -1,22 +1,26 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import { Element } from 'nav-frontend-typografi';
+import BEMHelper from 'common/util/bem';
 
 import './snakkeboble.less';
 
 interface Props {
-    tittel: string;
+    tittel?: string;
     tekst: string | React.ReactNode;
 }
 
-const Snakkeboble: React.StatelessComponent<Props> = ({ tittel = null, tekst }) => (
-    <div className={`snakkeboble snakkeboble--hvit`}>
-        <div className="snakkeboble__innhold">
+const bem = BEMHelper('snakkeboble');
+
+const Snakkeboble: React.StatelessComponent<Props> = ({ tittel, tekst }) => (
+    <div className={classnames(bem.className, bem.modifier('hvit'))}>
+        <div className={bem.element('innhold')}>
             {tittel && (
-                <div className="snakkeboble__tittel capitalizeName">
+                <div className={classnames(bem.element('tittel'), 'capitalizeName')}>
                     <Element className="m_no-margin">{tittel}</Element>
                 </div>
             )}
-            <div className="snakkeboble__tekst">{tekst}</div>
+            <div className={bem.element('tekst')}>{tekst}</div>
         </div>
     </div>
 );
