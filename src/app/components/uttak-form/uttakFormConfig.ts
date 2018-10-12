@@ -99,13 +99,13 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode, morErUfør, søkerErFarEllerMedmor } = payload;
+    const { periode, morErUfør } = payload;
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
         periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
         morErUfør ||
-        (erUttakEgenKvote(periode.konto, søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined)
+        (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined)
     ) {
         return false;
     }
