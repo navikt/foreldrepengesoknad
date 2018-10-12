@@ -51,6 +51,7 @@ interface StateProps {
     arbeidsforhold?: Arbeidsforhold[];
     velgbareStønadskontotyper: StønadskontoType[];
     søkerErFarEllerMedmor: boolean;
+    morErUfør: boolean;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: Date;
     annenForelderHarRett: boolean;
@@ -132,6 +133,7 @@ class UttaksperiodeForm extends React.Component<Props> {
             kanEndreStønadskonto,
             velgbareStønadskontotyper,
             søkerErFarEllerMedmor,
+            morErUfør,
             navnPåForeldre,
             familiehendelsesdato,
             arbeidsforhold,
@@ -147,7 +149,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             kanEndreStønadskonto,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            annenForelderHarRett
+            annenForelderHarRett,
+            morErUfør
         });
 
         if (visibility === undefined) {
@@ -245,11 +248,13 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
+    const søkerErFarEllerMedmor = erFarEllerMedmor(state.søknad.søker.rolle);
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,
         velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
-        søkerErFarEllerMedmor: erFarEllerMedmor(state.søknad.søker.rolle),
+        søkerErFarEllerMedmor,
+        morErUfør: søkerErFarEllerMedmor && state.søknad.annenForelder.erUfør,
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
         familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
         annenForelderHarRett: state.søknad.annenForelder.harRettPåForeldrepenger
