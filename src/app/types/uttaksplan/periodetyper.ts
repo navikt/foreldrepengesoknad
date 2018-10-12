@@ -74,6 +74,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     stillingsprosent?: string;
     orgnr?: string;
     selvstendigNæringsdrivendeEllerFrilans?: Arbeidsform;
+    erArbeidstaker?: boolean;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
