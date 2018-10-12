@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import BEMHelper from 'common/util/bem';
-import { måned, måned3bokstaver } from 'common/util/datoUtils';
+import { måned, måned3bokstaver, år, årToBokstaver } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
@@ -54,7 +54,9 @@ const renderDagMnd = (dato: Date): JSX.Element =>
         <div className={BEM.element('dagmnd')}>
             <span className={BEM.element('dagmnd__dato')}>{dato.getDate()}.</span>
             <EtikettLiten tag="span" className={BEM.element('dagmnd__mnd')}>
-                <abbr title={måned(dato)}>{måned3bokstaver(dato)}</abbr>.
+                <abbr title={`${måned(dato)} ${år(dato)}`}>
+                    {måned3bokstaver(dato)}-{årToBokstaver(dato)}
+                </abbr>
             </EtikettLiten>
         </div>
     ) : (
