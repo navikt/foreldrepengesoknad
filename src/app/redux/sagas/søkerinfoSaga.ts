@@ -34,21 +34,10 @@ function* getSøkerinfo(action: any) {
             yield put(apiActions.deleteStoredAppState());
         }
     } catch (error) {
-        if (error.response) {
-            error.response.status === 401
-                ? redirectToLogin()
-                : yield put(
-                      apiActions.updateApi({
-                          error
-                      })
-                  );
+        if (error.response && error.response.status === 401) {
+            redirectToLogin();
         } else {
             action.history.push(`${routeConfig.GENERELL_FEIL_URL}`);
-            yield put(
-                apiActions.updateApi({
-                    error
-                })
-            );
         }
     } finally {
         yield put(
