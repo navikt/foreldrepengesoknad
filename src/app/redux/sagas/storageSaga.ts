@@ -19,16 +19,7 @@ function* saveAppState() {
             søknad
         };
         yield call(Api.storeAppState, cleanedAppState);
-    } catch (error) {
-        yield put(apiActions.updateApi({ error }));
-    }
-}
-
-function* applyStoredStateToApp(state: AppState) {
-    if (Object.keys(state).length !== 0) {
-        yield put(søknadActions.updateSøknad(state.søknad));
-        yield put(commonActions.setSpråk(state.common.språkkode));
-        yield put(uttaksplanValideringActions.validerUttaksplanAction());
+    } catch {
         yield put(
             apiActions.updateApi({
                 isLoadingAppState: false
@@ -37,16 +28,29 @@ function* applyStoredStateToApp(state: AppState) {
     }
 }
 
+function* applyStoredStateToApp(state: AppState) {
+    if (Object.keys(state).length !== 0) {
+        yield put(søknadActions.updateSøknad(state.søknad));
+        yield put(commonActions.setSpråk(state.common.språkkode));
+        yield put(uttaksplanValideringActions.validerUttaksplanAction());
+    }
+    yield put(
+        apiActions.updateApi({
+            isLoadingAppState: false
+        })
+    );
+}
+
 function* getAppState(action: any) {
     try {
         const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
         const state: AppState = response.data;
         if (state) {
             yield applyStoredStateToApp(state);
+        } else {
+            yield put(apiActions.updateApi({ isLoadingAppState: false }));
         }
-    } catch (error) {
-        yield put(apiActions.updateApi({ error }));
-    } finally {
+    } catch {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
     }
 }
@@ -54,13 +58,12 @@ function* getAppState(action: any) {
 function* deleteStoredAppState() {
     try {
         yield call(Api.deleteStoredAppState);
-    } catch (error) {
         yield put(
             apiActions.updateApi({
-                error
+                isLoadingAppState: false
             })
         );
-    } finally {
+    } catch {
         yield put(
             apiActions.updateApi({
                 isLoadingAppState: false
