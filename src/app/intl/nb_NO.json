@@ -603,7 +603,25 @@
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder": "Informasjon når mors aktivitet er valgt",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
+        "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
+        "Du må legge ved bekreftelse som viser at {navnMor} er fulltidsstudent i perioden du skal ha foreldrepenger. Bekreftelsen må også vise:",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "Mors navn og fødselsnummer",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "Studiested, fag eller studieprogram",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "Oppstart og varighet av studiet",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
+        "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
+        "Du må legge ved dokumentasjon som viser at mors jobb og studier til sammen utgjør 100 prosent.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
+        "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen, som viser perioden det gjelder.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
+        "Du må legge ved dokumentasjon som viser at {navnMor} deltar på heltid i introduksjonsprogrammet for nyankomne innvandrere etter introduksjonsloven kapittel 2.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
+        "Du må legge ved dokumentasjon som viser at {navnMor} deltar på heltid i kvalifiseringsprogram etter sosialtjenesteloven kapittel 5A.",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
+        "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør {navnMor} er helt avhengig av hjelp til å ta seg av barnet, i hvilken grad {navnMor} er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med uttak",
