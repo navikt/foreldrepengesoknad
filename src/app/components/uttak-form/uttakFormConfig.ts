@@ -105,7 +105,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
         periode.type !== Periodetype.Uttak ||
         periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
         morErUfør ||
-        (erUttakEgenKvote(periode.konto, søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak === true)
+        (erUttakEgenKvote(periode.konto, søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined)
     ) {
         return false;
     }
