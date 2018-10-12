@@ -25,7 +25,6 @@ function* getSøkerinfo(action: any) {
         const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
             søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
-            isLoadingSøkerinfo: false,
             isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
@@ -52,9 +51,11 @@ function* getSøkerinfo(action: any) {
             );
         }
     } finally {
-        apiActions.updateApi({
-            isLoadingSøkerinfo: false
-        });
+        yield put(
+            apiActions.updateApi({
+                isLoadingSøkerinfo: false
+            })
+        );
     }
 }
 
