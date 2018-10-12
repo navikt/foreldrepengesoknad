@@ -98,14 +98,20 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
+    const { periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
+    if (periode.konto === undefined) {
+        return false;
+    }
     if (periode.type !== Periodetype.Uttak || periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return false;
     }
     if (erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined) {
         return true;
     }
-    return periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak !== undefined;
+    return (
+        periode.type === Periodetype.Uttak &&
+        (periode.ønskerSamtidigUttak !== undefined || (søkerErAleneOmOmsorg && søkerErFarEllerMedmor === false))
+    );
 };
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
