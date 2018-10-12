@@ -2,7 +2,7 @@ import moment from 'moment';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
 import { AppState } from '../reducers';
-import { Periodetype, isUttaksperiode, Uttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
+import { Periodetype, Uttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
@@ -14,7 +14,7 @@ const fjernTrekkdager = (p: Uttaksperiode) => {
     return { ...p, trekkdager: 0 };
 };
 
-function* uttaksplanStatus() {
+function* updateUttaksplanStatus() {
     const appState: AppState = yield select(stateSelector);
     const { søknad } = appState;
     const uttaksplan = søknad.uttaksplan;
@@ -22,17 +22,13 @@ function* uttaksplanStatus() {
         (p) => p.type === Periodetype.Uttak && p.konto !== StønadskontoType.ForeldrepengerFørFødsel
     );
     const famDato = getFamiliehendelsedato(søknad.barn, søknad.situasjon);
-    const trekkDagerEtterDenneDatoen = Uttaksdagen(Uttaksdagen(famDato).denneEllerNeste()).leggTil(30 - 1);
+    const trekkdagerStartdato = Uttaksdagen(Uttaksdagen(famDato).denneEllerNeste()).leggTil(30 - 1);
 
-    if (
-        firstUttaksPeriode &&
-        isUttaksperiode(firstUttaksPeriode) &&
-        firstUttaksPeriode.konto !== StønadskontoType.ForeldrepengerFørFødsel
-    ) {
+    if (firstUttaksPeriode !== undefined) {
         let updatedPeriode = {} as any;
 
-        if (moment(firstUttaksPeriode.tidsperiode.fom).isAfter(trekkDagerEtterDenneDatoen)) {
-            const trekkdager = Uttaksdagen(trekkDagerEtterDenneDatoen).getUttaksdagerFremTilDato(
+        if (moment(firstUttaksPeriode.tidsperiode.fom).isAfter(trekkdagerStartdato)) {
+            const trekkdager = Uttaksdagen(trekkdagerStartdato).getUttaksdagerFremTilDato(
                 firstUttaksPeriode.tidsperiode.fom
             );
             updatedPeriode = { ...firstUttaksPeriode, trekkdager };
@@ -50,8 +46,8 @@ function* uttaksplanStatus() {
 }
 
 export default function* uttaksplanStatusSaga() {
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, uttaksplanStatus)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, uttaksplanStatus)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, uttaksplanStatus)]);
-    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, uttaksplanStatus)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, updateUttaksplanStatus)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, updateUttaksplanStatus)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, updateUttaksplanStatus)]);
+    yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, updateUttaksplanStatus)]);
 }
