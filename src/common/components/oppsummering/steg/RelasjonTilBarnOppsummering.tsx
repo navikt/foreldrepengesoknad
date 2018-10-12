@@ -9,7 +9,7 @@ import Barn, { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '
 import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
-import { createListOfAttachmentPreviewLinks } from 'common/components/summary/util';
+import { createListOfAttachmentPreviewLinks } from 'common/components/oppsummering/util';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;
@@ -19,7 +19,7 @@ interface RelasjonTilBarnOppsummeringProps {
 }
 
 type Props = RelasjonTilBarnOppsummeringProps & InjectedIntlProps;
-class RelasjonTilBarnSummary extends React.Component<Props> {
+class RelasjonTilBarnOppsummering extends React.Component<Props> {
     getAntallBarnSummaryText(antallBarn: number): string {
         const { intl } = this.props;
         if (antallBarn === 1) {
@@ -239,4 +239,4 @@ class RelasjonTilBarnSummary extends React.Component<Props> {
         return this.renderPartial();
     }
 }
-export default injectIntl(RelasjonTilBarnSummary);
+export default injectIntl(RelasjonTilBarnOppsummering);

@@ -5,7 +5,7 @@ import DisplayTextWithLabel from 'common/components/display-text-with-label/Disp
 import getMessage from 'common/util/i18nUtils';
 
 import InformasjonOmUtenlandsopphold from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdSummaryList from 'common/components/summary/utenlandsopphold-summary-list/UtenlandsoppholdSummaryList';
+import UtenlandsoppholdSummaryList from 'common/components/oppsummering/utenlandsopphold-summary-list/UtenlandsoppholdSummaryList';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
     erBarnetFødt?: boolean;
 }
 
-const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
+const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
     const { intl, erBarnetFødt } = props;
     const {
         iNorgePåHendelsestidspunktet,
@@ -59,4 +59,4 @@ const UtenlandsoppholdSummary: React.StatelessComponent<Props & InjectedIntlProp
         </React.Fragment>
     );
 };
-export default injectIntl(UtenlandsoppholdSummary);
+export default injectIntl(UtenlandsoppholdOppsummering);

@@ -15,7 +15,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import Søknad from '../../../types/søknad/Søknad';
 import { apiActionCreators } from '../../../redux/actions';
 import { StegID } from '../../../util/routing/stegConfig';
-import OppsummeringWrapper from 'common/components/summary/SummaryWrapper';
+import OppsummeringWrapper from 'common/components/oppsummering/OppsummeringWrapper';
 import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';

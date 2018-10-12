@@ -8,7 +8,7 @@ export interface Props {
     children: React.ReactNode;
 }
 
-class Summary extends React.Component<Props> {
+class Oppsummeringsseksjon extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
@@ -17,11 +17,11 @@ class Summary extends React.Component<Props> {
         return (
             <Block animated={false}>
                 <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
-                    <div className="summary">{children}</div>
+                    <div className="oppsummeringsseksjon">{children}</div>
                 </Ekspanderbartpanel>
             </Block>
         );
     }
 }
 
-export default Summary;
+export default Oppsummeringsseksjon;
