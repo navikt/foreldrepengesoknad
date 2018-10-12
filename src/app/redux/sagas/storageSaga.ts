@@ -33,12 +33,12 @@ function* applyStoredStateToApp(state: AppState) {
         yield put(søknadActions.updateSøknad(state.søknad));
         yield put(commonActions.setSpråk(state.common.språkkode));
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
-        yield put(
-            apiActions.updateApi({
-                isLoadingAppState: false
-            })
-        );
     }
+    yield put(
+        apiActions.updateApi({
+            isLoadingAppState: false
+        })
+    );
 }
 
 function* getAppState(action: any) {
@@ -47,6 +47,8 @@ function* getAppState(action: any) {
         const state: AppState = response.data;
         if (state) {
             yield applyStoredStateToApp(state);
+        } else {
+            yield put(apiActions.updateApi({ isLoadingAppState: false }));
         }
     } catch {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
