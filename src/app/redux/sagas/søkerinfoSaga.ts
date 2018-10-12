@@ -25,7 +25,7 @@ function* getSøkerinfo(action: any) {
         const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
             søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
-            isLoadingAppState: true
+            isLoadingSøkerinfo: true
         };
         yield put(apiActions.updateApi(nextApiState));
         if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
