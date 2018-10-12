@@ -29,6 +29,7 @@ export interface UttakFormPayload {
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRett: boolean;
+    morErUfør: boolean;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -98,20 +99,17 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErAleneOmOmsorg, søkerErFarEllerMedmor } = payload;
-    if (periode.konto === undefined) {
+    const { periode, morErUfør, søkerErFarEllerMedmor } = payload;
+    if (
+        periode.konto === undefined ||
+        periode.type !== Periodetype.Uttak ||
+        periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
+        morErUfør ||
+        (erUttakEgenKvote(periode.konto, søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak === true)
+    ) {
         return false;
     }
-    if (periode.type !== Periodetype.Uttak || periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
-        return false;
-    }
-    if (erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined) {
-        return true;
-    }
-    return (
-        periode.type === Periodetype.Uttak &&
-        (periode.ønskerSamtidigUttak !== undefined || (søkerErAleneOmOmsorg && søkerErFarEllerMedmor === false))
-    );
+    return true;
 };
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
