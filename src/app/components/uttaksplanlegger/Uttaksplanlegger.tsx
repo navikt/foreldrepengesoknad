@@ -19,6 +19,7 @@ import FocusContainer from '../focus-container/FocusContainer';
 
 import './uttaksplanlegger.less';
 import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
+import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
@@ -128,6 +129,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     </div>
                                 )}
                             <span className={BEM.element('header__details')}>
+                                <span className={BEM.element('header__details__icon')}>
+                                    <HjerteIkon fylt={true} title="Hjerte" />
+                                </span>
                                 <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
                             </span>
                         </header>
