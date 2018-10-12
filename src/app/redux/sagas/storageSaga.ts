@@ -34,27 +34,21 @@ function* applyStoredStateToApp(state: AppState) {
 }
 
 function* getAppState(action: any) {
-    try {
-        const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
-        const state: AppState = response.data;
-        if (state) {
-            yield applyStoredStateToApp(state);
-        }
-    } finally {
-        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+    const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
+    const state: AppState = response.data;
+    if (state) {
+        yield applyStoredStateToApp(state);
     }
+    yield put(apiActions.updateApi({ isLoadingAppState: false }));
 }
 
 function* deleteStoredAppState() {
-    try {
-        yield call(Api.deleteStoredAppState);
-    } finally {
-        yield put(
-            apiActions.updateApi({
-                isLoadingAppState: false
-            })
-        );
-    }
+    yield call(Api.deleteStoredAppState);
+    yield put(
+        apiActions.updateApi({
+            isLoadingAppState: false
+        })
+    );
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
