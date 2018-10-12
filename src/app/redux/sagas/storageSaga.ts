@@ -10,14 +10,22 @@ import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 
 function* saveAppState() {
-    const stateSelector = (state: AppState) => state;
-    const appState: AppState = yield select(stateSelector);
-    const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
-    const cleanedAppState = {
-        ...appState,
-        søknad
-    };
-    yield call(Api.storeAppState, cleanedAppState);
+    try {
+        const stateSelector = (state: AppState) => state;
+        const appState: AppState = yield select(stateSelector);
+        const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
+        const cleanedAppState = {
+            ...appState,
+            søknad
+        };
+        yield call(Api.storeAppState, cleanedAppState);
+    } catch {
+        yield put(
+            apiActions.updateApi({
+                isLoadingAppState: false
+            })
+        );
+    }
 }
 
 function* applyStoredStateToApp(state: AppState) {
@@ -34,21 +42,32 @@ function* applyStoredStateToApp(state: AppState) {
 }
 
 function* getAppState(action: any) {
-    const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
-    const state: AppState = response.data;
-    if (state) {
-        yield applyStoredStateToApp(state);
+    try {
+        const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
+        const state: AppState = response.data;
+        if (state) {
+            yield applyStoredStateToApp(state);
+        }
+    } catch {
+        yield put(apiActions.updateApi({ isLoadingAppState: false }));
     }
-    yield put(apiActions.updateApi({ isLoadingAppState: false }));
 }
 
 function* deleteStoredAppState() {
-    yield call(Api.deleteStoredAppState);
-    yield put(
-        apiActions.updateApi({
-            isLoadingAppState: false
-        })
-    );
+    try {
+        yield call(Api.deleteStoredAppState);
+        yield put(
+            apiActions.updateApi({
+                isLoadingAppState: false
+            })
+        );
+    } catch {
+        yield put(
+            apiActions.updateApi({
+                isLoadingAppState: false
+            })
+        );
+    }
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
