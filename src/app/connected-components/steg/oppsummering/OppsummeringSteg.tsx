@@ -82,7 +82,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person } = props.søkerinfo;
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
-        renderFortsettKnapp: søknad.harGodkjentOppsummering, // TODO check if all steps is approved.
+        renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo)
