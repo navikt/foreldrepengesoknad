@@ -30,6 +30,21 @@ const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakTy
     }
 };
 
+const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string) => {
+    if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
+        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder" />;
+    } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
+        return (
+            <FormattedMessage
+                id="uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder"
+                values={{ navnAnnenForelder }}
+            />
+        );
+    } else {
+        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />;
+    }
+};
+
 class OverføringUttakPart extends React.Component<Props> {
     render() {
         const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder } = this.props;
@@ -45,9 +60,7 @@ class OverføringUttakPart extends React.Component<Props> {
                     />
                 </Block>
                 <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
-                    <Veilederinfo>
-                        <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />
-                    </Veilederinfo>
+                    <Veilederinfo>{getVeilederInfotekst(årsak!, navnAnnenForelder)}</Veilederinfo>
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
