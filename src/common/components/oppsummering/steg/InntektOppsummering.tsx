@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Søker from '../../../../app/types/søknad/Søker';
 import Block from 'common/components/block/Block';
+import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -26,7 +27,12 @@ const FrilansOppsummering = ({ søker }: Props) => {
         return <Block>Har jobbet som frilans siste 10 mnd</Block>;
     }
 
-    return <Block>Har ikke jobbet som frilans siste 10 mnd</Block>;
+    return (
+        <DisplayTextWithLabel
+            label={'Frilansarbeid siste 10 måneder'}
+            text={'Jeg har ikke jobbet som frilanser de siste 10 månedene'}
+        />
+    );
 };
 
 const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
@@ -36,7 +42,12 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
         return <Block>Har jobbet som selvstendig næringsdrivende siste 10 mnd</Block>;
     }
 
-    return <Block>Har ikke jobbet som selvstendig næringsdrivende siste 10 mnd</Block>;
+    return (
+        <DisplayTextWithLabel
+            label={'Arbeid som selvstendig næringsdrivende siste 10 måneder'}
+            text={'Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene'}
+        />
+    );
 };
 
 const AndreInntekterOppsummering = ({ søker }: Props) => {
@@ -46,7 +57,12 @@ const AndreInntekterOppsummering = ({ søker }: Props) => {
         return <Block>Har hatt andre inntekter siste 10 mnd</Block>;
     }
 
-    return <Block>Har ikke ikke hatt andre inntekter siste 10 mnd</Block>;
+    return (
+        <DisplayTextWithLabel
+            label={'Andre inntektskilder siste 10 måneder'}
+            text={'Jeg har ikke hatt andre inntektskilder de siste 10 månedene'}
+        />
+    );
 };
 
 export default injectIntl(InntektOppsummering);
