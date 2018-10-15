@@ -90,8 +90,8 @@ class UttaksperiodeForm extends React.Component<Props> {
 
     updateForeldrepengerFørFødselUttak(skalIkkeHaUttakFørTermin: boolean) {
         this.onChange({
-            skalIkkeHaUttakFørTermin,
             type: Periodetype.Uttak,
+            skalIkkeHaUttakFørTermin,
             tidsperiode: {
                 fom:
                     skalIkkeHaUttakFørTermin === false
