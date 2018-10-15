@@ -63,7 +63,7 @@ class AntallBarnBolk extends React.Component<Props> {
                             },
                             {
                                 inputProps: { id: 'js-tvillinger' },
-                                label: getMessage(intl, 'antallBarn.alternativ.tvillinger'),
+                                label: getMessage(intl, 'antallBarn.alternativ.tobarn'),
                                 value: '2'
                             },
                             {
