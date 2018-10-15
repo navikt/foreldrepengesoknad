@@ -85,6 +85,7 @@ class RelasjonTilBarnForeldreansvarSteg extends React.Component<Props, {}> {
 
                 <Block visible={visibility.fødselsdatoer(barn)} margin="none">
                     <FødselsdatoerSpørsmål
+                        antallBarn={barn.antallBarn}
                         fødselsdatoer={barn.fødselsdatoer || []}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAgo.toDate()

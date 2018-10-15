@@ -117,6 +117,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Block visible={visibility.spørsmålOmFødselsdatoer(barn)} hasChildBlocks={true}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
+                        antallBarn={barn.antallBarn}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
                             maksDato: barn.adopsjonsdato
