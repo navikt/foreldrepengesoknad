@@ -23,6 +23,7 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 
 import './velkommen.less';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import ChildSVG from 'common/components/child-svg/ChildSVG';
 
 interface StateProps {
     person?: Person;
@@ -85,6 +86,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         text: getMessage(intl, 'velkommen.bobletekst')
                     }}
                 />
+                <ChildSVG />
                 <div className="velkommen">
                     <Innholdstittel className="velkommen__tittel blokk-m">
                         {getMessage(intl, 'velkommen.tittel')}
