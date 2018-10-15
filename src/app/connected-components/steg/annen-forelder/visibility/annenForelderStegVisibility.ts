@@ -29,6 +29,18 @@ export enum AnnenForelderSpørsmålKeys {
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
 
+const visDeltOmsorg = (payload: AnnenForelderSpørsmålPayload): boolean => {
+    const { annenForelder, annenForelderErRegistrert } = payload;
+    if (annenForelder.kanIkkeOppgis) {
+        return false;
+    }
+    return (
+        annenForelderErRegistrert === true ||
+        ((annenForelder.utenlandskFnr !== true && questionValueIsOk(annenForelder.fnr)) ||
+            (annenForelder.utenlandskFnr === true && questionValueIsOk(annenForelder.bostedsland)))
+    );
+};
+
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fornavn),
@@ -54,13 +66,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     },
     [AnnenForelderSpørsmålKeys.deltOmsorg]: {
         isAnswered: ({ søker }) => questionValueIsOk(søker.erAleneOmOmsorg),
-        condition: (props) =>
-            props.annenForelder.kanIkkeOppgis !== true &&
-            (props.annenForelderErRegistrert === true ||
-                ((props.annenForelder.utenlandskFnr !== true && questionValueIsOk(props.annenForelder.fnr)) ||
-                    (props.annenForelder.utenlandskFnr === true &&
-                        questionValueIsOk(props.annenForelder.bostedsland) &&
-                        questionValueIsOk(props.annenForelder.fnr))))
+        condition: (payload) => visDeltOmsorg(payload)
     },
     [AnnenForelderSpørsmålKeys.harRettPåForeldrepenger]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.harRettPåForeldrepenger),
