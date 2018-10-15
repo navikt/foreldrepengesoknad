@@ -6,6 +6,7 @@ import DisplayTextWithLabel from 'common/components/display-text-with-label/Disp
 import { formatDate } from '../../../../app/util/dates/dates';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 import { Element } from 'nav-frontend-typografi';
+import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/FrilansoppdragOppsummeringsliste';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -31,7 +32,8 @@ const FrilansOppsummering = ({ søker }: Props) => {
             driverFosterhjem,
             jobberFremdelesSomFrilans,
             oppstart,
-            harJobbetForNærVennEllerFamilieSiste10Mnd
+            harJobbetForNærVennEllerFamilieSiste10Mnd,
+            oppdragForNæreVennerEllerFamilieSiste10Mnd
         } = frilansInformasjon;
         return (
             <>
@@ -48,7 +50,7 @@ const FrilansOppsummering = ({ søker }: Props) => {
                         </Element>
                     </Block>
                     <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
-                        <Element>Jeg har jobbet som frilans for nære venner eller familie de siste 10 månedene</Element>
+                        <FrilansoppdragOppsummeringsliste frilansoppdrag={oppdragForNæreVennerEllerFamilieSiste10Mnd} />
                     </Block>
                 </DisplayContentWithLabel>
             </>
