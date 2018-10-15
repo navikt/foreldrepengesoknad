@@ -93,6 +93,7 @@ class TidsperiodeBolk extends React.Component<Props> {
         } else if (tidsperiode.fom) {
             tilAvgrensninger = { minDato: tidsperiode.fom };
         }
+
         return (
             <SkjemaGruppe feil={feil}>
                 <div className={bem.className}>
@@ -134,7 +135,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 disabled={sluttdatoDisabled}
                                 avgrensninger={tilAvgrensninger}
                                 validators={datoValidatorer && datoValidatorer.til}
-                                dayPickerProps={{ initialMonth: defaultMånedTom }}
+                                dayPickerProps={{ initialMonth: defaultMånedTom || tidsperiode.fom }}
                                 kalender={{ plassering: kalenderplassering }}
                             />
                         </Block>

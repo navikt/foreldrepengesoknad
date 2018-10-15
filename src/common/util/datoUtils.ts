@@ -12,6 +12,10 @@ export function år(dato: Date): string {
     return moment(dato).format('YYYY');
 }
 
+export function årToBokstaver(dato: Date): string {
+    return moment(dato).format('YY');
+}
+
 export function måned(dato: Date): string {
     return moment(dato).format('MMMM');
 }

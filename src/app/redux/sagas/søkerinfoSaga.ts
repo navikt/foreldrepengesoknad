@@ -8,6 +8,7 @@ import { ApiStatePartial } from '../reducers/apiReducer';
 import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
+import routeConfig from '../../util/routing/routeConfig';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -24,8 +25,7 @@ function* getSøkerinfo(action: any) {
         const søkerinfoDTO: SøkerinfoDTO = response.data;
         const nextApiState: ApiStatePartial = {
             søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
-            isLoadingSøkerinfo: false,
-            isLoadingAppState: true
+            isLoadingSøkerinfo: true
         };
         yield put(apiActions.updateApi(nextApiState));
         if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
@@ -34,25 +34,17 @@ function* getSøkerinfo(action: any) {
             yield put(apiActions.deleteStoredAppState());
         }
     } catch (error) {
-        if (error.response) {
-            error.response.status === 401
-                ? redirectToLogin()
-                : yield put(
-                      apiActions.updateApi({
-                          error
-                      })
-                  );
+        if (error.response && error.response.status === 401) {
+            redirectToLogin();
         } else {
-            yield put(
-                apiActions.updateApi({
-                    error
-                })
-            );
+            action.history.push(`${routeConfig.GENERELL_FEIL_URL}`);
         }
     } finally {
-        apiActions.updateApi({
-            isLoadingSøkerinfo: false
-        });
+        yield put(
+            apiActions.updateApi({
+                isLoadingSøkerinfo: false
+            })
+        );
     }
 }
 

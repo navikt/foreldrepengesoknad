@@ -300,7 +300,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         onBlur={this.handleStillingsprosentBlur}
                         value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(stillingsprosent || '', intl)}
+                        validators={getStillingsprosentRegler(false, stillingsprosent || '', intl)}
                         maxLength={4}
                     />
                 </Block>

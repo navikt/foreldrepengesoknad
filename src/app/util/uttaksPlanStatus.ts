@@ -3,7 +3,8 @@ import {
     Periode,
     Uttaksperiode,
     StønadskontoType,
-    isUttaksperiode
+    isUttaksperiode,
+    Periodetype
 } from '../types/uttaksplan/periodetyper';
 import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
@@ -52,7 +53,9 @@ export const beregnGjenståendeUttaksdager = (
 
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
-                dagerGjenstående = dagerGjenstående - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);
+                if (p.type !== Periodetype.Utsettelse && p.type !== Periodetype.Opphold) {
+                    dagerGjenstående = dagerGjenstående - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);
+                }
             });
         }
 
