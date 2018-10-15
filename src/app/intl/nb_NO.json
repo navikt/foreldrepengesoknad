@@ -25,6 +25,8 @@
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
+    "steg.footer.avbryt": "Avbryt og slett søknad",
+
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken del av foreldrepengene skal du ta ut?",
@@ -558,9 +560,10 @@
 
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
-    "avbrytSøknadDialog.tittel": "Bekreft navigasjon",
-    "avbrytSøknadDialog.intro": "Dersom du avbryter søknaden vil all informasjon i planen bli slettet.",
-    "avbrytSøknadDialog.spørsmål": "vil du å avbryte søknaden",
+    "avbrytSøknadDialog.tittel": "Avbryt søknad",
+    "avbrytSøknadDialog.intro":
+        "Dersom du avbryter søknaden vil all informasjon du har fylt ut i søknaden bli slettet, og du kommer tilbake til velkomstsiden.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden?",
 
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
