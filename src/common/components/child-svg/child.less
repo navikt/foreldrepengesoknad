@@ -1,0 +1,91 @@
+@import '../../../common/styles/mixins.less';
+
+@blinkDuration: 5;
+
+.child  {
+    .chromeSvgRenderFix();
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    transform: translateZ(0);
+    transform: translate3d();
+
+    .chromeSvgRenderFix();
+    #SadEyes,
+    #OpenEyes,
+    #EyesLookingLeft,
+    #ClosedMouth,
+    #SadMouth,
+    #HappyMouth {
+        visibility: hidden;
+    }
+    &--happy {
+        #HappyMouth,
+        #OpenEyes {
+            visibility: visible;
+        }
+    }
+    &--sad {
+        #SadMouth,
+        #SadEyes {
+            visibility: visible;
+        }
+        .eyes {
+            animation: none;
+        }
+    }
+    &--lookLeft {
+        #SadMouth,
+        #SadEyes,
+        #OpenEyes {
+            visibility: visible;
+        }
+        #OpenEyeRight {
+            visibility: hidden;
+        }
+        #SadEyeLeft {
+            visibility: hidden;
+        }
+        .eyes {
+            animation: none;
+        }
+    }
+    .eyesContainer {
+        transition: all 0.3s ease;
+        transform: scale(1, 1);
+        animation: eyeBlink 5s infinite;
+        animation-timing-function: linear;
+    }
+    .openEye {
+        transition: all 0.3s ease;
+        transform: scale(1, 1);
+        animation: eyeBlink 5s infinite;
+        animation-timing-function: linear;
+    }
+}
+
+@keyframes eyeBlink {
+    0% {
+        transform: scaleY(1);
+    }
+    9% {
+        transform: scaleY(1);
+    }
+    10% {
+        transform: translateY(3px) scaleY(0.1);
+    }
+    11% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes lookLeft {
+    0% {
+        transform: move(0, 0);
+    }
+    50% {
+        transform: move(0, -5);
+    }
+    75% {
+        transform: move(0, 0);
+    }
+}
