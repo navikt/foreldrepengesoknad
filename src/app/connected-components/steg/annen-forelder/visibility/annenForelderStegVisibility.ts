@@ -40,6 +40,10 @@ const visDeltOmsorg = (payload: AnnenForelderSpørsmålPayload): boolean => {
             (annenForelder.utenlandskFnr === true && questionValueIsOk(annenForelder.bostedsland)))
     );
 };
+const visErAnnenForelderInformert = (payload: AnnenForelderSpørsmålPayload): boolean => {
+    const { søker, annenForelder } = payload;
+    return søker.erAleneOmOmsorg !== undefined && annenForelder.harRettPåForeldrepenger === true;
+};
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
@@ -89,9 +93,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erInformertOmSøknaden),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        condition: (props) => {
-            return props.søker.erAleneOmOmsorg === false && props.annenForelder.harRettPåForeldrepenger === true;
-        }
+        condition: (payload) => visErAnnenForelderInformert(payload)
     },
     [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
         isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
