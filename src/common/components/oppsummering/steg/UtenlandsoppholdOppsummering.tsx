@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import getMessage from 'common/util/i18nUtils';
-
 import InformasjonOmUtenlandsopphold from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
-import UtenlandsoppholdSummaryList from 'common/components/oppsummering/utenlandsopphold-summary-list/UtenlandsoppholdSummaryList';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/UtenlandsoppholdOppsummeringsliste';
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
@@ -32,7 +30,7 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                 />
             ) : (
                 <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}>
-                    <UtenlandsoppholdSummaryList informasjonOmUtenlandsopphold={tidligereOpphold} />
+                    <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={tidligereOpphold} />
                 </DisplayContentWithLabel>
             )}
             {iNorgeNeste12Mnd ? (
@@ -42,7 +40,7 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                 />
             ) : (
                 <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
-                    <UtenlandsoppholdSummaryList informasjonOmUtenlandsopphold={senereOpphold} />
+                    <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={senereOpphold} />
                 </DisplayContentWithLabel>
             )}
             {erBarnetFødt === false &&

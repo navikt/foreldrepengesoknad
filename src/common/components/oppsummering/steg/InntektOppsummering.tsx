@@ -3,6 +3,9 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Søker from '../../../../app/types/søknad/Søker';
 import Block from 'common/components/block/Block';
 import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
+import { formatDate } from '../../../../app/util/dates/dates';
+import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import { Element } from 'nav-frontend-typografi';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -21,15 +24,40 @@ const InntektOppsummering = ({ søker, intl }: Props) => {
 };
 
 const FrilansOppsummering = ({ søker }: Props) => {
-    const { harJobbetSomFrilansSiste10Mnd } = søker;
+    const { frilansInformasjon, harJobbetSomFrilansSiste10Mnd } = søker;
 
-    if (harJobbetSomFrilansSiste10Mnd) {
-        return <Block>Har jobbet som frilans siste 10 mnd</Block>;
+    if (frilansInformasjon && harJobbetSomFrilansSiste10Mnd) {
+        const {
+            driverFosterhjem,
+            jobberFremdelesSomFrilans,
+            oppstart,
+            harJobbetForNærVennEllerFamilieSiste10Mnd
+        } = frilansInformasjon;
+        return (
+            <>
+                <DisplayTextWithLabel label={'Oppstartsdato som frilans'} text={formatDate(oppstart)} />
+                <DisplayTextWithLabel
+                    label={'Jeg jobber fremdeles som frilans'}
+                    text={jobberFremdelesSomFrilans ? 'Ja' : 'Nei'}
+                />
+                <DisplayTextWithLabel label={'Jeg driver fosterhjem'} text={driverFosterhjem ? 'Ja' : 'Nei'} />
+                <DisplayContentWithLabel label={'Frilansarbeid for nære venner elle familie de siste 10 månedene'}>
+                    <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
+                        <Element>
+                            Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene
+                        </Element>
+                    </Block>
+                    <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
+                        <Element>Jeg har jobbet som frilans for nære venner eller familie de siste 10 månedene</Element>
+                    </Block>
+                </DisplayContentWithLabel>
+            </>
+        );
     }
 
     return (
         <DisplayTextWithLabel
-            label={'Frilansarbeid siste 10 måneder'}
+            label={'Arbeid som frilans siste 10 måneder'}
             text={'Jeg har ikke jobbet som frilanser de siste 10 månedene'}
         />
     );
