@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../util/questions/Question';
 import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Tidsperiode } from 'nav-datovelger';
@@ -30,11 +31,25 @@ export interface UttakFormPayload {
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRett: boolean;
     morErUfør: boolean;
+    familiehendelsesdato: Date;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 
 const Sp = UttakSpørsmålKeys;
+
+const erUttakFørFødsel = (payload: UttakFormPayload): boolean => {
+    const { periode, familiehendelsesdato } = payload;
+    return (
+        (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel) ||
+        moment(periode.tidsperiode && (periode.tidsperiode.tom as Date)).isBefore(familiehendelsesdato, 'day')
+    );
+};
+
+const visKvote = (payload: UttakFormPayload): boolean => {
+    const { kanEndreStønadskonto, velgbareStønadskontotyper } = payload;
+    return erUttakFørFødsel(payload) === false && kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0;
+};
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     const { periode, søkerErFarEllerMedmor } = payload;
@@ -46,11 +61,7 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
-    if (
-        periode.konto === undefined ||
-        periode.type === Periodetype.Overføring ||
-        periode.konto === StønadskontoType.ForeldrepengerFørFødsel
-    ) {
+    if (periode.konto === undefined || periode.type === Periodetype.Overføring || erUttakFørFødsel(payload)) {
         return false;
     } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
         const erEgenKonto = erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor);
@@ -103,7 +114,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
+        erUttakFørFødsel(payload) ||
         morErUfør ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined)
     ) {
@@ -121,8 +132,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.kvote]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         parentQuestion: Sp.tidsperiode,
-        condition: ({ kanEndreStønadskonto, velgbareStønadskontotyper }) =>
-            kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0
+        condition: (payload) => visKvote(payload)
     },
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
@@ -142,6 +152,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
         condition: (payload) =>
+            visKvote(payload) &&
             payload.periode.type === Periodetype.Overføring &&
             erUttakEgenKvote(payload.periode.konto, payload.søkerErFarEllerMedmor) === false
     },
