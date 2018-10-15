@@ -37,8 +37,15 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 const Sp = UttakSpørsmålKeys;
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor } = payload;
-    if (søkerErFarEllerMedmor && periode.konto !== undefined && periode.konto === StønadskontoType.Fellesperiode) {
+    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
+    if (søkerErFarEllerMedmor === false || periode.konto === undefined) {
+        return false;
+    }
+    const erDeltUttak = søkerErAleneOmOmsorg === false && annenForelderHarRett === true;
+    if (
+        erDeltUttak &&
+        (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
+    ) {
         return true;
     }
     return false;
@@ -105,7 +112,8 @@ const visGradering = (payload: UttakFormPayload): boolean => {
         periode.type !== Periodetype.Uttak ||
         periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
         morErUfør ||
-        (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined)
+        (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
+        (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined)
     ) {
         return false;
     }
