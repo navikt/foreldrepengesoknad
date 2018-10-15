@@ -7,6 +7,7 @@ import { formatDate } from '../../../../app/util/dates/dates';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 import { Element } from 'nav-frontend-typografi';
 import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/FrilansoppdragOppsummeringsliste';
+import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/SelvstendigNæringsdrivendeOppsummeringsliste';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -66,10 +67,14 @@ const FrilansOppsummering = ({ søker }: Props) => {
 };
 
 const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
-    const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
+    const { selvstendigNæringsdrivendeInformasjon, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
-    if (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
-        return <Block>Har jobbet som selvstendig næringsdrivende siste 10 mnd</Block>;
+    if (selvstendigNæringsdrivendeInformasjon && harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
+        return (
+            <DisplayContentWithLabel label={'Arbeid som selvstendig næringsdrivende siste 10 måneder'}>
+                <SelvstendigNæringsdrivendeOppsummeringsliste næringer={selvstendigNæringsdrivendeInformasjon} />
+            </DisplayContentWithLabel>
+        );
     }
 
     return (
