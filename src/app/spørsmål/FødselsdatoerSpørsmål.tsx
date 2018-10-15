@@ -9,6 +9,7 @@ import { Validator } from 'common/lib/validation/types';
 
 export interface FødselsdatoerSpørsmålProps {
     fødselsdatoer: DateValue[];
+    antallBarn: number | undefined;
     onChange: (fødselsdatoer: DateValue[]) => void;
     collapsed?: boolean;
     datoavgrensninger?: Avgrensninger;
@@ -52,14 +53,21 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
     }
 
     renderCollapsedFødselsdatoSpørsmål() {
-        const { fødselsdatoer } = this.props;
+        const { fødselsdatoer, antallBarn } = this.props;
+
+        let intlId = 'fødselsdatoer.fødsel';
+
+        if (antallBarn !== undefined && antallBarn > 1) {
+            intlId = 'fødselsdatoer.fødsel.flereBarn';
+        }
+
         return (
             <DatoInput
                 id="fødselsdatoe"
                 name="fødsesdato"
                 dato={fødselsdatoer[0]}
                 onChange={(d: Date) => this.onDatoChange(d, 0)}
-                label={<Labeltekst intlId="fødselsdatoer.fødsel.flereBarn" />}
+                label={<Labeltekst intlId={intlId} />}
                 avgrensninger={this.getFødselsdatoAvgrensninger()}
                 validators={this.getValidatorer()}
             />
