@@ -32,7 +32,9 @@ const deltUttakAdopsjonMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager)
+            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
+            ønskerSamtidigUttak: false,
+            gradert: false
         };
 
         currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager - 1);
@@ -46,7 +48,9 @@ const deltUttakAdopsjonMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5)
+            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5),
+            ønskerSamtidigUttak: false,
+            gradert: false
         };
 
         perioder.push(periodeFellesperiodeMor);
@@ -107,8 +111,7 @@ const deltUttakFødselMor = (
                     fom: startdatoPermisjon,
                     tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 16)
                 },
-                vedlegg: [],
-                ønskerSamtidigUttak: false
+                vedlegg: []
             };
 
             perioder.push(ekstraPeriodeFørFødsel);
@@ -145,7 +148,9 @@ const deltUttakFødselMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager)
+            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
+            ønskerSamtidigUttak: false,
+            gradert: false
         };
 
         currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
@@ -172,7 +177,9 @@ const deltUttakFødselMor = (
                 tidsperiode: getTidsperiode(
                     Uttaksdagen(currentTomDate).denneEllerNeste(),
                     fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager
-                )
+                ),
+                ønskerSamtidigUttak: false,
+                gradert: false
             };
 
             perioder.push(periodeFellesperiodeMor);
