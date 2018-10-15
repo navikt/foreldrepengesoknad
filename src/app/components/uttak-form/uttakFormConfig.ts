@@ -29,6 +29,7 @@ export interface UttakFormPayload {
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRett: boolean;
+    morErUfør: boolean;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -36,8 +37,17 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 const Sp = UttakSpørsmålKeys;
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor } = payload;
-    if (søkerErFarEllerMedmor && periode.konto !== undefined && periode.konto === StønadskontoType.Fellesperiode) {
+    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
+    if (søkerErFarEllerMedmor === false || periode.konto === undefined) {
+        return false;
+    }
+    const erDeltUttak = søkerErAleneOmOmsorg === false && annenForelderHarRett === true;
+    if (
+        erDeltUttak &&
+        (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
+    ) {
+        return true;
+    } else if (erDeltUttak === false && annenForelderHarRett === false) {
         return true;
     }
     return false;
@@ -98,14 +108,18 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
-    if (periode.type !== Periodetype.Uttak || periode.konto === StønadskontoType.ForeldrepengerFørFødsel) {
+    const { periode, morErUfør } = payload;
+    if (
+        periode.konto === undefined ||
+        periode.type !== Periodetype.Uttak ||
+        periode.konto === StønadskontoType.ForeldrepengerFørFødsel ||
+        morErUfør ||
+        (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
+        (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined)
+    ) {
         return false;
     }
-    if (erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor) && periode.ønskerSamtidigUttak !== undefined) {
-        return true;
-    }
-    return periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak !== undefined;
+    return true;
 };
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
@@ -123,8 +137,8 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
-            periode.konto === StønadskontoType.Fellesperiode &&
-            periode.morsAktivitetIPerioden !== undefined,
+            periode.morsAktivitetIPerioden !== undefined &&
+            periode.morsAktivitetIPerioden.length > 0,
         parentQuestion: Sp.tidsperiode,
         condition: (payload) => visAktivitetskravMor(payload)
     },

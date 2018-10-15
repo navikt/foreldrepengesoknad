@@ -2,7 +2,6 @@ import { ApiActionKeys, ApiActionTypes } from '../actions/api/apiActionDefinitio
 import { Kvittering } from '../../types/Kvittering';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
-import { AxiosError } from 'axios';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
@@ -13,7 +12,6 @@ export interface ApiState {
     søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     kvittering?: Kvittering;
-    error?: AxiosError;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -24,8 +22,7 @@ const getDefaultState = (): ApiState => ({
     isLoadingTilgjengeligeStønadskontoer: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
-    tilgjengeligeStønadskontoer: [],
-    error: undefined
+    tilgjengeligeStønadskontoer: []
 });
 
 const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiStatePartial => {

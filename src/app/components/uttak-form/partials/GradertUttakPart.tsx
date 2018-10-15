@@ -6,7 +6,7 @@ import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
-import { Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { Arbeidsform, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../uttakFormConfig';
@@ -40,7 +40,9 @@ class GradertUttakForm extends React.Component<Props> {
                         navn="ønskerDuGradertUttak"
                         spørsmål={getMessage(intl, 'uttaksperiode.gradert.skalDuHarGradering')}
                         valgtVerdi={periode.gradert}
-                        onChange={(ønskerGradering) => onChange({ gradert: ønskerGradering })}
+                        onChange={(ønskerGradering) =>
+                            onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
+                        }
                     />
                 </Block>
 
@@ -59,17 +61,19 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         value={periode.stillingsprosent || ''}
                         maxLength={4}
-                        validators={getStillingsprosentRegler(periode.stillingsprosent || '', intl)}
+                        validators={getStillingsprosentRegler(true, periode.stillingsprosent || '', intl)}
                     />
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
-                        onChange={(orgnr, selvstendigNæringsdrivendeEllerFrilans) =>
+                        onChange={(orgnr, arbeidsform) =>
                             onChange({
                                 orgnr,
-                                selvstendigNæringsdrivendeEllerFrilans
+                                selvstendigNæringsdrivendeEllerFrilans:
+                                    arbeidsform !== Arbeidsform.arbeidstaker ? arbeidsform : undefined,
+                                erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
                             })
                         }
                         frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
