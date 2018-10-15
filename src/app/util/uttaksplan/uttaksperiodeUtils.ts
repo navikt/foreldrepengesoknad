@@ -33,7 +33,7 @@ function getDatoavgrensningerForForeldrepengerFørFødsel(
 ): DatoAvgrensninger {
     const avgrensninger: Avgrensninger = {
         ...fellesUttakAvgrensninger,
-        ...uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato),
+        ...uttaksplanDatoavgrensninger.startdatoFørTerminForeldrepengerFørFødselKonto(familiehendelsesdato),
         ugyldigeTidsperioder
     };
     return {
