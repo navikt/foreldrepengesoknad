@@ -107,7 +107,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
 
                 <Block visible={visibility.spørsmålOmAntallBarn(barn)} hasChildBlocks={true}>
                     <AntallBarnBolk
-                        spørsmål={getMessage(intl, 'antallBarn.spørsmål.venter')}
+                        spørsmål={getMessage(intl, 'antallBarn.spørsmål.adoptert')}
                         inputName="antallBarn"
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
@@ -117,6 +117,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                 <Block visible={visibility.spørsmålOmFødselsdatoer(barn)} hasChildBlocks={true}>
                     <FødselsdatoerSpørsmål
                         fødselsdatoer={barn.fødselsdatoer || []}
+                        antallBarn={barn.antallBarn}
                         datoavgrensninger={{
                             minDato: DateValues.date15YearsAnd3MonthsAgo.toDate(),
                             maksDato: barn.adopsjonsdato
