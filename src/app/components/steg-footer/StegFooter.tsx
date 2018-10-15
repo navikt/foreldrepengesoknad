@@ -3,6 +3,7 @@ import BEMHelper from 'common/util/bem';
 import LinkButton from '../link-button/LinkButton';
 
 import './stegFooter.less';
+import { FormattedMessage } from 'react-intl';
 
 interface Props {
     onAvbryt: () => void;
@@ -19,7 +20,7 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt }) => {
                     e.preventDefault();
                     onAvbryt();
                 }}>
-                Avbryt søknad
+                <FormattedMessage id="steg.footer.avbryt" />
             </LinkButton>
         </div>
     );
