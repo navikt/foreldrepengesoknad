@@ -25,6 +25,7 @@ const AvbrytSøknadDialog: React.StatelessComponent<Props & InjectedIntlProps> =
             closeButton={false}
             contentLabel={getMessage(intl, 'avbrytSøknadDialog.tittel')}
             onBekreft={onAvbrytSøknad}
+            størrelse="30"
             onRequestClose={onFortsettSøknad}>
             <Block margin="xs">
                 <Undertittel tag="h1">{getMessage(intl, 'avbrytSøknadDialog.tittel')}</Undertittel>

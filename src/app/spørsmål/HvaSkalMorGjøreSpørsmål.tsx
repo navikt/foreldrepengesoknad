@@ -22,6 +22,63 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
         this.renderOptions = this.renderOptions.bind(this);
     }
 
+    getVeilederTekst() {
+        const { morsAktivitetIPerioden, navnPåForeldre, intl } = this.props;
+
+        if (morsAktivitetIPerioden === MorsAktivitet.Arbeid) {
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
+        } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
+            return <FormattedMessage id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning" />;
+        } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
+            return <FormattedMessage id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt" />;
+        } else if (morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet) {
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
+        } else if (morsAktivitetIPerioden === MorsAktivitet.Kvalifiseringsprogrammet) {
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
+        } else if (morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp) {
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
+        } else if (morsAktivitetIPerioden === MorsAktivitet.Utdanning) {
+            const listData = [
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4')
+            ];
+
+            return (
+                <>
+                    <FormattedMessage
+                        id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning"
+                        values={{ navnMor: navnPåForeldre.mor }}
+                    />
+                    <ul>{listData.map((listItem, index) => <li key={`trengerhjelp${index}`}>{listItem}</li>)}</ul>
+                </>
+            );
+        } else {
+            return '';
+        }
+    }
+
     renderOptions() {
         const { intl } = this.props;
         return Object.keys(MorsAktivitet).map((aktivitetsid) => (
@@ -32,7 +89,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
     }
     render() {
         const { intl, navnPåForeldre, morsAktivitetIPerioden, onChange } = this.props;
-        const visVeileder = morsAktivitetIPerioden !== undefined;
+        const visVeileder = morsAktivitetIPerioden !== undefined && morsAktivitetIPerioden.length > 0;
         return (
             <>
                 <Block margin={visVeileder ? 's' : 'm'}>
@@ -45,7 +102,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[
                             {
-                                test: () => morsAktivitetIPerioden !== undefined,
+                                test: () => morsAktivitetIPerioden !== undefined && morsAktivitetIPerioden.length > 0,
                                 failText: getMessage(intl, 'påkrevd')
                             }
                         ]}>
@@ -54,9 +111,7 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                     </Select>
                 </Block>
                 <Block visible={visVeileder} margin="none">
-                    <Veilederinfo>
-                        <FormattedMessage id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder" />
-                    </Veilederinfo>
+                    <Veilederinfo>{this.getVeilederTekst()}</Veilederinfo>
                 </Block>
             </>
         );
