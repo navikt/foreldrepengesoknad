@@ -8,6 +8,7 @@ import DisplayContentWithLabel from 'common/components/display-content-with-labe
 import { Element } from 'nav-frontend-typografi';
 import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/FrilansoppdragOppsummeringsliste';
 import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/SelvstendigNæringsdrivendeOppsummeringsliste';
+import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/AndreInntekterOppsummeringsliste';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -86,10 +87,14 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
 };
 
 const AndreInntekterOppsummering = ({ søker }: Props) => {
-    const { harHattAnnenInntektSiste10Mnd } = søker;
+    const { harHattAnnenInntektSiste10Mnd, andreInntekterSiste10Mnd } = søker;
 
-    if (harHattAnnenInntektSiste10Mnd) {
-        return <Block>Har hatt andre inntekter siste 10 mnd</Block>;
+    if (andreInntekterSiste10Mnd && harHattAnnenInntektSiste10Mnd) {
+        return (
+            <DisplayContentWithLabel label={'Andre inntektskilder siste 10 måneder'}>
+                <AndreInntekterOppsummeringsliste andreInntekter={andreInntekterSiste10Mnd} />
+            </DisplayContentWithLabel>
+        );
     }
 
     return (
