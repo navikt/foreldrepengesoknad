@@ -379,6 +379,10 @@
 
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
     "uttaksplan.overføring.vedlegg.info": "Du må laste opp dokumentasjon",
+    "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
+        "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} er helt avhengig av hjelp til å ta seg av barnet, i hvilken grad {navnAnnenForelder} er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
+    "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
+        "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker": "Her kan planlegge hvordan du skal ta ut foreldrepengeperioden din.",
     "uttaksplan.informasjonFarMedmorDeltUttak":
