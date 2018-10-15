@@ -47,6 +47,8 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
         (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
     ) {
         return true;
+    } else if (erDeltUttak === false && annenForelderHarRett === false) {
+        return true;
     }
     return false;
 };
@@ -135,7 +137,6 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.aktivitetskravMor]: {
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
-            periode.konto === StønadskontoType.Fellesperiode &&
             periode.morsAktivitetIPerioden !== undefined &&
             periode.morsAktivitetIPerioden.length > 0,
         parentQuestion: Sp.tidsperiode,
