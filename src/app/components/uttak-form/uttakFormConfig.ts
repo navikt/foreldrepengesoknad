@@ -128,7 +128,8 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
             periode.konto === StønadskontoType.Fellesperiode &&
-            periode.morsAktivitetIPerioden !== undefined,
+            periode.morsAktivitetIPerioden !== undefined &&
+            periode.morsAktivitetIPerioden.length > 0,
         parentQuestion: Sp.tidsperiode,
         condition: (payload) => visAktivitetskravMor(payload)
     },
