@@ -150,7 +150,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
             annenForelderHarRett,
-            morErUfør
+            morErUfør,
+            familiehendelsesdato
         });
 
         if (visibility === undefined) {
