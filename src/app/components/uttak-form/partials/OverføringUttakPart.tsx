@@ -18,13 +18,23 @@ interface Props {
     onChange: (periode: RecursivePartial<Overføringsperiode>) => void;
 }
 
+const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakType | undefined): boolean => {
+    if (søkerErFarEllerMedmor) {
+        return årsak !== undefined;
+    } else {
+        return (
+            årsak !== undefined &&
+            årsak !== OverføringÅrsakType.aleneomsorg &&
+            årsak !== OverføringÅrsakType.ikkeRettAnnenForelder
+        );
+    }
+};
+
 class OverføringUttakPart extends React.Component<Props> {
     render() {
         const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder } = this.props;
-        const visVedlegg =
-            (årsak !== undefined && årsak !== OverføringÅrsakType.aleneomsorg) ||
-            (årsak === OverføringÅrsakType.aleneomsorg && søkerErFarEllerMedmor === true);
         const vedleggList = vedlegg || [];
+
         return (
             <>
                 <Block margin="s">
@@ -34,7 +44,7 @@ class OverføringUttakPart extends React.Component<Props> {
                         onChange={(å) => onChange({ årsak: å })}
                     />
                 </Block>
-                <Block visible={visVedlegg}>
+                <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
                     <Veilederinfo>
                         <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />
                     </Veilederinfo>
