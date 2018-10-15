@@ -122,7 +122,9 @@
 
     "antallBarn.spørsmål.fått": "Hvor mange barn har du fått?",
     "antallBarn.spørsmål.venter": "Hvor mange barn venter du?",
+    "antallBarn.spørsmål.adoptert": "Hvor mange barn har du adoptert?",
     "antallBarn.alternativ.ettbarn": "ett barn",
+    "antallBarn.alternativ.tobarn": "to barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
     "antallBarn.select.tekst": "Hvor mange barn venter du?",
@@ -598,7 +600,8 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.tittel": "Slett perioden",
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
-    "egenDelUttakForm.samtidigUttak.veiledertekst": "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperioden og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her",
+    "egenDelUttakForm.samtidigUttak.veiledertekst":
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperioden og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
 
@@ -635,13 +638,15 @@
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år.",
 
-    "uttaksplan.validering.feiloppsummering.tittel": "Planen inneholder feil som du må rette opp i før du kan gå videre",
+    "uttaksplan.validering.feiloppsummering.tittel":
+        "Planen inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
-    "uttaksplan.validering.feil.tomUttaksplan": "Planen er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
+    "uttaksplan.validering.feil.tomUttaksplan":
+        "Planen er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
