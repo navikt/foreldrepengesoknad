@@ -13,6 +13,7 @@ import AnnenForelderOppsummering from 'common/components/oppsummering/steg/Annen
 import RelasjonTilBarnOppsummering from 'common/components/oppsummering/steg/RelasjonTilBarnOppsummering';
 import UtenlandsoppholdOppsummering from 'common/components/oppsummering/steg/UtenlandsoppholdOppsummering';
 import './oppsummeringWrapper.less';
+import InntektOppsummering from 'common/components/oppsummering/steg/InntektOppsummering';
 
 interface OppsummeringProps {
     className?: string;
@@ -65,6 +66,10 @@ class OppsummeringWrapper extends React.Component<Props> {
                             informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                             erBarnetFødt={søknad.barn.erBarnetFødt}
                         />
+                    </Oppsummeringsseksjon>
+
+                    <Oppsummeringsseksjon tittel={getMessage(intl, 'oppsummering.inntekt')} tittelProps={'undertittel'}>
+                        <InntektOppsummering søker={søknad.søker} />
                     </Oppsummeringsseksjon>
                 </div>
             </div>

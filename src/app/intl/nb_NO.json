@@ -506,6 +506,8 @@
     "oppsummering.fødselINorgeTrue": "i Norge",
     "oppsummering.fødselINorgeFalse": "i utlandet",
 
+    "oppsummering.inntekt": "Opplysninger om inntekt",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
