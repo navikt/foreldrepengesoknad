@@ -61,7 +61,7 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         value={periode.stillingsprosent || ''}
                         maxLength={4}
-                        validators={getStillingsprosentRegler(periode.stillingsprosent || '', intl)}
+                        validators={getStillingsprosentRegler(true, periode.stillingsprosent || '', intl)}
                     />
                 </Block>
 
