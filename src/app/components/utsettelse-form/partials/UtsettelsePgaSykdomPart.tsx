@@ -30,6 +30,16 @@ const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): 
     };
 };
 
+const getSykdomVeilederInfo = (sykdomsårsak: UtsettelseÅrsakType) => {
+    if (sykdomsårsak === UtsettelseÅrsakType.Sykdom) {
+        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.sykdom" />;
+    } else if (sykdomsårsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.barnInnlagt" />;
+    } else {
+        return <FormattedMessage id="utsettelse.sykdom.vedlegg.info.innlagt" />;
+    }
+};
+
 type Props = OwnProps & InjectedIntlProps;
 
 class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
@@ -56,9 +66,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                 </Block>
                 {sykdomsårsak !== undefined && (
                     <Block>
-                        <Veilederinfo>
-                            <FormattedMessage id="utsettelse.sykdom.vedlegg.info" />
-                        </Veilederinfo>
+                        <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak)}</Veilederinfo>
                         <VedleggSpørsmål
                             vedlegg={vedleggList}
                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}

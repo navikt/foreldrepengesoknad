@@ -18,13 +18,38 @@ interface Props {
     onChange: (periode: RecursivePartial<Overføringsperiode>) => void;
 }
 
+const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakType | undefined): boolean => {
+    if (søkerErFarEllerMedmor) {
+        return årsak !== undefined;
+    } else {
+        return (
+            årsak !== undefined &&
+            årsak !== OverføringÅrsakType.aleneomsorg &&
+            årsak !== OverføringÅrsakType.ikkeRettAnnenForelder
+        );
+    }
+};
+
+const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string) => {
+    if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
+        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder" />;
+    } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
+        return (
+            <FormattedMessage
+                id="uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder"
+                values={{ navnAnnenForelder }}
+            />
+        );
+    } else {
+        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />;
+    }
+};
+
 class OverføringUttakPart extends React.Component<Props> {
     render() {
         const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder } = this.props;
-        const visVedlegg =
-            (årsak !== undefined && årsak !== OverføringÅrsakType.aleneomsorg) ||
-            (årsak === OverføringÅrsakType.aleneomsorg && søkerErFarEllerMedmor === true);
         const vedleggList = vedlegg || [];
+
         return (
             <>
                 <Block margin="s">
@@ -34,10 +59,8 @@ class OverføringUttakPart extends React.Component<Props> {
                         onChange={(å) => onChange({ årsak: å })}
                     />
                 </Block>
-                <Block visible={visVedlegg}>
-                    <Veilederinfo>
-                        <FormattedMessage id="uttaksplan.overføring.vedlegg.info" />
-                    </Veilederinfo>
+                <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>
+                    <Veilederinfo>{getVeilederInfotekst(årsak!, navnAnnenForelder)}</Veilederinfo>
                     <VedleggSpørsmål
                         vedlegg={vedleggList}
                         attachmentType={AttachmentType.OVERFØRING_KVOTE}
