@@ -5,7 +5,7 @@ import List from '../../../../app/components/list/List';
 import './oppsummeringsliste.less';
 
 interface OppsummeringslisteelementProps {
-    venstrestiltTekst: string;
+    venstrestiltTekst: string | React.ReactNode;
     høyrestiltTekst: string;
 }
 
@@ -32,7 +32,7 @@ const Oppsummeringslisteelement: React.StatelessComponent<Oppsummeringslisteelem
 }: OppsummeringslisteelementProps) => (
     <li className="oppsummeringsliste__element" key={guid()}>
         <Element>{venstrestiltTekst}</Element>
-        <Element>{høyrestiltTekst}</Element>
+        <Element className="høyrestiltTekst">{høyrestiltTekst}</Element>
     </li>
 );
 
