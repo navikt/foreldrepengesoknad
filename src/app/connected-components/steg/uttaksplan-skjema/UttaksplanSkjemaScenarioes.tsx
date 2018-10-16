@@ -103,6 +103,7 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
                 barn={søknad.barn as ForeldreansvarBarn}
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                datoForAleneomsorg={søknad.barn.datoForAleneomsorg}
                 visible={søknad.dekningsgrad !== undefined}
             />
         </>
