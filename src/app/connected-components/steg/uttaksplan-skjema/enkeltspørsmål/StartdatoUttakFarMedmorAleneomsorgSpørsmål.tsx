@@ -15,6 +15,7 @@ import { DateValue } from '../../../../types/common';
 interface OwnProps {
     barn: ForeldreansvarBarn;
     familiehendelsesdato: Date;
+    datoForAleneomsorg: Date;
 }
 
 type Props = UttaksplanSkjemaspørsmålProps & OwnProps & InjectedIntlProps;
@@ -46,13 +47,17 @@ const getStartdatoFromAlternativ = (
 };
 
 const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
-    const { visible, barn, familiehendelsesdato, intl } = props;
+    const { visible, barn, datoForAleneomsorg, familiehendelsesdato, intl } = props;
 
     const alternativer: FlervalgAlternativ[] = [
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, barn.datoForAleneomsorg),
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen)
     ];
 
+    const avgrensningerAnnenDato = uttaksplanDatoavgrensninger.startdatoPermisjonAleneomsorgFarMedmor(
+        datoForAleneomsorg,
+        familiehendelsesdato
+    );
     return (
         <UttaksplanSkjemaSpørsmål
             harUnderspørsmål={true}
@@ -79,15 +84,16 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             data.valgtStartdatoAleneomsorgFarMedmor === ValgalternativerAleneomsorgFarMedmor.annen
                         }>
                         <ValiderbarDatoInput
-                            id="annenStartdatoAdopsjon"
-                            name="annenStartdatoAdopsjon"
-                            label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
+                            id="annenStartdatoAleneomsorgFarMedmor"
+                            name="annenStartdatoAleneomsorgFarMedmor"
+                            label={getMessage(
+                                intl,
+                                'uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål'
+                            )}
                             onChange={(startdatoPermisjon: DateValue) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
                             disabled={data.skalIkkeHaUttakFørTermin}
-                            avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonVedAdopsjon(
-                                familiehendelsesdato
-                            )}
+                            avgrensninger={avgrensningerAnnenDato}
                             validators={startdatoFarMedmorValidation(intl, data.startdatoPermisjon)}
                         />
                     </Block>

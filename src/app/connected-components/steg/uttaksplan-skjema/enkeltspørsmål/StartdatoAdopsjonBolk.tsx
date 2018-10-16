@@ -84,9 +84,7 @@ const StartdatoAdopsjonBolk = (props: Props) => {
                             label={getMessage(intl, 'uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål')}
                             onChange={(startdatoPermisjon) => onChange({ startdatoPermisjon })}
                             dato={data.startdatoPermisjon}
-                            avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonVedAdopsjon(
-                                familiehendelsesdato
-                            )}
+                            avgrensninger={uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(familiehendelsesdato)}
                         />
                     </Block>
                 </>
