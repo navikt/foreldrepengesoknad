@@ -19,7 +19,7 @@ const startdatoFørTerminValidators = (
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoFørTermin')
         },
         {
-            test: () => dato !== undefined && Uttaksdagen(dato).erUttaksdag(),
+            test: () => dato === undefined || Uttaksdagen(dato).erUttaksdag(),
             failText: getMessage(intl, 'uttaksplan.skjema.validering.startdatoHelg')
         }
     ];
