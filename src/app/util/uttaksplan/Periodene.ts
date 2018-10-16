@@ -17,7 +17,6 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getHull: () => getHull(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
-    // finnHullMellomPerioder: (periode: Periode) => finnHullMellomPerioder(perioder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     sort: () => perioder.sort(sorterPerioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -28,11 +27,6 @@ export const Periodene = (perioder: Periode[]) => ({
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager)
 });
 
-/**
- * Sorterer perioder ut fra startdato - asc
- * @param p1
- * @param p2
- */
 export function sorterPerioder(p1: Periode, p2: Periode) {
     if (p1.tidsperiode.fom === undefined || p2.tidsperiode.fom === undefined) {
         return p1.tidsperiode.fom === undefined ? -1 : 1;
@@ -44,43 +38,22 @@ function getPeriode(perioder: Periode[], id: string): Periode | undefined {
     return perioder.find((p) => p.id === id);
 }
 
-/**
- * Returnerer perioder som er uttaksperioder
- * @param perioder
- */
 function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Uttak) as Uttaksperiode[];
 }
 
-/**
- * Returnerer perioder som er uttaksperioder
- * @param perioder
- */
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Utsettelse) as Utsettelsesperiode[];
 }
 
-/**
- * Returnerer perioder som er uttaksperioder
- * @param perioder
- */
 function getHull(perioder: Periode[]): PeriodeHull[] {
     return perioder.filter((periode) => periode.type === Periodetype.Hull) as PeriodeHull[];
 }
 
-/**
- * Returnerer perioder som er uttaksperioder
- * @param perioder
- */
 function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Opphold) as Oppholdsperiode[];
 }
 
-/**
- * Finner perioder som berører tidsperiode
- * @param perioder Alle perioder
- * @param tidsperiode
- */
 function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
     return perioder.filter((p) => {
         if (p.id === periode.id) {
@@ -144,32 +117,3 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
     return Perioden(periode).setStartdato(Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager));
 }
-
-// function finnHullMellomPerioder(perioder: Periode[]): PeriodeHull[] {
-//     const hull: PeriodeHull[] = [];
-//     const len = perioder.length;
-//     perioder.forEach((periode, idx) => {
-//         if (idx === len - 1) {
-//             return;
-//         }
-//         const nestePeriode = perioder[idx + 1];
-
-//         const tidsperiodeMellomPerioder: Tidsperiode = {
-//             fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-//             tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige()
-//         };
-//         if (moment(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
-//             return;
-//         }
-
-//         const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
-//         if (uttaksdagerITidsperiode > 0) {
-//             hull.push({
-//                 id: guid(),
-//                 type: Periodetype.Hull,
-//                 tidsperiode: tidsperiodeMellomPerioder
-//             });
-//         }
-//     });
-//     return hull;
-// }
