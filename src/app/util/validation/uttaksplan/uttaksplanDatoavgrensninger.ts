@@ -34,6 +34,17 @@ const startdatoFørTermin = (familiehendelsesdato: Date): Avgrensninger => {
     };
 };
 
+const startdatoFørTerminForeldrepengerFørFødselKonto = (familiehendelsesdato: Date): Avgrensninger => {
+    const permisjonsregler = getPermisjonsregler();
+    const maksDato = Uttaksdagen(familiehendelsesdato).forrige();
+    const minDato = Uttaksdagen(maksDato).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 - 1);
+    return {
+        minDato,
+        maksDato,
+        helgedagerIkkeTillatt: true
+    };
+};
+
 const startdatoPermisjonVedAdopsjon = (familiehendelsesdato: Date): Avgrensninger => {
     return defaultPermisjonsperiodeAvgrensning(familiehendelsesdato);
 };
@@ -50,5 +61,6 @@ export const uttaksplanDatoavgrensninger = {
     startdatoFørTermin,
     startdatoPermisjonVedAdopsjon,
     morsSisteUttaksdag,
-    startdatoPermisjonFarMedmor
+    startdatoPermisjonFarMedmor,
+    startdatoFørTerminForeldrepengerFørFødselKonto
 };
