@@ -66,6 +66,25 @@
     "personalia.år": "{år} år",
 
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
+    "dinePersonopplysninger.behandling.html":
+        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden du kan få hvis du fyller vilkårene. Vilkårene står på nav.no/foreldrepenger.</p>",
+    "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
+    "dinePersonopplysninger.avsnitt.innhenting.html":
+        "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
+
+    "dinePersonopplysninger.avsnitt.lagring.tittel": "Lagring av opplysninger",
+    "dinePersonopplysninger.avsnitt.lagring.html":
+        "Hvis du sender inn søknaden, blir opplysninger du har gitt i søknaden lagret i tråd med arkivloven.",
+
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
+    "dinePersonopplysninger.avsnitt.automatiskBehandling.html":
+        "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
+    "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
+        "<p>Når søknaden er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
+    "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
+    "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
+        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern</a></p>",
 
     "dinePlikter.sectionheading": "Dine plikter",
     "dinePlikter.listeElement.1":
