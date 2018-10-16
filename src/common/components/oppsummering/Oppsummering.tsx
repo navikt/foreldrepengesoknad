@@ -7,13 +7,13 @@ import SøkerPersonalia from 'common/components/søker-personalia/SøkerPersonal
 import { formaterNavn } from 'app/util/domain/personUtil';
 import { Søkerinfo } from '../../../app/types/søkerinfo';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../app/util/validation/steg/barn';
-import Oppsummeringsseksjon from 'common/components/oppsummering/Oppsummeringsseksjon';
 import Block from 'common/components/block/Block';
-import AnnenForelderOppsummering from 'common/components/oppsummering/steg/AnnenForelderOppsummering';
-import RelasjonTilBarnOppsummering from 'common/components/oppsummering/steg/RelasjonTilBarnOppsummering';
-import UtenlandsoppholdOppsummering from 'common/components/oppsummering/steg/UtenlandsoppholdOppsummering';
-import './oppsummeringWrapper.less';
-import InntektOppsummering from 'common/components/oppsummering/steg/InntektOppsummering';
+import AnnenForelderOppsummering from 'common/components/oppsummering/steg-oppsummeringer/AnnenForelderOppsummering';
+import RelasjonTilBarnOppsummering from 'common/components/oppsummering/steg-oppsummeringer/RelasjonTilBarnOppsummering';
+import UtenlandsoppholdOppsummering from 'common/components/oppsummering/steg-oppsummeringer/UtenlandsoppholdOppsummering';
+import InntektOppsummering from 'common/components/oppsummering/steg-oppsummeringer/InntektOppsummering';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import './oppsummering.less';
 
 interface OppsummeringProps {
     className?: string;
