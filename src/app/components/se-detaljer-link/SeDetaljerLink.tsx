@@ -8,10 +8,21 @@ interface SeDetaljerLinkProps {
 
 type Props = SeDetaljerLinkProps & NavFrontendLenkeProps & InjectedIntlProps;
 
-const SeDetaljerLink: React.StatelessComponent<Props> = ({ content, ...otherProps }: Props) => (
+const SeDetaljerLink: React.StatelessComponent<Props> = ({ content, onClick, ...otherProps }: Props) => (
     <>
         {content}
-        <Lenke {...otherProps}>Se detaljer</Lenke>
+        <Lenke
+            {...otherProps}
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                if (e) {
+                    e.preventDefault();
+                }
+                if (onClick) {
+                    onClick(e);
+                }
+            }}>
+            Se detaljer
+        </Lenke>
     </>
 );
 

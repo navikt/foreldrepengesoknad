@@ -20,7 +20,7 @@ const Oppsummeringsliste: React.StatelessComponent<OppsummeringslisteProps> = (p
             className="oppsummeringsliste"
             data={data}
             renderElement={(elementProps: OppsummeringslisteelementProps) => (
-                <Oppsummeringslisteelement {...elementProps} />
+                <Oppsummeringslisteelement {...elementProps} key={guid()} />
             )}
         />
     );
@@ -30,7 +30,7 @@ const Oppsummeringslisteelement: React.StatelessComponent<Oppsummeringslisteelem
     venstrestiltTekst,
     høyrestiltTekst
 }: OppsummeringslisteelementProps) => (
-    <li className="oppsummeringsliste__element" key={guid()}>
+    <li className="oppsummeringsliste__element">
         <Element>{venstrestiltTekst}</Element>
         <Element className="høyrestiltTekst">{høyrestiltTekst}</Element>
     </li>

@@ -4,8 +4,8 @@ import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../app/util/dates/dates';
 import Oppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/Oppsummeringsliste';
 import { Næring } from '../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import Modal from 'nav-frontend-modal';
 import SeDetaljerLink from '../../../../app/components/se-detaljer-link/SeDetaljerLink';
+import NæringOppsummeringsmodal from 'common/components/oppsummering/oppsummeringsliste/NæringOppsummeringsmodal';
 
 interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
     næringer: Næring[];
@@ -15,6 +15,7 @@ type Props = SelvstendigNæringsdrivendeOppsummeringslisteProps & InjectedIntlPr
 
 interface State {
     modalIsOpen: boolean;
+    næring?: Næring;
 }
 
 class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Props, State> {
@@ -24,40 +25,59 @@ class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Prop
             modalIsOpen: false
         };
 
-        this.toggleModal = this.toggleModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.createOppsummeringslisteData = this.createOppsummeringslisteData.bind(this);
+        this.createOppsummeringslisteelementData = this.createOppsummeringslisteelementData.bind(this);
     }
 
-    toggleModal(e?: React.SyntheticEvent<HTMLAnchorElement>) {
-        if (e) {
-            e.preventDefault();
-        }
+    openModal(næring: Næring) {
         this.setState({
-            modalIsOpen: !this.state.modalIsOpen
+            modalIsOpen: true,
+            næring
         });
     }
 
+    closeModal() {
+        this.setState({
+            modalIsOpen: false,
+            næring: undefined
+        });
+    }
+
+    createOppsummeringslisteData() {
+        const { næringer } = this.props;
+        return næringer.map((næring) => this.createOppsummeringslisteelementData(næring));
+    }
+
+    createOppsummeringslisteelementData(næring: Næring) {
+        const { intl } = this.props;
+        const { navnPåNæringen, tidsperiode, pågående } = næring;
+        return {
+            venstrestiltTekst: (
+                <SeDetaljerLink content={navnPåNæringen} onClick={() => this.openModal(næring)} href="#" />
+            ),
+            høyrestiltTekst: getMessage(intl, 'tidsintervall', {
+                fom: formatDate(tidsperiode.fom),
+                tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
+            })
+        };
+    }
+
     render() {
-        const { næringer, intl } = this.props;
+        const { næring, modalIsOpen } = this.state;
         return (
             <>
-                <Oppsummeringsliste
-                    data={næringer.map(({ navnPåNæringen, tidsperiode, pågående }) => ({
-                        venstrestiltTekst: (
-                            <SeDetaljerLink content={navnPåNæringen} onClick={this.toggleModal} href="" />
-                        ),
-                        høyrestiltTekst: getMessage(intl, 'tidsintervall', {
-                            fom: formatDate(tidsperiode.fom),
-                            tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
-                        })
-                    }))}
-                />
-
-                <Modal onRequestClose={this.toggleModal} isOpen={this.state.modalIsOpen} contentLabel={'Oppsummering'}>
+                <Oppsummeringsliste data={this.createOppsummeringslisteData()} />
+                <NæringOppsummeringsmodal
+                    næring={næring}
+                    isOpen={modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    contentLabel={'Oppsummering'}>
                     Some content
-                </Modal>
+                </NæringOppsummeringsmodal>
             </>
         );
     }
 }
-
 export default injectIntl(SelvstendigNæringsdrivendeOppsummeringsliste);
