@@ -41,6 +41,40 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     }
 }
 
+function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
+    try {
+        yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
+        const response = yield call(Api.getUttakskontoer, action.params);
+        const stønadskontoer: StønadskontoerDTO = response.data;
+        const dekningsgrad: string = action.params.dekningsgrad;
+        const antallUker: number = Object.keys(stønadskontoer.kontoer)
+            .filter((konto: string) => konto !== StønadskontoType.Flerbarnsdager)
+            .reduce((sum, konto) => sum + stønadskontoer.kontoer[konto] / 5, 0);
+
+        if (dekningsgrad === '100') {
+            yield put(
+                apiActions.updateApi({
+                    dekningsgrad100AntallUker: antallUker,
+                    isLoadingTilgjengeligeStønadskontoer: false
+                })
+            );
+        } else {
+            yield put(
+                apiActions.updateApi({
+                    dekningsgrad80AntallUker: antallUker,
+                    isLoadingTilgjengeligeStønadskontoer: false
+                })
+            );
+        }
+    } catch (error) {
+        yield put(
+            apiActions.updateApi({
+                isLoadingTilgjengeligeStønadskontoer: false
+            })
+        );
+    }
+}
+
 function* getStønadskontoerAndLagUttaksplan(action: GetTilgjengeligeStønadskontoer) {
     yield put(søknadActionCreators.uttaksplanSetPerioder([]));
     yield all([getStønadskontoer(action)]);
@@ -57,6 +91,7 @@ export default function* søknadskontoerSaga() {
         takeEvery(
             ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG,
             getStønadskontoerAndLagUttaksplan
-        )
+        ),
+        takeEvery(ApiActionKeys.GET_TILGJENGELIGE_STØNADSUKER, getStønadskontoUker)
     ]);
 }
