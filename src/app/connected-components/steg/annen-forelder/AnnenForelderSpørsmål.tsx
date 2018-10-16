@@ -20,6 +20,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AnnenForelderSpørsmålKeys, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
 import { DateValue } from '../../../types/common';
+import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 
 export interface OwnProps {
     annenForelder: AnnenForelder;
@@ -155,6 +156,9 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         label={getMessage(intl, 'datoForAleneomsorg.spørsmål')}
                         onChange={(datoForAleneomsorg: DateValue) => onBarnChange({ datoForAleneomsorg })}
                         dato={barn.datoForAleneomsorg}
+                        avgrensninger={{
+                            minDato: getFamiliehendelsedato(barn, situasjon)
+                        }}
                     />
                 </Block>
                 <Block
