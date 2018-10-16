@@ -41,7 +41,8 @@ export const validerPeriodeForm = (
     periode: Periode,
     søker: Søker,
     annenForelder: AnnenForelder,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    familiehendelsesdato: Date
 ) => {
     const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Overføring || periode.type === Periodetype.Uttak) {
@@ -52,7 +53,8 @@ export const validerPeriodeForm = (
             annenForelderHarRett: annenForelder.harRettPåForeldrepenger,
             søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør
+            morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
+            familiehendelsesdato
         });
     }
     return validerUtsettelseForm({
