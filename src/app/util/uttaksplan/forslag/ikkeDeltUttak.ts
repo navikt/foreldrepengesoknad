@@ -31,7 +31,8 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false
+            ønskerSamtidigUttak: false,
+            gradert: false
         }
     ];
     return perioder;
@@ -51,7 +52,8 @@ const ikkeDeltUttakAdopsjonMor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
             vedlegg: [],
-            ønskerSamtidigUttak: false
+            ønskerSamtidigUttak: false,
+            gradert: false
         }
     ];
     return perioder;
@@ -151,7 +153,8 @@ const ikkeDeltUttakFødselMor = (
         konto: foreldrepengerKonto.konto,
         tidsperiode: antallDagerIForeldrepenger,
         vedlegg: [],
-        ønskerSamtidigUttak: false
+        ønskerSamtidigUttak: false,
+        gradert: false
     };
 
     perioder.push(foreldrepengerPeriode);
@@ -183,7 +186,8 @@ const ikkeDeltUttakFødselFarMedmor = (
             konto: foreldrepengerKonto.konto,
             tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager - oppbrukteDagerPgaSenSøknad),
             vedlegg: [],
-            ønskerSamtidigUttak: false
+            ønskerSamtidigUttak: false,
+            gradert: false
         }
     ];
     return perioder.sort(sorterPerioder);
