@@ -4,8 +4,6 @@ import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../app/util/dates/dates';
 import Oppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/Oppsummeringsliste';
 import { Næring } from '../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import SeDetaljerLink from '../../../../app/components/se-detaljer-link/SeDetaljerLink';
-import NæringOppsummeringsmodal from 'common/components/oppsummering/oppsummeringsliste/NæringOppsummeringsmodal';
 
 interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
     næringer: Næring[];
@@ -13,36 +11,15 @@ interface SelvstendigNæringsdrivendeOppsummeringslisteProps {
 
 type Props = SelvstendigNæringsdrivendeOppsummeringslisteProps & InjectedIntlProps;
 
-interface State {
-    modalIsOpen: boolean;
-    næring?: Næring;
-}
-
-class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Props, State> {
+class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
             modalIsOpen: false
         };
 
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.createOppsummeringslisteData = this.createOppsummeringslisteData.bind(this);
         this.createOppsummeringslisteelementData = this.createOppsummeringslisteelementData.bind(this);
-    }
-
-    openModal(næring: Næring) {
-        this.setState({
-            modalIsOpen: true,
-            næring
-        });
-    }
-
-    closeModal() {
-        this.setState({
-            modalIsOpen: false,
-            næring: undefined
-        });
     }
 
     createOppsummeringslisteData() {
@@ -54,30 +31,94 @@ class SelvstendigNæringsdrivendeOppsummeringsliste extends React.Component<Prop
         const { intl } = this.props;
         const { navnPåNæringen, tidsperiode, pågående } = næring;
         return {
-            venstrestiltTekst: (
-                <SeDetaljerLink content={navnPåNæringen} onClick={() => this.openModal(næring)} href="#" />
-            ),
+            venstrestiltTekst: navnPåNæringen,
             høyrestiltTekst: getMessage(intl, 'tidsintervall', {
                 fom: formatDate(tidsperiode.fom),
                 tom: pågående ? 'pågående' : formatDate(tidsperiode.tom)
-            })
+            }),
+            content: <Næringsdetaljer næring={næring} />
         };
     }
 
     render() {
-        const { næring, modalIsOpen } = this.state;
-        return (
-            <>
-                <Oppsummeringsliste data={this.createOppsummeringslisteData()} />
-                <NæringOppsummeringsmodal
-                    næring={næring}
-                    isOpen={modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    contentLabel={'Oppsummering'}>
-                    Some content
-                </NæringOppsummeringsmodal>
-            </>
-        );
+        return <Oppsummeringsliste data={this.createOppsummeringslisteData()} />;
     }
 }
+
+interface NæringsdetaljerProps {
+    næring: Næring;
+}
+
+const Næringsdetaljer: React.StatelessComponent<NæringsdetaljerProps> = ({ næring }: NæringsdetaljerProps) => {
+    const {
+        nyIArbeidslivet,
+        registrertILand,
+        registrertINorge,
+        oppstartsdato,
+        stillingsprosent,
+        organisasjonsnummer,
+        næringsinntekt,
+        endringAvNæringsinntektInformasjon,
+        næringstyper,
+        kanInnhenteOpplsyningerFraRevisor,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår,
+        revisor,
+        harRegnskapsfører,
+        regnskapsfører,
+        harRevisor
+    } = næring;
+
+    return (
+        <>
+            <span>Næringstype(r): {næringstyper.join(', ')}</span>
+            <span>Organisasjonsnummer: {organisasjonsnummer}</span>
+            <span>Stillingsprosent: {stillingsprosent}</span>
+            <span>Oppstartsdato: {formatDate(oppstartsdato)}</span>
+            <span>Næringsinntekt: {næringsinntekt}</span>
+            <span>Registrert i land: {registrertINorge ? 'Norge' : registrertILand}</span>
+            {nyIArbeidslivet !== undefined && <span>Ny i arbeidslivet: {nyIArbeidslivet ? 'Ja' : 'Nei'}</span>}
+            {hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined && (
+                <span>
+                    Har hatt varig endring av næringsinntekt siste 4 kalenderår:{' '}
+                    {hattVarigEndringAvNæringsinntektSiste4Kalenderår ? 'Ja' : 'Nei'}
+                </span>
+            )}
+            {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
+                <>
+                    <span>
+                        Dato for endring av næringsinntekt: {formatDate(endringAvNæringsinntektInformasjon!.dato)}
+                    </span>
+                    <span>
+                        Næringsinntekt etter endring: {endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                    </span>
+                    <span>
+                        Forklaring av endring av næringsinntekt: {endringAvNæringsinntektInformasjon!.forklaring}
+                    </span>
+                </>
+            )}
+            {harRegnskapsfører === true && (
+                <>
+                    <span>Regnskapsførers navn: {regnskapsfører.navn}</span>
+                    <span>Regnskapsførers telefonnummer: {regnskapsfører.telefonnummer}</span>
+                    <span>
+                        Regnskapsfører er nær venn eller familie: {regnskapsfører.erNærVennEllerFamilie ? 'Ja' : 'Nei'}
+                    </span>
+                </>
+            )}
+            {harRegnskapsfører === false &&
+                harRevisor === true && (
+                    <>
+                        <span>Revisors navn: {revisor.navn}</span>
+                        <span>Revisors telefonnummer: {revisor.telefonnummer}</span>
+                        <span>Revisor er nær venn eller familie: {revisor.erNærVennEllerFamilie ? 'Ja' : 'Nei'}</span>
+                        <span>
+                            Har gitt samtykke til NAV til å innhente opplysninger fra revisor:{' '}
+                            {kanInnhenteOpplsyningerFraRevisor ? 'Ja' : 'Nei'}
+                        </span>
+                    </>
+                )}
+        </>
+    );
+};
+
 export default injectIntl(SelvstendigNæringsdrivendeOppsummeringsliste);

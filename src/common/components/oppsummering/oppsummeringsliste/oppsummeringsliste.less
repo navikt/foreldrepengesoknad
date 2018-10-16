@@ -4,13 +4,20 @@
     margin: 0;
 
     &__element {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        margin-top: 0.5rem;
+        &__heading {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            margin-top: 0.5rem;
 
-        .høyrestiltTekst {
-            font-weight: normal;
+            .høyrestiltTekst {
+                font-weight: normal;
+            }
+        }
+
+        &__content {
+            margin-left: 0.5rem;
+            margin-top: 0.5rem;
         }
     }
 }
