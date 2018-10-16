@@ -43,8 +43,11 @@ export const validerPeriodeForm = (
     annenForelder: AnnenForelder,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     familiehendelsesdato: Date
-) => {
+): PeriodeValideringsfeil[] | undefined => {
     const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    if (periode.type === Periodetype.Hull) {
+        return undefined;
+    }
     if (periode.type === Periodetype.Overføring || periode.type === Periodetype.Uttak) {
         return validerUttakForm({
             periode,

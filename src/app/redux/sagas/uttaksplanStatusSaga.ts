@@ -5,7 +5,7 @@ import { AppState } from '../reducers';
 import { Periodetype, Uttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
-import søknadActionCreators from '../actions/s\u00F8knad/s\u00F8knadActionCreators';
+import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 
 const stateSelector = (state: AppState) => state;
