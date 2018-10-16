@@ -5,8 +5,9 @@ import List from '../../../../app/components/list/List';
 import './oppsummeringsliste.less';
 
 interface OppsummeringslisteelementProps {
-    venstrestiltTekst: string | React.ReactNode;
+    venstrestiltTekst: string;
     høyrestiltTekst: string;
+    content?: React.ReactNode;
 }
 
 interface OppsummeringslisteProps {
@@ -28,11 +29,15 @@ const Oppsummeringsliste: React.StatelessComponent<OppsummeringslisteProps> = (p
 
 const Oppsummeringslisteelement: React.StatelessComponent<OppsummeringslisteelementProps> = ({
     venstrestiltTekst,
-    høyrestiltTekst
+    høyrestiltTekst,
+    content
 }: OppsummeringslisteelementProps) => (
     <li className="oppsummeringsliste__element">
-        <Element>{venstrestiltTekst}</Element>
-        <Element className="høyrestiltTekst">{høyrestiltTekst}</Element>
+        <div className="oppsummeringsliste__element__heading">
+            <Element>{venstrestiltTekst}</Element>
+            <Element className="høyrestiltTekst">{høyrestiltTekst}</Element>
+        </div>
+        {content && <div className="oppsummeringsliste__element__content">{content}</div>}
     </li>
 );
 
