@@ -44,7 +44,10 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         const { dispatch, søknad } = props;
 
         dispatch(
-            apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams({ ...søknad, dekningsgrad: '100' }))
+            apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '100' }))
+        );
+        dispatch(
+            apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '80' }))
         );
     }
 

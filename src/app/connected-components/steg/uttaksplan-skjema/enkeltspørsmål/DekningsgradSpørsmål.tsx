@@ -8,12 +8,12 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
-import { TilgjengeligStønadskonto, StønadskontoType } from '../../../../types/uttaksplan/periodetyper';
 
 interface StateProps {
     dekningsgrad?: Dekningsgrad;
     erAleneomsorg?: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    dekningsgrad100AntallUker: number | undefined;
+    dekningsgrad80AntallUker: number | undefined;
 }
 interface OwnProps {
     visible?: boolean;
@@ -21,28 +21,16 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
-const dekningsgradConfig = {
-    40: 50,
-    46: 56,
-    49: 59,
-    63: 77,
-    66: 80,
-    92: 112,
-    95: 115
-};
-
-const getLabelTexts = (tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]) => {
-    const dekningsgradUker100 = tilgjengeligeStønadskontoer
-        .filter((k) => k.konto !== StønadskontoType.Flerbarnsdager)
-        .reduce((sum, konto) => sum + konto.dager / 5, 0);
-    const dekningsgradUker80 = dekningsgradConfig[dekningsgradUker100];
-
-    return { dekningsgradUker100, dekningsgradUker80 };
-};
-
 const DekningsgradSpørsmål = (props: Props) => {
-    const { visible = true, dispatch, erAleneomsorg, dekningsgrad, intl, tilgjengeligeStønadskontoer } = props;
-    const labelTexts = getLabelTexts(tilgjengeligeStønadskontoer);
+    const {
+        visible = true,
+        dispatch,
+        erAleneomsorg,
+        dekningsgrad,
+        intl,
+        dekningsgrad100AntallUker,
+        dekningsgrad80AntallUker
+    } = props;
 
     let checked;
     if (dekningsgrad === '100') {
@@ -62,13 +50,13 @@ const DekningsgradSpørsmål = (props: Props) => {
                 radios={[
                     {
                         label: getMessage(intl, 'spørsmål.dekningsgrad.100', {
-                            antallUker: labelTexts.dekningsgradUker100
+                            antallUker: dekningsgrad100AntallUker
                         }),
                         value: '100'
                     },
                     {
                         label: getMessage(intl, 'spørsmål.dekningsgrad.80', {
-                            antallUker: labelTexts.dekningsgradUker80
+                            antallUker: dekningsgrad80AntallUker
                         }),
                         value: '80'
                     }
@@ -84,7 +72,8 @@ const DekningsgradSpørsmål = (props: Props) => {
 const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad: state.søknad.dekningsgrad,
     erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger,
-    tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+    dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
+    dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
