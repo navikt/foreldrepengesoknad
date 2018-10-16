@@ -1,12 +1,16 @@
+import * as React from 'react';
 import { formatDate } from '../../../../../app/util/dates/dates';
 import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 interface NæringsdetaljerProps {
     næring: Næring;
 }
 
-const Næringsdetaljer: React.StatelessComponent<NæringsdetaljerProps> = ({ næring }: NæringsdetaljerProps) => {
+type Props = NæringsdetaljerProps & InjectedIntlProps;
+
+const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Props) => {
     const {
         nyIArbeidslivet,
         registrertILand,
@@ -27,46 +31,91 @@ const Næringsdetaljer: React.StatelessComponent<NæringsdetaljerProps> = ({ næ
 
     return (
         <>
-            <p>Næringstype(r): {næringstyper.join(', ')}</p>
-            <p>Organisasjonsnummer: {organisasjonsnummer}</p>
-            <p>Stillingsprosent: {stillingsprosent}</p>
-            <p>Oppstartsdato: {formatDate(oppstartsdato)}</p>
-            <p>Næringsinntekt: {næringsinntekt}</p>
-            <p>Registrert i land: {registrertINorge ? 'Norge' : registrertILand}</p>
-            {nyIArbeidslivet !== undefined && <p>Ny i arbeidslivet: {nyIArbeidslivet ? 'Ja' : 'Nei'}</p>}
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}: {næringstyper.join(', ')}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}: {organisasjonsnummer}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}: {stillingsprosent}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}: {formatDate(oppstartsdato)}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}: {næringsinntekt}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}:{' '}
+                {registrertINorge ? 'Norge' : registrertILand}
+            </p>
+            {nyIArbeidslivet !== undefined && (
+                <p>
+                    {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}:{' '}
+                    {nyIArbeidslivet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                </p>
+            )}
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined && (
                 <p>
-                    Har hatt varig endring av næringsinntekt siste 4 kalenderår:{' '}
-                    {hattVarigEndringAvNæringsinntektSiste4Kalenderår ? 'Ja' : 'Nei'}
+                    {getMessage(
+                        intl,
+                        'oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår'
+                    )}:{' '}
+                    {hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                        ? getMessage(intl, 'ja')
+                        : getMessage(intl, 'nei')}
                 </p>
             )}
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
                 <>
-                    <p>Dato for endring av næringsinntekt: {formatDate(endringAvNæringsinntektInformasjon!.dato)}</p>
                     <p>
-                        Næringsinntekt etter endring: {endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt')}:{' '}
+                        {formatDate(endringAvNæringsinntektInformasjon!.dato)}
                     </p>
-                    <p>Forklaring av endring av næringsinntekt: {endringAvNæringsinntektInformasjon!.forklaring}</p>
+                    <p>
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}:{' '}
+                        {endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                    </p>
+                    <p>
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}:{' '}
+                        {endringAvNæringsinntektInformasjon!.forklaring}
+                    </p>
                 </>
             )}
             {harRegnskapsfører === true && (
                 <>
-                    <p>Regnskapsførers navn: {regnskapsfører.navn}</p>
-                    <p>Regnskapsførers telefonnummer: {regnskapsfører.telefonnummer}</p>
                     <p>
-                        Regnskapsfører er nær venn eller familie: {regnskapsfører.erNærVennEllerFamilie ? 'Ja' : 'Nei'}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}:{' '}
+                        {regnskapsfører.navn}
+                    </p>
+                    <p>
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}:{' '}
+                        {regnskapsfører.telefonnummer}
+                    </p>
+                    <p>
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie')}:{' '}
+                        {regnskapsfører.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                     </p>
                 </>
             )}
             {harRegnskapsfører === false &&
                 harRevisor === true && (
                     <>
-                        <p>Revisors navn: {revisor.navn}</p>
-                        <p>Revisors telefonnummer: {revisor.telefonnummer}</p>
-                        <p>Revisor er nær venn eller familie: {revisor.erNærVennEllerFamilie ? 'Ja' : 'Nei'}</p>
                         <p>
-                            Har gitt samtykke til NAV til å innhente opplysninger fra revisor:{' '}
-                            {kanInnhenteOpplsyningerFraRevisor ? 'Ja' : 'Nei'}
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}: {revisor.navn}
+                        </p>
+                        <p>
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}:{' '}
+                            {revisor.telefonnummer}
+                        </p>
+                        <p>
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie')}:{' '}
+                            {revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                        </p>
+                        <p>
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke')}:{' '}
+                            {kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                         </p>
                     </>
                 )}
@@ -74,4 +123,4 @@ const Næringsdetaljer: React.StatelessComponent<NæringsdetaljerProps> = ({ næ
     );
 };
 
-export default Næringsdetaljer;
+export default injectIntl(Næringsdetaljer);
