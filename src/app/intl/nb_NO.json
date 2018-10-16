@@ -516,6 +516,48 @@
 
     "oppsummering.inntekt": "Opplysninger om inntekt",
 
+    "oppsummering.frilans.tittel": "Arbeid som frilans siste 10 måneder",
+    "oppsummering.frilans.ikkeFrilans": "Jeg har ikke jobbet som frilanser de siste 10 månedene",
+    "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilans",
+    "oppsummering.frilans.fremdelesFrilans": "Jeg jobber fremdeles som frilans",
+    "oppsummering.frilans.driverFosterhjem": "Jeg driver fosterhjem",
+    "oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
+        "Frilansarbeid for nære venner eller familie de siste 10 månedene",
+    "oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd":
+        "Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene",
+    "oppsummering.ikke.frilans.oppstartsdato": "Oppstartsdato som frilans",
+
+    "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som selvstendig næringsdrivende siste 10 måneder",
+    "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
+        "Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene",
+    "oppsummering.selvstendigNæringsdrivende.næringstype": "Næringstype",
+    "oppsummering.selvstendigNæringsdrivende.orgnr": "Organisasjonsnummer",
+    "oppsummering.selvstendigNæringsdrivende.stillingsprosent": "Stillingsprosent",
+    "oppsummering.selvstendigNæringsdrivende.oppstartsdato": "Oppstartsdato",
+    "oppsummering.selvstendigNæringsdrivende.næringsinntekt": "Næringsinntekt",
+    "oppsummering.selvstendigNæringsdrivende.registrertLand": "Registrert i land",
+    "oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet": "Ny i arbeidslivet",
+    "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår":
+        "Har hatt varig endring av næringsinntekt siste 4 kalenderår",
+    "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
+    "oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring": "Næringsinntekt etter endring",
+    "oppsummering.selvstendigNæringsdrivende.forklaring": "Forklaring av endring av næringsinntekt",
+    "oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn": "Regnskapsførers navn",
+    "oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf": "Regnskapsførers telefonnummer",
+    "oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie":
+        "Regnskapsfører er nær venn eller familie",
+    "oppsummering.selvstendigNæringsdrivende.revisorNavn": "Revisors navn",
+    "oppsummering.selvstendigNæringsdrivende.revisorTlf": "Revisors telefonnummer",
+    "oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie": "Revisor er nær venn eller familie",
+    "oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke":
+        "Har gitt samtykke til å innhente opplysninger fra revisor",
+
+    "oppsummering.andreInntekter.tittel": "Andre inntekter siste 10 måneder",
+    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre ommtelter de siste 10 månedene",
+    "oppsummering.andreInntekter.arbeidsgiverNavn": "Arbeidsgivers navn",
+    "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
+    "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",

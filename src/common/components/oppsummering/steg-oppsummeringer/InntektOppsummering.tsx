@@ -9,6 +9,7 @@ import { Element } from 'nav-frontend-typografi';
 import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/FrilansoppdragOppsummeringsliste';
 import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/SelvstendigNæringsdrivendeOppsummeringsliste';
 import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/AndreInntekterOppsummeringsliste';
+import getMessage from 'common/util/i18nUtils';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -26,7 +27,7 @@ const InntektOppsummering = ({ søker, intl }: Props) => {
     );
 };
 
-const FrilansOppsummering = ({ søker }: Props) => {
+const FrilansOppsummering = ({ søker, intl }: Props) => {
     const { frilansInformasjon, harJobbetSomFrilansSiste10Mnd } = søker;
 
     if (frilansInformasjon && harJobbetSomFrilansSiste10Mnd) {
@@ -38,41 +39,51 @@ const FrilansOppsummering = ({ søker }: Props) => {
             oppdragForNæreVennerEllerFamilieSiste10Mnd
         } = frilansInformasjon;
         return (
-            <>
-                <DisplayTextWithLabel label={'Oppstartsdato som frilans'} text={formatDate(oppstart)} />
+            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.frilans.tittel')}>
                 <DisplayTextWithLabel
-                    label={'Jeg jobber fremdeles som frilans'}
-                    text={jobberFremdelesSomFrilans ? 'Ja' : 'Nei'}
+                    label={getMessage(intl, 'oppsummering.frilans.oppstartsdato')}
+                    text={formatDate(oppstart)}
                 />
-                <DisplayTextWithLabel label={'Jeg driver fosterhjem'} text={driverFosterhjem ? 'Ja' : 'Nei'} />
-                <DisplayContentWithLabel label={'Frilansarbeid for nære venner elle familie de siste 10 månedene'}>
+                <DisplayTextWithLabel
+                    label={getMessage(intl, 'oppsummering.frilans.fremdelesFrilans')}
+                    text={jobberFremdelesSomFrilans ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
+                <DisplayTextWithLabel
+                    label={getMessage(intl, 'oppsummering.frilans.driverFosterhjem')}
+                    text={driverFosterhjem ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
+                <DisplayContentWithLabel
+                    label={getMessage(intl, 'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd')}>
                     <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
                         <Element>
-                            Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene
+                            {getMessage(
+                                intl,
+                                'oppsummering.frilans.harIkkeUtførtFrilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
+                            )}
                         </Element>
                     </Block>
                     <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
                         <FrilansoppdragOppsummeringsliste frilansoppdrag={oppdragForNæreVennerEllerFamilieSiste10Mnd} />
                     </Block>
                 </DisplayContentWithLabel>
-            </>
+            </DisplayContentWithLabel>
         );
     }
 
     return (
         <DisplayTextWithLabel
-            label={'Arbeid som frilans siste 10 måneder'}
-            text={'Jeg har ikke jobbet som frilanser de siste 10 månedene'}
+            label={getMessage(intl, 'oppsummering.frilans.tittel')}
+            text={getMessage(intl, 'oppsummering.frilans.ikkeFrilans')}
         />
     );
 };
 
-const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
+const SelvstendigNæringsdrivendeOppsummering = ({ søker, intl }: Props) => {
     const { selvstendigNæringsdrivendeInformasjon, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
     if (selvstendigNæringsdrivendeInformasjon && harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         return (
-            <DisplayContentWithLabel label={'Arbeid som selvstendig næringsdrivende siste 10 måneder'}>
+            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
                 <SelvstendigNæringsdrivendeOppsummeringsliste næringer={selvstendigNæringsdrivendeInformasjon} />
             </DisplayContentWithLabel>
         );
@@ -80,18 +91,18 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker }: Props) => {
 
     return (
         <DisplayTextWithLabel
-            label={'Arbeid som selvstendig næringsdrivende siste 10 måneder'}
-            text={'Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene'}
+            label={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}
+            text={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende')}
         />
     );
 };
 
-const AndreInntekterOppsummering = ({ søker }: Props) => {
+const AndreInntekterOppsummering = ({ søker, intl }: Props) => {
     const { harHattAnnenInntektSiste10Mnd, andreInntekterSiste10Mnd } = søker;
 
     if (andreInntekterSiste10Mnd && harHattAnnenInntektSiste10Mnd) {
         return (
-            <DisplayContentWithLabel label={'Andre inntektskilder siste 10 måneder'}>
+            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
                 <AndreInntekterOppsummeringsliste andreInntekter={andreInntekterSiste10Mnd} />
             </DisplayContentWithLabel>
         );
@@ -99,8 +110,8 @@ const AndreInntekterOppsummering = ({ søker }: Props) => {
 
     return (
         <DisplayTextWithLabel
-            label={'Andre inntektskilder siste 10 måneder'}
-            text={'Jeg har ikke hatt andre inntektskilder de siste 10 månedene'}
+            label={getMessage(intl, 'oppsummering.andreInntekter.tittel')}
+            text={getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}
         />
     );
 };

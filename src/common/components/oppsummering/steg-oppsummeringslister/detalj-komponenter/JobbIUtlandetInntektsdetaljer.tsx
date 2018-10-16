@@ -1,24 +1,30 @@
 import * as React from 'react';
 import { JobbIUtlandetInntekt } from '../../../../../app/types/søknad/AnnenInntekt';
+import getMessage from 'common/util/i18nUtils';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 interface JobbIUtlandetInntektsdetaljerProps {
     jobbIUtlandetInntekt: JobbIUtlandetInntekt;
 }
 
-const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<JobbIUtlandetInntektsdetaljerProps> = ({
-    jobbIUtlandetInntekt
-}) => {
+type Props = JobbIUtlandetInntektsdetaljerProps & InjectedIntlProps;
+
+const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIUtlandetInntekt, intl }) => {
     const { arbeidsgiverNavn, land, erNærVennEllerFamilieMedArbeidsgiver } = jobbIUtlandetInntekt;
     return (
         <>
-            <p>Arbeidsgivers navn: {arbeidsgiverNavn}</p>
-            <p>Arbeidsgivers land: {land}</p>
             <p>
-                Jeg er nær venn av eller i familie med denne arbeidsgiveren:
-                {erNærVennEllerFamilieMedArbeidsgiver ? 'Ja' : 'Nei'}
+                {getMessage(intl, 'oppsummering.andreInntekter.arbeidsgiverNavn')}: {arbeidsgiverNavn}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}: {land}
+            </p>
+            <p>
+                {getMessage(intl, 'oppsummering.andreInntekter.nærVennEllerFamilie')}:
+                {erNærVennEllerFamilieMedArbeidsgiver ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
             </p>
         </>
     );
 };
 
-export default JobbIUtlandetInntektsdetaljer;
+export default injectIntl(JobbIUtlandetInntektsdetaljer);
