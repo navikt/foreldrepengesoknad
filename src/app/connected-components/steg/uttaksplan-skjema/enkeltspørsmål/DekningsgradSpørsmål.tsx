@@ -12,6 +12,8 @@ import Block from 'common/components/block/Block';
 interface StateProps {
     dekningsgrad?: Dekningsgrad;
     erAleneomsorg?: boolean;
+    dekningsgrad100AntallUker: number | undefined;
+    dekningsgrad80AntallUker: number | undefined;
 }
 interface OwnProps {
     visible?: boolean;
@@ -20,7 +22,15 @@ interface OwnProps {
 type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
 const DekningsgradSpørsmål = (props: Props) => {
-    const { visible = true, dispatch, erAleneomsorg, dekningsgrad, intl } = props;
+    const {
+        visible = true,
+        dispatch,
+        erAleneomsorg,
+        dekningsgrad,
+        intl,
+        dekningsgrad100AntallUker,
+        dekningsgrad80AntallUker
+    } = props;
 
     let checked;
     if (dekningsgrad === '100') {
@@ -29,7 +39,7 @@ const DekningsgradSpørsmål = (props: Props) => {
         checked = '80';
     }
 
-    const labelKey: string = erAleneomsorg ? 'spørsmål.dekningsgrad.label--aleneomsorg' : 'spørsmål.dekningsgrad.label';
+    const labelKey: string = erAleneomsorg ? 'spørsmål.dekningsgrad.label.aleneomsorg' : 'spørsmål.dekningsgrad.label';
 
     return (
         <Block visible={visible}>
@@ -39,11 +49,15 @@ const DekningsgradSpørsmål = (props: Props) => {
                 legend={getMessage(intl, labelKey)}
                 radios={[
                     {
-                        label: getMessage(intl, 'spørsmål.dekningsgrad.100'),
+                        label: getMessage(intl, 'spørsmål.dekningsgrad.100', {
+                            antallUker: dekningsgrad100AntallUker
+                        }),
                         value: '100'
                     },
                     {
-                        label: getMessage(intl, 'spørsmål.dekningsgrad.80'),
+                        label: getMessage(intl, 'spørsmål.dekningsgrad.80', {
+                            antallUker: dekningsgrad80AntallUker
+                        }),
                         value: '80'
                     }
                 ]}
@@ -57,7 +71,9 @@ const DekningsgradSpørsmål = (props: Props) => {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad: state.søknad.dekningsgrad,
-    erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger
+    erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger,
+    dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
+    dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));

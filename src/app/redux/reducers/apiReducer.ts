@@ -12,6 +12,8 @@ export interface ApiState {
     søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     kvittering?: Kvittering;
+    dekningsgrad100AntallUker?: number;
+    dekningsgrad80AntallUker?: number;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
