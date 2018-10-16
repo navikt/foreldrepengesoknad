@@ -22,14 +22,14 @@ interface OppsummeringProps {
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
-class OppsummeringWrapper extends React.Component<Props> {
+class Oppsummering extends React.Component<Props> {
     render() {
         const { className, søkerinfo, søknad, intl } = this.props;
         const { person } = søkerinfo;
         return (
             <div className={className}>
                 <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
-                <div className="oppsummeringWrapper">
+                <div className="oppsummering">
                     <Block margin="xs">
                         <SøkerPersonalia
                             navn={formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
@@ -76,4 +76,4 @@ class OppsummeringWrapper extends React.Component<Props> {
         );
     }
 }
-export default injectIntl(OppsummeringWrapper);
+export default injectIntl(Oppsummering);
