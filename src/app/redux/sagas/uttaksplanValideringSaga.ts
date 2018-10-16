@@ -9,15 +9,18 @@ import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValideringReducer';
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
 
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
-    const { søker, annenForelder } = appState.søknad;
+    const { søker, annenForelder, barn, situasjon } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
+    const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     return {
         periodeId: periode.id,
-        valideringsfeil: validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer) || [],
+        valideringsfeil:
+            validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer, familiehendelsesdato) || [],
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };

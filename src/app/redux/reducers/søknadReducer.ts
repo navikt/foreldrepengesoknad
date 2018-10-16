@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
@@ -12,6 +13,9 @@ import { lagUttaksplan } from '../../util/uttaksplan/forslag/uttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import { Søker } from '../../types/søknad/Søker';
+import { isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { Barn } from '../../types/s\u00F8knad/Barn';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -161,7 +165,19 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         }
 
         case SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE: {
-            const filteredPerioder = state.uttaksplan.filter((periode) => periode.id !== action.periode.id);
+            const removeOtherPerioderFørTermin =
+                isForeldrepengerFørFødselUttaksperiode(action.periode) &&
+                action.periode.skalIkkeHaUttakFørTermin === true;
+            const familiehendelsesdato = getFamiliehendelsedato(state.barn as Barn, state.situasjon!);
+            const filteredPerioder = state.uttaksplan.filter((periode) => {
+                if (
+                    removeOtherPerioderFørTermin &&
+                    moment(periode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day')
+                ) {
+                    return false;
+                }
+                return periode.id !== action.periode.id;
+            });
             return {
                 ...state,
                 uttaksplan: [
