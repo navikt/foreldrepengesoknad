@@ -1,6 +1,8 @@
 @import '../../../common/styles/mixins.less';
 
 @blinkDuration: 5;
+@delay: 20s;
+@duration: 12s;
 
 .child  {
     .chromeSvgRenderFix();
@@ -67,12 +69,12 @@
     }
     .leftRight {
         transition: all 0.3s ease;
-        animation: lookLeftRightAnim 10s infinite;
+        animation: lookLeftRightAnim @duration infinite @delay;
         animation-timing-function: linear;
     }
     #Blush {
         transition: all 0.3s ease;
-        animation: lookLeftRightAnimBlush 10s infinite;
+        animation: lookLeftRightAnimBlush @duration infinite @delay;
         animation-timing-function: linear;
     }
     .openEye {
@@ -90,45 +92,44 @@
             visibility: visible;
         }
         #HappyMouth  {
-            visibility: visible;
+            visibility: hidden;
             transition: all 0.3s ease;
-            visibility: visible;
-            animation: happyMouthAnim 10s infinite;
+            animation: happyMouthAnim @duration infinite @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
         }
         #SadMouth {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadMouthAnim 10s infinite;
+            animation: sadMouthAnim @duration infinite @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
         }
         #SadEyeLeft {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadEyeLeftAnim 10s infinite;
+            animation: sadEyeAnim @duration infinite @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
-        }
-        #OpenEyeLeft {
-            transition: all 0.3s ease;
-            visibility: visible;
-            animation: openEyeLeftAnim 10s infinite;
-            animation-timing-function: ease-in-out;
-            transform-origin: 2.5px 5px;
         }
         #SadEyeRight {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadEyeRightAnim 10s infinite;
+            animation: sadEyeAnim @duration infinite @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 22px 2px;
         }
+        #OpenEyeLeft {
+            transition: all 0.3s ease;
+            visibility: hidden;
+            animation: openEyeLeftAnim @duration infinite @delay;
+            animation-timing-function: ease-in-out;
+            transform-origin: 2.5px 5px;
+        }
         #OpenEyeRight {
             transition: all 0.3s ease;
-            visibility: visible;
-            animation: openEyeRightAnim 10s infinite;
+            visibility: hidden;
+            animation: openEyeRightAnim @duration infinite @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 22px 2px;
         }
@@ -138,28 +139,28 @@
     0% {
         transform: translateX(0);
     }
-    20% {
+    10% {
         transform: translateX(0);
     }
-    23% {
+    11.5% {
         transform: translateX(-3px);
     }
-    40% {
+    20% {
         transform: translateX(-3px);
     }
-    50% {
+    25% {
         transform: translateX(3px);
     }
-    65% {
+    32.5% {
         transform: translateX(3px);
     }
-    66% {
+    33% {
         transform: translateX(2px);
     }
-    67% {
+    33.5% {
         transform: translateX(0.5px);
     }
-    68% {
+    34% {
         transform: translateX(0);
     }
 }
@@ -167,22 +168,22 @@
     0% {
         transform: translateX(0);
     }
-    20% {
+    10% {
         transform: translateX(0);
     }
-    28% {
+    14% {
         transform: translateX(2px);
     }
-    38% {
+    19% {
         transform: translateX(2px);
     }
-    50% {
+    25% {
         transform: translateX(-2px);
     }
-    62% {
+    31% {
         transform: translateX(-2px);
     }
-    67% {
+    32.5% {
         transform: translateX(0);
     }
 }
@@ -191,74 +192,104 @@
     0% {
         transform: scaleY(1);
     }
-    9% {
+    4.5% {
         transform: scaleY(1);
     }
-    10% {
+    5% {
         transform: translateY(3px) scaleY(0.1);
     }
-    11% {
+    5.5% {
         transform: scaleY(1);
     }
 }
 
 @keyframes openEyeLeftAnim {
     0% {
-        transform: translateY(0) scaleY(0) scaleX(1.7);
+        visibility: visible;
+        transform: translate(0, 0) scaleY(0) scaleX(1.7);
     }
-    5% {
-        transform: translateY(0) scaleY(0) scaleX(1.8);
+    2.5% {
+        transform: translate(0, 0) scaleY(0) scaleX(1.8);
     }
-    7% {
-        transform: translateY(0) scaleY(1) scaleX(1);
+    3.5% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    50.5% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    55.5% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    57.5% {
+        transform: translate(0, 0) scaleY(0.1) scaleX(1.7);
+    }
+    59.5% {
+        transform: translate(0, 0) scaleY(0.1) scaleX(1.7);
+    }
+    60.5% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    83% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    83.2% {
+        transform: translate(0, 0) scaleY(0) scaleX(1);
+    }
+    100% {
+        transform: translate(0, 0) scaleY(0) scaleX(1.7);
     }
 }
 @keyframes openEyeRightAnim {
     0% {
+        visibility: visible;
         transform: translate(0, 0) scaleY(0) scaleX(1.7);
     }
-    5% {
+    2.5% {
         transform: translate(0, 0) scaleY(0) scaleX(1.8);
     }
-    7% {
+    3.5% {
         transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    82% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    82.2% {
+        transform: translate(0, 0) scaleY(0) scaleX(1);
+    }
+    100% {
+        transform: translate(0, 0) scaleY(0) scaleX(1.7);
     }
 }
 
-@keyframes sadEyeLeftAnim {
-    0% {
-        transform: translateY(0) scaleY(1) scaleX(1);
-    }
-    5.5% {
-        transform: translateY(0) scaleY(1) scaleX(1);
-    }
-    6.9% {
-        transform: translateY(0) scaleY(1.5) scaleX(0.5);
-    }
-    7% {
-        transform: translateY(0) scaleY(0) scaleX(1);
-        visibility: hidden;
-    }
-    99.9% {
-        transform: translateY(0) scaleY(0) scaleX(1);
-    }
-}
-@keyframes sadEyeRightAnim {
+@keyframes sadEyeAnim {
     0% {
         transform: translate(0, 0) scaleY(1) scaleX(1);
     }
-    5.5% {
+    2.25% {
         transform: translate(0, 0) scaleY(1) scaleX(1);
     }
-    6.9% {
+    3.45% {
         transform: translate(0, 0) scaleY(1.5) scaleX(0.5);
     }
-    7% {
+    3.5% {
         transform: translate(0, 0) scaleY(0) scaleX(1);
         visibility: hidden;
     }
-    99.9% {
-        transform: translate(0, 0) scaleY(0) scaleX(1);
+    82% {
+        transform: translateY(0) scaleY(0) scaleX(1);
+        visibility: hidden;
+    }
+    83% {
+        transform: translateY(0) scaleY(1.5) scaleX(0.5);
+        visibility: visible;
+    }
+    84% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+        visibility: visible;
+    }
+    100% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+        visibility: visible;
     }
 }
 
@@ -268,59 +299,70 @@
         transform: scaleY(1) translateX(@sadMouthX);
         opacity: 1;
     }
-    20% {
+    10% {
         transform: scaleY(1) translateX(@sadMouthX);
         opacity: 1;
     }
-    22% {
+    11% {
         transform: scaleY(0.1) scaleX(0.9) translateX(@sadMouthX);
         opacity: 1;
     }
-    50% {
+    22.2% {
         transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
         opacity: 1;
     }
-    54.9% {
+    22.5% {
+        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    25% {
+        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    82% {
+        transform: scaleY(0.1) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    82.2% {
+        transform: scaleY(0.1) translateX(@sadMouthX);
         opacity: 1;
-        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
     }
-    55% {
-        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
-        opacity: 0;
-    }
-    90% {
+    83% {
         transform: scaleY(0.1) translateX(@sadMouthX);
-        opacity: 0;
     }
-    99.9% {
-        transform: scaleY(0.1) translateX(@sadMouthX);
-        opacity: 0;
+    83.2% {
+        transform: scaleY(1) translateX(@sadMouthX);
     }
     100% {
-        transform: scaleY(1.1) translateX(@sadMouthX);
-        opacity: 1;
+        transform: scaleY(1) translateX(@sadMouthX);
     }
 }
 @xPos: 1px;
 @keyframes happyMouthAnim {
     0% {
+        visibility: visible;
         transform: scaleY(0.2) translateX(@xPos);
         opacity: 0;
     }
-    54.5% {
+    22.2% {
         transform: scaleY(0.2) translateX(@xPos);
         opacity: 0;
     }
-    55% {
+    22.5% {
         transform: scaleY(0.2) translateX(@xPos);
         opacity: 1;
     }
-    58% {
+    26% {
         transform: scaleY(1) translateX(@xPos);
     }
-    99.9% {
+    81% {
         transform: scaleY(1) translateX(@xPos);
         opacity: 1;
+    }
+    82% {
+        visibility: visible;
+        transform: scaleY(0.2) translateX(@xPos);
+        opacity: 0;
     }
     100% {
         opacity: 0;
