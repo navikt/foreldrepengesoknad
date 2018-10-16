@@ -49,10 +49,30 @@
             animation: none;
         }
     }
-    .eyesContainer {
+    &--lookRight {
+        #SadMouth,
+        #SadEyes,
+        #OpenEyes {
+            visibility: visible;
+        }
+        #OpenEyeLeft {
+            visibility: hidden;
+        }
+        #SadEyeRight {
+            visibility: hidden;
+        }
+        .eyes {
+            animation: none;
+        }
+    }
+    .leftRight {
         transition: all 0.3s ease;
-        transform: scale(1, 1);
-        animation: eyeBlink 5s infinite;
+        animation: lookLeftRightAnim 10s infinite;
+        animation-timing-function: linear;
+    }
+    #Blush {
+        transition: all 0.3s ease;
+        animation: lookLeftRightAnimBlush 10s infinite;
         animation-timing-function: linear;
     }
     .openEye {
@@ -60,6 +80,110 @@
         transform: scale(1, 1);
         animation: eyeBlink 5s infinite;
         animation-timing-function: linear;
+    }
+    &--animated {
+        #SadMouth,
+        #SadEyes {
+            visibility: visible;
+        }
+        #OpenEyes {
+            visibility: visible;
+        }
+        #HappyMouth  {
+            visibility: visible;
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: happyMouthAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 2.5px 2px;
+        }
+        #SadMouth {
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: sadMouthAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 2.5px 2px;
+        }
+        #SadEyeLeft {
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: sadEyeLeftAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 2.5px 2px;
+        }
+        #OpenEyeLeft {
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: openEyeLeftAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 2.5px 5px;
+        }
+        #SadEyeRight {
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: sadEyeRightAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 22px 2px;
+        }
+        #OpenEyeRight {
+            transition: all 0.3s ease;
+            visibility: visible;
+            animation: openEyeRightAnim 10s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: 22px 2px;
+        }
+    }
+}
+@keyframes lookLeftRightAnim {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(0);
+    }
+    23% {
+        transform: translateX(-3px);
+    }
+    40% {
+        transform: translateX(-3px);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+    65% {
+        transform: translateX(3px);
+    }
+    66% {
+        transform: translateX(2px);
+    }
+    67% {
+        transform: translateX(0.5px);
+    }
+    68% {
+        transform: translateX(0);
+    }
+}
+@keyframes lookLeftRightAnimBlush {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(0);
+    }
+    28% {
+        transform: translateX(2px);
+    }
+    38% {
+        transform: translateX(2px);
+    }
+    50% {
+        transform: translateX(-2px);
+    }
+    62% {
+        transform: translateX(-2px);
+    }
+    67% {
+        transform: translateX(0);
     }
 }
 
@@ -78,14 +202,127 @@
     }
 }
 
-@keyframes lookLeft {
+@keyframes openEyeLeftAnim {
     0% {
-        transform: move(0, 0);
+        transform: translateY(0) scaleY(0) scaleX(1.7);
+    }
+    5% {
+        transform: translateY(0) scaleY(0) scaleX(1.8);
+    }
+    7% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+    }
+}
+@keyframes openEyeRightAnim {
+    0% {
+        transform: translate(0, 0) scaleY(0) scaleX(1.7);
+    }
+    5% {
+        transform: translate(0, 0) scaleY(0) scaleX(1.8);
+    }
+    7% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+}
+
+@keyframes sadEyeLeftAnim {
+    0% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+    }
+    5.5% {
+        transform: translateY(0) scaleY(1) scaleX(1);
+    }
+    6.9% {
+        transform: translateY(0) scaleY(1.5) scaleX(0.5);
+    }
+    7% {
+        transform: translateY(0) scaleY(0) scaleX(1);
+        visibility: hidden;
+    }
+    99.9% {
+        transform: translateY(0) scaleY(0) scaleX(1);
+    }
+}
+@keyframes sadEyeRightAnim {
+    0% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    5.5% {
+        transform: translate(0, 0) scaleY(1) scaleX(1);
+    }
+    6.9% {
+        transform: translate(0, 0) scaleY(1.5) scaleX(0.5);
+    }
+    7% {
+        transform: translate(0, 0) scaleY(0) scaleX(1);
+        visibility: hidden;
+    }
+    99.9% {
+        transform: translate(0, 0) scaleY(0) scaleX(1);
+    }
+}
+
+@sadMouthX: 0;
+@keyframes sadMouthAnim {
+    0% {
+        transform: scaleY(1) translateX(@sadMouthX);
+        opacity: 1;
+    }
+    20% {
+        transform: scaleY(1) translateX(@sadMouthX);
+        opacity: 1;
+    }
+    22% {
+        transform: scaleY(0.1) scaleX(0.9) translateX(@sadMouthX);
+        opacity: 1;
     }
     50% {
-        transform: move(0, -5);
+        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
+        opacity: 1;
     }
-    75% {
-        transform: move(0, 0);
+    54.9% {
+        opacity: 1;
+        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
+    }
+    55% {
+        transform: scaleY(0.1) scaleX(0.8) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    90% {
+        transform: scaleY(0.1) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    99.9% {
+        transform: scaleY(0.1) translateX(@sadMouthX);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleY(1.1) translateX(@sadMouthX);
+        opacity: 1;
+    }
+}
+@xPos: 1px;
+@keyframes happyMouthAnim {
+    0% {
+        transform: scaleY(0.2) translateX(@xPos);
+        opacity: 0;
+    }
+    54.5% {
+        transform: scaleY(0.2) translateX(@xPos);
+        opacity: 0;
+    }
+    55% {
+        transform: scaleY(0.2) translateX(@xPos);
+        opacity: 1;
+    }
+    58% {
+        transform: scaleY(1) translateX(@xPos);
+    }
+    99.9% {
+        transform: scaleY(1) translateX(@xPos);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }
