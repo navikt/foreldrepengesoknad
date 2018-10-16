@@ -92,8 +92,10 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
             return getMessage(intl, `periodeliste.utsettelsesårsak.ukjent`);
         case Periodetype.Opphold:
             return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
+        case Periodetype.Hull:
+            return 'Hull i uttaksplan';
     }
 };
 
 export const getTidsperioderIUttaksplan = (uttaksplan: Periode[], periodeId: string | undefined): Tidsperiode[] =>
-    uttaksplan.filter((p) => p.id !== periodeId).map((p) => p.tidsperiode);
+    uttaksplan.filter((p) => p.type !== Periodetype.Hull && p.id !== periodeId).map((p) => p.tidsperiode);
