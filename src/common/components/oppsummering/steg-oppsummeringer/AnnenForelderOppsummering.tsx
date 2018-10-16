@@ -9,9 +9,9 @@ import DisplayTextWithLabel from 'common/components/display-text-with-label/Disp
 import { formaterNavn } from 'app/util/domain/personUtil';
 import Barn from '../../../../app/types/søknad/Barn';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
-import { createListOfAttachmentPreviewLinks, missingAttachmentEtikettProps } from 'common/components/oppsummering/util';
 import EtikettBase from 'nav-frontend-etiketter';
 import { formatDate } from '../../../../app/util/dates/dates';
+import { createListOfAttachmentPreviewLinks, missingAttachmentEtikettProps } from 'common/util/oppsummeringUtils';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;

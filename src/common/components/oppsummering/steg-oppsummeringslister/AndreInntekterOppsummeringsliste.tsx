@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { formatDate } from '../../../../app/util/dates/dates';
-import Oppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/Oppsummeringsliste';
+import Oppsummeringsliste from 'common/components/oppsummeringsliste/Oppsummeringsliste';
 import { AnnenInntekt } from '../../../../app/types/søknad/AnnenInntekt';
 
 interface AndreInntekterOppsummeringslisteProps {

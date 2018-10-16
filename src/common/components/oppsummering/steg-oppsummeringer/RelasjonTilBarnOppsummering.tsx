@@ -9,7 +9,7 @@ import Barn, { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '
 import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
-import { createListOfAttachmentPreviewLinks } from 'common/components/oppsummering/util';
+import { createListOfAttachmentPreviewLinks } from 'common/util/oppsummeringUtils';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;

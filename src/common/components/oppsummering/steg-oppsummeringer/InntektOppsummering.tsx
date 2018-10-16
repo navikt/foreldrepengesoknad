@@ -6,9 +6,9 @@ import DisplayTextWithLabel from 'common/components/display-text-with-label/Disp
 import { formatDate } from '../../../../app/util/dates/dates';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
 import { Element } from 'nav-frontend-typografi';
-import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/FrilansoppdragOppsummeringsliste';
-import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/SelvstendigNæringsdrivendeOppsummeringsliste';
-import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/AndreInntekterOppsummeringsliste';
+import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/FrilansoppdragOppsummeringsliste';
+import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/SelvstendigNæringsdrivendeOppsummeringsliste';
+import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/AndreInntekterOppsummeringsliste';
 
 interface InntektOppsummeringProps {
     søker: Søker;

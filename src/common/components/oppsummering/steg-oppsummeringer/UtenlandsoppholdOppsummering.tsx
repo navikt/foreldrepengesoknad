@@ -4,7 +4,7 @@ import DisplayTextWithLabel from 'common/components/display-text-with-label/Disp
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
 import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
-import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/oppsummeringsliste/UtenlandsoppholdOppsummeringsliste';
+import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/UtenlandsoppholdOppsummeringsliste';
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
