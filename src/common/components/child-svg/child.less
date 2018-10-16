@@ -3,6 +3,7 @@
 @blinkDuration: 5;
 @delay: 20s;
 @duration: 12s;
+@iteration: 1;
 
 .child  {
     .chromeSvgRenderFix();
@@ -69,12 +70,12 @@
     }
     .leftRight {
         transition: all 0.3s ease;
-        animation: lookLeftRightAnim @duration infinite @delay;
+        animation: lookLeftRightAnim @duration @iteration @delay;
         animation-timing-function: linear;
     }
     #Blush {
         transition: all 0.3s ease;
-        animation: lookLeftRightAnimBlush @duration infinite @delay;
+        animation: lookLeftRightAnimBlush @duration @iteration @delay;
         animation-timing-function: linear;
     }
     .openEye {
@@ -94,42 +95,42 @@
         #HappyMouth  {
             visibility: hidden;
             transition: all 0.3s ease;
-            animation: happyMouthAnim @duration infinite @delay;
+            animation: happyMouthAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
         }
         #SadMouth {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadMouthAnim @duration infinite @delay;
+            animation: sadMouthAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
         }
         #SadEyeLeft {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadEyeAnim @duration infinite @delay;
+            animation: sadEyeAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 2px;
         }
         #SadEyeRight {
             transition: all 0.3s ease;
             visibility: visible;
-            animation: sadEyeAnim @duration infinite @delay;
+            animation: sadEyeAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 22px 2px;
         }
         #OpenEyeLeft {
             transition: all 0.3s ease;
             visibility: hidden;
-            animation: openEyeLeftAnim @duration infinite @delay;
+            animation: openEyeLeftAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 2.5px 5px;
         }
         #OpenEyeRight {
             transition: all 0.3s ease;
             visibility: hidden;
-            animation: openEyeRightAnim @duration infinite @delay;
+            animation: openEyeRightAnim @duration @iteration @delay;
             animation-timing-function: ease-in-out;
             transform-origin: 22px 2px;
         }
@@ -234,6 +235,7 @@
     }
     83.2% {
         transform: translate(0, 0) scaleY(0) scaleX(1);
+        visibility: hidden;
     }
     100% {
         transform: translate(0, 0) scaleY(0) scaleX(1.7);
@@ -255,9 +257,10 @@
     }
     82.2% {
         transform: translate(0, 0) scaleY(0) scaleX(1);
+        visibility: hidden;
     }
     100% {
-        transform: translate(0, 0) scaleY(0) scaleX(1.7);
+        transform: translate(0, 0) scaleY(0) scaleX(1);
     }
 }
 
