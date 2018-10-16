@@ -143,7 +143,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
             <React.Fragment>
                 {antallBarn && (
                     <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.antallBarn')}
+                        label={getMessage(intl, 'oppsummering.antallBarn.label')}
                         text={this.getAntallBarnSummaryText(antallBarn)}
                     />
                 )}

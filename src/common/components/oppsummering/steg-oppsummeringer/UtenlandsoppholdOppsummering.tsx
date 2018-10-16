@@ -36,7 +36,7 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
             {iNorgeNeste12Mnd ? (
                 <DisplayTextWithLabel
                     label={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}
-                    text={getMessage(intl, 'oppsummering.iNorgeNeste12')}
+                    text={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
                 />
             ) : (
                 <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
