@@ -5,10 +5,11 @@ import InfoIkon from 'common/components/ikoner/InfoIkon';
 import { Collapse } from 'react-collapse';
 const classNames = require('classnames');
 import './infoboks.less';
+import getMessage from 'common/util/i18nUtils';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface InfoboksProps {
-    tekst: string;
-    children?: React.ReactNode;
+    tekst: string | React.ReactNode;
     stil?: Stil;
 }
 
@@ -16,8 +17,10 @@ interface InfoboksState {
     isExpanded: boolean;
 }
 
-class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
-    constructor(props: InfoboksProps) {
+type Props = InfoboksProps & InjectedIntlProps;
+
+class Infoboks extends React.Component<Props, InfoboksState> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -34,16 +37,15 @@ class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
     }
 
     render() {
-        const { tekst, children, stil = 'info' } = this.props;
+        const { tekst, stil = 'info', intl } = this.props;
         const { isExpanded } = this.state;
 
         const ikon = isExpanded ? <LukkInfoIkon /> : <InfoIkon />;
-
         return (
             <React.Fragment>
                 <Sirkelknapp
                     stil={stil}
-                    ariaLabel={tekst}
+                    ariaLabel={typeof tekst === 'string' ? tekst : getMessage(intl, 'infoboks.sirkeltekst')}
                     onClick={this.toggleIsExpanded}
                     ikon={ikon}
                     toggle={{ pressed: isExpanded }}
@@ -55,11 +57,11 @@ class Infoboks extends React.Component<InfoboksProps, InfoboksState> {
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>
-                    <div className="infoboks__wrapper">{children || tekst}</div>
+                    {isExpanded ? <div className="infoboks__wrapper">{tekst}</div> : <span />}
                 </Collapse>
             </React.Fragment>
         );
     }
 }
 
-export default Infoboks;
+export default injectIntl(Infoboks);

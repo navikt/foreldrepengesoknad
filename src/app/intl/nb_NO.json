@@ -27,6 +27,17 @@
 
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
+    "steg.config.tittel.inngang": "Inngang",
+    "steg.config.tittel.infoOmBarnet": "Informasjon om barnet",
+    "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjon til barn overtakelse av foreldreansvar",
+    "steg.config.tittel.relasjonBarnFødsel": "Informasjon om barnet",
+    "steg.config.tittel.annenForelder": "Informasjon om den andre forelderen",
+    "steg.config.tittel.infoOmUttaket": "Informasjon om uttaket",
+    "steg.config.tittel.uttak": "Uttak",
+    "steg.config.tittel.infoOmUtenlandsopphold": "Informasjon om utenlandsopphold",
+    "steg.config.tittel.opplysningerOmInntekt": "Opplysninger om inntekt",
+    "steg.config.tittel.oppsummering": "Oppsummering",
+
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken del av foreldrepengene skal du ta ut?",
@@ -686,6 +697,8 @@
         "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperioden og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
+    "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
+        "Ønsker du å jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjema</a>.",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":

@@ -11,7 +11,7 @@ enum ValgAlternativer {
 interface JaNeiSpørsmålProps {
     navn: string;
     spørsmål: string;
-    hjelpetekst?: string;
+    hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: boolean;
     toKolonner?: boolean;
     onChange: (valgt: boolean) => void;
