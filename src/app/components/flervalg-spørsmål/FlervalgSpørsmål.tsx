@@ -11,7 +11,7 @@ export interface FlervalgAlternativ {
 interface FlervalgSpørsmålProps {
     navn: string;
     spørsmål: string;
-    hjelpetekst?: string;
+    hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: string;
     alternativer: FlervalgAlternativ[];
     toKolonner?: boolean;
@@ -21,11 +21,11 @@ interface FlervalgSpørsmålProps {
 type Props = FlervalgSpørsmålProps & InjectedIntlProps;
 
 const FlervalgSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, valgtVerdi, alternativer, toKolonner = false, intl } = props;
+    const { onChange, navn, spørsmål, hjelpetekst, valgtVerdi, alternativer, toKolonner = false, intl } = props;
 
     return (
         <RadioPanelGruppe
-            name={name}
+            name={navn}
             twoColumns={toKolonner}
             checked={valgtVerdi}
             legend={spørsmål}
