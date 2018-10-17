@@ -10,7 +10,7 @@ export type Stil = 'hvit' | 'bla' | 'info';
 
 export interface SirkelknappProps {
     /** Tekst som blir lest opp og satt som tittel på knappen */
-    ariaLabel: string | React.ReactNode;
+    ariaLabel: string;
     /** Ikon som brukes inne i knappen */
     ikon: React.ReactNode;
     /** Funksjon som kalles knappen klikkes på */
