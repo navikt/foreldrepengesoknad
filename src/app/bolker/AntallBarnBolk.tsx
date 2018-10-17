@@ -60,6 +60,8 @@ class AntallBarnBolk extends React.Component<Props> {
         const { spørsmål, inputName, feil, antallBarn, intl, erBarnetFødt, situasjon } = this.props;
         const antallBarnVerdi: AntallBarnVerdi | undefined =
             antallBarn !== undefined ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi) : undefined;
+        const antallBarnLabel =
+            situasjon === Søkersituasjon.FØDSEL ? 'antallBarn.alternativ.tvillinger' : 'antallBarn.alternativ.tobarn';
 
         return (
             <React.Fragment>
@@ -80,7 +82,7 @@ class AntallBarnBolk extends React.Component<Props> {
                             },
                             {
                                 inputProps: { id: 'js-tvillinger' },
-                                label: getMessage(intl, 'antallBarn.alternativ.tobarn'),
+                                label: getMessage(intl, antallBarnLabel),
                                 value: '2'
                             },
                             {
