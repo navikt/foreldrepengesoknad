@@ -3,6 +3,7 @@ import { formatDate } from '../../../../../app/util/dates/dates';
 import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 
 interface NæringsdetaljerProps {
     næring: Næring;
@@ -31,9 +32,10 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
 
     return (
         <>
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}: {næringstyper.join(', ')}
-            </p>
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}
+                verdi={næringstyper.join(', ')}
+            />
             <p>
                 {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}: {organisasjonsnummer}
             </p>
@@ -47,12 +49,12 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}: {næringsinntekt}
             </p>
             <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}:{' '}
+                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}:
                 {registrertINorge ? 'Norge' : registrertILand}
             </p>
             {nyIArbeidslivet !== undefined && (
                 <p>
-                    {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}:{' '}
+                    {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}:
                     {nyIArbeidslivet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 </p>
             )}
@@ -61,7 +63,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                     {getMessage(
                         intl,
                         'oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår'
-                    )}:{' '}
+                    )}:
                     {hattVarigEndringAvNæringsinntektSiste4Kalenderår
                         ? getMessage(intl, 'ja')
                         : getMessage(intl, 'nei')}
@@ -70,15 +72,15 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
                 <>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt')}:
                         {formatDate(endringAvNæringsinntektInformasjon!.dato)}
                     </p>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}:
                         {endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
                     </p>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}:
                         {endringAvNæringsinntektInformasjon!.forklaring}
                     </p>
                 </>
@@ -86,15 +88,15 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
             {harRegnskapsfører === true && (
                 <>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}:
                         {regnskapsfører.navn}
                     </p>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}:
                         {regnskapsfører.telefonnummer}
                     </p>
                     <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie')}:{' '}
+                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie')}:
                         {regnskapsfører.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                     </p>
                 </>
@@ -106,15 +108,15 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                             {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}: {revisor.navn}
                         </p>
                         <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}:{' '}
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}:
                             {revisor.telefonnummer}
                         </p>
                         <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie')}:{' '}
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie')}:
                             {revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                         </p>
                         <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke')}:{' '}
+                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke')}:
                             {kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                         </p>
                     </>

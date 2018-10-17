@@ -2,16 +2,16 @@ import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { Element } from 'nav-frontend-typografi';
-
 import AnnenForelder from 'app/types/søknad/AnnenForelder';
 import getMessage from 'common/util/i18nUtils';
-import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import Barn from '../../../../app/types/søknad/Barn';
-import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import EtikettBase from 'nav-frontend-etiketter';
 import { formatDate } from '../../../../app/util/dates/dates';
 import { createListOfAttachmentPreviewLinks, missingAttachmentEtikettProps } from 'common/util/oppsummeringUtils';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
@@ -44,7 +44,7 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
     const navn = fornavn && etternavn ? formaterNavn(fornavn, etternavn) : undefined;
 
     return (
-        <React.Fragment>
+        <Oppsummeringsseksjon>
             {kanIkkeOppgis && (
                 <Element className="kanIkkeOppgis">
                     {getMessage(intl, 'oppsummering.annenForelder.kanIkkeOppgis')}
@@ -52,35 +52,35 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
             )}
             {!kanIkkeOppgis &&
                 navn && (
-                    <DisplayTextWithLabel
+                    <Feltoppsummering
                         key="annenForelderNavn"
-                        label={getMessage(intl, 'oppsummering.annenForelder.navn.label')}
-                        text={navn}
+                        feltnavn={getMessage(intl, 'oppsummering.annenForelder.navn.label')}
+                        verdi={navn}
                     />
                 )}
             {(fnr || utenlandskFnr) && (
-                <DisplayTextWithLabel
+                <Feltoppsummering
                     key="annenForelderFødselsnummer"
-                    label={
+                    feltnavn={
                         utenlandskFnr
                             ? getMessage(intl, 'oppsummering.annenForelder.utenlandskFødselsnummer.label')
                             : getMessage(intl, 'oppsummering.annenForelder.fødselsnummer.label')
                     }
-                    text={fnr ? fnr : 'som ikke er oppgitt'}
+                    verdi={fnr ? fnr : 'som ikke er oppgitt'}
                 />
             )}
             {utenlandskFnr &&
                 bostedsland && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.annenForelder.bostedsland.label')}
-                        text={countries.getName(bostedsland, 'nb')}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.annenForelder.bostedsland.label')}
+                        verdi={countries.getName(bostedsland, 'nb')}
                     />
                 )}
             {erAleneOmOmsorg !== undefined &&
                 !kanIkkeOppgis && (
-                    <DisplayTextWithLabel
-                        label={erAleneOmOmsorgLabel}
-                        text={
+                    <Feltoppsummering
+                        feltnavn={erAleneOmOmsorgLabel}
+                        verdi={
                             erAleneOmOmsorg
                                 ? getMessage(intl, 'oppsummering.annenForelder.aleneomsorg')
                                 : getMessage(intl, 'oppsummering.annenForelder.deltOmsorg')
@@ -88,51 +88,54 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     />
                 )}
             {datoForAleneomsorg && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
-                    text={formatDate(datoForAleneomsorg) || ''}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.datoForAleneomsorg.label')}
+                    verdi={formatDate(datoForAleneomsorg) || ''}
                 />
             )}
             {dokumentasjonAvAleneomsorg &&
                 dokumentasjonAvAleneomsorg.length > 0 && (
-                    <DisplayContentWithLabel
-                        label={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}>
+                    <InnholdMedLedetekst
+                        ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}>
                         {createListOfAttachmentPreviewLinks(dokumentasjonAvAleneomsorg)}
-                    </DisplayContentWithLabel>
+                    </InnholdMedLedetekst>
                 )}
             {dokumentasjonAvAleneomsorg === undefined ||
                 (dokumentasjonAvAleneomsorg.length === 0 &&
                     erAleneOmOmsorg && (
-                        <DisplayContentWithLabel
-                            label={getMessage(intl, "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label'")}>
+                        <InnholdMedLedetekst
+                            ledetekst={getMessage(
+                                intl,
+                                "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label'"
+                            )}>
                             <EtikettBase {...missingAttachmentEtikettProps(intl)} />
-                        </DisplayContentWithLabel>
+                        </InnholdMedLedetekst>
                     ))}
             {harRettPåForeldrepenger !== undefined && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}
-                    text={harRettPåForeldrepenger ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}
+                    verdi={harRettPåForeldrepenger ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
             {erInformertOmSøknaden !== undefined && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.erInformertOmSøknaden.label', { navn })}
-                    text={erInformertOmSøknaden ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.erInformertOmSøknaden.label', { navn })}
+                    verdi={erInformertOmSøknaden ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
             {erForSyk !== undefined && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.erForSyk.label', { navn })}
-                    text={erForSyk ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.erForSyk.label', { navn })}
+                    verdi={erForSyk ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
             {erUfør !== undefined && (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.annenForelder.erUfør.label', { navn })}
-                    text={erUfør ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.annenForelder.erUfør.label', { navn })}
+                    verdi={erUfør ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-        </React.Fragment>
+        </Oppsummeringsseksjon>
     );
 };
 export default injectIntl(AnnenForelderOppsummering);

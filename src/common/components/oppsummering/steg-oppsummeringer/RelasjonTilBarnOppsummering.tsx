@@ -1,15 +1,15 @@
 import * as React from 'react';
 import getMessage from 'common/util/i18nUtils';
 import EtikettBase, { EtikettBaseProps } from 'nav-frontend-etiketter';
-
-import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { formatDate } from '../../../../app/util/dates/dates';
 import Barn, { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '../../../../app/types/søknad/Barn';
 import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
-import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
 import { createListOfAttachmentPreviewLinks } from 'common/util/oppsummeringUtils';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;
@@ -47,32 +47,32 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         return (
             <React.Fragment>
                 {foreldreansvarsdato && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.foreldreansvarsdato.label')}
-                        text={formatDate(foreldreansvarsdato) || ''}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.foreldreansvarsdato.label')}
+                        verdi={formatDate(foreldreansvarsdato) || ''}
                     />
                 )}
                 {antallBarn && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.antallBarn.label')}
-                        text={this.getAntallBarnSummaryText(antallBarn)}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.antallBarn.label')}
+                        verdi={this.getAntallBarnSummaryText(antallBarn)}
                     />
                 )}
                 {fødselsdatoer && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                        text={formatDate(fødselsdatoer[0]) || ''}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
+                        verdi={formatDate(fødselsdatoer[0]) || ''}
                     />
                 )}
                 {adopsjonsvedtak && adopsjonsvedtak.length > 0 ? (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}
-                        text={adopsjonsvedtak.map((vedlegg) => vedlegg.filename)}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}
+                        verdi={adopsjonsvedtak.map((vedlegg) => vedlegg.filename)}
                     />
                 ) : (
-                    <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}>
+                    <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}>
                         <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                    </DisplayContentWithLabel>
+                    </InnholdMedLedetekst>
                 )}
             </React.Fragment>
         );
@@ -92,45 +92,45 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    text={formatDate(fødselsdatoer[0]) || ''}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
+                    verdi={formatDate(fødselsdatoer[0]) || ''}
                 />
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.adopsjonAvEktefellesBarn.label')}
-                    text={adopsjonAvEktefellesBarn ? 'adopsjonAvEktefellesBarn' : 'ikkeAdopsjonAvEktefellesBarn'}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.adopsjonAvEktefellesBarn.label')}
+                    verdi={adopsjonAvEktefellesBarn ? 'adopsjonAvEktefellesBarn' : 'ikkeAdopsjonAvEktefellesBarn'}
                 />
                 {antallBarn && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.antallBarn.label')}
-                        text={this.getAntallBarnSummaryText(antallBarn)}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.antallBarn.label')}
+                        verdi={this.getAntallBarnSummaryText(antallBarn)}
                     />
                 )}
                 {adopsjonsdato && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.adopsjonsdato.label')}
-                        text={formatDate(adopsjonsdato) || ''}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.adopsjonsdato.label')}
+                        verdi={formatDate(adopsjonsdato) || ''}
                     />
                 )}
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.adoptertIUtlandet.label')}
-                    text={adoptertIUtlandet ? 'adoptertIUtlandet' : 'ikkeAdoptertIUtlandet'}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.adoptertIUtlandet.label')}
+                    verdi={adoptertIUtlandet ? 'adoptertIUtlandet' : 'ikkeAdoptertIUtlandet'}
                 />
                 {ankomstdato && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.ankomstdato.label')}
-                        text={formatDate(ankomstdato) || ''}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.ankomstdato.label')}
+                        verdi={formatDate(ankomstdato) || ''}
                     />
                 )}
                 {omsorgsovertakelse && omsorgsovertakelse.length > 0 ? (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.terminbekreftelse.label')}
-                        text={omsorgsovertakelse.map((vedlegg) => vedlegg.filename)}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.terminbekreftelse.label')}
+                        verdi={omsorgsovertakelse.map((vedlegg) => vedlegg.filename)}
                     />
                 ) : (
-                    <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.omsorgsovertakelse.label')}>
+                    <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.omsorgsovertakelse.label')}>
                         <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                    </DisplayContentWithLabel>
+                    </InnholdMedLedetekst>
                 )}
             </React.Fragment>
         );
@@ -142,9 +142,9 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         return (
             <React.Fragment>
                 {antallBarn && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.antallBarn.label')}
-                        text={this.getAntallBarnSummaryText(antallBarn)}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.antallBarn.label')}
+                        verdi={this.getAntallBarnSummaryText(antallBarn)}
                     />
                 )}
                 {this.props.barn.erBarnetFødt ? this.renderOppsummeringFødtBarn() : this.renderOppsummeringUfødtBarn()}
@@ -157,10 +157,10 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         const { fødselsdatoer } = barn as FødtBarn;
 
         return (
-            <React.Fragment>
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.fødselsdato.label')}
-                    text={formatDate(fødselsdatoer[0]) || ''}
+            <>
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.fødselsdato.label')}
+                    verdi={formatDate(fødselsdatoer[0]) || ''}
                 />
                 {/*
                     // This has been commented out as users won't have to upload birth certificate
@@ -170,17 +170,17 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
 
                     {fødselsattest && (
                         <DisplayTextWithLabel
-                            label={getMessage(intl, 'oppsummering.fødselsattest.label')}
-                            text={fødselsattest.map((vedlegg) => vedlegg.filename)}
+                            feltnavn={getMessage(intl, 'oppsummering.fødselsattest.label')}
+                            verdi={fødselsattest.map((vedlegg) => vedlegg.filename)}
                         />
                     )}
                     {fødselsattest === undefined && (
-                        <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.fødselsattest.label')}>
+                        <DisplayContentWithLabel feltnavn={getMessage(intl, 'oppsummering.fødselsattest.label')}>
                             <EtikettBase {...this.missingAttachmentEtikettProps()} />
                         </DisplayContentWithLabel>
                     )}
                 */}
-            </React.Fragment>
+            </>
         );
     }
 
@@ -191,31 +191,31 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
         return (
             <React.Fragment>
                 {annenForelder.erForSyk !== undefined && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'annenForelder.erForSyk.label')}
-                        text={annenForelder.erForSyk ? 'ja' : 'nei'}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'annenForelder.erForSyk.label')}
+                        verdi={annenForelder.erForSyk ? 'ja' : 'nei'}
                     />
                 )}
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.termindato')}
-                    text={formatDate(termindato) || ''}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.termindato')}
+                    verdi={formatDate(termindato) || ''}
                 />
                 {terminbekreftelse &&
                     terminbekreftelse.length > 0 && (
-                        <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
+                        <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
                             {createListOfAttachmentPreviewLinks(terminbekreftelse)}
-                        </DisplayContentWithLabel>
+                        </InnholdMedLedetekst>
                     )}
                 {terminbekreftelse === undefined &&
                     skalLasteOppTerminbekreftelse && (
-                        <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
+                        <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
                             <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                        </DisplayContentWithLabel>
+                        </InnholdMedLedetekst>
                     )}
                 {terminbekreftelseDato && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.terminbekreftelseDato.label')}
-                        text={formatDate(terminbekreftelseDato) || ''}
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.terminbekreftelseDato.label')}
+                        verdi={formatDate(terminbekreftelseDato) || ''}
                     />
                 )}
             </React.Fragment>
@@ -236,7 +236,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
     }
 
     render() {
-        return this.renderPartial();
+        return <Oppsummeringsseksjon>{this.renderPartial()}</Oppsummeringsseksjon>;
     }
 }
 export default injectIntl(RelasjonTilBarnOppsummering);
