@@ -137,7 +137,9 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 disabled={sluttdatoDisabled}
                                 avgrensninger={tilAvgrensninger}
                                 validators={datoValidatorer && datoValidatorer.til}
-                                dayPickerProps={{ initialMonth: defaultMånedTom || tidsperiode.fom }}
+                                dayPickerProps={{
+                                    initialMonth: defaultMånedTom || tidsperiode.fom
+                                }}
                                 kalender={{ plassering: kalenderplassering }}
                             />
                         </Block>

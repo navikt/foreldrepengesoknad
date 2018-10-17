@@ -8,11 +8,12 @@ import {
     ForeldrepengerFørFødselUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
-import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
 import { UttakFormPeriodeType } from '../UttakForm';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
+import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
+import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 export interface Props {
     periode: UttakFormPeriodeType;
@@ -24,12 +25,21 @@ export interface Props {
 }
 
 const getTidsperiodeDisabledProps = (
-    periode: UttakFormPeriodeType
+    periode: UttakFormPeriodeType,
+    familiehendelsesdato: Date
 ): { startdatoDisabled?: boolean; sluttdatoDisabled?: boolean } | undefined => {
     if (isForeldrepengerFørFødselUttaksperiode(periode as Periode)) {
         const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
         return {
             startdatoDisabled: skalIkkeHaUttak,
+            sluttdatoDisabled: true
+        };
+    } else if (
+        periode.id &&
+        periode.tidsperiode &&
+        Tidsperioden(periode.tidsperiode as Tidsperiode).erFørDato(familiehendelsesdato)
+    ) {
+        return {
             sluttdatoDisabled: true
         };
     }
@@ -56,15 +66,20 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     ? getDatoavgrensningerForStønadskonto(
                           periode.konto,
                           familiehendelsesdato,
-                          getPermisjonsregler(),
+                          tidsperiode as Tidsperiode,
                           ugyldigeTidsperioder
                       )
                     : {
                           fra: {
+                              minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
                               ugyldigeTidsperioder,
                               helgedagerIkkeTillatt: true
                           },
                           til: {
+                              minDato:
+                                  tidsperiode !== undefined && tidsperiode.fom
+                                      ? (tidsperiode.fom as Date)
+                                      : Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
                               ugyldigeTidsperioder,
                               helgedagerIkkeTillatt: true
                           }
@@ -78,7 +93,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
             feil={feil}
             defaultMånedFom={initialMonth}
             defaultMånedTom={initialMonth}
-            {...getTidsperiodeDisabledProps(periode)}
+            {...getTidsperiodeDisabledProps(periode, familiehendelsesdato)}
         />
     );
 };

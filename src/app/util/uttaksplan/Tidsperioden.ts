@@ -20,7 +20,9 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => flyttTidsperiode(tidsperiode, fom),
     setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager),
-    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl)
+    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl),
+    erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
+    erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false
 });
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
@@ -155,3 +157,12 @@ function tidsperiodeToString(tidsperiode: Tidsperiode, intl: InjectedIntl) {
         tom: formaterDatoUtenDag(tidsperiode.tom)
     });
 }
+
+const erTidsperiodeFomEllerEtterDato = (tidsperiode: Partial<Tidsperiode>, dato: Date): boolean => {
+    return (
+        tidsperiode.fom !== undefined &&
+        tidsperiode.tom !== undefined &&
+        moment(tidsperiode.fom).isSameOrAfter(dato) &&
+        moment(tidsperiode.tom).isSameOrAfter(dato)
+    );
+};
