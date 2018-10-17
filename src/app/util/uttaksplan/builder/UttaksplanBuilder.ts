@@ -6,48 +6,56 @@ import { Tidsperioden, getTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 
-export const UttaksplanBuilder = (perioder: Periode[]) => {
-    return new UttaksplanAutoBuilder(perioder);
+export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
+    return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);
+};
+
+const periodeHasValidTidsrom = (periode: Periode): boolean =>
+    periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined;
+
+const periodeIsAfterFamDato = (periode: Periode, famDato: Date): boolean => {
+    return (
+        periodeHasValidTidsrom(periode) &&
+        moment(periode.tidsperiode.fom).isSameOrAfter(famDato) &&
+        moment(periode.tidsperiode.tom).isSameOrAfter(famDato)
+    );
 };
 
 /**
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
 class UttaksplanAutoBuilder {
-    public constructor(public perioder: Periode[]) {
+    protected familiehendelsesdato: Date;
+
+    public constructor(public perioder: Periode[], familiehendelsesdato: Date) {
         this.perioder = perioder;
+        this.familiehendelsesdato = familiehendelsesdato;
     }
 
     /**
      * Bygger opp hele uttaksplanen på nytt
      */
     buildUttaksplan() {
-        const utsettelser = Periodene(this.perioder).getUtsettelser();
-        const opphold = Periodene(this.perioder).getOpphold();
-        const hull = Periodene(this.perioder).getHull();
-        const uttaksperioder = Periodene(this.perioder).getUttak();
+        const perioderFørFamDato = Periodene(this.perioder).getPerioderFørFamiliehendelsesdato(
+            this.familiehendelsesdato
+        );
+        const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
+            this.familiehendelsesdato
+        );
+
+        const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
+        const opphold = Periodene(perioderEtterFamDato).getOpphold();
+        const hull = Periodene(perioderEtterFamDato).getHull();
+        const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
+
         this.perioder = resetTidsperioder(uttaksperioder);
 
-        /** Perioder med faste tidsperioder */
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
-        this.perioder = settInnPerioder(this.perioder, fastePerioder);
+        this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
         this.slåSammenLikePerioder();
         this.sort();
         return this;
     }
-
-    // /**
-    //  * Proxy for om en skal oppdatere eller legge til ny
-    //  * @param periode
-    //  */
-    // leggTilEllerOppdaterPeriode(periode: Periode) {
-    //     if (periode.id) {
-    //         this.oppdaterPeriodeOgBuild(periode);
-    //     } else {
-    //         this.leggTilPeriodeOgBuild(periode);
-    //     }
-    //     return this;
-    // }
 
     /**
      * Legger til periode og oppdaterer uttaksplanen
@@ -74,10 +82,11 @@ class UttaksplanAutoBuilder {
         if (!oldPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
+        if (periodeIsAfterFamDato(periode, this.familiehendelsesdato)) {
+            this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
+        }
 
-        this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode)
-            .erstattPeriode(periode)
-            .buildUttaksplan();
+        this.erstattPeriode(periode).buildUttaksplan();
 
         return this;
     }
@@ -126,7 +135,9 @@ class UttaksplanAutoBuilder {
             return this;
         }
         this.justerHullRundtPeriode(periode);
-        const nyePeriodehull = finnHullVedEndretTidsperiode(oldPeriode, periode);
+        const nyePeriodehull = periodeHasValidTidsrom(periode)
+            ? finnHullVedEndretTidsperiode(oldPeriode, periode)
+            : undefined;
         if (nyePeriodehull) {
             this.perioder = this.perioder.concat(nyePeriodehull);
             this.sort();
@@ -453,6 +464,9 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
  * @param periode Endret periode
  */
 function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): PeriodeHull[] | undefined {
+    if (periodeHasValidTidsrom(periode) === false || periodeHasValidTidsrom(oldPeriode) === false) {
+        return undefined;
+    }
     /*
      TODO - sjekk at ikke opphold kolliderer med andre perioder
      */
