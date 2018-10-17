@@ -22,13 +22,13 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
-    sort: () => perioder.sort(sorterPerioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnAlleForegåendePerioder: (periode: Periode) => finnPerioderFørPeriode(perioder, periode),
     finnAllePåfølgendePerioder: (periode: Periode) => finnPerioderEtterPeriode(perioder, periode),
     finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
     finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
-    forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager)
+    forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
+    sort: () => perioder.sort(sorterPerioder)
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {

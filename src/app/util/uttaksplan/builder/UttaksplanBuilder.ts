@@ -13,14 +13,6 @@ export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Dat
 const periodeHasValidTidsrom = (periode: Periode): boolean =>
     periode.tidsperiode.fom !== undefined && periode.tidsperiode.tom !== undefined;
 
-const periodeIsAfterFamDato = (periode: Periode, famDato: Date): boolean => {
-    return (
-        periodeHasValidTidsrom(periode) &&
-        moment(periode.tidsperiode.fom).isSameOrAfter(famDato) &&
-        moment(periode.tidsperiode.tom).isSameOrAfter(famDato)
-    );
-};
-
 /**
  * Holder kontroll på uttaksperioder, utsettelser og opphold
  */
@@ -82,7 +74,7 @@ class UttaksplanAutoBuilder {
         if (!oldPeriode) {
             throw new Error('Periode for endring ikke funnet');
         }
-        if (periodeIsAfterFamDato(periode, this.familiehendelsesdato)) {
+        if (Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(this.familiehendelsesdato)) {
             this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
         }
 
