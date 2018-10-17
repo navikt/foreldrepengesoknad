@@ -45,6 +45,7 @@ class UttaksplanAutoBuilder {
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
         this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
         this.slåSammenLikePerioder();
+        this.fjernHullPåStarten();
         this.fjernHullPåSlutten();
         this.sort();
         return this;
@@ -153,11 +154,16 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    private fjernHullPåSlutten() {
-        this.perioder.reverse();
+    private fjernHullPåStarten() {
         while (this.perioder.findIndex((p) => p.type === Periodetype.Hull) === 0) {
             this.perioder.shift();
         }
+        return this;
+    }
+
+    private fjernHullPåSlutten() {
+        this.perioder.reverse();
+        this.fjernHullPåStarten();
         this.perioder.reverse();
         return this;
     }
