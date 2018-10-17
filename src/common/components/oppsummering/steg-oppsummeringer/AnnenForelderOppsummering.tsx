@@ -7,11 +7,9 @@ import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import { formaterNavn } from 'app/util/domain/personUtil';
 import Barn from '../../../../app/types/søknad/Barn';
-import EtikettBase from 'nav-frontend-etiketter';
 import { formatDate } from '../../../../app/util/dates/dates';
-import { createListOfAttachmentPreviewLinks, missingAttachmentEtikettProps } from 'common/util/oppsummeringUtils';
 import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
-import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
+import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
@@ -93,24 +91,12 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     verdi={formatDate(datoForAleneomsorg) || ''}
                 />
             )}
-            {dokumentasjonAvAleneomsorg &&
-                dokumentasjonAvAleneomsorg.length > 0 && (
-                    <KompleksFeltoppsummering
-                        ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}>
-                        {createListOfAttachmentPreviewLinks(dokumentasjonAvAleneomsorg)}
-                    </KompleksFeltoppsummering>
-                )}
-            {dokumentasjonAvAleneomsorg === undefined ||
-                (dokumentasjonAvAleneomsorg.length === 0 &&
-                    erAleneOmOmsorg && (
-                        <KompleksFeltoppsummering
-                            ledetekst={getMessage(
-                                intl,
-                                "oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label'"
-                            )}>
-                            <EtikettBase {...missingAttachmentEtikettProps(intl)} />
-                        </KompleksFeltoppsummering>
-                    ))}
+            {erAleneOmOmsorg && (
+                <OppsummeringAvDokumentasjon
+                    vedlegg={dokumentasjonAvAleneomsorg}
+                    ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}
+                />
+            )}
             {harRettPåForeldrepenger !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}
