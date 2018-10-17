@@ -4,10 +4,11 @@ import Modal, { ModalProps } from 'nav-frontend-modal';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
-import './bekreftDialog.less';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Systemtittel } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
+
+import './bekreftDialog.less';
 
 export interface Props extends ModalProps {
     tittel?: string;
