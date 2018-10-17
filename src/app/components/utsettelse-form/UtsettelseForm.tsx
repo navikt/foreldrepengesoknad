@@ -312,6 +312,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
                         onCancel={onCancel}
+                        ariaLabelAvbryt={getMessage(intl, 'uttaksplan.nyttopphold.avbrytAriaLabel')}
+                        ariaLabelLeggTil={getMessage(intl, 'uttaksplan.nyttopphold.leggTilAriaLabel')}
                     />
                 )}
             </>

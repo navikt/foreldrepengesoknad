@@ -298,6 +298,7 @@
     "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
 
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
+    "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
     "adopsjonAvEktefellesBarn.spørsmål": "Skal du ha foreldrepenger ved stebarnsadopsjon?",
@@ -424,6 +425,8 @@
     "uttaksplan.informasjonFarMedmorDeltUttak":
         "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din. Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte. Du kan lese mer om viktige frister her: {link}",
     "uttaksplan.fristerLinkTekst": "nav.no",
+    "uttaksplan.leggTil.opphold": "Legg til opphold",
+    "uttaksplan.leggTil.uttak": "Legg til periode",
 
     "vedlegg.arialabel.slett": "Fjern vedlegg {navn}",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
@@ -728,6 +731,10 @@
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med uttak",
+    "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
+    "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
+    "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt legg til nytt opphold",
+    "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til nytt opphold",
 
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.",
