@@ -75,7 +75,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
         }
 
         return (
-            <Applikasjonsside visSpråkvelger={true} margin={false}>
+            <Applikasjonsside visSpråkvelger={false} margin={false}>
                 <DocumentTitle title="Søknad om foreldrepenger" />
                 <VeilederMedSnakkeboble
                     dialog={{

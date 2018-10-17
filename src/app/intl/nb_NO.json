@@ -22,6 +22,8 @@
     "heltid": "Heltid",
     "deltid": "Deltid",
 
+    "tidsperiode": "Fra {fom} til {tom}",
+
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
@@ -78,7 +80,7 @@
 
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden du kan få hvis du fyller vilkårene. Vilkårene står på nav.no/foreldrepenger.</p>",
+        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
     "dinePersonopplysninger.avsnitt.innhenting.html":
         "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
@@ -678,6 +680,8 @@
     "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
+    "periodeliste.header.ariaBeskrivelse":
+        "Periode nummer: {periodenummer}, {periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.lukk": "Lukk",
 
     "endrePeriodeForm.slett.uttak": "Slett periode",

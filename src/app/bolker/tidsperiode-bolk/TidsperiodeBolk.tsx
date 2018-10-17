@@ -17,6 +17,7 @@ import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
 import { DateValue } from '../../types/common';
+import { guid } from 'nav-frontend-js-utils';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
@@ -93,7 +94,8 @@ class TidsperiodeBolk extends React.Component<Props> {
         } else if (tidsperiode.fom) {
             tilAvgrensninger = { minDato: tidsperiode.fom };
         }
-
+        const fraInputId = guid();
+        const tilInputId = guid();
         return (
             <SkjemaGruppe feil={feil}>
                 <div className={bem.className}>
@@ -101,7 +103,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <Block margin="none">
                             <DatoInput
                                 name="fraDatoInput"
-                                id="fraDatoInput"
+                                id={fraInputId}
                                 label={datoInputLabelProps ? datoInputLabelProps.fom : getMessage(intl, 'fraogmed')}
                                 onChange={(fom: Date) => {
                                     this.handleOnChange({
@@ -123,7 +125,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                         <Block margin="none">
                             <DatoInput
                                 name="tilDatoInput"
-                                id="tilDatoInput"
+                                id={tilInputId}
                                 label={datoInputLabelProps ? datoInputLabelProps.tom : getMessage(intl, 'tilogmed')}
                                 onChange={(tom: DateValue) => {
                                     this.handleOnChange({
