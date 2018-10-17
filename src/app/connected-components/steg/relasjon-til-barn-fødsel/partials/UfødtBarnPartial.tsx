@@ -15,12 +15,14 @@ import TerminbekreftelsePartial from './TerminbekreftelsePartial';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import Block from 'common/components/block/Block';
 import { RelasjonTilBarnUfødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 interface UfødtBarnPartialProps {
     barn: UfødtBarn;
     søker: Søker;
     annenForelder: AnnenForelderPartial;
     terminbekreftelse: Attachment[];
+    situasjon: Søkersituasjon;
     erFarEllerMedmor: boolean;
     vis: RelasjonTilBarnUfødtVisibility;
 }
@@ -29,7 +31,7 @@ type Props = UfødtBarnPartialProps & InjectedIntlProps & DispatchProps;
 
 class UfødtBarnPartial extends React.Component<Props> {
     render() {
-        const { barn, terminbekreftelse, annenForelder, erFarEllerMedmor, dispatch, intl, vis } = this.props;
+        const { barn, terminbekreftelse, annenForelder, erFarEllerMedmor, dispatch, intl, vis, situasjon } = this.props;
 
         const erMorEllerMorErForSyk = !erFarEllerMedmor || annenForelder.erForSyk === true;
 
@@ -57,6 +59,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                         <AntallBarnBolk
                             antallBarn={barn.antallBarn}
                             erBarnetFødt={barn.erBarnetFødt}
+                            situasjon={situasjon}
                             inputName="antallBarn"
                             onChange={(antallBarn: number) => {
                                 dispatch(
