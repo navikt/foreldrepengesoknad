@@ -37,6 +37,9 @@ function erPerioderLike(p1: Periode, p2: Periode) {
     if (p1.type !== p2.type || p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse) {
         return false;
     }
+    if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
+        return true;
+    }
     const k1 = getPeriodeFootprint(p1);
     const k2 = getPeriodeFootprint(p2);
     return k1 === k2;
