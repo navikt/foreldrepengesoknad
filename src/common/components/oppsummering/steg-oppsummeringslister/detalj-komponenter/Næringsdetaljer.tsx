@@ -36,89 +36,116 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}
                 verdi={næringstyper.join(', ')}
             />
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}: {organisasjonsnummer}
-            </p>
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}: {stillingsprosent}
-            </p>
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}: {formatDate(oppstartsdato)}
-            </p>
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}: {næringsinntekt}
-            </p>
-            <p>
-                {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}:
-                {registrertINorge ? 'Norge' : registrertILand}
-            </p>
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
+                verdi={organisasjonsnummer}
+            />
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
+                verdi={stillingsprosent}
+            />
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
+                verdi={formatDate(oppstartsdato)}
+            />
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
+                verdi={næringsinntekt}
+            />
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
+                verdi={registrertINorge ? 'Norge' : registrertILand}
+            />
+
             {nyIArbeidslivet !== undefined && (
-                <p>
-                    {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}:
-                    {nyIArbeidslivet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                </p>
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}
+                    verdi={nyIArbeidslivet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
             )}
+
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined && (
-                <p>
-                    {getMessage(
+                <Feltoppsummering
+                    feltnavn={getMessage(
                         intl,
                         'oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår'
-                    )}:
-                    {hattVarigEndringAvNæringsinntektSiste4Kalenderår
-                        ? getMessage(intl, 'ja')
-                        : getMessage(intl, 'nei')}
-                </p>
+                    )}
+                    verdi={
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                            ? getMessage(intl, 'ja')
+                            : getMessage(intl, 'nei')
+                    }
+                />
             )}
+
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
                 <>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt')}:
-                        {formatDate(endringAvNæringsinntektInformasjon!.dato)}
-                    </p>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring')}:
-                        {endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
-                    </p>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}:
-                        {endringAvNæringsinntektInformasjon!.forklaring}
-                    </p>
+                    <Feltoppsummering
+                        feltnavn={getMessage(
+                            intl,
+                            'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt'
+                        )}
+                        verdi={formatDate(endringAvNæringsinntektInformasjon!.dato)}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(
+                            intl,
+                            'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring'
+                        )}
+                        verdi={endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}
+                        verdi={endringAvNæringsinntektInformasjon!.forklaring}
+                    />
                 </>
             )}
+
             {harRegnskapsfører === true && (
                 <>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}:
-                        {regnskapsfører.navn}
-                    </p>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}:
-                        {regnskapsfører.telefonnummer}
-                    </p>
-                    <p>
-                        {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie')}:
-                        {regnskapsfører.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                    </p>
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerNavn')}
+                        verdi={regnskapsfører.navn}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsførerTlf')}
+                        verdi={regnskapsfører.telefonnummer}
+                    />
+                    <Feltoppsummering
+                        feltnavn={getMessage(
+                            intl,
+                            'oppsummering.selvstendigNæringsdrivende.regnskapsførerNærVennEllerFamilie'
+                        )}
+                        verdi={regnskapsfører.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    />
                 </>
             )}
+
             {harRegnskapsfører === false &&
                 harRevisor === true && (
                     <>
-                        <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}: {revisor.navn}
-                        </p>
-                        <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}:
-                            {revisor.telefonnummer}
-                        </p>
-                        <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie')}:
-                            {revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                        </p>
-                        <p>
-                            {getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke')}:
-                            {kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-                        </p>
+                        <Feltoppsummering
+                            feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorNavn')}
+                            verdi={revisor.navn}
+                        />
+                        <Feltoppsummering
+                            feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisorTlf')}
+                            verdi={revisor.telefonnummer}
+                        />
+                        <Feltoppsummering
+                            feltnavn={getMessage(
+                                intl,
+                                'oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie'
+                            )}
+                            verdi={revisor.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                        />
+                        <Feltoppsummering
+                            feltnavn={getMessage(
+                                intl,
+                                'oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke'
+                            )}
+                            verdi={kanInnhenteOpplsyningerFraRevisor ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                        />
                     </>
                 )}
         </>
