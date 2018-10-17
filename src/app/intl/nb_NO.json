@@ -595,6 +595,12 @@
     "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
 
+    "oppsummering.uttak": "Ditt uttak",
+    "oppsummering.uttak.type.uttak": "Uttak",
+    "oppsummering.uttak.type.utsettelse": "Utsettelse",
+    "oppsummering.uttak.type.overføring": "Overføring",
+    "oppsummering.uttak.type.opphold": "Opphold",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
