@@ -30,7 +30,7 @@ import {
     getRelasjonTilBarnFødselVisibility,
     RelasjonTilBarnFødselStegVisibility
 } from './visibility/relasjonTilBarnFødselVisibility';
-import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Søkersituasjon } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
 
 interface RelasjonTilBarnFødselStegProps {
@@ -42,6 +42,7 @@ interface RelasjonTilBarnFødselStegProps {
     terminbekreftelse: Attachment[];
     stegProps: StegProps;
     vis: RelasjonTilBarnFødselStegVisibility;
+    situasjon: Søkersituasjon;
 }
 
 type Props = RelasjonTilBarnFødselStegProps & InjectedIntlProps & DispatchProps & SøkerinfoProps & HistoryProps;
@@ -68,7 +69,8 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
             søknadenGjelderBarnValg,
             stegProps,
             vis,
-            dispatch
+            dispatch,
+            situasjon
         } = this.props;
 
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
@@ -99,6 +101,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                     </Block>
                     {vis.fødtBarnPart && (
                         <FødtBarnPartial
+                            situasjon={situasjon}
                             dispatch={dispatch}
                             barn={barn as FødtBarn}
                             gjelderAnnetBarn={gjelderAnnetBarn}
@@ -153,7 +156,8 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         barn,
         terminbekreftelse,
         stegProps,
-        vis
+        vis,
+        situasjon: state.søknad.situasjon
     };
 };
 
