@@ -11,6 +11,8 @@ import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
 import { Stønadskontouttak } from '../uttaksoppsummering/Uttaksoppsummering';
 import { getStønadskontoNavn } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import { formaterDato } from 'common/util/datoUtils';
+import { getFørsteMuligeSøknadsdagGittUttak } from '../../util/validation/uttaksplan/datobegrensninger';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -69,6 +71,16 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             feil.push({
                 name: uttaksplanleggerDomId,
                 text: getMessage(intl, 'uttaksplan.validering.feil.tomUttaksplan')
+            });
+        }
+
+        const førsteUttaksdag = Periodene(uttaksplan).getFørsteUttaksdag();
+        if (uttaksplanValidering.førsteUttakErInnenforSeksUker === false && førsteUttaksdag) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'uttaksplan.validering.feil.forsteUttakEtterSeksUker', {
+                    dato: formaterDato(getFørsteMuligeSøknadsdagGittUttak(førsteUttaksdag))
+                })
             });
         }
 

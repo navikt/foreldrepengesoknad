@@ -1,4 +1,4 @@
-import Søknad from '../../../../types/søknad/Søknad';
+import Søknad, { SøkerRolle } from '../../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { Søker } from '../../../../types/søknad/Søker';
@@ -45,6 +45,16 @@ const visErAnnenForelderInformert = (payload: AnnenForelderSpørsmålPayload): b
     return søker.erAleneOmOmsorg !== undefined && annenForelder.harRettPåForeldrepenger === true;
 };
 
+const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload): boolean => {
+    const { annenForelderErRegistrert, søkerErFarEllerMedmor, søker } = payload;
+
+    if (søkerErFarEllerMedmor && søker.rolle === SøkerRolle.MEDMOR) {
+        return false;
+    }
+
+    return annenForelderErRegistrert === false;
+};
+
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fornavn),
@@ -54,7 +64,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: () => true,
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.kanIkkeOppgis),
-        condition: (props) => props.annenForelderErRegistrert === false && !props.søkerErFarEllerMedmor
+        condition: (payload) => visAnnenForelderKanIkkeOppgis(payload)
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         isAnswered: ({ annenForelder }) =>
