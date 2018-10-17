@@ -166,14 +166,16 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Knapp
                             onClick={this.openNyUtsettelsesperiodeForm}
                             htmlType="button"
-                            ref={(c) => (this.leggTilOppholdKnapp = c)}>
-                            Legg til opphold
+                            ref={(c) => (this.leggTilOppholdKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.opphold" />
                         </Knapp>
                         <Knapp
                             onClick={this.openNyUttaksperiodeForm}
                             htmlType="button"
-                            ref={(c) => (this.leggTilUttakKnapp = c)}>
-                            Legg til periode
+                            ref={(c) => (this.leggTilUttakKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.uttak" />
                         </Knapp>
                     </Knapperad>
                 </Block>
