@@ -21,7 +21,6 @@ import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import AriaText from 'common/components/aria/AriaText';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
 import AriaText from 'common/components/aria/AriaText';
 
