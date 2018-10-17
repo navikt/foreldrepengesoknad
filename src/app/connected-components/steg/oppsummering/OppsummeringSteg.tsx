@@ -55,7 +55,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                <Oppsummering className="blokk-m" søkerinfo={søkerinfo} søknad={søknad} />
+                <Oppsummering søkerinfo={søkerinfo} søknad={søknad} />
 
                 <BekreftCheckboksPanel
                     className="blokk-m"

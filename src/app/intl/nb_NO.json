@@ -539,6 +539,8 @@
 
     "oppsummering.inntekt": "Opplysninger om inntekt",
 
+    "oppsummering.inntekt.registrerteArbeidsforhold": "Registrerte arbeidsforhold",
+
     "oppsummering.frilans.tittel": "Frilansarbeid",
     "oppsummering.frilans.ikkeFrilans": "Jeg har ikke jobbet som frilanser de siste 10 månedene",
     "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilans",

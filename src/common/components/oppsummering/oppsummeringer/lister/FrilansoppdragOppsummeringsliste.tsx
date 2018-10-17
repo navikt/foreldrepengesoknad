@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../app/util/dates/dates';
+import { formatDate } from '../../../../../app/util/dates/dates';
 import Oppsummeringsliste from 'common/components/oppsummeringsliste/Oppsummeringsliste';
-import { FrilansOppdrag } from '../../../../app/types/søknad/FrilansInformasjon';
+import { FrilansOppdrag } from '../../../../../app/types/søknad/FrilansInformasjon';
 
 interface FrilansoppdragOppsummeringslisteProps {
     frilansoppdrag: FrilansOppdrag[];
