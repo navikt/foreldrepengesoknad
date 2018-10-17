@@ -5,6 +5,7 @@ import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdri
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 
 interface NæringsdetaljerProps {
     næring: Næring;
@@ -28,7 +29,8 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
         revisor,
         harRegnskapsfører,
         regnskapsfører,
-        harRevisor
+        harRevisor,
+        vedlegg
     } = næring;
 
     return (
@@ -151,6 +153,11 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                         />
                     </>
                 )}
+
+            <OppsummeringAvDokumentasjon
+                vedlegg={vedlegg || []}
+                ledetekst={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.dokumentasjon')}
+            />
         </>
     );
 };
