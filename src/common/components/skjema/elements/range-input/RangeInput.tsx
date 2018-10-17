@@ -17,6 +17,7 @@ export type RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendere
 
 interface Props {
     label: string | React.ReactNode;
+    ariaLabelText: string;
     ariaDescription?: string;
     value: number;
     min: number;
@@ -81,6 +82,7 @@ class RangeInput extends React.Component<Props, State> {
     render() {
         const {
             label,
+            ariaLabelText,
             inputId,
             valueLabelRenderer,
             steppers,
@@ -93,6 +95,8 @@ class RangeInput extends React.Component<Props, State> {
         const { value, min, max, onChange } = this.props;
         const id = inputId || guid();
         const labelRenderer = valueLabelRenderer || defaultValueLabelRenderer;
+        const ariaDescribedById = `${id}_description`;
+        const ariaLabelId = `${id}_label`;
         return (
             <SkjemaInputElement label={label} id={id}>
                 {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
@@ -113,12 +117,14 @@ class RangeInput extends React.Component<Props, State> {
                             />
                         </div>
                     )}
+                    <AriaText id={ariaLabelId}>{ariaLabelText}</AriaText>
                     <div className="rangeInput__range">
-                        {ariaDescription && <AriaText id="aria">{ariaDescription}</AriaText>}
+                        {ariaDescription && <AriaText id={ariaDescribedById}>{ariaDescription}</AriaText>}
                         <input
                             {...rest}
                             id={id}
-                            aria-describedby="aria"
+                            aria-describedby={ariaDescribedById}
+                            aria-labelledby={ariaLabelId}
                             className="nav-frontend-range-input"
                             type="range"
                             onChange={(e) => onChange(parseInt(e.target.value, 10))}
