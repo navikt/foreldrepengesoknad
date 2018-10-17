@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Modal from 'nav-frontend-modal';
-import { Undertittel, Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Lenke from 'nav-frontend-lenker';
@@ -19,12 +19,11 @@ const DinePlikterModal = (props: Props) => {
             isOpen={props.isOpen}
             onRequestClose={() => props.onRequestClose()}
             closeButton={true}
-            contentLabel="dine plikter">
-            <div className="velkommenModalContent">
-                <Undertittel className="velkommenModalContent__header">
+            contentLabel={getMessage(intl, 'dinePlikter.sectionheading')}>
+            <article className="velkommenModalContent">
+                <Systemtittel tag="h1" className="velkommenModalContent__header">
                     {getMessage(intl, 'dinePlikter.sectionheading')}
-                </Undertittel>
-
+                </Systemtittel>
                 <ul>
                     <li>
                         <Normaltekst>{getMessage(intl, 'dinePlikter.listeElement.1')}</Normaltekst>
@@ -44,7 +43,7 @@ const DinePlikterModal = (props: Props) => {
                         </Normaltekst>
                     </li>
                 </ul>
-            </div>
+            </article>
         </Modal>
     );
 };
