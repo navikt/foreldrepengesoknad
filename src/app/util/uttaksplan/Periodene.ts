@@ -14,7 +14,8 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
-    sort: () => perioder.sort(sorterPerioder)
+    sort: () => perioder.sort(sorterPerioder),
+    getFørsteUttaksdag: () => getFørsteUttaksdag(perioder)
 });
 
 /**
@@ -84,4 +85,15 @@ function datoErInnenforTidsperiode(dato: Date, tidsperiode: Tidsperiode): boolea
         return false;
     }
     return m.isSame(fom, 'day') || m.isSame(tom, 'day') || m.isBetween(fom, tom, 'days');
+}
+
+function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
+    const førstePeriode = perioder
+        .filter((p) => p.tidsperiode.fom !== undefined)
+        .sort(sorterPerioder)
+        .shift();
+    if (førstePeriode) {
+        return førstePeriode.tidsperiode.fom;
+    }
+    return undefined;
 }
