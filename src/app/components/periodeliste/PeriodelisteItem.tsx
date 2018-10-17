@@ -16,6 +16,7 @@ import { onToggleItemProp } from '../toggle-list/ToggleList';
 
 export interface Props {
     periode: Periode;
+    periodenummer: number;
     isExpanded: boolean;
     navnPåForeldre: NavnPåForeldre;
     validertPeriode: ValidertPeriode;
@@ -26,6 +27,7 @@ export interface Props {
 
 const PeriodelisteItem: React.StatelessComponent<Props> = ({
     periode,
+    periodenummer,
     navnPåForeldre,
     validertPeriode,
     isExpanded,
@@ -41,7 +43,12 @@ const PeriodelisteItem: React.StatelessComponent<Props> = ({
             onToggle={() => onToggle(periode.id)}
             expandedHeaderClassName="periodeheader--isOpen"
             renderHeader={() => (
-                <PeriodeHeader periode={periode} navnPåForeldre={navnPåForeldre} validertPeriode={validertPeriode} />
+                <PeriodeHeader
+                    periodenummer={periodenummer}
+                    periode={periode}
+                    navnPåForeldre={navnPåForeldre}
+                    validertPeriode={validertPeriode}
+                />
             )}
             renderContent={() => (
                 <div
