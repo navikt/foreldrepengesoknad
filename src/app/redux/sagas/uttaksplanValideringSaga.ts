@@ -10,6 +10,7 @@ import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValide
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 
 const stateSelector = (state: AppState) => state;
 
@@ -49,7 +50,8 @@ function* validerUttaksplanSaga(action: any) {
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            getStønadskonterMedFormMyeUttak(uttaksstatus)
+            getStønadskonterMedFormMyeUttak(uttaksstatus),
+            førsteUttakErInnenforKommendeSeksUker(uttaksplan)
         )
     );
 }

@@ -20,6 +20,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
+    getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     sort: () => perioder.sort(sorterPerioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -135,4 +136,15 @@ function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendel
             moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false
     );
+}
+
+function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
+    const førstePeriode = perioder
+        .filter((p) => p.tidsperiode.fom !== undefined)
+        .sort(sorterPerioder)
+        .shift();
+    if (førstePeriode) {
+        return førstePeriode.tidsperiode.fom;
+    }
+    return undefined;
 }

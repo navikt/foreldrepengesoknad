@@ -1,13 +1,27 @@
 import * as React from 'react';
 import Modal from 'nav-frontend-modal';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import Block from 'common/components/block/Block';
 
 interface DineRettigheterModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
 }
+
+const Avsnitt: React.StatelessComponent<{ id: string }> = ({ id }) => {
+    return (
+        <Block margin="s">
+            <Ingress tag="h2">
+                <FormattedMessage id={`dinePersonopplysninger.avsnitt.${id}.tittel`} />
+            </Ingress>
+            <Normaltekst>
+                <FormattedHTMLMessage id={`dinePersonopplysninger.avsnitt.${id}.html`} />
+            </Normaltekst>
+        </Block>
+    );
+};
 
 type Props = DineRettigheterModalProps & InjectedIntlProps;
 const DinePersonopplysningerModal = (props: Props) => {
@@ -17,12 +31,24 @@ const DinePersonopplysningerModal = (props: Props) => {
             isOpen={props.isOpen}
             onRequestClose={() => props.onRequestClose()}
             closeButton={true}
-            contentLabel="dine rettigheter">
-            <div className="velkommenModalContent">
-                <Undertittel className="velkommenModalContent__header">
-                    {getMessage(intl, 'dinePersonopplysninger.sectionheading')}
-                </Undertittel>
-            </div>
+            contentLabel={getMessage(intl, 'dinePersonopplysninger.sectionheading')}>
+            <article className="velkommenModalContent velkommenModalContent--50">
+                <Block margin="s">
+                    <Systemtittel tag="h1" className="velkommenModalContent__header">
+                        {getMessage(intl, 'dinePersonopplysninger.sectionheading')}
+                    </Systemtittel>
+                </Block>
+                <Block margin="s">
+                    <Normaltekst>
+                        <FormattedHTMLMessage id="dinePersonopplysninger.behandling.html" />
+                    </Normaltekst>
+                </Block>
+
+                <Avsnitt id="innhenting" />
+                <Avsnitt id="automatiskBehandling" />
+                <Avsnitt id="svarPaSoknaden" />
+                <Avsnitt id="personvernerklaringen" />
+            </article>
         </Modal>
     );
 };
