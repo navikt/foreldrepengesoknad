@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as countries from 'i18n-iso-countries';
 import { JobbIUtlandetInntekt } from '../../../../../app/types/søknad/AnnenInntekt';
 import getMessage from 'common/util/i18nUtils';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -20,7 +21,7 @@ const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIU
             />
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}
-                verdi={land}
+                verdi={countries.getName(land, 'nb')}
             />
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.andreInntekter.nærVennEllerFamilie')}
