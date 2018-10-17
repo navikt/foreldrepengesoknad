@@ -8,7 +8,7 @@ export interface AriaAlternativeTextProps {
     visibleText: React.ReactNode;
 }
 
-const AriaAlternativeText: React.StatelessComponent<AriaAlternativeTextProps> = ({ ariaText, visibleText }) => {
+const AriaAlternative: React.StatelessComponent<AriaAlternativeTextProps> = ({ ariaText, visibleText }) => {
     if (!ariaText) {
         return <React.Fragment>{visibleText}</React.Fragment>;
     }
@@ -22,4 +22,4 @@ const AriaAlternativeText: React.StatelessComponent<AriaAlternativeTextProps> = 
     );
 };
 
-export default AriaAlternativeText;
+export default AriaAlternative;

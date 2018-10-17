@@ -11,11 +11,13 @@ import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
+import { Søkersituasjon } from '../../../../types/s\u00F8knad/S\u00F8knad';
 
 interface StateProps {
     barn: FødtBarn;
     registrerteBarn: RegistrertBarn[];
     gjelderAnnetBarn?: boolean;
+    situasjon: Søkersituasjon;
     vis: RelasjonTilBarnFødtVisibility;
 }
 
@@ -44,13 +46,15 @@ class FødtBarnPartial extends React.Component<Props> {
     }
 
     render() {
-        const { intl, dispatch, barn, vis } = this.props;
+        const { intl, dispatch, barn, vis, situasjon } = this.props;
         return (
             <React.Fragment>
                 <AntallBarnBolk
                     spørsmål={getMessage(intl, 'antallBarn.spørsmål.fått')}
                     inputName="antallBarn"
                     antallBarn={barn.antallBarn}
+                    situasjon={situasjon}
+                    erBarnetFødt={barn.erBarnetFødt}
                     onChange={this.oppdaterAntallBarn}
                 />
                 <Block visible={vis.fødselsdatoer}>

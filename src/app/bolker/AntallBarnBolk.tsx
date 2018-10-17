@@ -6,6 +6,7 @@ import Block from 'common/components/block/Block';
 import Labeltekst from 'common/components/labeltekst/Labeltekst';
 import { SkjemaelementFeil } from 'nav-frontend-skjema/lib/skjemaelement-feilmelding';
 import getMessage from 'common/util/i18nUtils';
+import { Søkersituasjon } from '../types/søknad/Søknad';
 
 export interface OwnProps {
     /** Spørsmålstekst */
@@ -16,6 +17,10 @@ export interface OwnProps {
     onChange: (antall: number) => void;
     /** Antall barn som er valgt */
     antallBarn?: number;
+    /** Termin eller født barn */
+    erBarnetFødt?: boolean;
+    /** Adopsjon eller fødsel */
+    situasjon?: Søkersituasjon;
     /** Valideringsfeilmelding */
     feil?: SkjemaelementFeil;
 }
@@ -23,6 +28,18 @@ export interface OwnProps {
 type Props = OwnProps & InjectedIntlProps;
 
 type AntallBarnVerdi = '1' | '2' | '3';
+
+const getSelectText = (situasjon: Søkersituasjon | undefined, erBarnetFødt: boolean | undefined): string => {
+    if (situasjon && situasjon === Søkersituasjon.ADOPSJON) {
+        return 'antallBarn.select.tekst.adopsjon';
+    } else {
+        if (erBarnetFødt!) {
+            return 'antallBarn.select.tekst.fødsel';
+        } else {
+            return 'antallBarn.select.tekst.termin';
+        }
+    }
+};
 
 class AntallBarnBolk extends React.Component<Props> {
     constructor(props: Props) {
@@ -40,9 +57,11 @@ class AntallBarnBolk extends React.Component<Props> {
     }
 
     render() {
-        const { spørsmål, inputName, feil, antallBarn, intl } = this.props;
+        const { spørsmål, inputName, feil, antallBarn, intl, erBarnetFødt, situasjon } = this.props;
         const antallBarnVerdi: AntallBarnVerdi | undefined =
             antallBarn !== undefined ? (`${Math.min(antallBarn, 3)}` as AntallBarnVerdi) : undefined;
+        const antallBarnLabel =
+            situasjon === Søkersituasjon.FØDSEL ? 'antallBarn.alternativ.tvillinger' : 'antallBarn.alternativ.tobarn';
 
         return (
             <React.Fragment>
@@ -63,7 +82,7 @@ class AntallBarnBolk extends React.Component<Props> {
                             },
                             {
                                 inputProps: { id: 'js-tvillinger' },
-                                label: getMessage(intl, 'antallBarn.alternativ.tobarn'),
+                                label: getMessage(intl, antallBarnLabel),
                                 value: '2'
                             },
                             {
@@ -77,7 +96,7 @@ class AntallBarnBolk extends React.Component<Props> {
                 <Block visible={antallBarnVerdi === '3'}>
                     <Select
                         bredde="xs"
-                        label={<Labeltekst intlId="antallBarn.select.tekst" />}
+                        label={<Labeltekst intlId={getSelectText(situasjon, erBarnetFødt)} />}
                         onChange={(evt: React.ChangeEvent<HTMLSelectElement>) =>
                             this.onSelectChange(parseInt(evt.target.value, 10))
                         }>

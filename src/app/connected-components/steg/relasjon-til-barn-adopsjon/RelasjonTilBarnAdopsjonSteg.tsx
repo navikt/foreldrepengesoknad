@@ -17,7 +17,7 @@ import AttachmentsUploaderPure from 'common/storage/attachment/components/Attach
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
 import { barnErGyldig } from '../../../util/validation/steg/barn';
-import { Skjemanummer } from '../../../types/søknad/Søknad';
+import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
 import AdopsjonAvEktefellesBarnSpørsmål from '../../../spørsmål/AdopsjonAvEktefellesBarnSpørsmål';
@@ -33,6 +33,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
+    situasjon: Søkersituasjon;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -69,7 +70,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const { barn, dispatch, stegProps, intl } = this.props;
+        const { barn, dispatch, stegProps, intl, situasjon } = this.props;
 
         return (
             <Steg onSubmit={this.handleOnSubmit} {...stegProps}>
@@ -111,6 +112,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                         inputName="antallBarn"
                         antallBarn={barn.antallBarn}
                         onChange={this.oppdaterAntallBarn}
+                        situasjon={situasjon}
                     />
                 </Block>
 
@@ -203,7 +205,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     return {
         barn,
-        stegProps
+        stegProps,
+        situasjon: state.søknad.situasjon
     };
 };
 

@@ -4,7 +4,7 @@ import BEMHelper from 'common/util/bem';
 import { måned, måned3bokstaver, år } from 'common/util/datoUtils';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
-import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, InjectedIntl, FormattedMessage } from 'react-intl';
 import {
     Periode,
     Periodetype,
@@ -21,8 +21,8 @@ import './periodeheader.less';
 import getMessage from 'common/util/i18nUtils';
 import { getPeriodeForelderNavn, getPeriodeTittel } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
-import AriaText from 'common/components/aria/AriaText';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
+import AriaText from 'common/components/aria/AriaText';
 
 type AdvarselType = 'advarsel' | 'feil';
 
@@ -34,6 +34,7 @@ export interface Advarsel {
 
 export interface Props {
     periode: Periode;
+    periodenummer: number;
     validertPeriode: ValidertPeriode;
     navnPåForeldre: NavnPåForeldre;
     advarsel?: Advarsel;
@@ -111,6 +112,7 @@ const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedI
 
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
+    periodenummer,
     navnPåForeldre,
     validertPeriode,
     isOpen,
@@ -119,7 +121,9 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     const gyldigTidsperiode = getValidTidsperiode(periode.tidsperiode);
     const visDatoer = periode.tidsperiode.fom || periode.tidsperiode.tom;
     let varighetString;
-    if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true) {
+    const erFpFørTerminUtenUttak =
+        isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true;
+    if (erFpFørTerminUtenUttak) {
         varighetString = getMessage(intl, 'periodeliste.header.skalIkkeHaUttakFørTermin');
     } else {
         varighetString = getVarighetString(
@@ -128,42 +132,63 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
         );
     }
     const foreldernavn = getPeriodeForelderNavn(periode, navnPåForeldre);
+    const periodetittel = getPeriodeTittel(intl, periode, navnPåForeldre);
     const advarselId = `advarsel__${periode.id}`;
     const advarsel = getAdvarselForPeriode(validertPeriode, intl);
     return (
-        <article
-            className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
-                [BEM.modifier('apnet')]: isOpen
-            })}>
-            <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
-                {renderPeriodeIkon(periode, navnPåForeldre)}
-            </div>
-            <div className={BEM.element('beskrivelse')}>
-                <Element tag="h1">{getPeriodeTittel(intl, periode, navnPåForeldre)}</Element>
-                <Normaltekst>
-                    {varighetString}
-                    <em className={BEM.element('hvem')}> - {foreldernavn}</em>
-                </Normaltekst>
-            </div>
-            {advarsel && (
-                <div className={BEM.element('advarsel')}>
-                    <AriaText id={advarselId}>{advarsel.beskrivelse}</AriaText>
-                    <span role="presentation">
-                        <UttaksplanIkon
-                            ikon={getIkonForAdvarsel(advarsel)}
-                            aria-labeledby={advarselId}
-                            title={advarsel.beskrivelse}
-                        />
-                    </span>
+        <article>
+            <AriaText>
+                <FormattedMessage
+                    id="periodeliste.header.ariaBeskrivelse"
+                    values={{
+                        periodenummer,
+                        periodetittel,
+                        foreldernavn,
+                        tidOgVarighet: visDatoer
+                            ? erFpFørTerminUtenUttak
+                                ? varighetString
+                                : `${Tidsperioden(periode.tidsperiode).formaterString(intl)} (${varighetString})`
+                            : varighetString,
+                        advarsel: advarsel ? `${advarsel.beskrivelse}.` : ''
+                    }}
+                />
+            </AriaText>
+
+            <div
+                role="presentation"
+                aria-hidden={true}
+                className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
+                    [BEM.modifier('apnet')]: isOpen
+                })}>
+                <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
+                    {renderPeriodeIkon(periode, navnPåForeldre)}
                 </div>
-            )}
-            {visDatoer && (
-                <div className={BEM.element('tidsrom')}>
-                    {renderDagMnd(periode.tidsperiode.fom)}
-                    -
-                    {renderDagMnd(periode.tidsperiode.tom)}
+                <div className={BEM.element('beskrivelse')}>
+                    <Element tag="h1">{periodetittel}</Element>
+                    <Normaltekst>
+                        {varighetString}
+                        <em className={BEM.element('hvem')}> - {foreldernavn}</em>
+                    </Normaltekst>
                 </div>
-            )}
+                {advarsel && (
+                    <div className={BEM.element('advarsel')}>
+                        <span role="presentation">
+                            <UttaksplanIkon
+                                ikon={getIkonForAdvarsel(advarsel)}
+                                aria-labeledby={advarselId}
+                                title={advarsel.beskrivelse}
+                            />
+                        </span>
+                    </div>
+                )}
+                {visDatoer && (
+                    <div className={BEM.element('tidsrom')}>
+                        {renderDagMnd(periode.tidsperiode.fom)}
+                        -
+                        {renderDagMnd(periode.tidsperiode.tom)}
+                    </div>
+                )}
+            </div>
         </article>
     );
 };

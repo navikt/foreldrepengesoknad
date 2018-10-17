@@ -5,6 +5,7 @@ import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
 import { InjectedIntl } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import getMessage from 'common/util/i18nUtils';
 
 /**
  * Wrapper en Tidsperiode med uttaksdager-funksjonalitet
@@ -151,7 +152,10 @@ function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2
 }
 
 function tidsperiodeToString(tidsperiode: Tidsperiode, intl: InjectedIntl) {
-    return `${formaterDatoUtenDag(tidsperiode.fom)} - ${formaterDatoUtenDag(tidsperiode.tom)}`;
+    return getMessage(intl, 'tidsperiode', {
+        fom: formaterDatoUtenDag(tidsperiode.fom),
+        tom: formaterDatoUtenDag(tidsperiode.tom)
+    });
 }
 
 const erTidsperiodeFomEllerEtterDato = (tidsperiode: Partial<Tidsperiode>, dato: Date): boolean => {
