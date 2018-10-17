@@ -56,6 +56,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                     <React.Fragment>
                         <AntallBarnBolk
                             antallBarn={barn.antallBarn}
+                            erBarnetFødt={barn.erBarnetFødt}
                             inputName="antallBarn"
                             onChange={(antallBarn: number) => {
                                 dispatch(
