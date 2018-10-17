@@ -5,7 +5,7 @@ const elementSelector = [
     'select:not([disabled])',
     'input:not([disabled])',
     'textarea:not([disabled])',
-    'button:not([disabled]'
+    'button:not([disabled])'
 ];
 
 function nodelistToArray(nodes: NodeList): HTMLElement[] {
@@ -16,9 +16,9 @@ function nodelistToArray(nodes: NodeList): HTMLElement[] {
     return arr;
 }
 
-const tabEnabledSelectors = ["[tabIndex='0']"].concat(elementSelector);
+const tabEnabledSelectors = [`[tabIndex='0']`].concat(elementSelector);
 
-const allTabIndexEnabledSelectors = ['[tabIndex]'].concat(elementSelector);
+const allTabIndexEnabledSelectors = [`[tabIndex]`].concat(elementSelector);
 
 export function focusElement(el: any) {
     if (!el) {
