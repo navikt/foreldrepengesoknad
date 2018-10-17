@@ -2,14 +2,15 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Søker from '../../../../app/types/søknad/Søker';
 import Block from 'common/components/block/Block';
-import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import { formatDate } from '../../../../app/util/dates/dates';
-import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import { Element } from 'nav-frontend-typografi';
 import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/FrilansoppdragOppsummeringsliste';
 import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/SelvstendigNæringsdrivendeOppsummeringsliste';
 import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/AndreInntekterOppsummeringsliste';
 import getMessage from 'common/util/i18nUtils';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -39,21 +40,24 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
             oppdragForNæreVennerEllerFamilieSiste10Mnd
         } = frilansInformasjon;
         return (
-            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.frilans.tittel')}>
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.frilans.oppstartsdato')}
-                    text={formatDate(oppstart)}
+            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.frilans.tittel')}>
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.frilans.oppstartsdato')}
+                    verdi={formatDate(oppstart)}
                 />
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.frilans.fremdelesFrilans')}
-                    text={jobberFremdelesSomFrilans ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.frilans.fremdelesFrilans')}
+                    verdi={jobberFremdelesSomFrilans ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.frilans.driverFosterhjem')}
-                    text={driverFosterhjem ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.frilans.driverFosterhjem')}
+                    verdi={driverFosterhjem ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
-                <DisplayContentWithLabel
-                    label={getMessage(intl, 'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd')}>
+                <InnholdMedLedetekst
+                    ledetekst={getMessage(
+                        intl,
+                        'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
+                    )}>
                     <Block visible={!harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
                         <Element>
                             {getMessage(
@@ -65,15 +69,15 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                     <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
                         <FrilansoppdragOppsummeringsliste frilansoppdrag={oppdragForNæreVennerEllerFamilieSiste10Mnd} />
                     </Block>
-                </DisplayContentWithLabel>
-            </DisplayContentWithLabel>
+                </InnholdMedLedetekst>
+            </Oppsummeringsseksjon>
         );
     }
 
     return (
-        <DisplayTextWithLabel
-            label={getMessage(intl, 'oppsummering.frilans.tittel')}
-            text={getMessage(intl, 'oppsummering.frilans.ikkeFrilans')}
+        <Feltoppsummering
+            feltnavn={getMessage(intl, 'oppsummering.frilans.tittel')}
+            verdi={getMessage(intl, 'oppsummering.frilans.ikkeFrilans')}
         />
     );
 };
@@ -83,17 +87,19 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker, intl }: Props) => {
 
     if (selvstendigNæringsdrivendeInformasjon && harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd) {
         return (
-            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
                 <SelvstendigNæringsdrivendeOppsummeringsliste næringer={selvstendigNæringsdrivendeInformasjon} />
-            </DisplayContentWithLabel>
+            </Oppsummeringsseksjon>
         );
     }
 
     return (
-        <DisplayTextWithLabel
-            label={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}
-            text={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende')}
-        />
+        <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}
+                verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende')}
+            />
+        </Oppsummeringsseksjon>
     );
 };
 
@@ -102,17 +108,19 @@ const AndreInntekterOppsummering = ({ søker, intl }: Props) => {
 
     if (andreInntekterSiste10Mnd && harHattAnnenInntektSiste10Mnd) {
         return (
-            <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
+            <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
                 <AndreInntekterOppsummeringsliste andreInntekter={andreInntekterSiste10Mnd} />
-            </DisplayContentWithLabel>
+            </Oppsummeringsseksjon>
         );
     }
 
     return (
-        <DisplayTextWithLabel
-            label={getMessage(intl, 'oppsummering.andreInntekter.tittel')}
-            text={getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}
-        />
+        <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.andreInntekter.tittel')}
+                verdi={getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}
+            />
+        </Oppsummeringsseksjon>
     );
 };
 

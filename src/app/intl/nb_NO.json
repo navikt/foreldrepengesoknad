@@ -517,7 +517,7 @@
 
     "oppsummering.inntekt": "Opplysninger om inntekt",
 
-    "oppsummering.frilans.tittel": "Arbeid som frilans siste 10 måneder",
+    "oppsummering.frilans.tittel": "Frilansarbeid",
     "oppsummering.frilans.ikkeFrilans": "Jeg har ikke jobbet som frilanser de siste 10 månedene",
     "oppsummering.frilans.oppstartsdato": "Oppstartsdato som frilans",
     "oppsummering.frilans.fremdelesFrilans": "Jeg jobber fremdeles som frilans",
@@ -528,7 +528,7 @@
         "Jeg har ikke jobbet som frilans for nære venner eller familie de siste 10 månedene",
     "oppsummering.ikke.frilans.oppstartsdato": "Oppstartsdato som frilans",
 
-    "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som selvstendig næringsdrivende siste 10 måneder",
+    "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som selvstendig næringsdrivende",
     "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
         "Jeg har ikke jobbet som selvstendig næringsdrivende de siste 10 månedene",
     "oppsummering.selvstendigNæringsdrivende.næringstype": "Næringstype",

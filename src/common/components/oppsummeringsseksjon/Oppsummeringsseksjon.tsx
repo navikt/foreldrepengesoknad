@@ -1,27 +1,17 @@
 import * as React from 'react';
-import Block from 'common/components/block/Block';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import Ingress from 'nav-frontend-typografi/lib/ingress';
+import './oppsummeringsseksjon.less';
 
-export interface Props {
-    tittel: string;
-    tittelProps: string;
+interface OppsummeringsseksjonProps {
+    ingress?: string;
     children: React.ReactNode;
 }
 
-class Oppsummeringsseksjon extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-    }
-    render() {
-        const { tittel, tittelProps, children } = this.props;
-        return (
-            <Block animated={false}>
-                <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
-                    <div className="oppsummeringsseksjon">{children}</div>
-                </Ekspanderbartpanel>
-            </Block>
-        );
-    }
-}
+const Oppsummeringsseksjon: React.StatelessComponent<OppsummeringsseksjonProps> = ({ ingress, children }) => (
+    <div className="oppsummeringsseksjon">
+        {ingress && <Ingress>{ingress}</Ingress>}
+        {children}
+    </div>
+);
 
 export default Oppsummeringsseksjon;

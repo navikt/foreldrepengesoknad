@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import DisplayTextWithLabel from 'common/components/display-text-with-label/DisplayTextWithLabel';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
-import DisplayContentWithLabel from 'common/components/display-content-with-label/DisplayContentWithLabel';
+import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/UtenlandsoppholdOppsummeringsliste';
+import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
+import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
@@ -22,39 +23,39 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
     } = props.informasjonOmUtenlandsopphold;
 
     return (
-        <React.Fragment>
+        <Oppsummeringsseksjon>
             {iNorgeSiste12Mnd ? (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}
-                    text={getMessage(intl, 'oppsummering.iNorgeSiste12MndTrue')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}
+                    verdi={getMessage(intl, 'oppsummering.iNorgeSiste12MndTrue')}
                 />
             ) : (
-                <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}>
+                <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}>
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={tidligereOpphold} />
-                </DisplayContentWithLabel>
+                </InnholdMedLedetekst>
             )}
             {iNorgeNeste12Mnd ? (
-                <DisplayTextWithLabel
-                    label={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}
-                    text={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}
+                    verdi={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
                 />
             ) : (
-                <DisplayContentWithLabel label={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
+                <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={senereOpphold} />
-                </DisplayContentWithLabel>
+                </InnholdMedLedetekst>
             )}
             {erBarnetFødt === false &&
                 iNorgePåHendelsestidspunktet !== undefined && (
-                    <DisplayTextWithLabel
-                        label={getMessage(intl, 'oppsummering.iNorgePåHendelsestidspunktet.label')}
-                        text={
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.iNorgePåHendelsestidspunktet.label')}
+                        verdi={
                             iNorgePåHendelsestidspunktet
                                 ? getMessage(intl, 'oppsummering.fødselINorgeTrue')
                                 : getMessage(intl, 'oppsummering.fødselINorgeFalse')
                         }
                     />
                 )}
-        </React.Fragment>
+        </Oppsummeringsseksjon>
     );
 };
 export default injectIntl(UtenlandsoppholdOppsummering);
