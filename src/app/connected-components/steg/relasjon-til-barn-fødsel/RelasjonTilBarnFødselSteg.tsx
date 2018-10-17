@@ -118,6 +118,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                     {vis.ufødtBarnPart &&
                         !erFarEllerMedmor(søker.rolle) && (
                             <UfødtBarnPartial
+                                situasjon={situasjon}
                                 dispatch={dispatch}
                                 barn={barn as UfødtBarn}
                                 annenForelder={annenForelder}
