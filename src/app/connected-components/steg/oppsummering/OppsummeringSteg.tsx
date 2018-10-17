@@ -2,24 +2,21 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
-
 import Steg, { StegProps } from '../../../components/steg/Steg';
-
 import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import Person from '../../../types/Person';
 import getMessage from 'common/util/i18nUtils';
-
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
 import { apiActionCreators } from '../../../redux/actions';
 import { StegID } from '../../../util/routing/stegConfig';
-import OppsummeringWrapper from 'common/components/summary/SummaryWrapper';
 import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
+import Oppsummering from 'common/components/oppsummering/Oppsummering';
 
 interface StateProps {
     person: Person;
@@ -58,7 +55,7 @@ class OppsummeringSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                <OppsummeringWrapper className="blokk-m" søkerinfo={søkerinfo} søknad={søknad} />
+                <Oppsummering søkerinfo={søkerinfo} søknad={søknad} />
 
                 <BekreftCheckboksPanel
                     className="blokk-m"

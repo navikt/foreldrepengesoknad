@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Block from 'common/components/block/Block';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import './oppsummeringspanel.less';
 
 export interface Props {
     tittel: string;
@@ -8,7 +9,7 @@ export interface Props {
     children: React.ReactNode;
 }
 
-class Summary extends React.Component<Props> {
+class Oppsummeringspanel extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
@@ -17,11 +18,11 @@ class Summary extends React.Component<Props> {
         return (
             <Block animated={false}>
                 <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
-                    <div className="summary">{children}</div>
+                    <div className="oppsummeringspanel">{children}</div>
                 </Ekspanderbartpanel>
             </Block>
         );
     }
 }
 
-export default Summary;
+export default Oppsummeringspanel;
