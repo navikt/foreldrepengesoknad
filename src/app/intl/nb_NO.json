@@ -683,6 +683,7 @@
     "periodeliste.header.ariaBeskrivelse":
         "Periode nummer: {periodenummer}, {periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.lukk": "Lukk",
+    "periodetype.hull.tittel": "Ubrukt tidsperiode",
 
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "endrePeriodeForm.slett.utsettelse": "Slett opphold",

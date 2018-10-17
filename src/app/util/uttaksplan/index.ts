@@ -93,7 +93,7 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
         case Periodetype.Opphold:
             return getOppholdskontoNavn(intl, periode.årsak, getForelderNavn(periode.forelder, navnPåForeldre));
         case Periodetype.Hull:
-            return 'Hull i uttaksplan';
+            return getMessage(intl, `periodetype.hull.tittel`);
     }
 };
 
