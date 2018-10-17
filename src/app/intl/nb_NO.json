@@ -504,13 +504,13 @@
     "oppsummering.antallBarn.8": "Åtte",
     "oppsummering.antallBarn.9": "Ni",
 
-    "oppsummering.fødselsdato.label": "fødselsdato:",
+    "oppsummering.fødselsdato.label": "fødselsdato",
     "oppsummering.adopsjonAvEktefellesBarn.label": "stebarnsadopsjon",
-    "oppsummering.adopsjonsdato.label": "adopsjonsdato:",
-    "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet:",
-    "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse:",
+    "oppsummering.adopsjonsdato.label": "adopsjonsdato",
+    "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
+    "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse",
 
-    "oppsummering.ankomstdato.label": "ankomstdato:",
+    "oppsummering.ankomstdato.label": "ankomstdato",
 
     "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
