@@ -117,18 +117,20 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
 
     validateComponentAtIndex(index: number) {
         setTimeout(() => {
-            const results = this.state.results.slice();
-            const fieldResult = this.components[index].validate();
-            results[index] = fieldResult;
-            const valid = results.every((result) => result.valid === true);
+            if (this.components[index]) {
+                const results = this.state.results.slice();
+                const fieldResult = this.components[index].validate();
+                results[index] = fieldResult;
+                const valid = results.every((result) => result.valid === true);
 
-            this.setState({
-                results,
-                valid,
-                failedSubmit: this.state.failedSubmit && !valid
-            });
-            if (this.props.onValidationResult) {
-                this.props.onValidationResult(this.mapResultsToErrorSummary());
+                this.setState({
+                    results,
+                    valid,
+                    failedSubmit: this.state.failedSubmit && !valid
+                });
+                if (this.props.onValidationResult) {
+                    this.props.onValidationResult(this.mapResultsToErrorSummary());
+                }
             }
         });
     }

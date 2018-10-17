@@ -72,8 +72,7 @@
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
-    "velkommen.foreldreansvar.veileder":
-        "Du må sende søknaden i posten.",
+    "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
     "velkommen.foreldreansvar.papirsøknadLenke": "Her finner du papirsøknaden",
 
     "personalia.år": "{år} år",
@@ -422,7 +421,7 @@
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker": "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din.",
-    "uttaksplan.informasjonFarMedmorDeltUttak": 
+    "uttaksplan.informasjonFarMedmorDeltUttak":
         "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din. Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte. Du kan lese mer om viktige frister her: {link}",
     "uttaksplan.fristerLinkTekst": "nav.no",
 
@@ -656,7 +655,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
     "uttaksplan.slettPlan": "Slett plan",
-    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda..",
+    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda...",
 
     "bekreftSlettUttaksplanDialog.tittel": "Slett plan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
@@ -676,13 +675,15 @@
 
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
-    "periodeliste.overlappendePeriode": "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
+    "periodeliste.overlappendePeriode":
+        "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse":
         "Periode nummer: {periodenummer}, {periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.lukk": "Lukk",
+    "periodetype.hull.tittel": "Ubrukt tidsperiode",
 
     "endrePeriodeForm.slett.uttak": "Slett periode",
     "endrePeriodeForm.slett.utsettelse": "Slett opphold",
