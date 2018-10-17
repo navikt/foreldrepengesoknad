@@ -3,7 +3,6 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Søker from '../../../../app/types/søknad/Søker';
 import Block from 'common/components/block/Block';
 import { formatDate } from '../../../../app/util/dates/dates';
-import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import { Element } from 'nav-frontend-typografi';
 import FrilansoppdragOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/FrilansoppdragOppsummeringsliste';
 import SelvstendigNæringsdrivendeOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/SelvstendigNæringsdrivendeOppsummeringsliste';
@@ -11,6 +10,7 @@ import AndreInntekterOppsummeringsliste from 'common/components/oppsummering/ste
 import getMessage from 'common/util/i18nUtils';
 import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 
 interface InntektOppsummeringProps {
     søker: Søker;
@@ -53,7 +53,7 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                     feltnavn={getMessage(intl, 'oppsummering.frilans.driverFosterhjem')}
                     verdi={driverFosterhjem ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
-                <InnholdMedLedetekst
+                <KompleksFeltoppsummering
                     ledetekst={getMessage(
                         intl,
                         'oppsummering.frilans.frilansArbeidForNæreVennerEllerFamilieSiste10Mnd'
@@ -69,7 +69,7 @@ const FrilansOppsummering = ({ søker, intl }: Props) => {
                     <Block visible={harJobbetForNærVennEllerFamilieSiste10Mnd} margin={'none'}>
                         <FrilansoppdragOppsummeringsliste frilansoppdrag={oppdragForNæreVennerEllerFamilieSiste10Mnd} />
                     </Block>
-                </InnholdMedLedetekst>
+                </KompleksFeltoppsummering>
             </Oppsummeringsseksjon>
         );
     }
