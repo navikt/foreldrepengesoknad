@@ -82,6 +82,7 @@ class Periodeliste extends React.Component<Props, State> {
                                             render={(onChange, onRequestDelete) => (
                                                 <PeriodelisteItem
                                                     key={periode.id}
+                                                    periodenummer={idx + 1}
                                                     periode={periode}
                                                     navnPåForeldre={navnPåForeldre}
                                                     validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}

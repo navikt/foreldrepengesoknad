@@ -27,60 +27,60 @@ export interface StegConfigItem {
 
 const stegConfig: StegConfig = {
     [StegID.INNGANG]: {
-        tittel: 'Inngang',
+        tittel: 'steg.config.tittel.inngang',
         fortsettKnappLabel: 'Fortsett',
         index: 0
     },
     [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
-        tittel: 'Informasjon om barnet',
+        tittel: 'steg.config.tittel.infoOmBarnet',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
     },
     [StegID.RELASJON_TIL_BARN_FORELDREANSVAR]: {
-        tittel: 'Relasjon til barn overtakelse av foreldreansvar',
+        tittel: 'steg.config.tittel.relasjonBarnForeldreansvar',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
     },
     [StegID.RELASJON_TIL_BARN_FØDSEL]: {
-        tittel: 'Informasjon om barnet',
+        tittel: 'steg.config.tittel.relasjonBarnFødsel',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANNEN_FORELDER,
         index: 1
     },
     [StegID.ANNEN_FORELDER]: {
-        tittel: 'Informasjon om den andre forelderen',
+        tittel: 'steg.config.tittel.annenForelder',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.UTTAKSPLAN_SKJEMA,
         index: 2
     },
     [StegID.UTTAKSPLAN_SKJEMA]: {
-        tittel: 'Informasjon om uttaket',
+        tittel: 'steg.config.tittel.infoOmUttaket',
         fortsettKnappLabel: 'Lag forslag til uttaksplan',
         nesteSteg: StegID.UTTAKSPLAN,
         index: 3
     },
     [StegID.UTTAKSPLAN]: {
-        tittel: 'Uttak',
+        tittel: 'steg.config.tittel.uttak',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.UTENLANDSOPPHOLD,
         index: 4
     },
     [StegID.UTENLANDSOPPHOLD]: {
-        tittel: 'Informasjon om utenlandsopphold',
+        tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
         fortsettKnappLabel: 'Fortsett',
         nesteSteg: StegID.ANDRE_INNTEKTER,
         index: 5
     },
     [StegID.ANDRE_INNTEKTER]: {
-        tittel: 'Opplysninger om inntekt',
+        tittel: 'steg.config.tittel.opplysningerOmInntekt',
         fortsettKnappLabel: 'Gå til oppsummering',
         nesteSteg: StegID.OPPSUMMERING,
         index: 6
     },
     [StegID.OPPSUMMERING]: {
-        tittel: 'Oppsummering',
+        tittel: 'steg.config.tittel.oppsummering',
         fortsettKnappLabel: 'Send søknad',
         index: 7
     }

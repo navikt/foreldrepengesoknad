@@ -129,7 +129,10 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     </div>
                                 )}
                             <span className={BEM.element('header__details')}>
-                                <span className={BEM.element('header__details__icon')}>
+                                <span
+                                    className={BEM.element('header__details__icon')}
+                                    role="presentation"
+                                    aria-hidden={true}>
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
                                 <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
