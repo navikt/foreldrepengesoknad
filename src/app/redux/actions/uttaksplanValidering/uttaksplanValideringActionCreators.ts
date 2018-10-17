@@ -8,13 +8,15 @@ import { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttak
 export function setUttaksplanValidering(
     validertePerioder: Periodevalidering,
     inneholderPerioder: boolean,
-    stønadskontoerMedForMyeUttak: Stønadskontouttak[]
+    stønadskontoerMedForMyeUttak: Stønadskontouttak[],
+    førsteUttakErInnenforSeksUker: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
         validertePerioder,
         inneholderPerioder,
-        stønadskontoerMedForMyeUttak
+        stønadskontoerMedForMyeUttak,
+        førsteUttakErInnenforSeksUker
     };
 }
 
