@@ -679,5 +679,7 @@
     "uttaksplan.validering.feil.tomUttaksplan":
         "Planen er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
+    "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
+        "Du søker tidligere enn 6 uker før du skal ta ut foreldrepenger. Første dag du kan sende inn søknaden er {dato}.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
