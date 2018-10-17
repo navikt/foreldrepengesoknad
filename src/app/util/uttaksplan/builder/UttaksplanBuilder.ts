@@ -45,6 +45,7 @@ class UttaksplanAutoBuilder {
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
         this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
         this.slåSammenLikePerioder();
+        this.fjernHullPåSlutten();
         this.sort();
         return this;
     }
@@ -149,6 +150,15 @@ class UttaksplanAutoBuilder {
     /** Slår sammen perioder som er like og er sammenhengende */
     private slåSammenLikePerioder() {
         this.perioder = slåSammenLikePerioder(this.perioder);
+        return this;
+    }
+
+    private fjernHullPåSlutten() {
+        this.perioder.reverse();
+        while (this.perioder.findIndex((p) => p.type === Periodetype.Hull) === 0) {
+            this.perioder.shift();
+        }
+        this.perioder.reverse();
         return this;
     }
 
