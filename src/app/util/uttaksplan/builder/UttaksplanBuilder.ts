@@ -90,7 +90,7 @@ class UttaksplanAutoBuilder {
      * @param periode
      */
     slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode, periode.type === Periodetype.Uttak).buildUttaksplan();
+        this.slettPeriode(periode, periode.type !== Periodetype.Utsettelse).buildUttaksplan();
         return this;
     }
 
@@ -100,11 +100,13 @@ class UttaksplanAutoBuilder {
      */
     private slettPeriode(periode: Periode, erstattMedHull?: boolean) {
         this.perioder = this.perioder.filter((p) => p.id !== periode.id);
-        // if (erstattMedHull) {
-        //     this.perioder.push({
-        //         tidsperiode: { ...periode.tidsperiode }
-        //     });
-        // }
+        if (erstattMedHull) {
+            this.perioder.push({
+                id: guid(),
+                type: Periodetype.Hull,
+                tidsperiode: { ...periode.tidsperiode }
+            });
+        }
         return this;
     }
 
