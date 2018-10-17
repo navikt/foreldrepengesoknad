@@ -181,7 +181,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        tidsperiode={tidsperiode}
                         feil={feil}
                     />
                 </Block>

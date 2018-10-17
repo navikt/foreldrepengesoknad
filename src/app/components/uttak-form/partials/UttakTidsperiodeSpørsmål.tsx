@@ -66,7 +66,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                     ? getDatoavgrensningerForStønadskonto(
                           periode.konto,
                           familiehendelsesdato,
-                          periode.tidsperiode as Tidsperiode,
+                          tidsperiode as Tidsperiode,
                           ugyldigeTidsperioder
                       )
                     : {
@@ -77,8 +77,8 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
                           },
                           til: {
                               minDato:
-                                  periode.tidsperiode !== undefined && periode.tidsperiode.fom
-                                      ? (periode.tidsperiode.fom as Date)
+                                  tidsperiode !== undefined && tidsperiode.fom
+                                      ? (tidsperiode.fom as Date)
                                       : Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
                               ugyldigeTidsperioder,
                               helgedagerIkkeTillatt: true
