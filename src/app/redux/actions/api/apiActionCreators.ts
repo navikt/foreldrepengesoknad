@@ -30,6 +30,14 @@ export function getTilgjengeligeStønadskonter(params: GetTilgjengeligeStønadsk
         params
     };
 }
+
+export function getTilgjengeligeStønadsuker(params: GetTilgjengeligeStønadskontoerParams): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSUKER,
+        params
+    };
+}
+
 export function getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
     params: GetTilgjengeligeStønadskontoerParams
 ): ApiActionTypes {
@@ -66,5 +74,6 @@ export default {
     storeAppState,
     getTilgjengeligeStønadskonter,
     getTilgjengeligeStønadskonterAndLagUttaksplanForslag,
+    getTilgjengeligeStønadsuker,
     updateApi
 };
