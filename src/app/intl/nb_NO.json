@@ -574,6 +574,7 @@
     "oppsummering.selvstendigNæringsdrivende.revisorNærVennEllerFamilie": "Revisor er nær venn eller familie",
     "oppsummering.selvstendigNæringsdrivende.harGittRevisorSamtykke":
         "Har gitt samtykke til å innhente opplysninger fra revisor",
+    "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekten din det siste året",
 
     "oppsummering.andreInntekter.tittel": "Andre inntekter siste 10 måneder",
     "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre ommtelter de siste 10 månedene",
