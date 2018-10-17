@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedHTMLMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
@@ -43,6 +43,7 @@ class GradertUttakForm extends React.Component<Props> {
                         onChange={(ønskerGradering) =>
                             onChange({ gradert: ønskerGradering, erArbeidstaker: ønskerGradering ? false : undefined })
                         }
+                        hjelpetekst={<FormattedHTMLMessage id="uttaksperiode.gradert.skalDuHarGradering.hjelpetekst" />}
                     />
                 </Block>
 
