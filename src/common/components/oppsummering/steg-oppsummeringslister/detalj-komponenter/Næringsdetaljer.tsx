@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as countries from 'i18n-iso-countries';
 import { formatDate } from '../../../../../app/util/dates/dates';
 import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
@@ -34,7 +35,9 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
         <>
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringstype')}
-                verdi={næringstyper.join(', ')}
+                verdi={næringstyper
+                    .map((næringstype) => getMessage(intl, `næringstype.${næringstype.toLowerCase()}`))
+                    .join(', ')}
             />
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
@@ -54,7 +57,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
             />
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
-                verdi={registrertINorge ? 'Norge' : registrertILand}
+                verdi={registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}
             />
 
             {nyIArbeidslivet !== undefined && (

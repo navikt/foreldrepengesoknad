@@ -2,10 +2,10 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import InformasjonOmUtenlandsopphold from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
-import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import UtenlandsoppholdOppsummeringsliste from 'common/components/oppsummering/steg-oppsummeringslister/UtenlandsoppholdOppsummeringsliste';
 import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
@@ -30,9 +30,9 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     verdi={getMessage(intl, 'oppsummering.iNorgeSiste12MndTrue')}
                 />
             ) : (
-                <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}>
+                <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.iNorgeSiste12Mnd.label')}>
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={tidligereOpphold} />
-                </InnholdMedLedetekst>
+                </KompleksFeltoppsummering>
             )}
             {iNorgeNeste12Mnd ? (
                 <Feltoppsummering
@@ -40,9 +40,9 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     verdi={getMessage(intl, 'oppsummering.iNorgeNeste12MndTrue')}
                 />
             ) : (
-                <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
+                <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.iNorgeNeste12Mnd.label')}>
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={senereOpphold} />
-                </InnholdMedLedetekst>
+                </KompleksFeltoppsummering>
             )}
             {erBarnetFødt === false &&
                 iNorgePåHendelsestidspunktet !== undefined && (

@@ -5,11 +5,11 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { formatDate } from '../../../../app/util/dates/dates';
 import Barn, { Adopsjonsbarn, ForeldreansvarBarn, FødtBarn, UfødtBarn } from '../../../../app/types/søknad/Barn';
 import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
-import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/InnholdMedLedetekst';
 import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
 import { createListOfAttachmentPreviewLinks } from 'common/util/oppsummeringUtils';
 import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsummeringsseksjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummering/KompleksFeltoppsummering';
 
 interface RelasjonTilBarnOppsummeringProps {
     barn: Barn;
@@ -70,9 +70,9 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                         verdi={adopsjonsvedtak.map((vedlegg) => vedlegg.filename)}
                     />
                 ) : (
-                    <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}>
+                    <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.adopsjonsvedtak.label')}>
                         <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                    </InnholdMedLedetekst>
+                    </KompleksFeltoppsummering>
                 )}
             </React.Fragment>
         );
@@ -128,9 +128,9 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                         verdi={omsorgsovertakelse.map((vedlegg) => vedlegg.filename)}
                     />
                 ) : (
-                    <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.omsorgsovertakelse.label')}>
+                    <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.omsorgsovertakelse.label')}>
                         <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                    </InnholdMedLedetekst>
+                    </KompleksFeltoppsummering>
                 )}
             </React.Fragment>
         );
@@ -202,15 +202,15 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 />
                 {terminbekreftelse &&
                     terminbekreftelse.length > 0 && (
-                        <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
+                        <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
                             {createListOfAttachmentPreviewLinks(terminbekreftelse)}
-                        </InnholdMedLedetekst>
+                        </KompleksFeltoppsummering>
                     )}
                 {terminbekreftelse === undefined &&
                     skalLasteOppTerminbekreftelse && (
-                        <InnholdMedLedetekst ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
+                        <KompleksFeltoppsummering ledetekst={getMessage(intl, 'oppsummering.terminbekreftelse.label')}>
                             <EtikettBase {...this.missingAttachmentEtikettProps()} />
-                        </InnholdMedLedetekst>
+                        </KompleksFeltoppsummering>
                     )}
                 {terminbekreftelseDato && (
                     <Feltoppsummering
