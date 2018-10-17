@@ -8,15 +8,14 @@ import { formaterNavn } from 'app/util/domain/personUtil';
 import { Søkerinfo } from '../../../app/types/søkerinfo';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../app/util/validation/steg/barn';
 import Block from 'common/components/block/Block';
-import AnnenForelderOppsummering from 'common/components/oppsummering/steg-oppsummeringer/AnnenForelderOppsummering';
-import RelasjonTilBarnOppsummering from 'common/components/oppsummering/steg-oppsummeringer/RelasjonTilBarnOppsummering';
-import UtenlandsoppholdOppsummering from 'common/components/oppsummering/steg-oppsummeringer/UtenlandsoppholdOppsummering';
-import InntektOppsummering from 'common/components/oppsummering/steg-oppsummeringer/InntektOppsummering';
+import AnnenForelderOppsummering from 'common/components/oppsummering/oppsummeringer/AnnenForelderOppsummering';
+import RelasjonTilBarnOppsummering from 'common/components/oppsummering/oppsummeringer/RelasjonTilBarnOppsummering';
+import UtenlandsoppholdOppsummering from 'common/components/oppsummering/oppsummeringer/UtenlandsoppholdOppsummering';
+import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/InntektOppsummering';
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import './oppsummering.less';
 
 interface OppsummeringProps {
-    className?: string;
     søkerinfo: Søkerinfo;
     søknad: Søknad;
 }
@@ -24,10 +23,10 @@ interface OppsummeringProps {
 type Props = OppsummeringProps & InjectedIntlProps;
 class Oppsummering extends React.Component<Props> {
     render() {
-        const { className, søkerinfo, søknad, intl } = this.props;
+        const { søkerinfo, søknad, intl } = this.props;
         const { person } = søkerinfo;
         return (
-            <div className={className}>
+            <Block margin="m">
                 <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
                 <div className="oppsummering">
                     <Block margin="xs">
@@ -69,10 +68,10 @@ class Oppsummering extends React.Component<Props> {
                     </Oppsummeringspanel>
 
                     <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.inntekt')} tittelProps={'undertittel'}>
-                        <InntektOppsummering søker={søknad.søker} />
+                        <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
                     </Oppsummeringspanel>
                 </div>
-            </div>
+            </Block>
         );
     }
 }

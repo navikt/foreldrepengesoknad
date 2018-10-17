@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as countries from 'i18n-iso-countries';
-import { Utenlandsopphold } from '../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold } from '../../../../../app/types/søknad/InformasjonOmUtenlandsopphold';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { formatDate } from '../../../../app/util/dates/dates';
+import { formatDate } from '../../../../../app/util/dates/dates';
 import Oppsummeringsliste from 'common/components/oppsummeringsliste/Oppsummeringsliste';
 
 interface UtenlandsoppholdOppsummeringslisteProps {
