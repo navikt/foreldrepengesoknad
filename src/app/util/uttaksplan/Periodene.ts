@@ -5,7 +5,8 @@ import {
     Periodetype,
     Utsettelsesperiode,
     Oppholdsperiode,
-    PeriodeHull
+    PeriodeHull,
+    isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Tidsperiode } from 'common/types';
 import { Perioden } from './Perioden';
@@ -17,6 +18,8 @@ export const Periodene = (perioder: Periode[]) => ({
     getUttak: () => getUttaksperioder(perioder),
     getHull: () => getHull(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
+    getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
+    getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     sort: () => perioder.sort(sorterPerioder),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -116,4 +119,20 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
     return Perioden(periode).setStartdato(Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager));
+}
+
+function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
+    return perioder.filter(
+        (periode) =>
+            moment(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day') ||
+            isForeldrepengerFørFødselUttaksperiode(periode)
+    );
+}
+
+function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
+    return perioder.filter(
+        (periode) =>
+            moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
+            isForeldrepengerFørFødselUttaksperiode(periode) === false
+    );
 }

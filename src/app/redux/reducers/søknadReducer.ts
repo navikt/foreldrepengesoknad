@@ -13,7 +13,7 @@ import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import { Søker } from '../../types/søknad/Søker';
 import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuilder';
-import { isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
 
@@ -58,8 +58,12 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
 };
 
 const filterOutPerioderFørTermin = (state: SøknadPartial) => {
-    return state.uttaksplan.filter((periode) =>
-        moment(periode.tidsperiode.tom).isBefore(getFamiliehendelsedato(state.barn as Barn, state.situasjon!), 'day')
+    return state.uttaksplan.filter(
+        (periode) =>
+            moment(periode.tidsperiode.fom).isSameOrAfter(
+                getFamiliehendelsedato(state.barn as Barn, state.situasjon!),
+                'day'
+            ) || isForeldrepengerFørFødselUttaksperiode(periode)
     );
 };
 
@@ -74,6 +78,12 @@ const handleGjelderAnnetBarn = (
 };
 
 const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
+    const getBuilder = (perioder?: Periode[]) => {
+        return UttaksplanBuilder(
+            perioder || state.uttaksplan,
+            getFamiliehendelsedato(state.barn as Barn, state.situasjon!)
+        );
+    };
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
@@ -159,7 +169,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
             return {
                 ...state,
-                uttaksplan: UttaksplanBuilder(state.uttaksplan).leggTilPeriodeOgBuild({
+                uttaksplan: getBuilder().leggTilPeriodeOgBuild({
                     ...action.periode
                 }).perioder
             };
@@ -168,7 +178,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
         case SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE: {
             return {
                 ...state,
-                uttaksplan: UttaksplanBuilder(state.uttaksplan).slettPeriodeOgBuild(action.periode).perioder
+                uttaksplan: getBuilder().slettPeriodeOgBuild(action.periode).perioder
             };
         }
 
@@ -182,7 +192,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 : state.uttaksplan;
             return {
                 ...state,
-                uttaksplan: UttaksplanBuilder(filteredPerioder).oppdaterPeriodeOgBuild(
+                uttaksplan: getBuilder(filteredPerioder).oppdaterPeriodeOgBuild(
                     cleanupPeriode(action.periode, state.søker as Søker, state.annenForelder as AnnenForelder)
                 ).perioder
             };
