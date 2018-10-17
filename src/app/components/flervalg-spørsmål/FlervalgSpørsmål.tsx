@@ -11,7 +11,7 @@ export interface FlervalgAlternativ {
 interface FlervalgSpørsmålProps {
     navn: string;
     spørsmål: string;
-    hjelpetekst?: string;
+    hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: string;
     alternativer: FlervalgAlternativ[];
     toKolonner?: boolean;

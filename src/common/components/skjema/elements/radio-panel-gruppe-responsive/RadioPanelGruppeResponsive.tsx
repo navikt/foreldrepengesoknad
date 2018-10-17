@@ -7,7 +7,7 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 
 interface ResponsiveProps {
     twoColumns?: boolean;
-    infoboksTekst?: string;
+    infoboksTekst?: string | React.ReactNode;
 }
 
 export type RadioPanelGruppeResponsiveProps = ResponsiveProps & RadioPanelGruppeProps;
