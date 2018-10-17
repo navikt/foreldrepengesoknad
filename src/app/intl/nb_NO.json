@@ -22,6 +22,8 @@
     "heltid": "Heltid",
     "deltid": "Deltid",
 
+    "tidsperiode": "Fra {fom} til {tom}",
+
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
@@ -629,6 +631,8 @@
     "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
+    "periodeliste.header.ariaBeskrivelse":
+        "Periode nummer: {periodenummer}, {periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.lukk": "Lukk",
 
     "endrePeriodeForm.slett.uttak": "Slett periode",
