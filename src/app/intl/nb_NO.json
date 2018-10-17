@@ -148,7 +148,9 @@
     "antallBarn.alternativ.tobarn": "to barn",
     "antallBarn.alternativ.tvillinger": "tvillinger",
     "antallBarn.alternativ.flere": "flere barn",
-    "antallBarn.select.tekst": "Hvor mange barn venter du?",
+    "antallBarn.select.tekst.termin": "Hvor mange barn venter du?",
+    "antallBarn.select.tekst.fødsel": "Hvor mange barn fikk du?",
+    "antallBarn.select.tekst.adopsjon": "Hvor mange barn adopterer du?",
     "antallBarn.select.velg": "Velg",
 
     "fødselsdatoer.fødsel": "Når er barnet født?",
