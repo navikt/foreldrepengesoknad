@@ -57,7 +57,7 @@ const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnn
     };
 };
 
-const filterOutPerioderFørTermin = (state: SøknadPartial) => {
+const removeEkstrauttakFørTermin = (state: SøknadPartial) => {
     return state.uttaksplan.filter(
         (periode) =>
             moment(periode.tidsperiode.fom).isSameOrAfter(
@@ -188,7 +188,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 action.periode.skalIkkeHaUttakFørTermin === true;
 
             const filteredPerioder = removeOtherPerioderFørTermin
-                ? filterOutPerioderFørTermin(state)
+                ? removeEkstrauttakFørTermin(state)
                 : state.uttaksplan;
             return {
                 ...state,
