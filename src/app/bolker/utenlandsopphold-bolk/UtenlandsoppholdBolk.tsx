@@ -7,7 +7,7 @@ import UtenlandsoppholdModal, {
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import OppholdListElement from '../tidsperiode-bolk/OppholdListElement';
+import OppholdListElement from './OppholdListElement';
 import getMessage from 'common/util/i18nUtils';
 
 interface UtenlandsoppholdBolkProps {
@@ -116,16 +116,6 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
                                         onEdit={() => this.onOppholdSelect(oppholdToRender, index)}
                                         onDelete={() => this.onOppholdDelete(oppholdToRender)}
                                         key={JSON.stringify(oppholdToRender)}
-                                        editButtonAriaText={getMessage(
-                                            intl,
-                                            'utenlandsopphold.liste.endreOppholdAriaTekst',
-                                            { land: oppholdToRender.land }
-                                        )}
-                                        deleteButtonAriaText={getMessage(
-                                            intl,
-                                            'utenlandsopphold.liste.slettOppholdAriaTekst',
-                                            { land: oppholdToRender.land }
-                                        )}
                                     />
                                 )}
                             />
