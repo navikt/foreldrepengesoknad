@@ -667,8 +667,8 @@
 
     "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
-    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Barnet er innlagt på helseinstitusjon",
-    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Jeg er innlagt på helseinstitusjon",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Jeg er innlagt på helseinstitusjon",
+    "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, i hvilken grad du er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
     "utsettelse.sykdom.vedlegg.info.innlagt":
