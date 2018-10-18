@@ -14,6 +14,8 @@ import UtenlandsoppholdOppsummering from 'common/components/oppsummering/oppsumm
 import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/InntektOppsummering';
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
 import './oppsummering.less';
+import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
+import { getNavnPåForeldre } from '../../../app/util/uttaksplan';
 
 interface OppsummeringProps {
     søkerinfo: Søkerinfo;
@@ -69,6 +71,13 @@ class Oppsummering extends React.Component<Props> {
 
                     <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.inntekt')} tittelProps={'undertittel'}>
                         <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
+                    </Oppsummeringspanel>
+
+                    <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.uttak')} tittelProps={'undertittel'}>
+                        <UttaksplanOppsummering
+                            perioder={søknad.uttaksplan}
+                            navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
+                        />
                     </Oppsummeringspanel>
                 </div>
             </Block>

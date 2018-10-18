@@ -72,12 +72,11 @@ class GradertUttakForm extends React.Component<Props> {
                         onChange={(orgnr, arbeidsform) =>
                             onChange({
                                 orgnr,
-                                selvstendigNæringsdrivendeEllerFrilans:
-                                    arbeidsform !== Arbeidsform.arbeidstaker ? arbeidsform : undefined,
+                                arbeidsform,
                                 erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
                             })
                         }
-                        frilansEllerSelvstendig={periode.selvstendigNæringsdrivendeEllerFrilans}
+                        frilansEllerSelvstendig={periode.arbeidsform}
                         valgtArbeidsforhold={periode.orgnr}
                     />
                 </Block>

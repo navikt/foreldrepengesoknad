@@ -82,7 +82,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
         renderFormTag: true,
         history: props.history,
-        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
     };
 
     return {

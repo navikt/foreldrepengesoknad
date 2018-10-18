@@ -218,7 +218,12 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         renderFortsettKnapp: utenlandsoppholdErGyldig(søknad),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.UTENLANDSOPPHOLD, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(
+            StegID.UTENLANDSOPPHOLD,
+            state.søknad,
+            props.søkerinfo,
+            state.uttaksplanValidering.erGyldig
+        )
     };
 
     return {

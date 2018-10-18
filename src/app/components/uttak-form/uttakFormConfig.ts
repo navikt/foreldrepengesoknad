@@ -137,7 +137,7 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
     const { periode } = payload;
     return (
         periode.type === Periodetype.Uttak &&
-        (questionValueIsOk(periode.selvstendigNæringsdrivendeEllerFrilans) || questionValueIsOk(periode.orgnr))
+        (questionValueIsOk(periode.arbeidsform) || questionValueIsOk(periode.orgnr))
     );
 };
 
