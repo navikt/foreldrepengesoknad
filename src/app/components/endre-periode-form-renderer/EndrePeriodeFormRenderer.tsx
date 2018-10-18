@@ -51,16 +51,14 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                 ...periode,
                 ...(p as Utsettelsesperiode),
                 erArbeidstaker:
-                    (p as Utsettelsesperiode).orgnr !== undefined &&
-                    (p as Utsettelsesperiode).selvstendigNæringsdrivendeEllerFrilans === undefined
+                    (p as Utsettelsesperiode).orgnr !== undefined && (p as Utsettelsesperiode).arbeidsform === undefined
             };
         } else if (periode.type === Periodetype.Uttak) {
             updatedPeriode = {
                 ...periode,
                 ...(p as Uttaksperiode),
                 erArbeidstaker:
-                    (p as Uttaksperiode).orgnr !== undefined &&
-                    (p as Uttaksperiode).selvstendigNæringsdrivendeEllerFrilans === undefined
+                    (p as Uttaksperiode).orgnr !== undefined && (p as Uttaksperiode).arbeidsform === undefined
             };
         } else if (periode.type === Periodetype.Overføring) {
             updatedPeriode = {
