@@ -32,10 +32,6 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
 
     return (
         <>
-            {/*gradert === true &&
-                trekkdager !== undefined && (
-                    <Feltoppsummering feltnavn={`Antall dager som trekkes fra ${konto}`} verdi={`${trekkdager}`} />
-                )*/}
             {ønskerSamtidigUttak !== undefined && (
                 <Feltoppsummering feltnavn="Skal ha samtidig uttak" verdi={ønskerSamtidigUttak ? 'Ja' : 'Nei'} />
             )}
