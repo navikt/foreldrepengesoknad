@@ -133,6 +133,14 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     return true;
 };
 
+const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
+    const { periode } = payload;
+    return (
+        periode.type === Periodetype.Uttak &&
+        (questionValueIsOk(periode.selvstendigNæringsdrivendeEllerFrilans) || questionValueIsOk(periode.orgnr))
+    );
+};
+
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
         isAnswered: ({ periode }) =>
@@ -180,7 +188,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         condition: ({ periode }) => periode.type === Periodetype.Uttak && periode.gradert === true
     },
     [Sp.hvorSkalDuJobbe]: {
-        isAnswered: ({ periode }) => periode.type === Periodetype.Uttak && questionValueIsOk(periode.orgnr),
+        isAnswered: (payload) => hvorSkalDuJobbeErBesvart(payload),
         parentQuestion: Sp.stillingsprosent
     }
 };
