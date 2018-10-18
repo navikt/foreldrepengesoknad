@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
+import { StønadskontoType, UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import getMessage from 'common/util/i18nUtils';
@@ -14,6 +14,7 @@ type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
 
 const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl }) => {
     const {
+        konto,
         morsAktivitetIPerioden,
         ønskerSamtidigUttak,
         gradert,
@@ -36,10 +37,12 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
                     verdi={ønskerSamtidigUttak ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
             )}
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
-                verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
-            />
+            {konto !== StønadskontoType.ForeldrepengerFørFødsel && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
+                    verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
+            )}
 
             {gradert === true &&
                 stillingsprosent && (
