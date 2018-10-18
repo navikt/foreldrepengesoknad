@@ -4,7 +4,6 @@ import Oppsummeringsliste, {
     OppsummeringslisteelementProps
 } from 'common/components/oppsummeringsliste/Oppsummeringsliste';
 import {
-    Oppholdsperiode,
     Overføringsperiode,
     Periode,
     Periodetype,
@@ -16,7 +15,6 @@ import { formatDate } from '../../../../../app/util/dates/dates';
 import Uttaksperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Utsettelsesperiodedetaljer';
 import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
-import Oppholdsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Oppholdsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
 
@@ -41,27 +39,25 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
         this.createOppsummeringslisteelementPropsForOverføringsperiode = this.createOppsummeringslisteelementPropsForOverføringsperiode.bind(
             this
         );
-        this.createOppsummeringslisteelementPropsForOppholdsperiode = this.createOppsummeringslisteelementPropsForOppholdsperiode.bind(
-            this
-        );
         this.formatTidsperiode = this.formatTidsperiode.bind(this);
     }
 
-    createOppsummeringslisteData() {
+    createOppsummeringslisteData(): OppsummeringslisteelementProps[] {
         const { perioder } = this.props;
-        return perioder.map((periode) => this.createOppsummeringslisteelementProps(periode));
+        return perioder
+            .map((periode) => this.createOppsummeringslisteelementProps(periode))
+            .filter((v) => v !== null) as OppsummeringslisteelementProps[];
     }
 
-    createOppsummeringslisteelementProps(periode: Periode): OppsummeringslisteelementProps {
+    createOppsummeringslisteelementProps(periode: Periode) {
         if (periode.type === Periodetype.Uttak) {
             return this.createOppsummeringslisteelementPropsForUttaksperiode(periode);
         } else if (periode.type === Periodetype.Utsettelse) {
             return this.createOppsummeringslisteelementPropsForUtsettelsesperiode(periode);
         } else if (periode.type === Periodetype.Overføring) {
             return this.createOppsummeringslisteelementPropsForOverføringsperiode(periode);
-        } else {
-            return this.createOppsummeringslisteelementPropsForOppholdsperiode(periode as Oppholdsperiode);
         }
+        return null;
     }
 
     createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode) {
@@ -86,14 +82,6 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
             venstrestiltTekst: `Overtakelse av ${periode.konto} på grunn av ${periode.årsak}`,
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: <Overføringsperiodedetaljer periode={periode} />
-        };
-    }
-
-    createOppsummeringslisteelementPropsForOppholdsperiode(periode: Oppholdsperiode) {
-        return {
-            venstrestiltTekst: `Opphold på grunn av ${periode.årsak}`,
-            høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Oppholdsperiodedetaljer periode={periode} />
         };
     }
 
