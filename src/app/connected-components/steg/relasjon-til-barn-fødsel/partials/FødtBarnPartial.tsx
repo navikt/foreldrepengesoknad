@@ -11,7 +11,7 @@ import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { RegistrertBarn } from '../../../../types/Person';
 import { RelasjonTilBarnFødtVisibility } from '../visibility/relasjonTilBarnFødselVisibility';
-import { Søkersituasjon } from '../../../../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../../../../types/søknad/Søknad';
 
 interface StateProps {
     barn: FødtBarn;

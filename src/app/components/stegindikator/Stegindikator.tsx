@@ -43,9 +43,10 @@ class Stegindikator extends React.Component<Props> {
             <div
                 className={bem.className}
                 role="progressbar"
-                aria-valuenow={aktivtSteg}
+                aria-valuenow={aktivtSteg + 1}
                 aria-valuemin={1}
-                aria-valuemax={steg.length}>
+                aria-valuemax={steg.length}
+                aria-label={getMessage(intl, stegConfig[id].tittel)}>
                 <h1 className={`typo-systemtittel ${bem.element('title')}`}>
                     <span className="m_no-focusOutline" ref={(c) => (this.title = c)} tabIndex={-1}>
                         {getMessage(intl, stegConfig[id].tittel)}

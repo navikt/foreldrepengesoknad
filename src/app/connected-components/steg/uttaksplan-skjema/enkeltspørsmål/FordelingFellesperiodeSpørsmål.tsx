@@ -47,6 +47,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                             }}
                         />
                     }
+                    ariaLabelText={getMessage(intl, 'uttaksplan.skjema.fordeling.spørsmål')}
                     ariaDescription={intl.formatMessage(
                         { id: 'uttaksplan.skjema.fordeling.aria.fordeling' },
                         {

@@ -11,8 +11,19 @@ let nyPeriode: Uttaksperiode = {
     forelder: Forelder.MOR,
     konto: StønadskontoType.Fedrekvote,
     tidsperiode: {
-        fom: new Date(),
-        tom: new Date()
+        fom: new Date(2018, 9, 1),
+        tom: new Date(2018, 9, 2)
+    },
+    ønskerSamtidigUttak: false
+};
+const nyPeriode2: Uttaksperiode = {
+    id: '',
+    type: Periodetype.Uttak,
+    forelder: Forelder.MOR,
+    konto: StønadskontoType.Mødrekvote,
+    tidsperiode: {
+        fom: new Date(2018, 10, 1),
+        tom: new Date(2018, 10, 2)
     },
     ønskerSamtidigUttak: false
 };
@@ -27,10 +38,10 @@ describe('Søknad - Uttaksplan reducer', () => {
         state = søknadReducer(state, actions.uttaksplanAddPeriode(nyPeriode));
         expect(state.uttaksplan.length).toBe(1);
         nyPeriode = state.uttaksplan[0] as Uttaksperiode;
-        expect(nyPeriode.id).toBeDefined();
+        expect(nyPeriode.id).not.toBe('');
     });
-    it('should create uniqe id for adder periode', () => {
-        state = søknadReducer(state, actions.uttaksplanAddPeriode(nyPeriode));
+    it('should create uniqe id for added periode', () => {
+        state = søknadReducer(state, actions.uttaksplanAddPeriode(nyPeriode2));
         expect(state.uttaksplan.length).toBe(2);
         expect(state.uttaksplan[0].id).not.toBe(state.uttaksplan[1].id);
     });

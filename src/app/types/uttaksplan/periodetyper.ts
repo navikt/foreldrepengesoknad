@@ -6,7 +6,8 @@ export enum Periodetype {
     'Uttak' = 'uttak',
     'Utsettelse' = 'utsettelse',
     'Opphold' = 'opphold',
-    'Overføring' = 'overføring'
+    'Overføring' = 'overføring',
+    'Hull' = 'ubegrunnetOpphold'
 }
 
 export enum StønadskontoType {
@@ -63,6 +64,11 @@ export interface PeriodeBase {
     vedlegg?: Attachment[];
 }
 
+export interface PeriodeHull extends PeriodeBase {
+    type: Periodetype.Hull;
+    tidsperiode: Tidsperiode;
+}
+
 export interface UttaksperiodeBase extends PeriodeBase {
     type: Periodetype.Uttak;
     konto: StønadskontoType;
@@ -108,7 +114,7 @@ export interface Overføringsperiode extends PeriodeBase {
     årsak: OverføringÅrsakType;
 }
 
-export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode | Overføringsperiode;
+export type Periode = Uttaksperiode | Utsettelsesperiode | Oppholdsperiode | Overføringsperiode | PeriodeHull;
 
 export interface TilgjengeligStønadskonto {
     konto: StønadskontoType;
