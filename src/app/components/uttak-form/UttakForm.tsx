@@ -250,6 +250,8 @@ class UttaksperiodeForm extends React.Component<Props> {
                     <NyPeriodeKnapperad
                         periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
                         onCancel={onCancel}
+                        ariaLabelAvbryt={getMessage(intl, 'uttaksplan.nyperiode.avbrytAriaLabel')}
+                        ariaLabelLeggTil={getMessage(intl, 'uttaksplan.nyperiode.leggTilAriaLabel')}
                     />
                 )}
             </React.Fragment>

@@ -5,18 +5,25 @@ import { FormattedMessage } from 'react-intl';
 
 export interface Props {
     periodeKanLeggesTil: boolean;
+    ariaLabelLeggTil: string;
+    ariaLabelAvbryt: string;
     onCancel?: () => void;
 }
 
-const NyPeriodeKnapperad: React.StatelessComponent<Props> = ({ onCancel, periodeKanLeggesTil }) => (
+const NyPeriodeKnapperad: React.StatelessComponent<Props> = ({
+    onCancel,
+    periodeKanLeggesTil,
+    ariaLabelAvbryt,
+    ariaLabelLeggTil
+}) => (
     <Knapperad>
         {onCancel && (
-            <Knapp htmlType="button" onClick={onCancel}>
+            <Knapp htmlType="button" onClick={onCancel} aria-label={ariaLabelAvbryt}>
                 <FormattedMessage id="avbryt" />
             </Knapp>
         )}
         {periodeKanLeggesTil && (
-            <Hovedknapp htmlType="submit">
+            <Hovedknapp htmlType="submit" aria-label={ariaLabelLeggTil}>
                 <FormattedMessage id="leggtil" />
             </Hovedknapp>
         )}

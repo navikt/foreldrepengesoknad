@@ -16,6 +16,7 @@ import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuild
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
+import { guid } from 'nav-frontend-js-utils';
 
 const getDefaultState = (): SøknadPartial => {
     return {
@@ -167,11 +168,17 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
 
         case SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE: {
+            const id = guid();
             return {
                 ...state,
                 uttaksplan: getBuilder().leggTilPeriodeOgBuild({
-                    ...action.periode
-                }).perioder
+                    ...action.periode,
+                    id
+                }).perioder,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    lastAddedPeriodeId: id
+                }
             };
         }
 
