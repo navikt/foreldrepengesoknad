@@ -156,7 +156,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                             />
                         </Block>
-                        <Block visible={uttaksplan.length === 0} margin="l">
+                        <Block visible={uttaksplan.length === 0} margin="xl">
                             <TomUttaksplanInfo />
                         </Block>
                         <Block visible={formIsOpen}>
