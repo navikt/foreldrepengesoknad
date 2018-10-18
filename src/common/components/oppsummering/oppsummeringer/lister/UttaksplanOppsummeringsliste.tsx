@@ -80,14 +80,14 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForOverføringsperiode(periode: Overføringsperiode) {
-        const { intl } = this.props;
+        const { navnPåForeldre, intl } = this.props;
         const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.overtakelse.pga', {
                 konto: kontonavn
             }),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Overføringsperiodedetaljer periode={periode} />
+            content: <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
         };
     }
 
