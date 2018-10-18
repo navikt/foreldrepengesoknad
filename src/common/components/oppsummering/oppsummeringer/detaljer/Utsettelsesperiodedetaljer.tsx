@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Arbeidsform, Utsettelsesperiode } from '../../../../../app/types/uttaksplan/periodetyper';
+import { Arbeidsform, Utsettelsesperiode, UtsettelseÅrsakType } from '../../../../../app/types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
@@ -13,7 +13,7 @@ interface UtsettelsesperiodedetaljerProps {
 type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
 
 const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl }) => {
-    const { morsAktivitetIPerioden, orgnr, arbeidsform, vedlegg, konto } = periode;
+    const { årsak, morsAktivitetIPerioden, orgnr, arbeidsform, vedlegg } = periode;
 
     let arbeidsformTekst = '';
     if (arbeidsform === Arbeidsform.arbeidstaker) {
@@ -32,8 +32,9 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, 
                 )}
                 ledetekst="Dokumentasjon av årsak til utsettelse"
             />
-            <Feltoppsummering feltnavn="Konto" verdi={konto} />
-            {arbeidsform && <Feltoppsummering feltnavn="Arbeidstaker" verdi={arbeidsformTekst} />}
+            {årsak === UtsettelseÅrsakType.Arbeid && (
+                <Feltoppsummering feltnavn="Arbeidstaker" verdi={arbeidsformTekst} />
+            )}
             {morsAktivitetIPerioden && (
                 <MorsAktivitetDetaljer
                     morsAktivitet={morsAktivitetIPerioden}
