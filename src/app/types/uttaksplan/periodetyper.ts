@@ -73,7 +73,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     gradert?: boolean;
     stillingsprosent?: string;
     orgnr?: string;
-    selvstendigNæringsdrivendeEllerFrilans?: Arbeidsform;
+    arbeidsform?: Arbeidsform;
     erArbeidstaker?: boolean;
 }
 
@@ -92,7 +92,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     morsAktivitetIPerioden?: MorsAktivitet;
     orgnr?: string;
     erArbeidstaker: boolean;
-    selvstendigNæringsdrivendeEllerFrilans?: Arbeidsform;
+    arbeidsform?: Arbeidsform;
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
