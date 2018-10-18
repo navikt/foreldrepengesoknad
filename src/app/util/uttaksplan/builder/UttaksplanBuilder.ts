@@ -59,8 +59,7 @@ class UttaksplanAutoBuilder {
         this.slåSammenLikePerioder();
         this.justerHullRundtPeriode(periode);
         this.perioder = settInnPeriode(this.perioder, {
-            ...periode,
-            id: guid()
+            ...periode
         });
         this.buildUttaksplan();
         return this;

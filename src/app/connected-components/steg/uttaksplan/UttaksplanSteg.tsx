@@ -36,6 +36,7 @@ interface StateProps {
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
     perioder: Periode[];
+    lastAddedPeriodeId: string | undefined;
     navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -146,6 +147,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksstatus,
             tilgjengeligeStønadskontoer,
             navnPåForeldre,
+            lastAddedPeriodeId,
             dispatch
         } = this.props;
         const { visFeiloppsummering } = this.state;
@@ -191,6 +193,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 barn={søknad.barn}
                                 uttaksplan={søknad.uttaksplan}
                                 uttaksplanValidering={uttaksplanValidering}
+                                lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 navnPåForeldre={navnPåForeldre}
@@ -248,6 +251,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         stegProps,
         uttaksstatus,
         navnPåForeldre,
+        lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer
