@@ -6,7 +6,8 @@ import {
     Utsettelsesperiode,
     Oppholdsperiode,
     PeriodeHull,
-    isForeldrepengerFørFødselUttaksperiode
+    isForeldrepengerFørFødselUttaksperiode,
+    Overføringsperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Tidsperiode } from 'common/types';
 import { Perioden } from './Perioden';
@@ -16,6 +17,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
     getOpphold: () => getOpphold(perioder),
     getUttak: () => getUttaksperioder(perioder),
+    getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
@@ -48,6 +50,10 @@ function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
 
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Utsettelse) as Utsettelsesperiode[];
+}
+
+function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
+    return perioder.filter((periode) => periode.type === Periodetype.Overføring) as Overføringsperiode[];
 }
 
 function getHull(perioder: Periode[]): PeriodeHull[] {
