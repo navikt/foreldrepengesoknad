@@ -162,7 +162,7 @@ const erTidsperiodeFomEllerEtterDato = (tidsperiode: Partial<Tidsperiode>, dato:
     return (
         tidsperiode.fom !== undefined &&
         tidsperiode.tom !== undefined &&
-        moment(tidsperiode.fom).isSameOrAfter(dato) &&
-        moment(tidsperiode.tom).isSameOrAfter(dato)
+        moment(tidsperiode.fom).isSameOrAfter(dato, 'day') &&
+        moment(tidsperiode.tom).isSameOrAfter(dato, 'day')
     );
 };
