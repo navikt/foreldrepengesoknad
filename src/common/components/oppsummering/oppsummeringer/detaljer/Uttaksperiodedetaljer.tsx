@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Arbeidsform, UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
+import { UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
+import getMessage from 'common/util/i18nUtils';
+import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
@@ -22,23 +24,38 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
     } = periode;
 
     let arbeidsformTekst = '';
-    if (arbeidsform === Arbeidsform.arbeidstaker) {
-        arbeidsformTekst = `Jeg skal jobbe for registrert arbeidstaker med organisasjonsnummer ${orgnr}`;
-    } else if (arbeidsform === Arbeidsform.selvstendignæringsdrivende) {
-        arbeidsformTekst = 'Jeg skal jobbe som selvstendig næringsdrivende eller frilans';
-    } else if (arbeidsform === Arbeidsform.frilans) {
-        arbeidsformTekst = 'Jeg skal jobbe som frilans';
+    if (arbeidsform) {
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr });
     }
 
     return (
         <>
             {ønskerSamtidigUttak !== undefined && (
-                <Feltoppsummering feltnavn="Skal ha samtidig uttak" verdi={ønskerSamtidigUttak ? 'Ja' : 'Nei'} />
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.uttak.samtidigUttak')}
+                    verdi={ønskerSamtidigUttak ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                />
             )}
-            <Feltoppsummering feltnavn="Jeg skal kombinere perioden med arbeid" verdi={gradert ? 'Ja' : 'Nei'} />
+            <Feltoppsummering
+                feltnavn={getMessage(intl, 'oppsummering.uttak.kombineresMedarbeid')}
+                verdi={gradert ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+            />
+
             {gradert === true &&
-                stillingsprosent && <Feltoppsummering feltnavn="Stillingsprosent" verdi={stillingsprosent} />}
-            {arbeidsform && <Feltoppsummering feltnavn="Arbeidstaker" verdi={arbeidsformTekst} />}
+                stillingsprosent && (
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.uttak.stillingsprosent')}
+                        verdi={stillingsprosent}
+                    />
+                )}
+
+            {arbeidsform && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.uttak.arbeidstaker.label')}
+                    verdi={arbeidsformTekst}
+                />
+            )}
+
             {morsAktivitetIPerioden && (
                 <MorsAktivitetDetaljer
                     morsAktivitet={morsAktivitetIPerioden}

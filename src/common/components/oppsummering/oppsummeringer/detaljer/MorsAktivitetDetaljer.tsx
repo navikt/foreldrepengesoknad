@@ -4,6 +4,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
+import getMessage from 'common/util/i18nUtils';
 
 interface MorsAktivitetDetaljerProps {
     morsAktivitet: MorsAktivitet;
@@ -18,9 +19,9 @@ const MorsAktivitetDetaljer: React.StatelessComponent<Props> = ({
     intl
 }) => (
     <>
-        <Feltoppsummering feltnavn="Mors aktivitet i perioden" verdi={morsAktivitet} />
+        <Feltoppsummering feltnavn={getMessage(intl, 'oppsummering.morsAktivitet')} verdi={morsAktivitet} />
         <OppsummeringAvDokumentasjon
-            ledetekst="Dokumentasjon av mors aktivitet i perioden"
+            ledetekst={getMessage(intl, 'oppsummering.morsAktivitet.dokumentasjon')}
             vedlegg={dokumentasjonAvMorsAktivitet}
         />
     </>
