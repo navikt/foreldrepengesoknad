@@ -39,8 +39,9 @@ class UttaksplanAutoBuilder {
         const opphold = Periodene(perioderEtterFamDato).getOpphold();
         const hull = Periodene(perioderEtterFamDato).getHull();
         const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
+        const overføringer = Periodene(perioderEtterFamDato).getOverføringer();
 
-        this.perioder = resetTidsperioder(uttaksperioder);
+        this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
         this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
