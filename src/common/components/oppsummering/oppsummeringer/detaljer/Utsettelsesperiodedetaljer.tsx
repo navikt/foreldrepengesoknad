@@ -27,12 +27,12 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, 
 
     return (
         <>
+            <Feltoppsummering feltnavn="årsak" verdi={årsak} />
             {dokumentasjonBehøvesForUtsettelsesperiode(periode) && (
                 <OppsummeringAvDokumentasjon
                     vedlegg={(vedlegg || []).filter(
                         (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
                     )}
-                    ledetekst="Dokumentasjon av årsak til utsettelse"
                 />
             )}
             {årsak === UtsettelseÅrsakType.Arbeid && (

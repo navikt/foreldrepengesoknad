@@ -7,6 +7,7 @@ import {
     Overføringsperiode,
     Periode,
     Periodetype,
+    StønadskontoType,
     Utsettelsesperiode,
     Uttaksperiode
 } from '../../../../../app/types/uttaksplan/periodetyper';
@@ -40,6 +41,7 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
             this
         );
         this.formatTidsperiode = this.formatTidsperiode.bind(this);
+        this.getStønadskontoNavnFromKonto = this.getStønadskontoNavnFromKonto.bind(this);
     }
 
     createOppsummeringslisteData(): OppsummeringslisteelementProps[] {
@@ -61,28 +63,37 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode) {
-        const { navnPåForeldre, intl } = this.props;
         return {
-            venstrestiltTekst: getStønadskontoNavn(intl, periode.konto, navnPåForeldre),
+            venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: <Uttaksperiodedetaljer periode={periode} />
         };
     }
 
     createOppsummeringslisteelementPropsForUtsettelsesperiode(periode: Utsettelsesperiode) {
+        const { intl } = this.props;
         return {
-            venstrestiltTekst: `Utsettelse på grunn av ${periode.årsak}`,
+            venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: <Utsettelsesperiodedetaljer periode={periode} />
         };
     }
 
     createOppsummeringslisteelementPropsForOverføringsperiode(periode: Overføringsperiode) {
+        const { intl } = this.props;
+        const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
-            venstrestiltTekst: `Overtakelse av ${periode.konto} på grunn av ${periode.årsak}`,
+            venstrestiltTekst: getMessage(intl, 'oppsummering.overtakelse.pga', {
+                konto: kontonavn
+            }),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: <Overføringsperiodedetaljer periode={periode} />
         };
+    }
+
+    getStønadskontoNavnFromKonto(konto: StønadskontoType) {
+        const { navnPåForeldre, intl } = this.props;
+        return getStønadskontoNavn(intl, konto, navnPåForeldre);
     }
 
     formatTidsperiode(tidsperiode: Tidsperiode) {
