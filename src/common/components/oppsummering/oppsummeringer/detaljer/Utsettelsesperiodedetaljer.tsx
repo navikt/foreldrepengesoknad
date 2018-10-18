@@ -5,6 +5,7 @@ import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummerin
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import { dokumentasjonBehøvesForUtsettelsesperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
 
 interface UtsettelsesperiodedetaljerProps {
     periode: Utsettelsesperiode;
@@ -26,12 +27,14 @@ const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, 
 
     return (
         <>
-            <OppsummeringAvDokumentasjon
-                vedlegg={(vedlegg || []).filter(
-                    (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
-                )}
-                ledetekst="Dokumentasjon av årsak til utsettelse"
-            />
+            {dokumentasjonBehøvesForUtsettelsesperiode(periode) && (
+                <OppsummeringAvDokumentasjon
+                    vedlegg={(vedlegg || []).filter(
+                        (currentVedlegg) => currentVedlegg.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                    )}
+                    ledetekst="Dokumentasjon av årsak til utsettelse"
+                />
+            )}
             {årsak === UtsettelseÅrsakType.Arbeid && (
                 <Feltoppsummering feltnavn="Arbeidstaker" verdi={arbeidsformTekst} />
             )}
