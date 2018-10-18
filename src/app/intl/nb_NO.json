@@ -422,8 +422,8 @@
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker": "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din.",
-    "uttaksplan.informasjonFarMedmorDeltUttak":
-        "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din. Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte. Du kan lese mer om viktige frister her: {link}",
+    "uttaksplan.informasjon.farMedmor.deltUttak":
+        "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din.<br /><br />Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
