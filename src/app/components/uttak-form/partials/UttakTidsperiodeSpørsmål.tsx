@@ -12,7 +12,7 @@ import { UttakFormPeriodeType } from '../UttakForm';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
-import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden, isValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 export interface Props {
@@ -36,7 +36,7 @@ const getTidsperiodeDisabledProps = (
         };
     } else if (
         periode.id &&
-        periode.tidsperiode &&
+        isValidTidsperiode(periode.tidsperiode) &&
         Tidsperioden(periode.tidsperiode as Tidsperiode).erFørDato(familiehendelsesdato)
     ) {
         return {

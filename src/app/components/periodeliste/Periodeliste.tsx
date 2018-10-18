@@ -17,6 +17,7 @@ export interface OwnProps {
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
+    lastAddedPeriodeId: string | undefined;
 }
 
 interface State {
@@ -30,7 +31,8 @@ export const periodelisteBem = BEMHelper('periodeliste');
 export const getPeriodelisteItemId = (periodeId: string): string => `periode-${periodeId}`;
 
 class Periodeliste extends React.Component<Props, State> {
-    focusOnPeriodeId: string | undefined;
+    periodeWhichHaveReceivedFocus: string | undefined;
+    periodeToBeFocused: string | undefined;
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -38,19 +40,18 @@ class Periodeliste extends React.Component<Props, State> {
         };
     }
     componentWillReceiveProps(nextProps: Props) {
-        const { perioder } = this.props;
-        const nyePerioder = nextProps.perioder;
-        if (perioder.length === nyePerioder.length - 1) {
-            const nyPeriode = nyePerioder.find((p) => perioder.find((p2) => p2.id === p.id) === undefined);
-            if (nyPeriode) {
-                this.focusOnPeriodeId = nyPeriode.id;
-            }
+        if (
+            nextProps.lastAddedPeriodeId !== undefined &&
+            nextProps.lastAddedPeriodeId !== this.periodeWhichHaveReceivedFocus
+        ) {
+            this.periodeToBeFocused = nextProps.lastAddedPeriodeId;
         }
     }
     componentDidUpdate() {
-        if (this.focusOnPeriodeId) {
-            focusElement(getPeriodelisteItemId(this.focusOnPeriodeId));
-            this.focusOnPeriodeId = undefined;
+        if (this.periodeToBeFocused) {
+            focusElement(getPeriodelisteItemId(this.periodeToBeFocused));
+            this.periodeWhichHaveReceivedFocus = this.periodeToBeFocused;
+            this.periodeToBeFocused = undefined;
         }
     }
     render() {
