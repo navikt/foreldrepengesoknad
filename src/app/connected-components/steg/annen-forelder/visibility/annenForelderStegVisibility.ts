@@ -58,8 +58,8 @@ const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload):
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fornavn),
-        condition: (props) => props.annenForelderErRegistrert === false,
-        isOptional: (props) => props.annenForelder.kanIkkeOppgis === true
+        condition: (payload) => payload.annenForelderErRegistrert === false,
+        isOptional: (payload) => payload.annenForelder.kanIkkeOppgis === true
     },
     [AnnenForelderSpørsmålKeys.kanIkkeOppgis]: {
         isOptional: () => true,
@@ -70,11 +70,11 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         isAnswered: ({ annenForelder }) =>
             questionValueIsOk(annenForelder.fnr) ||
             (annenForelder.utenlandskFnr === true && annenForelder.bostedsland !== undefined),
-        condition: (props) => {
+        condition: (payload) => {
             return (
-                props.annenForelder.kanIkkeOppgis !== true &&
-                props.annenForelderErRegistrert === false &&
-                questionValueIsOk(props.annenForelder.fornavn)
+                payload.annenForelder.kanIkkeOppgis !== true &&
+                payload.annenForelderErRegistrert === false &&
+                questionValueIsOk(payload.annenForelder.fornavn)
             );
         }
     },
@@ -85,20 +85,20 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.harRettPåForeldrepenger]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.harRettPåForeldrepenger),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        condition: (props) => {
+        condition: (payload) => {
             return (
-                props.søker.erAleneOmOmsorg === false ||
-                (props.søker.erAleneOmOmsorg && props.søkerErFarEllerMedmor === false)
+                payload.søker.erAleneOmOmsorg === false ||
+                (payload.søker.erAleneOmOmsorg && payload.søkerErFarEllerMedmor === false)
             );
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erUfør),
         parentQuestion: AnnenForelderSpørsmålKeys.harRettPåForeldrepenger,
-        condition: (props) =>
-            props.søker.erAleneOmOmsorg === false &&
-            props.annenForelder.harRettPåForeldrepenger === false &&
-            props.søkerErFarEllerMedmor
+        condition: (payload) =>
+            payload.søker.erAleneOmOmsorg === false &&
+            payload.annenForelder.harRettPåForeldrepenger === false &&
+            payload.søkerErFarEllerMedmor
     },
     [AnnenForelderSpørsmålKeys.erAnnenForelderInformert]: {
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.erInformertOmSøknaden),
@@ -108,7 +108,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
         isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        condition: (props) => props.søker.erAleneOmOmsorg === true && props.søkerErFarEllerMedmor === true
+        condition: (payload) => payload.søker.erAleneOmOmsorg === true && payload.søkerErFarEllerMedmor === true
     }
 };
 

@@ -27,6 +27,7 @@ export interface Props {
     uttaksplan: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
+    lastAddedPeriodeId: string | undefined;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -95,6 +96,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         onAdd(periode);
         this.closeForm();
     }
+
     handleOnCancel() {
         const { periodetype } = this.state;
         this.closeForm();
@@ -108,7 +110,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     render() {
-        const { søkersituasjon, barn, uttaksplan, uttaksplanValidering, navnPåForeldre, onRequestReset } = this.props;
+        const {
+            søkersituasjon,
+            barn,
+            uttaksplan,
+            uttaksplanValidering,
+            navnPåForeldre,
+            onRequestReset,
+            lastAddedPeriodeId
+        } = this.props;
         const { formIsOpen, periodetype } = this.state;
         return (
             <article>
@@ -143,9 +153,10 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 perioder={uttaksplan}
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
+                                lastAddedPeriodeId={lastAddedPeriodeId}
                             />
                         </Block>
-                        <Block visible={uttaksplan.length === 0} margin="l">
+                        <Block visible={uttaksplan.length === 0} margin="xl">
                             <TomUttaksplanInfo />
                         </Block>
                         <Block visible={formIsOpen}>
@@ -166,14 +177,16 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Knapp
                             onClick={this.openNyUtsettelsesperiodeForm}
                             htmlType="button"
-                            ref={(c) => (this.leggTilOppholdKnapp = c)}>
-                            Legg til opphold
+                            ref={(c) => (this.leggTilOppholdKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.opphold" />
                         </Knapp>
                         <Knapp
                             onClick={this.openNyUttaksperiodeForm}
                             htmlType="button"
-                            ref={(c) => (this.leggTilUttakKnapp = c)}>
-                            Legg til periode
+                            ref={(c) => (this.leggTilUttakKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.uttak" />
                         </Knapp>
                     </Knapperad>
                 </Block>
