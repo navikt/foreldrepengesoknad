@@ -130,6 +130,9 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
+                {/* 
+                Taes inn igjen i slutten av november
+
                 <Block
                     visible={
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
@@ -140,7 +143,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                             navn: annenForelder.fornavn
                         })}
                     </Veilederinfo>
-                </Block>
+                </Block> */}
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)}>
                     <ErAnnenForelderInformertSpørsmål
