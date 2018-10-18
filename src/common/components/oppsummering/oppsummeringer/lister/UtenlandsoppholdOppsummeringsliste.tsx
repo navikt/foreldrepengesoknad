@@ -25,6 +25,7 @@ const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({
                     tom: formatDate(tidsperiode.tom)
                 })
             }))}
+            kompakt={true}
         />
     );
 };

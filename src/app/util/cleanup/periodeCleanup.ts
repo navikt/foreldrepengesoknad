@@ -35,9 +35,7 @@ const cleanupUtsettelse = (
         forelder: periode.forelder,
         morsAktivitetIPerioden,
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
-        selvstendigNæringsdrivendeEllerFrilans: UtsettelseÅrsakType.Arbeid
-            ? periode.selvstendigNæringsdrivendeEllerFrilans
-            : undefined,
+        arbeidsform: UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
         erArbeidstaker: periode.erArbeidstaker
     };
 };
@@ -54,8 +52,7 @@ const cleanupUttak = (periode: Uttaksperiode): Uttaksperiode => {
         morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
-        selvstendigNæringsdrivendeEllerFrilans:
-            periode.gradert === true ? periode.selvstendigNæringsdrivendeEllerFrilans : undefined,
+        arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
         orgnr: periode.gradert === true ? periode.orgnr : undefined,
         trekkdager: periode.trekkdager,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined
