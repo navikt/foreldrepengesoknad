@@ -8,7 +8,6 @@ import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import OppholdListElement from './OppholdListElement';
-import getMessage from 'common/util/i18nUtils';
 
 interface UtenlandsoppholdBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -97,8 +96,7 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
             showUtenlandsoppholdContent,
             opphold,
             oppholdType,
-            utenlandsoppholdModalProps,
-            intl
+            utenlandsoppholdModalProps
         } = this.props;
         const { oppholdToEdit } = this.state;
 
