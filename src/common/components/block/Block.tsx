@@ -5,7 +5,7 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './block.less';
 
-export type BlockPadding = 'l' | 'm' | 's' | 'xs' | 'xxs' | 'none';
+export type BlockPadding = 'xl' | 'l' | 'm' | 's' | 'xs' | 'xxs' | 'none';
 
 export interface BlockProps {
     /** Default true */
