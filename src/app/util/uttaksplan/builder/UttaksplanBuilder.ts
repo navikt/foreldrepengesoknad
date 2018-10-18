@@ -5,6 +5,7 @@ import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
+import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 
 export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
     return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);
@@ -44,6 +45,7 @@ class UttaksplanAutoBuilder {
 
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
         this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
+        this.finnOgSettInnHull();
         this.slåSammenLikePerioder();
         this.fjernHullPåStarten();
         this.fjernHullPåSlutten();
@@ -89,7 +91,7 @@ class UttaksplanAutoBuilder {
      * @param periode
      */
     slettPeriodeOgBuild(periode: Periode) {
-        this.slettPeriode(periode, periode.type !== Periodetype.Utsettelse).buildUttaksplan();
+        this.slettPeriode(periode, skalSlettetPeriodeErstattesMedHull(periode, this.perioder)).buildUttaksplan();
         return this;
     }
 
@@ -166,6 +168,12 @@ class UttaksplanAutoBuilder {
         this.perioder.reverse();
         this.fjernHullPåStarten();
         this.perioder.reverse();
+        return this;
+    }
+
+    private finnOgSettInnHull() {
+        const hull = finnHull(this.perioder);
+        this.perioder = [...this.perioder, ...hull].sort(sorterPerioder);
         return this;
     }
 
@@ -264,52 +272,34 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-/**
- * Går gjennom alle perioder og finner uttaksdager som
- * ikke tilhører en periode. Oppretter Opphold for disse
- * @param perioder
- */
-// function finnOppholdsperioder(
-//     perioder: Array<Uttaksperiode | Utsettelsesperiode>
-// ): Oppholdsperiode[] {
-//     const opphold: Oppholdsperiode[] = [];
-//     const len = perioder.length;
-//     perioder.forEach((periode, idx) => {
-//         if (idx === len - 1) {
-//             return;
-//         }
-//         const nestePeriode = perioder[idx + 1];
+function finnHull(perioder: Periode[]): PeriodeHull[] {
+    const hull: PeriodeHull[] = [];
+    const len = perioder.length;
+    perioder.forEach((periode, idx) => {
+        if (idx === len - 1) {
+            return;
+        }
+        const nestePeriode = perioder[idx + 1];
 
-//         const tidsperiodeMellomPerioder = {
-//             startdato: uttaksdagUtil(periode.tidsperiode.sluttdato).neste(),
-//             sluttdato: uttaksdagUtil(
-//                 nestePeriode.tidsperiode.startdato
-//             ).forrige()
-//         };
-//         if (
-//             isBefore(
-//                 tidsperiodeMellomPerioder.sluttdato,
-//                 tidsperiodeMellomPerioder.startdato
-//             )
-//         ) {
-//             return;
-//         }
+        const tidsperiodeMellomPerioder: Tidsperiode = {
+            fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
+            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige()
+        };
+        if (moment(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
+            return;
+        }
 
-//         const uttaksdagerITidsperiode = tidsperioden(
-//             tidsperiodeMellomPerioder
-//         ).getAntallUttaksdager();
-//         if (uttaksdagerITidsperiode > 0) {
-//             opphold.push({
-//                 id: guid(),
-//                 type: Periodetype.Opphold,
-//                 tidsperiode: tidsperiodeMellomPerioder,
-//                 årsak: OppholdÅrsakType.ManglendeSøktPeriode,
-//                 forelder: 'forelder1' // TODO ikke hardkodet
-//             });
-//         }
-//     });
-//     return opphold;
-// }
+        const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+        if (uttaksdagerITidsperiode > 0) {
+            hull.push({
+                id: guid(),
+                type: Periodetype.Hull,
+                tidsperiode: tidsperiodeMellomPerioder
+            });
+        }
+    });
+    return hull;
+}
 
 /**
  * Går gjennom alle uttaksperioder og resetter tidsperioder gitt
@@ -500,4 +490,12 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
         });
     }
     return periodehull.length > 0 ? periodehull : undefined;
+}
+
+function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[]): boolean {
+    const idx = perioder.findIndex((p) => p.id === periode.id);
+    if (idx === 0 || idx === perioder.length - 1) {
+        return false;
+    }
+    return periode.type !== Periodetype.Utsettelse;
 }
