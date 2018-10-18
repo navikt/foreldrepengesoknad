@@ -133,8 +133,8 @@
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
-    "annenInntekt.ytelser.label": "Ytelser fra NAV",
-    "annenInntekt.ytelser.tekst": "Vi har oversikt over hvilke ytelser du får fra NAV.",
+    "annenInntekt.ytelser.label": "Utbetalinger fra NAV",
+    "annenInntekt.ytelser.tekst": "Hvis du får penger fra NAV, trenger du ikke opplyse om det i søknaden din.",
 
     "inntektstype.etterlønn_arbeidsgiver": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektstype.etterlønn_arbeidsgiver_info":
@@ -264,7 +264,7 @@
     "annenForelder.label.kanIkkeOppgiNavn": "Jeg kan ikke oppgi navnet til andre forelderen",
     "annenForelder.label.fødselsnummer": "og har fødselsnummer eller D-nummer...",
     "annenForelder.label.utenlandskFødselsnummer": "Utenlandsk fødselsnummer",
-    "annenForelder.label.bostedsland": "og bor i...",
+    "annenForelder.label.bostedsland": "og bor i",
     "annenForelder.placeholder.navn": "Navn",
     "annenForelder.placeholder.fødselsnummer": "Fødselsnummer",
     "annenForelder.ugyldigFødselsnummer": "Du må skrive et gyldig nummer (11 sifre)",
@@ -272,7 +272,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Når vi har behandlet søknaden din vil {navn} kunne logge seg på Ditt NAV og se hvilken periode du skal ha foreldrepenger og eventuelle opphold. ",
+        "Når vi har behandlet søknaden din vil {navn} kunne logge seg på Ditt NAV og se hvilken periode du skal ha foreldrepenger og eventuelle opphold.",
 
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
@@ -436,8 +436,8 @@
     "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak",
-    "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktivitet",
+    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak til overføring",
+    "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktiviten til mor",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
 
     "vedlegg.veileder.terminbekreftelsen":
@@ -448,7 +448,7 @@
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
-    "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen...",
+    "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
     "far.dokumantasjonAvAleneomsorg.vedlegg.veileder":
@@ -664,7 +664,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
 
     "uttaksplan.slettPlan": "Slett plan",
-    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda...",
+    "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda.",
 
     "bekreftSlettUttaksplanDialog.tittel": "Slett plan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
@@ -686,7 +686,7 @@
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
-    "periodeliste.hullMellomPerioder": "{dager} mangler periode med foreldrepenger eller opphold",
+    "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn opphold for.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse":
@@ -718,25 +718,25 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
         "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
-        "Du må legge ved bekreftelse som viser at {navnMor} er fulltidsstudent i perioden du skal ha foreldrepenger. Bekreftelsen må også vise:",
+        "Du må legge ved bekreftelse fra mors studiested at {navnMor} er fulltidsstudent. Bekreftelsen må også vise:",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "Mors navn og fødselsnummer",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "Studiested, fag eller studieprogram",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "Oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
         "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon som viser at mors jobb og studier til sammen utgjør 100 prosent.",
+        "Du må legge ved dokumentasjon som viser at {navnMor} jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
-        "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen, som viser perioden det gjelder.",
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnMor} er innlagt.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
-        "Du må legge ved dokumentasjon som viser at {navnMor} deltar på heltid i introduksjonsprogrammet for nyankomne innvandrere etter introduksjonsloven kapittel 2.",
+        "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i introduksjonsprogrammet etter kapittel 2 for nyankomne innvandrere.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
-        "Du må legge ved dokumentasjon som viser at {navnMor} deltar på heltid i kvalifiseringsprogram etter sosialtjenesteloven kapittel 5A.",
+        "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
         "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør {navnMor} er helt avhengig av hjelp til å ta seg av barnet, i hvilken grad {navnMor} er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
-    "uttaksplan.varighet.uttak": "{varighet} med uttak",
+    "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt legg til nytt opphold",
@@ -757,7 +757,7 @@
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
-    "uttaksplan.validering.feil.påkrevd": "Påkrevd felt",
+    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.tomUttaksplan":
         "Planen er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
