@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import { FrilansOppdrag } from '../types/søknad/FrilansInformasjon';
-import { prettifyTidsperiode } from '../util/dates/dates';
+import { FormattedMessage } from 'react-intl';
+import { FrilansOppdrag } from '../../types/søknad/FrilansInformasjon';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
-import FrilansOppdragModal from '../components/frilans-oppdrag-modal/FrilansOppdragModal';
-import InteractiveListElement, {
-    InteractiveListElementProps
-} from '../components/interactive-list-element/InteractiveListElement';
-import List from '../components/list/List';
+import FrilansOppdragModal from '../../components/frilans-oppdrag-modal/FrilansOppdragModal';
+import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
-import getMessage from 'common/util/i18nUtils';
+import FrilansOppdragListElement from './FrilansOppdragListElement';
 
 interface FrilansOppdragBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -26,7 +22,7 @@ interface FrilansOppdragBolkState {
 
 type FrilansOppdragBolkStatePartial = Partial<FrilansOppdragBolkState>;
 
-export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, FrilansOppdragBolkState> {
+class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, FrilansOppdragBolkState> {
     constructor(props: FrilansOppdragBolkProps) {
         super(props);
 
@@ -94,7 +90,6 @@ export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBo
         const { oppdragListe, renderSpørsmål, showOppdragsPerioderContent } = this.props;
 
         const { oppdragToEdit } = this.state;
-        const ListElement = injectIntl(FrilansOppdragListeElement);
 
         return (
             <React.Fragment>
@@ -105,7 +100,7 @@ export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBo
                             <List
                                 data={oppdragListe}
                                 renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (
-                                    <ListElement
+                                    <FrilansOppdragListElement
                                         oppdrag={updatedOppdrag}
                                         onDelete={() => this.onDelete(updatedOppdrag)}
                                         onEdit={() => this.onSelect(updatedOppdrag, index)}
@@ -143,22 +138,4 @@ export default class FrilansOppdragBolk extends React.Component<FrilansOppdragBo
     }
 }
 
-interface FrilansOppdragListeElementProps extends InteractiveListElementProps {
-    oppdrag: FrilansOppdrag;
-}
-
-const FrilansOppdragListeElement: React.StatelessComponent<FrilansOppdragListeElementProps & InjectedIntlProps> = ({
-    oppdrag,
-    intl,
-    ...rest
-}) => {
-    const deleteLinkText = getMessage(intl, 'slett.oppdrag');
-    return (
-        <InteractiveListElement
-            title={oppdrag.navnPåArbeidsgiver}
-            text={prettifyTidsperiode(oppdrag.tidsperiode)}
-            deleteLinkText={deleteLinkText}
-            {...rest}
-        />
-    );
-};
+export default FrilansOppdragBolk;

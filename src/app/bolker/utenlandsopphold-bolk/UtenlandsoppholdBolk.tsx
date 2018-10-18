@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
-import { UtenlandsoppholdType, Utenlandsopphold } from '../types/søknad/InformasjonOmUtenlandsopphold';
+import { UtenlandsoppholdType, Utenlandsopphold } from '../../types/søknad/InformasjonOmUtenlandsopphold';
 import UtenlandsoppholdModal, {
     UtenlandsoppholdModalPropsPartial
-} from '../components/utenlandsopphold-modal/UtenlandsoppholdModal';
-import { prettifyTidsperiode } from '../util/dates/dates';
-import * as countries from 'i18n-iso-countries';
+} from '../../components/utenlandsopphold-modal/UtenlandsoppholdModal';
 import Block from 'common/components/block/Block';
-import List from '../components/list/List';
-import InteractiveListElement, {
-    InteractiveListElementProps
-} from '../components/interactive-list-element/InteractiveListElement';
+import List from '../../components/list/List';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import OppholdListElement from '../tidsperiode-bolk/OppholdListElement';
 import getMessage from 'common/util/i18nUtils';
 
 interface UtenlandsoppholdBolkProps {
@@ -29,10 +25,12 @@ interface UtenlandsoppholdBolkState {
     oppholdIndex?: number;
 }
 
+type Props = UtenlandsoppholdBolkProps & InjectedIntlProps;
+
 type UtenlandsoppholdBolkStatePartial = Partial<UtenlandsoppholdBolkState>;
 
-class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, UtenlandsoppholdBolkState> {
-    constructor(props: UtenlandsoppholdBolkProps) {
+class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkState> {
+    constructor(props: Props) {
         super(props);
 
         this.openModal = this.openModal.bind(this);
@@ -99,11 +97,11 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
             showUtenlandsoppholdContent,
             opphold,
             oppholdType,
-            utenlandsoppholdModalProps
+            utenlandsoppholdModalProps,
+            intl
         } = this.props;
         const { oppholdToEdit } = this.state;
 
-        const ListElement = injectIntl(OppholdListeElement);
         return (
             <>
                 {renderSpørsmål()}
@@ -113,11 +111,21 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
                             <List
                                 data={opphold}
                                 renderElement={(oppholdToRender: Utenlandsopphold, index: number) => (
-                                    <ListElement
+                                    <OppholdListElement
                                         opphold={oppholdToRender}
                                         onEdit={() => this.onOppholdSelect(oppholdToRender, index)}
                                         onDelete={() => this.onOppholdDelete(oppholdToRender)}
                                         key={JSON.stringify(oppholdToRender)}
+                                        editButtonAriaText={getMessage(
+                                            intl,
+                                            'utenlandsopphold.liste.endreOppholdAriaTekst',
+                                            { land: oppholdToRender.land }
+                                        )}
+                                        deleteButtonAriaText={getMessage(
+                                            intl,
+                                            'utenlandsopphold.liste.slettOppholdAriaTekst',
+                                            { land: oppholdToRender.land }
+                                        )}
                                     />
                                 )}
                             />
@@ -147,24 +155,4 @@ class UtenlandsoppholdBolk extends React.Component<UtenlandsoppholdBolkProps, Ut
     }
 }
 
-interface OppholdListeElementProps extends InteractiveListElementProps {
-    opphold: Utenlandsopphold;
-}
-
-const OppholdListeElement: React.StatelessComponent<OppholdListeElementProps & InjectedIntlProps> = ({
-    opphold,
-    intl,
-    ...rest
-}) => {
-    const deleteLinKText = getMessage(intl, 'slett.utenlandsopphold');
-    return (
-        <InteractiveListElement
-            title={countries.getName(opphold.land, 'nb')}
-            text={prettifyTidsperiode(opphold.tidsperiode)}
-            deleteLinkText={deleteLinKText}
-            {...rest}
-        />
-    );
-};
-
-export default UtenlandsoppholdBolk;
+export default injectIntl(UtenlandsoppholdBolk);
