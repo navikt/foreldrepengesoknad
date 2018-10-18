@@ -605,6 +605,9 @@
     "oppsummering.uttak.type.overføring": "Overføring",
     "oppsummering.uttak.type.opphold": "Opphold",
 
+    "oppsummering.utsettelse.pga": "Utsettelse",
+    "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
