@@ -39,11 +39,11 @@ class UttaksplanAutoBuilder {
 
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
         this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
-        this.finnOgSettInnHull();
-        this.slåSammenLikePerioder();
-        this.fjernHullPåStarten();
-        this.fjernHullPåSlutten();
-        this.sort();
+        this.finnOgSettInnHull()
+            .slåSammenLikePerioder()
+            .fjernHullPåStarten()
+            .fjernHullPåSlutten()
+            .sort();
         return this;
     }
 
