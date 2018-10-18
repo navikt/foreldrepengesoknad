@@ -20,37 +20,31 @@
             font-weight: bold;
             width: 95%;
         }
-
-        &__editButton {
-            background: none;
-            border: 0;
-
-            &__icon {
-                position: absolute;
-                top: 1rem;
-                right: 1rem;
-            }
-        }
+    }
+    &__editButton {
+        .iconButton();
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
     }
 
     &__bottom {
         margin-top: 0.5rem;
         min-height: 1rem;
+    }
+    &__deleteButton {
+        .deleteButton();
 
-        &__deleteButton {
-            .deleteButton();
+        @media (max-width: @breakpoint) {
+            display: block;
+            margin-top: 0.5rem;
+            padding: 0;
+        }
 
-            @media (max-width: @breakpoint) {
-                display: block;
-                margin-top: 0.5rem;
-                padding: 0;
-            }
-
-            @media (min-width: @breakpoint) {
-                position: absolute;
-                bottom: 1rem;
-                right: 1rem;
-            }
+        @media (min-width: @breakpoint) {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
         }
     }
 

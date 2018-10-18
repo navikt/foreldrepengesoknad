@@ -12,6 +12,8 @@ const pencil = require('./pencil.svg').default;
 export interface InteractiveListElementProps {
     onEdit: () => void;
     onDelete: () => void;
+    editButtonAriaText?: string;
+    deleteButtonAriaText?: string;
 }
 
 interface AllListElementProps extends InteractiveListElementProps {
@@ -21,31 +23,41 @@ interface AllListElementProps extends InteractiveListElementProps {
     etikettProps?: EtikettBaseProps;
 }
 
-const cls = BEMHelper('interactiveListElement');
+const bem = BEMHelper('interactiveListElement');
 
 class InteractiveListElement extends React.Component<AllListElementProps & InjectedIntlProps> {
     render() {
-        const { title, text, deleteLinkText, etikettProps, onDelete, onEdit, intl } = this.props;
+        const {
+            title,
+            text,
+            deleteLinkText,
+            etikettProps,
+            deleteButtonAriaText,
+            editButtonAriaText,
+            onDelete,
+            onEdit,
+            intl
+        } = this.props;
         return (
-            <li className={cls.className}>
-                <div className={cls.element('top')}>
+            <li className={bem.className}>
+                <div className={bem.element('top')}>
                     <Normaltekst className="title">{title}</Normaltekst>
                     <button
-                        className="interactiveListElement__top__editButton"
+                        type="button"
+                        className={bem.element('editButton')}
                         onClick={onEdit}
-                        {...{ 'aria-label': getMessage(intl, 'rediger') }}
-                        type="button">
-                        <CustomSVG
-                            className="interactiveListElement__top__editButton__icon"
-                            iconRef={pencil}
-                            size={24}
-                        />
+                        aria-label={editButtonAriaText || getMessage(intl, 'rediger')}>
+                        <CustomSVG className={bem.element('editButton__icon')} iconRef={pencil} size={24} />
                     </button>
                 </div>
-                <Normaltekst className={cls.element('text')}>{text}</Normaltekst>
-                <div className={cls.element('bottom')}>
+                <Normaltekst className={bem.element('text')}>{text}</Normaltekst>
+                <div className={bem.element('bottom')}>
                     {etikettProps !== undefined && <Etikett {...etikettProps} />}
-                    <button className="interactiveListElement__bottom__deleteButton" onClick={onDelete} type="button">
+                    <button
+                        className={bem.element('deleteButton')}
+                        onClick={onDelete}
+                        type="button"
+                        aria-label={deleteButtonAriaText}>
                         {deleteLinkText}
                     </button>
                 </div>
