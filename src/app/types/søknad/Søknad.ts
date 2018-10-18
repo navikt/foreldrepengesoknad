@@ -38,6 +38,7 @@ interface SensitivSkjemaInfo {
 
 interface SkjemaEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
+    lastAddedPeriodeId?: string;
 }
 
 interface Søknad {
