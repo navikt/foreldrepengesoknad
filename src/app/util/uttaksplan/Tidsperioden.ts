@@ -5,6 +5,7 @@ import { getOffentligeFridager } from 'common/util/fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
 import { InjectedIntl } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import getMessage from 'common/util/i18nUtils';
 
 /**
  * Wrapper en Tidsperiode med uttaksdager-funksjonalitet
@@ -19,7 +20,9 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
     getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => flyttTidsperiode(tidsperiode, fom),
     setUttaksdager: (uttaksdager: number) => getTidsperiode(tidsperiode.fom, uttaksdager),
-    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl)
+    formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl),
+    erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
+    erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false
 });
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
@@ -149,5 +152,17 @@ function erTidsperiodeUtenforTidsperiode(tidsperiode1: Tidsperiode, tidsperiode2
 }
 
 function tidsperiodeToString(tidsperiode: Tidsperiode, intl: InjectedIntl) {
-    return `${formaterDatoUtenDag(tidsperiode.fom)} - ${formaterDatoUtenDag(tidsperiode.tom)}`;
+    return getMessage(intl, 'tidsperiode', {
+        fom: formaterDatoUtenDag(tidsperiode.fom),
+        tom: formaterDatoUtenDag(tidsperiode.tom)
+    });
 }
+
+const erTidsperiodeFomEllerEtterDato = (tidsperiode: Partial<Tidsperiode>, dato: Date): boolean => {
+    return (
+        tidsperiode.fom !== undefined &&
+        tidsperiode.tom !== undefined &&
+        moment(tidsperiode.fom).isSameOrAfter(dato) &&
+        moment(tidsperiode.tom).isSameOrAfter(dato)
+    );
+};

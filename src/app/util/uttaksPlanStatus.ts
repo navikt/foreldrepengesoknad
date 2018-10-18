@@ -53,7 +53,11 @@ export const beregnGjenståendeUttaksdager = (
 
         if (uttaksplanPerioder) {
             uttaksplanPerioder.forEach((p: Periode) => {
-                if (p.type !== Periodetype.Utsettelse && p.type !== Periodetype.Opphold) {
+                if (
+                    p.type !== Periodetype.Utsettelse &&
+                    p.type !== Periodetype.Opphold &&
+                    p.type !== Periodetype.Hull
+                ) {
                     dagerGjenstående = dagerGjenstående - finnAntallDagerÅTrekke(Perioden(p).getAntallUttaksdager(), p);
                 }
             });

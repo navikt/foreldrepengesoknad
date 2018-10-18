@@ -64,6 +64,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         validForm: PT.object
     };
     context: any;
+    timeoutId: number;
 
     constructor(props: Props) {
         super(props);
@@ -79,11 +80,19 @@ class UttaksperiodeForm extends React.Component<Props> {
         }
     }
 
+    componentWillUnmount() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+    }
+
     onChange(periode: UttakFormPeriodeType) {
         this.props.onChange(periode);
         if (this.context.validForm) {
-            setTimeout(() => {
-                this.context.validForm.validateAll();
+            this.timeoutId = setTimeout(() => {
+                if (this.context.validForm) {
+                    this.context.validForm.validateAll();
+                }
             });
         }
     }
@@ -172,7 +181,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         ugyldigeTidsperioder={ugyldigeTidsperioder}
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
-                        tidsperiode={tidsperiode as Partial<Tidsperiode>}
+                        tidsperiode={tidsperiode}
                         feil={feil}
                     />
                 </Block>
