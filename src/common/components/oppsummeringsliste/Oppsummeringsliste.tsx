@@ -4,7 +4,7 @@ import { guid } from 'nav-frontend-js-utils';
 import List from '../../../app/components/list/List';
 import './oppsummeringsliste.less';
 
-interface OppsummeringslisteelementProps {
+export interface OppsummeringslisteelementProps {
     venstrestiltTekst: string;
     høyrestiltTekst: string;
     content?: React.ReactNode;
