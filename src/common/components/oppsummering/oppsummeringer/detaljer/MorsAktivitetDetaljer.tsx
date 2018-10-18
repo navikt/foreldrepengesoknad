@@ -19,7 +19,10 @@ const MorsAktivitetDetaljer: React.StatelessComponent<Props> = ({
 }) => (
     <>
         <Feltoppsummering feltnavn="Mors aktivitet i perioden" verdi={morsAktivitet} />
-        <OppsummeringAvDokumentasjon vedlegg={dokumentasjonAvMorsAktivitet} />
+        <OppsummeringAvDokumentasjon
+            ledetekst="Dokumentasjon av mors aktivitet i perioden"
+            vedlegg={dokumentasjonAvMorsAktivitet}
+        />
     </>
 );
 

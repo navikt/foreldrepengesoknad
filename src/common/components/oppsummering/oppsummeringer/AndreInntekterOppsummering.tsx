@@ -24,7 +24,7 @@ const AndreInntekterOppsummering = ({ søker, intl }: Props) => {
     }
 
     return (
-        <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.andreInntekter.tittel')}>
+        <Oppsummeringsseksjon>
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.andreInntekter.tittel')}
                 verdi={getMessage(intl, 'oppsummering.andreInntekter.ikkeHattAndreInntekter')}

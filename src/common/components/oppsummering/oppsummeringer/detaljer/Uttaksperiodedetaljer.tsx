@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { Arbeidsform, StønadskontoType, UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
+import { Arbeidsform, UttaksperiodeBase } from '../../../../../app/types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import { Forelder } from 'common/types';
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 
 interface UttaksperiodedetaljerProps {
@@ -13,8 +12,6 @@ type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
 
 const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl }) => {
     const {
-        konto,
-        forelder,
         morsAktivitetIPerioden,
         ønskerSamtidigUttak,
         gradert,
@@ -35,7 +32,6 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
 
     return (
         <>
-            <Feltoppsummering feltnavn="Konto" verdi={konto} />
             {/*gradert === true &&
                 trekkdager !== undefined && (
                     <Feltoppsummering feltnavn={`Antall dager som trekkes fra ${konto}`} verdi={`${trekkdager}`} />
@@ -43,18 +39,16 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
             {ønskerSamtidigUttak !== undefined && (
                 <Feltoppsummering feltnavn="Skal ha samtidig uttak" verdi={ønskerSamtidigUttak ? 'Ja' : 'Nei'} />
             )}
-            <Feltoppsummering feltnavn="Uttaket er gradert" verdi={gradert ? 'Ja' : 'Nei'} />
+            <Feltoppsummering feltnavn="Jeg skal kombinere perioden med arbeid" verdi={gradert ? 'Ja' : 'Nei'} />
             {gradert === true &&
                 stillingsprosent && <Feltoppsummering feltnavn="Stillingsprosent" verdi={stillingsprosent} />}
             {arbeidsform && <Feltoppsummering feltnavn="Arbeidstaker" verdi={arbeidsformTekst} />}
-            {forelder === Forelder.FARMEDMOR &&
-                konto === StønadskontoType.Fellesperiode &&
-                morsAktivitetIPerioden && (
-                    <MorsAktivitetDetaljer
-                        morsAktivitet={morsAktivitetIPerioden}
-                        dokumentasjonAvMorsAktivitet={vedlegg || []}
-                    />
-                )}
+            {morsAktivitetIPerioden && (
+                <MorsAktivitetDetaljer
+                    morsAktivitet={morsAktivitetIPerioden}
+                    dokumentasjonAvMorsAktivitet={vedlegg || []}
+                />
+            )}
         </>
     );
 };
