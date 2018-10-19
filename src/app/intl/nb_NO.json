@@ -127,7 +127,7 @@
     "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
 
     "annenInntekt.arbeidsforhold.infotekst":
-        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
+        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
@@ -206,7 +206,7 @@
     "frilansOppdrag.modal.pågående": "Jeg har fortsatt oppdraget",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
@@ -231,7 +231,7 @@
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
-    "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
+    "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
 
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
@@ -419,7 +419,7 @@
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt.",
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {annenForelderNavn} er innlagt.",
 
     "uttaksplan.informasjonTilSøker": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
@@ -637,7 +637,7 @@
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
-    "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} innlagt på helseinstitusjon",
+    "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
@@ -651,7 +651,7 @@
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesperioden",
     "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
-    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut ...",
+    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut",
 
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.Utdanning": "Utdanning",
@@ -674,7 +674,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din vil bli nullstillt",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
         "Dersom du går tilbake til forrige steg vil planen din bli nullstillt, og du må lage planen på nytt.",
-    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
+    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
     "uttaksplan.slettPlan": "Slett plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda.",
