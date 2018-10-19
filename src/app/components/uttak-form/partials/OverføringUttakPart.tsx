@@ -22,11 +22,7 @@ const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakTy
     if (søkerErFarEllerMedmor) {
         return årsak !== undefined;
     } else {
-        return (
-            årsak !== undefined &&
-            årsak !== OverføringÅrsakType.aleneomsorg &&
-            årsak !== OverføringÅrsakType.ikkeRettAnnenForelder
-        );
+        return årsak !== undefined && årsak !== OverføringÅrsakType.aleneomsorg;
     }
 };
 
