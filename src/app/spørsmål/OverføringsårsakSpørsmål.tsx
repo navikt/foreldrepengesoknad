@@ -29,7 +29,6 @@ const OverføringsårsakSpørsmål = (props: Props) => {
             toKolonner={true}
             spørsmål={intl.formatMessage({ id: 'uttaksplan.overføring.årsak.spørsmål' }, { annenForelderNavn })}
             alternativer={[
-                getOverføringsårsakAlternativ(OverføringÅrsakType.ikkeRettAnnenForelder, annenForelderNavn, intl),
                 getOverføringsårsakAlternativ(
                     OverføringÅrsakType.insititusjonsoppholdAnnenForelder,
                     annenForelderNavn,

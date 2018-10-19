@@ -7,6 +7,7 @@ import { NavnPåForeldre } from 'common/types';
 interface UttaksplanOppsummeringProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
 }
 
 class UttaksplanOppsummering extends React.Component<UttaksplanOppsummeringProps> {

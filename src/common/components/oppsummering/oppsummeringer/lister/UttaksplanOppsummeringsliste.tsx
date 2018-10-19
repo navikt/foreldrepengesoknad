@@ -22,6 +22,7 @@ import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -80,14 +81,20 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForOverføringsperiode(periode: Overføringsperiode) {
-        const { navnPåForeldre, intl } = this.props;
+        const { navnPåForeldre, erFarEllerMedmor, intl } = this.props;
         const kontonavn = this.getStønadskontoNavnFromKonto(periode.konto);
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.overtakelse.pga', {
                 konto: kontonavn
             }),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
+            content: (
+                <Overføringsperiodedetaljer
+                    periode={periode}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
+            )
         };
     }
 
