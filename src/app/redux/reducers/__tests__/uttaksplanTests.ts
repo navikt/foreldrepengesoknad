@@ -22,7 +22,7 @@ const nyPeriode2: Uttaksperiode = {
     forelder: Forelder.MOR,
     konto: StønadskontoType.Mødrekvote,
     tidsperiode: {
-        fom: new Date(2018, 10, 1),
+        fom: new Date(2018, 9, 3),
         tom: new Date(2018, 10, 2)
     },
     ønskerSamtidigUttak: false
