@@ -9,7 +9,6 @@ import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 import Søknad from '../../types/søknad/Søknad';
-import { getStegFromWindowLocation, søknadStegPath } from '../../connected-components/steg/StegRoutes';
 
 function* saveAppState() {
     try {
@@ -35,12 +34,6 @@ function* applyStoredStateToApp(state: AppState) {
         yield put(søknadActions.updateSøknad(state.søknad));
         yield put(commonActions.setSpråk(state.common.språkkode));
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
-        if (state.søknad.ekstrainfo.currentStegID) {
-            const { currentStegID } = state.søknad.ekstrainfo;
-            if (currentStegID !== getStegFromWindowLocation()) {
-                window.location.pathname = søknadStegPath(currentStegID);
-            }
-        }
     }
     yield put(
         apiActions.updateApi({

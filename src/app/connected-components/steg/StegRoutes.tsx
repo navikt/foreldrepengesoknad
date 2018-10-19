@@ -36,25 +36,28 @@ export const getStegFromPathname = (pathname: string): StegID | undefined => {
 };
 
 interface StateProps {
-    currentSteg: StegID | undefined;
+    steg: StegID | undefined;
 }
 
 type Props = StateProps & SøkerinfoProps & RouteComponentProps<any> & HistoryProps & DispatchProps;
 
 class StegRoutes extends React.Component<Props> {
     unlistenLocationChange: () => void;
+    requestedSteg: StegID | undefined;
 
     constructor(props: Props) {
         super(props);
         this.state = {
-            currentSteg: props.currentSteg
+            currentSteg: props.steg
         };
+        this.navigateToStegIfNeeded(props);
     }
 
     componentWillMount() {
-        this.unlistenLocationChange = this.props.history.listen((location, action) => {
+        this.unlistenLocationChange = this.props.history.listen((location) => {
             const steg = getStegFromPathname(location.pathname);
             if (steg) {
+                this.requestedSteg = steg;
                 this.onStegChange(steg);
             }
         });
@@ -64,10 +67,18 @@ class StegRoutes extends React.Component<Props> {
         this.unlistenLocationChange();
     }
 
+    navigateToStegIfNeeded(props: Props) {
+        const { steg, history, location } = props;
+        const pathSteg = getStegFromPathname(location.pathname);
+        if (steg && steg !== pathSteg) {
+            history.replace(søknadStegPath(steg));
+        }
+    }
+
     onStegChange(steg: StegID) {
         setTimeout(() => {
             // Must allow state to be updated before checking equality
-            if (steg !== this.props.currentSteg) {
+            if (steg !== this.props.steg) {
                 this.props.dispatch(søknadActionCreators.setCurrentSteg(steg));
                 this.props.dispatch(apiActionCreators.storeAppState());
             }
@@ -76,7 +87,6 @@ class StegRoutes extends React.Component<Props> {
 
     render() {
         const { søkerinfo } = this.props;
-
         return (
             <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
                 <Switch>
@@ -137,5 +147,5 @@ class StegRoutes extends React.Component<Props> {
 }
 
 export default connect((appState: AppState): StateProps => ({
-    currentSteg: appState.søknad.ekstrainfo.currentStegID
+    steg: appState.søknad.ekstrainfo.currentStegID
 }))(withRouter(StegRoutes));
