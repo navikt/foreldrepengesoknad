@@ -121,7 +121,7 @@
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
-    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt?",
+    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
@@ -139,10 +139,10 @@
     "inntektstype.etterlønn_arbeidsgiver": "Sluttvederlag, sluttpakke eller etterlønn",
     "inntektstype.etterlønn_arbeidsgiver_info":
         "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
-    "inntektstype.militær_eller_siviltjeneste": "Militæret, sivilforsvar eller sivilforsvarstjeneste",
+    "inntektstype.militær_eller_siviltjeneste": "Militærtjeneste eller obligatorisk sivilforsvarstjeneste",
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
-    "inntektstype.lønn_under_utdanning": "Lønn ved permisjon for videre- eller etterutdanning",
+    "inntektstype.lønn_under_utdanning": "Lønn fra arbeidsgiver under videre- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.ventelønn": "Vartpenger og ventelønn",
     "inntektstype.ventelønn_info":
@@ -421,9 +421,9 @@
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt.",
 
-    "uttaksplan.informasjonTilSøker": "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din.",
+    "uttaksplan.informasjonTilSøker": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Slik ser planen din ut. Her kan du legge inn opphold eller endre perioden din.<br /><br />Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
@@ -528,7 +528,7 @@
     "oppsummering.ankomstdato.label": "ankomstdato",
 
     "oppsummering.annenForelder": "Den andre forelderen",
-    "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har...",
+    "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har",
     "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
     "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
     "oppsummering.annenForelder.kanIkkeOppgis": "Jeg kan ikke oppgi den andre forelderen",
