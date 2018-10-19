@@ -76,7 +76,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
         const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
 
         return (
-            <Steg {...stegProps} preSubmit={this.cleanupSteg}>
+            <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                 <Block visible={vis.hvilketBarnGjelderSøknadenBolk} margin="none">
                     <HvilkeBarnGjelderSøknadenBolk
                         søknadenGjelderBarnValg={søknadenGjelderBarnValg}

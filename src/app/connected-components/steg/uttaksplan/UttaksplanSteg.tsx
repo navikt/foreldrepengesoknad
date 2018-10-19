@@ -90,6 +90,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.hideBekreftSlettUttaksplanDialog = this.hideBekreftSlettUttaksplanDialog.bind(this);
         this.showBekreftSlettUttaksplanDialog = this.showBekreftSlettUttaksplanDialog.bind(this);
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
+        this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
 
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
@@ -139,6 +140,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
+    delayedSetFocusOnFeiloppsummering() {
+        setTimeout(() => {
+            if (this.feilOppsummering) {
+                const el = ReactDOM.findDOMNode(this.feilOppsummering);
+                if (el) {
+                    (el as HTMLElement).focus();
+                }
+            }
+        });
+    }
+
     render() {
         const {
             søknad,
@@ -156,19 +168,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         return (
             <Steg
                 {...this.props.stegProps}
-                requestNavigateToNextStep={() => {
+                onRequestNavigateToNextStep={() => {
                     this.setState({
                         harKlikketFortsett: true,
                         visFeiloppsummering: uttaksplanValidering.erGyldig === false
                     });
-                    setTimeout(() => {
-                        if (this.feilOppsummering) {
-                            const el = ReactDOM.findDOMNode(this.feilOppsummering);
-                            if (el) {
-                                (el as HTMLElement).focus();
-                            }
-                        }
-                    });
+                    if (uttaksplanValidering.erGyldig === false) {
+                        this.delayedSetFocusOnFeiloppsummering();
+                    }
                     return uttaksplanValidering.erGyldig;
                 }}
                 confirmNavigateToPreviousStep={perioderIUttaksplan ? this.showBekreftGåTilbakeDialog : undefined}

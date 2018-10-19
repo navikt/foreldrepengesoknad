@@ -11,7 +11,7 @@ import SkalBoINorgeNeste12MndSpørsmål from '../../../spørsmål/SkalBoINorgeNe
 import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import Steg, { StegProps } from '../../../components/steg/Steg';
-import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { HistoryProps } from '../../../types/common';
 import { default as INorgePåHendelsestidspunktetSpørsmål } from '../../../spørsmål/INorgePåHendelsestidspunktetSpørsmål';
 import isAvailable from '../util/isAvailable';
@@ -29,8 +29,6 @@ import {
     getSenereUtenlandsoppholdTildatoRegler as tilReglerSenerePerioder
 } from '../../../util/validation/senereUtenlandsopphold';
 import { default as visibility } from './visibility';
-import { søknadStegPath } from '../StegRoutes';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import cleanupUtenlandsOppholdSteg from '../../../util/cleanup/cleanupUtenlandsoppholdSteg';
 import getMessage from 'common/util/i18nUtils';
@@ -49,7 +47,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         this.renderSkalBoINorgeNeste12MndSpørsmål = this.renderSkalBoINorgeNeste12MndSpørsmål.bind(this);
         this.renderHarBoddINorgeSiste12MndSpørsmål = this.renderHarBoddINorgeSiste12MndSpørsmål.bind(this);
         this.updateUtenlandsopphold = this.updateUtenlandsopphold.bind(this);
-        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.preSubmit = this.preSubmit.bind(this);
     }
 
     renderSkalBoINorgeNeste12MndSpørsmål() {
@@ -95,12 +93,10 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         dispatch(søknadActions.updateUtenlandsopphold({ [oppholdType]: opphold }));
     }
 
-    handleOnSubmit() {
-        const { dispatch, history, søknad } = this.props;
+    preSubmit() {
+        const { dispatch, søknad } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
-        dispatch(apiActionCreators.storeAppState());
-        history.push(`${søknadStegPath(stegConfig[StegID.UTENLANDSOPPHOLD].nesteSteg)}`);
     }
 
     render() {
@@ -108,7 +104,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { informasjonOmUtenlandsopphold, barn, situasjon } = søknad;
 
         return (
-            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
+            <Steg {...stegProps} onPreSubmit={this.preSubmit}>
                 <Block hasChildBlocks={true}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderHarBoddINorgeSiste12MndSpørsmål}

@@ -97,7 +97,7 @@ class AnnenForelderSteg extends React.Component<Props> {
 
         if (søkersFødselsnummer && visibility) {
             return (
-                <Steg {...stegProps} preSubmit={this.cleanupSteg}>
+                <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                     <Block
                         header={{
                             title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
@@ -138,7 +138,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: visibility !== undefined && visibility.areAllQuestionsAnswered(),
         renderFormTag: true,
-        previousStegRoute: resolveStegToRender(state),
+        previousStegID: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };

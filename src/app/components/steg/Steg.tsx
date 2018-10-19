@@ -28,12 +28,12 @@ export interface StegProps {
     renderFormTag?: boolean;
     history: History;
     isAvailable?: boolean;
-    nesteStegRoute?: StegID;
-    previousStegRoute?: StegID;
+    nesteStegID?: StegID;
+    previousStegID?: StegID;
     errorSummaryRenderer?: () => React.ReactNode;
     onSubmit?: (event?: FormSubmitEvent) => void;
-    preSubmit?: () => void;
-    requestNavigateToNextStep?: () => boolean;
+    onPreSubmit?: () => void;
+    onRequestNavigateToNextStep?: () => boolean;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
@@ -69,46 +69,51 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleOnSubmit(event?: FormSubmitEvent) {
-        const { onSubmit, dispatch, preSubmit, requestNavigateToNextStep } = this.props;
-        if (onSubmit) {
-            onSubmit(event);
-        } else {
-            if (preSubmit) {
-                preSubmit();
-            }
-            if (requestNavigateToNextStep === undefined || requestNavigateToNextStep()) {
-                dispatch(apiActionCreators.storeAppState());
-                this.navigateToNextStep();
-            }
+        if (this.props.onSubmit) {
+            this.props.onSubmit(event);
+            return;
+        }
+        const { onPreSubmit, onRequestNavigateToNextStep } = this.props;
+        if (onPreSubmit) {
+            onPreSubmit();
+        }
+        if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
+            this.navigateToNextStep();
         }
     }
 
     handleFortsett() {
-        const { requestNavigateToNextStep } = this.props;
-        if (requestNavigateToNextStep === undefined || requestNavigateToNextStep()) {
+        const { onRequestNavigateToNextStep } = this.props;
+        if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
             this.navigateToNextStep();
         }
     }
 
     navigateToNextStep(): void {
-        const { id, nesteStegRoute } = this.props;
-        const nextStepPathname = nesteStegRoute ? nesteStegRoute : `${søknadStegPath(stegConfig[id].nesteSteg)}`;
-        this.props.history.push(nextStepPathname);
+        const { id, nesteStegID, dispatch } = this.props;
+        const stegToShow = nesteStegID ? nesteStegID : (stegConfig[id].nesteSteg as StegID);
+        dispatch(apiActionCreators.storeAppState());
+        this.props.history.push(stegToShow);
+    }
+
+    navigateToPreviousStep(): void {
+        const { previousStegID, dispatch } = this.props;
+        const stegToShow = previousStegID ? previousStegID : this.getPreviousStegID();
+        dispatch(apiActionCreators.storeAppState());
+        this.props.history.push(søknadStegPath(stegToShow));
     }
 
     findPreviousRoute(): string {
+        return `${søknadStegPath(this.getPreviousStegID())}`;
+    }
+
+    getPreviousStegID(): StegID {
         const activeStegId = this.props.id;
         const previousStegID =
             Object.keys(stegConfig).find(
                 (currentStegId) => stegConfig[currentStegId].index === stegConfig[activeStegId].index - 1
             ) || StegID.INNGANG;
-        return `${søknadStegPath(previousStegID)}`;
-    }
-
-    navigateToPreviousStep(): void {
-        const { previousStegRoute } = this.props;
-        const previousStegPathname = previousStegRoute ? previousStegRoute : this.findPreviousRoute();
-        this.props.history.push(previousStegPathname);
+        return previousStegID as StegID;
     }
 
     handleNavigateToPreviousStepClick() {
