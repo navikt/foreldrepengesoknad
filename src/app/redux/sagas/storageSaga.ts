@@ -8,15 +8,21 @@ import { default as uttaksplanValideringActions } from '../actions/uttaksplanVal
 import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
+import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
 
 function* saveAppState() {
     try {
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
-        const cleanedAppState = {
+        const { pathname } = window.location;
+        const cleanedAppState: Partial<AppState> = {
             ...appState,
-            søknad
+            søknad: søknad as Søknad,
+            common: {
+                ...appState.common,
+                pathname
+            }
         };
         yield call(Api.storeAppState, cleanedAppState);
     } catch {

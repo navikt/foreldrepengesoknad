@@ -75,7 +75,7 @@ function getStoredAppState() {
     });
 }
 
-function storeAppState(state: AppState) {
+function storeAppState(state: Partial<AppState>) {
     const url = `${apiBaseUrl}/storage`;
     const { søknad, common } = state;
     return axios.post(url, { søknad, common }, { withCredentials: true });
