@@ -121,7 +121,8 @@
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
-    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
+    "annenInntekt.spørsmål.næringsinntekt":
+        "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
@@ -403,7 +404,8 @@
 
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
-    "uttaksplan.skjema.validering.startdatoHelg": "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
+    "uttaksplan.skjema.validering.startdatoHelg":
+        "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilFarMedmor":
@@ -421,9 +423,15 @@
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {annenForelderNavn} er innlagt.",
 
-    "uttaksplan.informasjonTilSøker": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+    "uttaksplan.informasjonTilSøker":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+    "uttaksplan.informasjon.farMedmor.aleneOmsorg": "",
+    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør": "",
+    "uttaksplan.informasjon.mor.aleneOmsorg": "",
+    "uttaksplan.informasjon.mor.deltOmsorg": "",
+    "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
@@ -690,8 +698,7 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skadengjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelse.sykdom.vedlegg.info.innlagt":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
+    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
 
