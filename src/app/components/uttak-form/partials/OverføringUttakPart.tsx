@@ -28,7 +28,12 @@ const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakTy
 
 const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string) => {
     if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
-        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder" />;
+        return (
+            <FormattedMessage
+                id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder"
+                values={{ navnAnnenForelder }}
+            />
+        );
     } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
         return (
             <FormattedMessage

@@ -207,7 +207,8 @@
     "frilansOppdrag.modal.pågående": "Jeg har fortsatt oppdraget",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
@@ -421,16 +422,20 @@
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {annenForelderNavn} er innlagt.",
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt.",
 
     "uttaksplan.informasjonTilSøker":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
-    "uttaksplan.informasjon.farMedmor.aleneOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
-    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
-    "uttaksplan.informasjon.mor.aleneOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
-    "uttaksplan.informasjon.mor.deltOmsorg": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+    "uttaksplan.informasjon.farMedmor.aleneOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
+    "uttaksplan.informasjon.mor.aleneOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.mor.deltOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{dageroguker} tas av fellesperioden.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
