@@ -8,6 +8,7 @@ import { RegistrertAnnenForelder, RegistrertBarn } from '../Person';
 import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { StegID } from '../../util/routing/stegConfig';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -39,6 +40,7 @@ interface SensitivSkjemaInfo {
 interface SkjemaEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
+    currentStegID: StegID | undefined;
 }
 
 interface Søknad {

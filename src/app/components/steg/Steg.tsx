@@ -61,6 +61,11 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
+        this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
+    }
+
+    updateCurrentSteg(currentSteg: StegID) {
+        this.props.dispatch(søknadActionCreators.setCurrentSteg(currentSteg));
     }
 
     handleAvbrytSøknad() {
@@ -92,13 +97,15 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     navigateToNextStep(): void {
         const { id, nesteStegID, dispatch } = this.props;
         const stegToShow = nesteStegID ? nesteStegID : (stegConfig[id].nesteSteg as StegID);
+        this.updateCurrentSteg(stegToShow);
         dispatch(apiActionCreators.storeAppState());
-        this.props.history.push(stegToShow);
+        this.props.history.push(søknadStegPath(stegToShow));
     }
 
     navigateToPreviousStep(): void {
         const { previousStegID, dispatch } = this.props;
         const stegToShow = previousStegID ? previousStegID : this.getPreviousStegID();
+        this.updateCurrentSteg(stegToShow);
         dispatch(apiActionCreators.storeAppState());
         this.props.history.push(søknadStegPath(stegToShow));
     }

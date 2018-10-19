@@ -15,14 +15,9 @@ function* saveAppState() {
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
-        const { pathname } = window.location;
         const cleanedAppState: Partial<AppState> = {
             ...appState,
-            søknad: søknad as Søknad,
-            common: {
-                ...appState.common,
-                pathname
-            }
+            søknad: søknad as Søknad
         };
         yield call(Api.storeAppState, cleanedAppState);
     } catch {
