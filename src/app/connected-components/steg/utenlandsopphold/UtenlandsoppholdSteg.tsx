@@ -47,7 +47,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         this.renderSkalBoINorgeNeste12MndSpørsmål = this.renderSkalBoINorgeNeste12MndSpørsmål.bind(this);
         this.renderHarBoddINorgeSiste12MndSpørsmål = this.renderHarBoddINorgeSiste12MndSpørsmål.bind(this);
         this.updateUtenlandsopphold = this.updateUtenlandsopphold.bind(this);
-        this.preSubmit = this.preSubmit.bind(this);
+        this.cleanupSteg = this.cleanupSteg.bind(this);
     }
 
     renderSkalBoINorgeNeste12MndSpørsmål() {
@@ -93,7 +93,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         dispatch(søknadActions.updateUtenlandsopphold({ [oppholdType]: opphold }));
     }
 
-    preSubmit() {
+    cleanupSteg() {
         const { dispatch, søknad } = this.props;
         const { informasjonOmUtenlandsopphold } = søknad;
         dispatch(søknadActions.updateUtenlandsopphold(cleanupUtenlandsOppholdSteg(informasjonOmUtenlandsopphold)));
@@ -104,7 +104,7 @@ class UtenlandsoppholdSteg extends React.Component<Props> {
         const { informasjonOmUtenlandsopphold, barn, situasjon } = søknad;
 
         return (
-            <Steg {...stegProps} onPreSubmit={this.preSubmit}>
+            <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                 <Block hasChildBlocks={true}>
                     <UtenlandsoppholdBolk
                         renderSpørsmål={this.renderHarBoddINorgeSiste12MndSpørsmål}

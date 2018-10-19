@@ -8,7 +8,7 @@ import { default as uttaksplanValideringActions } from '../actions/uttaksplanVal
 import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
-import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
+import Søknad from '../../types/søknad/Søknad';
 
 function* saveAppState() {
     try {
