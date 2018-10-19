@@ -50,14 +50,18 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
                 verdi={stillingsprosent}
             />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
-                verdi={formatDate(oppstartsdato)}
-            />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
-                verdi={næringsinntekt}
-            />
+            {oppstartsdato !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
+                    verdi={formatDate(oppstartsdato)}
+                />
+            )}
+            {næringsinntekt !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
+                    verdi={næringsinntekt}
+                />
+            )}
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
                 verdi={registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}
