@@ -247,7 +247,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={visibility.næringRegistrertINorge(næring)}>
+                <Block visible={visibility.dokumentasjonAvInntektSisteÅr(næring)}>
                     <Veilederinfo>
                         Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være
                         kopi personinntektsskjema, næringsoppgave eller resultatregnskap.
