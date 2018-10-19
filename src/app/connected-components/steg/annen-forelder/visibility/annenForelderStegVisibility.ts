@@ -68,8 +68,10 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     },
     [AnnenForelderSpørsmålKeys.fødselsnummer]: {
         isAnswered: ({ annenForelder }) =>
-            questionValueIsOk(annenForelder.fnr) ||
-            (annenForelder.utenlandskFnr === true && annenForelder.bostedsland !== undefined),
+            (questionValueIsOk(annenForelder.fnr) && annenForelder.utenlandskFnr !== true) ||
+            (annenForelder.utenlandskFnr === true &&
+                annenForelder.bostedsland !== undefined &&
+                annenForelder.bostedsland.length > 0),
         condition: (payload) => {
             return (
                 payload.annenForelder.kanIkkeOppgis !== true &&
