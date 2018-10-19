@@ -42,7 +42,7 @@ const visDeltOmsorg = (payload: AnnenForelderSpørsmålPayload): boolean => {
 };
 const visErAnnenForelderInformert = (payload: AnnenForelderSpørsmålPayload): boolean => {
     const { søker, annenForelder } = payload;
-    return søker.erAleneOmOmsorg !== undefined && annenForelder.harRettPåForeldrepenger === true;
+    return søker.erAleneOmOmsorg === false && annenForelder.harRettPåForeldrepenger === true;
 };
 
 const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload): boolean => {

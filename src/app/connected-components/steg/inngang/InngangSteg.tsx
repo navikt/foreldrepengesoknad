@@ -85,13 +85,17 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     cleanupSøknad() {
-        const { valgtRolle, situasjon, søker, dispatch } = this.props;
+        const { valgtRolle, situasjon, dispatch } = this.props;
         if (situasjon !== this.initiellSituasjon || valgtRolle !== this.initiellSøkerrolle) {
             dispatch(
                 søknadActions.setSøknad({
-                    søker,
                     situasjon,
                     harGodkjentVilkår: true
+                })
+            );
+            dispatch(
+                søknadActions.updateSøker({
+                    rolle: valgtRolle
                 })
             );
         }
