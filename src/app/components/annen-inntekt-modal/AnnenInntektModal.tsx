@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import {
@@ -24,6 +24,7 @@ import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -223,6 +224,11 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         attachmentType={AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON}
                         skjemanummer={this.findSkjemanummer()}
                     />
+                </Block>
+                <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>
+                    <Veilederinfo>
+                        <FormattedMessage id="inntektstype.jobb_i_utlandet_info" />
+                    </Veilederinfo>
                 </Block>
             </ModalForm>
         );
