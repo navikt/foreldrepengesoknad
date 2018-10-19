@@ -56,7 +56,8 @@ const getVeilederInfoText = (søknad: Søknad) => {
 
     if (erFarEllerMedmor(søknad.søker.rolle)) {
         if (
-            (!annenForelder.kanIkkeOppgis && !annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
+            annenForelder.kanIkkeOppgis ||
+            (!annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
             søker.erAleneOmOmsorg
         ) {
             return <FormattedMessage id="uttaksplan.informasjon.farMedmor.aleneOmsorg" />;
@@ -74,10 +75,7 @@ const getVeilederInfoText = (søknad: Søknad) => {
             );
         }
     } else {
-        if (
-            (!annenForelder.kanIkkeOppgis && !annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
-            søker.erAleneOmOmsorg
-        ) {
+        if (annenForelder.kanIkkeOppgis || !annenForelder.harRettPåForeldrepenger || søker.erAleneOmOmsorg) {
             return <FormattedMessage id="uttaksplan.informasjon.mor.aleneOmsorg" />;
         } else {
             return <FormattedMessage id="uttaksplan.informasjon.mor.deltOmsorg" />;
