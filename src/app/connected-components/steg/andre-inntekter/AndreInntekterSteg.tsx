@@ -174,7 +174,12 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFortsettKnapp: annenInntektErGyldig(søker),
         renderFormTag: true,
         history,
-        isAvailable: isAvailable(StegID.ANDRE_INNTEKTER, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(
+            StegID.ANDRE_INNTEKTER,
+            state.søknad,
+            props.søkerinfo,
+            state.uttaksplanValidering.erGyldig
+        )
     };
 
     return {

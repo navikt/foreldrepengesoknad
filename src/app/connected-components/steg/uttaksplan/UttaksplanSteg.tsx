@@ -5,7 +5,7 @@ import lenker from '../../../util/routing/lenker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import Søknad, { SøkerRolle } from '../../../types/søknad/Søknad';
+import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
@@ -21,14 +21,14 @@ import BekreftGåTilUttaksplanSkjemaDialog from './BekreftGåTilUttaksplanSkjema
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
-import { FormattedMessage } from 'react-intl';
-import Lenke from 'nav-frontend-lenker';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -52,26 +52,36 @@ interface UttaksplanStegState {
 type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 
 const getVeilederInfoText = (søknad: Søknad) => {
-    if (
-        (søknad.søker.rolle === SøkerRolle.FAR || søknad.søker.rolle === SøkerRolle.MEDMOR) &&
-        søknad.annenForelder.kanIkkeOppgis !== true &&
-        søknad.annenForelder.harRettPåForeldrepenger === true
-    ) {
-        return (
-            <FormattedMessage
-                id="uttaksplan.informasjonFarMedmorDeltUttak"
-                values={{
-                    navn: søknad.annenForelder.fornavn,
-                    link: (
-                        <Lenke href={lenker.viktigeFrister} target="_blank">
-                            <FormattedMessage id="uttaksplan.fristerLinkTekst" />
-                        </Lenke>
-                    )
-                }}
-            />
-        );
+    const { annenForelder, søker } = søknad;
+
+    if (erFarEllerMedmor(søknad.søker.rolle)) {
+        if (
+            (!annenForelder.kanIkkeOppgis && !annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
+            søker.erAleneOmOmsorg
+        ) {
+            return <FormattedMessage id="uttaksplan.informasjon.farMedmor.aleneOmsorg" />;
+        } else if (annenForelder.erUfør) {
+            return <FormattedMessage id="uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør" />;
+        } else {
+            return (
+                <FormattedHTMLMessage
+                    id="uttaksplan.informasjon.farMedmor.deltUttak"
+                    values={{
+                        navn: annenForelder.fornavn,
+                        link: lenker.viktigeFrister
+                    }}
+                />
+            );
+        }
     } else {
-        return <FormattedMessage id="uttaksplan.informasjonTilSøker" />;
+        if (
+            (!annenForelder.kanIkkeOppgis && !annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
+            søker.erAleneOmOmsorg
+        ) {
+            return <FormattedMessage id="uttaksplan.informasjon.mor.aleneOmsorg" />;
+        } else {
+            return <FormattedMessage id="uttaksplan.informasjon.mor.deltOmsorg" />;
+        }
     }
 };
 

@@ -24,7 +24,7 @@ const SelvstendigNæringsdrivendeOppsummering = ({ søker, intl }: Props) => {
     }
 
     return (
-        <Oppsummeringsseksjon ingress={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}>
+        <Oppsummeringsseksjon>
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.tittel')}
                 verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende')}

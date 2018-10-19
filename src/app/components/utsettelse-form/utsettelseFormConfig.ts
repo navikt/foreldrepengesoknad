@@ -62,7 +62,7 @@ const harRegistrertArbeidOk = (
     return (
         periode.årsak === UtsettelseÅrsakType.Arbeid &&
         variant === Utsettelsesvariant.Arbeid &&
-        (questionValueIsOk(periode.orgnr) || questionValueIsOk(periode.selvstendigNæringsdrivendeEllerFrilans))
+        (questionValueIsOk(periode.orgnr) || questionValueIsOk(periode.arbeidsform))
     );
 };
 

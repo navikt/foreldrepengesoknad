@@ -14,7 +14,7 @@ import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt
 
 const harGodkjentVilkår = (søknad: Søknad) => søknad.harGodkjentVilkår === true;
 
-const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
+const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, uttaksplanErGyldig?: boolean): boolean => {
     switch (stegId) {
         case StegID.INNGANG:
             return harGodkjentVilkår(søknad);
@@ -42,7 +42,8 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): 
                 harGodkjentVilkår(søknad) &&
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
-                uttaksplanSkjemaErGyldig(søknad)
+                uttaksplanSkjemaErGyldig(søknad) &&
+                uttaksplanErGyldig === true
             );
         case StegID.ANDRE_INNTEKTER:
             return (
@@ -50,7 +51,8 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): 
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
                 uttaksplanSkjemaErGyldig(søknad) &&
-                utenlandsoppholdErGyldig(søknad)
+                utenlandsoppholdErGyldig(søknad) &&
+                uttaksplanErGyldig === true
             );
         case StegID.OPPSUMMERING:
             return (
@@ -58,6 +60,7 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo): 
                 barnErGyldig(søknad, søkerinfo) &&
                 annenForelderErGyldig(søknad, søkerinfo) &&
                 uttaksplanSkjemaErGyldig(søknad) &&
+                uttaksplanErGyldig === true &&
                 utenlandsoppholdErGyldig(søknad) &&
                 annenInntektErGyldig(søknad.søker)
             );
