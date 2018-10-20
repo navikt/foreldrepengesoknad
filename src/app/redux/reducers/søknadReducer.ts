@@ -38,7 +38,8 @@ const getDefaultState = (): SøknadPartial => {
         ekstrainfo: {
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
-            }
+            },
+            currentStegID: undefined
         },
         sensitivInfoIkkeLagre: {
             søknadenGjelderBarnValg: {
@@ -217,6 +218,15 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 }
             };
         }
+
+        case SøknadActionKeys.SET_CURRENT_STEG:
+            return {
+                ...state,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    currentStegID: action.stegID
+                }
+            };
 
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;

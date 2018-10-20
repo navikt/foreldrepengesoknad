@@ -61,7 +61,8 @@ const søknad: SøknadPartial = {
         registrertAnnenForelder
     },
     ekstrainfo: {
-        uttaksplanSkjema: {}
+        uttaksplanSkjema: {},
+        currentStegID: undefined
     }
 };
 
