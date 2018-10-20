@@ -4,11 +4,9 @@ import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { ApiStatePartial } from '../reducers/apiReducer';
-
-import { SøkerinfoDTO } from '../../api/types/sokerinfoDTO';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
-import routeConfig from '../../util/routing/routeConfig';
+import { redirectToGenerellFeil } from '../../util/routing/generellFeil';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -19,16 +17,18 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     return !(registrerteBarn && registrerteBarn.length > 0);
 }
 
-function* getSøkerinfo(action: any) {
+function* getSøkerinfo() {
     try {
-        const response = yield call(Api.getSøkerinfo, action.params);
-        const søkerinfoDTO: SøkerinfoDTO = response.data;
+        const response = yield call(Api.getSøkerinfo);
+        const søkerinfo: Søkerinfo = getSøkerinfoFromDTO(response.data);
+        const useStorage = shouldUseStoredDataIfTheyExist(søkerinfo) || 1 === 1;
         const nextApiState: ApiStatePartial = {
-            søkerinfo: getSøkerinfoFromDTO(søkerinfoDTO),
-            isLoadingSøkerinfo: true
+            søkerinfo,
+            isLoadingSøkerinfo: true,
+            isLoadingAppState: true
         };
         yield put(apiActions.updateApi(nextApiState));
-        if (shouldUseStoredDataIfTheyExist(nextApiState.søkerinfo)) {
+        if (useStorage) {
             yield put(apiActions.getStoredAppState());
         } else {
             yield put(apiActions.deleteStoredAppState());
@@ -37,7 +37,7 @@ function* getSøkerinfo(action: any) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
         } else {
-            action.history.push(`${routeConfig.GENERELL_FEIL_URL}`);
+            redirectToGenerellFeil();
         }
     } finally {
         yield put(
