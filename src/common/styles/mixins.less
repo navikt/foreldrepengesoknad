@@ -4,7 +4,11 @@
     box-shadow: 0 0 0 3px @orangeFocus;
 }
 
-.borderButton() {
+.iconButton() {
+    .borderButton();
+    border: none;
+}
+.borderButton(@hideBorder: false) {
     border-radius: 4px;
     background-color: @white;
     border: 1px solid @navGra20;
