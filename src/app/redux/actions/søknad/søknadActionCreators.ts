@@ -18,6 +18,7 @@ import {
     UttaksplanUpdatePeriode,
     UttaksplanUpdateSkjemadata,
     UttaksplanLagForslag,
+    SetCurrentSteg,
     AvbrytSøknad
 } from './søknadActionDefinitions';
 import {
@@ -33,6 +34,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { StegID } from '../../../util/routing/stegConfig';
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
@@ -141,6 +143,11 @@ const avbrytSøknad = (): AvbrytSøknad => ({
     type: SøknadActionKeys.AVBRYT_SØKNAD
 });
 
+const setCurrentSteg = (stegID: StegID): SetCurrentSteg => ({
+    type: SøknadActionKeys.SET_CURRENT_STEG,
+    stegID
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -162,5 +169,6 @@ export default {
     deleteAttachmentFailed,
     uttaksplanLagForslag,
     avbrytSøknad,
-    setSøknad
+    setSøknad,
+    setCurrentSteg
 };
