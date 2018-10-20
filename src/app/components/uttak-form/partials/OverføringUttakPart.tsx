@@ -22,17 +22,18 @@ const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakTy
     if (søkerErFarEllerMedmor) {
         return årsak !== undefined;
     } else {
-        return (
-            årsak !== undefined &&
-            årsak !== OverføringÅrsakType.aleneomsorg &&
-            årsak !== OverføringÅrsakType.ikkeRettAnnenForelder
-        );
+        return årsak !== undefined && årsak !== OverføringÅrsakType.aleneomsorg;
     }
 };
 
 const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: string) => {
     if (årsak === OverføringÅrsakType.insititusjonsoppholdAnnenForelder) {
-        return <FormattedMessage id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder" />;
+        return (
+            <FormattedMessage
+                id="uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder"
+                values={{ navnAnnenForelder }}
+            />
+        );
     } else if (årsak === OverføringÅrsakType.sykdomAnnenForelder) {
         return (
             <FormattedMessage

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -116,7 +116,9 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                     />
                 </Block>
                 <Block margin="none" visible={visVeileder}>
-                    <Veilederinfo>Informason når en har lenger enn tre uker permisjon før fødsel</Veilederinfo>
+                    <Veilederinfo>
+                        <FormattedMessage id="uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker" />
+                    </Veilederinfo>
                 </Block>
             </>
         );

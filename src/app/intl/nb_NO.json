@@ -11,7 +11,7 @@
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
-    "pågående": "pågående",
+    "pågående": "Jeg jobber her fortsatt",
 
     "rediger": "Rediger",
 
@@ -121,13 +121,14 @@
     "annenInntekt.modal.tittel": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
-    "annenInntekt.spørsmål.næringsinntekt": "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
+    "annenInntekt.spørsmål.næringsinntekt":
+        "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
 
     "annenInntekt.arbeidsforhold.infotekst":
-        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i AA-registret.",
+        "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
@@ -206,7 +207,8 @@
     "frilansOppdrag.modal.pågående": "Jeg har fortsatt oppdraget",
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
-    "varigEndringAvNæringsinntekt.inntektEtterEndring.label": "Oppgi næringsinntekten din etter endringen",
+    "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
+        "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
@@ -231,7 +233,7 @@
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
-    "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
+    "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
 
     "erDuSelvstendigNæringsdrivende.spørsmål": "Har du jobbet som selvstendig næringsdrivende de siste 10 månedene?",
 
@@ -403,7 +405,8 @@
 
     "uttaksplan.skjema.validering.startdatoUtenforGyldigTidsrom":
         "Startdato må være innen de {uker} første ukene før termin/fødsel",
-    "uttaksplan.skjema.validering.startdatoHelg": "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
+    "uttaksplan.skjema.validering.startdatoHelg":
+        "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilFarMedmor":
@@ -421,9 +424,19 @@
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt.",
 
-    "uttaksplan.informasjonTilSøker": "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+    "uttaksplan.informasjonTilSøker":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. .<br /><br />Hvis du ikke skal starte din periode dagen etter {navn} sin siste dag med foreldrepenger må du legge inn et opphold fra denne dagen og frem til dagen før du skal starte.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+    "uttaksplan.informasjon.farMedmor.aleneOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
+    "uttaksplan.informasjon.mor.aleneOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+    "uttaksplan.informasjon.mor.deltOmsorg":
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+    "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{dageroguker} tas av fellesperioden.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
@@ -481,7 +494,7 @@
 
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
 
-    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig nummer (11 sifre)",
+    "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer (11 sifre)",
 
     "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste tolv månedene.",
     "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste tolv månedene.",
@@ -637,7 +650,7 @@
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
-    "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} innlagt på helseinstitusjon",
+    "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
@@ -651,7 +664,7 @@
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesperioden",
     "oppholdsårsaktype.foreldernavn.UTTAK_KVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
-    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut ...",
+    "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut",
 
     "morsAktivitet.Arbeid": "Arbeid",
     "morsAktivitet.Utdanning": "Utdanning",
@@ -674,7 +687,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din vil bli nullstillt",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
         "Dersom du går tilbake til forrige steg vil planen din bli nullstillt, og du må lage planen på nytt.",
-    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake",
+    "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
     "uttaksplan.slettPlan": "Slett plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder enda.",
@@ -690,8 +703,7 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skadengjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelse.sykdom.vedlegg.info.innlagt":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
+    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
 

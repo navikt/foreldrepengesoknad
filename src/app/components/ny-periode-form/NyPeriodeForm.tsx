@@ -5,7 +5,7 @@ import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
 import './nyPeriodeForm.less';
 import Block from 'common/components/block/Block';
-import { EtikettLiten } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 import BEMHelper from 'common/util/bem';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
@@ -28,9 +28,9 @@ const bem = BEMHelper('periodeForm');
 const PeriodeFormTittel: React.StatelessComponent<{ tittel: string }> = ({ tittel }) => {
     return (
         <Block margin="s">
-            <EtikettLiten tag="h1" className={bem.element('heading')}>
+            <Undertittel tag="h1" className={bem.element('heading')}>
                 {tittel}
-            </EtikettLiten>
+            </Undertittel>
         </Block>
     );
 };
