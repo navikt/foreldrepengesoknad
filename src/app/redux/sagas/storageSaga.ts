@@ -8,6 +8,7 @@ import { default as uttaksplanValideringActions } from '../actions/uttaksplanVal
 import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
+import Søknad from '../../types/søknad/Søknad';
 
 function* saveAppState() {
     try {
@@ -16,7 +17,7 @@ function* saveAppState() {
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
         const cleanedAppState = {
             ...appState,
-            søknad
+            søknad: søknad as Søknad
         };
         yield call(Api.storeAppState, cleanedAppState);
     } catch {
