@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { AnnenInntekt, AnnenInntektType, JobbIUtlandetInntekt } from '../types/søknad/AnnenInntekt';
+import { AnnenInntekt } from '../../types/søknad/AnnenInntekt';
 import { Knapp } from 'nav-frontend-knapper';
-import AnnenInntektModal from '../components/annen-inntekt-modal/AnnenInntektModal';
-import { prettifyTidsperiode } from '../util/dates/dates';
-import List from '../components/list/List';
-import {
-    InteractiveListElementProps,
-    default as InteractiveListElement
-} from '../components/interactive-list-element/InteractiveListElement';
+import AnnenInntektModal from '../../components/annen-inntekt-modal/AnnenInntektModal';
+import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
+import { FormattedMessage } from 'react-intl';
+import AndreInntekterListElement from './AndreInntekterListElement';
 
 interface AndreInntekterBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -95,7 +90,6 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
         const { renderSpørsmål, showAndreInntekterPeriodeContent, andreInntekterSiste10Mnd } = this.props;
 
         const { annenInntektToEdit } = this.state;
-        const ListElement = injectIntl(AndreInntekterListeElement);
 
         return (
             <React.Fragment>
@@ -106,7 +100,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(annenInntekt: AnnenInntekt, index: number) => (
-                                    <ListElement
+                                    <AndreInntekterListElement
                                         annenInntekt={annenInntekt}
                                         key={`annenInntekt-${index}`}
                                         onEdit={() => this.onEdit(annenInntekt, index)}
@@ -139,50 +133,4 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
         );
     }
 }
-
-interface AndreInntekterListeElementProps extends InteractiveListElementProps {
-    annenInntekt: AnnenInntekt;
-}
-
-const AndreInntekterListeElement: React.StatelessComponent<AndreInntekterListeElementProps & InjectedIntlProps> = ({
-    annenInntekt,
-    intl,
-    ...rest
-}) => {
-    const { type, tidsperiode, vedlegg } = annenInntekt;
-    const inntektstypeSkalHaVedlegg =
-        type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING && type !== AnnenInntektType.JOBB_I_UTLANDET;
-    const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
-    const intlKey = 'inntektstype.';
-    let title = `${type}`;
-
-    if (type === AnnenInntektType.JOBB_I_UTLANDET) {
-        const arbeidsgiver = (annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn;
-        title = `${getMessage(intl, `${intlKey}${type.toLowerCase()}`)} (${arbeidsgiver})`;
-    } else {
-        title = getMessage(intl, `${intlKey}${type.toLowerCase()}`);
-    }
-
-    const deleteLinkText = getMessage(intl, 'slett.periode');
-    const dokVedlagt = getMessage(intl, 'dokumentasjon.vedlagt');
-    const dokMangler = getMessage(intl, 'dokumentasjon.mangler');
-
-    return (
-        <InteractiveListElement
-            title={title}
-            text={prettifyTidsperiode(tidsperiode)}
-            deleteLinkText={deleteLinkText}
-            etikettProps={
-                inntektstypeSkalHaVedlegg
-                    ? {
-                          type: harVedlegg ? 'suksess' : 'fokus',
-                          children: harVedlegg ? dokVedlagt : dokMangler
-                      }
-                    : undefined
-            }
-            {...rest}
-        />
-    );
-};
-
 export default AndreInntekterBolk;
