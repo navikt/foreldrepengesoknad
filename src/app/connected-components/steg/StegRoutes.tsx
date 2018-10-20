@@ -15,15 +15,78 @@ import OppsummeringSteg from './oppsummering/OppsummeringSteg';
 import { HistoryProps } from '../../types/common';
 import { SøkerinfoProps } from '../../types/søkerinfo';
 import UttaksplanSkjemaSteg from './uttaksplan-skjema/UttaksplanSkjemaSteg';
+import { connect } from 'react-redux';
+import { DispatchProps } from 'common/redux/types';
+import { AppState } from '../../redux/reducers';
+import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
+import { apiActionCreators } from '../../redux/actions';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
-type Props = SøkerinfoProps & RouteComponentProps<any> & HistoryProps;
+export const getStegFromWindowLocation = (): StegID | undefined => {
+    return getStegFromPathname(window.location.pathname);
+};
+
+export const getStegFromPathname = (pathname: string): StegID | undefined => {
+    const steg = pathname.match(/soknad\/(.+)/);
+    if (steg && steg.length === 2) {
+        return steg[1] as StegID;
+    }
+    return undefined;
+};
+
+interface StateProps {
+    steg: StegID | undefined;
+}
+
+type Props = StateProps & SøkerinfoProps & RouteComponentProps<any> & HistoryProps & DispatchProps;
 
 class StegRoutes extends React.Component<Props> {
+    unlistenLocationChange: () => void;
+    requestedSteg: StegID | undefined;
+
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            currentSteg: props.steg
+        };
+        this.navigateToStegIfNeeded(props);
+    }
+
+    componentWillMount() {
+        this.unlistenLocationChange = this.props.history.listen((location) => {
+            const steg = getStegFromPathname(location.pathname);
+            if (steg) {
+                this.requestedSteg = steg;
+                this.onStegChange(steg);
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.unlistenLocationChange();
+    }
+
+    navigateToStegIfNeeded(props: Props) {
+        const { steg, history, location } = props;
+        const pathSteg = getStegFromPathname(location.pathname);
+        if (steg && steg !== pathSteg) {
+            history.replace(søknadStegPath(steg));
+        }
+    }
+
+    onStegChange(steg: StegID) {
+        setTimeout(() => {
+            // Must allow state to be updated before checking equality
+            if (steg !== this.props.steg) {
+                this.props.dispatch(søknadActionCreators.setCurrentSteg(steg));
+                this.props.dispatch(apiActionCreators.storeAppState());
+            }
+        });
+    }
+
     render() {
         const { søkerinfo } = this.props;
-
         return (
             <Applikasjonsside visSpråkvelger={false} visSøknadstittel={true}>
                 <Switch>
@@ -83,4 +146,6 @@ class StegRoutes extends React.Component<Props> {
     }
 }
 
-export default withRouter(StegRoutes);
+export default connect((appState: AppState): StateProps => ({
+    steg: appState.søknad.ekstrainfo.currentStegID
+}))(withRouter(StegRoutes));
