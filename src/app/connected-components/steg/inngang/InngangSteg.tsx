@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 import { AppState } from '../../../redux/reducers';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import { søknadStegPath } from '../StegRoutes';
 import { StegID } from '../../../util/routing/stegConfig';
 import { DispatchProps } from 'common/redux/types';
 import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
@@ -47,7 +45,6 @@ class InngangSteg extends React.Component<Props, {}> {
         super(props);
 
         this.cleanupSøknad = this.cleanupSøknad.bind(this);
-        this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.updateSituasjonAndRolleInState = this.updateSituasjonAndRolleInState.bind(this);
 
         this.initiellSituasjon = props.situasjon;
@@ -101,19 +98,17 @@ class InngangSteg extends React.Component<Props, {}> {
         }
     }
 
-    handleOnSubmit() {
-        this.cleanupSøknad();
-
-        const { dispatch, history, situasjon } = this.props;
-        dispatch(apiActionCreators.storeAppState());
-
-        if (situasjon === Søkersituasjon.FØDSEL) {
-            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_FØDSEL)}`);
-        } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {
-            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_FORELDREANSVAR)}`);
-        } else if (situasjon === Søkersituasjon.ADOPSJON) {
-            history.push(`${søknadStegPath(StegID.RELASJON_TIL_BARN_ADOPSJON)}`);
+    getNextStegID() {
+        const { situasjon } = this.props;
+        switch (situasjon) {
+            case Søkersituasjon.FØDSEL:
+                return StegID.RELASJON_TIL_BARN_FØDSEL;
+            case Søkersituasjon.FORELDREANSVAR:
+                return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
+            case Søkersituasjon.ADOPSJON:
+                return StegID.RELASJON_TIL_BARN_ADOPSJON;
         }
+        return undefined;
     }
 
     render() {
@@ -121,7 +116,7 @@ class InngangSteg extends React.Component<Props, {}> {
         const { rolle } = søker;
 
         return (
-            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
+            <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
                 <Block>
                     <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
                 </Block>
@@ -167,7 +162,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: true,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        nesteStegRoute: resolveStegToRender(state)
+        nesteStegID: resolveStegToRender(state)
     };
 
     return {

@@ -75,7 +75,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         return (
             <Steg
                 {...stegProps}
-                preSubmit={() =>
+                onPreSubmit={() =>
                     dispatch(
                         apiActionCreators.getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
                             getStønadskontoParams(søknad)
