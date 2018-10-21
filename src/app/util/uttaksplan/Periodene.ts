@@ -12,6 +12,7 @@ import {
 import { Tidsperiode } from 'common/types';
 import { Perioden } from './Perioden';
 import { Uttaksdagen } from './Uttaksdagen';
+import { isValidTidsperiode } from './Tidsperioden';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -22,6 +23,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
+    getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -35,7 +37,7 @@ export const Periodene = (perioder: Periode[]) => ({
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
     if (p1.tidsperiode.fom === undefined || p2.tidsperiode.fom === undefined) {
-        return p1.tidsperiode.fom === undefined ? -1 : 1;
+        return p1.tidsperiode.fom === undefined ? 1 : -1;
     }
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
 }
@@ -131,15 +133,25 @@ function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
 function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
     return perioder.filter(
         (periode) =>
-            moment(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day') ||
-            isForeldrepengerFørFødselUttaksperiode(periode)
+            isForeldrepengerFørFødselUttaksperiode(periode) ||
+            (isValidTidsperiode(periode.tidsperiode) &&
+                moment(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day'))
     );
 }
 
 function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
     return perioder.filter(
         (periode) =>
+            isValidTidsperiode(periode.tidsperiode) &&
             moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
+            isForeldrepengerFørFødselUttaksperiode(periode) === false
+    );
+}
+
+function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
+    return perioder.filter(
+        (periode) =>
+            isValidTidsperiode(periode.tidsperiode) === false &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false
     );
 }
