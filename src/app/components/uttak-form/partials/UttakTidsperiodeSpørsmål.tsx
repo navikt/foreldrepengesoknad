@@ -13,7 +13,6 @@ import { Feil } from 'common/components/skjema/elements/skjema-input-element/typ
 import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Tidsperioden, isValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
-import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 export interface Props {
     periode: UttakFormPeriodeType;
@@ -61,30 +60,12 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(t)}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            datoAvgrensninger={
-                periode.konto
-                    ? getDatoavgrensningerForStønadskonto(
-                          periode.konto,
-                          familiehendelsesdato,
-                          tidsperiode as Tidsperiode,
-                          ugyldigeTidsperioder
-                      )
-                    : {
-                          fra: {
-                              minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                              ugyldigeTidsperioder,
-                              helgedagerIkkeTillatt: true
-                          },
-                          til: {
-                              minDato:
-                                  tidsperiode !== undefined && tidsperiode.fom
-                                      ? (tidsperiode.fom as Date)
-                                      : Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                              ugyldigeTidsperioder,
-                              helgedagerIkkeTillatt: true
-                          }
-                      }
-            }
+            datoAvgrensninger={getDatoavgrensningerForStønadskonto(
+                periode.konto,
+                familiehendelsesdato,
+                tidsperiode,
+                ugyldigeTidsperioder
+            )}
             datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode)}
             visVarighet={true}
             varighetRenderer={(dager) =>

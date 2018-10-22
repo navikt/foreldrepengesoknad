@@ -29,11 +29,28 @@ export function getSisteMuligePermisjonsdag(familiehendelsesdato: Date): Date {
 }
 
 export function getDatoavgrensningerForStønadskonto(
-    konto: StønadskontoType,
+    konto: StønadskontoType | undefined,
     familiehendelsesdato: Date,
     tidsperiode: Partial<Tidsperiode> | undefined,
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger | undefined {
+    if (konto === undefined) {
+        return {
+            fra: {
+                minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
+                ugyldigeTidsperioder,
+                helgedagerIkkeTillatt: true
+            },
+            til: {
+                minDato:
+                    tidsperiode !== undefined && tidsperiode.fom
+                        ? (tidsperiode.fom as Date)
+                        : Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
+                ugyldigeTidsperioder,
+                helgedagerIkkeTillatt: true
+            }
+        };
+    }
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato, ugyldigeTidsperioder);
     }
