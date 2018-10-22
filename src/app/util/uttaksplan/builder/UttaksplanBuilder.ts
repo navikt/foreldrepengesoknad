@@ -70,9 +70,8 @@ class UttaksplanAutoBuilder {
             throw new Error('Periode for endring ikke funnet');
         }
         if (isValidTidsperiode(periode.tidsperiode) && isValidTidsperiode(oldPeriode.tidsperiode) === false) {
-            this.perioder = settInnPeriode(this.perioder.filter((p) => p.id !== periode.id), {
-                ...periode
-            });
+            this.slettPeriodeOgBuild(oldPeriode);
+            this.leggTilPeriodeOgBuild(periode);
         }
         if (Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(this.familiehendelsesdato)) {
             this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
