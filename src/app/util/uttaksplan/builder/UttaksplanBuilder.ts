@@ -2,7 +2,7 @@ import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
 import { Periode, Periodetype, PeriodeHull } from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
-import { Tidsperioden, getTidsperiode } from '../Tidsperioden';
+import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
@@ -26,9 +26,11 @@ class UttaksplanAutoBuilder {
         const perioderFørFamDato = Periodene(this.perioder).getPerioderFørFamiliehendelsesdato(
             this.familiehendelsesdato
         );
+
         const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
             this.familiehendelsesdato
         );
+
         const perioderMedUgyldigTidsperiode = Periodene(this.perioder).getPerioderMedUgyldigTidsperiode();
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
@@ -46,6 +48,7 @@ class UttaksplanAutoBuilder {
             .fjernHullPåStarten()
             .fjernHullPåSlutten()
             .sort();
+
         this.perioder = [...this.perioder, ...perioderMedUgyldigTidsperiode];
         return this;
     }
@@ -60,11 +63,15 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    oppdaterPeriodeOgBuild(periode: Periode, skip = false) {
+    oppdaterPeriodeOgBuild(periode: Periode) {
         const oldPeriode = periode.id ? Periodene(this.perioder).getPeriode(periode.id) : undefined;
 
         if (!oldPeriode) {
             throw new Error('Periode for endring ikke funnet');
+        }
+        if (isValidTidsperiode(periode.tidsperiode) && isValidTidsperiode(oldPeriode.tidsperiode) === false) {
+            this.slettPeriodeOgBuild(oldPeriode);
+            this.leggTilPeriodeOgBuild(periode);
         }
         if (Tidsperioden(periode.tidsperiode).erFomEllerEtterDato(this.familiehendelsesdato)) {
             this.oppdaterPerioderVedEndretPeriode(periode, oldPeriode);
@@ -137,8 +144,7 @@ class UttaksplanAutoBuilder {
     }
 
     private finnOgSettInnHull() {
-        const hull = finnHull(this.perioder);
-        this.perioder = [...this.perioder, ...hull].sort(sorterPerioder);
+        this.perioder = finnOgSettInnHull(this.perioder);
         return this;
     }
 
@@ -195,7 +201,11 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     const berørtePerioder = Periodene(perioder).finnOverlappendePerioder(nyPeriode);
     const periodeSomMåSplittes = Periodene(perioder).finnPeriodeMedDato(nyPeriode.tidsperiode.fom);
     if (berørtePerioder.length === 0 && !periodeSomMåSplittes) {
-        return [...perioder, nyPeriode];
+        const nyPeriodeliste = [...perioder, nyPeriode].sort(sorterPerioder);
+        if (nyPeriodeliste[nyPeriodeliste.length - 1].id === nyPeriode.id) {
+            return finnOgSettInnHull(nyPeriodeliste);
+        }
+        return nyPeriodeliste;
     }
 
     if (!periodeSomMåSplittes) {
@@ -402,4 +412,9 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
         return false;
     }
     return periode.type !== Periodetype.Utsettelse;
+}
+
+function finnOgSettInnHull(perioder: Periode[]): Periode[] {
+    const hull = finnHull(perioder);
+    return [...perioder, ...hull].sort(sorterPerioder);
 }
