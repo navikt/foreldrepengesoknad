@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import { prettifyTidsperiode } from '../util/dates/dates';
+import { FormattedMessage } from 'react-intl';
 import Knapp from 'nav-frontend-knapper/lib/knapp';
-import { Næring } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import SelvstendigNæringsdrivendeModal from '../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
+import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
+import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
 import Block from 'common/components/block/Block';
-import InteractiveListElement, {
-    InteractiveListElementProps
-} from '../components/interactive-list-element/InteractiveListElement';
-import List from '../components/list/List';
-import getMessage from 'common/util/i18nUtils';
-import { næringsinntektSisteÅrMåDokumenteres } from '../util/domain/næringer';
+import List from '../../components/list/List';
+import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     renderSpørsmål: () => JSX.Element;
@@ -98,7 +93,6 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         const { næringListe, renderSpørsmål, showNæringsPerioderContent } = this.props;
 
         const { næringToEdit } = this.state;
-        const ListElement = injectIntl(NæringListeElement);
 
         return (
             <React.Fragment>
@@ -109,7 +103,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                             <List
                                 data={næringListe}
                                 renderElement={(updatedNæring: Næring, index: number) => (
-                                    <ListElement
+                                    <SelvstendigNæringsdrivendeListElement
                                         næring={updatedNæring}
                                         onEdit={() => this.onSelect(updatedNæring, index)}
                                         onDelete={() => this.onDelete(updatedNæring)}
@@ -144,35 +138,3 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
         );
     }
 }
-
-interface NæringListeElementProps extends InteractiveListElementProps {
-    næring: Næring;
-}
-
-const NæringListeElement: React.StatelessComponent<NæringListeElementProps & InjectedIntlProps> = ({
-    næring,
-    intl,
-    ...rest
-}) => {
-    const deleteLinkText = getMessage(intl, 'slett.næring');
-    const måDokumentereInntektSisteÅr = næringsinntektSisteÅrMåDokumenteres(næring);
-    const harVedlegg = næring.vedlegg && næring.vedlegg.length > 0;
-    return (
-        <InteractiveListElement
-            title={næring.navnPåNæringen}
-            text={prettifyTidsperiode(næring.tidsperiode)}
-            deleteLinkText={deleteLinkText}
-            etikettProps={
-                måDokumentereInntektSisteÅr
-                    ? {
-                          type: harVedlegg ? 'suksess' : 'fokus',
-                          children: harVedlegg
-                              ? getMessage(intl, 'dokumentasjon.vedlagt')
-                              : getMessage(intl, 'dokumentasjon.mangler')
-                      }
-                    : undefined
-            }
-            {...rest}
-        />
-    );
-};
