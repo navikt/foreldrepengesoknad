@@ -222,6 +222,7 @@
     "næringstype.annen": "Annen type virksomet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
