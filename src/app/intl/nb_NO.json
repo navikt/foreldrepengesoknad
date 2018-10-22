@@ -410,7 +410,7 @@
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilFarMedmor":
-        "Du må velge den samme lengden på perioden med foreldrepenger {navn} valgte i sin søknad.",
+        "Du må velge den samme lengden på perioden med foreldrepenger som {navn} valgte i sin søknad.",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
@@ -418,11 +418,11 @@
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
-    "uttaksplan.overføring.vedlegg.info": "Du må laste opp dokumentasjon",
+    "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt.",
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
@@ -689,7 +689,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
     "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din blir slettet.",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
-        "Hvis du går tilbake til forrige steg, blir planen din bli slettet og du må lage den på nytt. Ønsker du å gå tilbake?",
+        "Hvis du går tilbake til forrige steg, blir planen din bli slettet og du må lage den på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
     "uttaksplan.slettPlan": "Slett plan",
