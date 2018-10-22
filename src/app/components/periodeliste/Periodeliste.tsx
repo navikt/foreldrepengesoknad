@@ -7,7 +7,7 @@ import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriod
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 
 import './periodeliste.less';
-import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteItem from './PeriodelisteItem';
 import PeriodelisteHull from './PeriodelisteHull';
@@ -57,6 +57,7 @@ class Periodeliste extends React.Component<Props, State> {
     render() {
         const { perioder, uttaksplanValidering, navnPåForeldre } = this.props;
         const numPerioder = perioder.length;
+        let firstInvalidTidsperiode = false;
         return (
             <ToggleList
                 render={(onToggle, isOpen) => (
@@ -64,12 +65,18 @@ class Periodeliste extends React.Component<Props, State> {
                         {perioder.map((periode, idx) => {
                             const isExpanded = isOpen(periode.id);
                             const nextIsGap = idx < numPerioder - 1 && perioder[idx + 1].type === Periodetype.Hull;
+                            firstInvalidTidsperiode =
+                                firstInvalidTidsperiode === false && isValidTidsperiode(periode.tidsperiode) === false;
                             return (
                                 <div
                                     key={periode.id}
                                     className={classnames(
                                         periodelisteBem.element('item', isExpanded ? 'expanded' : undefined),
                                         periodelisteBem.element('item', nextIsGap ? 'with-gap' : undefined),
+                                        periodelisteBem.element(
+                                            'item',
+                                            firstInvalidTidsperiode ? 'firstInvalidTidsperiode' : undefined
+                                        ),
                                         periodelisteBem.element('item', `type-${periode.type}`)
                                     )}>
                                     {periode.type === Periodetype.Hull ? (
