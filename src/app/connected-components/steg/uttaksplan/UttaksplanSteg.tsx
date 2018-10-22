@@ -78,7 +78,12 @@ const getVeilederInfoText = (søknad: Søknad) => {
         if (annenForelder.kanIkkeOppgis || !annenForelder.harRettPåForeldrepenger || søker.erAleneOmOmsorg) {
             return <FormattedMessage id="uttaksplan.informasjon.mor.aleneOmsorg" />;
         } else {
-            return <FormattedMessage id="uttaksplan.informasjon.mor.deltOmsorg" />;
+            return (
+                <FormattedMessage
+                    id="uttaksplan.informasjon.mor.deltOmsorg"
+                    values={{ navnAnnenForelder: annenForelder.fornavn }}
+                />
+            );
         }
     }
 };
