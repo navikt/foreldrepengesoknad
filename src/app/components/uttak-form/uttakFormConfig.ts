@@ -124,12 +124,11 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode, morErUfør } = payload;
+    const { periode } = payload;
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
         erUttakFørFødsel(payload) ||
-        morErUfør ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined)
     ) {
