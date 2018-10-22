@@ -303,7 +303,7 @@
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
 
-    "adopsjonAvEktefellesBarn.spørsmål": "Skal du ha foreldrepenger ved stebarnsadopsjon?",
+    "adopsjonAvEktefellesBarn.spørsmål": "Gjelder søknaden din stebarnsadopsjon?",
 
     "attachments.tittel.omsorgsovertakelse": "Omsorgsovertakelse",
     "attachments.tittel.stebarnsadopsjon": "Stebarnsadopsjon",
@@ -682,14 +682,14 @@
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.tittel": "Avbryt søknad",
     "avbrytSøknadDialog.intro":
-        "Dersom du avbryter søknaden vil all informasjon du har fylt ut i søknaden bli slettet, og du kommer tilbake til velkomstsiden.",
-    "avbrytSøknadDialog.spørsmål": "Ønsker du å avbryte søknaden?",
+        "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å slette søknaden?",
 
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
-    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din vil bli nullstillt",
+    "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din blir slettet.",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
-        "Dersom du går tilbake til forrige steg vil planen din bli nullstillt, og du må lage planen på nytt.",
+        "Hvis du går tilbake til forrige steg, blir planen din bli slettet og du må lage den på nytt. Ønsker du å gå tilbake?",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
     "uttaksplan.slettPlan": "Slett plan",
@@ -698,14 +698,14 @@
     "bekreftSlettUttaksplanDialog.tittel": "Slett plan",
     "bekreftSlettUttaksplanDialog.okLabel": "Ja, slett",
     "bekreftSlettUttaksplanDialog.avbrytLabel": "Nei, avbryt",
-    "bekreftSlettUttaksplanDialog.tekst": "Ønsker du å gå slette planen?",
+    "bekreftSlettUttaksplanDialog.tekst": "Ønsker du å slette planen?",
 
     "utsettelse.sykdom.alternativer.spørsmål": "Velg alternativ",
     "utsettelse.sykdom.alternativ.SYKDOM": "Jeg er for syk til å ta meg av barnet",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Jeg er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
-        "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skadengjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+        "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
@@ -740,7 +740,7 @@
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Ønsker du å jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjema</a>.",
+        "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjema</a>.",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
@@ -755,7 +755,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
         "Du må legge ved dokumentasjon som viser at {navnMor} jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
-        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnMor} er innlagt.",
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnMor} er innlagt, som også viser perioden det gjelder.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
         "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i introduksjonsprogrammet etter kapittel 2 for nyankomne innvandrere.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
