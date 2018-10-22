@@ -26,9 +26,11 @@ class UttaksplanAutoBuilder {
         const perioderFørFamDato = Periodene(this.perioder).getPerioderFørFamiliehendelsesdato(
             this.familiehendelsesdato
         );
-        const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
-            this.familiehendelsesdato
+
+        const perioderEtterFamDato = finnOgSettInnHull(
+            Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(this.familiehendelsesdato)
         );
+
         const perioderMedUgyldigTidsperiode = Periodene(this.perioder).getPerioderMedUgyldigTidsperiode();
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
@@ -46,6 +48,7 @@ class UttaksplanAutoBuilder {
             .fjernHullPåStarten()
             .fjernHullPåSlutten()
             .sort();
+
         this.perioder = [...this.perioder, ...perioderMedUgyldigTidsperiode];
         return this;
     }
@@ -60,7 +63,7 @@ class UttaksplanAutoBuilder {
         return this;
     }
 
-    oppdaterPeriodeOgBuild(periode: Periode, skip = false) {
+    oppdaterPeriodeOgBuild(periode: Periode) {
         const oldPeriode = periode.id ? Periodene(this.perioder).getPeriode(periode.id) : undefined;
 
         if (!oldPeriode) {
@@ -137,8 +140,7 @@ class UttaksplanAutoBuilder {
     }
 
     private finnOgSettInnHull() {
-        const hull = finnHull(this.perioder);
-        this.perioder = [...this.perioder, ...hull].sort(sorterPerioder);
+        this.perioder = finnOgSettInnHull(this.perioder);
         return this;
     }
 
@@ -402,4 +404,9 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
         return false;
     }
     return periode.type !== Periodetype.Utsettelse;
+}
+
+function finnOgSettInnHull(perioder: Periode[]): Periode[] {
+    const hull = finnHull(perioder);
+    return [...perioder, ...hull].sort(sorterPerioder);
 }
