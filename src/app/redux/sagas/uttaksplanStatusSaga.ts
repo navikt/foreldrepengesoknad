@@ -16,15 +16,18 @@ const fjernTrekkdager = (p: Uttaksperiode) => {
 
 function* updateUttaksplanStatus() {
     const appState: AppState = yield select(stateSelector);
-    const { søknad } = appState;
+    const { søknad, api } = appState;
+    const { tilgjengeligeStønadskontoer } = api;
     const uttaksplan = søknad.uttaksplan;
+    const erDeltUttak: boolean =
+        tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Foreldrepenger) === undefined;
     const firstUttaksPeriode = uttaksplan.find(
         (p) => p.type === Periodetype.Uttak && p.konto !== StønadskontoType.ForeldrepengerFørFødsel
     );
     const famDato = getFamiliehendelsedato(søknad.barn, søknad.situasjon);
     const trekkdagerStartdato = Uttaksdagen(Uttaksdagen(famDato).denneEllerNeste()).leggTil(30 - 1);
 
-    if (firstUttaksPeriode !== undefined) {
+    if (firstUttaksPeriode !== undefined && !erDeltUttak) {
         let updatedPeriode = {} as any;
 
         if (moment(firstUttaksPeriode.tidsperiode.fom).isAfter(trekkdagerStartdato)) {
