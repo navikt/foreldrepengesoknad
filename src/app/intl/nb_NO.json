@@ -652,6 +652,7 @@
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
+    "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",

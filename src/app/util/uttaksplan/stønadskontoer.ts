@@ -8,7 +8,8 @@ export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligSt
                 kontoType.konto === StønadskontoType.Fellesperiode ||
                 kontoType.konto === StønadskontoType.Fedrekvote ||
                 kontoType.konto === StønadskontoType.Mødrekvote ||
-                kontoType.konto === StønadskontoType.Foreldrepenger
+                kontoType.konto === StønadskontoType.Foreldrepenger ||
+                kontoType.konto === StønadskontoType.AktivitetsfriKvote
         )
         .map((kontoType) => kontoType.konto);
 
@@ -21,5 +22,6 @@ export const stønadskontoSortOrder = {
     [StønadskontoType.Fellesperiode]: 4,
     [StønadskontoType.Foreldrepenger]: 5,
     [StønadskontoType.SamtidigUttak]: 6,
-    [StønadskontoType.Flerbarnsdager]: 7
+    [StønadskontoType.Flerbarnsdager]: 7,
+    [StønadskontoType.AktivitetsfriKvote]: 8
 };

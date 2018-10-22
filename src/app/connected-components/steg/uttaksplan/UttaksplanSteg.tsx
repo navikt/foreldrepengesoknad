@@ -205,6 +205,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 navnPåForeldre={navnPåForeldre}
+                                erMorUfør={søknad.annenForelder.erUfør}
                             />
                         </Block>
                         {søknad.uttaksplan &&
