@@ -6,6 +6,7 @@ import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
+import { StegID } from '../../../util/routing/stegConfig';
 
 export type UpdateSøknadActionPayload = Partial<Søknad>;
 
@@ -30,7 +31,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_DELETE_PERIODE' = 'uttaksplanDeletePeriode',
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
-    'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag'
+    'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
+    'SET_CURRENT_STEG' = 'setCurrentSteg'
 }
 
 export interface SetSøknad {
@@ -143,6 +145,10 @@ export interface DeleteAttachmentFailed {
 export interface AvbrytSøknad {
     type: SøknadActionKeys.AVBRYT_SØKNAD;
 }
+export interface SetCurrentSteg {
+    type: SøknadActionKeys.SET_CURRENT_STEG;
+    stegID: StegID;
+}
 
 export type SøknadAction =
     | SetSøknad
@@ -165,4 +171,5 @@ export type SøknadAction =
     | UttaksplanDeletePeriode
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
-    | UttaksplanLagForslag;
+    | UttaksplanLagForslag
+    | SetCurrentSteg;

@@ -29,6 +29,7 @@ class UttaksplanAutoBuilder {
         const perioderEtterFamDato = Periodene(this.perioder).getPerioderEtterFamiliehendelsesdato(
             this.familiehendelsesdato
         );
+        const perioderMedUgyldigTidsperiode = Periodene(this.perioder).getPerioderMedUgyldigTidsperiode();
 
         const utsettelser = Periodene(perioderEtterFamDato).getUtsettelser();
         const opphold = Periodene(perioderEtterFamDato).getOpphold();
@@ -45,6 +46,7 @@ class UttaksplanAutoBuilder {
             .fjernHullPåStarten()
             .fjernHullPåSlutten()
             .sort();
+        this.perioder = [...this.perioder, ...perioderMedUgyldigTidsperiode];
         return this;
     }
 
