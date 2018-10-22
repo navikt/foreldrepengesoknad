@@ -36,8 +36,8 @@ export const Periodene = (perioder: Periode[]) => ({
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
-    if (p1.tidsperiode.fom === undefined || p2.tidsperiode.fom === undefined) {
-        return p1.tidsperiode.fom === undefined ? 1 : -1;
+    if (isValidTidsperiode(p1.tidsperiode) === false || isValidTidsperiode(p2.tidsperiode) === false) {
+        return isValidTidsperiode(p1.tidsperiode) ? -1 : 1;
     }
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
 }
