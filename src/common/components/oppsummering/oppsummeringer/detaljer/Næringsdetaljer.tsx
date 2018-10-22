@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import { næringsinntektSisteÅrMåDokumenteres } from '../../../../../app/util/domain/næringer';
 
 interface NæringsdetaljerProps {
     næring: Næring;
@@ -49,14 +50,18 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
                 verdi={stillingsprosent}
             />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
-                verdi={formatDate(oppstartsdato)}
-            />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
-                verdi={næringsinntekt}
-            />
+            {oppstartsdato !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.oppstartsdato')}
+                    verdi={formatDate(oppstartsdato)}
+                />
+            )}
+            {næringsinntekt !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
+                    verdi={næringsinntekt}
+                />
+            )}
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.registrertLand')}
                 verdi={registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}
@@ -154,10 +159,12 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                     </>
                 )}
 
-            <OppsummeringAvDokumentasjon
-                vedlegg={vedlegg || []}
-                ledetekst={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.dokumentasjon')}
-            />
+            {næringsinntektSisteÅrMåDokumenteres(næring) && (
+                <OppsummeringAvDokumentasjon
+                    vedlegg={vedlegg || []}
+                    ledetekst={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.dokumentasjon')}
+                />
+            )}
         </>
     );
 };

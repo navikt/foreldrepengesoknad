@@ -6,7 +6,7 @@ import HarDuJobbetSomFrilansSiste10MndSpørsmål from '../../spørsmål/HarDuJob
 import Søker, { SøkerPartial } from '../../types/søknad/Søker';
 import JobberDuFremdelesSomFrilansSpørsmål from '../../spørsmål/JobberDuFremdelesSomFrilansSpørsmål';
 import { FrilansInformasjonPartial, FrilansOppdrag } from '../../types/søknad/FrilansInformasjon';
-import FrilansOppdragBolk from '../FrilansOppdragBolk';
+import FrilansOppdragBolk from '../frilans-oppdrag-bolk/FrilansOppdragBolk';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';

@@ -68,7 +68,7 @@ const getVeilederInfoText = (søknad: Søknad) => {
                 <FormattedHTMLMessage
                     id="uttaksplan.informasjon.farMedmor.deltUttak"
                     values={{
-                        navn: annenForelder.fornavn,
+                        navnAnnenForelder: annenForelder.fornavn,
                         link: lenker.viktigeFrister
                     }}
                 />
@@ -217,7 +217,11 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {søknad.uttaksplan &&
                             tilgjengeligeStønadskontoer.length > 0 && (
                                 <Block margin="l">
-                                    <Uttaksoppsummering uttak={uttaksstatus} navnPåForeldre={navnPåForeldre} />
+                                    <Uttaksoppsummering
+                                        uttak={uttaksstatus}
+                                        navnPåForeldre={navnPåForeldre}
+                                        rolle={søknad.søker.rolle}
+                                    />
                                 </Block>
                             )}
                     </React.Fragment>
