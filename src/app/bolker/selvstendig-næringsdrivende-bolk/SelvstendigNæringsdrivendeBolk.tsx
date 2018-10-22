@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import Knapp from 'nav-frontend-knapper/lib/knapp';
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næringsdrivende-modal/SelvstendigNæringsdrivendeModal';
@@ -23,7 +22,7 @@ interface SelvstendigNæringsdrivendeBolkState {
 
 type SelvstendigNæringsdrivendeBolkStatePartial = Partial<SelvstendigNæringsdrivendeBolkState>;
 
-class SelvstendigNæringsdrivendeBolk extends React.Component<
+export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     SelvstendigNæringsdrivendeBolkProps,
     SelvstendigNæringsdrivendeBolkState
 > {
@@ -139,5 +138,3 @@ class SelvstendigNæringsdrivendeBolk extends React.Component<
         );
     }
 }
-
-export default SelvstendigNæringsdrivendeBolk;
