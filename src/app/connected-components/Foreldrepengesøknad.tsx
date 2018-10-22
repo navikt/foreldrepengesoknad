@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
 import routeConfig from '../util/routing/routeConfig';
-import StegRoutes from './steg/StegRoutes';
+import StegRoutes, { getStegFromPathname } from './steg/StegRoutes';
 import GenerellFeil from './sider/feilsider/GenerellFeil';
 import { DispatchProps } from 'common/redux/types';
 import { apiActionCreators as api } from '../redux/actions';
@@ -12,8 +12,11 @@ import Velkommen from './sider/velkommen/Velkommen';
 import { AppState } from '../redux/reducers';
 import { Søkerinfo } from '../types/søkerinfo';
 import LoadingScreen from '../components/loading-screen/LoadingScreen';
+import Søknad from '../types/søknad/Søknad';
+import { StegID } from '../util/routing/stegConfig';
 
 interface StateProps {
+    søknad: Partial<Søknad>;
     søkerinfo?: Søkerinfo;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
@@ -22,6 +25,18 @@ interface StateProps {
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
+
+const checkIfUserShouldJumpToSteg = (søknad: Partial<Søknad> | undefined, pathname: string): StegID | undefined => {
+    if (pathname.indexOf(routeConfig.GENERELL_FEIL_URL) >= 0) {
+        return undefined;
+    }
+
+    const skipToStegID = søknad && søknad.ekstrainfo ? søknad.ekstrainfo.currentStegID : undefined;
+    if (skipToStegID !== undefined && skipToStegID !== getStegFromPathname(pathname)) {
+        return skipToStegID;
+    }
+    return undefined;
+};
 
 class Foreldrepengesøknad extends React.Component<Props> {
     componentWillMount() {
@@ -42,7 +57,12 @@ class Foreldrepengesøknad extends React.Component<Props> {
     }
 
     renderSøknadRoutes(søkerinfo: Søkerinfo) {
+        const { søknad } = this.props;
+        const skipToStegID = checkIfUserShouldJumpToSteg(søknad, this.props.history.location.pathname);
         const routes = [
+            ...(skipToStegID
+                ? [<Redirect key="redirect" to={`${routeConfig.SOKNAD_ROUTE_PREFIX}/${skipToStegID}`} />]
+                : []),
             <Route
                 path={routeConfig.SOKNAD_ROUTE_PREFIX}
                 render={(props) => <StegRoutes {...props} søkerinfo={søkerinfo} />}
@@ -81,6 +101,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
+    søknad: state.søknad,
     søkerinfo: state.api.søkerinfo,
     isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
     isLoadingAppState: state.api.isLoadingAppState,

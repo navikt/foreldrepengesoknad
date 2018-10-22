@@ -3,7 +3,7 @@ import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
 import AnnenInntektSiste10MndSpørsmål, { AnnenInntekt } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { default as stegConfig, StegID } from '../../../util/routing/stegConfig';
+import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
 import AndreInntekterBolk from '../../../bolker/andre-inntekter-bolk/AndreInntekterBolk';
@@ -21,8 +21,6 @@ import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import InformasjonOmArbeidsforholdWrapper from 'common/components/arbeidsforhold-infobox/InformasjonOmArbeidsforholdWrapper';
 import visibility from './visibility';
-import apiActionCreators from '../../../redux/actions/api/apiActionCreators';
-import { søknadStegPath } from '../StegRoutes';
 import cleanupAndreInntekterSteg from '../../../util/cleanup/cleanupAndreInntekterSteg';
 import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
@@ -39,7 +37,7 @@ type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & D
 class AndreInntekterSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.cleanupSteg = this.cleanupSteg.bind(this);
         this.updateSøkerAndSave = this.updateSøkerAndSave.bind(this);
         this.state = {
             harHattAnnenInntekt: undefined
@@ -94,11 +92,9 @@ class AndreInntekterSteg extends React.Component<Props> {
         );
     }
 
-    handleOnSubmit() {
-        const { søker, dispatch, history } = this.props;
+    cleanupSteg() {
+        const { søker, dispatch } = this.props;
         dispatch(søknadActions.updateSøker(cleanupAndreInntekterSteg(søker)));
-        dispatch(apiActionCreators.storeAppState());
-        history.push(`${søknadStegPath(stegConfig[StegID.ANDRE_INNTEKTER].nesteSteg)}`);
     }
 
     render() {
@@ -106,7 +102,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Steg {...stegProps} onSubmit={this.handleOnSubmit}>
+            <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                 <Block
                     header={{
                         title: getMessage(intl, 'annenInntekt.ytelser.label')
