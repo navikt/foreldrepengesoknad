@@ -14,6 +14,7 @@ const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): 
         maksDato: getSisteMuligeUttaksdag(familiehendelsesdato)
     };
 };
+
 export function getDatoavgrensningerForStønadskonto(
     konto: StønadskontoType | undefined,
     familiehendelsesdato: Date,
@@ -30,12 +31,17 @@ export function getDatoavgrensningerForStønadskonto(
         return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato, ugyldigeTidsperioder);
     }
     const felles = standardAvgrensningerForUttakEtterFødsel(familiehendelsesdato);
+
     return {
         fra: {
             ...felles,
             ugyldigeTidsperioder
         },
-        til: { ...felles, ugyldigeTidsperioder }
+        til: {
+            ...felles,
+            minDato: tidsperiode && tidsperiode.fom ? tidsperiode.fom : felles.minDato,
+            ugyldigeTidsperioder
+        }
     };
 }
 

@@ -26,7 +26,21 @@ export const Tidsperioden = (tidsperiode: Tidsperiode) => ({
 });
 
 export function isValidTidsperiode(tidsperiode: any): tidsperiode is Tidsperiode {
-    return tidsperiode.fom !== undefined && tidsperiode.tom !== undefined;
+    return (
+        tidsperiode.fom !== undefined &&
+        tidsperiode.tom !== undefined &&
+        moment(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+    );
+}
+
+export function resetTidsperiodeTomIfBeforeFom(tidsperiode: Partial<Tidsperiode>): Partial<Tidsperiode> {
+    return {
+        fom: tidsperiode.fom,
+        tom:
+            tidsperiode.fom && tidsperiode.tom && moment(tidsperiode.fom).isAfter(tidsperiode.tom, 'day')
+                ? tidsperiode.fom
+                : tidsperiode.tom
+    };
 }
 
 export function getValidTidsperiode(tidsperiode: Partial<Tidsperiode> | undefined): Tidsperiode | undefined {

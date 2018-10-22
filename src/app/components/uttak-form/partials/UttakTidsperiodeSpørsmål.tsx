@@ -12,7 +12,11 @@ import { UttakFormPeriodeType } from '../UttakForm';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { getUttakTidsperiodeValidatorer } from '../../../util/validation/uttaksplan/uttakTidsperiodeValidation';
 import { getVarighetString } from 'common/util/intlUtils';
-import { Tidsperioden, isValidTidsperiode } from '../../../util/uttaksplan/Tidsperioden';
+import {
+    Tidsperioden,
+    isValidTidsperiode,
+    resetTidsperiodeTomIfBeforeFom
+} from '../../../util/uttaksplan/Tidsperioden';
 
 export interface Props {
     periode: UttakFormPeriodeType;
@@ -58,7 +62,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     const initialMonth = isForeldrepengerFørFødselUttaksperiode(periode) ? familiehendelsesdato : undefined;
     return (
         <TidsperiodeBolk
-            onChange={(t: Partial<Tidsperiode>) => onChange(t)}
+            onChange={(t: Partial<Tidsperiode>) => onChange(resetTidsperiodeTomIfBeforeFom(t))}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
             datoAvgrensninger={getDatoavgrensningerForStønadskonto(
                 periode.konto,
