@@ -10,6 +10,7 @@ export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forel
     if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
+            case StønadskontoType.AktivitetsfriKvote:
                 return 'blue';
             case StønadskontoType.Mødrekvote:
             case StønadskontoType.Foreldrepenger:
