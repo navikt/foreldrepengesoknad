@@ -18,7 +18,8 @@ const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): DateVa
 };
 
 export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): Periode[] => {
-    const { barn, situasjon, ekstrainfo } = søknad;
+    const { barn, situasjon, ekstrainfo, annenForelder } = søknad;
+    const { erUfør } = annenForelder;
     const { uttaksplanSkjema } = ekstrainfo;
     const { startdatoPermisjon, fellesperiodeukerMor } = uttaksplanSkjema;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
@@ -41,7 +42,8 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
                 famDato,
                 erFarEllerMedmor(søknad.søker.rolle),
                 tilgjengeligeStønadskontoer,
-                startdatoPermisjon
+                startdatoPermisjon,
+                erUfør
             );
         }
     }

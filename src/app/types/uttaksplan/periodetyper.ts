@@ -80,6 +80,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     orgnr?: string;
     arbeidsform?: Arbeidsform;
     erArbeidstaker?: boolean;
+    harIkkeAktivitetskrav?: boolean;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
