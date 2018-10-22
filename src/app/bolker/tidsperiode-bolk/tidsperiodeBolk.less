@@ -1,13 +1,22 @@
+@import '../../styles/variables.less';
 .tidsperiodeBolk {
     display: flex;
     flex-wrap: wrap;
     &__fra {
-        margin-right: 1rem;
+        padding-right: 1rem;
         padding-bottom: 0.5rem;
+        max-width: 50%;
+        @media (max-width: @mobile-breakpoint) {
+            max-width: 100%;
+        }
     }
     &__til {
-        margin-right: 1rem;
+        padding-right: 1rem;
         padding-bottom: 0.5rem;
+        max-width: 50%;
+        @media (max-width: @mobile-breakpoint) {
+            max-width: 100%;
+        }
     }
     &__varighet {
         width: 100%;
