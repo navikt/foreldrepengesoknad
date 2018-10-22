@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { DatoAvgrensninger } from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { Avgrensninger } from 'nav-datovelger';
@@ -6,28 +5,15 @@ import { Tidsperiode } from 'common/types';
 import { uttaksplanDatoavgrensninger } from '../validation/uttaksplan/uttaksplanDatoavgrensninger';
 import { Tidsperioden, isValidTidsperiode } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { getPermisjonsregler } from './permisjonsregler';
+import { getSisteMuligeUttaksdag, getFørsteUttaksdagPåEllerEtterFødsel } from './uttaksdatoer';
 
 const standardAvgrensningerForUttakEtterFødsel = (familiehendelsesdato: Date): Avgrensninger => {
     return {
         helgedagerIkkeTillatt: true,
         minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-        maksDato: getSisteMuligePermisjonsdag(familiehendelsesdato)
+        maksDato: getSisteMuligeUttaksdag(familiehendelsesdato)
     };
 };
-
-export function getFørsteMuligePermisjonsdag(familiehendelsesdato: Date): Date {
-    return Uttaksdagen(familiehendelsesdato).trekkFra(getPermisjonsregler().maksAntallUkerForeldrepengerFørFødsel * 5);
-}
-
-export function getSisteMuligePermisjonsdag(familiehendelsesdato: Date): Date {
-    return Uttaksdagen(
-        moment(familiehendelsesdato)
-            .add(getPermisjonsregler().maksPermisjonslengdeIÅr, 'year')
-            .toDate()
-    ).denneEllerNeste();
-}
-
 export function getDatoavgrensningerForStønadskonto(
     konto: StønadskontoType | undefined,
     familiehendelsesdato: Date,
@@ -35,21 +21,7 @@ export function getDatoavgrensningerForStønadskonto(
     ugyldigeTidsperioder: Tidsperiode[]
 ): DatoAvgrensninger | undefined {
     if (konto === undefined) {
-        return {
-            fra: {
-                minDato: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                ugyldigeTidsperioder,
-                helgedagerIkkeTillatt: true
-            },
-            til: {
-                minDato:
-                    tidsperiode !== undefined && tidsperiode.fom
-                        ? (tidsperiode.fom as Date)
-                        : Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                ugyldigeTidsperioder,
-                helgedagerIkkeTillatt: true
-            }
-        };
+        return getDatoavgrensningerForPeriodeUtenKonto(familiehendelsesdato, tidsperiode, ugyldigeTidsperioder);
     }
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato, ugyldigeTidsperioder);
@@ -64,6 +36,26 @@ export function getDatoavgrensningerForStønadskonto(
             ugyldigeTidsperioder
         },
         til: { ...felles, ugyldigeTidsperioder }
+    };
+}
+
+function getDatoavgrensningerForPeriodeUtenKonto(
+    familiehendelsesdato: Date,
+    tidsperiode: Partial<Tidsperiode> | undefined,
+    ugyldigeTidsperioder: Tidsperiode[]
+) {
+    const minDato = getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato);
+    return {
+        fra: {
+            minDato,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true
+        },
+        til: {
+            minDato: tidsperiode !== undefined && tidsperiode.fom ? (tidsperiode.fom as Date) : minDato,
+            ugyldigeTidsperioder,
+            helgedagerIkkeTillatt: true
+        }
     };
 }
 
