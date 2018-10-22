@@ -27,6 +27,10 @@ interface StateProps {
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 
 const checkIfUserShouldJumpToSteg = (søknad: Partial<Søknad> | undefined, pathname: string): StegID | undefined => {
+    if (pathname.indexOf(routeConfig.GENERELL_FEIL_URL) >= 0) {
+        return undefined;
+    }
+
     const skipToStegID = søknad && søknad.ekstrainfo ? søknad.ekstrainfo.currentStegID : undefined;
     if (skipToStegID !== undefined && skipToStegID !== getStegFromPathname(pathname)) {
         return skipToStegID;
