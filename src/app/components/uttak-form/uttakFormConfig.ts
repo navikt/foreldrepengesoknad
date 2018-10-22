@@ -6,7 +6,8 @@ import {
     StønadskontoType,
     Periodetype,
     OverføringÅrsakType,
-    isForeldrepengerFørFødselUttaksperiode
+    isForeldrepengerFørFødselUttaksperiode,
+    isUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
@@ -63,6 +64,10 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     ) {
         return true;
     } else if (erDeltUttak === false && annenForelderHarRett === false) {
+        if (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) {
+            return false;
+        }
+
         return true;
     }
     return false;
