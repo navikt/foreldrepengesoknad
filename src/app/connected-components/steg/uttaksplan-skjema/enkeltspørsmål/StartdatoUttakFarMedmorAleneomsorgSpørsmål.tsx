@@ -1,7 +1,6 @@
 import * as React from 'react';
 import FlervalgSpørsmål, { FlervalgAlternativ } from '../../../../components/flervalg-spørsmål/FlervalgSpørsmål';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import { ForeldreansvarBarn } from '../../../../types/søknad/Barn';
 import Block from 'common/components/block/Block';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
@@ -13,7 +12,6 @@ import startdatoFarMedmorValidation from '../../../../util/validation/uttaksplan
 import { DateValue } from '../../../../types/common';
 
 interface OwnProps {
-    barn: ForeldreansvarBarn;
     familiehendelsesdato: Date;
     datoForAleneomsorg: Date;
 }
@@ -37,20 +35,20 @@ const getAlternativ = (
 
 const getStartdatoFromAlternativ = (
     alternativ: ValgalternativerAleneomsorgFarMedmor,
-    barn: ForeldreansvarBarn,
+    datoForAleneomsorg: Date,
     valgtVerdi?: Date
 ): DateValue => {
     if (alternativ === ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg) {
-        return barn.datoForAleneomsorg;
+        return datoForAleneomsorg;
     }
     return valgtVerdi;
 };
 
 const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
-    const { visible, barn, datoForAleneomsorg, familiehendelsesdato, intl } = props;
+    const { visible, datoForAleneomsorg, familiehendelsesdato, intl } = props;
 
     const alternativer: FlervalgAlternativ[] = [
-        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, barn.datoForAleneomsorg),
+        getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.datoForAleneomsorg, datoForAleneomsorg),
         getAlternativ(intl, ValgalternativerAleneomsorgFarMedmor.annen)
     ];
 
@@ -74,7 +72,11 @@ const StartdatoUttakFarMedmorAleneomsorgSpørsmål = (props: Props) => {
                             onChange={(value: ValgalternativerAleneomsorgFarMedmor) =>
                                 onChange({
                                     valgtStartdatoAleneomsorgFarMedmor: value,
-                                    startdatoPermisjon: getStartdatoFromAlternativ(value, barn, data.startdatoPermisjon)
+                                    startdatoPermisjon: getStartdatoFromAlternativ(
+                                        value,
+                                        datoForAleneomsorg,
+                                        data.startdatoPermisjon
+                                    )
                                 })
                             }
                         />

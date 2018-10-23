@@ -8,7 +8,7 @@ import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
 import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
-import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 import { NavnPåForeldre } from 'common/types';
@@ -97,13 +97,14 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
 };
 
 const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
+    const omsorgsDato = søknad.barn.datoForAleneomsorg || getFamiliehendelsedato(søknad.barn, søknad.situasjon);
+
     return (
         <>
             <DekningsgradSpørsmål />
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
-                barn={søknad.barn as ForeldreansvarBarn}
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                datoForAleneomsorg={søknad.barn.datoForAleneomsorg}
+                datoForAleneomsorg={omsorgsDato}
                 visible={søknad.dekningsgrad !== undefined}
             />
         </>
