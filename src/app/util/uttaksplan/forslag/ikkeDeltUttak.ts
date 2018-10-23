@@ -20,11 +20,15 @@ const ANTALL_DAGER_FORBEHOLDT_MOR_ETTER_FØDSEL = 30;
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue
+    startdatoPermisjon: DateValue,
+    erMorUfør: boolean | undefined,
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
     famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
-    const perioder: Uttaksperiode[] = [
-        {
+    const perioder: Uttaksperiode[] = [];
+
+    if (erMorUfør !== true) {
+        const periode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
@@ -33,8 +37,38 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
-        }
-    ];
+        };
+
+        perioder.push(periode);
+    } else {
+        const aktivitetsFriPeriode: Uttaksperiode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.FARMEDMOR,
+            konto: StønadskontoType.AktivitetsfriKvote,
+            tidsperiode: getTidsperiode(famDato, aktivitetsfriKvote!.dager),
+            vedlegg: [],
+            ønskerSamtidigUttak: false,
+            gradert: false,
+            harIkkeAktivitetskrav: true
+        };
+
+        perioder.push(aktivitetsFriPeriode);
+
+        const aktivitetskravPeriode: Uttaksperiode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.FARMEDMOR,
+            konto: StønadskontoType.Foreldrepenger,
+            tidsperiode: getTidsperiode(Uttaksdagen(famDato).leggTil(75), foreldrepengerKonto.dager),
+            vedlegg: [],
+            ønskerSamtidigUttak: false,
+            gradert: false
+        };
+
+        perioder.push(aktivitetskravPeriode);
+    }
+
     return perioder;
 };
 
@@ -63,12 +97,20 @@ const ikkeDeltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
     foreldrepengerKonto: TilgjengeligStønadskonto,
-    startdatoPermisjon: DateValue
+    startdatoPermisjon: DateValue,
+    erMorUfør: boolean | undefined,
+    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return ikkeDeltUttakAdopsjonMor(famDato, foreldrepengerKonto, startdatoPermisjon);
     } else {
-        return ikkeDeltUttakAdopsjonFarMedmor(famDato, foreldrepengerKonto, startdatoPermisjon);
+        return ikkeDeltUttakAdopsjonFarMedmor(
+            famDato,
+            foreldrepengerKonto,
+            startdatoPermisjon,
+            erMorUfør,
+            aktivitetsfriKvote
+        );
     }
 };
 
@@ -276,7 +318,14 @@ export const ikkeDeltUttak = (
     );
 
     if (situasjon === Søkersituasjon.ADOPSJON) {
-        return ikkeDeltUttakAdopsjon(famDato, erFarEllerMedmor, foreldrepengerKonto!, startdatoPermisjon);
+        return ikkeDeltUttakAdopsjon(
+            famDato,
+            erFarEllerMedmor,
+            foreldrepengerKonto!,
+            startdatoPermisjon,
+            erMorUfør,
+            aktivitetsfriKvote
+        );
     }
 
     if (situasjon === Søkersituasjon.FØDSEL) {
