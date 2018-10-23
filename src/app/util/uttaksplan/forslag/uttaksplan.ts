@@ -1,10 +1,11 @@
 import { Barn, FødtBarn, UfødtBarn, Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { Periode, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 import { DateValue } from '../../../types/common';
+import { getDeltUttak } from './util';
 
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): DateValue => {
     if (situasjon === Søkersituasjon.FØDSEL) {
@@ -23,8 +24,7 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
     const { uttaksplanSkjema } = ekstrainfo;
     const { startdatoPermisjon, fellesperiodeukerMor } = uttaksplanSkjema;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
-    const erDeltUttak: boolean =
-        tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Foreldrepenger) === undefined;
+    const erDeltUttak: boolean = getDeltUttak(tilgjengeligeStønadskontoer);
 
     if (famDato) {
         if (erDeltUttak) {
