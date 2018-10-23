@@ -5,8 +5,9 @@ import Kontostatus from './Kontostatus';
 import TilesList from '../tiles-list/TilesList';
 import { Forelder, NavnPåForeldre } from 'common/types';
 import { FormattedMessage } from 'react-intl';
-import { SøkerRolle } from '../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle } from '../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../util/domain/personUtil';
+import { getDeltUttak } from '../../util/uttaksplan/forslag/util';
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
@@ -21,7 +22,7 @@ export interface Props {
 }
 
 const getTittel = (uttak: Stønadskontouttak[], rolle: SøkerRolle): string => {
-    const deltUttak = uttak.find((u) => u.konto === StønadskontoType.Foreldrepenger) === undefined;
+    const deltUttak = getDeltUttak(uttak);
 
     if (deltUttak && erFarEllerMedmor(rolle)) {
         return 'uttaksoppsummering.forbrukt';
