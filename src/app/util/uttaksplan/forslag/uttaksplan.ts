@@ -5,7 +5,7 @@ import { ikkeDeltUttak } from './ikkeDeltUttak';
 import { deltUttak } from './deltUttak';
 import { erFarEllerMedmor } from '../../domain/personUtil';
 import { DateValue } from '../../../types/common';
-import { getDeltUttak } from './util';
+import { getErDeltUttak } from './util';
 
 const getFamiliehendelsesdato = (barn: Barn, situasjon: Søkersituasjon): DateValue => {
     if (situasjon === Søkersituasjon.FØDSEL) {
@@ -24,7 +24,7 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
     const { uttaksplanSkjema } = ekstrainfo;
     const { startdatoPermisjon, fellesperiodeukerMor } = uttaksplanSkjema;
     const famDato = getFamiliehendelsesdato(barn, situasjon);
-    const erDeltUttak: boolean = getDeltUttak(tilgjengeligeStønadskontoer);
+    const erDeltUttak: boolean = getErDeltUttak(tilgjengeligeStønadskontoer);
 
     if (famDato) {
         if (erDeltUttak) {

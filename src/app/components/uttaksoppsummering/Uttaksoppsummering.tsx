@@ -7,7 +7,7 @@ import { Forelder, NavnPåForeldre } from 'common/types';
 import { FormattedMessage } from 'react-intl';
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../util/domain/personUtil';
-import { getDeltUttak } from '../../util/uttaksplan/forslag/util';
+import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 
 export interface Stønadskontouttak {
     konto: StønadskontoType;
@@ -22,7 +22,7 @@ export interface Props {
 }
 
 const getTittel = (uttak: Stønadskontouttak[], rolle: SøkerRolle): string => {
-    const deltUttak = getDeltUttak(uttak);
+    const deltUttak = getErDeltUttak(uttak);
 
     if (deltUttak && erFarEllerMedmor(rolle)) {
         return 'uttaksoppsummering.forbrukt';

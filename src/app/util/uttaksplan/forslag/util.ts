@@ -73,6 +73,6 @@ export function getFedrekvote(
     return getTidsperiode(startdato, permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE);
 }
 
-export function getDeltUttak(kontoer: Array<TilgjengeligStønadskonto | Stønadskontouttak>): boolean {
+export function getErDeltUttak(kontoer: Array<TilgjengeligStønadskonto | Stønadskontouttak>): boolean {
     return kontoer.find((u) => u.konto === StønadskontoType.Foreldrepenger) === undefined;
 }
