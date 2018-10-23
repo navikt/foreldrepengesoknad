@@ -16,7 +16,13 @@ import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
+import {
+    findMissingAttachments,
+    mapMissingAttachmentsToSøknad,
+    MissingAttachment
+} from '../../../util/søknad/missingAttachmentUtil';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     person: Person;
@@ -24,6 +30,7 @@ interface StateProps {
     kvittering?: Kvittering;
     stegProps: StegProps;
     perioder: Periode[];
+    missingAttachments: MissingAttachment[];
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -34,11 +41,11 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     sendSøknad() {
-        const { søknad, perioder, dispatch } = this.props;
+        const { søknad, perioder, missingAttachments, dispatch } = this.props;
         dispatch(
             apiActionCreators.sendSøknad(
                 {
-                    ...søknad,
+                    ...mapMissingAttachmentsToSøknad(missingAttachments, søknad),
                     uttaksplan: [...(perioder || [])]
                 },
                 this.props.history
@@ -47,7 +54,7 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     render() {
-        const { søknad, søkerinfo, stegProps, dispatch, intl } = this.props;
+        const { søknad, søkerinfo, stegProps, missingAttachments, dispatch, intl } = this.props;
         const { person } = søkerinfo;
         if (person === undefined) {
             return null;
@@ -56,7 +63,11 @@ class OppsummeringSteg extends React.Component<Props> {
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
                 <Oppsummering søkerinfo={søkerinfo} søknad={søknad} />
-
+                {missingAttachments.length > 0 && (
+                    <Veilederinfo type="advarsel">
+                        {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
+                    </Veilederinfo>
+                )}
                 <BekreftCheckboksPanel
                     className="blokk-m"
                     checked={søknad.harGodkjentOppsummering}
@@ -85,11 +96,14 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
     };
 
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api);
+
     return {
         person,
         søknad,
         perioder: state.søknad.uttaksplan,
         kvittering: state.api.kvittering,
+        missingAttachments,
         stegProps
     };
 };

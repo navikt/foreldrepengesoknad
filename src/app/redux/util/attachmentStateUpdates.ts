@@ -15,7 +15,7 @@ export const addAttachmentToState = (attachment: Attachment, state: SøknadParti
     return updateAttachmentState(attachment, state, Operation.ADD);
 };
 
-const updateAttachmentList = (
+export const updateAttachmentList = (
     attachments: Attachment[],
     attachment: Attachment,
     operation: Operation
@@ -71,21 +71,28 @@ const stateWithUpdatedAndreInntekterAttachments = (
     return state;
 };
 
-const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, operation: Operation): SøknadPartial => {
-    const { type } = attachment;
-    const isAttachmentForBarn =
-        type === AttachmentType.TERMINBEKREFTELSE ||
-        type === AttachmentType.FØDSELSATTEST ||
-        type === AttachmentType.OMSORGSOVERTAKELSE ||
-        type === AttachmentType.ADOPSJONSVEDTAK ||
-        type === AttachmentType.ALENEOMSORG;
-    const isAttachmentForAnnenInntekt = type === AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON;
+export const isAttachmentForAnnenInntekt = (type: AttachmentType) => type === AttachmentType.ANNEN_INNTEKT;
 
-    if (isAttachmentForBarn) {
+export const isAttachmentForSelvstendigNæringsdrivende = (type: AttachmentType) =>
+    type === AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE;
+
+export const isAttachmentForBarn = (type: AttachmentType) =>
+    type === AttachmentType.TERMINBEKREFTELSE ||
+    type === AttachmentType.FØDSELSATTEST ||
+    type === AttachmentType.OMSORGSOVERTAKELSE ||
+    type === AttachmentType.ADOPSJONSVEDTAK ||
+    type === AttachmentType.ALENEOMSORG;
+
+export const isAttachmentForPeriode = (type: AttachmentType) =>
+    type === AttachmentType.UTSETTELSE_SYKDOM ||
+    type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
+    type === AttachmentType.OVERFØRING_KVOTE;
+
+const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, operation: Operation): SøknadPartial => {
+    if (isAttachmentForBarn(attachment.type)) {
         return stateWithUpdatedBarnAttachments(attachment, state, operation);
-    } else if (isAttachmentForAnnenInntekt) {
+    } else if (isAttachmentForAnnenInntekt(attachment.type)) {
         return stateWithUpdatedAndreInntekterAttachments(attachment, state, operation);
     }
-
     return state;
 };
