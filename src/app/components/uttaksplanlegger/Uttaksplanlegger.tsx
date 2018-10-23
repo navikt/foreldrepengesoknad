@@ -28,6 +28,7 @@ export interface Props {
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
+    erMorUfør: boolean | undefined;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -117,7 +118,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             uttaksplanValidering,
             navnPåForeldre,
             onRequestReset,
-            lastAddedPeriodeId
+            lastAddedPeriodeId,
+            erMorUfør
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
         return (
@@ -163,6 +165,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        erMorUfør={erMorUfør}
                                         periodetype={periodetype}
                                         onSubmit={this.handleOnSubmit}
                                         onCancel={this.handleOnCancel}

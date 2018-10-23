@@ -33,9 +33,19 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
-            return <FormattedMessage id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning" />;
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
-            return <FormattedMessage id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt" />;
+            return (
+                <FormattedMessage
+                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt"
+                    values={{ navnMor: navnPåForeldre.mor }}
+                />
+            );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Introduksjonsprogrammet) {
             return (
                 <FormattedMessage

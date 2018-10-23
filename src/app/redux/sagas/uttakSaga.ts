@@ -9,18 +9,35 @@ import { AppState } from '../reducers';
 import { default as uttaksplanValideringActions } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
 
+const stateSelector = (state: AppState) => state;
+
+const opprettAktivitetsFriKonto = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] => {
+    const nyeKontoer: TilgjengeligStønadskonto[] = [];
+    const aktivitetskravFrieDager = 15 * 5;
+
+    nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDager });
+    nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDager });
+
+    return nyeKontoer;
+};
+
 function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
         yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
+        const appState: AppState = yield select(stateSelector);
+        const erMorUfør = appState.søknad.annenForelder.erUfør;
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
-        const tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
+        let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
         Object.keys(stønadskontoer.kontoer).map((konto) => {
             tilgjengeligeStønadskontoer.push({
                 konto: konto as StønadskontoType,
                 dager: stønadskontoer.kontoer[konto]
             });
         });
+        if (erMorUfør === true) {
+            tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(tilgjengeligeStønadskontoer);
+        }
         yield put(
             apiActions.updateApi({
                 isLoadingTilgjengeligeStønadskontoer: false,

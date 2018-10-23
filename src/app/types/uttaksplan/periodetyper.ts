@@ -23,7 +23,8 @@ export enum StønadskontoType {
     'ForeldrepengerFørFødsel' = 'FORELDREPENGER_FØR_FØDSEL',
     /** Når det kun er en forsørger/forelder */
     'SamtidigUttak' = 'SAMTIDIGUTTAK',
-    'Flerbarnsdager' = 'FLERBARNSDAGER'
+    'Flerbarnsdager' = 'FLERBARNSDAGER',
+    'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE'
 }
 
 export enum UtsettelseÅrsakType {
@@ -80,6 +81,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     orgnr?: string;
     arbeidsform?: Arbeidsform;
     erArbeidstaker?: boolean;
+    harIkkeAktivitetskrav?: boolean;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {
