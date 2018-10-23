@@ -117,7 +117,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
 
                         <div className="blokk-s">
                             <Knapp onClick={() => this.openModal()} htmlType="button">
-                                <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
+                                <FormattedMessage id="selvstendigNæringsdrivende.leggTilNæring" />
                             </Knapp>
                         </div>
 

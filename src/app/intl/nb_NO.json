@@ -222,6 +222,7 @@
     "næringstype.annen": "Annen type virksomet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
@@ -651,6 +652,7 @@
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
+    "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
@@ -753,7 +755,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
         "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon som viser at {navnMor} jobb og studier til sammen utgjør 100 prosent.",
+        "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnMor} er innlagt, som også viser perioden det gjelder.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":

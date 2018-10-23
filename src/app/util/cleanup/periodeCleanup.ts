@@ -53,6 +53,7 @@ const cleanupUttak = (periode: Uttaksperiode): Uttaksperiode => {
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
         arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
+        harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
         orgnr: periode.gradert === true ? periode.orgnr : undefined,
         trekkdager: periode.trekkdager,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined

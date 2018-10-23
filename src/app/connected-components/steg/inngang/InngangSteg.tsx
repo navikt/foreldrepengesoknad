@@ -59,7 +59,7 @@ class InngangSteg extends React.Component<Props, {}> {
             return SøkerRolle.MOR;
         }
 
-        if (situasjon === Søkersituasjon.FØDSEL && kjønn === Kjønn.MANN) {
+        if (kjønn === Kjønn.MANN) {
             return SøkerRolle.FAR;
         }
 
