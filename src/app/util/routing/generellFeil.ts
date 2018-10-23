@@ -1,5 +1,5 @@
 import routeConfig from './routeConfig';
 
 export const redirectToGenerellFeil = () => {
-    window.location.href = routeConfig.GENERELL_FEIL_URL;
+    window.history.pushState({}, 'Feil', routeConfig.GENERELL_FEIL_URL);
 };
