@@ -5,6 +5,7 @@ import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummerin
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import getMessage from 'common/util/i18nUtils';
 import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
+import { dokumentasjonBehøvesForUttaksperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
@@ -59,9 +60,9 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
                 />
             )}
 
-            {morsAktivitetIPerioden && (
+            {dokumentasjonBehøvesForUttaksperiode(periode) && (
                 <MorsAktivitetDetaljer
-                    morsAktivitet={morsAktivitetIPerioden}
+                    morsAktivitet={morsAktivitetIPerioden!}
                     dokumentasjonAvMorsAktivitet={vedlegg || []}
                 />
             )}

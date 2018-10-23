@@ -15,7 +15,8 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { erFarEllerMedmor } from '../domain/personUtil';
 import { spørsmålOmVedleggVisible } from '../../connected-components/steg/relasjon-til-barn-adopsjon/visibility';
@@ -32,8 +33,9 @@ import {
     isAttachmentForSelvstendigNæringsdrivende
 } from '../../redux/util/attachmentStateUpdates';
 import {
-    dokumentasjonBehøvedForOverføringsperiode,
-    dokumentasjonBehøvesForUtsettelsesperiode
+    dokumentasjonBehøvesForOverføringsperiode,
+    dokumentasjonBehøvesForUtsettelsesperiode,
+    dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
@@ -46,9 +48,11 @@ export interface MissingAttachment {
 
 function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
     if (periode.type === Periodetype.Overføring) {
-        return dokumentasjonBehøvedForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
+        return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
     } else if (periode.type === Periodetype.Utsettelse) {
         return dokumentasjonBehøvesForUtsettelsesperiode(periode as Utsettelsesperiode);
+    } else if (periode.type === Periodetype.Uttak) {
+        return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
     } else {
         return (periode as any).årsak === UtsettelseÅrsakType.Sykdom;
     }

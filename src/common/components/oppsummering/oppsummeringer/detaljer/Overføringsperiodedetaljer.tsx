@@ -6,7 +6,7 @@ import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokum
 import getMessage from 'common/util/i18nUtils';
 import { getÅrsakTekst } from 'common/util/oppsummeringUtils';
 import { NavnPåForeldre } from 'common/types';
-import { dokumentasjonBehøvedForOverføringsperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
+import { dokumentasjonBehøvesForOverføringsperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
 
 interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;
@@ -40,7 +40,7 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
                 verdi={getÅrsakTekst(intl, periode, { annenForelderNavn })}
             />
 
-            {dokumentasjonBehøvedForOverføringsperiode(erFarEllerMedmor, periode) && (
+            {dokumentasjonBehøvesForOverføringsperiode(erFarEllerMedmor, periode) && (
                 <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />
             )}
         </>
