@@ -8,7 +8,7 @@ import { UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import StartdatoPermisjonMorBolk from './enkeltspørsmål/StartdatoPermisjonMorBolk';
 import FordelingFellesperiodeSpørsmål from './enkeltspørsmål/FordelingFellesperiodeSpørsmål';
 import StartdatoAdopsjonBolk from './enkeltspørsmål/StartdatoAdopsjonBolk';
-import { Adopsjonsbarn, ForeldreansvarBarn } from '../../../types/søknad/Barn';
+import { Adopsjonsbarn } from '../../../types/søknad/Barn';
 import StartdatoUttakFarMedmorSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorSpørsmål';
 import StartdatoUttakFarMedmorAleneomsorgSpørsmål from './enkeltspørsmål/StartdatoUttakFarMedmorAleneomsorgSpørsmål';
 import { NavnPåForeldre } from 'common/types';
