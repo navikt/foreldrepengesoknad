@@ -55,7 +55,6 @@ const cleanupUttak = (periode: Uttaksperiode): Uttaksperiode => {
         arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
         harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
         orgnr: periode.gradert === true ? periode.orgnr : undefined,
-        trekkdager: periode.trekkdager,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined
     };
     if (isForeldrepengerFørFødselUttaksperiode(periode)) {
