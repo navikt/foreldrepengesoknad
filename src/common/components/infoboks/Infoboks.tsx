@@ -4,9 +4,10 @@ import LukkInfoIkon from 'common/components/ikoner/LukkInfoIkon';
 import InfoIkon from 'common/components/ikoner/InfoIkon';
 import { Collapse } from 'react-collapse';
 const classNames = require('classnames');
-import './infoboks.less';
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+
+import './infoboks.less';
 
 interface InfoboksProps {
     tekst: string | React.ReactNode;
@@ -43,13 +44,15 @@ class Infoboks extends React.Component<Props, InfoboksState> {
         const ikon = isExpanded ? <LukkInfoIkon /> : <InfoIkon />;
         return (
             <React.Fragment>
-                <Sirkelknapp
-                    stil={stil}
-                    ariaLabel={getMessage(intl, 'infoboks.sirkeltekst')}
-                    onClick={this.toggleIsExpanded}
-                    ikon={ikon}
-                    toggle={{ pressed: isExpanded }}
-                />
+                <span className="infoboks__sirkel">
+                    <Sirkelknapp
+                        stil={stil}
+                        ariaLabel={getMessage(intl, 'infoboks.sirkeltekst')}
+                        onClick={this.toggleIsExpanded}
+                        ikon={ikon}
+                        toggle={{ pressed: isExpanded }}
+                    />
+                </span>
                 <Collapse
                     hasNestedCollapse={true}
                     className={classNames('infoboks', {
