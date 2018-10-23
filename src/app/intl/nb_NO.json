@@ -27,6 +27,8 @@
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
+    "steg.dokument.tittel": "{steg} - Søknad om foreldrepenger - NAV",
+
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
     "steg.config.tittel.inngang": "Inngang",
@@ -683,8 +685,7 @@
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.tittel": "Avbryt søknad",
-    "avbrytSøknadDialog.intro":
-        "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
+    "avbrytSøknadDialog.intro": "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å slette søknaden?",
 
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
@@ -708,7 +709,8 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon, som også viser perioden det gjelder.",
+    "utsettelse.sykdom.vedlegg.info.innlagt":
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon, som også viser perioden det gjelder.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
 

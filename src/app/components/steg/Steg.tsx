@@ -20,6 +20,7 @@ import AvbrytSøknadDialog from '../avbryt-søknad-dialog/AvbrytSøknadDialog';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 
 import './steg.less';
+import DocumentTitle from 'react-document-title';
 
 export interface StegProps {
     id: StegID;
@@ -146,6 +147,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         const { id, renderFortsettKnapp, fortsettKnappLabel, errorSummaryRenderer, intl } = this.props;
         return (
             <>
+                <DocumentTitle
+                    title={getMessage(intl, 'steg.dokument.tittel', { steg: getMessage(intl, stegConfig[id].tittel) })}
+                />
                 {errorSummaryRenderer ? errorSummaryRenderer() : null}
                 <Block margin="xs">
                     <BackButton
