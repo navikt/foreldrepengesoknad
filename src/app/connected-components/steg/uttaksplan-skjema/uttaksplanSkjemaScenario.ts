@@ -32,9 +32,10 @@ export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaS
     ) {
         scenario = UttaksplanSkjemaScenario.s4_morFarAdopsjon;
     } else if (
-        (søknad.situasjon === Søkersituasjon.FØDSEL || søknad.situasjon === Søkersituasjon.ADOPSJON) &&
-        søkerErFarEllerMedmor &&
-        søknad.søker.erAleneOmOmsorg === true
+        ((søknad.situasjon === Søkersituasjon.FØDSEL || søknad.situasjon === Søkersituasjon.ADOPSJON) &&
+            søkerErFarEllerMedmor &&
+            søknad.søker.erAleneOmOmsorg === true) ||
+        (søkerErFarEllerMedmor && søknad.annenForelder.kanIkkeOppgis === true)
     ) {
         scenario = UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon;
     } else if (

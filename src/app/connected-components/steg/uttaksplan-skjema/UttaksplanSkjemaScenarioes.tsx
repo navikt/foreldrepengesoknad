@@ -97,13 +97,14 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
 };
 
 const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
+    const omsorgsDato = søknad.barn.datoForAleneomsorg || getFamiliehendelsedato(søknad.barn, søknad.situasjon);
+
     return (
         <>
             <DekningsgradSpørsmål />
             <StartdatoUttakFarMedmorAleneomsorgSpørsmål
-                barn={søknad.barn as ForeldreansvarBarn}
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
-                datoForAleneomsorg={søknad.barn.datoForAleneomsorg}
+                datoForAleneomsorg={omsorgsDato}
                 visible={søknad.dekningsgrad !== undefined}
             />
         </>
