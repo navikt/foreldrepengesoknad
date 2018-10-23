@@ -70,8 +70,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
         this.setState({
             annenInntekt: {
                 ...this.state.annenInntekt,
-                ...annenInntektProperties,
-                vedlegg: visibility.vedlegg(this.state.annenInntekt) ? [] : undefined
+                ...annenInntektProperties
             }
         });
     }
