@@ -66,18 +66,17 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                         ]}
                     />
                 </Block>
-                {sykdomsårsak !== undefined &&
-                    visVedlegg(sykdomsårsak) && (
-                        <Block>
-                            <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak!)}</Veilederinfo>
-                            <VedleggSpørsmål
-                                vedlegg={vedleggList}
-                                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                                skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                                onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak })}
-                            />
-                        </Block>
-                    )}
+                {visVedlegg(sykdomsårsak) && (
+                    <Block>
+                        <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak!)}</Veilederinfo>
+                        <VedleggSpørsmål
+                            vedlegg={vedleggList}
+                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                            onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak: sykdomsårsak! })}
+                        />
+                    </Block>
+                )}
             </>
         );
     }
