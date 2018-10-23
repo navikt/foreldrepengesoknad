@@ -30,13 +30,13 @@
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
     "steg.config.tittel.inngang": "Inngang",
-    "steg.config.tittel.infoOmBarnet": "Informasjon om barnet",
+    "steg.config.tittel.infoOmBarnet": "Om barnet",
     "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjon til barn overtakelse av foreldreansvar",
-    "steg.config.tittel.relasjonBarnFødsel": "Informasjon om barnet",
-    "steg.config.tittel.annenForelder": "Informasjon om den andre forelderen",
-    "steg.config.tittel.infoOmUttaket": "Informasjon om perioden din med foreldrepenger",
-    "steg.config.tittel.uttak": "Informasjon om perioden din med foreldrepenger",
-    "steg.config.tittel.infoOmUtenlandsopphold": "Informasjon om utenlandsopphold",
+    "steg.config.tittel.relasjonBarnFødsel": "Om barnet",
+    "steg.config.tittel.annenForelder": "Den andre forelderen",
+    "steg.config.tittel.infoOmUttaket": "Perioden din med foreldrepenger",
+    "steg.config.tittel.uttak": "Perioden din med foreldrepenger",
+    "steg.config.tittel.infoOmUtenlandsopphold": "Utenlandsopphold",
     "steg.config.tittel.opplysningerOmInntekt": "Opplysninger om inntekt",
     "steg.config.tittel.oppsummering": "Oppsummering",
 
@@ -79,7 +79,7 @@
 
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
     "dinePersonopplysninger.avsnitt.innhenting.html":
         "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
@@ -93,10 +93,10 @@
         "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
+        "<p>Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern</a></p>",
+        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
 
     "dinePlikter.sectionheading": "Dine plikter",
     "dinePlikter.listeElement.1":
@@ -361,7 +361,7 @@
     "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label.aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
-        "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke senere gjøre om dette valget.",
+        "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
@@ -426,17 +426,17 @@
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
@@ -562,9 +562,9 @@
 
     "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
-    "oppsummering.iNorgeSiste12MndTrue": "vært i Norge",
+    "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
-    "oppsummering.iNorgeNeste12MndTrue": "være i Norge",
+    "oppsummering.iNorgeNeste12MndTrue": "bo i Norge",
     "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
     "oppsummering.fødselINorgeTrue": "i Norge",
     "oppsummering.fødselINorgeFalse": "i utlandet",
@@ -742,7 +742,7 @@
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjema</a>.",
+        "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjemaet</a>.",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
