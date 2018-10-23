@@ -24,7 +24,7 @@ import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { getSkjemanummerForAndreInntekter } from '../../util/søknad/missingAttachmentUtil';
+import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
