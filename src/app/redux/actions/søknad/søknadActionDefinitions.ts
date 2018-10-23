@@ -15,7 +15,6 @@ export enum SøknadActionKeys {
     'AVBRYT_SØKNAD' = 'avbrytSøknad',
     'UPDATE_ANNEN_FORELDER' = 'updateAnnenForelder',
     'UPDATE_BARN' = 'updateBarn',
-    'ADD_ATTACHMENT_TO_STATE' = 'addAttachmentToState',
     'UPLOAD_ATTACHMENT' = 'uploadAttachment',
     'UPLOAD_ATTACHMENT_SUCCESS' = 'uploadAttachmentSuccess',
     'UPLOAD_ATTACHMENT_FAILED' = 'uploadAttachmentFailed',
@@ -111,12 +110,6 @@ export interface UttaksplanUpdatePeriode {
     periode: Periode;
 }
 
-export interface AddAttachment {
-    type: SøknadActionKeys.ADD_ATTACHMENT_TO_STATE;
-    attachment: Attachment;
-    index: number;
-}
-
 export interface UploadAttachment {
     type: SøknadActionKeys.UPLOAD_ATTACHMENT;
     payload: Attachment;
@@ -167,7 +160,6 @@ export type SøknadAction =
     | UpdateSøker
     | UpdateSøkerAndStorage
     | UpdateSøknad
-    | AddAttachment
     | UploadAttachment
     | UploadAttachmentSuccess
     | UploadAttachmentFailed

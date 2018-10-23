@@ -227,9 +227,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                     currentStegID: action.stegID
                 }
             };
-        case SøknadActionKeys.ADD_ATTACHMENT_TO_STATE:
-            const attachment = action.attachment;
-            return addAttachmentToState(attachment, state);
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;
