@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 import {
     TilgjengeligStønadskonto,
@@ -14,8 +13,6 @@ import { guid } from 'nav-frontend-js-utils';
 import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
 import { DateValue } from '../../../types/common';
-
-const ANTALL_DAGER_FORBEHOLDT_MOR_ETTER_FØDSEL = 30;
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
@@ -212,15 +209,6 @@ const ikkeDeltUttakFødselFarMedmor = (
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
     const startDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
-    const trekkDagerEtterDenneDatoen = Uttaksdagen(Uttaksdagen(famDato).denneEllerNeste()).leggTil(
-        ANTALL_DAGER_FORBEHOLDT_MOR_ETTER_FØDSEL - 1
-    );
-
-    let oppbrukteDagerPgaSenSøknad = 0;
-
-    if (startDato && moment(trekkDagerEtterDenneDatoen).isBefore(startDato, 'day')) {
-        oppbrukteDagerPgaSenSøknad = Uttaksdagen(trekkDagerEtterDenneDatoen).getUttaksdagerFremTilDato(startDato);
-    }
 
     const perioder: Periode[] = [];
 
@@ -230,7 +218,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager - oppbrukteDagerPgaSenSøknad),
+            tidsperiode: getTidsperiode(startDato, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
@@ -238,8 +226,7 @@ const ikkeDeltUttakFødselFarMedmor = (
 
         perioder.push(periode);
     } else {
-        let gjenståendeDager = foreldrepengerKonto.dager + aktivitetsfriKvote!.dager - oppbrukteDagerPgaSenSøknad;
-        const aktivitetsFrieDager = Math.min(15 * 5, gjenståendeDager);
+        const aktivitetsFrieDager = 15 * 5;
 
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
@@ -255,22 +242,18 @@ const ikkeDeltUttakFødselFarMedmor = (
 
         perioder.push(aktivitetsFriPeriode);
 
-        gjenståendeDager = gjenståendeDager - aktivitetsFrieDager;
+        const aktivitetskravPeriode: Uttaksperiode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.FARMEDMOR,
+            konto: StønadskontoType.Foreldrepenger,
+            tidsperiode: getTidsperiode(Uttaksdagen(startDato).leggTil(aktivitetsFrieDager), foreldrepengerKonto.dager),
+            vedlegg: [],
+            ønskerSamtidigUttak: false,
+            gradert: false
+        };
 
-        if (gjenståendeDager > 0) {
-            const aktivitetskravPeriode: Uttaksperiode = {
-                id: guid(),
-                type: Periodetype.Uttak,
-                forelder: Forelder.FARMEDMOR,
-                konto: StønadskontoType.Foreldrepenger,
-                tidsperiode: getTidsperiode(Uttaksdagen(startDato).leggTil(aktivitetsFrieDager), gjenståendeDager),
-                vedlegg: [],
-                ønskerSamtidigUttak: false,
-                gradert: false
-            };
-
-            perioder.push(aktivitetskravPeriode);
-        }
+        perioder.push(aktivitetskravPeriode);
     }
 
     return perioder.sort(sorterPerioder);
