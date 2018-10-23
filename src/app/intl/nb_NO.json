@@ -37,7 +37,7 @@
     "steg.config.tittel.infoOmUttaket": "Perioden din med foreldrepenger",
     "steg.config.tittel.uttak": "Perioden din med foreldrepenger",
     "steg.config.tittel.infoOmUtenlandsopphold": "Utenlandsopphold",
-    "steg.config.tittel.opplysningerOmInntekt": "Opplysninger om inntekt",
+    "steg.config.tittel.opplysningerOmInntekt": " Arbeidsforhold og inntekt",
     "steg.config.tittel.oppsummering": "Oppsummering",
 
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
@@ -150,7 +150,7 @@
         "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
-        "Siden du har opptjening fra et annet EØS-land eller Sveits så kan det ta litt lenger tid å behandlesøknaden din, siden vi må innhente dokumnetasjon.",
+        "Siden du har opptjening fra et annet EØS-land eller Sveits så kan det ta litt lenger tid å behandle søknaden din, siden vi må innhente dokumnetasjon.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
@@ -421,7 +421,7 @@
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
     "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
-        "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+        "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt, som også viser perioden det gjelder.",
 
@@ -453,7 +453,7 @@
     "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak til overføring",
+    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon til årsak for overføring",
     "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktiviten til mor",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
 
@@ -520,7 +520,7 @@
     "oppsummering.samtykke":
         "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
 
-    "oppsummering.relasjonTilBarn": "Informasjon om barnet",
+    "oppsummering.relasjonTilBarn": "Om barnet",
     "oppsummering.termindato.label": "termindato",
     "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato.label": "Som er datert den",
@@ -560,7 +560,7 @@
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
-    "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
+    "oppsummering.utenlandsopphold": "Utenlandsopphold",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
     "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
@@ -707,8 +707,8 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Jeg er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
-        "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
+        "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon, som også viser perioden det gjelder.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
 
@@ -738,7 +738,7 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperioden og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her",
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her.",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
@@ -763,7 +763,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
         "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
-        "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør {navnMor} er helt avhengig av hjelp til å ta seg av barnet, i hvilken grad {navnMor} er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
+        "Du må legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
