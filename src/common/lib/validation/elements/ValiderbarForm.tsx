@@ -210,7 +210,7 @@ export class ValiderbarForm extends React.Component<Props, ValiderbarFormState> 
         }
         return (
             <form onSubmit={this.onSubmit} className={className}>
-                {summaryBox}
+                <div role="alert">{summaryBox}</div>
                 {this.props.children}
             </form>
         );
