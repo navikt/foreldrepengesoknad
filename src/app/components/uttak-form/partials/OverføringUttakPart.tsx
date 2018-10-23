@@ -18,7 +18,7 @@ interface Props {
     onChange: (periode: RecursivePartial<Overføringsperiode>) => void;
 }
 
-const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakType | undefined): boolean => {
+export const visVedlegg = (søkerErFarEllerMedmor: boolean, årsak: OverføringÅrsakType | undefined): boolean => {
     if (søkerErFarEllerMedmor) {
         return årsak !== undefined;
     } else {

@@ -27,17 +27,19 @@
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
 
+    "steg.dokument.tittel": "{steg} - Søknad om foreldrepenger - NAV",
+
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
     "steg.config.tittel.inngang": "Inngang",
-    "steg.config.tittel.infoOmBarnet": "Informasjon om barnet",
+    "steg.config.tittel.infoOmBarnet": "Om barnet",
     "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjon til barn overtakelse av foreldreansvar",
-    "steg.config.tittel.relasjonBarnFødsel": "Informasjon om barnet",
-    "steg.config.tittel.annenForelder": "Informasjon om den andre forelderen",
-    "steg.config.tittel.infoOmUttaket": "Informasjon om perioden din med foreldrepenger",
-    "steg.config.tittel.uttak": "Informasjon om perioden din med foreldrepenger",
-    "steg.config.tittel.infoOmUtenlandsopphold": "Informasjon om utenlandsopphold",
-    "steg.config.tittel.opplysningerOmInntekt": "Opplysninger om inntekt",
+    "steg.config.tittel.relasjonBarnFødsel": "Om barnet",
+    "steg.config.tittel.annenForelder": "Den andre forelderen",
+    "steg.config.tittel.infoOmUttaket": "Perioden din med foreldrepenger",
+    "steg.config.tittel.uttak": "Perioden din med foreldrepenger",
+    "steg.config.tittel.infoOmUtenlandsopphold": "Utenlandsopphold",
+    "steg.config.tittel.opplysningerOmInntekt": " Arbeidsforhold og inntekt",
     "steg.config.tittel.oppsummering": "Oppsummering",
 
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
@@ -79,7 +81,7 @@
 
     "dinePersonopplysninger.sectionheading": "Slik behandler NAV personopplysningene dine",
     "dinePersonopplysninger.behandling.html":
-        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
+        "<p>NAV innhenter og mottar opplysninger om deg når du sender inn en søknad. Det er nødvendig for at du skal kunne få riktig tjeneste og ytelser.</p><p>Du har valgt å søke om foreldrepenger. Det er en ytelse fra folketrygden som du kan få hvis du fyller vilkårene. Vilkårene står på <a href=\"https://www.nav.no/foreldrepenger\"  class=\"lenke\" rel=\"noopener\">nav.no/foreldrepenger</a>.</p>",
     "dinePersonopplysninger.avsnitt.innhenting.tittel": "Opplysninger vi innhenter fra deg og offentlige registre",
     "dinePersonopplysninger.avsnitt.innhenting.html":
         "<p>For å behandle søknaden din henter vi inn opplysninger om</p><ul><li>tilknytningen din til Norge, arbeidsforholdene dine og inntekten din</li><li>ytelser du mottar fra NAV</li><li>barn og den andre forelderen</li><li>trygdeordninger du kan ha rett til i andre land</li></ul><p>Vi kan også sende opplysninger om deg til trygdeordninger i andre land.</p>",
@@ -93,10 +95,10 @@
         "<p>Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger</p><ul><li>du gir i søknaden</li><li>fra Folkeregisteret</li><li>om arbeidsforholdene dine fra Arbeidstaker- og arbeidsgiverregisteret</li><li>om inntekten din fra A-meldingen</li><li>om inntekt og avtalt permisjon fra arbeidsgiveren din</li></ul>",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.tittel": "Svar på søknaden",
     "dinePersonopplysninger.avsnitt.svarPaSoknaden.html":
-        "<p>Når søknaden er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
+        "<p>Når søknaden din er behandlet, får du et vedtaksbrev. Det forteller deg om</p><ul><li>begrunnelse for beslutningen</li><li>hvordan du får innsyn i saksbehandlingen og reglene som er blitt brukt</li><li>hvordan du kan klage hvis du er uenig</li></ul>",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.tittel": "Personvernerklæringen i NAV",
     "dinePersonopplysninger.avsnitt.personvernerklaringen.html":
-        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern</a></p>",
+        "<p>Du kan lese mer om hvordan NAV behandler personopplysninger i Arbeids- og velferdsetatens personvernerklæring på <a class=\"lenke\" rel=\"noopener\" href=\"https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten\">nav.no/personvern.</a></p>",
 
     "dinePlikter.sectionheading": "Dine plikter",
     "dinePlikter.listeElement.1":
@@ -150,7 +152,7 @@
         "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
-        "Siden du har opptjening fra et annet EØS-land eller Sveits så kan det ta litt lenger tid å behandlesøknaden din, siden vi må innhente dokumnetasjon.",
+        "Siden du har opptjening fra et annet EØS-land eller Sveits så kan det ta litt lenger tid å behandle søknaden din, siden vi må innhente dokumnetasjon.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
 
@@ -222,6 +224,7 @@
     "næringstype.annen": "Annen type virksomet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
+    "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
     "selvstendigNæringsdrivende.modal.navn": "Hva heter virksomheten din?",
     "selvstendigNæringsdrivende.modal.orgnr": "Hva er organisasjonsnummeret?",
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
@@ -360,7 +363,7 @@
     "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label.aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
-        "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke senere gjøre om dette valget.",
+        "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
@@ -421,22 +424,22 @@
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
     "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
-        "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskriver hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+        "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnAnnenForelder} er innlagt, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
@@ -453,7 +456,7 @@
     "vedlegg.lastoppknapp.omsorgsovertakelse": "Last opp dokumentasjon på omsorgsovertakelse",
     "vedlegg.lastoppknapp.fødselsattest": "Last opp fødselsattesten",
     "vedlegg.lastoppknapp.anneninntektdokumentasjon": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon på årsak til overføring",
+    "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon til årsak for overføring",
     "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktiviten til mor",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
 
@@ -520,7 +523,7 @@
     "oppsummering.samtykke":
         "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
 
-    "oppsummering.relasjonTilBarn": "Informasjon om barnet",
+    "oppsummering.relasjonTilBarn": "Om barnet",
     "oppsummering.termindato.label": "termindato",
     "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato.label": "Som er datert den",
@@ -560,11 +563,11 @@
     "oppsummering.annenForelder.erForSyk.label": "Er { navn } for syk til å ta seg av barnet eller innlagt?",
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
-    "oppsummering.utenlandsopphold": "Informasjon om utenlandsopphold",
+    "oppsummering.utenlandsopphold": "Utenlandsopphold",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
-    "oppsummering.iNorgeSiste12MndTrue": "vært i Norge",
+    "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
-    "oppsummering.iNorgeNeste12MndTrue": "være i Norge",
+    "oppsummering.iNorgeNeste12MndTrue": "bo i Norge",
     "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
     "oppsummering.fødselINorgeTrue": "i Norge",
     "oppsummering.fødselINorgeFalse": "i utlandet",
@@ -635,6 +638,9 @@
     "oppsummering.morsAktivitet": "Mors aktivitet i perioden",
     "oppsummering.morsAktivitet.dokumentasjon": "Dokumentasjon av mors aktivitet i perioden",
 
+    "oppsummering.veileder.manglendeVedlegg":
+        "Hvis vi ikke mottar vedleggene innen fristen, mangler vi nødvendige opplysninger for å behandle saken din. Vi kan da avgjøre saken din med de opplysningene vi har tilgjengelig, og du kan da risikere å få avslag.",
+
     "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
@@ -652,6 +658,7 @@
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
+    "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
@@ -705,8 +712,9 @@
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Jeg er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.vedlegg.info.sykdom":
-        "Du må legge ved bekreftelse fra legen din. Den må beskriver hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "utsettelse.sykdom.vedlegg.info.innlagt": "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon.",
+        "Du må legge ved bekreftelse fra legen din. Den må beskrive hvordan sykdommen eller skaden gjør deg helt avhengig av hjelp til å ta deg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "utsettelse.sykdom.vedlegg.info.innlagt":
+        "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjon, som også viser perioden det gjelder.",
     "utsettelse.sykdom.vedlegg.info.barnInnlagt":
         "Du må legge ved bekreftelse på innleggelsen fra helseinstitusjonen hvor barnet er innlagt, som også viser perioden det gjelder.",
 
@@ -736,11 +744,11 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperioden og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her",
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her.",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":
-        "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjema</a>.",
+        "Skal du jobbe hos flere arbeidsgivere samtidig må du sende inn søknaden på papir. Du kan lese mer om dette på <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>,  og her finner du <a href=\"https://www.nav.no/\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">papirskjemaet</a>.",
 
     "uttaksplan.fellesdel.hvaSkalMorGjøre.spørsmål": "Hva skal {navnMor} gjøre i denne perioden?",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
@@ -753,7 +761,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
         "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon som viser at {navnMor} jobb og studier til sammen utgjør 100 prosent.",
+        "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
         "Du må legge ved dokumentasjon fra sykehuset eller helseinstitusjonen når {navnMor} er innlagt, som også viser perioden det gjelder.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
@@ -761,7 +769,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
         "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
-        "Du må legge ved legeerklæring som konkret beskriver hvordan sykdommen eller skaden gjør {navnMor} er helt avhengig av hjelp til å ta seg av barnet, i hvilken grad {navnMor} er avhengig av hjelp og hvor lenge sykdommen vil vare med fra og til dato.",
+        "Du må legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",

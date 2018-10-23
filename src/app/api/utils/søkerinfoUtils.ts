@@ -22,7 +22,7 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     }
     return barn.map((b: any): RegistrertBarn => ({
         ...b,
-        fødselsdato: moment(b.fødselsdato).toDate()
+        fødselsdato: moment.utc(b.fødselsdato).toDate()
     }));
 };
 

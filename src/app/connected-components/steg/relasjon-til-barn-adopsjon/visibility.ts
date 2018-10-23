@@ -32,7 +32,7 @@ const spørsmålOmAnkomstdatoVisible = (barn: Partial<Adopsjonsbarn>): boolean =
     return barn.adopsjonAvEktefellesBarn === false && barn.adoptertIUtlandet === true;
 };
 
-const spørsmålOmVedleggVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
+export const spørsmålOmVedleggVisible = (barn: Partial<Adopsjonsbarn>): boolean => {
     return (
         utfyltAdoptertIUtlandet(barn) ||
         (barn.adopsjonAvEktefellesBarn === true && fødselsdatoerErFyltUt(barn.fødselsdatoer))

@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import {
-    Overføringsperiode,
-    OverføringÅrsakType,
-    StønadskontoType
-} from '../../../../../app/types/uttaksplan/periodetyper';
+import { Overføringsperiode, StønadskontoType } from '../../../../../app/types/uttaksplan/periodetyper';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import getMessage from 'common/util/i18nUtils';
 import { getÅrsakTekst } from 'common/util/oppsummeringUtils';
 import { NavnPåForeldre } from 'common/types';
+import { dokumentasjonBehøvedForOverføringsperiode } from '../../../../../app/util/uttaksplan/utsettelsesperiode';
 
 interface OverføringsperiodedetaljerProps {
     periode: Overføringsperiode;
@@ -34,7 +31,7 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
     erFarEllerMedmor,
     intl
 }) => {
-    const { årsak, vedlegg } = periode;
+    const { vedlegg } = periode;
     const annenForelderNavn = getNavnPåAnnenForelder(navnPåForeldre, periode.konto);
     return (
         <>
@@ -43,7 +40,7 @@ const Overføringsperiodedetaljer: React.StatelessComponent<Props> = ({
                 verdi={getÅrsakTekst(intl, periode, { annenForelderNavn })}
             />
 
-            {(erFarEllerMedmor || årsak !== OverføringÅrsakType.aleneomsorg) && (
+            {dokumentasjonBehøvedForOverføringsperiode(erFarEllerMedmor, periode) && (
                 <OppsummeringAvDokumentasjon vedlegg={vedlegg || []} />
             )}
         </>
