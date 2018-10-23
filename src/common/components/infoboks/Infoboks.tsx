@@ -45,7 +45,7 @@ class Infoboks extends React.Component<Props, InfoboksState> {
             <React.Fragment>
                 <Sirkelknapp
                     stil={stil}
-                    ariaLabel={typeof tekst === 'string' ? tekst : getMessage(intl, 'infoboks.sirkeltekst')}
+                    ariaLabel={getMessage(intl, 'infoboks.sirkeltekst')}
                     onClick={this.toggleIsExpanded}
                     ikon={ikon}
                     toggle={{ pressed: isExpanded }}
