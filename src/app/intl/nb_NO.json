@@ -681,8 +681,7 @@
     "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt søknad",
     "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
     "avbrytSøknadDialog.tittel": "Avbryt søknad",
-    "avbrytSøknadDialog.intro":
-        "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
+    "avbrytSøknadDialog.intro": "Det du har fylt ut i søknaden blir slettet, og du kommer tilbake til velkomstsiden.",
     "avbrytSøknadDialog.spørsmål": "Ønsker du å slette søknaden?",
 
     "bekreftGåTilUttaksplanSkjemaDialog.okLabel": "Ja",
@@ -715,10 +714,10 @@
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn opphold for.",
+    "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode uten uttak eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
-    "periodeliste.header.ariaBeskrivelse":
-        "Periode nummer: {periodenummer}, {periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
+    "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
     "periodeliste.lukk": "Lukk",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
 
