@@ -148,7 +148,7 @@
     "inntektstype.ventelønn": "Vartpenger og ventelønn",
     "inntektstype.ventelønn_info":
         "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
-    "inntektstype.jobb_i_utlandet": "Jobb i EØS-land eller Sveits",
+    "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
         "Siden du har opptjening fra et annet EØS-land eller Sveits så kan det ta litt lenger tid å behandlesøknaden din, siden vi må innhente dokumnetasjon.",
     "inntektstype.frilans": "Frilans",
@@ -330,7 +330,7 @@
     "væreINorgeVedFødsel.spørsmål": "Skal du være i Norge når barnet blir født?",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge når barnet ble født?",
 
-    "adopsjonsdato.spørsmål": "Når overtok du omsorgen",
+    "adopsjonsdato.spørsmål": "Når overtok du omsorgen?",
     "stebarnsadopsjonsdato.spørsmål": "Oppgi datoen for stebarnsadopsjon",
     "adoptertIUtlandet.spørsmål": "Har du adoptert fra utlandet?",
 
