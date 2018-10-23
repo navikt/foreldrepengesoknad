@@ -23,6 +23,8 @@ export interface OwnProps {
     onChange: (payload: UtsettelsePgaSykdomChangePayload) => void;
 }
 
+export const visVedlegg = (sykdomsårsak?: UtsettelseÅrsakType) => sykdomsårsak !== undefined;
+
 const getSykdomAlternativ = (intl: InjectedIntl, årsak: UtsettelseÅrsakType): FlervalgAlternativ => {
     return {
         label: getMessage(intl, `utsettelse.sykdom.alternativ.${årsak}`),
@@ -64,17 +66,18 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                         ]}
                     />
                 </Block>
-                {sykdomsårsak !== undefined && (
-                    <Block>
-                        <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak)}</Veilederinfo>
-                        <VedleggSpørsmål
-                            vedlegg={vedleggList}
-                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
-                            onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak })}
-                        />
-                    </Block>
-                )}
+                {sykdomsårsak !== undefined &&
+                    visVedlegg(sykdomsårsak) && (
+                        <Block>
+                            <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak!)}</Veilederinfo>
+                            <VedleggSpørsmål
+                                vedlegg={vedleggList}
+                                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak })}
+                            />
+                        </Block>
+                    )}
             </>
         );
     }

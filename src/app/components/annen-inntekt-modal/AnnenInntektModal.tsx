@@ -17,7 +17,6 @@ import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Landvelger from '../landvelger/Landvelger';
 import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
-import { Skjemanummer } from '../../types/søknad/Søknad';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
@@ -25,6 +24,7 @@ import ModalForm from 'common/components/modalForm/ModalForm';
 import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { getSkjemanummerForAndreInntekter } from '../../util/søknad/missingAttachmentUtil';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -66,16 +66,17 @@ class AnnenInntektModal extends React.Component<Props, State> {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    updateAnnenInntekt(annenInntektProperties: AnnenInntektPartial) {
+    updateAnnenInntekt(annenInntektProperties: AnnenInntektPartial): void {
         this.setState({
             annenInntekt: {
                 ...this.state.annenInntekt,
-                ...annenInntektProperties
+                ...annenInntektProperties,
+                vedlegg: visibility.vedlegg(this.state.annenInntekt) ? [] : undefined
             }
         });
     }
 
-    updateVedleggList(vedlegg: Attachment[]) {
+    updateVedleggList(vedlegg: Attachment[]): void {
         const { annenInntekt } = this.state;
         this.setState({
             annenInntekt: {
@@ -85,7 +86,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
         });
     }
 
-    updateVedleggItem(vedlegg: Attachment) {
+    updateVedleggItem(vedlegg: Attachment): void {
         const { annenInntekt } = this.state;
         if (annenInntekt && annenInntekt.vedlegg) {
             const index = annenInntekt.vedlegg.indexOf(vedlegg);
@@ -99,26 +100,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
         }
     }
 
-    findSkjemanummer(): Skjemanummer {
-        const { annenInntekt } = this.state;
-
-        switch (annenInntekt.type) {
-            case AnnenInntektType.MILITÆRTJENESTE:
-                return Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;
-            case AnnenInntektType.JOBB_I_UTLANDET:
-                return Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG;
-            case AnnenInntektType.VENTELØNN:
-                return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-            case AnnenInntektType.SLUTTPAKKE:
-                return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-            case AnnenInntektType.LØNN_VED_VIDEREUTDANNING:
-                return Skjemanummer.INNTEKTSOPPLYSNINGER;
-            default:
-                return Skjemanummer.ANNET;
-        }
-    }
-
-    onSubmit() {
+    onSubmit(): void {
         this.props.onSubmit(this.state.annenInntekt as AnnenInntekt);
     }
 
@@ -221,8 +203,8 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             vedleggList.splice(index, 1);
                             this.updateVedleggList(vedleggList);
                         }}
-                        attachmentType={AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON}
-                        skjemanummer={this.findSkjemanummer()}
+                        attachmentType={AttachmentType.ANNEN_INNTEKT}
+                        skjemanummer={getSkjemanummerForAndreInntekter(annenInntekt.type!)}
                     />
                 </Block>
                 <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>

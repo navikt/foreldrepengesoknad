@@ -35,6 +35,7 @@ import { SøknadenGjelderBarnValg } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
+import { MissingAttachment } from '../../../util/søknad/missingAttachmentUtil';
 
 const setSøknad = (payload: UpdateSøknadActionPayload) => ({
     type: SøknadActionKeys.SET_SØKNAD,
@@ -81,6 +82,11 @@ const updateSøknad = (payload: UpdateSøknadActionPayload): UpdateSøknad => ({
 const uttaksplanUpdateSkjemdata = (payload: Partial<UttaksplanSkjemadata>): UttaksplanUpdateSkjemadata => ({
     type: SøknadActionKeys.UTTAKSPLAN_UPDATE_SKJEMADATA,
     payload
+});
+
+const addAttachment = (missingAttachment: MissingAttachment) => ({
+    type: SøknadActionKeys.ADD_ATTACHMENT_TO_STATE,
+    missingAttachment
 });
 
 const uploadAttachment = (payload: Attachment) => ({
@@ -161,6 +167,7 @@ export default {
     uttaksplanDeletePeriode,
     uttaksplanUpdatePeriode,
     uttaksplanUpdateSkjemdata,
+    addAttachment,
     uploadAttachment,
     uploadAttachmentSuccess,
     uploadAttachmentFailed,

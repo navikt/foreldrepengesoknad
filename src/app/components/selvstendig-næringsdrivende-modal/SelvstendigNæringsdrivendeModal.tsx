@@ -267,8 +267,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             vedleggList.splice(index, 1);
                             this.updateVedleggList(vedleggList);
                         }}
-                        attachmentType={AttachmentType.ANNEN_INNTEKT_DOKUMENTASJON}
-                        skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER}
+                        attachmentType={AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE}
+                        skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG}
                     />
                 </Block>
 
