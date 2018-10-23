@@ -10,7 +10,7 @@ import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsu
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
-import { getDeltUttak } from './uttaksplan/forslag/util';
+import { getErDeltUttak } from './uttaksplan/forslag/util';
 import { erFarEllerMedmor } from './domain/personUtil';
 import { SøkerRolle } from '../types/s\u00F8knad/S\u00F8knad';
 
@@ -41,7 +41,7 @@ export const beregnGjenståendeUttaksdager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     uttaksplan: Periode[]
 ): Stønadskontouttak[] => {
-    const erDeltUttak = getDeltUttak(tilgjengeligeStønadskontoer);
+    const erDeltUttak = getErDeltUttak(tilgjengeligeStønadskontoer);
     const erFarMedmor = erFarEllerMedmor(SøkerRolle.FAR);
 
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
