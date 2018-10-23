@@ -1,11 +1,14 @@
 import Søknad from '../../types/søknad/Søknad';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
 
 const isArrayOfAttachments = (object: object) => {
-    return Array.isArray(object) && object.some((element) => element.filename);
+    return (
+        Array.isArray(object) &&
+        object.some((element) => element.filename || element.innsendingsType === InnsendingsType.SEND_SENERE)
+    );
 };
 
 const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>

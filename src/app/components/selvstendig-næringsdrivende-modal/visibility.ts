@@ -152,7 +152,7 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
     return false;
 };
 
-const module = {
+export const module = {
     navnPåNæringen: navnPåNæringenVisible,
     organisasjonsnummer: organisasjonsnummerVisible,
     tidsperiodeUtfylt: tidsperiodeErUtfylt,

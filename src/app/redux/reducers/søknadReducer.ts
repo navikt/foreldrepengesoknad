@@ -3,8 +3,8 @@ import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActi
 import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
 import {
-    getUniqeRegistrertAnnenForelderFromBarn,
-    getBarnInfoFraRegistrertBarnValg
+    getBarnInfoFraRegistrertBarnValg,
+    getUniqeRegistrertAnnenForelderFromBarn
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
@@ -227,7 +227,6 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                     currentStegID: action.stegID
                 }
             };
-
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;
