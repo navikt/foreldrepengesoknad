@@ -28,6 +28,9 @@
     "revisor": "revisor",
 
     "steg.dokument.tittel": "{steg} - Søknad om foreldrepenger - NAV",
+    "velkommen.dokument.tittel": "Velkommen - Søknad om foreldrepenger - NAV",
+    "feilside.dokument.tittel": "Feil - Søknad om foreldrepenger - NAV",
+    "søknadsendt.dokument.tittel": "Søknad mottatt - Søknad om foreldrepenger - NAV",
 
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
@@ -636,11 +639,9 @@
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.morsAktivitet": "Mors aktivitet i perioden",
     "oppsummering.morsAktivitet.dokumentasjon": "Dokumentasjon av mors aktivitet i perioden",
-
     "oppsummering.veileder.manglendeVedlegg":
         "Hvis vi ikke mottar vedleggene innen fristen, mangler vi nødvendige opplysninger for å behandle saken din. Vi kan da avgjøre saken din med de opplysningene vi har tilgjengelig, og du kan da risikere å få avslag.",
 
-    "kvittering.sectionheading": "Søknad mottatt",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
     "kvittering.referanseId": "Vi mottok søknaden med referansenummer {id} den {date} kl. {timeOfDay}.",
