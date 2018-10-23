@@ -19,7 +19,10 @@ export const uttaksplanSkjemaErGyldig = (søknad: Søknad): boolean => {
                 søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
             return harSvartPåStartdato && skjema.fellesperiodeukerMor !== undefined;
         case UttaksplanSkjemaScenario.s4_morFarAdopsjon:
-            return skjema.startdatoPermisjon !== undefined;
+            return (
+                skjema.startdatoPermisjon !== undefined ||
+                (skjema.harAnnenForelderSøktFP === true && søknad.dekningsgrad !== undefined)
+            );
 
         case UttaksplanSkjemaScenario.s5_farMedmorAleneomsorgFødselAdopsjon:
             return skjema.startdatoPermisjon !== undefined;
