@@ -362,10 +362,10 @@
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir høyere ved å velge 100 prosent. Du kan ikke senere gjøre om dette valget.",
 
-    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte ditt perioden før termin?",
+    "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
-    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før terminen",
-    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg tok ikke ut foreldrepenger før terminen",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.label": "Jeg skal ikke ha foreldrepenger før termin",
+    "spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label": "Jeg tok ikke ut foreldrepenger før termin",
     "spørsmål.startdatoPermisjon.varighet": "{varighet} før termin",
     "spørsmål.startdatoPermisjon.barnetErFødt.varighet": "{varighet} før fødsel",
     "spørsmål.startdatoPermisjonFarMedmor.label": "Når ønsker du å starte perioden?",
@@ -436,7 +436,7 @@
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
-    "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{dageroguker} tas av fellesperioden.",
+    "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
