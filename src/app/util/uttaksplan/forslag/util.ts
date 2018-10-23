@@ -3,6 +3,8 @@ import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { getTidsperiode } from '../Tidsperioden';
 import { getDefaultPermisjonStartdato } from '../permisjonUtils';
+import { TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import { Stønadskontouttak } from '../../../components/uttaksoppsummering/Uttaksoppsummering';
 
 const UTTAKSDAGER_I_UKE = 5;
 
@@ -69,4 +71,8 @@ export function getFedrekvote(
             : getFellesperiodeFarMedmor(familiehendelsedato, permisjonsregler, fellesukerMor, fellesukerFarMedmor).tom
     ).neste();
     return getTidsperiode(startdato, permisjonsregler.antallUkerFedrekvote * UTTAKSDAGER_I_UKE);
+}
+
+export function getErDeltUttak(kontoer: Array<TilgjengeligStønadskonto | Stønadskontouttak>): boolean {
+    return kontoer.find((u) => u.konto === StønadskontoType.Foreldrepenger) === undefined;
 }
