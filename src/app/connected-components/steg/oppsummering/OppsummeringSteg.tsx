@@ -16,7 +16,6 @@ import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
-import { ApiState } from '../../../redux/reducers/apiReducer';
 import {
     findMissingAttachments,
     mapMissingAttachmentsToSøknad,
@@ -28,7 +27,6 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 interface StateProps {
     person: Person;
     søknad: Søknad;
-    api: ApiState;
     kvittering?: Kvittering;
     stegProps: StegProps;
     perioder: Periode[];
@@ -103,7 +101,6 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         person,
         søknad,
-        api: state.api,
         perioder: state.søknad.uttaksplan,
         kvittering: state.api.kvittering,
         missingAttachments,
