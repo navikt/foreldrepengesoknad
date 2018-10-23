@@ -17,18 +17,11 @@ import { SøkerRolle } from '../types/s\u00F8knad/S\u00F8knad';
 const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
     if (isUttaksperiode(p)) {
         const periodeErGradert = p.stillingsprosent !== undefined;
-        const periodeHarTrekkdagerPgaSenSøknad = p.trekkdager !== undefined;
 
-        if (periodeErGradert && periodeHarTrekkdagerPgaSenSøknad) {
-            const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
-
-            return p.trekkdager! + Math.floor(dager * graderingsProsent);
-        } else if (periodeErGradert) {
+        if (periodeErGradert) {
             const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
 
             return Math.floor(dager * graderingsProsent);
-        } else if (periodeHarTrekkdagerPgaSenSøknad) {
-            return dager + p.trekkdager!;
         } else {
             return dager;
         }
