@@ -388,7 +388,8 @@
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
 
     "uttaksplan.skjema.fordeling.spørsmål": "Hvor mange uker skal du ha av fellesperioden?",
-    "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre fellesdel til {navn}",
+    "uttaksplan.skjema.fordeling.reduser.tooltip": "En uke mindre",
+    "uttaksplan.skjema.fordeling.øk.tooltip": "En uke mer",
     "uttaksplan.skjema.fordeling.aria.fordeling":
         "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.fordeling.veiledning":

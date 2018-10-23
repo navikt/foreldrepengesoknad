@@ -5,7 +5,6 @@ import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
 import { NavnPåForeldre } from 'common/types';
 import getMessage from 'common/util/i18nUtils';
-import Tittel from '../../../../components/tittel/Tittel';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../../util/routing/lenker';
 import Block from 'common/components/block/Block';
@@ -31,47 +30,23 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
             visible={visible}
             render={(data, onChange) => (
                 <RangeInput
-                    label={
-                        <Tittel
-                            tittel={getMessage(intl, 'uttaksplan.skjema.fordeling.spørsmål')}
-                            info={{
-                                tekst: infotekst,
-                                rikTekst: (
-                                    <Normaltekst tag="div">
-                                        <Block margin="xxs">{infotekst}</Block>
-                                        <Lenke href={lenker.nav_aktivitetskrav} target="_blank">
-                                            <FormattedMessage id="uttaksplan.skjema.fordeling.veiledning.lenketekst" />
-                                        </Lenke>
-                                    </Normaltekst>
-                                )
-                            }}
-                        />
+                    label={getMessage(intl, 'uttaksplan.skjema.fordeling.spørsmål')}
+                    hjelpetekst={
+                        <Normaltekst tag="div">
+                            <Block margin="xxs">{infotekst}</Block>
+                            <Lenke href={lenker.nav_aktivitetskrav} target="_blank">
+                                <FormattedMessage id="uttaksplan.skjema.fordeling.veiledning.lenketekst" />
+                            </Lenke>
+                        </Normaltekst>
                     }
                     ariaLabelText={getMessage(intl, 'uttaksplan.skjema.fordeling.spørsmål')}
-                    ariaDescription={intl.formatMessage(
-                        { id: 'uttaksplan.skjema.fordeling.aria.fordeling' },
-                        {
-                            navnMor: navnPåForeldre.mor,
-                            ukerFellesperiode
-                        }
-                    )}
                     value={data.fellesperiodeukerMor!}
                     min={0}
                     max={ukerFellesperiode}
                     onChange={(fellesperiodeukerMor) => onChange({ fellesperiodeukerMor })}
                     steppers={{
-                        reduceLabel: intl.formatMessage(
-                            { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
-                            {
-                                navn: navnPåForeldre.mor || intl.formatMessage({ id: 'uttaksplan.mor' })
-                            }
-                        ),
-                        increaseLabel: intl.formatMessage(
-                            { id: 'uttaksplan.skjema.fordeling.reduser.tooltip' },
-                            {
-                                navn: navnPåForeldre.farMedmor || intl.formatMessage({ id: 'uttaksplan.farMedmor' })
-                            }
-                        )
+                        reduceLabel: intl.formatMessage({ id: 'uttaksplan.skjema.fordeling.reduser.tooltip' }),
+                        increaseLabel: intl.formatMessage({ id: 'uttaksplan.skjema.fordeling.øk.tooltip' })
                     }}
                     ariaValueChangedMessage={(value) =>
                         intl.formatMessage(
