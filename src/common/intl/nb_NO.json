@@ -19,5 +19,11 @@
     "common.tall-8": "åtte",
     "common.tall-9": "ni",
     "common.tall-10": "ti",
-    "infoboks.sirkeltekst": "Hjelp"
+
+    "infoboks.sirkeltekst": "Hjelp",
+
+    "datoinput.avgrensninger.beskrivelse.fraTil": "Du kan velge en dato{fra}{til}. ",
+    "datoinput.avgrensninger.beskrivelse.fraOgMed": " fra og med {dato}",
+    "datoinput.avgrensninger.beskrivelse.tilOgMed": " til og med {dato}",
+    "datoinput.avgrensninger.beskrivelse.ikkeHelg": "Du kan ikke velge en helgedag."
 }
