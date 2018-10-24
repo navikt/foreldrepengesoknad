@@ -148,7 +148,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         return (
             <>
                 <DocumentTitle
-                    title={getMessage(intl, 'steg.dokument.tittel', { steg: getMessage(intl, stegConfig[id].tittel) })}
+                    title={getMessage(intl, 'dokument.tittel.steg', { steg: getMessage(intl, stegConfig[id].tittel) })}
                 />
                 {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
                 <Block margin="xs">
