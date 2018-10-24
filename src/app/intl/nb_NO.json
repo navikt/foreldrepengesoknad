@@ -447,6 +447,9 @@
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
+    "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
+    "uttaksplan.hull.leggTil.opphold": "Erstatt med ny opphold",
+    "uttaksplan.hull.leggTil.uttak": "Erstatt med nytt periode",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
@@ -724,7 +727,7 @@
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn opphold for.",
-    "periodeliste.hullMellomPerioder.fridag": "{dager} uten periode. Opphold kan ikke registreres på en helligdag.",
+    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Opphold kan ikke registreres på en offentlig fridag.",
     "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode uten uttak eller opphold",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",

@@ -7,17 +7,22 @@ import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriod
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 
 import './periodeliste.less';
-import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import ToggleList from '../toggle-list/ToggleList';
 import PeriodelisteItem from './PeriodelisteItem';
 import PeriodelisteHull from './PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
+import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { Periodene } from '../../util/uttaksplan/Periodene';
 
 export interface OwnProps {
     perioder: Periode[];
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
+    onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
+    onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
+    onFjernPeriode?: (periode: Periode) => void;
 }
 
 interface State {
@@ -55,7 +60,14 @@ class Periodeliste extends React.Component<Props, State> {
         }
     }
     render() {
-        const { perioder, uttaksplanValidering, navnPåForeldre } = this.props;
+        const {
+            perioder,
+            uttaksplanValidering,
+            navnPåForeldre,
+            onLeggTilOpphold,
+            onLeggTilPeriode,
+            onFjernPeriode
+        } = this.props;
         const numPerioder = perioder.length;
         let firstInvalidTidsperiode = false;
         return (
@@ -65,6 +77,10 @@ class Periodeliste extends React.Component<Props, State> {
                         {perioder.map((periode, idx) => {
                             const isExpanded = isOpen(periode.id);
                             const nextIsGap = idx < numPerioder - 1 && perioder[idx + 1].type === Periodetype.Hull;
+                            const nesteUttaksperiode = Periodene(perioder)
+                                .finnAllePåfølgendePerioder(periode)
+                                .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring)
+                                .shift();
                             firstInvalidTidsperiode =
                                 firstInvalidTidsperiode === false && isValidTidsperiode(periode.tidsperiode) === false;
                             return (
@@ -82,8 +98,12 @@ class Periodeliste extends React.Component<Props, State> {
                                     {periode.type === Periodetype.Hull ? (
                                         <PeriodelisteHull
                                             key={periode.id}
-                                            antallDager={Tidsperioden(periode.tidsperiode).getAntallUttaksdager()}
-                                            årsak={periode.årsak}
+                                            periode={periode}
+                                            nesteUttaksperiode={nesteUttaksperiode}
+                                            navnPåForeldre={navnPåForeldre}
+                                            onLeggTilOpphold={onLeggTilOpphold}
+                                            onLeggTilPeriode={onLeggTilPeriode}
+                                            onFjernPeriode={onFjernPeriode}
                                         />
                                     ) : (
                                         <EndrePeriodeFormRenderer
