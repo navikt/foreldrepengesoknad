@@ -18,7 +18,7 @@ const IkkeMyndig: React.StatelessComponent<Props> = (props: Props) => {
     const { intl, søkerinfo } = props;
     return (
         <Applikasjonsside visSpråkvelger={false} margin={false}>
-            <DocumentTitle title={getMessage(intl, 'søknad.pageheading')} />
+            <DocumentTitle title={getMessage(intl, 'dokument.tittel.feilside.ikkeMyndig')} />
             <Feilsidemelding
                 illustrasjon={{
                     tittel: getMessage(intl, 'ikkeMyndig.tittel', {

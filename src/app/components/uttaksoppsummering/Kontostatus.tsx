@@ -24,7 +24,7 @@ const Kontostatus: React.StatelessComponent<Props & InjectedIntlProps> = ({ utta
 
     return (
         <Normaltekst className={BEM.className} tag="div">
-            <div className={BEM.element('ikon')}>
+            <div className={BEM.element('ikon')} aria-hidden={true} role="presentation">
                 <StønadskontoIkon konto={uttak.konto} navnPåForeldre={navnPåForeldre} />
             </div>
             <div className={BEM.element('content')}>

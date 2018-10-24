@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { guid } from 'nav-frontend-js-utils';
+import RangeStepper from './RangeStepper';
+import { Fieldset } from 'nav-frontend-skjema';
+import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
-import RangeStepper from './RangeStepper';
-import SkjemaInputElement from 'common/components/skjema/elements/skjema-input-element/SkjemaInputElement';
-import AriaText from 'common/components/aria/AriaText';
 
 export interface RangeInputValueLabelRendererOptions {
     value: number;
@@ -16,9 +16,9 @@ export interface RangeInputValueLabelRendererOptions {
 export type RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendererOptions) => React.ReactElement<any>;
 
 interface Props {
-    label: string | React.ReactNode;
+    label: string;
+    hjelpetekst?: React.ReactNode;
     ariaLabelText: string;
-    ariaDescription?: string;
     value: number;
     min: number;
     max: number;
@@ -82,11 +82,11 @@ class RangeInput extends React.Component<Props, State> {
     render() {
         const {
             label,
+            hjelpetekst,
             ariaLabelText,
             inputId,
             valueLabelRenderer,
             steppers,
-            ariaDescription,
             ariaValueChangedMessage,
             valueLabelPlacement = 'above',
             ...rest
@@ -95,56 +95,64 @@ class RangeInput extends React.Component<Props, State> {
         const { value, min, max, onChange } = this.props;
         const id = inputId || guid();
         const labelRenderer = valueLabelRenderer || defaultValueLabelRenderer;
-        const ariaDescribedById = `${id}_description`;
         const ariaLabelId = `${id}_label`;
         return (
-            <SkjemaInputElement label={label} id={id}>
-                {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
-
-                <div
-                    className={classnames('rangeInput', {
-                        'rangeInput--withSteppers': steppers !== undefined
-                    })}
-                    ref={(c) => (this.container = c)}
-                    onBlur={this.handleBlur}
-                    onFocus={this.handleFocus}>
-                    {steppers && (
-                        <div className="rangeInput__stepper rangeInput__stepper--previous">
-                            <RangeStepper
-                                direction="previous"
-                                onClick={() => (value > min ? onChange(value - 1) : null)}
-                                label={steppers ? steppers.reduceLabel : 'Mindre'}
-                            />
+            <div className="rangeInputWrapper">
+                <Fieldset legend={label}>
+                    {hjelpetekst && (
+                        <div className="rangeInputWrapper__help">
+                            <Infoboks tekst={hjelpetekst} />
                         </div>
                     )}
-                    <AriaText id={ariaLabelId}>{ariaLabelText}</AriaText>
-                    <div className="rangeInput__range">
-                        {ariaDescription && <AriaText id={ariaDescribedById}>{ariaDescription}</AriaText>}
-                        <input
-                            {...rest}
-                            id={id}
-                            aria-describedby={ariaDescribedById}
-                            aria-labelledby={ariaLabelId}
-                            className="nav-frontend-range-input"
-                            type="range"
-                            onChange={(e) => onChange(parseInt(e.target.value, 10))}
-                        />
-                        <div role="alert" aria-live="assertive" className="sr-only">
-                            {ariaValueChangedMessage && this.state.active ? ariaValueChangedMessage(value) : undefined}
-                        </div>
+                    <div aria-live="polite">
+                        {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
-                    {steppers && (
-                        <div className="rangeInput__stepper rangeInput__stepper--next">
-                            <RangeStepper
-                                direction="next"
-                                onClick={() => (value < max ? onChange(value + 1) : null)}
-                                label={steppers ? steppers.increaseLabel : 'Mer'}
+                    <div
+                        className={classnames('rangeInput', {
+                            'rangeInput--withSteppers': steppers !== undefined
+                        })}
+                        ref={(c) => (this.container = c)}
+                        onBlur={this.handleBlur}
+                        onFocus={this.handleFocus}>
+                        {steppers && (
+                            <div className="rangeInput__stepper rangeInput__stepper--previous">
+                                <RangeStepper
+                                    direction="previous"
+                                    onClick={() => (value > min ? onChange(value - 1) : null)}
+                                    label={steppers ? steppers.reduceLabel : 'Mindre'}
+                                />
+                            </div>
+                        )}
+                        <div className="rangeInput__range">
+                            <input
+                                {...rest}
+                                id={id}
+                                aria-labelledby={ariaLabelId}
+                                className="nav-frontend-range-input"
+                                type="range"
+                                onChange={(e) => onChange(parseInt(e.target.value, 10))}
                             />
+                            <div role="alert" aria-live="assertive" className="sr-only">
+                                {ariaValueChangedMessage && this.state.active
+                                    ? ariaValueChangedMessage(value)
+                                    : undefined}
+                            </div>
                         </div>
-                    )}
-                </div>
-                {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
-            </SkjemaInputElement>
+                        {steppers && (
+                            <div className="rangeInput__stepper rangeInput__stepper--next">
+                                <RangeStepper
+                                    direction="next"
+                                    onClick={() => (value < max ? onChange(value + 1) : null)}
+                                    label={steppers ? steppers.increaseLabel : 'Mer'}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div aria-live="polite">
+                        {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
+                    </div>
+                </Fieldset>
+            </div>
         );
     }
 }
