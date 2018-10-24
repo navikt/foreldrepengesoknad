@@ -6,6 +6,7 @@ export type ToggleListRenderProps = (onToggleItem: onToggleItemProp, isOpen: (id
 
 export interface Props {
     render: ToggleListRenderProps;
+    singleMode?: boolean;
 }
 
 type ToggleItem = Map<string, boolean>;
@@ -25,14 +26,16 @@ class ToggleList<T> extends React.Component<Props, State> {
     }
 
     onItemToggle(id: string, open?: boolean) {
+        const { singleMode = true } = this.props;
         if (open !== undefined) {
             this.setState({
-                openItems: new Map(this.state.openItems).set(id, open)
+                openItems: singleMode ? new Map().set(id, open) : new Map(this.state.openItems).set(id, open)
             });
         } else {
             const currState = this.state.openItems.get(id);
+            const newState = currState === true ? false : true;
             this.setState({
-                openItems: new Map(this.state.openItems).set(id, currState === true ? false : true)
+                openItems: singleMode ? new Map().set(id, newState) : new Map(this.state.openItems).set(id, newState)
             });
         }
     }
