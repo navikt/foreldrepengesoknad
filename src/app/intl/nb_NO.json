@@ -448,8 +448,8 @@
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
-    "uttaksplan.hull.leggTil.opphold": "Erstatt med ny opphold",
-    "uttaksplan.hull.leggTil.uttak": "Erstatt med nytt periode",
+    "uttaksplan.hull.leggTil.opphold": "Lag nytt opphold",
+    "uttaksplan.hull.leggTil.uttak": "Lag ny periode",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",

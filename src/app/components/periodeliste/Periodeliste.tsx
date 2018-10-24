@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
@@ -77,6 +77,8 @@ class Periodeliste extends React.Component<Props, State> {
                         {perioder.map((periode, idx) => {
                             const isExpanded = isOpen(periode.id);
                             const nextIsGap = idx < numPerioder - 1 && perioder[idx + 1].type === Periodetype.Hull;
+                            const erFørstePeriodeEtterForeldrepengerFørFødsel =
+                                idx > 0 && isForeldrepengerFørFødselUttaksperiode(perioder[idx - 1]);
                             const nesteUttaksperiode = Periodene(perioder)
                                 .finnAllePåfølgendePerioder(periode)
                                 .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring)
@@ -103,7 +105,9 @@ class Periodeliste extends React.Component<Props, State> {
                                             navnPåForeldre={navnPåForeldre}
                                             onLeggTilOpphold={onLeggTilOpphold}
                                             onLeggTilPeriode={onLeggTilPeriode}
-                                            onFjernPeriode={onFjernPeriode}
+                                            onFjernPeriode={
+                                                erFørstePeriodeEtterForeldrepengerFørFødsel ? undefined : onFjernPeriode
+                                            }
                                         />
                                     ) : (
                                         <EndrePeriodeFormRenderer
