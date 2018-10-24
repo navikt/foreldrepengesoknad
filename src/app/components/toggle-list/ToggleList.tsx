@@ -20,9 +20,16 @@ class ToggleList<T> extends React.Component<Props, State> {
         super(props);
         this.onItemToggle = this.onItemToggle.bind(this);
         this.isOpen = this.isOpen.bind(this);
+        this.collapseAll = this.collapseAll.bind(this);
         this.state = {
             openItems: new Map()
         };
+    }
+
+    collapseAll() {
+        this.setState({
+            openItems: new Map()
+        });
     }
 
     onItemToggle(id: string, open?: boolean) {
