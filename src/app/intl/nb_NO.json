@@ -785,13 +785,13 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til nytt opphold",
 
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte hvilken periode du skal ha ferie.",
+        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Din arbeidsgiver må bekrefte hvilken periode du skal ha ferie.",
+        "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Din arbeidsgiver må bekrefte hvilken periode du skal ha ferie.",
+        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
 
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
@@ -801,7 +801,7 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.tomUttaksplan":
-        "Planen er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
+        "Planen din er tom. Du må legge til periode med foreldrepenger eller opphold for å gå videre.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du søker tidligere enn 6 uker før du skal ta ut foreldrepenger. Første dag du kan sende inn søknaden er {dato}.",
