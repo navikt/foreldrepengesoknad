@@ -76,3 +76,21 @@ export const getSkjemanummerForAndreInntekter = (annenInntektType: AnnenInntektT
             return Skjemanummer.ANNET;
     }
 };
+
+export const isAttachmentForAnnenInntekt = (type: AttachmentType) => type === AttachmentType.ANNEN_INNTEKT;
+
+export const isAttachmentForSelvstendigNæringsdrivende = (type: AttachmentType) =>
+    type === AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE;
+
+export const isAttachmentForBarn = (type: AttachmentType) =>
+    type === AttachmentType.TERMINBEKREFTELSE ||
+    type === AttachmentType.FØDSELSATTEST ||
+    type === AttachmentType.OMSORGSOVERTAKELSE ||
+    type === AttachmentType.ADOPSJONSVEDTAK ||
+    type === AttachmentType.ALENEOMSORG;
+
+export const isAttachmentForPeriode = (type: AttachmentType) =>
+    type === AttachmentType.UTSETTELSE_SYKDOM ||
+    type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
+    type === AttachmentType.OVERFØRING_KVOTE ||
+    type === AttachmentType.ARBEID_VED_GRADERING;
