@@ -2,6 +2,7 @@ import moment from 'moment';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getTidsperiode, Tidsperioden } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
+import { Tidsperiode } from 'common/types';
 
 export const Perioden = (periode: Periode) => ({
     erUttak: () => erUttak(periode),
@@ -53,6 +54,6 @@ function getPeriodeFootprint(periode: Periode) {
 function flyttPeriode(periode: Periode, fom: Date): Periode {
     return {
         ...periode,
-        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom)
+        tidsperiode: Tidsperioden(periode.tidsperiode).setStartdato(fom) as Tidsperiode
     };
 }

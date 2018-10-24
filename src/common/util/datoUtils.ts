@@ -4,6 +4,10 @@ export function formaterDato(dato: Date, datoformat?: string): string {
     return moment(dato).format(datoformat || 'dddd D. MMMM YYYY');
 }
 
+export function formaterDatoTall(dato: Date, datoformat?: string): string {
+    return moment(dato).format(datoformat || 'DD.MM.YYYY');
+}
+
 export function formaterDatoUtenDag(dato: Date): string {
     return moment(dato).format('D. MMMM YYYY');
 }

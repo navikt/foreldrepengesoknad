@@ -13,10 +13,11 @@ import {
     EndrePeriodeChangeEvent
 } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { onToggleItemProp } from '../toggle-list/ToggleList';
+import { getPeriodeTittel } from '../../util/uttaksplan';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 export interface Props {
     periode: Periode;
-    periodenummer: number;
     isExpanded: boolean;
     navnPåForeldre: NavnPåForeldre;
     validertPeriode: ValidertPeriode;
@@ -25,57 +26,59 @@ export interface Props {
     onToggle: onToggleItemProp;
 }
 
-const PeriodelisteItem: React.StatelessComponent<Props> = ({
+const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
-    periodenummer,
     navnPåForeldre,
     validertPeriode,
     isExpanded,
     onRequestDelete,
     onChange,
-    onToggle
+    onToggle,
+    intl
 }) => {
     const id = getPeriodelisteItemId(periode.id);
+    const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
     return (
-        <ToggleItemControlled
-            id={id}
-            isExpanded={isExpanded}
-            onToggle={() => onToggle(periode.id)}
-            expandedHeaderClassName="periodeheader--isOpen"
-            renderHeader={() => (
-                <PeriodeHeader
-                    periodenummer={periodenummer}
-                    periode={periode}
-                    navnPåForeldre={navnPåForeldre}
-                    validertPeriode={validertPeriode}
-                />
-            )}
-            renderContent={() => (
-                <div
-                    className={classnames(
-                        periodelisteBem.element('content'),
-                        periodelisteBem.element('content', periode.type),
-                        periodelisteBem.element('content', getPeriodeFarge(periode))
-                    )}>
-                    <EndrePeriodeFormContent
+        <article arial-label={ariaLabel}>
+            <ToggleItemControlled
+                id={id}
+                isExpanded={isExpanded}
+                onToggle={() => onToggle(periode.id)}
+                expandedHeaderClassName="periodeheader--isOpen"
+                renderHeader={() => (
+                    <PeriodeHeader
                         periode={periode}
+                        navnPåForeldre={navnPåForeldre}
                         validertPeriode={validertPeriode}
-                        onChange={onChange}
-                        onRequestDelete={onRequestDelete}
-                        onRequestClose={() => {
-                            onToggle(periode.id);
-                            if (isExpanded) {
-                                const el = document.getElementById(id);
-                                if (el) {
-                                    el.focus();
-                                }
-                            }
-                        }}
                     />
-                </div>
-            )}
-        />
+                )}
+                renderContent={() => (
+                    <div
+                        className={classnames(
+                            periodelisteBem.element('content'),
+                            periodelisteBem.element('content', periode.type),
+                            periodelisteBem.element('content', getPeriodeFarge(periode))
+                        )}>
+                        <EndrePeriodeFormContent
+                            periode={periode}
+                            validertPeriode={validertPeriode}
+                            onChange={onChange}
+                            onRequestDelete={onRequestDelete}
+                            onRequestClose={() => {
+                                onToggle(periode.id);
+                                if (isExpanded) {
+                                    const el = document.getElementById(id);
+                                    if (el) {
+                                        el.focus();
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+                )}
+            />
+        </article>
     );
 };
 
-export default PeriodelisteItem;
+export default injectIntl(PeriodelisteItem);
