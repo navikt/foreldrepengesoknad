@@ -13,7 +13,7 @@ interface Props {
 }
 
 const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
-    const { intl, erBarnetFødt } = props;
+    const { intl } = props;
     const {
         iNorgePåHendelsestidspunktet,
         iNorgeNeste12Mnd,
@@ -44,17 +44,16 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
                     <UtenlandsoppholdOppsummeringsliste informasjonOmUtenlandsopphold={senereOpphold} />
                 </KompleksFeltoppsummering>
             )}
-            {erBarnetFødt === false &&
-                iNorgePåHendelsestidspunktet !== undefined && (
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.iNorgePåHendelsestidspunktet.label')}
-                        verdi={
-                            iNorgePåHendelsestidspunktet
-                                ? getMessage(intl, 'oppsummering.fødselINorgeTrue')
-                                : getMessage(intl, 'oppsummering.fødselINorgeFalse')
-                        }
-                    />
-                )}
+            {iNorgePåHendelsestidspunktet !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.iNorgePåHendelsestidspunktet.label')}
+                    verdi={
+                        iNorgePåHendelsestidspunktet
+                            ? getMessage(intl, 'oppsummering.fødselINorgeTrue')
+                            : getMessage(intl, 'oppsummering.fødselINorgeFalse')
+                    }
+                />
+            )}
         </Oppsummeringsseksjon>
     );
 };
