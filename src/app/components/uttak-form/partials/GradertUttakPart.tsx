@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedHTMLMessage } from 'react-intl';
+import { FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
@@ -9,8 +9,13 @@ import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
 import { Arbeidsform, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
-import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../uttakFormConfig';
+import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
 import { getStillingsprosentRegler } from '../../../util/validation/stillingsprosent';
+import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
+import { Skjemanummer } from '../../../types/søknad/Søknad';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -32,7 +37,6 @@ class GradertUttakForm extends React.Component<Props> {
 
     render() {
         const { periode, arbeidsforhold, visibility, intl, onChange } = this.props;
-
         return (
             <>
                 <Block>
@@ -78,6 +82,17 @@ class GradertUttakForm extends React.Component<Props> {
                         }
                         frilansEllerSelvstendig={periode.arbeidsform}
                         valgtArbeidsforhold={periode.orgnr}
+                    />
+                </Block>
+                <Block visible={periode.erArbeidstaker === true}>
+                    <Veilederinfo>
+                        {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering')}
+                    </Veilederinfo>
+                    <VedleggSpørsmål
+                        vedlegg={periode.vedlegg as Attachment[]}
+                        onChange={(vedlegg) => onChange({ vedlegg })}
+                        attachmentType={AttachmentType.ARBEID_VED_GRADERING}
+                        skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
                     />
                 </Block>
             </>
