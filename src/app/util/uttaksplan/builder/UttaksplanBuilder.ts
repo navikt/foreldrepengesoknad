@@ -1,11 +1,18 @@
 import moment from 'moment';
 import { guid } from 'nav-frontend-js-utils';
-import { Periode, Periodetype, PeriodeHull } from '../../../types/uttaksplan/periodetyper';
+import {
+    Periode,
+    Periodetype,
+    PeriodeHull,
+    UtsettelseÅrsakType,
+    PeriodeHullÅrsak
+} from '../../../types/uttaksplan/periodetyper';
 import { Periodene, sorterPerioder } from '../Periodene';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from '../Tidsperioden';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Perioden } from '../Perioden';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { getOffentligeFridager } from 'common/util/fridagerUtils';
 
 export const UttaksplanBuilder = (perioder: Periode[], familiehendelsesdato: Date) => {
     return new UttaksplanAutoBuilder(perioder, familiehendelsesdato);
@@ -56,9 +63,17 @@ class UttaksplanAutoBuilder {
     leggTilPeriodeOgBuild(periode: Periode) {
         this.slåSammenLikePerioder();
         this.justerHullRundtPeriode(periode);
-        this.perioder = settInnPeriode(this.perioder, {
-            ...periode
-        });
+        if (
+            periode.type === Periodetype.Utsettelse &&
+            periode.årsak === UtsettelseÅrsakType.Ferie &&
+            Tidsperioden(periode.tidsperiode).getAntallFridager() > 0
+        ) {
+            this.perioder = settInnFerieMedHelligdager(this.perioder, periode);
+        } else {
+            this.perioder = settInnPeriode(this.perioder, {
+                ...periode
+            });
+        }
         this.buildUttaksplan();
         return this;
     }
@@ -386,22 +401,16 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
     const periodehull: PeriodeHull[] = [];
     const diffStartdato = Uttaksdagen(oldPeriode.tidsperiode.fom).getUttaksdagerFremTilDato(periode.tidsperiode.fom);
     if (diffStartdato > 0) {
-        periodehull.push({
-            id: guid(),
-            type: Periodetype.Hull,
-            tidsperiode: getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato)
-        });
+        periodehull.push(getNyttPeriodehull(getTidsperiode(oldPeriode.tidsperiode.fom, diffStartdato)));
     }
     const diffSluttdato = Uttaksdagen(oldPeriode.tidsperiode.tom).getUttaksdagerFremTilDato(periode.tidsperiode.tom);
     if (diffSluttdato < 0) {
-        periodehull.push({
-            id: guid(),
-            type: Periodetype.Hull,
-            tidsperiode: {
+        periodehull.push(
+            getNyttPeriodehull({
                 fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
                 tom: oldPeriode.tidsperiode.tom
-            }
-        });
+            })
+        );
     }
     return periodehull.length > 0 ? periodehull : undefined;
 }
@@ -417,4 +426,86 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
 function finnOgSettInnHull(perioder: Periode[]): Periode[] {
     const hull = finnHull(perioder);
     return [...perioder, ...hull].sort(sorterPerioder);
+}
+
+function settInnFerieMedHelligdager(perioder: Periode[], periode: Periode) {
+    const splittetPeriode = splittPeriodeMedHelligdager(periode);
+    return settInnPerioder(perioder, splittetPeriode);
+}
+
+const getNyttPeriodehull = (tidsperiode: Tidsperiode, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
+    id: guid(),
+    type: Periodetype.Hull,
+    tidsperiode,
+    årsak
+});
+
+export function splittPeriodeMedHelligdager(periode: Periode): Periode[] {
+    const nyePerioder: Periode[] = [];
+    const { tidsperiode } = periode;
+    const friperioder = getFriperioderITidsperiode(tidsperiode);
+    let fom = periode.tidsperiode.fom;
+    friperioder.forEach((friperiode, idx) => {
+        if (moment(friperiode.fom).isSame(fom, 'day')) {
+            nyePerioder.push(getNyttPeriodehull(friperiode));
+            fom = Uttaksdagen(friperiode.tom).neste();
+        } else {
+            nyePerioder.push({
+                ...periode,
+                tidsperiode: {
+                    fom,
+                    tom: Uttaksdagen(friperiode.fom).forrige()
+                }
+            });
+            nyePerioder.push(getNyttPeriodehull(friperiode));
+            fom = Uttaksdagen(friperiode.tom).neste();
+        }
+    });
+    if (moment(fom).isSameOrBefore(tidsperiode.tom, 'day')) {
+        nyePerioder.push({
+            ...periode,
+            tidsperiode: {
+                fom,
+                tom: tidsperiode.tom
+            }
+        });
+    }
+    return nyePerioder;
+}
+
+export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiode[] {
+    const friperioder: Tidsperiode[] = [];
+    const fridagerIPerioden = getOffentligeFridager(tidsperiode).filter((d) => Uttaksdagen(d.date).erUttaksdag());
+    if (fridagerIPerioden.length === 0) {
+        return [];
+    }
+
+    let fom: Date | undefined = fridagerIPerioden[0].date;
+    let tom: Date | undefined;
+
+    const antallFridager = fridagerIPerioden.length;
+    fridagerIPerioden.forEach((fridag, idx: number) => {
+        if (idx === antallFridager - 1) {
+            tom = fridag.date;
+        } else {
+            const nextDate = fridagerIPerioden[idx + 1].date;
+            if (
+                moment(fom)
+                    .add(1, 'day')
+                    .isSame(nextDate, 'day') === false
+            ) {
+                tom = fridag.date;
+                fom = nextDate;
+            }
+        }
+        if (fom && tom) {
+            friperioder.push({
+                fom,
+                tom
+            });
+            tom = undefined;
+        }
+    });
+
+    return friperioder;
 }
