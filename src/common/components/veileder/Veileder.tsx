@@ -25,6 +25,8 @@ const Veileder = (props: Props) => {
 
     const svgProps = {
         ...rest,
+        width: '184',
+        height: '184',
         className: classnames(
             'veileder',
             `veileder--tema-${farge}`,
