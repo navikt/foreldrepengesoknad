@@ -5,13 +5,14 @@ import './personaliaBox.less';
 import { PersonBase } from 'app/types/Person';
 import { getAlderFraDato } from 'app/util/dates/dates';
 import { formaterNavn } from 'app/util/domain/personUtil';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 
 interface PersonaliaBoxProps {
     person: PersonBase;
 }
 
-const PersonaliaBox = ({ person }: PersonaliaBoxProps) => {
+type Props = PersonaliaBoxProps & InjectedIntlProps;
+const PersonaliaBox: React.StatelessComponent<Props> = ({ person }: Props) => {
     return (
         <div className="personaliaBox">
             <EtikettLiten className="personaliaBox__fnr">{person.fnr}</EtikettLiten>
