@@ -8,7 +8,7 @@ import getMessage from 'common/util/i18nUtils';
 const GenerellFeil: React.StatelessComponent<InjectedIntlProps> = (props: InjectedIntlProps) => {
     return (
         <Applikasjonsside visSpråkvelger={false}>
-            <DocumentTitle title={getMessage(props.intl, 'feilside.dokument.tittel')} />
+            <DocumentTitle title={getMessage(props.intl, 'dokument.tittel.feilside.generell')} />
             <Feilsidemelding tittel="Det oppstod en feil" ingress="Litt mer informasjon om hva som gikk feil" />
         </Applikasjonsside>
     );
