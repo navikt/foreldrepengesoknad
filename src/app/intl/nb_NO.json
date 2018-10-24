@@ -447,6 +447,11 @@
     "uttaksplan.leggTil.opphold": "Legg til opphold",
     "uttaksplan.leggTil.uttak": "Legg til periode",
 
+    "uttaksplanSkjema.info.adoptertIUtlandet":
+        "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
+    "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
+        "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
+
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
 
