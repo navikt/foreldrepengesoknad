@@ -136,7 +136,7 @@ const ikkeDeltUttakFødselMor = (
                 konto: StønadskontoType.Foreldrepenger,
                 tidsperiode: {
                     fom: startdatoPermisjon,
-                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 16)
+                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 15)
                 },
                 vedlegg: [],
                 ønskerSamtidigUttak: false

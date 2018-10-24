@@ -37,7 +37,7 @@ const deltUttakAdopsjonMor = (
             gradert: false
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager - 1);
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
 
         perioder.push(periodeMødrekvote);
     }
@@ -109,7 +109,7 @@ const deltUttakFødselMor = (
                 konto: StønadskontoType.Fellesperiode,
                 tidsperiode: {
                     fom: startdatoPermisjon,
-                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 16)
+                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 15)
                 },
                 vedlegg: []
             };
