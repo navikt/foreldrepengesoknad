@@ -401,7 +401,7 @@
     "uttaksplan.skjema.fordeling.aria.fordeling":
         "Hvor mange uker av fellesdelen skal {navnMor} ha av totalt {ukerFellesperiode} uker?",
     "uttaksplan.skjema.fordeling.veiledning":
-        "Av perioden med foreldrepenger må mor ta ut {pakrevdForelder1} uker, og den andre forelderen {pakrevdForelder2} uker. Resten av ukene med foreldrepenger kan dere dele. Når {navnForelder2} har fellesperiode er det aktivitetskrav til {navnForelder1}.",
+        "Av perioden med foreldrepenger er {pakrevdForelder1} uker satt av til {navnForelder1}, mens {pakrevdForelder2} uker er satt av til {navnForelder2}. Resten av ukene er fellesperiode som dere kan dele. Husk at det er aktivitetskrav til {navnForelder1} når {navnForelder2} har fellesperiode.",
     "uttaksplan.skjema.fordeling.veiledning.lenketekst": "Les mer om aktivitetskravet her.",
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
     "uttaksplan.skjema.fordeling.valgtVerdi":
@@ -419,7 +419,7 @@
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilFarMedmor":
-        "Du må velge den samme lengden på perioden med foreldrepenger som {navn} valgte i sin søknad.",
+        "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} sin søknad.",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
