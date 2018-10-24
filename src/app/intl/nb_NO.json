@@ -461,6 +461,7 @@
     "vedlegg.lastoppknapp.dokumentasjonOverføringAvKvote": "Last opp dokumentasjon til årsak for overføring",
     "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon på aktiviten til mor",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.dokumentasjonAvArbeidVedGradering": "Last opp dokumentasjon her",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
@@ -470,6 +471,7 @@
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
+    "vedlegg.veileder.dokumentasjonAvArbeidVedGradering": "Du må legge ved bekreftelse fra din arbeidsgiver",
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",

@@ -13,6 +13,7 @@ import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../domain/personUtil';
+import { shouldPeriodeHaveAttachment } from '../søknad/missingAttachmentUtil';
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
@@ -40,12 +41,12 @@ const cleanupUtsettelse = (
     };
 };
 
-const cleanupUttak = (periode: Uttaksperiode): Uttaksperiode => {
+const cleanupUttak = (periode: Uttaksperiode, søker: Søker): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: periode.vedlegg,
+        vedlegg: shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søker.rolle)) ? periode.vedlegg : undefined,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
@@ -94,7 +95,7 @@ export const cleanupPeriode = (periode: Periode, søker: Søker, annenForelder: 
         case Periodetype.Utsettelse:
             return cleanupUtsettelse(periode, søker, annenForelder);
         case Periodetype.Uttak:
-            return cleanupUttak(periode);
+            return cleanupUttak(periode, søker);
         case Periodetype.Opphold:
             return cleanupOpphold(periode);
     }
