@@ -150,7 +150,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 <DocumentTitle
                     title={getMessage(intl, 'steg.dokument.tittel', { steg: getMessage(intl, stegConfig[id].tittel) })}
                 />
-                {errorSummaryRenderer ? errorSummaryRenderer() : null}
+                {errorSummaryRenderer ? <div role="alert">{errorSummaryRenderer()}</div> : null}
                 <Block margin="xs">
                     <BackButton
                         text={getMessage(intl, 'tilbake')}
@@ -189,7 +189,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {renderFormTag ? (
                     <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
-                    <div className={bem.className}>{this.renderContent()}</div>
+                    <div className={bem.className} aria-live="assertive">
+                        {this.renderContent()}
+                    </div>
                 )}
                 <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
                 <AvbrytSøknadDialog

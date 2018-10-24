@@ -34,7 +34,6 @@ export interface Advarsel {
 
 export interface Props {
     periode: Periode;
-    periodenummer: number;
     validertPeriode: ValidertPeriode;
     navnPåForeldre: NavnPåForeldre;
     advarsel?: Advarsel;
@@ -112,7 +111,6 @@ const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedI
 
 const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
-    periodenummer,
     navnPåForeldre,
     validertPeriode,
     isOpen,
@@ -136,12 +134,11 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
     const advarselId = `advarsel__${periode.id}`;
     const advarsel = getAdvarselForPeriode(validertPeriode, intl);
     return (
-        <article>
+        <div>
             <AriaText>
                 <FormattedMessage
                     id="periodeliste.header.ariaBeskrivelse"
                     values={{
-                        periodenummer,
                         periodetittel,
                         foreldernavn,
                         tidOgVarighet: visDatoer
@@ -189,7 +186,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
                     </div>
                 )}
             </div>
-        </article>
+        </div>
     );
 };
 

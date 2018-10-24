@@ -123,7 +123,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
         return (
-            <article>
+            <section>
                 <Block>
                     <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
@@ -193,7 +193,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </Knapp>
                     </Knapperad>
                 </Block>
-            </article>
+            </section>
         );
     }
 }
