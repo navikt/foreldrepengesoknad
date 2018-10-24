@@ -83,6 +83,7 @@ class Periodeliste extends React.Component<Props, State> {
                                         <PeriodelisteHull
                                             key={periode.id}
                                             antallDager={Tidsperioden(periode.tidsperiode).getAntallUttaksdager()}
+                                            årsak={periode.årsak}
                                         />
                                     ) : (
                                         <EndrePeriodeFormRenderer

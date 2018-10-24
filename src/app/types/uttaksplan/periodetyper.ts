@@ -53,7 +53,7 @@ export enum OverføringÅrsakType {
 }
 
 export enum PeriodeHullÅrsak {
-    'helligdag' = 'HELLIGDAGER'
+    'Fridag' = 'Fridag'
 }
 
 export interface Helligdag {

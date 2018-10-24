@@ -4,12 +4,14 @@ import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import AdvarselIkonÅpen from '../uttaksplan-ikon/ikoner/AdvarselIkon\u00C5pen';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { PeriodeHullÅrsak } from '../../types/uttaksplan/periodetyper';
 
 export interface Props {
     antallDager: number;
+    årsak?: PeriodeHullÅrsak;
 }
 
-const PeriodelisteHull: React.StatelessComponent<Props & InjectedIntlProps> = ({ antallDager, intl }) => (
+const PeriodelisteHull: React.StatelessComponent<Props & InjectedIntlProps> = ({ antallDager, årsak, intl }) => (
     <article className={periodelisteBem.element('hull')}>
         <h1 className="sr-only">
             <FormattedMessage id="periodeliste.hullMellomPerioder.aria-label" />
@@ -18,10 +20,17 @@ const PeriodelisteHull: React.StatelessComponent<Props & InjectedIntlProps> = ({
             <AdvarselIkonÅpen />
         </span>
         <Normaltekst tag="span">
-            <FormattedMessage
-                id="periodeliste.hullMellomPerioder"
-                values={{ dager: getVarighetString(antallDager, intl) }}
-            />
+            {årsak === PeriodeHullÅrsak.Fridag ? (
+                <FormattedMessage
+                    id="periodeliste.hullMellomPerioder.fridag"
+                    values={{ dager: getVarighetString(antallDager, intl) }}
+                />
+            ) : (
+                <FormattedMessage
+                    id="periodeliste.hullMellomPerioder"
+                    values={{ dager: getVarighetString(antallDager, intl) }}
+                />
+            )}
         </Normaltekst>
     </article>
 );
