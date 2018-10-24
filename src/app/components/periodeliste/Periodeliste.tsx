@@ -20,24 +20,21 @@ export interface OwnProps {
     lastAddedPeriodeId: string | undefined;
 }
 
-interface State {
-    toggleState: {};
-}
-
 type Props = OwnProps;
 
 export const periodelisteBem = BEMHelper('periodeliste');
 
 export const getPeriodelisteItemId = (periodeId: string): string => `periode-${periodeId}`;
 
-class Periodeliste extends React.Component<Props, State> {
+class Periodeliste extends React.Component<Props> {
+    toggleList: ToggleList<any> | null;
     periodeWhichHaveReceivedFocus: string | undefined;
     periodeToBeFocused: string | undefined;
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            toggleState: []
-        };
+
+    collapseAll() {
+        if (this.toggleList) {
+            this.toggleList.collapseAll();
+        }
     }
     componentWillReceiveProps(nextProps: Props) {
         if (
@@ -60,6 +57,7 @@ class Periodeliste extends React.Component<Props, State> {
         let firstInvalidTidsperiode = false;
         return (
             <ToggleList
+                ref={(c) => (this.toggleList = c)}
                 render={(onToggle, isOpen) => (
                     <div className={periodelisteBem.className}>
                         {perioder.map((periode, idx) => {
