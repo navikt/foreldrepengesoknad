@@ -631,6 +631,7 @@
     "oppsummering.utsettelse.pga": "Utsettelse",
     "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
 
+    "oppsummering.uttak.dokumentasjonAvArbeidsforhold": "Dokumentasjon av arbeidsforhold",
     "oppsummering.uttak.arbeidstaker": "Jeg skal jobbe for registrert arbeidstaker med organisasjonsnummer {orgnr}",
     "oppsummering.uttak.selvstendig_næringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
     "oppsummering.uttak.frilans": "Jeg skal jobbe som frilans",
