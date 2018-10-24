@@ -9,7 +9,6 @@ import KompleksFeltoppsummering from 'common/components/kompleks-feltoppsummerin
 
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
-    erBarnetFødt?: boolean;
 }
 
 const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
