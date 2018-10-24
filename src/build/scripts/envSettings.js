@@ -6,7 +6,7 @@ function createEnvSettingsFile(settingsFile) {
             settingsFile,
             `window.appSettings = {
                 REST_API_URL: '${process.env.FORELDREPENGESOKNAD_API_URL}',
-                UTTAK_API_URL: '${process.env.UTTAK_API_URL}',
+                UTTAK_API_URL: '${process.env.FP_UTTAK_SERVICE_URL}',
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}'
             };`
         );
