@@ -430,6 +430,9 @@ function finnHullVedEndretTidsperiode(oldPeriode: Periode, periode: Periode): Pe
 }
 
 function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[]): boolean {
+    if (periode.type === Periodetype.Hull) {
+        return false;
+    }
     const idx = perioder.findIndex((p) => p.id === periode.id);
     if (idx === 0 || idx === perioder.length - 1) {
         return false;

@@ -126,9 +126,13 @@ function erTidsperiodeUtenforTidsperiode(
 }
 
 function tidsperiodeToString(tidsperiode: Partial<Tidsperiode>, intl: InjectedIntl) {
+    const { fom, tom } = tidsperiode;
+    if (fom && tom && moment(fom).isSame(tom, 'day')) {
+        return formaterDatoUtenDag(fom ? fom : tom);
+    }
     return getMessage(intl, 'tidsperiode', {
-        fom: tidsperiode.fom ? formaterDatoUtenDag(tidsperiode.fom) : '',
-        tom: tidsperiode.tom ? formaterDatoUtenDag(tidsperiode.tom) : ''
+        fom: fom ? formaterDatoUtenDag(fom) : '',
+        tom: tom ? formaterDatoUtenDag(tom) : ''
     });
 }
 
