@@ -32,6 +32,10 @@ class ToggleList<T> extends React.Component<Props, State> {
         });
     }
 
+    open(id: string) {
+        this.onItemToggle(id, true);
+    }
+
     onItemToggle(id: string, open?: boolean) {
         const { singleMode = true } = this.props;
         if (open !== undefined) {

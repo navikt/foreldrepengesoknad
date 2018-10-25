@@ -52,6 +52,9 @@ class Periodeliste extends React.Component<Props> {
     componentDidUpdate() {
         if (this.periodeToBeFocused) {
             focusElement(getPeriodelisteItemId(this.periodeToBeFocused));
+            if (this.toggleList) {
+                this.toggleList.open(this.periodeToBeFocused);
+            }
             this.periodeWhichHaveReceivedFocus = this.periodeToBeFocused;
             this.periodeToBeFocused = undefined;
         }
