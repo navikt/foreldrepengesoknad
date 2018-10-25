@@ -450,8 +450,8 @@
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
-    "uttaksplan.hull.leggTil.opphold": "Lag nytt opphold",
-    "uttaksplan.hull.leggTil.uttak": "Lag ny periode",
+    "uttaksplan.hull.leggTil.opphold": "Sett inn ny utsettelse",
+    "uttaksplan.hull.leggTil.uttak": "Sett inn ny periode",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
 
@@ -677,6 +677,7 @@
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
+    "stønadskontotype.undefined": "Ny periode uten kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
