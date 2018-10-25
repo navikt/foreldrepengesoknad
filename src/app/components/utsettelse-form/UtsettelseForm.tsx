@@ -25,7 +25,7 @@ import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
 import { erFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
@@ -33,6 +33,7 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -259,20 +260,31 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     {periode.type === Periodetype.Utsettelse && (
                         <>
                             {periode.årsak === UtsettelseÅrsakType.Arbeid && (
-                                <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
-                                    <HvorSkalDuJobbeSpørsmål
-                                        arbeidsforhold={arbeidsforhold}
-                                        valgtArbeidsforhold={periode.orgnr}
-                                        frilansEllerSelvstendig={periode.arbeidsform}
-                                        onChange={(orgnr, arbeidsform) =>
-                                            this.onChange({
-                                                orgnr,
-                                                arbeidsform,
-                                                erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
-                                            })
-                                        }
-                                    />
-                                </Block>
+                                <>
+                                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
+                                        <HvorSkalDuJobbeSpørsmål
+                                            arbeidsforhold={arbeidsforhold}
+                                            valgtArbeidsforhold={periode.orgnr}
+                                            frilansEllerSelvstendig={periode.arbeidsform}
+                                            onChange={(orgnr, arbeidsform) =>
+                                                this.onChange({
+                                                    orgnr,
+                                                    arbeidsform,
+                                                    erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
+                                                })
+                                            }
+                                        />
+                                    </Block>
+                                    <Block
+                                        visible={
+                                            periode.arbeidsform === Arbeidsform.frilans ||
+                                            periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
+                                        }>
+                                        <Veilederinfo>
+                                            <FormattedMessage id="uttaksplan.infoTilFrilansOgSelvstendig" />
+                                        </Veilederinfo>
+                                    </Block>
+                                </>
                             )}
                             <Block
                                 visible={visibility.isVisible(UtsettelseSpørsmålKeys.sykdomsårsak)}
