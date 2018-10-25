@@ -24,14 +24,12 @@ import {
     getAttachmentTypeForPeriode,
     getSkjemanummerForAndreInntekter,
     getSkjemanummerForPeriode,
-    mapFileToAttachment
-} from 'common/storage/attachment/components/util';
-import {
     isAttachmentForAnnenInntekt,
     isAttachmentForBarn,
     isAttachmentForPeriode,
-    isAttachmentForSelvstendigNæringsdrivende
-} from '../../redux/util/attachmentStateUpdates';
+    isAttachmentForSelvstendigNæringsdrivende,
+    mapFileToAttachment
+} from 'common/storage/attachment/components/util';
 import {
     dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
@@ -46,7 +44,7 @@ export interface MissingAttachment {
     skjemanummer: Skjemanummer;
 }
 
-function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
+export function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
     if (periode.type === Periodetype.Overføring) {
         return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
     } else if (periode.type === Periodetype.Utsettelse) {
