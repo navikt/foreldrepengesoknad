@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import Søknad from '../../../types/søknad/Søknad';
 import HarAnnenForelderSøktForeldrepengerSpørsmål from './enkeltspørsmål/HarAnnenForelderSøktForeldrepengerSpørsmål';
 import DekningsgradSpørsmål from './enkeltspørsmål/DekningsgradSpørsmål';
@@ -15,6 +16,8 @@ import { NavnPåForeldre } from 'common/types';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
+import { findOldestDate } from '../../../util/dates/dates';
+import Block from 'common/components/block/Block';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -62,6 +65,17 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
 const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode, navnPåForeldre }) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
+    const latestDate =
+        (søknad.barn as Adopsjonsbarn).ankomstdato !== undefined
+            ? findOldestDate([
+                  (søknad.barn as Adopsjonsbarn).adopsjonsdato!,
+                  (søknad.barn as Adopsjonsbarn).ankomstdato!
+              ])
+            : (søknad.barn as Adopsjonsbarn).adopsjonsdato;
+    const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
+    const stebarnsadopsjon = (søknad.barn as Adopsjonsbarn).adopsjonAvEktefellesBarn;
+    const adoptertIUtlandet = (søknad.barn as Adopsjonsbarn).adoptertIUtlandet;
+
     return (
         <>
             <HarAnnenForelderSøktForeldrepengerSpørsmål
@@ -84,6 +98,22 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== true}
                 barn={søknad.barn as Adopsjonsbarn}
             />
+            <Block
+                visible={
+                    startdatoPermisjon !== undefined &&
+                    moment(latestDate).isBefore(moment(startdatoPermisjon)) &&
+                    stebarnsadopsjon !== true
+                }>
+                <Veilederinfo>
+                    <FormattedMessage
+                        id={
+                            adoptertIUtlandet !== undefined && adoptertIUtlandet === true
+                                ? 'uttaksplanSkjema.info.adoptertIUtlandet'
+                                : 'uttaksplanSkjema.info.ikkeAdoptertIUtlandet'
+                        }
+                    />
+                </Veilederinfo>
+            </Block>
             {søknad.søker.erAleneOmOmsorg === false &&
                 søknad.annenForelder.harRettPåForeldrepenger && (
                     <FordelingFellesperiodeSpørsmål
