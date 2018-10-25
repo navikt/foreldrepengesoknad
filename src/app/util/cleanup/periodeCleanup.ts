@@ -38,7 +38,7 @@ const cleanupUtsettelse = (
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
         arbeidsform: UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: periode.årsak === UtsettelseÅrsakType.Sykdom ? periode.vedlegg : undefined
+        vedlegg: shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søker.rolle)) ? periode.vedlegg : undefined
     };
 };
 
