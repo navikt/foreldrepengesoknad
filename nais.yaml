@@ -25,7 +25,7 @@ fasitResources:
   used:
   - alias: foreldrepengesoknad-api
     resourceType: restservice
-  - alias: appres.cms
+  - alias: tmp.foreldrepengesoknad.appres.cms
     resourceType: baseurl
   - alias: loginservice
     resourceType: restservice
