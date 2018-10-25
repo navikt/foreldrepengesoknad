@@ -1,8 +1,12 @@
 import * as React from 'react';
+
 import SkjemaInputElement from '../skjema-input-element/SkjemaInputElement';
 import { Feil } from '../skjema-input-element/types';
 import NavDatovelger from 'nav-datovelger';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
+import AriaText from 'common/components/aria/AriaText';
+import { getAvgrensningerDescriptionForInput } from 'common/components/skjema/elements/dato-input/datoInputDescription';
 
 import BEMHelper from 'common/util/bem';
 
@@ -18,13 +22,17 @@ export interface DatoInputProps extends DatovelgerCommonProps {
 export type Props = DatoInputProps & InjectedIntlProps;
 
 import './datoInput.less';
-import { DatovelgerCommonProps } from 'nav-datovelger/dist/datovelger/Datovelger';
 
 const bem = BEMHelper('datoInput');
 
 class DatoInput extends React.Component<Props, {}> {
     render() {
         const { id, label, postfix, feil, intl, onChange, kalender, ...rest } = this.props;
+        const avgrensningerTekst = this.props.avgrensninger
+            ? getAvgrensningerDescriptionForInput(intl, this.props.avgrensninger)
+            : undefined;
+        const ariaDescriptionId = avgrensningerTekst ? `${id}_ariaDesc` : undefined;
+
         return (
             <SkjemaInputElement id={this.props.id} feil={feil} label={label}>
                 <div className={bem.className}>
@@ -37,10 +45,16 @@ class DatoInput extends React.Component<Props, {}> {
                             input={{
                                 id,
                                 placeholder: 'dd.mm.åååå',
-                                name
+                                name,
+                                ariaDescribedby: ariaDescriptionId
                             }}
                             onChange={(dato) => onChange(dato ? dato : undefined)}
                         />
+                        {ariaDescriptionId && (
+                            <AriaText id={ariaDescriptionId} aria-role="presentation" aria-hidden="true">
+                                {avgrensningerTekst}
+                            </AriaText>
+                        )}
                     </div>
                     {postfix ? <div className={bem.element('postfix')}>{postfix}</div> : undefined}
                 </div>

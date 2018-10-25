@@ -17,5 +17,7 @@ export const dokumentasjonBehøvesForOverføringsperiode = (
 ): boolean => erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg;
 
 export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean => {
-    return periode.morsAktivitetIPerioden !== undefined;
+    return (
+        periode.morsAktivitetIPerioden !== undefined || (periode.gradert === true && periode.erArbeidstaker === true)
+    );
 };
