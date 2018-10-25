@@ -365,8 +365,9 @@
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.dekningsgrad.100": "{antallUker} uker med 100 prosent foreldrepenger",
     "spørsmål.dekningsgrad.80": "{antallUker} uker med 80 prosent foreldrepenger",
-    "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
-    "spørsmål.dekningsgrad.label.aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
+    "spørsmål.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
+    "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
+    "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir noe høyrer ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
 
