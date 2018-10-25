@@ -160,7 +160,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                     <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                                Din plan
+                                <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestReset &&
                                 uttaksplan.length > 0 && (
