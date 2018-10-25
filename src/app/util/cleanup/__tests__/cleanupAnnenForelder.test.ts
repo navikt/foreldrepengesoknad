@@ -152,7 +152,7 @@ describe('Cleanup AnnenForelder', () => {
                 ) as ForeldreansvarBarn;
                 expect(af.erUfør).toBeUndefined();
                 expect(af.erInformertOmSøknaden).toBeUndefined();
-                expect(af.harRettPåForeldrepenger).toBeDefined();
+                expect(af.harRettPåForeldrepenger).toBeUndefined();
                 expect(b.datoForAleneomsorg).toBeUndefined();
             });
         });
