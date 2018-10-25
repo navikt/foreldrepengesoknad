@@ -279,7 +279,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>
                                         <Veilederinfo>
-                                            {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering')}
+                                            {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
                                         </Veilederinfo>
                                         <VedleggSpørsmål
                                             vedlegg={periode.vedlegg as Attachment[]}
