@@ -21,6 +21,7 @@ import './uttaksplanlegger.less';
 import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { Periodene } from '../../util/uttaksplan/Periodene';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
@@ -151,16 +152,18 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             navnPåForeldre,
             onRequestReset,
             lastAddedPeriodeId,
+            forelder,
             erMorUfør
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
+        const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
         return (
             <section>
                 <Block>
                     <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                                Din plan
+                                <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestReset &&
                                 uttaksplan.length > 0 && (
@@ -192,6 +195,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                                 onLeggTilPeriode={this.settInnNyPeriode}
                                 onFjernPeriode={this.props.onDelete}
+                                antallFeriedager={antallFeriedager}
                             />
                         </Block>
                         <Block visible={uttaksplan.length === 0} margin="xl">
@@ -201,6 +205,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        antallFeriedager={antallFeriedager}
                                         erMorUfør={erMorUfør}
                                         periodetype={periodetype}
                                         onSubmit={this.handleOnSubmit}

@@ -372,9 +372,7 @@ function splittPeriodeMedPeriode(periode: Periode, nyPeriode: Periode): Periode[
     const dagerIPeriode = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const dagerForsteDel = Tidsperioden({
         fom: periode.tidsperiode.fom,
-        tom: moment(nyPeriode.tidsperiode.fom)
-            .subtract(1, 'day')
-            .toDate()
+        tom: Uttaksdagen(nyPeriode.tidsperiode.fom).forrige()
     }).getAntallUttaksdager();
     let dagerSisteDel = dagerIPeriode - dagerForsteDel;
     const forste: Periode = {

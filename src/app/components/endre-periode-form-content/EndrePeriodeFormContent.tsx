@@ -18,6 +18,7 @@ import './endrePeriodeFormContent.less';
 
 export interface Props {
     periode: Periode;
+    antallFeriedager: number;
     validertPeriode: ValidertPeriode | undefined;
     onChange: EndrePeriodeChangeEvent;
     onRequestDelete: EndrePeriodeRequestDeleteEvent;
@@ -28,7 +29,7 @@ const bem = BEMHelper('endrePeriodeForm');
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
-        const { periode, validertPeriode, onChange, onRequestDelete, onRequestClose } = this.props;
+        const { periode, validertPeriode, antallFeriedager, onChange, onRequestDelete, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         const harOverlappendePerioder = validertPeriode && validertPeriode.overlappendePerioder.length > 0;
@@ -38,6 +39,7 @@ class EndrePeriodeFormContent extends React.Component<Props> {
                     <UtsettelseForm
                         periode={periode}
                         onChange={onChange}
+                        antallFeriedager={antallFeriedager}
                         harOverlappendePerioder={harOverlappendePerioder}
                     />
                 ) : (

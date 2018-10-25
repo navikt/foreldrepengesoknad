@@ -39,6 +39,7 @@ export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | R
 
 interface OwnProps {
     periode: UtsettelseFormPeriodeType;
+    antallFeriedager: number;
     harOverlappendePerioder?: boolean;
     onChange: (periode: UtsettelseFormPeriodeType) => void;
     onCancel?: () => void;
@@ -206,6 +207,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     render() {
         const {
             periode,
+            antallFeriedager,
             arbeidsforhold,
             søknad,
             navnPåForeldre,
@@ -252,7 +254,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
-                            tidsperiode={tidsperiode}
+                            antallFeriedager={antallFeriedager}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
                             forelder={Forelder.MOR}
                         />
