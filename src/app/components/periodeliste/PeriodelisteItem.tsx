@@ -19,6 +19,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 export interface Props {
     periode: Periode;
     isExpanded: boolean;
+    antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;
     validertPeriode: ValidertPeriode;
     onChange: EndrePeriodeChangeEvent;
@@ -29,6 +30,7 @@ export interface Props {
 const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
     periode,
     navnPåForeldre,
+    antallFeriedager,
     validertPeriode,
     isExpanded,
     onRequestDelete,
@@ -61,6 +63,7 @@ const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
                         )}>
                         <EndrePeriodeFormContent
                             periode={periode}
+                            antallFeriedager={antallFeriedager}
                             validertPeriode={validertPeriode}
                             onChange={onChange}
                             onRequestDelete={onRequestDelete}

@@ -17,6 +17,7 @@ import { Periodene } from '../../util/uttaksplan/Periodene';
 
 export interface OwnProps {
     perioder: Periode[];
+    antallFeriedager: number;
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
@@ -64,6 +65,7 @@ class Periodeliste extends React.Component<Props> {
             perioder,
             uttaksplanValidering,
             navnPåForeldre,
+            antallFeriedager,
             onLeggTilOpphold,
             onLeggTilPeriode,
             onFjernPeriode
@@ -117,6 +119,7 @@ class Periodeliste extends React.Component<Props> {
                                                 <PeriodelisteItem
                                                     key={periode.id}
                                                     periode={periode}
+                                                    antallFeriedager={antallFeriedager}
                                                     navnPåForeldre={navnPåForeldre}
                                                     validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
                                                     isExpanded={isExpanded}
