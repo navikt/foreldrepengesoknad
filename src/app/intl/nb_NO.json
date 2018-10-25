@@ -449,6 +449,8 @@
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
+    "uttaksplan.infoTilFrilansOgSelvstendig":
+        "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
