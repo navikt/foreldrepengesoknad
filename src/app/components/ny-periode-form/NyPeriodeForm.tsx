@@ -19,6 +19,7 @@ import UttakForm from '../uttak-form/UttakForm';
 import { Tidsperiode } from 'common/types';
 
 interface OwnProps {
+    antallFeriedager: number;
     erMorUfør: boolean | undefined;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
@@ -98,7 +99,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, onCancel } = this.props;
+        const { intl, antallFeriedager, onCancel } = this.props;
         const { periode } = this.state;
 
         return (
@@ -107,6 +108,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
                         <UtsettelsesperiodeForm
+                            antallFeriedager={antallFeriedager}
                             periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}
