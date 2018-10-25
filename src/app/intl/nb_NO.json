@@ -454,7 +454,7 @@
     "uttaksplan.hull.leggTil.opphold": "Sett inn ny utsettelse",
     "uttaksplan.hull.leggTil.uttak": "Sett inn ny periode",
     "uttaksplan.infoTilFrilansOgSelvstendig":
-        "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
+        "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
@@ -779,12 +779,12 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
         "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
-        "Du må legge ved bekreftelse fra mors studiested at {navnMor} er fulltidsstudent. Bekreftelsen må også vise:",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "Mors navn og fødselsnummer",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "Studiested, fag eller studieprogram",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "Oppstart og varighet av studiet",
+        "Du må legge ved bekreftelse på at {navnMor} er fulltidsstudent. Bekreftelsen må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "navn og fødselsnummer",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "studiested, fag eller studieprogram",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
-        "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
+        "har {navnMor} søkt om permisjon fra studiet en periode må dette komme frem i bekreftelsen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
         "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
