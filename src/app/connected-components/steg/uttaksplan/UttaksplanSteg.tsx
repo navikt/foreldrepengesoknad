@@ -206,7 +206,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
-                        <Veilederinfo maxWidth="30">{getVeilederInfoText(søknad)}</Veilederinfo>
+                        <Veilederinfo>{getVeilederInfoText(søknad)}</Veilederinfo>
                         <Block>
                             <Uttaksplanlegger
                                 søkersituasjon={søknad.situasjon}

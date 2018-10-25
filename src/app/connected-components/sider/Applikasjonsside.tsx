@@ -27,6 +27,7 @@ class Sidemal extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
+
     render() {
         const { visSpråkvelger, visSøknadstittel, språkkode, children, margin = true, dispatch } = this.props;
 

@@ -65,7 +65,6 @@ class Oppsummering extends React.Component<Props> {
                         tittelProps={'undertittel'}>
                         <UtenlandsoppholdOppsummering
                             informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
-                            erBarnetFødt={søknad.barn.erBarnetFødt}
                         />
                     </Oppsummeringspanel>
 

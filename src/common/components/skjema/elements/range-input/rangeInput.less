@@ -107,9 +107,19 @@
 /** Sett default styling på slider */
 .rangeInputStyling();
 
+.rangeInputWrapper {
+    position: relative;
+    .infoboks__sirkel {
+        position: absolute;
+        top: 0;
+        right: 0.5rem;
+    }
+}
+
 .rangeInput {
     width: 100%;
     padding-top: 0.5rem;
+    position: relative;
     &--withSteppers {
         display: flex;
         align-items: center;

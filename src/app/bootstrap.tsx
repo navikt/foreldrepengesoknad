@@ -13,7 +13,7 @@ import * as countries from 'i18n-iso-countries';
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
-Modal.setAppElement('#app');
+Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
 
 render(

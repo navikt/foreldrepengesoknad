@@ -80,7 +80,7 @@ class SøknadSendtSide extends React.Component<Props> {
         const { intl, person } = this.props;
         return (
             <Applikasjonsside visSøknadstittel={true}>
-                <DocumentTitle title={getMessage(intl, 'søknadsendt.dokument.tittel')} />
+                <DocumentTitle title={getMessage(intl, 'dokument.tittel.søknadSendt')} />
 
                 <div className="søknadSendt">
                     <SpotlightLetter className="blokk-m søknadSendt__spotlightLetter" />

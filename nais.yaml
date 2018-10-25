@@ -31,3 +31,5 @@ fasitResources:
     resourceType: restservice
   - alias: loadbalancer:foreldrepengesoknad
     resourceType: loadbalancerconfig
+  - alias: fp-uttak-service
+    resourceType: restservice

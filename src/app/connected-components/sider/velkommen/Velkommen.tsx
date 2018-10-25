@@ -76,7 +76,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
 
         return (
             <Applikasjonsside visSpråkvelger={false} margin={false}>
-                <DocumentTitle title={getMessage(intl, 'velkommen.dokument.tittel')} />
+                <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
                 <VeilederMedSnakkeboble
                     dialog={{
                         title: getMessage(intl, 'velkommen.bobletittel', {
