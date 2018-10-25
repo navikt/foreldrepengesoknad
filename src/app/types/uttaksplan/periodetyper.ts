@@ -52,6 +52,10 @@ export enum OverføringÅrsakType {
     'aleneomsorg' = 'ALENEOMSORG'
 }
 
+export enum PeriodeHullÅrsak {
+    'Fridag' = 'Fridag'
+}
+
 export interface Helligdag {
     dato: Date;
     navn: string;
@@ -67,6 +71,7 @@ export interface PeriodeBase {
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
+    årsak?: PeriodeHullÅrsak;
 }
 
 export interface UttaksperiodeBase extends PeriodeBase {
