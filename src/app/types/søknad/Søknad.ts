@@ -82,7 +82,7 @@ export enum Skjemanummer {
     ETTERLØNN_ELLER_SLUTTVEDERLAG = 'I000044',
     OMSORGSOVERTAKELSESDATO = 'I000042',
     ANNET = 'I000060',
-    FØDSELSATTEST = 'I000063',
+    FØDSELSATTEST = 'I000063', // will be required once we start fetching data from TPS about registered children.
     TERMINBEKREFTELSE = 'I000062',
     DOK_MILITÆR_SILVIL_TJENESTE = 'I000039',
     INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG = 'I000007',
