@@ -452,6 +452,13 @@
     "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
     "uttaksplan.hull.leggTil.opphold": "Lag nytt opphold",
     "uttaksplan.hull.leggTil.uttak": "Lag ny periode",
+    "uttaksplan.infoTilFrilansOgSelvstendig":
+        "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
+
+    "uttaksplanSkjema.info.adoptertIUtlandet":
+        "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
+    "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
+        "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
