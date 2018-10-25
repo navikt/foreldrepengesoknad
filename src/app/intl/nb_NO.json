@@ -542,7 +542,7 @@
         "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
 
     "oppsummering.relasjonTilBarn": "Om barnet",
-    "oppsummering.termindato.label": "termindato",
+    "oppsummering.termindato": "Termindato",
     "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato.label": "Som er datert den",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
@@ -558,7 +558,7 @@
     "oppsummering.antallBarn.9": "Ni",
 
     "oppsummering.fødselsdato.label": "fødselsdato",
-    "oppsummering.adopsjonAvEktefellesBarn.label": "stebarnsadopsjon",
+    "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
     "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse",
@@ -582,6 +582,8 @@
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "oppsummering.utenlandsopphold": "Utenlandsopphold",
+    "oppsummering.iNorgePåFødselstidspunktet.label": "Jeg er i Norge på fødselstidspunktet",
+    "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Jeg er i Norge på datoen for omsorgsovertakelse",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
     "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
@@ -632,7 +634,7 @@
     "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekten din det siste året",
 
     "oppsummering.andreInntekter.tittel": "Andre inntekter siste 10 måneder",
-    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre ommtelter de siste 10 månedene",
+    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre inntekter de siste 10 månedene",
     "oppsummering.andreInntekter.arbeidsgiverNavn": "Arbeidsgivers navn",
     "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
@@ -646,7 +648,7 @@
     "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
 
     "oppsummering.uttak.dokumentasjonAvArbeidsforhold": "Dokumentasjon av arbeidsforhold",
-    "oppsummering.uttak.arbeidstaker": "Jeg skal jobbe for registrert arbeidstaker med organisasjonsnummer {orgnr}",
+    "oppsummering.uttak.arbeidstaker": "Jeg skal jobbe for {arbeidsgiverNavn} med organisasjonsnummer {orgnr}",
     "oppsummering.uttak.selvstendig_næringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
     "oppsummering.uttak.frilans": "Jeg skal jobbe som frilans",
     "oppsummering.uttak.samtidigUttak": "Vi skal ha samtidig uttak",
