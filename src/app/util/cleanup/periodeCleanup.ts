@@ -37,7 +37,8 @@ const cleanupUtsettelse = (
         morsAktivitetIPerioden,
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
         arbeidsform: UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
-        erArbeidstaker: periode.erArbeidstaker
+        erArbeidstaker: periode.erArbeidstaker,
+        vedlegg: periode.årsak === UtsettelseÅrsakType.Sykdom ? periode.vedlegg : undefined
     };
 };
 
