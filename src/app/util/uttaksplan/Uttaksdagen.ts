@@ -107,10 +107,13 @@ function getUttaksdagFraOgMedDato(dato: Date): Date {
  * @param uttaksdager
  */
 function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
+    if (erUttaksdag(dato) === false) {
+        throw new Error('leggUttaksdagerTilDato: Dato må være uttaksdag');
+    }
     let nyDato = dato;
     let dagteller = 0;
     let uttaksdageteller = 0;
-    while (uttaksdageteller < uttaksdager) {
+    while (uttaksdageteller <= uttaksdager) {
         const tellerdato = moment(dato)
             .add(dagteller++, 'days')
             .toDate();
@@ -128,6 +131,9 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
  * @param uttaksdager
  */
 function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
+    if (erUttaksdag(dato) === false) {
+        throw new Error('trekkUttaksdagerFraDato: Dato må være uttaksdag');
+    }
     let nyDato = dato;
     let dagteller = 0;
     let uttaksdageteller = 0;
