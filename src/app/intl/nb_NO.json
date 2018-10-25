@@ -381,7 +381,7 @@
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag med foreldrepenger?",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe utsettelse i perioden med foreldrepenger?",
 
-    "nyPeriodeForm.utsettelse.tittel": "Legg til utsettelse",
+    "nyPeriodeForm.utsettelse.tittel": "Utsett en periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte perioden?",
