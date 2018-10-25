@@ -135,7 +135,7 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 }
 
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
-    const forskyvetStartdato = Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager);
+    const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(uttaksdager);
     return Perioden(periode).setStartdato(forskyvetStartdato);
 }
 
