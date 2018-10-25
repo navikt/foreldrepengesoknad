@@ -474,7 +474,8 @@
     "vedlegg.veileder.stebarnsadopsjon":
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
-    "vedlegg.veileder.dokumentasjonAvArbeidVedGradering": "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
+    "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
@@ -630,7 +631,7 @@
     "oppsummering.uttak.type.uttak": "Uttak",
     "oppsummering.uttak.type.utsettelse": "Utsettelse",
     "oppsummering.uttak.type.overføring": "Overføring",
-    "oppsummering.uttak.type.opphold": "Opphold,
+    "oppsummering.uttak.type.opphold": "Opphold",
     "oppsummering.utsettelse.pga": "Utsettelse",
     "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
 
