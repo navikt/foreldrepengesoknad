@@ -56,6 +56,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     nyPeriodeForm: FocusContainer | null;
     leggTilOppholdKnapp: Knapp | null;
     leggTilUttakKnapp: Knapp | null;
+    periodeliste: Periodeliste | null;
 
     constructor(props: Props) {
         super(props);
@@ -68,6 +69,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.closeForm = this.closeForm.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleOnCancel = this.handleOnCancel.bind(this);
+        this.lukkPeriodeliste = this.lukkPeriodeliste.bind(this);
     }
 
     openForm(periodetype: Periodetype, tidsperiode?: Tidsperiode) {
@@ -84,11 +86,19 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     openNyUtsettelsesperiodeForm(tidsperiode?: Tidsperiode) {
+        this.lukkPeriodeliste();
         this.openForm(Periodetype.Utsettelse, tidsperiode);
     }
 
     openNyUttaksperiodeForm(tidsperiode?: Tidsperiode) {
+        this.lukkPeriodeliste();
         this.openForm(Periodetype.Uttak, tidsperiode);
+    }
+
+    lukkPeriodeliste() {
+        if (this.periodeliste) {
+            this.periodeliste.collapseAll();
+        }
     }
 
     closeForm() {
@@ -155,6 +165,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
+                                ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
