@@ -8,12 +8,16 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
+import { SøkerRolle } from '../../../../types/s\u00F8knad/S\u00F8knad';
+import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 
 interface StateProps {
     dekningsgrad?: Dekningsgrad;
     erAleneomsorg?: boolean;
     dekningsgrad100AntallUker: number | undefined;
     dekningsgrad80AntallUker: number | undefined;
+    rolle: SøkerRolle;
+    harAnnenForelderSøktFP: boolean | undefined;
 }
 interface OwnProps {
     visible?: boolean;
@@ -29,7 +33,9 @@ const DekningsgradSpørsmål = (props: Props) => {
         dekningsgrad,
         intl,
         dekningsgrad100AntallUker,
-        dekningsgrad80AntallUker
+        dekningsgrad80AntallUker,
+        rolle,
+        harAnnenForelderSøktFP
     } = props;
 
     let checked;
@@ -39,7 +45,25 @@ const DekningsgradSpørsmål = (props: Props) => {
         checked = '80';
     }
 
-    const labelKey: string = erAleneomsorg ? 'spørsmål.dekningsgrad.label.aleneomsorg' : 'spørsmål.dekningsgrad.label';
+    let labelKey: string = '';
+
+    if (erFarEllerMedmor(rolle)) {
+        if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
+            labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
+        } else {
+            labelKey = erAleneomsorg
+                ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
+                : 'spørsmål.dekningsgrad.label.deltUttak';
+        }
+    } else {
+        if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
+            labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
+        } else {
+            labelKey = erAleneomsorg
+                ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
+                : 'spørsmål.dekningsgrad.label.deltUttakMor';
+        }
+    }
 
     return (
         <Block visible={visible}>
@@ -73,7 +97,9 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad: state.søknad.dekningsgrad,
     erAleneomsorg: state.søknad.søker.erAleneOmOmsorg || !state.søknad.annenForelder.harRettPåForeldrepenger,
     dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
-    dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker
+    dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
+    rolle: state.søknad.søker.rolle,
+    harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
