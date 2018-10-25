@@ -56,7 +56,7 @@ export function getTidsperiode(fom: Date, uttaksdager: number): Tidsperiode {
     }
     return {
         fom,
-        tom: Uttaksdagen(fom).leggTil(uttaksdager - 1)
+        tom: Uttaksdagen(fom).leggTil(uttaksdager)
     };
 }
 
