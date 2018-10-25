@@ -450,6 +450,9 @@
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
+    "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
+    "uttaksplan.hull.leggTil.opphold": "Sett inn ny utsettelse",
+    "uttaksplan.hull.leggTil.uttak": "Sett inn ny periode",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
 
@@ -680,6 +683,7 @@
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
+    "stønadskontotype.undefined": "Ny periode uten kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
@@ -744,6 +748,7 @@
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
     "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode uten uttak eller utsettelse",
+    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Opphold kan ikke registreres på en offentlig fridag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
