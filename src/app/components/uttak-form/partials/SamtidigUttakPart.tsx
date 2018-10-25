@@ -25,7 +25,6 @@ const SamtidigUttakPart: React.StatelessComponent<Props & InjectedIntlProps> = (
         </Block>
         <Block visible={ønskerSamtidigUttak === true} margin="none">
             <Veilederinfo>
-                {' '}
                 <FormattedMessage
                     id="egenDelUttakForm.samtidigUttak.veiledertekst"
                     values={{
