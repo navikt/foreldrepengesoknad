@@ -37,7 +37,7 @@ const deltUttakAdopsjonMor = (
             gradert: false
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager + 1);
 
         perioder.push(periodeMødrekvote);
     }
@@ -48,7 +48,7 @@ const deltUttakAdopsjonMor = (
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(Uttaksdagen(currentTomDate).neste(), fellesperiodeukerMor * 5),
+            tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5),
             ønskerSamtidigUttak: false,
             gradert: false
         };
@@ -153,7 +153,7 @@ const deltUttakFødselMor = (
             gradert: false
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager);
+        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager + 1);
 
         perioder.push(periodeMødrekvote);
     }
@@ -174,10 +174,7 @@ const deltUttakFødselMor = (
                 type: Periodetype.Uttak,
                 forelder: Forelder.MOR,
                 konto: StønadskontoType.Fellesperiode,
-                tidsperiode: getTidsperiode(
-                    Uttaksdagen(currentTomDate).denneEllerNeste(),
-                    fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager
-                ),
+                tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5 - trekkEkstraPermisjonDager),
                 ønskerSamtidigUttak: false,
                 gradert: false
             };
