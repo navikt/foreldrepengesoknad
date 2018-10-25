@@ -200,7 +200,7 @@ function fjernPeriodehullIPeriodetidsrom(perioder: Periode[], periode: Periode):
 
 function settInnPerioder(perioder: Periode[], perioder2: Periode[]): Periode[] {
     if (perioder.length === 0) {
-        return perioder;
+        return perioder2;
     }
     let nyePerioder: Periode[] = [...perioder];
     perioder2.sort(sorterPerioder).forEach((periode) => {
