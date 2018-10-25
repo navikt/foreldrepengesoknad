@@ -5,7 +5,10 @@ import Applikasjonsside from '../../connected-components/sider/Applikasjonsside'
 import DocumentTitle from 'react-document-title';
 import getMessage from 'common/util/i18nUtils';
 
-type Props = InjectedIntlProps;
+interface OwnProps {}
+
+type Props = OwnProps & InjectedIntlProps;
+
 const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
     return (
         <Applikasjonsside>
@@ -14,4 +17,5 @@ const LoadingScreen: React.StatelessComponent<Props> = (props: Props) => {
         </Applikasjonsside>
     );
 };
+
 export default injectIntl(LoadingScreen);
