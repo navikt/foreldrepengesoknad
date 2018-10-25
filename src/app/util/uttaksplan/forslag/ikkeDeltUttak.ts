@@ -57,7 +57,10 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(Uttaksdagen(famDato).leggTil(75), foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(
+                Uttaksdagen(famDato).leggTil(aktivitetsfriKvote!.dager + 1),
+                foreldrepengerKonto.dager
+            ),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
@@ -226,8 +229,6 @@ const ikkeDeltUttakFødselFarMedmor = (
 
         perioder.push(periode);
     } else {
-        const aktivitetsFrieDager = 15 * 5;
-
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
@@ -247,7 +248,10 @@ const ikkeDeltUttakFødselFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(Uttaksdagen(startDato).leggTil(aktivitetsFrieDager), foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(
+                Uttaksdagen(startDato).leggTil(aktivitetsfriKvote!.dager + 1),
+                foreldrepengerKonto.dager
+            ),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
