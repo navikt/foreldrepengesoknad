@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from '../periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
@@ -9,7 +9,7 @@ import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn } from '../../types/søknad/Barn';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -30,6 +30,7 @@ export interface Props {
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     erMorUfør: boolean | undefined;
+    forelder: Forelder;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -70,6 +71,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleOnCancel = this.handleOnCancel.bind(this);
         this.lukkPeriodeliste = this.lukkPeriodeliste.bind(this);
+        this.settInnNyttOpphold = this.settInnNyttOpphold.bind(this);
+        this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
     }
 
     openForm(periodetype: Periodetype, tidsperiode?: Tidsperiode) {
@@ -83,6 +86,22 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 this.nyPeriodeForm.focus();
             }
         });
+    }
+
+    settInnNyttOpphold(tidsperiode?: Tidsperiode) {
+        const periode: Partial<Utsettelsesperiode> = {
+            type: Periodetype.Utsettelse,
+            tidsperiode
+        };
+        this.props.onAdd(periode as Periode);
+    }
+    settInnNyPeriode(tidsperiode?: Tidsperiode) {
+        const periode: Partial<Uttaksperiode> = {
+            type: Periodetype.Uttak,
+            tidsperiode,
+            forelder: this.props.forelder
+        };
+        this.props.onAdd(periode as Periode);
     }
 
     openNyUtsettelsesperiodeForm(tidsperiode?: Tidsperiode) {
@@ -170,8 +189,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
-                                onLeggTilOpphold={this.openNyUtsettelsesperiodeForm}
-                                onLeggTilPeriode={this.openNyUttaksperiodeForm}
+                                onLeggTilOpphold={this.settInnNyttOpphold}
+                                onLeggTilPeriode={this.settInnNyPeriode}
                                 onFjernPeriode={this.props.onDelete}
                             />
                         </Block>
