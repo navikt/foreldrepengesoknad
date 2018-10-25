@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
-import { SøkerRolle } from '../../../../types/s\u00F8knad/S\u00F8knad';
+import { SøkerRolle } from '../../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 
 interface StateProps {
