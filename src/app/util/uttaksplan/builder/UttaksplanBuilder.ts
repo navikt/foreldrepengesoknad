@@ -499,16 +499,16 @@ export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiod
         return [];
     }
 
-    let fom: Date = fridagerIPerioden[0].date;
+    let fom: Date = moment(fridagerIPerioden[0].date).toDate();
     const antallFridager = fridagerIPerioden.length;
     fridagerIPerioden.forEach((fridag, idx: number) => {
         if (idx === antallFridager - 1 && fom) {
             friperioder.push({
                 fom,
-                tom: fridagerIPerioden[idx].date
+                tom: moment(fridagerIPerioden[idx].date).toDate()
             });
         } else {
-            const nextDate = fridagerIPerioden[idx + 1].date;
+            const nextDate = moment(fridagerIPerioden[idx + 1].date).toDate();
             if (
                 moment(fom)
                     .add(1, 'day')
@@ -516,7 +516,7 @@ export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiod
             ) {
                 friperioder.push({
                     fom,
-                    tom: fridag.date
+                    tom: moment(fridag.date).toDate()
                 });
                 fom = nextDate;
             }
