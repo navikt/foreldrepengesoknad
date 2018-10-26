@@ -447,6 +447,10 @@
     "uttaksplan.informasjon.mor.deltOmsorg":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
+    "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
+        "Når du ikke starter foreldrepengeperioden tre uker før termindato faller disse dagene bort.",
+    "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
+        "{varighet} du ikke bruker før termin faller bort",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
