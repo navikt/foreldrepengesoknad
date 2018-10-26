@@ -32,10 +32,11 @@ const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
 
 export const beregnGjenståendeUttaksdager = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    uttaksplan: Periode[]
+    uttaksplan: Periode[],
+    søkerrolle: SøkerRolle
 ): Stønadskontouttak[] => {
     const erDeltUttak = getErDeltUttak(tilgjengeligeStønadskontoer);
-    const erFarMedmor = erFarEllerMedmor(SøkerRolle.FAR);
+    const erFarMedmor = erFarEllerMedmor(søkerrolle);
 
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let forelder: Forelder | undefined;
