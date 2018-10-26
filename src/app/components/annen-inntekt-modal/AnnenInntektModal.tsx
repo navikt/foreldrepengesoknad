@@ -177,9 +177,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             fra: [hasValueRule(tidsperiode.fom, getMessage(intl, 'påkrevd'))],
                             til: [
                                 {
-                                    test: () =>
-                                        (tidsperiode.tom !== undefined || tidsperiode.tom !== '') &&
-                                        annenInntekt.pågående === true,
+                                    test: () => tidsperiode.tom !== undefined || annenInntekt.pågående === true,
                                     failText: getMessage(intl, 'påkrevd')
                                 }
                             ]
