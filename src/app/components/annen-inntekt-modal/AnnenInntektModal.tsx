@@ -25,6 +25,7 @@ import visibility from './visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
+import { hasValueRule } from '../../util/validation/common';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -106,12 +107,14 @@ class AnnenInntektModal extends React.Component<Props, State> {
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { annenInntekt } = this.state;
+        const tidsperiode = annenInntekt.tidsperiode !== undefined ? annenInntekt.tidsperiode : {};
 
         return (
             <ModalForm
                 isOpen={isOpen}
                 title={getMessage(intl, 'annenInntekt.modal.tittel')}
                 onSubmit={this.onSubmit}
+                noSummary={true}
                 onRequestClose={onCancel}
                 renderFormButtons={true}
                 dialogSize="medium"
@@ -122,6 +125,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         label={''}
                         onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
                         defaultValue={annenInntekt.type}
+                        validators={[hasValueRule(annenInntekt.type, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
                 <Block visible={visibility.land(annenInntekt)}>
@@ -163,12 +167,23 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 </Block>
                 <Block>
                     <TidsperiodeBolk
-                        tidsperiode={annenInntekt.tidsperiode || {}}
-                        onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
-                            this.updateAnnenInntekt({ tidsperiode })
+                        tidsperiode={tidsperiode}
+                        onChange={(changedTidsperiode: TidsperiodeMedValgfriSluttdato) =>
+                            this.updateAnnenInntekt({ tidsperiode: changedTidsperiode })
                         }
                         sluttdatoDisabled={annenInntekt.pågående}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(annenInntekt.tidsperiode)}
+                        datoValidatorer={{
+                            fra: [hasValueRule(tidsperiode.fom, getMessage(intl, 'påkrevd'))],
+                            til: [
+                                {
+                                    test: () =>
+                                        (tidsperiode.tom !== undefined || tidsperiode.tom !== '') &&
+                                        annenInntekt.pågående === true,
+                                    failText: getMessage(intl, 'påkrevd')
+                                }
+                            ]
+                        }}
                         kalenderplassering="fullskjerm"
                     />
                     <Checkbox
