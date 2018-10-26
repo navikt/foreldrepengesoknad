@@ -80,7 +80,7 @@
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
-    "velkommen.foreldreansvar.papirsøknadLenke": "Her finner du papirsøknaden",
+    "papirsøknad.lenke": "Her finner du papirsøknaden",
 
     "personalia.år": "{år} år",
 
@@ -192,6 +192,8 @@
     "foreldreansvar.antallBarn": "Antall barn",
 
     "erBarnetFødt.spørsmål": "Er barnet født?",
+    "erBarnetFødt.spørsmål.veileder.medMorEllerFar":
+        "Du kan ikke søke før barnet er født. Unntaket er hvis mor er syk eller innlagt på sykehus eller helseinstitusjon. Da må du sende søknaden i posten. { lenke }",
 
     "erDuMedmor.spørsmål": "Er du medmor?",
 
@@ -265,6 +267,8 @@
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
+    "annenForelder.aleneOmOmsorg.veileder":
+        "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
@@ -777,7 +781,8 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. Les mer om å være hjemme samtidig her.",
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+    "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
     "uttaksperiode.gradert.skalDuHarGradering.hjelpetekst":

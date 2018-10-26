@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import Lenke from 'nav-frontend-lenker';
 
 import Steg, { StegProps } from 'app/components/steg/Steg';
 import UfødtBarnPartial from './partials/UfødtBarnPartial';
@@ -32,6 +33,7 @@ import {
 } from './visibility/relasjonTilBarnFødselVisibility';
 import { SøknadenGjelderBarnValg, Søkersituasjon } from '../../../types/søknad/Søknad';
 import FødtBarnPartial from './partials/FødtBarnPartial';
+import lenker from '../../../util/routing/lenker';
 
 interface RelasjonTilBarnFødselStegProps {
     barn: Barn;
@@ -112,7 +114,16 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                     {barn.erBarnetFødt === false &&
                         erFarEllerMedmor(søker.rolle) && (
                             <Veilederinfo>
-                                Info. kan ikke søke før etter at barnet er født, unntak ved sykdom
+                                <FormattedMessage
+                                    id="erBarnetFødt.spørsmål.veileder.medMorEllerFar"
+                                    values={{
+                                        lenke: (
+                                            <Lenke href={lenker.papirsøknad}>
+                                                <FormattedMessage id="papirsøknad.lenke" />
+                                            </Lenke>
+                                        )
+                                    }}
+                                />
                             </Veilederinfo>
                         )}
                     {vis.ufødtBarnPart &&
