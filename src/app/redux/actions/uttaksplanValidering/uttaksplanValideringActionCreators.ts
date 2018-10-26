@@ -10,7 +10,8 @@ export function setUttaksplanValidering(
     inneholderPerioder: boolean,
     stønadskontoerMedForMyeUttak: Stønadskontouttak[],
     førsteUttakErInnenforSeksUker: boolean,
-    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean
+    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean,
+    uttaksmengdeForFarMedmorForHøy: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
@@ -18,7 +19,8 @@ export function setUttaksplanValidering(
         inneholderPerioder,
         stønadskontoerMedForMyeUttak,
         førsteUttakErInnenforSeksUker,
-        morHarSøktUgyldigUtsettelseFørsteSeksUker
+        morHarSøktUgyldigUtsettelseFørsteSeksUker,
+        uttaksmengdeForFarMedmorForHøy
     };
 }
 

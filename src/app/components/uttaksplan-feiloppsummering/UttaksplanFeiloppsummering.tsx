@@ -101,6 +101,12 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 text: getMessage(intl, 'uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør')
             });
         }
+        if (uttaksplanValidering.uttaksmengdeForFarMedmorForHøy === true) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'For høyt uttak')
+            });
+        }
 
         return (
             <Feiloppsummering

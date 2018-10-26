@@ -16,6 +16,7 @@ export interface SetUttaksplanValidering {
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
+    uttaksmengdeForFarMedmorForHøy: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;
