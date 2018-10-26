@@ -27,7 +27,7 @@ import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodel
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
@@ -216,8 +216,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
+                                onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 navnPåForeldre={navnPåForeldre}
                                 erMorUfør={søknad.annenForelder.erUfør}
+                                forelder={erFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
                         </Block>
                         {søknad.uttaksplan &&

@@ -18,6 +18,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
 import { findOldestDate } from '../../../util/dates/dates';
 import Block from 'common/components/block/Block';
+import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -142,13 +143,24 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
 };
 
 const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
+    const familiehendelsesdato = getFamiliehendelsedato(søknad.barn, søknad.situasjon);
+    const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const reservertMorFørDenneDatoen = Uttaksdagen(førsteUttaksdag).leggTil(30);
+    const dagensDatoFørReservertMorDato = moment(startdatoPermisjon).isBefore(reservertMorFørDenneDatoen);
+
     return (
         <>
             <DekningsgradSpørsmål />
             <StartdatoUttakFarMedmorSpørsmål
                 visible={søknad.dekningsgrad !== undefined}
-                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+                familiehendelsesdato={førsteUttaksdag}
             />
+            <Block visible={dagensDatoFørReservertMorDato}>
+                <Veilederinfo>
+                    <FormattedMessage id="uttaksplanSkjema.info.reservertMor" />
+                </Veilederinfo>
+            </Block>
         </>
     );
 };

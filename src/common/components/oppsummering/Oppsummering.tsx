@@ -57,6 +57,7 @@ class Oppsummering extends React.Component<Props> {
                             annenForelder={søknad.annenForelder}
                             erAleneOmOmsorg={søknad.søker.erAleneOmOmsorg}
                             barn={søknad.barn}
+                            erFarEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
                         />
                     </Oppsummeringspanel>
 
@@ -65,6 +66,7 @@ class Oppsummering extends React.Component<Props> {
                         tittelProps={'undertittel'}>
                         <UtenlandsoppholdOppsummering
                             informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
+                            situasjon={søknad.situasjon}
                         />
                     </Oppsummeringspanel>
 
@@ -77,6 +79,7 @@ class Oppsummering extends React.Component<Props> {
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
                             erFarEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
+                            registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
                         />
                     </Oppsummeringspanel>
                 </div>

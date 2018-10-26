@@ -21,7 +21,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
     erMorUfør: boolean | undefined,
     aktivitetsfriKvote: TilgjengeligStønadskonto | undefined
 ) => {
-    famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [];
 
     if (erMorUfør !== true) {
@@ -30,7 +30,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
@@ -43,7 +43,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.AktivitetsfriKvote,
-            tidsperiode: getTidsperiode(famDato, aktivitetsfriKvote!.dager),
+            tidsperiode: getTidsperiode(førsteUttaksdag, aktivitetsfriKvote!.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false,
@@ -57,7 +57,10 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(Uttaksdagen(famDato).leggTil(75), foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(
+                Uttaksdagen(førsteUttaksdag).leggTil(aktivitetsfriKvote!.dager + 1),
+                foreldrepengerKonto.dager
+            ),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
@@ -74,14 +77,14 @@ const ikkeDeltUttakAdopsjonMor = (
     foreldrepengerKonto: TilgjengeligStønadskonto,
     startdatoPermisjon: DateValue
 ) => {
-    famDato = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
     const perioder: Uttaksperiode[] = [
         {
             id: guid(),
             type: Periodetype.Uttak,
             forelder: Forelder.MOR,
             konto: foreldrepengerKonto.konto,
-            tidsperiode: getTidsperiode(famDato, foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false
@@ -117,14 +120,14 @@ const ikkeDeltUttakFødselMor = (
     startdatoPermisjon: DateValue,
     foreldrePengerFørFødselKonto: TilgjengeligStønadskonto
 ) => {
-    famDato = Uttaksdagen(famDato).denneEllerNeste();
+    const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = startdatoPermisjon ? true : false;
 
     if (foreldrePengerFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && startdatoPermisjon) {
-        const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(famDato);
+        const dagerFørFødsel = Uttaksdagen(startdatoPermisjon).getUttaksdagerFremTilDato(førsteUttaksdag);
         const merEnnTreUkerPermisjonFørFødsel = dagerFørFødsel > 15;
-        const startdatoFpFørFødsel = Uttaksdagen(famDato).trekkFra(
+        const startdatoFpFørFødsel = Uttaksdagen(førsteUttaksdag).trekkFra(
             merEnnTreUkerPermisjonFørFødsel ? 15 : dagerFørFødsel
         );
 
@@ -136,7 +139,7 @@ const ikkeDeltUttakFødselMor = (
                 konto: StønadskontoType.Foreldrepenger,
                 tidsperiode: {
                     fom: startdatoPermisjon,
-                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 16)
+                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 15)
                 },
                 vedlegg: [],
                 ønskerSamtidigUttak: false
@@ -152,7 +155,7 @@ const ikkeDeltUttakFødselMor = (
             konto: foreldrePengerFørFødselKonto.konto,
             tidsperiode: {
                 fom: startdatoFpFørFødsel,
-                tom: Uttaksdagen(famDato).forrige()
+                tom: Uttaksdagen(førsteUttaksdag).forrige()
             },
             vedlegg: [],
             ønskerSamtidigUttak: false
@@ -180,10 +183,10 @@ const ikkeDeltUttakFødselMor = (
 
     const antallDagerIForeldrepenger = ekstraPermisjonFørFødsel
         ? getTidsperiode(
-              famDato,
+              førsteUttaksdag,
               foreldrepengerKonto.dager - Tidsperioden(ekstraPermisjonFørFødsel.tidsperiode).getAntallUttaksdager()
           )
-        : getTidsperiode(famDato, foreldrepengerKonto.dager);
+        : getTidsperiode(førsteUttaksdag, foreldrepengerKonto.dager);
 
     const foreldrepengerPeriode: Periode = {
         id: guid(),
@@ -226,8 +229,6 @@ const ikkeDeltUttakFødselFarMedmor = (
 
         perioder.push(periode);
     } else {
-        const aktivitetsFrieDager = 15 * 5;
-
         const aktivitetsFriPeriode: Uttaksperiode = {
             id: guid(),
             type: Periodetype.Uttak,
@@ -247,7 +248,10 @@ const ikkeDeltUttakFødselFarMedmor = (
             type: Periodetype.Uttak,
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
-            tidsperiode: getTidsperiode(Uttaksdagen(startDato).leggTil(aktivitetsFrieDager), foreldrepengerKonto.dager),
+            tidsperiode: getTidsperiode(
+                Uttaksdagen(startDato).leggTil(aktivitetsfriKvote!.dager + 1),
+                foreldrepengerKonto.dager
+            ),
             vedlegg: [],
             ønskerSamtidigUttak: false,
             gradert: false

@@ -365,8 +365,9 @@
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.dekningsgrad.100": "{antallUker} uker med 100 prosent foreldrepenger",
     "spørsmål.dekningsgrad.80": "{antallUker} uker med 80 prosent foreldrepenger",
-    "spørsmål.dekningsgrad.label": "Hvor lang periode med foreldrepenger har dere valgt?",
-    "spørsmål.dekningsgrad.label.aleneomsorg": "Hvor lang periode med foreldrepenger ønsker du?",
+    "spørsmål.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
+    "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
+    "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir noe høyrer ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
 
@@ -449,13 +450,18 @@
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
+    "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
+    "uttaksplan.hull.leggTil.opphold": "Sett inn ny utsettelse",
+    "uttaksplan.hull.leggTil.uttak": "Sett inn ny periode",
     "uttaksplan.infoTilFrilansOgSelvstendig":
-        "Om søknaden din blir innvilget fra NAV vil dette anses som en avtale mellom deg og NAV.",
+        "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
     "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
+    "uttaksplanSkjema.info.reservertMor":
+        "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
@@ -485,7 +491,8 @@
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
+
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
@@ -542,7 +549,7 @@
         "Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.",
 
     "oppsummering.relasjonTilBarn": "Om barnet",
-    "oppsummering.termindato.label": "termindato",
+    "oppsummering.termindato": "Termindato",
     "oppsummering.terminbekreftelse.label": "Det er vedlagt en terminbekreftelse",
     "oppsummering.terminbekreftelseDato.label": "Som er datert den",
     "oppsummering.antallBarn.label": "Søknaden gjelder",
@@ -558,7 +565,7 @@
     "oppsummering.antallBarn.9": "Ni",
 
     "oppsummering.fødselsdato.label": "fødselsdato",
-    "oppsummering.adopsjonAvEktefellesBarn.label": "stebarnsadopsjon",
+    "oppsummering.adopsjonAvEktefellesBarn.label": "Gjelder søknaden stebarnsadopsjon?",
     "oppsummering.adopsjonsdato.label": "adopsjonsdato",
     "oppsummering.adoptertIUtlandet.label": "adoptert i utlandet",
     "oppsummering.omsorgsovertakelse.label": "omsorgsovertakelse",
@@ -582,6 +589,8 @@
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "oppsummering.utenlandsopphold": "Utenlandsopphold",
+    "oppsummering.iNorgePåFødselstidspunktet.label": "Jeg er i Norge på fødselstidspunktet",
+    "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Jeg er i Norge på datoen for omsorgsovertakelse",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
     "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
     "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
@@ -632,7 +641,7 @@
     "oppsummering.selvstendigNæringsdrivende.dokumentasjon": "Dokumentasjon av inntekten din det siste året",
 
     "oppsummering.andreInntekter.tittel": "Andre inntekter siste 10 måneder",
-    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre ommtelter de siste 10 månedene",
+    "oppsummering.andreInntekter.ikkeHattAndreInntekter": "Jeg har ikke hatt andre inntekter de siste 10 månedene",
     "oppsummering.andreInntekter.arbeidsgiverNavn": "Arbeidsgivers navn",
     "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
@@ -646,7 +655,7 @@
     "oppsummering.overtakelse.pga": "Overtakelse av {konto}",
 
     "oppsummering.uttak.dokumentasjonAvArbeidsforhold": "Dokumentasjon av arbeidsforhold",
-    "oppsummering.uttak.arbeidstaker": "Jeg skal jobbe for registrert arbeidstaker med organisasjonsnummer {orgnr}",
+    "oppsummering.uttak.arbeidstaker": "Jeg skal jobbe for {arbeidsgiverNavn} med organisasjonsnummer {orgnr}",
     "oppsummering.uttak.selvstendig_næringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
     "oppsummering.uttak.frilans": "Jeg skal jobbe som frilans",
     "oppsummering.uttak.samtidigUttak": "Vi skal ha samtidig uttak",
@@ -677,6 +686,7 @@
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
+    "stønadskontotype.undefined": "Ny periode uten kvote",
 
     "overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{annenForelderNavn} er innlagt på helseinstitusjon",
     "overføringsårsaktype.SYKDOM_ANNEN_FORELDER": "For syk til å ta seg av barnet",
@@ -716,6 +726,7 @@
         "Hvis du går tilbake til forrige steg, blir planen din bli slettet og du må lage den på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
+    "uttaksplan.tittel": "Din plan",
     "uttaksplan.slettPlan": "Slett plan",
     "uttaksplan.tomPlan": "Du har ikke lagt til noen perioder ennå.",
 
@@ -741,6 +752,7 @@
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
     "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode uten uttak eller utsettelse",
+    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Opphold kan ikke registreres på en offentlig fridag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
@@ -771,12 +783,12 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeid":
         "Du må legge ved bekreftelse fra {navnMor} sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent. Dersom mor er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
-        "Du må legge ved bekreftelse fra mors studiested at {navnMor} er fulltidsstudent. Bekreftelsen må også vise:",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "Mors navn og fødselsnummer",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "Studiested, fag eller studieprogram",
-    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "Oppstart og varighet av studiet",
+        "Du må legge ved bekreftelse på at {navnMor} er fulltidsstudent. Bekreftelsen må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "navn og fødselsnummer",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "studiested, fag eller studieprogram",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
-        "Er det søkt om permisjon fra studiet i en periode må dette fremkomme i bekreftelsen",
+        "har mor søkt om permisjon fra studiet en periode må dette komme frem i bekreftelsen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
         "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
@@ -800,9 +812,9 @@
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
+        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn {ukerOgDager}. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
 
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",

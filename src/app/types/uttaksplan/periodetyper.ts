@@ -43,13 +43,18 @@ export enum Arbeidsform {
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
-    'UttakKvoteAnnenForelder' = 'UTTAK_KVOTE_ANNEN_FORELDER'
+    'UttakFedrekvoteAnnenForelder' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
+    'UttakMødrekvoteAnnenForelder' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER'
 }
 
 export enum OverføringÅrsakType {
     'insititusjonsoppholdAnnenForelder' = 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
     'sykdomAnnenForelder' = 'SYKDOM_ANNEN_FORELDER',
     'aleneomsorg' = 'ALENEOMSORG'
+}
+
+export enum PeriodeHullÅrsak {
+    'Fridag' = 'Fridag'
 }
 
 export interface Helligdag {
@@ -67,6 +72,7 @@ export interface PeriodeBase {
 export interface PeriodeHull extends PeriodeBase {
     type: Periodetype.Hull;
     tidsperiode: Tidsperiode;
+    årsak?: PeriodeHullÅrsak;
 }
 
 export interface UttaksperiodeBase extends PeriodeBase {

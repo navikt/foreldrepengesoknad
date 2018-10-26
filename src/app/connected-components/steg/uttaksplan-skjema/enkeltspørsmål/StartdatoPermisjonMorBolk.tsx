@@ -59,9 +59,10 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
 
         const antallDager = getAntallUttaksdager(data.startdatoPermisjon, familiehendelsesdato);
         const permisjonsregler = getPermisjonsregler();
-        const visVeileder =
-            antallDager !== undefined && antallDager > permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
 
+        const antallDagerMerEnn3uker: number =
+            antallDager !== undefined ? antallDager - permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 : 0;
+        const harMerEnnTreUkerFørTermin = antallDagerMerEnn3uker > 0;
         const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
 
         const varighet = getVarighet(startdato, familiehendelsesdato, intl);
@@ -72,6 +73,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                     : getMessage(intl, 'spørsmål.startdatoPermisjon.varighet', { varighet })
                 : undefined;
 
+        const visVeileder = harMerEnnTreUkerFørTermin;
         const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         return (
             <>
@@ -117,7 +119,12 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                 </Block>
                 <Block margin="none" visible={visVeileder}>
                     <Veilederinfo>
-                        <FormattedMessage id="uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker" />
+                        <FormattedMessage
+                            id="uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker"
+                            values={{
+                                varighet: getVarighetString(antallDagerMerEnn3uker, intl)
+                            }}
+                        />
                     </Veilederinfo>
                 </Block>
             </>

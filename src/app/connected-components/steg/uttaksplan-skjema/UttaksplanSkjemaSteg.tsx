@@ -21,17 +21,14 @@ import { apiActionCreators } from '../../../redux/actions';
 import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import { NavnPåForeldre } from 'common/types';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
-import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     navnPåForeldre: NavnPåForeldre;
-    familiehendelsesdato: Date;
     antallUkerFellesperiode: number;
     scenario: UttaksplanSkjemaScenario;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
@@ -113,16 +110,17 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
     const scenario = getUttaksplanSkjemaScenario(state.søknad);
     const {
-        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer }
     } = state;
     const søknad = { ...state.søknad };
     const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     if (
         scenario === UttaksplanSkjemaScenario.s3_morFødsel &&
         skjemadata.skalIkkeHaUttakFørTermin !== true &&
         skjemadata.startdatoPermisjon === undefined
     ) {
-        const defaultStartdato = Uttaksdagen(familiehendelsesdato).trekkFra(
+        const defaultStartdato = Uttaksdagen(førsteUttaksdag).trekkFra(
             permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
         );
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon = defaultStartdato;
@@ -130,11 +128,9 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     return {
         stegProps,
         søknad,
-        familiehendelsesdato,
         navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
         antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
         scenario,
-        tilgjengeligeStønadskontoer,
         isLoadingTilgjengeligeStønadskontoer
     };
 };
