@@ -75,19 +75,15 @@ export interface SøknadPartial {
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
-// TODO remove redundant skjemanummer when we know more about which to use
 export enum Skjemanummer {
     DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL = 'I000041',
     BEKREFTELSE_FRA_ARBEIDSGIVER = 'I000065',
     INNTEKTSOPPLYSNINGER = 'I000026',
-    ARBEIDSFORHOLD = 'I000043',
     ETTERLØNN_ELLER_SLUTTVEDERLAG = 'I000044',
-    TERMINDATO_ELLER_OMSORGSOVERTAKELSESDATO = 'I000041',
     OMSORGSOVERTAKELSESDATO = 'I000042',
     ANNET = 'I000060',
-    FØDSELSATTEST = 'I000063',
+    FØDSELSATTEST = 'I000063', // will be required once we start fetching data from TPS about registered children.
     TERMINBEKREFTELSE = 'I000062',
-    DOK_ETTERLØNN = 'I000044',
     DOK_MILITÆR_SILVIL_TJENESTE = 'I000039',
     INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG = 'I000007',
     DOK_MORS_UTDANNING_ARBEID_SYKDOM = 'I000038',

@@ -6,10 +6,11 @@ import {
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 
-export const dokumentasjonBehøvesForUtsettelsesperiode = ({ årsak }: Utsettelsesperiode): boolean =>
+export const dokumentasjonBehøvesForUtsettelsesperiode = ({ årsak, erArbeidstaker }: Utsettelsesperiode): boolean =>
     årsak === UtsettelseÅrsakType.Sykdom ||
     årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-    årsak === UtsettelseÅrsakType.InstitusjonSøker;
+    årsak === UtsettelseÅrsakType.InstitusjonSøker ||
+    erArbeidstaker;
 
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
