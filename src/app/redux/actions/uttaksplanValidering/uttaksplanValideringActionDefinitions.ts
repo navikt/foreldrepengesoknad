@@ -15,6 +15,7 @@ export interface SetUttaksplanValidering {
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     førsteUttakErInnenforSeksUker: boolean;
+    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;
