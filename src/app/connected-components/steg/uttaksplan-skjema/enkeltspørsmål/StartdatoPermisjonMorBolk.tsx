@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -9,15 +8,15 @@ import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../
 import ValiderbarDatoInput from 'common/lib/validation/elements/ValiderbarDatoInput';
 import startdatoFørTerminValidators from '../../../../util/validation/uttaksplan/startdatoFørTerminValidation';
 import { uttaksplanDatoavgrensninger } from '../../../../util/validation/uttaksplan/uttaksplanDatoavgrensninger';
-import { Tidsperioden } from '../../../../util/uttaksplan/Tidsperioden';
+import { Tidsperioden, getValidTidsperiode } from '../../../../util/uttaksplan/Tidsperioden';
 import { getVarighetString } from 'common/util/intlUtils';
 import { UttaksplanSkjemadata } from '../uttaksplanSkjemadata';
 import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../../../types/common';
+import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
+import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -26,20 +25,16 @@ interface OwnProps {
 
 type Props = OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps;
 
-const getAntallUttaksdager = (fom: DateValue, tom: DateValue): number | undefined => {
-    if (fom !== undefined && tom !== undefined && moment(fom).isBefore(tom, 'day')) {
-        return Tidsperioden({
-            fom,
-            tom: Uttaksdagen(tom).forrige()
-        }).getAntallUttaksdager();
-    }
-    return undefined;
-};
-
-const getVarighet = (fom: DateValue, tom: DateValue, intl: InjectedIntl): string | undefined => {
-    const antallDager = getAntallUttaksdager(fom, tom);
-    return antallDager !== undefined ? getVarighetString(antallDager, intl) : undefined;
-};
+const getVarighetForStartdato = (antallDager: number, barnetErFødt: boolean, intl: InjectedIntl): string | undefined =>
+    antallDager > 0
+        ? barnetErFødt
+            ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.varighet', {
+                  varighet: getVarighetString(antallDager, intl)
+              })
+            : getMessage(intl, 'spørsmål.startdatoPermisjon.varighet', {
+                  varighet: getVarighetString(antallDager, intl)
+              })
+        : undefined;
 
 class StartdatoPermisjonMorBolk extends React.Component<Props> {
     static contextTypes = {
@@ -49,6 +44,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
 
     renderContent(data: Partial<UttaksplanSkjemadata>, onChange: (data: Partial<UttaksplanSkjemadata>) => void) {
         const { barnetErFødt, familiehendelsesdato, intl } = this.props;
+
         const spørsmålNår = barnetErFødt
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.label')
             : getMessage(intl, 'spørsmål.startdatoPermisjon.label');
@@ -57,24 +53,19 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
             ? getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.barnetErFødt.label')
             : getMessage(intl, 'spørsmål.startdatoPermisjon.skalIkkeHaUttak.label');
 
-        const antallDager = getAntallUttaksdager(data.startdatoPermisjon, familiehendelsesdato);
         const permisjonsregler = getPermisjonsregler();
-
-        const antallDagerMerEnn3uker: number =
-            antallDager !== undefined ? antallDager - permisjonsregler.antallUkerForeldrepengerFørFødsel * 5 : 0;
-        const harMerEnnTreUkerFørTermin = antallDagerMerEnn3uker > 0;
+        const sisteUttaksdagFørTermin = Uttaksdagen(familiehendelsesdato).forrige();
+        const tidsperiode = getValidTidsperiode({
+            fom: data.startdatoPermisjon,
+            tom: sisteUttaksdagFørTermin
+        });
+        const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
+        const antallDagerFørFødselIhtRegler = permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
+        const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
 
-        const varighet = getVarighet(startdato, familiehendelsesdato, intl);
-        const varighetString =
-            varighet !== undefined
-                ? barnetErFødt
-                    ? getMessage(intl, 'spørsmål.startdatoPermisjon.barnetErFødt.varighet', { varighet })
-                    : getMessage(intl, 'spørsmål.startdatoPermisjon.varighet', { varighet })
-                : undefined;
+        const visVeileder = antallDager !== antallDagerFørFødselIhtRegler;
 
-        const visVeileder = harMerEnnTreUkerFørTermin;
-        const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         return (
             <>
                 <Block margin="xs">
@@ -97,7 +88,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                             familiehendelsesdato,
                             data.skalIkkeHaUttakFørTermin
                         )}
-                        postfix={varighetString}
+                        postfix={getVarighetForStartdato(antallDager, barnetErFødt, intl)}
                     />
                 </Block>
                 <Block margin={visVeileder ? 'xs' : 'm'}>
@@ -118,14 +109,11 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                     />
                 </Block>
                 <Block margin="none" visible={visVeileder}>
-                    <Veilederinfo>
-                        <FormattedMessage
-                            id="uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker"
-                            values={{
-                                varighet: getVarighetString(antallDagerMerEnn3uker, intl)
-                            }}
-                        />
-                    </Veilederinfo>
+                    <VeilederStartdatoPermisjon
+                        antallDager={antallDager}
+                        skalIkkeHaUttakFørTermin={data.skalIkkeHaUttakFørTermin === true}
+                        antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}
+                    />
                 </Block>
             </>
         );
