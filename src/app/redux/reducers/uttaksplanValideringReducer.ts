@@ -23,6 +23,7 @@ export interface UttaksplanValideringState {
     erGyldig: boolean;
     førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
+    uttaksmengdeForFarMedmorForHøy: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -42,7 +43,8 @@ const getDefaultState = (): UttaksplanValideringState => {
         stønadskontoerMedForMyeUttak: [],
         førsteUttakErInnenforSeksUker: false,
         erGyldig: true,
-        morHarSøktUgyldigUtsettelseFørsteSeksUker: false
+        morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
+        uttaksmengdeForFarMedmorForHøy: false
     };
 };
 
@@ -63,7 +65,8 @@ const uttaksplanValideringReducer = (
                 action.inneholderPerioder &&
                 action.stønadskontoerMedForMyeUttak.length === 0 &&
                 action.førsteUttakErInnenforSeksUker === true &&
-                action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false;
+                action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
+                action.uttaksmengdeForFarMedmorForHøy === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -71,7 +74,8 @@ const uttaksplanValideringReducer = (
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
                 førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
-                erGyldig
+                erGyldig,
+                uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true
             };
     }
     return state;
