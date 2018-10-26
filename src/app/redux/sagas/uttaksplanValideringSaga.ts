@@ -10,6 +10,7 @@ import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValide
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { harMorHarSøktUgyldigUtsettelseFørsteSeksUker } from '../../util/validation/uttaksplan/utsettelseMorValidation';
 // import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 
 const stateSelector = (state: AppState) => state;
@@ -30,9 +31,9 @@ const getStønadskonterMedFormMyeUttak = (uttak: Stønadskontouttak[]) => {
     return uttak.filter((u) => u.dagerGjenstående < 0);
 };
 
-function* validerUttaksplanSaga(action: any) {
+function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan } = appState.søknad;
+    const { uttaksplan, barn, situasjon } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
     let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
@@ -51,7 +52,8 @@ function* validerUttaksplanSaga(action: any) {
             validertePerioder,
             antallAktivePerioder > 0,
             getStønadskonterMedFormMyeUttak(uttaksstatus),
-            true // førsteUttakErInnenforKommendeSeksUker(uttaksplan)
+            true, // førsteUttakErInnenforKommendeSeksUker(uttaksplan),
+            harMorHarSøktUgyldigUtsettelseFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon))
         )
     );
 }

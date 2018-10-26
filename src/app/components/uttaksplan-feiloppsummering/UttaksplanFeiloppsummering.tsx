@@ -95,6 +95,13 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
+        if (uttaksplanValidering.morHarSøktUgyldigUtsettelseFørsteSeksUker) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør')
+            });
+        }
+
         return (
             <Feiloppsummering
                 show={erSynlig === true && uttaksplanValidering.erGyldig === false}

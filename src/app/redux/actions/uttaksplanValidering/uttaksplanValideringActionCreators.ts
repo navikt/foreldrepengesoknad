@@ -9,14 +9,16 @@ export function setUttaksplanValidering(
     validertePerioder: Periodevalidering,
     inneholderPerioder: boolean,
     stønadskontoerMedForMyeUttak: Stønadskontouttak[],
-    førsteUttakErInnenforSeksUker: boolean
+    førsteUttakErInnenforSeksUker: boolean,
+    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
         validertePerioder,
         inneholderPerioder,
         stønadskontoerMedForMyeUttak,
-        førsteUttakErInnenforSeksUker
+        førsteUttakErInnenforSeksUker,
+        morHarSøktUgyldigUtsettelseFørsteSeksUker
     };
 }
 
