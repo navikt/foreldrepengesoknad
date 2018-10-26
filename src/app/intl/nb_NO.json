@@ -369,7 +369,7 @@
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
-        "Den totale utbetalingen blir noe høyrer ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
+        "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
@@ -489,7 +489,7 @@
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
 
@@ -804,7 +804,7 @@
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
-    "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt legg til ny utsettelse",
+    "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
     "utsettelseskjema.veiledning.ferie":
@@ -824,10 +824,11 @@
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.tomUttaksplan":
-        "Planen din er tom. Du må legge til periode med foreldrepenger eller en utsettelse for å gå videre.",
+        "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du kan ikke søke om en utsettelse som ikke er på grunn av sykdom eller innleggelse, eller gradert uttak første seks ukene.",
-    "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør": "",
+    "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
+        "Du kan søke tidligst 6 uker før du skal ha foreldrepenger. Du kan sende inn søknad fra og med {dato}.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

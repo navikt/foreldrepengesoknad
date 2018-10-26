@@ -1,4 +1,5 @@
 name: foreldrepengesoknad
+team: nais
 image: repo.adeo.no:5443/foreldrepengesoknad
 replicas:
   min: 2
