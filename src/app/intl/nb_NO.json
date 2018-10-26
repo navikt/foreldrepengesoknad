@@ -489,7 +489,10 @@
         "Du må laste opp dokumentasjon på stebarnsadopsjonen og bekreftelse på dato for stebarnsadopsjonen.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent.",
+    "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
+
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
