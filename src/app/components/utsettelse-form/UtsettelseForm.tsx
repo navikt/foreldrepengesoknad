@@ -22,7 +22,7 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import Søknad from '../../types/søknad/Søknad';
+import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
@@ -34,11 +34,14 @@ import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
 interface OwnProps {
     periode: UtsettelseFormPeriodeType;
+    antallFeriedager: number;
     harOverlappendePerioder?: boolean;
     onChange: (periode: UtsettelseFormPeriodeType) => void;
     onCancel?: () => void;
@@ -163,14 +166,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     this.onChange({
                         type: Periodetype.Utsettelse,
                         årsak: UtsettelseÅrsakType.Arbeid,
-                        forelder
+                        forelder,
+                        erArbeidstaker: undefined
                     });
                 } else if (variant === Utsettelsesvariant.Ferie) {
                     this.onChange({
                         type: Periodetype.Utsettelse,
                         årsak: UtsettelseÅrsakType.Ferie,
                         forelder,
-                        erArbeidstaker: false
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
                     this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder, erArbeidstaker: false });
@@ -206,6 +210,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     render() {
         const {
             periode,
+            antallFeriedager,
             arbeidsforhold,
             søknad,
             navnPåForeldre,
@@ -252,7 +257,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
-                            tidsperiode={tidsperiode}
+                            antallFeriedager={antallFeriedager}
                             aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
                             forelder={Forelder.MOR}
                         />
@@ -273,6 +278,17 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                                     erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
                                                 })
                                             }
+                                        />
+                                    </Block>
+                                    <Block visible={periode.erArbeidstaker === true}>
+                                        <Veilederinfo>
+                                            {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
+                                        </Veilederinfo>
+                                        <VedleggSpørsmål
+                                            vedlegg={periode.vedlegg as Attachment[]}
+                                            onChange={(vedlegg) => this.onChange({ vedlegg })}
+                                            attachmentType={AttachmentType.ARBEID_VED_UTSETTELSE}
+                                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
                                         />
                                     </Block>
                                     <Block

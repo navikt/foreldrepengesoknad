@@ -145,7 +145,8 @@ const Scenario5: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
 const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
     const familiehendelsesdato = getFamiliehendelsedato(søknad.barn, søknad.situasjon);
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
-    const reservertMorFørDenneDatoen = Uttaksdagen(familiehendelsesdato).leggTil(30);
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const reservertMorFørDenneDatoen = Uttaksdagen(førsteUttaksdag).leggTil(30);
     const dagensDatoFørReservertMorDato = moment(startdatoPermisjon).isBefore(reservertMorFørDenneDatoen);
 
     return (
@@ -153,7 +154,7 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
             <DekningsgradSpørsmål />
             <StartdatoUttakFarMedmorSpørsmål
                 visible={søknad.dekningsgrad !== undefined}
-                familiehendelsesdato={familiehendelsesdato}
+                familiehendelsesdato={førsteUttaksdag}
             />
             <Block visible={dagensDatoFørReservertMorDato}>
                 <Veilederinfo>

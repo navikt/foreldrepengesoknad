@@ -7,8 +7,8 @@ const permisjonsregler = getPermisjonsregler();
 export const uttaksdatoer = (familiehendelsesdato: Date) => ({
     førsteUttaksdagForeldrepengerFørFødsel: getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato),
     førsteUttaksdagPåEllerEtterFødsel: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-    førsteMuligeUttaksdag: getFørsteMuligeUttaksdag(familiehendelsesdato),
-    sisteMuligeUttaksdag: getSisteMuligeUttaksdag(familiehendelsesdato)
+    førsteMuligeUttaksdagFørTermin: getFørsteMuligeUttaksdag(familiehendelsesdato),
+    sisteMuligeUttaksdagEtterTermin: getSisteMuligeUttaksdag(familiehendelsesdato)
 });
 
 export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
@@ -16,16 +16,20 @@ export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Da
 }
 
 export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: Date): Date {
-    return Uttaksdagen(familiehendelsesdato).trekkFra(permisjonsregler.antallUkerForeldrepengerFørFødsel * 5);
+    return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
+        permisjonsregler.antallUkerForeldrepengerFørFødsel * 5
+    );
 }
 
 export function getFørsteMuligeUttaksdag(familiehendelsesdato: Date): Date {
-    return Uttaksdagen(familiehendelsesdato).trekkFra(permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5);
+    return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
+        permisjonsregler.maksAntallUkerForeldrepengerFørFødsel * 5
+    );
 }
 
 export function getSisteMuligeUttaksdag(familiehendelsesdato: Date): Date {
     return Uttaksdagen(
-        moment(familiehendelsesdato)
+        moment(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato))
             .add(permisjonsregler.maksPermisjonslengdeIÅr, 'year')
             .toDate()
     ).denneEllerNeste();

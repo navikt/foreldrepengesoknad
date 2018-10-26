@@ -10,7 +10,10 @@ import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValide
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
+import { harMorHarSøktUgyldigUtsettelseFørsteSeksUker } from '../../util/validation/uttaksplan/utsettelseMorValidation';
+import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
+import { erFarEllerMedmor } from 'app/util/domain/personUtil';
+// import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 
 const stateSelector = (state: AppState) => state;
 
@@ -26,13 +29,13 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     };
 };
 
-const getStønadskonterMedFormMyeUttak = (uttak: Stønadskontouttak[]) => {
+const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
     return uttak.filter((u) => u.dagerGjenstående < 0);
 };
 
-function* validerUttaksplanSaga(action: any) {
+function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan } = appState.søknad;
+    const { uttaksplan, barn, situasjon } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
     let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
@@ -50,8 +53,14 @@ function* validerUttaksplanSaga(action: any) {
         setUttaksplanValidering(
             validertePerioder,
             antallAktivePerioder > 0,
-            getStønadskonterMedFormMyeUttak(uttaksstatus),
-            førsteUttakErInnenforKommendeSeksUker(uttaksplan)
+            getStønadskontoerMedForMyeUttak(uttaksstatus),
+            true, // førsteUttakErInnenforKommendeSeksUker(uttaksplan),
+            harMorHarSøktUgyldigUtsettelseFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon)),
+            erUttaksmengdeForFarMedmorForHøy(
+                uttaksplan,
+                appState.api.tilgjengeligeStønadskontoer,
+                erFarEllerMedmor(appState.søknad.søker.rolle)
+            )
         )
     );
 }

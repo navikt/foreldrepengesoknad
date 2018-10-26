@@ -7,12 +7,13 @@ import {
     Oppholdsperiode,
     PeriodeHull,
     isForeldrepengerFørFødselUttaksperiode,
-    Overføringsperiode
+    Overføringsperiode,
+    UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, Forelder } from 'common/types';
 import { Perioden } from './Perioden';
 import { Uttaksdagen } from './Uttaksdagen';
-import { isValidTidsperiode } from './Tidsperioden';
+import { isValidTidsperiode, Tidsperioden } from './Tidsperioden';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -25,6 +26,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
+    getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnAlleForegåendePerioder: (periode: Periode) => finnPerioderFørPeriode(perioder, periode),
@@ -37,6 +39,9 @@ export const Periodene = (perioder: Periode[]) => ({
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
     if (isValidTidsperiode(p1.tidsperiode) === false || isValidTidsperiode(p2.tidsperiode) === false) {
+        if (isForeldrepengerFørFødselUttaksperiode(p1) && p1.skalIkkeHaUttakFørTermin) {
+            return -1;
+        }
         return isValidTidsperiode(p1.tidsperiode) ? -1 : 1;
     }
     return moment(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
@@ -52,6 +57,12 @@ function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
 
 function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
     return perioder.filter((periode) => periode.type === Periodetype.Utsettelse) as Utsettelsesperiode[];
+}
+
+function getFerieUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
+    return perioder.filter(
+        (periode) => periode.type === Periodetype.Utsettelse && periode.årsak === UtsettelseÅrsakType.Ferie
+    ) as Utsettelsesperiode[];
 }
 
 function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
@@ -127,7 +138,8 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
 }
 
 function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
-    return Perioden(periode).setStartdato(Uttaksdagen(periode.tidsperiode.fom).leggTil(uttaksdager));
+    const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(uttaksdager);
+    return Perioden(periode).setStartdato(forskyvetStartdato);
 }
 
 function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
@@ -165,4 +177,11 @@ function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
         return førstePeriode.tidsperiode.fom;
     }
     return undefined;
+}
+
+function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
+    return getFerieUtsettelser(perioder)
+        .filter((p) => (isValidTidsperiode(p.tidsperiode) && forelder ? p.forelder === forelder : true))
+        .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
+        .reduce((tot = 0, curr) => tot + curr, 0);
 }

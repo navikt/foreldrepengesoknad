@@ -52,7 +52,7 @@ export const validerPeriodeForm = (
         return validerUttakForm({
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
-            kanEndreStønadskonto: false,
+            kanEndreStønadskonto: true,
             annenForelderHarRett: annenForelder.harRettPåForeldrepenger,
             søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,

@@ -35,36 +35,34 @@ function* applyStoredStateToApp(state: AppState) {
         yield put(commonActions.setSpråk(state.common.språkkode));
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
     }
-    yield put(
-        apiActions.updateApi({
-            isLoadingAppState: false
-        })
-    );
 }
 
 function* getAppState(action: any) {
     try {
+        put(apiActions.updateApi({ isLoadingAppState: true }));
         const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
         const state: AppState = response.data;
         if (state) {
             yield applyStoredStateToApp(state);
-        } else {
-            yield put(apiActions.updateApi({ isLoadingAppState: false }));
         }
     } catch {
+        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+    } finally {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
     }
 }
 
 function* deleteStoredAppState() {
     try {
+        yield put(apiActions.updateApi({ isLoadingAppState: true }));
         yield call(Api.deleteStoredAppState);
+    } catch {
         yield put(
             apiActions.updateApi({
                 isLoadingAppState: false
             })
         );
-    } catch {
+    } finally {
         yield put(
             apiActions.updateApi({
                 isLoadingAppState: false

@@ -138,8 +138,8 @@ class InngangSteg extends React.Component<Props, {}> {
                         <Block>
                             <FormattedMessage id="velkommen.foreldreansvar.veileder" />
                         </Block>
-                        <Lenke href={lenker.papirsøknadForeldreansvar}>
-                            <FormattedMessage id="velkommen.foreldreansvar.papirsøknadLenke" />
+                        <Lenke href={lenker.papirsøknad}>
+                            <FormattedMessage id="papirsøknad.lenke" />
                         </Lenke>
                     </Veilederinfo>
                 </Block>

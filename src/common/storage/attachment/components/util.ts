@@ -7,11 +7,12 @@ import {
     Periode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    Uttaksperiode
 } from '../../../../app/types/uttaksplan/periodetyper';
-import { getOverføringÅrsakSkjemanummer } from '../../../../app/util/skjemanummer/overføringÅrsakSkjemanummer';
-import { getMorsAktivitetSkjemanummer } from '../../../../app/util/skjemanummer/morsAktivitetSkjemanummer';
 import { AnnenInntektType } from '../../../../app/types/søknad/AnnenInntekt';
+import { getOverføringÅrsakSkjemanummer } from '../../../../app/util/skjemanummer/overføringÅrsakSkjemanummer';
+import { getUtsettelseSkjemanummer } from '../../../../app/util/skjemanummer/utsettelseSkjemanummer';
+import { getUttakperiodeSkjemanummer } from '../../../../app/util/skjemanummer/uttakSkjemanummer';
 
 export const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
@@ -40,14 +41,16 @@ export const isAttachmentWithError = ({ pending, uploaded, innsendingsType }: At
 };
 
 export const getSkjemanummerForPeriode = (periode: Periode): Skjemanummer => {
-    if (periode.type === Periodetype.Overføring) {
-        return getOverføringÅrsakSkjemanummer((periode as Overføringsperiode).årsak);
-    } else if ((periode as any).morsAktivitetIPerioden) {
-        return getMorsAktivitetSkjemanummer((periode as Utsettelsesperiode).morsAktivitetIPerioden);
-    } else if ((periode as any).årsak === UtsettelseÅrsakType.Sykdom) {
-        return Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
+    switch (periode.type) {
+        case Periodetype.Utsettelse:
+            return getUtsettelseSkjemanummer(periode as Utsettelsesperiode);
+        case Periodetype.Uttak:
+            return getUttakperiodeSkjemanummer(periode as Uttaksperiode);
+        case Periodetype.Overføring:
+            return getOverføringÅrsakSkjemanummer((periode as Overføringsperiode).årsak);
+        default:
+            return Skjemanummer.ANNET;
     }
-    return Skjemanummer.ANNET;
 };
 
 export const getAttachmentTypeForPeriode = (periode: Periode): AttachmentType => {
@@ -93,4 +96,5 @@ export const isAttachmentForPeriode = (type: AttachmentType) =>
     type === AttachmentType.UTSETTELSE_SYKDOM ||
     type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
     type === AttachmentType.OVERFØRING_KVOTE ||
-    type === AttachmentType.ARBEID_VED_GRADERING;
+    type === AttachmentType.ARBEID_VED_GRADERING ||
+    type === AttachmentType.ARBEID_VED_UTSETTELSE;

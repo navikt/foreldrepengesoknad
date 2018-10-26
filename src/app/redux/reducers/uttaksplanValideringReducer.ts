@@ -22,6 +22,8 @@ export interface UttaksplanValideringState {
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
     førsteUttakErInnenforSeksUker: boolean;
+    morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
+    uttaksmengdeForFarMedmorForHøy: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -40,7 +42,9 @@ const getDefaultState = (): UttaksplanValideringState => {
         inneholderPerioder: false,
         stønadskontoerMedForMyeUttak: [],
         førsteUttakErInnenforSeksUker: false,
-        erGyldig: true
+        erGyldig: true,
+        morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
+        uttaksmengdeForFarMedmorForHøy: false
     };
 };
 
@@ -60,14 +64,18 @@ const uttaksplanValideringReducer = (
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
                 action.stønadskontoerMedForMyeUttak.length === 0 &&
-                action.førsteUttakErInnenforSeksUker === true;
+                action.førsteUttakErInnenforSeksUker === true &&
+                action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
+                action.uttaksmengdeForFarMedmorForHøy === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
+                førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true,
+                morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
-                førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true
+                uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true
             };
     }
     return state;

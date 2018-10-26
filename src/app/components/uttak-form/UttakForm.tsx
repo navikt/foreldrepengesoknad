@@ -124,13 +124,15 @@ class UttaksperiodeForm extends React.Component<Props> {
             this.onChange({
                 type: Periodetype.Overføring,
                 konto,
-                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
+                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
+                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : false
             });
         } else {
             this.onChange({
                 type: Periodetype.Uttak,
                 konto,
-                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR
+                forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
+                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : false
             });
         }
     }
