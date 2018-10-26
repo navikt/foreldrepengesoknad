@@ -83,7 +83,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 />
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.adopsjonAvEktefellesBarn.label')}
-                    verdi={adopsjonAvEktefellesBarn ? 'adopsjonAvEktefellesBarn' : 'ikkeAdopsjonAvEktefellesBarn'}
+                    verdi={adopsjonAvEktefellesBarn ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
                 {antallBarn && (
                     <Feltoppsummering
@@ -99,7 +99,7 @@ class RelasjonTilBarnOppsummering extends React.Component<Props> {
                 )}
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.adoptertIUtlandet.label')}
-                    verdi={adoptertIUtlandet ? 'adoptertIUtlandet' : 'ikkeAdoptertIUtlandet'}
+                    verdi={adoptertIUtlandet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                 />
                 {ankomstdato && (
                     <Feltoppsummering

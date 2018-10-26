@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from '../periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
@@ -9,7 +9,7 @@ import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Barn } from '../../types/søknad/Barn';
-import { NavnPåForeldre } from 'common/types';
+import { NavnPåForeldre, Forelder } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -20,6 +20,8 @@ import FocusContainer from '../focus-container/FocusContainer';
 import './uttaksplanlegger.less';
 import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
+import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
+import { Periodene } from '../../util/uttaksplan/Periodene';
 
 export interface Props {
     søkersituasjon: Søkersituasjon;
@@ -29,6 +31,7 @@ export interface Props {
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     erMorUfør: boolean | undefined;
+    forelder: Forelder;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
     onDelete?: (periode: Periode) => void;
@@ -37,8 +40,15 @@ export interface Props {
 
 interface State {
     periodetype?: Periodetype;
+    tidsperiode?: Tidsperiode;
     formIsOpen: boolean;
 }
+
+const initialState: State = {
+    formIsOpen: false,
+    periodetype: undefined,
+    tidsperiode: undefined
+};
 
 const BEM = BEMHelper('uttaksplanlegger');
 
@@ -48,14 +58,12 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     nyPeriodeForm: FocusContainer | null;
     leggTilOppholdKnapp: Knapp | null;
     leggTilUttakKnapp: Knapp | null;
+    periodeliste: Periodeliste | null;
 
     constructor(props: Props) {
         super(props);
 
-        this.state = {
-            formIsOpen: false,
-            periodetype: undefined
-        };
+        this.state = { ...initialState };
 
         this.openForm = this.openForm.bind(this);
         this.openNyUtsettelsesperiodeForm = this.openNyUtsettelsesperiodeForm.bind(this);
@@ -63,12 +71,16 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.closeForm = this.closeForm.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
         this.handleOnCancel = this.handleOnCancel.bind(this);
+        this.lukkPeriodeliste = this.lukkPeriodeliste.bind(this);
+        this.settInnNyttOpphold = this.settInnNyttOpphold.bind(this);
+        this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
     }
 
-    openForm(periodetype: Periodetype) {
+    openForm(periodetype: Periodetype, tidsperiode?: Tidsperiode) {
         this.setState({
             formIsOpen: true,
-            periodetype
+            periodetype,
+            tidsperiode
         });
         setTimeout(() => {
             if (this.nyPeriodeForm) {
@@ -77,19 +89,40 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         });
     }
 
-    openNyUtsettelsesperiodeForm() {
-        this.openForm(Periodetype.Utsettelse);
+    settInnNyttOpphold(tidsperiode?: Tidsperiode) {
+        const periode: Partial<Utsettelsesperiode> = {
+            type: Periodetype.Utsettelse,
+            tidsperiode
+        };
+        this.props.onAdd(periode as Periode);
+    }
+    settInnNyPeriode(tidsperiode?: Tidsperiode) {
+        const periode: Partial<Uttaksperiode> = {
+            type: Periodetype.Uttak,
+            tidsperiode,
+            forelder: this.props.forelder
+        };
+        this.props.onAdd(periode as Periode);
     }
 
-    openNyUttaksperiodeForm() {
-        this.openForm(Periodetype.Uttak);
+    openNyUtsettelsesperiodeForm(tidsperiode?: Tidsperiode) {
+        this.lukkPeriodeliste();
+        this.openForm(Periodetype.Utsettelse, tidsperiode);
+    }
+
+    openNyUttaksperiodeForm(tidsperiode?: Tidsperiode) {
+        this.lukkPeriodeliste();
+        this.openForm(Periodetype.Uttak, tidsperiode);
+    }
+
+    lukkPeriodeliste() {
+        if (this.periodeliste) {
+            this.periodeliste.collapseAll();
+        }
     }
 
     closeForm() {
-        this.setState({
-            formIsOpen: false,
-            periodetype: undefined
-        });
+        this.setState(initialState);
     }
 
     handleOnSubmit(periode: Periode) {
@@ -119,16 +152,18 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             navnPåForeldre,
             onRequestReset,
             lastAddedPeriodeId,
+            forelder,
             erMorUfør
         } = this.props;
         const { formIsOpen, periodetype } = this.state;
+        const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
         return (
             <section>
                 <Block>
                     <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
                         <header className={BEM.element('header')}>
                             <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                                Din plan
+                                <FormattedMessage id="uttaksplan.tittel" />
                             </Systemtittel>
                             {onRequestReset &&
                                 uttaksplan.length > 0 && (
@@ -152,10 +187,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
+                                ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
+                                onLeggTilOpphold={this.settInnNyttOpphold}
+                                onLeggTilPeriode={this.settInnNyPeriode}
+                                onFjernPeriode={this.props.onDelete}
+                                antallFeriedager={antallFeriedager}
                             />
                         </Block>
                         <Block visible={uttaksplan.length === 0} margin="xl">
@@ -165,10 +205,12 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        antallFeriedager={antallFeriedager}
                                         erMorUfør={erMorUfør}
                                         periodetype={periodetype}
                                         onSubmit={this.handleOnSubmit}
                                         onCancel={this.handleOnCancel}
+                                        tidsperiode={this.state.tidsperiode}
                                     />
                                 </FocusContainer>
                             )}
@@ -178,14 +220,14 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                 <Block margin="none" visible={!formIsOpen}>
                     <Knapperad>
                         <Knapp
-                            onClick={this.openNyUtsettelsesperiodeForm}
+                            onClick={() => this.openNyUtsettelsesperiodeForm()}
                             htmlType="button"
                             ref={(c) => (this.leggTilOppholdKnapp = c)}
                             aria-expanded={formIsOpen}>
                             <FormattedMessage id="uttaksplan.leggTil.opphold" />
                         </Knapp>
                         <Knapp
-                            onClick={this.openNyUttaksperiodeForm}
+                            onClick={() => this.openNyUttaksperiodeForm()}
                             htmlType="button"
                             ref={(c) => (this.leggTilUttakKnapp = c)}
                             aria-expanded={formIsOpen}>

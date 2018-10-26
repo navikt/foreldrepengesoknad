@@ -15,11 +15,12 @@ interface AnnenForelderOppsummeringProps {
     annenForelder: AnnenForelder;
     barn: Barn;
     erAleneOmOmsorg: boolean;
+    erFarEllerMedmor: boolean;
 }
 
 type Props = AnnenForelderOppsummeringProps & InjectedIntlProps;
 const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props) => {
-    const { erAleneOmOmsorg, barn, intl } = props;
+    const { erFarEllerMedmor, erAleneOmOmsorg, barn, intl } = props;
     const {
         fornavn,
         etternavn,
@@ -91,12 +92,13 @@ const AnnenForelderOppsummering: React.StatelessComponent<Props> = (props: Props
                     verdi={formatDate(datoForAleneomsorg) || ''}
                 />
             )}
-            {erAleneOmOmsorg && (
-                <OppsummeringAvDokumentasjon
-                    vedlegg={dokumentasjonAvAleneomsorg}
-                    ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}
-                />
-            )}
+            {erAleneOmOmsorg &&
+                erFarEllerMedmor && (
+                    <OppsummeringAvDokumentasjon
+                        vedlegg={dokumentasjonAvAleneomsorg}
+                        ledetekst={getMessage(intl, 'oppsummering.annenForelder.dokumentasjonAvAleneomsorg.label')}
+                    />
+                )}
             {harRettPåForeldrepenger !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.annenForelder.harRettPåForeldrepenger.label', { navn })}

@@ -18,11 +18,13 @@ import Utsettelsesperiodedetaljer from 'common/components/oppsummering/oppsummer
 import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/Overføringsperiodedetaljer';
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
+import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
+    registrerteArbeidsforhold: Arbeidsforhold[];
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -72,11 +74,13 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUtsettelsesperiode(periode: Utsettelsesperiode) {
-        const { intl } = this.props;
+        const { registrerteArbeidsforhold, intl } = this.props;
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Utsettelsesperiodedetaljer periode={periode} />
+            content: (
+                <Utsettelsesperiodedetaljer periode={periode} registrerteArbeidsforhold={registrerteArbeidsforhold} />
+            )
         };
     }
 
