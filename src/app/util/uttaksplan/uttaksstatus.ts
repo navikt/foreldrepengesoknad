@@ -9,7 +9,11 @@ export const getUttaksstatus = (
     uttaksplan: Periode[],
     søkerrolle: SøkerRolle
 ) => {
-    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan);
+    const uttaksstatus: Stønadskontouttak[] = beregnGjenståendeUttaksdager(
+        tilgjengeligeStønadskontoer,
+        uttaksplan,
+        søkerrolle
+    );
     if (erFarEllerMedmor(søkerrolle)) {
         return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
     }
