@@ -7,8 +7,8 @@ const permisjonsregler = getPermisjonsregler();
 export const uttaksdatoer = (familiehendelsesdato: Date) => ({
     førsteUttaksdagForeldrepengerFørFødsel: getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato),
     førsteUttaksdagPåEllerEtterFødsel: Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-    førsteMuligeUttaksdag: getFørsteMuligeUttaksdag(familiehendelsesdato),
-    sisteMuligeUttaksdag: getSisteMuligeUttaksdag(familiehendelsesdato)
+    førsteMuligeUttaksdagFørTermin: getFørsteMuligeUttaksdag(familiehendelsesdato),
+    sisteMuligeUttaksdagEtterTermin: getSisteMuligeUttaksdag(familiehendelsesdato)
 });
 
 export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {

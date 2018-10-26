@@ -827,6 +827,7 @@
         "Planen din er tom. Du må legge til periode med foreldrepenger eller en utsettelse for å gå videre.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
-        "Du søker tidligere enn 6 uker før du skal ta ut foreldrepenger. Første dag du kan sende inn søknaden er {dato}.",
+        "Du kan ikke søke om en utsettelse som ikke er på grunn av sykdom eller innleggelse, eller gradert uttak første seks ukene.",
+    "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør": "",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
