@@ -88,10 +88,7 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
         isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.harRettPåForeldrepenger),
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
         condition: (payload) => {
-            return (
-                payload.søker.erAleneOmOmsorg === false ||
-                (payload.søker.erAleneOmOmsorg && payload.søkerErFarEllerMedmor === false)
-            );
+            return payload.søker.erAleneOmOmsorg === false;
         }
     },
     [AnnenForelderSpørsmålKeys.erMorUfør]: {
