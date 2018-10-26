@@ -1,8 +1,9 @@
 import * as React from 'react';
 import FlervalgSpørsmål from '../../flervalg-spørsmål/FlervalgSpørsmål';
 import { OppholdÅrsakType } from '../../../types/uttaksplan/periodetyper';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export interface OwnProps {
     oppholdsårsak: OppholdÅrsakType | undefined;
@@ -12,7 +13,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const HvaErÅrsakTilOppholdSpørsmål: React.StatelessComponent<Props> = ({
+const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
     oppholdsårsak,
     onChange,
     navnAnnenForelder,
@@ -28,7 +29,9 @@ const HvaErÅrsakTilOppholdSpørsmål: React.StatelessComponent<Props> = ({
             alternativer={[
                 {
                     label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
-                    value: OppholdÅrsakType.UttakKvoteAnnenForelder
+                    value: erFarEllerMedmor
+                        ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
+                        : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
                 },
                 {
                     label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
@@ -39,4 +42,4 @@ const HvaErÅrsakTilOppholdSpørsmål: React.StatelessComponent<Props> = ({
     </>
 );
 
-export default injectIntl(HvaErÅrsakTilOppholdSpørsmål);
+export default injectIntl(OppholdsårsakSpørsmål);
