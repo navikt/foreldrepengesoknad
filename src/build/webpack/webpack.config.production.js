@@ -8,7 +8,8 @@ webpackConfig.mode = 'production';
 webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
         template: `${__dirname}/../../app/index.html`,
-        inject: 'body'
+        inject: 'body',
+        hash: true
     })
 );
 
