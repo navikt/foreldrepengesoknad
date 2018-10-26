@@ -678,7 +678,7 @@
 
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
-    "kvittering.referanseId": "Vi mottok søknaden med referansenummer {id} den {date} kl. {timeOfDay}.",
+    "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
     "kvittering.dittNav": "Det vil ta noen dager før søknaden er synlig på {dittNavLink}.",
     "kvittering.dittNavLink": "Ditt NAV",
     "kvittering.kontonummer":
