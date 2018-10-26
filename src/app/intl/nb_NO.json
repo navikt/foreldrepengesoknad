@@ -220,7 +220,7 @@
         "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
+        "Her kan du skrive kort hva som har endret seg i virksomheten eller arbeidssituasjonen din",
 
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fortsatt som frilanser?",
 
@@ -228,7 +228,7 @@
     "næringstype.fiske": "Fiske",
     "næringstype.jordbruk_skogbruk": "Jordbruk",
     "næringstype.dagmamma": "Dagmamma eller familiebarnehage i eget hjem",
-    "næringstype.annen": "Annen type virksomet",
+    "næringstype.annen": "Annen type virksomhet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
@@ -452,11 +452,11 @@
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
-        "Når du ikke starter foreldrepengeperioden tre uker før termindato faller disse dagene bort.",
+        "Når du ikke starter foreldrepengeperioden tre uker før termindato mister du rett til foreldrepenger disse dagene..",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
     "uttaksplan.fristerLinkTekst": "nav.no",
-    "uttaksplan.leggTil.opphold": "Legg til utsettelse",
+    "uttaksplan.leggTil.opphold": "Utsett en periode",
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
@@ -782,7 +782,7 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
