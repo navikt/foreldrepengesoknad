@@ -3,7 +3,6 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import { ApiStatePartial } from '../reducers/apiReducer';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { redirectToGenerellFeil } from '../../util/routing/generellFeil';
@@ -19,15 +18,18 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
 
 function* getSøkerinfo() {
     try {
+        yield put(apiActions.updateApi({ isLoadingSøkerinfo: true }));
+
         const response = yield call(Api.getSøkerinfo);
         const søkerinfo: Søkerinfo = getSøkerinfoFromDTO(response.data);
         const useStorage = shouldUseStoredDataIfTheyExist(søkerinfo);
-        const nextApiState: ApiStatePartial = {
-            søkerinfo,
-            isLoadingSøkerinfo: true,
-            isLoadingAppState: true
-        };
-        yield put(apiActions.updateApi(nextApiState));
+
+        yield put(
+            apiActions.updateApi({
+                søkerinfo
+            })
+        );
+
         if (useStorage) {
             yield put(apiActions.getStoredAppState());
         } else {
