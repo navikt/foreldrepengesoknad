@@ -19,8 +19,8 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 const getDefaultState = (): ApiState => ({
-    isLoadingSøkerinfo: false,
-    isLoadingAppState: false,
+    isLoadingSøkerinfo: true,
+    isLoadingAppState: true,
     isLoadingTilgjengeligeStønadskontoer: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,

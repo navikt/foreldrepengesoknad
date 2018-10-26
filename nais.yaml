@@ -1,4 +1,5 @@
 name: foreldrepengesoknad
+team: nais
 image: repo.adeo.no:5443/foreldrepengesoknad
 replicas:
   min: 2
@@ -25,7 +26,7 @@ fasitResources:
   used:
   - alias: foreldrepengesoknad-api
     resourceType: restservice
-  - alias: tmp.foreldrepengesoknad.appres.cms
+  - alias: appres.cms
     resourceType: baseurl
   - alias: loginservice
     resourceType: restservice

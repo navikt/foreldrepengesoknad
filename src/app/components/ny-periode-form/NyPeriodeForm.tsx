@@ -16,12 +16,15 @@ import BEMHelper from 'common/util/bem';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttak-form/UttakForm';
+import { Tidsperiode } from 'common/types';
 
 interface OwnProps {
+    antallFeriedager: number;
     erMorUfør: boolean | undefined;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
     periodetype: Periodetype;
+    tidsperiode?: Tidsperiode;
 }
 
 interface State {
@@ -46,9 +49,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const { periodetype } = props;
+        const { periodetype, tidsperiode } = props;
         const periode: RecursivePartial<Periode> = {
-            tidsperiode: {}
+            tidsperiode: tidsperiode || {}
         };
         if (
             periodetype === Periodetype.Utsettelse ||
@@ -96,7 +99,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, onCancel } = this.props;
+        const { intl, antallFeriedager, onCancel } = this.props;
         const { periode } = this.state;
 
         return (
@@ -105,6 +108,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
                         <UtsettelsesperiodeForm
+                            antallFeriedager={antallFeriedager}
                             periode={periode as UtsettelseFormPeriodeType}
                             onChange={this.updatePeriode}
                             onCancel={onCancel}

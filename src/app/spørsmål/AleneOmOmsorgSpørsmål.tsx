@@ -17,7 +17,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
         <JaNeiSpørsmål
             spørsmål={getMessage(intl, 'annenForelder.aleneOmOmsorg')}
             navn="omsorgsfordeling"
-            hjelpetekst="Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen."
+            hjelpetekst={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
             onChange={onChange}
             valgtVerdi={aleneOmOmsorg === undefined ? undefined : !aleneOmOmsorg}
         />
