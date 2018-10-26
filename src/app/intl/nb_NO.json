@@ -458,9 +458,9 @@
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Legg til utsettelse",
     "uttaksplan.leggTil.uttak": "Legg til periode",
-    "uttaksplan.hull.fjern": "Bruk av neste periode ({nesteUttaksperiode})",
-    "uttaksplan.hull.leggTil.opphold": "Sett inn ny utsettelse",
-    "uttaksplan.hull.leggTil.uttak": "Sett inn ny periode",
+    "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
+    "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
+    "uttaksplan.hull.leggTil.uttak": "Legg ny periode",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
 
