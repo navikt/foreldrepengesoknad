@@ -396,7 +396,7 @@
     "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg dato",
 
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
-    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Omsorgsovertakelsen {dato}",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.annen": "Annen dato",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
 
@@ -467,7 +467,7 @@
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
     "uttaksplanSkjema.info.ikkeAdoptertIUtlandet":
-        "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
+        "Starter du foreldrepengene senere enn omsorgsovertakelsen mister du rett til foreldrepenger disse dagene.",
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk.",
 
