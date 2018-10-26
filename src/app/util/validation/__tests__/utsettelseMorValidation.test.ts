@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
     Uttaksperiode,
     Utsettelsesperiode,
@@ -12,7 +11,6 @@ import { Forelder } from 'common/types';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
 const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
