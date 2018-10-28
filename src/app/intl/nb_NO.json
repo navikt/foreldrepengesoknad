@@ -132,7 +132,7 @@
         "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
-    "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
+    "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
 
     "annenInntekt.arbeidsforhold.infotekst":
         "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
@@ -309,7 +309,7 @@
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
     "søkersituasjon.alternativ.stebarn": "Stebarnadopsjon",
-    "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
+    "søkersituasjon.alternativ.omsorgsovertakelse": "Overta foreldreansvar",
 
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
@@ -471,7 +471,7 @@
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk.",
     "uttaksplanSkjema.info.dekningsgrad80":
-        "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
+        "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
