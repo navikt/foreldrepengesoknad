@@ -5,10 +5,13 @@ import { today } from '../values';
 
 export const førsteUttakErInnenforKommendeSeksUker = (perioder: Periode[]): boolean => {
     const førsteUttaksdag = Periodene(perioder).getFørsteUttaksdag();
-    const førsteUttaksDagErFør20190101 = moment(førsteUttaksdag).isSameOrAfter(new Date(2019, 0, 1));
+    const førsteUttaksDagErFør20190101 = moment(førsteUttaksdag).isSameOrBefore(new Date(2019, 0, 1));
     if (førsteUttaksdag) {
         const førsteMuligeSøknadsdag = getFørsteMuligeSøknadsdagGittUttak(førsteUttaksdag);
-        return moment(førsteMuligeSøknadsdag).isSameOrBefore(today, 'day') && !førsteUttaksDagErFør20190101;
+        return (
+            førsteUttaksDagErFør20190101 ||
+            (moment(førsteMuligeSøknadsdag).isSameOrBefore(today, 'day') && !førsteUttaksDagErFør20190101)
+        );
     }
     return true;
 };
