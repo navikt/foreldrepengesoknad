@@ -850,6 +850,6 @@
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du kan søke tidligst 6 uker før du skal ha foreldrepenger. Du kan sende inn søknad fra og med {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ikke søke om en utsettelse som ikke er på grunn av sykdom eller innleggelse, eller gradert uttak første seks ukene.",
+        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
