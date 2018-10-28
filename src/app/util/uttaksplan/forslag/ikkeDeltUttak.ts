@@ -137,10 +137,7 @@ const ikkeDeltUttakFødselMor = (
                 type: Periodetype.Uttak,
                 forelder: Forelder.MOR,
                 konto: StønadskontoType.Foreldrepenger,
-                tidsperiode: {
-                    fom: startdatoPermisjon,
-                    tom: Uttaksdagen(startdatoPermisjon).leggTil(dagerFørFødsel - 15)
-                },
+                tidsperiode: getTidsperiode(startdatoPermisjon, dagerFørFødsel - 15),
                 vedlegg: [],
                 ønskerSamtidigUttak: false
             };
