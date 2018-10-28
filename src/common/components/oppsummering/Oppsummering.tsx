@@ -67,6 +67,7 @@ class Oppsummering extends React.Component<Props> {
                         <UtenlandsoppholdOppsummering
                             informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
                             situasjon={søknad.situasjon}
+                            farEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
                         />
                     </Oppsummeringspanel>
 
