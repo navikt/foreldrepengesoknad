@@ -99,12 +99,14 @@ class GradertUttakForm extends React.Component<Props> {
                         periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
                     }>
                     <Veilederinfo>{getVeilederTekst(intl, periode.erArbeidstaker!)}</Veilederinfo>
-                    <VedleggSpørsmål
-                        vedlegg={periode.vedlegg as Attachment[]}
-                        onChange={(vedlegg) => onChange({ vedlegg })}
-                        attachmentType={AttachmentType.ARBEID_VED_GRADERING}
-                        skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
-                    />
+                    {periode.arbeidsform === Arbeidsform.arbeidstaker && (
+                        <VedleggSpørsmål
+                            vedlegg={periode.vedlegg as Attachment[]}
+                            onChange={(vedlegg) => onChange({ vedlegg })}
+                            attachmentType={AttachmentType.ARBEID_VED_GRADERING}
+                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
+                        />
+                    )}
                 </Block>
             </>
         );
