@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Dekningsgrad } from 'common/types';
@@ -14,7 +14,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     dekningsgrad?: Dekningsgrad;
-    erAleneomsorg?: boolean;
+    erAleneomsorg: boolean;
     dekningsgrad100AntallUker: number | undefined;
     dekningsgrad80AntallUker: number | undefined;
     rolle: SøkerRolle;
@@ -25,6 +25,12 @@ interface OwnProps {
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
+
+const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string => {
+    return erAleneOmOmsorg
+        ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')
+        : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg');
+};
 
 const DekningsgradSpørsmål = (props: Props) => {
     const {
@@ -88,14 +94,12 @@ const DekningsgradSpørsmål = (props: Props) => {
                         }
                     ]}
                     name="dekninsgrad"
-                    infoboksTekst={getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')}
+                    infoboksTekst={getInfoboxText(intl, erAleneomsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
             <Block visible={dekningsgrad === '80'}>
-                <Veilederinfo>
-                    <FormattedMessage id="uttaksplanSkjema.info.dekningsgrad80" />
-                </Veilederinfo>
+                <Veilederinfo>{getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
             </Block>
         </>
     );
