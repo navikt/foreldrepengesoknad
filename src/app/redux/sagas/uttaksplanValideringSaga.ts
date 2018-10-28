@@ -13,7 +13,7 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { harMorHarSøktUgyldigUtsettelseFørsteSeksUker } from '../../util/validation/uttaksplan/utsettelseMorValidation';
 import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
 import { erFarEllerMedmor } from 'app/util/domain/personUtil';
-// import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
+import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 
 const stateSelector = (state: AppState) => state;
 
@@ -54,7 +54,7 @@ function* validerUttaksplanSaga() {
             validertePerioder,
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
-            true, // førsteUttakErInnenforKommendeSeksUker(uttaksplan),
+            førsteUttakErInnenforKommendeSeksUker(uttaksplan),
             harMorHarSøktUgyldigUtsettelseFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon)),
             erUttaksmengdeForFarMedmorForHøy(
                 uttaksplan,

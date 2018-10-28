@@ -7,7 +7,10 @@ export const førsteUttakErInnenforKommendeSeksUker = (perioder: Periode[]): boo
     const førsteUttaksdag = Periodene(perioder).getFørsteUttaksdag();
     if (førsteUttaksdag) {
         const førsteMuligeSøknadsdag = getFørsteMuligeSøknadsdagGittUttak(førsteUttaksdag);
-        return moment(førsteMuligeSøknadsdag).isSameOrBefore(today, 'day');
+        return (
+            moment(førsteMuligeSøknadsdag).isSameOrBefore(today, 'day') ||
+            moment(today).isBefore(moment(new Date(2019, 0, 1)))
+        );
     }
     return true;
 };
