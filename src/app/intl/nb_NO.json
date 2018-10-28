@@ -799,9 +799,14 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "studiested, fag eller studieprogram",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
-        "har mor søkt om permisjon fra studiet en periode må dette komme frem i bekreftelsen",
+        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
+        "Du må legge ved dokumentasjon på {navnMor} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1": "navn og fødselsnummer",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt2": "studiested, fag eller studieprogram",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt3": "oppstart og varighet av studiet",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4":
+        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
