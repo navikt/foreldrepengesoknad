@@ -1,3 +1,5 @@
+@import '../../../common/styles/variables.less';
+
 .block {
     /** Motvirke at outline på elementer blir klippet på grunn av overflow:hidden */
     @outlineSize: 8px;
@@ -43,6 +45,19 @@
 
         .sirkelknapp  {
             margin-left: 1rem;
+        }
+    }
+    @media (max-width: @tablet-breakpoint) {
+        &--sm {
+            &--m {
+                margin-bottom: 2rem;
+            }
+            &--s {
+                margin-bottom: 1.5rem;
+            }
+            &--xs {
+                margin-bottom: 1rem;
+            }
         }
     }
 }
