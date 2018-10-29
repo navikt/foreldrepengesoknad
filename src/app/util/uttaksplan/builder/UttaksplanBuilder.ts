@@ -257,7 +257,7 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-function finnHull(perioder: Periode[]): PeriodeHull[] {
+export function finnHullIPerioder(perioder: Periode[]): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
     const len = perioder.length;
     perioder.forEach((periode, idx) => {
@@ -439,7 +439,7 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
 }
 
 function finnOgSettInnHull(perioder: Periode[]): Periode[] {
-    const hull = finnHull(perioder);
+    const hull = finnHullIPerioder(perioder);
     return [...perioder, ...hull].sort(sorterPerioder);
 }
 
