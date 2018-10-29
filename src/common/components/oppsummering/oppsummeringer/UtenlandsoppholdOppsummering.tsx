@@ -11,10 +11,11 @@ import { Søkersituasjon } from '../../../../app/types/søknad/Søknad';
 interface Props {
     informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
     situasjon: Søkersituasjon;
+    farEllerMedmor: boolean;
 }
 
 const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedIntlProps> = (props) => {
-    const { situasjon, intl } = props;
+    const { situasjon, intl, farEllerMedmor } = props;
     const {
         iNorgePåHendelsestidspunktet,
         iNorgeNeste12Mnd,
@@ -48,7 +49,11 @@ const UtenlandsoppholdOppsummering: React.StatelessComponent<Props & InjectedInt
             {iNorgePåHendelsestidspunktet !== undefined &&
                 situasjon === Søkersituasjon.FØDSEL && (
                     <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.iNorgePåFødselstidspunktet.label')}
+                        feltnavn={
+                            farEllerMedmor
+                                ? getMessage(intl, 'oppsummering.iNorgePåFødselstidspunktet.label.farMedmor')
+                                : getMessage(intl, 'oppsummering.iNorgePåFødselstidspunktet.label')
+                        }
                         verdi={iNorgePåHendelsestidspunktet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                     />
                 )}
