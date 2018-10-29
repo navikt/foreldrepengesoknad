@@ -54,7 +54,7 @@ class UttaksplanAutoBuilder {
 
         this.finnOgSettInnHull();
         this.slåSammenLikePerioder();
-        if (foreldrepengerFørTermin && foreldrepengerFørTermin.skalIkkeHaUttakFørTermin === false) {
+        if (foreldrepengerFørTermin === undefined) {
             this.fjernHullPåStarten();
         }
         this.fjernHullPåSlutten();
