@@ -856,6 +856,8 @@
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger. Det gjelder også hvis du vil kombinere foreldrepengene med delvis arbeid.",
+    "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
+        "Du har søkt om ugyldig uttak eller utsettelse i de første seks ukene.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
