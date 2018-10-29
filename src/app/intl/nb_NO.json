@@ -34,6 +34,10 @@
     "dokument.tittel.feilside.ikkeMyndig": "Ikke myndig - Søknad om foreldrepenger - NAV",
     "dokument.tittel.søknadSendt": "Søknad mottatt - Søknad om foreldrepenger - NAV",
 
+    "feilside.tittel": "Det oppstod en feil",
+    "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
+    "feilside.ingress.lenke": "kontakt brukerstøtte",
+
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
     "steg.config.tittel.inngang": "Din situasjon",
@@ -237,7 +241,7 @@
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
-    "nyIArbeidslivet.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
+    "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
@@ -637,7 +641,8 @@
     "oppsummering.selvstendigNæringsdrivende.oppstartsdato": "Oppstartsdato",
     "oppsummering.selvstendigNæringsdrivende.næringsinntekt": "Næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.registrertLand": "Registrert i land",
-    "oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet": "Ny i arbeidslivet",
+    "oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År":
+        "Jeg har blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene",
     "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår":
         "Har hatt varig endring av næringsinntekt siste 4 kalenderår",
     "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
@@ -850,6 +855,7 @@
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger.",
+        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb eller gradere de første seks ukene du tar ut foreldrepenger.",
+    "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
