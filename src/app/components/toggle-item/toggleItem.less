@@ -27,6 +27,13 @@
         &:focus {
             z-index: 2;
         }
+        &--hideArrow  {
+            @media (max-width: @mobile-breakpoint) {
+                &__arrow {
+                    display: none;
+                }
+            }
+        }
         /** Ekspanderbart panel styles */
     }
     a.toggleItem__header {
