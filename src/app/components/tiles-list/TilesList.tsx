@@ -2,7 +2,7 @@ import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 import './tilesList.less';
 
-const BEM = BEMHelper('tileslist');
+const BEM = BEMHelper('tilesList');
 
 const TilesList: React.StatelessComponent<{}> = ({ children }) => (
     <ol className={BEM.className}>
