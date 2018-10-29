@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedHTMLMessage, InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
+import { FormattedHTMLMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Input from 'common/components/skjema/wrappers/Input';
 import Block from 'common/components/block/Block';
@@ -25,14 +25,6 @@ interface OwnProps {
 }
 
 type Props = OwnProps & InjectedIntlProps;
-
-const getVeilederTekst = (intl: InjectedIntl, erArbeidstaker: boolean): string => {
-    if (erArbeidstaker) {
-        return getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering');
-    } else {
-        return getMessage(intl, 'uttaksplan.infoTilFrilansOgSelvstendig');
-    }
-};
 
 class GradertUttakForm extends React.Component<Props> {
     handleStillingsprosentChange(stillingsprosent: string) {
@@ -98,7 +90,15 @@ class GradertUttakForm extends React.Component<Props> {
                         periode.arbeidsform === Arbeidsform.frilans ||
                         periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
                     }>
-                    <Veilederinfo>{getVeilederTekst(intl, periode.erArbeidstaker!)}</Veilederinfo>
+                    <Veilederinfo>
+                        <FormattedHTMLMessage
+                            id={
+                                periode.erArbeidstaker
+                                    ? 'vedlegg.veileder.dokumentasjonAvArbeidVedGradering'
+                                    : 'uttaksplan.infoTilFrilansOgSelvstendig'
+                            }
+                        />
+                    </Veilederinfo>
                     {periode.arbeidsform === Arbeidsform.arbeidstaker && (
                         <VedleggSpørsmål
                             vedlegg={periode.vedlegg as Attachment[]}
