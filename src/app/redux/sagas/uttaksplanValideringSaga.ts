@@ -36,8 +36,10 @@ const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
 
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, barn, situasjon } = appState.søknad;
+    const { uttaksplan, barn, situasjon, søker } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
+    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const søkerErMor = søkerErFarEllerMedmor === false;
     let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
         validertePerioder[periode.id] = validerPeriode(appState, periode);
@@ -56,12 +58,16 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
             førsteUttakErInnenforKommendeSeksUker(uttaksplan),
-            harMorHarSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon)),
-            harFarHarSøktUgyldigUttakFørsteSeksUker(
-                uttaksplan,
-                getFamiliehendelsedato(barn, situasjon),
-                barn.antallBarn
-            ),
+            søkerErMor
+                ? harMorHarSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon))
+                : false,
+            søkerErFarEllerMedmor
+                ? harFarHarSøktUgyldigUttakFørsteSeksUker(
+                      uttaksplan,
+                      getFamiliehendelsedato(barn, situasjon),
+                      barn.antallBarn
+                  )
+                : false,
             erUttaksmengdeForFarMedmorForHøy(
                 uttaksplan,
                 appState.api.tilgjengeligeStønadskontoer,
