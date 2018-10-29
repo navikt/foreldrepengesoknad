@@ -8,6 +8,10 @@ import søknadActionCreators from '../actions/søknad/søknadActionCreators';
 import { AppState } from '../reducers';
 import { default as uttaksplanValideringActions } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer';
+import {
+    overstyrAntallTilgjengeligeUkerForBarnFørJuli2018,
+    skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
+} from '../../util/uttaksplan/tidsregler/f\u00F8rJuli2018';
 
 const stateSelector = (state: AppState) => state;
 
@@ -37,6 +41,16 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         });
         if (erMorUfør === true) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(tilgjengeligeStønadskontoer);
+        }
+        if (
+            skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
+                action.params.familiehendelsesdato,
+                tilgjengeligeStønadskontoer
+            )
+        ) {
+            tilgjengeligeStønadskontoer = overstyrAntallTilgjengeligeUkerForBarnFørJuli2018(
+                tilgjengeligeStønadskontoer
+            );
         }
         yield put(
             apiActions.updateApi({
