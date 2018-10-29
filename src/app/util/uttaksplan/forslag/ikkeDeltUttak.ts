@@ -58,7 +58,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(
-                Uttaksdagen(førsteUttaksdag).leggTil(aktivitetsfriKvote!.dager + 1),
+                Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
                 foreldrepengerKonto.dager
             ),
             vedlegg: [],
@@ -246,7 +246,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             forelder: Forelder.FARMEDMOR,
             konto: StønadskontoType.Foreldrepenger,
             tidsperiode: getTidsperiode(
-                Uttaksdagen(startDato).leggTil(aktivitetsfriKvote!.dager + 1),
+                Uttaksdagen(aktivitetsFriPeriode.tidsperiode.tom).neste(),
                 foreldrepengerKonto.dager
             ),
             vedlegg: [],

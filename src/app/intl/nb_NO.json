@@ -154,7 +154,7 @@
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.ventelønn": "Vartpenger og ventelønn",
     "inntektstype.ventelønn_info":
-        "Du må legge ved dokumentasjon fra arbeidsgiver din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
+        "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
         "Siden du har jobbet i et annet land må vi innhente dokumentasjon derfra. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
@@ -433,7 +433,7 @@
     "uttaksplan.familiehendelsesdato.adopsjon": "Barnet er adoptert {dato}",
     "uttaksplan.familiehendelsesdato.omsorgsovertakelse": "Omsorgsovertakselsedato den {dato}",
 
-    "uttaksplan.overføring.årsak.spørsmål": "Hvorfor du skal overta {annenForelderNavn} sin kvote?",
+    "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} sin kvote?",
     "uttaksplan.overføring.vedlegg.info": "Du må legge ved bekreftelse på datoen du ble alene om omsorgen for barnet.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
         "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
@@ -441,11 +441,11 @@
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
 
     "uttaksplan.informasjonTilSøker":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navn}, men {navn} må søke selv.",
     "uttaksplan.informasjon.farMedmor.deltUttak":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Hvis du ikke skal ta ut foreldrepengene dine rett etter {navnAnnenForelder} sin siste dag, må du søke om å utsette.<br /><br />Du kan lese mer om viktige frister her: <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">nav.no</a>",
     "uttaksplan.informasjon.farMedmor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
@@ -676,7 +676,7 @@
     "oppsummering.uttak.samtidigUttak": "Vi skal ha samtidig uttak",
     "oppsummering.uttak.kombineresMedarbeid": "Jeg skal kombinere perioden med arbeid",
     "oppsummering.uttak.stillingsprosent": "Stillingsprosent",
-    "oppsummering.uttak.arbeidstaker.label": "Arbeidstaker",
+    "oppsummering.uttak.arbeidstaker.label": "Arbeidssted",
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.morsAktivitet": "Mors aktivitet i perioden",
     "oppsummering.morsAktivitet.dokumentasjon": "Dokumentasjon av mors aktivitet i perioden",
@@ -698,7 +698,7 @@
     "stønadskontotype.FORELDREPENGER": "Foreldrepenger",
     "stønadskontotype.FELLESPERIODE": "Fellesperiode",
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
-    "stønadskontotype.FLERBARNSDAGER": "Flerbarnskvote",
+    "stønadskontotype.FLERBARNSDAGER": "Flerbarnsuker",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
     "stønadskontotype.undefined": "Ny periode uten kvote",
@@ -739,7 +739,7 @@
     "bekreftGåTilUttaksplanSkjemaDialog.avbrytLabel": "Nei",
     "bekreftGåTilUttaksplanSkjemaDialog.tittel": "Planen din blir slettet.",
     "bekreftGåTilUttaksplanSkjemaDialog.intro":
-        "Hvis du går tilbake til forrige steg, blir planen din bli slettet og du må lage den på nytt.",
+        "Hvis du går tilbake til forrige steg, blir planen din slettet og du må lage den på nytt.",
     "bekreftGåTilUttaksplanSkjemaDialog.spørsmål": "Ønsker du å gå tilbake?",
 
     "uttaksplan.tittel": "Din plan",
@@ -847,7 +847,7 @@
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
     "uttaksplan.validering.feil.tomUttaksplan":
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse.",
-    "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
+    "uttaksplan.validering.feil.forMyeUttak": "Du har lagt inn for mange dager av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
