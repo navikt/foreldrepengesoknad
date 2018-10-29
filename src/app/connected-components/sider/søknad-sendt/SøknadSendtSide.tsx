@@ -31,13 +31,26 @@ class SøknadSendtSide extends React.Component<Props> {
         );
     }
 
+    buildSaksnummerMessage() {
+        const { kvittering } = this.props;
+        return (
+            <FormattedMessage
+                id={'kvittering.saksNr'}
+                values={{
+                    id: kvittering.saksNr ? kvittering.saksNr : kvittering.referanseId,
+                    timeOfDay: moment(kvittering.mottattDato).format('HH:mm'),
+                    date: moment(kvittering.mottattDato).format('LL')
+                }}
+            />
+        );
+    }
+
     buildReferenceNumberMessage() {
         const { kvittering } = this.props;
         return (
             <FormattedMessage
-                id={kvittering.saksNr ? 'kvittering.saksNr' : 'kvittering.referanseId'}
+                id="kvittering.referanseId"
                 values={{
-                    id: kvittering.saksNr ? kvittering.saksNr : kvittering.referanseId,
                     timeOfDay: moment(kvittering.mottattDato).format('HH:mm'),
                     date: moment(kvittering.mottattDato).format('LL')
                 }}
@@ -88,7 +101,11 @@ class SøknadSendtSide extends React.Component<Props> {
                         {this.buildHeadlineMessage()}
                     </Innholdstittel>
 
-                    <Ingress className="blokk-xs">{this.buildReferenceNumberMessage()}</Ingress>
+                    <Ingress className="blokk-xs">
+                        {this.props.kvittering.saksNr
+                            ? this.buildSaksnummerMessage()
+                            : this.buildReferenceNumberMessage()}
+                    </Ingress>
                     <Ingress className="blokk-xs">{this.buildDittNavMessage()}</Ingress>
 
                     {person.bankkonto &&

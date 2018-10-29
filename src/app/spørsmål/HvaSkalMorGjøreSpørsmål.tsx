@@ -33,11 +33,21 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                 />
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.ArbeidOgUtdanning) {
+            const listData = [
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt2'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt3'),
+                getMessage(intl, 'uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4')
+            ];
+
             return (
-                <FormattedMessage
-                    id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning"
-                    values={{ navnMor: navnPåForeldre.mor }}
-                />
+                <>
+                    <FormattedMessage
+                        id="uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning"
+                        values={{ navnMor: navnPåForeldre.mor }}
+                    />
+                    <ul>{listData.map((listItem, index) => <li key={`arbeidOgUtdanning${index}`}>{listItem}</li>)}</ul>
+                </>
             );
         } else if (morsAktivitetIPerioden === MorsAktivitet.Innlagt) {
             return (

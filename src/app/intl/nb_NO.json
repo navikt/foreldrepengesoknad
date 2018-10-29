@@ -11,7 +11,7 @@
     "fraogmed": "Fra og med",
     "tilogmed": "Til og med",
 
-    "pågående": "Jeg jobber her fortsatt",
+    "pågående": "Pågående",
 
     "rediger": "Rediger",
 
@@ -36,14 +36,14 @@
 
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
-    "steg.config.tittel.inngang": "Inngang",
+    "steg.config.tittel.inngang": "Din situasjon",
     "steg.config.tittel.infoOmBarnet": "Om barnet",
     "steg.config.tittel.relasjonBarnForeldreansvar": "Relasjon til barn overtakelse av foreldreansvar",
     "steg.config.tittel.relasjonBarnFødsel": "Om barnet",
     "steg.config.tittel.annenForelder": "Den andre forelderen",
     "steg.config.tittel.infoOmUttaket": "Perioden din med foreldrepenger",
     "steg.config.tittel.uttak": "Perioden din med foreldrepenger",
-    "steg.config.tittel.infoOmUtenlandsopphold": "Utenlandsopphold",
+    "steg.config.tittel.infoOmUtenlandsopphold": "Opphold i utland",
     "steg.config.tittel.opplysningerOmInntekt": " Arbeidsforhold og inntekt",
     "steg.config.tittel.oppsummering": "Oppsummering",
 
@@ -132,7 +132,7 @@
         "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
-    "annenInntekt.tom": "Hvis du har avsluttet  {navnPåNæringen} oppgi sluttdato",
+    "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
 
     "annenInntekt.arbeidsforhold.infotekst":
         "Hvis du mangler informasjon om et eller flere arbeidsforhold, eller mener at informasjonen ikke stemmer så må du kontakte din arbeidsgiver og be dem oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret.",
@@ -220,7 +220,7 @@
         "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
-        "Her kan du skrive kort hva som som har endret seg i virksomheten eller arbeidssituasjonen din",
+        "Her kan du skrive kort hva som har endret seg i virksomheten eller arbeidssituasjonen din",
 
     "jobberFremdelesSomFrilans.spørsmål": "Jobber du fortsatt som frilanser?",
 
@@ -228,7 +228,7 @@
     "næringstype.fiske": "Fiske",
     "næringstype.jordbruk_skogbruk": "Jordbruk",
     "næringstype.dagmamma": "Dagmamma eller familiebarnehage i eget hjem",
-    "næringstype.annen": "Annen type virksomet",
+    "næringstype.annen": "Annen type virksomhet",
 
     "selvstendigNæringsdrivende.oppfølgingsspørsmål": "Perioder som selvstendig næringsdrivende",
     "selvstendigNæringsdrivende.leggTilNæring": "Legg til virksomhet",
@@ -309,7 +309,7 @@
     "søkersituasjon.alternativ.fødsel": "Fødsel",
     "søkersituasjon.alternativ.adopsjon": "Adopsjon",
     "søkersituasjon.alternativ.stebarn": "Stebarnadopsjon",
-    "søkersituasjon.alternativ.omsorgsovertakelse": "Foreldreansvar",
+    "søkersituasjon.alternativ.omsorgsovertakelse": "Overta foreldreansvar",
 
     "gjelderSøknadenNoenAvDisseBarna.spørsmål": "Gjelder foreldrepengesøknaden noen av disse barna?",
     "gjelderSøknadenNoenAvDisseBarna.spørsmål.ettBarn": "Gjelder foreldrepengesøknaden dette barnet?",
@@ -374,6 +374,8 @@
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
+    "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
+        "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
@@ -396,7 +398,7 @@
     "uttaksplan.skjema.startdatoAdopsjon.annenDato.spørsmål": "Velg dato",
 
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.spørsmål": "Når skal du starte foreldrepengene dine?",
-    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Dato omsorgsovertakelse ({dato})",
+    "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.datoForAleneomsorg": "Omsorgsovertakelsen {dato}",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.alternativ.annen": "Annen dato",
     "uttaksplan.skjema.startdatoAleneomsorgFarMedmor.annenDato.spørsmål": "Velg annen dato",
 
@@ -452,11 +454,11 @@
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
-        "Når du ikke starter foreldrepengeperioden tre uker før termindato faller disse dagene bort.",
+        "Når du ikke starter foreldrepengeperioden tre uker før termindato mister du rett til foreldrepenger disse dagene.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMindreEnnTreUker":
         "{varighet} du ikke bruker før termin faller bort",
     "uttaksplan.fristerLinkTekst": "nav.no",
-    "uttaksplan.leggTil.opphold": "Legg til utsettelse",
+    "uttaksplan.leggTil.opphold": "Utsett en periode",
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
@@ -470,6 +472,8 @@
         "Starter du foreldrepengene senere enn omsorgsovertakelsen vil du miste dager.",
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du starter ditt uttak i de første seks ukene etter fødsel må du kunne dokumentere at mor er for syk.",
+    "uttaksplanSkjema.info.dekningsgrad80":
+        "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepenger du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepenger du har brukt",
@@ -487,6 +491,7 @@
     "vedlegg.lastoppknapp.morsaktivitetdokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.dokumentasjonAvArbeidVedGradering": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.dokumentasjonAvArbeidVedUtsettelse": "Last opp dokumentasjon her",
 
     "vedlegg.veileder.terminbekreftelsen":
         "Du må legge ved en bekreftelse på termin. Denne må være datert og signert av lege eller jordmor når du er i 26. svangerskapsuke eller senere.",
@@ -598,6 +603,7 @@
 
     "oppsummering.utenlandsopphold": "Utenlandsopphold",
     "oppsummering.iNorgePåFødselstidspunktet.label": "Jeg er i Norge på fødselstidspunktet",
+    "oppsummering.iNorgePåFødselstidspunktet.label.farMedmor": "Jeg var i Norge på fødselstidspunktet",
     "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Jeg er i Norge på datoen for omsorgsovertakelse",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
     "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
@@ -678,11 +684,11 @@
 
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
-    "kvittering.referanseId": "Vi mottok søknaden med referansenummer {id} den {date} kl. {timeOfDay}.",
-    "kvittering.dittNav": "Du kan følge med på søknaden på {dittNavLink}.",
+    "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
+    "kvittering.dittNav": "Det vil ta noen dager før søknaden er synlig på {dittNavLink}.",
     "kvittering.dittNavLink": "Ditt NAV",
     "kvittering.kontonummer":
-        "Hvis søknaden din blir innvilget, blir engangsstønaden utbetalt til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
+        "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
 
     "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
@@ -782,7 +788,7 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinerer både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
@@ -798,9 +804,14 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt2": "studiested, fag eller studieprogram",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
-        "har mor søkt om permisjon fra studiet en periode må dette komme frem i bekreftelsen",
+        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning":
-        "Du må legge ved dokumentasjon som viser at {navnMor} sin jobb og studier til sammen utgjør 100 prosent.",
+        "Du må legge ved dokumentasjon på {navnMor} sitt arbeidsforhold og studier. Dokumentasjon fra studiestedet må vise",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt1": "navn og fødselsnummer",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt2": "studiested, fag eller studieprogram",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt3": "oppstart og varighet av studiet",
+    "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.arbeidOgUtdanning.punkt4":
+        "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.innlagt":
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.introduksjonsprogrammet":
@@ -837,8 +848,8 @@
         "For å komme videre i søknaden må du legge til en periode med foreldrepenger eller en utsettelse.",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mye uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
-        "Du kan ikke søke om en utsettelse som ikke er på grunn av sykdom eller innleggelse, eller gradert uttak første seks ukene.",
+        "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan søke tidligst 6 uker før du skal ha foreldrepenger. Du kan sende inn søknad fra og med {dato}.",
+        "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
