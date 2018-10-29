@@ -8,7 +8,9 @@ import {
     PeriodeHull,
     isForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    StønadskontoType,
+    ForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { Tidsperiode, Forelder } from 'common/types';
 import { Perioden } from './Perioden';
@@ -25,6 +27,7 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
+    getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
@@ -184,4 +187,11 @@ function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
         .filter((p) => (isValidTidsperiode(p.tidsperiode) && forelder ? p.forelder === forelder : true))
         .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
         .reduce((tot = 0, curr) => tot + curr, 0);
+}
+
+function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFødselUttaksperiode | undefined {
+    const periode: Periode | undefined = perioder.find(
+        (p) => p.type === Periodetype.Uttak && p.konto === StønadskontoType.ForeldrepengerFørFødsel
+    );
+    return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
 }
