@@ -16,7 +16,6 @@ import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import ErNæringenRegistrertINorgeSpørsmål from '../../spørsmål/ErNæringenRegistrertINorgeSpørsmål';
 import Landvelger from '../landvelger/Landvelger';
-import HeltNyIArbeidslivetSpørsmål from '../../spørsmål/HeltNyIArbeidslivetSpørsmål';
 import VarigEndringAvNæringsinntektBolk from '../../bolker/VarigEndringAvNæringsinntektBolk';
 import NæringsrelasjonBolk from '../../bolker/næringsrelasjon-bolk/NæringsrelasjonBolk';
 import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsførerSpørsmål';
@@ -35,6 +34,7 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from '../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -149,7 +149,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             registrertINorge,
             registrertILand,
             stillingsprosent,
-            nyIArbeidslivet,
+            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
             harRegnskapsfører,
             harRevisor,
             kanInnhenteOpplsyningerFraRevisor,
@@ -305,12 +305,18 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={visibility.nyIArbeidslivet(næring)}>
-                    <HeltNyIArbeidslivetSpørsmål
-                        nyIArbeidslivet={nyIArbeidslivet}
+                <Block visible={visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring)}>
+                    <HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål
+                        spørsmålstekst={getMessage(
+                            intl,
+                            'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.spørsmål'
+                        )}
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene={
+                            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                        }
                         onChange={(v: boolean) =>
                             this.updateNæring({
-                                nyIArbeidslivet: v
+                                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: v
                             })
                         }
                     />

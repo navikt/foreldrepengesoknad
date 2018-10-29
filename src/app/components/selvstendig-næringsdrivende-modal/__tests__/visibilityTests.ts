@@ -161,45 +161,47 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
     });
 
     describe('Oppstartsdato', () => {
-        it('should be visible if nyIArbeidslivet is true and visible', () => {
-            fns.nyIArbeidslivet = jest.fn(() => true);
-            expect(fns.oppstartsdato({ nyIArbeidslivet: true })).toBe(true);
+        it('should be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is true and visible', () => {
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
+            expect(fns.oppstartsdato({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true })).toBe(true);
         });
 
-        it('should not be visible if nyIArbeidslivet is true and not visible', () => {
-            fns.nyIArbeidslivet = jest.fn(() => false);
-            expect(fns.oppstartsdato({ nyIArbeidslivet: true })).toBe(false);
+        it('should not be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is true and not visible', () => {
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
+            expect(fns.oppstartsdato({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true })).toBe(false);
         });
 
-        it('should not be visible if nyIArbeidslivet is false and visible', () => {
-            fns.nyIArbeidslivet = jest.fn(() => true);
-            expect(fns.oppstartsdato({ nyIArbeidslivet: false })).toBe(false);
+        it('should not be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is false and visible', () => {
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
+            expect(fns.oppstartsdato({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false })).toBe(false);
         });
 
-        it('should not be visible if nyIArbeidslivet is false and not visible', () => {
-            fns.nyIArbeidslivet = jest.fn(() => false);
-            expect(fns.oppstartsdato({ nyIArbeidslivet: false })).toBe(false);
+        it('should not be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is false and not visible', () => {
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
+            expect(fns.oppstartsdato({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false })).toBe(false);
         });
     });
 
     describe('Regnskapsfører-bolk', () => {
         beforeEach(() => {
-            fns.nyIArbeidslivet = jest.fn(() => true);
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
             fns.varigEndringAvNæringsinntekt = jest.fn(() => true);
         });
 
-        it('should be visible if nyIArbeidslivet is defined and visible', () => {
-            expect(fns.regnskapsførerBolk({ nyIArbeidslivet: true })).toBe(true);
+        it('should be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is defined and visible', () => {
+            expect(fns.regnskapsførerBolk({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true })).toBe(true);
         });
 
-        it('should be hidden if nyIArbeidslivet is undefined or not visible', () => {
+        it('should be hidden if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is undefined or not visible', () => {
             expect(fns.regnskapsførerBolk({})).toBe(false);
-            fns.nyIArbeidslivet = jest.fn(() => false);
-            expect(fns.regnskapsførerBolk({ nyIArbeidslivet: true })).toBe(false);
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
+            expect(fns.regnskapsførerBolk({ harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true })).toBe(
+                false
+            );
         });
 
         it('should be visible if varigEndringAvNæringsinntekt is defined and visible', () => {
-            fns.nyIArbeidslivet = jest.fn(() => false);
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
             expect(fns.regnskapsførerBolk({ hattVarigEndringAvNæringsinntektSiste4Kalenderår: true })).toBe(true);
         });
 
@@ -270,7 +272,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Form buttons', () => {
         beforeEach(() => {
             fns.kanInnhenteOpplysningerFraRevisor = jest.fn(() => true);
-            fns.nyIArbeidslivet = jest.fn(() => true);
+            fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
             fns.kanInnhenteOpplysningerFraRevisor = jest.fn(() => true);
         });
 
@@ -313,17 +315,17 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(fns.formButtons(data)).toBe(false);
         });
 
-        it('should be visible if no revisor and no regnskapsfører, but nyIArbeidslivet is defined and visible', () => {
+        it('should be visible if no revisor and no regnskapsfører, but harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is defined and visible', () => {
             expect(
                 fns.formButtons({
                     harRevisor: false,
                     harRegnskapsfører: false,
-                    nyIArbeidslivet: true
+                    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true
                 })
             ).toBe(true);
         });
 
-        it('should be hidden if data about both revisor, regnskapsfører and nyIArbeidslivet is missing', () => {
+        it('should be hidden if data about both revisor, regnskapsfører and harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is missing', () => {
             expect(fns.formButtons({})).toBe(false);
             expect(fns.formButtons({ harRegnskapsfører: false })).toBe(false);
             expect(fns.formButtons({ harRevisor: false })).toBe(false);

@@ -16,7 +16,7 @@ type Props = NæringsdetaljerProps & InjectedIntlProps;
 
 const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Props) => {
     const {
-        nyIArbeidslivet,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         registrertILand,
         registrertINorge,
         oppstartsdato,
@@ -67,10 +67,17 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 verdi={registrertINorge ? 'Norge' : countries.getName(registrertILand, 'nb')}
             />
 
-            {nyIArbeidslivet !== undefined && (
+            {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined && (
                 <Feltoppsummering
-                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet')}
-                    verdi={nyIArbeidslivet ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
+                    feltnavn={getMessage(
+                        intl,
+                        'oppsummering.selvstendigNæringsdrivende.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene'
+                    )}
+                    verdi={
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+                            ? getMessage(intl, 'ja')
+                            : getMessage(intl, 'nei')
+                    }
                 />
             )}
 
