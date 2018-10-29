@@ -307,10 +307,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring)}>
                     <HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål
-                        spørsmålstekst={getMessage(
-                            intl,
-                            'harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.spørsmål'
-                        )}
+                        spørsmålstekst={getMessage(intl, 'blittYrkesaktivSiste3År.spørsmål')}
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene={
                             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                         }

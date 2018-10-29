@@ -69,10 +69,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
 
             {harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined && (
                 <Feltoppsummering
-                    feltnavn={getMessage(
-                        intl,
-                        'oppsummering.selvstendigNæringsdrivende.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene'
-                    )}
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.blittYrkesaktivSiste3År')}
                     verdi={
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
                             ? getMessage(intl, 'ja')
