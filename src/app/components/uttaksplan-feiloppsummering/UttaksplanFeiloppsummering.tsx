@@ -104,7 +104,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         if (uttaksplanValidering.uttaksmengdeForFarMedmorForHøy === true) {
             feil.push({
                 name: uttaksplanleggerDomId,
-                text: getMessage(intl, 'For høyt uttak')
+                text: getMessage(intl, 'uttaksplan.validering.feil.farMedmorForHøytUttak')
             });
         }
 
