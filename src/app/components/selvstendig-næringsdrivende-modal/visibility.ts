@@ -68,7 +68,9 @@ const stillingsprosentVisible: VisibilityFunction<NæringPartial> = (næring: N�
     }
 };
 
-const nyIArbeidslivetVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
+const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: VisibilityFunction<NæringPartial> = (
+    næring: NæringPartial
+) => {
     const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
@@ -80,7 +82,10 @@ const nyIArbeidslivetVisible: VisibilityFunction<NæringPartial> = (næring: Næ
 };
 
 const oppstartsdatoVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    return næring.nyIArbeidslivet === true && module.nyIArbeidslivet(næring);
+    return (
+        næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene === true &&
+        module.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring)
+    );
 };
 
 const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
@@ -95,9 +100,12 @@ const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> =
 };
 
 const regnskapsførerBolkVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { nyIArbeidslivet, hattVarigEndringAvNæringsinntektSiste4Kalenderår } = næring;
-    if (module.nyIArbeidslivet(næring)) {
-        return nyIArbeidslivet !== undefined;
+    const {
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår
+    } = næring;
+    if (module.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring)) {
+        return harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined;
     }
     if (module.varigEndringAvNæringsinntekt(næring)) {
         return hattVarigEndringAvNæringsinntektSiste4Kalenderår !== undefined;
@@ -133,7 +141,7 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
         revisor,
         regnskapsfører,
         kanInnhenteOpplsyningerFraRevisor,
-        nyIArbeidslivet
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
     } = næring;
 
     if (harRegnskapsfører && regnskapsfører !== undefined) {
@@ -145,7 +153,8 @@ const formButtonsVisible: VisibilityFunction<NæringPartial> = (næring: Næring
     }
     if (harRegnskapsfører === false && harRevisor === false) {
         return (
-            (module.nyIArbeidslivet(næring) && nyIArbeidslivet !== undefined) ||
+            (module.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(næring) &&
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene !== undefined) ||
             varigEndringAvNæringsinntektVisible(næring)
         );
     }
@@ -162,7 +171,7 @@ export const module = {
     næringRegistrertINorge: næringRegistrertINorgeVisible,
     næringRegistrertILand: næringRegistrertILandVisible,
     stillingsprosent: stillingsprosentVisible,
-    nyIArbeidslivet: nyIArbeidslivetVisible,
+    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible,
     oppstartsdato: oppstartsdatoVisible,
     varigEndringAvNæringsinntekt: varigEndringAvNæringsinntektVisible,
     regnskapsførerBolk: regnskapsførerBolkVisible,
