@@ -6,6 +6,7 @@ import { Collapse } from 'react-collapse';
 const classNames = require('classnames');
 import getMessage from 'common/util/i18nUtils';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 import './infoboks.less';
 
@@ -60,7 +61,13 @@ class Infoboks extends React.Component<Props, InfoboksState> {
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>
-                    {isExpanded ? <div className="infoboks__wrapper typo-normaltekst">{tekst}</div> : <span />}
+                    {isExpanded ? (
+                        <Normaltekst className="infoboks__wrapper typo-normaltekst" tag="div">
+                            {tekst}
+                        </Normaltekst>
+                    ) : (
+                        <span />
+                    )}
                 </Collapse>
             </React.Fragment>
         );
