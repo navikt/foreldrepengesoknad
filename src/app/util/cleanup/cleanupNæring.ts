@@ -4,7 +4,7 @@ import visibility from '../../components/selvstendig-næringsdrivende-modal/visi
 const cleanupNæring = (næring: Næring): Næring => {
     const {
         registrertILand,
-        nyIArbeidslivet,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         oppstartsdato,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår,
         harRegnskapsfører,
@@ -17,7 +17,11 @@ const cleanupNæring = (næring: Næring): Næring => {
 
     const newNæring = {
         registrertILand: visibility.næringRegistrertILand(næring) ? registrertILand : undefined,
-        nyIArbeidslivet: visibility.nyIArbeidslivet(næring) ? nyIArbeidslivet : undefined,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene(
+            næring
+        )
+            ? harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            : undefined,
         oppstartsdato: visibility.oppstartsdato(næring) ? oppstartsdato : undefined,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår: visibility.varigEndringAvNæringsinntekt(næring)
             ? hattVarigEndringAvNæringsinntektSiste4Kalenderår

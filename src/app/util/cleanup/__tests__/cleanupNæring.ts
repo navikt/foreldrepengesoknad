@@ -12,7 +12,7 @@ const regnskapsførerMock: NæringsrelasjonPartial = {};
 
 const næring: NæringPartial = {
     registrertILand: 'testland',
-    nyIArbeidslivet: true,
+    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     harRevisor: true,
     revisor: revisorMock as Næringsrelasjon,
@@ -25,7 +25,7 @@ describe('cleanupNæring', () => {
     describe('fields are visible', () => {
         beforeEach(() => {
             visibility.næringRegistrertILand = jest.fn(() => false);
-            visibility.nyIArbeidslivet = jest.fn(() => false);
+            visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
             visibility.varigEndringAvNæringsinntekt = jest.fn(() => false);
             visibility.revisorBolk = jest.fn(() => false);
             visibility.kanInnhenteOpplysningerFraRevisor = jest.fn(() => false);
@@ -35,14 +35,14 @@ describe('cleanupNæring', () => {
             const result = cleanup(næring as Næring);
             const {
                 registrertILand,
-                nyIArbeidslivet,
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
                 kanInnhenteOpplsyningerFraRevisor
             } = result;
 
             expect(registrertILand).toBeUndefined();
-            expect(nyIArbeidslivet).toBeUndefined();
+            expect(harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene).toBeUndefined();
             expect(hattVarigEndringAvNæringsinntektSiste4Kalenderår).toBeUndefined();
             expect(harRevisor).toBeUndefined();
             expect(kanInnhenteOpplsyningerFraRevisor).toBeUndefined();
@@ -52,7 +52,7 @@ describe('cleanupNæring', () => {
     describe('fields are not visible', () => {
         beforeEach(() => {
             visibility.næringRegistrertILand = jest.fn(() => true);
-            visibility.nyIArbeidslivet = jest.fn(() => true);
+            visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
             visibility.varigEndringAvNæringsinntekt = jest.fn(() => true);
             visibility.revisorBolk = jest.fn(() => true);
             visibility.kanInnhenteOpplysningerFraRevisor = jest.fn(() => true);
@@ -62,14 +62,16 @@ describe('cleanupNæring', () => {
             const result = cleanup(næring as Næring);
             const {
                 registrertILand,
-                nyIArbeidslivet,
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
                 kanInnhenteOpplsyningerFraRevisor
             } = result;
 
             expect(registrertILand).toBe(næring.registrertILand);
-            expect(nyIArbeidslivet).toBe(næring.nyIArbeidslivet);
+            expect(harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene).toBe(
+                næring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene
+            );
             expect(hattVarigEndringAvNæringsinntektSiste4Kalenderår).toBe(
                 næring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
             );

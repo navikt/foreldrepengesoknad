@@ -237,7 +237,8 @@
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
-    "nyIArbeidslivet.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
+    "harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene.spørsmål":
+        "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
@@ -637,7 +638,8 @@
     "oppsummering.selvstendigNæringsdrivende.oppstartsdato": "Oppstartsdato",
     "oppsummering.selvstendigNæringsdrivende.næringsinntekt": "Næringsinntekt",
     "oppsummering.selvstendigNæringsdrivende.registrertLand": "Registrert i land",
-    "oppsummering.selvstendigNæringsdrivende.nyIArbeidslivet": "Ny i arbeidslivet",
+    "oppsummering.selvstendigNæringsdrivende.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene":
+        "Jeg har blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene",
     "oppsummering.selvstendigNæringsdrivende.hattVarigEndringAvNæringsinntektSiste4Kalenderår":
         "Har hatt varig endring av næringsinntekt siste 4 kalenderår",
     "oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt": "Dato for endring av næringsinntekt",
