@@ -218,7 +218,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                     </div>
                 </Block>
                 <Block margin="none" visible={!formIsOpen}>
-                    <Knapperad>
+                    <Knapperad style="mobile-50-50">
                         <Knapp
                             onClick={() => this.openNyUtsettelsesperiodeForm()}
                             htmlType="button"

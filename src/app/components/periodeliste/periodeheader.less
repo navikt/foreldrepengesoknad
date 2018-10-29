@@ -38,9 +38,6 @@
         @media (max-width: @tablet-breakpoint) {
             width: 10rem;
         }
-        @media (max-width: @mobile-breakpoint) {
-            width: 6rem;
-        }
         flex-grow: 0;
         display: flex;
         justify-content: stretch;
@@ -61,13 +58,7 @@
         text-align: center;
         &__dato {
             display: block;
-            @media (max-width: @mobile-breakpoint) {
-                > *  {
-                    display: block;
-                }
-            }
         }
-
         &__mnd {
             letter-spacing: 0.4px;
             color: #7f756c;
@@ -77,6 +68,41 @@
         }
     }
     @media (max-width: @mobile-breakpoint) {
+        flex-wrap: wrap;
+        &__beskrivelse {
+            width: 80%;
+            padding-bottom: 0.5rem;
+            order: 2;
+        }
+        &__tidsrom {
+            padding-left: 1rem;
+            padding-bottom: 1rem;
+            width: 100%;
+            order: 3;
+        }
+        &__advarsel {
+            width: 2.5rem;
+            order: 1;
+            padding-left: 1rem;
+        }
+
+        &__dagmnd {
+            width: initial;
+            text-align: left;
+            padding-right: 0.5rem;
+            &:last-child {
+                padding-left: 0.5rem;
+            }
+
+            &__dato {
+                display: inline;
+            }
+            &__mnd {
+                letter-spacing: normal;
+                color: inherit;
+                font-size: inherit;
+            }
+        }
         &__ikon {
             display: none;
         }
