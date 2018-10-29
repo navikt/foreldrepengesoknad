@@ -37,7 +37,7 @@ const deltUttakAdopsjonMor = (
             gradert: false
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager + 1);
+        currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
 
         perioder.push(periodeMødrekvote);
     }
@@ -150,7 +150,7 @@ const deltUttakFødselMor = (
             gradert: false
         };
 
-        currentTomDate = Uttaksdagen(currentTomDate).leggTil(mkKonto.dager + 1);
+        currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
 
         perioder.push(periodeMødrekvote);
     }
