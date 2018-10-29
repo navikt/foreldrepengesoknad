@@ -21,7 +21,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
     return (
         <SkjemaInputElement label={getMessage(intl, 'annenForelder.spørsmål.navn')}>
             <Row>
-                <Column xs="8" sm="6">
+                <Column xs="12" sm="6" className="block--sm--xs">
                     <Input
                         disabled={kanIkkeOppgis}
                         label={getMessage(intl, 'annenForelder.spørsmål.fornavn')}
@@ -32,7 +32,7 @@ const NavnPåAnnenForelderSpørsmål = (props: Props) => {
                         throttled={false}
                     />
                 </Column>
-                <Column xs="8" sm="6">
+                <Column xs="12" sm="6">
                     <Input
                         disabled={kanIkkeOppgis}
                         label={getMessage(intl, 'annenForelder.spørsmål.etternavn')}

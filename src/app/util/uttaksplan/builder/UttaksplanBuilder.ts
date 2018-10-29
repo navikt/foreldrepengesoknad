@@ -45,18 +45,22 @@ class UttaksplanAutoBuilder {
         const hull = Periodene(perioderEtterFamDato).getHull();
         const uttaksperioder = Periodene(perioderEtterFamDato).getUttak();
         const overføringer = Periodene(perioderEtterFamDato).getOverføringer();
+        const foreldrepengerFørTermin = Periodene(perioderFørFamDato).getForeldrepengerFørTermin();
 
         this.perioder = resetTidsperioder([...uttaksperioder, ...overføringer]);
 
         const fastePerioder: Periode[] = [...opphold, ...utsettelser, ...hull].sort(sorterPerioder);
-        this.perioder = [...perioderFørFamDato, ...settInnPerioder(this.perioder, fastePerioder)];
-        this.finnOgSettInnHull()
-            .slåSammenLikePerioder()
-            .fjernHullPåStarten()
-            .fjernHullPåSlutten()
-            .sort();
+        this.perioder = [...settInnPerioder(this.perioder, fastePerioder)];
 
-        this.perioder = [...this.perioder, ...perioderMedUgyldigTidsperiode];
+        this.finnOgSettInnHull();
+        this.slåSammenLikePerioder();
+        if (foreldrepengerFørTermin === undefined) {
+            this.fjernHullPåStarten();
+        }
+        this.fjernHullPåSlutten();
+        this.sort();
+
+        this.perioder = [...perioderFørFamDato, ...this.perioder, ...perioderMedUgyldigTidsperiode];
         return this;
     }
 
@@ -159,7 +163,7 @@ class UttaksplanAutoBuilder {
     }
 
     private finnOgSettInnHull() {
-        this.perioder = finnOgSettInnHull(this.perioder);
+        this.perioder = finnOgSettInnHull(this.perioder, this.familiehendelsesdato);
         return this;
     }
 
@@ -257,9 +261,20 @@ function settInnPeriode(perioder: Periode[], nyPeriode: Periode): Periode[] {
     }
 }
 
-export function finnHullIPerioder(perioder: Periode[]): PeriodeHull[] {
+export function finnHullIPerioder(perioder: Periode[], startdato?: Date): PeriodeHull[] {
     const hull: PeriodeHull[] = [];
     const len = perioder.length;
+
+    if (startdato && len > 0 && perioder[0].type !== Periodetype.Hull) {
+        const fom = Uttaksdagen(startdato).denneEllerNeste();
+        const uttagsdagerMellomStartOgFørstePeriode = Tidsperioden({
+            fom,
+            tom: Uttaksdagen(perioder[0].tidsperiode.fom).forrige()
+        }).getAntallUttaksdager();
+        if (uttagsdagerMellomStartOgFørstePeriode > 0) {
+            hull.push(getNyttPeriodehull(getTidsperiode(fom, uttagsdagerMellomStartOgFørstePeriode)));
+        }
+    }
     perioder.forEach((periode, idx) => {
         if (idx === len - 1) {
             return;
@@ -438,8 +453,8 @@ function skalSlettetPeriodeErstattesMedHull(periode: Periode, perioder: Periode[
     return periode.type !== Periodetype.Utsettelse;
 }
 
-function finnOgSettInnHull(perioder: Periode[]): Periode[] {
-    const hull = finnHullIPerioder(perioder);
+function finnOgSettInnHull(perioder: Periode[], startdato?: Date): Periode[] {
+    const hull = finnHullIPerioder(perioder, startdato);
     return [...perioder, ...hull].sort(sorterPerioder);
 }
 
