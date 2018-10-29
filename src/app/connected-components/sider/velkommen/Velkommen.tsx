@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
-import { Innholdstittel } from 'nav-frontend-typografi';
+import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 import getMessage from 'common/util/i18nUtils';
@@ -100,7 +100,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
                                 })
                             );
                         }}>
-                        <span>{this.getBekreftCheckboksPanelLabelHeader()}</span>
+                        <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
                     </BekreftCheckboksPanel>
                     <Hovedknapp
                         className="velkommen__startSøknadKnapp blokk-m"
@@ -108,7 +108,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         onClick={() => harGodkjentVilkår && history.push('soknad/inngang')}>
                         {getMessage(intl, 'velkommen.startSøknadKnapp')}
                     </Hovedknapp>
-                    <div className="velkommen__personopplysningerLink">
+                    <Normaltekst className="velkommen__personopplysningerLink">
                         <a
                             className="lenke"
                             href="#"
@@ -120,7 +120,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
                             }}>
                             <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                         </a>
-                    </div>
+                    </Normaltekst>
                 </div>
 
                 <DinePlikterModal
