@@ -23,6 +23,7 @@ export interface UttaksplanValideringState {
     erGyldig: boolean;
     førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
+    farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
 }
 
@@ -44,6 +45,7 @@ const getDefaultState = (): UttaksplanValideringState => {
         førsteUttakErInnenforSeksUker: false,
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
+        farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         uttaksmengdeForFarMedmorForHøy: false
     };
 };
@@ -66,6 +68,7 @@ const uttaksplanValideringReducer = (
                 action.stønadskontoerMedForMyeUttak.length === 0 &&
                 action.førsteUttakErInnenforSeksUker === true &&
                 action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
+                action.farHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.uttaksmengdeForFarMedmorForHøy === false;
             return {
                 ...state,
@@ -74,6 +77,7 @@ const uttaksplanValideringReducer = (
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
                 førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
+                farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
                 uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true
             };

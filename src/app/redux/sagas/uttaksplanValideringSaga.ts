@@ -10,10 +10,11 @@ import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValide
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import { harMorHarSøktUgyldigUtsettelseFørsteSeksUker } from '../../util/validation/uttaksplan/utsettelseMorValidation';
+import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
 import { erFarEllerMedmor } from 'app/util/domain/personUtil';
 import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
+import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 
 const stateSelector = (state: AppState) => state;
 
@@ -55,7 +56,12 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
             førsteUttakErInnenforKommendeSeksUker(uttaksplan),
-            harMorHarSøktUgyldigUtsettelseFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon)),
+            harMorHarSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon)),
+            harFarHarSøktUgyldigUttakFørsteSeksUker(
+                uttaksplan,
+                getFamiliehendelsedato(barn, situasjon),
+                barn.antallBarn
+            ),
             erUttaksmengdeForFarMedmorForHøy(
                 uttaksplan,
                 appState.api.tilgjengeligeStønadskontoer,
