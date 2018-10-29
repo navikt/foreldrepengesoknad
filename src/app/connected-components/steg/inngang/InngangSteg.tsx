@@ -135,7 +135,7 @@ class InngangSteg extends React.Component<Props, {}> {
                 </Block>
                 <Block visible={visibility.papirsøknadInfo(situasjon)}>
                     <Veilederinfo>
-                        <Block>
+                        <Block margin="xs">
                             <FormattedMessage id="velkommen.foreldreansvar.veileder" />
                         </Block>
                         <Lenke href={lenker.papirsøknad}>
