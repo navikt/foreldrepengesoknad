@@ -8,7 +8,7 @@ import {
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
 import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
-import { lagUttaksplan } from '../../util/uttaksplan/forslag/uttaksplan';
+import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
 import { Søker } from '../../types/søknad/Søker';
