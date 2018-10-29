@@ -4,6 +4,7 @@ import Snakkeboble from '../snakkeboble/Snakkeboble';
 import BEMHelper from 'common/util/bem';
 
 import './personMedSnakkeboble.less';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 interface Props {
     personRenderer: () => React.ReactNode;
@@ -33,9 +34,9 @@ const PersonMedSnakkeboble: React.StatelessComponent<Props> = ({
                 stil ? bem.modifier(stil) : undefined
             )}>
             {dialog && (
-                <div className={bem.element('snakkeboble')}>
+                <Normaltekst tag="div" className={bem.element('snakkeboble')}>
                     <Snakkeboble tittel={dialog.title} tekst={dialog.text} />
-                </div>
+                </Normaltekst>
             )}
             <div className={bem.element('person')}>{personRenderer()}</div>
         </div>
