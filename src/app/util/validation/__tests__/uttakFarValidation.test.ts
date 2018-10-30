@@ -60,7 +60,7 @@ describe('Validering av mors uttak første 6 uker', () => {
         );
         expect(result).toBeFalsy();
     });
-    it('skal IKKE godta overføring på grunn av sykdom annen forelder', () => {
+    it('skal IKKE godta overføring på grunn av annet enn sykdom annen forelder', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
             [{ ...overføring, årsak: OverføringÅrsakType.aleneomsorg }],
             familiehendelsesdato,
