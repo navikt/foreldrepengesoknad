@@ -4,6 +4,7 @@
     "avbryt": "Avbryt",
     "avslutt": "Avslutt",
     "leggtil": "Legg til",
+    "Oppdater": "Oppdater",
 
     "jeg": "jeg",
     "vi": "vi",
@@ -354,6 +355,7 @@
     "tidsintervall": "{fom} - {tom}",
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
+    "utenlandsopphold.tittel.endre": "Endre utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Hvilket land bodde du i?",
     "utenlandsopphold.select.spørsmål.senereOpphold": "Hvilket land skal du bo i?",
