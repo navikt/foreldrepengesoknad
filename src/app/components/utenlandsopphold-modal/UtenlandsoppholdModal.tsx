@@ -156,7 +156,7 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
 
     render() {
         const { type, ...modalProps } = this.props;
-        const { oppholdToEdit } = this.state;
+        const { oppholdToEdit, editMode } = this.state;
 
         const cls = BEMHelper('utenlandsoppholdModal');
 
@@ -164,17 +164,16 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
             <Modal className={cls.className} onRequestClose={this.onRequestClose} {...modalProps}>
                 <ValiderbarForm onSubmit={this.onSubmit} noSummary={true}>
                     <Undertittel className={cls.element('title')}>
-                        <FormattedMessage id="utenlandsopphold.tittel" />
+                        <FormattedMessage id={editMode ? 'utenlandsopphold.tittel.endre' : 'utenlandsopphold.tittel'} />
                     </Undertittel>
-
-                    <Block>
+                    <Block margin="xs">
                         <Landvelger
                             label={<Labeltekst intlId={`utenlandsopphold.select.spørsmål.${type}`} />}
                             onChange={(land: string) => this.updateOpphold({ land })}
                             defaultValue={oppholdToEdit && oppholdToEdit.land}
                         />
                     </Block>
-                    <Block>
+                    <Block margin="xs">
                         <TidsperiodeBolk
                             kalenderplassering="fullskjerm"
                             datoAvgrensninger={this.getTidsperiodeAvgrensninger()}
@@ -185,13 +184,12 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
                             }
                         />
                     </Block>
-
-                    <Knapperad>
+                    <Knapperad style="mobile-50-50">
                         <Knapp type="standard" onClick={this.onRequestClose} htmlType="button">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
                         <Hovedknapp>
-                            <FormattedMessage id="leggtil" />
+                            <FormattedMessage id={editMode ? 'oppdater' : 'leggtil'} />
                         </Hovedknapp>
                     </Knapperad>
                 </ValiderbarForm>
