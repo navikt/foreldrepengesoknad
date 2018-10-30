@@ -159,84 +159,82 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
         return (
             <section>
-                <Normaltekst tag="div">
-                    <Block>
-                        <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
-                            <header className={BEM.element('header')}>
-                                <Systemtittel tag="h1" className={BEM.element('header__title')}>
-                                    <FormattedMessage id="uttaksplan.tittel" />
-                                </Systemtittel>
-                                {onRequestReset &&
-                                    uttaksplan.length > 0 && (
-                                        <div className={BEM.element('header__reset')}>
-                                            <LinkButton
-                                                className={BEM.element('resetLink')}
-                                                onClick={() => onRequestReset()}>
-                                                <FormattedMessage id="uttaksplan.slettPlan" />
-                                            </LinkButton>
-                                        </div>
-                                    )}
-                                <span className={BEM.element('header__details')}>
-                                    <span
-                                        className={BEM.element('header__details__icon')}
-                                        role="presentation"
-                                        aria-hidden={true}>
-                                        <HjerteIkon fylt={true} title="Hjerte" />
-                                    </span>
-                                    <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
-                                </span>
-                            </header>
-                            <Block visible={uttaksplan.length > 0}>
-                                <Periodeliste
-                                    ref={(c) => (this.periodeliste = c)}
-                                    perioder={uttaksplan}
-                                    navnPåForeldre={navnPåForeldre}
-                                    uttaksplanValidering={uttaksplanValidering}
-                                    lastAddedPeriodeId={lastAddedPeriodeId}
-                                    onLeggTilOpphold={this.settInnNyttOpphold}
-                                    onLeggTilPeriode={this.settInnNyPeriode}
-                                    onFjernPeriode={this.props.onDelete}
-                                    antallFeriedager={antallFeriedager}
-                                />
-                            </Block>
-                            <Block visible={uttaksplan.length === 0} margin="xl">
-                                <TomUttaksplanInfo />
-                            </Block>
-                            <Block visible={formIsOpen}>
-                                {periodetype !== undefined && (
-                                    <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
-                                        <NyPeriodeForm
-                                            antallFeriedager={antallFeriedager}
-                                            erMorUfør={erMorUfør}
-                                            periodetype={periodetype}
-                                            onSubmit={this.handleOnSubmit}
-                                            onCancel={this.handleOnCancel}
-                                            tidsperiode={this.state.tidsperiode}
-                                        />
-                                    </FocusContainer>
+                <Block>
+                    <div className={BEM.className} id={uttaksplanleggerDomId} tabIndex={-1}>
+                        <header className={BEM.element('header')}>
+                            <Systemtittel tag="h1" className={BEM.element('header__title')}>
+                                <FormattedMessage id="uttaksplan.tittel" />
+                            </Systemtittel>
+                            {onRequestReset &&
+                                uttaksplan.length > 0 && (
+                                    <div className={BEM.element('header__reset')}>
+                                        <LinkButton
+                                            className={BEM.element('resetLink')}
+                                            onClick={() => onRequestReset()}>
+                                            <FormattedMessage id="uttaksplan.slettPlan" />
+                                        </LinkButton>
+                                    </div>
                                 )}
-                            </Block>
-                        </div>
-                    </Block>
-                    <Block margin="none" visible={!formIsOpen}>
-                        <Knapperad style="mobile-50-50">
-                            <Knapp
-                                onClick={() => this.openNyUtsettelsesperiodeForm()}
-                                htmlType="button"
-                                ref={(c) => (this.leggTilOppholdKnapp = c)}
-                                aria-expanded={formIsOpen}>
-                                <FormattedMessage id="uttaksplan.leggTil.opphold" />
-                            </Knapp>
-                            <Knapp
-                                onClick={() => this.openNyUttaksperiodeForm()}
-                                htmlType="button"
-                                ref={(c) => (this.leggTilUttakKnapp = c)}
-                                aria-expanded={formIsOpen}>
-                                <FormattedMessage id="uttaksplan.leggTil.uttak" />
-                            </Knapp>
-                        </Knapperad>
-                    </Block>
-                </Normaltekst>
+                            <span className={BEM.element('header__details')}>
+                                <span
+                                    className={BEM.element('header__details__icon')}
+                                    role="presentation"
+                                    aria-hidden={true}>
+                                    <HjerteIkon fylt={true} title="Hjerte" />
+                                </span>
+                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
+                            </span>
+                        </header>
+                        <Block visible={uttaksplan.length > 0}>
+                            <Periodeliste
+                                ref={(c) => (this.periodeliste = c)}
+                                perioder={uttaksplan}
+                                navnPåForeldre={navnPåForeldre}
+                                uttaksplanValidering={uttaksplanValidering}
+                                lastAddedPeriodeId={lastAddedPeriodeId}
+                                onLeggTilOpphold={this.settInnNyttOpphold}
+                                onLeggTilPeriode={this.settInnNyPeriode}
+                                onFjernPeriode={this.props.onDelete}
+                                antallFeriedager={antallFeriedager}
+                            />
+                        </Block>
+                        <Block visible={uttaksplan.length === 0} margin="xl">
+                            <TomUttaksplanInfo />
+                        </Block>
+                        <Block visible={formIsOpen}>
+                            {periodetype !== undefined && (
+                                <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
+                                    <NyPeriodeForm
+                                        antallFeriedager={antallFeriedager}
+                                        erMorUfør={erMorUfør}
+                                        periodetype={periodetype}
+                                        onSubmit={this.handleOnSubmit}
+                                        onCancel={this.handleOnCancel}
+                                        tidsperiode={this.state.tidsperiode}
+                                    />
+                                </FocusContainer>
+                            )}
+                        </Block>
+                    </div>
+                </Block>
+                <Block margin="none" visible={!formIsOpen}>
+                    <Knapperad style="mobile-50-50">
+                        <Knapp
+                            onClick={() => this.openNyUtsettelsesperiodeForm()}
+                            htmlType="button"
+                            ref={(c) => (this.leggTilOppholdKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.opphold" />
+                        </Knapp>
+                        <Knapp
+                            onClick={() => this.openNyUttaksperiodeForm()}
+                            htmlType="button"
+                            ref={(c) => (this.leggTilUttakKnapp = c)}
+                            aria-expanded={formIsOpen}>
+                            <FormattedMessage id="uttaksplan.leggTil.uttak" />
+                        </Knapp>
+                    </Knapperad>
+                </Block>
             </section>
         );
     }
