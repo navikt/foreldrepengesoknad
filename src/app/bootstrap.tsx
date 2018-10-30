@@ -10,6 +10,7 @@ import IntlProvider from './intl/IntlProvider';
 import './styles/app.less';
 
 import * as countries from 'i18n-iso-countries';
+import { Normaltekst } from 'nav-frontend-typografi';
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
@@ -20,7 +21,9 @@ render(
     <Provider store={store}>
         <IntlProvider>
             <Router>
-                <Foreldrepengesøknad />
+                <Normaltekst tag="div">
+                    <Foreldrepengesøknad />
+                </Normaltekst>
             </Router>
         </IntlProvider>
     </Provider>,
