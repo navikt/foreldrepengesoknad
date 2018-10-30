@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Block from 'common/components/block/Block';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import './oppsummeringspanel.less';
 
@@ -16,11 +15,11 @@ class Oppsummeringspanel extends React.Component<Props> {
     render() {
         const { tittel, tittelProps, children } = this.props;
         return (
-            <Block animated={false}>
+            <div className="oppsummeringPanel">
                 <Ekspanderbartpanel tittel={tittel} tittelProps={tittelProps}>
                     <div className="oppsummeringspanel">{children}</div>
                 </Ekspanderbartpanel>
-            </Block>
+            </div>
         );
     }
 }
