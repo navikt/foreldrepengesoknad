@@ -4,6 +4,7 @@
     "avbryt": "Avbryt",
     "avslutt": "Avslutt",
     "leggtil": "Legg til",
+    "Oppdater": "Oppdater",
 
     "jeg": "jeg",
     "vi": "vi",
@@ -78,7 +79,8 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
-    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.samtykkeIntro":
+        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.dinePlikter": "dine plikter",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
@@ -353,6 +355,7 @@
     "tidsintervall": "{fom} - {tom}",
 
     "utenlandsopphold.tittel": "Legg til utenlandsopphold",
+    "utenlandsopphold.tittel.endre": "Endre utenlandsopphold",
     "utenlandsopphold.leggTilLand": "Legg til land",
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Hvilket land bodde du i?",
     "utenlandsopphold.select.spørsmål.senereOpphold": "Hvilket land skal du bo i?",
@@ -690,8 +693,8 @@
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
-    "kvittering.dittNav": "Det vil ta noen dager før søknaden er synlig på {dittNavLink}.",
-    "kvittering.dittNavLink": "Ditt NAV",
+    "kvittering.innsyn": "Det vil ta noen dager før søknaden er synlig på {lenke}.",
+    "kvittering.innsyn.lenke": "dine foreldrepenger",
     "kvittering.kontonummer":
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
@@ -856,6 +859,8 @@
         "Du er for tidlig ute. Du kan tidligst søke seks uker før du skal ha foreldrepenger. Du må vente med å sende søknaden din til {dato}.",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger. Det gjelder også hvis du vil kombinere foreldrepengene med delvis arbeid.",
+    "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
+        "Du kan ta ut eller utsette fedrekvoten tidligst fra uke syv etter fødselen. Unntaket er om mor er syk.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

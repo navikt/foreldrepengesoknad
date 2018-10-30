@@ -38,7 +38,7 @@ class NæringsrelasjonBolk extends React.Component<Props> {
 
         return (
             <React.Fragment>
-                {renderSpørsmål()}
+                <Block margin={oppfølgingsspørsmålSynlig ? 'm' : 'none'}>{renderSpørsmål()}</Block>
                 {oppfølgingsspørsmålSynlig && (
                     <React.Fragment>
                         <Block>
