@@ -20,6 +20,7 @@ import { DispatchProps } from 'common/redux/types';
 import { AppState } from '../../redux/reducers';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import { apiActionCreators } from '../../redux/actions';
+import { Redirect } from 'react-router';
 
 export const søknadStegPath = (stegPath?: string): string => `${routeConfig.SOKNAD_ROUTE_PREFIX}/${stegPath}`;
 
@@ -129,6 +130,10 @@ class StegRoutes extends React.Component<Props> {
                         path={søknadStegPath(StegID.UTTAKSPLAN_SKJEMA)}
                         render={(props) => <UttaksplanSkjemaSteg {...props} søkerinfo={søkerinfo} />}
                         key={StegID.UTTAKSPLAN_SKJEMA}
+                    />
+                    <Redirect
+                        from={`${routeConfig.SOKNAD_ROUTE_PREFIX}/uttaksplanSkjema`}
+                        to={StegID.UTTAKSPLAN_SKJEMA}
                     />
                     <Route
                         path={søknadStegPath(StegID.UTTAKSPLAN)}
