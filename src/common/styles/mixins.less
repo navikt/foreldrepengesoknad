@@ -8,6 +8,7 @@
     .borderButton();
     border: none;
 }
+
 .borderButton(@hideBorder: false) {
     border-radius: 4px;
     background-color: @white;
@@ -20,6 +21,12 @@
     &:focus {
         .focusOutline();
     }
+}
+
+.grayBlockMobileFullWidth() {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
 }
 
 .chromeSvgRenderFix() {

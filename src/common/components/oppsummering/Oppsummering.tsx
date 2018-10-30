@@ -31,7 +31,7 @@ class Oppsummering extends React.Component<Props> {
             <Block margin="m">
                 <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
                 <div className="oppsummering">
-                    <Block margin="xs">
+                    <Block margin="s">
                         <SøkerPersonalia
                             navn={formaterNavn(person.fornavn, person.etternavn, person.mellomnavn)}
                             fnr={person.fnr}
