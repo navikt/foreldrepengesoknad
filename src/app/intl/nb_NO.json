@@ -78,7 +78,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
-    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }.",
+    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.dinePlikter": "dine plikter",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
@@ -685,7 +685,7 @@
     "oppsummering.morsAktivitet": "Mors aktivitet i perioden",
     "oppsummering.morsAktivitet.dokumentasjon": "Dokumentasjon av mors aktivitet i perioden",
     "oppsummering.veileder.manglendeVedlegg":
-        "Du må sende inn manglende vedlegg innen 14 dager. Hvis vi ikke mottar vedleggene innen fristen, mangler vi nødvendige opplysninger for å behandle saken din. Vi kan da avgjøre saken din med de opplysningene vi har tilgjengelig, og du kan da risikere å få avslag.",
+        "Du må sende inn manglende dokumentasjon innen 14 dager. Hvis du ikke sender dokumentasjonen innen fristen, behandler vi søknaden din med de opplysningene vi har fått. Det betyr at du kan få avslag på søknaden.",
 
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
