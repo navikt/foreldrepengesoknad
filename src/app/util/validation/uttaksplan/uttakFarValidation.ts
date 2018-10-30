@@ -16,12 +16,12 @@ export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
     antallBarn: number,
     situasjon: Søkersituasjon
 ): boolean => {
-    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
-    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
-
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return false;
     }
+
+    const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
     const perioderInnenforSeksFørsteUker = Periodene(perioder)
         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)
