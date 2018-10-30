@@ -9,10 +9,7 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
 };
 
-export const harMorHarSøktUgyldigUtsettelseFørsteSeksUker = (
-    perioder: Periode[],
-    familiehendelsesdato: Date
-): boolean => {
+export const harMorHarSøktUgyldigUttakFørsteSeksUker = (perioder: Periode[], familiehendelsesdato: Date): boolean => {
     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 

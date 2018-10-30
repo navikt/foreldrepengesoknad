@@ -64,10 +64,12 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     ) {
         return true;
     } else if (erDeltUttak === false && annenForelderHarRett === false) {
-        if (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) {
+        if (
+            (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
+            isUttaksperiode(periode) === false
+        ) {
             return false;
         }
-
         return true;
     }
     return false;
