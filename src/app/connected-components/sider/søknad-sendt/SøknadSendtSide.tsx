@@ -13,6 +13,7 @@ import SpotlightLetter from 'common/components/ikoner/SpotlightLetter';
 import Applikasjonsside from '../Applikasjonsside';
 
 import './søknadSendtSide.less';
+import lenker from '../../../util/routing/lenker';
 
 interface StateProps {
     person: Person;
@@ -77,11 +78,11 @@ class SøknadSendtSide extends React.Component<Props> {
     buildDittNavMessage() {
         return (
             <FormattedMessage
-                id="kvittering.dittNav"
+                id="kvittering.innsyn"
                 values={{
-                    dittNavLink: (
-                        <Lenke href="https://tjenester.nav.no/saksoversikt/">
-                            <FormattedMessage id="kvittering.dittNavLink" />
+                    lenke: (
+                        <Lenke href={lenker.innsyn}>
+                            <FormattedMessage id="kvittering.innsyn.lenke" />
                         </Lenke>
                     )
                 }}
