@@ -16,6 +16,7 @@ export const getStønadskontoParams = (søknad: Søknad): GetTilgjengeligeStøna
     const morHarRett = rolle === SøkerRolle.MOR || (erFarEllerMedmor && harRettPåForeldrepenger === true);
     const farEllerMedmorHarAleneomsorg = erFarEllerMedmor && (erAleneOmOmsorg || søknad.annenForelder.kanIkkeOppgis);
     const farEllerMedmorHarRett = erFarEllerMedmor || (rolle === SøkerRolle.MOR && harRettPåForeldrepenger === true);
+    const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon || familiehendelsesdato;
 
     return {
         antallBarn,
@@ -25,6 +26,7 @@ export const getStønadskontoParams = (søknad: Søknad): GetTilgjengeligeStøna
         morHarAleneomsorg,
         farHarRett: farEllerMedmorHarRett,
         farHarAleneomsorg: farEllerMedmorHarAleneomsorg,
-        erFødsel: situasjon === Søkersituasjon.FØDSEL
+        erFødsel: situasjon === Søkersituasjon.FØDSEL,
+        startdatoUttak: startdatoPermisjon
     };
 };
