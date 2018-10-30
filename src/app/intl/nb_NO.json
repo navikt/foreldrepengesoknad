@@ -685,7 +685,7 @@
     "oppsummering.morsAktivitet": "Mors aktivitet i perioden",
     "oppsummering.morsAktivitet.dokumentasjon": "Dokumentasjon av mors aktivitet i perioden",
     "oppsummering.veileder.manglendeVedlegg":
-        "Du må sende inn manglende dokumentasjon innen 14 dager. Hvis du ikke sender dokumentasjonen innen fristen, behandler vi søknaden din med de opplysningene vi har fått. Det betyr at du kan få avslag på søknaden.",
+        "Husk å sende oss dokumentasjonen som mangler innen 14 dager. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
 
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
