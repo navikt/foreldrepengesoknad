@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Periode, Periodetype, Uttaksperiode, Utsettelsesperiode } from '../../types/uttaksplan/periodetyper';
-import { Systemtittel, Normaltekst } from 'nav-frontend-typografi';
+import { Systemtittel } from 'nav-frontend-typografi';
 import Periodeliste from '../periodeliste/Periodeliste';
 import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
