@@ -15,6 +15,7 @@ export interface GetTilgjengeligeStønadskontoerParams {
     erFødsel: boolean;
     morHarAleneomsorg?: boolean;
     farHarAleneomsorg?: boolean;
+    startdatoUttak: Date;
 }
 
 const apiBaseUrl = Environment.REST_API_URL;
@@ -36,7 +37,8 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         familiehendelsesdato,
         erFødsel,
         morHarAleneomsorg,
-        farHarAleneomsorg
+        farHarAleneomsorg,
+        startdatoUttak
     } = params;
 
     const urlParams = {
@@ -47,7 +49,8 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
         farHarAleneomsorg: farHarAleneomsorg || false,
         dekningsgrad,
         antallBarn,
-        familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD')
+        familiehendelsesdato: formaterDato(familiehendelsesdato, 'YYYYMMDD'),
+        startdatoUttak: formaterDato(startdatoUttak, 'YYYYMMDD')
     };
 
     return axios.get(`${uttakBaseUrl}/konto`, {
