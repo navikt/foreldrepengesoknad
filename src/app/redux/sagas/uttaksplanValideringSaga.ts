@@ -59,7 +59,11 @@ function* validerUttaksplanSaga() {
             getStønadskontoerMedForMyeUttak(uttaksstatus),
             førsteUttakErInnenforKommendeSeksUker(uttaksplan),
             søkerErMor
-                ? harMorHarSøktUgyldigUttakFørsteSeksUker(uttaksplan, getFamiliehendelsedato(barn, situasjon))
+                ? harMorHarSøktUgyldigUttakFørsteSeksUker(
+                      uttaksplan,
+                      getFamiliehendelsedato(barn, situasjon),
+                      situasjon
+                  )
                 : false,
             søkerErFarEllerMedmor
                 ? harFarHarSøktUgyldigUttakFørsteSeksUker(
