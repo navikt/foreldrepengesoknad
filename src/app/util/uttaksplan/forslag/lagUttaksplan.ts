@@ -10,6 +10,7 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
     const { barn, situasjon, ekstrainfo, annenForelder } = søknad;
     const { erUfør } = annenForelder;
     const { uttaksplanSkjema } = ekstrainfo;
+    const { harAnnenForelderSøktFP } = uttaksplanSkjema;
     const { startdatoPermisjon, fellesperiodeukerMor } = uttaksplanSkjema;
     const famDato = getFamiliehendelsedato(barn, situasjon);
     const erDeltUttak: boolean = getErDeltUttak(tilgjengeligeStønadskontoer);
@@ -22,7 +23,8 @@ export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: Ti
                 erFarEllerMedmor(søknad.søker.rolle),
                 tilgjengeligeStønadskontoer,
                 startdatoPermisjon,
-                fellesperiodeukerMor
+                fellesperiodeukerMor,
+                harAnnenForelderSøktFP
             );
         } else {
             return ikkeDeltUttak(
