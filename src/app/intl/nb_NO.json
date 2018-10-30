@@ -432,7 +432,7 @@
         "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag",
 
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Hvilken del av foreldrepengene skal {navn} ta ut?",
-    "uttaksplan.skjema.informasjonTilFarMedmor":
+    "uttaksplan.skjema.informasjonTilAnnenForelder":
         "Du må velge den samme lengden på perioden med foreldrepenger som dere valgte i {navn} sin søknad.",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin den {dato}",

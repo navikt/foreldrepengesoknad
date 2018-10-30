@@ -98,7 +98,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
-            <Block visible={dekningsgrad === '80'}>
+            <Block visible={dekningsgrad === '80' && harAnnenForelderSøktFP === false}>
                 <Veilederinfo>{getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
             </Block>
         </>

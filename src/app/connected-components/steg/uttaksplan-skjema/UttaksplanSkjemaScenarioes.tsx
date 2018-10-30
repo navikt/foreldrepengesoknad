@@ -86,8 +86,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
             {skjema.harAnnenForelderSøktFP === true && (
                 <Veilederinfo>
                     <FormattedMessage
-                        id="uttaksplan.skjema.informasjonTilFarMedmor"
-                        values={{ navn: navnPåForeldre.mor }}
+                        id="uttaksplan.skjema.informasjonTilAnnenForelder"
+                        values={{ navn: søknad.annenForelder.fornavn }}
                     />
                 </Veilederinfo>
             )}
