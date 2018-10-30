@@ -12,7 +12,7 @@ function* sendSøknad(action: SendSøknad) {
         const response = yield call(Api.sendSøknad, cleanupSøknadForInnsending(action.søknad));
         const kvittering: Kvittering = response.data;
         if (kvittering) {
-            action.history.push(`${routeConfig.APP_ROUTE_PREFIX}søknad-sendt`);
+            action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);
         }
         yield put(apiActions.updateApi({ kvittering, søknadHasBeenReceived: true }));
         yield put(apiActions.deleteStoredAppState());

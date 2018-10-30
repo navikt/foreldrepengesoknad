@@ -8,7 +8,7 @@ export enum StegID {
     'UTENLANDSOPPHOLD' = 'utenlandsopphold',
     'ANNEN_FORELDER' = 'annen-forelder',
     'ANDRE_INNTEKTER' = 'andre-inntekter',
-    'UTTAKSPLAN_SKJEMA' = 'uttaksplanSkjema',
+    'UTTAKSPLAN_SKJEMA' = 'uttaksplan-skjema',
     'UTTAKSPLAN' = 'uttaksplan',
     'OPPSUMMERING' = 'oppsummering'
 }
