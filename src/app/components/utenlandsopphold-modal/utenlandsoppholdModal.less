@@ -9,5 +9,12 @@
     &__title {
         margin-bottom: @paddingLarge;
         text-align: center;
+        margin-right: 3rem;
+    }
+    @media (max-width: @mobile-breakpoint) {
+        padding: 1rem 1rem 2rem 1rem;
+        &__title {
+            text-align: left;
+        }
     }
 }
