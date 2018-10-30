@@ -11,7 +11,6 @@ import {
     StønadskontoType,
     isForeldrepengerFørFødselUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import { Tidsperioden, getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 import StønadskontoIkon from '../uttaksplan-ikon/StønadskontoIkon';
@@ -154,7 +153,7 @@ const PeriodeHeader: React.StatelessComponent<Props & InjectedIntlProps> = ({
             <div
                 role="presentation"
                 aria-hidden={true}
-                className={classnames(BEM.className, BEM.modifier(getPeriodeFarge(periode)), 'typo-normal', {
+                className={classnames(BEM.className, 'typo-normal', {
                     [BEM.modifier('apnet')]: isOpen
                 })}>
                 <div className={BEM.element('ikon')} role="presentation" aria-hidden={true}>
