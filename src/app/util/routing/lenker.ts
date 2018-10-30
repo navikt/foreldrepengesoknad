@@ -7,5 +7,6 @@ export default {
     nav_aktivitetskrav:
         'https://www.nav.no/no/Person/Familie/Venter+du+barn/spesielt-om-foreldrepenger-til-far--347656',
     brukerstøtte:
-        'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749'
+        'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749',
+    innsyn: 'https://foreldrepenger.nav.no'
 };

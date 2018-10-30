@@ -78,7 +78,8 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
-    "velkommen.samtykkeIntro": "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.samtykkeIntro":
+        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.dinePlikter": "dine plikter",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
@@ -690,8 +691,8 @@
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",
-    "kvittering.dittNav": "Det vil ta noen dager før søknaden er synlig på {dittNavLink}.",
-    "kvittering.dittNavLink": "Ditt NAV",
+    "kvittering.innsyn": "Det vil ta noen dager før søknaden er synlig på {lenke}.",
+    "kvittering.innsyn.lenke": "dine foreldrepenger",
     "kvittering.kontonummer":
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
