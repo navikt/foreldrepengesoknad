@@ -4,6 +4,7 @@ import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden'
 import { Forelder } from 'common/types';
 import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
+import { Søkersituasjon } from '../../../types/s\u00F8knad/S\u00F8knad';
 
 const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);
@@ -12,10 +13,15 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
 export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
     perioder: Periode[],
     familiehendelsesdato: Date,
-    antallBarn: number
+    antallBarn: number,
+    situasjon: Søkersituasjon
 ): boolean => {
     const førsteUttaksdag = uttaksdatoer(familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
     const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
+
+    if (situasjon === Søkersituasjon.ADOPSJON) {
+        return false;
+    }
 
     const perioderInnenforSeksFørsteUker = Periodene(perioder)
         .getPerioderEtterFamiliehendelsesdato(familiehendelsesdato)

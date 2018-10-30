@@ -65,7 +65,8 @@ function* validerUttaksplanSaga() {
                 ? harFarHarSøktUgyldigUttakFørsteSeksUker(
                       uttaksplan,
                       getFamiliehendelsedato(barn, situasjon),
-                      barn.antallBarn
+                      barn.antallBarn,
+                      situasjon
                   )
                 : false,
             erUttaksmengdeForFarMedmorForHøy(
