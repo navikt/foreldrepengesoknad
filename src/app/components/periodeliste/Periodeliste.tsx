@@ -14,7 +14,7 @@ import PeriodelisteHull from './PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
-import PeriodelisteItemMarkør from './PeriodelisteItemMark\u00F8r';
+import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
 
 export interface OwnProps {
     perioder: Periode[];
@@ -101,7 +101,7 @@ class Periodeliste extends React.Component<Props> {
                                         ),
                                         periodelisteBem.element('item', `type-${periode.type}`)
                                     )}>
-                                    <PeriodelisteItemMarkør periode={periode} />
+                                    <PeriodeFargestrek periode={periode} />
                                     <div className={periodelisteBem.element('item__strek')} />
                                     {periode.type === Periodetype.Hull ? (
                                         <PeriodelisteHull
