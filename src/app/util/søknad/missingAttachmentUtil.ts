@@ -96,10 +96,8 @@ export const findMissingAttachmentsForPeriode = (søknad: Søknad): MissingAttac
     const missingAttachments = [];
     for (const periode of søknad.uttaksplan) {
         if (
-            shouldPeriodeHaveAttachment(
-                periode,
-                erFarEllerMedmor(søknad.søker.rolle) && isAttachmentMissing(periode.vedlegg)
-            )
+            shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søknad.søker.rolle)) &&
+            isAttachmentMissing(periode.vedlegg)
         ) {
             missingAttachments.push({
                 index: søknad.uttaksplan.indexOf(periode),
