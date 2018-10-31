@@ -17,46 +17,51 @@ const deltUttakAdopsjonMor = (
     famDato: Date,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
-    fellesperiodeukerMor: number | undefined
+    fellesperiodeukerMor: number | undefined,
+    harAnnenForelderSøktFP: boolean | undefined
 ): Periode[] => {
-    const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
-    const perioder: Periode[] = [];
-    const mkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Mødrekvote
-    );
-    let currentTomDate: Date = førsteUttaksdag;
+    if (harAnnenForelderSøktFP !== true) {
+        const førsteUttaksdag = Uttaksdagen(startdatoPermisjon || famDato).denneEllerNeste();
+        const perioder: Periode[] = [];
+        const mkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+            (konto) => konto.konto === StønadskontoType.Mødrekvote
+        );
+        let currentTomDate: Date = førsteUttaksdag;
 
-    if (mkKonto !== undefined) {
-        const periodeMødrekvote: Periode = {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Mødrekvote,
-            tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
-            ønskerSamtidigUttak: false,
-            gradert: false
-        };
+        if (mkKonto !== undefined) {
+            const periodeMødrekvote: Periode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.MOR,
+                konto: StønadskontoType.Mødrekvote,
+                tidsperiode: getTidsperiode(currentTomDate, mkKonto.dager),
+                ønskerSamtidigUttak: false,
+                gradert: false
+            };
 
-        currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
+            currentTomDate = Uttaksdagen(periodeMødrekvote.tidsperiode.tom).neste();
 
-        perioder.push(periodeMødrekvote);
+            perioder.push(periodeMødrekvote);
+        }
+
+        if (fellesperiodeukerMor !== undefined && fellesperiodeukerMor > 0) {
+            const periodeFellesperiodeMor: Periode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.MOR,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5),
+                ønskerSamtidigUttak: false,
+                gradert: false
+            };
+
+            perioder.push(periodeFellesperiodeMor);
+        }
+
+        return perioder.sort(sorterPerioder);
+    } else {
+        return [];
     }
-
-    if (fellesperiodeukerMor !== undefined && fellesperiodeukerMor > 0) {
-        const periodeFellesperiodeMor: Periode = {
-            id: guid(),
-            type: Periodetype.Uttak,
-            forelder: Forelder.MOR,
-            konto: StønadskontoType.Fellesperiode,
-            tidsperiode: getTidsperiode(currentTomDate, fellesperiodeukerMor * 5),
-            ønskerSamtidigUttak: false,
-            gradert: false
-        };
-
-        perioder.push(periodeFellesperiodeMor);
-    }
-
-    return perioder.sort(sorterPerioder);
 };
 
 const deltUttakAdopsjonFarMedmor = () => {
@@ -68,10 +73,17 @@ const deltUttakAdopsjon = (
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
-    fellesperiodeukerMor: number | undefined
+    fellesperiodeukerMor: number | undefined,
+    harAnnenForelderSøktFP: boolean | undefined
 ) => {
     if (!erFarEllerMedmor) {
-        return deltUttakAdopsjonMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeukerMor);
+        return deltUttakAdopsjonMor(
+            famDato,
+            tilgjengeligeStønadskontoer,
+            startdatoPermisjon,
+            fellesperiodeukerMor,
+            harAnnenForelderSøktFP
+        );
     } else {
         return deltUttakAdopsjonFarMedmor();
     }
@@ -207,7 +219,8 @@ export const deltUttak = (
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
-    fellesperiodeukerMor: number | undefined
+    fellesperiodeukerMor: number | undefined,
+    harAnnenForelderSøktFP: boolean | undefined
 ) => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return deltUttakAdopsjon(
@@ -215,7 +228,8 @@ export const deltUttak = (
             erFarEllerMedmor,
             tilgjengeligeStønadskontoer,
             startdatoPermisjon,
-            fellesperiodeukerMor
+            fellesperiodeukerMor,
+            harAnnenForelderSøktFP
         );
     }
 
