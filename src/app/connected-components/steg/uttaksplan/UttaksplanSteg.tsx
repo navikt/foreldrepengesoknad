@@ -23,7 +23,7 @@ import Uttaksoppsummering, { Stønadskontouttak } from '../../../components/utta
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
-import { getPeriodelisteItemId } from '../../../components/periodeliste/Periodeliste';
+import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
@@ -147,7 +147,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     handleOnPeriodeErrorClick(periodeId: string) {
-        const el = document.getElementById(getPeriodelisteItemId(periodeId));
+        const el = document.getElementById(getPeriodelisteElementId(periodeId));
         if (el) {
             el.focus();
         }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Periode } from '../../types/uttaksplan/periodetyper';
-import { periodelisteBem, getPeriodelisteItemId } from './Periodeliste';
+import { periodelisteBem, getPeriodelisteElementId } from './Periodeliste';
 import PeriodeHeader from './PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -38,7 +38,7 @@ const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
     onToggle,
     intl
 }) => {
-    const id = getPeriodelisteItemId(periode.id);
+    const id = getPeriodelisteElementId(periode.id);
     const ariaLabel = getPeriodeTittel(intl, periode, navnPåForeldre);
     return (
         <article arial-label={ariaLabel}>

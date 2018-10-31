@@ -6,7 +6,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
-import { getPeriodelisteItemId } from '../periodeliste/Periodeliste';
+import { getPeriodelisteElementId } from '../periodeliste/Periodeliste';
 import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
 import { Stønadskontouttak } from '../uttaksoppsummering/Uttaksoppsummering';
 import { getStønadskontoNavn } from '../../util/uttaksplan';
@@ -61,7 +61,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                     ? getMessage(intl, `uttaksplan.validering.feil.${validertPeriode.valideringsfeil[0].feilKey}`)
                     : getMessage(intl, 'uttaksplan.validering.feil.periodeoverlapp');
             return {
-                name: getPeriodelisteItemId(validertPeriode.periodeId),
+                name: getPeriodelisteElementId(validertPeriode.periodeId),
                 payload: validertPeriode,
                 text: feilmelding
             };
