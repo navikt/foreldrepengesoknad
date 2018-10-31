@@ -66,10 +66,11 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUttaksperiode(periode: Uttaksperiode) {
+        const { registrerteArbeidsforhold } = this.props;
         return {
             venstrestiltTekst: this.getStønadskontoNavnFromKonto(periode.konto),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
-            content: <Uttaksperiodedetaljer periode={periode} />
+            content: <Uttaksperiodedetaljer periode={periode} registrerteArbeidsforhold={registrerteArbeidsforhold} />
         };
     }
 

@@ -6,14 +6,28 @@ import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer
 import getMessage from 'common/util/i18nUtils';
 import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
 import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
+import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
+    registrerteArbeidsforhold: Arbeidsforhold[];
 }
 
 type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
 
-const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl }) => {
+const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: string) => {
+    if (orgnr) {
+        const valgtArbeidsgiver = arbeidsforhold.find(
+            ({ arbeidsgiverId, arbeidsgiverIdType }) => arbeidsgiverIdType === 'orgnr' && arbeidsgiverId === orgnr
+        );
+        if (valgtArbeidsgiver) {
+            return valgtArbeidsgiver.arbeidsgiverNavn;
+        }
+    }
+    return '';
+};
+
+const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
     const {
         konto,
         morsAktivitetIPerioden,
@@ -26,8 +40,9 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, intl 
     } = periode;
 
     let arbeidsformTekst = '';
+    const arbeidsgiverNavn = getValgtArbeidsgiverNavn(registrerteArbeidsforhold, orgnr);
     if (arbeidsform) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr });
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr, arbeidsgiverNavn });
     }
 
     return (
