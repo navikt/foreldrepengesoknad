@@ -15,18 +15,6 @@ interface UttaksperiodedetaljerProps {
 
 type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
 
-const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: string) => {
-    if (orgnr) {
-        const valgtArbeidsgiver = arbeidsforhold.find(
-            ({ arbeidsgiverId, arbeidsgiverIdType }) => arbeidsgiverIdType === 'orgnr' && arbeidsgiverId === orgnr
-        );
-        if (valgtArbeidsgiver) {
-            return valgtArbeidsgiver.arbeidsgiverNavn;
-        }
-    }
-    return '';
-};
-
 const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
     const {
         konto,
@@ -40,11 +28,8 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
     } = periode;
 
     let arbeidsformTekst = '';
-    const arbeidsgiverNavn = registrerteArbeidsforhold
-        ? getValgtArbeidsgiverNavn(registrerteArbeidsforhold, orgnr)
-        : '';
     if (arbeidsform) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr, arbeidsgiverNavn });
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, orgnr, registrerteArbeidsforhold);
     }
 
     return (
