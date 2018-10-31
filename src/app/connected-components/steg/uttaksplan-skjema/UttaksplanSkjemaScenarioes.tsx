@@ -29,10 +29,13 @@ export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ navnPåForeldre }) => (
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
     <>
         <Veilederinfo>
-            <FormattedMessage id="uttaksplan.skjema.informasjonTilFarMedmor" values={{ navn: navnPåForeldre.mor }} />
+            <FormattedMessage
+                id="uttaksplan.skjema.informasjonTilAnnenForelder"
+                values={{ navn: søknad.annenForelder.fornavn }}
+            />
         </Veilederinfo>
         <DekningsgradSpørsmål />
     </>
