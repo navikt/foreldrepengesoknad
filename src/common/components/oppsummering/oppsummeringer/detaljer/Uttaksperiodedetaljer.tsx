@@ -10,7 +10,7 @@ import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 interface UttaksperiodedetaljerProps {
     periode: UttaksperiodeBase;
-    registrerteArbeidsforhold: Arbeidsforhold[];
+    registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
 }
 
 type Props = UttaksperiodedetaljerProps & InjectedIntlProps;
@@ -40,7 +40,9 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
     } = periode;
 
     let arbeidsformTekst = '';
-    const arbeidsgiverNavn = getValgtArbeidsgiverNavn(registrerteArbeidsforhold, orgnr);
+    const arbeidsgiverNavn = registrerteArbeidsforhold
+        ? getValgtArbeidsgiverNavn(registrerteArbeidsforhold, orgnr)
+        : '';
     if (arbeidsform) {
         arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr, arbeidsgiverNavn });
     }
