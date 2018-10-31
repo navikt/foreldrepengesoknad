@@ -4,24 +4,26 @@ import BEMHelper from 'common/util/bem';
 import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
-import './periodelisteItemMarkør.less';
+import './periodeFargestrek.less';
+import { Forelder } from 'common/types';
 
 export interface Props {
     periode: Periode;
+    forelder?: Forelder;
 }
 
-const bem = BEMHelper('periodelisteItemMarkor');
+const bem = BEMHelper('periodeFargestrek');
 
-const PeriodelisteItemMarkør: React.StatelessComponent<Props> = ({ periode }) => {
+const PeriodeFargestrek: React.StatelessComponent<Props> = ({ periode, forelder }) => {
     const gradert = periode.type === Periodetype.Uttak && periode.gradert;
     return (
         <div
             className={classnames(
                 bem.className,
-                bem.modifier(getPeriodeFarge(periode)),
+                bem.modifier(getPeriodeFarge(periode, forelder)),
                 gradert ? `${bem.modifier(getPeriodeFarge(periode))}--gradert` : undefined
             )}
         />
     );
 };
-export default PeriodelisteItemMarkør;
+export default PeriodeFargestrek;
