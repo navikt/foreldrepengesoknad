@@ -17,25 +17,12 @@ interface UtsettelsesperiodedetaljerProps {
 
 type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
 
-const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: string) => {
-    if (orgnr) {
-        const valgtArbeidsgiver = arbeidsforhold.find(
-            ({ arbeidsgiverId, arbeidsgiverIdType }) => arbeidsgiverIdType === 'orgnr' && arbeidsgiverId === orgnr
-        );
-        if (valgtArbeidsgiver) {
-            return valgtArbeidsgiver.arbeidsgiverNavn;
-        }
-    }
-    return '';
-};
-
 const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
     const { årsak, morsAktivitetIPerioden, orgnr, arbeidsform, vedlegg } = periode;
 
-    const arbeidsgiverNavn = getValgtArbeidsgiverNavn(registrerteArbeidsforhold, orgnr);
     let arbeidsformTekst = '';
     if (arbeidsform) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, { orgnr, arbeidsgiverNavn });
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, orgnr, registrerteArbeidsforhold);
     }
 
     return (
