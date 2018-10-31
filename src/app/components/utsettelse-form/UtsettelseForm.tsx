@@ -121,7 +121,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     getUtsettelseÅrsakRadios(): RadioProps[] {
         const { søknad, intl } = this.props;
         const { annenForelder, søker } = søknad;
-        const { kanIkkeOppgis, utenlandskFnr, harRettPåForeldrepenger } = annenForelder;
+        const { kanIkkeOppgis, harRettPåForeldrepenger } = annenForelder;
         const { erAleneOmOmsorg } = søker;
 
         const defaultRadios: RadioProps[] = [
@@ -139,7 +139,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             }
         ];
 
-        if (erAleneOmOmsorg || !harRettPåForeldrepenger || utenlandskFnr || kanIkkeOppgis) {
+        if (erAleneOmOmsorg || !harRettPåForeldrepenger || kanIkkeOppgis) {
             return defaultRadios;
         }
 
