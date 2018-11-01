@@ -125,16 +125,16 @@ class UttaksperiodeForm extends React.Component<Props> {
                 type: Periodetype.Overføring,
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
-                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : false,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager
+                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
             });
         } else {
             this.onChange({
                 type: Periodetype.Uttak,
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
-                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : false,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager
+                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
             });
         }
     }

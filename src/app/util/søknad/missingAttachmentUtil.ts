@@ -159,7 +159,7 @@ export const findMissingAttachments = (søknad: Søknad, api: ApiState): Missing
 export const mapMissingAttachmentsToSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
-            new File([''], ''),
+            { name: '', size: '' } as any,
             missingAttachment.type,
             missingAttachment.skjemanummer,
             InnsendingsType.SEND_SENERE

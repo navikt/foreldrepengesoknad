@@ -80,8 +80,8 @@
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
     "velkommen.samtykkeIntro":
-        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
-    "velkommen.dinePlikter": "dine plikter",
+        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.dinePlikter": "dine plikter.<br /><br />",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
@@ -860,7 +860,7 @@
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger. Det gjelder også hvis du vil kombinere foreldrepengene med delvis arbeid.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ta ut eller utsette fedrekvoten tidligst fra uke syv etter fødselen. Unntaket er om mor er syk.",
+        "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Hvis du skal ta ut tidligere fordi mor er syk eller innlagt må du søke på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
