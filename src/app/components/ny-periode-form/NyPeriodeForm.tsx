@@ -17,12 +17,15 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttak-form/UttakForm';
 import { Tidsperiode } from 'common/types';
+import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
+import Søknad from '../../types/søknad/Søknad';
 
 interface OwnProps {
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
+    søknad: Søknad;
     periodetype: Periodetype;
     tidsperiode?: Tidsperiode;
 }
@@ -94,7 +97,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
         e.stopPropagation();
         const { onSubmit } = this.props;
         const { periode } = this.state;
-        onSubmit(periode as Periode);
+        const { søker, annenForelder } = this.props.søknad;
+        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder);
+        onSubmit(cleanedPeriode as Periode);
         this.updatePeriode({ tidsperiode: {} });
     }
 

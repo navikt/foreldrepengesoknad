@@ -7,8 +7,7 @@ import BEMHelper from 'common/util/bem';
 import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
-import { Søkersituasjon } from '../../types/søknad/Søknad';
-import { Barn } from '../../types/søknad/Barn';
+import Søknad from '../../types/søknad/Søknad';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
@@ -24,13 +23,10 @@ import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 
 export interface Props {
-    søkersituasjon: Søkersituasjon;
-    barn: Barn;
-    uttaksplan: Periode[];
+    søknad: Søknad;
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
-    erMorUfør: boolean | undefined;
     forelder: Forelder;
     onAdd: (periode: Periode) => void;
     onUpdate?: (periode: Periode) => void;
@@ -145,16 +141,16 @@ class Uttaksplanlegger extends React.Component<Props, State> {
 
     render() {
         const {
-            søkersituasjon,
-            barn,
-            uttaksplan,
+            søknad,
             uttaksplanValidering,
             navnPåForeldre,
             onRequestReset,
             lastAddedPeriodeId,
-            forelder,
-            erMorUfør
+            forelder
         } = this.props;
+        const { barn, uttaksplan } = søknad;
+        const søkersituasjon = søknad.situasjon;
+        const erMorUfør = søknad.annenForelder.erUfør;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
         return (
@@ -211,6 +207,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                         onSubmit={this.handleOnSubmit}
                                         onCancel={this.handleOnCancel}
                                         tidsperiode={this.state.tidsperiode}
+                                        søknad={this.props.søknad}
                                     />
                                 </FocusContainer>
                             )}
