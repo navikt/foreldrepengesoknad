@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DocumentTitle from 'react-document-title';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
@@ -59,7 +59,7 @@ class Velkommen extends React.Component<Props, OwnProps> {
                                     isDinePlikterModalOpen: true
                                 });
                             }}>
-                            <FormattedMessage id="velkommen.dinePlikter" />
+                            <FormattedHTMLMessage id="velkommen.dinePlikter" />
                         </a>
                     )
                 }}
