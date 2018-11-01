@@ -10,7 +10,7 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = ({ årsak, erArbeidsta
     årsak === UtsettelseÅrsakType.Sykdom ||
     årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
     årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-    erArbeidstaker;
+    (erArbeidstaker && årsak !== UtsettelseÅrsakType.Ferie);
 
 export const dokumentasjonBehøvesForOverføringsperiode = (
     erFarEllerMedmor: boolean,
