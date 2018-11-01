@@ -6,6 +6,7 @@ import getMessage from 'common/util/i18nUtils';
 import './oppsummeringAvDokumentasjon.less';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Lenke from 'nav-frontend-lenker';
+import { isAttachmentWithError } from 'common/storage/attachment/components/util';
 
 interface OppsummeringAvDokumentasjonProps {
     ledetekst?: string;
@@ -22,7 +23,7 @@ class OppsummeringAvDokumentasjon extends React.Component<Props> {
 
     renderListOfAttachmentPreviewLinks() {
         const { vedlegg } = this.props;
-        return vedlegg.map(({ url, id, filename }) => (
+        return vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).map(({ url, id, filename }) => (
             <Lenke href={url!} key={id} target="_blank">
                 {filename}
             </Lenke>
