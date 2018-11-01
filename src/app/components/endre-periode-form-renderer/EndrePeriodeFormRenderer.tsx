@@ -16,10 +16,16 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
 import getMessage from 'common/util/i18nUtils';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
+import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
+import Søknad from '../../types/søknad/Søknad';
+import { AppState } from '../../redux/reducers';
 
 export interface OwnProps {
     periode: Periode;
     render: (onChange: EndrePeriodeChangeEvent, onRequestDelete: () => void) => {};
+}
+interface StateProps {
+    søknad: Søknad;
 }
 
 export type EndrePeriodeChangeEvent = (periode: RecursivePartial<Periode>) => void;
@@ -30,7 +36,7 @@ interface State {
 }
 const bem = BEMHelper('endrePeriodeForm');
 
-type Props = OwnProps & DispatchProps & InjectedIntlProps;
+type Props = StateProps & OwnProps & DispatchProps & InjectedIntlProps;
 
 class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -45,24 +51,29 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
     onChange(p: RecursivePartial<Periode>) {
         let updatedPeriode: Periode | undefined;
+        const { søker, annenForelder } = this.props.søknad;
         const { periode, dispatch } = this.props;
         if (periode.type === Periodetype.Utsettelse) {
             updatedPeriode = {
                 ...periode,
                 ...(p as Utsettelsesperiode)
             };
+            updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søker, annenForelder);
         } else if (periode.type === Periodetype.Uttak) {
             updatedPeriode = {
                 ...periode,
                 ...(p as Uttaksperiode)
             };
+            updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søker);
         } else if (periode.type === Periodetype.Overføring) {
             updatedPeriode = {
                 ...periode,
                 ...(p as Overføringsperiode)
             };
+            updatedPeriode = PeriodeCleanup.cleanupOverføring(periode);
         } else if (periode.type === Periodetype.Opphold) {
             updatedPeriode = { ...periode, ...(p as Oppholdsperiode) };
+            updatedPeriode = PeriodeCleanup.cleanupOpphold(periode);
         }
         if (updatedPeriode !== undefined) {
             if (updatedPeriode.type !== this.props.periode.type) {
@@ -100,4 +111,8 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 }
 
-export default connect()(injectIntl(EndrePeriodeFormRenderer));
+const mapStateToProps = (state: AppState): StateProps => ({
+    søknad: state.søknad
+});
+
+export default connect(mapStateToProps)(injectIntl(EndrePeriodeFormRenderer));
