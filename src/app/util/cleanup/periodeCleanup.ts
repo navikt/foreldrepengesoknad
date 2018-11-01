@@ -19,6 +19,7 @@ import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/Utse
 import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
+import Søknad from '../../types/s\u00F8knad/S\u00F8knad';
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
@@ -117,12 +118,47 @@ export const cleanupNyPeriode = (
     return periode;
 };
 
+function applyChangesAndCleanPeriode(
+    periode: Periode,
+    periodeChanges: RecursivePartial<Periode>,
+    søknad: Søknad,
+    visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
+): Periode {
+    const { søker, annenForelder } = søknad;
+    let updatedPeriode = { ...periode };
+    const type = periodeChanges.type || periode.type;
+    if (type === Periodetype.Utsettelse) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Utsettelsesperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søker, annenForelder);
+    } else if (type === Periodetype.Uttak) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Uttaksperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søker, visibility as UttakSpørsmålVisibility);
+    } else if (type === Periodetype.Overføring) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Overføringsperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupOverføring(updatedPeriode);
+    } else if (type === Periodetype.Opphold) {
+        updatedPeriode = { ...periode, ...(periodeChanges as Oppholdsperiode) };
+        updatedPeriode = PeriodeCleanup.cleanupOpphold(updatedPeriode);
+    }
+    return updatedPeriode;
+}
+
 const PeriodeCleanup = {
     cleanupUttak,
     cleanupUtsettelse,
     cleanupOverføring,
     cleanupOpphold,
-    cleanupNyPeriode
+    cleanupNyPeriode,
+    applyChangesAndCleanPeriode
 };
 
 export default PeriodeCleanup;

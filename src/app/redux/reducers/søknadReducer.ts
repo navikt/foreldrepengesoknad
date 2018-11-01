@@ -171,7 +171,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 uttaksplan: getBuilder().leggTilPeriodeOgBuild({
-                    ...cleanupPeriode(action.periode, state.søker as Søker, state.annenForelder as AnnenForelder),
+                    ...action.periode,
                     id
                 }).perioder,
                 ekstrainfo: {
