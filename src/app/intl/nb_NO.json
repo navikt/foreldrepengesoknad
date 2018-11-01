@@ -837,13 +837,13 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte ferien din. Det gjør de i digital inntektsmelding eller inntektsskjema som sendes i posten.",
+        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte ferien din. Det gjør de i digital inntektsmelding eller inntektsskjema som sendes i posten.",
+        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Arbeidsgiveren din må bekrefte ferien din. Det gjør de i digital inntektsmelding eller inntektsskjema som sendes i posten.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
 
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
