@@ -27,6 +27,7 @@
 
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
+    "gradering.prosent": "{stillingsprosent} prosent",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepenger - NAV",
@@ -273,8 +274,7 @@
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
-    "annenForelder.aleneOmOmsorg.veileder":
-        "Ingen av dere er alene om omsorgen for barnet.",
+    "annenForelder.aleneOmOmsorg.veileder": "Ingen av dere er alene om omsorgen for barnet.",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
