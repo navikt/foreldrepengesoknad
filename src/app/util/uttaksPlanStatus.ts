@@ -14,7 +14,7 @@ import { getErDeltUttak } from './uttaksplan/forslag/util';
 import { erFarEllerMedmor } from './domain/personUtil';
 import { SøkerRolle } from '../types/søknad/Søknad';
 
-const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
+export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
     if (isUttaksperiode(p)) {
         const periodeErGradert = p.stillingsprosent !== undefined;
 
