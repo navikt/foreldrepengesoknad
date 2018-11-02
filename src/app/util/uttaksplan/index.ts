@@ -27,12 +27,7 @@ export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnP�
     return 'Ingen forelder registrert';
 };
 
-export const getStønadskontoNavn = (
-    intl: InjectedIntl,
-    konto: StønadskontoType,
-    navnPåForeldre: NavnPåForeldre,
-    forBrukInneISetning?: boolean
-) => {
+export const getStønadskontoNavn = (intl: InjectedIntl, konto: StønadskontoType, navnPåForeldre: NavnPåForeldre) => {
     let navn;
     switch (konto) {
         case StønadskontoType.Mødrekvote:
@@ -47,8 +42,7 @@ export const getStønadskontoNavn = (
     if (navn) {
         return intl.formatMessage({ id: `stønadskontotype.foreldernavn.kvote` }, { navn });
     }
-    const str = intl.formatMessage({ id: `stønadskontotype.${konto}` });
-    return forBrukInneISetning ? str.toLowerCase() : str;
+    return intl.formatMessage({ id: `stønadskontotype.${konto}` });
 };
 
 export const getOppholdskontoNavn = (intl: InjectedIntl, årsak: OppholdÅrsakType, foreldernavn: string) => {
