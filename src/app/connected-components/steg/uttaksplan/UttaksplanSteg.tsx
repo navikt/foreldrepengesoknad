@@ -209,16 +209,13 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         <Veilederinfo>{getVeilederInfoText(søknad)}</Veilederinfo>
                         <Block>
                             <Uttaksplanlegger
-                                søkersituasjon={søknad.situasjon}
-                                barn={søknad.barn}
-                                uttaksplan={søknad.uttaksplan}
+                                søknad={søknad}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 navnPåForeldre={navnPåForeldre}
-                                erMorUfør={søknad.annenForelder.erUfør}
                                 forelder={erFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR}
                             />
                         </Block>

@@ -11,7 +11,7 @@ import { getStønadskontoSortOrder } from '../../util/uttaksplan/stønadskontoer
 import {
     overstyrAntallTilgjengeligeUkerForBarnFørJuli2018,
     skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
-} from '../../util/uttaksplan/tidsregler/f\u00F8rJuli2018';
+} from '../../util/uttaksplan/tidsregler/førJuli2018';
 
 const stateSelector = (state: AppState) => state;
 
