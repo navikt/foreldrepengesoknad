@@ -9,6 +9,7 @@ import { AppState } from '../reducers';
 import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 import Søknad from '../../types/søknad/Søknad';
+import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanup';
 
 function* saveAppState() {
     try {
@@ -31,7 +32,8 @@ function* saveAppState() {
 
 function* applyStoredStateToApp(state: AppState) {
     if (Object.keys(state).length !== 0) {
-        yield put(søknadActions.updateSøknad(state.søknad));
+        const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
+        yield put(søknadActions.updateSøknad(søknad));
         yield put(commonActions.setSpråk(state.common.språkkode));
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
     }
