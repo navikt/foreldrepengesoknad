@@ -334,14 +334,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     navnAnnenForelder={søknad.annenForelder.fornavn}
                                 />
                             </Block>
-                            <Block visible={periode.årsak !== undefined}>
+                            {periode.årsak !== undefined && (
                                 <Veilederinfo>
                                     <FormattedMessage
                                         id="uttaksplan.infoVedOpphold"
                                         values={{ navn: søknad.annenForelder.fornavn }}
                                     />
                                 </Veilederinfo>
-                            </Block>
+                            )}
                         </>
                     )}
                 </Block>
