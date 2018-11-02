@@ -7,11 +7,9 @@ import {
     getUniqeRegistrertAnnenForelderFromBarn
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import AnnenForelder, { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
+import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
-import { cleanupPeriode } from '../../util/cleanup/periodeCleanup';
-import { Søker } from '../../types/søknad/Søker';
 import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuilder';
 import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/uttaksplan/periodetyper';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
@@ -173,7 +171,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             return {
                 ...state,
                 uttaksplan: getBuilder().leggTilPeriodeOgBuild({
-                    ...cleanupPeriode(action.periode, state.søker as Søker, state.annenForelder as AnnenForelder),
+                    ...action.periode,
                     id
                 }).perioder,
                 ekstrainfo: {
@@ -200,9 +198,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 : state.uttaksplan;
             return {
                 ...state,
-                uttaksplan: getBuilder(filteredPerioder).oppdaterPeriodeOgBuild(
-                    cleanupPeriode(action.periode, state.søker as Søker, state.annenForelder as AnnenForelder)
-                ).perioder
+                uttaksplan: getBuilder(filteredPerioder).oppdaterPeriodeOgBuild(action.periode).perioder
             };
         }
 

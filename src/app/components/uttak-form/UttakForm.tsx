@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PT from 'prop-types';
 import {
-    Periode,
     Periodetype,
     StønadskontoType,
     Uttaksperiode,
@@ -35,6 +34,7 @@ import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -42,7 +42,7 @@ interface UttaksperiodeFormProps {
     periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
     harOverlappendePerioder?: boolean;
-    onChange: (periode: RecursivePartial<Periode>) => void;
+    onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
 }
 
@@ -71,6 +71,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         this.updateStønadskontoType = this.updateStønadskontoType.bind(this);
         this.updateForeldrepengerFørFødselUttak = this.updateForeldrepengerFørFødselUttak.bind(this);
         this.updateOverføringUttak = this.updateOverføringUttak.bind(this);
+        this.getVisibility = this.getVisibility.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -87,7 +88,7 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     onChange(periode: UttakFormPeriodeType) {
-        this.props.onChange(periode);
+        this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.timeoutId = setTimeout(() => {
                 if (this.context.validForm) {
@@ -139,7 +140,7 @@ class UttaksperiodeForm extends React.Component<Props> {
         }
     }
 
-    render() {
+    getVisibility() {
         const {
             periode,
             søknad,
@@ -147,16 +148,11 @@ class UttaksperiodeForm extends React.Component<Props> {
             velgbareStønadskontotyper,
             søkerErFarEllerMedmor,
             morErUfør,
-            navnPåForeldre,
             familiehendelsesdato,
-            arbeidsforhold,
-            annenForelderHarRett,
-            harOverlappendePerioder,
-            onCancel,
-            intl
+            annenForelderHarRett
         } = this.props;
 
-        const visibility = getUttakFormVisibility({
+        return getUttakFormVisibility({
             periode,
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
@@ -166,6 +162,22 @@ class UttaksperiodeForm extends React.Component<Props> {
             morErUfør,
             familiehendelsesdato
         });
+    }
+    render() {
+        const {
+            periode,
+            søknad,
+            velgbareStønadskontotyper,
+            søkerErFarEllerMedmor,
+            navnPåForeldre,
+            familiehendelsesdato,
+            arbeidsforhold,
+            harOverlappendePerioder,
+            onCancel,
+            intl
+        } = this.props;
+
+        const visibility = this.getVisibility();
 
         if (visibility === undefined) {
             return null;
