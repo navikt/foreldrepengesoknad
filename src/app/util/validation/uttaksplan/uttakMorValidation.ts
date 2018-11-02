@@ -4,7 +4,7 @@ import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden'
 import { Forelder } from 'common/types';
 import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
-import { Søkersituasjon } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
     return isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(dato);

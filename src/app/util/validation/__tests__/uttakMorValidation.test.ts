@@ -8,7 +8,7 @@ import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakMorValidation';
 import { Forelder } from 'common/types';
-import { Søkersituasjon } from '../../../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
