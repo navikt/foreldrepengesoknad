@@ -36,6 +36,7 @@ import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -43,7 +44,7 @@ interface OwnProps {
     periode: UtsettelseFormPeriodeType;
     antallFeriedager: number;
     harOverlappendePerioder?: boolean;
-    onChange: (periode: UtsettelseFormPeriodeType) => void;
+    onChange: EndrePeriodeChangeEvent;
     onCancel?: () => void;
 }
 
@@ -96,6 +97,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         super(props);
         this.onVariantChange = this.onVariantChange.bind(this);
         this.onSykdomÅrsakChange = this.onSykdomÅrsakChange.bind(this);
+        this.getVisibility = this.getVisibility.bind(this);
         this.state = {
             variant: getVariantFromPeriode(props.periode)
         };
@@ -111,8 +113,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         if (periode.type === Periodetype.Utsettelse) {
             (periode as Utsettelsesperiode).konto = getEgenKvote(this.props.søkerErFarEllerMedmor);
         }
-
-        this.props.onChange(periode);
+        this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.context.validForm.validateAll();
         }
@@ -207,6 +208,19 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
         }
     }
 
+    getVisibility() {
+        const { periode, søknad, søkerErFarEllerMedmor } = this.props;
+        const { variant } = this.state;
+
+        return getUtsettelseFormVisibility({
+            variant,
+            periode,
+            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
+            søkerErFarEllerMedmor,
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+        });
+    }
+
     render() {
         const {
             periode,
@@ -214,20 +228,13 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             arbeidsforhold,
             søknad,
             navnPåForeldre,
-            søkerErFarEllerMedmor,
             harOverlappendePerioder,
             onCancel,
             intl
         } = this.props;
         const { variant } = this.state;
 
-        const visibility = getUtsettelseFormVisibility({
-            variant,
-            periode,
-            søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor,
-            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
-        });
+        const visibility = this.getVisibility();
 
         if (visibility === undefined) {
             return null;
