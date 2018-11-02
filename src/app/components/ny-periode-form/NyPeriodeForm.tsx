@@ -19,11 +19,14 @@ import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttak-form/UttakForm';
 import { Tidsperiode, Forelder } from 'common/types';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
+import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
+import Søknad from '../../types/søknad/Søknad';
 
 interface OwnProps {
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
     forelder: Forelder;
+    søknad: Søknad;
     periodetype: Periodetype;
     tidsperiode?: Tidsperiode;
     onSubmit: (periode: Periode) => void;
@@ -97,7 +100,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
         e.stopPropagation();
         const { onSubmit } = this.props;
         const { periode } = this.state;
-        onSubmit(periode as Periode);
+        const { søker, annenForelder } = this.props.søknad;
+        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder);
+        onSubmit(cleanedPeriode as Periode);
         this.updatePeriode({ tidsperiode: {} });
     }
 
