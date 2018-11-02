@@ -470,6 +470,8 @@
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
     "uttaksplan.hull.leggTil.uttak": "Legg ny periode",
+    "uttaksplan.infoVedOpphold":
+        "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger.  Husk at {navn} selv må søke.",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
 
