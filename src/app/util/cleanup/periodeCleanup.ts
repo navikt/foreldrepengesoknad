@@ -3,17 +3,23 @@ import {
     isForeldrepengerFørFødselUttaksperiode,
     Oppholdsperiode,
     Overføringsperiode,
-    Periode,
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Uttaksperiode
+    Uttaksperiode,
+    Periode
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { erFarEllerMedmor } from '../domain/personUtil';
 import { shouldPeriodeHaveAttachment } from '../søknad/missingAttachmentUtil';
+import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../../components/uttak-form/uttakFormConfig';
+import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
+import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
+import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
+import { RecursivePartial } from '../../types/Partial';
+import Søknad from '../../types/søknad/Søknad';
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
@@ -36,13 +42,13 @@ const cleanupUtsettelse = (
         forelder: periode.forelder,
         morsAktivitetIPerioden,
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
-        arbeidsform: UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
+        arbeidsform: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
         erArbeidstaker: periode.erArbeidstaker,
         vedlegg: shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søker.rolle)) ? periode.vedlegg : undefined
     };
 };
 
-const cleanupUttak = (periode: Uttaksperiode, søker: Søker): Uttaksperiode => {
+const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: UttakSpørsmålVisibility): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
@@ -51,7 +57,10 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker): Uttaksperiode => 
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
-        morsAktivitetIPerioden: periode.morsAktivitetIPerioden,
+        morsAktivitetIPerioden:
+            visibility && visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)
+                ? periode.morsAktivitetIPerioden
+                : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
         arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
@@ -90,16 +99,66 @@ const cleanupOpphold = (periode: Oppholdsperiode): Oppholdsperiode => {
     };
 };
 
-export const cleanupPeriode = (periode: Periode, søker: Søker, annenForelder: AnnenForelder): Periode => {
+export const cleanupNyPeriode = (
+    periode: UtsettelseFormPeriodeType | UttakFormPeriodeType | Periode,
+    søker: Søker,
+    annenForelder: AnnenForelder,
+    visibility?: UttakSpørsmålVisibility | UtsettelseSpørsmålVisibility
+): RecursivePartial<UtsettelseFormPeriodeType | UttakFormPeriodeType> | Periode => {
     switch (periode.type) {
         case Periodetype.Overføring:
-            return cleanupOverføring(periode);
+            return cleanupOverføring(periode as Overføringsperiode);
         case Periodetype.Utsettelse:
-            return cleanupUtsettelse(periode, søker, annenForelder);
+            return cleanupUtsettelse(periode as Utsettelsesperiode, søker, annenForelder);
         case Periodetype.Uttak:
-            return cleanupUttak(periode, søker);
+            return cleanupUttak(periode as Uttaksperiode, søker, visibility as UttakSpørsmålVisibility);
         case Periodetype.Opphold:
-            return cleanupOpphold(periode);
+            return cleanupOpphold(periode as Oppholdsperiode);
     }
     return periode;
 };
+
+function applyChangesAndCleanPeriode(
+    periode: Periode,
+    periodeChanges: RecursivePartial<Periode>,
+    søknad: Søknad,
+    visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
+): Periode {
+    const { søker, annenForelder } = søknad;
+    let updatedPeriode = { ...periode };
+    const type = periodeChanges.type || periode.type;
+    if (type === Periodetype.Utsettelse) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Utsettelsesperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupUtsettelse(updatedPeriode, søker, annenForelder);
+    } else if (type === Periodetype.Uttak) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Uttaksperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søker, visibility as UttakSpørsmålVisibility);
+    } else if (type === Periodetype.Overføring) {
+        updatedPeriode = {
+            ...periode,
+            ...(periodeChanges as Overføringsperiode)
+        };
+        updatedPeriode = PeriodeCleanup.cleanupOverføring(updatedPeriode);
+    } else if (type === Periodetype.Opphold) {
+        updatedPeriode = { ...periode, ...(periodeChanges as Oppholdsperiode) };
+        updatedPeriode = PeriodeCleanup.cleanupOpphold(updatedPeriode);
+    }
+    return updatedPeriode;
+}
+
+const PeriodeCleanup = {
+    cleanupUttak,
+    cleanupUtsettelse,
+    cleanupOverføring,
+    cleanupOpphold,
+    cleanupNyPeriode,
+    applyChangesAndCleanPeriode
+};
+
+export default PeriodeCleanup;
