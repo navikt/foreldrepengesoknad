@@ -31,12 +31,23 @@ type Props = OwnProps;
 
 export const periodelisteBem = BEMHelper('periodeliste');
 
-export const getPeriodelisteItemId = (periodeId: string): string => `periode-${periodeId}`;
+export const getPeriodelisteElementId = (periodeId: string): string => `periode-${periodeId}`;
 
 class Periodeliste extends React.Component<Props> {
     toggleList: ToggleList<any> | null;
     periodeWhichHaveReceivedFocus: string | undefined;
     periodeToBeFocused: string | undefined;
+
+    constructor(props: Props) {
+        super(props);
+
+        this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
+
+        const { perioder } = props;
+        if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
+            this.periodeToBeFocused = props.lastAddedPeriodeId;
+        }
+    }
 
     collapseAll() {
         if (this.toggleList) {
@@ -52,11 +63,14 @@ class Periodeliste extends React.Component<Props> {
         }
     }
     componentDidUpdate() {
+        this.checkPeriodeFocus();
+    }
+    componentDidMount() {
+        this.checkPeriodeFocus();
+    }
+    checkPeriodeFocus() {
         if (this.periodeToBeFocused) {
-            focusElement(getPeriodelisteItemId(this.periodeToBeFocused));
-            if (this.toggleList) {
-                this.toggleList.open(this.periodeToBeFocused);
-            }
+            focusElement(getPeriodelisteElementId(this.periodeToBeFocused));
             this.periodeWhichHaveReceivedFocus = this.periodeToBeFocused;
             this.periodeToBeFocused = undefined;
         }

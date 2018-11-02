@@ -96,10 +96,8 @@ export const findMissingAttachmentsForPeriode = (søknad: Søknad): MissingAttac
     const missingAttachments = [];
     for (const periode of søknad.uttaksplan) {
         if (
-            shouldPeriodeHaveAttachment(
-                periode,
-                erFarEllerMedmor(søknad.søker.rolle) && isAttachmentMissing(periode.vedlegg)
-            )
+            shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søknad.søker.rolle)) &&
+            isAttachmentMissing(periode.vedlegg)
         ) {
             missingAttachments.push({
                 index: søknad.uttaksplan.indexOf(periode),
@@ -161,7 +159,7 @@ export const findMissingAttachments = (søknad: Søknad, api: ApiState): Missing
 export const mapMissingAttachmentsToSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
-            new File([''], ''),
+            { name: '', size: '' } as any,
             missingAttachment.type,
             missingAttachment.skjemanummer,
             InnsendingsType.SEND_SENERE

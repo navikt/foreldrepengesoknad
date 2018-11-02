@@ -80,8 +80,8 @@
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startSøknadKnapp": "Begynn med søknaden",
     "velkommen.samtykkeIntro":
-        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link }. Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
-    "velkommen.dinePlikter": "dine plikter",
+        "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
+    "velkommen.dinePlikter": "dine plikter.<br /><br />",
     "velkommen.samtykke": "Jeg bekrefter at jeg har lest og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om hvordan NAV behandler personopplysningene dine",
 
@@ -273,8 +273,7 @@
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
     "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
-    "annenForelder.aleneOmOmsorg.veileder":
-        "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
+    "annenForelder.aleneOmOmsorg.veileder": "Ingen av dere er alene om omsorgen for barnet.",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
@@ -837,13 +836,13 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
+        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
+        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Din arbeidsgiver må bekrefte perioden du skal ha ferie.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i den digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
 
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
@@ -860,7 +859,7 @@
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger. Det gjelder også hvis du vil kombinere foreldrepengene med delvis arbeid.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ta ut eller utsette fedrekvoten tidligst fra uke syv etter fødselen. Unntaket er om mor er syk.",
+        "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Hvis du skal ta ut tidligere fordi mor er syk eller innlagt må du søke på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
