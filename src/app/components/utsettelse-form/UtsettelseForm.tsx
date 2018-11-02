@@ -326,13 +326,23 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         </>
                     )}
                     {periode.type === Periodetype.Opphold && (
-                        <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
-                            <OppholdsårsakSpørsmål
-                                onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak })}
-                                oppholdsårsak={periode.årsak}
-                                navnAnnenForelder={søknad.annenForelder.fornavn}
-                            />
-                        </Block>
+                        <>
+                            <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.oppholdsårsak)}>
+                                <OppholdsårsakSpørsmål
+                                    onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak })}
+                                    oppholdsårsak={periode.årsak}
+                                    navnAnnenForelder={søknad.annenForelder.fornavn}
+                                />
+                            </Block>
+                            <Block visible={periode.årsak !== undefined}>
+                                <Veilederinfo>
+                                    <FormattedMessage
+                                        id="uttaksplan.infoVedOpphold"
+                                        values={{ navn: søknad.annenForelder.fornavn }}
+                                    />
+                                </Veilederinfo>
+                            </Block>
+                        </>
                     )}
                 </Block>
                 {periode.id === undefined && (
