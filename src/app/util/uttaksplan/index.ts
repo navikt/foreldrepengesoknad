@@ -8,6 +8,20 @@ import { erFarEllerMedmor } from '../domain/personUtil';
 import Person from '../../types/Person';
 import getMessage from 'common/util/i18nUtils';
 
+const isValidStillingsprosent = (pst: string | undefined): boolean =>
+    pst !== undefined && isNaN(parseFloat(pst)) === false;
+
+const prettifyProsent = (pst: string): number | undefined => {
+    const nbr = parseFloat(pst);
+    if (isNaN(nbr)) {
+        return undefined;
+    }
+    if (Math.round(nbr) === nbr) {
+        return Math.round(nbr);
+    }
+    return nbr;
+};
+
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
     if (navnPåForeldre.farMedmor) {
         return forelder === Forelder.MOR ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -75,6 +89,18 @@ export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåFor
 export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
+            const tittel = getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
+            if (
+                periode.gradert &&
+                periode.stillingsprosent !== undefined &&
+                isValidStillingsprosent(periode.stillingsprosent)
+            ) {
+                return `${tittel} ${getMessage(intl, 'gradering.prosent', {
+                    stillingsprosent: prettifyProsent(periode.stillingsprosent)
+                })}`;
+            }
+            return tittel;
+
         case Periodetype.Overføring:
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre);
         case Periodetype.Utsettelse:
