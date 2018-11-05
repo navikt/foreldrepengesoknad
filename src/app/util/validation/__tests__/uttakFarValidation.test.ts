@@ -19,6 +19,7 @@ const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
 const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
     forelder: Forelder.FARMEDMOR
@@ -117,7 +118,7 @@ describe('Validering av mors uttak første 6 uker', () => {
     });
     it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL
@@ -126,7 +127,7 @@ describe('Validering av mors uttak første 6 uker', () => {
     });
     it('skal godta uttak dersom mors aktivitet er sykdom ', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL
@@ -135,7 +136,7 @@ describe('Validering av mors uttak første 6 uker', () => {
     });
     it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
-            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
             familiehendelsesdato,
             1,
             Søkersituasjon.FØDSEL

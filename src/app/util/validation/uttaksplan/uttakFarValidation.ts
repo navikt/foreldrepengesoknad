@@ -18,10 +18,11 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
 };
 
 export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
-    morErSykEllerInnlagt: (): boolean => {
+    fellersperiodeOgMorErSykEllerInnlagt: (): boolean => {
         return (
-            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+            periode.konto === StønadskontoType.Fellesperiode &&
+            (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
         );
     },
     erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote: (antallBarn: number): boolean => {
@@ -34,7 +35,10 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
 
 const erFarsUttakFørsteSeksUkerGyldig = (periode: Uttaksperiode, antallBarn: number): boolean => {
     const unntak = unntakFarFørsteSeksUker(periode);
-    return unntak.morErSykEllerInnlagt() || unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn);
+    return (
+        unntak.fellersperiodeOgMorErSykEllerInnlagt() ||
+        unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
+    );
 };
 
 export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
