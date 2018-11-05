@@ -37,7 +37,7 @@ export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
                         p.konto !== StønadskontoType.Flerbarnsdager &&
                         p.konto !== StønadskontoType.Fedrekvote))
         )
-        .filter((p) => p.konto !== StønadskontoType.Fedrekvote);
+        .filter((p) => p.konto !== StønadskontoType.Fedrekvote && p.konto !== StønadskontoType.Foreldrepenger);
 
     const ugyldigeOverføringer = Periodene(perioderInnenforSeksFørsteUker)
         .getOverføringer()
