@@ -27,6 +27,8 @@
 
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
+    "gradering.prosent": "{stillingsprosent} prosent",
+    "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepenger - NAV",
