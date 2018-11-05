@@ -2,13 +2,12 @@
 
 .periodeheader {
     border-radius: 0.25rem;
-    background-color: white;
-    border-left: 0.5rem solid transparent;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: stretch;
     padding-right: 0.5rem;
+    border-left: 0.5rem solid transparent;
 
     abbr[title] {
         text-decoration: none;
@@ -18,7 +17,6 @@
     &__hvem {
         color: #7f756c;
     }
-
     &__ikon {
         padding-left: 1rem;
         flex-grow: 0;
@@ -42,15 +40,6 @@
         display: flex;
         justify-content: stretch;
         flex-wrap: nowrap;
-    }
-    &--purple {
-        border-left-color: @c-periodefarge-lilla;
-    }
-    &--green {
-        border-left-color: @c-periodefarge-gronn;
-    }
-    &--blue {
-        border-left-color: @c-periodefarge-blaa;
     }
     &__dagmnd {
         width: 50%;
@@ -107,8 +96,4 @@
             display: none;
         }
     }
-}
-.periodeheader--isOpen .periodeheader {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
