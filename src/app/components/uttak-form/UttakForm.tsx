@@ -9,8 +9,8 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
-import Søknad from '../../types/søknad/Søknad';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
@@ -35,6 +35,9 @@ import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -221,6 +224,22 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 }
                             />
                         )}
+                        {visibility.isVisible(UttakSpørsmålKeys.kvote) &&
+                            periode.konto === StønadskontoType.Fedrekvote && (
+                                <>
+                                    <Veilederinfo>
+                                        <FormattedMessage id="uttaksplan.informasjon.morErForSyk" />
+                                    </Veilederinfo>
+                                    <Block>
+                                        <VedleggSpørsmål
+                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                            vedlegg={periode.vedlegg as Attachment[]}
+                                            onChange={(v) => this.onChange({ vedlegg: v })}
+                                        />
+                                    </Block>
+                                </>
+                            )}
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>
