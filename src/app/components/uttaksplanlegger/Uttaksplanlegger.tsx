@@ -204,6 +204,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                         antallFeriedager={antallFeriedager}
                                         erMorUfør={erMorUfør}
                                         periodetype={periodetype}
+                                        forelder={forelder}
                                         onSubmit={this.handleOnSubmit}
                                         onCancel={this.handleOnCancel}
                                         tidsperiode={this.state.tidsperiode}

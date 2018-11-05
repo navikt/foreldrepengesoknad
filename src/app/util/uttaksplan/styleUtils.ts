@@ -34,9 +34,9 @@ export const getOppholdFarge = (periode: Oppholdsperiode): UttaksplanColor => {
     return getForelderFarge(periode.forelder);
 };
 
-export const getPeriodeFarge = (periode: Periode): UttaksplanColor | undefined => {
+export const getPeriodeFarge = (periode: Periode, forelder?: Forelder): UttaksplanColor | undefined => {
     if (periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) {
-        return getStønadskontoFarge(periode.konto, periode.forelder);
+        return getStønadskontoFarge(periode.konto, periode.forelder || forelder);
     }
     if (periode.type === Periodetype.Utsettelse) {
         return getUtsettelseFarge();

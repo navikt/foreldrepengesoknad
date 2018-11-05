@@ -3,6 +3,9 @@
 .periodeliste {
     &__item {
         margin-bottom: 0.25rem;
+        position: relative;
+        background-color: white;
+        border-radius: 0.25rem;
         &:last-child {
             margin-bottom: 0;
         }
@@ -14,6 +17,9 @@
         }
         &--firstInvalidTidsperiode {
             margin-top: 2rem;
+        }
+        &--type-ubegrunnetOpphold {
+            background-color: transparent;
         }
     }
     &__hull {
@@ -33,11 +39,6 @@
         }
     }
     &__content {
-        background-color: white;
-        border-left: 8px solid white;
-        border-radius: 0.25rem;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
         padding: 1.5rem;
         position: relative;
 
@@ -50,16 +51,6 @@
             right: 1rem;
             position: absolute;
             background-color: #c6c2bf;
-        }
-
-        &--purple {
-            border-left-color: @c-periodefarge-lilla;
-        }
-        &--green {
-            border-left-color: @c-periodefarge-gronn;
-        }
-        &--blue {
-            border-left-color: @c-periodefarge-blaa;
         }
     }
     .skjema__feilomrade--harFeil {

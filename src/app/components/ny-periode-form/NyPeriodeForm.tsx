@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import {
     Periode,
     Periodetype,
@@ -16,18 +17,20 @@ import BEMHelper from 'common/util/bem';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import UttakForm from '../uttak-form/UttakForm';
-import { Tidsperiode } from 'common/types';
+import { Tidsperiode, Forelder } from 'common/types';
+import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
 import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 
 interface OwnProps {
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
-    onSubmit: (periode: Periode) => void;
-    onCancel: () => void;
+    forelder: Forelder;
     søknad: Søknad;
     periodetype: Periodetype;
     tidsperiode?: Tidsperiode;
+    onSubmit: (periode: Periode) => void;
+    onCancel: () => void;
 }
 
 interface State {
@@ -36,7 +39,7 @@ interface State {
 
 type Props = OwnProps & InjectedIntlProps;
 
-const bem = BEMHelper('periodeForm');
+const bem = BEMHelper('nyPeriodeForm');
 
 const PeriodeFormTittel: React.StatelessComponent<{ tittel: string }> = ({ tittel }) => {
     return (
@@ -104,11 +107,16 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, antallFeriedager, onCancel } = this.props;
+        const { intl, antallFeriedager, forelder, onCancel } = this.props;
         const { periode } = this.state;
 
         return (
-            <form className={`periodeForm periodeForm--${periode.type!.toLowerCase()}`} onSubmit={this.handleOnSubmit}>
+            <form
+                className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
+                onSubmit={this.handleOnSubmit}>
+                <div className={bem.element('fargestrek')}>
+                    <PeriodeFargestrek periode={periode as Periode} forelder={forelder} />
+                </div>
                 {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
