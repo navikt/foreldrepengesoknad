@@ -8,7 +8,7 @@ import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../../../redux/actions/søknad/søknadActionCreators';
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
-import { SøkerRolle } from '../../../../types/søknad/Søknad';
+import { SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
@@ -19,6 +19,7 @@ interface StateProps {
     dekningsgrad80AntallUker: number | undefined;
     rolle: SøkerRolle;
     harAnnenForelderSøktFP: boolean | undefined;
+    situasjon: Søkersituasjon;
 }
 interface OwnProps {
     visible?: boolean;
@@ -42,7 +43,8 @@ const DekningsgradSpørsmål = (props: Props) => {
         dekningsgrad100AntallUker,
         dekningsgrad80AntallUker,
         rolle,
-        harAnnenForelderSøktFP
+        harAnnenForelderSøktFP,
+        situasjon
     } = props;
 
     let checked;
@@ -72,6 +74,11 @@ const DekningsgradSpørsmål = (props: Props) => {
         }
     }
 
+    const skalViseVeileder =
+        dekningsgrad === '80' &&
+        (situasjon === Søkersituasjon.FØDSEL ||
+            (situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false));
+
     return (
         <>
             <Block visible={visible}>
@@ -98,7 +105,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
-            <Block visible={dekningsgrad === '80' && harAnnenForelderSøktFP === false}>
+            <Block visible={skalViseVeileder}>
                 <Veilederinfo>{getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
             </Block>
         </>
@@ -111,7 +118,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad100AntallUker: state.api.dekningsgrad100AntallUker,
     dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
     rolle: state.søknad.søker.rolle,
-    harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP
+    harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
+    situasjon: state.søknad.situasjon
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
