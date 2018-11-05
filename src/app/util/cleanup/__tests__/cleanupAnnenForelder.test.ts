@@ -2,7 +2,7 @@ import { Kjønn } from '../../../types/common';
 import Person, { RegistrertAnnenForelder } from '../../../types/Person';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import AnnenForelder from '../../../types/søknad/AnnenForelder';
-import Søknad, { SøknadPartial, SøkerRolle } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadPartial, SøkerRolle, Søkersituasjon } from '../../../types/søknad/Søknad';
 import { cleanupAnnenForelder, cleanupAnnenForelderBarn } from '../cleanupAnnenForelderSteg';
 
 import {
@@ -50,6 +50,7 @@ const søknad: SøknadPartial = {
         erAleneOmOmsorg: false,
         andreInntekterSiste10Mnd: []
     },
+    situasjon: Søkersituasjon.FØDSEL,
     uttaksplan: [],
     harGodkjentVilkår: false,
     harGodkjentOppsummering: false,
