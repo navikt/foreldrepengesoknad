@@ -382,6 +382,8 @@
         "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
     "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
         "Den totale utbetalingen blir høyere hvis du velger 100 prosent. Valget gjelder dere begge, og kan ikke endres senere.",
+    "spørsmål.dekningsgrad.midlertidig":
+        "Det er foreslått å øke mødre- og fedrekvoten til 19 uker ved valg av 80 % sats når første dag med foreldrepenger er 1. januar 2019 eller senere. Samtidig reduseres fellesperioden til 18 uker. Dersom barnet blir født før  1.1.2019 eller økning av mødre- og fedrekvoten ikke blir vedtatt, vil kvotene forbli 15 uker og fellesperioden 26 uker.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønsker du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønsker du å starte perioden?",
