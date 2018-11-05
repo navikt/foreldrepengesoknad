@@ -89,7 +89,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 feil.push({
                     name: uttaksplanleggerDomId,
                     text: getMessage(intl, 'uttaksplan.validering.feil.forMyeUttak', {
-                        konto: getStønadskontoNavn(intl, uttak.konto, navnPåForeldre, true)
+                        konto: getStønadskontoNavn(intl, uttak.konto, navnPåForeldre).toLowerCase()
                     })
                 });
             });
