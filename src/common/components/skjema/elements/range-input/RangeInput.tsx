@@ -6,6 +6,7 @@ import { Fieldset } from 'nav-frontend-skjema';
 import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
+import AriaText from 'common/components/aria/AriaText';
 
 export interface RangeInputValueLabelRendererOptions {
     value: number;
@@ -124,6 +125,7 @@ class RangeInput extends React.Component<Props, State> {
                             </div>
                         )}
                         <div className="rangeInput__range">
+                            <AriaText id={ariaLabelId}>{ariaLabelText}</AriaText>
                             <input
                                 {...rest}
                                 id={id}
