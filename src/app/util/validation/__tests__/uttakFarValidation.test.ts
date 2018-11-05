@@ -5,7 +5,8 @@ import {
     OverføringÅrsakType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    StønadskontoType
+    StønadskontoType,
+    MorsAktivitet
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
@@ -113,5 +114,32 @@ describe('Validering av mors uttak første 6 uker', () => {
             Søkersituasjon.FØDSEL
         );
         expect(result).toBeFalsy();
+    });
+    it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeFalsy();
+    });
+    it('skal godta uttak dersom mors aktivitet er sykdom ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeFalsy();
+    });
+    it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fedrekvote, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeTruthy();
     });
 });
