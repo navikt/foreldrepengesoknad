@@ -16,20 +16,24 @@ import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummerin
 import './oppsummering.less';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
 import { getNavnPåForeldre } from '../../../app/util/uttaksplan';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 interface OppsummeringProps {
     søkerinfo: Søkerinfo;
     søknad: Søknad;
+    uttaksplanValidering: UttaksplanValideringState;
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
 class Oppsummering extends React.Component<Props> {
     render() {
-        const { søkerinfo, søknad, intl } = this.props;
+        const { søkerinfo, søknad, uttaksplanValidering, intl } = this.props;
         const { person } = søkerinfo;
         return (
             <Block margin="m">
-                <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
+                {uttaksplanValidering.erGyldig && (
+                    <Veilederinfo>{getMessage(intl, 'oppsummering.veileder')}</Veilederinfo>
+                )}
                 <div className="oppsummering">
                     <Block margin="s">
                         <SøkerPersonalia
@@ -81,6 +85,7 @@ class Oppsummering extends React.Component<Props> {
                             navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
                             erFarEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
                             registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
+                            uttaksplanValidering={uttaksplanValidering}
                         />
                     </Oppsummeringspanel>
                 </div>
