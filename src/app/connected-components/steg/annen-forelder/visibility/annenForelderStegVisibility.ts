@@ -1,8 +1,8 @@
-import Søknad, { SøkerRolle } from '../../../../types/søknad/Søknad';
+import Søknad, { SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { Søkerinfo } from '../../../../types/søkerinfo';
 import AnnenForelder from '../../../../types/søknad/AnnenForelder';
 import { Søker } from '../../../../types/søknad/Søker';
-import { Barn } from '../../../../types/søknad/Barn';
+import { Barn, Adopsjonsbarn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
 import { QuestionConfig, Questions, questionValueIsOk, QuestionVisibility } from '../../../../util/questions/Question';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
@@ -11,6 +11,7 @@ interface AnnenForelderSpørsmålPayload {
     søker: Søker;
     barn: Barn;
     annenForelder: AnnenForelder;
+    gjelderStebarnsadopsjon: boolean;
     person: Person;
     søkerErFarEllerMedmor: boolean;
     annenForelderErRegistrert: boolean;
@@ -29,6 +30,13 @@ export enum AnnenForelderSpørsmålKeys {
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
 
+const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
+    if (situasjon === Søkersituasjon.ADOPSJON) {
+        return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === false;
+    }
+    return false;
+};
+
 const visDeltOmsorg = (payload: AnnenForelderSpørsmålPayload): boolean => {
     const { annenForelder, annenForelderErRegistrert } = payload;
     if (annenForelder.kanIkkeOppgis) {
@@ -46,12 +54,13 @@ const visErAnnenForelderInformert = (payload: AnnenForelderSpørsmålPayload): b
 };
 
 const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload): boolean => {
-    const { annenForelderErRegistrert, søkerErFarEllerMedmor, søker } = payload;
-
+    const { annenForelderErRegistrert, søkerErFarEllerMedmor, søker, gjelderStebarnsadopsjon } = payload;
+    if (gjelderStebarnsadopsjon) {
+        return false;
+    }
     if (søkerErFarEllerMedmor && søker.rolle === SøkerRolle.MEDMOR) {
         return false;
     }
-
     return annenForelderErRegistrert === false;
 };
 
@@ -115,10 +124,10 @@ export const getAnnenForelderStegVisibility = (
     søknad: Partial<Søknad>,
     søkerinfo: Søkerinfo
 ): QuestionVisibility<AnnenForelderSpørsmålKeys> | undefined => {
-    const { annenForelder, søker, barn } = søknad;
+    const { annenForelder, søker, barn, situasjon } = søknad;
     const { person } = søkerinfo;
 
-    if (!søker || !barn || !annenForelder || !person) {
+    if (!søker || !barn || !annenForelder || !person || !situasjon) {
         return undefined;
     }
     const registrertAnnenForelder = søknad.sensitivInfoIkkeLagre
@@ -131,7 +140,8 @@ export const getAnnenForelderStegVisibility = (
         annenForelder,
         person,
         søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
-        annenForelderErRegistrert: registrertAnnenForelder !== undefined
+        annenForelderErRegistrert: registrertAnnenForelder !== undefined,
+        gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon)
     };
 
     return Questions(annenForelderSpørsmålConfig).getVisbility(payload);
