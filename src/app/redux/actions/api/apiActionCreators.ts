@@ -4,9 +4,10 @@ import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { History } from 'history';
 
-export function getSøkerinfo(): ApiActionTypes {
+export function getSøkerinfo(history: History): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_SØKERINFO
+        type: ApiActionKeys.GET_SØKERINFO,
+        history
     };
 }
 
@@ -24,10 +25,14 @@ export function getStoredAppState(): ApiActionTypes {
     };
 }
 
-export function getTilgjengeligeStønadskonter(params: GetTilgjengeligeStønadskontoerParams): ApiActionTypes {
+export function getTilgjengeligeStønadskonter(
+    params: GetTilgjengeligeStønadskontoerParams,
+    history: History
+): ApiActionTypes {
     return {
         type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER,
-        params
+        params,
+        history
     };
 }
 
