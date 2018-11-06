@@ -6,8 +6,10 @@ const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
 const getDecorator = require('./src/build/scripts/decorator');
 const createEnvSettingsFile = require('./src/build/scripts/envSettings');
+var compression = require('compression');
 
 const server = express();
+server.use(compression());
 
 server.set('views', `${__dirname}/dist`);
 server.set('view engine', 'mustache');
@@ -33,10 +35,7 @@ const renderApp = (decoratorFragments) =>
 
 const startServer = (html) => {
     server.use('/dist/js', express.static(path.resolve(__dirname, 'dist/js')));
-    server.use(
-        '/dist/css',
-        express.static(path.resolve(__dirname, 'dist/css'))
-    );
+    server.use('/dist/css', express.static(path.resolve(__dirname, 'dist/css')));
 
     server.get(['/dist/js/settings.js'], (req, res) => {
         res.sendFile(path.resolve(`../../dist/js/settings.js`));
