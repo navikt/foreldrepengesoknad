@@ -31,7 +31,9 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
         super(props);
         this.handleOnErrorClick = this.handleOnErrorClick.bind(this);
     }
-    handleOnErrorClick(error: UttaksplanValideringFeil) {
+    handleOnErrorClick(error: UttaksplanValideringFeil, evt: React.MouseEvent<HTMLAnchorElement>) {
+        evt.stopPropagation();
+        evt.preventDefault();
         const { onErrorClick } = this.props;
         if (error.payload && error.payload.periodeId) {
             onErrorClick(error.payload.periodeId);
@@ -121,6 +123,7 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
                 show={erSynlig === true && uttaksplanValidering.erGyldig === false}
                 title={getMessage(intl, 'uttaksplan.validering.feiloppsummering.tittel')}
                 errors={feil}
+                onErrorClick={this.handleOnErrorClick}
             />
         );
     }
