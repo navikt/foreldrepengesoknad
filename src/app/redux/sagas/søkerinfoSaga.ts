@@ -1,11 +1,11 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
-import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys, GetSøkerinfo } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
-import { redirectToGenerellFeil } from '../../util/routing/generellFeil';
+import routeConfig from '../../util/routing/routeConfig';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -16,7 +16,7 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     return !(registrerteBarn && registrerteBarn.length > 0);
 }
 
-function* getSøkerinfo() {
+function* getSøkerinfo(action: GetSøkerinfo) {
     try {
         yield put(apiActions.updateApi({ isLoadingSøkerinfo: true }));
 
@@ -39,7 +39,7 @@ function* getSøkerinfo() {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
         } else {
-            redirectToGenerellFeil();
+            action.history.push(routeConfig.GENERELL_FEIL_URL);
         }
     } finally {
         yield put(
