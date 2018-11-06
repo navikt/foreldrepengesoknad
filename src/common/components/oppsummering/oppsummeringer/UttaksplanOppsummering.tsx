@@ -4,12 +4,14 @@ import Oppsummeringsseksjon from 'common/components/oppsummeringsseksjon/Oppsumm
 import UttaksplanOppsummeringsliste from 'common/components/oppsummering/oppsummeringer/lister/UttaksplanOppsummeringsliste';
 import { NavnPåForeldre } from 'common/types';
 import Arbeidsforhold from '../../../../app/types/Arbeidsforhold';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 interface UttaksplanOppsummeringProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: Arbeidsforhold[];
+    uttaksplanValidering: UttaksplanValideringState;
 }
 
 class UttaksplanOppsummering extends React.Component<UttaksplanOppsummeringProps> {

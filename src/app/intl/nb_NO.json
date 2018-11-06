@@ -695,6 +695,9 @@
     "oppsummering.veileder.manglendeVedlegg":
         "Husk å sende oss dokumentasjonen som mangler innen 14 dager. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
 
+    "oppsummering.valideringsfeil.uttaksplan.intro": "Det er en feil i planen din som du må rette opp.",
+    "oppsummering.valideringsfeil.uttaksplan.lenketekst": "Gå til planen",
+
     "kvittering.headline": "Takk for søknaden",
     "kvittering.saksNr": "Vi mottok søknaden med saksnummer {id} den {date} kl. {timeOfDay}.",
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",

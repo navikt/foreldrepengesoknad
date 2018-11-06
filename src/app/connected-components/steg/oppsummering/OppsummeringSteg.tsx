@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 import Steg, { StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
@@ -14,7 +14,6 @@ import { apiActionCreators } from '../../../redux/actions';
 import { StegID } from '../../../util/routing/stegConfig';
 import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { Periode } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import {
     findMissingAttachments,
@@ -23,38 +22,80 @@ import {
 } from '../../../util/søknad/missingAttachmentUtil';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
+import { NavnPåForeldre } from 'common/types';
+import { getNavnPåForeldre } from '../../../util/uttaksplan';
+import { validerUttaksplanAction } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { getStønadskontoParams } from '../../../util/uttaksplan/st\u00F8nadskontoParams';
+import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
+import { søknadStegPath } from '../StegRoutes';
+import { AlertStripeAdvarselSolid } from 'nav-frontend-alertstriper';
+import Block from 'common/components/block/Block';
+import LinkButton from '../../../components/link-button/LinkButton';
 
 interface StateProps {
     person: Person;
     søknad: Søknad;
     kvittering?: Kvittering;
     stegProps: StegProps;
-    perioder: Periode[];
+    uttaksplanValidering: UttaksplanValideringState;
+    navnPåForeldre: NavnPåForeldre;
     missingAttachments: MissingAttachment[];
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    isLoadingTilgjengeligeStønadskontoer: boolean;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
+        const { tilgjengeligeStønadskontoer, søknad, dispatch } = this.props;
+
         this.sendSøknad = this.sendSøknad.bind(this);
+        this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
+
+        if (tilgjengeligeStønadskontoer.length === 0) {
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
+            );
+        }
+    }
+
+    componentWillMount() {
+        this.props.dispatch(validerUttaksplanAction());
     }
 
     sendSøknad() {
-        const { søknad, perioder, missingAttachments, dispatch } = this.props;
+        const { søknad, missingAttachments, dispatch } = this.props;
         dispatch(
             apiActionCreators.sendSøknad(
                 {
                     ...mapMissingAttachmentsToSøknad(missingAttachments, søknad),
-                    uttaksplan: [...(perioder || [])]
+                    uttaksplan: [...(søknad.uttaksplan || [])]
                 },
                 this.props.history
             )
         );
     }
+    gotoUttaksplan() {
+        const { history } = this.props;
+        const path = søknadStegPath(StegID.UTTAKSPLAN);
+        this.props.dispatch(søknadActions.setCurrentSteg(StegID.UTTAKSPLAN));
+        history.push(path);
+    }
 
     render() {
-        const { søknad, søkerinfo, stegProps, missingAttachments, dispatch, intl } = this.props;
+        const {
+            søknad,
+            søkerinfo,
+            uttaksplanValidering,
+            stegProps,
+            missingAttachments,
+            isLoadingTilgjengeligeStønadskontoer,
+            dispatch,
+            intl
+        } = this.props;
         const { person } = søkerinfo;
         if (person === undefined) {
             return null;
@@ -62,24 +103,49 @@ class OppsummeringSteg extends React.Component<Props> {
 
         return (
             <Steg {...stegProps} onSubmit={this.sendSøknad}>
-                <Oppsummering søkerinfo={søkerinfo} søknad={søknad} />
-                {missingAttachments.length > 0 && (
-                    <Veilederinfo type="advarsel">
-                        {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
-                    </Veilederinfo>
+                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                    <ApplicationSpinner />
+                ) : (
+                    <>
+                        {uttaksplanValidering.erGyldig === false && (
+                            <Block>
+                                <AlertStripeAdvarselSolid>
+                                    <Block margin="xxs">
+                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.intro" />
+                                    </Block>
+                                    <LinkButton color="white" onClick={() => this.gotoUttaksplan()}>
+                                        <FormattedMessage id="oppsummering.valideringsfeil.uttaksplan.lenketekst" />
+                                    </LinkButton>
+                                </AlertStripeAdvarselSolid>
+                            </Block>
+                        )}
+                        <Oppsummering
+                            søkerinfo={søkerinfo}
+                            søknad={søknad}
+                            uttaksplanValidering={uttaksplanValidering}
+                        />
+                        {uttaksplanValidering.erGyldig &&
+                            missingAttachments.length > 0 && (
+                                <Veilederinfo type="advarsel">
+                                    {getMessage(intl, 'oppsummering.veileder.manglendeVedlegg')}
+                                </Veilederinfo>
+                            )}
+                        {uttaksplanValidering.erGyldig && (
+                            <BekreftCheckboksPanel
+                                className="blokk-m"
+                                checked={søknad.harGodkjentOppsummering}
+                                label={getMessage(intl, 'oppsummering.samtykke')}
+                                onChange={() => {
+                                    dispatch(
+                                        søknadActions.updateSøknad({
+                                            harGodkjentOppsummering: !søknad.harGodkjentOppsummering
+                                        })
+                                    );
+                                }}
+                            />
+                        )}
+                    </>
                 )}
-                <BekreftCheckboksPanel
-                    className="blokk-m"
-                    checked={søknad.harGodkjentOppsummering}
-                    label={getMessage(intl, 'oppsummering.samtykke')}
-                    onChange={() => {
-                        dispatch(
-                            søknadActions.updateSøknad({
-                                harGodkjentOppsummering: !søknad.harGodkjentOppsummering
-                            })
-                        );
-                    }}
-                />
             </Steg>
         );
     }
@@ -88,6 +154,9 @@ class OppsummeringSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søknad = state.søknad;
     const { person } = props.søkerinfo;
+    const {
+        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
+    } = state;
     const stegProps: StegProps = {
         id: StegID.OPPSUMMERING,
         renderFortsettKnapp: søknad.harGodkjentOppsummering,
@@ -101,10 +170,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         person,
         søknad,
-        perioder: state.søknad.uttaksplan,
+        uttaksplanValidering: state.uttaksplanValidering,
+        navnPåForeldre: getNavnPåForeldre(søknad, person),
         kvittering: state.api.kvittering,
         missingAttachments,
-        stegProps
+        stegProps,
+        tilgjengeligeStønadskontoer,
+        isLoadingTilgjengeligeStønadskontoer
     };
 };
 
