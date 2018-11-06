@@ -24,13 +24,15 @@ interface UpdateApi {
     payload: ApiStatePartial;
 }
 
-interface GetSøkerinfo {
+export interface GetSøkerinfo {
     type: ApiActionKeys.GET_SØKERINFO;
+    history: History;
 }
 
 export interface GetTilgjengeligeStønadskontoer {
     type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER;
     params: GetTilgjengeligeStønadskontoerParams;
+    history: History;
 }
 
 export interface GetTilgjengeligeStønadsuker {

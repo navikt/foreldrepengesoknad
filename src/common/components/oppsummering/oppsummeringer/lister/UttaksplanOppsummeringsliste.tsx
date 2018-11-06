@@ -19,12 +19,14 @@ import Overføringsperiodedetaljer from 'common/components/oppsummering/oppsumme
 import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
+import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: Arbeidsforhold[];
+    uttaksplanValidering: UttaksplanValideringState;
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
