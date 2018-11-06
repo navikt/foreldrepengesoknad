@@ -64,9 +64,7 @@ const DekningsgradSpørsmål = (props: Props) => {
 
     // Denne koden kan fjernes når forslaget er vedtatt eller avslått
     const førsteDatoEtter20190101OgDeltUttak =
-        !erAleneomsorg &&
-        (moment(familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1)) ||
-            moment(startdatoPermisjon).isSameOrAfter(new Date(2019, 0, 1)));
+        !erAleneomsorg && moment(startdatoPermisjon || familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1));
 
     if (erFarEllerMedmor(rolle)) {
         if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
