@@ -38,6 +38,7 @@ import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePer
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
+import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -163,7 +164,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             søkerErFarEllerMedmor,
             annenForelderHarRett,
             morErUfør,
-            familiehendelsesdato
+            familiehendelsesdato,
+            situasjon: søknad.situasjon
         });
     }
     render() {
@@ -224,8 +226,14 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 }
                             />
                         )}
-                        {visibility.isVisible(UttakSpørsmålKeys.kvote) &&
-                            periode.konto === StønadskontoType.Fedrekvote && (
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
+                            <ErMorForSykSpørsmål
+                                onChange={(v) => this.onChange({ erMorForSyk: v })}
+                                erMorForSyk={periode.erMorForSyk}
+                            />
+                        </Block>
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === true && (
                                 <>
                                     <Veilederinfo>
                                         <FormattedMessage id="uttaksplan.informasjon.morErForSyk" />
