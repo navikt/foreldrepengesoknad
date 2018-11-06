@@ -5,7 +5,8 @@ import {
     OverføringÅrsakType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    StønadskontoType
+    StønadskontoType,
+    MorsAktivitet
 } from '../../../types/uttaksplan/periodetyper';
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
@@ -18,6 +19,7 @@ const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 
 const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
+    konto: StønadskontoType.Fellesperiode,
     gradert: false,
     tidsperiode: getTidsperiode(førsteUttaksdag, 5),
     forelder: Forelder.FARMEDMOR
@@ -113,5 +115,32 @@ describe('Validering av mors uttak første 6 uker', () => {
             Søkersituasjon.FØDSEL
         );
         expect(result).toBeFalsy();
+    });
+    it('skal godta uttak dersom mors aktivitet er innlagt ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Innlagt }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeFalsy();
+    });
+    it('skal godta uttak dersom mors aktivitet er sykdom ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.TrengerHjelp }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeFalsy();
+    });
+    it('skal IKKE godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [{ ...uttak, konto: StønadskontoType.Fellesperiode, morsAktivitetIPerioden: MorsAktivitet.Arbeid }],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeTruthy();
     });
 });

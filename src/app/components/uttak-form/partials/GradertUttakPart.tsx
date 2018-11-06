@@ -6,7 +6,7 @@ import Block from 'common/components/block/Block';
 import { getFloatFromString } from 'common/util/numberUtils';
 import Arbeidsforhold from '../../../types/Arbeidsforhold';
 import JaNeiSpørsmål from '../../ja-nei-spørsmål/JaNeiSpørsmål';
-import { Arbeidsform, Uttaksperiode } from '../../../types/uttaksplan/periodetyper';
+import { Arbeidsform, Uttaksperiode, Periode } from '../../../types/uttaksplan/periodetyper';
 import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
@@ -16,6 +16,9 @@ import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { getVarighetString } from 'common/util/intlUtils';
+import { finnAntallDagerÅTrekke } from '../../../util/uttaksPlanStatus';
+import { Perioden } from '../../../util/uttaksplan/Perioden';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
@@ -37,6 +40,16 @@ class GradertUttakForm extends React.Component<Props> {
 
     render() {
         const { periode, arbeidsforhold, visibility, intl, onChange } = this.props;
+
+        const pst = getFloatFromString(periode.stillingsprosent || '');
+        const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
+        const varighet =
+            pst && uttaksdager
+                ? getMessage(intl, 'gradert.uttak.varighet', {
+                      varighet: getVarighetString(finnAntallDagerÅTrekke(uttaksdager, periode as Periode), intl)
+                  })
+                : undefined;
+
         return (
             <>
                 <Block>
@@ -52,22 +65,25 @@ class GradertUttakForm extends React.Component<Props> {
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.stillingsprosent)}>
-                    <Input
-                        name="utsettelse-stillingsprosent"
-                        bredde="XS"
-                        label={getMessage(intl, 'stillingsprosent')}
-                        onChange={(v: string) =>
-                            onChange({
-                                stillingsprosent: v
-                            })
-                        }
-                        onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
-                            this.handleStillingsprosentChange(e.target.value)
-                        }
-                        value={periode.stillingsprosent || ''}
-                        maxLength={4}
-                        validators={getStillingsprosentRegler(true, periode.stillingsprosent || '', intl)}
-                    />
+                    <Block margin={varighet ? 'xxs' : 'none'}>
+                        <Input
+                            name="utsettelse-stillingsprosent"
+                            bredde="XS"
+                            label={getMessage(intl, 'stillingsprosent')}
+                            onChange={(v: string) =>
+                                onChange({
+                                    stillingsprosent: v
+                                })
+                            }
+                            onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
+                                this.handleStillingsprosentChange(e.target.value)
+                            }
+                            value={periode.stillingsprosent || ''}
+                            maxLength={4}
+                            validators={getStillingsprosentRegler(true, periode.stillingsprosent || '', intl)}
+                        />
+                    </Block>
+                    {varighet && <div className="comment">{varighet}</div>}
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
