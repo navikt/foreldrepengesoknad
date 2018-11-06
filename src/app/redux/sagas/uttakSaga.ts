@@ -12,6 +12,7 @@ import {
     overstyrAntallTilgjengeligeUkerForBarnFørJuli2018,
     skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
+import routeConfig from '../../util/routing/routeConfig';
 
 const stateSelector = (state: AppState) => state;
 
@@ -89,6 +90,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 isLoadingTilgjengeligeStønadskontoer: false
             })
         );
+        action.history.push(routeConfig.GENERELL_FEIL_URL);
     }
 }
 
