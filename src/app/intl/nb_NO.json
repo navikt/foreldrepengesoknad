@@ -599,7 +599,7 @@
 
     "oppsummering.annenForelder": "Den andre forelderen",
     "oppsummering.annenForelder.aleneOmOmsorg.label": "{personligPronomen} har",
-    "oppsummering.annenForelder.deltOmsorg": "delt omsorg",
+    "oppsummering.annenForelder.deltOmsorg": "felles omsorg",
     "oppsummering.annenForelder.aleneomsorg": "aleneomsorg",
     "oppsummering.annenForelder.kanIkkeOppgis": "Jeg kan ikke oppgi den andre forelderen",
     "oppsummering.annenForelder.navn.label": "Den andre forelderen heter",
