@@ -33,6 +33,7 @@ export interface StateProps {
     velgbareRoller: SøkerRolle[];
     stegProps: StegProps;
     søker: Søker;
+    erEndringssøknad: boolean;
 }
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
@@ -82,10 +83,11 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     cleanupSøknad() {
-        const { valgtRolle, situasjon, dispatch } = this.props;
+        const { valgtRolle, situasjon, erEndringssøknad, dispatch } = this.props;
         if (situasjon !== this.initiellSituasjon || valgtRolle !== this.initiellSøkerrolle) {
             dispatch(
                 søknadActions.setSøknad({
+                    erEndringssøknad,
                     situasjon,
                     harGodkjentVilkår: true
                 })
@@ -155,6 +157,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const valgtRolle = state.søknad.søker.rolle;
     const velgbareRoller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
     const erRolleGyldig = velgbareRoller.some((r) => r === søker.rolle);
+    const erEndringssøknad = state.søknad.erEndringssøknad;
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
@@ -171,7 +174,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         situasjon,
         valgtRolle,
         velgbareRoller,
-        stegProps
+        stegProps,
+        erEndringssøknad
     };
 };
 

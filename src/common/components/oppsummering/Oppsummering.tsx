@@ -61,19 +61,25 @@ class Oppsummering extends React.Component<Props> {
                         />
                     </Oppsummeringspanel>
 
-                    <Oppsummeringspanel
-                        tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
-                        tittelProps={'undertittel'}>
-                        <UtenlandsoppholdOppsummering
-                            informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
-                            situasjon={søknad.situasjon}
-                            farEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
-                        />
-                    </Oppsummeringspanel>
+                    {søknad.erEndringssøknad === false && (
+                        <>
+                            <Oppsummeringspanel
+                                tittel={getMessage(intl, 'oppsummering.utenlandsopphold')}
+                                tittelProps={'undertittel'}>
+                                <UtenlandsoppholdOppsummering
+                                    informasjonOmUtenlandsopphold={søknad.informasjonOmUtenlandsopphold}
+                                    situasjon={søknad.situasjon}
+                                    farEllerMedmor={erFarEllerMedmor(søknad.søker.rolle)}
+                                />
+                            </Oppsummeringspanel>
 
-                    <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.inntekt')} tittelProps={'undertittel'}>
-                        <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
-                    </Oppsummeringspanel>
+                            <Oppsummeringspanel
+                                tittel={getMessage(intl, 'oppsummering.inntekt')}
+                                tittelProps={'undertittel'}>
+                                <InntektOppsummering søker={søknad.søker} arbeidsforhold={søkerinfo.arbeidsforhold} />
+                            </Oppsummeringspanel>
+                        </>
+                    )}
 
                     <Oppsummeringspanel tittel={getMessage(intl, 'oppsummering.uttak')} tittelProps={'undertittel'}>
                         <UttaksplanOppsummering
