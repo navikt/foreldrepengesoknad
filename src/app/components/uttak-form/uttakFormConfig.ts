@@ -197,7 +197,6 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
     if (
         isValidTidsperiode(tidsperiode) &&
         erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
-        payload.søkerErFarEllerMedmor &&
         payload.periode.konto === StønadskontoType.Fedrekvote
     ) {
         return true;
