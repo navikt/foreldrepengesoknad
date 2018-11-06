@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
+import moment from 'moment';
+import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedMessage } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Dekningsgrad } from 'common/types';
@@ -11,6 +12,7 @@ import Block from 'common/components/block/Block';
 import { SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
 import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 
 interface StateProps {
     dekningsgrad?: Dekningsgrad;
@@ -20,6 +22,8 @@ interface StateProps {
     rolle: SøkerRolle;
     harAnnenForelderSøktFP: boolean | undefined;
     situasjon: Søkersituasjon;
+    familiehendelseDato: Date;
+    startdatoPermisjon: Date | undefined;
 }
 interface OwnProps {
     visible?: boolean;
@@ -44,7 +48,9 @@ const DekningsgradSpørsmål = (props: Props) => {
         dekningsgrad80AntallUker,
         rolle,
         harAnnenForelderSøktFP,
-        situasjon
+        situasjon,
+        familiehendelseDato,
+        startdatoPermisjon
     } = props;
 
     let checked;
@@ -55,6 +61,12 @@ const DekningsgradSpørsmål = (props: Props) => {
     }
 
     let labelKey: string = '';
+
+    // Denne koden kan fjernes når forslaget er vedtatt eller avslått
+    const førsteDatoEtter20190101OgDeltUttak =
+        !erAleneomsorg &&
+        (moment(familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1)) ||
+            moment(startdatoPermisjon).isSameOrAfter(new Date(2019, 0, 1)));
 
     if (erFarEllerMedmor(rolle)) {
         if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
@@ -76,8 +88,8 @@ const DekningsgradSpørsmål = (props: Props) => {
 
     const skalViseVeileder =
         dekningsgrad === '80' &&
-        (situasjon === Søkersituasjon.FØDSEL ||
-            (situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false));
+        ((situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false) ||
+            (situasjon === Søkersituasjon.FØDSEL && !erFarEllerMedmor(rolle) && !erAleneomsorg));
 
     return (
         <>
@@ -106,7 +118,16 @@ const DekningsgradSpørsmål = (props: Props) => {
                 />
             </Block>
             <Block visible={skalViseVeileder}>
-                <Veilederinfo>{getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
+                <Veilederinfo>
+                    {getInfoboxText(intl, erAleneomsorg)}
+                    {førsteDatoEtter20190101OgDeltUttak === true ? (
+                        <>
+                            <br />
+                            <br />
+                            <FormattedMessage id="spørsmål.dekningsgrad.midlertidig" />
+                        </>
+                    ) : null}
+                </Veilederinfo>
             </Block>
         </>
     );
@@ -119,7 +140,9 @@ const mapStateToProps = (state: AppState): StateProps => ({
     dekningsgrad80AntallUker: state.api.dekningsgrad80AntallUker,
     rolle: state.søknad.søker.rolle,
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
-    situasjon: state.søknad.situasjon
+    situasjon: state.søknad.situasjon,
+    familiehendelseDato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
+    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));
