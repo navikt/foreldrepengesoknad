@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { default as NavStegindikator } from 'nav-frontend-stegindikator';
-import stegConfig, { StegConfigItem, StegID, StegConfig } from '../../util/routing/stegConfig';
+import { getStegConfig, StegConfigItem, StegID, StegConfig } from '../../util/routing/stegConfig';
 import getMessage from 'common/util/i18nUtils';
 import './stegindikator.less';
 import BEMHelper from 'common/util/bem';
@@ -8,6 +8,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 interface StegProps {
     id: StegID;
+    erEndringssøknad: boolean;
 }
 
 type Props = StegProps & InjectedIntlProps;
@@ -35,7 +36,8 @@ class Stegindikator extends React.Component<Props> {
     }
 
     render() {
-        const { id, intl } = this.props;
+        const { id, erEndringssøknad, intl } = this.props;
+        const stegConfig = getStegConfig(erEndringssøknad);
         const steg = this.buildStegindikatorSteg(stegConfig);
         const aktivtSteg = stegConfig[id].index;
         const bem = BEMHelper('stegindikator');
