@@ -89,6 +89,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     harIkkeAktivitetskrav?: boolean;
     vedlegg?: Attachment[];
     ønskerFlerbarnsdager?: boolean;
+    erMorForSyk?: boolean;
 }
 
 export interface ForeldrepengerFørFødselUttaksperiode extends UttaksperiodeBase {

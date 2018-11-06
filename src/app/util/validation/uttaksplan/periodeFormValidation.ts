@@ -11,6 +11,7 @@ import {
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
+import { Søkersituasjon } from 'app/types/søknad/Søknad';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
@@ -42,7 +43,8 @@ export const validerPeriodeForm = (
     søker: Søker,
     annenForelder: AnnenForelder,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    situasjon: Søkersituasjon
 ): PeriodeValideringsfeil[] | undefined => {
     const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Hull) {
@@ -57,7 +59,8 @@ export const validerPeriodeForm = (
             søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
             morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
-            familiehendelsesdato
+            familiehendelsesdato,
+            situasjon
         });
     }
     return validerUtsettelseForm({
