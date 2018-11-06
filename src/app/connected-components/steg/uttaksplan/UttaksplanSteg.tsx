@@ -116,7 +116,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
         }
         if (tilgjengeligeStønadskontoer.length === 0) {
-            dispatch(apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad)));
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
+            );
         }
     }
 
