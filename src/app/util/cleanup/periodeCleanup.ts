@@ -12,7 +12,7 @@ import {
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
-import { erFarEllerMedmor } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import { shouldPeriodeHaveAttachment } from '../søknad/missingAttachmentUtil';
 import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../../components/uttak-form/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
@@ -27,7 +27,7 @@ const cleanupUtsettelse = (
     annenForelder: AnnenForelder
 ): Utsettelsesperiode => {
     const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-        erFarEllerMedmor(søker.rolle),
+        getErSøkerFarEllerMedmor(søker.rolle),
         annenForelder.harRettPåForeldrepenger
     )
         ? periode.morsAktivitetIPerioden
@@ -44,7 +44,9 @@ const cleanupUtsettelse = (
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
         arbeidsform: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søker.rolle)) ? periode.vedlegg : undefined
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
+            ? periode.vedlegg
+            : undefined
     };
 };
 
@@ -53,7 +55,9 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: shouldPeriodeHaveAttachment(periode, erFarEllerMedmor(søker.rolle)) ? periode.vedlegg : undefined,
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
+            ? periode.vedlegg
+            : undefined,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,

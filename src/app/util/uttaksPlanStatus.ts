@@ -11,7 +11,7 @@ import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getErDeltUttak } from './uttaksplan/forslag/util';
-import { erFarEllerMedmor } from './domain/personUtil';
+import { getErSøkerFarEllerMedmor } from './domain/personUtil';
 import { SøkerRolle } from '../types/søknad/Søknad';
 
 export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
@@ -36,7 +36,7 @@ export const beregnGjenståendeUttaksdager = (
     søkerrolle: SøkerRolle
 ): Stønadskontouttak[] => {
     const erDeltUttak = getErDeltUttak(tilgjengeligeStønadskontoer);
-    const erFarMedmor = erFarEllerMedmor(søkerrolle);
+    const erFarMedmor = getErSøkerFarEllerMedmor(søkerrolle);
 
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let forelder: Forelder | undefined;

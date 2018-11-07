@@ -6,7 +6,7 @@ import TilesList from '../tiles-list/TilesList';
 import { Forelder, NavnPåForeldre } from 'common/types';
 import { FormattedMessage } from 'react-intl';
 import { SøkerRolle } from '../../types/søknad/Søknad';
-import { erFarEllerMedmor } from '../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 
 export interface Stønadskontouttak {
@@ -24,7 +24,7 @@ export interface Props {
 const getTittel = (uttak: Stønadskontouttak[], rolle: SøkerRolle): string => {
     const deltUttak = getErDeltUttak(uttak);
 
-    if (deltUttak && erFarEllerMedmor(rolle)) {
+    if (deltUttak && getErSøkerFarEllerMedmor(rolle)) {
         return 'uttaksoppsummering.forbrukt';
     }
 
