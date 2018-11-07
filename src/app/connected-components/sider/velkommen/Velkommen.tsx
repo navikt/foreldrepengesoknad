@@ -128,14 +128,17 @@ class Velkommen extends React.Component<Props, OwnProps> {
                             {getMessage(intl, 'velkommen.startNySøknadKnapp')}
                         </Hovedknapp>
 
-                        <FeatureBlock feature={Feature.endringssøknad}>
-                            <Hovedknapp
-                                className="velkommen__startSøknadKnapp blokk-m"
-                                disabled={!harGodkjentVilkår}
-                                onClick={() => this.startEndringssøknad()}>
-                                {getMessage(intl, 'velkommen.startEndringssøknadKnapp')}
-                            </Hovedknapp>
-                        </FeatureBlock>
+                        <FeatureBlock
+                            feature={Feature.endringssøknad}
+                            render={() => (
+                                <Hovedknapp
+                                    className="velkommen__startSøknadKnapp blokk-m"
+                                    disabled={!harGodkjentVilkår}
+                                    onClick={() => this.startEndringssøknad()}>
+                                    {getMessage(intl, 'velkommen.startEndringssøknadKnapp')}
+                                </Hovedknapp>
+                            )}
+                        />
                     </Knapperad>
                     <Normaltekst className="velkommen__personopplysningerLink">
                         <a
