@@ -26,7 +26,7 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
 import Feature from '../../../components/feature/Feature';
-import { FeatureToggle } from '../../../FeatureToggles';
+import { FeatureToggle } from '../../../FeatureToggle';
 
 interface StateProps {
     person?: Person;

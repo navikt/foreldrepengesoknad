@@ -1,4 +1,4 @@
-import { FeatureToggle } from './FeatureToggles';
+import { FeatureToggle } from './FeatureToggle';
 
 const Environment = () => {
     return {

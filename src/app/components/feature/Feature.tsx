@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FeatureToggle } from '../../FeatureToggles';
+import { FeatureToggle } from '../../FeatureToggle';
 import Environment from '../../Environment';
 
 export interface Props {
