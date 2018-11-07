@@ -60,29 +60,62 @@ node {
          ])
     }
 
-    stage('Deploy to preprod') {
-        withEnv(['HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088',
-               'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
-               'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
-              ]) {
-            System.setProperty("java.net.useSystemProxies", "true")
-            System.setProperty("http.nonProxyHosts", "*.adeo.no")
-            callback = "${env.BUILD_URL}input/Deploy/"
-            def deploy = deployLib.deployNaisApp(app, releaseVersion, environment, zone, namespace, callback, committer).key
-            try {
-                timeout(time: 15, unit: 'MINUTES') {
-                    input id: 'deploy', message: "Check status here:  https://jira.adeo.no/browse/${deploy}"
+    stage("Deploy to preprod") {
+        parallel 'T10': {
+            stage("T10") {
+                withEnv(['HTTPS_PROXY=http://webproxy-internett.nav.no:8088',
+                         'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
+                         'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
+                ]) {
+                    System.setProperty("java.net.useSystemProxies", "true")
+                    System.setProperty("http.nonProxyHosts", "*.adeo.no")
+                    callback = "${env.BUILD_URL}input/Deploy/"
+                    def deploy = deployLib.deployNaisApp(app, releaseVersion, 't10', zone, 't10', callback, committer).key
+                    echo "Check status here:  https://jira.adeo.no/browse/${deploy}"
+                    try {
+                        timeout(time: 15, unit: 'MINUTES') {
+                            input id: 'deploy', message: "Check status here:  https://jira.adeo.no/browse/${deploy}"
+                        }
+                        slackSend([
+                                color  : 'good',
+                                message: "${app} version ${releaseVersion} has been deployed to T10."
+                        ])
+                    } catch (Exception ex) {
+                        slackSend([
+                                color  : 'danger',
+                                message: "Unable to deploy ${app} version ${releaseVersion} to T10. See https://jira.adeo.no/browse/${deploy} for details"
+                        ])
+                        throw new Exception("Deploy feilet :( \n Se https://jira.adeo.no/browse/" + deploy + " for detaljer", ex)
+                    }
                 }
-                slackSend([
-                    color: 'good',
-                    message: "${app} version ${releaseVersion} has been deployed to pre-prod."
-                ])
-            } catch (Exception e) {    
-                slackSend([
-                    color: 'danger',
-                    message: "Unable to deploy ${app} version ${releaseVersion} to pre-prod. See https://jira.adeo.no/browse/${deploy} for details"
-                ])
-                throw new Exception("Deploy feilet :( \n Se https://jira.adeo.no/browse/" + deploy + " for detaljer", e)
+            }
+        }, 'Q1': {
+            stage("Q1") {
+                withEnv(['HTTPS_PROXY=http://webproxy-internett.nav.no:8088',
+                         'NO_PROXY=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no',
+                         'no_proxy=localhost,127.0.0.1,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no'
+                ]) {
+                    System.setProperty("java.net.useSystemProxies", "true")
+                    System.setProperty("http.nonProxyHosts", "*.adeo.no")
+                    callback = "${env.BUILD_URL}input/Deploy/"
+                    def deploy = deployLib.deployNaisApp(app, releaseVersion, 'q1', zone, namespace, callback, committer).key
+                    echo "Check status here:  https://jira.adeo.no/browse/${deploy}"
+                    try {
+                        timeout(time: 15, unit: 'MINUTES') {
+                            input id: 'deploy', message: "Check status here:  https://jira.adeo.no/browse/${deploy}"
+                        }
+                        slackSend([
+                                color  : 'good',
+                                message: "${app} version ${releaseVersion} has been deployed to Q1."
+                        ])
+                    } catch (Exception ex) {
+                        slackSend([
+                                color  : 'danger',
+                                message: "Unable to deploy ${app} version ${releaseVersion} to Q1. See https://jira.adeo.no/browse/${deploy} for details"
+                        ])
+                        throw new Exception("Deploy feilet :( \n Se https://jira.adeo.no/browse/" + deploy + " for detaljer", ex)
+                    }
+                }
             }
         }
     }
