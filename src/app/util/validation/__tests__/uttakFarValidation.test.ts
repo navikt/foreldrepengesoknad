@@ -11,11 +11,13 @@ import {
 import { getTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../uttaksplan/uttakFarValidation';
-import { Forelder } from 'common/types';
+import { Forelder, Tidsperiode } from 'common/types';
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
+const tidsperiodeEtterSeksUker: Tidsperiode = getTidsperiode(førsteUttaksdagEtterSeksUker, 5);
 
 const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
@@ -43,7 +45,7 @@ const uttak = uttakBase as Uttaksperiode;
 const utsettelse = utsettelseBase as Utsettelsesperiode;
 const overføring = overføringBase as Overføringsperiode;
 
-describe('Validering av mors uttak første 6 uker', () => {
+describe('Validering av fars uttak første 6 uker', () => {
     it('skal godta overføring på grunn av insititusjonsoppholdAnnenForelder', () => {
         const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
             [{ ...overføring, årsak: OverføringÅrsakType.insititusjonsoppholdAnnenForelder }],
@@ -142,5 +144,21 @@ describe('Validering av mors uttak første 6 uker', () => {
             Søkersituasjon.FØDSEL
         );
         expect(result).toBeTruthy();
+    });
+    it('skal godta uttak dersom mors aktivitet er annet enn sykdom eller innlagt ETTER seks uker ', () => {
+        const result = harFarHarSøktUgyldigUttakFørsteSeksUker(
+            [
+                {
+                    ...uttak,
+                    tidsperiode: tidsperiodeEtterSeksUker,
+                    konto: StønadskontoType.Fellesperiode,
+                    morsAktivitetIPerioden: MorsAktivitet.Arbeid
+                }
+            ],
+            familiehendelsesdato,
+            1,
+            Søkersituasjon.FØDSEL
+        );
+        expect(result).toBeFalsy();
     });
 });
