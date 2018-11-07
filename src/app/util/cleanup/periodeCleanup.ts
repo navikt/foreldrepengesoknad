@@ -67,7 +67,8 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
         orgnr: periode.gradert === true ? periode.orgnr : undefined,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined,
-        ønskerFlerbarnsdager: periode.ønskerFlerbarnsdager
+        ønskerFlerbarnsdager: periode.ønskerFlerbarnsdager,
+        erMorForSyk: periode.erMorForSyk
     };
     if (isForeldrepengerFørFødselUttaksperiode(periode)) {
         (uttaksperiode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin =

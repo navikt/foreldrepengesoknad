@@ -57,7 +57,7 @@
     "skalDereHaGradertUttakSamtidig.spørsmål": "Skal dere ha foreldrepenger samtidig?",
     "skaldujobbeheltidellerdeltid.spørsmål": "Skal du jobbe heltid eller deltid?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Hvilken del av foreldrepengene skal du ta ut?",
-    "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet?",
+    "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
 
     "stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
 
@@ -468,6 +468,8 @@
         "{varighet} du ikke bruker før termin faller bort",
     "uttaksplan.informasjon.morErForSyk":
         "Dersom du skal starte ditt uttak innenfor de første seks ukene etter fødsel må du legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+    "uttaksplan.informasjon.morErForSykNeiSvar":
+        "Du kan ikke starte ditt uttak innenfor de første seks ukene etter fødsel dersom mor ikke er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.leggTil.opphold": "Utsett en periode",
     "uttaksplan.leggTil.uttak": "Legg til periode",
@@ -866,7 +868,7 @@
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ikke legge inn utsettelse på grunn av ferie eller jobb de første seks ukene du tar ut foreldrepenger. Det gjelder også hvis du vil kombinere foreldrepengene med delvis arbeid.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Hvis du skal ta ut tidligere fordi mor er syk eller innlagt må du søke på papir.",
+        "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

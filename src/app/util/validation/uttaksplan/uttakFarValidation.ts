@@ -4,7 +4,8 @@ import {
     StønadskontoType,
     Periodetype,
     Uttaksperiode,
-    MorsAktivitet
+    MorsAktivitet,
+    UtsettelseÅrsakType
 } from '../../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../uttaksplan/Periodene';
 import { isValidTidsperiode, Tidsperioden } from '../../uttaksplan/Tidsperioden';
@@ -18,7 +19,7 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
 };
 
 export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
-    fellersperiodeOgMorErSykEllerInnlagt: (): boolean => {
+    fellesperiodeOgMorErSykEllerInnlagt: (): boolean => {
         return (
             periode.konto === StønadskontoType.Fellesperiode &&
             (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
@@ -30,14 +31,18 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
             antallBarn > 1 &&
             (periode.konto === StønadskontoType.Flerbarnsdager || periode.konto === StønadskontoType.Fedrekvote)
         );
+    },
+    fedreKvoteErMorForSykDeFørsteSeksUker: (): boolean => {
+        return periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true;
     }
 });
 
 const erFarsUttakFørsteSeksUkerGyldig = (periode: Uttaksperiode, antallBarn: number): boolean => {
     const unntak = unntakFarFørsteSeksUker(periode);
     return (
-        unntak.fellersperiodeOgMorErSykEllerInnlagt() ||
-        unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
+        unntak.fellesperiodeOgMorErSykEllerInnlagt() ||
+        unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn) ||
+        unntak.fedreKvoteErMorForSykDeFørsteSeksUker()
     );
 };
 
@@ -71,7 +76,9 @@ export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
                 p.årsak !== OverføringÅrsakType.sykdomAnnenForelder
         );
 
-    const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker).getUtsettelser();
+    const ugyldigeUtsettelser = Periodene(farsPerioderInnenforSeksFørsteUker)
+        .getUtsettelser()
+        .filter((utsettelse) => utsettelse.årsak !== UtsettelseÅrsakType.InstitusjonBarnet);
 
     return ugyldigeUttak.length + ugyldigeOverføringer.length + ugyldigeUtsettelser.length > 0;
 };

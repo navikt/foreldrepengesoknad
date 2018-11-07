@@ -251,6 +251,14 @@ class UttaksperiodeForm extends React.Component<Props> {
                                     </Block>
                                 </>
                             )}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === false && (
+                                <>
+                                    <Veilederinfo>
+                                        <FormattedMessage id="uttaksplan.informasjon.morErForSykNeiSvar" />
+                                    </Veilederinfo>
+                                </>
+                            )}
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>
