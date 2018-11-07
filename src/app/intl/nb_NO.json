@@ -40,6 +40,8 @@
     "feilside.tittel": "Det oppstod en feil",
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
+    "feilside.vedlegg.forStortTotalt":
+        "Du har et vedlegg som inneholder for mange sider. En pdf kan maksimalt ha 5 sider.",
 
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
@@ -524,6 +526,7 @@
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
 
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
+    "vedlegg.forStort": "Vedlegget må være mindre enn 9MB",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
     "far.dokumantasjonAvAleneomsorg.vedlegg.veileder":
