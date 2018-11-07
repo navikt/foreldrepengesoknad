@@ -236,7 +236,10 @@ class UttaksperiodeForm extends React.Component<Props> {
                             periode.erMorForSyk === true && (
                                 <>
                                     <Veilederinfo>
-                                        <FormattedMessage id="uttaksplan.informasjon.morErForSyk" />
+                                        <FormattedMessage
+                                            id="uttaksplan.informasjon.morErForSyk"
+                                            values={{ navnMor: navnPåForeldre.mor }}
+                                        />
                                     </Veilederinfo>
                                     <Block>
                                         <VedleggSpørsmål
