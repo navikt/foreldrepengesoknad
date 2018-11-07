@@ -10,7 +10,7 @@ import søknadActionCreators from '../../../../redux/actions/søknad/søknadActi
 import { AppState } from '../../../../redux/reducers';
 import Block from 'common/components/block/Block';
 import { SøkerRolle, Søkersituasjon } from '../../../../types/søknad/Søknad';
-import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getFamiliehendelsedato } from 'app/util/uttaksplan';
 
@@ -66,7 +66,7 @@ const DekningsgradSpørsmål = (props: Props) => {
     const førsteDatoEtter20190101OgDeltUttak =
         !erAleneomsorg && moment(startdatoPermisjon || familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1));
 
-    if (erFarEllerMedmor(rolle)) {
+    if (getErSøkerFarEllerMedmor(rolle)) {
         if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
             labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
         } else {
@@ -87,7 +87,7 @@ const DekningsgradSpørsmål = (props: Props) => {
     const skalViseVeileder =
         dekningsgrad === '80' &&
         ((situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false) ||
-            (situasjon === Søkersituasjon.FØDSEL && !erFarEllerMedmor(rolle) && !erAleneomsorg));
+            (situasjon === Søkersituasjon.FØDSEL && !getErSøkerFarEllerMedmor(rolle) && !erAleneomsorg));
 
     return (
         <>

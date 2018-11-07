@@ -27,7 +27,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
-import { erFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -369,7 +369,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
-        søkerErFarEllerMedmor: erFarEllerMedmor(state.søknad.søker.rolle),
+        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
     };
 };
