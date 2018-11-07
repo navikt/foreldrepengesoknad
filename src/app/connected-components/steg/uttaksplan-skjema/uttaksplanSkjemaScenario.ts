@@ -9,15 +9,18 @@ export enum UttaksplanSkjemaScenario {
     's5_farMedmorAleneomsorgFødselAdopsjon' = 's5_farMedmorAleneomsorgFødselAdopsjon',
     's6_bareFarMedmorRettTilFpFødsel' = 's6_bareFarMedmorRettTilFpFødsel',
     's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan' = 's7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan',
-    's8_ukjent_x' = 'ukjent'
+    's8_endringssøknad' = 's8_endringssøknad',
+    'sX_ukjent_x' = 'ukjent'
 }
 
 export const getUttaksplanSkjemaScenario = (søknad: Søknad): UttaksplanSkjemaScenario => {
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søknad.søker.rolle);
     const søkerErMor = !søkerErFarEllerMedmor;
 
-    let scenario = UttaksplanSkjemaScenario.s8_ukjent_x;
-    if (
+    let scenario = UttaksplanSkjemaScenario.sX_ukjent_x;
+    if (søknad.erEndringssøknad) {
+        scenario = UttaksplanSkjemaScenario.s8_endringssøknad;
+    } else if (
         søkerErFarEllerMedmor &&
         søknad.situasjon === Søkersituasjon.FØDSEL &&
         søknad.annenForelder.harRettPåForeldrepenger

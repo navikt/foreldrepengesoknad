@@ -383,6 +383,8 @@
     "spørsmål.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
+    "spørsmål.dekningsgrad.endringssøknad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
+    "spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger har du valgt?",
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
     "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
