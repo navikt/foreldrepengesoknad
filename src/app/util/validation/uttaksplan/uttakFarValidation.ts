@@ -59,7 +59,7 @@ export const harFarHarSøktUgyldigUttakFørsteSeksUker = (
         .filter((p) => periodeErFørDato(p, førsteUttaksdagEtterSeksUker))
         .filter((p) => p.type !== Periodetype.Hull && p.forelder === Forelder.FARMEDMOR);
 
-    const ugyldigeUttak = Periodene(perioder)
+    const ugyldigeUttak = Periodene(farsPerioderInnenforSeksFørsteUker)
         .getUttak()
         .filter((p) => erFarsUttakFørsteSeksUkerGyldig(p, antallBarn) === false);
 
