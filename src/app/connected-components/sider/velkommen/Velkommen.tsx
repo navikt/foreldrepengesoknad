@@ -25,8 +25,8 @@ import './velkommen.less';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
-import Feature from '../../../components/feature/Feature';
-import { FeatureToggle } from '../../../FeatureToggle';
+import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
+import { Feature } from '../../../Feature';
 
 interface StateProps {
     person?: Person;
@@ -128,14 +128,14 @@ class Velkommen extends React.Component<Props, OwnProps> {
                             {getMessage(intl, 'velkommen.startNySøknadKnapp')}
                         </Hovedknapp>
 
-                        <Feature feature={FeatureToggle.endringssøknad}>
+                        <FeatureBlock feature={Feature.endringssøknad}>
                             <Hovedknapp
                                 className="velkommen__startSøknadKnapp blokk-m"
                                 disabled={!harGodkjentVilkår}
                                 onClick={() => this.startEndringssøknad()}>
                                 {getMessage(intl, 'velkommen.startEndringssøknadKnapp')}
                             </Hovedknapp>
-                        </Feature>
+                        </FeatureBlock>
                     </Knapperad>
                     <Normaltekst className="velkommen__personopplysningerLink">
                         <a

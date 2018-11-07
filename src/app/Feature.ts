@@ -1,10 +1,10 @@
 import Environment from './Environment';
 
-export enum FeatureToggle {
+export enum Feature {
     endringssøknad = 'FEATURE_ENDRINGSSOKNAD'
 }
 
-export const isFeatureEnabled = (feature: FeatureToggle): boolean => {
+export const isFeatureEnabled = (feature: Feature): boolean => {
     if (Environment[feature] && Environment[feature] === true) {
         return true;
     }
