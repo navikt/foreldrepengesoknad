@@ -106,7 +106,7 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
         erUttakInnenFørsteSeksUkerFødselFarMedmor(payload)
     ) {
         if (erUttakInnenFørsteSeksUkerFødselFarMedmor(payload)) {
-            if (payload.periode.type === Periodetype.Uttak && payload.periode.erMorForSyk !== undefined) {
+            if (payload.periode.type === Periodetype.Uttak && payload.periode.erMorForSyk === true) {
                 return true;
             }
         }
@@ -171,7 +171,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
         if (erUttakInnenFørsteSeksUkerFødselFarMedmor(payload)) {
             if (
                 periode.type === Periodetype.Uttak &&
-                periode.erMorForSyk !== undefined &&
+                periode.erMorForSyk === true &&
                 periode.ønskerSamtidigUttak !== undefined
             ) {
                 return true;
@@ -220,7 +220,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
             periode.konto === StønadskontoType.Fedrekvote &&
-            periode.erMorForSyk !== undefined,
+            periode.erMorForSyk === true,
         parentQuestion: Sp.kvote,
         condition: (payload) => visErMorForSyk(payload)
     },
