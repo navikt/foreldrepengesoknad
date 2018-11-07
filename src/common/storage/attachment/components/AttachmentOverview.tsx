@@ -27,7 +27,7 @@ export interface AttachmentOverviewProps {
 interface State {
     showErrorMessage: boolean;
     failedAttachments: Attachment[];
-    errorMessage?: any;
+    errorMessage?: string;
 }
 
 type Props = AttachmentOverviewProps;
