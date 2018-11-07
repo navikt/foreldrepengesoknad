@@ -1,50 +1,25 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
-
-export enum NæringRegistrertINorge {
-    'NÆRINGEN_ER_REGISTRERT_I_NORGE' = 'næringenErRegistrertINorge',
-    'NÆRINGEN_ER_IKKE_REGISTRERT_I_NORGE' = 'næringenErIkkeRegistrertINorge'
-}
+import JaNeiSpørsmål from '../components/ja-nei-sp\u00F8rsm\u00E5l/JaNeiSp\u00F8rsm\u00E5l';
 
 interface ErNæringenRegistrertINorgeSpørsmålProps {
     navnPåNæringen: string;
     registrertINorge?: boolean;
-    onChange: (registrertINorge: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (registrertINorge: boolean) => void;
 }
 
 type Props = ErNæringenRegistrertINorgeSpørsmålProps & InjectedIntlProps;
 
 const ErNæringenRegistrertINorgeSpørsmål = (props: Props) => {
-    const { onChange, registrertINorge, navnPåNæringen, intl, ...otherProps } = props;
-
-    let checked;
-    if (registrertINorge === true) {
-        checked = NæringRegistrertINorge.NÆRINGEN_ER_REGISTRERT_I_NORGE;
-    } else if (registrertINorge === false) {
-        checked = NæringRegistrertINorge.NÆRINGEN_ER_IKKE_REGISTRERT_I_NORGE;
-    }
+    const { onChange, registrertINorge, navnPåNæringen, intl } = props;
 
     return (
-        <RadioPanelGruppeResponsive
-            checked={checked}
-            legend={getMessage(intl, 'erNæringenRegistrertINorge.spørsmål', { navnPåNæringen })}
-            radios={[
-                {
-                    label: getMessage(intl, 'ja'),
-                    value: NæringRegistrertINorge.NÆRINGEN_ER_REGISTRERT_I_NORGE
-                },
-                {
-                    label: getMessage(intl, 'nei'),
-                    value: NæringRegistrertINorge.NÆRINGEN_ER_IKKE_REGISTRERT_I_NORGE
-                }
-            ]}
-            name="erNæringenRegistrertINorge"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: NæringRegistrertINorge) =>
-                onChange(v === NæringRegistrertINorge.NÆRINGEN_ER_REGISTRERT_I_NORGE, e)
-            }
-            {...otherProps}
+        <JaNeiSpørsmål
+            spørsmål={getMessage(intl, 'erNæringenRegistrertINorge.spørsmål', { navnPåNæringen })}
+            navn="erNæringenRegistrertINorge"
+            valgtVerdi={registrertINorge}
+            onChange={(verdi) => onChange(verdi)}
         />
     );
 };
