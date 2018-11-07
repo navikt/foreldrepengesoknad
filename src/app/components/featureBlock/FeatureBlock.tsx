@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FeatureToggle, isFeatureEnabled } from '../../FeatureToggle';
+import { Feature, isFeatureEnabled } from '../../Feature';
 
 export interface Props {
-    feature: FeatureToggle;
+    feature: Feature;
 }
 
 const FeatureBlock: React.StatelessComponent<Props> = ({ feature, children }) =>
