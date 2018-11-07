@@ -33,6 +33,9 @@ function* saveAppState() {
 function* applyStoredStateToApp(state: AppState) {
     if (Object.keys(state).length !== 0) {
         const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
+        if (søknad.erEndringssøknad === undefined) {
+            søknad.erEndringssøknad = false;
+        }
         yield put(søknadActions.updateSøknad(søknad));
         yield put(commonActions.setSpråk(state.common.språkkode));
         yield put(uttaksplanValideringActions.validerUttaksplanAction());
