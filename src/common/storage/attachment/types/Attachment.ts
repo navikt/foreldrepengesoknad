@@ -16,4 +16,5 @@ export interface Attachment {
     type: AttachmentType;
     skjemanummer: Skjemanummer;
     innsendingsType?: InnsendingsType;
+    error?: any;
 }
