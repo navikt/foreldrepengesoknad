@@ -7,6 +7,9 @@ import { getErDeltUttak } from './util';
 import { getFamiliehendelsedato } from '..';
 
 export const lagUttaksplan = (søknad: Søknad, tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[]): Periode[] => {
+    if (søknad.erEndringssøknad) {
+        return [];
+    }
     const { barn, situasjon, ekstrainfo, annenForelder } = søknad;
     const { erUfør } = annenForelder;
     const { uttaksplanSkjema } = ekstrainfo;
