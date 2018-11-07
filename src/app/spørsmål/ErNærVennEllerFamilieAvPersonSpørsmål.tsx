@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import JaNeiSpørsmål from '../components/ja-nei-sp\u00F8rsm\u00E5l/JaNeiSp\u00F8rsm\u00E5l';
+import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
 interface ErNærVennEllerFamilieAvPersonSpørsmålProps {
     erNærVennEllerFamilieAvPerson?: boolean;
