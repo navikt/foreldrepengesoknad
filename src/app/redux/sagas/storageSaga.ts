@@ -10,6 +10,7 @@ import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 import Søknad from '../../types/søknad/Søknad';
 import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanup';
+import { isFeatureEnabled, FeatureToggle } from '../../FeatureToggle';
 
 function* saveAppState() {
     try {
@@ -33,7 +34,11 @@ function* saveAppState() {
 function* applyStoredStateToApp(state: AppState) {
     if (Object.keys(state).length !== 0) {
         const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
-        if (søknad.erEndringssøknad === undefined) {
+        if (isFeatureEnabled(FeatureToggle.endringssøknad)) {
+            if (søknad.erEndringssøknad === undefined) {
+                søknad.erEndringssøknad = false;
+            }
+        } else {
             søknad.erEndringssøknad = false;
         }
         yield put(søknadActions.updateSøknad(søknad));
