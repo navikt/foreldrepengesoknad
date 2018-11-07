@@ -6,7 +6,7 @@ import { AppState } from '../../../redux/reducers';
 import { DispatchProps } from 'common/redux/types';
 import { HistoryProps } from '../../../types/common';
 import { RegistrertAnnenForelder } from '../../../types/Person';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import isAvailable from '../util/isAvailable';
 import { StegID } from '../../../util/routing/stegConfig';
 import Block from 'common/components/block/Block';
@@ -130,7 +130,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person, registrerteBarn } = props.søkerinfo;
     const { søker, barn, annenForelder, situasjon, sensitivInfoIkkeLagre } = state.søknad;
     const { registrertAnnenForelder } = sensitivInfoIkkeLagre;
-    const erSøkerFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
     const visibility = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
 

@@ -4,7 +4,7 @@ import { InjectedIntl } from 'react-intl';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
-import { erFarEllerMedmor } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import Person from '../../types/Person';
 import getMessage from 'common/util/i18nUtils';
 
@@ -79,7 +79,7 @@ export const getFamiliehendelsedato = (barn: Barn, situasjon: Søkersituasjon): 
 };
 
 export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåForeldre => {
-    const erFarMedmor = erFarEllerMedmor(søknad.søker.rolle);
+    const erFarMedmor = getErSøkerFarEllerMedmor(søknad.søker.rolle);
     return {
         mor: erFarMedmor ? søknad.annenForelder.fornavn : søker.fornavn,
         farMedmor: erFarMedmor ? søker.fornavn : søknad.annenForelder.fornavn

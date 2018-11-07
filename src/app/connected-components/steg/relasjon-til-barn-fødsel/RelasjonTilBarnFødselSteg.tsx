@@ -17,7 +17,7 @@ import Barn, { FødtBarn, UfødtBarn } from '../../../types/søknad/Barn';
 import Søker from '../../../types/søknad/Søker';
 
 import { StegID } from '../../../util/routing/stegConfig';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import HvilkeBarnGjelderSøknadenBolk from '../../../bolker/HvilkeBarnGjelderSøknadenBolk';
 import isAvailable from '../util/isAvailable';
@@ -112,7 +112,7 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                         />
                     )}
                     {barn.erBarnetFødt === false &&
-                        erFarEllerMedmor(søker.rolle) && (
+                        getErSøkerFarEllerMedmor(søker.rolle) && (
                             <Veilederinfo>
                                 <FormattedMessage
                                     id="erBarnetFødt.spørsmål.veileder.medMorEllerFar"
@@ -127,14 +127,14 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
                             </Veilederinfo>
                         )}
                     {vis.ufødtBarnPart &&
-                        !erFarEllerMedmor(søker.rolle) && (
+                        !getErSøkerFarEllerMedmor(søker.rolle) && (
                             <UfødtBarnPartial
                                 situasjon={situasjon}
                                 dispatch={dispatch}
                                 barn={barn as UfødtBarn}
                                 annenForelder={annenForelder}
                                 søker={søker}
-                                erFarEllerMedmor={erFarEllerMedmor(søker.rolle)}
+                                erFarEllerMedmor={getErSøkerFarEllerMedmor(søker.rolle)}
                                 terminbekreftelse={terminbekreftelse || []}
                                 vis={vis.ufødt}
                             />

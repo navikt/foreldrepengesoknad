@@ -5,7 +5,7 @@ import { Søker } from '../../../../types/søknad/Søker';
 import { Barn, Adopsjonsbarn } from '../../../../types/søknad/Barn';
 import Person from '../../../../types/Person';
 import { QuestionConfig, Questions, questionValueIsOk, QuestionVisibility } from '../../../../util/questions/Question';
-import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
 
 interface AnnenForelderSpørsmålPayload {
     søker: Søker;
@@ -139,7 +139,7 @@ export const getAnnenForelderStegVisibility = (
         barn,
         annenForelder,
         person,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
+        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderErRegistrert: registrertAnnenForelder !== undefined,
         gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon)
     };

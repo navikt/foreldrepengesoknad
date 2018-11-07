@@ -1,7 +1,7 @@
 import { RelasjonTilBarFødselVisibilityFunctions as f } from './visibilityFunctions';
 import { skalSøkerLasteOppTerminbekreftelse } from '../../../../util/validation/steg/barn';
 import { FødtBarn, UfødtBarn } from '../../../../types/søknad/Barn';
-import { erFarEllerMedmor } from '../../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../../util/domain/personUtil';
 import { ApiState } from '../../../../redux/reducers/apiReducer';
 import Søknad from '../../../../types/søknad/Søknad';
 
@@ -34,7 +34,7 @@ export const getRelasjonTilBarnFødselVisibility = (
     const { søker, barn, sensitivInfoIkkeLagre } = søknad;
     const { gjelderAnnetBarn } = sensitivInfoIkkeLagre.søknadenGjelderBarnValg;
 
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
     const skalLasteOppTerminbekreftelse = skalSøkerLasteOppTerminbekreftelse(søknad, søkerinfo!);
     const registrerteBarn = søkerinfo!.registrerteBarn || [];
