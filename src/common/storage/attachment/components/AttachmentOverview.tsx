@@ -13,7 +13,6 @@ import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { AxiosError } from 'axios';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
@@ -61,7 +60,7 @@ class AttachmentOverview extends React.Component<Props, State> {
         }
     }
 
-    createErrorMessage(error: AxiosError): string {
+    createErrorMessage(error: any): string {
         if (error.response && error.response.status === 400) {
             return 'vedlegg.forStort';
         }
@@ -102,7 +101,6 @@ class AttachmentOverview extends React.Component<Props, State> {
         const attachmentsToRender = attachments.filter((a: Attachment) => !isAttachmentWithError(a));
         const showAttachments = attachmentsToRender.length > 0;
 
-        console.log(errorMessage ? errorMessage.response : 'feil');
         return (
             <React.Fragment>
                 <Block margin={showAttachments || showErrorMessage ? 'xs' : 'none'}>

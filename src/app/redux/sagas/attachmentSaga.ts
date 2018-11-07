@@ -6,13 +6,11 @@ import { DeleteAttachment, SøknadActionKeys, UploadAttachment } from '../action
 
 function* uploadAttachment(action: UploadAttachment) {
     const attachment = action.payload;
-    console.log('uploadAttachment');
     try {
         const response = yield call(AttachmentApi.saveAttachment, attachment);
         const uri: string = response.headers.location || 'mockurl';
         yield put(søknadActions.uploadAttachmentSuccess(attachment, uri));
     } catch (error) {
-        console.log(error);
         yield put(søknadActions.uploadAttachmentFailed(error, attachment));
     }
 }

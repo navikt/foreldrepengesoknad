@@ -40,6 +40,8 @@
     "feilside.tittel": "Det oppstod en feil",
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
+    "feilside.vedlegg.forStortTotalt":
+        "Du har et vedlegg som inneholder for mange sider. En pdf kan maksimalt ha 5 sider.",
 
     "steg.footer.avbryt": "Avbryt og slett søknad",
 
