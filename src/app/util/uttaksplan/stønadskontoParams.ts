@@ -1,6 +1,6 @@
 import Søknad, { SøkerRolle, Søkersituasjon } from '../../types/søknad/Søknad';
 import { GetTilgjengeligeStønadskontoerParams } from '../../api/api';
-import { erFarEllerMedmor as erFarEllerMedmorSjekk } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor as erFarEllerMedmorSjekk } from '../domain/personUtil';
 import { getFamiliehendelsedato } from './index';
 
 export const getStønadskontoParams = (søknad: Søknad): GetTilgjengeligeStønadskontoerParams => {

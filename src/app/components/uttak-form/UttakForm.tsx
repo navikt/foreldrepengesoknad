@@ -9,13 +9,13 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
-import Søknad from '../../types/søknad/Søknad';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import { erFarEllerMedmor } from '../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
@@ -35,6 +35,10 @@ import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
+import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -160,7 +164,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             søkerErFarEllerMedmor,
             annenForelderHarRett,
             morErUfør,
-            familiehendelsesdato
+            familiehendelsesdato,
+            situasjon: søknad.situasjon
         });
     }
     render() {
@@ -221,6 +226,39 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 }
                             />
                         )}
+                        <Block visible={visibility.isVisible(UttakSpørsmålKeys.erMorForSyk)}>
+                            <ErMorForSykSpørsmål
+                                onChange={(v) => this.onChange({ erMorForSyk: v })}
+                                erMorForSyk={periode.erMorForSyk}
+                            />
+                        </Block>
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === true && (
+                                <>
+                                    <Veilederinfo>
+                                        <FormattedMessage
+                                            id="uttaksplan.informasjon.morErForSyk"
+                                            values={{ navnMor: navnPåForeldre.mor }}
+                                        />
+                                    </Veilederinfo>
+                                    <Block>
+                                        <VedleggSpørsmål
+                                            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+                                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                                            vedlegg={periode.vedlegg as Attachment[]}
+                                            onChange={(v) => this.onChange({ vedlegg: v })}
+                                        />
+                                    </Block>
+                                </>
+                            )}
+                        {visibility.isVisible(UttakSpørsmålKeys.erMorForSyk) &&
+                            periode.erMorForSyk === false && (
+                                <>
+                                    <Veilederinfo>
+                                        <FormattedMessage id="uttaksplan.informasjon.morErForSykNeiSvar" />
+                                    </Veilederinfo>
+                                </>
+                            )}
                         <Block
                             visible={visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)}
                             hasChildBlocks={true}>
@@ -276,7 +314,7 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(state.søknad.søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(state.søknad.søker.rolle);
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,

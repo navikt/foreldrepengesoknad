@@ -12,7 +12,7 @@ import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
-import { erFarEllerMedmor } from 'app/util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 
@@ -25,7 +25,14 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     return {
         periodeId: periode.id,
         valideringsfeil:
-            validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer, familiehendelsesdato) || [],
+            validerPeriodeForm(
+                periode,
+                søker,
+                annenForelder,
+                tilgjengeligeStønadskontoer,
+                familiehendelsesdato,
+                situasjon
+            ) || [],
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };
@@ -38,7 +45,7 @@ function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
     const { uttaksplan, barn, situasjon, søker } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     const søkerErMor = søkerErFarEllerMedmor === false;
     let antallAktivePerioder = 0;
     uttaksplan.forEach((periode) => {
@@ -76,7 +83,7 @@ function* validerUttaksplanSaga() {
             erUttaksmengdeForFarMedmorForHøy(
                 uttaksplan,
                 appState.api.tilgjengeligeStønadskontoer,
-                erFarEllerMedmor(appState.søknad.søker.rolle)
+                getErSøkerFarEllerMedmor(appState.søknad.søker.rolle)
             )
         )
     );

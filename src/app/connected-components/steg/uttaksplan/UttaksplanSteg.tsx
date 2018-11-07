@@ -28,7 +28,7 @@ import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -54,7 +54,7 @@ type Props = StateProps & DispatchProps & SøkerinfoProps & HistoryProps;
 const getVeilederInfoText = (søknad: Søknad) => {
     const { annenForelder, søker } = søknad;
 
-    if (erFarEllerMedmor(søknad.søker.rolle)) {
+    if (getErSøkerFarEllerMedmor(søknad.søker.rolle)) {
         if (
             annenForelder.kanIkkeOppgis ||
             (!annenForelder.harRettPåForeldrepenger && !annenForelder.erUfør) ||
@@ -218,7 +218,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
                                 navnPåForeldre={navnPåForeldre}
-                                forelder={erFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR}
+                                forelder={
+                                    getErSøkerFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR
+                                }
                             />
                         </Block>
                         {søknad.uttaksplan &&
