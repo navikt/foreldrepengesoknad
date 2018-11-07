@@ -5,7 +5,7 @@ export enum Feature {
 }
 
 export const isFeatureEnabled = (feature: Feature): boolean => {
-    if (Environment[feature] && Environment[feature] === true) {
+    if (Environment[feature] && Environment[feature] === 'true') {
         return true;
     }
     return false;
