@@ -1,5 +1,5 @@
 import { getVariantFromPeriode } from '../../../components/utsettelse-form/UtsettelseForm';
-import { erFarEllerMedmor } from '../../domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
 import { Søker } from '../../../types/søknad/Søker';
 import { TilgjengeligStønadskonto, Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
@@ -11,6 +11,7 @@ import {
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
+import { Søkersituasjon } from 'app/types/søknad/Søknad';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
@@ -42,9 +43,10 @@ export const validerPeriodeForm = (
     søker: Søker,
     annenForelder: AnnenForelder,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    familiehendelsesdato: Date
+    familiehendelsesdato: Date,
+    situasjon: Søkersituasjon
 ): PeriodeValideringsfeil[] | undefined => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Hull) {
         return undefined;
     }
@@ -57,14 +59,15 @@ export const validerPeriodeForm = (
             søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
             morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
-            familiehendelsesdato
+            familiehendelsesdato,
+            situasjon
         });
     }
     return validerUtsettelseForm({
         periode,
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
+        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger
     });
 };
