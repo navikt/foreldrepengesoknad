@@ -27,7 +27,7 @@ import { NavnPåForeldre } from 'common/types';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { validerUttaksplanAction } from '../../../redux/actions/uttaksplanValidering/uttaksplanValideringActionCreators';
 import { TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
-import { getStønadskontoParams } from '../../../util/uttaksplan/st\u00F8nadskontoParams';
+import { getStønadskontoParams } from '../../../util/uttaksplan/stønadskontoParams';
 import ApplicationSpinner from 'common/components/application-spinner/ApplicationSpinner';
 import { søknadStegPath } from '../StegRoutes';
 import { AlertStripeAdvarselSolid } from 'nav-frontend-alertstriper';
