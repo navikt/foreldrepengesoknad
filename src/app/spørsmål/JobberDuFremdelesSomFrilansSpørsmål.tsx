@@ -1,49 +1,24 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
-
-enum JobberFremdelesSomFrilans {
-    'JOBBER_FREMDELES_SOM_FRILANS' = 'jobberFremdelesSomFrilans',
-    'JOBBER_IKKE_FREMDELES_SOM_FRILANS' = 'jobberIkkeFremdelesSomFrilans'
-}
+import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
 interface JobberFremdelesSomFrilansSpørsmålProps {
     jobberFremdelesSomFrilans?: boolean;
-    onChange: (jobberFremdelesSomFrilans: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (jobberFremdelesSomFrilans: boolean) => void;
 }
 
 type Props = JobberFremdelesSomFrilansSpørsmålProps & InjectedIntlProps;
 
 const JobberFremdelesSomFrilansSpørsmål = (props: Props) => {
-    const { onChange, jobberFremdelesSomFrilans, intl, ...otherProps } = props;
-
-    let checked;
-    if (jobberFremdelesSomFrilans === true) {
-        checked = JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS;
-    } else if (jobberFremdelesSomFrilans === false) {
-        checked = JobberFremdelesSomFrilans.JOBBER_IKKE_FREMDELES_SOM_FRILANS;
-    }
+    const { onChange, jobberFremdelesSomFrilans, intl } = props;
 
     return (
-        <RadioPanelGruppeResponsive
-            checked={checked}
-            legend={getMessage(intl, 'jobberFremdelesSomFrilans.spørsmål')}
-            radios={[
-                {
-                    label: getMessage(intl, 'ja'),
-                    value: JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS
-                },
-                {
-                    label: getMessage(intl, 'nei'),
-                    value: JobberFremdelesSomFrilans.JOBBER_IKKE_FREMDELES_SOM_FRILANS
-                }
-            ]}
-            name="jobberFremdelesSomFrilans"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: JobberFremdelesSomFrilans) =>
-                onChange(v === JobberFremdelesSomFrilans.JOBBER_FREMDELES_SOM_FRILANS, e)
-            }
-            {...otherProps}
+        <JaNeiSpørsmål
+            spørsmål={getMessage(intl, 'jobberFremdelesSomFrilans.spørsmål')}
+            navn="jobberFremdelesSomFrilans"
+            valgtVerdi={jobberFremdelesSomFrilans}
+            onChange={(verdi) => onChange(verdi)}
         />
     );
 };
