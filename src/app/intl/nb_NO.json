@@ -726,8 +726,8 @@
     "utsettelsesårsak.LOVBESTEMT_FERIE": "Ferie",
     "utsettelsesårsak.ARBEID": "Arbeid",
     "utsettelsesårsak.SYKDOM": "Sykdom",
-    "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt søker",
-    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Innlagt barn",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_SØKER": "Innlagt",
+    "utsettelsesårsak.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt",
     "utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesperioden",
