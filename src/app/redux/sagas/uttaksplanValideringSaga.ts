@@ -25,7 +25,14 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     return {
         periodeId: periode.id,
         valideringsfeil:
-            validerPeriodeForm(periode, søker, annenForelder, tilgjengeligeStønadskontoer, familiehendelsesdato) || [],
+            validerPeriodeForm(
+                periode,
+                søker,
+                annenForelder,
+                tilgjengeligeStønadskontoer,
+                familiehendelsesdato,
+                situasjon
+            ) || [],
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };

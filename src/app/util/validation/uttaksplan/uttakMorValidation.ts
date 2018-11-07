@@ -31,6 +31,7 @@ export const harMorHarSøktUgyldigUttakFørsteSeksUker = (
             (p) =>
                 p.forelder === Forelder.MOR &&
                 p.årsak !== UtsettelseÅrsakType.InstitusjonSøker &&
+                p.årsak !== UtsettelseÅrsakType.InstitusjonBarnet &&
                 p.årsak !== UtsettelseÅrsakType.Sykdom
         );
 
