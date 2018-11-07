@@ -14,7 +14,7 @@ const isArrayOfAttachments = (object: object) => {
 const removeAttachmentsWithUploadError = (attachments: Attachment[]) =>
     attachments.filter((a: Attachment) => !isAttachmentWithError(a));
 
-const cleanUpAttachments = (object: object): Attachment[] => {
+export const cleanUpAttachments = (object: object): Attachment[] => {
     const foundAttachments = [] as Attachment[];
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
