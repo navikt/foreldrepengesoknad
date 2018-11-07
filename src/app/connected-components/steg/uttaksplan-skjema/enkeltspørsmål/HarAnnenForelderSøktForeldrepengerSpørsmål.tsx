@@ -14,17 +14,22 @@ const HarAnnenForelderSøktForeldrepengerSpørsmål: React.StatelessComponent<Pr
     navnAnnenForelder,
     intl
 }) => (
-    <UttaksplanSkjemaSpørsmål
-        visible={visible}
-        render={(data, onChange) => (
-            <JaNeiSpørsmål
-                navn="harAnnenForelderSøktFP"
-                spørsmål={intl.formatMessage({ id: 'spørsmål.harAnnenForelderSøktFP.label' }, { navnAnnenForelder })}
-                valgtVerdi={data.harAnnenForelderSøktFP}
-                onChange={(harAnnenForelderSøktFP) => onChange({ harAnnenForelderSøktFP })}
-            />
-        )}
-    />
+    <>
+        <UttaksplanSkjemaSpørsmål
+            visible={visible}
+            render={(data, onChange) => (
+                <JaNeiSpørsmål
+                    navn="harAnnenForelderSøktFP"
+                    spørsmål={intl.formatMessage(
+                        { id: 'spørsmål.harAnnenForelderSøktFP.label' },
+                        { navnAnnenForelder }
+                    )}
+                    valgtVerdi={data.harAnnenForelderSøktFP}
+                    onChange={(harAnnenForelderSøktFP) => onChange({ harAnnenForelderSøktFP })}
+                />
+            )}
+        />
+    </>
 );
 
 export default injectIntl(HarAnnenForelderSøktForeldrepengerSpørsmål);
