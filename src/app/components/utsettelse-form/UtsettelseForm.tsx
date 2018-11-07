@@ -339,6 +339,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     onChange={(oppholdsårsak) => this.onChange({ årsak: oppholdsårsak })}
                                     oppholdsårsak={periode.årsak}
                                     navnAnnenForelder={søknad.annenForelder.fornavn}
+                                    søkerErFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
                                 />
                             </Block>
                             {periode.årsak !== undefined && (
