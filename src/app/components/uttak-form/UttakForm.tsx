@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import { erFarEllerMedmor } from '../../util/domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
@@ -314,7 +314,7 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(state.søknad.søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(state.søknad.søker.rolle);
     return {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,

@@ -3,11 +3,11 @@ import FlervalgSpørsmål from '../../flervalg-spørsmål/FlervalgSpørsmål';
 import { OppholdÅrsakType } from '../../../types/uttaksplan/periodetyper';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { erFarEllerMedmor } from '../../../util/domain/personUtil';
 
 export interface OwnProps {
     oppholdsårsak: OppholdÅrsakType | undefined;
     navnAnnenForelder: string;
+    søkerErFarEllerMedmor: boolean;
     onChange: (årsak: OppholdÅrsakType) => void;
 }
 
@@ -17,6 +17,7 @@ const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
     oppholdsårsak,
     onChange,
     navnAnnenForelder,
+    søkerErFarEllerMedmor,
     intl
 }) => (
     <>
@@ -29,7 +30,7 @@ const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
             alternativer={[
                 {
                     label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
-                    value: erFarEllerMedmor
+                    value: søkerErFarEllerMedmor
                         ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
                         : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
                 },

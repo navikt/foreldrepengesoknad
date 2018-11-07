@@ -1,5 +1,5 @@
 import { getVariantFromPeriode } from '../../../components/utsettelse-form/UtsettelseForm';
-import { erFarEllerMedmor } from '../../domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
 import { Søker } from '../../../types/søknad/Søker';
 import { TilgjengeligStønadskonto, Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
@@ -46,7 +46,7 @@ export const validerPeriodeForm = (
     familiehendelsesdato: Date,
     situasjon: Søkersituasjon
 ): PeriodeValideringsfeil[] | undefined => {
-    const søkerErFarEllerMedmor = erFarEllerMedmor(søker.rolle);
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Hull) {
         return undefined;
     }
@@ -67,7 +67,7 @@ export const validerPeriodeForm = (
         periode,
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: erFarEllerMedmor(søker.rolle),
+        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger
     });
 };

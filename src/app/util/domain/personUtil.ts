@@ -1,7 +1,7 @@
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import moment from 'moment';
 
-export const erFarEllerMedmor = (søkerRolle: SøkerRolle): boolean =>
+export const getErSøkerFarEllerMedmor = (søkerRolle: SøkerRolle): boolean =>
     søkerRolle === SøkerRolle.FAR || søkerRolle === SøkerRolle.MEDMOR || søkerRolle === SøkerRolle.FORESATT2;
 
 export const formaterNavn = (fornavn: string, etternavn: string, mellomnavn?: string) => {

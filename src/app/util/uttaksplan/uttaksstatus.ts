@@ -2,7 +2,7 @@ import { TilgjengeligStønadskonto, Periode, StønadskontoType } from '../../typ
 import { SøkerRolle } from '../../types/søknad/Søknad';
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { beregnGjenståendeUttaksdager } from '../uttaksPlanStatus';
-import { erFarEllerMedmor } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 
 export const getUttaksstatus = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
@@ -14,7 +14,7 @@ export const getUttaksstatus = (
         uttaksplan,
         søkerrolle
     );
-    if (erFarEllerMedmor(søkerrolle)) {
+    if (getErSøkerFarEllerMedmor(søkerrolle)) {
         return uttaksstatus.filter((kontouttak) => kontouttak.konto !== StønadskontoType.ForeldrepengerFørFødsel);
     }
     return uttaksstatus;
