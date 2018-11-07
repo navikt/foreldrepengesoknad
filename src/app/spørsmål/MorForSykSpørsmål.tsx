@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
+import JaNeiSpørsmål from '../components/ja-nei-sp\u00F8rsm\u00E5l/JaNeiSp\u00F8rsm\u00E5l';
 
 export enum MorForSyk {
     'FOR_SYK' = 'forSyk',
@@ -10,38 +10,20 @@ export enum MorForSyk {
 
 interface MorForSykSpørsmålProps {
     erMorForSyk?: boolean;
-    onChange: (erBarnetFødt: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (erBarnetFødt: boolean) => void;
 }
 
 type Props = MorForSykSpørsmålProps & InjectedIntlProps;
 
 const MorForSykSpørsmål = (props: Props) => {
-    const { onChange, erMorForSyk, intl, ...otherProps } = props;
-
-    let checked;
-    if (erMorForSyk === true) {
-        checked = MorForSyk.FOR_SYK;
-    } else if (erMorForSyk === false) {
-        checked = MorForSyk.IKKE_FOR_SYK;
-    }
+    const { onChange, erMorForSyk, intl } = props;
 
     return (
-        <RadioPanelGruppeResponsive
-            name="morForSykSpørsmål"
-            checked={checked}
-            legend={getMessage(intl, 'morForSykSpørsmål.spørsmål')}
-            radios={[
-                {
-                    label: getMessage(intl, 'ja'),
-                    value: MorForSyk.FOR_SYK
-                },
-                {
-                    label: getMessage(intl, 'nei'),
-                    value: MorForSyk.IKKE_FOR_SYK
-                }
-            ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: MorForSyk) => onChange(v === MorForSyk.FOR_SYK, e)}
-            {...otherProps}
+        <JaNeiSpørsmål
+            spørsmål={getMessage(intl, 'morForSykSpørsmål.spørsmål')}
+            navn="morForSykSpørsmål"
+            valgtVerdi={erMorForSyk}
+            onChange={(verdi) => onChange(verdi)}
         />
     );
 };
