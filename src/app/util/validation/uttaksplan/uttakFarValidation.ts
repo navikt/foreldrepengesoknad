@@ -19,30 +19,32 @@ const periodeErFørDato = ({ tidsperiode }: Periode, dato: Date): boolean => {
 };
 
 export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
-    fellesperiodeOgMorErSykEllerInnlagt: (): boolean => {
-        return (
-            periode.konto === StønadskontoType.Fellesperiode &&
-            (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
-        );
+    erMorForSykDeFørsteSeksUker: (): boolean => {
+        if (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger) {
+            return (
+                periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
+                periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp
+            );
+        }
+
+        if (periode.konto === StønadskontoType.Fedrekvote) {
+            return periode.erMorForSyk === true;
+        }
+
+        return false;
     },
     erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote: (antallBarn: number): boolean => {
         return (
             antallBarn > 1 &&
             (periode.konto === StønadskontoType.Flerbarnsdager || periode.konto === StønadskontoType.Fedrekvote)
         );
-    },
-    fedreKvoteErMorForSykDeFørsteSeksUker: (): boolean => {
-        return periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true;
     }
 });
 
 const erFarsUttakFørsteSeksUkerGyldig = (periode: Uttaksperiode, antallBarn: number): boolean => {
     const unntak = unntakFarFørsteSeksUker(periode);
     return (
-        unntak.fellesperiodeOgMorErSykEllerInnlagt() ||
-        unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn) ||
-        unntak.fedreKvoteErMorForSykDeFørsteSeksUker()
+        unntak.erMorForSykDeFørsteSeksUker() || unntak.erFlerbarnsukerOgUttakAvFlerbarnsdagerEllerFedrekvote(antallBarn)
     );
 };
 
