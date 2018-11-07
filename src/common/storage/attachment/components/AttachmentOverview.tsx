@@ -13,6 +13,7 @@ import { Skjemanummer } from '../../../../app/types/søknad/Søknad';
 import Block from 'common/components/block/Block';
 import AlertstripeWithCloseButton from 'common/components/alertstripe-content/AlertstripeWithCloseButton';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { AxiosError } from 'axios';
 
 export interface AttachmentOverviewProps {
     attachments: Attachment[];
@@ -27,6 +28,7 @@ export interface AttachmentOverviewProps {
 interface State {
     showErrorMessage: boolean;
     failedAttachments: Attachment[];
+    errorMessage?: any;
 }
 
 type Props = AttachmentOverviewProps;
@@ -46,28 +48,41 @@ class AttachmentOverview extends React.Component<Props, State> {
         );
 
         if (this.hasFailedAttachments(attachmentsWithoutOldFailedAttachments)) {
-            this.setState({
-                failedAttachments: this.state.failedAttachments.concat(
-                    attachmentsWithoutOldFailedAttachments.filter(isAttachmentWithError)
-                )
-            });
-            this.showErrorMessage();
+            this.setState(
+                {
+                    failedAttachments: this.state.failedAttachments.concat(
+                        attachmentsWithoutOldFailedAttachments.filter(isAttachmentWithError)
+                    )
+                },
+                () => {
+                    this.showErrorMessage(this.createErrorMessage(attachmentsWithoutOldFailedAttachments[0].error));
+                }
+            );
         }
+    }
+
+    createErrorMessage(error: AxiosError): string {
+        if (error.response && error.response.status === 400) {
+            return 'vedlegg.forStort';
+        }
+        return 'vedlegg.feilmelding';
     }
 
     hasFailedAttachments(attachments: Attachment[]) {
         return attachments.some(isAttachmentWithError);
     }
 
-    showErrorMessage() {
+    showErrorMessage(errorMessage: string) {
         this.setState({
-            showErrorMessage: true
+            showErrorMessage: true,
+            errorMessage
         });
     }
 
     hideErrorMessage() {
         this.setState({
-            showErrorMessage: false
+            showErrorMessage: false,
+            errorMessage: undefined
         });
     }
 
@@ -82,12 +97,15 @@ class AttachmentOverview extends React.Component<Props, State> {
             onFilesSelect
         } = this.props;
 
+        const { showErrorMessage, errorMessage } = this.state;
+
         const attachmentsToRender = attachments.filter((a: Attachment) => !isAttachmentWithError(a));
         const showAttachments = attachmentsToRender.length > 0;
 
+        console.log(errorMessage ? errorMessage.response : 'feil');
         return (
             <React.Fragment>
-                <Block margin={showAttachments || this.state.showErrorMessage ? 'xs' : 'none'}>
+                <Block margin={showAttachments || showErrorMessage ? 'xs' : 'none'}>
                     <VedleggInput
                         id={inputId}
                         onFilesSelect={(files: File[]) => {
@@ -100,17 +118,21 @@ class AttachmentOverview extends React.Component<Props, State> {
                 <CSSTransition
                     classNames="transitionFade"
                     timeout={150}
-                    in={showAttachments || this.state.showErrorMessage}
+                    in={showAttachments || showErrorMessage}
                     unmountOnExit={true}>
                     <React.Fragment>
-                        {(showAttachments || this.state.showErrorMessage) && (
+                        {(showAttachments || showErrorMessage) && (
                             <React.Fragment>
-                                <Block margin="xs" visible={this.state.showErrorMessage} animated={false}>
+                                <Block margin="xs" visible={showErrorMessage} animated={false}>
                                     <AlertstripeWithCloseButton
                                         alertStripeProps={{
                                             type: 'advarsel',
                                             solid: true,
-                                            children: <FormattedMessage id={'vedlegg.feilmelding'} />
+                                            children: (
+                                                <FormattedMessage
+                                                    id={errorMessage ? errorMessage : 'vedlegg.feilmelding'}
+                                                />
+                                            )
                                         }}
                                         lukknappProps={{
                                             hvit: true,

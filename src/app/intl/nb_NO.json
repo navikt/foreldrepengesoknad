@@ -519,6 +519,7 @@
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
 
     "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
+    "vedlegg.forStort": "Vedlegget må være mindre enn 9MB",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
     "far.dokumantasjonAvAleneomsorg.vedlegg.veileder":
