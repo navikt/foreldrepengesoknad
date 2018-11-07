@@ -25,14 +25,16 @@ import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsummering/UttaksplanFeiloppsummering';
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
-import { getUttaksstatus } from '../../../util/uttaksplan/uttaksstatus';
+import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/uttaksplan/uttaksstatus';
 import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
+import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
+    erDeltUttak: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
     perioder: Periode[];
@@ -175,11 +177,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             tilgjengeligeStønadskontoer,
             navnPåForeldre,
             lastAddedPeriodeId,
+            erDeltUttak,
             dispatch
         } = this.props;
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
-
+        const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
+            erDeltUttak,
+            getErSøkerFarEllerMedmor(søknad.søker.rolle),
+            søknad.erEndringssøknad
+        );
         return (
             <Steg
                 {...this.props.stegProps}
@@ -229,7 +236,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     <Uttaksoppsummering
                                         uttak={uttaksstatus}
                                         navnPåForeldre={navnPåForeldre}
-                                        rolle={søknad.søker.rolle}
+                                        gjelderDagerBrukt={gjelderDagerBrukt}
                                     />
                                 </Block>
                             )}
@@ -260,7 +267,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     const uttaksstatus: Stønadskontouttak[] = getUttaksstatus(
         tilgjengeligeStønadskontoer,
         søknad.uttaksplan,
-        søknad.søker.rolle
+        søknad.søker.rolle,
+        søknad.erEndringssøknad
     );
 
     const stegProps: StegProps = {
@@ -279,6 +287,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         stegProps,
         uttaksstatus,
         navnPåForeldre,
+        erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,

@@ -38,12 +38,12 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
 };
 
 const getStønadskontoerMedForMyeUttak = (uttak: Stønadskontouttak[]) => {
-    return uttak.filter((u) => u.dagerGjenstående < 0);
+    return uttak.filter((u) => u.antallDager < 0);
 };
 
 function* validerUttaksplanSaga() {
     const appState: AppState = yield select(stateSelector);
-    const { uttaksplan, barn, situasjon, søker } = appState.søknad;
+    const { uttaksplan, barn, situasjon, søker, erEndringssøknad } = appState.søknad;
     const validertePerioder: Periodevalidering = {};
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     const søkerErMor = søkerErFarEllerMedmor === false;
@@ -57,7 +57,8 @@ function* validerUttaksplanSaga() {
     const uttaksstatus = getUttaksstatus(
         appState.api.tilgjengeligeStønadskontoer,
         uttaksplan,
-        appState.søknad.søker.rolle
+        appState.søknad.søker.rolle,
+        erEndringssøknad
     );
     yield put(
         setUttaksplanValidering(
