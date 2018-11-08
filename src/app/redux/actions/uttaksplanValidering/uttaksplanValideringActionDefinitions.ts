@@ -18,6 +18,9 @@ export interface SetUttaksplanValidering {
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
+    uttakErBareOpphold: boolean;
+    uttaksplanStarterMedOpphold: boolean;
+    uttaksplanSlutterMedOpphold: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;
