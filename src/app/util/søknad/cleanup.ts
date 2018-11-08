@@ -19,8 +19,11 @@ export const cleanUpAttachments = (object: object): Attachment[] => {
     Object.keys(object).forEach((key: string) => {
         if (typeof object[key] === 'object') {
             if (isArrayOfAttachments(object[key])) {
-                foundAttachments.push(...removeAttachmentsWithUploadError(object[key]));
-                object[key] = (object[key] as Attachment[]).map((attachment: Attachment) => attachment.id);
+                const attachmentWithoutUploadError = [...removeAttachmentsWithUploadError(object[key])];
+                foundAttachments.push(...attachmentWithoutUploadError);
+                object[key] = (object[key] as Attachment[])
+                    .filter((attachment: Attachment) => attachmentWithoutUploadError.includes(attachment))
+                    .map((attachment: Attachment) => attachment.id);
             } else {
                 foundAttachments.push(...cleanUpAttachments(object[key]));
             }
