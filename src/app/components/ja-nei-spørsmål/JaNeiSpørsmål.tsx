@@ -14,13 +14,17 @@ interface JaNeiSpørsmålProps {
     hjelpetekst?: string | React.ReactNode;
     valgtVerdi?: boolean;
     toKolonner?: boolean;
+    labels?: {
+        ja: string;
+        nei: string;
+    };
     onChange: (valgt: boolean) => void;
 }
 
 type Props = JaNeiSpørsmålProps & InjectedIntlProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, toKolonner = true, intl } = props;
+    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, toKolonner = true, labels, intl } = props;
 
     let checked;
     if (valgtVerdi === true) {
@@ -38,11 +42,11 @@ const JaNeiSpørsmål = (props: Props) => {
             toKolonner={toKolonner}
             alternativer={[
                 {
-                    label: getMessage(intl, 'ja'),
+                    label: getMessage(intl, labels ? labels.ja : getMessage(intl, 'ja')),
                     value: ValgAlternativer.JA
                 },
                 {
-                    label: getMessage(intl, 'nei'),
+                    label: getMessage(intl, labels ? labels.nei : getMessage(intl, 'nei')),
                     value: ValgAlternativer.NEI
                 }
             ]}
