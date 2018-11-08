@@ -21,6 +21,8 @@ import { Tidsperiode, Forelder } from 'common/types';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
 import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
+import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
+import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -35,6 +37,7 @@ interface OwnProps {
 
 interface State {
     periode: RecursivePartial<Periode>;
+    visibility: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility | undefined;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -68,14 +71,18 @@ class NyPeriodeForm extends React.Component<Props, State> {
             periode.type = periodetype;
         }
         this.state = {
-            periode
+            periode,
+            visibility: undefined
         };
 
         this.updatePeriode = this.updatePeriode.bind(this);
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
     }
 
-    updatePeriode(periode: RecursivePartial<Periode>) {
+    updatePeriode(
+        periode: RecursivePartial<Periode>,
+        visibility?: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
+    ) {
         const { erMorUfør } = this.props;
 
         if (isUttaksperiode(periode) && periode.konto === StønadskontoType.AktivitetsfriKvote) {
@@ -91,7 +98,8 @@ class NyPeriodeForm extends React.Component<Props, State> {
             ...periode
         };
         this.setState({
-            periode: updatedPeriode as RecursivePartial<Periode>
+            periode: updatedPeriode as RecursivePartial<Periode>,
+            visibility
         });
     }
 
@@ -99,9 +107,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
         e.preventDefault();
         e.stopPropagation();
         const { onSubmit } = this.props;
-        const { periode } = this.state;
+        const { periode, visibility } = this.state;
         const { søker, annenForelder } = this.props.søknad;
-        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder);
+        const cleanedPeriode = PeriodeCleanup.cleanupNyPeriode(periode as Periode, søker, annenForelder, visibility);
         onSubmit(cleanedPeriode as Periode);
         this.updatePeriode({ tidsperiode: {} });
     }
