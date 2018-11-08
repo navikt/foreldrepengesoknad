@@ -18,7 +18,8 @@ function* sendSøknad(action: SendSøknad) {
         yield put(apiActions.deleteStoredAppState());
     } catch (error) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
-            errorMessage: error && error.response ? error.response.data.messages : 'feilside.ingress'
+            errorMessage:
+                error && error.response && error.response.status === 413 ? error.response.data.messages : undefined
         });
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));
