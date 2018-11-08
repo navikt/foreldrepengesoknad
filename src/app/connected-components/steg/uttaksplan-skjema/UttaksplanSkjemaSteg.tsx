@@ -38,14 +38,16 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
 
-        const { dispatch, søknad } = props;
+        const { dispatch, stegProps, søknad } = props;
 
-        dispatch(
-            apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '100' }))
-        );
-        dispatch(
-            apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '80' }))
-        );
+        if (stegProps.isAvailable) {
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '100' }))
+            );
+            dispatch(
+                apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams({ ...søknad, dekningsgrad: '80' }))
+            );
+        }
     }
 
     componentWillMount() {

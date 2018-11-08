@@ -50,12 +50,12 @@ type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & 
 class OppsummeringSteg extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-        const { tilgjengeligeStønadskontoer, søknad, dispatch } = this.props;
+        const { tilgjengeligeStønadskontoer, søknad, stegProps, dispatch } = this.props;
 
         this.sendSøknad = this.sendSøknad.bind(this);
         this.gotoUttaksplan = this.gotoUttaksplan.bind(this);
 
-        if (tilgjengeligeStønadskontoer.length === 0) {
+        if (tilgjengeligeStønadskontoer.length === 0 && stegProps.isAvailable) {
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
             );

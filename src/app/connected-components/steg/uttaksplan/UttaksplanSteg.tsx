@@ -96,7 +96,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     constructor(props: Props) {
         super(props);
 
-        const { søknad, tilgjengeligeStønadskontoer, dispatch } = this.props;
+        const { søknad, tilgjengeligeStønadskontoer, stegProps, dispatch } = this.props;
 
         this.onBekreftGåTilbake = this.onBekreftGåTilbake.bind(this);
         this.showBekreftGåTilbakeDialog = this.showBekreftGåTilbakeDialog.bind(this);
@@ -113,14 +113,15 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             visFeiloppsummering: false,
             harKlikketFortsett: false
         };
-
-        if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
-            dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
-        }
-        if (tilgjengeligeStønadskontoer.length === 0) {
-            dispatch(
-                apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
-            );
+        if (stegProps.isAvailable) {
+            if (søknad.ekstrainfo.uttaksplanSkjema.forslagLaget === false) {
+                dispatch(søknadActions.uttaksplanLagForslag(tilgjengeligeStønadskontoer));
+            }
+            if (tilgjengeligeStønadskontoer.length === 0) {
+                dispatch(
+                    apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
+                );
+            }
         }
     }
 
