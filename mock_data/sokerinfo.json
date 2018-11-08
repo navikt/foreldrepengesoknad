@@ -6,22 +6,7 @@
         "fødselsdato": "1994-01-28",
         "kjønn": "K",
         "land": "NO",
-        "ikkeNordiskEøsLand": false,
-        "barn": [
-            {
-                "fornavn": "Amalie",
-                "etternavn": "Skraam",
-                "fnr": "29031857021",
-                "kjønn": "K",
-                "fødselsdato": "2018-03-31",
-                "annenForelder": {
-                    "fnr": "25059710888",
-                    "fornavn": "Espen",
-                    "etternavn": "Gabler",
-                    "fødselsdato": "1997-05-25"
-                }
-            }
-        ]
+        "ikkeNordiskEøsLand": false
     },
     "arbeidsforhold": [
         {
