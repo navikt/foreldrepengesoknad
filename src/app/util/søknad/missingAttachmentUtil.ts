@@ -74,10 +74,11 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
         });
     }
 
+    const annenForelderStegVisibility = getAnnenForelderStegVisibility(søknad, api.søkerinfo!);
     const shouldUploadDokumentasjonAvAleneomsorg =
-        getAnnenForelderStegVisibility(søknad, api.søkerinfo!)!.isVisible(
-            AnnenForelderSpørsmålKeys.datoForAleneomsorg
-        ) && søknad.barn.datoForAleneomsorg !== undefined;
+        annenForelderStegVisibility &&
+        annenForelderStegVisibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg) &&
+        søknad.barn.datoForAleneomsorg !== undefined;
     if (shouldUploadDokumentasjonAvAleneomsorg && isAttachmentMissing(søknad.barn.dokumentasjonAvAleneomsorg)) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.ANNET,

@@ -19,9 +19,10 @@ export function sendSøknad(søknad: Søknad, history: History): ApiActionTypes 
     };
 }
 
-export function getStoredAppState(): ApiActionTypes {
+export function getStoredAppState(history: History): ApiActionTypes {
     return {
-        type: ApiActionKeys.GET_STORED_APP_STATE
+        type: ApiActionKeys.GET_STORED_APP_STATE,
+        history
     };
 }
 

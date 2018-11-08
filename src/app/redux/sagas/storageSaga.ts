@@ -1,6 +1,6 @@
 import { takeEvery, all, call, put, select, throttle } from 'redux-saga/effects';
 import Api from '../../api/api';
-import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
+import { ApiActionKeys, GetStoredAppState } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as commonActions } from '../actions/common/commonActionCreators';
@@ -10,6 +10,9 @@ import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { AxiosResponse } from 'axios';
 import Søknad from '../../types/søknad/Søknad';
 import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanup';
+import { isFeatureEnabled, Feature } from '../../Feature';
+import { History } from 'history';
+import routeConfig from '../../util/routing/routeConfig';
 
 function* saveAppState() {
     try {
@@ -30,27 +33,43 @@ function* saveAppState() {
     }
 }
 
-function* applyStoredStateToApp(state: AppState) {
-    if (Object.keys(state).length !== 0) {
-        const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
-        yield put(søknadActions.updateSøknad(søknad));
-        yield put(commonActions.setSpråk(state.common.språkkode));
-        yield put(uttaksplanValideringActions.validerUttaksplanAction());
-    }
-}
-
-function* getAppState(action: any) {
+function* getAppState(action: GetStoredAppState) {
     try {
         put(apiActions.updateApi({ isLoadingAppState: true }));
-        const response: AxiosResponse = yield call(Api.getStoredAppState, action.params);
+        const response: AxiosResponse = yield call(Api.getStoredAppState);
         const state: AppState = response.data;
         if (state) {
-            yield applyStoredStateToApp(state);
+            yield applyStoredStateToApp(state, action.history);
         }
     } catch {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
     } finally {
         yield put(apiActions.updateApi({ isLoadingAppState: false }));
+    }
+}
+
+function* applyStoredStateToApp(state: AppState, history: History) {
+    if (Object.keys(state).length !== 0) {
+        const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
+        if (
+            (søknad.erEndringssøknad && isFeatureEnabled(Feature.endringssøknad) === false) ||
+            søknad.ekstrainfo.currentStegID === undefined
+        ) {
+            yield put(commonActions.setSpråk(state.common.språkkode));
+            yield put(søknadActions.avbrytSøknad());
+            history.push(routeConfig.APP_ROUTE_PREFIX);
+        } else {
+            if (isFeatureEnabled(Feature.endringssøknad)) {
+                if (søknad.erEndringssøknad === undefined) {
+                    søknad.erEndringssøknad = false;
+                }
+            } else {
+                søknad.erEndringssøknad = false;
+            }
+            yield put(søknadActions.updateSøknad(søknad));
+            yield put(commonActions.setSpråk(state.common.språkkode));
+            yield put(uttaksplanValideringActions.validerUttaksplanAction());
+        }
     }
 }
 
