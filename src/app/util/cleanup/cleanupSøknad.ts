@@ -5,9 +5,11 @@ export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Peri
     return uttaksplan.filter((p) => p.type !== Periodetype.Hull);
 };
 
-export const cleanupSøknadForInnsending = (søknad: Søknad): Søknad => {
+export const cleanupSøknadForInnsending = (søknad: Søknad): Partial<Søknad> => {
     return {
         ...søknad,
+        sensitivInfoIkkeLagre: undefined,
+        ekstrainfo: undefined,
         uttaksplan: removePeriodetypeHullFromUttaksplan(søknad.uttaksplan)
     };
 };
