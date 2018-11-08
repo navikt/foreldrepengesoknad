@@ -14,7 +14,10 @@ interface GenerellFeilProps {
 
 type Props = GenerellFeilProps & InjectedIntlProps;
 const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
-    const errorMessage = props.history.location.state.errorMessage;
+    const errorMessage =
+        props.history.location.state && props.history.location.state.errorMessage
+            ? props.history.location.state.errorMessage
+            : 'feilside.ingress';
 
     return (
         <Applikasjonsside visSpråkvelger={false}>
