@@ -17,7 +17,7 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
     const errorMessage =
         props.history.location.state && props.history.location.state.errorMessage
             ? props.history.location.state.errorMessage
-            : 'feilside.ingress';
+            : undefined;
 
     return (
         <Applikasjonsside visSpråkvelger={false}>
@@ -25,16 +25,20 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
             <Feilsidemelding
                 tittel={getMessage(props.intl, 'feilside.tittel')}
                 ingress={
-                    <FormattedMessage
-                        id={errorMessage}
-                        values={{
-                            lenke: (
-                                <Lenke href={lenker.brukerstøtte}>
-                                    {getMessage(props.intl, 'feilside.ingress.lenke')}
-                                </Lenke>
-                            )
-                        }}
-                    />
+                    errorMessage ? (
+                        errorMessage
+                    ) : (
+                        <FormattedMessage
+                            id={'feilside.ingress'}
+                            values={{
+                                lenke: (
+                                    <Lenke href={lenker.brukerstøtte}>
+                                        {getMessage(props.intl, 'feilside.ingress.lenke')}
+                                    </Lenke>
+                                )
+                            }}
+                        />
+                    )
                 }
             />
         </Applikasjonsside>
