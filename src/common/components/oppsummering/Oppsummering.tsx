@@ -92,6 +92,7 @@ class Oppsummering extends React.Component<Props> {
                             erFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
                             registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
                             uttaksplanValidering={uttaksplanValidering}
+                            dekningsgrad={søknad.dekningsgrad}
                         />
                     </Oppsummeringspanel>
                 </div>
