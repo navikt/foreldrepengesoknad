@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
-import AnnenInntektSiste10MndSpørsmål, { AnnenInntekt } from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
+import AnnenInntektSiste10MndSpørsmål from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
@@ -60,10 +60,10 @@ class AndreInntekterSteg extends React.Component<Props> {
             <Block>
                 <AnnenInntektSiste10MndSpørsmål
                     harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
-                    onChange={(value: AnnenInntekt) =>
+                    onChange={(value) =>
                         dispatch(
                             søknadActions.updateSøker({
-                                harHattAnnenInntektSiste10Mnd: value === AnnenInntekt.HAR_HATT_ANNEN_INNTEKT
+                                harHattAnnenInntektSiste10Mnd: value
                             })
                         )
                     }
