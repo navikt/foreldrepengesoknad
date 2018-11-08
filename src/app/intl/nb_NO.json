@@ -685,6 +685,10 @@
     "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
 
+    "oppsummering.dekningsgrad.label": "Lengde på periode med foreldrepenger",
+    "oppsummering.dekningsgrad.verdi80": "{antallUker} uker med 80 prosent foreldrepenger",
+    "oppsummering.dekningsgrad.verdi100": "{antallUker} uker med 100 prosent foreldrepenger",
+
     "oppsummering.uttak": "Din plan",
     "oppsummering.uttak.type.uttak": "Uttak",
     "oppsummering.uttak.type.utsettelse": "Utsettelse",
