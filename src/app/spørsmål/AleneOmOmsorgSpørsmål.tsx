@@ -19,7 +19,7 @@ const AleneOmOmsorgsSpørsmål = (props: Props) => {
             navn="omsorgsfordeling"
             hjelpetekst={getMessage(intl, 'annenForelder.aleneOmOmsorg.veileder')}
             onChange={onChange}
-            valgtVerdi={aleneOmOmsorg === undefined ? undefined : !aleneOmOmsorg}
+            valgtVerdi={aleneOmOmsorg === undefined ? undefined : aleneOmOmsorg}
         />
     );
 };
