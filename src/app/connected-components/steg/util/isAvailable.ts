@@ -61,8 +61,8 @@ const isAvailable = (stegId: StegID, søknad: Søknad, søkerinfo: Søkerinfo, u
                 annenForelderErGyldig(søknad, søkerinfo) &&
                 uttaksplanSkjemaErGyldig(søknad) &&
                 uttaksplanErGyldig === true &&
-                utenlandsoppholdErGyldig(søknad) &&
-                annenInntektErGyldig(søknad.søker)
+                (søknad.erEndringssøknad === false ? utenlandsoppholdErGyldig(søknad) : true) &&
+                (søknad.erEndringssøknad === false ? annenInntektErGyldig(søknad.søker) : true)
             );
         default:
             return false;

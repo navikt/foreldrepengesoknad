@@ -1,5 +1,5 @@
 import * as React from 'react';
-import stegConfig, { StegConfigItem, StegID } from '../../util/routing/stegConfig';
+import { getStegConfig, StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
 import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
@@ -38,11 +38,15 @@ export interface StegProps {
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
 }
 
+interface StateProps {
+    erEndringssøknad: boolean;
+}
+
 interface State {
     visAvbrytDialog: boolean;
 }
 
-type Props = StegProps & InjectedIntlProps;
+type Props = StateProps & StegProps & InjectedIntlProps;
 
 class Steg extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {
@@ -63,6 +67,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
+        this.getStegConfig = this.getStegConfig.bind(this);
     }
 
     updateCurrentSteg(currentSteg: StegID) {
@@ -97,6 +102,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
     navigateToNextStep(): void {
         const { id, nesteStegID, dispatch } = this.props;
+        const stegConfig = this.getStegConfig();
         const stegToShow = nesteStegID ? nesteStegID : (stegConfig[id].nesteSteg as StegID);
         this.updateCurrentSteg(stegToShow);
         dispatch(apiActionCreators.storeAppState());
@@ -116,6 +122,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     getPreviousStegID(): StegID {
+        const stegConfig = this.getStegConfig();
         const activeStegId = this.props.id;
         const previousStegID =
             Object.keys(stegConfig).find(
@@ -137,14 +144,28 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
     shouldHideBackButton(): boolean {
         const activeStegId = this.props.id;
+        const stegConfig = this.getStegConfig();
         return (
             Math.min(...Object.values(stegConfig).map((stegConfigItem: StegConfigItem) => stegConfigItem.index)) ===
             stegConfig[activeStegId].index
         );
     }
 
+    getStegConfig() {
+        return getStegConfig(this.props.erEndringssøknad);
+    }
+
     renderContent() {
-        const { id, renderFortsettKnapp, fortsettKnappLabel, errorSummaryRenderer, intl } = this.props;
+        const {
+            id,
+            renderFortsettKnapp,
+            fortsettKnappLabel,
+            errorSummaryRenderer,
+            erEndringssøknad,
+            intl
+        } = this.props;
+
+        const stegConfig = this.getStegConfig();
         return (
             <>
                 <DocumentTitle
@@ -159,7 +180,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                     />
                 </Block>
                 <Block>
-                    <Stegindikator id={id} />
+                    <Stegindikator id={id} erEndringssøknad={erEndringssøknad} />
                 </Block>
                 {this.props.children}
                 {renderFortsettKnapp === true && (
@@ -204,6 +225,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 }
 
-const mapStateToProps = (state: AppState, props: Props) => props;
+const mapStateToProps = (state: AppState): StateProps => ({ erEndringssøknad: state.søknad.erEndringssøknad });
 
 export default injectIntl(connect(mapStateToProps)(Steg));

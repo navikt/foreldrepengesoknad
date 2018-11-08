@@ -20,6 +20,7 @@ export interface OwnProps {
 
 interface StateProps {
     språkkode: Språkkode;
+    erEndringssøknad: boolean;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
@@ -29,7 +30,15 @@ class Sidemal extends React.Component<Props> {
     }
 
     render() {
-        const { visSpråkvelger, visSøknadstittel, språkkode, children, margin = true, dispatch } = this.props;
+        const {
+            visSpråkvelger,
+            visSøknadstittel,
+            språkkode,
+            children,
+            erEndringssøknad,
+            margin = true,
+            dispatch
+        } = this.props;
 
         const BEM = BEMHelper('content');
         const cls = classnames(BEM.className, {
@@ -41,7 +50,11 @@ class Sidemal extends React.Component<Props> {
                 {visSpråkvelger && (
                     <Språkvelger kode={språkkode} setSpråkkode={(kode: Språkkode) => dispatch(setSpråk(kode))} />
                 )}
-                {visSøknadstittel && <Søknadstittel>{getMessage(this.props.intl, 'søknad.pageheading')}</Søknadstittel>}
+                {visSøknadstittel && (
+                    <Søknadstittel>
+                        {getMessage(this.props.intl, `søknad.pageheading.${erEndringssøknad ? 'endring' : 'ny'}`)}
+                    </Søknadstittel>
+                )}
                 <div className={cls}>{children}</div>
             </React.Fragment>
         );
@@ -49,7 +62,8 @@ class Sidemal extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    språkkode: state.common.språkkode
+    språkkode: state.common.språkkode,
+    erEndringssøknad: state.søknad.erEndringssøknad
 });
 
 export default connect(mapStateToProps)(injectIntl(Sidemal));

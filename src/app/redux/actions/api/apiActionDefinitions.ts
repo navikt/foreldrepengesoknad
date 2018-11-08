@@ -53,6 +53,7 @@ export interface SendSøknad {
 
 export interface GetStoredAppState {
     type: ApiActionKeys.GET_STORED_APP_STATE;
+    history: History;
 }
 
 export interface DeleteStoredAppState {

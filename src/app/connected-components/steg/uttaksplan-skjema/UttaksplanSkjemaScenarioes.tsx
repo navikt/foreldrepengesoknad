@@ -186,6 +186,8 @@ const Scenario7: React.StatelessComponent<ScenarioProps> = ({ søknad, navnPåFo
     </>
 );
 
+const Scenario8: React.StatelessComponent<ScenarioProps> = ({ søknad }) => <DekningsgradSpørsmål />;
+
 const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
     const { scenario, ...scenarioProps } = props;
     switch (scenario) {
@@ -201,6 +203,8 @@ const UttaksplanSkjemaScenarioes: React.StatelessComponent<Props> = (props) => {
             return <Scenario6 {...scenarioProps} />;
         case UttaksplanSkjemaScenario.s7_farMorAdopsjon_morFarAlleredeSøkt_ikkeDeltPlan:
             return <Scenario7 {...scenarioProps} />;
+        case UttaksplanSkjemaScenario.s8_endringssøknad:
+            return <Scenario8 {...scenarioProps} />;
         default:
             return <>Undefined scenario</>;
     }

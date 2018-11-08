@@ -24,6 +24,7 @@ interface StateProps {
     situasjon: Søkersituasjon;
     familiehendelseDato: Date;
     startdatoPermisjon: Date | undefined;
+    erEndringssøknad: boolean;
 }
 interface OwnProps {
     visible?: boolean;
@@ -50,7 +51,8 @@ const DekningsgradSpørsmål = (props: Props) => {
         harAnnenForelderSøktFP,
         situasjon,
         familiehendelseDato,
-        startdatoPermisjon
+        startdatoPermisjon,
+        erEndringssøknad
     } = props;
 
     let checked;
@@ -66,21 +68,19 @@ const DekningsgradSpørsmål = (props: Props) => {
     const førsteDatoEtter20190101OgDeltUttak =
         !erAleneomsorg && moment(startdatoPermisjon || familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1));
 
-    if (getErSøkerFarEllerMedmor(rolle)) {
-        if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
-            labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
-        } else {
-            labelKey = erAleneomsorg
-                ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
-                : 'spørsmål.dekningsgrad.label.deltUttak';
-        }
+    if (erEndringssøknad) {
+        labelKey = erAleneomsorg
+            ? 'spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak'
+            : 'spørsmål.dekningsgrad.endringssøknad.label.deltUttak';
     } else {
         if (harAnnenForelderSøktFP !== undefined && harAnnenForelderSøktFP === true) {
             labelKey = 'spørsmål.dekningsgrad.label.deltUttak';
         } else {
             labelKey = erAleneomsorg
                 ? 'spørsmål.dekningsgrad.label.ikkeDeltUttak'
-                : 'spørsmål.dekningsgrad.label.deltUttakMor';
+                : getErSøkerFarEllerMedmor(rolle)
+                    ? 'spørsmål.dekningsgrad.label.deltUttak'
+                    : 'spørsmål.dekningsgrad.label.deltUttakMor';
         }
     }
 
@@ -140,7 +140,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     harAnnenForelderSøktFP: state.søknad.ekstrainfo.uttaksplanSkjema.harAnnenForelderSøktFP,
     situasjon: state.søknad.situasjon,
     familiehendelseDato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
-    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon
+    startdatoPermisjon: state.søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon,
+    erEndringssøknad: state.søknad.erEndringssøknad
 });
 
 export default connect(mapStateToProps)(injectIntl(DekningsgradSpørsmål));

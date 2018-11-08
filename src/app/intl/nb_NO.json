@@ -77,13 +77,15 @@
     "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Hvorfor skal du utsette?",
     "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Hvilken del av foreldrepengene skal { navn } bruke?",
 
-    "søknad.pageheading": "Søknad om foreldrepenger",
+    "søknad.pageheading.ny": "Søknad om foreldrepenger",
+    "søknad.pageheading.endring": "Søknad om foreldrepenger - endring",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
-    "velkommen.startSøknadKnapp": "Begynn med søknaden",
+    "velkommen.startNySøknadKnapp": "Begynn med ny søknad",
+    "velkommen.startEndringssøknadKnapp": "Begynn med endringssøknad",
     "velkommen.samtykkeIntro":
         "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
@@ -383,6 +385,8 @@
     "spørsmål.dekningsgrad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
     "spørsmål.dekningsgrad.label.deltUttakMor": "Hvor lang periode med foreldrepenger ønsker dere?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
+    "spørsmål.dekningsgrad.endringssøknad.label.deltUttak": "Hvor lang periode med foreldrepenger har dere valgt?",
+    "spørsmål.dekningsgrad.endringssøknad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger har du valgt?",
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalingen blir noe høyere ved å velge 100 prosent. Du kan ikke gjøre om dette valget senere.",
     "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":

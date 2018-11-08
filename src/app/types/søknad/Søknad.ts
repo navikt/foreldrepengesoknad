@@ -45,6 +45,7 @@ interface SkjemaEkstrainfo {
 
 interface Søknad {
     type: Foreldrepenger;
+    erEndringssøknad: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
     annenForelder: AnnenForelder;
@@ -61,6 +62,7 @@ interface Søknad {
 
 export interface SøknadPartial {
     type?: Foreldrepenger;
+    erEndringssøknad?: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
     annenForelder: AnnenForelderPartial;

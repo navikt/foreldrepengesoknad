@@ -25,65 +25,87 @@ export interface StegConfigItem {
     index: number;
 }
 
-const stegConfig: StegConfig = {
-    [StegID.INNGANG]: {
-        tittel: 'steg.config.tittel.inngang',
-        fortsettKnappLabel: 'Fortsett',
-        index: 0
-    },
-    [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
-        tittel: 'steg.config.tittel.infoOmBarnet',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.ANNEN_FORELDER,
-        index: 1
-    },
-    [StegID.RELASJON_TIL_BARN_FORELDREANSVAR]: {
-        tittel: 'steg.config.tittel.relasjonBarnForeldreansvar',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.ANNEN_FORELDER,
-        index: 1
-    },
-    [StegID.RELASJON_TIL_BARN_FØDSEL]: {
-        tittel: 'steg.config.tittel.relasjonBarnFødsel',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.ANNEN_FORELDER,
-        index: 1
-    },
-    [StegID.ANNEN_FORELDER]: {
-        tittel: 'steg.config.tittel.annenForelder',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.UTTAKSPLAN_SKJEMA,
-        index: 2
-    },
-    [StegID.UTTAKSPLAN_SKJEMA]: {
-        tittel: 'steg.config.tittel.infoOmUttaket',
-        fortsettKnappLabel: 'Lag forslag til uttaksplan',
-        nesteSteg: StegID.UTTAKSPLAN,
-        index: 3
-    },
-    [StegID.UTTAKSPLAN]: {
-        tittel: 'steg.config.tittel.uttak',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.UTENLANDSOPPHOLD,
-        index: 4
-    },
-    [StegID.UTENLANDSOPPHOLD]: {
-        tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
-        fortsettKnappLabel: 'Fortsett',
-        nesteSteg: StegID.ANDRE_INNTEKTER,
-        index: 5
-    },
-    [StegID.ANDRE_INNTEKTER]: {
-        tittel: 'steg.config.tittel.opplysningerOmInntekt',
-        fortsettKnappLabel: 'Gå til oppsummering',
-        nesteSteg: StegID.OPPSUMMERING,
-        index: 6
-    },
-    [StegID.OPPSUMMERING]: {
-        tittel: 'steg.config.tittel.oppsummering',
-        fortsettKnappLabel: 'Send søknad',
-        index: 7
+export const getStegConfig = (erEndringssøknad: boolean): StegConfig => {
+    let stegConfig: StegConfig = {
+        [StegID.INNGANG]: {
+            tittel: 'steg.config.tittel.inngang',
+            fortsettKnappLabel: 'Fortsett',
+            index: 0
+        },
+        [StegID.RELASJON_TIL_BARN_ADOPSJON]: {
+            tittel: 'steg.config.tittel.infoOmBarnet',
+            fortsettKnappLabel: 'Fortsett',
+            nesteSteg: StegID.ANNEN_FORELDER,
+            index: 1
+        },
+        [StegID.RELASJON_TIL_BARN_FORELDREANSVAR]: {
+            tittel: 'steg.config.tittel.relasjonBarnForeldreansvar',
+            fortsettKnappLabel: 'Fortsett',
+            nesteSteg: StegID.ANNEN_FORELDER,
+            index: 1
+        },
+        [StegID.RELASJON_TIL_BARN_FØDSEL]: {
+            tittel: 'steg.config.tittel.relasjonBarnFødsel',
+            fortsettKnappLabel: 'Fortsett',
+            nesteSteg: StegID.ANNEN_FORELDER,
+            index: 1
+        },
+        [StegID.ANNEN_FORELDER]: {
+            tittel: 'steg.config.tittel.annenForelder',
+            fortsettKnappLabel: 'Fortsett',
+            nesteSteg: StegID.UTTAKSPLAN_SKJEMA,
+            index: 2
+        },
+        [StegID.UTTAKSPLAN_SKJEMA]: {
+            tittel: 'steg.config.tittel.infoOmUttaket',
+            fortsettKnappLabel: 'Lag forslag til uttaksplan',
+            nesteSteg: StegID.UTTAKSPLAN,
+            index: 3
+        }
+    };
+    if (erEndringssøknad) {
+        stegConfig = {
+            ...stegConfig,
+            [StegID.UTTAKSPLAN]: {
+                tittel: 'steg.config.tittel.uttak',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.OPPSUMMERING,
+                index: 4
+            },
+            [StegID.OPPSUMMERING]: {
+                tittel: 'steg.config.tittel.oppsummering',
+                fortsettKnappLabel: 'Send søknad',
+                index: 5
+            }
+        };
+    } else {
+        stegConfig = {
+            ...stegConfig,
+            [StegID.UTTAKSPLAN]: {
+                tittel: 'steg.config.tittel.uttak',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.UTENLANDSOPPHOLD,
+                index: 4
+            },
+            [StegID.UTENLANDSOPPHOLD]: {
+                tittel: 'steg.config.tittel.infoOmUtenlandsopphold',
+                fortsettKnappLabel: 'Fortsett',
+                nesteSteg: StegID.ANDRE_INNTEKTER,
+                index: 5
+            },
+            [StegID.ANDRE_INNTEKTER]: {
+                tittel: 'steg.config.tittel.opplysningerOmInntekt',
+                fortsettKnappLabel: 'Gå til oppsummering',
+                nesteSteg: StegID.OPPSUMMERING,
+                index: 6
+            },
+            [StegID.OPPSUMMERING]: {
+                tittel: 'steg.config.tittel.oppsummering',
+                fortsettKnappLabel: 'Send søknad',
+                index: 7
+            }
+        };
     }
-};
 
-export default stegConfig;
+    return stegConfig;
+};

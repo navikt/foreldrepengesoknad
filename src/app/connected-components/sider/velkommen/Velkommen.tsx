@@ -23,6 +23,10 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 
 import './velkommen.less';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
+import Knapperad from 'common/components/knapperad/Knapperad';
+import { apiActionCreators } from '../../../redux/actions';
+import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
+import { Feature } from '../../../Feature';
 
 interface StateProps {
     person?: Person;
@@ -67,8 +71,22 @@ class Velkommen extends React.Component<Props, OwnProps> {
         );
     }
 
+    startFørstegangssøknad() {
+        const { history, dispatch } = this.props;
+        dispatch(søknadActions.updateSøknad({ erEndringssøknad: false }));
+        dispatch(apiActionCreators.storeAppState());
+        history.push('soknad/inngang');
+    }
+
+    startEndringssøknad() {
+        const { history, dispatch } = this.props;
+        dispatch(søknadActions.updateSøknad({ erEndringssøknad: true }));
+        dispatch(apiActionCreators.storeAppState());
+        history.push('soknad/inngang');
+    }
+
     render() {
-        const { person, harGodkjentVilkår, history, dispatch, intl } = this.props;
+        const { person, harGodkjentVilkår, dispatch, intl } = this.props;
 
         if (person === undefined) {
             return null;
@@ -102,12 +120,26 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         }}>
                         <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
                     </BekreftCheckboksPanel>
-                    <Hovedknapp
-                        className="velkommen__startSøknadKnapp blokk-m"
-                        disabled={!harGodkjentVilkår}
-                        onClick={() => harGodkjentVilkår && history.push('soknad/inngang')}>
-                        {getMessage(intl, 'velkommen.startSøknadKnapp')}
-                    </Hovedknapp>
+                    <Knapperad>
+                        <Hovedknapp
+                            className="velkommen__startSøknadKnapp blokk-m"
+                            disabled={!harGodkjentVilkår}
+                            onClick={() => this.startFørstegangssøknad()}>
+                            {getMessage(intl, 'velkommen.startNySøknadKnapp')}
+                        </Hovedknapp>
+
+                        <FeatureBlock
+                            feature={Feature.endringssøknad}
+                            render={() => (
+                                <Hovedknapp
+                                    className="velkommen__startSøknadKnapp blokk-m"
+                                    disabled={!harGodkjentVilkår}
+                                    onClick={() => this.startEndringssøknad()}>
+                                    {getMessage(intl, 'velkommen.startEndringssøknadKnapp')}
+                                </Hovedknapp>
+                            )}
+                        />
+                    </Knapperad>
                     <Normaltekst className="velkommen__personopplysningerLink">
                         <a
                             className="lenke"
