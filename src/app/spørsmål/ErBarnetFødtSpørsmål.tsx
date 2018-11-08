@@ -1,41 +1,24 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
-
-export enum BarnFødt {
-    'ER_FØDT' = 'erFødt',
-    'IKKE_FØDT' = 'ikkeFødt'
-}
+import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
 interface BarnFødtBolkProps {
     erBarnetFødt?: boolean;
-    onChange: (erBarnetFødt: boolean, e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (erBarnetFødt: boolean) => void;
 }
 
 type Props = BarnFødtBolkProps & InjectedIntlProps;
 
 const ErBarnetFødtSpørsmål = (props: Props) => {
-    const { onChange, erBarnetFødt, intl, ...otherProps } = props;
-
-    let checked;
-    if (erBarnetFødt === true) {
-        checked = BarnFødt.ER_FØDT;
-    } else if (erBarnetFødt === false) {
-        checked = BarnFødt.IKKE_FØDT;
-    }
+    const { onChange, erBarnetFødt, intl } = props;
 
     return (
-        <RadioPanelGruppeResponsive
-            checked={checked}
-            legend={getMessage(intl, 'erBarnetFødt.spørsmål')}
-            radios={[
-                { label: getMessage(intl, 'ja'), value: BarnFødt.ER_FØDT },
-                { label: getMessage(intl, 'nei'), value: BarnFødt.IKKE_FØDT }
-            ]}
-            name="barnFødt"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: BarnFødt) => onChange(v === BarnFødt.ER_FØDT, e)}
-            {...otherProps}
+        <JaNeiSpørsmål
+            spørsmål={getMessage(intl, 'erBarnetFødt.spørsmål')}
+            navn="barnFødt"
+            valgtVerdi={erBarnetFødt}
+            onChange={(verdi) => onChange(verdi)}
         />
     );
 };
