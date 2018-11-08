@@ -110,7 +110,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg)}>
                     <AleneOmOmsorgSpørsmål
                         aleneOmOmsorg={søker.erAleneOmOmsorg}
-                        onChange={(deltOmsorg) => onSøkerChange({ erAleneOmOmsorg: !deltOmsorg })}
+                        onChange={(erAleneOmOmsorg) => onSøkerChange({ erAleneOmOmsorg })}
                     />
                 </Block>
 

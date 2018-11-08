@@ -279,8 +279,9 @@
     "kanInnhenteOpplysningerFraRevisor.spørsmål":
         "Gir du NAV fullmakt til å innhente opplysninger direkte fra revisor?",
 
-    "annenForelder.aleneOmOmsorg": "Har dere felles omsorg for barnet?",
-    "annenForelder.aleneOmOmsorg.veileder": "Ingen av dere er alene om omsorgen for barnet.",
+    "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
+    "annenForelder.aleneOmOmsorg.veileder":
+        "Du har omsorgen for barnet alene, og du bor ikke sammen med den andre forelderen.",
     "annenForelder.bostedsland": "Hvor bor { navn }?",
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
