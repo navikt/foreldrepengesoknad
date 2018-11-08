@@ -878,5 +878,8 @@
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsette foreldrepengene dine tidligst fra uke syv etter fødselen. Unntaket er om mor er for syk eller innlagt i helseinstitusjon.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn flere dager enn du har tilgjengelig.",
+    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

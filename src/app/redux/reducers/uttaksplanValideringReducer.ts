@@ -25,6 +25,9 @@ export interface UttaksplanValideringState {
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
+    uttakErBareOpphold: boolean;
+    uttaksplanStarterMedOpphold: boolean;
+    uttaksplanSlutterMedOpphold: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -46,7 +49,10 @@ const getDefaultState = (): UttaksplanValideringState => {
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
-        uttaksmengdeForFarMedmorForHøy: false
+        uttaksmengdeForFarMedmorForHøy: false,
+        uttakErBareOpphold: false,
+        uttaksplanStarterMedOpphold: false,
+        uttaksplanSlutterMedOpphold: false
     };
 };
 
@@ -69,7 +75,10 @@ const uttaksplanValideringReducer = (
                 action.førsteUttakErInnenforSeksUker === true &&
                 action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.farHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
-                action.uttaksmengdeForFarMedmorForHøy === false;
+                action.uttaksmengdeForFarMedmorForHøy === false &&
+                action.uttakErBareOpphold === false &&
+                action.uttaksplanStarterMedOpphold === false &&
+                action.uttaksplanSlutterMedOpphold === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -79,7 +88,10 @@ const uttaksplanValideringReducer = (
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
-                uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true
+                uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true,
+                uttakErBareOpphold: action.uttakErBareOpphold === true,
+                uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
+                uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true
             };
     }
     return state;
