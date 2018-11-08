@@ -42,11 +42,11 @@ const JaNeiSpørsmål = (props: Props) => {
             toKolonner={toKolonner}
             alternativer={[
                 {
-                    label: getMessage(intl, labels ? labels.ja : getMessage(intl, 'ja')),
+                    label: labels ? labels.ja : getMessage(intl, 'ja'),
                     value: ValgAlternativer.JA
                 },
                 {
-                    label: getMessage(intl, labels ? labels.nei : getMessage(intl, 'nei')),
+                    label: labels ? labels.nei : getMessage(intl, 'nei'),
                     value: ValgAlternativer.NEI
                 }
             ]}
