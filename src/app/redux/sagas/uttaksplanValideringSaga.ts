@@ -15,6 +15,9 @@ import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttakspla
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
 import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
+import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
+import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
+import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 
 const stateSelector = (state: AppState) => state;
 
@@ -85,7 +88,10 @@ function* validerUttaksplanSaga() {
                 uttaksplan,
                 appState.api.tilgjengeligeStønadskontoer,
                 getErSøkerFarEllerMedmor(appState.søknad.søker.rolle)
-            )
+            ),
+            uttaksplanErBareOpphold(uttaksplan),
+            uttaksplanStarterMedOpphold(uttaksplan),
+            uttaksplanSlutterMedOpphold(uttaksplan)
         )
     );
 }

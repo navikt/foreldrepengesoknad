@@ -12,7 +12,10 @@ export function setUttaksplanValidering(
     førsteUttakErInnenforSeksUker: boolean,
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean,
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean,
-    uttaksmengdeForFarMedmorForHøy: boolean
+    uttaksmengdeForFarMedmorForHøy: boolean,
+    uttakErBareOpphold: boolean,
+    uttaksplanStarterMedOpphold: boolean,
+    uttaksplanSlutterMedOpphold: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
@@ -22,7 +25,10 @@ export function setUttaksplanValidering(
         førsteUttakErInnenforSeksUker,
         morHarSøktUgyldigUtsettelseFørsteSeksUker,
         farHarSøktUgyldigUtsettelseFørsteSeksUker,
-        uttaksmengdeForFarMedmorForHøy
+        uttaksmengdeForFarMedmorForHøy,
+        uttakErBareOpphold,
+        uttaksplanStarterMedOpphold,
+        uttaksplanSlutterMedOpphold
     };
 }
 
