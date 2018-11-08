@@ -240,6 +240,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             const failedAttachment = action.attachment;
             failedAttachment.pending = false;
             failedAttachment.uploaded = false;
+            failedAttachment.error = action.error;
             return editAttachmentInState(failedAttachment, state);
 
         case SøknadActionKeys.DELETE_ATTACHMENT:

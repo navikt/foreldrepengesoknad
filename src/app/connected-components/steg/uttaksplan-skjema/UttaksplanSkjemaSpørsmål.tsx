@@ -7,7 +7,7 @@ import søknadActionCreators from '../../../redux/actions/søknad/søknadActionC
 import { UttaksplanSkjemadata } from './uttaksplanSkjemadata';
 
 export interface UttaksplanSkjemaspørsmålProps {
-    visible?: boolean;
+    visible: boolean;
     harUnderspørsmål?: boolean;
 }
 
