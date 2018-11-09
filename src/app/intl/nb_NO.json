@@ -574,6 +574,8 @@
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
     "valideringsfeil.organisasjonsnummer.required": "Organisasjonsnummer må fylles ut",
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
+    "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer":
+        "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
     "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosent",
     "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
