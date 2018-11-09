@@ -13,8 +13,6 @@ const requestDecorator = (callback) =>
 const getDecorator = () =>
     new Promise((resolve, reject) => {
         const callback = (error, response, body) => {
-            console.log(response.statusCode);
-            console.log(response);
             if (!error && response.statusCode >= 200 && response.statusCode < 400) {
                 const { document } = new JSDOM(body).window;
                 const prop = 'innerHTML';
