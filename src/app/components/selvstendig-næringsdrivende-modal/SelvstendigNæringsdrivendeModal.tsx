@@ -35,6 +35,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from '../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
+import { removeSpacesFromString } from '../../util/stringUtils';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -193,7 +194,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
                         onChange={(v: string) =>
                             this.updateNæring({
-                                organisasjonsnummer: v
+                                organisasjonsnummer: removeSpacesFromString(v)
                             })
                         }
                         required={true}
