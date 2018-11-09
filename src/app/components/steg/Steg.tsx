@@ -227,4 +227,4 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({ erEndringssøknad: state.søknad.erEndringssøknad });
 
-export default injectIntl(connect(mapStateToProps)(Steg));
+export default connect(mapStateToProps)(injectIntl(Steg));
