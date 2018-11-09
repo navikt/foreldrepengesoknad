@@ -67,7 +67,6 @@ const Terminbekreftelse: React.StatelessComponent<Props> = (props) => {
                             ? getTerminbekreftelseDatoRegler(barn.terminbekreftelseDato, barn.termindato, intl)
                             : []
                     }
-                    infotekst={getMessage(intl, 'terminbekreftelseDato.infotekst')}
                 />
             </Block>
         </React.Fragment>
