@@ -1,5 +1,6 @@
 import { Dekningsgrad } from 'common/types';
-import { Søkersituasjon } from '../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../types/søknad/Søknad';
+import { TilgjengeligStønadskonto } from '../types/uttaksplan/periodetyper';
 
 export interface Uttaksdatoer {
     førsteUttaksdag: Date;
@@ -29,4 +30,5 @@ export interface Søknadsinfo {
     søkerErFarEllerMedmor: boolean;
     søkerErAleneOmOmsorgen: boolean;
     uttaksdatoer: Uttaksdatoer;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
