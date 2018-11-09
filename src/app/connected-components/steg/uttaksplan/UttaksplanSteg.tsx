@@ -30,7 +30,7 @@ import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
-import { findMissingAttachments } from 'app/util/søknad/missingAttachmentUtil';
+import { findMissingAttachments, MissingAttachment } from 'app/util/søknad/missingAttachmentUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -43,7 +43,7 @@ interface StateProps {
     navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
-    missingAttachments: any;
+    missingAttachments: MissingAttachment[];
 }
 
 interface UttaksplanStegState {
