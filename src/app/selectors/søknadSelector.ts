@@ -65,10 +65,10 @@ export const søknadsinfoSelector = createSelector(
                 farEllerMedmorHarRett,
                 morHarAleneomsorg,
                 morHarRett,
+                søkerErMor: søkerErFarEllerMedmor === false,
                 søkerErFarEllerMedmor,
                 søkerErAleneOmOmsorgen: søknad.søker.erAleneOmOmsorg,
                 erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
-                søkerErMor: getErSøkerFarEllerMedmor(søknad.søker.rolle),
                 uttaksdatoer,
                 tilgjengeligeStønadskontoer
             };
