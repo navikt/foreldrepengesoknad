@@ -27,6 +27,9 @@
 
     "regnskapsfører": "rekneskapsførar",
     "revisor": "revisor",
+        
+    "søknad.pageheading.ny": "Søknad om foreldrepenger",
+    "søknad.pageheading.endring": "Søknad om foreldrepenger - endring",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
