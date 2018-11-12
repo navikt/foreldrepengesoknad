@@ -32,7 +32,6 @@ import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
-import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
@@ -110,9 +109,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     onChange(periode: UtsettelseFormPeriodeType) {
-        if (periode.type === Periodetype.Utsettelse) {
-            (periode as Utsettelsesperiode).konto = getEgenKvote(this.props.søkerErFarEllerMedmor);
-        }
         this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.context.validForm.validateAll();
