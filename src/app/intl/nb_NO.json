@@ -409,7 +409,13 @@
     "nyPeriodeForm.utsettelse.tittel": "Utsett en periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
 
+    "uttaksplan.startdato.veileder.forTidligStartdato":
+        "Startdato må være innen de 12 første ukene før termin/fødsel. Første mulige startdato er {dato}.",
+    "uttaksplan.startdato.veileder.helgedag":
+        "Startdato kan ikke være på en lørdag eller søndag, du må velge en ukedag.",
+
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønsker du å starte perioden?",
+
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakelsen {dato}",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Ankomst til Norge {dato}",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.annen": "Annen dato",

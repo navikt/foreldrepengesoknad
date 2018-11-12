@@ -15,8 +15,8 @@ import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregle
 import { getDefaultPermisjonStartdato } from '../../../../util/uttaksplan/permisjonUtils';
 import { ValidFormContext } from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../../../types/common';
-import VeilederStartdatoPermisjon from './VeilederStartdatoPermisjon';
 import { Uttaksdagen } from '../../../../util/uttaksplan/Uttaksdagen';
+import VeilederStartdatoPermisjon from '../../../../components/veilederStartdatoPermisjon/VeilederStartdatoPermisjon';
 
 interface OwnProps {
     barnetErFødt: boolean;
@@ -61,6 +61,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
         });
         const antallDager = tidsperiode ? Tidsperioden(tidsperiode).getAntallUttaksdager() : 0;
         const antallDagerFørFødselIhtRegler = permisjonsregler.antallUkerForeldrepengerFørFødsel * 5;
+
         const datoAvgrensninger = uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdato);
         const startdato = data.skalIkkeHaUttakFørTermin !== true ? data.startdatoPermisjon : undefined;
 
@@ -78,10 +79,14 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                         }}
                         dato={startdato}
                         disabled={data.skalIkkeHaUttakFørTermin}
-                        avgrensninger={datoAvgrensninger}
+                        avgrensninger={{
+                            ...datoAvgrensninger,
+                            minDato: undefined
+                        }}
                         dayPickerProps={{
                             initialMonth: data.startdatoPermisjon ? data.startdatoPermisjon : familiehendelsesdato
                         }}
+                        kanVelgeUgyldigDato={true}
                         validators={startdatoFørTerminValidators(
                             intl,
                             data.startdatoPermisjon,
@@ -110,9 +115,11 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                 </Block>
                 <Block margin="none" visible={visVeileder}>
                     <VeilederStartdatoPermisjon
+                        startdato={startdato}
                         antallDager={antallDager}
                         skalIkkeHaUttakFørTermin={data.skalIkkeHaUttakFørTermin === true}
                         antallDagerFørFødselIhtRegler={antallDagerFørFødselIhtRegler}
+                        førsteMuligeStartdato={datoAvgrensninger.minDato}
                     />
                 </Block>
             </>
