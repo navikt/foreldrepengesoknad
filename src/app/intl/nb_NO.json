@@ -882,6 +882,8 @@
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det mangler informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.før12UkerFørTermin": "Startdato må være innen de 12 første ukene før termin/fødsel",
+    "uttaksplan.validering.etterSistePermisjonsdag": "Perioden må være innenfor tre år etter fødsel",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må være en ukedag.",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlapper en annen periode",
     "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå videre i søknaden.",
