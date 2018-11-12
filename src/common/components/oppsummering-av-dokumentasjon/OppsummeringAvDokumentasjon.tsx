@@ -37,7 +37,7 @@ class OppsummeringAvDokumentasjon extends React.Component<Props> {
             <KompleksFeltoppsummering
                 className="oppsummeringAvDokumentasjon"
                 ledetekst={ledetekst || getMessage(intl, 'vedlagtdokumentasjon')}>
-                {vedlegg && vedlegg.length > 0 ? (
+                {vedlegg && vedlegg.filter((a: Attachment) => !isAttachmentWithError(a)).length > 0 ? (
                     this.renderListOfAttachmentPreviewLinks()
                 ) : (
                     <EtikettBase type="fokus">{getMessage(intl, 'dokumentasjon.mangler')}</EtikettBase>
