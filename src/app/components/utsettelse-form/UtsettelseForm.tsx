@@ -168,7 +168,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         type: Periodetype.Utsettelse,
                         årsak: UtsettelseÅrsakType.Arbeid,
                         forelder,
-                        erArbeidstaker: undefined
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Ferie) {
                     this.onChange({
@@ -178,7 +178,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder, erArbeidstaker: false });
+                    this.onChange({
+                        type: Periodetype.Utsettelse,
+                        årsak: undefined,
+                        forelder,
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    });
                 }
             }
         }
