@@ -22,7 +22,6 @@ import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsføre
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
-import { getStillingsprosentRegler } from '../../util/validation/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
@@ -149,7 +148,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             organisasjonsnummer,
             registrertINorge,
             registrertILand,
-            stillingsprosent,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
             harRegnskapsfører,
             harRevisor,
@@ -286,23 +284,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         onChange={(v: string) => this.updateNæring({ registrertILand: v })}
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
                         defaultValue={registrertILand}
-                    />
-                </Block>
-
-                <Block visible={visibility.stillingsprosent(næring)}>
-                    <Input
-                        name="selvstendigNæringsdrivende-stillingsprosent"
-                        bredde="XS"
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
-                        onChange={(v: string) =>
-                            this.updateNæring({
-                                stillingsprosent: v
-                            })
-                        }
-                        onBlur={this.handleStillingsprosentBlur}
-                        value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(false, stillingsprosent || '', intl)}
-                        maxLength={4}
                     />
                 </Block>
 
