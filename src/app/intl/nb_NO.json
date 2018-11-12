@@ -688,7 +688,7 @@
     "oppsummering.andreInntekter.arbeidsgiverLand": "Arbeidsgivers land",
     "oppsummering.andreInntekter.nærVennEllerFamilie": "Jeg er nær venn av eller i familie med denne arbeidsgiveren",
 
-    "oppsummering.dekningsgrad.label": "Lengde på periode med foreldrepenger",
+    "oppsummering.dekningsgrad.label": "Lengde med foreldrepenger",
     "oppsummering.dekningsgrad.verdi80": "{antallUker} uker med 80 prosent foreldrepenger",
     "oppsummering.dekningsgrad.verdi100": "{antallUker} uker med 100 prosent foreldrepenger",
 
@@ -801,8 +801,8 @@
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
-    "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode uten uttak eller utsettelse",
-    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Opphold kan ikke registreres på en offentlig fridag.",
+    "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode er uten uttak eller utsettelse",
+    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikke legge unn utsettelse på en helligdag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
