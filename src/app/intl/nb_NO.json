@@ -864,7 +864,7 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
+        "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p>Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
