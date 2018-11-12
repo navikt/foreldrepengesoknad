@@ -11,14 +11,12 @@ import visibility from '../../components/annen-inntekt-modal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
 import {
-    Overføringsperiode,
     Periode,
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import { spørsmålOmVedleggVisible } from '../../connected-components/steg/relasjon-til-barn-adopsjon/visibility';
 import {
     getAttachmentTypeForPeriode,
@@ -31,7 +29,6 @@ import {
     mapFileToAttachment
 } from 'common/storage/attachment/components/util';
 import {
-    dokumentasjonBehøvesForOverføringsperiode,
     dokumentasjonBehøvesForUtsettelsesperiode,
     dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
@@ -44,15 +41,13 @@ export interface MissingAttachment {
     skjemanummer: Skjemanummer;
 }
 
-export function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
-    if (periode.type === Periodetype.Overføring) {
-        return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
-    } else if (periode.type === Periodetype.Utsettelse) {
+export function shouldPeriodeHaveAttachment(periode: Periode): boolean {
+    if (periode.type === Periodetype.Utsettelse) {
         return dokumentasjonBehøvesForUtsettelsesperiode(periode as Utsettelsesperiode);
     } else if (periode.type === Periodetype.Uttak) {
         return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
     } else {
-        return (periode as any).årsak === UtsettelseÅrsakType.Sykdom;
+        return (periode as any).årsak === UtsettelseÅrsakType.Sykdom || periode.type === Periodetype.Overføring;
     }
 }
 
@@ -96,10 +91,7 @@ export const findMissingAttachmentsForPeriode = (søknad: Søknad): MissingAttac
 
     const missingAttachments = [];
     for (const periode of søknad.uttaksplan) {
-        if (
-            shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søknad.søker.rolle)) &&
-            isAttachmentMissing(periode.vedlegg)
-        ) {
+        if (shouldPeriodeHaveAttachment(periode) && isAttachmentMissing(periode.vedlegg)) {
             missingAttachments.push({
                 index: søknad.uttaksplan.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),

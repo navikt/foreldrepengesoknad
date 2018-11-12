@@ -173,7 +173,6 @@ class UttaksperiodeForm extends React.Component<Props> {
             periode,
             søknad,
             velgbareStønadskontotyper,
-            søkerErFarEllerMedmor,
             navnPåForeldre,
             familiehendelsesdato,
             arbeidsforhold,
@@ -293,7 +292,6 @@ class UttaksperiodeForm extends React.Component<Props> {
                         <OverføringUttakPart
                             navnAnnenForelder={søknad.annenForelder.fornavn}
                             årsak={periode.årsak}
-                            søkerErFarEllerMedmor={søkerErFarEllerMedmor}
                             vedlegg={periode.vedlegg as Attachment[]}
                             onChange={(p) => this.updateOverføringUttak(p)}
                         />

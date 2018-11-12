@@ -34,8 +34,7 @@ const OverføringsårsakSpørsmål = (props: Props) => {
                     annenForelderNavn,
                     intl
                 ),
-                getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, intl),
-                getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, intl)
+                getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, intl)
             ]}
             valgtVerdi={årsak}
             onChange={(valgtÅrsak) => onChange(valgtÅrsak as OverføringÅrsakType)}

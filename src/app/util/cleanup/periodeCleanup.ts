@@ -44,9 +44,7 @@ const cleanupUtsettelse = (
         orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
         arbeidsform: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
-            ? periode.vedlegg
-            : undefined
+        vedlegg: shouldPeriodeHaveAttachment(periode) ? periode.vedlegg : undefined
     };
 };
 
@@ -55,9 +53,7 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
-            ? periode.vedlegg
-            : undefined,
+        vedlegg: shouldPeriodeHaveAttachment(periode) ? periode.vedlegg : undefined,
         forelder: periode.forelder,
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,

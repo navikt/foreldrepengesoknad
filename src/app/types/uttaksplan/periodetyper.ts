@@ -49,8 +49,7 @@ export enum OppholdÅrsakType {
 
 export enum OverføringÅrsakType {
     'insititusjonsoppholdAnnenForelder' = 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-    'sykdomAnnenForelder' = 'SYKDOM_ANNEN_FORELDER',
-    'aleneomsorg' = 'ALENEOMSORG'
+    'sykdomAnnenForelder' = 'SYKDOM_ANNEN_FORELDER'
 }
 
 export enum PeriodeHullÅrsak {

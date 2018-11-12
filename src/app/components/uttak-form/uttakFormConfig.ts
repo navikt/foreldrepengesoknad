@@ -5,7 +5,6 @@ import { Tidsperiode } from 'nav-datovelger';
 import {
     StønadskontoType,
     Periodetype,
-    OverføringÅrsakType,
     isForeldrepengerFørFødselUttaksperiode,
     isUttaksperiode
 } from '../../types/uttaksplan/periodetyper';
@@ -147,17 +146,6 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     return false;
 };
 
-const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
-    if (periode.type !== Periodetype.Overføring || periode.årsak === undefined) {
-        return false;
-    }
-    return (
-        periode.årsak !== OverføringÅrsakType.aleneomsorg ||
-        (periode.årsak === OverføringÅrsakType.aleneomsorg && payload.søkerErFarEllerMedmor === true)
-    );
-};
-
 const visGradering = (payload: UttakFormPayload): boolean => {
     const { periode } = payload;
     if (
@@ -244,11 +232,6 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             visKvote(payload) &&
             payload.periode.type === Periodetype.Overføring &&
             erUttakEgenKvote(payload.periode.konto, payload.søkerErFarEllerMedmor) === false
-    },
-    [Sp.overføringsdokumentasjon]: {
-        isOptional: () => true,
-        isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
-        condition: (payload) => visOverføringsdokumentasjon(payload)
     },
     [Sp.skalHaGradering]: {
         isAnswered: ({ periode }) => periode.type === Periodetype.Uttak && questionValueIsOk(periode.gradert),

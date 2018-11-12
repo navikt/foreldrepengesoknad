@@ -1,6 +1,4 @@
 import {
-    Overføringsperiode,
-    OverføringÅrsakType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
@@ -12,11 +10,6 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = ({ årsak, erArbeidsta
     årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
     årsak === UtsettelseÅrsakType.InstitusjonSøker ||
     (erArbeidstaker && årsak !== UtsettelseÅrsakType.Ferie);
-
-export const dokumentasjonBehøvesForOverføringsperiode = (
-    erFarEllerMedmor: boolean,
-    periode: Overføringsperiode
-): boolean => erFarEllerMedmor || periode.årsak !== OverføringÅrsakType.aleneomsorg;
 
 export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean => {
     return (
