@@ -30,7 +30,7 @@ import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
-import { findMissingAttachments, MissingAttachment } from 'app/util/søknad/missingAttachmentUtil';
+import { findMissingAttachmentsForPeriode, MissingAttachment } from 'app/util/søknad/missingAttachmentUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -303,7 +303,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
-        missingAttachments: findMissingAttachments(søknad, state.api)
+        missingAttachments: findMissingAttachmentsForPeriode(søknad)
     };
 };
 
