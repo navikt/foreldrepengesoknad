@@ -7,6 +7,7 @@ interface OverføringsårsakSpørsmålProps {
     årsak: OverføringÅrsakType | undefined;
     annenForelderNavn: string;
     onChange: (årsak: OverføringÅrsakType) => void;
+    visAleneomsorgSomMuligÅrsak: boolean;
 }
 
 type Props = OverføringsårsakSpørsmålProps & InjectedIntlProps;
@@ -21,22 +22,23 @@ const getOverføringsårsakAlternativ = (
 });
 
 const OverføringsårsakSpørsmål = (props: Props) => {
-    const { årsak, annenForelderNavn, intl, onChange } = props;
+    const { årsak, annenForelderNavn, visAleneomsorgSomMuligÅrsak, intl, onChange } = props;
+
+    const alternativer = [
+        getOverføringsårsakAlternativ(OverføringÅrsakType.insititusjonsoppholdAnnenForelder, annenForelderNavn, intl),
+        getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, intl)
+    ];
+
+    if (visAleneomsorgSomMuligÅrsak) {
+        alternativer.push(getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, intl));
+    }
 
     return (
         <FlervalgSpørsmål
             navn="overføringsårsak"
             toKolonner={true}
             spørsmål={intl.formatMessage({ id: 'uttaksplan.overføring.årsak.spørsmål' }, { annenForelderNavn })}
-            alternativer={[
-                getOverføringsårsakAlternativ(
-                    OverføringÅrsakType.insititusjonsoppholdAnnenForelder,
-                    annenForelderNavn,
-                    intl
-                ),
-                getOverføringsårsakAlternativ(OverføringÅrsakType.sykdomAnnenForelder, annenForelderNavn, intl),
-                getOverføringsårsakAlternativ(OverføringÅrsakType.aleneomsorg, annenForelderNavn, intl)
-            ]}
+            alternativer={alternativer}
             valgtVerdi={årsak}
             onChange={(valgtÅrsak) => onChange(valgtÅrsak as OverføringÅrsakType)}
         />
