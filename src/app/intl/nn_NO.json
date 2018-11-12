@@ -682,6 +682,9 @@
     "oppsummering.uttak.type.opphold": "Opphald",
     "oppsummering.utsettelse.pga": "Utsetjing",
     "oppsummering.overtakelse.pga": "Overtaking av {konto}",
+    "oppsummering.dekningsgrad.label": "Lengde med foreldrepenger",
+    "oppsummering.dekningsgrad.verdi80": "{antallUker} uker med 80 prosent foreldrepenger",
+    "oppsummering.dekningsgrad.verdi100": "{antallUker} uker med 100 prosent foreldrepenger",
 
     "oppsummering.uttak.dokumentasjonAvArbeidsforhold": "Dokumentasjon av arbeidsforhold",
     "oppsummering.uttak.arbeidstaker": "Eg skal jobbe for {arbeidsgiverNavn} med organisasjonsnummer {orgnr}",
