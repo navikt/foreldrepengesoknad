@@ -20,9 +20,13 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
             : undefined;
 
     return (
-        <Applikasjonsside visSpråkvelger={false}>
+        <Applikasjonsside visSpråkvelger={false} margin={false}>
             <DocumentTitle title={getMessage(props.intl, 'dokument.tittel.feilside.generell')} />
             <Feilsidemelding
+                illustrasjon={{
+                    tittel: getMessage(props.intl, 'feilside.bobletittel'),
+                    tekst: getMessage(props.intl, 'feilside.bobletekst')
+                }}
                 tittel={getMessage(props.intl, 'feilside.tittel')}
                 ingress={
                     errorMessage ? (
