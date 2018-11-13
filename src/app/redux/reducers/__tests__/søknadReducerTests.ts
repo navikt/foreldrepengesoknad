@@ -1,10 +1,25 @@
 import { default as reducer, getDefaultSøknadState } from '../søknadReducer';
 import actions from '../../actions/søknad/søknadActionCreators';
-import { SøkerRolle } from '../../../types/søknad/Søknad';
+import { Skjemanummer, SøkerRolle } from '../../../types/søknad/Søknad';
+import { StegID } from '../../../util/routing/stegConfig';
+import * as attachmentReducerUtils from './../../util/attachmentStateUpdates';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 const defaultState = getDefaultSøknadState();
 
 const stringify = (someObject: any) => JSON.stringify(someObject);
+
+const mockedAttachment: Attachment = {
+    pending: false,
+    id: '1',
+    filename: 'asdf',
+    filesize: 1,
+    file: new File(['aasdfsdf'], 'asdf'),
+    uploaded: false,
+    type: AttachmentType.ADOPSJONSVEDTAK,
+    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO
+};
 
 describe('søknadReducer', () => {
     it('should initially set the correct default state', () => {
@@ -83,5 +98,66 @@ describe('søknadReducer', () => {
     it('should update specified properties of søknad.søker when UPDATE_SØKER-action is dispatched', () => {
         const someAlteredState = reducer(defaultState, actions.updateSøker({ rolle: SøkerRolle.MOR }));
         expect(someAlteredState.søker.rolle).toBe(SøkerRolle.MOR);
+    });
+
+    it('should update currentStegID in ekstrainfo with specified ID when SET_CURRENT_STEG-action is dispatched', () => {
+        const someAlteredState = reducer(defaultState, actions.setCurrentSteg(StegID.INNGANG));
+        expect(someAlteredState.ekstrainfo.currentStegID).toBe(StegID.INNGANG);
+    });
+
+    it('should set attachment.pending to true and call addAttachmentToState when UPLOAD_ATTACHMENT-action is dispatched', () => {
+        mockedAttachment.pending = false;
+        (attachmentReducerUtils as any).addAttachmentToState = jest.fn((attachment, state) => {
+            state.vedlegg = [attachment];
+            return state;
+        });
+        const newSøknadState = reducer(defaultState, actions.uploadAttachment(mockedAttachment) as any);
+        expect(attachmentReducerUtils.addAttachmentToState).toHaveBeenCalledWith(mockedAttachment, defaultState);
+        expect(newSøknadState.vedlegg![0].pending).toBe(true);
+    });
+
+    it('should set attachment.pending to false, attachment.uploaded to true and call editAttachmentInState when UPLOAD_ATTACHMENT_SUCCESS-action is dispatched', () => {
+        mockedAttachment.pending = true;
+        mockedAttachment.uploaded = false;
+        (attachmentReducerUtils as any).editAttachmentInState = jest.fn((attachment, state) => {
+            state.vedlegg = [attachment];
+            return state;
+        });
+        const newSøknadState = reducer(defaultState, actions.uploadAttachmentSuccess(mockedAttachment, 'someUrl'));
+        expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
+        expect(newSøknadState.vedlegg![0].pending).toBe(false);
+        expect(newSøknadState.vedlegg![0].uploaded).toBe(true);
+        expect(newSøknadState.vedlegg![0].url).toBe('someUrl');
+    });
+
+    it('should set attachment.pending to false, attachment.uploaded to false and call editAttachmentInState when UPLOAD_ATTACHMENT_FAILED-action is dispatched', () => {
+        mockedAttachment.pending = true;
+        mockedAttachment.uploaded = false;
+        (attachmentReducerUtils as any).editAttachmentInState = jest.fn((attachment, state) => {
+            state.vedlegg = [attachment];
+            return state;
+        });
+        const newSøknadState = reducer(defaultState, actions.uploadAttachmentFailed('someError', mockedAttachment));
+        expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
+        expect(newSøknadState.vedlegg![0].pending).toBe(false);
+        expect(newSøknadState.vedlegg![0].uploaded).toBe(false);
+        expect(newSøknadState.vedlegg![0].error).toBe('someError');
+    });
+
+    it('should set attachment.pending to true and call editAttachmentInState when DELETE_ATTACHMENT-action is dispatched', () => {
+        mockedAttachment.pending = false;
+        (attachmentReducerUtils as any).editAttachmentInState = jest.fn((attachment, state) => {
+            state.vedlegg = [attachment];
+            return state;
+        });
+        const newSøknadState = reducer(defaultState, actions.deleteAttachment(mockedAttachment));
+        expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
+        expect(newSøknadState.vedlegg![0].pending).toBe(true);
+    });
+
+    it('should call removeAttachmentFromState with specified attachment when DELETE_ATTACHMENT_SUCCESS-action is dispatched', () => {
+        (attachmentReducerUtils as any).removeAttachmentFromState = jest.fn();
+        reducer(defaultState, actions.deleteAttachmentSuccess(mockedAttachment));
+        expect(attachmentReducerUtils.removeAttachmentFromState).toHaveBeenCalledWith(mockedAttachment, defaultState);
     });
 });
