@@ -35,6 +35,8 @@ import { Skjemanummer } from '../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
+import { hasValueRule } from '../../util/validation/common';
+import { dateIs15YearsAnd3MonthsAgoOrLess } from '../../util/dates/dates';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -238,11 +240,18 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v
+                                næringsinntekt: v.replace(/ /g, '')
                             };
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
+                        validators={[
+                            hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd')),
+                            {
+                                test: () => Number.isInteger(Number(næringsinntekt)),
+                                failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt')
+                            }
+                        ]}
                     />
                 </Block>
 

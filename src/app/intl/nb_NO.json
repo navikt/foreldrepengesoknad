@@ -580,6 +580,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
 
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må oppgi din næringsinntekt som et heltall",
+
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å komme videre i søknaden.",
 
     "oppsummering.veileder":
