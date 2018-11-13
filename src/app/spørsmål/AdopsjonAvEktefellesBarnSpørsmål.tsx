@@ -17,8 +17,8 @@ const AdopsjonAvEktefellesBarnSpørsmål = (props: Props) => {
         <JaNeiSpørsmål
             spørsmål={getMessage(intl, 'adopsjonAvEktefellesBarn.spørsmål')}
             navn="adopsjonAvEktefellesBarn"
-            valgtVerdi={adopsjonAvEktefellesBarn}
-            onChange={(verdi) => onChange(verdi)}
+            valgtVerdi={adopsjonAvEktefellesBarn === false}
+            onChange={(verdi) => onChange(!verdi)}
         />
     );
 };
