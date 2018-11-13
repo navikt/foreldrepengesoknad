@@ -11,7 +11,7 @@ import './styles/app.less';
 
 import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
-import ApplicationInfo from './components/applicationInfo/ApplicationInfo';
+
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
 
@@ -24,7 +24,6 @@ render(
             <Router>
                 <Normaltekst tag="div">
                     <Foreldrepengesøknad />
-                    <ApplicationInfo />
                 </Normaltekst>
             </Router>
         </IntlProvider>
