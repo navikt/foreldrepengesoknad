@@ -93,7 +93,7 @@ function* deleteStoredAppState() {
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
-const THROTTLE_INTERVAL_UTTAKSPLAN = 1500;
+const THROTTLE_INTERVAL_UTTAKSPLAN = 15000;
 
 export default function* storageSaga() {
     yield all([
