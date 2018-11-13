@@ -14,7 +14,7 @@ import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
 
-function* saveAppState() {
+function* saveAppState(action: any) {
     try {
         const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
@@ -93,15 +93,16 @@ function* deleteStoredAppState() {
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
+const THROTTLE_INTERVAL_UTTAKSPLAN = 1500;
 
 export default function* storageSaga() {
     yield all([
         takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
         takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
         throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
     ]);
