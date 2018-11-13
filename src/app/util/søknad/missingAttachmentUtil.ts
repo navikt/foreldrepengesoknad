@@ -1,5 +1,5 @@
 import { getRelasjonTilBarnFødselVisibility } from '../../connected-components/steg/relasjon-til-barn-fødsel/visibility/relasjonTilBarnFødselVisibility';
-import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
+import Søknad, { Skjemanummer, SøkerRolle } from '../../types/søknad/Søknad';
 import { ApiState } from '../../redux/reducers/apiReducer';
 import {
     AnnenForelderSpørsmålKeys,
@@ -89,19 +89,19 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
-export const findMissingAttachmentsForPeriode = (søknad: Søknad): MissingAttachment[] => {
-    if (!søknad.uttaksplan) {
+export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRolle: SøkerRolle): MissingAttachment[] => {
+    if (!perioder) {
         return [];
     }
 
     const missingAttachments = [];
-    for (const periode of søknad.uttaksplan) {
+    for (const periode of perioder) {
         if (
-            shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søknad.søker.rolle)) &&
+            shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
             isAttachmentMissing(periode.vedlegg)
         ) {
             missingAttachments.push({
-                index: søknad.uttaksplan.indexOf(periode),
+                index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
                 type: getAttachmentTypeForPeriode(periode)
             });
@@ -129,7 +129,7 @@ export const findMissingAttachmentsForSelvstendigNæringsdrivende = (søknad: S�
     return missingAttachments;
 };
 
-export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad) => {
+export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): MissingAttachment[] => {
     if (!søknad.søker.andreInntekterSiste10Mnd) {
         return [];
     }
@@ -151,7 +151,7 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad) => {
 export const findMissingAttachments = (søknad: Søknad, api: ApiState): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPeriode(søknad));
+    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle));
     missingAttachments.push(...findMissingAttachmentsForSelvstendigNæringsdrivende(søknad));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
