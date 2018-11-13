@@ -18,6 +18,7 @@ import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation
 import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
+import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 
 const stateSelector = (state: AppState) => state;
 
@@ -57,6 +58,7 @@ function* validerUttaksplanSaga() {
             antallAktivePerioder++;
         }
     });
+    const erDeltUttak = getErDeltUttak(appState.api.tilgjengeligeStønadskontoer);
     const uttaksstatus = getUttaksstatus(
         appState.api.tilgjengeligeStønadskontoer,
         uttaksplan,
@@ -77,7 +79,8 @@ function* validerUttaksplanSaga() {
                   )
                 : false,
             søkerErFarEllerMedmor
-                ? harFarHarSøktUgyldigUttakFørsteSeksUker(
+                ? erDeltUttak &&
+                  harFarHarSøktUgyldigUttakFørsteSeksUker(
                       uttaksplan,
                       getFamiliehendelsedato(barn, situasjon),
                       barn.antallBarn,
