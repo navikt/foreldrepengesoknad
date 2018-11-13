@@ -27,7 +27,7 @@
 
     "regnskapsfører": "rekneskapsførar",
     "revisor": "revisor",
-        
+
     "søknad.pageheading.ny": "Søknad om foreldrepenger",
     "søknad.pageheading.endring": "Søknad om foreldrepenger - endring",
 
@@ -82,7 +82,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startNySøknadKnapp": "Begynn med søknaden",
-    "velkommen.startEndringssøknadKnapp": "
+    "velkommen.startEndringssøknadKnapp": "Start endringssøknad",
     "velkommen.samtykkeIntro":
         "For å gå vidare med søknaden må du stadfeste at du har lese og forstått { link } Vi lagrar søknaden for deg i 24 timar. Dersom du ikkje held fram, eller dersom du avbryt søknaden, blir opplysningane du har lagt inn, sletta.",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
@@ -400,10 +400,11 @@
 
     "nyPeriodeForm.utsettelse.tittel": "Utset éin periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
-    "uttaksplan.infoVedOpphold": "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} selv må søke.",
+    "uttaksplan.infoVedOpphold":
+        "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} selv må søke.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold."
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønskjer du å starte perioden?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakinga {dato}",
