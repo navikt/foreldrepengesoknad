@@ -16,7 +16,7 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
 
-const getDefaultState = (): SøknadPartial => {
+export const getDefaultSøknadState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
         annenForelder: {
@@ -77,7 +77,7 @@ const handleGjelderAnnetBarn = (
     return annenForelder;
 };
 
-const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
+const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
     const getBuilder = (perioder?: Periode[]) => {
         return UttaksplanBuilder(
             perioder || state.uttaksplan,
@@ -87,7 +87,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
-                ...getDefaultState()
+                ...getDefaultSøknadState()
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
@@ -96,7 +96,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         case SøknadActionKeys.SET_SØKNAD:
             return {
-                ...getDefaultState(),
+                ...getDefaultSøknadState(),
                 ...action.payload
             };
         case SøknadActionKeys.UPDATE_BARN:

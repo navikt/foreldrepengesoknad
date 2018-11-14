@@ -59,25 +59,16 @@ const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næri
     return module.næringRegistrertINorge(næring) && registrertINorge === false;
 };
 
-const stillingsprosentVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { registrertINorge, registrertILand } = næring;
-    if (registrertINorge === true) {
-        return module.næringRegistrertINorge(næring);
-    } else {
-        return registrertINorge === false && registrertILand !== undefined && module.næringRegistrertILand(næring);
-    }
-};
-
 const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: VisibilityFunction<NæringPartial> = (
     næring: NæringPartial
 ) => {
-    const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
         næring.tidsperiode !== undefined &&
+        (næring.registrertINorge !== undefined ||
+            (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
         erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
-        module.stillingsprosent(næring) &&
-        stillingsprosent !== undefined
+        (module.næringRegistrertILand(næring) || module.næringRegistrertINorge(næring))
     );
 };
 
@@ -89,13 +80,13 @@ const oppstartsdatoVisible: VisibilityFunction<NæringPartial> = (næring: Næri
 };
 
 const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { stillingsprosent } = næring;
     return (
         næring !== undefined &&
         næring.tidsperiode !== undefined &&
+        (næring.registrertINorge !== undefined ||
+            (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
         !erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
-        module.stillingsprosent(næring) &&
-        stillingsprosent !== undefined
+        (module.næringRegistrertILand(næring) || module.næringRegistrertINorge(næring))
     );
 };
 
@@ -170,7 +161,6 @@ export const module = {
     dokumentasjonAvInntektSisteÅr: dokumentasjonAvInntektSisteÅrVisible,
     næringRegistrertINorge: næringRegistrertINorgeVisible,
     næringRegistrertILand: næringRegistrertILandVisible,
-    stillingsprosent: stillingsprosentVisible,
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible,
     oppstartsdato: oppstartsdatoVisible,
     varigEndringAvNæringsinntekt: varigEndringAvNæringsinntektVisible,
