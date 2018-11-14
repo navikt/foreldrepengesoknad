@@ -36,7 +36,6 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
-import { dateIs15YearsAnd3MonthsAgoOrLess } from '../../util/dates/dates';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
