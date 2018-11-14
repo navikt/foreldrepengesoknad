@@ -22,7 +22,6 @@ import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsføre
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
-import { getStillingsprosentRegler } from '../../util/validation/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
@@ -36,6 +35,7 @@ import { Skjemanummer } from '../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
+import { hasValueRule } from '../../util/validation/common';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -149,7 +149,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             organisasjonsnummer,
             registrertINorge,
             registrertILand,
-            stillingsprosent,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
             harRegnskapsfører,
             harRevisor,
@@ -240,11 +239,18 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v
+                                næringsinntekt: v.replace(/ /g, '')
                             };
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
+                        validators={[
+                            hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd')),
+                            {
+                                test: () => Number.isInteger(Number(næringsinntekt)),
+                                failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt')
+                            }
+                        ]}
                     />
                 </Block>
 
@@ -286,23 +292,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         onChange={(v: string) => this.updateNæring({ registrertILand: v })}
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
                         defaultValue={registrertILand}
-                    />
-                </Block>
-
-                <Block visible={visibility.stillingsprosent(næring)}>
-                    <Input
-                        name="selvstendigNæringsdrivende-stillingsprosent"
-                        bredde="XS"
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
-                        onChange={(v: string) =>
-                            this.updateNæring({
-                                stillingsprosent: v
-                            })
-                        }
-                        onBlur={this.handleStillingsprosentBlur}
-                        value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(false, stillingsprosent || '', intl)}
-                        maxLength={4}
                     />
                 </Block>
 

@@ -138,28 +138,6 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
         });
     });
 
-    describe('Stillingsprosent', () => {
-        it('should be visible if registrertINorge is true and visible', () => {
-            fns.næringRegistrertINorge = jest.fn(() => true);
-            expect(fns.stillingsprosent({ registrertINorge: true })).toBe(true);
-        });
-
-        it('should be visible if registrertILand is defined and visible, and registrertINorge is false', () => {
-            fns.næringRegistrertILand = jest.fn(() => true);
-            expect(fns.stillingsprosent({ registrertINorge: false, registrertILand: 'country' }));
-        });
-
-        it('should be hidden if registrertILand is not visible', () => {
-            fns.næringRegistrertILand = jest.fn(() => false);
-            expect(fns.stillingsprosent({ registrertINorge: false })).toBe(false);
-        });
-
-        it('should be hidden if registrertINorge is not visible', () => {
-            fns.næringRegistrertINorge = jest.fn(() => false);
-            expect(fns.stillingsprosent({ registrertINorge: true })).toBe(false);
-        });
-    });
-
     describe('Oppstartsdato', () => {
         it('should be visible if harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene is true and visible', () => {
             fns.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);

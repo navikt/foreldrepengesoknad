@@ -37,6 +37,9 @@
     "dokument.tittel.feilside.ikkeMyndig": "Ikke myndig - Søknad om foreldrepenger - NAV",
     "dokument.tittel.søknadSendt": "Søknad mottatt - Søknad om foreldrepenger - NAV",
 
+    "feilside.bobletittel": "Oops,",
+    "feilside.bobletekst": "noe gikk galt.",
+
     "feilside.tittel": "Det oppstod en feil",
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
@@ -348,7 +351,6 @@
     "termindato.spørsmål": "Når er termindatoen?",
 
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsen datert?",
-    "terminbekreftelseDato.infotekst": "Vi trenger disse opplysningene fordi....",
 
     "befinnerDuDegINorgePåDatoForOmsorgsovertakelse.spørsmål":
         "Befinner du deg i Norge på datoen for omsorgsovertakelse?",
@@ -587,6 +589,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
 
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må oppgi din næringsinntekt som et heltall",
+
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å komme videre i søknaden.",
 
     "oppsummering.veileder":
@@ -808,7 +812,7 @@
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
     "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode er uten uttak eller utsettelse",
-    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikke legge unn utsettelse på en helligdag.",
+    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikke legge inn utsettelse på en helligdag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
@@ -861,7 +865,7 @@
         "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
         "Du må legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
-    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du være hjemme samtidig med den andre forelderen?",
+    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepenger i samme periode?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepenger",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
@@ -870,7 +874,7 @@
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
     "utsettelseskjema.veiledning.ferie":
-        "Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager. Din arbeidsgiver må bekrefte perioden du skal ha ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
+        "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p>Arbeidsgiveren din må bekrefte perioden du skal ha ferie. Det kan de gjøre når de sender opplysninger om inntekten din til oss, eller du kan få bekreftelsen hos arbeidsgiveren og legge den ved søknaden din.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
         "Du kan dessverre ikke legge inn utsettelse på grunn av ferie fordi du ikke er registrert med et arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":

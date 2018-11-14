@@ -69,6 +69,7 @@ describe('Søknad - Uttaksplan reducer', () => {
     });
     it('should replace all perioder on setUttaksplan', () => {
         state = søknadReducer(state, actions.uttaksplanSetPerioder([]));
+        expect(state.uttaksplan).toBeInstanceOf(Array);
         expect(state.uttaksplan.length).toBe(0);
     });
 });

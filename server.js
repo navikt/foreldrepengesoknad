@@ -22,8 +22,6 @@ server.use((req, res, next) => {
     res.set('X-Frame-Options', 'SAMEORIGIN');
     res.set('X-XSS-Protection', '1; mode=block');
     res.set('X-Content-Type-Options', 'nosniff');
-    res.set('Referrer-Policy', '');
-    res.set('Feature-Policy', 'none');
     next();
 });
 

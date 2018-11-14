@@ -98,6 +98,7 @@ class StartdatoPermisjonMorBolk extends React.Component<Props> {
                 </Block>
                 <Block margin={visVeileder ? 'xs' : 'm'}>
                     <Checkbox
+                        name="skalIkkeHaUttakFørTermin"
                         checked={data.skalIkkeHaUttakFørTermin || false}
                         label={spørsmålHaddeIkke}
                         onChange={(e) => {

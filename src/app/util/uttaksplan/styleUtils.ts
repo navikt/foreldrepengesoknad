@@ -6,7 +6,15 @@ const getForelderFarge = (forelder: Forelder) => {
     return forelder === Forelder.MOR ? 'purple' : 'blue';
 };
 
-export const getStønadskontoFarge = (konto: StønadskontoType, forelder?: Forelder): UttaksplanColor => {
+export const getStønadskontoFarge = (
+    konto: StønadskontoType,
+    forelder: Forelder | undefined,
+    forIkon?: boolean
+): UttaksplanColor => {
+    if (forIkon && (konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager)) {
+        return 'purpleBlue';
+    }
+
     if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:

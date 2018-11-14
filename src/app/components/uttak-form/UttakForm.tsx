@@ -291,6 +291,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         hasChildBlocks={true}
                         margin="none">
                         <OverføringUttakPart
+                            erEndringssøknad={søknad.erEndringssøknad}
                             navnAnnenForelder={søknad.annenForelder.fornavn}
                             årsak={periode.årsak}
                             søkerErFarEllerMedmor={søkerErFarEllerMedmor}
