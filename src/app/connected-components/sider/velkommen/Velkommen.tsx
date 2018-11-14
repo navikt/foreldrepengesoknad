@@ -26,7 +26,6 @@ import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
 import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
-import ApplicationInfo from '../../../components/applicationInfo/ApplicationInfo';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 
 interface StateProps {
@@ -168,7 +167,6 @@ class Velkommen extends React.Component<Props, OwnProps> {
                         })
                     }
                 />
-                <ApplicationInfo />
             </Applikasjonsside>
         );
     }
