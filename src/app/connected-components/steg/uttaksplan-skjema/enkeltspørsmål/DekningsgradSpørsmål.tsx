@@ -110,7 +110,7 @@ const DekningsgradSpørsmål = (props: Props) => {
                             value: '80'
                         }
                     ]}
-                    name="dekninsgrad"
+                    name="dekningsgrad"
                     infoboksTekst={getInfoboxText(intl, erAleneomsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
