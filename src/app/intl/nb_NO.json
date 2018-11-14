@@ -37,6 +37,9 @@
     "dokument.tittel.feilside.ikkeMyndig": "Ikke myndig - Søknad om foreldrepenger - NAV",
     "dokument.tittel.søknadSendt": "Søknad mottatt - Søknad om foreldrepenger - NAV",
 
+    "feilside.bobletittel": "Oops,",
+    "feilside.bobletekst": "noe gikk galt.",
+
     "feilside.tittel": "Det oppstod en feil",
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
