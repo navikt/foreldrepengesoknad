@@ -89,7 +89,7 @@
     "velkommen.samtykke": "Eg stadfestar at eg har lese og forstått",
     "velkommen.lesMerOmPersonopplysninger": "Les om korleis NAV behandlar personopplysningane dine",
 
-    "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
+    "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten. ",
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
     "personalia.år": "{år} år",
@@ -385,7 +385,7 @@
     "spørsmål.dekningsgrad.hjelpetekst":
         "Den totale utbetalinga blir noko høgare ved å velje 100 prosent. Du kan ikkje gjere om dette valet seinare.",
     "spørsmål.dekningsgrad.hjelpetekst.aleneomsorg":
-        "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
+        "Den totale utbetalinga blir høgare dersom de vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
 
     "spørsmål.startdatoPermisjon.label": "Når ønskjer du å starte perioden før termin?",
     "spørsmål.startdatoPermisjon.barnetErFødt.label": "Når ønskjer du å starte perioden?",
@@ -468,7 +468,7 @@
     "uttaksplan.informasjon.mor.aleneOmsorg":
         "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søkje sjølv.",
+        "Her kan du fortelje oss når du vil ha foreldrepengar. Du kan også leggje inn utsetjing i foreldrepengeperioden dersom du skal ha ferie, dersom du skal jobbe, eller dersom du er sjuk. Du kan leggje inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søkje sjølv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} blir tekne av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
         "Når du ikkje startar foreldrepengeperioden tre veker før termindato, fell desse dagane bort.",
@@ -850,11 +850,10 @@
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsetjing",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsetjing",
-
     "utsettelseskjema.veiledning.ferie":
         "Du kan utsetje foreldrepengane med ferie i inntil fire veker og éin dag for kvart kalenderår, i tillegg til overført ferie frå i fjor og ti feriedagar frå neste år. Du kan ikkje utsetje på helgedagar. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan dessverre ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold.",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold.",
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
