@@ -85,6 +85,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.kanIkkeOppgis)}>
                     <Checkbox
+                        name="annenForelderKanIkkeOppgis"
                         checked={kanIkkeOppgis || false}
                         label={
                             situasjon === Søkersituasjon.ADOPSJON
