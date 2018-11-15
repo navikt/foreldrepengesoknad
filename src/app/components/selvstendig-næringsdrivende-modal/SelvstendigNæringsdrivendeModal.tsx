@@ -187,6 +187,22 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
+                <Block visible={visibility.næringRegistrertINorge(næring)}>
+                    <ErNæringenRegistrertINorgeSpørsmål
+                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
+                        registrertINorge={registrertINorge}
+                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
+                    />
+                </Block>
+
+                <Block visible={visibility.næringRegistrertILand(næring)}>
+                    <Landvelger
+                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
+                        defaultValue={registrertILand}
+                    />
+                </Block>
+
                 <Block visible={visibility.organisasjonsnummer(næring)}>
                     <Input
                         name="selvstendigNæringsdrivende-orgnr"
@@ -276,22 +292,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }}
                         attachmentType={AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE}
                         skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertINorge(næring)}>
-                    <ErNæringenRegistrertINorgeSpørsmål
-                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
-                        registrertINorge={registrertINorge}
-                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertILand(næring)}>
-                    <Landvelger
-                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
-                        defaultValue={registrertILand}
                     />
                 </Block>
 

@@ -10,9 +10,25 @@ const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: N�
     return næringstyper !== undefined && næringstyper.length > 0;
 };
 
-const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
+const næringRegistrertINorgeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { navnPåNæringen } = næring;
     return module.navnPåNæringen(næring) && navnPåNæringen !== undefined;
+};
+
+const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
+    const { registrertINorge } = næring;
+    return module.næringRegistrertINorge(næring) && registrertINorge === false;
+};
+
+const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
+    const { registrertINorge, registrertILand } = næring;
+    if (module.næringRegistrertINorge(næring) && registrertINorge === undefined) {
+        return false;
+    }
+    return (
+        module.næringRegistrertINorge(næring) &&
+        (registrertINorge === true || (registrertINorge === false && registrertILand !== undefined))
+    );
 };
 
 const tidsperiodeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
@@ -46,19 +62,6 @@ const dokumentasjonAvInntektSisteÅrVisible: VisibilityFunction<NæringPartial> 
     return false;
 };
 
-const næringRegistrertINorgeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { næringsinntekt } = næring;
-    if (module.næringsinntekt(næring)) {
-        return næringsinntekt !== undefined;
-    }
-    return module.tidsperiodeUtfylt(næring) && module.tidsperiode(næring);
-};
-
-const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { registrertINorge } = næring;
-    return module.næringRegistrertINorge(næring) && registrertINorge === false;
-};
-
 const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: VisibilityFunction<NæringPartial> = (
     næring: NæringPartial
 ) => {
@@ -68,7 +71,7 @@ const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: Visibilit
         (næring.registrertINorge !== undefined ||
             (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
         erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
-        (module.næringRegistrertILand(næring) || module.næringRegistrertINorge(næring))
+        (module.næringsinntekt(næring) && næring.næringsinntekt !== undefined)
     );
 };
 
