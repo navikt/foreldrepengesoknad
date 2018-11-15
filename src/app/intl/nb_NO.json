@@ -72,7 +72,7 @@
     "hvorSkalDuJobbe.spørsmål": "Hvor skal du jobbe?",
 
     "jegskalhaferie": "Jeg skal ha ferie",
-    "Jegskaljobbeheltid": "Jeg skal ha ferie",
+    "jegskaljobbeheltid": "Jeg skal ha ferie",
     "jegskaliarbeid": "Jeg skal i arbeid",
     "pgasykdom": "På grunn av sykdom",
     "skaltautforeldrepenger": "skal ta ut foreldrepenger",
@@ -258,6 +258,8 @@
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
+    "selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr":
+        "Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være kopi personinntektsskjema, næringsoppgave eller resultatregnskap.",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
