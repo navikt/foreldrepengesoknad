@@ -117,7 +117,9 @@ export const findMissingAttachmentsForSelvstendigNæringsdrivende = (søknad: S�
 
     const missingAttachments = [];
     for (const selvstendigNæring of søknad.søker.selvstendigNæringsdrivendeInformasjon) {
-        const selvstendingNæringsdrivendeVedlegg = annenInntektVisibility.næringRegistrertINorge(selvstendigNæring);
+        const selvstendingNæringsdrivendeVedlegg = annenInntektVisibility.dokumentasjonAvInntektSisteÅr(
+            selvstendigNæring
+        );
         if (selvstendingNæringsdrivendeVedlegg && isAttachmentMissing(selvstendigNæring.vedlegg)) {
             missingAttachments.push({
                 index: søknad.søker.selvstendigNæringsdrivendeInformasjon.indexOf(selvstendigNæring),

@@ -1,4 +1,5 @@
 import { DatoValidatorer } from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
+import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdagen } from '../../uttaksplan/Uttaksdagen';
 import { UttakFormPeriodeType } from '../../../components/uttak-form/UttakForm';
@@ -7,6 +8,7 @@ import { PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanVal
 import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
 import { DateValue } from '../../../types/common';
+import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 
 const erUtfyltTest = (dato: DateValue, skalIkkeHaUttak: boolean): Validator => ({
     test: () => (skalIkkeHaUttak ? true : dato !== undefined),
@@ -18,27 +20,54 @@ const erUttaksdagTest = (dato: DateValue) => ({
     failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.DATO_IKKE_UTTAKSDAG}` }
 });
 
+const starterInnenfor12UkerFørTermin = (dato: DateValue, familiehendelsesdato: Date) => ({
+    test: () =>
+        dato !== undefined &&
+        moment(dato).isSameOrAfter(uttaksdatoer(familiehendelsesdato).førsteMuligeUttaksdagFørTermin),
+    failText: { intlKey: 'uttaksplan.validering.før12UkerFørTermin' }
+});
+
+const slutterInnenforGyldigPermisjonsperiode = (dato: DateValue, familiehendelsesdato: Date) => ({
+    test: () =>
+        dato !== undefined &&
+        moment(dato).isSameOrBefore(uttaksdatoer(familiehendelsesdato).sisteMuligeUttaksdagEtterTermin),
+    failText: { intlKey: 'uttaksplan.validering.etterSistePermisjonsdag' }
+});
+
 export const getUttakTidsperiodeValidatorer = (
     skalIkkeHaUttak: boolean,
-    tidsperiode: Partial<Tidsperiode>
+    tidsperiode: Partial<Tidsperiode>,
+    familiehendelsesdato: Date
 ): DatoValidatorer | undefined => {
     if (skalIkkeHaUttak) {
         return undefined;
     }
     return {
-        fra: [erUtfyltTest(tidsperiode.fom, skalIkkeHaUttak), erUttaksdagTest(tidsperiode.fom)],
-        til: [erUtfyltTest(tidsperiode.tom, skalIkkeHaUttak), erUttaksdagTest(tidsperiode.tom)]
+        fra: [
+            erUtfyltTest(tidsperiode.fom, skalIkkeHaUttak),
+            erUttaksdagTest(tidsperiode.fom),
+            starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato)
+        ],
+        til: [
+            erUtfyltTest(tidsperiode.tom, skalIkkeHaUttak),
+            erUttaksdagTest(tidsperiode.tom),
+            slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato)
+        ]
     };
 };
 
-export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType): boolean => {
+export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, familiehendelsesdato: Date): boolean => {
     const { tidsperiode } = uttaksperiode;
     if (tidsperiode !== undefined && uttaksperiode.type === Periodetype.Uttak) {
         const skalIkkeHaUttak = isForeldrepengerFørFødselUttaksperiode(uttaksperiode)
             ? uttaksperiode.skalIkkeHaUttakFørTermin
             : false;
 
-        const validators = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode as Tidsperiode);
+        const validators = getUttakTidsperiodeValidatorer(
+            skalIkkeHaUttak,
+            tidsperiode as Tidsperiode,
+            familiehendelsesdato
+        );
         if (validators === undefined) {
             return true;
         }

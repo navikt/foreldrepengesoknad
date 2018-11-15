@@ -32,7 +32,7 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     if (visibility.areAllQuestionsAnswered() === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT });
     }
-    if (uttakTidsperiodeErGyldig(payload.periode) === false) {
+    if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
     }
     return valideringsfeil.length === 0 ? undefined : valideringsfeil;
