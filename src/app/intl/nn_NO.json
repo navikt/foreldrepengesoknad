@@ -82,7 +82,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Eg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startNySøknadKnapp": "Begynn med søknaden",
-    "velkommen.startEndringssøknadKnapp": "Start endringssøknad",
+    "velkommen.startEndringssøknadKnapp": "Begynn med endringssøknaden",
     "velkommen.samtykkeIntro":
         "For å gå vidare med søknaden må du stadfeste at du har lese og forstått { link } Vi lagrar søknaden for deg i 24 timar. Dersom du ikkje held fram, eller dersom du avbryt søknaden, blir opplysningane du har lagt inn, sletta.",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
@@ -139,7 +139,7 @@
     "annenInntekt.modal.land": "Kva land har du jobba i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Gi opp namnet på arbeidsgivaren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Kva har du hatt i næringsinntekt hittil i år, før skatt? Gi opp summen i kroner.",
+        "Kva har du hatt i næringsinntekt hittil i år, før skatt? Gi opp summen i heile krone.",
 
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.tom": "Dersom du har avslutta {navnPåNæringen} gi opp sluttdato",
@@ -276,7 +276,7 @@
     "kanInnhenteOpplysningerFraRevisor.spørsmål":
         "Gir du NAV fullmakt til å hente inn opplysningar direkte frå revisor?",
 
-    "annenForelder.aleneOmOmsorg": "Er du alene om omsorgen av barnet?",
+    "annenForelder.aleneOmOmsorg": "Er du åleine om omsorga av barnet?",
     "annenForelder.aleneOmOmsorg.veileder":
         "Du har omsorga for barnet åleine, og du bur ikkje saman med den andre forelderen.",
     "annenForelder.bostedsland": "Kvar bur { navn }?",
@@ -401,10 +401,10 @@
     "nyPeriodeForm.utsettelse.tittel": "Utset éin periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
     "uttaksplan.infoVedOpphold":
-        "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} selv må søke.",
-    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
-    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
+        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
+    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønskjer du å starte perioden?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakinga {dato}",
@@ -573,7 +573,7 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosenten må vere under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må vere over 0",
 
-    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må oppgi din næringsinntekt som et heltall",
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
 
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å kome vidare i søknaden.",
 
@@ -689,9 +689,9 @@
     "oppsummering.uttak.type.opphold": "Opphald",
     "oppsummering.utsettelse.pga": "Utsetjing",
     "oppsummering.overtakelse.pga": "Overtaking av {konto}",
-    "oppsummering.dekningsgrad.label": "Lengde med foreldrepenger",
-    "oppsummering.dekningsgrad.verdi80": "{antallUker} uker med 80 prosent foreldrepenger",
-    "oppsummering.dekningsgrad.verdi100": "{antallUker} uker med 100 prosent foreldrepenger",
+    "oppsummering.dekningsgrad.label": "Lengde med foreldrepengar",
+    "oppsummering.dekningsgrad.verdi80": "{antallUker} veker med 80 prosent foreldrepengar",
+    "oppsummering.dekningsgrad.verdi100": "{antallUker} veker med 100 prosent foreldrepengar",
 
     "oppsummering.uttak.dokumentasjonAvArbeidsforhold": "Dokumentasjon av arbeidsforhold",
     "oppsummering.uttak.arbeidstaker": "Eg skal jobbe for {arbeidsgiverNavn} med organisasjonsnummer {orgnr}",
@@ -713,7 +713,7 @@
     "kvittering.innsyn": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
     "kvittering.kontonummer":
-        "Dersom søknaden din blir innvilga, blir eingongsstønaden betalt ut til kontonummer {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
+        "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV til kontonummeret ditt (kontonummer). Du kan endre kontonummeret på (link).",
     "kvittering.dinProfilLink": "Din profil",
 
     "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
@@ -844,7 +844,7 @@
         "Du må leggje ved stadfesting frå programarrangøren på at {navnMor} tek del i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
         "Du må leggje ved stadfesting frå legen til {navnMor}. Stadfestinga må gjere greie for korleis sjukdommen eller skaden gjer {navnMor} heilt avhengig av hjelp til å ta seg av barnet, og kor lenge det kjem til å vare. Det er ikkje nok med vanleg sjukmelding..",
-    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal du vere heime samtidig med den andre forelderen?",
+    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepengar i same perioden?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal de ha foreldrepengar samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
@@ -858,7 +858,7 @@
     "utsettelseskjema.ferievarsel.ulovlig":
         "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
-        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire uker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare ",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
