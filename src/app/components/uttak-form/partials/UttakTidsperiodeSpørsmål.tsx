@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import { Tidsperiode } from 'common/types';
 import TidsperiodeBolk from '../../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -59,18 +60,31 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
-    const initialMonth = isForeldrepengerFørFødselUttaksperiode(periode) ? familiehendelsesdato : undefined;
+    const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode)
+        ? familiehendelsesdato
+        : undefined;
+
+    const erUttakFørForeldrepengerFørFødsel =
+        !erForeldrepengerFørFødsel &&
+        isValidTidsperiode(tidsperiode) &&
+        moment(tidsperiode.fom).isBefore(familiehendelsesdato);
+
+    const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
+        periode.konto,
+        familiehendelsesdato,
+        tidsperiode,
+        ugyldigeTidsperioder
+    );
+    const datoValidatorer = getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode, familiehendelsesdato);
+
+    const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
     return (
         <TidsperiodeBolk
             onChange={(t: Partial<Tidsperiode>) => onChange(resetTidsperiodeTomIfBeforeFom(t))}
             tidsperiode={tidsperiode ? (tidsperiode as Partial<Tidsperiode>) : {}}
-            datoAvgrensninger={getDatoavgrensningerForStønadskonto(
-                periode.konto,
-                familiehendelsesdato,
-                tidsperiode,
-                ugyldigeTidsperioder
-            )}
-            datoValidatorer={getUttakTidsperiodeValidatorer(skalIkkeHaUttak, tidsperiode)}
+            datoAvgrensninger={datoAvgrensninger}
+            datoValidatorer={datoValidatorer}
+            kanVelgeUgyldigDato={erUttakFørForeldrepengerFørFødsel}
             visVarighet={true}
             varighetRenderer={(dager) =>
                 intl.formatMessage({ id: 'uttaksplan.varighet.uttak' }, { varighet: getVarighetString(dager, intl) })
