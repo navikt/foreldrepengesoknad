@@ -762,6 +762,7 @@
     "utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
 
     "oppholdsårsaktype.foreldernavn.UTTAK_FELLESP_ANNEN_FORELDER": "{foreldernavn} tar ut av fellesperioden",
+    "oppholdsårsaktype.foreldernavn.UTTAK_FLERBARN_ANNEN_FORELDER": "{foreldernavn} tar ut av flernbarnsperioden",
     "oppholdsårsaktype.foreldernavn.UTTAK_FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
     "oppholdsårsaktype.foreldernavn.UTTAK_MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut av sin kvote",
     "oppholdsårsaktype.foreldernavn.undefined": "{foreldernavn} tar ut",
