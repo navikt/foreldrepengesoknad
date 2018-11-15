@@ -17,6 +17,7 @@ const StegFooter: React.StatelessComponent<Props> = ({ onAvbryt }) => {
         <Normaltekst tag="div" className={bem.className}>
             <div className={bem.element('divider')} />
             <LinkButton
+                id="avbrytSøknadLenke"
                 onClick={(e) => {
                     e.preventDefault();
                     onAvbryt();
