@@ -4,7 +4,6 @@ import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import { fødselsdatoerErFyltUt } from '../fødselsdato';
 import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
-import DateValues from '../values';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 import { findOldestDate } from '../../dates/dates';
 
@@ -77,10 +76,7 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 };
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    return (
-        søknad.barn.erBarnetFødt === false &&
-        !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold, DateValues.today.toDate())
-    );
+    return søknad.barn.erBarnetFødt === false && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold);
 };
 
 export const getUniqeRegistrertAnnenForelderFromBarn = (
