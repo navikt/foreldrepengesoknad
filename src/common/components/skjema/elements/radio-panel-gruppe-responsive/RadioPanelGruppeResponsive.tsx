@@ -21,23 +21,25 @@ class RadioPanelGruppeResponsive extends React.Component<RadioPanelGruppeRespons
         });
         return (
             <div className="radioPanelGruppe">
-                <Fieldset legend={legend}>
-                    {infoboksTekst && <Infoboks tekst={infoboksTekst} />}
-                    <SkjemaGruppe className="radioPanelGruppe--responsive" feil={feil}>
-                        {radios.map((radio) => {
-                            return (
-                                <div className={cls} key={radio.value}>
-                                    <RadioPanel
-                                        checked={checked === radio.value}
-                                        name={name}
-                                        onChange={(event) => onChange(event, radio.value)}
-                                        {...radio}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </SkjemaGruppe>
-                </Fieldset>
+                <SkjemaGruppe feil={feil}>
+                    <Fieldset legend={legend}>
+                        {infoboksTekst && <Infoboks tekst={infoboksTekst} />}
+                        <div className="radioPanelGruppe--responsive">
+                            {radios.map((radio) => {
+                                return (
+                                    <div className={cls} key={radio.value}>
+                                        <RadioPanel
+                                            checked={checked === radio.value}
+                                            name={name}
+                                            onChange={(event) => onChange(event, radio.value)}
+                                            {...radio}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </Fieldset>
+                </SkjemaGruppe>
             </div>
         );
     }

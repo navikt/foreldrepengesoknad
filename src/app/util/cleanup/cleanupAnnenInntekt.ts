@@ -11,9 +11,6 @@ const cleanupAnnenInntekt = (inntekt: AnnenInntekt): AnnenInntekt => {
     if (!visibility.land(inntekt)) {
         delete (inntekt as JobbIUtlandetInntekt).land;
     }
-    if (!visibility.erNærVennEllerFamilie(inntekt)) {
-        delete (inntekt as JobbIUtlandetInntekt).erNærVennEllerFamilieMedArbeidsgiver;
-    }
     return inntekt;
 };
 

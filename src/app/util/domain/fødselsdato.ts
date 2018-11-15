@@ -1,14 +1,3 @@
-import { getDateFromString } from '../dates/dates';
-import { DateValue } from '../../types/common';
-
-const fødselsdatoerToString = (datoer: DateValue[]): string[] => {
-    return datoer.map((dato) => (dato !== undefined ? dato.toISOString() : ''));
-};
-
-const fødselsdatoerFromString = (datoer: string[]) => {
-    return datoer.map((dato) => (dato !== undefined && dato !== '' ? getDateFromString(dato) : undefined));
-};
-
 const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
     let fødselsdatoer = [...datoer];
     if (datoer.length > antall) {
@@ -21,7 +10,5 @@ const trimFødselsdatoer = (antall: number, datoer: Date[] = []): Date[] => {
 };
 
 export default {
-    fødselsdatoerFromString,
-    fødselsdatoerToString,
     trimFødselsdatoer
 };

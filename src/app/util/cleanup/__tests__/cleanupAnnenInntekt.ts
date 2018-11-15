@@ -7,7 +7,6 @@ const annenInntekt: AnnenInntekt = {
     vedlegg: [],
     arbeidsgiverNavn: 'something',
     land: 'some country',
-    erNærVennEllerFamilieMedArbeidsgiver: false,
     pågående: true,
     tidsperiode: {
         fom: new Date()
@@ -20,21 +19,14 @@ describe('cleanupAnnenInntekt', () => {
             visibility.vedlegg = jest.fn(() => false);
             visibility.arbeidsgiverNavn = jest.fn(() => false);
             visibility.land = jest.fn(() => false);
-            visibility.erNærVennEllerFamilie = jest.fn(() => false);
         });
 
         it('should set fields values to undefined if they are not visible', () => {
             const resultInntekt = cleanup(annenInntekt);
-            const {
-                vedlegg,
-                arbeidsgiverNavn,
-                land,
-                erNærVennEllerFamilieMedArbeidsgiver
-            } = resultInntekt as JobbIUtlandetInntekt;
+            const { vedlegg, arbeidsgiverNavn, land } = resultInntekt as JobbIUtlandetInntekt;
             expect(vedlegg).toBeUndefined();
             expect(arbeidsgiverNavn).toBeUndefined();
             expect(land).toBeUndefined();
-            expect(erNærVennEllerFamilieMedArbeidsgiver).toBeUndefined();
         });
     });
 
@@ -43,21 +35,14 @@ describe('cleanupAnnenInntekt', () => {
             visibility.vedlegg = jest.fn(() => true);
             visibility.arbeidsgiverNavn = jest.fn(() => true);
             visibility.land = jest.fn(() => true);
-            visibility.erNærVennEllerFamilie = jest.fn(() => true);
         });
 
         it('should set fields to their given values', () => {
             const resultInntekt = cleanup(annenInntekt);
-            const {
-                vedlegg,
-                arbeidsgiverNavn,
-                land,
-                erNærVennEllerFamilieMedArbeidsgiver
-            } = resultInntekt as JobbIUtlandetInntekt;
+            const { vedlegg, arbeidsgiverNavn, land } = resultInntekt as JobbIUtlandetInntekt;
             expect(vedlegg).toBe(annenInntekt.vedlegg);
             expect(arbeidsgiverNavn).toBe(annenInntekt.arbeidsgiverNavn);
             expect(land).toBe(annenInntekt.land);
-            expect(erNærVennEllerFamilieMedArbeidsgiver).toBe(annenInntekt.erNærVennEllerFamilieMedArbeidsgiver);
         });
     });
 });
