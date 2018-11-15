@@ -1,7 +1,7 @@
 import * as React from 'react';
-import FlervalgSpørsmål from '../../flervalg-spørsmål/FlervalgSpørsmål';
-import { OppholdÅrsakType } from '../../../types/uttaksplan/periodetyper';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import FlervalgSpørsmål, { FlervalgAlternativ } from '../../flervalg-spørsmål/FlervalgSpørsmål';
+import { OppholdÅrsakType, TilgjengeligStønadskonto, StønadskontoType } from '../../../types/uttaksplan/periodetyper';
+import { InjectedIntlProps, injectIntl, InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
 export interface OwnProps {
@@ -9,15 +9,64 @@ export interface OwnProps {
     navnAnnenForelder: string;
     søkerErFarEllerMedmor: boolean;
     onChange: (årsak: OppholdÅrsakType) => void;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = OwnProps & InjectedIntlProps;
+
+const filterEgenKonto = (konto: TilgjengeligStønadskonto, søkerErFarEllerMedmor: boolean) => {
+    return søkerErFarEllerMedmor
+        ? konto.konto !== StønadskontoType.Fedrekvote
+        : konto.konto !== StønadskontoType.Mødrekvote;
+};
+
+const createAlternative = (
+    konto: TilgjengeligStønadskonto,
+    søkerErFarEllerMedmor: boolean,
+    navnAnnenForelder: string,
+    intl: InjectedIntl
+): FlervalgAlternativ => {
+    if (konto.konto === StønadskontoType.Fedrekvote || konto.konto === StønadskontoType.Mødrekvote) {
+        return {
+            label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
+            value: søkerErFarEllerMedmor
+                ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
+                : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
+        };
+    } else if (konto.konto === StønadskontoType.Fellesperiode) {
+        return {
+            label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
+            value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
+        };
+    } else {
+        return {
+            label: getMessage(intl, 'stønadskontotype.FLERBARNSUKER'),
+            value: OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder
+        };
+    }
+};
+
+const getAlternativer = (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    søkerErFarEllerMedmor: boolean,
+    navnAnnenForelder: string,
+    intl: InjectedIntl
+): FlervalgAlternativ[] => {
+    return tilgjengeligeStønadskontoer
+        .filter(
+            (konto) =>
+                filterEgenKonto(konto, søkerErFarEllerMedmor) &&
+                konto.konto !== StønadskontoType.ForeldrepengerFørFødsel
+        )
+        .map((konto) => createAlternative(konto, søkerErFarEllerMedmor, navnAnnenForelder, intl));
+};
 
 const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
     oppholdsårsak,
     onChange,
     navnAnnenForelder,
     søkerErFarEllerMedmor,
+    tilgjengeligeStønadskontoer,
     intl
 }) => (
     <>
@@ -27,18 +76,7 @@ const OppholdsårsakSpørsmål: React.StatelessComponent<Props> = ({
             valgtVerdi={oppholdsårsak}
             onChange={onChange}
             toKolonner={true}
-            alternativer={[
-                {
-                    label: getMessage(intl, 'stønadskontotype.foreldernavn.kvote', { navn: navnAnnenForelder }),
-                    value: søkerErFarEllerMedmor
-                        ? OppholdÅrsakType.UttakMødrekvoteAnnenForelder
-                        : OppholdÅrsakType.UttakFedrekvoteAnnenForelder
-                },
-                {
-                    label: getMessage(intl, 'stønadskontotype.FELLESPERIODE'),
-                    value: OppholdÅrsakType.UttakFellesperiodeAnnenForelder
-                }
-            ]}
+            alternativer={getAlternativer(tilgjengeligeStønadskontoer, søkerErFarEllerMedmor, navnAnnenForelder, intl)}
         />
     </>
 );
