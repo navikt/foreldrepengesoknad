@@ -22,6 +22,6 @@ export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): b
     return (
         periode.morsAktivitetIPerioden !== undefined ||
         (periode.gradert === true && periode.erArbeidstaker === true) ||
-        periode.konto === StønadskontoType.Fedrekvote
+        (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)
     );
 };
