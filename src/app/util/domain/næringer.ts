@@ -1,8 +1,8 @@
-import moment from 'moment';
+const moment = require('moment');
 import { Næring } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { dateIs1YearAgoOrLess } from '../dates/dates';
 
-export const erMindreEnn4ÅrSidenOppstart = (næring: Næring): boolean => {
+export const er4ÅrSidenOppstartEllerMindre = (næring: Næring): boolean => {
     const { tidsperiode } = næring;
 
     const date4YearsAgo = moment().subtract(4, 'years');
