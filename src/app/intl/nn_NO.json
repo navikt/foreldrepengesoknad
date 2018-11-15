@@ -558,6 +558,7 @@
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
 
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive eit gyldig fødselsnummer, elleve siffer",
+    "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
 
     "valideringsfeil.utenlandsopphold.tidligere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
     "valideringsfeil.utenlandsopphold.senere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
