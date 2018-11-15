@@ -71,11 +71,7 @@ const stateWithUpdatedAndreInntekterAttachments = (
     return state;
 };
 
-export const updateAttachmentState = (
-    attachment: Attachment,
-    state: SøknadPartial,
-    operation: Operation
-): SøknadPartial => {
+const updateAttachmentState = (attachment: Attachment, state: SøknadPartial, operation: Operation): SøknadPartial => {
     if (isAttachmentForBarn(attachment.type)) {
         return stateWithUpdatedBarnAttachments(attachment, state, operation);
     } else if (isAttachmentForAnnenInntekt(attachment.type)) {
