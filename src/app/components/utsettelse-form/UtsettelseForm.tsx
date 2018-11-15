@@ -130,7 +130,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 value: Utsettelsesvariant.Ferie
             },
             {
-                label: 'Jeg skal jobbe heltid',
+                label: getMessage(intl, 'Jegskaljobbeheltid'),
                 value: Utsettelsesvariant.Arbeid
             },
             {
