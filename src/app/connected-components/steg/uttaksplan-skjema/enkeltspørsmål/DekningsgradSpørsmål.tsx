@@ -32,7 +32,7 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
-const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string => {
+const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string | undefined => {
     return erAleneOmOmsorg
         ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')
         : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg');
@@ -111,13 +111,13 @@ const DekningsgradSpørsmål = (props: Props) => {
                         }
                     ]}
                     name="dekningsgrad"
-                    infoboksTekst={getInfoboxText(intl, erAleneomsorg)}
+                    infoboksTekst={erEndringssøknad ? undefined : getInfoboxText(intl, erAleneomsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
             <Block visible={skalViseVeileder}>
                 <Veilederinfo>
-                    {getInfoboxText(intl, erAleneomsorg)}
+                    {erEndringssøknad === false && getInfoboxText(intl, erAleneomsorg)}
                     {førsteDatoEtter20190101OgDeltUttak === true ? (
                         <>
                             <br />
