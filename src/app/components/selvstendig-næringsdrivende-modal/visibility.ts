@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { Næring, NæringPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { date4YearsAgo } from '../../util/validation/values';
-import { erMindreEnn4ÅrSidenOppstart, næringsinntektSisteÅrMåDokumenteres } from '../../util/domain/næringer';
+import { er4ÅrSidenOppstartEllerMindre, næringsinntektSisteÅrMåDokumenteres } from '../../util/domain/næringer';
 import næringsrelasjonFns from '../../bolker/næringsrelasjon-bolk/visibility';
 import VisibilityFunction from '../../types/dom/Visibility';
 
@@ -78,7 +78,7 @@ const harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible: Visibilit
         næring.tidsperiode !== undefined &&
         (næring.registrertINorge !== undefined ||
             (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
-        erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
+        er4ÅrSidenOppstartEllerMindre(næring as Næring) &&
         (module.næringsinntekt(næring) && næring.næringsinntekt !== undefined)
     );
 };
@@ -96,7 +96,7 @@ const varigEndringAvNæringsinntektVisible: VisibilityFunction<NæringPartial> =
         næring.tidsperiode !== undefined &&
         (næring.registrertINorge !== undefined ||
             (næring.registrertILand !== undefined && næring.registrertILand !== '')) &&
-        !erMindreEnn4ÅrSidenOppstart(næring as Næring) &&
+        !er4ÅrSidenOppstartEllerMindre(næring as Næring) &&
         (module.næringRegistrertILand(næring) || module.næringRegistrertINorge(næring))
     );
 };
