@@ -6,7 +6,8 @@ import {
     Oppholdsperiode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    TilgjengeligStønadskonto
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -52,6 +53,7 @@ interface StateProps {
     arbeidsforhold: Arbeidsforhold[];
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -234,6 +236,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             navnPåForeldre,
             harOverlappendePerioder,
             onCancel,
+            tilgjengeligeStønadskontoer,
             intl
         } = this.props;
         const { variant } = this.state;
@@ -344,6 +347,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     oppholdsårsak={periode.årsak}
                                     navnAnnenForelder={søknad.annenForelder.fornavn}
                                     søkerErFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                 />
                             </Block>
                             {periode.årsak !== undefined && (
@@ -375,7 +379,8 @@ const mapStateToProps = (state: AppState): StateProps => {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
+        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };
 
