@@ -18,7 +18,7 @@ export interface ApiState {
 
 export type ApiStatePartial = Partial<ApiState>;
 
-const getDefaultState = (): ApiState => ({
+export const getDefaultApiState = (): ApiState => ({
     isLoadingSøkerinfo: true,
     isLoadingAppState: true,
     isLoadingTilgjengeligeStønadskontoer: false,
@@ -27,7 +27,7 @@ const getDefaultState = (): ApiState => ({
     tilgjengeligeStønadskontoer: []
 });
 
-const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiStatePartial => {
+const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {
