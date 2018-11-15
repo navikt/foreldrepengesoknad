@@ -145,7 +145,7 @@
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i kroner.",
+        "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i  hele kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
@@ -583,7 +583,7 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
 
-    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må oppgi din næringsinntekt som et heltall",
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må runde av til nærmeste hele krone.",
 
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å komme videre i søknaden.",
 
