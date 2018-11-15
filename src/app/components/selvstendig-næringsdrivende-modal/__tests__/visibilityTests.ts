@@ -26,8 +26,9 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(fns.næringRegistrertINorge({ navnPåNæringen: 'abc' })).toBe(true);
         });
 
-        it('should be hidden if navn på næringen is visible but its value is undefined', () => {
+        it('should be hidden if navn på næringen is visible but its value is undefined or empty', () => {
             expect(fns.næringRegistrertINorge({})).toBe(false);
+            expect(fns.næringRegistrertINorge({ navnPåNæringen: '' })).toBe(false);
         });
     });
 
@@ -66,6 +67,10 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             expect(fns.organisasjonsnummer({ registrertINorge: undefined })).toBe(false);
         });
 
+        it('should be hidden if registrert norge is false', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: false })).toBe(false);
+        });
+
         it('should be hidden if registrert norge is is false and registrertILand is undefined', () => {
             expect(fns.organisasjonsnummer({ registrertINorge: false, registrertILand: undefined })).toBe(false);
         });
@@ -74,15 +79,29 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Tidsperiode', () => {
         describe('visibility', () => {
             beforeEach(() => {
+                fns.næringRegistrertINorge = jest.fn(() => true);
                 fns.organisasjonsnummer = jest.fn(() => true);
             });
 
-            it('should be visible if organisasjonsnummer is defined', () => {
-                expect(fns.tidsperiode({ organisasjonsnummer: '123123123' })).toBe(true);
+            it('should be visible if registrertINorge and organisasjonsnummer is defined', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: '123123123' })).toBe(true);
             });
 
-            it('should be hidden if organisasjonsnummer is undefined or not visible', () => {
-                expect(fns.tidsperiode({ organisasjonsnummer: undefined })).toBe(false);
+            it('should be hidden if registrertINorge and organisasjonsnummer is not defined', () => {
+                expect(fns.tidsperiode({ registrertINorge: true })).toBe(false);
+            });
+
+            it('should be hidden if registrertINorge and organisasjonsnummer is empty', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: '' })).toBe(false);
+            });
+
+            it('should be visible if registrertINorge === false and registrertILand has value', () => {
+                fns.organisasjonsnummer = jest.fn(() => false);
+                expect(fns.tidsperiode({ registrertINorge: false, registrertILand: 'abc' })).toBe(true);
+            });
+
+            it('should be hidden if registrertINorge === true and organisasjonsnummer is undefined or not visible', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: undefined })).toBe(false);
             });
         });
 

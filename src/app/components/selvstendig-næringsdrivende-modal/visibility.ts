@@ -12,7 +12,7 @@ const navnPåNæringenVisible: VisibilityFunction<NæringPartial> = (næring: N�
 
 const næringRegistrertINorgeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { navnPåNæringen } = næring;
-    return module.navnPåNæringen(næring) && navnPåNæringen !== undefined;
+    return module.navnPåNæringen(næring) && navnPåNæringen !== undefined && navnPåNæringen !== '';
 };
 
 const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
@@ -22,7 +22,7 @@ const næringRegistrertILandVisible: VisibilityFunction<NæringPartial> = (næri
 
 const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
     const { registrertINorge, registrertILand } = næring;
-    if (module.næringRegistrertINorge(næring) && registrertINorge === undefined) {
+    if (module.næringRegistrertINorge(næring) && (registrertINorge === undefined || registrertINorge === false)) {
         return false;
     }
     return (
@@ -32,8 +32,16 @@ const organisasjonsnummerVisible: VisibilityFunction<NæringPartial> = (næring:
 };
 
 const tidsperiodeVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { organisasjonsnummer } = næring;
-    return module.organisasjonsnummer(næring) && organisasjonsnummer !== undefined;
+    const { organisasjonsnummer, registrertINorge, registrertILand } = næring;
+    if (module.næringRegistrertINorge(næring) === false) {
+        return false;
+    }
+    return (
+        (module.organisasjonsnummer(næring) && organisasjonsnummer !== undefined && organisasjonsnummer !== '') ||
+        (module.organisasjonsnummer(næring) === false &&
+            (registrertINorge === true ||
+                (registrertINorge === false && registrertILand !== undefined && registrertILand !== '')))
+    );
 };
 
 const tidsperiodeErUtfylt: VisibilityFunction<NæringPartial> = (næring: NæringPartial): boolean => {
