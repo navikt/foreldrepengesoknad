@@ -1,6 +1,6 @@
 import { Validator } from 'common/lib/validation/types';
 import { UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
-import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelse\u00C5rsakGyldigForStartdato';
+import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 import { InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 
