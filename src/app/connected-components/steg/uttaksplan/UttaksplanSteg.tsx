@@ -30,6 +30,7 @@ import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
+import { findMissingAttachmentsForPerioder, MissingAttachment } from 'app/util/søknad/missingAttachmentUtil';
 
 interface StateProps {
     stegProps: StegProps;
@@ -42,6 +43,7 @@ interface StateProps {
     navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    missingAttachments: MissingAttachment[];
 }
 
 interface UttaksplanStegState {
@@ -179,8 +181,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             navnPåForeldre,
             lastAddedPeriodeId,
             erDeltUttak,
-            dispatch
+            dispatch,
+            missingAttachments
         } = this.props;
+
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
         const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
@@ -241,6 +245,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     />
                                 </Block>
                             )}
+                        {uttaksplanValidering.erGyldig &&
+                            missingAttachments.length > 0 && (
+                                <Veilederinfo type="advarsel">
+                                    <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
+                                </Veilederinfo>
+                            )}
                     </React.Fragment>
                 )}
                 <BekreftGåTilUttaksplanSkjemaDialog
@@ -292,7 +302,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        missingAttachments: findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle)
     };
 };
 

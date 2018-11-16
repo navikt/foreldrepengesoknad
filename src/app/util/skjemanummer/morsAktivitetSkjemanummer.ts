@@ -11,9 +11,9 @@ export const getMorsAktivitetSkjemanummer = (morsAktivitet?: MorsAktivitet): Skj
             return Skjemanummer.ANNET_SKJEMA_IKKE_NAV;
         case MorsAktivitet.ArbeidOgUtdanning:
         case MorsAktivitet.Arbeid:
+        case MorsAktivitet.TrengerHjelp:
             return Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM;
         case MorsAktivitet.Utdanning:
-        case MorsAktivitet.TrengerHjelp:
             return Skjemanummer.BEKREFTELSE_FRA_STUDIESTED;
         default:
             return Skjemanummer.ANNET;

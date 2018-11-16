@@ -24,17 +24,6 @@ describe('AnnenInntektModal visibility', () => {
             });
         });
     });
-    describe('erNærVennEllerFamilieVisible', () => {
-        it('should be visible only when type is JOBB_I_UTLANDET', () => {
-            Object.values(AnnenInntektType).forEach((type: AnnenInntektType) => {
-                if (type === AnnenInntektType.JOBB_I_UTLANDET) {
-                    expect(fns.erNærVennEllerFamilie({ type })).toBe(true);
-                } else {
-                    expect(fns.erNærVennEllerFamilie({ type })).toBe(false);
-                }
-            });
-        });
-    });
     describe('vedleggVisible', () => {
         it('should be visible only when type is not LØNN_VED_VIDEREUTDANNING and not JOBB_I_UTLANDET', () => {
             Object.values(AnnenInntektType).forEach((type: AnnenInntektType) => {

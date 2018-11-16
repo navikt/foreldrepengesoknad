@@ -45,6 +45,7 @@ const FødselsnummerBolk = (props: Props) => {
 
                     <Block>
                         <Checkbox
+                            name="harUtenlandskFnr"
                             disabled={kanIkkeOppgis}
                             checked={utenlandskFnr || false}
                             label={getMessage(intl, 'annenForelder.spørsmål.utenlandskFnr', { navn })}

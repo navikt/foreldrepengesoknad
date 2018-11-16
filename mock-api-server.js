@@ -51,6 +51,10 @@ router.post('/rest/soknad', (req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
+router.post('/rest/soknad/endre', (req, res) => {
+    return res.send(MockStorage.getSoknadSendt());
+});
+
 router.delete('/rest/storage', (req, res) => {
     res.sendStatus(204);
 });

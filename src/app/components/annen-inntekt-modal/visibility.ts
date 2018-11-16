@@ -16,14 +16,8 @@ const vedleggVisible: VisibilityFunction<AnnenInntektPartial> = (annenInntekt: A
     return type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING && type !== AnnenInntektType.JOBB_I_UTLANDET;
 };
 
-const erNærVennEllerFamilieVisible: VisibilityFunction<AnnenInntektPartial> = (annenInntekt: AnnenInntektPartial) => {
-    const { type } = annenInntekt;
-    return type === AnnenInntektType.JOBB_I_UTLANDET;
-};
-
 export default {
     land: landVisible,
     arbeidsgiverNavn: arbeidsgiverNavnVisible,
-    vedlegg: vedleggVisible,
-    erNærVennEllerFamilie: erNærVennEllerFamilieVisible
+    vedlegg: vedleggVisible
 };

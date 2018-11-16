@@ -8,13 +8,13 @@ const callFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[0].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[1].test();
 
 const callMatchingApplicantsFødselsnummerValidator = (
     fødselsnummer: string,
     utenlandskFødselsnummer: boolean,
     søkersFødselsnummer: string
-) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[1].test();
+) => getFødselsnummerRegler(fødselsnummer, utenlandskFødselsnummer, søkersFødselsnummer, intl)[2].test();
 
 describe('Fødselsnummer validation', () => {
     const SØKER_FNR = '21079951436';
