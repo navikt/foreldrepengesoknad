@@ -590,10 +590,10 @@
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
     "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer":
         "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
-    "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosent",
-    "valideringsfeil.stillingsprosent.ugyldigTall": "Stillingsprosent må være et gyldig tall opp til 100",
-    "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosent må være under 100",
-    "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må være over 0",
+    "valideringsfeil.stillingsprosent.required": "Du må oppgi prosent",
+    "valideringsfeil.stillingsprosent.ugyldigTall": "Prosent må være et gyldig tall opp til 100",
+    "valideringsfeil.stillingsprosent.over100prosent": "Prosent må være under 100",
+    "valideringsfeil.stillingsprosent.under1": "Prosenten må være over 0",
 
     "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du må runde av til nærmeste hele krone.",
 
