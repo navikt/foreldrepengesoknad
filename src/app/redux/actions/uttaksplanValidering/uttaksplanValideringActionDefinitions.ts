@@ -21,6 +21,7 @@ export interface SetUttaksplanValidering {
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;
+    uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;
