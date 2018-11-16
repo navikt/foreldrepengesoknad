@@ -29,6 +29,7 @@
     "revisor": "revisor",
     "gradering.prosent": "{stillingsprosent} prosent",
     "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
+    "samtidig.uttak.varighet": "Du bruker {varighet} med foreldrepenger",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepenger - NAV",
@@ -65,6 +66,7 @@
     "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
 
     "stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
+    "samtidigUttakProsent": "Oppgi samtidig uttak prosent",
 
     "orgnr": "Organisasjonsnummer",
     "jegSkalJobbeSomSelvstendigNæringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
