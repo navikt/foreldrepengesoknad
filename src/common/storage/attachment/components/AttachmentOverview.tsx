@@ -61,7 +61,7 @@ class AttachmentOverview extends React.Component<Props, State> {
     }
 
     createErrorMessage(error: any): string {
-        if (error.response && error.response.status === 400) {
+        if (error.response && error.response.status === 413) {
             return 'vedlegg.forStort';
         }
         return 'vedlegg.feilmelding';
