@@ -19,6 +19,7 @@ import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttakspl
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
+import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 
 const stateSelector = (state: AppState) => state;
 
@@ -94,7 +95,8 @@ function* validerUttaksplanSaga() {
             ),
             uttaksplanErBareOpphold(uttaksplan),
             uttaksplanStarterMedOpphold(uttaksplan),
-            uttaksplanSlutterMedOpphold(uttaksplan)
+            uttaksplanSlutterMedOpphold(uttaksplan),
+            uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan)
         )
     );
 }

@@ -911,5 +911,7 @@
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
+    "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
+        "Du kan ikke legge inn en periode med samtidig uttak som har en høyere graderingsprosent enn prosenten av samtidig uttak",
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }
