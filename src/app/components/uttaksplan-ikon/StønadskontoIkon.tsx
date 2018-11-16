@@ -21,7 +21,7 @@ const StønadskontoIkon: React.StatelessComponent<Props & InjectedIntlProps> = (
     intl,
     navnPåForeldre
 }) => (
-    <IconBox color={getStønadskontoFarge(konto, forelder)} stripes={gradert}>
+    <IconBox color={getStønadskontoFarge(konto, forelder, true)} stripes={gradert}>
         <UttaksplanIkon ikon={UttaksplanIkonKeys.uttak} title={getStønadskontoNavn(intl, konto, navnPåForeldre)} />
     </IconBox>
 );

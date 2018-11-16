@@ -43,6 +43,7 @@ export enum Arbeidsform {
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
+    'UttakFlerbarnsukerAnnenForelder' = 'UTTAK_FLERBARN_ANNEN_FORELDER',
     'UttakFedrekvoteAnnenForelder' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     'UttakMødrekvoteAnnenForelder' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER'
 }

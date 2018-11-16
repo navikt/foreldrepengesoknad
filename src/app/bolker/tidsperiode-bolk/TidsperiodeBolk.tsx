@@ -47,6 +47,7 @@ interface TidsperiodeBolkProps {
     defaultMånedFom?: Date;
     defaultMånedTom?: Date;
     kalenderplassering?: KalenderPlassering;
+    kanVelgeUgyldigDato?: boolean;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -76,6 +77,7 @@ class TidsperiodeBolk extends React.Component<Props> {
             defaultMånedFom,
             defaultMånedTom,
             datoInputLabelProps,
+            kanVelgeUgyldigDato,
             kalenderplassering
         } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
@@ -111,6 +113,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                         fom
                                     });
                                 }}
+                                kanVelgeUgyldigDato={kanVelgeUgyldigDato}
                                 disabled={startdatoDisabled}
                                 dato={tidsperiode.fom}
                                 avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
@@ -133,6 +136,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                         tom
                                     });
                                 }}
+                                kanVelgeUgyldigDato={kanVelgeUgyldigDato}
                                 dato={tidsperiode.tom}
                                 disabled={sluttdatoDisabled}
                                 avgrensninger={tilAvgrensninger}
