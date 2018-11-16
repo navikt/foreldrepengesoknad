@@ -54,6 +54,8 @@ export const findOldestDate = (dateArray: Date[]): DateValue => {
 };
 
 export const dateIsNotInFuture = (date: DateValue): boolean => moment(date).isBefore(tomorrow, 'day');
+export const dateIsTodayOrInFuture = (date: DateValue): boolean => moment(date).isSameOrAfter(today, 'day');
+export const dateIsInThePast = (date: DateValue): boolean => moment(date).isBefore(today, 'day');
 export const dateIs3YearsAgoOrLess = (date: DateValue): boolean => moment(date).isSameOrAfter(date3YearsAgo, 'day');
 export const dateIs15YearsAnd3MonthsAgoOrLess = (date: DateValue): boolean =>
     moment(date).isSameOrAfter(date15YearsAnd3MonthsAgo, 'day');
