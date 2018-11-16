@@ -576,7 +576,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosenten må vere under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må vere over 0",
 
-    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt":
+        "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
 
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å kome vidare i søknaden.",
 
@@ -879,5 +880,8 @@
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg.",
+    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
+        "Du kan ikkje utsetje på grunn av {årsak}, før dagens dato",
+
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig"
 }

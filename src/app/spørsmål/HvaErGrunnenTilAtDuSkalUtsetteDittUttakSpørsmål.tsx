@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import { Utsettelsesvariant } from '../components/utsettelse-form/UtsettelseForm';
+import ValiderbarRadioPanelGruppeResponsive from 'common/lib/validation/elements/ValiderbarRadioPanelGruppeResponsive';
+import { Validator } from 'common/lib/validation/types';
 
 interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
     variant?: Utsettelsesvariant;
+    validatorer?: Validator[];
     onChange: (variant: Utsettelsesvariant) => void;
     radios: RadioProps[];
 }
@@ -14,16 +16,17 @@ interface HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps {
 type Props = HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmålProps & InjectedIntlProps;
 
 const HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål = (props: Props) => {
-    const { onChange, variant, radios, intl } = props;
+    const { onChange, variant, radios, validatorer, intl } = props;
 
     return (
-        <RadioPanelGruppeResponsive
+        <ValiderbarRadioPanelGruppeResponsive
             checked={variant}
             twoColumns={true}
             legend={getMessage(intl, 'hvaergrunnentilatduskalutsettedittuttak.spørsmål')}
             radios={radios}
             name="årsakTilUtsettelse"
             onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Utsettelsesvariant) => onChange(v)}
+            validators={validatorer}
         />
     );
 };
