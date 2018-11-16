@@ -27,6 +27,8 @@
 
     "regnskapsfører": "rekneskapsførar",
     "revisor": "revisor",
+    "gradering.prosent": "{stillingsprosent} prosent",
+    "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar"
 
     "søknad.pageheading.ny": "Søknad om foreldrepengar",
     "søknad.pageheading.endring": "Søknad om endring av foreldrepengar",
