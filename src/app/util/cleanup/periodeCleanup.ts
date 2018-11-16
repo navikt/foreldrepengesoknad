@@ -66,6 +66,7 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
+        samtidigUttakProsent: periode.ønskerSamtidigUttak === true ? periode.samtidigUttakProsent : undefined,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
         arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
         harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
