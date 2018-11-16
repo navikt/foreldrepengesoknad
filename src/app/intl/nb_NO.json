@@ -909,5 +909,9 @@
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
+
+    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
+        "Du kan ikke utsette på grunn av {årsak}, før dagens dato",
+
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
 }

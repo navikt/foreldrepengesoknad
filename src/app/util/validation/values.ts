@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+export const yesterday = moment().subtract(1, 'days');
+
 export const today = moment();
 
 export const tomorrow = moment().add(1, 'days');
