@@ -37,7 +37,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
-import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelse\u00C5rsak';
+import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
