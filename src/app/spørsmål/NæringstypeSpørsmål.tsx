@@ -29,6 +29,7 @@ const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) =
 
     return (
         <CheckboksPanelGruppeResponsive
+            twoColumns={true}
             legend={getMessage(intl, 'næringstype.spørsmål')}
             checkboxes={createNæringstypeOptions()}
             onChange={(e: InputChangeEvent, næringstype: Næringstype) => {
