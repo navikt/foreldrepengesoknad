@@ -61,15 +61,22 @@ describe('Relasjon til barn adopsjon', () => {
         expect(fns.spørsmålOmAnkomstdato({ adopsjonAvEktefellesBarn: false, adoptertIUtlandet: false })).toBe(false);
     });
 
-    it('Skal vise "Last opp vedlegg" dersom all annen info for adopsjon av ektefelles barn er fylt ut', () => {
+    it('Skal vise "Last opp vedlegg" dersom all annen info for adopsjon av ektefelles barn er fylt ut og det er førstegangssøknad', () => {
         (util as any).fødselsdatoerErFyltUt = jest.fn(() => true);
 
-        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: true })).toBe(true);
-        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: false })).toBe(false);
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: true }, false)).toBe(true);
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: false }, false)).toBe(false);
 
         (util as any).fødselsdatoerErFyltUt = jest.fn(() => false);
 
-        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: true })).toBe(false);
-        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: false })).toBe(false);
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: true }, false)).toBe(false);
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: false }, false)).toBe(false);
+    });
+
+    it('Skal ikke vise "Last opp vedlegg" dersom det er endringssøknad', () => {
+        (util as any).fødselsdatoerErFyltUt = jest.fn(() => true);
+
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: true }, true)).toBe(false);
+        expect(fns.spørsmålOmVedlegg({ adopsjonAvEktefellesBarn: false }, true)).toBe(false);
     });
 });
