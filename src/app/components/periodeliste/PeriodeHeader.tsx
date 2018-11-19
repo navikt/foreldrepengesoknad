@@ -105,6 +105,13 @@ const getAdvarselForPeriode = (validertPeriode: ValidertPeriode, intl: InjectedI
             beskrivelse: getMessage(intl, `periodeliste.overlappendePeriode`)
         };
     }
+    if (validertPeriode.advarsler.length > 0) {
+        const advarsel = validertPeriode.advarsler[0];
+        return {
+            type: 'advarsel',
+            beskrivelse: getMessage(intl, `uttaksplan.validering.advarsel.${advarsel.advarselKey}`)
+        };
+    }
     return undefined;
 };
 
