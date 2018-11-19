@@ -15,6 +15,7 @@ interface AnnenForelderSpørsmålPayload {
     person: Person;
     søkerErFarEllerMedmor: boolean;
     annenForelderErRegistrert: boolean;
+    erEndringssøknad: boolean;
 }
 
 export enum AnnenForelderSpørsmålKeys {
@@ -116,7 +117,10 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
     [AnnenForelderSpørsmålKeys.datoForAleneomsorg]: {
         isAnswered: ({ barn }) => barn.datoForAleneomsorg !== undefined,
         parentQuestion: AnnenForelderSpørsmålKeys.deltOmsorg,
-        condition: (payload) => payload.søker.erAleneOmOmsorg === true && payload.søkerErFarEllerMedmor === true
+        condition: (payload) =>
+            payload.erEndringssøknad === false &&
+            payload.søker.erAleneOmOmsorg === true &&
+            payload.søkerErFarEllerMedmor === true
     }
 };
 
@@ -139,6 +143,7 @@ export const getAnnenForelderStegVisibility = (
         barn,
         annenForelder,
         person,
+        erEndringssøknad: søknad.erEndringssøknad || false,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderErRegistrert: registrertAnnenForelder !== undefined,
         gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon)
