@@ -67,7 +67,10 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
         });
     }
 
-    if (spørsmålOmVedleggVisible(søknad.barn) && isAttachmentMissing((søknad.barn as any).omsorgsovertakelse)) {
+    if (
+        spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
+        isAttachmentMissing((søknad.barn as any).omsorgsovertakelse)
+    ) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
             type: AttachmentType.OMSORGSOVERTAKELSE
