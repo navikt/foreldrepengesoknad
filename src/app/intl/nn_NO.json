@@ -251,6 +251,8 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "Kva land er verksemda di registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Kva er stillingsprosenten din?",
     "blittYrkesaktivSiste3År.spørsmål": "Er du blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra?",
+    "blittYrkesaktivSiste3År.hjelpetekst":
+        "Du har ikkje hatt fast jobb, jobba som frilanser eller hatt annen inntekt før du starta verksemda di.",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste fire åra?",
@@ -448,10 +450,9 @@
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Kva del av foreldrepengane skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilAnnenForelder":
         "Du må velje den same lengda på perioden med foreldrepengar som de valde i søknaden til {navn}.",
-   
+
     "samtidigUttakProsent": "Oppgje prosent med samtidig uttak",
     "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
-
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",

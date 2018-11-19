@@ -255,6 +255,8 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
     "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
+    "blittYrkesaktivSiste3År.hjelpetekst":
+        "Du har ikke hatt fast jobb, jobbet som frilanser eller hatt annen inntekt før du startet virksomheten din.",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
