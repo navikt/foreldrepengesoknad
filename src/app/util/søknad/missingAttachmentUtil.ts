@@ -103,7 +103,7 @@ export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRol
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (hasPeriodeMissingAttachment) {
+        if (hasPeriodeMissingAttachment(periode, søkerRolle)) {
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
