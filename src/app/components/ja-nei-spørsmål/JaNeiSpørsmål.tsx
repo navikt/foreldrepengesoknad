@@ -24,7 +24,7 @@ interface JaNeiSpørsmålProps {
 type Props = JaNeiSpørsmålProps & InjectedIntlProps;
 
 const JaNeiSpørsmål = (props: Props) => {
-    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, toKolonner = false, labels, intl } = props;
+    const { onChange, spørsmål, hjelpetekst, navn, valgtVerdi, toKolonner = true, labels, intl } = props;
 
     let checked;
     if (valgtVerdi === true) {
