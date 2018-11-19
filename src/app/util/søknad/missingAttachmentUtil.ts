@@ -89,6 +89,13 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
+export const hasPeriodeMissingAttachment = (periode: Periode, søkerRolle: SøkerRolle): boolean => {
+    return (
+        shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
+        isAttachmentMissing(periode.vedlegg)
+    );
+};
+
 export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRolle: SøkerRolle): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -96,10 +103,7 @@ export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRol
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (
-            shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
-            isAttachmentMissing(periode.vedlegg)
-        ) {
+        if (hasPeriodeMissingAttachment(periode, søkerRolle)) {
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
