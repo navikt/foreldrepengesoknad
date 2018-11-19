@@ -305,7 +305,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Når vi har behandlet søknaden din vil {navn} kunne logge seg på Ditt NAV og se hvilken periode du skal ha foreldrepenger og eventuelle opphold.",
+        "Når vi har behandlet søknaden din vil {navn} se i søknaden sin hvilken periode du skal ha foreldrepenger og eventuelle opphold. Dette gjelder for deg som skal starte foreldrepengene dine i 2019.",
 
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "kun bodd i Norge",
