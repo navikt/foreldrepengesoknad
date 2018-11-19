@@ -143,7 +143,7 @@ export const getAnnenForelderStegVisibility = (
         barn,
         annenForelder,
         person,
-        erEndringssøknad: søknad.erEndringssøknad || false,
+        erEndringssøknad: søknad.erEndringssøknad === true,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
         annenForelderErRegistrert: registrertAnnenForelder !== undefined,
         gjelderStebarnsadopsjon: gjelderSøknadenStebarnsadopsjon(barn, situasjon)
