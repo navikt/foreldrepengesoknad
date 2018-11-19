@@ -448,10 +448,9 @@
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Kva del av foreldrepengane skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilAnnenForelder":
         "Du må velje den same lengda på perioden med foreldrepengar som de valde i søknaden til {navn}.",
-   
+
     "samtidigUttakProsent": "Oppgje prosent med samtidig uttak",
     "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
-
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
@@ -857,6 +856,7 @@
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepengar i same perioden?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal de ha foreldrepengar samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
+    "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsetjing",
