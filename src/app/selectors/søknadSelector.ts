@@ -9,19 +9,34 @@ import { Søknadsinfo, Uttaksdatoer } from './types';
 import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 import { RecursivePartial } from '../types/Partial';
 import { Barn } from '../types/søknad/Barn';
-import { Søker } from '../types/søknad/Søker';
-import AnnenForelder from '../types/søknad/AnnenForelder';
 
 const søknadSelector = (state: AppState): RecursivePartial<Søknad> => state.søknad;
+
+const getBarn = createSelector([søknadSelector], (søknad) => søknad.barn);
+const getSituasjon = createSelector([søknadSelector], (søknad) => søknad.situasjon);
+const getDekningsgrad = createSelector([søknadSelector], (søknad) => søknad.dekningsgrad);
+const getSøker = createSelector([søknadSelector], (søknad) => søknad.søker);
+const getAnnenForelder = createSelector([søknadSelector], (søknad) => søknad.annenForelder);
+
+const getErAleneOmOmsorg = createSelector([getSøker], (søker = {}) => søker.erAleneOmOmsorg);
+const getRolle = createSelector([getSøker], (søker = {}) => søker.rolle);
+
+const getAntallBarn = createSelector([getBarn], (barn = {}) => barn.antallBarn);
+
+const getHarRettPåForeldrepenger = createSelector(
+    [getAnnenForelder],
+    (annenForelder = {}) => annenForelder.harRettPåForeldrepenger
+);
+const getKanIkkeOppgis = createSelector([getAnnenForelder], (annenForelder = {}) => annenForelder.kanIkkeOppgis);
 
 const tilgjengeligeSøknadskontoerSelector = (state: AppState): TilgjengeligStønadskonto[] | undefined =>
     state.api.tilgjengeligeStønadskontoer.length > 0 ? state.api.tilgjengeligeStønadskontoer : undefined;
 
 const familiehendelsesdatoSelector = createSelector(
-    søknadSelector,
-    (søknad): Date | undefined =>
-        barnHasRequiredValues(søknad.barn) && søkersituasjonHasRequiredValues(søknad.situasjon)
-            ? getFamiliehendelsedato(søknad.barn, søknad.situasjon)
+    [getBarn, getSituasjon],
+    (barn, situasjon): Date | undefined =>
+        barnHasRequiredValues(barn) && søkersituasjonHasRequiredValues(situasjon)
+            ? getFamiliehendelsedato(barn, situasjon)
             : undefined
 );
 
@@ -32,27 +47,45 @@ export const uttaksdatoerSelector = createSelector(
     }
 );
 export const søknadsinfoSelector = createSelector(
-    søknadSelector,
     familiehendelsesdatoSelector,
     uttaksdatoerSelector,
     tilgjengeligeSøknadskontoerSelector,
-    (søknad, familiehendelsesdato, uttaksdatoer, tilgjengeligeStønadskontoer): Søknadsinfo | undefined => {
+    getSituasjon,
+    getDekningsgrad,
+    getErAleneOmOmsorg,
+    getRolle,
+    getAntallBarn,
+    getHarRettPåForeldrepenger,
+    getKanIkkeOppgis,
+    (
+        familiehendelsesdato,
+        uttaksdatoer,
+        tilgjengeligeStønadskontoer,
+        situasjon,
+        dekningsgrad,
+        erAleneOmOmsorg,
+        rolle,
+        antallBarn,
+        harRettPåForeldrepenger,
+        kanIkkeOppgis
+    ): Søknadsinfo | undefined => {
         if (
-            søknadHasRequiredValues(søknad) &&
             familiehendelsesdato !== undefined &&
             uttaksdatoer !== undefined &&
-            tilgjengeligeStønadskontoer !== undefined
+            tilgjengeligeStønadskontoer !== undefined &&
+            situasjon !== undefined &&
+            dekningsgrad !== undefined &&
+            erAleneOmOmsorg !== undefined &&
+            rolle !== undefined &&
+            antallBarn !== undefined &&
+            harRettPåForeldrepenger !== undefined &&
+            kanIkkeOppgis
         ) {
-            const { barn, situasjon, dekningsgrad, søker, annenForelder } = søknad;
-            const { erAleneOmOmsorg, rolle } = søker;
-            const { antallBarn } = barn;
-            const { harRettPåForeldrepenger } = annenForelder;
-            const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(rolle);
-            const morHarAleneomsorg =
-                søkerErFarEllerMedmor === false && (erAleneOmOmsorg || søknad.annenForelder.kanIkkeOppgis);
+            const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(rolle!);
+            const søkerErMor = !søkerErFarEllerMedmor;
+            const morHarAleneomsorg = søkerErFarEllerMedmor === false && (erAleneOmOmsorg || kanIkkeOppgis);
             const morHarRett = rolle === SøkerRolle.MOR || (søkerErFarEllerMedmor && harRettPåForeldrepenger === true);
-            const farEllerMedmorHarAleneomsorg =
-                søkerErFarEllerMedmor && (erAleneOmOmsorg || søknad.annenForelder.kanIkkeOppgis);
+            const farEllerMedmorHarAleneomsorg = søkerErFarEllerMedmor && (erAleneOmOmsorg || kanIkkeOppgis);
             const farEllerMedmorHarRett =
                 søkerErFarEllerMedmor || (rolle === SøkerRolle.MOR && harRettPåForeldrepenger === true);
 
@@ -65,9 +98,9 @@ export const søknadsinfoSelector = createSelector(
                 farEllerMedmorHarRett,
                 morHarAleneomsorg,
                 morHarRett,
-                søkerErMor: søkerErFarEllerMedmor === false,
+                søkerErMor,
                 søkerErFarEllerMedmor,
-                søkerErAleneOmOmsorgen: søknad.søker.erAleneOmOmsorg,
+                søkerErAleneOmOmsorgen: erAleneOmOmsorg,
                 erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
                 uttaksdatoer,
                 tilgjengeligeStønadskontoer
@@ -83,21 +116,3 @@ const barnHasRequiredValues = (barn: RecursivePartial<Barn> | undefined): barn i
 const søkersituasjonHasRequiredValues = (
     situasjon: RecursivePartial<Søkersituasjon> | undefined
 ): situasjon is Søkersituasjon => situasjon !== undefined;
-
-const søkerHasRequiredValues = (søker: RecursivePartial<Søker> | undefined): søker is Søker =>
-    søker !== undefined && søker.rolle !== undefined;
-
-const annenForelderHasRequiredValues = (
-    annenForelder: RecursivePartial<AnnenForelder> | undefined
-): annenForelder is AnnenForelder => annenForelder !== undefined;
-
-const søknadHasRequiredValues = (søknad: RecursivePartial<Søknad>): søknad is Søknad => {
-    if (
-        barnHasRequiredValues(søknad.barn) &&
-        søkerHasRequiredValues(søknad.søker) &&
-        annenForelderHasRequiredValues(søknad.annenForelder)
-    ) {
-        return true;
-    }
-    return false;
-};
