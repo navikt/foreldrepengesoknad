@@ -42,14 +42,18 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                     .map((næringstype) => getMessage(intl, `næringstype.${næringstype.toLowerCase()}`))
                     .join(', ')}
             />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
-                verdi={organisasjonsnummer}
-            />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
-                verdi={stillingsprosent}
-            />
+            {organisasjonsnummer !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
+                    verdi={organisasjonsnummer}
+                />
+            )}
+            {stillingsprosent !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
+                    verdi={stillingsprosent}
+                />
+            )}
             {næringsinntekt !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
@@ -136,6 +140,15 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 </>
             )}
 
+            {harRegnskapsfører === false && (
+                <>
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}
+                        verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
+                    />
+                </>
+            )}
+
             {harRegnskapsfører === false &&
                 harRevisor === true && (
                     <>
@@ -163,6 +176,15 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                         />
                     </>
                 )}
+
+            {harRevisor === false && (
+                <>
+                    <Feltoppsummering
+                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisor')}
+                        verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRevisor')}
+                    />
+                </>
+            )}
 
             {næringsinntektSisteÅrMåDokumenteres(næring) && (
                 <OppsummeringAvDokumentasjon
