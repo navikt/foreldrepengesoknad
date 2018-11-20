@@ -16,7 +16,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Landvelger from '../landvelger/Landvelger';
-import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
@@ -150,19 +149,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
                         value={(annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || ''}
-                    />
-                </Block>
-                <Block visible={visibility.erNærVennEllerFamilie(annenInntekt)}>
-                    <ErArbeidsgiverNærVennEllerFamilie
-                        erArbeidsgiverNærVennEllerFamilie={
-                            (annenInntekt as JobbIUtlandetInntekt).erNærVennEllerFamilieMedArbeidsgiver
-                        }
-                        onChange={(v: boolean) => {
-                            const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                erNærVennEllerFamilieMedArbeidsgiver: v
-                            };
-                            this.updateAnnenInntekt(utlandInntekt);
-                        }}
                     />
                 </Block>
                 <Block>

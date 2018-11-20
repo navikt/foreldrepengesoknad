@@ -6,7 +6,8 @@ import {
     Oppholdsperiode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    TilgjengeligStønadskonto
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -14,7 +15,6 @@ import HvorSkalDuJobbeSpørsmål from '../../spørsmål/HvorSkalDuJobbeSpørsmå
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
-import DateValues from '../../util/validation/values';
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
@@ -53,6 +53,7 @@ interface StateProps {
     arbeidsforhold: Arbeidsforhold[];
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -131,7 +132,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 value: Utsettelsesvariant.Ferie
             },
             {
-                label: 'Jeg skal jobbe heltid',
+                label: getMessage(intl, 'jegskaljobbeheltid'),
                 value: Utsettelsesvariant.Arbeid
             },
             {
@@ -168,7 +169,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         type: Periodetype.Utsettelse,
                         årsak: UtsettelseÅrsakType.Arbeid,
                         forelder,
-                        erArbeidstaker: undefined
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Ferie) {
                     this.onChange({
@@ -178,7 +179,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder, erArbeidstaker: false });
+                    this.onChange({
+                        type: Periodetype.Utsettelse,
+                        årsak: undefined,
+                        forelder,
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    });
                 }
             }
         }
@@ -230,6 +236,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             navnPåForeldre,
             harOverlappendePerioder,
             onCancel,
+            tilgjengeligeStønadskontoer,
             intl
         } = this.props;
         const { variant } = this.state;
@@ -265,7 +272,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
-                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold)}
                             forelder={Forelder.MOR}
                         />
                     </Block>
@@ -340,6 +347,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     oppholdsårsak={periode.årsak}
                                     navnAnnenForelder={søknad.annenForelder.fornavn}
                                     søkerErFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                 />
                             </Block>
                             {periode.årsak !== undefined && (
@@ -371,7 +379,8 @@ const mapStateToProps = (state: AppState): StateProps => {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
+        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
     };
 };
 
