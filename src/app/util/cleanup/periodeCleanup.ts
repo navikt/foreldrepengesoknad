@@ -13,13 +13,13 @@ import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
-import { shouldPeriodeHaveAttachment } from '../søknad/missingAttachmentUtil';
 import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../../components/uttak-form/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
 import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
+import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,

@@ -30,7 +30,8 @@ import { getNavnPåForeldre } from '../../../util/uttaksplan';
 import { NavnPåForeldre, Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
-import { findMissingAttachmentsForPerioder, MissingAttachment } from 'app/util/søknad/missingAttachmentUtil';
+import { MissingAttachment } from '../../../types/MissingAttachment';
+import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
 
 interface StateProps {
     stegProps: StegProps;
