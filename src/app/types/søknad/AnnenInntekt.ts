@@ -31,7 +31,6 @@ export class JobbIUtlandetInntekt extends AnnenInntektBase {
     type: AnnenInntektType.JOBB_I_UTLANDET;
     arbeidsgiverNavn: string;
     land: string;
-    erNærVennEllerFamilieMedArbeidsgiver: boolean;
 }
 
 export class VentelønnInntekt extends AnnenInntektBase {

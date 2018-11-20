@@ -20,6 +20,8 @@ export interface GetTilgjengeligeStønadskontoerParams {
 
 const apiBaseUrl = Environment.REST_API_URL;
 const uttakBaseUrl = Environment.UTTAK_API_URL;
+const sendSøknadUrl = `${apiBaseUrl}/soknad`;
+const sendEndringssøknadUrl = `${sendSøknadUrl}/endre`;
 
 function getSøkerinfo() {
     return axios.get(`${apiBaseUrl}/sokerinfo`, {
@@ -60,7 +62,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 }
 
 function sendSøknad(søknad: Søknad) {
-    const url = `${apiBaseUrl}/soknad`;
+    const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
     return axios.post(url, cleanUpSøknad(søknad), {
         withCredentials: true,

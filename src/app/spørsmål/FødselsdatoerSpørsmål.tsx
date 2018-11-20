@@ -63,7 +63,7 @@ class FødselsdatoerSpørsmål extends React.Component<Props, {}> {
 
         return (
             <DatoInput
-                id="fødselsdatoe"
+                id="fødselsdato"
                 name="fødsesdato"
                 dato={fødselsdatoer[0]}
                 onChange={(d: Date) => this.onDatoChange(d, 0)}

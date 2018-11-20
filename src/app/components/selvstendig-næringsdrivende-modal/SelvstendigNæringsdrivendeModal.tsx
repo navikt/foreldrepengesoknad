@@ -22,7 +22,6 @@ import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsføre
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
-import { getStillingsprosentRegler } from '../../util/validation/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
@@ -35,6 +34,8 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Skjemanummer } from '../../types/søknad/Søknad';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
+import { removeSpacesFromString } from '../../util/stringUtils';
+import { hasValueRule } from '../../util/validation/common';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -148,7 +149,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             organisasjonsnummer,
             registrertINorge,
             registrertILand,
-            stillingsprosent,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
             harRegnskapsfører,
             harRevisor,
@@ -187,13 +187,29 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
+                <Block visible={visibility.næringRegistrertINorge(næring)}>
+                    <ErNæringenRegistrertINorgeSpørsmål
+                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
+                        registrertINorge={registrertINorge}
+                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
+                    />
+                </Block>
+
+                <Block visible={visibility.næringRegistrertILand(næring)}>
+                    <Landvelger
+                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
+                        defaultValue={registrertILand}
+                    />
+                </Block>
+
                 <Block visible={visibility.organisasjonsnummer(næring)}>
                     <Input
                         name="selvstendigNæringsdrivende-orgnr"
                         label={getMessage(intl, 'selvstendigNæringsdrivende.modal.orgnr')}
                         onChange={(v: string) =>
                             this.updateNæring({
-                                organisasjonsnummer: v
+                                organisasjonsnummer: removeSpacesFromString(v)
                             })
                         }
                         required={true}
@@ -239,18 +255,24 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v
+                                næringsinntekt: v.replace(/ /g, '')
                             };
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
+                        validators={[
+                            hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd')),
+                            {
+                                test: () => Number.isInteger(Number(næringsinntekt)),
+                                failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt')
+                            }
+                        ]}
                     />
                 </Block>
 
                 <Block visible={visibility.dokumentasjonAvInntektSisteÅr(næring)}>
                     <Veilederinfo>
-                        Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være
-                        kopi personinntektsskjema, næringsoppgave eller resultatregnskap.
+                        {getMessage(intl, 'selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr')}
                     </Veilederinfo>
                     <AttachmentsUploader
                         attachments={næring.vedlegg || []}
@@ -269,39 +291,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }}
                         attachmentType={AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE}
                         skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertINorge(næring)}>
-                    <ErNæringenRegistrertINorgeSpørsmål
-                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
-                        registrertINorge={registrertINorge}
-                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertILand(næring)}>
-                    <Landvelger
-                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
-                        defaultValue={registrertILand}
-                    />
-                </Block>
-
-                <Block visible={visibility.stillingsprosent(næring)}>
-                    <Input
-                        name="selvstendigNæringsdrivende-stillingsprosent"
-                        bredde="XS"
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
-                        onChange={(v: string) =>
-                            this.updateNæring({
-                                stillingsprosent: v
-                            })
-                        }
-                        onBlur={this.handleStillingsprosentBlur}
-                        value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(false, stillingsprosent || '', intl)}
-                        maxLength={4}
                     />
                 </Block>
 

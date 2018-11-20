@@ -32,7 +32,7 @@ export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørs
 
 const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
-        return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === false;
+        return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
     }
     return false;
 };

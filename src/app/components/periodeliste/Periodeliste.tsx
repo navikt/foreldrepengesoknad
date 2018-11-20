@@ -22,6 +22,7 @@ export interface OwnProps {
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
+    onPeriodeLukk?: (id: string) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onFjernPeriode?: (periode: Periode) => void;
@@ -42,6 +43,7 @@ class Periodeliste extends React.Component<Props> {
         super(props);
 
         this.checkPeriodeFocus = this.checkPeriodeFocus.bind(this);
+        this.handleOnItemToggle = this.handleOnItemToggle.bind(this);
 
         const { perioder } = props;
         if (perioder.length === 1 && perioder[0].id === props.lastAddedPeriodeId) {
@@ -75,6 +77,11 @@ class Periodeliste extends React.Component<Props> {
             this.periodeToBeFocused = undefined;
         }
     }
+    handleOnItemToggle(id: string, open: boolean) {
+        if (this.props.onPeriodeLukk && open === false) {
+            this.props.onPeriodeLukk(id);
+        }
+    }
     render() {
         const {
             perioder,
@@ -90,6 +97,7 @@ class Periodeliste extends React.Component<Props> {
         return (
             <ToggleList
                 ref={(c) => (this.toggleList = c)}
+                onItemToggle={this.handleOnItemToggle}
                 render={(onToggle, isOpen) => (
                     <div className={periodelisteBem.className}>
                         {perioder.map((periode, idx) => {

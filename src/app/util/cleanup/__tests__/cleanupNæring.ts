@@ -79,6 +79,21 @@ describe('cleanupNæring', () => {
             expect(kanInnhenteOpplsyningerFraRevisor).toBe(næring.kanInnhenteOpplsyningerFraRevisor);
         });
     });
+    describe('organisasjonsnummer', () => {
+        it('should be included when registrertINorge is true', () => {
+            const næringCpy = { ...næring };
+            næringCpy.registrertINorge = true;
+            næringCpy.organisasjonsnummer = '123';
+            const result = cleanup(næringCpy as Næring);
+            expect(result.organisasjonsnummer).toBeDefined();
+        });
+        it('should not be included when registrertINorge is false', () => {
+            const næringCpy = { ...næring };
+            næringCpy.registrertINorge = false;
+            const result = cleanup(næringCpy as Næring);
+            expect(result.organisasjonsnummer).toBeUndefined();
+        });
+    });
     describe('revisor', () => {
         it('should be set to undefined if harRevisor is not true', () => {
             const næringCpy = { ...næring };

@@ -1,5 +1,5 @@
+const moment = require('moment');
 import { SøkerRolle } from '../../types/søknad/Søknad';
-import moment from 'moment';
 
 export const getErSøkerFarEllerMedmor = (søkerRolle: SøkerRolle): boolean =>
     søkerRolle === SøkerRolle.FAR || søkerRolle === SøkerRolle.MEDMOR || søkerRolle === SøkerRolle.FORESATT2;
