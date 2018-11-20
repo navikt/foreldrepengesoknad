@@ -35,14 +35,9 @@ import {
     dokumentasjonBehøvesForUtsettelsesperiode,
     dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
+import { MissingAttachment } from '../../types/MissingAttachment';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
-
-export interface MissingAttachment {
-    index?: number;
-    type: AttachmentType;
-    skjemanummer: Skjemanummer;
-}
 
 export function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
     if (periode.type === Periodetype.Overføring) {
