@@ -32,7 +32,7 @@ describe('Terminbekreftelsedato validation', () => {
         it('should be invalid if termindato is too late for applicant to be in uke26+3', () => {
             const termindato = moment().toDate();
             const ugyldigTerminbekreftelse = moment()
-                .subtract(fjortenUkerPluss3Number + 1, 'days')
+                .subtract((fjortenUkerPluss3Number + 1) * 24, 'hours')
                 .toDate();
             expect(callUtstedtUke26EllerSenere(ugyldigTerminbekreftelse, termindato)).toBe(false);
         });
@@ -40,7 +40,7 @@ describe('Terminbekreftelsedato validation', () => {
         it('should be valid if termindato and temrinbekreftelsedato cross-validation is valid', () => {
             const termindato = moment().toDate();
             const gyldigTerminbekreftelse = moment()
-                .subtract(fjortenUkerPluss3Number, 'days')
+                .subtract(fjortenUkerPluss3Number * 24, 'hours')
                 .toDate();
             expect(callUtstedtUke26EllerSenere(gyldigTerminbekreftelse, termindato)).toBe(true);
         });

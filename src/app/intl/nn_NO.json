@@ -142,7 +142,7 @@
     "annenInntekt.modal.land": "Kva land har du jobba i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Gi opp namnet på arbeidsgivaren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Kva har du hatt i næringsinntekt hittil i år, før skatt? Gi opp summen i heile krone.",
+        "Kva har du hatt i næringsinntekt før skatt dei siste tolv månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.",
 
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.tom": "Dersom du har avslutta {navnPåNæringen} gi opp sluttdato",
@@ -152,6 +152,8 @@
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med noko arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Arbeidsforholda dine",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.veileder":
+        "Vi kan tidlegast behandle søknaden når arbeidsgivaren din har sendt inn inntektsmeldinga. Denne kan arbeidsgivaren din sende inn fire veker før du startar foreldrepengane.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",
@@ -230,7 +232,7 @@
     "frilansOppdrag.modal.oppdragsgiver": "Namnet på oppdragsgivaren",
 
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Gi opp næringsinntekta di etter endringa. Gi opp summen i kroner.",
+        "Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort kva som har endra seg i verksemda eller arbeidssituasjonen din",
@@ -251,6 +253,8 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "Kva land er verksemda di registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Kva er stillingsprosenten din?",
     "blittYrkesaktivSiste3År.spørsmål": "Er du blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra?",
+    "blittYrkesaktivSiste3År.hjelpetekst":
+        "Du har ikkje hatt fast jobb, jobba som frilansar eller hatt anna inntekt før du starta verksemda di.",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste fire åra?",
@@ -301,7 +305,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
     "annenForelder.ugyldigBostedsland": "Du må gi opp kvar den andre forelderen bur",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Når vi har behandla søknaden din, vil {navn} kunne logge seg på Ditt NAV og sjå kva periode du skal ha foreldrepengar og eventuelle opphald.",
+        "Når vi har behandla søknaden din, vil {navn} sjå i søknaden sin kva periode du skal ha foreldrepengar, og eventuelle opphald. Dette gjeld for deg som skal starte foreldrepengane dine i 2019.",
 
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste tolv månadene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "berre budd i Noreg",
@@ -407,6 +411,9 @@
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
     "uttaksplan.infoVedOpphold":
         "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
+
+    "aktivitetskrav.lesmer":
+        " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønskjer du å starte perioden?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakinga {dato}",
@@ -655,6 +662,10 @@
         "Eg har ikkje jobba som frilansar for nære venner eller familie dei siste ti månadene",
     "oppsummering.ikke.frilans.oppstartsdato": "Oppstartsdato som frilansar",
 
+    "oppsummering.selvstendigNæringsdrivende.regnskapsfører": "Regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører": "Eg har ikkje regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.revisor": "Revisor",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRevisor": "Eg har ikkje revisor",
     "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som sjølvstendig næringsdrivande",
     "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
         "Eg har ikkje jobba som sjølvstendig næringsdrivande dei siste ti månadene",
@@ -853,6 +864,7 @@
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepengar i same perioden?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal de ha foreldrepengar samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
+    "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsetjing",
