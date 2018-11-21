@@ -418,6 +418,9 @@
     "nyPeriodeForm.utsettelse.tittel": "Utsett en periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
 
+    "aktivitetskrav.lesmer":
+        " <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les mer om aktivitetskravet til mor her.</a>",
+
     "uttaksplan.startdato.veileder.forTidligStartdato":
         "Startdato må være innen de 12 første ukene før termin/fødsel. Første mulige startdato er {dato}.",
     "uttaksplan.startdato.veileder.helgedag":
