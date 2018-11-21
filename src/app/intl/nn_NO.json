@@ -412,6 +412,9 @@
     "uttaksplan.infoVedOpphold":
         "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
 
+    "aktivitetskrav.lesmer":
+        " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
+
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønskjer du å starte perioden?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakinga {dato}",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.ankomst": "Innkomst til Noreg {dato}",
