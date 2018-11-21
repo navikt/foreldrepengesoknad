@@ -152,6 +152,8 @@
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med noko arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Arbeidsforholda dine",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.veileder":
+        "Nav kan ikke behandle søknaden din før arbeidsgiveren din sender inn inntektsmelding. Arbeidsgiver kan sende inn denne tidligst 4 uker før du starter foreldrepengene.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",

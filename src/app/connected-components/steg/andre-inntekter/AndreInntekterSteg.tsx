@@ -2,7 +2,7 @@ import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
 import AnnenInntektSiste10MndSpørsmål from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducers';
@@ -25,6 +25,7 @@ import cleanupAndreInntekterSteg from '../../../util/cleanup/cleanupAndreInntekt
 import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     stegProps: StegProps;
@@ -100,6 +101,7 @@ class AndreInntekterSteg extends React.Component<Props> {
     render() {
         const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
         const { harHattAnnenInntektSiste10Mnd } = søker;
+        const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
         return (
             <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
@@ -115,6 +117,11 @@ class AndreInntekterSteg extends React.Component<Props> {
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}>
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
+                    {harArbeidsforhold && (
+                        <Veilederinfo>
+                            <FormattedMessage id="annenInntekt.arbeidsforhold.veileder" />
+                        </Veilederinfo>
+                    )}
                 </Block>
 
                 <Block hasChildBlocks={true} margin="none">
