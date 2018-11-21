@@ -131,7 +131,8 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
                 erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
                 periode.type === Periodetype.Uttak &&
                 periode.konto === StønadskontoType.Fedrekvote &&
-                periode.erMorForSyk === undefined
+                periode.erMorForSyk === undefined &&
+                !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
             ) {
                 return false;
             }
@@ -195,7 +196,8 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
     if (
         isValidTidsperiode(tidsperiode) &&
         erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
-        payload.periode.konto === StønadskontoType.Fedrekvote
+        payload.periode.konto === StønadskontoType.Fedrekvote &&
+        !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
     ) {
         return true;
     }

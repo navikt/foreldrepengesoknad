@@ -7,5 +7,6 @@ export default {
     nav_aktivitetskrav: 'https://familie.nav.no/om-foreldrepenger#hvor-lenge-kan-jeg-fa-foreldrepenger',
     brukerstøtte:
         'https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Teknisk+brukerstotte/hjelp-til-personbruker?kap=398749',
-    innsyn: 'https://foreldrepenger.nav.no'
+    innsyn: 'https://foreldrepenger.nav.no',
+    morsAktivitetskrav: 'https://familie.nav.no/om-foreldrepenger'
 };

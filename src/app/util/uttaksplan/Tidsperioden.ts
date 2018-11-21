@@ -75,7 +75,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: Partial<Tidsperiode>, taB
         if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
-        fom.add(1, 'day');
+        fom.add(24, 'hours');
     }
     if (taBortFridager) {
         fridager = getUttaksdagerSomErFridager(tidsperiode).length;
