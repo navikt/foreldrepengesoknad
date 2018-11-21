@@ -167,7 +167,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 isOpen={isOpen}
                 renderFormButtons={visibility.formButtons(næring)}
                 submitLabel={getMessage(intl, 'leggtil')}
-                cancelLabel={getMessage(intl, 'avbryt')}>
+                cancelLabel={getMessage(intl, 'avbryt')}
+                noSummary={true}>
                 <Block>
                     <NæringstypeSpørsmål næringstyper={næringstyper || []} onChange={this.toggleNæringstype} />
                 </Block>
