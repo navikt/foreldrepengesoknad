@@ -12,9 +12,17 @@ import {
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
+    if (isValidTidsperiode(payload.periode.tidsperiode) === false) {
+        return [
+            {
+                feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE
+            }
+        ];
+    }
     if (visibility.areAllQuestionsAnswered()) {
         return undefined;
     }
@@ -29,11 +37,11 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     const visibility = getUttakFormVisibility(payload);
     const valideringsfeil: PeriodeValideringsfeil[] = [];
 
-    if (visibility.areAllQuestionsAnswered() === false) {
-        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT });
-    }
     if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
+    }
+    if (visibility.areAllQuestionsAnswered() === false) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT });
     }
     return valideringsfeil.length === 0 ? undefined : valideringsfeil;
 };
