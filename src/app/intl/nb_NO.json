@@ -146,7 +146,7 @@
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Oppgi navnet på arbeidsgiveren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Hva har du hatt i næringsinntekt hittil i år, før skatt? Oppgi summen i  hele kroner.",
+        "Hva har du hatt i næringsinntekt før skatt de siste tolv månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.",
 
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
@@ -234,7 +234,7 @@
     "frilansOppdrag.modal.oppdragsgiver": "Navn på oppdragsgiver",
 
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Oppgi næringsinntekten din etter endringen. Oppgi summen i kroner.",
+        "Oppgi næringsinntekten din etter endringen. Oppgi årsinntekten i hele kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort hva som har endret seg i virksomheten eller arbeidssituasjonen din",
