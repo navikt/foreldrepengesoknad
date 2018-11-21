@@ -4,12 +4,11 @@ import { ApiActionKeys, SendSøknad } from '../actions/api/apiActionDefinitions'
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { Kvittering } from '../../types/Kvittering';
 import routeConfig from '../../util/routing/routeConfig';
-import { cleanupSøknadForInnsending } from '../../util/cleanup/cleanupSøknad';
 
 function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
-        const response = yield call(Api.sendSøknad, cleanupSøknadForInnsending(action.søknad));
+        const response = yield call(Api.sendSøknad, action.søknad);
         const kvittering: Kvittering = response.data;
         if (kvittering) {
             action.history.push(`${routeConfig.APP_ROUTE_PREFIX}soknad-sendt`);

@@ -9,6 +9,7 @@ import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
+import { Omit } from 'react-redux';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -59,6 +60,8 @@ interface Søknad {
     ekstrainfo: SkjemaEkstrainfo;
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
+
+export type SøknadForInnsending = Omit<Søknad, 'ekstrainfo' | 'sensitivInfoIkkeLagre'>;
 
 export interface SøknadPartial {
     type?: Foreldrepenger;
