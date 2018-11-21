@@ -142,7 +142,7 @@
     "annenInntekt.modal.land": "Kva land har du jobba i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Gi opp namnet på arbeidsgivaren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Kva har du hatt i næringsinntekt hittil i år, før skatt? Gi opp summen i heile krone.",
+        "Kva har du hatt i næringsinntekt før skatt dei siste tolv månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.",
 
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.tom": "Dersom du har avslutta {navnPåNæringen} gi opp sluttdato",
