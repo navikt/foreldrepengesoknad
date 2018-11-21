@@ -230,7 +230,7 @@
     "frilansOppdrag.modal.oppdragsgiver": "Namnet på oppdragsgivaren",
 
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Gi opp næringsinntekta di etter endringa. Gi opp summen i kroner.",
+        "Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort kva som har endra seg i verksemda eller arbeidssituasjonen din",
