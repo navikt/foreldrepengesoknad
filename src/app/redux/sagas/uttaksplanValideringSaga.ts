@@ -19,7 +19,7 @@ import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttakspl
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
-import { hasPeriodeMissingAttachment } from '../../util/s\u00F8knad/missingAttachmentUtil';
+import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 
 const stateSelector = (state: AppState) => state;
 

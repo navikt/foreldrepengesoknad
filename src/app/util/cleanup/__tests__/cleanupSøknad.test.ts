@@ -1,5 +1,5 @@
-import { removePeriodetypeHullFromUttaksplan } from '../cleanupSøknad';
 import { Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
+import { removePeriodetypeHullFromUttaksplan } from '../cleanupSøknad';
 
 const uttaksplan: Periode[] = [
     {
