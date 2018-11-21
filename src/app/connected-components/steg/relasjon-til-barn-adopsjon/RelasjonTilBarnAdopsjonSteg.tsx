@@ -32,6 +32,7 @@ interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
     situasjon: Søkersituasjon;
+    erEndringssøknad: boolean;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -66,7 +67,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const { barn, dispatch, stegProps, intl, situasjon } = this.props;
+        const { barn, dispatch, stegProps, intl, erEndringssøknad, situasjon } = this.props;
 
         return (
             <Steg onPreSubmit={this.cleanupSteg} {...stegProps}>
@@ -160,7 +161,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                     />
                 </Block>
 
-                <Block visible={visibility.spørsmålOmVedlegg(barn)}>
+                <Block visible={visibility.spørsmålOmVedlegg(barn, erEndringssøknad)}>
                     <Block margin="xs">
                         <Veilederinfo>
                             {getMessage(
@@ -202,7 +203,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         barn,
         stegProps,
-        situasjon: state.søknad.situasjon
+        situasjon: state.søknad.situasjon,
+        erEndringssøknad: state.søknad.erEndringssøknad
     };
 };
 
