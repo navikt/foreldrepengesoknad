@@ -48,7 +48,13 @@ function erPerioderLike(p1: Periode, p2: Periode) {
 
 function getPeriodeFootprint(periode: Periode) {
     const { tidsperiode, id, ...rest } = periode;
-    return JSON.stringify({ ...rest });
+    const sortedPeriode = {};
+    Object.keys(rest)
+        .sort()
+        .forEach((key) => {
+            sortedPeriode[key] = rest[key];
+        });
+    return JSON.stringify({ ...sortedPeriode });
 }
 
 function flyttPeriode(periode: Periode, fom: Date): Periode {
