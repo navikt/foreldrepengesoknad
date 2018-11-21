@@ -9,6 +9,7 @@ import { Validator } from 'common/lib/validation/types';
 import { allValidatorsPass } from 'common/lib/validation/utils/runValidFormValidation';
 import { DateValue } from '../../../types/common';
 import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
+import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 
 const erUtfyltTest = (dato: DateValue, skalIkkeHaUttak: boolean): Validator => ({
     test: () => (skalIkkeHaUttak ? true : dato !== undefined),
@@ -62,6 +63,10 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, fa
         const skalIkkeHaUttak = isForeldrepengerFørFødselUttaksperiode(uttaksperiode)
             ? uttaksperiode.skalIkkeHaUttakFørTermin
             : false;
+
+        if (isValidTidsperiode(tidsperiode) === false) {
+            return false;
+        }
 
         const validators = getUttakTidsperiodeValidatorer(
             skalIkkeHaUttak,
