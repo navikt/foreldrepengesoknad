@@ -1,0 +1,58 @@
+{
+    "søknad": {
+        "type": "foreldrepenger",
+        "annenForelder": {
+            "kanIkkeOppgis": false,
+            "fornavn": "fro",
+            "fnr": "12123",
+            "utenlandskFnr": true,
+            "bostedsland": "AM",
+            "harRettPåForeldrepenger": true,
+            "erInformertOmSøknaden": true
+        },
+        "barn": { "erBarnetFødt": true, "fødselsdatoer": ["2018-11-05T11:00:00.000Z"], "antallBarn": 1 },
+        "informasjonOmUtenlandsopphold": { "tidligereOpphold": [], "senereOpphold": [] },
+        "søker": { "erAleneOmOmsorg": false, "andreInntekterSiste10Mnd": [], "rolle": "MOR" },
+        "harGodkjentVilkår": true,
+        "harGodkjentOppsummering": false,
+        "ekstrainfo": {
+            "uttaksplanSkjema": {
+                "startdatoPermisjon": "2018-10-15T10:00:00.000Z",
+                "fellesperiodeukerMor": 8,
+                "forslagLaget": true
+            },
+            "currentStegID": "uttaksplan"
+        },
+        "uttaksplan": [
+            {
+                "id": "2149911772-02799-23800-6859-29046027779752",
+                "type": "uttak",
+                "forelder": "mor",
+                "konto": "FORELDREPENGER_FØR_FØDSEL",
+                "tidsperiode": { "fom": "2018-10-15T10:00:00.000Z", "tom": "2018-11-02T11:00:00.000Z" }
+            },
+            {
+                "id": "963912602-3636-12165-26416-2625199821425",
+                "type": "uttak",
+                "forelder": "mor",
+                "konto": "MØDREKVOTE",
+                "tidsperiode": { "fom": "2018-11-05T11:00:00.000Z", "tom": "2019-02-15T11:00:00.000Z" },
+                "ønskerSamtidigUttak": false,
+                "gradert": false
+            },
+            {
+                "id": "173025499-6604-2596-25634-031432941122352",
+                "type": "uttak",
+                "forelder": "mor",
+                "konto": "FELLESPERIODE",
+                "tidsperiode": { "fom": "2019-02-18T11:00:00.000Z", "tom": "2019-04-12T10:00:00.000Z" },
+                "ønskerSamtidigUttak": false,
+                "gradert": false
+            }
+        ],
+        "erEndringssøknad": false,
+        "situasjon": "fødsel",
+        "dekningsgrad": "100"
+    },
+    "common": { "språkkode": "nb" }
+}
