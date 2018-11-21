@@ -657,6 +657,10 @@
         "Eg har ikkje jobba som frilansar for nære venner eller familie dei siste ti månadene",
     "oppsummering.ikke.frilans.oppstartsdato": "Oppstartsdato som frilansar",
 
+    "oppsummering.selvstendigNæringsdrivende.regnskapsfører": "Regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører": "Eg har ikkje regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.revisor": "Revisor",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRevisor": "Eg har ikkje revisor",
     "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som sjølvstendig næringsdrivande",
     "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
         "Eg har ikkje jobba som sjølvstendig næringsdrivande dei siste ti månadene",
