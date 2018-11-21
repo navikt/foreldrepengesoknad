@@ -18,7 +18,7 @@ function* sendSøknad(action: SendSøknad) {
     } catch (error) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
-                error && error.response && error.response.status === 413 ? error.response.data.messages : undefined
+                error && error.response && error.response.status === 413 ? error.response.data.message : undefined
         });
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));
