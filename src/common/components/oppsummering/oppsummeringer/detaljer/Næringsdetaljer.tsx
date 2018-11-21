@@ -141,12 +141,10 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
             )}
 
             {harRegnskapsfører === false && (
-                <>
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}
-                        verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
-                    />
-                </>
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}
+                    verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
+                />
             )}
 
             {harRegnskapsfører === false &&
@@ -178,12 +176,10 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                 )}
 
             {harRevisor === false && (
-                <>
-                    <Feltoppsummering
-                        feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisor')}
-                        verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRevisor')}
-                    />
-                </>
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisor')}
+                    verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRevisor')}
+                />
             )}
 
             {næringsinntektSisteÅrMåDokumenteres(næring) && (
