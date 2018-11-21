@@ -12,7 +12,7 @@ export const fjortenUkerPluss3 = 14 * 7 + 3;
 export const getTerminbekreftelsedatoAvgrensninger = (termindato?: Date): Avgrensninger => ({
     minDato: termindato
         ? moment(termindato)
-              .subtract(fjortenUkerPluss3, 'days')
+              .subtract(fjortenUkerPluss3 * 24, 'hours')
               .toDate()
         : date1YearAgo.toDate(),
     maksDato: today.toDate()
@@ -33,7 +33,7 @@ export const getTerminbekreftelseDatoRegler = (
         {
             test: () =>
                 moment
-                    .max(termindatoM.subtract(fjortenUkerPluss3Number, 'days'), terminbekreftelsedatoM)
+                    .max(termindatoM.subtract(fjortenUkerPluss3Number * 24, 'hours'), terminbekreftelsedatoM)
                     .isSame(terminbekreftelsedatoM, 'day'),
             failText: getMessage(intl, `${intlKey}.duMåVæreIUke26`)
         }

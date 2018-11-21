@@ -524,7 +524,7 @@ export function getFriperioderITidsperiode(tidsperiode: Tidsperiode): Tidsperiod
             const nextDate = moment(fridagerIPerioden[idx + 1].date).toDate();
             if (
                 moment(fom)
-                    .add(1, 'day')
+                    .add(24, 'hours')
                     .isSame(nextDate, 'day') === false
             ) {
                 friperioder.push({
