@@ -132,21 +132,37 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
         const stønadskontoer: StønadskontoerDTO = response.data;
         const dekningsgrad: string = action.params.dekningsgrad;
         const antallUker: number = Object.keys(stønadskontoer.kontoer)
-            .filter((konto: string) => konto !== StønadskontoType.Flerbarnsdager)
-            .reduce((sum, konto) => sum + stønadskontoer.kontoer[konto] / 5, 0);
+            .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
+            .reduce((sum: number, konto: StønadskontoType) => sum + stønadskontoer.kontoer[konto] / 5, 0);
+        const antallFellesperiodeUker: number = Object.keys(stønadskontoer.kontoer)
+            .filter(
+                (konto: StønadskontoType) =>
+                    konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager
+            )
+            .reduce((sum: number, konto: StønadskontoType) => {
+                if (konto === StønadskontoType.Fellesperiode) {
+                    return sum + stønadskontoer.kontoer[konto] / 5;
+                } else if (konto === StønadskontoType.Flerbarnsdager) {
+                    return sum - stønadskontoer.kontoer[konto] / 5;
+                } else {
+                    return 0;
+                }
+            }, 0);
 
         if (dekningsgrad === '100') {
             yield put(
                 apiActions.updateApi({
                     dekningsgrad100AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    fellesPeriodeUkerDekningsgrad100: antallFellesperiodeUker
                 })
             );
         } else {
             yield put(
                 apiActions.updateApi({
                     dekningsgrad80AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    fellesPeriodeUkerDekningsgrad80: antallFellesperiodeUker
                 })
             );
         }

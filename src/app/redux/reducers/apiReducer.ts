@@ -14,6 +14,8 @@ export interface ApiState {
     kvittering?: Kvittering;
     dekningsgrad100AntallUker?: number;
     dekningsgrad80AntallUker?: number;
+    fellesPeriodeUkerDekningsgrad100?: number;
+    fellesPeriodeUkerDekningsgrad80?: number;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
