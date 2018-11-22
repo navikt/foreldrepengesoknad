@@ -143,12 +143,22 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     </Veilederinfo>
                 </Block>
 
-                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)}>
-                    <ErAnnenForelderInformertSpørsmål
-                        navn={annenForelder.fornavn}
-                        erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
-                        onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
-                    />
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
+                    <Block>
+                        <ErAnnenForelderInformertSpørsmål
+                            navn={annenForelder.fornavn}
+                            erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
+                            onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
+                        />
+                    </Block>
+                    {annenForelder.erInformertOmSøknaden === false && (
+                        <Veilederinfo type="advarsel">
+                            <FormattedMessage
+                                id="erAnnenForelderInformert.veilederIkkeInformert"
+                                values={{ navn: annenForelder.fornavn }}
+                            />
+                        </Veilederinfo>
+                    )}
                 </Block>
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
                     <DatoInput
