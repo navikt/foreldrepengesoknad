@@ -31,6 +31,16 @@ export enum AnnenForelderSpørsmålKeys {
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
 
+export const skalBrukerStoppesPgaAnnenForelderIkkeInformert = (
+    annenForelder: AnnenForelder,
+    visibility: AnnenForelderStegVisibility | undefined
+): boolean => {
+    if (visibility && visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)) {
+        return annenForelder.erInformertOmSøknaden === false;
+    }
+    return false;
+};
+
 const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
