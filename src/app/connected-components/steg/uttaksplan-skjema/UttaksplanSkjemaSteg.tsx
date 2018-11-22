@@ -49,12 +49,12 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
         }
     }
 
-    componentWillMount() {
-        const defaultAntallUkerAvFellesperiode = Math.round((this.props.antallUkerFellesperiode || 0) / 2);
-        if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerMor === undefined) {
+    componentWillReceiveProps(nextProps: Props) {
+        const dekningsgrad = this.props.søknad.dekningsgrad;
+        if (dekningsgrad !== nextProps.søknad.dekningsgrad) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
-                    fellesperiodeukerMor: defaultAntallUkerAvFellesperiode
+                    fellesperiodeukerMor: Math.round((nextProps.antallUkerFellesperiode || 0) / 2)
                 })
             );
         }
