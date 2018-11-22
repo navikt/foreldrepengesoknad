@@ -93,6 +93,15 @@
     "velkommen.lesMerOmPersonopplysninger": "Les om korleis NAV behandlar personopplysningane dine",
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten. ",
+
+    "velkommen.intro.harIkkeSak":
+        "Har du en foreldrepengesak i dag så kan du endre ditt uttak gjennom at søke om endring. Hvis du vil søke om foreldrepenger for ett nytt barn må du velge det nedenfor.",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
+        "Skal du søke om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
     "personalia.år": "{år} år",
