@@ -16,9 +16,35 @@ import routeConfig from '../../util/routing/routeConfig';
 
 const stateSelector = (state: AppState) => state;
 
-const opprettAktivitetsFriKonto = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] => {
+const getAktivitetsFrieUker = (dekningsgrad: string, antallBarn: number): number => {
+    if (antallBarn === 1) {
+        if (dekningsgrad === '100') {
+            return 15;
+        } else {
+            return 15;
+        }
+    } else if (antallBarn === 2) {
+        if (dekningsgrad === '100') {
+            return 32;
+        } else {
+            return 36;
+        }
+    } else {
+        if (dekningsgrad === '100') {
+            return 61;
+        } else {
+            return 71;
+        }
+    }
+};
+
+const opprettAktivitetsFriKonto = (
+    kontoer: TilgjengeligStønadskonto[],
+    dekningsgrad: string,
+    antallBarn: number
+): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    const aktivitetskravFrieDager = 15 * 5;
+    const aktivitetskravFrieDager = getAktivitetsFrieUker(dekningsgrad, antallBarn) * 5;
 
     nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDager });
     nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDager });
@@ -61,7 +87,11 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
         if (erMorUfør === true) {
-            tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(tilgjengeligeStønadskontoer);
+            tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
+                tilgjengeligeStønadskontoer,
+                appState.søknad.dekningsgrad,
+                appState.søknad.barn.antallBarn
+            );
         }
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
