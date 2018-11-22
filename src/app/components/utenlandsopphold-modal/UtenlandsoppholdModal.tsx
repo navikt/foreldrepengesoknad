@@ -20,6 +20,7 @@ import { Validator } from 'common/lib/validation/types/index';
 import { InjectedIntl, InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import ValiderbarForm from 'common/lib/validation/elements/ValiderbarForm';
 import { DateValue } from '../../types/common';
+import { hasValueRule } from '../../util/validation/common';
 
 export interface AvgrensningGetters {
     getFraAvgrensning?: (date?: Date) => Avgrensninger;
@@ -171,6 +172,7 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
                             label={<Labeltekst intlId={`utenlandsopphold.select.spørsmål.${type}`} />}
                             onChange={(land: string) => this.updateOpphold({ land })}
                             defaultValue={oppholdToEdit && oppholdToEdit.land}
+                            validators={[hasValueRule(oppholdToEdit && oppholdToEdit.land, 'påkrevd')]}
                         />
                     </Block>
                     <Block margin="xs">
