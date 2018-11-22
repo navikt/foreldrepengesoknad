@@ -144,7 +144,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
-                    <Block>
+                    <Block margin={annenForelder.erInformertOmSøknaden === false ? 'xs' : 'm'}>
                         <ErAnnenForelderInformertSpørsmål
                             navn={annenForelder.fornavn}
                             erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
