@@ -67,7 +67,8 @@ const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload):
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
-        isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fornavn),
+        isAnswered: ({ annenForelder }) =>
+            questionValueIsOk(annenForelder.fornavn) && questionValueIsOk(annenForelder.etternavn),
         condition: (payload) => payload.annenForelderErRegistrert === false,
         isOptional: (payload) => payload.annenForelder.kanIkkeOppgis === true
     },
@@ -86,7 +87,8 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
             return (
                 payload.annenForelder.kanIkkeOppgis !== true &&
                 payload.annenForelderErRegistrert === false &&
-                questionValueIsOk(payload.annenForelder.fornavn)
+                questionValueIsOk(payload.annenForelder.fornavn) &&
+                questionValueIsOk(payload.annenForelder.etternavn)
             );
         }
     },
