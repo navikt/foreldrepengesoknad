@@ -13,7 +13,6 @@ import { uttaksplanSkjemaErGyldig } from '../../../util/validation/steg/uttakspl
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Søknad from '../../../types/søknad/Søknad';
 import { getPermisjonsregler } from '../../../util/uttaksplan/permisjonsregler';
-import { getAntallUkerFellesperiode } from '../../../util/uttaksplan/permisjonUtils';
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../../util/uttaksplan';
 import { getUttaksplanSkjemaScenario, UttaksplanSkjemaScenario } from './uttaksplanSkjemaScenario';
 import UttaksplanSkjemaScenarioes from './UttaksplanSkjemaScenarioes';
@@ -27,7 +26,7 @@ interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
     navnPåForeldre: NavnPåForeldre;
-    antallUkerFellesperiode: number;
+    antallUkerFellesperiode: number | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
 }
@@ -51,7 +50,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
     }
 
     componentWillMount() {
-        const defaultAntallUkerAvFellesperiode = Math.round(this.props.antallUkerFellesperiode / 2);
+        const defaultAntallUkerAvFellesperiode = Math.round((this.props.antallUkerFellesperiode || 0) / 2);
         if (this.props.søknad.ekstrainfo.uttaksplanSkjema.fellesperiodeukerMor === undefined) {
             this.props.dispatch(
                 søknadActions.uttaksplanUpdateSkjemdata({
@@ -88,7 +87,7 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         scenario={scenario}
                         søknad={søknad}
                         navnPåForeldre={navnPåForeldre}
-                        antallUkerFellesperiode={antallUkerFellesperiode}
+                        antallUkerFellesperiode={antallUkerFellesperiode || 0}
                     />
                 )}
             </Steg>
@@ -112,7 +111,7 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
     const scenario = getUttaksplanSkjemaScenario(state.søknad);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer }
+        api: { isLoadingTilgjengeligeStønadskontoer, fellesPeriodeUkerDekningsgrad100, fellesPeriodeUkerDekningsgrad80 }
     } = state;
     const søknad = { ...state.søknad };
     const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
@@ -131,7 +130,8 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         stegProps,
         søknad,
         navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
-        antallUkerFellesperiode: getAntallUkerFellesperiode(permisjonsregler, state.søknad.dekningsgrad!),
+        antallUkerFellesperiode:
+            søknad.dekningsgrad === '100' ? fellesPeriodeUkerDekningsgrad100 : fellesPeriodeUkerDekningsgrad80,
         scenario,
         isLoadingTilgjengeligeStønadskontoer
     };
