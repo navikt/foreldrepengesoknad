@@ -13,10 +13,11 @@ import {
     skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
 import routeConfig from '../../util/routing/routeConfig';
+import { Dekningsgrad } from 'common/types';
 
 const stateSelector = (state: AppState) => state;
 
-const getAktivitetsFrieUker = (dekningsgrad: string, antallBarn: number): number => {
+const getAktivitetsFrieUker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
     if (antallBarn === 1) {
         if (dekningsgrad === '100') {
             return 15;
@@ -40,7 +41,7 @@ const getAktivitetsFrieUker = (dekningsgrad: string, antallBarn: number): number
 
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
-    dekningsgrad: string,
+    dekningsgrad: Dekningsgrad,
     antallBarn: number
 ): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
