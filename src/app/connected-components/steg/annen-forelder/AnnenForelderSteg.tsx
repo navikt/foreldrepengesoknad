@@ -134,10 +134,11 @@ const skalFortsettKnappRendres = (
     visibility: AnnenForelderStegVisibility | undefined,
     stoppBrukerPgaAnnenForelderIkkeInformert: boolean
 ): boolean => {
-    if (visibility === undefined) {
-        return false;
-    }
-    if (visibility.areAllQuestionsAnswered() === false || stoppBrukerPgaAnnenForelderIkkeInformert) {
+    if (
+        visibility === undefined ||
+        visibility.areAllQuestionsAnswered() === false ||
+        stoppBrukerPgaAnnenForelderIkkeInformert
+    ) {
         return false;
     }
     return true;

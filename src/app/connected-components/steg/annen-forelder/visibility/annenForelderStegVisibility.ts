@@ -35,10 +35,7 @@ export const skalBrukerStoppesPgaAnnenForelderIkkeInformert = (
     annenForelder: AnnenForelder,
     visibility: AnnenForelderStegVisibility | undefined
 ): boolean => {
-    if (visibility === undefined) {
-        return false;
-    }
-    if (visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)) {
+    if (visibility && visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)) {
         return annenForelder.erInformertOmSøknaden === false;
     }
     return false;
