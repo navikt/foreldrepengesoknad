@@ -130,14 +130,11 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 }
 
-const skalFortsettKnappRendres = (
-    visibility: AnnenForelderStegVisibility | undefined,
-    stoppBrukerPgaAnnenForelderIkkeInformert: boolean
-): boolean => {
+const skalFortsettKnappRendres = (søknad: Søknad, visibility: AnnenForelderStegVisibility | undefined): boolean => {
     if (
         visibility === undefined ||
         visibility.areAllQuestionsAnswered() === false ||
-        stoppBrukerPgaAnnenForelderIkkeInformert
+        skalBrukerStoppesPgaAnnenForelderIkkeInformert(søknad.annenForelder, visibility)
     ) {
         return false;
     }
@@ -151,14 +148,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
     const visibility = getAnnenForelderStegVisibility(state.søknad, props.søkerinfo);
-    const stoppBrukerPgaAnnenForelderIkkeInformert = skalBrukerStoppesPgaAnnenForelderIkkeInformert(
-        state.søknad.annenForelder,
-        visibility
-    );
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: skalFortsettKnappRendres(visibility, stoppBrukerPgaAnnenForelderIkkeInformert),
+        renderFortsettKnapp: skalFortsettKnappRendres(state.søknad, visibility),
         renderFormTag: true,
         previousStegID: resolveStegToRender(state),
         history: props.history,
