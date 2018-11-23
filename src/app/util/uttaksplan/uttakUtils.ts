@@ -22,7 +22,7 @@ export const erUttakEgenKvote = (konto: StønadskontoType | undefined, søkerErF
 
 const T23 = 'T23';
 export const correctDateIfMissmatchOnIsoString = (date: Date) => {
-    if (moment(date).isValid() === false) {
+    if (date && moment(date).isValid() === false && date.toISOString) {
         return date;
     }
     const isoString = date.toISOString();
