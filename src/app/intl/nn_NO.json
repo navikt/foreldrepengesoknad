@@ -463,7 +463,7 @@
     "uttaksplan.skjema.informasjonTilAnnenForelder":
         "Du må velje den same lengda på perioden med foreldrepengar som de valde i søknaden til {navn}.",
 
-    "samtidigUttakProsent": "Oppgje prosent med samtidig uttak",
+    "samtidigUttakProsent": "Oppgi kor mange prosent foreldrepengar du tek ut",
     "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
@@ -839,7 +839,9 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønskjer du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "De kan ha 100 prosent foreldrepengar til saman, der de kan kombinere både fellesperiode og kvotar. Det er også mogleg å ha 150 prosent foreldrepengar til saman ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+        "De kan ta ut opptil 100 prosent foreldrepengar til saman, til dømes hvis de tek ut 50 prosent kvar. De kan også ta ut opptil 150 prosent til saman, om ein av dykk er i opptil 50 prosent jobb samstundes som den andre tek ut kvote. {link}.",
+    "egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst":
+        "De kan begge ta ut 100 prosent foreldrepengar samstundes når de får fleire barn. De vel sjølv om de tek ut fleirbarnsvekene som fellesperiode eller kvote. Det er ikkje krav til kva du gjer når {navn} tek ut flerbarnsveker eller kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les meir om å vere heime samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengane med delvis arbeid?",
@@ -890,6 +892,7 @@
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
+    "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",

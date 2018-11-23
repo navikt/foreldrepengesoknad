@@ -271,8 +271,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
-                                onChange={(ønskerSamtidigUttak) => this.onChange({ ønskerSamtidigUttak })}
+                                onChange={this.onChange}
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                                visibility={visibility}
+                                navnAnnenForelder={søknad.annenForelder.fornavn}
+                                periode={periode}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
