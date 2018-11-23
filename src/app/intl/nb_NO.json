@@ -66,7 +66,7 @@
     "erMorForSyk.spørsmål": "Er mor for syk til å ta seg av barnet eller innlagt i helseinstitusjon?",
 
     "stillingsprosent": "Oppgi stillingsprosenten du skal jobbe",
-    "samtidigUttakProsent": "Oppgi prosent med samtidig uttak du skal ha",
+    "samtidigUttakProsent": "Oppgi hvor mange prosent foreldrepenger du skal ta ut",
 
     "orgnr": "Organisasjonsnummer",
     "jegSkalJobbeSomSelvstendigNæringsdrivende": "Jeg skal jobbe som selvstendig næringsdrivende",
@@ -861,9 +861,9 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+        "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel hvis dere tar ut 50 prosent hver. Dere kan også ta opptil 150 prosent til sammen, hvis en av dere er i opptil 50 prosent jobb samtidig som den andre tar ut kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst":
-        "Dere kan ha 100 prosent foreldrepenger til sammen, hvor dere kan kombinere både fellesperiode og kvoter. Det er også mulig å ha 150 prosent foreldrepenger til sammen ved å kombinere 100 prosent kvote med inntil 50 prosent fellesperiode. {link}.",
+        "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva du gjør når {navn} tar ut flerbarnsuker eller kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
 
     "uttaksperiode.gradert.skalDuHarGradering": "Skal du kombinere foreldrepengene med delvis arbeid?",
@@ -916,7 +916,7 @@
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
-    "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
+    "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",
