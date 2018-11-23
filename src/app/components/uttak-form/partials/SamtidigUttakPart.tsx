@@ -8,7 +8,7 @@ import lenker from '../../../util/routing/lenker';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { Perioden } from 'app/util/uttaksplan/Perioden';
-import { Periode, Uttaksperiode } from 'app/types/uttaksplan/periodetyper';
+import { Periode, Uttaksperiode, StønadskontoType } from 'app/types/uttaksplan/periodetyper';
 import { RecursivePartial } from 'app/types/Partial';
 import getMessage from 'common/util/i18nUtils';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -37,6 +37,7 @@ class SamtidigUttakPart extends React.Component<Props> {
     render() {
         const { onChange, ønskerSamtidigUttak, intl, visibility, periode } = this.props;
 
+        const erFlerbarnsUker = periode.konto === StønadskontoType.Flerbarnsdager;
         const pst = getFloatFromString(periode.samtidigUttakProsent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
         const varighet =
@@ -57,7 +58,11 @@ class SamtidigUttakPart extends React.Component<Props> {
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
                     <Veilederinfo>
                         <FormattedMessage
-                            id="egenDelUttakForm.samtidigUttak.veiledertekst"
+                            id={
+                                erFlerbarnsUker
+                                    ? 'egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst'
+                                    : 'egenDelUttakForm.samtidigUttak.veiledertekst'
+                            }
                             values={{
                                 link: (
                                     <Lenke href={lenker.fleksibeltuttak}>
