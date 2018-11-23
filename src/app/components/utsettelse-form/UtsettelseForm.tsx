@@ -25,7 +25,7 @@ import getMessage from 'common/util/i18nUtils';
 import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
 import { getErSøkerFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
@@ -38,6 +38,7 @@ import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
+import lenker from '../../util/routing/lenker';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -358,9 +359,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             </Block>
                             {periode.årsak !== undefined && (
                                 <Veilederinfo>
-                                    <FormattedMessage
+                                    <FormattedHTMLMessage
                                         id="uttaksplan.infoVedOpphold"
-                                        values={{ navn: søknad.annenForelder.fornavn }}
+                                        values={{ navn: søknad.annenForelder.fornavn, link: lenker.viktigeFrister }}
                                     />
                                 </Veilederinfo>
                             )}
