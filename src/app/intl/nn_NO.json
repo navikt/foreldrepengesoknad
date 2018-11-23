@@ -420,7 +420,7 @@
     "nyPeriodeForm.utsettelse.tittel": "Utset éin periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
     "uttaksplan.infoVedOpphold":
-        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
+        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} må søkje sjølv, seinast dagen før foreldrepengane tek til for ikkje å miste dagar. Les om viktige fristar.",
 
     "aktivitetskrav.lesmer":
         " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
