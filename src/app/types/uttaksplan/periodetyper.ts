@@ -82,6 +82,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
+    samtidigUttakProsent?: string;
     gradert?: boolean;
     stillingsprosent?: string;
     orgnr?: string;

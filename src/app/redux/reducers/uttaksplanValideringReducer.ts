@@ -10,7 +10,8 @@ export enum PeriodeValideringErrorKey {
     'SKJEMA_IKKE_KOMPLETT' = 'skjemaIkkeKomplett',
     'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
-    'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi'
+    'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
+    'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent'
 }
 
 export enum PeriodeAdvarselKey {
@@ -33,6 +34,7 @@ export interface UttaksplanValideringState {
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;
+    uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -62,7 +64,8 @@ const getDefaultState = (): UttaksplanValideringState => {
         uttaksmengdeForFarMedmorForHøy: false,
         uttakErBareOpphold: false,
         uttaksplanStarterMedOpphold: false,
-        uttaksplanSlutterMedOpphold: false
+        uttaksplanSlutterMedOpphold: false,
+        uttaksplanGraderingStørreEnnSamtidigUttak: false
     };
 };
 
@@ -88,7 +91,8 @@ const uttaksplanValideringReducer = (
                 action.uttaksmengdeForFarMedmorForHøy === false &&
                 action.uttakErBareOpphold === false &&
                 action.uttaksplanStarterMedOpphold === false &&
-                action.uttaksplanSlutterMedOpphold === false;
+                action.uttaksplanSlutterMedOpphold === false &&
+                action.uttaksplanGraderingStørreEnnSamtidigUttak === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -101,7 +105,8 @@ const uttaksplanValideringReducer = (
                 uttaksmengdeForFarMedmorForHøy: action.uttaksmengdeForFarMedmorForHøy === true,
                 uttakErBareOpphold: action.uttakErBareOpphold === true,
                 uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
-                uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true
+                uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
+                uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true
             };
     }
     return state;

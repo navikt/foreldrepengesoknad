@@ -14,6 +14,7 @@ import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
+import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
@@ -43,6 +44,9 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     }
     if (gradertUttaksperiodeErUgyldig(payload.periode)) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_GRADERING_VERDI });
+    }
+    if (samtidigUttaksperiodeErUgyldig(payload.periode)) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_SAMTIDIG_UTTAK_PROSENT });
     }
     if (visibility.areAllQuestionsAnswered() === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.SKJEMA_IKKE_KOMPLETT });
