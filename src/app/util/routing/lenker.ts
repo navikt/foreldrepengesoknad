@@ -1,6 +1,6 @@
 export default {
     rettOgPlikt: 'https://nav.no/rettOgPlikt',
-    fleksibeltuttak: 'https://familie.nav.no/om-foreldrepenger#hjemme-samtidig',
+    fleksibeltuttak: 'https://www.nav.no/fleksibeltuttak',
     papirsøknad:
         'https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=267385&veiledertype=privatperson&method=mail',
     viktigeFrister: 'https://www.nav.no',

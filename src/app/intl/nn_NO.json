@@ -890,7 +890,6 @@
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
-    "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",
