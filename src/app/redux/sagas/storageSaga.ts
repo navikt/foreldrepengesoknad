@@ -13,6 +13,7 @@ import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanu
 import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
+import { correctFomAfterTomOnUttaksplan } from '../../util/uttaksplan/uttakUtils';
 
 function* saveAppState(action: any) {
     try {
@@ -66,6 +67,7 @@ function* applyStoredStateToApp(state: AppState, history: History) {
             } else {
                 søknad.erEndringssøknad = false;
             }
+            søknad.uttaksplan = correctFomAfterTomOnUttaksplan(søknad.uttaksplan);
             yield put(søknadActions.updateSøknad(søknad));
             yield put(commonActions.setSpråk(state.common.språkkode));
             yield put(uttaksplanValideringActions.validerUttaksplanAction());
