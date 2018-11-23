@@ -889,6 +889,7 @@
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
+    "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",

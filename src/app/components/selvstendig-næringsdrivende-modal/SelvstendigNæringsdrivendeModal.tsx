@@ -23,7 +23,6 @@ import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import ModalForm from 'common/components/modalForm/ModalForm';
-import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
@@ -76,7 +75,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.onSubmit = this.onSubmit.bind(this);
         this.updateNæring = this.updateNæring.bind(this);
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
-        this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(this);
     }
 
     updateNæring(næringProperties: NæringPartial): void {
@@ -128,13 +126,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         }
 
         this.updateNæring({ næringstyper: newNæringstyper });
-    }
-
-    handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
-        const pst = getFloatFromString(e.target.value);
-        this.updateNæring({
-            stillingsprosent: pst ? pst.toFixed(1) : e.target.value
-        });
     }
 
     render() {
