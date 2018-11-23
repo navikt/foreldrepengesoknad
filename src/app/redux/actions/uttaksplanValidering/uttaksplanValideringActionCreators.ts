@@ -15,7 +15,8 @@ export function setUttaksplanValidering(
     uttaksmengdeForFarMedmorForHøy: boolean,
     uttakErBareOpphold: boolean,
     uttaksplanStarterMedOpphold: boolean,
-    uttaksplanSlutterMedOpphold: boolean
+    uttaksplanSlutterMedOpphold: boolean,
+    uttaksplanGraderingStørreEnnSamtidigUttak: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
@@ -28,7 +29,8 @@ export function setUttaksplanValidering(
         uttaksmengdeForFarMedmorForHøy,
         uttakErBareOpphold,
         uttaksplanStarterMedOpphold,
-        uttaksplanSlutterMedOpphold
+        uttaksplanSlutterMedOpphold,
+        uttaksplanGraderingStørreEnnSamtidigUttak
     };
 }
 
