@@ -31,6 +31,16 @@ export enum AnnenForelderSpørsmålKeys {
 
 export type AnnenForelderStegVisibility = QuestionVisibility<AnnenForelderSpørsmålKeys>;
 
+export const skalBrukerStoppesPgaAnnenForelderIkkeInformert = (
+    annenForelder: AnnenForelder,
+    visibility: AnnenForelderStegVisibility | undefined
+): boolean => {
+    if (visibility && visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)) {
+        return annenForelder.erInformertOmSøknaden === false;
+    }
+    return false;
+};
+
 const gjelderSøknadenStebarnsadopsjon = (barn: Barn, situasjon: Søkersituasjon): boolean => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return (barn as Adopsjonsbarn).adopsjonAvEktefellesBarn === true;
@@ -67,7 +77,8 @@ const visAnnenForelderKanIkkeOppgis = (payload: AnnenForelderSpørsmålPayload):
 
 const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPayload, AnnenForelderSpørsmålKeys> = {
     [AnnenForelderSpørsmålKeys.navnPåAnnenForelder]: {
-        isAnswered: ({ annenForelder }) => questionValueIsOk(annenForelder.fornavn),
+        isAnswered: ({ annenForelder }) =>
+            questionValueIsOk(annenForelder.fornavn) && questionValueIsOk(annenForelder.etternavn),
         condition: (payload) => payload.annenForelderErRegistrert === false,
         isOptional: (payload) => payload.annenForelder.kanIkkeOppgis === true
     },
@@ -86,7 +97,8 @@ const annenForelderSpørsmålConfig: QuestionConfig<AnnenForelderSpørsmålPaylo
             return (
                 payload.annenForelder.kanIkkeOppgis !== true &&
                 payload.annenForelderErRegistrert === false &&
-                questionValueIsOk(payload.annenForelder.fornavn)
+                questionValueIsOk(payload.annenForelder.fornavn) &&
+                questionValueIsOk(payload.annenForelder.etternavn)
             );
         }
     },

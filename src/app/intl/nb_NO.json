@@ -290,6 +290,7 @@
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepenger?",
 
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
+    "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå videre.",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er dere nære venner eller i familie?",
@@ -513,7 +514,7 @@
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
     "uttaksplan.hull.leggTil.uttak": "Legg ny periode",
     "uttaksplan.infoVedOpphold":
-        "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger.  Husk at {navn} selv må søke.",
+        "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} må søke selv, senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
 
@@ -910,6 +911,7 @@
 
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
+    "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Påkrevd informasjon om perioden mangler",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
     "uttaksplan.validering.før12UkerFørTermin": "Du kan tidligst ta ut foreldrepenger 12 uker før termin eller fødsel",

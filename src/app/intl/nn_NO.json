@@ -286,6 +286,7 @@
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepengar?",
 
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
+    "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå vidare.",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
@@ -419,7 +420,7 @@
     "nyPeriodeForm.utsettelse.tittel": "Utset éin periode",
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
     "uttaksplan.infoVedOpphold":
-        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
+        "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} må søkje sjølv, seinast dagen før foreldrepengane tek til for ikkje å miste dagar. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige fristar.</a>",
 
     "aktivitetskrav.lesmer":
         " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
@@ -888,6 +889,7 @@
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
 
     "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
+    "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",

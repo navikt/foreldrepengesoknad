@@ -13,7 +13,11 @@ import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import PersonaliaBox from 'common/components/personalia-box/PersonaliaBox';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
-import { getAnnenForelderStegVisibility, AnnenForelderStegVisibility } from './visibility/annenForelderStegVisibility';
+import {
+    getAnnenForelderStegVisibility,
+    AnnenForelderStegVisibility,
+    skalBrukerStoppesPgaAnnenForelderIkkeInformert
+} from './visibility/annenForelderStegVisibility';
 import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
 import { default as søknadActions } from '../../../redux/actions/søknad/søknadActionCreators';
 import { resolveStegToRender } from '../util/navigation';
@@ -126,6 +130,17 @@ class AnnenForelderSteg extends React.Component<Props> {
     }
 }
 
+const skalFortsettKnappRendres = (søknad: Søknad, visibility: AnnenForelderStegVisibility | undefined): boolean => {
+    if (
+        visibility === undefined ||
+        visibility.areAllQuestionsAnswered() === false ||
+        skalBrukerStoppesPgaAnnenForelderIkkeInformert(søknad.annenForelder, visibility)
+    ) {
+        return false;
+    }
+    return true;
+};
+
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { person, registrerteBarn } = props.søkerinfo;
     const { søker, barn, annenForelder, situasjon, sensitivInfoIkkeLagre } = state.søknad;
@@ -136,7 +151,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
 
     const stegProps: StegProps = {
         id: StegID.ANNEN_FORELDER,
-        renderFortsettKnapp: visibility !== undefined && visibility.areAllQuestionsAnswered(),
+        renderFortsettKnapp: skalFortsettKnappRendres(state.søknad, visibility),
         renderFormTag: true,
         previousStegID: resolveStegToRender(state),
         history: props.history,
