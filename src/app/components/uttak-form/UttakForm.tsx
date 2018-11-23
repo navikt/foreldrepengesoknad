@@ -274,6 +274,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 onChange={this.onChange}
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
                                 visibility={visibility}
+                                navnAnnenForelder={søknad.annenForelder.fornavn}
                                 periode={periode}
                             />
                         </Block>

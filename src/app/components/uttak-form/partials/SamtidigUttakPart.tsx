@@ -21,6 +21,7 @@ export interface OwnProps {
     ønskerSamtidigUttak: boolean | undefined;
     periode: RecursivePartial<Uttaksperiode>;
     visibility: UttakSpørsmålVisibility;
+    navnAnnenForelder: string;
 }
 
 type Props = OwnProps & InjectedIntlProps;
@@ -35,7 +36,7 @@ class SamtidigUttakPart extends React.Component<Props> {
     }
 
     render() {
-        const { onChange, ønskerSamtidigUttak, intl, visibility, periode } = this.props;
+        const { onChange, ønskerSamtidigUttak, intl, visibility, periode, navnAnnenForelder } = this.props;
 
         const erFlerbarnsUker = periode.konto === StønadskontoType.Flerbarnsdager;
         const pst = getFloatFromString(periode.samtidigUttakProsent || '');
@@ -68,7 +69,8 @@ class SamtidigUttakPart extends React.Component<Props> {
                                     <Lenke href={lenker.fleksibeltuttak}>
                                         <FormattedMessage id="egenDelUttakForm.samtidigUttak.veiledertekst.lenke" />
                                     </Lenke>
-                                )
+                                ),
+                                navn: navnAnnenForelder
                             }}
                         />
                     </Veilederinfo>
