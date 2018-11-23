@@ -6,7 +6,7 @@ import { Periode } from '../../types/uttaksplan/periodetyper';
 import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
 import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { Periodene } from '../../util/uttaksplan/Periodene';
-import { Periodevalidering, ValidertPeriode } from '../reducers/uttaksplanValideringReducer';
+import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
 import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
@@ -20,6 +20,7 @@ import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
+import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 
 const stateSelector = (state: AppState) => state;
 
@@ -27,6 +28,10 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     const { søker, annenForelder, barn, situasjon } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
+    const advarsler = [];
+    if (hasPeriodeMissingAttachment(periode, søker.rolle)) {
+        advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
+    }
     return {
         periodeId: periode.id,
         valideringsfeil:
@@ -38,6 +43,7 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
                 familiehendelsesdato,
                 situasjon
             ) || [],
+        advarsler,
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };
 };

@@ -15,11 +15,6 @@ import { StegID } from '../../../util/routing/stegConfig';
 import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import isAvailable from '../util/isAvailable';
-import {
-    findMissingAttachments,
-    mapMissingAttachmentsToSøknad,
-    MissingAttachment
-} from '../../../util/søknad/missingAttachmentUtil';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
@@ -33,6 +28,8 @@ import { søknadStegPath } from '../StegRoutes';
 import { AlertStripeAdvarselSolid } from 'nav-frontend-alertstriper';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
+import { MissingAttachment } from '../../../types/MissingAttachment';
+import { mapMissingAttachmentsToSøknad, findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
 
 interface StateProps {
     person: Person;

@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:alpine
 
 WORKDIR /usr/src/app
 
@@ -12,4 +12,4 @@ COPY src/build/scripts/envSettings.js ./src/build/scripts/envSettings.js
 COPY .env .
 
 EXPOSE 8080
-CMD ["yarn", "start-express"]
+CMD ["npm", "run", "start-express"]

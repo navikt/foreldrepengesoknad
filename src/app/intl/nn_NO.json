@@ -27,9 +27,11 @@
 
     "regnskapsfører": "rekneskapsførar",
     "revisor": "revisor",
+    "gradering.prosent": "{stillingsprosent} prosent",
+    "gradert.uttak.varighet": "Du bruker {varighet} med foreldrepengar",
 
-    "søknad.pageheading.ny": "Søknad om foreldrepenger",
-    "søknad.pageheading.endring": "Søknad om foreldrepenger - endring",
+    "søknad.pageheading.ny": "Søknad om foreldrepengar",
+    "søknad.pageheading.endring": "Søknad om endring av foreldrepengar",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
@@ -91,6 +93,15 @@
     "velkommen.lesMerOmPersonopplysninger": "Les om korleis NAV behandlar personopplysningane dine",
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten. ",
+
+    "velkommen.intro.harIkkeSak":
+        "Har du en foreldrepengesak i dag så kan du endre ditt uttak gjennom at søke om endring. Hvis du vil søke om foreldrepenger for ett nytt barn må du velge det nedenfor.",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
+        "Skal du søke om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
     "personalia.år": "{år} år",
@@ -140,7 +151,7 @@
     "annenInntekt.modal.land": "Kva land har du jobba i?",
     "annenInntekt.spørsmål.arbeidsgiver": "Gi opp namnet på arbeidsgivaren",
     "annenInntekt.spørsmål.næringsinntekt":
-        "Kva har du hatt i næringsinntekt hittil i år, før skatt? Gi opp summen i heile krone.",
+        "Kva har du hatt i næringsinntekt før skatt dei siste tolv månadene? Dersom verksemda har vart i kortare tid, kan du bruke denne perioden og rekne om til årsinntekt. Gi opp beløpet i heile kroner.",
 
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.tom": "Dersom du har avslutta {navnPåNæringen} gi opp sluttdato",
@@ -150,6 +161,8 @@
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med noko arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Arbeidsforholda dine",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
+    "annenInntekt.arbeidsforhold.veileder":
+        "Vi kan tidlegast behandle søknaden når arbeidsgivaren din har sendt inn inntektsmeldinga. Denne kan arbeidsgivaren din sende inn fire veker før du startar foreldrepengane.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",
@@ -228,7 +241,7 @@
     "frilansOppdrag.modal.oppdragsgiver": "Namnet på oppdragsgivaren",
 
     "varigEndringAvNæringsinntekt.inntektEtterEndring.label":
-        "Gi opp næringsinntekta di etter endringa. Gi opp summen i kroner.",
+        "Gi opp næringsinntekta di etter endringa. Gi opp årsinntekta i heile kroner.",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label":
         "Her kan du skrive kort kva som har endra seg i verksemda eller arbeidssituasjonen din",
@@ -249,6 +262,8 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "Kva land er verksemda di registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Kva er stillingsprosenten din?",
     "blittYrkesaktivSiste3År.spørsmål": "Er du blitt yrkesaktiv i løpet av dei tre siste ferdiglikna åra?",
+    "blittYrkesaktivSiste3År.hjelpetekst":
+        "Du har ikkje hatt fast jobb, jobba som frilansar eller hatt anna inntekt før du starta verksemda di.",
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste fire åra?",
@@ -271,6 +286,7 @@
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepengar?",
 
     "erAnnenForelderInformert.spørsmål": "Har du orientert {navn} om søknaden din?",
+    "erAnnenForelderInformert.veilederIkkeInformert": "Du må orientere {navn} om søknaden, før du kan gå vidare.",
 
     "erMorUfør.spørsmål": "Har {navn} uføretrygd?",
     "erArbeidsgiverNærVennEllerFamilie.spørsmål": "Er de nære venner eller i familie?",
@@ -299,7 +315,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
     "annenForelder.ugyldigBostedsland": "Du må gi opp kvar den andre forelderen bur",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Når vi har behandla søknaden din, vil {navn} kunne logge seg på Ditt NAV og sjå kva periode du skal ha foreldrepengar og eventuelle opphald.",
+        "Når vi har behandla søknaden din, vil {navn} sjå i søknaden sin kva periode du skal ha foreldrepengar, og eventuelle opphald. Dette gjeld for deg som skal starte foreldrepengane dine i 2019.",
 
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste tolv månadene?",
     "boddINorgeSiste12Mnd.alternativ.boddINorge": "berre budd i Noreg",
@@ -405,9 +421,9 @@
     "nyPeriodeForm.uttak.tittel": "Legg til ny periode",
     "uttaksplan.infoVedOpphold":
         "Her kan du leggje inn periodar der {navn} skal ha foreldrepengar. Hugs at {navn} sjølv må søkje.",
-    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
-    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
-    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
+
+    "aktivitetskrav.lesmer":
+        " <a href={link} rel=\"noopener\" target=\"_blank\">Les meir om aktivitetskravet til mor her.</a>",
 
     "uttaksplan.skjema.startdatoAdopsjon.spørsmål": "Når ønskjer du å starte perioden?",
     "uttaksplan.skjema.startdatoAdopsjon.alternativ.omsorgsovertakelse": "Omsorgsovertakinga {dato}",
@@ -446,6 +462,9 @@
     "uttaksplan.skjema.opphold.årsak.spørsmål": "Kva del av foreldrepengane skal {navn} ta ut?",
     "uttaksplan.skjema.informasjonTilAnnenForelder":
         "Du må velje den same lengda på perioden med foreldrepengar som de valde i søknaden til {navn}.",
+
+    "samtidigUttakProsent": "Oppgje prosent med samtidig uttak",
+    "samtidig.uttak.varighet": "Du brukar {varighet} med foreldrepengar",
 
     "uttaksplan.familiehendelsesdato.fødsel.ufødtBarn": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.fødsel.fødtBarn": "Barnet er født {dato}",
@@ -576,7 +595,8 @@
     "valideringsfeil.stillingsprosent.over100prosent": "Stillingsprosenten må vere under 100",
     "valideringsfeil.stillingsprosent.under1": "Stillingsprosenten må vere over 0",
 
-    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt": "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
+    "valideringsfeil.selvstendigNæringsdrivende.næringsinntekt":
+        "Du kan ikkje gi opp summen med øre. Du kan runde av til næraste heile krone.",
 
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å kome vidare i søknaden.",
 
@@ -652,6 +672,10 @@
         "Eg har ikkje jobba som frilansar for nære venner eller familie dei siste ti månadene",
     "oppsummering.ikke.frilans.oppstartsdato": "Oppstartsdato som frilansar",
 
+    "oppsummering.selvstendigNæringsdrivende.regnskapsfører": "Regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører": "Eg har ikkje regnskapsførar",
+    "oppsummering.selvstendigNæringsdrivende.revisor": "Revisor",
+    "oppsummering.selvstendigNæringsdrivende.harIkkeRevisor": "Eg har ikkje revisor",
     "oppsummering.selvstendigNæringsdrivende.tittel": "Arbeid som sjølvstendig næringsdrivande",
     "oppsummering.selvstendigNæringsdrivende.ikkeSelvstendigNæringsdrivende":
         "Eg har ikkje jobba som sjølvstendig næringsdrivande dei siste ti månadene",
@@ -850,6 +874,7 @@
     "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepengar i same perioden?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal de ha foreldrepengar samtidig?",
     "uttaksplan.varighet.uttak": "{varighet} med foreldrepengar",
+    "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.nyperiode.avbrytAriaLabel": "Avbryt legg til ny periode",
     "uttaksplan.nyperiode.leggTilAriaLabel": "Ok, legg til ny periode",
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsetjing",
@@ -863,21 +888,29 @@
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
 
-    "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare ",
+    "uttaksplan.validering.feiloppsummering.tittel": "Planen inneheld feil som du må rette opp i før du kan gå vidare",
     "uttaksplan.validering.feil.skjemaIkkeKomplett": "Det manglar informasjon om perioden",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
-    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag.",
+    "uttaksplan.validering.feil.datoErIkkeUttaksdag": "Datoen må vere ein vekedag",
     "uttaksplan.validering.feil.periodeoverlapp": "Perioden overlappar ein annan periode",
-    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden.",
+    "uttaksplan.validering.feil.påkrevd": "Du må svare på spørsmålet for å kunne gå vidare i søknaden",
     "uttaksplan.validering.feil.tomUttaksplan":
-        "For å kome vidare i søknaden må du leggje til en periode med foreldrepengar eller en utsetjing.",
+        "For å kome vidare i søknaden må du leggje til en periode med foreldrepengar eller en utsetjing",
     "uttaksplan.validering.feil.forMyeUttak": "Det er registrert for mykje uttak av {konto}",
     "uttaksplan.validering.feil.forsteUttakEtterSeksUker":
         "Du er for tidleg ute. Du kan tidlegast søkje seks veker før du skal ha foreldrepengar. Du må vente med å sende søknaden din til {dato}",
     "uttaksplan.validering.feil.morHarSøktUgyldigUtsettelseSeksFør":
-        "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb dei første seks vekene du tek ut foreldrepengar. Det gjeld også dersom du vil kombinere foreldrepengane med delvis arbeid..",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie eller jobb dei første seks vekene du tek ut foreldrepengar. Det gjeld også dersom du vil kombinere foreldrepengane med delvis arbeid.",
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
-    "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg.",
+    "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg",
+    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
+        "Du kan ikkje utsetje på grunn av {årsak}, før dagens dato",
+    "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
+    "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
+    "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
+
+    "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
+
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig"
 }

@@ -3,7 +3,7 @@ import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
-import { cleanUpSøknad } from '../util/søknad/cleanup';
+import { cleanUpSøknad } from '../util/cleanup/cleanupSøknad';
 import { formaterDato } from 'common/util/datoUtils';
 
 export interface GetTilgjengeligeStønadskontoerParams {

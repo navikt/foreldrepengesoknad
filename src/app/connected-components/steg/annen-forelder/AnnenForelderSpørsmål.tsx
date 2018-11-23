@@ -131,9 +131,6 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                {/* 
-                Taes inn igjen i slutten av november
-
                 <Block
                     visible={
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
@@ -144,14 +141,24 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                             navn: annenForelder.fornavn
                         })}
                     </Veilederinfo>
-                </Block> */}
+                </Block>
 
-                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)}>
-                    <ErAnnenForelderInformertSpørsmål
-                        navn={annenForelder.fornavn}
-                        erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
-                        onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
-                    />
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
+                    <Block margin={annenForelder.erInformertOmSøknaden === false ? 'xs' : 'm'}>
+                        <ErAnnenForelderInformertSpørsmål
+                            navn={annenForelder.fornavn}
+                            erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
+                            onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
+                        />
+                    </Block>
+                    {annenForelder.erInformertOmSøknaden === false && (
+                        <Veilederinfo type="advarsel">
+                            <FormattedMessage
+                                id="erAnnenForelderInformert.veilederIkkeInformert"
+                                values={{ navn: annenForelder.fornavn }}
+                            />
+                        </Veilederinfo>
+                    )}
                 </Block>
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
                     <DatoInput

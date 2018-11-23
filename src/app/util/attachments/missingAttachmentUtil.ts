@@ -35,14 +35,9 @@ import {
     dokumentasjonBehøvesForUtsettelsesperiode,
     dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
+import { MissingAttachment } from '../../types/MissingAttachment';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
-
-export interface MissingAttachment {
-    index?: number;
-    type: AttachmentType;
-    skjemanummer: Skjemanummer;
-}
 
 export function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
     if (periode.type === Periodetype.Overføring) {
@@ -67,7 +62,10 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
         });
     }
 
-    if (spørsmålOmVedleggVisible(søknad.barn) && isAttachmentMissing((søknad.barn as any).omsorgsovertakelse)) {
+    if (
+        spørsmålOmVedleggVisible(søknad.barn, søknad.erEndringssøknad) &&
+        isAttachmentMissing((søknad.barn as any).omsorgsovertakelse)
+    ) {
         missingAttachments.push({
             skjemanummer: Skjemanummer.OMSORGSOVERTAKELSESDATO,
             type: AttachmentType.OMSORGSOVERTAKELSE
@@ -89,6 +87,13 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
+export const hasPeriodeMissingAttachment = (periode: Periode, søkerRolle: SøkerRolle): boolean => {
+    return (
+        shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
+        isAttachmentMissing(periode.vedlegg)
+    );
+};
+
 export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRolle: SøkerRolle): MissingAttachment[] => {
     if (!perioder) {
         return [];
@@ -96,10 +101,7 @@ export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRol
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (
-            shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
-            isAttachmentMissing(periode.vedlegg)
-        ) {
+        if (hasPeriodeMissingAttachment(periode, søkerRolle)) {
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),

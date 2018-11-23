@@ -46,7 +46,7 @@ function erUttaksdag(dato: Date): boolean {
 function getUttaksdagFørDato(dato: Date): Date {
     return getUttaksdagTilOgMedDato(
         moment(dato)
-            .subtract(1, 'days')
+            .subtract(24, 'hours')
             .toDate()
     );
 }
@@ -59,11 +59,11 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
             return moment(dato)
-                .subtract(1, 'days')
+                .subtract(24, 'hours')
                 .toDate();
         case 7:
             return moment(dato)
-                .subtract(2, 'days')
+                .subtract(48, 'hours')
                 .toDate();
         default:
             return dato;
@@ -77,7 +77,7 @@ function getUttaksdagTilOgMedDato(dato: Date): Date {
 function getUttaksdagEtterDato(dato: Date): Date {
     return getUttaksdagFraOgMedDato(
         moment(dato)
-            .add(1, 'days')
+            .add(24, 'hours')
             .toDate()
     );
 }
@@ -90,11 +90,11 @@ function getUttaksdagFraOgMedDato(dato: Date): Date {
     switch (getUkedag(dato)) {
         case 6:
             return moment(dato)
-                .add(2, 'days')
+                .add(48, 'hours')
                 .toDate();
         case 7:
             return moment(dato)
-                .add(1, 'days')
+                .add(24, 'hours')
                 .toDate();
         default:
             return dato;
@@ -115,7 +115,7 @@ function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
     let uttaksdageteller = 0;
     while (uttaksdageteller <= uttaksdager) {
         const tellerdato = moment(dato)
-            .add(dagteller++, 'days')
+            .add(dagteller++ * 24, 'hours')
             .toDate();
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
@@ -139,7 +139,7 @@ function trekkUttaksdagerFraDato(dato: Date, uttaksdager: number): Date {
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
         const tellerdato = moment(dato)
-            .add(--dagteller, 'days')
+            .add(--dagteller * 24, 'hours')
             .toDate();
         if (erUttaksdag(tellerdato)) {
             nyDato = tellerdato;
