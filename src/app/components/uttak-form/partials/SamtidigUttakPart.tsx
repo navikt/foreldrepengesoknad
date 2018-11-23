@@ -89,7 +89,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                             }
                             value={periode.samtidigUttakProsent || ''}
                             maxLength={4}
-                            validators={getStillingsprosentRegler(true, periode.samtidigUttakProsent || '', intl)}
+                            validators={getStillingsprosentRegler(periode.samtidigUttakProsent || '', intl)}
                         />
                     </Block>
                     {varighet && <div className="comment">{varighet}</div>}
