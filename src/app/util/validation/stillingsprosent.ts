@@ -4,7 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import { getFloatFromString } from 'common/util/numberUtils';
 import { hasValueRule } from './common';
 
-const isStillingsprosentLessThan100Percent = (stillingsprosent: string): boolean => {
+const stillingsprosentIsLessThan100 = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
     if (pst) {
         return pst < 100;
@@ -12,15 +12,7 @@ const isStillingsprosentLessThan100Percent = (stillingsprosent: string): boolean
     return false;
 };
 
-const isStillingsprosentMax100Percent = (stillingsprosent: string): boolean => {
-    const pst = getFloatFromString(stillingsprosent);
-    if (pst) {
-        return pst <= 100;
-    }
-    return false;
-};
-
-const isStillingsprosentAbove0 = (stillingsprosent: string): boolean => {
+const stillingsprosentIsMoreThan0 = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
     if (pst) {
         return pst > 0;
@@ -28,28 +20,21 @@ const isStillingsprosentAbove0 = (stillingsprosent: string): boolean => {
     return false;
 };
 
-export const getStillingsprosentRegler = (
-    erGradering: boolean,
-    stillingsprosent: string,
-    intl: InjectedIntl
-): Validator[] => {
+export const getStillingsprosentRegler = (stillingsprosent: string, intl?: InjectedIntl): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
-        hasValueRule(stillingsprosent, getMessage(intl, `${intlKey}.required`)),
+        hasValueRule(stillingsprosent, intl ? getMessage(intl, `${intlKey}.required`) : ''),
         {
             test: () => getFloatFromString(stillingsprosent) !== undefined,
-            failText: getMessage(intl, `${intlKey}.ugyldigTall`)
+            failText: intl ? getMessage(intl, `${intlKey}.ugyldigTall`) : ''
         },
         {
-            test: () => isStillingsprosentAbove0(stillingsprosent),
-            failText: getMessage(intl, `${intlKey}.under1`)
+            test: () => stillingsprosentIsMoreThan0(stillingsprosent),
+            failText: intl ? getMessage(intl, `${intlKey}.under1`) : ''
         },
         {
-            test: () =>
-                erGradering
-                    ? isStillingsprosentLessThan100Percent(stillingsprosent)
-                    : isStillingsprosentMax100Percent(stillingsprosent),
-            failText: getMessage(intl, `${intlKey}.over100prosent`)
+            test: () => stillingsprosentIsLessThan100(stillingsprosent),
+            failText: intl ? getMessage(intl, `${intlKey}.over100prosent`) : ''
         }
     ];
 };
