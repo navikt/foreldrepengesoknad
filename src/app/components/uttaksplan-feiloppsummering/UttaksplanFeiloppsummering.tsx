@@ -139,6 +139,13 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
+        if (uttaksplanValidering.uttaksplanGraderingStørreEnnSamtidigUttak === true) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak')
+            });
+        }
+
         return (
             <Feiloppsummering
                 show={erSynlig === true && uttaksplanValidering.erGyldig === false}
