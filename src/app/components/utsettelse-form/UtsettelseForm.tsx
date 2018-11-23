@@ -37,6 +37,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -267,6 +268,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(v) => this.onVariantChange(v)}
+                            validatorer={
+                                periode.type === Periodetype.Utsettelse
+                                    ? getUtsettelseÅrsakTypeValidators(periode.årsak, tidsperiode.fom, intl)
+                                    : undefined
+                            }
                         />
                     </Block>
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>

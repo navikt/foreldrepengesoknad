@@ -12,6 +12,10 @@ export enum PeriodeValideringErrorKey {
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag'
 }
 
+export enum PeriodeAdvarselKey {
+    'MANGLENDE_VEDLEGG' = 'manglendeVedlegg'
+}
+
 export interface Periodevalidering {
     [periodeId: string]: ValidertPeriode;
 }
@@ -35,9 +39,14 @@ export interface PeriodeValideringsfeil {
     feilKey: PeriodeValideringErrorKey;
 }
 
+export interface PeriodeAdvarsel {
+    advarselKey: PeriodeAdvarselKey;
+}
+
 export interface ValidertPeriode {
     periodeId: string;
     valideringsfeil: PeriodeValideringsfeil[];
+    advarsler: PeriodeAdvarsel[];
     overlappendePerioder: Periode[];
 }
 

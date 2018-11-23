@@ -2,7 +2,7 @@ import * as React from 'react';
 import { periodelisteBem } from './Periodeliste';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
-import AdvarselIkonÅpen from '../uttaksplan-ikon/ikoner/AdvarselIkon\u00C5pen';
+import AdvarselIkonÅpen from '../uttaksplan-ikon/ikoner/AdvarselIkonÅpen';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { PeriodeHullÅrsak, PeriodeHull, Periode } from '../../types/uttaksplan/periodetyper';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';

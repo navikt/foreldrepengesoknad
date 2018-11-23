@@ -10,10 +10,11 @@ import VarigEndringAvNæringsinntektSpørsmål from '../spørsmål/VarigEndringA
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Textarea from 'nav-frontend-skjema/lib/textarea';
-import Input from 'nav-frontend-skjema/lib/input';
-import { InputChangeEvent, TextareaChangeEvent } from '../types/dom/Events';
+import { TextareaChangeEvent } from '../types/dom/Events';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { getTidsperiodeAvgrensningerSiste4år } from '../util/validation/andreInntekter';
+import { hasValueRule } from '../util/validation/common';
+import Input from 'common/components/skjema/wrappers/Input';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
@@ -72,13 +73,28 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     </Block>
                     <Block>
                         <Input
+                            name={'inntektEtterEndring'}
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
                             value={(info && info.næringsinntektEtterEndring) || ''}
-                            onChange={(e: InputChangeEvent) =>
+                            onChange={(value: string) =>
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    næringsinntektEtterEndring: e.target.value
+                                    næringsinntektEtterEndring: value
                                 })
                             }
+                            validators={[
+                                hasValueRule(
+                                    (info && info.næringsinntektEtterEndring) || '',
+                                    getMessage(intl, 'påkrevd')
+                                ),
+                                {
+                                    test: () =>
+                                        Number.isInteger(Number((info && info.næringsinntektEtterEndring) || '')),
+                                    failText: getMessage(
+                                        intl,
+                                        'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt'
+                                    )
+                                }
+                            ]}
                         />
                     </Block>
                     <Block>
