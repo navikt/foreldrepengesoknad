@@ -25,8 +25,7 @@ export enum UttakSpørsmålKeys {
     'skalHaGradering' = 'skalHaGradering',
     'stillingsprosent' = 'stillingsprosent',
     'hvorSkalDuJobbe' = 'hvorSkalDuJobbe',
-    'erMorForSyk' = 'erMorForSyk',
-    'samtidigUttakProsent' = 'samtidigUttakProsent'
+    'erMorForSyk' = 'erMorForSyk'
 }
 
 export interface UttakFormPayload {
@@ -238,12 +237,6 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
             periode.type === Periodetype.Uttak && questionValueIsOk(periode.ønskerSamtidigUttak),
         parentQuestion: Sp.tidsperiode,
         condition: (payload) => visSamtidigUttak(payload)
-    },
-    [Sp.samtidigUttakProsent]: {
-        isAnswered: ({ periode }) =>
-            periode.type === Periodetype.Uttak && questionValueIsOk(periode.samtidigUttakProsent),
-        parentQuestion: Sp.samtidigUttak,
-        condition: ({ periode }) => periode.type === Periodetype.Uttak && periode.ønskerSamtidigUttak === true
     },
     [Sp.overføringsårsak]: {
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),

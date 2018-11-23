@@ -14,11 +14,8 @@ import { getFloatFromString } from 'common/util/numberUtils';
 export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
     if (isUttaksperiode(p)) {
         const periodeErGradert = p.stillingsprosent !== undefined;
-        const periodeErSamtidigUttak = p.samtidigUttakProsent !== undefined;
 
-        if (periodeErSamtidigUttak) {
-            return Math.floor(dager * (getFloatFromString(p.samtidigUttakProsent)! / 100));
-        } else if (periodeErGradert) {
+        if (periodeErGradert) {
             const graderingsProsent = (100 - getFloatFromString(p.stillingsprosent)!) / 100;
 
             return Math.floor(dager * graderingsProsent);
