@@ -210,7 +210,7 @@ class Velkommen extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
-    nyesteSak: state.api.saker.sort((a, b) => a.opprettet.localeCompare(b.opprettet))[0]
+    nyesteSak: state.api.saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0]
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

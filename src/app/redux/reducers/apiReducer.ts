@@ -10,6 +10,7 @@ export interface ApiState {
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingSaker: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -27,6 +28,7 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingSøkerinfo: true,
     isLoadingAppState: true,
     isLoadingTilgjengeligeStønadskontoer: false,
+    isLoadingSaker: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
     tilgjengeligeStønadskontoer: []
