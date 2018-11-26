@@ -247,18 +247,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v.replace(/ /g, '')
+                                næringsinntekt: Number.parseInt(v.replace(/ /g, ''))
                             };
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
-                        validators={[
-                            hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd')),
-                            {
-                                test: () => Number.isInteger(Number(næringsinntekt)),
-                                failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt')
-                            }
-                        ]}
+                        validators={[hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
 

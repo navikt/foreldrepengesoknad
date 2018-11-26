@@ -11,7 +11,7 @@ export enum Næringstype {
 export class Næring {
     næringstyper: Næringstype[];
     tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
-    næringsinntekt: string;
+    næringsinntekt: number;
     pågående: boolean;
     navnPåNæringen: string;
     organisasjonsnummer: string;
@@ -32,7 +32,7 @@ export class Næring {
 
 export class EndringAvNæringsinntektInformasjon {
     dato: Date;
-    næringsinntektEtterEndring: string;
+    næringsinntektEtterEndring: number;
     forklaring: string;
 }
 
