@@ -126,7 +126,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
         it('should be visible if næringsinntekt is defined and visible, and oppstartsdato is 1 year ago or less', () => {
             expect(
                 fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '123',
+                    næringsinntekt: 123,
                     tidsperiode: { fom: date1YearAgo.toDate() }
                 })
             ).toBe(true);
@@ -137,7 +137,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             fns.næringsinntekt = jest.fn(() => false);
             expect(
                 fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '213',
+                    næringsinntekt: 213,
                     tidsperiode: { fom: date1YearAgo.toDate() }
                 })
             ).toBe(false);
@@ -147,7 +147,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
             fns.næringsinntekt = jest.fn(() => true);
             expect(
                 fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '111',
+                    næringsinntekt: 111,
                     tidsperiode: { fom: dateMoreThan1YearAgo.toDate() }
                 })
             ).toBe(false);
