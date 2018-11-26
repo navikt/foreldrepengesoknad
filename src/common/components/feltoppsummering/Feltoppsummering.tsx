@@ -6,7 +6,7 @@ import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/Innhold
 
 interface Props {
     feltnavn: string;
-    verdi: string | string[];
+    verdi: string | string[] | number;
 }
 
 const Feltoppsummering: React.StatelessComponent<Props> = ({ feltnavn, verdi }) => (
