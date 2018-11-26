@@ -7,7 +7,7 @@ import Sak from '../../types/søknad/Sak';
 
 function* getSaker() {
     try {
-        yield put(apiActions.updateApi({ isLoadingSøkerinfo: true }));
+        yield put(apiActions.updateApi({ isLoadingSaker: true }));
 
         const response = yield call(Api.getSaker);
         const saker: Sak[] = response.data;
@@ -24,7 +24,7 @@ function* getSaker() {
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingSøkerinfo: false
+                isLoadingSaker: false
             })
         );
     }
