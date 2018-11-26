@@ -19,7 +19,7 @@ const SøknadstypeSpørsmål = (props: Props) => {
                 intl,
                 `velkommen.spørsmål.søknadstype.${harEksisterendeSak ? 'harSak' : 'harIkkeSak'}.spørsmål`
             )}
-            navn="samtidigGradertUttak"
+            navn="søknadstype"
             valgtVerdi={skalEndre}
             labels={{
                 ja: getMessage(intl, `velkommen.spørsmål.søknadstype.alternativ.endring`),
