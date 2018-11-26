@@ -497,9 +497,9 @@
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
         "Når du ikke starter foreldrepengeperioden tre uker før termindato mister du rett til foreldrepenger disse dagene.",
