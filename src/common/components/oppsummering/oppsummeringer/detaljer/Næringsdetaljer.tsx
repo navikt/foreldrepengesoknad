@@ -57,7 +57,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
             {næringsinntekt !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
-                    verdi={næringsinntekt}
+                    verdi={`${næringsinntekt}`}
                 />
             )}
             <Feltoppsummering
@@ -111,7 +111,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                             intl,
                             'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring'
                         )}
-                        verdi={endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                        verdi={`${endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}`}
                     />
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}
