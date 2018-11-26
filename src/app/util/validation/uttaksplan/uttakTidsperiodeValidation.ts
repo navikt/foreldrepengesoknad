@@ -64,7 +64,7 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, fa
             ? uttaksperiode.skalIkkeHaUttakFørTermin
             : false;
 
-        if (isValidTidsperiode(tidsperiode) === false) {
+        if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
             return false;
         }
 
