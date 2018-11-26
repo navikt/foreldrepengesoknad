@@ -34,6 +34,7 @@ export interface StateProps {
     stegProps: StegProps;
     søker: Søker;
     erEndringssøknad: boolean;
+    saksnummer?: string;
 }
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
@@ -83,11 +84,12 @@ class InngangSteg extends React.Component<Props, {}> {
     }
 
     cleanupSøknad() {
-        const { valgtRolle, situasjon, erEndringssøknad, dispatch } = this.props;
+        const { valgtRolle, saksnummer, situasjon, erEndringssøknad, dispatch } = this.props;
         if (situasjon !== this.initiellSituasjon || valgtRolle !== this.initiellSøkerrolle) {
             dispatch(
                 søknadActions.setSøknad({
                     erEndringssøknad,
+                    saksnummer,
                     situasjon,
                     harGodkjentVilkår: true
                 })
@@ -175,7 +177,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         valgtRolle,
         velgbareRoller,
         stegProps,
-        erEndringssøknad
+        erEndringssøknad,
+        saksnummer: state.søknad.saksnummer
     };
 };
 

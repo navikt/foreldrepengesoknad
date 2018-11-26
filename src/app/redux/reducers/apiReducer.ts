@@ -2,9 +2,11 @@ import { ApiActionKeys, ApiActionTypes } from '../actions/api/apiActionDefinitio
 import { Kvittering } from '../../types/Kvittering';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
+import Sak from '../../types/søknad/Sak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
+    saker: Sak[];
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -21,6 +23,7 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 export const getDefaultApiState = (): ApiState => ({
+    saker: [],
     isLoadingSøkerinfo: true,
     isLoadingAppState: true,
     isLoadingTilgjengeligeStønadskontoer: false,
