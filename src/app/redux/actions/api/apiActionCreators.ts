@@ -11,6 +11,12 @@ export function getSøkerinfo(history: History): ApiActionTypes {
     };
 }
 
+export function getSaker(): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_SAKER
+    };
+}
+
 export function sendSøknad(søknad: Søknad, history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.SEND_SØKNAD,
@@ -74,6 +80,7 @@ export function updateApi(payload: ApiStatePartial): ApiActionTypes {
 
 export default {
     getSøkerinfo,
+    getSaker,
     sendSøknad,
     getStoredAppState,
     deleteStoredAppState,
