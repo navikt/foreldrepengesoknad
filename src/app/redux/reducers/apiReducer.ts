@@ -5,8 +5,9 @@ import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
+    isLoadingInitialAppData: boolean;
     isLoadingSøkerinfo: boolean;
-    isLoadingAppState: boolean;
+    isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
@@ -21,8 +22,9 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 export const getDefaultApiState = (): ApiState => ({
-    isLoadingSøkerinfo: true,
-    isLoadingAppState: true,
+    isLoadingInitialAppData: true,
+    isLoadingSøkerinfo: false,
+    isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
@@ -44,12 +46,12 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
         case ApiActionKeys.DELETE_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
     }
     return state;

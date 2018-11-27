@@ -27,7 +27,7 @@ function* saveAppState(action: any) {
     } catch {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false
             })
         );
     }
@@ -35,16 +35,16 @@ function* saveAppState(action: any) {
 
 function* getAppState(action: GetStoredAppState) {
     try {
-        put(apiActions.updateApi({ isLoadingAppState: true }));
+        put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         const response: AxiosResponse = yield call(Api.getStoredAppState);
         const state: AppState = response.data;
         if (state) {
             yield applyStoredStateToApp(state, action.history);
         }
     } catch {
-        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: false }));
     } finally {
-        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: false, isLoadingInitialAppData: false }));
     }
 }
 
@@ -75,18 +75,18 @@ function* applyStoredStateToApp(state: AppState, history: History) {
 
 function* deleteStoredAppState() {
     try {
-        yield put(apiActions.updateApi({ isLoadingAppState: true }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         yield call(Api.deleteStoredAppState);
     } catch {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false
             })
         );
     }
