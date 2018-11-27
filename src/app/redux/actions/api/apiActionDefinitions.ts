@@ -5,6 +5,7 @@ import { History } from 'history';
 
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
+    'GET_SAKER' = 'getSaker',
 
     'GET_STORED_APP_STATE' = 'getStoredAppState',
     'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
@@ -27,6 +28,10 @@ interface UpdateApi {
 export interface GetSøkerinfo {
     type: ApiActionKeys.GET_SØKERINFO;
     history: History;
+}
+
+export interface GetSaker {
+    type: ApiActionKeys.GET_SAKER;
 }
 
 export interface GetTilgjengeligeStønadskontoer {
@@ -67,6 +72,7 @@ export interface StoreAppState {
 export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
+    | GetSaker
     | GetStoredAppState
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

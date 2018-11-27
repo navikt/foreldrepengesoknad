@@ -86,7 +86,8 @@ function* deleteStoredAppState() {
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingStoredAppState: false
+                isLoadingStoredAppState: false,
+                isLoadingInitialAppData: false
             })
         );
     }
