@@ -66,9 +66,7 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
     intl
 }) => {
     const skalIkkeHaUttak = (periode as ForeldrepengerFørFødselUttaksperiode).skalIkkeHaUttakFørTermin;
-    const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode)
-        ? familiehendelsesdato
-        : undefined;
+    const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
 
     const erUttakFørForeldrepengerFørFødsel =
         !erForeldrepengerFørFødsel &&
