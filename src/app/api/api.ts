@@ -30,6 +30,13 @@ function getSøkerinfo() {
     });
 }
 
+const getSaker = () => {
+    return axios.get(`${apiBaseUrl}/saker`, {
+        timeout: 60 * 1000,
+        withCredentials: true
+    });
+};
+
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const {
         antallBarn,
@@ -93,6 +100,7 @@ function deleteStoredAppState() {
 
 const Api = {
     getSøkerinfo,
+    getSaker,
     getUttakskontoer,
     sendSøknad,
     getStoredAppState,
