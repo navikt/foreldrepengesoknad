@@ -19,6 +19,7 @@ import { guid } from 'nav-frontend-js-utils';
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
+        saksnummer: undefined,
         annenForelder: {
             kanIkkeOppgis: false
         },

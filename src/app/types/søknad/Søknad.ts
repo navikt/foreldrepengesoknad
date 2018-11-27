@@ -46,6 +46,7 @@ interface SkjemaEkstrainfo {
 
 interface Søknad {
     type: Foreldrepenger;
+    saksnummer?: string;
     erEndringssøknad: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
@@ -65,6 +66,7 @@ export type SøknadForInnsending = Omit<Søknad, 'ekstrainfo' | 'sensitivInfoIkk
 
 export interface SøknadPartial {
     type?: Foreldrepenger;
+    saksnummer?: string;
     erEndringssøknad?: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
