@@ -14,7 +14,7 @@ import { Søkerinfo } from '../types/søkerinfo';
 import LoadingScreen from '../components/loading-screen/LoadingScreen';
 import Søknad from '../types/søknad/Søknad';
 import { StegID } from '../util/routing/stegConfig';
-import { Feature } from '../Feature';
+import { Feature, isFeatureEnabled } from '../Feature';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -45,7 +45,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
         const { dispatch, søkerinfo } = this.props;
         if (!søkerinfo) {
             dispatch(api.getSøkerinfo(this.props.history));
-            if (Feature.endringssøknad) {
+            if (isFeatureEnabled(Feature.endringssøknad)) {
                 dispatch(api.getSaker());
             }
         }

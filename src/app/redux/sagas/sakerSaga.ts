@@ -11,10 +11,11 @@ function* getSaker() {
 
         const response = yield call(Api.getSaker);
         const saker: Sak[] = response.data;
+        const nyesteSak = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0];
 
         yield put(
             apiActions.updateApi({
-                saker
+                nyesteSak
             })
         );
     } catch (error) {

@@ -6,7 +6,7 @@ import Sak from '../../types/søknad/Sak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
-    saker: Sak[];
+    nyesteSak?: Sak;
     isLoadingSøkerinfo: boolean;
     isLoadingAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
@@ -24,7 +24,6 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 export const getDefaultApiState = (): ApiState => ({
-    saker: [],
     isLoadingSøkerinfo: true,
     isLoadingAppState: true,
     isLoadingTilgjengeligeStønadskontoer: false,
