@@ -21,7 +21,6 @@ interface InntektstypeOptions {
 const getOptions = (intl: InjectedIntl): InntektstypeOptions => ({
     [AnnenInntektType.JOBB_I_UTLANDET]: getMessage(intl, 'inntektstype.jobb_i_utlandet'),
     [AnnenInntektType.MILITÆRTJENESTE]: getMessage(intl, 'inntektstype.militær_eller_siviltjeneste'),
-    [AnnenInntektType.LØNN_VED_VIDEREUTDANNING]: getMessage(intl, 'inntektstype.lønn_under_utdanning'),
     [AnnenInntektType.VENTELØNN]: getMessage(intl, 'inntektstype.ventelønn'),
     [AnnenInntektType.SLUTTPAKKE]: getMessage(intl, 'inntektstype.etterlønn_arbeidsgiver')
 });
