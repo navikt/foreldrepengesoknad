@@ -148,6 +148,7 @@
     "annenForelder.spørsmål.utenlandskFnr": "{navn} har utenlandsk fødselsnummer",
 
     "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
+    "annenInntekt.modal.velgInntektstype": "Velg inntektstype",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
