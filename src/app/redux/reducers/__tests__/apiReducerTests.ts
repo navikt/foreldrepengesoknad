@@ -8,14 +8,16 @@ describe('apiReducer', () => {
         const {
             isLoadingSøkerinfo,
             isLoadingStoredAppState,
+            isLoadingInitialAppData,
             isLoadingTilgjengeligeStønadskontoer,
             søknadSendingInProgress,
             søknadHasBeenReceived,
             tilgjengeligeStønadskontoer
         } = defaultState;
 
-        expect(isLoadingSøkerinfo).toBe(true);
-        expect(isLoadingStoredAppState).toBe(true);
+        expect(isLoadingSøkerinfo).toBe(false);
+        expect(isLoadingStoredAppState).toBe(false);
+        expect(isLoadingInitialAppData).toBe(true);
         expect(isLoadingTilgjengeligeStønadskontoer).toBe(false);
         expect(søknadSendingInProgress).toBe(false);
         expect(søknadHasBeenReceived).toBe(false);
