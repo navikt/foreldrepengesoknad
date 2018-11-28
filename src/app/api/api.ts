@@ -71,7 +71,7 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 function sendSøknad(søknad: Søknad) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-    return axios.post(url, cleanUpSøknad(søknad), {
+    return axios.post(url, søknad, {
         withCredentials: true,
         timeout: 30 * 1000,
         headers: {
