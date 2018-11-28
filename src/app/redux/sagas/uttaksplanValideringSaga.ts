@@ -21,28 +21,21 @@ import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
+import { getSøknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 const stateSelector = (state: AppState) => state;
 
 const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode => {
-    const { søker, annenForelder, barn, situasjon } = appState.søknad;
+    const { søker } = appState.søknad;
     const { tilgjengeligeStønadskontoer } = appState.api;
-    const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const advarsler = [];
+    const søknadsinfo = getSøknadsinfo(appState);
     if (hasPeriodeMissingAttachment(periode, søker.rolle)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
     return {
         periodeId: periode.id,
-        valideringsfeil:
-            validerPeriodeForm(
-                periode,
-                søker,
-                annenForelder,
-                tilgjengeligeStønadskontoer,
-                familiehendelsesdato,
-                situasjon
-            ) || [],
+        valideringsfeil: validerPeriodeForm(periode, tilgjengeligeStønadskontoer, søknadsinfo!) || [],
         advarsler,
         overlappendePerioder: Periodene(appState.søknad.uttaksplan).finnOverlappendePerioder(periode)
     };

@@ -14,11 +14,11 @@ import { Barn } from '../types/søknad/Barn';
 import { Søkersituasjon } from '../types/søknad/Søknad';
 import { getFamiliehendelsedato } from '../util/uttaksplan';
 import { getErSøkerFarEllerMedmor } from '../util/domain/personUtil';
-import { getFarEllerMedmorHarRettPåForeldrepenger } from './regler/farEllerMedmorHarRettPåForeldrepenger';
-import { getMorHarAleneomsorg } from './regler/morHarAleneomsorg';
-import { getMorHarRettPåForeldrepenger } from './regler/morHarRettPåForeldrepenger';
-import { getFarEllerMedmorHarAleneomsorg } from './regler/farEllerMedmorHarAleneomsorg';
-import { getErFlerbarnssøknad } from './regler/erFlerbarnssøknad';
+import { getFarEllerMedmorHarRettPåForeldrepenger } from '../regler/søknad/farEllerMedmorHarRettPåForeldrepenger';
+import { getMorHarAleneomsorg } from '../regler/søknad/morHarAleneomsorg';
+import { getMorHarRettPåForeldrepenger } from '../regler/søknad/morHarRettPåForeldrepenger';
+import { getFarEllerMedmorHarAleneomsorg } from '../regler/søknad/farEllerMedmorHarAleneomsorg';
+import { getErFlerbarnssøknad } from '../regler/søknad/erFlerbarnssøknad';
 import { selectTilgjengeligeStønadskontoer } from './apiSelector';
 
 const barnHasRequiredValues = (barn: RecursivePartial<Barn> | undefined): barn is Barn =>

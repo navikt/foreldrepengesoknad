@@ -40,10 +40,11 @@ import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
+import { getUttakFormRegler } from '../../selectors/uttakFormRegler';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
-interface UttaksperiodeFormProps {
+interface OwnProps {
     søknadsinfo: Søknadsinfo;
     periode: UttakFormPeriodeType;
     kanEndreStønadskonto: boolean;
@@ -58,7 +59,7 @@ interface StateProps {
     velgbareStønadskontotyper: StønadskontoType[];
 }
 
-type Props = UttaksperiodeFormProps & StateProps & InjectedIntlProps;
+type Props = OwnProps & StateProps & InjectedIntlProps;
 
 class UttaksperiodeForm extends React.Component<Props> {
     static contextTypes = {
@@ -150,12 +151,8 @@ class UttaksperiodeForm extends React.Component<Props> {
             periode,
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
-            annenForelderHarRett: søknadsinfo.annenForelder.harRett,
-            familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato,
-            morErUfør: søknadsinfo.mor.erUfør,
-            situasjon: søknadsinfo.søknaden.situasjon,
-            søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor
+            søknadsinfo,
+            regler: getUttakFormRegler(søknadsinfo)
         });
     }
     render() {
@@ -301,7 +298,7 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: AppState): StateProps => {
+const mapStateToProps = (state: AppState, props: OwnProps): StateProps => {
     const arbeidsforhold = selectArbeidsforhold(state);
     const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
 

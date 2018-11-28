@@ -28,6 +28,8 @@ import AnnenForelder from '../types/søknad/AnnenForelder';
 import Person from '../types/Person';
 import { getErSøkerFarEllerMedmor } from '../util/domain/personUtil';
 import { Navn } from '../types/common';
+import { Uttaksdatoer } from './types';
+import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
 
 export interface Søknadsinfo {
     søknaden: OmSøknaden;
@@ -36,6 +38,7 @@ export interface Søknadsinfo {
     søker: OmSøker;
     mor: OmMor;
     farMedmor: OmFarMedmor;
+    uttaksdatoer: Uttaksdatoer;
 }
 
 interface OmSøknaden {
@@ -217,7 +220,8 @@ export const getSøknadsinfo = createSelector(
                 mor: omMor,
                 farMedmor: omFarMedmor,
                 annenForelder: omAnnenForelder,
-                navn
+                navn,
+                uttaksdatoer: getUttaksdatoer(omSøknaden.familiehendelsesdato)
             };
         }
         return undefined;
