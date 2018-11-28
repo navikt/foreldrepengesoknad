@@ -1,5 +1,5 @@
 import { StønadskontoType, isUttaksperiode } from '../../types/uttaksplan/periodetyper';
-import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 
 export const aktivitetskravMorSkalBesvares = (periode: UttakFormPeriodeType, søknadsinfo: Søknadsinfo): boolean => {

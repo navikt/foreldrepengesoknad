@@ -11,8 +11,8 @@ import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
-import { Søknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
-import { getUttakFormRegler } from '../../../selectors/uttakFormRegler';
+import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { getUttakFormRegler } from '../../../regler/uttakForm/uttakFormRegler';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);

@@ -10,8 +10,8 @@ import {
     Periode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
-import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
-import { UttakFormRegler } from '../../selectors/uttakFormRegler';
+import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { UttakFormRegler } from '../../regler/uttakForm/uttakFormRegler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -44,7 +44,7 @@ const visKvote = ({ periode, kanEndreStønadskonto, velgbareStønadskontotyper, 
 };
 
 const visAktivitetskravMor = ({ regler, periode }: UttakFormPayload): boolean => {
-    return periode.konto !== undefined && regler.aktivitetskravMorSkalBesvares();
+    return periode.konto !== undefined && regler.aktivitetskravMorSkalBesvares(periode);
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {

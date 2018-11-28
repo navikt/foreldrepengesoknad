@@ -15,7 +15,7 @@ import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
-import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 
 export interface OwnProps {
     søknadsinfo: Søknadsinfo;

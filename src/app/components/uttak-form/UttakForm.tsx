@@ -40,7 +40,7 @@ import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
-import { getUttakFormRegler } from '../../selectors/uttakFormRegler';
+import { getUttakFormRegler } from '../../regler/uttakForm/uttakFormRegler';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 

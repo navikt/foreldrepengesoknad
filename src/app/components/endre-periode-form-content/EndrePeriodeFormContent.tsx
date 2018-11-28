@@ -15,7 +15,7 @@ import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReduce
 import { Knapp } from 'nav-frontend-knapper';
 
 import './endrePeriodeFormContent.less';
-import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 
 export interface Props {
     søknadsinfo: Søknadsinfo;

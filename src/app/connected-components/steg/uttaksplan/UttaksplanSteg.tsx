@@ -32,7 +32,7 @@ import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
-import { Søknadsinfo, getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
+import { Søknadsinfo, getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;

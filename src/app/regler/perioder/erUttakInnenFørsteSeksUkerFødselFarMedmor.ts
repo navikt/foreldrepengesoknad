@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { Søkersituasjon } from '../../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Tidsperiode } from 'common/types';
 import { Uttaksdatoer } from '../../selectors/types';
