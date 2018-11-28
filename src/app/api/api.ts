@@ -73,6 +73,7 @@ function sendSøknad(søknad: Søknad) {
 
     return axios.post(url, cleanUpSøknad(søknad), {
         withCredentials: true,
+        timeout: 30 * 1000,
         headers: {
             'content-type': 'application/json;'
         }
