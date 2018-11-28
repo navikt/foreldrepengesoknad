@@ -12,6 +12,12 @@ export interface UttakFormRegler {
     erUttakInnenFørsteSeksUkerFødselFarMedmor: (
         tidsperiode: Tidsperiode | Partial<Tidsperiode> | RecursivePartial<Tidsperiode> | undefined
     ) => boolean;
+    kvoteSkalBesvares: (
+        periode: Periode,
+        kanEndreStønadskonto: boolean,
+        velgbareStønadskontotyper: StønadskontoType[]
+    ) => boolean;
+    aktivitetskravMorSkalBesvares: () => boolean;
 }
 
 export const getUttakFormRegler = (info: Søknadsinfo): UttakFormRegler => ({
@@ -25,7 +31,16 @@ export const getUttakFormRegler = (info: Søknadsinfo): UttakFormRegler => ({
             info.søknaden.situasjon,
             info.søker.erFarEllerMedmor,
             info.uttaksdatoer
-        )
+        ),
+    kvoteSkalBesvares: (
+        periode: Periode,
+        kanEndreStønadskonto: boolean,
+        velgbareStønadskontotyper: StønadskontoType[]
+    ) =>
+        erUttakFørFødsel(periode, info.søknaden.familiehendelsesdato) === false &&
+        kanEndreStønadskonto === true &&
+        velgbareStønadskontotyper.length > 0,
+    aktivitetskravMorSkalBesvares: () => false
 });
 
 export default getUttakFormRegler;
