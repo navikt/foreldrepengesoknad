@@ -32,9 +32,11 @@ import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
+import { Søknadsinfo, getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
+    søknadsinfo?: Søknadsinfo;
     søknad: Søknad;
     erDeltUttak: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
@@ -175,6 +177,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     render() {
         const {
             søknad,
+            søknadsinfo,
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
@@ -193,6 +196,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             getErSøkerFarEllerMedmor(søknad.søker.rolle),
             søknad.erEndringssøknad
         );
+
+        if (!søknadsinfo) {
+            return null;
+        }
         return (
             <Steg
                 {...this.props.stegProps}
@@ -225,6 +232,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         <Block>
                             <Uttaksplanlegger
                                 søknad={søknad}
+                                søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
@@ -295,6 +303,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
 
     return {
         søknad,
+        søknadsinfo: getSøknadsinfo(state),
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksstatus,

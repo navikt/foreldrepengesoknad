@@ -15,8 +15,10 @@ import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
+import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 export interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     antallFeriedager: number;
     uttaksplanValidering: UttaksplanValideringState;
@@ -84,6 +86,7 @@ class Periodeliste extends React.Component<Props> {
     }
     render() {
         const {
+            søknadsinfo,
             perioder,
             uttaksplanValidering,
             navnPåForeldre,
@@ -142,6 +145,7 @@ class Periodeliste extends React.Component<Props> {
                                             periode={periode}
                                             render={(onChange, onRequestDelete) => (
                                                 <PeriodelisteItem
+                                                    søknadsinfo={søknadsinfo}
                                                     key={periode.id}
                                                     periode={periode}
                                                     antallFeriedager={antallFeriedager}

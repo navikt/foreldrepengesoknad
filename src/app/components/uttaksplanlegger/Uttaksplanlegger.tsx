@@ -21,9 +21,11 @@ import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
+import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 export interface Props {
     søknad: Søknad;
+    søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
@@ -146,13 +148,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             navnPåForeldre,
             onRequestReset,
             lastAddedPeriodeId,
-            forelder
+            forelder,
+            søknadsinfo
         } = this.props;
         const { barn, uttaksplan } = søknad;
         const søkersituasjon = søknad.situasjon;
         const erMorUfør = søknad.annenForelder.erUfør;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
+
         return (
             <section>
                 <Block>
@@ -184,6 +188,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
+                                søknadsinfo={søknadsinfo}
                                 perioder={uttaksplan}
                                 navnPåForeldre={navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
@@ -201,6 +206,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        søknadsinfo={søknadsinfo}
                                         antallFeriedager={antallFeriedager}
                                         erMorUfør={erMorUfør}
                                         periodetype={periodetype}

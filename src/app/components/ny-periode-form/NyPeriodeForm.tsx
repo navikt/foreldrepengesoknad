@@ -23,8 +23,10 @@ import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
+import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
     forelder: Forelder;
@@ -140,6 +142,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttakForm
+                            søknadsinfo={this.props.søknadsinfo}
                             periode={periode as Partial<Uttaksperiode>}
                             kanEndreStønadskonto={true}
                             onChange={this.updatePeriode}

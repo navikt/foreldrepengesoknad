@@ -50,18 +50,18 @@ export const selectErDeltUttak = createSelector([selectTilgjengeligeStønadskont
     return getErDeltUttak(tilgjengeligeStønadskontoer);
 });
 
-export const selectSøkerErFarEllerMedmor = createSelector([selectSøkerrolle], (søkerrolle): boolean | undefined => {
-    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) : undefined;
+export const selectSøkerErFarEllerMedmor = createSelector([selectSøkerrolle], (søkerrolle): boolean => {
+    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) : false;
 });
 
-export const selectSøkerErMor = createSelector([selectSøkerrolle], (søkerrolle): boolean | undefined => {
-    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) === false : undefined;
+export const selectSøkerErMor = createSelector([selectSøkerrolle], (søkerrolle): boolean => {
+    return søkerrolle ? getErSøkerFarEllerMedmor(søkerrolle) === false : false;
 });
 
 export const selectMorErUfør = createSelector(
     [selectAnnenForelder, selectSøkerErFarEllerMedmor],
     (annenForelder, erFarEllerMedmor): boolean | undefined => {
-        if (erFarEllerMedmor !== undefined && annenForelder !== undefined) {
+        if (annenForelder !== undefined) {
             return erFarEllerMedmor === true && annenForelder.erUfør === true;
         }
         return undefined;
@@ -71,8 +71,8 @@ export const selectMorErUfør = createSelector(
 export const selectMorHarAleneomsorg = createSelector(
     [selectSøkerErMor, selectSøkerErAleneOmOmsorg, selectAnnenForelder],
     (søkerErMor, søkerErAleneOmOmsorg, annenForelder): boolean | undefined => {
-        if (søkerErMor !== undefined && søkerErAleneOmOmsorg !== undefined && annenForelder !== undefined) {
-            return getMorHarAleneomsorg(søkerErMor, søkerErAleneOmOmsorg, annenForelder);
+        if (annenForelder !== undefined) {
+            return getMorHarAleneomsorg(søkerErMor === true, søkerErAleneOmOmsorg === true, annenForelder);
         }
         return undefined;
     }
@@ -81,8 +81,8 @@ export const selectMorHarAleneomsorg = createSelector(
 export const selectMorHarRett = createSelector(
     [selectSøkerrolle, selectSøkerErFarEllerMedmor, selectAnnenForelder],
     (søkerrolle, erFarEllerMedmor, annenForelder): boolean | undefined => {
-        if (søkerrolle !== undefined && erFarEllerMedmor !== undefined && annenForelder !== undefined) {
-            return getMorHarRettPåForeldrepenger(søkerrolle, erFarEllerMedmor, annenForelder);
+        if (søkerrolle !== undefined && annenForelder !== undefined) {
+            return getMorHarRettPåForeldrepenger(søkerrolle, erFarEllerMedmor === true, annenForelder);
         }
         return undefined;
     }
@@ -90,15 +90,11 @@ export const selectMorHarRett = createSelector(
 export const selectFarEllerMedmorHarRett = createSelector(
     [selectSøkerrolle, selectSøkerErFarEllerMedmor, selectAnnenForelderHarRettPåForeldrepenger],
     (søkerrolle, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger): boolean | undefined => {
-        if (
-            søkerrolle !== undefined &&
-            søkerErFarEllerMedmor !== undefined &&
-            annenForelderHarRettPåForeldrepenger !== undefined
-        ) {
+        if (søkerrolle !== undefined) {
             return getFarEllerMedmorHarRettPåForeldrepenger(
                 søkerrolle,
-                søkerErFarEllerMedmor,
-                annenForelderHarRettPåForeldrepenger
+                søkerErFarEllerMedmor === true,
+                annenForelderHarRettPåForeldrepenger === true
             );
         }
         return undefined;
@@ -108,8 +104,12 @@ export const selectFarEllerMedmorHarRett = createSelector(
 export const selectFarEllerMedmorHarAleneomsorg = createSelector(
     [selectSøkerErFarEllerMedmor, selectSøkerErAleneOmOmsorg, selectAnnenForelder],
     (søkerErFarEllerMedmor, søkerErAleneOmOmsorg, annenForelder): boolean | undefined => {
-        if (søkerErFarEllerMedmor !== undefined && søkerErAleneOmOmsorg !== undefined && annenForelder !== undefined) {
-            return getFarEllerMedmorHarAleneomsorg(søkerErFarEllerMedmor, søkerErAleneOmOmsorg, annenForelder);
+        if (annenForelder !== undefined) {
+            return getFarEllerMedmorHarAleneomsorg(
+                søkerErFarEllerMedmor === true,
+                søkerErAleneOmOmsorg === true,
+                annenForelder
+            );
         }
         return undefined;
     }

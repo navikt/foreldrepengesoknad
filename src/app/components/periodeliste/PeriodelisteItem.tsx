@@ -15,8 +15,10 @@ import {
 import { onToggleItemProp } from '../toggle-list/ToggleList';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 export interface Props {
+    søknadsinfo: Søknadsinfo;
     periode: Periode;
     isExpanded: boolean;
     antallFeriedager: number;
@@ -28,6 +30,7 @@ export interface Props {
 }
 
 const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
+    søknadsinfo,
     periode,
     navnPåForeldre,
     antallFeriedager,
@@ -62,6 +65,7 @@ const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
                             periodelisteBem.element('content', getPeriodeFarge(periode))
                         )}>
                         <EndrePeriodeFormContent
+                            søknadsinfo={søknadsinfo}
                             periode={periode}
                             antallFeriedager={antallFeriedager}
                             validertPeriode={validertPeriode}

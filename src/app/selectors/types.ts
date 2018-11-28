@@ -1,5 +1,5 @@
-import { Dekningsgrad } from 'common/types';
-import { Søkersituasjon } from '../types/søknad/Søknad';
+// import { Dekningsgrad } from 'common/types';
+// import { Søkersituasjon } from '../types/søknad/Søknad';
 // import { TilgjengeligStønadskonto } from '../types/uttaksplan/periodetyper';
 
 export interface Uttaksdatoer {
@@ -16,19 +16,19 @@ export interface Uttaksdatoer {
     };
 }
 
-export interface Søknadsinfo {
-    situasjon: Søkersituasjon;
-    familiehendelsesdato: Date;
-    dekningsgrad: Dekningsgrad;
-    antallBarn: number;
-    morHarRett: boolean;
-    morHarAleneomsorg: boolean;
-    farEllerMedmorHarRett: boolean;
-    farEllerMedmorHarAleneomsorg: boolean;
-    erDeltUttak: boolean;
-    søkerErMor: boolean;
-    søkerErFarEllerMedmor: boolean;
-    søkerErAleneOmOmsorgen: boolean;
-}
-// uttaksdatoer: Uttaksdatoer;
-// tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+// export interface Søknadsinfo {
+//     situasjon: Søkersituasjon;
+//     familiehendelsesdato: Date;
+//     dekningsgrad: Dekningsgrad;
+//     antallBarn: number;
+//     morHarRett: boolean;
+//     morHarAleneomsorg: boolean;
+//     farEllerMedmorHarRett: boolean;
+//     farEllerMedmorHarAleneomsorg: boolean;
+//     erDeltUttak: boolean;
+//     søkerErMor: boolean;
+//     søkerErFarEllerMedmor: boolean;
+//     søkerErAleneOmOmsorgen: boolean;
+// }
+// // uttaksdatoer: Uttaksdatoer;
+// // tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];

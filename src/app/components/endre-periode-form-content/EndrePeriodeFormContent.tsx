@@ -15,8 +15,10 @@ import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReduce
 import { Knapp } from 'nav-frontend-knapper';
 
 import './endrePeriodeFormContent.less';
+import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 export interface Props {
+    søknadsinfo: Søknadsinfo;
     periode: Periode;
     antallFeriedager: number;
     validertPeriode: ValidertPeriode | undefined;
@@ -29,7 +31,15 @@ const bem = BEMHelper('endrePeriodeForm');
 
 class EndrePeriodeFormContent extends React.Component<Props> {
     render() {
-        const { periode, validertPeriode, antallFeriedager, onChange, onRequestDelete, onRequestClose } = this.props;
+        const {
+            periode,
+            validertPeriode,
+            antallFeriedager,
+            onChange,
+            onRequestDelete,
+            onRequestClose,
+            søknadsinfo
+        } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
         const harOverlappendePerioder = validertPeriode && validertPeriode.overlappendePerioder.length > 0;
@@ -44,6 +54,7 @@ class EndrePeriodeFormContent extends React.Component<Props> {
                     />
                 ) : (
                     <UttakForm
+                        søknadsinfo={søknadsinfo}
                         periode={periode as Uttaksperiode}
                         onChange={onChange}
                         kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
