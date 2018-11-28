@@ -1,5 +1,5 @@
 import { Periode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import { erUttakFørFødsel } from '../perioder/erUttakF\u00F8rF\u00F8dsel';
+import { erUttakFørFødsel } from '../perioder/erUttakFørFødsel';
 
 const kvoteSkalBesvares = (
     familiehendelsesdato: Date,
