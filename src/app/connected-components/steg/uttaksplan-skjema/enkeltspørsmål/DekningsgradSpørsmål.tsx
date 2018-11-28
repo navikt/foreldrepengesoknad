@@ -86,6 +86,7 @@ const DekningsgradSpørsmål = (props: Props) => {
 
     const skalViseVeileder =
         dekningsgrad === '80' &&
+        erEndringssøknad === false &&
         ((situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false) ||
             (situasjon === Søkersituasjon.FØDSEL && !getErSøkerFarEllerMedmor(rolle) && !erAleneomsorg));
 
@@ -120,8 +121,6 @@ const DekningsgradSpørsmål = (props: Props) => {
                     {erEndringssøknad === false && getInfoboxText(intl, erAleneomsorg)}
                     {førsteDatoEtter20190101OgDeltUttak === true ? (
                         <>
-                            <br />
-                            <br />
                             <FormattedMessage id="spørsmål.dekningsgrad.midlertidig" />
                         </>
                     ) : null}
