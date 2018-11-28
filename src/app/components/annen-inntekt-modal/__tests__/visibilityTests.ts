@@ -24,4 +24,15 @@ describe('AnnenInntektModal visibility', () => {
             });
         });
     });
+    describe('vedleggVisible', () => {
+        it('should be visible only when type is not JOBB_I_UTLANDET', () => {
+            Object.values(AnnenInntektType).forEach((type: AnnenInntektType) => {
+                if (type !== AnnenInntektType.JOBB_I_UTLANDET) {
+                    expect(fns.vedlegg({ type })).toBe(true);
+                } else {
+                    expect(fns.vedlegg({ type })).toBe(false);
+                }
+            });
+        });
+    });
 });
