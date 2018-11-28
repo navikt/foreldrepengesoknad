@@ -7,8 +7,9 @@ import Sak from '../../types/søknad/Sak';
 export interface ApiState {
     søkerinfo?: Søkerinfo;
     nyesteSak?: Sak;
+    isLoadingInitialAppData: boolean;
     isLoadingSøkerinfo: boolean;
-    isLoadingAppState: boolean;
+    isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
     søknadSendingInProgress: boolean;
@@ -24,8 +25,9 @@ export interface ApiState {
 export type ApiStatePartial = Partial<ApiState>;
 
 export const getDefaultApiState = (): ApiState => ({
-    isLoadingSøkerinfo: true,
-    isLoadingAppState: true,
+    isLoadingInitialAppData: true,
+    isLoadingSøkerinfo: false,
+    isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     isLoadingSaker: false,
     søknadSendingInProgress: false,
@@ -48,12 +50,12 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
         case ApiActionKeys.DELETE_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
     }
     return state;

@@ -19,7 +19,6 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
 function* getSøkerinfo(action: GetSøkerinfo) {
     try {
         yield put(apiActions.updateApi({ isLoadingSøkerinfo: true }));
-
         const response = yield call(Api.getSøkerinfo);
         const søkerinfo: Søkerinfo = getSøkerinfoFromDTO(response.data);
         const useStorage = shouldUseStoredDataIfTheyExist(søkerinfo);
@@ -41,6 +40,7 @@ function* getSøkerinfo(action: GetSøkerinfo) {
         } else {
             action.history.push(routeConfig.GENERELL_FEIL_URL);
         }
+        yield put(apiActions.updateApi({ isLoadingInitialAppData: false }));
     } finally {
         yield put(
             apiActions.updateApi({
