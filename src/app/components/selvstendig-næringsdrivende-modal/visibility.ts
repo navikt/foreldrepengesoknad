@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { Næring, NæringPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { date4YearsAgo } from '../../util/validation/values';
-import { er4ÅrSidenOppstartEllerMindre, næringsinntektSisteÅrMåDokumenteres } from '../../util/domain/næringer';
+import { er4ÅrSidenOppstartEllerMindre } from '../../util/domain/næringer';
 import næringsrelasjonFns from '../../bolker/næringsrelasjon-bolk/visibility';
 import VisibilityFunction from '../../types/dom/Visibility';
 
@@ -58,14 +58,6 @@ const næringsinntektVisible: VisibilityFunction<NæringPartial> = (næring: Næ
     if (tidsperiode && module.tidsperiodeUtfylt(næring)) {
         const { fom } = tidsperiode;
         return moment(fom).isAfter(date4YearsAgo, 'day') && module.tidsperiode(næring);
-    }
-    return false;
-};
-
-const dokumentasjonAvInntektSisteÅrVisible: VisibilityFunction<NæringPartial> = (næring: NæringPartial) => {
-    const { næringsinntekt } = næring;
-    if (module.næringsinntekt(næring)) {
-        return næringsinntekt !== undefined && næringsinntektSisteÅrMåDokumenteres(næring as Næring);
     }
     return false;
 };
@@ -169,7 +161,6 @@ export const module = {
     tidsperiodeUtfylt: tidsperiodeErUtfylt,
     tidsperiode: tidsperiodeVisible,
     næringsinntekt: næringsinntektVisible,
-    dokumentasjonAvInntektSisteÅr: dokumentasjonAvInntektSisteÅrVisible,
     næringRegistrertINorge: næringRegistrertINorgeVisible,
     næringRegistrertILand: næringRegistrertILandVisible,
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneVisible,

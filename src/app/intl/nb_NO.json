@@ -273,8 +273,6 @@
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
-    "selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr":
-        "Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være kopi av personinntektsskjema, næringsoppgave eller resultatregnskap.",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
