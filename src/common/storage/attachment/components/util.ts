@@ -73,8 +73,6 @@ export const getSkjemanummerForAndreInntekter = (annenInntektType: AnnenInntektT
             return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
         case AnnenInntektType.SLUTTPAKKE:
             return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-        case AnnenInntektType.LØNN_VED_VIDEREUTDANNING:
-            return Skjemanummer.INNTEKTSOPPLYSNINGER;
         default:
             return Skjemanummer.ANNET;
     }
