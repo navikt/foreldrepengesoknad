@@ -71,7 +71,9 @@ export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Peri
 };
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
-    const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknad;
+    const søknadCopy = JSON.parse(JSON.stringify(søknad));
+    const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknadCopy;
+
     const cleanedSøknad: SøknadForInnsending = { ...rest };
     cleanedSøknad.vedlegg = cleanUpAttachments(cleanedSøknad);
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
