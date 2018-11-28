@@ -10,8 +10,6 @@ import {
     Periode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
-import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
-import Perioderegler from '../../selectors/Perioderegler';
 import { Søknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 import { UttakFormRegler } from '../../selectors/uttakFormRegler';
 
@@ -75,16 +73,16 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     const { periode, søknadsinfo, regler } = payload;
-    const { søknaden, søker, annenForelder } = søknadsinfo;
+    const { søker, annenForelder } = søknadsinfo;
     if (
         periode.konto === undefined ||
         periode.type === Periodetype.Overføring ||
-        Perioderegler.erUttakFørFødsel(payload.periode as Periode, søknaden.familiehendelsesdato) ||
+        regler.erUttakFørFødsel(payload.periode as Periode) ||
         (periode.type === Periodetype.Uttak && visErMorForSyk(payload) && periode.erMorForSyk === false)
     ) {
         return false;
     } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
-        const erEgenKonto = erUttakEgenKvote(periode.konto, søker.erFarEllerMedmor);
+        const erEgenKonto = regler.erUttakEgenKvote(periode.konto);
         const aktivitetskravMor = visAktivitetskravMor(payload);
         const aktivitetskravMorOk =
             (aktivitetskravMor && questionValueIsOk(periode.morsAktivitetIPerioden)) || aktivitetskravMor === false;
@@ -145,11 +143,11 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode, søknadsinfo } = payload;
+    const { periode, regler } = payload;
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        Perioderegler.erUttakFørFødsel(payload.periode as Periode, søknadsinfo.søknaden.familiehendelsesdato) ||
+        regler.erUttakFørFødsel(payload.periode as Periode) ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
         (visErMorForSyk(payload) && periode.erMorForSyk !== true)

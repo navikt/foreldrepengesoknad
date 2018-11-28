@@ -4,7 +4,7 @@ import { erUttakEgenKvote } from '../util/uttaksplan/uttakUtils';
 import { erUttakInnenFørsteSeksUkerFødselFarMedmor } from '../regler/perioder/erUttakInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { RecursivePartial } from '../types/Partial';
-import { erUttakFørFødsel } from './Perioderegler';
+import { erUttakFørFødsel } from '../regler/perioder/erUttakF\u00F8rF\u00F8dsel';
 
 export interface UttakFormRegler {
     erUttakFørFødsel: (periode: Periode) => boolean;

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Periodetype, StønadskontoType, Periode } from '../types/uttaksplan/periodetyper';
+import { Periode, StønadskontoType, Periodetype } from '../../types/uttaksplan/periodetyper';
 
 export const erUttakFørFødsel = (periode: Periode, familiehendelsesdato: Date): boolean => {
     const { tidsperiode } = periode;
@@ -9,9 +9,3 @@ export const erUttakFørFødsel = (periode: Periode, familiehendelsesdato: Date)
         (tom && moment(tom).isBefore(familiehendelsesdato, 'day'))
     );
 };
-
-const Perioderegler = {
-    erUttakFørFødsel
-};
-
-export default Perioderegler;
