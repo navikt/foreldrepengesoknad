@@ -27,7 +27,7 @@ import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
 import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
 import { Feature, isFeatureEnabled } from '../../../Feature';
-import SøknadstypeSpørsmål from '../../../sp\u00F8rsm\u00E5l/S\u00F8knadstypeSp\u00F8rsm\u00E5l';
+import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 
 interface StateProps {

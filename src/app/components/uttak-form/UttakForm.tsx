@@ -15,12 +15,11 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
 import HvilkenKvoteSkalBenyttesSpørsmål from '../../spørsmål/HvilkenKvoteSkalBenyttesSpørsmål';
 import Block from 'common/components/block/Block';
-import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { getVelgbareStønadskontotyper } from '../../util/uttaksplan/stønadskontoer';
 import { getUttakFormVisibility, UttakSpørsmålKeys } from './uttakFormConfig';
-import { getNavnPåForeldre, getTidsperioderIUttaksplan, getFamiliehendelsedato } from '../../util/uttaksplan';
+import { getNavnPåForeldre, getTidsperioderIUttaksplan } from '../../util/uttaksplan';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import SamtidigUttakPart from './partials/SamtidigUttakPart';
@@ -39,6 +38,8 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
+import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -318,16 +319,19 @@ class UttaksperiodeForm extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(state.søknad.søker.rolle);
+    const { søker, mor, søknaden, annenForelder } = getSøknadsinfo(state)!;
+    const arbeidsforhold = selectArbeidsforhold(state);
+    const tilgjengeligeStønadskontoer = selectTilgjengeligeStønadskontoer(state);
+
     return {
         søknad: state.søknad,
-        arbeidsforhold: state.api.søkerinfo!.arbeidsforhold,
-        velgbareStønadskontotyper: getVelgbareStønadskontotyper(state.api.tilgjengeligeStønadskontoer),
-        søkerErFarEllerMedmor,
-        morErUfør: søkerErFarEllerMedmor && state.søknad.annenForelder.erUfør,
+        arbeidsforhold,
+        velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
+        søkerErFarEllerMedmor: søker.erFarEllerMedmor,
+        morErUfør: mor.erUfør,
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon),
-        annenForelderHarRett: state.søknad.annenForelder.harRettPåForeldrepenger
+        familiehendelsesdato: søknaden.familiehendelsesdato,
+        annenForelderHarRett: annenForelder.harRett
     };
 };
 

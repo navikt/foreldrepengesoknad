@@ -7,13 +7,15 @@ import {
     Periodetype,
     OverføringÅrsakType,
     isForeldrepengerFørFødselUttaksperiode,
-    isUttaksperiode
+    isUttaksperiode,
+    Periode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import { uttaksdatoer } from 'app/util/uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import Perioderegler from '../../selectors/Perioderegler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -45,14 +47,6 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 
 const Sp = UttakSpørsmålKeys;
 
-const erUttakFørFødsel = (payload: UttakFormPayload): boolean => {
-    const { periode, familiehendelsesdato } = payload;
-    return (
-        (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel) ||
-        moment(periode.tidsperiode && (periode.tidsperiode.tom as Date)).isBefore(familiehendelsesdato, 'day')
-    );
-};
-
 const erUttakInnenFørsteSeksUkerFødselFarMedmor = (payload: UttakFormPayload): boolean => {
     if (payload.situasjon === Søkersituasjon.ADOPSJON || !payload.søkerErFarEllerMedmor) {
         return false;
@@ -72,7 +66,11 @@ const erUttakInnenFørsteSeksUkerFødselFarMedmor = (payload: UttakFormPayload):
 
 const visKvote = (payload: UttakFormPayload): boolean => {
     const { kanEndreStønadskonto, velgbareStønadskontotyper } = payload;
-    return erUttakFørFødsel(payload) === false && kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0;
+    return (
+        Perioderegler.erUttakFørFødsel(payload.periode as Periode, payload.familiehendelsesdato) === false &&
+        kanEndreStønadskonto === true &&
+        velgbareStønadskontotyper.length > 0
+    );
 };
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
@@ -103,7 +101,7 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     if (
         periode.konto === undefined ||
         periode.type === Periodetype.Overføring ||
-        erUttakFørFødsel(payload) ||
+        Perioderegler.erUttakFørFødsel(payload.periode as Periode, payload.familiehendelsesdato) ||
         (periode.type === Periodetype.Uttak && visErMorForSyk(payload) && periode.erMorForSyk === false)
     ) {
         return false;
@@ -173,7 +171,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        erUttakFørFødsel(payload) ||
+        Perioderegler.erUttakFørFødsel(payload.periode as Periode, payload.familiehendelsesdato) ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
         (visErMorForSyk(payload) && periode.erMorForSyk !== true)
