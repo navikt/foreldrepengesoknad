@@ -29,10 +29,12 @@ import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
+import Sak from '../../../types/søknad/Sak';
 
 interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
+    nyesteSak?: Sak;
 }
 
 interface State {
@@ -79,8 +81,14 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     startSøknad(erEndringssøknad: boolean | undefined) {
-        const { history, dispatch } = this.props;
-        dispatch(søknadActions.updateSøknad({ erEndringssøknad: erEndringssøknad === true }));
+        const { nyesteSak, history, dispatch } = this.props;
+        dispatch(
+            søknadActions.updateSøknad({
+                erEndringssøknad: erEndringssøknad === true,
+                saksnummer:
+                    erEndringssøknad === true && nyesteSak && nyesteSak.saksnummer ? nyesteSak.saksnummer : undefined
+            })
+        );
         dispatch(apiActionCreators.storeAppState());
         history.push('soknad/inngang');
     }
@@ -95,13 +103,13 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     render() {
-        const { person, harGodkjentVilkår, dispatch, intl } = this.props;
+        const { person, nyesteSak, harGodkjentVilkår, dispatch, intl } = this.props;
 
         if (person === undefined) {
             return null;
         }
 
-        const endringssøknadEnabled = isFeatureEnabled(Feature.endringssøknad);
+        const endringssøknadEnabled = isFeatureEnabled(Feature.endringssøknad) && nyesteSak;
 
         return (
             <Applikasjonsside visSpråkvelger={isFeatureEnabled(Feature.nynorsk)} margin={false}>
@@ -119,26 +127,33 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className="velkommen__tittel blokk-s">
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    <FeatureBlock
-                        feature={Feature.endringssøknad}
-                        render={() => (
-                            <>
-                                <Block>
-                                    <Ingress>
-                                        <FormattedMessage id="velkommen.intro.harIkkeSak" />
-                                    </Ingress>
-                                </Block>
-                                <Block>
-                                    <SøknadstypeSpørsmål
-                                        harEksisterendeSak={false}
-                                        skalEndre={this.state.skalEndre}
-                                        onChange={(skalEndre) => this.setState({ skalEndre })}
-                                    />
-                                </Block>
-                            </>
-                        )}
-                    />
-                    <Block visible={endringssøknadEnabled === false || this.state.skalEndre !== undefined}>
+                    {nyesteSak !== undefined && (
+                        <FeatureBlock
+                            feature={Feature.endringssøknad}
+                            render={() => (
+                                <>
+                                    <Block>
+                                        <Ingress>
+                                            <FormattedMessage id="velkommen.intro.harIkkeSak" />
+                                        </Ingress>
+                                    </Block>
+                                    <Block>
+                                        <SøknadstypeSpørsmål
+                                            harEksisterendeSak={false}
+                                            skalEndre={this.state.skalEndre}
+                                            onChange={(skalEndre) => this.setState({ skalEndre })}
+                                        />
+                                    </Block>
+                                </>
+                            )}
+                        />
+                    )}
+                    <Block
+                        visible={
+                            nyesteSak === undefined ||
+                            endringssøknadEnabled === false ||
+                            this.state.skalEndre !== undefined
+                        }>
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}
@@ -195,7 +210,8 @@ class Velkommen extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo.person,
-    harGodkjentVilkår: state.søknad.harGodkjentVilkår
+    harGodkjentVilkår: state.søknad.harGodkjentVilkår,
+    nyesteSak: state.api.nyesteSak
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

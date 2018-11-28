@@ -1,0 +1,9 @@
+@import '../../styles/variables.less';
+@import '../../styles/mixins.less';
+
+.infoBlock {
+    .grayBlock();
+    @media (max-width: @mobile-breakpoint) {
+        .grayBlockMobileFullWidth();
+    }
+}

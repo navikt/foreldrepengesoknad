@@ -13,7 +13,7 @@ const arbeidsgiverNavnVisible: VisibilityFunction<AnnenInntektPartial> = (annenI
 
 const vedleggVisible: VisibilityFunction<AnnenInntektPartial> = (annenInntekt: AnnenInntektPartial) => {
     const { type } = annenInntekt;
-    return type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING && type !== AnnenInntektType.JOBB_I_UTLANDET;
+    return type !== AnnenInntektType.JOBB_I_UTLANDET;
 };
 
 export default {

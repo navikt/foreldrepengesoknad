@@ -267,8 +267,6 @@
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste fire åra?",
-    "selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr":
-        "Du må leggje ved dokumentasjon av inntekta di for det siste året. Dette kan for eksempel vere kopi av personinntektsskjema, næringsoppgåve eller resultatrekneskap.",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når starta du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Dersom du har avslutta {navnPåNæringen}, gi opp sluttdato",
@@ -567,6 +565,7 @@
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
         "Du kan ikkje søke om foreldrepengar for barn som er eldre enn 15 år og 3 månader {dato}",
     "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdatoen kan ikkje vere etter adopsjonsdatoen",
+    "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak": "Prosenten du skal jobbe kan ikkje vere høgare enn prosenten du skal vere heime med foreldrepengar.",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindatoen",
     "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidlegast søkje når du er i 26. svangerskapsveke",
