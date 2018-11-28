@@ -80,9 +80,6 @@ export const getSkjemanummerForAndreInntekter = (annenInntektType: AnnenInntektT
 
 export const isAttachmentForAnnenInntekt = (type: AttachmentType) => type === AttachmentType.ANNEN_INNTEKT;
 
-export const isAttachmentForSelvstendigNæringsdrivende = (type: AttachmentType) =>
-    type === AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE;
-
 export const isAttachmentForBarn = (type: AttachmentType) =>
     type === AttachmentType.TERMINBEKREFTELSE ||
     type === AttachmentType.FØDSELSATTEST ||
