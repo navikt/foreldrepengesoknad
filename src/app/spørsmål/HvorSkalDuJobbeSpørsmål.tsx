@@ -61,16 +61,14 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
         const value = valgtArbeidsforhold !== undefined ? valgtArbeidsforhold : frilansEllerSelvstendig;
 
         return (
-            <>
-                <FlervalgSpørsmål
-                    navn="arbeidsgiver"
-                    alternativer={this.getRadioOptions()}
-                    valgtVerdi={value}
-                    toKolonner={true}
-                    spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
-                    onChange={this.handleOnChange}
-                />
-            </>
+            <FlervalgSpørsmål
+                navn="arbeidsgiver"
+                alternativer={this.getRadioOptions()}
+                valgtVerdi={value}
+                toKolonner={true}
+                spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
+                onChange={this.handleOnChange}
+            />
         );
     }
 }
