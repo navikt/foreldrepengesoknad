@@ -15,8 +15,7 @@ type Props = AndreInntekterListeElementProps & InjectedIntlProps;
 
 const AndreInntekterListeElement: React.StatelessComponent<Props> = ({ annenInntekt, intl, ...rest }) => {
     const { type, tidsperiode, vedlegg } = annenInntekt;
-    const inntektstypeSkalHaVedlegg =
-        type !== AnnenInntektType.LØNN_VED_VIDEREUTDANNING && type !== AnnenInntektType.JOBB_I_UTLANDET;
+    const inntektstypeSkalHaVedlegg = type !== AnnenInntektType.JOBB_I_UTLANDET;
     const harVedlegg = vedlegg !== undefined && vedlegg.length > 0;
     const intlKey = 'inntektstype.';
     let title = `${type}`;
