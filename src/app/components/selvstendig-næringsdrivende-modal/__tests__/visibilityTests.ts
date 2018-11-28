@@ -4,7 +4,6 @@ import {
     Næringsrelasjon,
     Næringstype
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { date1YearAgo, dateMoreThan1YearAgo } from '../../../util/validation/values';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Navn på næringen', () => {
@@ -115,42 +114,6 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
                 expect(fns.tidsperiodeUtfylt({ tidsperiode: {} })).toBe(false);
                 expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: false })).toBe(false);
             });
-        });
-    });
-
-    describe('Dokumentasjon av næringsinntekt', () => {
-        beforeEach(() => {
-            fns.næringsinntekt = jest.fn(() => true);
-        });
-
-        it('should be visible if næringsinntekt is defined and visible, and oppstartsdato is 1 year ago or less', () => {
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: 123,
-                    tidsperiode: { fom: date1YearAgo.toDate() }
-                })
-            ).toBe(true);
-        });
-
-        it('should be hidden if næringsinntekt is not defined or not visible', () => {
-            expect(fns.dokumentasjonAvInntektSisteÅr({ tidsperiode: { fom: date1YearAgo.toDate() } })).toBe(false);
-            fns.næringsinntekt = jest.fn(() => false);
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: 213,
-                    tidsperiode: { fom: date1YearAgo.toDate() }
-                })
-            ).toBe(false);
-        });
-
-        it('should be hidden if oppstartsdato is more than 1 year ago', () => {
-            fns.næringsinntekt = jest.fn(() => true);
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: 111,
-                    tidsperiode: { fom: dateMoreThan1YearAgo.toDate() }
-                })
-            ).toBe(false);
         });
     });
 
