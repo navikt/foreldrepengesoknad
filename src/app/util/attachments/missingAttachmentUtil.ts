@@ -137,7 +137,11 @@ export const findMissingAttachments = (søknad: Søknad, api: ApiState): Missing
     return missingAttachments;
 };
 
-export const mapMissingAttachmentsToSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): Søknad => {
+export const mapMissingAttachmentsToSøknad = (
+    missingAttachments: MissingAttachment[],
+    orignalSøknad: Søknad
+): Søknad => {
+    const søknad = JSON.parse(JSON.stringify(orignalSøknad));
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
             { name: '', size: '' } as any,
