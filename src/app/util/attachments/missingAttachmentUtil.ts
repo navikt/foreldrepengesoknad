@@ -6,7 +6,6 @@ import {
     getAnnenForelderStegVisibility
 } from '../../connected-components/steg/annen-forelder/visibility/annenForelderStegVisibility';
 
-import { module as annenInntektVisibility } from '../../components/selvstendig-næringsdrivende-modal/visibility';
 import visibility from '../../components/annen-inntekt-modal/visibility';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { Attachment, InnsendingsType } from 'common/storage/attachment/types/Attachment';
@@ -27,7 +26,6 @@ import {
     isAttachmentForAnnenInntekt,
     isAttachmentForBarn,
     isAttachmentForPeriode,
-    isAttachmentForSelvstendigNæringsdrivende,
     mapFileToAttachment
 } from 'common/storage/attachment/components/util';
 import {
@@ -112,27 +110,6 @@ export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRol
     return missingAttachments;
 };
 
-export const findMissingAttachmentsForSelvstendigNæringsdrivende = (søknad: Søknad): MissingAttachment[] => {
-    if (!søknad.søker.selvstendigNæringsdrivendeInformasjon) {
-        return [];
-    }
-
-    const missingAttachments = [];
-    for (const selvstendigNæring of søknad.søker.selvstendigNæringsdrivendeInformasjon) {
-        const selvstendingNæringsdrivendeVedlegg = annenInntektVisibility.dokumentasjonAvInntektSisteÅr(
-            selvstendigNæring
-        );
-        if (selvstendingNæringsdrivendeVedlegg && isAttachmentMissing(selvstendigNæring.vedlegg)) {
-            missingAttachments.push({
-                index: søknad.søker.selvstendigNæringsdrivendeInformasjon.indexOf(selvstendigNæring),
-                skjemanummer: Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG,
-                type: AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE
-            });
-        }
-    }
-    return missingAttachments;
-};
-
 export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): MissingAttachment[] => {
     if (!søknad.søker.andreInntekterSiste10Mnd) {
         return [];
@@ -156,7 +133,6 @@ export const findMissingAttachments = (søknad: Søknad, api: ApiState): Missing
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
     missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle));
-    missingAttachments.push(...findMissingAttachmentsForSelvstendigNæringsdrivende(søknad));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };
@@ -174,8 +150,6 @@ export const mapMissingAttachmentsToSøknad = (missingAttachments: MissingAttach
             søknad.barn[attachment.type] = [attachment];
         } else if (isAttachmentForAnnenInntekt(attachment.type)) {
             søknad.søker.andreInntekterSiste10Mnd![missingAttachment.index!].vedlegg = [attachment];
-        } else if (isAttachmentForSelvstendigNæringsdrivende(attachment.type)) {
-            søknad.søker.selvstendigNæringsdrivendeInformasjon![missingAttachment.index!].vedlegg = [attachment];
         } else if (isAttachmentForPeriode(attachment.type)) {
             søknad.uttaksplan![missingAttachment.index!].vedlegg = [attachment];
         }

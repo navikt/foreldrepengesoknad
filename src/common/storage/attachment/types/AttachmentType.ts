@@ -4,7 +4,6 @@ export enum AttachmentType {
     TERMINBEKREFTELSE = 'terminbekreftelse',
     FØDSELSATTEST = 'fødselsattest',
     ANNEN_INNTEKT = 'anneninntektDokumentasjon',
-    SELVSTENDIGNÆRINGSDRIVENDE = 'selvstendignæringdrivendeDokumentasjon',
     UTSETTELSE_SYKDOM = 'utsettelseSykdomUttaksplan',
     MORS_AKTIVITET_DOKUMENTASJON = 'morsaktivitetdokumentasjon',
     OVERFØRING_KVOTE = 'dokumentasjonOverføringAvKvote',
