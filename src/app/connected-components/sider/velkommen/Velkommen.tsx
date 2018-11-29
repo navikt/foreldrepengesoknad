@@ -141,7 +141,7 @@ class Velkommen extends React.Component<Props, State> {
                                             </Ingress>
                                         </Block>
                                         <Block>
-                                            <SakInfo nyesteSak={nyesteSak} />
+                                            <SakInfo sak={nyesteSak} />
                                         </Block>
                                         <Block>
                                             <SøknadstypeSpørsmål

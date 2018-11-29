@@ -2,25 +2,25 @@ import * as React from 'react';
 import BEMHelper from 'common/util/bem';
 
 import { FormattedMessage } from 'react-intl';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import InfoBlock from 'common/components/info-block/InfoBlock';
 import moment from 'moment';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import EtikettBase from 'nav-frontend-etiketter';
-import { getIntlKeyForStatus } from '../../util/stringUtils';
+import InfoBlock from 'common/components/info-block/InfoBlock';
 import BarnevognIkon from 'common/components/ikoner/BarnevognIkon';
+import StorkIkon from 'common/components/ikoner/StorkIkon';
+import { getIntlKeyForStatus } from '../../util/stringUtils';
 import Sak from '../../types/søknad/Sak';
+import { sakGjelderAdopsjon } from '../../util/saker/sakerUtils';
 
 import './sakInfo.less';
-import { sakGjelderAdopsjon } from '../../util/saker/sakerUtils';
-import StorkIkon from 'common/components/ikoner/StorkIkon';
 
 interface Props {
-    nyesteSak: Sak;
+    sak: Sak;
 }
 
-const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
+const SakInfo: React.StatelessComponent<Props> = ({ sak }) => {
     const bem = BEMHelper('sak-info');
-    const statusTextKey = nyesteSak.status ? getIntlKeyForStatus(nyesteSak.status) : undefined;
+    const statusTextKey = sak.status ? getIntlKeyForStatus(sak.status) : undefined;
     return (
         <InfoBlock padding="none">
             <div className={bem.className}>
@@ -32,7 +32,7 @@ const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
                         <FormattedMessage
                             id={'velkommen.sak.sistEndret'}
                             values={{
-                                date: moment(nyesteSak.opprettet).format('LL')
+                                date: moment(sak.opprettet).format('LL')
                             }}
                         />
                     </Normaltekst>
@@ -42,9 +42,7 @@ const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
                         </EtikettBase>
                     )}
                 </div>
-                <div className={bem.element('icon')}>
-                    {sakGjelderAdopsjon(nyesteSak) ? <StorkIkon /> : <BarnevognIkon />}
-                </div>
+                <div className={bem.element('icon')}>{sakGjelderAdopsjon(sak) ? <StorkIkon /> : <BarnevognIkon />}</div>
             </div>
         </InfoBlock>
     );
