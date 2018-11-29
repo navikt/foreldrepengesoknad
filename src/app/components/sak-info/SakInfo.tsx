@@ -18,6 +18,7 @@ interface Props {
 
 const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
     const bem = BEMHelper('sak-info');
+    const statusTextKey = nyesteSak.status ? getIntlKeyForStatus(nyesteSak.status) : undefined;
     return (
         <InfoBlock padding="none">
             <div className={bem.className}>
@@ -33,9 +34,9 @@ const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
                             }}
                         />
                     </Normaltekst>
-                    {nyesteSak.status && (
+                    {statusTextKey && (
                         <EtikettBase type={'fokus'}>
-                            <FormattedMessage id={getIntlKeyForStatus(nyesteSak.status)} />
+                            <FormattedMessage id={statusTextKey} />
                         </EtikettBase>
                     )}
                 </div>
