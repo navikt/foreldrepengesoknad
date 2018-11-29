@@ -27,11 +27,6 @@ import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjon
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Skjemanummer } from '../../types/søknad/Søknad';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
@@ -84,30 +79,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 ...næringProperties
             }
         });
-    }
-
-    updateVedleggList(vedlegg: Attachment[]) {
-        const { næring } = this.state;
-        this.setState({
-            næring: {
-                ...næring,
-                vedlegg
-            }
-        });
-    }
-
-    updateVedleggItem(vedlegg: Attachment) {
-        const { næring } = this.state;
-        if (næring && næring.vedlegg) {
-            const index = næring.vedlegg.indexOf(vedlegg);
-            næring.vedlegg[index] = vedlegg;
-            this.setState({
-                næring: {
-                    ...næring,
-                    vedlegg: næring.vedlegg
-                }
-            });
-        }
     }
 
     onSubmit(): void {
@@ -247,42 +218,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v.replace(/ /g, '')
+                                næringsinntekt: Number.parseInt(v.replace(/ /g, ''))
                             };
                             this.updateNæring(næringPartial);
                         }}
                         value={næringsinntekt || ''}
-                        validators={[
-                            hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd')),
-                            {
-                                test: () => Number.isInteger(Number(næringsinntekt)),
-                                failText: getMessage(intl, 'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt')
-                            }
-                        ]}
-                    />
-                </Block>
-
-                <Block visible={visibility.dokumentasjonAvInntektSisteÅr(næring)}>
-                    <Veilederinfo>
-                        {getMessage(intl, 'selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr')}
-                    </Veilederinfo>
-                    <AttachmentsUploader
-                        attachments={næring.vedlegg || []}
-                        onFilesUploadStart={(attachments: Attachment[]) => {
-                            this.updateVedleggList([...(næring.vedlegg || []), ...attachments]);
-                        }}
-                        onFileUploadFinish={(vedlegg: Attachment) => this.updateVedleggItem(vedlegg)}
-                        onFileDeleteStart={(vedlegg: Attachment) => {
-                            this.updateVedleggItem(vedlegg);
-                        }}
-                        onFileDeleteFinish={(vedlegg: Attachment) => {
-                            const vedleggList = næring.vedlegg || [];
-                            const index = vedleggList.indexOf(vedlegg);
-                            vedleggList.splice(index, 1);
-                            this.updateVedleggList(vedleggList);
-                        }}
-                        attachmentType={AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE}
-                        skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG}
+                        validators={[hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
 
