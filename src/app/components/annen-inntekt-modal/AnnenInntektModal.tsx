@@ -9,7 +9,6 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
-import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import { Checkbox, Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
@@ -25,6 +24,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
 import { hasValueRule } from '../../util/validation/common';
+import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -120,11 +120,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
-                    <InntektstypeVelger
-                        label={''}
+                    <InntektstypeSpørsmål
+                        inntektstype={annenInntekt.type}
                         onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
-                        defaultValue={annenInntekt.type}
-                        validators={[hasValueRule(annenInntekt.type, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
                 <Block visible={visibility.land(annenInntekt)}>
