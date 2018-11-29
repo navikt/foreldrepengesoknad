@@ -12,7 +12,6 @@ import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
-import { getUttakFormRegler } from '../../../regler/uttakForm/uttakFormRegler';
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
     const visibility = getUtsettelseFormVisibility(payload);
@@ -65,8 +64,7 @@ export const validerPeriodeForm = (
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
             kanEndreStønadskonto: true,
-            søknadsinfo,
-            regler: getUttakFormRegler(søknadsinfo)
+            søknadsinfo
         });
     }
     return validerUtsettelseForm({

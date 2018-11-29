@@ -1,36 +1,41 @@
 import { StønadskontoType, Periode } from '../../types/uttaksplan/periodetyper';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { PeriodeRegler, getPeriodeRegler } from '../perioder/periodeRegler';
+// import { getPeriodeRegler } from '../perioder/periodeRegler';
 import kvoteSkalBesvares from './kvoteSkalBesvares';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
+import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
+import { PeriodeRegler } from '../perioder/periodeRegler';
 
-export interface UttakFormRegler extends PeriodeRegler {
-    kvoteSkalBesvares: (
-        periode: Periode,
-        kanEndreStønadskonto: boolean,
-        velgbareStønadskontotyper: StønadskontoType[]
-    ) => boolean;
-    aktivitetskravMorSkalBesvares: (periode: UttakFormPeriodeType) => boolean;
-    samtidigUttakSkalBesvares: (
-        periode: UttakFormPeriodeType,
-        velgbareStønadskontotyper: StønadskontoType[]
-    ) => boolean;
-}
+export const UttakFormRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType) => ({
+    kvoteSkalBesvares: (kanEndreStønadskonto: boolean, velgbareStønadskontotyper: StønadskontoType[]): boolean =>
+        kvoteSkalBesvares(
+            info.søknaden.familiehendelsesdato,
+            periode as Periode,
+            kanEndreStønadskonto,
+            velgbareStønadskontotyper
+        ),
 
-export const getUttakFormRegler = (info: Søknadsinfo): UttakFormRegler => ({
-    ...getPeriodeRegler(info),
-    kvoteSkalBesvares: (
-        periode: Periode,
-        kanEndreStønadskonto: boolean,
-        velgbareStønadskontotyper: StønadskontoType[]
-    ) =>
-        kvoteSkalBesvares(info.søknaden.familiehendelsesdato, periode, kanEndreStønadskonto, velgbareStønadskontotyper),
-    aktivitetskravMorSkalBesvares: (periode: UttakFormPeriodeType) => aktivitetskravMorSkalBesvares(periode, info),
+    aktivitetskravMorSkalBesvares: () => aktivitetskravMorSkalBesvares(periode, info),
 
-    samtidigUttakSkalBesvares: (periode: UttakFormPeriodeType, velgbareStønadskontotyper: StønadskontoType[]) =>
-        samtidigUttakSkalBesvares(periode, velgbareStønadskontotyper, info)
+    erMorForSykSkalBesvares: (): boolean =>
+        erMorForForSykSkalBesvares(
+            periode,
+            info.søknaden.situasjon,
+            info.søker.erFarEllerMedmor,
+            info.uttaksdatoer,
+            info.søknaden.erFlerbarnssøknad
+        ),
+
+    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]): boolean =>
+        samtidigUttakSkalBesvares(
+            periode,
+            velgbareStønadskontotyper,
+            info.søknaden.erDeltUttak,
+            PeriodeRegler(info).erUttakInnenFørsteSeksUkerFødselFarMedmor(periode as Periode),
+            PeriodeRegler(info).erUttakFørFødsel(periode as Periode)
+        )
 });
 
-export default getUttakFormRegler;
+export default UttakFormRegler;

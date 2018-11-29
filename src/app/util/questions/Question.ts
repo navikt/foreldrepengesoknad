@@ -8,7 +8,7 @@ export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
         isAnswered: (props: Payload) => boolean;
         parentQuestion?: QuestionKeys;
-        condition?: (props: Payload) => boolean;
+        isVisible?: (props: Payload) => boolean;
         isOptional?: (props: Payload) => boolean;
     };
 }
@@ -22,7 +22,7 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     if (!config) {
         return false;
     }
-    const conditionIsMet = config.condition ? config.condition(payload) : true;
+    const conditionIsMet = config.isVisible ? config.isVisible(payload) : true;
     if (conditionIsMet === false) {
         return false;
     }
