@@ -87,6 +87,11 @@
     "søknad.pageheading.endring": "Søknad om endring av foreldrepenger",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
+    "velkommen.sak.type": "Foreldrepenger",
+    "velkommen.sak.sistEndret": "Sist endret: {date}",
+    "velkommen.sak.status.underBehandling": "Under behandling",
+    "velkommen.sak.status.avsluttet": "Avsluttet",
+
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
