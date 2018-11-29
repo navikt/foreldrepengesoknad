@@ -137,7 +137,7 @@ class Velkommen extends React.Component<Props, State> {
                                     <>
                                         <Block>
                                             <Ingress>
-                                                <FormattedMessage id="velkommen.intro.harIkkeSak" />
+                                                <FormattedMessage id="velkommen.intro.harSak" />
                                             </Ingress>
                                         </Block>
                                         <Block>

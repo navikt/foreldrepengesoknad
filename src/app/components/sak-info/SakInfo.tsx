@@ -11,6 +11,8 @@ import BarnevognIkon from 'common/components/ikoner/BarnevognIkon';
 import Sak from '../../types/søknad/Sak';
 
 import './sakInfo.less';
+import { sakGjelderAdopsjon } from '../../util/saker/sakerUtils';
+import StorkIkon from 'common/components/ikoner/StorkIkon';
 
 interface Props {
     nyesteSak: Sak;
@@ -41,7 +43,7 @@ const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
                     )}
                 </div>
                 <div className={bem.element('icon')}>
-                    <BarnevognIkon />
+                    {sakGjelderAdopsjon(nyesteSak) ? <StorkIkon /> : <BarnevognIkon />}
                 </div>
             </div>
         </InfoBlock>

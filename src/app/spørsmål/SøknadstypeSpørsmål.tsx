@@ -16,7 +16,7 @@ const SøknadstypeSpørsmål = (props: Props) => {
     if (harEksisterendeSak) {
         return (
             <JaNeiSpørsmål
-                spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.'harSak'.spørsmål`)}
+                spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.spørsmål`)}
                 navn="søknadstype"
                 valgtVerdi={skalEndre}
                 labels={{
@@ -31,7 +31,7 @@ const SøknadstypeSpørsmål = (props: Props) => {
             <JaNeiSpørsmål
                 spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål`)}
                 navn="søknadstype"
-                valgtVerdi={!skalEndre}
+                valgtVerdi={skalEndre !== undefined ? !skalEndre : undefined}
                 labels={{
                     ja: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn`),
                     nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring`)
