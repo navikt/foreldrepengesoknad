@@ -140,7 +140,9 @@ class Velkommen extends React.Component<Props, State> {
                                                 <FormattedMessage id="velkommen.intro.harIkkeSak" />
                                             </Ingress>
                                         </Block>
-                                        <SakInfo nyesteSak={nyesteSak} />
+                                        <Block>
+                                            <SakInfo nyesteSak={nyesteSak} />
+                                        </Block>
                                         <Block>
                                             <SøknadstypeSpørsmål
                                                 harEksisterendeSak={false}

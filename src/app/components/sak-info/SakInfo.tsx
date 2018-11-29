@@ -17,15 +17,15 @@ interface Props {
 }
 
 const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
-    const cls = BEMHelper('sak-info');
+    const bem = BEMHelper('sak-info');
     return (
-        <InfoBlock>
-            <div className={cls.className}>
-                <div className={cls.element('text')}>
-                    <Element>
+        <InfoBlock padding="none">
+            <div className={bem.className}>
+                <div className={bem.element('text')}>
+                    <Element className="blokk-xxxs">
                         <FormattedMessage id={'velkommen.sak.type'} />
                     </Element>
-                    <Normaltekst>
+                    <Normaltekst className="blokk-xxs">
                         <FormattedMessage
                             id={'velkommen.sak.sistEndret'}
                             values={{
@@ -39,7 +39,9 @@ const SakInfo: React.StatelessComponent<Props> = ({ nyesteSak }) => {
                         </EtikettBase>
                     )}
                 </div>
-                <BarnevognIkon className={cls.element('icon')} />
+                <div className={bem.element('icon')}>
+                    <BarnevognIkon />
+                </div>
             </div>
         </InfoBlock>
     );
