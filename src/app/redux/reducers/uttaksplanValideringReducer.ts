@@ -27,7 +27,6 @@ export interface UttaksplanValideringState {
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
-    førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
@@ -57,7 +56,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         periodevalidering: {},
         inneholderPerioder: false,
         stønadskontoerMedForMyeUttak: [],
-        førsteUttakErInnenforSeksUker: false,
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
@@ -85,7 +83,6 @@ const uttaksplanValideringReducer = (
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
                 action.stønadskontoerMedForMyeUttak.length === 0 &&
-                action.førsteUttakErInnenforSeksUker === true &&
                 action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.farHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.uttaksmengdeForFarMedmorForHøy === false &&
@@ -98,7 +95,6 @@ const uttaksplanValideringReducer = (
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
-                førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,
