@@ -76,24 +76,16 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                             name={'inntektEtterEndring'}
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
                             value={(info && info.næringsinntektEtterEndring) || ''}
-                            onChange={(value: string) =>
+                            onChange={(v: string) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    næringsinntektEtterEndring: value
-                                })
-                            }
+                                    næringsinntektEtterEndring: Number.parseInt(v.replace(/ /g, ''))
+                                });
+                            }}
                             validators={[
                                 hasValueRule(
                                     (info && info.næringsinntektEtterEndring) || '',
                                     getMessage(intl, 'påkrevd')
-                                ),
-                                {
-                                    test: () =>
-                                        Number.isInteger(Number((info && info.næringsinntektEtterEndring) || '')),
-                                    failText: getMessage(
-                                        intl,
-                                        'valideringsfeil.selvstendigNæringsdrivende.næringsinntekt'
-                                    )
-                                }
+                                )
                             ]}
                         />
                     </Block>

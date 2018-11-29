@@ -19,9 +19,8 @@ import { Feature, isFeatureEnabled } from '../Feature';
 interface StateProps {
     søknad: Partial<Søknad>;
     søkerinfo?: Søkerinfo;
-    isLoadingSøkerinfo: boolean;
-    isLoadingAppState: boolean;
     isLoadingSaker: boolean;
+    isLoadingInitialAppData: boolean;
     isSendSøknadInProgress: boolean;
     søknadHasBeenReceived: boolean;
 }
@@ -85,17 +84,14 @@ class Foreldrepengesøknad extends React.Component<Props> {
     render() {
         const {
             søkerinfo,
-            isLoadingAppState,
-            isLoadingSøkerinfo,
+            isLoadingInitialAppData,
             isSendSøknadInProgress,
             isLoadingSaker,
             søknadHasBeenReceived
         } = this.props;
 
-        if (isLoadingAppState || isLoadingSøkerinfo || isSendSøknadInProgress || isLoadingSaker) {
+        if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
             return <LoadingScreen />;
-        } else if (!søkerinfo && !isLoadingSøkerinfo) {
-            return <Route component={GenerellFeil} />;
         } else if (søkerinfo && !søkerinfo.person.erMyndig) {
             return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo!} />} />;
         } else if (søknadHasBeenReceived) {
@@ -109,8 +105,7 @@ class Foreldrepengesøknad extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => ({
     søknad: state.søknad,
     søkerinfo: state.api.søkerinfo,
-    isLoadingSøkerinfo: state.api.isLoadingSøkerinfo,
-    isLoadingAppState: state.api.isLoadingAppState,
+    isLoadingInitialAppData: state.api.isLoadingInitialAppData,
     isLoadingSaker: state.api.isLoadingSaker,
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
     søknadHasBeenReceived: state.api.søknadHasBeenReceived

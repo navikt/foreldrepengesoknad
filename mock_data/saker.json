@@ -1,0 +1,18 @@
+[
+    {
+        "saksnummer": "135737372",
+        "status": "UBEH",
+        "opprettet": "2018-11-07",
+        "behandlinger": [
+            {
+                "id": null,
+                "status": "UTRED",
+                "type": "ES",
+                "tema": "ENGST",
+                "årsak": null,
+                "behandlendeEnhet": "4833",
+                "behandlendeEnhetNavn": "NAV Familie- og pensjonsytelser Oslo 1"
+            }
+        ]
+    }
+]

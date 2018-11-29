@@ -11,8 +11,8 @@ import { DateValue } from '../../../types/common';
 import { uttaksdatoer } from '../../uttaksplan/uttaksdatoer';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 
-const erUtfyltTest = (dato: DateValue, skalIkkeHaUttak: boolean): Validator => ({
-    test: () => (skalIkkeHaUttak ? true : dato !== undefined),
+const erUtfyltTest = (dato: DateValue): Validator => ({
+    test: () => dato !== undefined,
     failText: { intlKey: `uttaksplan.validering.feil.${PeriodeValideringErrorKey.PÅKREVD_VERDI_MANGLER}` }
 });
 
@@ -45,12 +45,12 @@ export const getUttakTidsperiodeValidatorer = (
     }
     return {
         fra: [
-            erUtfyltTest(tidsperiode.fom, skalIkkeHaUttak),
+            erUtfyltTest(tidsperiode.fom),
             erUttaksdagTest(tidsperiode.fom),
             starterInnenfor12UkerFørTermin(tidsperiode.fom, familiehendelsesdato)
         ],
         til: [
-            erUtfyltTest(tidsperiode.tom, skalIkkeHaUttak),
+            erUtfyltTest(tidsperiode.tom),
             erUttaksdagTest(tidsperiode.tom),
             slutterInnenforGyldigPermisjonsperiode(tidsperiode.tom, familiehendelsesdato)
         ]
@@ -64,7 +64,7 @@ export const uttakTidsperiodeErGyldig = (uttaksperiode: UttakFormPeriodeType, fa
             ? uttaksperiode.skalIkkeHaUttakFørTermin
             : false;
 
-        if (isValidTidsperiode(tidsperiode) === false) {
+        if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
             return false;
         }
 

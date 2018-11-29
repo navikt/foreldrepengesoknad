@@ -18,17 +18,19 @@ const næring: NæringPartial = {
     revisor: revisorMock as Næringsrelasjon,
     harRegnskapsfører: true,
     regnskapsfører: regnskapsførerMock as Næringsrelasjon,
-    kanInnhenteOpplsyningerFraRevisor: true
+    kanInnhenteOpplsyningerFraRevisor: true,
+    næringsinntekt: 2000
 };
 
 describe('cleanupNæring', () => {
-    describe('fields are visible', () => {
+    describe('fields are not visible', () => {
         beforeEach(() => {
             visibility.næringRegistrertILand = jest.fn(() => false);
             visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => false);
             visibility.varigEndringAvNæringsinntekt = jest.fn(() => false);
             visibility.revisorBolk = jest.fn(() => false);
             visibility.kanInnhenteOpplysningerFraRevisor = jest.fn(() => false);
+            visibility.næringsinntekt = jest.fn(() => false);
         });
 
         it('should set næring properties to undefined', () => {
@@ -38,7 +40,8 @@ describe('cleanupNæring', () => {
                 harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
-                kanInnhenteOpplsyningerFraRevisor
+                kanInnhenteOpplsyningerFraRevisor,
+                næringsinntekt
             } = result;
 
             expect(registrertILand).toBeUndefined();
@@ -46,16 +49,18 @@ describe('cleanupNæring', () => {
             expect(hattVarigEndringAvNæringsinntektSiste4Kalenderår).toBeUndefined();
             expect(harRevisor).toBeUndefined();
             expect(kanInnhenteOpplsyningerFraRevisor).toBeUndefined();
+            expect(næringsinntekt).toBeUndefined();
         });
     });
 
-    describe('fields are not visible', () => {
+    describe('fields are visible', () => {
         beforeEach(() => {
             visibility.næringRegistrertILand = jest.fn(() => true);
             visibility.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene = jest.fn(() => true);
             visibility.varigEndringAvNæringsinntekt = jest.fn(() => true);
             visibility.revisorBolk = jest.fn(() => true);
             visibility.kanInnhenteOpplysningerFraRevisor = jest.fn(() => true);
+            visibility.næringsinntekt = jest.fn(() => true);
         });
 
         it('should set næring properties to their assigned values', () => {
@@ -65,7 +70,8 @@ describe('cleanupNæring', () => {
                 harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
                 hattVarigEndringAvNæringsinntektSiste4Kalenderår,
                 harRevisor,
-                kanInnhenteOpplsyningerFraRevisor
+                kanInnhenteOpplsyningerFraRevisor,
+                næringsinntekt
             } = result;
 
             expect(registrertILand).toBe(næring.registrertILand);
@@ -77,6 +83,7 @@ describe('cleanupNæring', () => {
             );
             expect(harRevisor).toBe(næring.harRevisor);
             expect(kanInnhenteOpplsyningerFraRevisor).toBe(næring.kanInnhenteOpplsyningerFraRevisor);
+            expect(næringsinntekt).toBe(næring.næringsinntekt);
         });
     });
     describe('organisasjonsnummer', () => {

@@ -7,15 +7,17 @@ describe('apiReducer', () => {
     it('should initially set the correct default state', () => {
         const {
             isLoadingSøkerinfo,
-            isLoadingAppState,
+            isLoadingStoredAppState,
+            isLoadingInitialAppData,
             isLoadingTilgjengeligeStønadskontoer,
             søknadSendingInProgress,
             søknadHasBeenReceived,
             tilgjengeligeStønadskontoer
         } = defaultState;
 
-        expect(isLoadingSøkerinfo).toBe(true);
-        expect(isLoadingAppState).toBe(true);
+        expect(isLoadingSøkerinfo).toBe(false);
+        expect(isLoadingStoredAppState).toBe(false);
+        expect(isLoadingInitialAppData).toBe(true);
         expect(isLoadingTilgjengeligeStønadskontoer).toBe(false);
         expect(søknadSendingInProgress).toBe(false);
         expect(søknadHasBeenReceived).toBe(false);
@@ -33,13 +35,13 @@ describe('apiReducer', () => {
         expect(updatedApiState.isLoadingSøkerinfo).toBe(true);
     });
 
-    it('should set isLoadingAppState to true when GET_STORED_APP_STATE-action is dispatched', () => {
+    it('should set isLoadingStoredAppState to true when GET_STORED_APP_STATE-action is dispatched', () => {
         const updatedApiState = reducer(defaultState, actions.getStoredAppState({} as any));
-        expect(updatedApiState.isLoadingAppState).toBe(true);
+        expect(updatedApiState.isLoadingStoredAppState).toBe(true);
     });
 
-    it('should set isLoadingAppState to true when DELETE_STORED_APP_STATE-action is dispatched', () => {
+    it('should set isLoadingStoredAppState to true when DELETE_STORED_APP_STATE-action is dispatched', () => {
         const updatedApiState = reducer(defaultState, actions.deleteStoredAppState());
-        expect(updatedApiState.isLoadingAppState).toBe(true);
+        expect(updatedApiState.isLoadingStoredAppState).toBe(true);
     });
 });

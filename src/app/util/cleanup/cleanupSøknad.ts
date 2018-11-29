@@ -73,10 +73,12 @@ export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Peri
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknad;
     const cleanedSøknad: SøknadForInnsending = { ...rest };
-    cleanedSøknad.vedlegg = cleanUpAttachments(søknad);
-    cleanedSøknad.uttaksplan = søknad.uttaksplan.filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode));
-    cleanedSøknad.uttaksplan = changeClientonlyKontotypes(søknad.uttaksplan);
-    cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(søknad.uttaksplan);
-    cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(søknad.uttaksplan);
+    cleanedSøknad.vedlegg = cleanUpAttachments(cleanedSøknad);
+    cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
+        isValidTidsperiode(periode.tidsperiode)
+    );
+    cleanedSøknad.uttaksplan = changeClientonlyKontotypes(cleanedSøknad.uttaksplan);
+    cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
+    cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
     return cleanedSøknad;
 };

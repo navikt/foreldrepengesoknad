@@ -87,7 +87,8 @@ class Velkommen extends React.Component<Props, State> {
         dispatch(
             søknadActions.updateSøknad({
                 erEndringssøknad: erEndringssøknad === true,
-                saksnummer: nyesteSak && nyesteSak.saksnummer ? nyesteSak.saksnummer : undefined
+                saksnummer:
+                    erEndringssøknad === true && nyesteSak && nyesteSak.saksnummer ? nyesteSak.saksnummer : undefined
             })
         );
         dispatch(apiActionCreators.storeAppState());

@@ -96,11 +96,12 @@
 
     "velkommen.intro.harIkkeSak":
         "Har du en foreldrepengesak i dag så kan du endre ditt uttak gjennom at søke om endring. Hvis du vil søke om foreldrepenger for ett nytt barn må du velge det nedenfor.",
-    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
-        "Skal du søke om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
-    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
 
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
@@ -142,6 +143,7 @@
     "annenForelder.spørsmål.utenlandskFnr": "{navn} har utanlandsk fødselsnummer",
 
     "annenInntekt.modal.pågående": "Eg har framleis verksemda",
+    "annenInntekt.modal.velgInntektstype": "Velg inntektstype",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskjelder dei siste ti månadene?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
@@ -267,8 +269,6 @@
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Gi opp dato for når du blei yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt ei varig endring i verksemda eller arbeidssituasjonen din dei siste fire åra?",
-    "selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr":
-        "Du må leggje ved dokumentasjon av inntekta di for det siste året. Dette kan for eksempel vere kopi av personinntektsskjema, næringsoppgåve eller resultatrekneskap.",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når starta du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Dersom du har avslutta {navnPåNæringen}, gi opp sluttdato",
@@ -567,6 +567,8 @@
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
         "Du kan ikkje søke om foreldrepengar for barn som er eldre enn 15 år og 3 månader {dato}",
     "valideringsfeil.fodselsdato.etterAdopsjonsdato": "Fødselsdatoen kan ikkje vere etter adopsjonsdatoen",
+    "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
+        "Prosenten du skal jobbe kan ikkje vere høgare enn prosenten du skal vere heime med foreldrepengar.",
 
     "valideringsfeil.termindato.duMåOppgi": "Du må gi opp termindatoen",
     "valideringsfeil.termindato.duMåVæreIUke26": "Du kan tidlegast søkje når du er i 26. svangerskapsveke",

@@ -34,6 +34,10 @@ router.get('/rest/storage', (req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
+router.get('/rest/saker', (req, res) => {
+    res.send(MockStorage.getSaker());
+});
+
 router.get('/rest/konto', (req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });

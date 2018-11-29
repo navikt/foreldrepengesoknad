@@ -107,11 +107,12 @@
 
     "velkommen.intro.harIkkeSak":
         "Har du en foreldrepengesak i dag så kan du endre ditt uttak gjennom at søke om endring. Hvis du vil søke om foreldrepenger for ett nytt barn må du velge det nedenfor.",
-    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
-        "Skal du søke om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
-    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
 
     "papirsøknad.lenke": "Her finner du papirsøknaden",
 
@@ -153,6 +154,7 @@
     "annenForelder.spørsmål.utenlandskFnr": "{navn} har utenlandsk fødselsnummer",
 
     "annenInntekt.modal.pågående": "Jeg har fortsatt virksomheten",
+    "annenInntekt.modal.velgInntektstype": "Velg inntektstype",
     "annenInntekt.spørsmål": "Har du hatt andre inntektskilder de siste 10 månedene?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
@@ -278,8 +280,6 @@
     "selvstendigNæringsdrivende.modal.oppstartsdato": "Oppgi dato for når du ble yrkesaktiv",
     "varigEndringAvNæringsinntekt.spørsmål":
         "Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste fire årene?",
-    "selvstendigNæringsdrivende.modal.dokumentasjonAvInntektSisteÅr":
-        "Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være kopi av personinntektsskjema, næringsoppgave eller resultatregnskap.",
 
     "selvstendigNæringsdrivende.tidsperiode.fom": "Når startet du {navnPåNæringen}?",
     "selvstendigNæringsdrivende.tidsperiode.tom": "Hvis du har avsluttet {navnPåNæringen} oppgi sluttdato",
@@ -502,9 +502,9 @@
     "uttaksplan.informasjon.farMedmor.deltOmsorgMorUfør":
         "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn opphold i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan ha 15 uker med foreldrepenger uten aktivitetskrav til mor.",
     "uttaksplan.informasjon.mor.aleneOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk.",
     "uttaksplan.informasjon.mor.deltOmsorg":
-        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobb eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
+        "Her kan du fortelle oss når du vil ha foreldrepenger. Du kan også legge inn utsettelse i foreldrepengeperioden hvis du skal ha ferie, jobbe eller er syk. Du kan legge inn perioden for {navnAnnenForelder}, men {navnAnnenForelder} må søke selv.",
     "uttaksplan.informasjon.foreldrepengerFørFødselMerEnnTreUker": "{varighet} tas av fellesperioden.",
     "uttaksplan.informasjon.foreldrepengerFørFødselSkalIkkeHa":
         "Når du ikke starter foreldrepengeperioden tre uker før termindato mister du rett til foreldrepenger disse dagene.",
@@ -943,7 +943,7 @@
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
     "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
-        "Du kan ikke legge inn en periode med samtidig uttak som har en høyere graderingsprosent enn prosenten av samtidig uttak",
+        "Prosenten du skal jobbe kan ikke være høyere enn prosenten du skal være hjemme med foreldrepenger.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 
