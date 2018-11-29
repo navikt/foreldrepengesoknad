@@ -137,11 +137,7 @@ export const findMissingAttachments = (søknad: Søknad, api: ApiState): Missing
     return missingAttachments;
 };
 
-export const mapMissingAttachmentsToSøknad = (
-    missingAttachments: MissingAttachment[],
-    orignalSøknad: Søknad
-): Søknad => {
-    const søknad = JSON.parse(JSON.stringify(orignalSøknad));
+export const mapMissingAttachmentsToSøknad = (missingAttachments: MissingAttachment[], søknad: Søknad): void => {
     missingAttachments.forEach((missingAttachment: MissingAttachment) => {
         const attachment = mapFileToAttachment(
             { name: '', size: '' } as any,
@@ -158,5 +154,4 @@ export const mapMissingAttachmentsToSøknad = (
             søknad.uttaksplan![missingAttachment.index!].vedlegg = [attachment];
         }
     });
-    return søknad;
 };
