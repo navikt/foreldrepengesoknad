@@ -1,10 +1,10 @@
-import { all, put, call, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
-import Sak from '../../types/søknad/Sak';
-import { gjelderSakForeldrepengesøknad } from '../../util/saker/sakerUtils';
+import Sak, { FagsakStatus } from '../../types/søknad/Sak';
+import { erInfotrygdSak, gjelderSakForeldrepengesøknad } from '../../util/saker/sakerUtils';
 
 function* getSaker() {
     try {
@@ -14,10 +14,10 @@ function* getSaker() {
         const saker: Sak[] = response.data;
         const nyesteSak = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0];
 
-        if (gjelderSakForeldrepengesøknad(nyesteSak)) {
+        if (skalKunneSøkeOmEndring(nyesteSak)) {
             yield put(
                 apiActions.updateApi({
-                    nyesteSak
+                    sakForEndringssøknad: nyesteSak
                 })
             );
         }
@@ -37,3 +37,11 @@ function* getSaker() {
 export default function* sakerSaga() {
     yield all([takeLatest(ApiActionKeys.GET_SAKER, getSaker)]);
 }
+
+const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
+    if (!gjelderSakForeldrepengesøknad(nyesteSak)) {
+        return false;
+    }
+
+    return nyesteSak.status === FagsakStatus.LOPENDE || erInfotrygdSak(nyesteSak);
+};

@@ -27,3 +27,7 @@ export const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
         );
     }
 };
+
+export const erInfotrygdSak = (sak: Sak) => {
+    return sak.behandlinger === undefined;
+};
