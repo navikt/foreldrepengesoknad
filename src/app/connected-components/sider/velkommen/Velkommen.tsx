@@ -36,7 +36,7 @@ import './velkommen.less';
 interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
-    nyesteSak?: Sak;
+    sakForEndringssøknad?: Sak;
 }
 
 interface State {
@@ -83,12 +83,14 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     startSøknad(erEndringssøknad: boolean | undefined) {
-        const { nyesteSak, history, dispatch } = this.props;
+        const { sakForEndringssøknad, history, dispatch } = this.props;
         dispatch(
             søknadActions.updateSøknad({
                 erEndringssøknad: erEndringssøknad === true,
                 saksnummer:
-                    erEndringssøknad === true && nyesteSak && nyesteSak.saksnummer ? nyesteSak.saksnummer : undefined
+                    erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
+                        ? sakForEndringssøknad.saksnummer
+                        : undefined
             })
         );
         dispatch(apiActionCreators.storeAppState());
@@ -105,13 +107,13 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     render() {
-        const { person, nyesteSak, harGodkjentVilkår, dispatch, intl } = this.props;
+        const { person, sakForEndringssøknad, harGodkjentVilkår, dispatch, intl } = this.props;
 
         if (person === undefined) {
             return null;
         }
 
-        const endringssøknadEnabled = isFeatureEnabled(Feature.endringssøknad) && nyesteSak;
+        const endringssøknadEnabled = isFeatureEnabled(Feature.endringssøknad) && sakForEndringssøknad;
 
         return (
             <Applikasjonsside visSpråkvelger={isFeatureEnabled(Feature.nynorsk)} margin={false}>
@@ -129,7 +131,7 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className="velkommen__tittel blokk-s">
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    {nyesteSak !== undefined && (
+                    {sakForEndringssøknad !== undefined && (
                         <FeatureBlock
                             feature={Feature.endringssøknad}
                             render={() => {
@@ -141,7 +143,7 @@ class Velkommen extends React.Component<Props, State> {
                                             </Ingress>
                                         </Block>
                                         <Block>
-                                            <SakInfo sak={nyesteSak} />
+                                            <SakInfo sak={sakForEndringssøknad} />
                                         </Block>
                                         <Block>
                                             <SøknadstypeSpørsmål
@@ -157,7 +159,7 @@ class Velkommen extends React.Component<Props, State> {
                     )}
                     <Block
                         visible={
-                            nyesteSak === undefined ||
+                            sakForEndringssøknad === undefined ||
                             endringssøknadEnabled === false ||
                             this.state.skalEndre !== undefined
                         }>
@@ -212,7 +214,7 @@ class Velkommen extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
-    nyesteSak: state.api.nyesteSak
+    sakForEndringssøknad: state.api.sakForEndringssøknad
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));
