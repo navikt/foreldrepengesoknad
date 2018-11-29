@@ -1,3 +1,5 @@
+@import '../../styles/variables.less';
+
 .sak-info {
     display: flex;
     flex-flow: row nowrap;
@@ -13,5 +15,18 @@
         margin-right: 2rem;
         align-self: flex-end;
         line-height: 0;
+    }
+
+    @media (max-width: @mobile-breakpoint) {
+        flex-flow: column wrap;
+        &__text {
+            order: 2;
+        }
+        &__icon {
+            width: 100%;
+            text-align: center;
+            order: 1;
+            margin: 1.5rem 0 0 0;
+        }
     }
 }
