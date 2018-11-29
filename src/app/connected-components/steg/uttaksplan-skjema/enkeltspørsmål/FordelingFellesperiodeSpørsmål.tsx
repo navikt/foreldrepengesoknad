@@ -13,11 +13,12 @@ import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregle
 export interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
     ukerFellesperiode: number;
+    annenForelderErFarEllerMedmor: boolean;
 }
 
 const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
     OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps
-> = ({ visible, navnPåForeldre, ukerFellesperiode, intl }) => {
+> = ({ visible, annenForelderErFarEllerMedmor, navnPåForeldre, ukerFellesperiode, intl }) => {
     const permisjonsregler = getPermisjonsregler();
     const infotekst = getMessage(intl, 'uttaksplan.skjema.fordeling.veiledning', {
         pakrevdForelder1: permisjonsregler.antallUkerForeldrepengerFørFødsel + permisjonsregler.antallUkerMødrekvote,
@@ -25,6 +26,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
         navnForelder1: navnPåForeldre.mor,
         navnForelder2: navnPåForeldre.farMedmor
     });
+    const annenForeldersNavn = annenForelderErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
     return (
         <UttaksplanSkjemaSpørsmål
             visible={visible}
@@ -59,7 +61,7 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                         )
                     }
                     valueLabelRenderer={(options) => (
-                        <Ingress tag="p" className="m-text-center fordelingFellesperiode-valgtVerdi">
+                        <Ingress tag="p" className="m-text-center fordelingFellesperiode--valgtVerdi">
                             <FormattedMessage
                                 id="uttaksplan.skjema.fordeling.valgtVerdi"
                                 values={{
@@ -70,7 +72,15 @@ const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
                             />
                         </Ingress>
                     )}
-                    valueLabelPlacement="below"
+                    valueLabelPlacement="above"
+                    bottomContentRenderer={(options) => (
+                        <Normaltekst className="m-text-center fordelingFellesperiode--bottomContent">
+                            <FormattedMessage
+                                id="uttaksplan.skjema.fordeling.annenForeldersFellesperiode"
+                                values={{ annenForeldersNavn, antallUker: options.max - options.value }}
+                            />
+                        </Normaltekst>
+                    )}
                 />
             )}
         />

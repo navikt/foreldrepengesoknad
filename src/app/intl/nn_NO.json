@@ -449,6 +449,8 @@
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
     "uttaksplan.skjema.fordeling.valgtVerdi":
         "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
+    "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
+        "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
 
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må gi opp når du skal starte foreldrepengane, eller krysse av for at du ikkje skal ha foreldrepengar før termindato ",
