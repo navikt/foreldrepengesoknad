@@ -6,7 +6,7 @@ export const samtidigUttaksperiodeErUgyldig = (periode: UttakFormPeriodeType) =>
     if (periode.type === Periodetype.Uttak) {
         const { ønskerSamtidigUttak, samtidigUttakProsent } = periode;
         if (ønskerSamtidigUttak === true) {
-            const regler = getStillingsprosentRegler(samtidigUttakProsent || '');
+            const regler = getStillingsprosentRegler(true, samtidigUttakProsent || '');
             const results = regler.map((regel) => regel.test() === true);
             return results.some((erGyldig) => erGyldig === false);
         }
