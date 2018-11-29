@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Søkersituasjon } from '../../types/s\u00F8knad/S\u00F8knad';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { InjectedIntlProps } from 'react-intl';
 import InfoBlock from 'common/components/info-block/InfoBlock';
 
