@@ -6,6 +6,7 @@ export const questionValueIsOk = (value: QuestionValue) => {
 
 export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
+        isRequired?: (props: Payload) => boolean;
         isAnswered: (props: Payload) => boolean;
         parentQuestion?: QuestionKeys;
         visibilityRequirements?: (props: Payload) => boolean;

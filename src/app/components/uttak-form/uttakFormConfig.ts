@@ -12,8 +12,9 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { UttakFormRegler } from '../../regler/uttakForm/uttakFormRegler';
 import { PeriodeRegler } from '../../regler/perioder/periodeRegler';
+import { erUttakFørFødsel } from '../../regler/perioder/erUttakF\u00F8rF\u00F8dsel';
+import { UttakRegler } from '../../regler/uttak/uttakRegler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -46,16 +47,20 @@ const visKvote = ({
     velgbareStønadskontotyper,
     søknadsinfo
 }: UttakFormPayload): boolean => {
-    return UttakFormRegler(søknadsinfo, periode).kvoteSkalBesvares(kanEndreStønadskonto, velgbareStønadskontotyper);
+    return (
+        erUttakFørFødsel(periode as Periode, søknadsinfo.søknaden.familiehendelsesdato) === false &&
+        kanEndreStønadskonto === true &&
+        velgbareStønadskontotyper.length > 0
+    );
 };
 
 const visAktivitetskravMor = ({ periode, søknadsinfo }: UttakFormPayload): boolean => {
-    return periode.konto !== undefined && UttakFormRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares();
+    return periode.konto !== undefined && UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares();
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     const { søknadsinfo, periode, velgbareStønadskontotyper } = payload;
-    const skalBesvares = UttakFormRegler(søknadsinfo, periode).samtidigUttakSkalBesvares(velgbareStønadskontotyper);
+    const skalBesvares = UttakRegler(søknadsinfo, periode).samtidigUttakSkalBesvares(velgbareStønadskontotyper);
 
     if (skalBesvares === false) {
         return false;
@@ -125,24 +130,19 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
+        isRequired: () => true,
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
             (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.kvote]: {
+        isRequired: () => false,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         parentQuestion: Sp.tidsperiode,
         visibilityRequirements: (payload) => visKvote(payload)
     },
-    [Sp.erMorForSyk]: {
-        isAnswered: ({ periode }) =>
-            isUttaksperiode(periode) &&
-            periode.konto === StønadskontoType.Fedrekvote &&
-            periode.erMorForSyk !== undefined,
-        parentQuestion: Sp.kvote,
-        visibilityRequirements: (payload) => visErMorForSyk(payload)
-    },
     [Sp.aktivitetskravMor]: {
+        isRequired: ({ periode, søknadsinfo }) => UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -151,9 +151,19 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         visibilityRequirements: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
+        isRequired: ({ søknadsinfo, periode, velgbareStønadskontotyper }) =>
+            UttakRegler(søknadsinfo, periode).samtidigUttakSkalBesvares(velgbareStønadskontotyper),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         parentQuestion: Sp.tidsperiode,
         visibilityRequirements: (payload) => visSamtidigUttak(payload)
+    },
+    [Sp.erMorForSyk]: {
+        isAnswered: ({ periode }) =>
+            isUttaksperiode(periode) &&
+            periode.konto === StønadskontoType.Fedrekvote &&
+            periode.erMorForSyk !== undefined,
+        parentQuestion: Sp.kvote,
+        visibilityRequirements: (payload) => visErMorForSyk(payload)
     },
     [Sp.samtidigUttakProsent]: {
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent),

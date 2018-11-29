@@ -1,23 +1,19 @@
 import { StønadskontoType, Periode } from '../../types/uttaksplan/periodetyper';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-// import { getPeriodeRegler } from '../perioder/periodeRegler';
-import kvoteSkalBesvares from './kvoteSkalBesvares';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { PeriodeRegler } from '../perioder/periodeRegler';
 
-export const UttakFormRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType) => ({
-    kvoteSkalBesvares: (kanEndreStønadskonto: boolean, velgbareStønadskontotyper: StønadskontoType[]): boolean =>
-        kvoteSkalBesvares(
-            info.søknaden.familiehendelsesdato,
+export const UttakRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType) => ({
+    aktivitetskravMorSkalBesvares: () =>
+        aktivitetskravMorSkalBesvares(
             periode as Periode,
-            kanEndreStønadskonto,
-            velgbareStønadskontotyper
+            info.søker.erMor,
+            info.annenForelder.harRett,
+            info.søknaden.erDeltUttak
         ),
-
-    aktivitetskravMorSkalBesvares: () => aktivitetskravMorSkalBesvares(periode, info),
 
     erMorForSykSkalBesvares: (): boolean =>
         erMorForForSykSkalBesvares(
@@ -38,4 +34,4 @@ export const UttakFormRegler = (info: Søknadsinfo, periode: UttakFormPeriodeTyp
         )
 });
 
-export default UttakFormRegler;
+export default UttakRegler;
