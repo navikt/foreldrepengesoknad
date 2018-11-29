@@ -21,15 +21,17 @@ import { HistoryProps } from '../../../types/common';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
-import './velkommen.less';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
 import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
 import { Feature, isFeatureEnabled } from '../../../Feature';
-import SøknadstypeSpørsmål from '../../../sp\u00F8rsm\u00E5l/S\u00F8knadstypeSp\u00F8rsm\u00E5l';
+import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak from '../../../types/søknad/Sak';
+import SakInfo from '../../../components/sak-info/SakInfo';
+
+import './velkommen.less';
 
 interface StateProps {
     person?: Person;
@@ -130,22 +132,27 @@ class Velkommen extends React.Component<Props, State> {
                     {nyesteSak !== undefined && (
                         <FeatureBlock
                             feature={Feature.endringssøknad}
-                            render={() => (
-                                <>
-                                    <Block>
-                                        <Ingress>
-                                            <FormattedMessage id="velkommen.intro.harIkkeSak" />
-                                        </Ingress>
-                                    </Block>
-                                    <Block>
-                                        <SøknadstypeSpørsmål
-                                            harEksisterendeSak={false}
-                                            skalEndre={this.state.skalEndre}
-                                            onChange={(skalEndre) => this.setState({ skalEndre })}
-                                        />
-                                    </Block>
-                                </>
-                            )}
+                            render={() => {
+                                return (
+                                    <>
+                                        <Block>
+                                            <Ingress>
+                                                <FormattedMessage id="velkommen.intro.harSak" />
+                                            </Ingress>
+                                        </Block>
+                                        <Block>
+                                            <SakInfo sak={nyesteSak} />
+                                        </Block>
+                                        <Block>
+                                            <SøknadstypeSpørsmål
+                                                harEksisterendeSak={false}
+                                                skalEndre={this.state.skalEndre}
+                                                onChange={(skalEndre) => this.setState({ skalEndre })}
+                                            />
+                                        </Block>
+                                    </>
+                                );
+                            }}
                         />
                     )}
                     <Block
@@ -159,11 +166,7 @@ class Velkommen extends React.Component<Props, State> {
                             checked={harGodkjentVilkår}
                             label={getMessage(intl, 'velkommen.samtykke')}
                             onChange={() => {
-                                dispatch(
-                                    søknadActions.updateSøknad({
-                                        harGodkjentVilkår: !harGodkjentVilkår
-                                    })
-                                );
+                                dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: !harGodkjentVilkår }));
                             }}>
                             <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
                         </BekreftCheckboksPanel>
@@ -181,9 +184,7 @@ class Velkommen extends React.Component<Props, State> {
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    this.setState({
-                                        isDinePersonopplysningerModalOpen: true
-                                    });
+                                    this.setState({ isDinePersonopplysningerModalOpen: true });
                                 }}>
                                 <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
                             </a>

@@ -87,6 +87,11 @@
     "søknad.pageheading.endring": "Søknad om endring av foreldrepenger",
 
     "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
+    "velkommen.sak.type": "Foreldrepenger",
+    "velkommen.sak.sistEndret": "Sist endret: {date}",
+    "velkommen.sak.status.underBehandling": "Under behandling",
+    "velkommen.sak.status.avsluttet": "Avsluttet",
+
     "velkommen.ingress": "Foreldrepenger er noe du kan få for hvert barn du føder eller adopterer.",
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
@@ -100,13 +105,15 @@
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
 
-    "velkommen.intro.harIkkeSak":
+    "velkommen.intro.harSak":
         "Her søker du om foreldrepenger når du venter barn eller skal være hjemme i foreldrepermisjon. Hvis du er far eller medmor og skal starte foreldrepengeperioden din med en utsettelse, må du velge ny søknad først. Mottar du allerede foreldrepenger, kan du utsette eller endre ved å velge søk om endring.",
-    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
-        "Skal du søke om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
+
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
-    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
 
     "papirsøknad.lenke": "Her finner du papirsøknaden",
 
