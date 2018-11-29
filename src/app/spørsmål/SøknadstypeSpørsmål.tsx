@@ -13,21 +13,33 @@ type Props = OwnProps & InjectedIntlProps;
 
 const SøknadstypeSpørsmål = (props: Props) => {
     const { harEksisterendeSak, skalEndre, onChange, intl } = props;
-    return (
-        <JaNeiSpørsmål
-            spørsmål={getMessage(
-                intl,
-                `velkommen.spørsmål.søknadstype.${harEksisterendeSak ? 'harSak' : 'harIkkeSak'}.spørsmål`
-            )}
-            navn="søknadstype"
-            valgtVerdi={skalEndre}
-            labels={{
-                ja: getMessage(intl, `velkommen.spørsmål.søknadstype.alternativ.endring`),
-                nei: getMessage(intl, `velkommen.spørsmål.søknadstype.alternativ.nyttbarn`)
-            }}
-            onChange={(verdi) => onChange(verdi)}
-        />
-    );
+    if (harEksisterendeSak) {
+        return (
+            <JaNeiSpørsmål
+                spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.'harSak'.spørsmål`)}
+                navn="søknadstype"
+                valgtVerdi={skalEndre}
+                labels={{
+                    ja: getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
+                    nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
+                }}
+                onChange={(verdi) => onChange(verdi)}
+            />
+        );
+    } else {
+        return (
+            <JaNeiSpørsmål
+                spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål`)}
+                navn="søknadstype"
+                valgtVerdi={!skalEndre}
+                labels={{
+                    ja: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn`),
+                    nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring`)
+                }}
+                onChange={(verdi) => onChange(!verdi)}
+            />
+        );
+    }
 };
 
 export default injectIntl(SøknadstypeSpørsmål);
