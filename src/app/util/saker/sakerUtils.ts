@@ -1,4 +1,4 @@
-import Sak from '../../types/søknad/Sak';
+import Sak, { FagsakStatus } from '../../types/søknad/Sak';
 import Behandling, { BehandlingTema } from '../../types/søknad/Behandling';
 
 const getBehandling = (sak: Sak): Behandling | undefined => {
@@ -26,4 +26,16 @@ export const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
             tema === BehandlingTema.UDEFINERT
         );
     }
+};
+
+export const erInfotrygdSak = (sak: Sak) => {
+    return sak.behandlinger === undefined;
+};
+
+export const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
+    if (!gjelderSakForeldrepengesøknad(nyesteSak)) {
+        return false;
+    }
+
+    return nyesteSak.status === FagsakStatus.LOPENDE || erInfotrygdSak(nyesteSak);
 };
