@@ -12,6 +12,16 @@ const stillingsprosentIsLessThan100 = (stillingsprosent: string): boolean => {
     return false;
 };
 
+const samtidigUttakProsentIsMax100 = (samtidigUttakProsent: string): boolean => {
+    const pst = getFloatFromString(samtidigUttakProsent);
+
+    if (pst) {
+        return pst <= 100;
+    }
+
+    return false;
+};
+
 const stillingsprosentIsMoreThan0 = (stillingsprosent: string): boolean => {
     const pst = getFloatFromString(stillingsprosent);
     if (pst) {
@@ -20,7 +30,11 @@ const stillingsprosentIsMoreThan0 = (stillingsprosent: string): boolean => {
     return false;
 };
 
-export const getStillingsprosentRegler = (stillingsprosent: string, intl?: InjectedIntl): Validator[] => {
+export const getStillingsprosentRegler = (
+    erSamtidigUttak: boolean,
+    stillingsprosent: string,
+    intl?: InjectedIntl
+): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
         hasValueRule(stillingsprosent, intl ? getMessage(intl, `${intlKey}.required`) : ''),
@@ -33,7 +47,10 @@ export const getStillingsprosentRegler = (stillingsprosent: string, intl?: Injec
             failText: intl ? getMessage(intl, `${intlKey}.under1`) : ''
         },
         {
-            test: () => stillingsprosentIsLessThan100(stillingsprosent),
+            test: () =>
+                erSamtidigUttak
+                    ? samtidigUttakProsentIsMax100(stillingsprosent)
+                    : stillingsprosentIsLessThan100(stillingsprosent),
             failText: intl ? getMessage(intl, `${intlKey}.over100prosent`) : ''
         }
     ];
