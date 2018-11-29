@@ -31,7 +31,7 @@ function getSøkerinfo() {
 }
 
 const getSaker = () => {
-    return axios.get(`${apiBaseUrl}/saker`, {
+    return axios.get(`${apiBaseUrl}/innsyn/saker`, {
         timeout: 60 * 1000,
         withCredentials: true
     });
