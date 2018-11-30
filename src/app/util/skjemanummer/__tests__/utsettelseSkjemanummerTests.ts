@@ -29,11 +29,6 @@ describe('getUtsettelseSkjemanummer', () => {
         expect(getUtsettelseSkjemanummer(periodeMedMorsAktivitet)).toBe(Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM);
     });
 
-    it('should require Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER if erArbeidstaker is truthy', () => {
-        const arbeidstakerPeriode = { ...periodeMock, erArbeidstaker: true };
-        expect(getUtsettelseSkjemanummer(arbeidstakerPeriode)).toBe(Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER);
-    });
-
     it('should require Skjemanummer.ANNET if neither morsAktivitetIPerioden nor erArbeidstaker is truthy', () => {
         expect(getUtsettelseSkjemanummer(periodeMock)).toBe(Skjemanummer.ANNET);
     });

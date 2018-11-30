@@ -30,6 +30,7 @@ import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
+import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -147,6 +148,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         value={navnPåNæringen || ''}
                         throttled={false}
+                        validators={getFritekstfeltRules({ maxLength: 100 }, intl, navnPåNæringen)}
                     />
                 </Block>
 
