@@ -27,6 +27,7 @@ export interface UtsettelseFormPayload {
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRettPåForeldrepenger: boolean;
+    familiehendelsesdato: Date;
 }
 
 export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørsmålKeys>;
