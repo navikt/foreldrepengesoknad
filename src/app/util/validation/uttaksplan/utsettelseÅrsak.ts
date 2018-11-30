@@ -15,9 +15,7 @@ export const getUtsettelseÅrsakTypeValidators = (
     return [
         {
             test: () => erUtsettelseÅrsakTypeGyldigForStartdato(årsak, startdato),
-            failText: getMessage(intl, 'utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato', {
-                årsak: getMessage(intl, `utsettelsesårsak.${årsak}`).toLowerCase()
-            })
+            failText: getMessage(intl, 'utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato')
         }
     ];
 };
