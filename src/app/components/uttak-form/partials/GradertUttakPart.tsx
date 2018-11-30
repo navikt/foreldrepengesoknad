@@ -11,10 +11,6 @@ import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
 import { getStillingsprosentRegler } from '../../../util/validation/stillingsprosent';
-import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import { Skjemanummer } from '../../../types/søknad/Søknad';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from '../../../util/uttaksPlanStatus';
@@ -115,14 +111,6 @@ class GradertUttakForm extends React.Component<Props> {
                             }
                         />
                     </Veilederinfo>
-                    {periode.arbeidsform === Arbeidsform.arbeidstaker && (
-                        <VedleggSpørsmål
-                            vedlegg={periode.vedlegg as Attachment[]}
-                            onChange={(vedlegg) => onChange({ vedlegg })}
-                            attachmentType={AttachmentType.ARBEID_VED_GRADERING}
-                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
-                        />
-                    )}
                 </Block>
             </>
         );
