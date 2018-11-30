@@ -950,7 +950,7 @@
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
-        "Du kan ikke søke om utsettelse før foreldrepengeperioden starter.",
+        "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 
