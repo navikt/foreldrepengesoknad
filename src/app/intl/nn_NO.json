@@ -914,10 +914,12 @@
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg",
     "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
-        "Du kan ikkje utsetje på grunn av {årsak}, før dagens dato",
+        "Du kan berre søke om å utsetje fram i tid når du utset på grunn av ferie eller arbeid. Det gjeld óg dersom du skal kombinere foreldrepengane med delvis jobb.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        "Du kan berre søke om å utsetje fram i tid når du utset på grunn av ferie eller arbeid. Det gjeld óg dersom du skal kombinere foreldrepengane med delvis jobb.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
