@@ -917,7 +917,7 @@
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan berre søke om å utsetje fram i tid når du utset på grunn av ferie eller arbeid. Det gjeld óg dersom du skal kombinere foreldrepengane med delvis jobb.",
+        " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikkje søke om å utsetje før foreldrepengeperioden starta.",
 
