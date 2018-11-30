@@ -106,7 +106,7 @@
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
 
     "velkommen.intro.harSak":
-        "Her søker du om foreldrepenger når du venter barn eller skal være hjemme i foreldrepermisjon. Hvis du er far eller medmor og skal starte foreldrepengeperioden din med en utsettelse, må du velge ny søknad først. Mottar du allerede foreldrepenger, kan du utsette eller endre ved å velge søk om endring.",
+        "Her søker du om foreldrepenger. Hvis du skal starte foreldrepengeperioden din med en utsettelse, må du velge ny søknad. Mottar du allerede foreldepenger, velger du søk om endring.",
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
