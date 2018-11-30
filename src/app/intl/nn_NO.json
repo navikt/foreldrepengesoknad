@@ -103,6 +103,12 @@
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søke om endring på en eksisterende foreldrepengesak?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    
+    "velkommen.sak.type": "Foreldrepengar",
+    "velkommen.sak.sistEndret": "Sist endra: {date}",
+    "velkommen.sak.status.underBehandling": "Under behandling",
+    "velkommen.sak.status.avsluttet": "Avsluttet",
+
 
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
