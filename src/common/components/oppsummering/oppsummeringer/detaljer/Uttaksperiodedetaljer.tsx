@@ -5,7 +5,6 @@ import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummerin
 import MorsAktivitetDetaljer from 'common/components/oppsummering/oppsummeringer/detaljer/MorsAktivitetDetaljer';
 import getMessage from 'common/util/i18nUtils';
 import { getArbeidsformTekst } from 'common/util/oppsummeringUtils';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
 import Arbeidsforhold from 'app/types/Arbeidsforhold';
 
 interface UttaksperiodedetaljerProps {
@@ -67,13 +66,6 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
                     dokumentasjonAvMorsAktivitet={vedlegg || []}
                 />
             )}
-            {periode.gradert === true &&
-                periode.erArbeidstaker === true && (
-                    <OppsummeringAvDokumentasjon
-                        ledetekst={getMessage(intl, 'oppsummering.uttak.dokumentasjonAvArbeidsforhold')}
-                        vedlegg={vedlegg || []}
-                    />
-                )}
         </>
     );
 };
