@@ -921,5 +921,7 @@
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
-    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig"
+    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
+
+    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikke være lengre enn {maxLength} tegn."
 }
