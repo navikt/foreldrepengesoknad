@@ -5,7 +5,8 @@ import {
     Periodetype,
     StønadskontoType,
     Periode,
-    UttaksperiodeBase
+    UttaksperiodeBase,
+    MorsAktivitet
 } from '../../../types/uttaksplan/periodetyper';
 import { Uttaksdagen } from '../Uttaksdagen';
 import { Forelder } from 'common/types';
@@ -233,6 +234,7 @@ const ikkeDeltUttakFødselFarMedmor = (
             konto: StønadskontoType.AktivitetsfriKvote,
             tidsperiode: getTidsperiode(startDato, aktivitetsfriKvote!.dager),
             vedlegg: [],
+            morsAktivitetIPerioden: MorsAktivitet.Uføre,
             ønskerSamtidigUttak: false,
             gradert: false,
             harIkkeAktivitetskrav: true

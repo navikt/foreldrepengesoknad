@@ -102,11 +102,13 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
 
     renderOptions() {
         const { intl } = this.props;
-        return Object.keys(MorsAktivitet).map((aktivitetsid) => (
-            <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
-                {getMessage(intl, `morsAktivitet.${aktivitetsid}`)}
-            </option>
-        ));
+        return Object.keys(MorsAktivitet)
+            .filter((aktivitetsid) => MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre)
+            .map((aktivitetsid) => (
+                <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
+                    {getMessage(intl, `morsAktivitet.${aktivitetsid}`)}
+                </option>
+            ));
     }
     render() {
         const { intl, navnPåForeldre, morsAktivitetIPerioden, onChange } = this.props;
@@ -123,7 +125,10 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[
                             {
-                                test: () => morsAktivitetIPerioden !== undefined && morsAktivitetIPerioden.length > 0,
+                                test: () =>
+                                    morsAktivitetIPerioden !== undefined &&
+                                    morsAktivitetIPerioden !== MorsAktivitet.Uføre &&
+                                    morsAktivitetIPerioden.length > 0,
                                 failText: getMessage(intl, 'påkrevd')
                             }
                         ]}>

@@ -7,7 +7,8 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    Periode
+    Periode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -62,7 +63,8 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
         morsAktivitetIPerioden:
-            visibility && visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)
+            (visibility && visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)) ||
+            periode.morsAktivitetIPerioden === MorsAktivitet.Uføre
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
