@@ -1,4 +1,4 @@
-import Sak, { FagsakStatus } from '../../types/søknad/Sak';
+import Sak, { FagsakStatus, SakType } from '../../types/søknad/Sak';
 import Behandling, { BehandlingTema } from '../../types/søknad/Behandling';
 
 const getBehandling = (sak: Sak): Behandling | undefined => {
@@ -28,8 +28,8 @@ export const gjelderSakForeldrepengesøknad = (sak: Sak): boolean => {
     }
 };
 
-export const erInfotrygdSak = (sak: Sak) => {
-    return sak.behandlinger === undefined;
+export const erInfotrygdSak = (sak: Sak): boolean => {
+    return sak.type === SakType.SAK;
 };
 
 export const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
