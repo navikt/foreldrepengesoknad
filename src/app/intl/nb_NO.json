@@ -949,6 +949,8 @@
         "Prosenten du skal jobbe kan ikke være høyere enn prosenten du skal være hjemme med foreldrepenger.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan bare søke om utsettelse frem i tid når utsettelsen din gjelder ferie eller arbeid. Dette gjelder også hvis du skal kombinere foreldrepengene med delvis jobb.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikke søke om utsettelse før foreldrepengeperioden starter.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 

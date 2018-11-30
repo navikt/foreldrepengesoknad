@@ -12,7 +12,8 @@ export enum PeriodeValideringErrorKey {
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
     'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
     'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent',
-    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode'
+    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode',
+    'UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL' = 'ikkeUtsettelseFørForeldrepengerFørFødsel'
 }
 
 export enum PeriodeAdvarselKey {
