@@ -952,9 +952,6 @@
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 
-    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
-        "Du kan bare søke om utsettelse frem i tid når utsettelsen din gjelder ferie eller arbeid. Dette gjelder også hvis du skal kombinere foreldrepengene med delvis jobb.",
-
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
 
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Feltet kan maks være {maxLength} tegn."
