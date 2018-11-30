@@ -6,14 +6,14 @@ import { Kvittering } from '../../types/Kvittering';
 import routeConfig from '../../util/routing/routeConfig';
 import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
-import { mapMissingAttachmentsToSøknad } from '../../util/attachments/missingAttachmentUtil';
+import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
 
 function* sendSøknad(action: SendSøknad) {
     try {
         yield put(apiActions.updateApi({ søknadSendingInProgress: true }));
         const orignalSøknad = yield select((state: AppState) => state.søknad);
         const søknadCopy = JSON.parse(JSON.stringify(orignalSøknad));
-        mapMissingAttachmentsToSøknad(action.missingAttachments, søknadCopy);
+        mapMissingAttachmentsOnSøknad(action.missingAttachments, søknadCopy);
 
         const response = yield call(Api.sendSøknad, cleanUpSøknad(søknadCopy));
         const kvittering: Kvittering = response.data;
