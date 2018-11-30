@@ -28,7 +28,7 @@ import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
-import Sak from '../../../types/søknad/Sak';
+import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
 import './velkommen.less';
@@ -142,9 +142,11 @@ class Velkommen extends React.Component<Props, State> {
                                                 <FormattedMessage id="velkommen.intro.harSak" />
                                             </Ingress>
                                         </Block>
-                                        <Block>
-                                            <SakInfo sak={sakForEndringssøknad} />
-                                        </Block>
+                                        {sakForEndringssøknad.type === SakType.FPSAK && (
+                                            <Block>
+                                                <SakInfo sak={sakForEndringssøknad} />
+                                            </Block>
+                                        )}
                                         <Block>
                                             <SøknadstypeSpørsmål
                                                 harEksisterendeSak={false}
