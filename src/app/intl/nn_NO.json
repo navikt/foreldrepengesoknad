@@ -516,6 +516,8 @@
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.dekningsgrad80":
         "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikkje søke om utsettelse før foreldrepengeperioden startar.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
