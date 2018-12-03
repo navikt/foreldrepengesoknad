@@ -6,7 +6,7 @@ export const questionValueIsOk = (value: QuestionValue) => {
 
 export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
-        isRequired?: (props: Payload) => boolean;
+        isIncluded?: (props: Payload) => boolean;
         isAnswered: (props: Payload) => boolean;
         parentQuestion?: QuestionKeys;
         visibilityRequirements?: (props: Payload) => boolean;
@@ -23,16 +23,19 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     if (!config) {
         return false;
     }
-    const conditionIsMet = config.visibilityRequirements ? config.visibilityRequirements(payload) : true;
-    if (conditionIsMet === false) {
+    if (config.isIncluded && config.isIncluded(payload) === false) {
         return false;
     }
-    if (config.parentQuestion === undefined) {
-        return conditionIsMet;
-    } else {
-        const parentHasValidValue = questions[config.parentQuestion as any].isAnswered(payload);
-        return parentHasValidValue && isQuestionVisible(questions, config.parentQuestion, payload);
+    if (config.visibilityRequirements && config.visibilityRequirements(payload) === false) {
+        return false;
     }
+    if (config.parentQuestion !== undefined) {
+        return (
+            isQuestionVisible(questions, config.parentQuestion, payload) &&
+            questions[config.parentQuestion as any].isAnswered(payload)
+        );
+    }
+    return true;
 };
 
 const isAllQuestionsAnswered = <Payload, QuestionKeys>(
