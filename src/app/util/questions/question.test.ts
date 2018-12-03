@@ -35,7 +35,8 @@ export const questionConfig: QuestionConfig<TestPayload, TestKeys> = {
     },
     [TestKeys.friend]: {
         isRelevant: () => true,
-        isAnswered: (payload: TestPayload) => payload.friend !== undefined
+        isAnswered: (payload: TestPayload) => payload.friend !== undefined,
+        visibilityFilter: ({ parent, child, grandchild }) => parent === true && child === true && grandchild === true
     }
 };
 
@@ -47,7 +48,7 @@ describe('question', () => {
         expect(visibility.isVisible(TestKeys.parent)).toBe(true);
         expect(visibility.isVisible(TestKeys.child)).toBe(false);
         expect(visibility.isVisible(TestKeys.grandchild)).toBe(false);
-        expect(visibility.isVisible(TestKeys.friend)).toBe(true);
+        expect(visibility.isVisible(TestKeys.friend)).toBe(false);
     });
     it('renders child if relevant', () => {
         const visibility = getVisibility({ ...testPayload, allowChildren: true });
@@ -64,6 +65,18 @@ describe('question', () => {
         const visibility = getVisibility({ ...testPayload, allowChildren: true, child: true });
         expect(visibility.isVisible(TestKeys.parent)).toBe(true);
         expect(visibility.isVisible(TestKeys.child)).toBe(true);
+        expect(visibility.isVisible(TestKeys.grandchild)).toBe(true);
+    });
+    it('filters out questions based on visibilityFilter', () => {
+        let visibility = getVisibility({ ...testPayload, allowChildren: true, child: true });
+        expect(visibility.isVisible(TestKeys.friend)).toBe(false);
+        visibility = getVisibility({
+            ...testPayload,
+            allowChildren: true,
+            child: true,
+            parent: true,
+            grandchild: true
+        });
         expect(visibility.isVisible(TestKeys.grandchild)).toBe(true);
     });
 });
