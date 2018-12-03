@@ -32,6 +32,7 @@ import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
 import './velkommen.less';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     person?: Person;
@@ -149,7 +150,7 @@ class Velkommen extends React.Component<Props, State> {
                                         )}
                                         <Block>
                                             <SøknadstypeSpørsmål
-                                                harEksisterendeSak={false}
+                                                harEksisterendeSak={true}
                                                 skalEndre={this.state.skalEndre}
                                                 onChange={(skalEndre) => this.setState({ skalEndre })}
                                             />
@@ -165,6 +166,13 @@ class Velkommen extends React.Component<Props, State> {
                             endringssøknadEnabled === false ||
                             this.state.skalEndre !== undefined
                         }>
+                        {this.state.skalEndre === false && (
+                            <>
+                                <Veilederinfo>
+                                    <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                </Veilederinfo>
+                            </>
+                        )}
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}
