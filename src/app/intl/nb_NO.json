@@ -674,6 +674,7 @@
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "oppsummering.utenlandsopphold": "Utenlandsopphold",
+    "oppsummering.utenlandsopphold.land": "bo i {land}",
     "oppsummering.iNorgePåFødselstidspunktet.label": "Jeg er i Norge på fødselstidspunktet",
     "oppsummering.iNorgePåFødselstidspunktet.label.farMedmor": "Jeg var i Norge på fødselstidspunktet",
     "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Jeg er i Norge på datoen for omsorgsovertakelse",

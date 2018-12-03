@@ -19,7 +19,9 @@ const UtenlandsoppholdOppsummeringsliste: React.StatelessComponent<Props> = ({
     return (
         <Oppsummeringsliste
             data={informasjonOmUtenlandsopphold.map(({ land, tidsperiode }) => ({
-                venstrestiltTekst: `bo i ${countries.getName(land, 'nb')}`,
+                venstrestiltTekst: getMessage(intl, 'oppsummering.utenlandsopphold.land', {
+                    land: countries.getName(land, 'nb')
+                }),
                 høyrestiltTekst: getMessage(intl, 'tidsintervall', {
                     fom: formatDate(tidsperiode.fom),
                     tom: formatDate(tidsperiode.tom)
