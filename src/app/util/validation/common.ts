@@ -13,9 +13,19 @@ import {
     timeintervalsOverlap,
     dateIs15YearsAnd3MonthsAgoOrLess
 } from '../dates/dates';
+import { maxLengthIsGreaterThanOrEqualToStringLength } from '../stringUtils';
 
 export const hasValueRule = (v: any, failText: string): Validator => ({
     test: () => v !== undefined && v !== '',
+    failText
+});
+
+export const maxLengthIsGreaterThanOrEqualToStringLengthRule = (
+    maxLength: number,
+    v: string,
+    failText: string
+): Validator => ({
+    test: () => maxLengthIsGreaterThanOrEqualToStringLength(maxLength, v),
     failText
 });
 

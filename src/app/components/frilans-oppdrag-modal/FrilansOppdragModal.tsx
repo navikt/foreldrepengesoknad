@@ -6,13 +6,15 @@ import { Undertittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
+import Input from 'common/components/skjema/wrappers/Input';
+import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;
@@ -98,6 +100,8 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                                     navnPåArbeidsgiver: e.target.value
                                 })
                             }
+                            name="oppdragsgiverNavn"
+                            validators={getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver)}
                         />
                     </Block>
 
