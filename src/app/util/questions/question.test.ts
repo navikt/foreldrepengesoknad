@@ -1,49 +1,41 @@
 import { QuestionConfig, QuestionVisibility, questionValueIsOk, Questions } from './Question';
 
 enum TestKeys {
-    name = 'name',
-    hasAddress = 'hasAddress',
-    address = 'address',
-    address2 = 'address2'
+    parent = 'parent',
+    child = 'child',
+    grandchild = 'grandchild',
+    friend = 'friend'
 }
 
 interface TestPayload {
-    firstname?: string;
-    hasAddress?: boolean;
-    address?: string;
-    address2?: string;
-    shouldAskIfHasAddress?: boolean;
+    parent?: boolean;
+    child?: boolean;
+    grandchild?: boolean;
+    friend?: boolean;
+    allowChildren?: boolean;
 }
 
 type TestQuestionVisibility = QuestionVisibility<TestKeys>;
 
 const testPayload: TestPayload = {};
 
-const askIfUserHasAddress = (payload: TestPayload): boolean => {
-    return payload.shouldAskIfHasAddress === true;
-};
-const askForAddressDetails = (payload: TestPayload): boolean => {
-    return payload.hasAddress === true;
-};
-
 export const questionConfig: QuestionConfig<TestPayload, TestKeys> = {
-    [TestKeys.name]: {
+    [TestKeys.parent]: {
         isRelevant: () => true,
-        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.firstname)
+        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.parent)
     },
-    [TestKeys.hasAddress]: {
-        isRelevant: (payload) => askIfUserHasAddress(payload),
-        isAnswered: (payload: TestPayload) => payload.hasAddress !== undefined
+    [TestKeys.child]: {
+        isRelevant: (payload) => payload.allowChildren === true,
+        isAnswered: (payload: TestPayload) => payload.child !== undefined
     },
-    [TestKeys.address]: {
-        parentQuestion: TestKeys.hasAddress,
-        isRelevant: (payload) => askForAddressDetails(payload),
-        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.address)
+    [TestKeys.grandchild]: {
+        parentQuestion: TestKeys.child,
+        isRelevant: (payload) => payload.allowChildren === true,
+        isAnswered: (payload: TestPayload) => payload.grandchild !== undefined
     },
-    [TestKeys.address2]: {
-        parentQuestion: TestKeys.address,
+    [TestKeys.friend]: {
         isRelevant: () => true,
-        isAnswered: (payload: TestPayload) => questionValueIsOk(payload.address2)
+        isAnswered: (payload: TestPayload) => payload.friend !== undefined
     }
 };
 
@@ -52,65 +44,26 @@ const getVisibility = (payload: TestPayload): TestQuestionVisibility => Question
 describe('question', () => {
     it('renders only relevant questions', () => {
         const visibility = getVisibility(testPayload);
-        expect(visibility.isVisible(TestKeys.name)).toBe(true);
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(false);
-        expect(visibility.isVisible(TestKeys.address)).toBe(false);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
+        expect(visibility.isVisible(TestKeys.parent)).toBe(true);
+        expect(visibility.isVisible(TestKeys.child)).toBe(false);
+        expect(visibility.isVisible(TestKeys.grandchild)).toBe(false);
+        expect(visibility.isVisible(TestKeys.friend)).toBe(true);
     });
-    it('does NOT render question when isIncluded returns false', () => {
-        const visibility = getVisibility({ ...testPayload, shouldAskIfHasAddress: false });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(false);
+    it('renders child if relevant', () => {
+        const visibility = getVisibility({ ...testPayload, allowChildren: true });
+        expect(visibility.isVisible(TestKeys.parent)).toBe(true);
+        expect(visibility.isVisible(TestKeys.child)).toBe(true);
     });
-    it('does render question correctly when isIncluded returns true', () => {
-        const visibility = getVisibility({ ...testPayload, shouldAskIfHasAddress: true });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address)).toBe(false);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
+    it('does not render children if parent is not visible or relevant', () => {
+        const visibility = getVisibility({ ...testPayload, allowChildren: true });
+        expect(visibility.isVisible(TestKeys.parent)).toBe(true);
+        expect(visibility.isVisible(TestKeys.child)).toBe(true);
+        expect(visibility.isVisible(TestKeys.grandchild)).toBe(false);
     });
-    it('does NOT render question if parent question has no value', () => {
-        const visibility = getVisibility({ ...testPayload, shouldAskIfHasAddress: true });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address)).toBe(false);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
-    });
-    it('does render question if parent question has value', () => {
-        const visibility = getVisibility({
-            ...testPayload,
-            shouldAskIfHasAddress: true,
-            hasAddress: true
-        });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
-    });
-    it('does NOT render question if parent question has value but value is negative', () => {
-        const visibility = getVisibility({
-            ...testPayload,
-            shouldAskIfHasAddress: true,
-            hasAddress: true
-        });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
-    });
-    it('does NOT render question if parent question has value, but where value returns false in isIncludedCheck', () => {
-        const visibility = getVisibility({
-            ...testPayload,
-            shouldAskIfHasAddress: true,
-            hasAddress: false
-        });
-        expect(visibility.isVisible(TestKeys.address)).toBe(false);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(false);
-    });
-    it('does render question if all parent questions has value', () => {
-        const visibility = getVisibility({
-            ...testPayload,
-            shouldAskIfHasAddress: true,
-            hasAddress: true,
-            address: 'Italy'
-        });
-        expect(visibility.isVisible(TestKeys.hasAddress)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address)).toBe(true);
-        expect(visibility.isVisible(TestKeys.address2)).toBe(true);
+    it('does render children if parent is visible and relevant', () => {
+        const visibility = getVisibility({ ...testPayload, allowChildren: true, child: true });
+        expect(visibility.isVisible(TestKeys.parent)).toBe(true);
+        expect(visibility.isVisible(TestKeys.child)).toBe(true);
+        expect(visibility.isVisible(TestKeys.grandchild)).toBe(true);
     });
 });
