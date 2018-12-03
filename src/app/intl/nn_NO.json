@@ -32,8 +32,6 @@
 
     "søknad.pageheading.ny": "Søknad om foreldrepengar",
     "søknad.pageheading.endring": "Søknad om endring av foreldrepengar",
-    "velkommen.intro.harSak":
-        "Her søker du om foreldrepengar. Dersom du skal starte perioden din med foreldrepengar med ein utsetjing, må du velje ny søknad. Har du allereie foreldrepengar, vel du søk om endring.",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
@@ -109,7 +107,8 @@
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søkja om endring på ein eksisterende foreldrepengesak?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, eg vil søkja om endringar",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, eg vil søkje for eit nytt barn",
-    "velkommen.intro.harSak.veileder": "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
+    "velkommen.intro.harSak.veileder":
+        "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
 
     "velkommen.sak.type": "Foreldrepengar",
     "velkommen.sak.sistEndret": "Sist endra: {date}",
@@ -670,7 +669,7 @@
     "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Eg er i Noreg på datoen for omsorgsovertakinga",
     "oppsummering.iNorgeSiste12Mnd.label": "Dei siste 12 månadene har eg",
     "oppsummering.iNorgeSiste12MndTrue": "budd i Noreg",
-    "oppsummering.iNorgeNeste12Mnd.label": "Dei neste 12 månadene skal eg vere i",
+    "oppsummering.iNorgeNeste12Mnd.label": "Dei neste 12 månadene skal eg",
     "oppsummering.iNorgeNeste12MndTrue": "bu i Noreg",
     "oppsummering.fødselINorge.label": "Eg skal føde barnet",
     "oppsummering.fødselINorgeTrue": "i Noreg",
@@ -932,8 +931,6 @@
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
-    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
-        "Du kan ikkje søke om å utsetje før foreldrepengeperioden starta.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
