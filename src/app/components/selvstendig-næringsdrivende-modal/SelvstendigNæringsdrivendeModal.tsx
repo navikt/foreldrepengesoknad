@@ -31,6 +31,7 @@ import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from
 import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
+import { trimNumberFromInput } from 'common/util/numberUtils';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -220,12 +221,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: Number.parseInt(v.replace(/ /g, ''))
+                                næringsinntekt: trimNumberFromInput(v)
                             };
                             this.updateNæring(næringPartial);
                         }}
-                        value={næringsinntekt || ''}
-                        validators={[hasValueRule(næringsinntekt, getMessage(intl, 'påkrevd'))]}
+                        value={næringsinntekt === undefined || isNaN(næringsinntekt) ? '' : næringsinntekt}
+                        validators={[
+                            hasValueRule(
+                                (næringsinntekt && isNaN(næringsinntekt) === false) || '',
+                                getMessage(intl, 'påkrevd')
+                            )
+                        ]}
                     />
                 </Block>
 

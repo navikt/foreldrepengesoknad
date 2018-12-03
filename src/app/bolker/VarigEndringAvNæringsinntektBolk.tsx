@@ -16,6 +16,7 @@ import { hasValueRule } from '../util/validation/common';
 import Input from 'common/components/skjema/wrappers/Input';
 import Textarea from 'common/components/skjema/wrappers/Textarea';
 import { getFritekstfeltRules } from '../util/validation/fritekstfelt';
+import { trimNumberFromInput } from 'common/util/numberUtils';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
@@ -76,15 +77,19 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                         <Input
                             name={'inntektEtterEndring'}
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
-                            value={(info && info.næringsinntektEtterEndring) || ''}
+                            value={
+                                info && info.næringsinntektEtterEndring !== undefined
+                                    ? info.næringsinntektEtterEndring
+                                    : ''
+                            }
                             onChange={(v: string) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
-                                    næringsinntektEtterEndring: Number.parseInt(v.replace(/ /g, ''))
+                                    næringsinntektEtterEndring: trimNumberFromInput(v)
                                 });
                             }}
                             validators={[
                                 hasValueRule(
-                                    (info && info.næringsinntektEtterEndring) || '',
+                                    (info && isNaN(info.næringsinntektEtterEndring) === false) || '',
                                     getMessage(intl, 'påkrevd')
                                 )
                             ]}
