@@ -106,9 +106,10 @@
         "Hvis du er medmor og skal starte foreldrepengeperioden din med en utsettelse, må du velge en ny søknad.",
     "velkommen.intro.harSak.mann":
         "Skal du starte foreldrepengeperioden din med en utsettelse, må du velge en ny søknad først.",
-    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søke om endring på en eksisterende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
-    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søkja om endring på en eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, eg vil søkja om endringar",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, eg vil søkje for eit nytt barn",
+    "velkommen.intro.harSak.veileder": "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
 
     "velkommen.sak.type": "Foreldrepengar",
     "velkommen.sak.sistEndret": "Sist endra: {date}",
