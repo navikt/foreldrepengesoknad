@@ -15,3 +15,8 @@ export const getFloatFromString = (value: string | undefined): number | undefine
     }
     return undefined;
 };
+
+export const trimNumberFromInput = (str: string): undefined | number => {
+    const nbr = Number.parseInt(str.replace(/ /g, ''), 10);
+    return isNaN(nbr) ? undefined : nbr;
+};
