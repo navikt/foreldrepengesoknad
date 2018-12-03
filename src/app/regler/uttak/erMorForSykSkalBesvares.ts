@@ -1,7 +1,7 @@
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import { Søkersituasjon } from '../../types/s\u00F8knad/S\u00F8knad';
-import { erUttakInnenFørsteSeksUkerFødselFarMedmor } from '../perioder/erUttakInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
+import { Søkersituasjon } from '../../types/søknad/Søknad';
+import { erUttakInnenFørsteSeksUkerFødselFarMedmor } from '../perioder/erUttakInnenFørsteSeksUkerFødselFarMedmor';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Uttaksdatoer } from '../../selectors/types';
 

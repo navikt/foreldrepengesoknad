@@ -5,39 +5,42 @@ import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { PeriodeRegler } from '../perioder/periodeRegler';
+import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 
 export interface UttakRegler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
     samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]) => boolean;
+    overføringsårsakSkalBesvares: () => boolean;
 }
 
-export const getUttakRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType): UttakRegler => ({
+export const getUttakRegler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakRegler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
             periode as Periode,
-            info.søker.erMor,
-            info.annenForelder.harRett,
-            info.søknaden.erDeltUttak
+            søknadsinfo.søker.erMor,
+            søknadsinfo.annenForelder.harRett,
+            søknadsinfo.søknaden.erDeltUttak
         ),
 
     erMorForSykSkalBesvares: (): boolean =>
         erMorForForSykSkalBesvares(
             periode,
-            info.søknaden.situasjon,
-            info.søker.erFarEllerMedmor,
-            info.uttaksdatoer,
-            info.søknaden.erFlerbarnssøknad
+            søknadsinfo.søknaden.situasjon,
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.uttaksdatoer,
+            søknadsinfo.søknaden.erFlerbarnssøknad
         ),
 
     samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]): boolean =>
         samtidigUttakSkalBesvares(
             periode,
             velgbareStønadskontotyper,
-            info.søknaden.erDeltUttak,
-            PeriodeRegler(info).erUttakInnenFørsteSeksUkerFødselFarMedmor(periode as Periode),
-            PeriodeRegler(info).erUttakFørFødsel(periode as Periode)
-        )
+            søknadsinfo.søknaden.erDeltUttak,
+            PeriodeRegler(søknadsinfo).erUttakInnenFørsteSeksUkerFødselFarMedmor(periode as Periode),
+            PeriodeRegler(søknadsinfo).erUttakFørFødsel(periode as Periode)
+        ),
+    overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
 });
 
 export default getUttakRegler;
