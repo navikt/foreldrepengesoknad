@@ -9,7 +9,7 @@ export default interface Sak {
 }
 
 export enum SakType {
-    SAK = 'SAK',
+    SAK = 'SAK', // Indicates that sak is from infotrygd
     FPSAK = 'FPSAK'
 }
 
