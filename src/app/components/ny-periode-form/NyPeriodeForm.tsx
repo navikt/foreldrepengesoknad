@@ -1,12 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-    Periode,
-    Periodetype,
-    Uttaksperiode,
-    isUttaksperiode,
-    StønadskontoType
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm, { UtsettelseFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
@@ -83,16 +77,6 @@ class NyPeriodeForm extends React.Component<Props, State> {
         periode: RecursivePartial<Periode>,
         visibility?: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const { erMorUfør } = this.props;
-
-        if (isUttaksperiode(periode) && periode.konto === StønadskontoType.AktivitetsfriKvote) {
-            periode.harIkkeAktivitetskrav = erMorUfør;
-        } else {
-            if (isUttaksperiode(periode)) {
-                periode.harIkkeAktivitetskrav = false;
-            }
-        }
-
         const updatedPeriode = {
             ...this.state.periode,
             ...periode
