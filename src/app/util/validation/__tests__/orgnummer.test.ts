@@ -9,6 +9,7 @@ const intl = {} as InjectedIntl;
 
 const gyldigOrgNr = '979312059';
 const ugyldigOrgNrMod11 = '979312058';
+const ugyldigOrgNrMod11b = '123123123';
 
 describe('valider organisasjonsnummer', () => {
     describe('støttefunksjoner', () => {
@@ -24,6 +25,7 @@ describe('valider organisasjonsnummer', () => {
             expect(erGyldigNorskOrgnummer('123345455a')).toBeFalsy();
             expect(erGyldigNorskOrgnummer(gyldigOrgNr)).toBeTruthy();
             expect(erGyldigNorskOrgnummer(ugyldigOrgNrMod11)).toBeFalsy();
+            expect(erGyldigNorskOrgnummer(ugyldigOrgNrMod11b)).toBeFalsy();
             expect(erGyldigNorskOrgnummer('')).toBeFalsy();
         });
     });
