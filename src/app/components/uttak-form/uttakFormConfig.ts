@@ -130,19 +130,19 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isRequired: () => true,
+        isIncluded: () => true,
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
             (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.kvote]: {
-        isRequired: () => false,
+        isIncluded: () => false,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         parentQuestion: Sp.tidsperiode,
         visibilityRequirements: (payload) => visKvote(payload)
     },
     [Sp.aktivitetskravMor]: {
-        isRequired: ({ periode, søknadsinfo }) => UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares(),
+        isIncluded: ({ periode, søknadsinfo }) => UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -151,7 +151,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         visibilityRequirements: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
-        isRequired: ({ søknadsinfo, periode, velgbareStønadskontotyper }) =>
+        isIncluded: ({ søknadsinfo, periode, velgbareStønadskontotyper }) =>
             UttakRegler(søknadsinfo, periode).samtidigUttakSkalBesvares(velgbareStønadskontotyper),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         parentQuestion: Sp.tidsperiode,

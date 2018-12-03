@@ -38,7 +38,7 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     return true;
 };
 
-const isAllQuestionsAnswered = <Payload, QuestionKeys>(
+const areAllQuestionsAnswered = <Payload, QuestionKeys>(
     questions: QuestionConfig<Payload, QuestionKeys>,
     payload: Payload
 ): boolean => {
@@ -61,6 +61,6 @@ export interface QuestionVisibility<QuestionKeys> {
 export const Questions = <P, T>(questions: QuestionConfig<P, T>) => ({
     getVisbility: (payload: P): QuestionVisibility<T> => ({
         isVisible: (key: T) => isQuestionVisible(questions, key, payload),
-        areAllQuestionsAnswered: () => isAllQuestionsAnswered(questions, payload)
+        areAllQuestionsAnswered: () => areAllQuestionsAnswered(questions, payload)
     })
 });
