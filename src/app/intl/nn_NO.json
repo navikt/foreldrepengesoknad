@@ -98,18 +98,18 @@
 
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
-    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, eg vil søkje om endring",
 
     "velkommen.intro.harSak":
-        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Dersom du er far eller medmor og skal starte perioden din med foreldrepengar med å utsetje den, må du velje ny søknad fyrst. Har du allereie foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
+        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Har du allereie foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
     "velkommen.intro.harSak.kvinne":
-        "Hvis du er medmor og skal starte foreldrepengeperioden din med en utsettelse, må du velge en ny søknad.",
+        "Hvis du er medmor og skal starte foreldrepengeperioden din med ein utsetjing, må du velje ein ny søknad.",
     "velkommen.intro.harSak.mann":
-        "Skal du starte foreldrepengeperioden din med en utsettelse, må du velge en ny søknad først.",
-    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søkja om endring på en eksisterende foreldrepengesak?",
+        "Skal du starte foreldrepengeperioden din med ein utsetjing, må du velje ein ny søknad først.",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søkja om endring på ein eksisterende foreldrepengesak?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, eg vil søkja om endringar",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, eg vil søkje for eit nytt barn",
-    "velkommen.intro.harSak.veileder": "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
+    "velkommen.intro.harSak.veileder": "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
 
     "velkommen.sak.type": "Foreldrepengar",
     "velkommen.sak.sistEndret": "Sist endra: {date}",
