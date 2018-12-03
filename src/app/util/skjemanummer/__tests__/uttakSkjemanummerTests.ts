@@ -24,11 +24,6 @@ describe('getUttakperiodeSkjemanummer', () => {
         expect(getUttakperiodeSkjemanummer(periodeMedMorsAktivitet)).toBe(getMorsAktivitetSkjemanummer(aktivitet));
     });
 
-    it('should require Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER if gradert=true and erArbeidstaker=true', () => {
-        const periodeMedGradertArbeid = { ...periodeMock, gradert: true, erArbeidstaker: true };
-        expect(getUttakperiodeSkjemanummer(periodeMedGradertArbeid)).toBe(Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER);
-    });
-
     it('should require Skjemanummer.ANNET if morsAktivitetIPerioden is not defined, and not gradert && erArbeidstaker', () => {
         expect(getUttakperiodeSkjemanummer(periodeMock)).toBe(Skjemanummer.ANNET);
     });

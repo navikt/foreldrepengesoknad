@@ -951,11 +951,14 @@
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
     "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
         "Prosenten du skal jobbe kan ikke være høyere enn prosenten du skal være hjemme med foreldrepenger.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 
-    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
-        "Du kan ikke utsette på grunn av {årsak}, før dagens dato",
+    "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
 
-    "validerbarForm.ukjentFeil": "Verdien er ikke gyldig"
+    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Feltet kan maks være {maxLength} tegn."
 }

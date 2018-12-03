@@ -2,11 +2,11 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { NæringsrelasjonPartial } from '../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import Block from 'common/components/block/Block';
-import Input from 'nav-frontend-skjema/lib/input';
-import { InputChangeEvent } from '../../types/dom/Events';
 import getMessage from 'common/util/i18nUtils';
 import ErNærVennEllerFamilieAvPersonSpørsmål from '../../spørsmål/ErNærVennEllerFamilieAvPersonSpørsmål';
 import visibility from './visibility';
+import Input from 'common/components/skjema/wrappers/Input';
+import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 
 interface NæringsrelasjonBolkProps {
     næringsrelasjon: NæringsrelasjonPartial;
@@ -44,21 +44,24 @@ class NæringsrelasjonBolk extends React.Component<Props> {
                         <Block>
                             <Input
                                 value={navn || ''}
+                                name="næringsrelasjon-navn"
                                 label={getMessage(intl, 'næringsrelasjon.navn', { næringsrelasjonsType })}
-                                onChange={(e: InputChangeEvent) =>
+                                onChange={(v: string) =>
                                     this.handleOnChange({
-                                        navn: e.target.value
+                                        navn: v
                                     })
                                 }
+                                validators={getFritekstfeltRules({ maxLength: 100 }, intl, navn)}
                             />
                         </Block>
                         <Block visible={visibility.tlfnr(næringsrelasjon)}>
                             <Input
                                 value={telefonnummer || ''}
+                                name="telefonnr"
                                 label={getMessage(intl, 'næringsrelasjon.tlfnr', { næringsrelasjonsType })}
-                                onChange={(e: InputChangeEvent) =>
+                                onChange={(v: string) =>
                                     this.handleOnChange({
-                                        telefonnummer: e.target.value
+                                        telefonnummer: v
                                     })
                                 }
                             />

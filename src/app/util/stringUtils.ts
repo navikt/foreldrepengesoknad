@@ -4,6 +4,10 @@ export const removeSpacesFromString = (value: string) => {
     return value.replace(/\s/g, '');
 };
 
+export const maxLengthIsGreaterThanOrEqualToStringLength = (maxLength: number, value: string) => {
+    return value.length <= maxLength;
+};
+
 export const getIntlKeyForStatus = (status: FagsakStatus): string => {
     switch (status) {
         case FagsakStatus.OPPRETTET:

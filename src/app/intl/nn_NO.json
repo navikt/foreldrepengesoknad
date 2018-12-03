@@ -32,6 +32,8 @@
 
     "søknad.pageheading.ny": "Søknad om foreldrepengar",
     "søknad.pageheading.endring": "Søknad om endring av foreldrepengar",
+    "velkommen.intro.harSak":
+        "Her søker du om foreldrepengar. Dersom du skal starte perioden din med foreldrepengar med ein utsetjing, må du velje ny søknad. Har du allereie foreldrepengar, vel du søk om endring.",
 
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
@@ -107,6 +109,11 @@
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søke om endring på en eksisterende foreldrepengesak?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+
+    "velkommen.sak.type": "Foreldrepengar",
+    "velkommen.sak.sistEndret": "Sist endra: {date}",
+    "velkommen.sak.status.underBehandling": "Under behandling",
+    "velkommen.sak.status.avsluttet": "Avsluttet",
 
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
@@ -520,6 +527,8 @@
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.dekningsgrad80":
         "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
@@ -917,13 +926,17 @@
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg",
-    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
-        "Du kan ikkje utsetje på grunn av {årsak}, før dagens dato",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikkje søke om å utsetje før foreldrepengeperioden starta.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
-    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig"
+    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
+
+    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikke være lengre enn {maxLength} tegn."
 }
