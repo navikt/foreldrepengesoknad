@@ -18,9 +18,7 @@ export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {
     if (!orgnr || er9Tall(orgnr) === false || starterPå9Eller9(orgnr) === false) {
         return false;
     }
-    const mod11 = getMod11(orgnr);
-    const checksum = parseInt(orgnr.charAt(8), 10);
-    return mod11 === checksum;
+    return getMod11(orgnr) === parseInt(orgnr.charAt(8), 10);
 };
 
 export const getOrganisasjonsnummerRegler = (
