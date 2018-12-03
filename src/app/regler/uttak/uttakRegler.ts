@@ -6,7 +6,13 @@ import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { PeriodeRegler } from '../perioder/periodeRegler';
 
-export const UttakRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType) => ({
+export interface UttakRegler {
+    aktivitetskravMorSkalBesvares: () => boolean;
+    erMorForSykSkalBesvares: () => boolean;
+    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]) => boolean;
+}
+
+export const getUttakRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType): UttakRegler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
             periode as Periode,
@@ -34,4 +40,4 @@ export const UttakRegler = (info: Søknadsinfo, periode: UttakFormPeriodeType) =
         )
 });
 
-export default UttakRegler;
+export default getUttakRegler;

@@ -35,6 +35,7 @@ export interface UttakFormPayload {
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
     søknadsinfo: Søknadsinfo;
+    regler: UttakRegler;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -138,7 +139,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.aktivitetskravMor]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: ({ periode, søknadsinfo }) => UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares(),
+        isRelevant: ({ regler }) => regler.aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -147,8 +148,8 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: ({ søknadsinfo, periode, velgbareStønadskontotyper }) =>
-            UttakRegler(søknadsinfo, periode).samtidigUttakSkalBesvares(velgbareStønadskontotyper),
+        isRelevant: ({ regler, velgbareStønadskontotyper }) =>
+            regler.samtidigUttakSkalBesvares(velgbareStønadskontotyper),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         isVisible: (payload) => visSamtidigUttak(payload)
     },
