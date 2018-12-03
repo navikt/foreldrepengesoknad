@@ -28,21 +28,21 @@ const askForAddressDetails = (payload: TestPayload): boolean => {
 
 export const questionConfig: QuestionConfig<TestPayload, TestKeys> = {
     [TestKeys.name]: {
-        isIncluded: () => true,
+        isRelevant: () => true,
         isAnswered: (payload: TestPayload) => questionValueIsOk(payload.firstname)
     },
     [TestKeys.hasAddress]: {
-        isIncluded: (payload) => askIfUserHasAddress(payload),
+        isRelevant: (payload) => askIfUserHasAddress(payload),
         isAnswered: (payload: TestPayload) => payload.hasAddress !== undefined
     },
     [TestKeys.address]: {
-        isIncluded: (payload) => askForAddressDetails(payload),
         parentQuestion: TestKeys.hasAddress,
+        isRelevant: (payload) => askForAddressDetails(payload),
         isAnswered: (payload: TestPayload) => questionValueIsOk(payload.address)
     },
     [TestKeys.address2]: {
-        isIncluded: () => true,
         parentQuestion: TestKeys.address,
+        isRelevant: () => true,
         isAnswered: (payload: TestPayload) => questionValueIsOk(payload.address2)
     }
 };
