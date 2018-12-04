@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
-import AnnenInntektSiste10MndSpørsmål from '../../../spørsmål/AnnenInntektSiste10MndSpørsmål';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
 import { connect } from 'react-redux';
@@ -14,7 +13,6 @@ import Søker from '../../../types/søknad/Søker';
 import FrilanserBolk from '../../../bolker/frilanser-bolk/FrilanserBolk';
 import { FrilansInformasjon } from '../../../types/søknad/FrilansInformasjon';
 import SelvstendigNæringsdrivendeBolk from '../../../bolker/selvstendig-næringsdrivende-bolk/SelvstendigNæringsdrivendeBolk';
-import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../../spørsmål/HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål';
 import { Næring } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import isAvailable from '../util/isAvailable';
 import { annenInntektErGyldig } from '../../../util/validation/steg/annenInntekt';
@@ -43,54 +41,10 @@ class AndreInntekterSteg extends React.Component<Props> {
         this.state = {
             harHattAnnenInntekt: undefined
         };
-        this.renderAnnenInntektSiste10MndSpørsmål = this.renderAnnenInntektSiste10MndSpørsmål.bind(this);
-        this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål = this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål.bind(
-            this
-        );
     }
 
     updateSøkerAndSave(søker: Partial<Søker>) {
         this.props.dispatch(søknadActions.updateSøkerAndStorage(søker));
-    }
-
-    renderAnnenInntektSiste10MndSpørsmål() {
-        const { søker, dispatch } = this.props;
-        const { harHattAnnenInntektSiste10Mnd } = søker;
-
-        return (
-            <Block>
-                <AnnenInntektSiste10MndSpørsmål
-                    harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
-                    onChange={(value) =>
-                        dispatch(
-                            søknadActions.updateSøker({
-                                harHattAnnenInntektSiste10Mnd: value
-                            })
-                        )
-                    }
-                />
-            </Block>
-        );
-    }
-
-    renderSelvstendigNæringsdrivendeSiste10MndSpørsmål() {
-        const { søker, dispatch } = this.props;
-        const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
-
-        return (
-            <Block>
-                <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
-                    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
-                    onChange={(value: boolean) =>
-                        dispatch(
-                            søknadActions.updateSøker({
-                                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: value
-                            })
-                        )
-                    }
-                />
-            </Block>
-        );
     }
 
     cleanupSteg() {
@@ -140,9 +94,11 @@ class AndreInntekterSteg extends React.Component<Props> {
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.selvstendigNæringsdrivendeBolk(søker)}>
                     <SelvstendigNæringsdrivendeBolk
-                        renderSpørsmål={this.renderSelvstendigNæringsdrivendeSiste10MndSpørsmål}
-                        showNæringsPerioderContent={søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true}
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
+                            søker.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                        }
                         næringListe={søker.selvstendigNæringsdrivendeInformasjon || []}
+                        onChangeSøker={(søkerProperties: Søker) => dispatch(søknadActions.updateSøker(søkerProperties))}
                         onChange={(updatedNæringer: Næring[]) =>
                             this.updateSøkerAndSave({
                                 selvstendigNæringsdrivendeInformasjon: updatedNæringer
@@ -153,9 +109,9 @@ class AndreInntekterSteg extends React.Component<Props> {
 
                 <Block hasChildBlocks={true} margin="none" visible={visibility.andreInntekterBolk(søker)}>
                     <AndreInntekterBolk
-                        renderSpørsmål={this.renderAnnenInntektSiste10MndSpørsmål}
-                        showAndreInntekterPeriodeContent={harHattAnnenInntektSiste10Mnd}
+                        harHattAnnenInntektSiste10Mnd={harHattAnnenInntektSiste10Mnd}
                         andreInntekterSiste10Mnd={søker.andreInntekterSiste10Mnd || []}
+                        onChangeSøker={(søkerProperties) => dispatch(søknadActions.updateSøker(søkerProperties))}
                         onChange={(andreInntekterSiste10Mnd) =>
                             dispatch(
                                 søknadActions.updateSøker({

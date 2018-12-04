@@ -4,7 +4,7 @@ import getMessage from 'common/util/i18nUtils';
 import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 
 interface HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmålProps {
-    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean;
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
     onChange: (harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean) => void;
 }
 
