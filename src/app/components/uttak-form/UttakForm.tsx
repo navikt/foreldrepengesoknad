@@ -130,7 +130,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                 type: Periodetype.Overføring,
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
-                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+                harIkkeAktivitetskrav:
+                    konto === StønadskontoType.AktivitetsfriKvote ||
+                    konto === StønadskontoType.AktivitetsfriFlerbarnsdager
+                        ? true
+                        : undefined,
                 ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
             });
         } else {
@@ -138,7 +142,11 @@ class UttaksperiodeForm extends React.Component<Props> {
                 type: Periodetype.Uttak,
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
-                harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
+                harIkkeAktivitetskrav:
+                    konto === StønadskontoType.AktivitetsfriKvote ||
+                    konto === StønadskontoType.AktivitetsfriFlerbarnsdager
+                        ? true
+                        : undefined,
                 ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
             });
         }
