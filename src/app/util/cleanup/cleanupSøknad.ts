@@ -38,18 +38,14 @@ export const cleanUpAttachments = (object: object): Attachment[] => {
     return foundAttachments;
 };
 
-const changeClientonlyKontotypes = (uttaksplan: Periode[]) => {
+const changeClientonlyKontotypes = (uttaksplan: Periode[], erMorUfør: boolean) => {
     return uttaksplan.map((periode) => {
         if (isUttaksperiode(periode)) {
             if (periode.konto === StønadskontoType.Flerbarnsdager) {
-                periode.konto = StønadskontoType.Fellesperiode;
+                periode.konto = erMorUfør ? StønadskontoType.Foreldrepenger : StønadskontoType.Fellesperiode;
             }
 
             if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
-                periode.konto = StønadskontoType.Foreldrepenger;
-            }
-
-            if (periode.konto === StønadskontoType.AktivitetsfriFlerbarnsdager) {
                 periode.konto = StønadskontoType.Foreldrepenger;
             }
         }
@@ -82,7 +78,7 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
         isValidTidsperiode(periode.tidsperiode)
     );
-    cleanedSøknad.uttaksplan = changeClientonlyKontotypes(cleanedSøknad.uttaksplan);
+    cleanedSøknad.uttaksplan = changeClientonlyKontotypes(cleanedSøknad.uttaksplan, søknad.annenForelder.erUfør);
     cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
     cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
     return cleanedSøknad;
