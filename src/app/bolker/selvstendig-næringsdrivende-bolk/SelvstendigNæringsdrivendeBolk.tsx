@@ -6,11 +6,15 @@ import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næri
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
+import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../sp\u00F8rsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSp\u00F8rsm\u00E5l';
 
 interface SelvstendigNæringsdrivendeBolkProps {
-    renderSpørsmål: () => JSX.Element;
     showNæringsPerioderContent: boolean;
     næringListe: Næring[];
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
+    onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange: (
+        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean
+    ) => void;
     onChange: (næring: Næring[]) => void;
 }
 
@@ -90,13 +94,25 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const { næringListe, renderSpørsmål, showNæringsPerioderContent } = this.props;
+        const {
+            næringListe,
+            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
+            onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange,
+            showNæringsPerioderContent
+        } = this.props;
 
         const { næringToEdit } = this.state;
 
         return (
             <React.Fragment>
-                {renderSpørsmål()}
+                <Block margin={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ? 'xs' : 'm'}>
+                    <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                        }
+                        onChange={onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange}
+                    />
+                </Block>
                 {showNæringsPerioderContent && (
                     <React.Fragment>
                         <Block margin="s" visible={næringListe.length > 0}>
