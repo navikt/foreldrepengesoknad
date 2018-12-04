@@ -117,6 +117,8 @@
         "Du må tidligere ha søkt om foreldrepenger for det samme barnet for å sende inn søknad om endring.",
     "velkommen.intro.harSak":
         "Her kan du søke om å utsette eller endre foreldrepengeperioden din. Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
+    "velkommen.intro.harInfotrygdSak":
+        "Her søker du om foreldrepenger når du skal være hjemme med barnet. Har du allerede foreldrepenger, kan du utsette eller gjøre andre endringer.",
 
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengeperiode?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
