@@ -17,26 +17,24 @@ import { Dekningsgrad } from 'common/types';
 
 const stateSelector = (state: AppState) => state;
 
-const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad): number => {
-    if (dekningsgrad === '100') {
-        return 15;
-    } else {
-        return 15;
-    }
-};
-
-const getAktivitetsFrieUkerFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
-    if (antallBarn === 2) {
+const getAktivitetsFrieUker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
+    if (antallBarn === 1) {
         if (dekningsgrad === '100') {
-            return 17;
+            return 15;
         } else {
-            return 21;
+            return 15;
+        }
+    } else if (antallBarn === 2) {
+        if (dekningsgrad === '100') {
+            return 32;
+        } else {
+            return 36;
         }
     } else {
         if (dekningsgrad === '100') {
-            return 46;
+            return 61;
         } else {
-            return 56;
+            return 71;
         }
     }
 };
@@ -47,24 +45,10 @@ const opprettAktivitetsFriKonto = (
     antallBarn: number
 ): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad) * 5;
+    const aktivitetskravFrieDager = getAktivitetsFrieUker(dekningsgrad, antallBarn) * 5;
 
-    if (antallBarn >= 2) {
-        const aktivitetskravFrieDagerFlerbarnsuker = getAktivitetsFrieUkerFlerbarnsuker(dekningsgrad, antallBarn) * 5;
-
-        nyeKontoer.push({
-            ...kontoer[0],
-            dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger - aktivitetskravFrieDagerFlerbarnsuker
-        });
-        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
-        nyeKontoer.push({
-            konto: StønadskontoType.AktivitetsfriFlerbarnsdager,
-            dager: aktivitetskravFrieDagerFlerbarnsuker
-        });
-    } else {
-        nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });
-        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
-    }
+    nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDager });
+    nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDager });
 
     return nyeKontoer;
 };
