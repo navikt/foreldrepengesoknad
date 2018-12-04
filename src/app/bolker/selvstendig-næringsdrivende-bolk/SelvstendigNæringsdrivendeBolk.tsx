@@ -99,7 +99,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                 {renderSpørsmål()}
                 {showNæringsPerioderContent && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="s" visible={næringListe.length > 0}>
                             <List
                                 data={næringListe}
                                 renderElement={(updatedNæring: Næring, index: number) => (
@@ -114,12 +114,11 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                 )}
                             />
                         </Block>
-
-                        <div className="blokk-s">
+                        <Block>
                             <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="selvstendigNæringsdrivende.leggTilNæring" />
                             </Knapp>
-                        </div>
+                        </Block>
 
                         <SelvstendigNæringsdrivendeModal
                             næring={næringToEdit}

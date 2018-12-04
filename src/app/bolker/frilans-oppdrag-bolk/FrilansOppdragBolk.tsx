@@ -96,7 +96,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                 {renderSpørsmål()}
                 {showOppdragsPerioderContent && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="s" visible={oppdragListe.length > 0}>
                             <List
                                 data={oppdragListe}
                                 renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (
@@ -109,8 +109,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                                 )}
                             />
                         </Block>
-
-                        <Block margin="s">
+                        <Block>
                             <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>

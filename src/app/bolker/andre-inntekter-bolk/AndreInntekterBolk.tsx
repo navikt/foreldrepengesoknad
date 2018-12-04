@@ -96,7 +96,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                 {renderSpørsmål()}
                 {showAndreInntekterPeriodeContent && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="s" visible={andreInntekterSiste10Mnd.length > 0}>
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(annenInntekt: AnnenInntekt, index: number) => (
