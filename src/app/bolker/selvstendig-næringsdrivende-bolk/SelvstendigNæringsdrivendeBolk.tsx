@@ -7,14 +7,12 @@ import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
 import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../sp\u00F8rsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSp\u00F8rsm\u00E5l';
+import { Søker } from '../../types/s\u00F8knad/S\u00F8ker';
 
 interface SelvstendigNæringsdrivendeBolkProps {
-    showNæringsPerioderContent: boolean;
     næringListe: Næring[];
     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
-    onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange: (
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean
-    ) => void;
+    onChangeSøker: (v: Partial<Søker>) => void;
     onChange: (næring: Næring[]) => void;
 }
 
@@ -94,12 +92,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const {
-            næringListe,
-            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd,
-            onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange,
-            showNæringsPerioderContent
-        } = this.props;
+        const { næringListe, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, onChangeSøker } = this.props;
 
         const { næringToEdit } = this.state;
 
@@ -110,10 +103,12 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                         harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
                             harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
                         }
-                        onChange={onHarJobbetSomSelvstendigNæringsdrivendeSiste10MndChange}
+                        onChange={(harJobbet) =>
+                            onChangeSøker({ harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: harJobbet })
+                        }
                     />
                 </Block>
-                {showNæringsPerioderContent && (
+                {harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true && (
                     <React.Fragment>
                         <Block margin="s" visible={næringListe.length > 0}>
                             <List
