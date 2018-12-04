@@ -3,6 +3,7 @@
         "saksnummer": "135737372",
         "status": "LOP",
         "opprettet": "2018-11-07",
+        "type": "FPSAK",
         "behandlinger": [
             {
                 "id": null,
