@@ -19,7 +19,7 @@ import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
-import { getUttakRegler } from '../../../regler/uttak/uttakRegler';
+import { getUttakSkjemaregler } from '../../../regler/uttak/uttakSkjemaregler';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
@@ -108,7 +108,7 @@ export const validerPeriodeForm = (
             velgbareStønadskontotyper,
             kanEndreStønadskonto: true,
             søknadsinfo,
-            regler: getUttakRegler(søknadsinfo, periode, velgbareStønadskontotyper)
+            regler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper)
         });
     }
     return validerUtsettelseForm({

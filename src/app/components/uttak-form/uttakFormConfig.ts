@@ -12,7 +12,7 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { UttakRegler } from '../../regler/uttak/uttakRegler';
+import { UttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
 import { erUttakFørFødsel } from '../../regler/søknadsperioden/erUttakFørFødsel';
 import { Søknadsperioden } from '../../regler/søknadsperioden/Søknadsperioden';
 
@@ -35,7 +35,7 @@ export interface UttakFormPayload {
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
     søknadsinfo: Søknadsinfo;
-    regler: UttakRegler;
+    regler: UttakSkjemaregler;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;

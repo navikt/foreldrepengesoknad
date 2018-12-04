@@ -7,18 +7,18 @@ import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
 
-export interface UttakRegler {
+export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
     samtidigUttakSkalBesvares: () => boolean;
     overføringsårsakSkalBesvares: () => boolean;
 }
 
-export const getUttakRegler = (
+export const getUttakSkjemaregler = (
     søknadsinfo: Søknadsinfo,
     periode: UttakFormPeriodeType,
     velgbareStønadskontotyper: StønadskontoType[]
-): UttakRegler => ({
+): UttakSkjemaregler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
             periode as Periode,
@@ -49,4 +49,4 @@ export const getUttakRegler = (
     overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
 });
 
-export default getUttakRegler;
+export default getUttakSkjemaregler;

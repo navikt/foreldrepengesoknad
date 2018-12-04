@@ -41,7 +41,7 @@ import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
-import { getUttakRegler } from '../../regler/uttak/uttakRegler';
+import { getUttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -171,7 +171,7 @@ class UttaksperiodeForm extends React.Component<Props> {
             velgbareStønadskontotyper,
             kanEndreStønadskonto,
             søknadsinfo,
-            regler: getUttakRegler(søknadsinfo, periode, velgbareStønadskontotyper)
+            regler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper)
         });
     }
     render() {
