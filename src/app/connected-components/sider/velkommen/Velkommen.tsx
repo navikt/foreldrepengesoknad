@@ -144,8 +144,8 @@ class Velkommen extends React.Component<Props, State> {
                                                 <FormattedMessage
                                                     id={
                                                         erSakForEndringssøknadFraInfotrygd
-                                                            ? 'velkommen.intro.harSak'
-                                                            : 'velkommen.intro.harInfotrygdSak'
+                                                            ? 'velkommen.intro.harInfotrygdSak'
+                                                            : 'velkommen.intro.harSak'
                                                     }
                                                 />
                                             </Ingress>
