@@ -89,7 +89,8 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
     } else if (erDeltUttak === false && annenForelderHarRett === false) {
         if (
             (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
-            isUttaksperiode(periode) === false
+            isUttaksperiode(periode) === false ||
+            periode.konto === StønadskontoType.Flerbarnsdager
         ) {
             return false;
         }
