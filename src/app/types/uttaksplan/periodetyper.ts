@@ -24,7 +24,6 @@ export enum StønadskontoType {
     /** Når det kun er en forsørger/forelder */
     'SamtidigUttak' = 'SAMTIDIGUTTAK',
     'Flerbarnsdager' = 'FLERBARNSDAGER',
-    'AktivitetsfriFlerbarnsdager' = 'AKTIVITETSFRI_FLERBARNSDAGER',
     'AktivitetsfriKvote' = 'AKTIVITETSFRI_KVOTE'
 }
 
