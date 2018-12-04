@@ -102,12 +102,13 @@ export const validerPeriodeForm = (
         return undefined;
     }
     if (periode.type === Periodetype.Overføring || periode.type === Periodetype.Uttak) {
+        const velgbareStønadskontotyper = getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer);
         return validerUttakForm({
             periode,
-            velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
+            velgbareStønadskontotyper,
             kanEndreStønadskonto: true,
             søknadsinfo,
-            regler: getUttakRegler(søknadsinfo, periode)
+            regler: getUttakRegler(søknadsinfo, periode, velgbareStønadskontotyper)
         });
     }
     return validerUtsettelseForm({

@@ -148,8 +148,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: ({ regler, velgbareStønadskontotyper }) =>
-            regler.samtidigUttakSkalBesvares(velgbareStønadskontotyper),
+        isRelevant: ({ regler }) => regler.samtidigUttakSkalBesvares(),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
     },

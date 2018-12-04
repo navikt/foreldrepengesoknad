@@ -10,11 +10,15 @@ import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
 export interface UttakRegler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
-    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]) => boolean;
+    samtidigUttakSkalBesvares: () => boolean;
     overføringsårsakSkalBesvares: () => boolean;
 }
 
-export const getUttakRegler = (søknadsinfo: Søknadsinfo, periode: UttakFormPeriodeType): UttakRegler => ({
+export const getUttakRegler = (
+    søknadsinfo: Søknadsinfo,
+    periode: UttakFormPeriodeType,
+    velgbareStønadskontotyper: StønadskontoType[]
+): UttakRegler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
             periode as Periode,
@@ -32,7 +36,7 @@ export const getUttakRegler = (søknadsinfo: Søknadsinfo, periode: UttakFormPer
             søknadsinfo.søknaden.erFlerbarnssøknad
         ),
 
-    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]): boolean => {
+    samtidigUttakSkalBesvares: (): boolean => {
         const perioden = Søknadsperioden(søknadsinfo, periode as Periode);
         return samtidigUttakSkalBesvares(
             periode,
