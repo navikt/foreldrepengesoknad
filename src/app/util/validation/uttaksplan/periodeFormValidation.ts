@@ -108,7 +108,7 @@ export const validerPeriodeForm = (
             velgbareStønadskontotyper,
             kanEndreStønadskonto: true,
             søknadsinfo,
-            regler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper)
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper)
         });
     }
     return validerUtsettelseForm({

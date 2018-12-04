@@ -35,7 +35,7 @@ export interface UttakFormPayload {
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
     søknadsinfo: Søknadsinfo;
-    regler: UttakSkjemaregler;
+    skjemaregler: UttakSkjemaregler;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -126,20 +126,20 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isRequried: () => true,
+        isRequired: () => true,
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
             (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.konto]: {
         parentQuestion: Sp.tidsperiode,
-        isRequried: () => true,
+        isRequired: () => true,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         visibilityFilter: (payload) => visKontospørsmål(payload)
     },
     [Sp.aktivitetskravMor]: {
         parentQuestion: Sp.tidsperiode,
-        isRequried: ({ regler }) => regler.aktivitetskravMorSkalBesvares(),
+        isRequired: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -148,13 +148,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         parentQuestion: Sp.tidsperiode,
-        isRequried: ({ regler }) => regler.samtidigUttakSkalBesvares(),
+        isRequired: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
     },
     [Sp.erMorForSyk]: {
         parentQuestion: Sp.konto,
-        isRequried: ({ regler }) => regler.erMorForSykSkalBesvares(),
+        isRequired: ({ skjemaregler }) => skjemaregler.erMorForSykSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.konto === StønadskontoType.Fedrekvote &&
@@ -162,11 +162,11 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttakProsent]: {
         parentQuestion: Sp.samtidigUttak,
-        isRequried: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
+        isRequired: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)
     },
     [Sp.overføringsårsak]: {
-        isRequried: ({ regler }) => regler.overføringsårsakSkalBesvares(),
+        isRequired: ({ skjemaregler }) => skjemaregler.overføringsårsakSkalBesvares(),
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)
     },
     [Sp.overføringsdokumentasjon]: {

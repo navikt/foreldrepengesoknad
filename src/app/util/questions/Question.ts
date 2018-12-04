@@ -7,7 +7,7 @@ export const questionValueIsOk = (value: QuestionValue) => {
 export interface QuestionConfig<Payload, QuestionKeys> {
     [key: string]: {
         parentQuestion?: QuestionKeys;
-        isRequried?: (props: Payload) => boolean;
+        isRequired?: (props: Payload) => boolean;
         isAnswered: (props: Payload) => boolean;
         isOptional?: (props: Payload) => boolean;
         visibilityFilter?: (props: Payload) => boolean;
@@ -23,7 +23,7 @@ const isQuestionVisible = <Payload, QuestionKeys>(
     if (!config) {
         return false;
     }
-    if (config.isRequried && config.isRequried(payload) === false) {
+    if (config.isRequired && config.isRequired(payload) === false) {
         return false;
     }
     if (config.visibilityFilter && config.visibilityFilter(payload) === false) {
