@@ -1,7 +1,3 @@
-import { Dekningsgrad } from 'common/types';
-import { Søkersituasjon } from '../types/søknad/Søknad';
-import { TilgjengeligStønadskonto } from '../types/uttaksplan/periodetyper';
-
 export interface Uttaksdatoer {
     førsteUttaksdag: Date;
     førFødsel: {
@@ -14,21 +10,4 @@ export interface Uttaksdatoer {
         førsteUttaksdagEtterSeksUker: Date;
         sisteMuligeUttaksdag: Date;
     };
-}
-
-export interface Søknadsinfo {
-    familiehendelsesdato: Date;
-    dekningsgrad: Dekningsgrad;
-    antallBarn: number;
-    morHarRett: boolean;
-    morHarAleneomsorg: boolean;
-    farEllerMedmorHarRett: boolean;
-    farEllerMedmorHarAleneomsorg: boolean;
-    situasjon: Søkersituasjon;
-    erDeltUttak: boolean;
-    søkerErMor: boolean;
-    søkerErFarEllerMedmor: boolean;
-    søkerErAleneOmOmsorgen: boolean;
-    uttaksdatoer: Uttaksdatoer;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
 }

@@ -1,8 +1,6 @@
 import moment from 'moment';
 import { getVariantFromPeriode, UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
-import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
-import { Søker } from '../../../types/søknad/Søker';
 import {
     TilgjengeligStønadskonto,
     Periode,
@@ -10,7 +8,6 @@ import {
     UtsettelseÅrsakType,
     Utsettelsesperiode
 } from '../../../types/uttaksplan/periodetyper';
-import AnnenForelder from '../../../types/søknad/AnnenForelder';
 import { PeriodeValideringsfeil, PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import {
     getUtsettelseFormVisibility,
@@ -18,10 +15,11 @@ import {
 } from '../../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPayload, getUttakFormVisibility } from '../../../components/uttak-form/uttakFormConfig';
 import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
-import { Søkersituasjon } from 'app/types/søknad/Søknad';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
+import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import { getUttakRegler } from '../../../regler/uttak/uttakRegler';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
@@ -80,7 +78,7 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     const visibility = getUttakFormVisibility(payload);
     const valideringsfeil: PeriodeValideringsfeil[] = [];
 
-    if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
+    if (uttakTidsperiodeErGyldig(payload.periode, payload.søknadsinfo.søknaden.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
     }
     if (gradertUttaksperiodeErUgyldig(payload.periode)) {
@@ -97,13 +95,9 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
 
 export const validerPeriodeForm = (
     periode: Periode,
-    søker: Søker,
-    annenForelder: AnnenForelder,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
-    familiehendelsesdato: Date,
-    situasjon: Søkersituasjon
+    søknadsinfo: Søknadsinfo
 ): PeriodeValideringsfeil[] | undefined => {
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
     if (periode.type === Periodetype.Hull) {
         return undefined;
     }
@@ -112,20 +106,16 @@ export const validerPeriodeForm = (
             periode,
             velgbareStønadskontotyper: getVelgbareStønadskontotyper(tilgjengeligeStønadskontoer),
             kanEndreStønadskonto: true,
-            annenForelderHarRett: annenForelder.harRettPåForeldrepenger,
-            søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-            søkerErFarEllerMedmor,
-            morErUfør: søkerErFarEllerMedmor === false && annenForelder.erUfør,
-            familiehendelsesdato,
-            situasjon
+            søknadsinfo,
+            regler: getUttakRegler(søknadsinfo, periode)
         });
     }
     return validerUtsettelseForm({
         periode,
         variant: getVariantFromPeriode(periode),
-        søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
-        søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
-        familiehendelsesdato
+        søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
+        søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
+        familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato
     });
 };

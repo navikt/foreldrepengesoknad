@@ -148,6 +148,16 @@ export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): p
     return periode.type === Periodetype.Uttak;
 }
 
+export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {
+    return periode.type === Periodetype.Overføring;
+}
+
+export function isUttakEllerOverføringsperiode(
+    periode: Periode | RecursivePartial<Periode>
+): periode is Uttaksperiode | Overføringsperiode {
+    return periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring;
+}
+
 export function isForeldrepengerFørFødselUttaksperiode(
     periode: Periode | RecursivePartial<Periode>
 ): periode is ForeldrepengerFørFødselUttaksperiode {
