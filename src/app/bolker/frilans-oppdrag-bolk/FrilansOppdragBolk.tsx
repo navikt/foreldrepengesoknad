@@ -96,7 +96,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                 {renderSpørsmål()}
                 {showOppdragsPerioderContent && (
                     <React.Fragment>
-                        <Block margin="s" visible={oppdragListe.length > 0}>
+                        <Block margin="xs" visible={oppdragListe.length > 0}>
                             <List
                                 data={oppdragListe}
                                 renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (

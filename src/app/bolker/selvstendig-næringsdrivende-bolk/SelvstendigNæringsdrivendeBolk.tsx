@@ -110,7 +110,7 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                 </Block>
                 {harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true && (
                     <React.Fragment>
-                        <Block margin="s" visible={næringListe.length > 0}>
+                        <Block margin="xs" visible={næringListe.length > 0}>
                             <List
                                 data={næringListe}
                                 renderElement={(updatedNæring: Næring, index: number) => (
