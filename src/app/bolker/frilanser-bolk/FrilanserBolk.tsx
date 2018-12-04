@@ -48,7 +48,7 @@ class FrilanserBolk extends React.Component<Props> {
             frilansInformasjon && frilansInformasjon.harJobbetForNærVennEllerFamilieSiste10Mnd;
 
         return (
-            <Block>
+            <Block margin={harJobbetForNærVennEllerFamilieSiste10Mnd ? 'xs' : 'm'}>
                 <HarDuJobbetForNærVennEllerFamilieSiste10MndSpørsmål
                     onChange={(v: boolean) =>
                         this.handleFrilansinformasjonOnChange({

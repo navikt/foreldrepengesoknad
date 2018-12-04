@@ -58,7 +58,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harHattAnnenInntektSiste10Mnd } = søker;
 
         return (
-            <Block>
+            <Block margin={harHattAnnenInntektSiste10Mnd ? 'xs' : 'm'}>
                 <AnnenInntektSiste10MndSpørsmål
                     harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
                     onChange={(value) =>
@@ -78,7 +78,7 @@ class AndreInntekterSteg extends React.Component<Props> {
         const { harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd } = søker;
 
         return (
-            <Block>
+            <Block margin={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ? 'xs' : 'm'}>
                 <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
                     harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd}
                     onChange={(value: boolean) =>
