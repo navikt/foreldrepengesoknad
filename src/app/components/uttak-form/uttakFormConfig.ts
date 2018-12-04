@@ -126,20 +126,20 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isRelevant: () => true,
+        isRequried: () => true,
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
             (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.konto]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: () => true,
+        isRequried: () => true,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         visibilityFilter: (payload) => visKontospørsmål(payload)
     },
     [Sp.aktivitetskravMor]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: ({ regler }) => regler.aktivitetskravMorSkalBesvares(),
+        isRequried: ({ regler }) => regler.aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -148,13 +148,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         parentQuestion: Sp.tidsperiode,
-        isRelevant: ({ regler }) => regler.samtidigUttakSkalBesvares(),
+        isRequried: ({ regler }) => regler.samtidigUttakSkalBesvares(),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
     },
     [Sp.erMorForSyk]: {
         parentQuestion: Sp.konto,
-        isRelevant: ({ regler }) => regler.erMorForSykSkalBesvares(),
+        isRequried: ({ regler }) => regler.erMorForSykSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.konto === StønadskontoType.Fedrekvote &&
@@ -162,11 +162,11 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttakProsent]: {
         parentQuestion: Sp.samtidigUttak,
-        isRelevant: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
+        isRequried: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)
     },
     [Sp.overføringsårsak]: {
-        isRelevant: ({ regler }) => regler.overføringsårsakSkalBesvares(),
+        isRequried: ({ regler }) => regler.overføringsårsakSkalBesvares(),
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)
     },
     [Sp.overføringsdokumentasjon]: {
