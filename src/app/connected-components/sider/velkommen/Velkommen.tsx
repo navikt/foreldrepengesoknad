@@ -31,8 +31,9 @@ import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
-import './velkommen.less';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
+import './velkommen.less';
 
 interface StateProps {
     person?: Person;
@@ -109,7 +110,6 @@ class Velkommen extends React.Component<Props, State> {
 
     render() {
         const { person, sakForEndringssøknad, harGodkjentVilkår, dispatch, intl } = this.props;
-
         if (person === undefined) {
             return null;
         }
@@ -136,6 +136,7 @@ class Velkommen extends React.Component<Props, State> {
                         <FeatureBlock
                             feature={Feature.endringssøknad}
                             render={() => {
+                                const erSakForEndringssøknadFraInfotrygd = erInfotrygdSak(sakForEndringssøknad);
                                 return (
                                     <>
                                         <Block>
@@ -153,8 +154,20 @@ class Velkommen extends React.Component<Props, State> {
                                                 harEksisterendeSak={true}
                                                 skalEndre={this.state.skalEndre}
                                                 onChange={(skalEndre) => this.setState({ skalEndre })}
+                                                erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
                                             />
                                         </Block>
+                                        {this.state.skalEndre === false && (
+                                            <Veilederinfo>
+                                                <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                            </Veilederinfo>
+                                        )}
+                                        {this.state.skalEndre === true &&
+                                            erSakForEndringssøknadFraInfotrygd && (
+                                                <Veilederinfo>
+                                                    <FormattedMessage id="velkommen.intro.harInfotrygdSak.veileder" />
+                                                </Veilederinfo>
+                                            )}
                                     </>
                                 );
                             }}
@@ -166,13 +179,6 @@ class Velkommen extends React.Component<Props, State> {
                             endringssøknadEnabled === false ||
                             this.state.skalEndre !== undefined
                         }>
-                        {this.state.skalEndre === false && (
-                            <>
-                                <Veilederinfo>
-                                    <FormattedMessage id="velkommen.intro.harSak.veileder" />
-                                </Veilederinfo>
-                            </>
-                        )}
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}

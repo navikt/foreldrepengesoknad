@@ -7,21 +7,30 @@ interface OwnProps {
     harEksisterendeSak?: boolean;
     skalEndre: boolean | undefined;
     onChange: (skalEndre: boolean) => void;
+    erSakForEndringssøknadFraInfotrygd: boolean;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
 const SøknadstypeSpørsmål = (props: Props) => {
-    const { harEksisterendeSak, skalEndre, onChange, intl } = props;
+    const { harEksisterendeSak, skalEndre, onChange, erSakForEndringssøknadFraInfotrygd, intl } = props;
     if (harEksisterendeSak) {
         return (
             <JaNeiSpørsmål
-                spørsmål={getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.spørsmål`)}
+                spørsmål={
+                    erSakForEndringssøknadFraInfotrygd
+                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.spørsmål`)
+                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.spørsmål`)
+                }
                 navn="søknadstype"
                 valgtVerdi={skalEndre}
                 labels={{
-                    ja: getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
-                    nei: getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
+                    ja: erSakForEndringssøknadFraInfotrygd
+                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.endring`)
+                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.endring`),
+                    nei: erSakForEndringssøknadFraInfotrygd
+                        ? getMessage(intl, `velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.nyttbarn`)
+                        : getMessage(intl, `velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn`)
                 }}
                 onChange={(verdi) => onChange(verdi)}
             />
