@@ -107,7 +107,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                 </Block>
                 {harHattAnnenInntektSiste10Mnd === true && (
                     <React.Fragment>
-                        <Block margin="s" visible={andreInntekterSiste10Mnd.length > 0}>
+                        <Block margin="xs" visible={andreInntekterSiste10Mnd.length > 0}>
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(annenInntekt: AnnenInntekt, index: number) => (
@@ -121,7 +121,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                             />
                         </Block>
 
-                        <Block margin="s">
+                        <Block>
                             <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
