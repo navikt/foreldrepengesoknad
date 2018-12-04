@@ -48,6 +48,10 @@ const changeClientonlyKontotypes = (uttaksplan: Periode[]) => {
             if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
                 periode.konto = StønadskontoType.Foreldrepenger;
             }
+
+            if (periode.konto === StønadskontoType.AktivitetsfriFlerbarnsdager) {
+                periode.konto = StønadskontoType.Foreldrepenger;
+            }
         }
 
         return periode;
