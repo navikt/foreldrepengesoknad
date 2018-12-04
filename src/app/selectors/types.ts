@@ -1,6 +1,16 @@
-import { Dekningsgrad } from 'common/types';
+import { Navn } from '../types/common';
+import { NavnPåForeldre, Dekningsgrad } from 'common/types';
 import { Søkersituasjon } from '../types/søknad/Søknad';
-import { TilgjengeligStønadskonto } from '../types/uttaksplan/periodetyper';
+
+export interface Søknadsinfo {
+    søknaden: OmSøknaden;
+    navn: NavnISøknaden;
+    annenForelder: OmAnnenForelder;
+    søker: OmSøker;
+    mor: OmMor;
+    farMedmor: OmFarMedmor;
+    uttaksdatoer: Uttaksdatoer;
+}
 
 export interface Uttaksdatoer {
     førsteUttaksdag: Date;
@@ -16,19 +26,44 @@ export interface Uttaksdatoer {
     };
 }
 
-export interface Søknadsinfo {
-    familiehendelsesdato: Date;
-    dekningsgrad: Dekningsgrad;
-    antallBarn: number;
-    morHarRett: boolean;
-    morHarAleneomsorg: boolean;
-    farEllerMedmorHarRett: boolean;
-    farEllerMedmorHarAleneomsorg: boolean;
+export interface NavnISøknaden {
+    mor: Navn;
+    søker: Navn;
+    annenForelder: Navn;
+    farMedmor: Navn;
+    navnPåForeldre: NavnPåForeldre;
+}
+
+export interface OmSøknaden {
+    saksnummer?: string;
     situasjon: Søkersituasjon;
+    familiehendelsesdato: Date;
+    dekningsgrad: Dekningsgrad | undefined;
+    erFødsel: boolean;
     erDeltUttak: boolean;
-    søkerErMor: boolean;
-    søkerErFarEllerMedmor: boolean;
-    søkerErAleneOmOmsorgen: boolean;
-    uttaksdatoer: Uttaksdatoer;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    erFlerbarnssøknad: boolean;
+    erEndringssøknad: boolean;
+}
+
+export interface OmSøker {
+    erMor: boolean;
+    erFarEllerMedmor: boolean;
+    erAleneOmOmsorg: boolean;
+}
+
+export interface OmAnnenForelder {
+    harRett: boolean;
+    erMor: boolean;
+    erFarEllerMedmor: boolean;
+}
+
+export interface OmMor {
+    erUfør: boolean;
+    harRett: boolean;
+    erAleneOmOmsorg: boolean;
+}
+
+export interface OmFarMedmor {
+    harRett: boolean;
+    erAleneOmOmsorg: boolean;
 }
