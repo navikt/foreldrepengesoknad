@@ -141,7 +141,13 @@ class Velkommen extends React.Component<Props, State> {
                                     <>
                                         <Block>
                                             <Ingress>
-                                                <FormattedMessage id="velkommen.intro.harSak" />
+                                                <FormattedMessage
+                                                    id={
+                                                        erSakForEndringssøknadFraInfotrygd
+                                                            ? 'velkommen.intro.harSak'
+                                                            : 'velkommen.intro.harInfotrygdSak'
+                                                    }
+                                                />
                                             </Ingress>
                                         </Block>
                                         {sakForEndringssøknad.type === SakType.FPSAK && (
@@ -157,11 +163,12 @@ class Velkommen extends React.Component<Props, State> {
                                                 erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
                                             />
                                         </Block>
-                                        {this.state.skalEndre === false && (
-                                            <Veilederinfo>
-                                                <FormattedMessage id="velkommen.intro.harSak.veileder" />
-                                            </Veilederinfo>
-                                        )}
+                                        {this.state.skalEndre === false &&
+                                            !erSakForEndringssøknadFraInfotrygd && (
+                                                <Veilederinfo>
+                                                    <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                                </Veilederinfo>
+                                            )}
                                         {this.state.skalEndre === true &&
                                             erSakForEndringssøknadFraInfotrygd && (
                                                 <Veilederinfo>
