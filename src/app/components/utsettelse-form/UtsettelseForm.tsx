@@ -54,6 +54,7 @@ interface StateProps {
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    familiehendelsesdato: Date;
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -215,7 +216,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknad, søkerErFarEllerMedmor } = this.props;
+        const { periode, søknad, søkerErFarEllerMedmor, familiehendelsesdato } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
@@ -223,7 +224,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger,
+            familiehendelsesdato
         });
     }
 
@@ -379,7 +381,8 @@ const mapStateToProps = (state: AppState): StateProps => {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon)
     };
 };
 
