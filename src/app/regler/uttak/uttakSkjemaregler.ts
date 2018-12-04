@@ -4,7 +4,7 @@ import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
-import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
+import { getSøknadsperiode } from '../søknadsperioden/søknadsperiode';
 import { Søknadsinfo } from '../../selectors/types';
 
 export interface UttakSkjemaregler {
@@ -37,13 +37,13 @@ export const getUttakSkjemaregler = (
         ),
 
     samtidigUttakSkalBesvares: (): boolean => {
-        const perioden = Søknadsperioden(søknadsinfo, periode as Periode);
+        const søknadsperiode = getSøknadsperiode(søknadsinfo, periode as Periode);
         return samtidigUttakSkalBesvares(
             periode,
             velgbareStønadskontotyper,
             søknadsinfo.søknaden.erDeltUttak,
-            perioden.erInnenFørsteSeksUkerFødselFarMedmor(),
-            perioden.erUttakFørFødsel()
+            søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor(),
+            søknadsperiode.erUttakFørFødsel()
         );
     },
     overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
