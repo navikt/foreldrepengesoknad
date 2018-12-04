@@ -17,7 +17,7 @@ import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/types';
 
 interface OwnProps {
     søknadsinfo: Søknadsinfo;

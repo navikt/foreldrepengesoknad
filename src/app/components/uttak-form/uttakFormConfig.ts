@@ -11,10 +11,10 @@ import {
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { UttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
 import { erUttakFørFødsel } from '../../regler/søknadsperioden/erUttakFørFødsel';
 import { Søknadsperioden } from '../../regler/søknadsperioden/Søknadsperioden';
+import { Søknadsinfo } from '../../selectors/types';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',

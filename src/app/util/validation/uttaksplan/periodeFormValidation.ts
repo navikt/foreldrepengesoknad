@@ -18,9 +18,9 @@ import { uttakTidsperiodeErGyldig } from './uttakTidsperiodeValidation';
 import { isValidTidsperiode } from '../../uttaksplan/Tidsperioden';
 import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
-import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { getUttakSkjemaregler } from '../../../regler/uttak/uttakSkjemaregler';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
+import { Søknadsinfo } from '../../../selectors/types';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (

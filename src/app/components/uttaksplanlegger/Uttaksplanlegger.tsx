@@ -21,7 +21,7 @@ import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/types';
 
 export interface Props {
     søknad: Søknad;

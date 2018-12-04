@@ -39,9 +39,9 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
 import { getUttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
+import { Søknadsinfo } from '../../selectors/types';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 

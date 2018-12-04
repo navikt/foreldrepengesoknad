@@ -15,7 +15,7 @@ import {
 import { onToggleItemProp } from '../toggle-list/ToggleList';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
+import { Søknadsinfo } from '../../selectors/types';
 
 export interface Props {
     søknadsinfo: Søknadsinfo;

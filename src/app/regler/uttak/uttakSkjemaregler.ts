@@ -1,11 +1,11 @@
 import { StønadskontoType, Periode } from '../../types/uttaksplan/periodetyper';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
 import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
+import { Søknadsinfo } from '../../selectors/types';
 
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;

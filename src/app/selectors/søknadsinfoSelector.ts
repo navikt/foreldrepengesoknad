@@ -7,8 +7,7 @@ import {
     selectSøker,
     selectErEndringssøknad
 } from './søknadSelector';
-import { Søkersituasjon } from '../types/søknad/Søknad';
-import { Dekningsgrad, NavnPåForeldre } from 'common/types';
+
 import {
     selectFamiliehendelsesdato,
     selectErDeltUttak,
@@ -28,58 +27,8 @@ import AnnenForelder from '../types/søknad/AnnenForelder';
 import Person from '../types/Person';
 import { getErSøkerFarEllerMedmor } from '../util/domain/personUtil';
 import { Navn } from '../types/common';
-import { Uttaksdatoer } from './types';
 import { getUttaksdatoer } from '../util/uttaksplan/uttaksdatoer';
-
-export interface Søknadsinfo {
-    søknaden: OmSøknaden;
-    navn: NavnISøknaden;
-    annenForelder: OmAnnenForelder;
-    søker: OmSøker;
-    mor: OmMor;
-    farMedmor: OmFarMedmor;
-    uttaksdatoer: Uttaksdatoer;
-}
-
-interface OmSøknaden {
-    saksnummer?: string;
-    situasjon: Søkersituasjon;
-    familiehendelsesdato: Date;
-    dekningsgrad: Dekningsgrad | undefined;
-    erFødsel: boolean;
-    erDeltUttak: boolean;
-    erFlerbarnssøknad: boolean;
-    erEndringssøknad: boolean;
-}
-
-interface OmSøker {
-    erMor: boolean;
-    erFarEllerMedmor: boolean;
-    erAleneOmOmsorg: boolean;
-}
-interface OmAnnenForelder {
-    harRett: boolean;
-    erMor: boolean;
-    erFarEllerMedmor: boolean;
-}
-interface OmMor {
-    erUfør: boolean;
-    harRett: boolean;
-    erAleneOmOmsorg: boolean;
-}
-
-interface OmFarMedmor {
-    harRett: boolean;
-    erAleneOmOmsorg: boolean;
-}
-
-export interface NavnISøknaden {
-    mor: Navn;
-    søker: Navn;
-    annenForelder: Navn;
-    farMedmor: Navn;
-    navnPåForeldre: NavnPåForeldre;
-}
+import { OmMor, OmSøker, OmFarMedmor, OmAnnenForelder, NavnISøknaden, Søknadsinfo, OmSøknaden } from './types';
 
 const selectOmSøknaden = createSelector(
     [

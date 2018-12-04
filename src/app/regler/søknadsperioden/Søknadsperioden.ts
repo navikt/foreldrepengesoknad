@@ -1,10 +1,10 @@
 import { Periode, Periodetype, isUttaksperiode, StønadskontoType } from '../../types/uttaksplan/periodetyper';
-import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
 import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import { erInnenFørsteSeksUkerFødselFarMedmor } from './erInnenFørsteSeksUkerFødselFarMedmor';
 import { erUttakFørFødsel } from './erUttakFørFødsel';
 import { harAktivitetskrav } from './harAktivitetskrav';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { Søknadsinfo } from '../../selectors/types';
 
 export const Søknadsperioden = (søknadsinfo: Søknadsinfo, periode: Periode) => ({
     erUttaksperiode: () => periode.type === Periodetype.Uttak,
