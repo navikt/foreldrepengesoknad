@@ -4,7 +4,8 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    StønadskontoType
+    StønadskontoType,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 
 export const dokumentasjonBehøvesForUtsettelsesperiode = ({ årsak }: Utsettelsesperiode): boolean =>
@@ -19,7 +20,7 @@ export const dokumentasjonBehøvesForOverføringsperiode = (
 
 export const dokumentasjonBehøvesForUttaksperiode = (periode: Uttaksperiode): boolean => {
     return (
-        periode.morsAktivitetIPerioden !== undefined ||
+        (periode.morsAktivitetIPerioden !== undefined && periode.morsAktivitetIPerioden !== MorsAktivitet.Uføre) ||
         (periode.konto === StønadskontoType.Fedrekvote && periode.erMorForSyk === true)
     );
 };

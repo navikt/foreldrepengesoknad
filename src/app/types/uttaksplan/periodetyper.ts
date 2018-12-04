@@ -140,7 +140,8 @@ export enum MorsAktivitet {
     'Introduksjonsprogrammet' = 'INTROPROG',
     'TrengerHjelp' = 'TRENGER_HJELP',
     'Innlagt' = 'INNLAGT',
-    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING'
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'Uføre' = 'UFØRE'
 }
 
 export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
