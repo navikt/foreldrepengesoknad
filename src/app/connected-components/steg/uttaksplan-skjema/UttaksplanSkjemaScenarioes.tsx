@@ -158,7 +158,7 @@ const Scenario6: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
         <>
             <DekningsgradSpørsmål />
             <StartdatoUttakFarMedmorSpørsmål
-                visible={søknad.dekningsgrad !== undefined}
+                visible={søknad.dekningsgrad !== undefined && søknad.annenForelder.erUfør === false}
                 familiehendelsesdato={førsteUttaksdag}
             />
             <Block visible={dagensDatoFørReservertMorDato}>

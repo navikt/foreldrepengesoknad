@@ -26,7 +26,7 @@ const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startda
     }
 };
 
-const getAktivitetsFrieUkerFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
+const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
     if (antallBarn === 2) {
         if (dekningsgrad === '100') {
             return 17;
@@ -52,16 +52,16 @@ const opprettAktivitetsFriKonto = (
     const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad, startdatoUttak) * 5;
 
     if (antallBarn >= 2) {
-        const aktivitetskravFrieDagerFlerbarnsuker = getAktivitetsFrieUkerFlerbarnsuker(dekningsgrad, antallBarn) * 5;
+        const flerbarnsuker = getFlerbarnsuker(dekningsgrad, antallBarn) * 5;
 
         nyeKontoer.push({
             ...kontoer[0],
-            dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger - aktivitetskravFrieDagerFlerbarnsuker
+            dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger - flerbarnsuker
         });
         nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
         nyeKontoer.push({
-            konto: StønadskontoType.AktivitetsfriFlerbarnsdager,
-            dager: aktivitetskravFrieDagerFlerbarnsuker
+            konto: StønadskontoType.Flerbarnsdager,
+            dager: flerbarnsuker
         });
     } else {
         nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });

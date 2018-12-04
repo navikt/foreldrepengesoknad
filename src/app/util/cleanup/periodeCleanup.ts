@@ -28,7 +28,6 @@ const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
         const validPeriodeTypes: StønadskontoType[] = [
             StønadskontoType.Fellesperiode,
             StønadskontoType.Foreldrepenger,
-            StønadskontoType.AktivitetsfriFlerbarnsdager,
             StønadskontoType.AktivitetsfriKvote
         ];
         if (validPeriodeTypes.includes(periode.konto)) {
