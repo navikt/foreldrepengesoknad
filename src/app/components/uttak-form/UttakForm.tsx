@@ -93,7 +93,6 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     onChange(periode: UttakFormPeriodeType) {
-        setTimeout(() => null, 1000);
         this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.timeoutId = setTimeout(() => {
