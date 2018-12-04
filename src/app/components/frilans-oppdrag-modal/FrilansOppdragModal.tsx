@@ -95,9 +95,9 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         <Input
                             label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
                             value={oppdrag.navnPåArbeidsgiver || ''}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onChange={(value: string) =>
                                 this.updateOppdrag({
-                                    navnPåArbeidsgiver: e.target.value
+                                    navnPåArbeidsgiver: value
                                 })
                             }
                             name="oppdragsgiverNavn"

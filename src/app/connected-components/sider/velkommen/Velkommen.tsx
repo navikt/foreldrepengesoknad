@@ -28,10 +28,11 @@ import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
 import { Feature, isFeatureEnabled } from '../../../Feature';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
-import Sak from '../../../types/søknad/Sak';
+import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
 import './velkommen.less';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 interface StateProps {
     person?: Person;
@@ -142,12 +143,14 @@ class Velkommen extends React.Component<Props, State> {
                                                 <FormattedMessage id="velkommen.intro.harSak" />
                                             </Ingress>
                                         </Block>
-                                        <Block>
-                                            <SakInfo sak={sakForEndringssøknad} />
-                                        </Block>
+                                        {sakForEndringssøknad.type === SakType.FPSAK && (
+                                            <Block>
+                                                <SakInfo sak={sakForEndringssøknad} />
+                                            </Block>
+                                        )}
                                         <Block>
                                             <SøknadstypeSpørsmål
-                                                harEksisterendeSak={false}
+                                                harEksisterendeSak={true}
                                                 skalEndre={this.state.skalEndre}
                                                 onChange={(skalEndre) => this.setState({ skalEndre })}
                                             />
@@ -163,6 +166,13 @@ class Velkommen extends React.Component<Props, State> {
                             endringssøknadEnabled === false ||
                             this.state.skalEndre !== undefined
                         }>
+                        {this.state.skalEndre === false && (
+                            <>
+                                <Veilederinfo>
+                                    <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                </Veilederinfo>
+                            </>
+                        )}
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}

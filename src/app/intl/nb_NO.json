@@ -83,10 +83,10 @@
     "hvaergrunnentilatduskalutsettedittuttak.spørsmål": "Hvorfor skal du utsette?",
     "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Hvilken del av foreldrepengene skal { navn } bruke?",
 
-    "søknad.pageheading.ny": "Søknad om foreldrepenger",
+    "søknad.pageheading.ny": "Foreldrepengesøknaden",
     "søknad.pageheading.endring": "Søknad om endring av foreldrepenger",
 
-    "velkommen.tittel": "Velkommen til søknad om foreldrepenger",
+    "velkommen.tittel": "Velkommen til foreldrepengesøknaden",
     "velkommen.sak.type": "Foreldrepenger",
     "velkommen.sak.sistEndret": "Sist endret: {date}",
     "velkommen.sak.status.underBehandling": "Under behandling",
@@ -96,7 +96,7 @@
     "velkommen.bobletittel": "Hei, {name}!",
     "velkommen.bobletekst": "Jeg vil hjelpe deg med å fylle ut søknaden.",
     "velkommen.startNySøknadKnapp": "Begynn med ny søknad",
-    "velkommen.startEndringssøknadKnapp": "Begynn med endringssøknad",
+    "velkommen.startEndringssøknadKnapp": "Begynn med søknad om endring",
     "velkommen.samtykkeIntro":
         "For å gå videre med søknaden må du bekrefte at du har lest og forstått { link } Vi lagrer søknaden din for deg i 24 timer. Hvis du ikke fortsetter eller du avbryter søknaden, blir opplysningene du har lagt inn slettet.",
     "velkommen.dinePlikter": "dine plikter.<br /><br />",
@@ -105,13 +105,17 @@
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten.",
 
-    "velkommen.intro.harSak":
-        "Her søker du om foreldrepenger. Hvis du skal starte foreldrepengeperioden din med en utsettelse, må du velge ny søknad. Mottar du allerede foreldepenger, velger du søk om endring.",
     "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
     "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, jeg vil søke om endring",
 
-    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
+    "velkommen.intro.harIkkeSak": "Her kan du søke om foreldrepenger, kvote eller utsette foreldepengeperioden din.",
+
+    "velkommen.intro.harSak.veileder":
+        "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
+    "velkommen.intro.harSak":
+        "Her kan du søke om å utsette eller endre foreldrepengeperioden din. Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengeperiode?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
 
@@ -176,7 +180,7 @@
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Vi kan tidligst behandle søknaden når arbeidsgiveren din har sendt inn inntektsmeldingen. Denne kan arbeidsgiveren din sende inn fire uker før du starter foreldrepengene.",
+        "Vi kan tidligst behandle søknaden når arbeidsgiveren din har sendt inn inntektsmeldingen. Denne kan arbeidsgiveren din sende inn fire uker før du starter foreldrepengene. Vi vil i noen tilfeller kontakte arbeidsgiver i forbindelse med behandling av søknaden.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalinger fra NAV",
@@ -670,12 +674,13 @@
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "oppsummering.utenlandsopphold": "Utenlandsopphold",
+    "oppsummering.utenlandsopphold.land": "bo i {land}",
     "oppsummering.iNorgePåFødselstidspunktet.label": "Jeg er i Norge på fødselstidspunktet",
     "oppsummering.iNorgePåFødselstidspunktet.label.farMedmor": "Jeg var i Norge på fødselstidspunktet",
     "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Jeg er i Norge på datoen for omsorgsovertakelse",
     "oppsummering.iNorgeSiste12Mnd.label": "De siste 12 månendene har jeg",
     "oppsummering.iNorgeSiste12MndTrue": "bodd i Norge",
-    "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg være i",
+    "oppsummering.iNorgeNeste12Mnd.label": "De neste 12 månendene skal jeg",
     "oppsummering.iNorgeNeste12MndTrue": "bo i Norge",
     "oppsummering.fødselINorge.label": "Jeg skal føde barnet",
     "oppsummering.fødselINorgeTrue": "i Norge",
@@ -779,6 +784,7 @@
     "stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepenger før fødsel",
     "stønadskontotype.FLERBARNSDAGER": "Flerbarnsuker",
     "stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepenger uten aktivitetskrav",
+    "stønadskontotype.AKTIVITETSFRI_FLERBARNSDAGER": "Flerbarnsuker uten aktivitetskrav",
     "stønadskontotype.foreldernavn.kvote": "{navn} sin kvote",
     "stønadskontotype.undefined": "Ny periode uten kvote",
 
@@ -948,7 +954,9 @@
     "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
         "Prosenten du skal jobbe kan ikke være høyere enn prosenten du skal være hjemme med foreldrepenger.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
-        "Du kan bare søke om utsettelse frem i tid når utsettelsen din gjelder ferie eller arbeid. Dette gjelder også hvis du skal kombinere foreldrepengene med delvis jobb.",
+        "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikke søke om utsettelse før foreldrepengeperioden din starter.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 

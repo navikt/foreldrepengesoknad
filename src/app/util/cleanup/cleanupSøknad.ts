@@ -48,6 +48,10 @@ const changeClientonlyKontotypes = (uttaksplan: Periode[]) => {
             if (periode.konto === StønadskontoType.AktivitetsfriKvote) {
                 periode.konto = StønadskontoType.Foreldrepenger;
             }
+
+            if (periode.konto === StønadskontoType.AktivitetsfriFlerbarnsdager) {
+                periode.konto = StønadskontoType.Foreldrepenger;
+            }
         }
 
         return periode;
@@ -72,6 +76,7 @@ export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Peri
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknad;
+
     const cleanedSøknad: SøknadForInnsending = { ...rest };
     cleanedSøknad.vedlegg = cleanUpAttachments(cleanedSøknad);
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>

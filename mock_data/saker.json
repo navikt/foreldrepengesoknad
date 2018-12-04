@@ -1,12 +1,13 @@
 [
     {
         "saksnummer": "135737372",
-        "status": "UBEH",
+        "status": "LOP",
         "opprettet": "2018-11-07",
+        "type": "FPSAK",
         "behandlinger": [
             {
                 "id": null,
-                "status": "UTRED",
+                "status": "UBEH",
                 "type": "ES",
                 "tema": "FORP",
                 "årsak": null,

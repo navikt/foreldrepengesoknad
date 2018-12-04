@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getVariantFromPeriode, UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
 import { getErSøkerFarEllerMedmor } from '../../domain/personUtil';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
@@ -31,7 +32,7 @@ const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): pe
 };
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
-    const { periode } = payload;
+    const { periode, familiehendelsesdato } = payload;
     const { tidsperiode, årsak } = periode;
 
     let fom;
@@ -56,6 +57,15 @@ const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValiderin
             ];
         }
     }
+
+    if (moment(fom as Date).isBefore(moment(familiehendelsesdato))) {
+        return [
+            {
+                feilKey: PeriodeValideringErrorKey.UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL
+            }
+        ];
+    }
+
     if (visibility.areAllQuestionsAnswered()) {
         return undefined;
     }
@@ -115,6 +125,7 @@ export const validerPeriodeForm = (
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger
+        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
+        familiehendelsesdato
     });
 };
