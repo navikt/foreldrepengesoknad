@@ -113,11 +113,17 @@
 
     "velkommen.intro.harSak.veileder":
         "Når du søker om foreldrepenger for et nytt barn,  mister du dager du har igjen fra den første foreldrepengeperioden din.",
+    "velkommen.intro.harInfotrygdSak.veileder":
+        "Du må tidligere ha søkt om foreldrepenger for det samme barnet for å sende inn søknad om endring.",
     "velkommen.intro.harSak":
         "Her kan du søke om å utsette eller endre foreldrepengeperioden din. Skal du søke om foreldrepenger for et nytt barn, velger du det nedenfor.",
+
     "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengeperiode?",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, jeg vil søke om endring",
     "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harInfotrygdSak.spørsmål": "Hva vil du søke om?",
+    "velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.endring": "Jeg vil søke om endring",
+    "velkommen.spørsmål.søknadstype.harInfotrygdSak.alternativ.nyttbarn": "Jeg vil søke om foreldrepenger",
 
     "papirsøknad.lenke": "Her finner du papirsøknaden",
 
