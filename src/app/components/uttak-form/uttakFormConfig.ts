@@ -7,13 +7,11 @@ import {
     OverføringÅrsakType,
     isForeldrepengerFørFødselUttaksperiode,
     isUttaksperiode,
-    Periode,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { UttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
-import { erUttakFørFødsel } from '../../regler/søknadsperioden/erUttakFørFødsel';
-import { Søknadsperioden } from '../../regler/søknadsperioden/Søknadsperioden';
+import { Søknadsperiode } from '../../regler/søknadsperioden/Søknadsperioden';
 import { Søknadsinfo } from '../../selectors/types';
 
 export enum UttakSpørsmålKeys {
@@ -35,6 +33,7 @@ export interface UttakFormPayload {
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
     søknadsinfo: Søknadsinfo;
+    søknadsperiode: Søknadsperiode;
     skjemaregler: UttakSkjemaregler;
 }
 
@@ -43,16 +42,11 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 const Sp = UttakSpørsmålKeys;
 
 const visKontospørsmål = ({
-    periode,
     kanEndreStønadskonto,
     velgbareStønadskontotyper,
-    søknadsinfo
+    søknadsperiode
 }: UttakFormPayload): boolean => {
-    return (
-        erUttakFørFødsel(periode as Periode, søknadsinfo.søknaden.familiehendelsesdato) === false &&
-        kanEndreStønadskonto === true &&
-        velgbareStønadskontotyper.length > 0
-    );
+    return kanEndreStønadskonto === true && velgbareStønadskontotyper.length > 0 && søknadsperiode.erUttakEtterFødsel();
 };
 
 const visAktivitetskravMor = ({ periode, søknadsinfo }: UttakFormPayload): boolean => {
@@ -89,12 +83,11 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 };
 
 const visGradering = (payload: UttakFormPayload): boolean => {
-    const { periode, søknadsinfo } = payload;
-    const søknadsperioden = Søknadsperioden(søknadsinfo, periode as Periode);
+    const { periode, søknadsperiode } = payload;
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        søknadsperioden.erUttakFørFødsel() ||
+        søknadsperiode.erUttakFørFødsel() ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
         (visErMorForSyk(payload) && periode.erMorForSyk !== true)
@@ -110,12 +103,11 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
 };
 
 const visErMorForSyk = (payload: UttakFormPayload) => {
-    const { periode, søknadsinfo } = payload;
-    const søknadsperioden = Søknadsperioden(søknadsinfo, periode as Periode);
+    const { søknadsperiode } = payload;
     if (
-        søknadsperioden.harGyldigTidsperiode() &&
-        søknadsperioden.erInnenFørsteSeksUkerFødselFarMedmor() &&
-        søknadsperioden.erUttakFedrekvote() &&
+        søknadsperiode.harGyldigTidsperiode() &&
+        søknadsperiode.erInnenFørsteSeksUkerFødselFarMedmor() &&
+        søknadsperiode.erUttakFedrekvote() &&
         !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
     ) {
         return true;

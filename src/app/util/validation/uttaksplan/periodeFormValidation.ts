@@ -21,6 +21,7 @@ import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValid
 import { getUttakSkjemaregler } from '../../../regler/uttak/uttakSkjemaregler';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 import { Søknadsinfo } from '../../../selectors/types';
+import { getSøknadsperiode } from '../../../regler/s\u00F8knadsperioden/S\u00F8knadsperioden';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (
@@ -108,7 +109,8 @@ export const validerPeriodeForm = (
             velgbareStønadskontotyper,
             kanEndreStønadskonto: true,
             søknadsinfo,
-            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper)
+            skjemaregler: getUttakSkjemaregler(søknadsinfo, periode, velgbareStønadskontotyper),
+            søknadsperiode: getSøknadsperiode(søknadsinfo, periode)
         });
     }
     return validerUtsettelseForm({
