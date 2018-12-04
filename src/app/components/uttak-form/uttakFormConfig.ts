@@ -12,9 +12,9 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { PeriodeRegler } from '../../regler/perioder/periodeRegler';
-import { erUttakFørFødsel } from '../../regler/perioder/erUttakFørFødsel';
 import { UttakRegler } from '../../regler/uttak/uttakRegler';
+import { erUttakFørFødsel } from '../../regler/søknadsperioden/erUttakFørFødsel';
+import { Søknadsperioden } from '../../regler/søknadsperioden/Søknadsperioden';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -42,7 +42,7 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 
 const Sp = UttakSpørsmålKeys;
 
-const visKvote = ({
+const visKontospørsmål = ({
     periode,
     kanEndreStønadskonto,
     velgbareStønadskontotyper,
@@ -93,7 +93,7 @@ const visGradering = (payload: UttakFormPayload): boolean => {
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        PeriodeRegler(søknadsinfo).erUttakFørFødsel(payload.periode as Periode) ||
+        erUttakFørFødsel(periode as Periode, søknadsinfo.søknaden.familiehendelsesdato) ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
         (visErMorForSyk(payload) && periode.erMorForSyk !== true)
@@ -114,7 +114,7 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
     if (
         isValidTidsperiode(tidsperiode) &&
-        PeriodeRegler(søknadsinfo).erUttakInnenFørsteSeksUkerFødselFarMedmor(periode as Periode) &&
+        Søknadsperioden(søknadsinfo, periode as Periode).erInnenFørsteSeksUkerFødselFarMedmor() &&
         payload.periode.konto === StønadskontoType.Fedrekvote &&
         !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
     ) {
@@ -135,7 +135,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         parentQuestion: Sp.tidsperiode,
         isRelevant: () => true,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
-        visibilityFilter: (payload) => visKvote(payload)
+        visibilityFilter: (payload) => visKontospørsmål(payload)
     },
     [Sp.aktivitetskravMor]: {
         parentQuestion: Sp.tidsperiode,
@@ -167,11 +167,8 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)
     },
     [Sp.overføringsårsak]: {
-        isRelevant: (payload) =>
-            payload.periode.type === Periodetype.Overføring &&
-            PeriodeRegler(payload.søknadsinfo).erUttakEgenKvote(payload.periode.konto),
-        isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak),
-        visibilityFilter: (payload) => visKvote(payload)
+        isRelevant: ({ regler }) => regler.overføringsårsakSkalBesvares(),
+        isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,

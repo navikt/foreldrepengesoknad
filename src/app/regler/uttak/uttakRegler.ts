@@ -4,8 +4,8 @@ import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
-import { PeriodeRegler } from '../perioder/periodeRegler';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
+import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
 
 export interface UttakRegler {
     aktivitetskravMorSkalBesvares: () => boolean;
@@ -32,14 +32,16 @@ export const getUttakRegler = (søknadsinfo: Søknadsinfo, periode: UttakFormPer
             søknadsinfo.søknaden.erFlerbarnssøknad
         ),
 
-    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]): boolean =>
-        samtidigUttakSkalBesvares(
+    samtidigUttakSkalBesvares: (velgbareStønadskontotyper: StønadskontoType[]): boolean => {
+        const perioden = Søknadsperioden(søknadsinfo, periode as Periode);
+        return samtidigUttakSkalBesvares(
             periode,
             velgbareStønadskontotyper,
             søknadsinfo.søknaden.erDeltUttak,
-            PeriodeRegler(søknadsinfo).erUttakInnenFørsteSeksUkerFødselFarMedmor(periode as Periode),
-            PeriodeRegler(søknadsinfo).erUttakFørFødsel(periode as Periode)
-        ),
+            perioden.erInnenFørsteSeksUkerFødselFarMedmor(),
+            perioden.erUttakFørFødsel()
+        );
+    },
     overføringsårsakSkalBesvares: () => overføringsårsakSkalBesvares(periode as Periode, søknadsinfo)
 });
 

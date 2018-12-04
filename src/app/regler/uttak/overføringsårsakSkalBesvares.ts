@@ -1,9 +1,10 @@
-import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
+import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Søknadsinfo } from '../../selectors/søknadsinfoSelector';
-import { PeriodeRegler } from '../perioder/periodeRegler';
+import { Søknadsperioden } from '../søknadsperioden/Søknadsperioden';
 
 const overføringsårsakSkalBesvares = (periode: Periode, søknadsinfo: Søknadsinfo) => {
-    return periode.type === Periodetype.Overføring && PeriodeRegler(søknadsinfo).erUttakEgenKvote(periode.konto);
+    const perioden = Søknadsperioden(søknadsinfo, periode);
+    return perioden.erOverføringsperiode() && perioden.erUttakAnnenForeldersKvote();
 };
 
 export default overføringsårsakSkalBesvares;
