@@ -19,7 +19,6 @@ export const getStønadskontoFarge = (
         switch (konto) {
             case StønadskontoType.Fedrekvote:
             case StønadskontoType.AktivitetsfriKvote:
-            case StønadskontoType.AktivitetsfriFlerbarnsdager:
                 return 'blue';
             case StønadskontoType.Mødrekvote:
             case StønadskontoType.Foreldrepenger:
