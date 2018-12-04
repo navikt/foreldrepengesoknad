@@ -6,11 +6,12 @@ import {
     Uttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
     Overføringsperiode,
-    MorsAktivitet
+    MorsAktivitet,
+    Periode
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
-import { Skjemanummer, Uttaksplan } from '../../types/søknad/Søknad';
+import { Skjemanummer } from '../../types/søknad/Søknad';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducers';
@@ -55,7 +56,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-    uttaksplan: Uttaksplan;
+    uttaksplan: Periode[];
     arbeidsforhold?: Arbeidsforhold[];
     velgbareStønadskontotyper: StønadskontoType[];
 }

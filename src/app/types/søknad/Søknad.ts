@@ -44,8 +44,6 @@ interface SkjemaEkstrainfo {
     currentStegID: StegID | undefined;
 }
 
-export type Uttaksplan = Periode[];
-
 interface Søknad {
     type: Foreldrepenger;
     saksnummer?: string;
