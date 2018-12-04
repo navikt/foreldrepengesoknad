@@ -8,19 +8,36 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
     Periode,
-    MorsAktivitet
+    isUttaksperiode,
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
-import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../../components/uttak-form/uttakFormConfig';
+import { UttakSpørsmålVisibility } from '../../components/uttak-form/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
 import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
+
+const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
+    if (isUttaksperiode(periode)) {
+        const validPeriodeTypes: StønadskontoType[] = [
+            StønadskontoType.Fellesperiode,
+            StønadskontoType.Foreldrepenger,
+            StønadskontoType.AktivitetsfriFlerbarnsdager,
+            StønadskontoType.AktivitetsfriKvote
+        ];
+        if (validPeriodeTypes.includes(periode.konto)) {
+            return true;
+        }
+    }
+
+    return false;
+};
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
@@ -63,8 +80,7 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
         morsAktivitetIPerioden:
-            (visibility && visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)) ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.Uføre
+            periodeKontotypeHasAktivitetskrav(periode) && periode.morsAktivitetIPerioden
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,

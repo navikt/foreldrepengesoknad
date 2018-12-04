@@ -5,7 +5,8 @@ import {
     StønadskontoType,
     Uttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Overføringsperiode
+    Overføringsperiode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -92,6 +93,7 @@ class UttaksperiodeForm extends React.Component<Props> {
     }
 
     onChange(periode: UttakFormPeriodeType) {
+        setTimeout(() => null, 1000);
         this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.timeoutId = setTimeout(() => {
@@ -135,7 +137,12 @@ class UttaksperiodeForm extends React.Component<Props> {
                     konto === StønadskontoType.AktivitetsfriFlerbarnsdager
                         ? true
                         : undefined,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
+                morsAktivitetIPerioden:
+                    konto === StønadskontoType.AktivitetsfriKvote ||
+                    konto === StønadskontoType.AktivitetsfriFlerbarnsdager
+                        ? MorsAktivitet.Uføre
+                        : undefined
             });
         } else {
             this.onChange({
@@ -147,7 +154,12 @@ class UttaksperiodeForm extends React.Component<Props> {
                     konto === StønadskontoType.AktivitetsfriFlerbarnsdager
                         ? true
                         : undefined,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
+                morsAktivitetIPerioden:
+                    konto === StønadskontoType.AktivitetsfriKvote ||
+                    konto === StønadskontoType.AktivitetsfriFlerbarnsdager
+                        ? MorsAktivitet.Uføre
+                        : undefined
             });
         }
     }
