@@ -1,5 +1,5 @@
 import { QuestionConfig, Questions, QuestionVisibility, questionValueIsOk } from '../../util/questions/Question';
-import { getValidTidsperiode, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { getValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Tidsperiode } from 'nav-datovelger';
 import {
     StønadskontoType,
@@ -56,7 +56,7 @@ const visKontospørsmål = ({
 };
 
 const visAktivitetskravMor = ({ periode, søknadsinfo }: UttakFormPayload): boolean => {
-    return periode.konto !== undefined; // && UttakRegler(søknadsinfo, periode).aktivitetskravMorSkalBesvares();
+    return periode.konto !== undefined;
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
@@ -90,10 +90,11 @@ const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
 
 const visGradering = (payload: UttakFormPayload): boolean => {
     const { periode, søknadsinfo } = payload;
+    const søknadsperioden = Søknadsperioden(søknadsinfo, periode as Periode);
     if (
         periode.konto === undefined ||
         periode.type !== Periodetype.Uttak ||
-        erUttakFørFødsel(periode as Periode, søknadsinfo.søknaden.familiehendelsesdato) ||
+        søknadsperioden.erUttakFørFødsel() ||
         (visSamtidigUttak(payload) && periode.ønskerSamtidigUttak === undefined) ||
         (visAktivitetskravMor(payload) && periode.morsAktivitetIPerioden === undefined) ||
         (visErMorForSyk(payload) && periode.erMorForSyk !== true)
@@ -110,12 +111,11 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
 
 const visErMorForSyk = (payload: UttakFormPayload) => {
     const { periode, søknadsinfo } = payload;
-    const { tidsperiode } = periode;
-
+    const søknadsperioden = Søknadsperioden(søknadsinfo, periode as Periode);
     if (
-        isValidTidsperiode(tidsperiode) &&
-        Søknadsperioden(søknadsinfo, periode as Periode).erInnenFørsteSeksUkerFødselFarMedmor() &&
-        payload.periode.konto === StønadskontoType.Fedrekvote &&
+        søknadsperioden.harGyldigTidsperiode() &&
+        søknadsperioden.erInnenFørsteSeksUkerFødselFarMedmor() &&
+        søknadsperioden.erUttakFedrekvote() &&
         !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
     ) {
         return true;
