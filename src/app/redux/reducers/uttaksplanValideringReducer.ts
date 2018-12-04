@@ -11,7 +11,9 @@ export enum PeriodeValideringErrorKey {
     'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
     'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
-    'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent'
+    'UGYLDIG_SAMTIDIG_UTTAK_PROSENT' = 'ugyldigSamtidigUttakProsent',
+    'UGYLDIG_ÅRSAK_OG_TIDSPERIODE' = 'ugyldigÅrsakOgTidsperiode',
+    'UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL' = 'ikkeUtsettelseFørForeldrepengerFørFødsel'
 }
 
 export enum PeriodeAdvarselKey {
@@ -27,7 +29,6 @@ export interface UttaksplanValideringState {
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
     erGyldig: boolean;
-    førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
@@ -57,7 +58,6 @@ const getDefaultState = (): UttaksplanValideringState => {
         periodevalidering: {},
         inneholderPerioder: false,
         stønadskontoerMedForMyeUttak: [],
-        førsteUttakErInnenforSeksUker: false,
         erGyldig: true,
         morHarSøktUgyldigUtsettelseFørsteSeksUker: false,
         farHarSøktUgyldigUtsettelseFørsteSeksUker: false,
@@ -85,7 +85,6 @@ const uttaksplanValideringReducer = (
                 periodeneErGyldige(action.validertePerioder) &&
                 action.inneholderPerioder &&
                 action.stønadskontoerMedForMyeUttak.length === 0 &&
-                action.førsteUttakErInnenforSeksUker === true &&
                 action.morHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.farHarSøktUgyldigUtsettelseFørsteSeksUker === false &&
                 action.uttaksmengdeForFarMedmorForHøy === false &&
@@ -98,7 +97,6 @@ const uttaksplanValideringReducer = (
                 periodevalidering: action.validertePerioder,
                 inneholderPerioder: action.inneholderPerioder,
                 stønadskontoerMedForMyeUttak: action.stønadskontoerMedForMyeUttak,
-                førsteUttakErInnenforSeksUker: action.førsteUttakErInnenforSeksUker === true,
                 morHarSøktUgyldigUtsettelseFørsteSeksUker: action.morHarSøktUgyldigUtsettelseFørsteSeksUker,
                 farHarSøktUgyldigUtsettelseFørsteSeksUker: action.farHarSøktUgyldigUtsettelseFørsteSeksUker,
                 erGyldig,

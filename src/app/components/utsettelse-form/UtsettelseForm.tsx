@@ -22,7 +22,7 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
+import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
@@ -34,8 +34,6 @@ import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import lenker from '../../util/routing/lenker';
@@ -56,6 +54,7 @@ interface StateProps {
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    familiehendelsesdato: Date;
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -217,7 +216,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknad, søkerErFarEllerMedmor } = this.props;
+        const { periode, søknad, søkerErFarEllerMedmor, familiehendelsesdato } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
@@ -225,7 +224,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger,
+            familiehendelsesdato
         });
     }
 
@@ -305,12 +305,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                         <Veilederinfo>
                                             {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
                                         </Veilederinfo>
-                                        <VedleggSpørsmål
-                                            vedlegg={periode.vedlegg as Attachment[]}
-                                            onChange={(vedlegg) => this.onChange({ vedlegg })}
-                                            attachmentType={AttachmentType.ARBEID_VED_UTSETTELSE}
-                                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
-                                        />
                                     </Block>
                                     <Block
                                         visible={
@@ -387,7 +381,8 @@ const mapStateToProps = (state: AppState): StateProps => {
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
         navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
-        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon)
     };
 };
 

@@ -34,7 +34,7 @@ router.get('/rest/storage', (req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
-router.get('/rest/saker', (req, res) => {
+router.get('/rest/innsyn/saker', (req, res) => {
     res.send(MockStorage.getSaker());
 });
 

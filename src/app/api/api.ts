@@ -3,7 +3,6 @@ import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
-import { cleanUpSøknad } from '../util/cleanup/cleanupSøknad';
 import { formaterDato } from 'common/util/datoUtils';
 
 export interface GetTilgjengeligeStønadskontoerParams {
@@ -71,8 +70,9 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 function sendSøknad(søknad: Søknad) {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-    return axios.post(url, cleanUpSøknad(søknad), {
+    return axios.post(url, søknad, {
         withCredentials: true,
+        timeout: 30 * 1000,
         headers: {
             'content-type': 'application/json;'
         }

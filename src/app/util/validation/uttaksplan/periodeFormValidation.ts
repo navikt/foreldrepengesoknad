@@ -1,6 +1,13 @@
-import { getVariantFromPeriode } from '../../../components/utsettelse-form/UtsettelseForm';
+import moment from 'moment';
+import { getVariantFromPeriode, UtsettelseFormPeriodeType } from '../../../components/utsettelse-form/UtsettelseForm';
 import { getVelgbareStønadskontotyper } from '../../uttaksplan/stønadskontoer';
-import { TilgjengeligStønadskonto, Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
+import {
+    TilgjengeligStønadskonto,
+    Periode,
+    Periodetype,
+    UtsettelseÅrsakType,
+    Utsettelsesperiode
+} from '../../../types/uttaksplan/periodetyper';
 import { PeriodeValideringsfeil, PeriodeValideringErrorKey } from '../../../redux/reducers/uttaksplanValideringReducer';
 import {
     getUtsettelseFormVisibility,
@@ -13,16 +20,50 @@ import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 import { Søknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import { getUttakRegler } from '../../../regler/uttak/uttakRegler';
+import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
+
+const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
+    return (
+        periode.type === Periodetype.Utsettelse &&
+        (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid)
+    );
+};
 
 const validerUtsettelseForm = (payload: UtsettelseFormPayload): PeriodeValideringsfeil[] | undefined => {
+    const { periode, familiehendelsesdato } = payload;
+    const { tidsperiode, årsak } = periode;
+
+    let fom;
+    if (tidsperiode) {
+        fom = tidsperiode.fom;
+    }
+
     const visibility = getUtsettelseFormVisibility(payload);
-    if (isValidTidsperiode(payload.periode.tidsperiode) === false) {
+    if (isValidTidsperiode(tidsperiode) === false) {
         return [
             {
                 feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE
             }
         ];
     }
+    if (erUtsettelsePgaArbeidEllerFerie(periode) && fom && årsak) {
+        if (!erUtsettelseÅrsakTypeGyldigForStartdato(periode.årsak, fom as Date)) {
+            return [
+                {
+                    feilKey: PeriodeValideringErrorKey.UGYLDIG_ÅRSAK_OG_TIDSPERIODE
+                }
+            ];
+        }
+    }
+
+    if (moment(fom as Date).isBefore(moment(familiehendelsesdato))) {
+        return [
+            {
+                feilKey: PeriodeValideringErrorKey.UTSETTELSE_FØR_FORELDREPENGER_FØR_FØDSEL
+            }
+        ];
+    }
+
     if (visibility.areAllQuestionsAnswered()) {
         return undefined;
     }
@@ -74,6 +115,7 @@ export const validerPeriodeForm = (
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søknadsinfo.søker.erAleneOmOmsorg,
         søkerErFarEllerMedmor: søknadsinfo.søker.erFarEllerMedmor,
-        annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett
+        annenForelderHarRettPåForeldrepenger: søknadsinfo.annenForelder.harRett,
+        familiehendelsesdato: søknadsinfo.søknaden.familiehendelsesdato
     });
 };

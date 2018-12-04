@@ -29,7 +29,7 @@ import { AlertStripeAdvarselSolid } from 'nav-frontend-alertstriper';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
 import { MissingAttachment } from '../../../types/MissingAttachment';
-import { mapMissingAttachmentsToSøknad, findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
+import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
 
 interface StateProps {
     person: Person;
@@ -64,16 +64,8 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     sendSøknad() {
-        const { søknad, missingAttachments, dispatch } = this.props;
-        dispatch(
-            apiActionCreators.sendSøknad(
-                {
-                    ...mapMissingAttachmentsToSøknad(missingAttachments, søknad),
-                    uttaksplan: [...(søknad.uttaksplan || [])]
-                },
-                this.props.history
-            )
-        );
+        const { missingAttachments, dispatch } = this.props;
+        dispatch(apiActionCreators.sendSøknad(missingAttachments, this.props.history));
     }
     gotoUttaksplan() {
         const { history } = this.props;

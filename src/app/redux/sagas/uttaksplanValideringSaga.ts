@@ -13,7 +13,6 @@ import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
 import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
 import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
-import { førsteUttakErInnenforKommendeSeksUker } from '../../util/validation/uttaksplan/datobegrensninger';
 import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
 import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
@@ -70,7 +69,6 @@ function* validerUttaksplanSaga() {
             validertePerioder,
             antallAktivePerioder > 0,
             getStønadskontoerMedForMyeUttak(uttaksstatus),
-            førsteUttakErInnenforKommendeSeksUker(uttaksplan),
             søkerErMor
                 ? harMorHarSøktUgyldigUttakFørsteSeksUker(
                       uttaksplan,

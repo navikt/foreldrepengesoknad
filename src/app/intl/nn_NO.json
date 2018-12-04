@@ -94,13 +94,26 @@
 
     "velkommen.foreldreansvar.veileder": "Du må sende søknaden i posten. ",
 
-    "velkommen.intro.harIkkeSak":
-        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Dersom du er far eller medmor og skal starte perioden din med foreldrepengar med å utsetje den, må du velje ny søknad fyrst. Har du allereie foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
-    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål":
-        "Skal du søke om endring på en eksisterende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Ønsker du å endre på din nåværende foreldrepengesak?",
-    "velkommen.spørsmål.søknadstype.alternativ.endring": "Ja, jeg vil søke om endring",
-    "velkommen.spørsmål.søknadstype.alternativ.nyttbarn": " Nei, jeg vil søke for ett nytt barn",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.spørsmål": "Vil du begynne med ny foreldrepengesøknad?",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.nyttbarn": "Ja, start ny søknad",
+    "velkommen.spørsmål.søknadstype.harIkkeSak.alternativ.endring": "Nei, eg vil søkje om endring",
+
+    "velkommen.intro.harSak":
+        "Her søker du om foreldrepengar når du skal ha barn eller skal vera heime i foreldrepermisjon. Har du allereie foreldrepengar, kan du utsetje eller endre ved å velje søk om endring.",
+    "velkommen.intro.harSak.kvinne":
+        "Hvis du er medmor og skal starte foreldrepengeperioden din med ein utsetjing, må du velje ein ny søknad.",
+    "velkommen.intro.harSak.mann":
+        "Skal du starte foreldrepengeperioden din med ein utsetjing, må du velje ein ny søknad først.",
+    "velkommen.spørsmål.søknadstype.harSak.spørsmål": "Skal du søkja om endring på ein eksisterende foreldrepengesak?",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.endring": "Ja, eg vil søkja om endringar",
+    "velkommen.spørsmål.søknadstype.harSak.alternativ.nyttbarn": " Nei, eg vil søkje for eit nytt barn",
+    "velkommen.intro.harSak.veileder":
+        "Når du søkjer om foreldrepengar for eit nytt barn, mistar du dagar du har igjen frå den første foreldrepengeperioden din.",
+
+    "velkommen.sak.type": "Foreldrepengar",
+    "velkommen.sak.sistEndret": "Sist endra: {date}",
+    "velkommen.sak.status.underBehandling": "Under behandling",
+    "velkommen.sak.status.avsluttet": "Avsluttet",
 
     "papirsøknad.lenke": "Her finn du papirsøknaden",
 
@@ -163,7 +176,7 @@
     "annenInntekt.arbeidsforhold.label": "Arbeidsforholda dine",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Vi kan tidlegast behandle søknaden når arbeidsgivaren din har sendt inn inntektsmeldinga. Denne kan arbeidsgivaren din sende inn fire veker før du startar foreldrepengane.",
+        "Vi kan tidlegast behandle søknaden når arbeidsgivaren din har sendt inn inntektsmeldinga. Denne kan arbeidsgivaren din sende inn fire veker før du startar foreldrepengane. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",
@@ -447,6 +460,8 @@
     "uttaksplan.skjema.fordeling.uker": "{uker, plural, one {# uke} other {# uker}}",
     "uttaksplan.skjema.fordeling.valgtVerdi":
         "{ukerForelder} av {ukerTotalt, plural, one {# uke} other {# uker}} med fellesperiode",
+    "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
+        "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
 
     "uttaksplan.skjema.validering.startdatoFørTermin":
         "Du må gi opp når du skal starte foreldrepengane, eller krysse av for at du ikkje skal ha foreldrepengar før termindato ",
@@ -512,6 +527,8 @@
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
     "uttaksplanSkjema.info.dekningsgrad80":
         "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
+    "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
+        "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
@@ -647,12 +664,13 @@
     "oppsummering.annenForelder.erUfør.label": "Er { navn } ufør? ",
 
     "oppsummering.utenlandsopphold": "Utanlandsopphald",
+    "oppsummering.utenlandsopphold.land": "bu i {land}",
     "oppsummering.iNorgePåFødselstidspunktet.label": "Eg er i Noreg på fødselstidspunktet",
     "oppsummering.iNorgePåFødselstidspunktet.label.farMedmor": "Eg var i Noreg på fødselstidspunktet",
     "oppsummering.iNorgePåDatoForOmsorgsovertakelse.label": "Eg er i Noreg på datoen for omsorgsovertakinga",
     "oppsummering.iNorgeSiste12Mnd.label": "Dei siste 12 månadene har eg",
     "oppsummering.iNorgeSiste12MndTrue": "budd i Noreg",
-    "oppsummering.iNorgeNeste12Mnd.label": "Dei neste 12 månadene skal eg vere i",
+    "oppsummering.iNorgeNeste12Mnd.label": "Dei neste 12 månadene skal eg",
     "oppsummering.iNorgeNeste12MndTrue": "bu i Noreg",
     "oppsummering.fødselINorge.label": "Eg skal føde barnet",
     "oppsummering.fødselINorgeTrue": "i Noreg",
@@ -909,13 +927,15 @@
     "uttaksplan.validering.feil.farHarSøktUgyldigUtsettelseSeksFør":
         "Du kan ta ut eller utsetje foreldrepengane dine tidlegast frå veke sju etter fødselen. Dersom du skal ta ut foreldrepengar tidlegare fordi mor er sjuk eller innlagd, må du søkje på papir.",
     "uttaksplan.validering.feil.farMedmorForHøytUttak": "Du har lagt inn fleire dagar enn du har tilgjengeleg",
-    "utsettelse.validering.feil.ugyldigÅrsakPgaDatoFørDagensDato":
-        "Du kan ikkje utsetje på grunn av {årsak}, før dagens dato",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikkje ha ein uttaksplan med berre opphald.",
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikkje starte med eit opphald.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikkje slutte med eit opphald.",
+    "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
+        " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
-    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig"
+    "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
+
+    "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikke være lengre enn {maxLength} tegn."
 }

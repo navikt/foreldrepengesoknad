@@ -60,6 +60,7 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                         visible={harSvartPåStartdato}
                         ukerFellesperiode={antallUkerFellesperiode}
                         navnPåForeldre={navnPåForeldre}
+                        annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                     />
                 )}
         </>
@@ -124,6 +125,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                         visible={skjema.startdatoPermisjon !== undefined && skjema.harAnnenForelderSøktFP !== true}
                         ukerFellesperiode={antallUkerFellesperiode}
                         navnPåForeldre={navnPåForeldre}
+                        annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
                     />
                 )}
         </>
