@@ -1,8 +1,9 @@
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
-import { StønadskontoType, Periode } from '../../types/uttaksplan/periodetyper';
+import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Uttaksdatoer } from '../../selectors/types';
-import { erInnenFørsteSeksUkerFødselFarMedmor } from '../søknadsperioden/erInnenFørsteSeksUkerFødselFarMedmor';
+import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
+import { Tidsperiode } from 'common/types';
 
 const erMorForForSykSkalBesvares = (
     periode: UttakFormPeriodeType,
@@ -14,7 +15,12 @@ const erMorForForSykSkalBesvares = (
     const { konto } = periode;
     if (
         konto === StønadskontoType.Fedrekvote &&
-        erInnenFørsteSeksUkerFødselFarMedmor(periode as Periode, situasjon, søkerErFarEllerMedmor, uttaksdatoer) &&
+        erInnenFørsteSeksUkerFødselFarMedmor(
+            periode.tidsperiode as Tidsperiode,
+            situasjon,
+            søkerErFarEllerMedmor,
+            uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
+        ) &&
         erFlerbarnssøknad === false
     ) {
         return true;
