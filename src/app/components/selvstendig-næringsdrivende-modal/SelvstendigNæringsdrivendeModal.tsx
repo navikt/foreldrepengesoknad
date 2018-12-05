@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -32,6 +32,7 @@ import { removeSpacesFromString } from '../../util/stringUtils';
 import { hasValueRule } from '../../util/validation/common';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 import { trimNumberFromInput } from 'common/util/numberUtils';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -290,7 +291,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={visibility.revisorBolk(næring)}>
+                <Block visible={visibility.revisorBolk(næring)} margin="none">
                     <NæringsrelasjonBolk
                         renderSpørsmål={() => (
                             <HarDuRevisorSpørsmål
@@ -322,6 +323,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             })
                         }
                     />
+                </Block>
+
+                <Block visible={visibility.formButtons(næring)} margin="none">
+                    <Veilederinfo>
+                        <FormattedMessage id="selvstendigNæringsdrivende.modal.veileder.blikontaktet" />
+                    </Veilederinfo>
                 </Block>
             </ModalForm>
         );
