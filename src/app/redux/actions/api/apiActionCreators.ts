@@ -89,6 +89,7 @@ export default {
     getSøkerinfo,
     getSaker,
     sendSøknad,
+    getUttaksplanForSak,
     getStoredAppState,
     deleteStoredAppState,
     storeAppState,

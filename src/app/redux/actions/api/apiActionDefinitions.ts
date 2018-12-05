@@ -36,7 +36,7 @@ export interface GetSaker {
     type: ApiActionKeys.GET_SAKER;
 }
 
-export interface GetInnsynUttaksplan {
+export interface GetUttaksplanForSak {
     type: ApiActionKeys.GET_UTTAKSPLAN_FOR_SAK;
     saksnummer: string;
 }
@@ -80,7 +80,7 @@ export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
     | GetSaker
-    | GetInnsynUttaksplan
+    | GetUttaksplanForSak
     | GetStoredAppState
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

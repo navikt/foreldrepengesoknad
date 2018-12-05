@@ -148,6 +148,11 @@ const setCurrentSteg = (stegID: StegID): SetCurrentSteg => ({
     stegID
 });
 
+const setEndringssakUttaksplan = (perioder: Periode[]) => ({
+    type: SøknadActionKeys.SET_ENDRINGSSAK_UTTAKSPLAN,
+    perioder
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -170,5 +175,6 @@ export default {
     uttaksplanLagForslag,
     avbrytSøknad,
     setSøknad,
-    setCurrentSteg
+    setCurrentSteg,
+    setEndringssakUttaksplan
 };

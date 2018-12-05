@@ -38,7 +38,8 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },
-            currentStegID: undefined
+            currentStegID: undefined,
+            endringUttaksplan: undefined
         },
         sensitivInfoIkkeLagre: {
             søknadenGjelderBarnValg: {
@@ -222,6 +223,14 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     currentStegID: action.stegID
+                }
+            };
+        case SøknadActionKeys.SET_ENDRINGSSAK_UTTAKSPLAN:
+            return {
+                ...state,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    endringUttaksplan: action.perioder
                 }
             };
         case SøknadActionKeys.UPLOAD_ATTACHMENT:

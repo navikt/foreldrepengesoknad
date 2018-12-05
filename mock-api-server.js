@@ -62,7 +62,8 @@ router.post('/rest/soknad/endre', (req, res) => {
 router.delete('/rest/storage', (req, res) => {
     res.sendStatus(204);
 });
-router.delete('/rest/innsyn/uttaksplan', (req, res) => {
+
+router.get('/rest/innsyn/uttaksplan', (req, res) => {
     res.send(MockStorage.getUttaksplan());
 });
 

@@ -32,6 +32,7 @@ import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
+import { isFeatureEnabled, Feature } from '../../../Feature';
 
 interface StateProps {
     stegProps: StegProps;
@@ -124,6 +125,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                 dispatch(
                     apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
                 );
+            }
+            if (
+                isFeatureEnabled(Feature.hentUttaksplanForEndring) &&
+                søknad.erEndringssøknad &&
+                søknad.saksnummer !== undefined &&
+                søknad.ekstrainfo.endringUttaksplan === undefined
+            ) {
+                dispatch(apiActionCreators.getUttaksplanForSak(søknad.saksnummer));
             }
         }
     }

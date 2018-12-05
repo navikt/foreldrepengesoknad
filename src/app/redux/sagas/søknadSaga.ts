@@ -1,7 +1,9 @@
-import { takeEvery, all, put } from 'redux-saga/effects';
+import { takeEvery, all, put, call } from 'redux-saga/effects';
 import { default as søknadActions } from '../actions/søknad/søknadActionCreators';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { SøknadActionKeys, UpdateSøkerAndStorage, AvbrytSøknad } from '../actions/søknad/søknadActionDefinitions';
+import { ApiActionKeys, GetUttaksplanForSak } from '../actions/api/apiActionDefinitions';
+import Api from '../../api/api';
 
 function* updateSøkerAndStorage(action: UpdateSøkerAndStorage) {
     yield put(søknadActions.updateSøker(action.payload));
@@ -12,9 +14,19 @@ function* avbrytSøknadSaga(action: AvbrytSøknad) {
     yield put(apiActions.storeAppState());
 }
 
+function* getUttaksplanForSak(action: GetUttaksplanForSak) {
+    try {
+        const response = yield call(Api.getUttaksplanForSak, action.saksnummer);
+        yield put(søknadActions.setEndringssakUttaksplan(response.data || []));
+    } catch (error) {
+        yield put(søknadActions.setEndringssakUttaksplan([]));
+    }
+}
+
 export default function* søknadSaga() {
     yield all([
         takeEvery(SøknadActionKeys.UPDATE_SØKER_AND_STORAGE, updateSøkerAndStorage),
-        takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga)
+        takeEvery(SøknadActionKeys.AVBRYT_SØKNAD, avbrytSøknadSaga),
+        takeEvery(ApiActionKeys.GET_UTTAKSPLAN_FOR_SAK, getUttaksplanForSak)
     ]);
 }

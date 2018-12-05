@@ -32,7 +32,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
-    'SET_CURRENT_STEG' = 'setCurrentSteg'
+    'SET_CURRENT_STEG' = 'setCurrentSteg',
+    'SET_ENDRINGSSAK_UTTAKSPLAN' = 'setEndringssakUttaksplan'
 }
 
 export interface SetSøknad {
@@ -78,6 +79,11 @@ export interface UpdateSøknad {
 export interface UpdateSøknad {
     type: SøknadActionKeys.UPDATE_SØKNAD;
     payload: UpdateSøknadActionPayload;
+}
+
+export interface SetEndringssakUttaksplan {
+    type: SøknadActionKeys.SET_ENDRINGSSAK_UTTAKSPLAN;
+    perioder: Periode[];
 }
 
 export interface UttaksplanSetPerioder {
@@ -172,4 +178,5 @@ export type SøknadAction =
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
-    | SetCurrentSteg;
+    | SetCurrentSteg
+    | SetEndringssakUttaksplan;

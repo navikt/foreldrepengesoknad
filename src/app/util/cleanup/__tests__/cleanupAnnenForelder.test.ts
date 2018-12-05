@@ -63,7 +63,8 @@ const søknad: SøknadPartial = {
     },
     ekstrainfo: {
         uttaksplanSkjema: {},
-        currentStegID: undefined
+        currentStegID: undefined,
+        endringUttaksplan: []
     }
 };
 

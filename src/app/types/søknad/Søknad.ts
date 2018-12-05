@@ -42,6 +42,7 @@ interface SkjemaEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     currentStegID: StegID | undefined;
+    endringUttaksplan: Periode[] | undefined;
 }
 
 interface Søknad {
