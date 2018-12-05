@@ -98,7 +98,16 @@ function deleteStoredAppState() {
     return axios.delete(url, { withCredentials: true });
 }
 
+function getInnsynUttaksplan() {
+    const url = `${apiBaseUrl}/innsyn/uttaksplan`;
+    return axios.get(url, {
+        withCredentials: true,
+        transformResponse: storageParser
+    });
+}
+
 const Api = {
+    getInnsynUttaksplan,
     getSøkerinfo,
     getSaker,
     getUttakskontoer,

@@ -17,7 +17,9 @@ export enum ApiActionKeys {
 
     'GET_TILGJENGELIGE_STØNADSKONTOER' = 'getTilgjengeligeStønadskontoer',
     'GET_TILGJENGELIGE_STØNADSKONTOER_AND_LAG_UTTAKSPLAN_FORSLAG' = 'getTilgjengeligeStønadskontoerAndLagUttaksplanForslag',
-    'GET_TILGJENGELIGE_STØNADSUKER' = 'GET_TILGJENGELIGE_STØNADSUKER'
+    'GET_TILGJENGELIGE_STØNADSUKER' = 'GET_TILGJENGELIGE_STØNADSUKER',
+
+    'GET_UTTAKSPLAN_FOR_SAK' = 'getUttaksplanForSak'
 }
 
 interface UpdateApi {
@@ -32,6 +34,11 @@ export interface GetSøkerinfo {
 
 export interface GetSaker {
     type: ApiActionKeys.GET_SAKER;
+}
+
+export interface GetInnsynUttaksplan {
+    type: ApiActionKeys.GET_UTTAKSPLAN_FOR_SAK;
+    saksnummer: string;
 }
 
 export interface GetTilgjengeligeStønadskontoer {
@@ -73,6 +80,7 @@ export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
     | GetSaker
+    | GetInnsynUttaksplan
     | GetStoredAppState
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

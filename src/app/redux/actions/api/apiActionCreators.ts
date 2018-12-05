@@ -59,6 +59,13 @@ export function getTilgjengeligeStønadskonterAndLagUttaksplanForslag(
     };
 }
 
+export function getUttaksplanForSak(saksnummer: string): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_UTTAKSPLAN_FOR_SAK,
+        saksnummer
+    };
+}
+
 export function deleteStoredAppState(): ApiActionTypes {
     return {
         type: ApiActionKeys.DELETE_STORED_APP_STATE
