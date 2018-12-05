@@ -287,6 +287,8 @@
     "selvstendigNæringsdrivende.modal.tittel": "Opplysninger om virksomheten din",
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
+    "selvstendigNæringsdrivende.modal.veileder.blikontaktet":
+        "Vi kontakter deg hvis du må sende mer dokumentasjon på virksomheten din.",
     "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du har ikke hatt fast jobb, jobbet som frilanser eller hatt annen inntekt før du startet virksomheten din.",
