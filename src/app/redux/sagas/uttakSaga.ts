@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { takeEvery, all, put, call, select } from 'redux-saga/effects';
 import { default as apiActions, updateApi } from '../actions/api/apiActionCreators';
 import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/apiActionDefinitions';
@@ -17,11 +18,11 @@ import { Dekningsgrad } from 'common/types';
 
 const stateSelector = (state: AppState) => state;
 
-const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad): number => {
+const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startdatoUttak: Date): number => {
     if (dekningsgrad === '100') {
         return 15;
     } else {
-        return 15;
+        return moment(startdatoUttak).isBefore(moment(new Date(2019, 0, 1))) ? 15 : 19;
     }
 };
 
@@ -44,10 +45,11 @@ const getAktivitetsFrieUkerFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBa
 const opprettAktivitetsFriKonto = (
     kontoer: TilgjengeligStønadskonto[],
     dekningsgrad: Dekningsgrad,
-    antallBarn: number
+    antallBarn: number,
+    startdatoUttak: Date
 ): TilgjengeligStønadskonto[] => {
     const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad) * 5;
+    const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad, startdatoUttak) * 5;
 
     if (antallBarn >= 2) {
         const aktivitetskravFrieDagerFlerbarnsuker = getAktivitetsFrieUkerFlerbarnsuker(dekningsgrad, antallBarn) * 5;
@@ -107,7 +109,8 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
-                appState.søknad.barn.antallBarn
+                appState.søknad.barn.antallBarn,
+                action.params.startdatoUttak
             );
         }
         if (

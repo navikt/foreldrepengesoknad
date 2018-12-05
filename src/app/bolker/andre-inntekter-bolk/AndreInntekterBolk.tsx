@@ -6,12 +6,14 @@ import List from '../../components/list/List';
 import Block from 'common/components/block/Block';
 import { FormattedMessage } from 'react-intl';
 import AndreInntekterListElement from './AndreInntekterListElement';
+import AnnenInntektSiste10MndSpørsmål from '../../spørsm\u00E5l/AnnenInntektSiste10MndSpørsm\u00E5l';
+import { Søker } from '../../types/søknad/Søker';
 
 interface AndreInntekterBolkProps {
-    renderSpørsmål: () => JSX.Element;
-    showAndreInntekterPeriodeContent: boolean;
+    harHattAnnenInntektSiste10Mnd: boolean | undefined;
     andreInntekterSiste10Mnd: AnnenInntekt[];
     onChange: (andreInntekterSiste10Mnd: AnnenInntekt[]) => void;
+    onChangeSøker: (v: Partial<Søker>) => void;
 }
 
 interface AndreInntekterBolkState {
@@ -87,16 +89,25 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
     }
 
     render() {
-        const { renderSpørsmål, showAndreInntekterPeriodeContent, andreInntekterSiste10Mnd } = this.props;
+        const { onChangeSøker, harHattAnnenInntektSiste10Mnd, andreInntekterSiste10Mnd } = this.props;
 
         const { annenInntektToEdit } = this.state;
 
         return (
             <React.Fragment>
-                {renderSpørsmål()}
-                {showAndreInntekterPeriodeContent && (
+                <Block margin={harHattAnnenInntektSiste10Mnd ? 'xs' : 'm'}>
+                    <AnnenInntektSiste10MndSpørsmål
+                        harHattAnnenInntekt={harHattAnnenInntektSiste10Mnd}
+                        onChange={(value) =>
+                            onChangeSøker({
+                                harHattAnnenInntektSiste10Mnd: value
+                            })
+                        }
+                    />
+                </Block>
+                {harHattAnnenInntektSiste10Mnd === true && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="xs" visible={andreInntekterSiste10Mnd.length > 0}>
                             <List
                                 data={andreInntekterSiste10Mnd}
                                 renderElement={(annenInntekt: AnnenInntekt, index: number) => (
@@ -110,7 +121,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                             />
                         </Block>
 
-                        <Block margin="s">
+                        <Block>
                             <Knapp onClick={() => this.openModal()} htmlType="button">
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
