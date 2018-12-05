@@ -1,10 +1,10 @@
 import { Periode } from '../../types/uttaksplan/periodetyper';
-import { getSøknadsperiode } from '../søknadsperioden/søknadsperiode';
 import { Søknadsinfo } from '../../selectors/types';
+import { getPeriodeegenskaper } from '../periodeegenskaper/periodeegenskaper';
 
 const overføringsårsakSkalBesvares = (periode: Periode, søknadsinfo: Søknadsinfo) => {
-    const søknadsperiode = getSøknadsperiode(søknadsinfo, periode);
-    return søknadsperiode.erOverføringsperiode() && søknadsperiode.erUttakAnnenForeldersKvote();
+    const periodeegenskaper = getPeriodeegenskaper(søknadsinfo, periode);
+    return periodeegenskaper.erOverføringsperiode() && periodeegenskaper.erUttakAnnenForeldersKvote();
 };
 
 export default overføringsårsakSkalBesvares;
