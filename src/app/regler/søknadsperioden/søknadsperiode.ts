@@ -30,10 +30,10 @@ export const getSøknadsperiode = (søknadsinfo: Søknadsinfo, periode: Periode)
     erUttakFedrekvote: () => isUttaksperiode(periode) && periode.konto === StønadskontoType.Fedrekvote,
     erInnenFørsteSeksUkerFødselFarMedmor: () =>
         erInnenFørsteSeksUkerFødselFarMedmor(
-            periode,
+            periode.tidsperiode,
             søknadsinfo.søknaden.situasjon,
             søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.uttaksdatoer
+            søknadsinfo.uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker
         ),
     harAktivitetskrav: () => isUttaksperiode(periode) && harAktivitetskrav(periode.konto),
     harGyldigTidsperiode: () => isValidTidsperiode(periode.tidsperiode)

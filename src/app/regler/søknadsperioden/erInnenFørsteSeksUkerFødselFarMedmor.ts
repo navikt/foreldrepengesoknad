@@ -2,25 +2,21 @@ import moment from 'moment';
 
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
-import { Uttaksdatoer } from '../../selectors/types';
-import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Tidsperiode } from 'common/types';
 
 export const erInnenFørsteSeksUkerFødselFarMedmor = (
-    periode: Partial<Periode>,
+    tidsperiode: Partial<Tidsperiode>,
     situasjon: Søkersituasjon,
     søkerErFarEllerMedmor: boolean,
-    uttaksdatoer: Uttaksdatoer
+    førsteUttaksdagEtterSeksUker: Date
 ): boolean => {
     if (
-        situasjon === Søkersituasjon.ADOPSJON ||
+        situasjon !== Søkersituasjon.FØDSEL ||
         !søkerErFarEllerMedmor ||
-        periode.tidsperiode === undefined ||
-        isValidTidsperiode(periode.tidsperiode) === false
+        tidsperiode === undefined ||
+        isValidTidsperiode(tidsperiode) === false
     ) {
         return false;
     }
-    return moment(periode.tidsperiode.fom).isBefore(
-        moment(uttaksdatoer.etterFødsel.førsteUttaksdagEtterSeksUker),
-        'day'
-    );
+    return moment(tidsperiode.fom).isBefore(moment(førsteUttaksdagEtterSeksUker), 'day');
 };
