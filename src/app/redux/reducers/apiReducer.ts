@@ -11,6 +11,7 @@ export interface ApiState {
     isLoadingSøkerinfo: boolean;
     isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingEndringUttaksplan: boolean;
     isLoadingSaker: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
@@ -29,6 +30,7 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingSøkerinfo: false,
     isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
+    isLoadingEndringUttaksplan: false,
     isLoadingSaker: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
@@ -46,6 +48,11 @@ const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiSt
             return {
                 ...state,
                 isLoadingSøkerinfo: true
+            };
+        case ApiActionKeys.GET_UTTAKSPLAN_FOR_SAK:
+            return {
+                ...state,
+                isLoadingEndringUttaksplan: true
             };
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {

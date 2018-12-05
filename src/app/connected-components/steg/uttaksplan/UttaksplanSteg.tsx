@@ -45,6 +45,7 @@ interface StateProps {
     navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingEndringUttaksplan: boolean;
     missingAttachments: MissingAttachment[];
 }
 
@@ -186,6 +187,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknad,
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
+            isLoadingEndringUttaksplan,
             uttaksstatus,
             tilgjengeligeStønadskontoer,
             navnPåForeldre,
@@ -226,7 +228,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
                 )}>
-                {isLoadingTilgjengeligeStønadskontoer === true ? (
+                {isLoadingTilgjengeligeStønadskontoer === true || isLoadingEndringUttaksplan === true ? (
                     <ApplicationSpinner />
                 ) : (
                     <React.Fragment>
@@ -281,7 +283,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
 const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps): StateProps => {
     const {
         søknad,
-        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer }
+        api: { tilgjengeligeStønadskontoer, isLoadingTilgjengeligeStønadskontoer, isLoadingEndringUttaksplan }
     } = state;
     const { søkerinfo, history } = props;
 
@@ -313,6 +315,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
+        isLoadingEndringUttaksplan,
         missingAttachments: findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle)
     };
 };
