@@ -1,4 +1,4 @@
-import { getErFlerbarnssøknad } from '../erFlerbarnss\u00F8knad';
+import { getErFlerbarnssøknad } from '../erFlerbarnssøknad';
 
 describe('erFlerbarnssøknad', () => {
     it('returns false when antall barn is 0', () => {
