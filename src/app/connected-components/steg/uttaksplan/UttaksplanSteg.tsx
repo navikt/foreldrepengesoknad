@@ -32,6 +32,7 @@ import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
 import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
+import OvertrukneDager from './OvertrukneDager';
 
 interface StateProps {
     stegProps: StegProps;
@@ -109,6 +110,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         this.showBekreftSlettUttaksplanDialog = this.showBekreftSlettUttaksplanDialog.bind(this);
         this.onBekreftSlettUttaksplan = this.onBekreftSlettUttaksplan.bind(this);
         this.delayedSetFocusOnFeiloppsummering = this.delayedSetFocusOnFeiloppsummering.bind(this);
+        this.getOvertrukneKontoer = this.getOvertrukneKontoer.bind(this);
 
         this.state = {
             bekreftGåTilbakeDialogSynlig: false,
@@ -161,6 +163,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
+    getOvertrukneKontoer(uttaksstatus: Stønadskontouttak[]) {
+        return uttaksstatus.filter((konto) => konto.antallDager < 0);
+    }
+
     delayedSetFocusOnFeiloppsummering() {
         setTimeout(() => {
             if (this.feilOppsummering) {
@@ -193,6 +199,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             getErSøkerFarEllerMedmor(søknad.søker.rolle),
             søknad.erEndringssøknad
         );
+        const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatus);
+
         return (
             <Steg
                 {...this.props.stegProps}
@@ -236,6 +244,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 }
                             />
                         </Block>
+
                         {søknad.uttaksplan &&
                             tilgjengeligeStønadskontoer.length > 0 && (
                                 <Block margin="l">
@@ -246,6 +255,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                     />
                                 </Block>
                             )}
+                        {overtrukneKontoer.length > 0 && (
+                            <OvertrukneDager overtrukneKontoer={overtrukneKontoer} navnPåForeldre={navnPåForeldre} />
+                        )}
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
                                 <Veilederinfo type="advarsel">
