@@ -187,10 +187,10 @@ class UtenlandsoppholdModal extends React.Component<UtenlandsoppholdModalProps, 
                         />
                     </Block>
                     <Knapperad style="mobile-50-50">
-                        <Knapp type="standard" onClick={this.onRequestClose} htmlType="button">
+                        <Knapp type="standard" onClick={this.onRequestClose} htmlType="button" data-name="cancel">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
-                        <Hovedknapp>
+                        <Hovedknapp data-name="leggTil">
                             <FormattedMessage id={editMode ? 'oppdater' : 'leggtil'} />
                         </Hovedknapp>
                     </Knapperad>
