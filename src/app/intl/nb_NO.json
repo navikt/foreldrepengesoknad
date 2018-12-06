@@ -962,7 +962,7 @@
     "uttaksplan.validering.feil.uttaksplanStarterMedOpphold": "Uttaksplanen kan ikke starte med ett opphold.",
     "uttaksplan.validering.feil.uttaksplanSlutterMedOpphold": "Uttaksplanen kan ikke slutte med ett opphold.",
     "uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak":
-        "Prosenten du skal jobbe kan ikke være høyere enn prosenten du skal være hjemme med foreldrepenger.",
+        "Samtidig uttaksprosent og foreldrepenger kombinert med arbeid kan ikke være høyere enn 100 prosent til sammen.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
