@@ -8,7 +8,6 @@ import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideri
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
-import { getPermisjonsregler } from 'app/util/uttaksplan/permisjonsregler';
 
 interface OwnProps {
     perioder: Periode[];
@@ -17,22 +16,20 @@ interface OwnProps {
     registrerteArbeidsforhold: Arbeidsforhold[];
     uttaksplanValidering: UttaksplanValideringState;
     dekningsgrad: Dekningsgrad;
+    antallUkerUttaksplan: number;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
 class UttaksplanOppsummering extends React.Component<Props> {
     render() {
-        const { dekningsgrad, intl, ...rest } = this.props;
-        const permisjonsregler = getPermisjonsregler();
-        const antallUker =
-            dekningsgrad === '100' ? permisjonsregler.antallUkerTotalt100 : permisjonsregler.antallUkerTotalt80;
+        const { dekningsgrad, antallUkerUttaksplan, intl, ...rest } = this.props;
         return (
             <Oppsummeringsseksjon>
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.dekningsgrad.label')}
                     verdi={getMessage(intl, `oppsummering.dekningsgrad.verdi${dekningsgrad}`, {
-                        antallUker
+                        antallUker: antallUkerUttaksplan
                     })}
                 />
                 <UttaksplanOppsummeringsliste {...rest} />
