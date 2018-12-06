@@ -6,8 +6,8 @@ import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næri
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
-import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../sp\u00F8rsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSp\u00F8rsm\u00E5l';
-import { Søker } from '../../types/s\u00F8knad/S\u00F8ker';
+import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../spørsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSpørsm\u00E5l';
+import { Søker } from '../../types/søknad/Søker';
 
 interface SelvstendigNæringsdrivendeBolkProps {
     næringListe: Næring[];

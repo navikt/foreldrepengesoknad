@@ -4,9 +4,10 @@ import { InjectedIntl } from 'react-intl';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor, formaterNavn } from '../domain/personUtil';
 import Person from '../../types/Person';
 import getMessage from 'common/util/i18nUtils';
+import { Navn } from '../../types/common';
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
     pst !== undefined && isNaN(parseFloat(pst)) === false;
@@ -27,6 +28,23 @@ export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåFore
         return forelder === Forelder.MOR ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     }
     return forelder === Forelder.MOR ? navnPåForeldre.mor : forelder;
+};
+
+export const getNavnFromObject = ({
+    fornavn,
+    etternavn
+}: {
+    fornavn?: string;
+    etternavn?: string;
+}): Navn | undefined => {
+    if (fornavn && etternavn) {
+        return {
+            fornavn,
+            etternavn,
+            navn: formaterNavn(fornavn, etternavn)
+        };
+    }
+    return undefined;
 };
 
 export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
