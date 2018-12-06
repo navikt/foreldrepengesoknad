@@ -16,3 +16,9 @@ export enum Kjønn {
 export interface HistoryProps {
     history: History;
 }
+
+export interface Navn {
+    fornavn: string;
+    etternavn: string;
+    navn: string;
+}
