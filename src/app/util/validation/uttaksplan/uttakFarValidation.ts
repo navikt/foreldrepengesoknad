@@ -27,7 +27,7 @@ export const unntakFarFørsteSeksUker = (periode: Uttaksperiode) => ({
             );
         }
 
-        if (periode.konto === StønadskontoType.Fedrekvote) {
+        if (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.AktivitetsfriKvote) {
             return periode.erMorForSyk === true;
         }
 
