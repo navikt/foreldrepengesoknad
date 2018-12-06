@@ -41,6 +41,7 @@ interface StateProps {
     missingAttachments: MissingAttachment[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    antallUkerUttaksplan: number;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -56,6 +57,7 @@ class OppsummeringSteg extends React.Component<Props> {
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
             );
+            dispatch(apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams(søknad)));
         }
     }
 
@@ -82,6 +84,7 @@ class OppsummeringSteg extends React.Component<Props> {
             stegProps,
             missingAttachments,
             isLoadingTilgjengeligeStønadskontoer,
+            antallUkerUttaksplan,
             dispatch,
             intl
         } = this.props;
@@ -112,6 +115,7 @@ class OppsummeringSteg extends React.Component<Props> {
                             søkerinfo={søkerinfo}
                             søknad={søknad}
                             uttaksplanValidering={uttaksplanValidering}
+                            antallUkerUttaksplan={antallUkerUttaksplan}
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
@@ -155,6 +159,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api);
+    const antallUkerUttaksplan =
+        state.søknad.dekningsgrad === '100'
+            ? state.api.dekningsgrad100AntallUker!
+            : state.api.dekningsgrad80AntallUker!;
 
     return {
         person,
@@ -165,7 +173,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         missingAttachments,
         stegProps,
         tilgjengeligeStønadskontoer,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        antallUkerUttaksplan
     };
 };
 
