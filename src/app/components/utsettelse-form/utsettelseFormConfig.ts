@@ -80,26 +80,26 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.årsak),
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
         isAnswered: () => true,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Ferie
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Ferie
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) =>
             periode.type === Periodetype.Utsettelse ? harRegistrertArbeidOk(variant, periode) : true,
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Oppholdsperiode).årsak),
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        condition: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
+        isRequired: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
     }
 };
 
