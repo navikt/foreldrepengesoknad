@@ -105,7 +105,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         />
                     </Block>
 
-                    <Block>
+                    <Block margin="xxs">
                         <TidsperiodeBolk
                             tidsperiode={oppdrag.tidsperiode || {}}
                             onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
@@ -119,6 +119,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
 
                     <Block>
                         <Checkbox
+                            name="pågåendeOppdrag"
                             checked={oppdrag.pågående || false}
                             label={getMessage(intl, 'pågående')}
                             onChange={() => {
@@ -134,10 +135,10 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                     </Block>
 
                     <Knapperad>
-                        <Knapp type="standard" onClick={onRequestClose} htmlType="button">
+                        <Knapp type="standard" onClick={onRequestClose} htmlType="button" data-name="avbryt">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
-                        <Hovedknapp>
+                        <Hovedknapp data-name="leggTil">
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
                     </Knapperad>
