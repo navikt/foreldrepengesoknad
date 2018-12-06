@@ -185,7 +185,7 @@
     "annenInntekt.arbeidsforhold.label": "Arbeidsforholda dine",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Vi kan tidlegast behandle søknaden når arbeidsgivaren din har sendt inn inntektsmeldinga. Denne kan arbeidsgivaren din sende inn fire veker før du startar foreldrepengane. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
+        "Husk å be arbeidsgivaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgivaren din kan sende den tidlegast fire veker før foreldrepengeperioden startar, eller før du skal utsetje. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
     "annenInntekt.ytelser.label": "Utbetalingar frå NAV",
