@@ -946,6 +946,8 @@
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikkje lasta opp",
 
+    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mye uttak av {konto}",
+
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
 
     "valideringsfeil.fritekst.kanIkkeVæreLengreEnn": "Svaret kan ikke være lengre enn {maxLength} tegn."
