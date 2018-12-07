@@ -5,6 +5,7 @@ import getMessage from 'common/util/i18nUtils';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 import { Næringstype } from '../types/søknad/SelvstendigNæringsdrivendeInformasjon';
 import { InputChangeEvent } from '../types/dom/Events';
+import { CheckboksProps } from 'nav-frontend-skjema/lib/checkboks-panel';
 
 interface NæringstypeSpørsmålProps {
     næringstyper: Næringstype[];
@@ -17,12 +18,15 @@ const næringstypeValues = [Næringstype.DAGMAMMA, Næringstype.FISKER, Nærings
 
 const NæringstypeSpørsmål: React.StatelessComponent<Props> = (props: Props) => {
     const { onChange, næringstyper, intl } = props;
-    const createNæringstypeOptions = () => {
-        return næringstypeValues.map((næringstype: Næringstype) => {
+    const createNæringstypeOptions = (): CheckboksProps[] => {
+        return næringstypeValues.map((næringstype: Næringstype): CheckboksProps => {
             return {
                 label: getMessage(intl, `næringstype.${næringstype.toLocaleLowerCase()}`),
                 value: næringstype,
-                checked: næringstyper.indexOf(næringstype) >= 0
+                checked: næringstyper.indexOf(næringstype) >= 0,
+                inputProps: {
+                    value: næringstype
+                }
             };
         });
     };

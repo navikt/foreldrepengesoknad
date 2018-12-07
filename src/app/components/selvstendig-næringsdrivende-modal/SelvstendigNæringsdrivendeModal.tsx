@@ -202,6 +202,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.tidsperiode(næring)}>
                     <Checkbox
+                        name="pågåendeVirksomhet"
                         checked={pågående || false}
                         label={getMessage(intl, 'annenInntekt.modal.pågående')}
                         onChange={() => {

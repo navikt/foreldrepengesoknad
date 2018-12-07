@@ -17,7 +17,7 @@ const HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål = (pr
     return (
         <JaNeiSpørsmål
             spørsmål={spørsmålstekst}
-            navn="iNorgePåHendelsestidspunktet"
+            navn="harBlittYrkesaktivSisteTreÅr"
             hjelpetekst={getMessage(intl, 'blittYrkesaktivSiste3År.hjelpetekst')}
             onChange={onChange}
             valgtVerdi={harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene}
