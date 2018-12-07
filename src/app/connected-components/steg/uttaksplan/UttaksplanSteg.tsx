@@ -33,6 +33,7 @@ import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
 import OvertrukneDager from './OvertrukneDager';
+import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 
 interface StateProps {
     stegProps: StegProps;
@@ -40,6 +41,7 @@ interface StateProps {
     erDeltUttak: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
+    uttaksstatusOvertrukneDager: Stønadskontouttak[];
     perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
     navnPåForeldre: NavnPåForeldre;
@@ -163,8 +165,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
-    getOvertrukneKontoer(uttaksstatus: Stønadskontouttak[]) {
-        return uttaksstatus.filter((konto) => konto.antallDager < 0);
+    getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
+        return uttaksstatusOvertrukneDager.filter((konto) => konto.antallDager < 0);
     }
 
     delayedSetFocusOnFeiloppsummering() {
@@ -184,6 +186,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksplanValidering,
             isLoadingTilgjengeligeStønadskontoer,
             uttaksstatus,
+            uttaksstatusOvertrukneDager,
             tilgjengeligeStønadskontoer,
             navnPåForeldre,
             lastAddedPeriodeId,
@@ -199,7 +202,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             getErSøkerFarEllerMedmor(søknad.søker.rolle),
             søknad.erEndringssøknad
         );
-        const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatus);
+        const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatusOvertrukneDager);
 
         return (
             <Steg
@@ -295,6 +298,12 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknad.erEndringssøknad
     );
 
+    const uttaksstatusOvertrukneDager = beregnGjenståendeUttaksdager(
+        tilgjengeligeStønadskontoer,
+        søknad.uttaksplan,
+        false
+    );
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
@@ -310,6 +319,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         tilgjengeligeStønadskontoer,
         stegProps,
         uttaksstatus,
+        uttaksstatusOvertrukneDager,
         navnPåForeldre,
         erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
