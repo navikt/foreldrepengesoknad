@@ -139,6 +139,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
+                        name="arbeidsgiverNavn"
                         label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
                         onChange={(e: InputChangeEvent) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
@@ -171,6 +172,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Checkbox
                         checked={annenInntekt.pågående || false}
                         label={getMessage(intl, 'pågående')}
+                        name="pågåendeInntektskilde"
                         onChange={() => {
                             this.updateAnnenInntekt({
                                 pågående: !annenInntekt.pågående,
