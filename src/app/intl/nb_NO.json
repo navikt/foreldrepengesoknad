@@ -968,7 +968,7 @@
 
     "uttaksplan.validering.advarsel.manglendeVedlegg": "Dokumentasjon er ikke lastet opp",
 
-    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mye uttak av {konto}",
+    "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mye av {konto}",
 
     "validerbarForm.ukjentFeil": "Verdien er ikke gyldig",
 
