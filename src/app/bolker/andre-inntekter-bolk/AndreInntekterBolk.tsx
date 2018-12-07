@@ -122,7 +122,7 @@ class AndreInntekterBolk extends React.Component<AndreInntekterBolkProps, AndreI
                         </Block>
 
                         <Block>
-                            <Knapp onClick={() => this.openModal()} htmlType="button">
+                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilAnnenInntekt">
                                 <FormattedMessage id="annenInntekt.leggTilInntekt" />
                             </Knapp>
                         </Block>
