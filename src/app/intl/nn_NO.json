@@ -540,6 +540,10 @@
         "Den totale utbetalinga blir høgare dersom du vel 100 prosent. Valet gjeld dykk begge, og de kan ikkje endre det seinare.",
     "uttaksplan.validering.feil.ikkeUtsettelseFørForeldrepengerFørFødsel":
         "Du kan ikkje søke om å utsetje før perioden din med foreldrepengar startar.",
+    "uttaksplan.informasjon.morErForSykNeiSvar":
+        "Du kan ikkje starte uttaket ditt dei første seks vekene etter fødsel dersom mor ikkje er for sjuk, eller dersom ho er innlagd i helseinstitusjon.",
+    "uttaksplan.informasjon.morErForSyk":
+        "Dersom du skal starte uttaket ditt dei første seks vekene etter fødselen, må du leggje ved ei stadfesting frå legen til {navnMor}. Stadfestinga må gjere greie for korleis sjukdommen eller skaden gjer {navnMor} helt avhengig av hjelp til å ta seg av barnet, og kor lenge det kjem til å vare. Det er ikkje nok med vanleg sjukmelding.",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
