@@ -108,13 +108,13 @@ export const getUttaksprosentFromStillingsprosent = (
     stillingsPst: number | undefined,
     samtidigUttakPst: number | undefined
 ): number | undefined => {
-    if (stillingsPst === undefined) {
-        return stillingsPst;
-    }
     if (samtidigUttakPst) {
-        return 100 - samtidigUttakPst;
+        return samtidigUttakPst;
     }
-    return 100 - stillingsPst;
+    if (stillingsPst) {
+        return 100 - stillingsPst;
+    }
+    return undefined;
 };
 
 export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
