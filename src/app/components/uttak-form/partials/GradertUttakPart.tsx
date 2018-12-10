@@ -79,7 +79,6 @@ class GradertUttakForm extends React.Component<Props> {
                             validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
                         />
                     </Block>
-                    {varighet && <div className="comment">{varighet}</div>}
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
