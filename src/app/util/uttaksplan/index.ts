@@ -104,9 +104,15 @@ export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåFor
     };
 };
 
-export const getUttaksprosentFromStillingsprosent = (stillingsPst: number | undefined): number | undefined => {
+export const getUttaksprosentFromStillingsprosent = (
+    stillingsPst: number | undefined,
+    samtidigUttakPst: number | undefined
+): number | undefined => {
     if (stillingsPst === undefined) {
         return stillingsPst;
+    }
+    if (samtidigUttakPst) {
+        return 100 - samtidigUttakPst;
     }
     return 100 - stillingsPst;
 };
@@ -121,7 +127,10 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                 isValidStillingsprosent(periode.stillingsprosent)
             ) {
                 return `${tittel} ${getMessage(intl, 'gradering.prosent', {
-                    stillingsprosent: getUttaksprosentFromStillingsprosent(prettifyProsent(periode.stillingsprosent))
+                    stillingsprosent: getUttaksprosentFromStillingsprosent(
+                        prettifyProsent(periode.stillingsprosent),
+                        periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
+                    )
                 })}`;
             }
             return tittel;
