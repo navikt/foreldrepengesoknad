@@ -13,13 +13,14 @@ export interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
 const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
-    søkerErFarEllerMedmor: boolean
+    søkerErFarEllerMedmor: boolean,
+    bareFarMedmorHarRett: boolean
 ): InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor | undefined => {
-    if (søkerErFarEllerMedmor === false) {
+    if (søkerErFarEllerMedmor === false || bareFarMedmorHarRett === false) {
         return undefined;
     }
-    const førstePeriode = Periodene(uttaksplan).getFørstePerioderEtterFamiliehendelsesdato(familiehendelsesdato);
 
+    const førstePeriode = Periodene(uttaksplan).getFørstePerioderEtterFamiliehendelsesdato(familiehendelsesdato);
     if (førstePeriode === undefined) {
         return undefined;
     }

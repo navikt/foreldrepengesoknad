@@ -151,7 +151,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const infoOmTapteUttaksdager = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
             uttaksplan,
             søknadsinfo.søknaden.familiehendelsesdato,
-            søknadsinfo.søker.erFarEllerMedmor
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.mor.harRett === false
         );
 
         return (
