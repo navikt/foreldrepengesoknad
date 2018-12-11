@@ -27,6 +27,8 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
+    getFørstePerioderEtterFamiliehendelsesdato: (dato: Date) =>
+        getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
@@ -161,6 +163,14 @@ function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendel
             moment(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false
     );
+}
+
+function getFørstePeriodeEtterFamiliehendelsesdato(
+    perioder: Periode[],
+    familiehendelsesdato: Date
+): Periode | undefined {
+    const aktuellePerioder = getPerioderEtterFamiliehendelsesdato(perioder, familiehendelsesdato).sort(sorterPerioder);
+    return aktuellePerioder.length > 0 ? aktuellePerioder[0] : undefined;
 }
 
 function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {

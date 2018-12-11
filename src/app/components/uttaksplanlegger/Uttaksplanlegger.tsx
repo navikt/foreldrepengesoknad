@@ -22,6 +22,8 @@ import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
+import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
+import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 
 export interface Props {
     søknad: Søknad;
@@ -145,6 +147,13 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const { barn, uttaksplan } = søknad;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
+
+        const infoOmTapteUttaksdager = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
+            uttaksplan,
+            søknadsinfo.søknaden.familiehendelsesdato,
+            søknadsinfo.søker.erFarEllerMedmor
+        );
+
         return (
             <section>
                 <Block>
@@ -173,6 +182,13 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
                             </span>
                         </header>
+                        <Block visible={infoOmTapteUttaksdager !== undefined} margin="xs">
+                            <TapteUttaksdagerFarMedmor
+                                familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
+                                info={infoOmTapteUttaksdager!}
+                                onLeggTilOpphold={this.settInnNyttOpphold}
+                            />
+                        </Block>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
