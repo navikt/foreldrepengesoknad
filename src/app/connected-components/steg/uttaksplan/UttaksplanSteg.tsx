@@ -26,25 +26,24 @@ import UttaksplanFeiloppsummering from '../../../components/uttaksplan-feiloppsu
 import { getPeriodelisteElementId } from '../../../components/periodeliste/Periodeliste';
 import BekreftSlettUttaksplanDialog from './BekreftSlettUttaksplanDialog';
 import { getUttaksstatus, skalBeregneAntallDagerBrukt } from '../../../util/uttaksplan/uttaksstatus';
-import { getNavnPåForeldre } from '../../../util/uttaksplan';
-import { NavnPåForeldre, Forelder } from 'common/types';
+import { Forelder } from 'common/types';
 import { getErSøkerFarEllerMedmor } from '../../../util/domain/personUtil';
-import { getErDeltUttak } from '../../../util/uttaksplan/forslag/util';
 import { MissingAttachment } from '../../../types/MissingAttachment';
 import { findMissingAttachmentsForPerioder } from '../../../util/attachments/missingAttachmentUtil';
 import OvertrukneDager from './OvertrukneDager';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
+import { Søknadsinfo } from '../../../selectors/types';
+import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
     søknad: Søknad;
-    erDeltUttak: boolean;
+    søknadsinfo?: Søknadsinfo;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     uttaksstatus: Stønadskontouttak[];
     uttaksstatusOvertrukneDager: Stønadskontouttak[];
     perioder: Periode[];
     lastAddedPeriodeId: string | undefined;
-    navnPåForeldre: NavnPåForeldre;
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     missingAttachments: MissingAttachment[];
@@ -188,19 +187,22 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             uttaksstatus,
             uttaksstatusOvertrukneDager,
             tilgjengeligeStønadskontoer,
-            navnPåForeldre,
             lastAddedPeriodeId,
-            erDeltUttak,
             dispatch,
-            missingAttachments
+            missingAttachments,
+            søknadsinfo
         } = this.props;
+
+        if (!søknadsinfo) {
+            return null;
+        }
 
         const { visFeiloppsummering } = this.state;
         const perioderIUttaksplan = søknad.uttaksplan.length > 0;
         const gjelderDagerBrukt = skalBeregneAntallDagerBrukt(
-            erDeltUttak,
-            getErSøkerFarEllerMedmor(søknad.søker.rolle),
-            søknad.erEndringssøknad
+            søknadsinfo.søknaden.erDeltUttak,
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.søknaden.erEndringssøknad
         );
         const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatusOvertrukneDager);
 
@@ -224,7 +226,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         uttaksplanValidering={uttaksplanValidering}
                         erSynlig={visFeiloppsummering}
                         uttaksplan={søknad.uttaksplan}
-                        navnPåForeldre={navnPåForeldre}
+                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                         onErrorClick={(periodeId: string) => this.handleOnPeriodeErrorClick(periodeId)}
                     />
                 )}>
@@ -236,12 +238,12 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         <Block>
                             <Uttaksplanlegger
                                 søknad={søknad}
+                                søknadsinfo={søknadsinfo}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onAdd={(periode) => dispatch(søknadActions.uttaksplanAddPeriode(periode))}
                                 onRequestReset={() => this.showBekreftSlettUttaksplanDialog()}
                                 onDelete={(periode) => dispatch(søknadActions.uttaksplanDeletePeriode(periode))}
-                                navnPåForeldre={navnPåForeldre}
                                 forelder={
                                     getErSøkerFarEllerMedmor(søknad.søker.rolle) ? Forelder.FARMEDMOR : Forelder.MOR
                                 }
@@ -253,13 +255,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 <Block margin="l">
                                     <Uttaksoppsummering
                                         uttak={uttaksstatus}
-                                        navnPåForeldre={navnPåForeldre}
+                                        navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                         gjelderDagerBrukt={gjelderDagerBrukt}
                                     />
                                 </Block>
                             )}
                         {overtrukneKontoer.length > 0 && (
-                            <OvertrukneDager overtrukneKontoer={overtrukneKontoer} navnPåForeldre={navnPåForeldre} />
+                            <OvertrukneDager
+                                overtrukneKontoer={overtrukneKontoer}
+                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
+                            />
                         )}
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
@@ -291,6 +296,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     } = state;
     const { søkerinfo, history } = props;
 
+    const søknadsinfo = getSøknadsinfo(state);
+
     const uttaksstatus: Stønadskontouttak[] = getUttaksstatus(
         tilgjengeligeStønadskontoer,
         søknad.uttaksplan,
@@ -312,7 +319,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
 
-    const navnPåForeldre = getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person);
+    // const navnPåForeldre = getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person);
 
     return {
         søknad,
@@ -320,8 +327,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         stegProps,
         uttaksstatus,
         uttaksstatusOvertrukneDager,
-        navnPåForeldre,
-        erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
+        søknadsinfo,
+        // navnPåForeldre,
+        // erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,

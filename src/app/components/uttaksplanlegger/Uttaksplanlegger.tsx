@@ -8,7 +8,7 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import Søknad from '../../types/søknad/Søknad';
-import { NavnPåForeldre, Forelder } from 'common/types';
+import { Forelder } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 import { FormattedMessage } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
@@ -21,11 +21,12 @@ import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
+import { Søknadsinfo } from '../../selectors/types';
 
 export interface Props {
     søknad: Søknad;
+    søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
-    navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
     onAdd: (periode: Periode) => void;
@@ -140,17 +141,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            søknad,
-            uttaksplanValidering,
-            navnPåForeldre,
-            onRequestReset,
-            lastAddedPeriodeId,
-            forelder
-        } = this.props;
+        const { søknad, uttaksplanValidering, søknadsinfo, onRequestReset, lastAddedPeriodeId, forelder } = this.props;
         const { barn, uttaksplan } = søknad;
-        const søkersituasjon = søknad.situasjon;
-        const erMorUfør = søknad.annenForelder.erUfør;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
         return (
@@ -178,14 +170,14 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     aria-hidden={true}>
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
-                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
+                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
                             </span>
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
-                                navnPåForeldre={navnPåForeldre}
+                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
@@ -202,7 +194,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
                                         antallFeriedager={antallFeriedager}
-                                        erMorUfør={erMorUfør}
+                                        erMorUfør={søknadsinfo.mor.erUfør}
                                         periodetype={periodetype}
                                         forelder={forelder}
                                         onSubmit={this.handleOnSubmit}
