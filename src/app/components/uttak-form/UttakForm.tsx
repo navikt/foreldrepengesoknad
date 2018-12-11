@@ -287,6 +287,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                                 periode={periode}
                                 arbeidsforhold={arbeidsforhold}
                                 onChange={this.onChange}
+                                visAntallDagerUttak={periode.ønskerSamtidigUttak !== true}
                             />
                         </Block>
                     </>
