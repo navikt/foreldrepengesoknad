@@ -783,6 +783,8 @@
     "kvittering.kontonummer":
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.dinProfilLink": "Din profil",
+    "kvittering.behandlingstid":
+        "NAV trenger oppdaterte opplysninger for å behandle søknaden din. Derfor kan du tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter.",
 
     "stønadskontotype.MØDREKVOTE": "Mor sin kvote",
     "stønadskontotype.FLERBARNSUKER": "Flerbarnsuker",
