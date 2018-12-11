@@ -22,15 +22,15 @@ const getValgtArbeidsgiverNavn = (arbeidsforhold: Arbeidsforhold[], orgnr?: stri
 
 export const getArbeidsformTekst = (
     intl: InjectedIntl,
-    arbeidsform: Arbeidsform,
-    orgnr?: string,
+    arbeidsform: Arbeidsform[],
+    orgnummere?: string[],
     arbeidsforhold?: Arbeidsforhold[]
 ) => {
-    if (orgnr && arbeidsforhold && arbeidsforhold.length > 0) {
-        const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnr);
-        return getMessage(intl, `oppsummering.uttak.arbeidstaker`, { orgnr, arbeidsgiverNavn });
+    if (orgnummere !== undefined && orgnummere.length > 0 && arbeidsforhold && arbeidsforhold.length > 0) {
+        const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnummere[0]);
+        return getMessage(intl, `oppsummering.uttak.arbeidstaker`, { orgnr: orgnummere[0], arbeidsgiverNavn });
     }
-    return getMessage(intl, `oppsummering.uttak.${arbeidsform.toLowerCase()}`);
+    return getMessage(intl, `oppsummering.uttak.${arbeidsform[0].toLowerCase()}`);
 };
 
 export const getÅrsakTekst = (

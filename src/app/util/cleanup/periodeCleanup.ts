@@ -58,8 +58,8 @@ const cleanupUtsettelse = (
         tidsperiode: periode.tidsperiode,
         forelder: periode.forelder,
         morsAktivitetIPerioden,
-        orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
-        arbeidsform: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
+        orgnummere: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnummere : undefined,
+        arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
         vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
             ? periode.vedlegg
@@ -85,9 +85,9 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
         samtidigUttakProsent: periode.ønskerSamtidigUttak === true ? periode.samtidigUttakProsent : undefined,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
-        arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
+        arbeidsformer: periode.gradert === true ? periode.arbeidsformer : undefined,
         harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
-        orgnr: periode.gradert === true ? periode.orgnr : undefined,
+        orgnummere: periode.gradert === true ? periode.orgnummere : undefined,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined,
         ønskerFlerbarnsdager: periode.ønskerFlerbarnsdager,
         erMorForSyk: periode.erMorForSyk

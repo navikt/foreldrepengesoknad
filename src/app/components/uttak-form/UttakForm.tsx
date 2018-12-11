@@ -284,7 +284,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
                             <GradertUttakPart
                                 visibility={visibility}
-                                periode={periode}
+                                periode={periode as Uttaksperiode}
                                 arbeidsforhold={arbeidsforhold}
                                 onChange={this.onChange}
                             />

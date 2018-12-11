@@ -18,7 +18,7 @@ import { Perioden } from '../../../util/uttaksplan/Perioden';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
-    periode: RecursivePartial<Uttaksperiode>;
+    periode: Uttaksperiode;
     visibility: UttakSpørsmålVisibility;
     arbeidsforhold?: Arbeidsforhold[];
 }
@@ -84,22 +84,23 @@ class GradertUttakForm extends React.Component<Props> {
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
-                        onChange={(orgnr, arbeidsform) =>
+                        onChange={(orgnummere, arbeidsformer) =>
                             onChange({
-                                orgnr,
-                                arbeidsform,
-                                erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
+                                orgnummere,
+                                arbeidsformer,
+                                erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                             })
                         }
-                        frilansEllerSelvstendig={periode.arbeidsform}
-                        valgtArbeidsforhold={periode.orgnr}
+                        arbeidsformer={periode.arbeidsformer || []}
+                        orgnummere={periode.orgnummere || []}
                     />
                 </Block>
                 <Block
                     visible={
                         periode.erArbeidstaker === true ||
-                        periode.arbeidsform === Arbeidsform.frilans ||
-                        periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
+                        (periode.arbeidsformer &&
+                            (periode.arbeidsformer.includes(Arbeidsform.frilans) ||
+                                periode.arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)))
                     }>
                     <Veilederinfo>
                         <FormattedHTMLMessage
