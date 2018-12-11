@@ -6,8 +6,8 @@ const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 export interface InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor {
     antallUttaksdagerTapt: number;
-    førsteUttaksdag: Date;
-    sisteUttaksdagInnenSeksUker: Date;
+    førsteRegistrerteUttaksdag: Date;
+    sisteUttaksdagInnenforSeksUker: Date;
 }
 
 const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
@@ -25,12 +25,13 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
         return undefined;
     }
 
-    const førsteUttaksdag = førstePeriode.tidsperiode.fom;
-    const sisteUttaksdagInnenSeksUker = getTidsperiode(førsteUttaksdag, 30).tom;
-    const antallUttaksdager = Tidsperioden({
-        fom: familiehendelsesdato,
-        tom: førsteUttaksdag
-    }).getAntallUttaksdager();
+    const førsteRegistrerteUttaksdag = førstePeriode.tidsperiode.fom;
+    const sisteUttaksdagInnenforSeksUker = getTidsperiode(familiehendelsesdato, 30).tom;
+    const antallUttaksdager =
+        Tidsperioden({
+            fom: familiehendelsesdato,
+            tom: førsteRegistrerteUttaksdag
+        }).getAntallUttaksdager() - 1;
 
     if (antallUttaksdager === undefined || antallUttaksdager <= ANTALL_UTTAKSDAGER_SEKS_UKER) {
         return undefined;
@@ -38,8 +39,8 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
 
     return {
         antallUttaksdagerTapt: antallUttaksdager - ANTALL_UTTAKSDAGER_SEKS_UKER,
-        førsteUttaksdag,
-        sisteUttaksdagInnenSeksUker
+        førsteRegistrerteUttaksdag,
+        sisteUttaksdagInnenforSeksUker
     };
 };
 
