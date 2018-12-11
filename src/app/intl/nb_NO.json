@@ -593,10 +593,10 @@
     "driverFosterhjem.spørsmål": "Har du inntekt som fosterforelder?",
 
     "valideringsfeil.frilansOppstart.duMåOppgi": "Du må oppgi oppstartsdato",
-    "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdato må være idag eller tidligere",
+    "valideringsfeil.frilansOppstart.måVæreIdagEllerTidligere": "Oppstartsdato må være i dag eller tidligere",
 
     "valideringsfeil.fodselsdato.duMåOppgi": "Du må oppgi fødselsdato",
-    "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være idag eller tidligere",
+    "valideringsfeil.fodselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "valideringsfeil.fodselsdato.ikkeMerEnn3ÅrTilbake":
         "Du kan ikke søke om foreldrepenger for barn som er eldre enn tre år.",
     "valideringsfeil.fodselsdato.ikkeMerEnn15År3MndTilbake":
