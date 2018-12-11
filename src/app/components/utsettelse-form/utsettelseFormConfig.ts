@@ -9,7 +9,6 @@ import {
     Periodetype
 } from '../../types/uttaksplan/periodetyper';
 // import aktivitetskravMorUtil from '../../util/domain/aktivitetskravMor';
-import { RecursivePartial } from '../../types/Partial';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -59,14 +58,12 @@ const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): bool
     // return false;
 };
 
-const harRegistrertArbeidOk = (
-    variant: Utsettelsesvariant | undefined,
-    periode: RecursivePartial<Utsettelsesperiode>
-) => {
+const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: Utsettelsesperiode) => {
     return (
         periode.årsak === UtsettelseÅrsakType.Arbeid &&
         variant === Utsettelsesvariant.Arbeid &&
-        (questionValueIsOk(periode.orgnr) || questionValueIsOk(periode.arbeidsform))
+        ((periode.orgnummere !== undefined && periode.orgnummere.length > 0) ||
+            (periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0))
     );
 };
 
@@ -88,7 +85,9 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) =>
-            periode.type === Periodetype.Utsettelse ? harRegistrertArbeidOk(variant, periode) : true,
+            periode.type === Periodetype.Utsettelse
+                ? harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)
+                : true,
         parentQuestion: Sp.variant,
         isRequired: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },

@@ -21,14 +21,14 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
         ønskerSamtidigUttak,
         gradert,
         stillingsprosent,
-        orgnr,
-        arbeidsform,
+        orgnummere,
+        arbeidsformer,
         vedlegg
     } = periode;
 
     let arbeidsformTekst = '';
-    if (arbeidsform) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, orgnr, registrerteArbeidsforhold);
+    if (arbeidsformer) {
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnummere, registrerteArbeidsforhold);
     }
 
     return (
@@ -54,7 +54,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
                     />
                 )}
 
-            {arbeidsform && (
+            {arbeidsformer && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.uttak.arbeidstaker.label')}
                     verdi={arbeidsformTekst}
