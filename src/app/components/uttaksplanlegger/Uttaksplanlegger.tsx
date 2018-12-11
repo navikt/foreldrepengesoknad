@@ -24,6 +24,9 @@ import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Søknadsinfo } from '../../selectors/types';
 import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 
 export interface Props {
     søknad: Søknad;
@@ -155,6 +158,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             søknadsinfo.mor.harRett === false
         );
 
+        const informerOmNårPeriodenBegynnerÅLøpe =
+            uttaksplan.length === 0 && søknadsinfo.mor.harRett === false && søknadsinfo.søker.erFarEllerMedmor === true;
+
         return (
             <section>
                 <Block>
@@ -185,7 +191,6 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         </header>
                         <Block visible={infoOmTapteUttaksdager !== undefined} margin="xs">
                             <TapteUttaksdagerFarMedmor
-                                familiehendelsesdato={søknadsinfo.søknaden.familiehendelsesdato}
                                 info={infoOmTapteUttaksdager!}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                             />
@@ -203,8 +208,24 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
-                        <Block visible={uttaksplan.length === 0} margin="xl">
-                            <TomUttaksplanInfo />
+                        <Block visible={uttaksplan.length === 0}>
+                            <Block margin="l">
+                                <TomUttaksplanInfo />
+                            </Block>
+                            <Block visible={informerOmNårPeriodenBegynnerÅLøpe} margin="none">
+                                <Veilederinfo>
+                                    <FormattedMessage
+                                        id="uttaksplan.infoVedTapteUttaksdager.tomUttaksplan"
+                                        values={{
+                                            dato: formaterDatoUtenDag(
+                                                Uttaksdagen(
+                                                    søknadsinfo.uttaksdatoer.etterFødsel.sisteUttaksdagInnenforSeksUker
+                                                ).neste()
+                                            )
+                                        }}
+                                    />
+                                </Veilederinfo>
+                            </Block>
                         </Block>
                         <Block visible={formIsOpen}>
                             {periodetype !== undefined && (
