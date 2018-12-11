@@ -20,6 +20,7 @@ interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
     periode: RecursivePartial<Uttaksperiode>;
     visibility: UttakSpørsmålVisibility;
+    visAntallDagerUttak: boolean;
     arbeidsforhold?: Arbeidsforhold[];
 }
 
@@ -35,7 +36,7 @@ class GradertUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, arbeidsforhold, visibility, intl, onChange } = this.props;
+        const { periode, arbeidsforhold, visibility, intl, onChange, visAntallDagerUttak } = this.props;
 
         const pst = getFloatFromString(periode.stillingsprosent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
@@ -46,6 +47,7 @@ class GradertUttakForm extends React.Component<Props> {
                   })
                 : undefined;
 
+        const visAntallDagerUttakInfo = visAntallDagerUttak && varighet !== undefined;
         return (
             <>
                 <Block>
@@ -79,6 +81,7 @@ class GradertUttakForm extends React.Component<Props> {
                             validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
                         />
                     </Block>
+                    {visAntallDagerUttakInfo && <div className="comment">{varighet}</div>}
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
