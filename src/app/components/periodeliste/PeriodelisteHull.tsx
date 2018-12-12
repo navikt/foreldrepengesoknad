@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { periodelisteBem } from './Periodeliste';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { getVarighetString } from 'common/util/intlUtils';
 import AdvarselIkonÅpen from '../uttaksplan-ikon/ikoner/AdvarselIkonÅpen';
@@ -7,11 +6,11 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { PeriodeHullÅrsak, PeriodeHull, Periode } from '../../types/uttaksplan/periodetyper';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 import LinkButton from '../link-button/LinkButton';
-import Knapperad from 'common/components/knapperad/Knapperad';
 import getMessage from 'common/util/i18nUtils';
 import { Tidsperiode } from 'nav-datovelger';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import PeriodelisteInfoItem from './PeriodelisteInfoItem';
 
 export interface Props {
     periode: PeriodeHull;
@@ -60,36 +59,29 @@ const PeriodelisteHull: React.StatelessComponent<Props & InjectedIntlProps> = ({
     }
 
     return (
-        <article className={periodelisteBem.element('hull')}>
-            <h1 className="sr-only">
-                <FormattedMessage id="periodeliste.hullMellomPerioder.aria-label" />
-            </h1>
-            <span className={periodelisteBem.element('hull__icon')} role="presentation">
-                <AdvarselIkonÅpen />
-            </span>
-            <Normaltekst tag="span">
-                {periode.årsak === PeriodeHullÅrsak.Fridag ? (
-                    <FormattedMessage
-                        id="periodeliste.hullMellomPerioder.fridag"
-                        values={{
-                            dager: getVarighetString(antallDager, intl),
-                            tidsperiode: Tidsperioden(periode.tidsperiode).formaterString(intl)
-                        }}
-                    />
-                ) : (
-                    <FormattedMessage
-                        id="periodeliste.hullMellomPerioder"
-                        values={{ dager: getVarighetString(antallDager, intl) }}
-                    />
-                )}
-                {knapper &&
-                    knapper.length > 0 && (
-                        <div className={periodelisteBem.element('hull__leggTilKnapper')}>
-                            <Knapperad align="left">{knapper}</Knapperad>
-                        </div>
+        <PeriodelisteInfoItem
+            ariaLabel={getMessage(intl, 'periodeliste.hullMellomPerioder.aria-label')}
+            infoText={
+                <Normaltekst tag="span">
+                    {periode.årsak === PeriodeHullÅrsak.Fridag ? (
+                        <FormattedMessage
+                            id="periodeliste.hullMellomPerioder.fridag"
+                            values={{
+                                dager: getVarighetString(antallDager, intl),
+                                tidsperiode: Tidsperioden(periode.tidsperiode).formaterString(intl)
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="periodeliste.hullMellomPerioder"
+                            values={{ dager: getVarighetString(antallDager, intl) }}
+                        />
                     )}
-            </Normaltekst>
-        </article>
+                </Normaltekst>
+            }
+            icon={<AdvarselIkonÅpen />}
+            buttons={knapper}
+        />
     );
 };
 export default injectIntl(PeriodelisteHull);
