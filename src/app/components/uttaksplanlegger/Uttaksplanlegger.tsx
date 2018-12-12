@@ -151,7 +151,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
 
-        const infoOmTapteUttaksdager = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
+        const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
             uttaksplan,
             søknadsinfo.søknaden.familiehendelsesdato,
             søknadsinfo.søker.erFarEllerMedmor,
@@ -189,9 +189,9 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
                             </span>
                         </header>
-                        <Block visible={infoOmTapteUttaksdager !== undefined} margin="xs">
+                        <Block visible={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined} margin="xs">
                             <TapteUttaksdagerFarMedmor
-                                info={infoOmTapteUttaksdager!}
+                                info={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor!}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
                             />
                         </Block>
