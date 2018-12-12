@@ -17,6 +17,7 @@ interface Person extends PersonBase {
 }
 
 export interface RegistrertBarn extends PersonBase {
+    constructedId: string;
     annenForelder?: RegistrertAnnenForelder;
 }
 
