@@ -545,12 +545,12 @@
     "uttaksplan.informasjon.morErForSyk":
         "Dersom du skal starte uttaket ditt dei første seks vekene etter fødselen, må du leggje ved ei stadfesting frå legen til {navnMor}. Stadfestinga må gjere greie for korleis sjukdommen eller skaden gjer {navnMor} helt avhengig av hjelp til å ta seg av barnet, og kor lenge det kjem til å vare. Det er ikkje nok med vanleg sjukmelding.",
 
-    "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
+    "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
-        "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre uker med foreldrepenger.",
+        "Perioden med foreldrepengar starter {dato}. Starter du seinare, får du færre dagar med foreldrepengar.",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil miste {dager} {dager, plural, one {dag} other {dager}} med foreldrepenger på grunn av at du starter permisjonen senere enn seks uker etter fødsel. For å unngå dette kan du legge til en utsettelse i dagene mellom seks uker etter fødsel og din første periode (fra {fom} til og med {tom}).",
-    "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
+        "Du vil mista {dager} {dager, plural, one{dag}other {dager}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden {fom} til og med {tom}.",
+    "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsetjing",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
     "uttaksoppsummering.forbrukt": "Foreldrepengar du har brukt",
