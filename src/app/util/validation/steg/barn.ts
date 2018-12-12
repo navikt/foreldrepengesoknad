@@ -6,6 +6,9 @@ import { Søkerinfo } from '../../../types/søkerinfo';
 import { harAktivtArbeidsforhold } from '../../domain/arbeidsforhold';
 import { RegistrertBarn, RegistrertAnnenForelder } from '../../../types/Person';
 import { findOldestDate } from '../../dates/dates';
+import { Validator } from 'common/lib/validation/types';
+import { InjectedIntl } from 'react-intl';
+import getMessage from 'common/util/i18nUtils';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -113,4 +116,21 @@ export const getBarnInfoFraRegistrertBarnValg = (
         antallBarn: valgteBarn.length > 0 ? valgteBarn.length : undefined,
         erBarnetFødt: valgteBarn.length > 0 || undefined
     };
+};
+
+const barnErFødtFørAnkomstNorge = (fødselsdato: Date, ankomstdato: Date): boolean => {
+    return moment(fødselsdato).isSameOrBefore(ankomstdato, 'day');
+};
+
+export const getAdopsjonAnkomstdatoValidatorer = (barn: Adopsjonsbarn, intl: InjectedIntl): Validator[] | undefined => {
+    const { fødselsdatoer, ankomstdato } = barn;
+    if (fødselsdatoer && fødselsdatoer.length > 0 && ankomstdato !== undefined) {
+        return [
+            {
+                test: () => barnErFødtFørAnkomstNorge(barn.fødselsdatoer[0], ankomstdato),
+                failText: getMessage(intl, 'valideringsfeil.fodselsdato.etterAdopsjonsdato')
+            }
+        ];
+    }
+    return undefined;
 };

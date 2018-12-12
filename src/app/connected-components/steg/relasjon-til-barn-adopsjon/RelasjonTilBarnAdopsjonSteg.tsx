@@ -16,7 +16,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
-import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { barnErGyldig, getAdopsjonAnkomstdatoValidatorer } from '../../../util/validation/steg/barn';
 import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
@@ -158,6 +158,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             );
                         }}
                         dato={barn.ankomstdato}
+                        validators={getAdopsjonAnkomstdatoValidatorer(barn, intl)}
                     />
                 </Block>
 
