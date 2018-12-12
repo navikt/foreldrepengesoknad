@@ -1,9 +1,10 @@
 import moment from 'moment';
 import Person, { RegistrertBarn } from '../../types/Person';
-import { SøkerinfoDTO } from '../types/sokerinfoDTO';
+import { SøkerinfoDTO, SøkerinfoDTOBarn } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
+import { Kjønn } from '../../types/common';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -15,15 +16,30 @@ const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     };
 };
 
+const createIdForBarn = (fornavn: string, etternavn: string, fødselsdato: string, kjønn: Kjønn): string => {
+    return `${fornavn}-${etternavn}-${fødselsdato}-${kjønn}`;
+};
+
 const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     const { barn } = søkerinfo.søker;
     if (barn === undefined || barn.length === 0) {
         return [];
     }
-    return barn.map((b: any): RegistrertBarn => ({
-        ...b,
-        fødselsdato: moment.utc(b.fødselsdato).toDate()
-    }));
+    return barn.map((dtoBarn: SøkerinfoDTOBarn): RegistrertBarn => {
+        const constructedId = createIdForBarn(dtoBarn.fornavn, dtoBarn.etternavn, dtoBarn.fødselsdato, dtoBarn.kjønn);
+        const { fødselsdato, annenForelder, ...rest } = dtoBarn;
+        return {
+            constructedId,
+            ...rest,
+            fødselsdato: moment.utc(fødselsdato).toDate(),
+            annenForelder: annenForelder
+                ? {
+                      ...annenForelder,
+                      fødselsdato: moment.utc(annenForelder.fødselsdato).toDate()
+                  }
+                : undefined
+        };
+    });
 };
 
 const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
