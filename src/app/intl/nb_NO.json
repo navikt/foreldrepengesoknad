@@ -541,9 +541,9 @@
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
-        "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre uker med foreldrepenger.",
+        "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil miste {dager} {dager, plural, one {dag} other {dager}} med foreldrepenger på grunn av at du starter permisjonen senere enn seks uker etter fødsel. For å unngå dette kan du legge til en utsettelse i dagene mellom seks uker etter fødsel og din første periode (fra {fom} til og med {tom}).",
+        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden {fom} til og med {tom}.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
