@@ -584,7 +584,11 @@
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
         "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden og i kva stillingsprosent. Arbeidsgivaren kan gi stadfestinga i digital inntektsmelding eller ved å signere på skjemaet for utsetjing.",
 
-    "vedlegg.feilmelding": "Noko gjekk gale. Prøv igjen litt seinare ...",
+    "vedlegg.feilmelding.tittel.flereFeil": " Opplasting av vedlegg feilte for:",
+    "vedlegg.feilmelding.flereFeil": "{filename} - Ops noko gjekk gale prøv igjen",
+    "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må vera mindre enn 9MB",
+    "vedlegg.feilmelding": " Ops noko gjekk gale, prøv igjen",
+    "vedlegg.forStort": " Vedlegget må vera mindre enn 9MB",
 
     "annenForelder.morIkkeSyk": "Du må søkje etter at barnet er født.",
     "far.dokumantasjonAvAleneomsorg.vedlegg.veileder":
