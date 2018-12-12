@@ -2,12 +2,6 @@ import moment from 'moment';
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
-import {
-    getBarnInfoFraRegistrertBarnValg,
-    getUniqeRegistrertAnnenForelderFromBarn
-} from '../../util/validation/steg/barn';
-import { RegistrertAnnenForelder } from '../../types/Person';
-import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuilder';
@@ -15,6 +9,7 @@ import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/u
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
+import { getBarnInfoFraRegistrertBarnValg } from '../../util/validation/steg/barn';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -38,23 +33,14 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },
-            currentStegID: undefined
-        },
-        sensitivInfoIkkeLagre: {
+            currentStegID: undefined,
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             }
         },
+        sensitivInfoIkkeLagre: {},
         uttaksplan: []
-    };
-};
-
-const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): AnnenForelderPartial => {
-    return {
-        fnr: registertForelder.fnr,
-        fornavn: registertForelder.fornavn,
-        etternavn: registertForelder.etternavn
     };
 };
 
@@ -66,16 +52,6 @@ const removeEkstrauttakFørTermin = (state: SøknadPartial) => {
                 'day'
             ) || isForeldrepengerFørFødselUttaksperiode(periode)
     );
-};
-
-const handleGjelderAnnetBarn = (
-    annenForelder: AnnenForelderPartial,
-    gjelderAnnetBarn?: boolean
-): AnnenForelderPartial => {
-    if (gjelderAnnetBarn) {
-        return { ...annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined };
-    }
-    return annenForelder;
 };
 
 const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
@@ -127,25 +103,16 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 }
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
-            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
-            const gjelderAnnetBarn = action.payload.gjelderAnnetBarn;
             const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
-            const updatedState: SøknadPartial = {
+
+            return {
                 ...state,
                 barn,
-                annenForelder: registrertAnnenForelder
-                    ? {
-                          ...state.annenForelder,
-                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
-                      }
-                    : handleGjelderAnnetBarn(state.annenForelder, gjelderAnnetBarn),
-                sensitivInfoIkkeLagre: {
-                    ...state.sensitivInfoIkkeLagre,
-                    søknadenGjelderBarnValg: action.payload,
-                    registrertAnnenForelder
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    søknadenGjelderBarnValg: action.payload
                 }
             };
-            return updatedState;
         }
 
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:
