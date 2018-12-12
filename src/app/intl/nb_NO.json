@@ -288,7 +288,7 @@
     "selvstendigNæringsdrivende.modal.registrertILand": "Hvilket land er virksomheten din registrert i?",
     "selvstendigNæringsdrivende.modal.stillingsprosent": "Hva er stillingsprosenten din?",
     "selvstendigNæringsdrivende.modal.veileder.blikontaktet":
-        "Vi kontakter deg hvis du må sende mer dokumentasjon på virksomheten din.",
+        "Vi henter inn opplysninger om virksomheten og inntekten din fra offentlige registre. Vi tar kontakt med deg hvis vi trenger flere opplysninger.",
     "blittYrkesaktivSiste3År.spørsmål": "Har du blitt yrkesaktiv i løpet av de tre siste ferdigliknede årene?",
     "blittYrkesaktivSiste3År.hjelpetekst":
         "Du har ikke hatt fast jobb, jobbet som frilanser eller hatt annen inntekt før du startet virksomheten din.",
@@ -894,7 +894,7 @@
     "endrePeriodeForm.bekreftSlettDialog.overføring.melding": "Ønsker du å slette perioden?",
 
     "egenDelUttakForm.samtidigUttak.veiledertekst":
-        "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel hvis dere tar ut 50 prosent hver. Dere kan også ta opptil 150 prosent til sammen, hvis en av dere er i opptil 50 prosent jobb samtidig som den andre tar ut kvote. {link}.",
+        "Dere kan ta ut opptil 100 prosent foreldrepenger til sammen, for eksempel ved at dere bytter på å jobbe og å være hjemme med barnet. Hvis en av dere tar ut 100 prosent kvote, kan den andre kombinere arbeid med å ta ut opptil 50 prosent av fellesperioden. {link}.",
     "egenDelUttakForm.samtidigUttak.flernBarnsuker.veiledertekst":
         "Dere kan begge ta ut 100 prosent foreldrepenger samtidig når dere får flere barn. Dere velger selv om flerbarnsukene skal tas ut som fellesperiode eller kvote. Det er ikke krav til hva du gjør når {navn} tar ut flerbarnsuker eller kvote. {link}.",
     "egenDelUttakForm.samtidigUttak.veiledertekst.lenke": "Les mer om å være hjemme samtidig her",
