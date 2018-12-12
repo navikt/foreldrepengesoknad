@@ -24,9 +24,9 @@ export default class AttachmentsUploaderPure extends React.Component<Attachments
         onFilesSelect(files);
     }
 
-    onFileDelete(file: Attachment) {
+    onFileDelete(files: Attachment[]) {
         const { onFileDelete } = this.props;
-        onFileDelete(file);
+        files.forEach(onFileDelete);
     }
 
     render() {

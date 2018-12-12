@@ -580,7 +580,10 @@
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
         "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
 
-    "vedlegg.feilmelding": "Noe gikk galt. Prøv igjen litt senere...",
+    "vedlegg.feilmelding.tittel.flereFeil": "Opplasting av vedlegg feilet for:",
+    "vedlegg.feilmelding.flereFeil": "{filename} - Ops noe gikk galt prøv igjen",
+    "vedlegg.forStort.flereFeil": "{filename} - Vedlegget må være mindre enn 9MB",
+    "vedlegg.feilmelding": "Ops noe gikk galt, prøv igjen",
     "vedlegg.forStort": "Vedlegget må være mindre enn 9MB",
 
     "annenForelder.morIkkeSyk": "Du må søke etter at barnet er født.",
