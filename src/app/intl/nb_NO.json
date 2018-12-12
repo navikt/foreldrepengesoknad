@@ -539,6 +539,7 @@
         "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} må søke selv, senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
+    "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre uker med foreldrepenger.",
     "uttaksplan.infoVedTapteUttaksdager":
