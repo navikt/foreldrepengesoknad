@@ -31,8 +31,11 @@ export const getRelasjonTilBarnFødselVisibility = (
     api: ApiState
 ): RelasjonTilBarnFødselStegVisibility => {
     const { søkerinfo } = api;
-    const { søker, barn, sensitivInfoIkkeLagre } = søknad;
-    const { gjelderAnnetBarn } = sensitivInfoIkkeLagre.søknadenGjelderBarnValg;
+    const {
+        søker,
+        barn,
+        ekstrainfo: { søknadenGjelderBarnValg }
+    } = søknad;
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
 
@@ -40,7 +43,10 @@ export const getRelasjonTilBarnFødselVisibility = (
     const registrerteBarn = søkerinfo!.registrerteBarn || [];
 
     const hvilketBarnGjelderSøknadenBolk = f.hvilkeBarnGjelderSøknadenBolkVisible(registrerteBarn);
-    const erBarnetFødt = f.erBarnetFødtSpørsmålVisible(hvilketBarnGjelderSøknadenBolk, gjelderAnnetBarn);
+    const erBarnetFødt = f.erBarnetFødtSpørsmålVisible(
+        hvilketBarnGjelderSøknadenBolk,
+        søknadenGjelderBarnValg ? søknadenGjelderBarnValg.gjelderAnnetBarn : undefined
+    );
     const ufødtBarnPart = f.ufødtBarnPartialVisible(erBarnetFødt, barn);
     const fødtBarnPart = f.fødtBarnPartialVisible(erBarnetFødt, barn);
 
