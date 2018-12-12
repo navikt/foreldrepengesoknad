@@ -9,7 +9,12 @@ import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/u
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
-import { getBarnInfoFraRegistrertBarnValg } from '../../util/validation/steg/barn';
+import {
+    getBarnInfoFraRegistrertBarnValg,
+    getUniqeRegistrertAnnenForelderFromBarn
+} from '../../util/validation/steg/barn';
+import { RegistrertAnnenForelder } from '../../types/Person';
+import AnnenForelder from '../../types/s\u00F8knad/AnnenForelder';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
@@ -52,6 +57,14 @@ const removeEkstrauttakFørTermin = (state: SøknadPartial) => {
                 'day'
             ) || isForeldrepengerFørFødselUttaksperiode(periode)
     );
+};
+
+const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): Partial<AnnenForelder> => {
+    return {
+        fnr: registertForelder.fnr,
+        fornavn: registertForelder.fornavn,
+        etternavn: registertForelder.etternavn
+    };
 };
 
 const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
@@ -103,14 +116,27 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 }
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
-            const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
+            const { gjelderAnnetBarn, valgteBarn } = action.payload;
+            const barn = getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn);
+            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(valgteBarn);
 
             return {
                 ...state,
                 barn,
+                annenForelder: registrertAnnenForelder
+                    ? {
+                          ...state.annenForelder,
+                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
+                      }
+                    : gjelderAnnetBarn
+                        ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
+                        : state.annenForelder,
                 ekstrainfo: {
                     ...state.ekstrainfo,
                     søknadenGjelderBarnValg: action.payload
+                },
+                sensitivInfoIkkeLagre: {
+                    registrertAnnenForelder
                 }
             };
         }
