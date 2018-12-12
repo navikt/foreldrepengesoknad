@@ -539,6 +539,12 @@
         "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} må søke selv, senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoTilFrilansOgSelvstendig":
         "Når du bekrefter her hvor mye du skal jobbe, regnes det som en avtale mellom deg og NAV hvis du får innvilget søknaden din.",
+    "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
+    "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
+        "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre uker med foreldrepenger.",
+    "uttaksplan.infoVedTapteUttaksdager":
+        "Du vil miste {dager} {dager, plural, one {dag} other {dager}} med foreldrepenger på grunn av at du starter permisjonen senere enn seks uker etter fødsel. For å unngå dette kan du legge til en utsettelse i dagene mellom seks uker etter fødsel og din første periode (fra {fom} til og med {tom}).",
+    "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
