@@ -28,7 +28,7 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
 
     let arbeidsformTekst = '';
     if (arbeidsformer) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnummere, registrerteArbeidsforhold);
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnummere, registrerteArbeidsforhold).join('\r\n');
     }
 
     return (
