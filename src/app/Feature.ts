@@ -3,7 +3,7 @@ import Environment from './Environment';
 export enum Feature {
     endringssøknad = 'FEATURE_ENDRINGSSOKNAD',
     nynorsk = 'FEATURE_NYNORSK',
-    hentBarn = 'FEATURE_HENT_BARN'
+    registrertBarn = 'REGISTRERT_BARN'
 }
 
 export const isFeatureEnabled = (feature: Feature): boolean => {

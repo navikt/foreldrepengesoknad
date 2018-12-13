@@ -57,7 +57,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
         const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
         const { søkerinfo } = appState.api;
 
-        if (isFeatureEnabled(Feature.hentBarn) === false) {
+        if (isFeatureEnabled(Feature.registrertBarn) === false) {
             delete søknad.ekstrainfo.søknadenGjelderBarnValg;
         } else {
             if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
