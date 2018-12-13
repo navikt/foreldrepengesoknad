@@ -10,7 +10,7 @@ interface HvorSkalDuJobbeSpørsmålProps {
     onChange: (orgnr: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
     arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
-    orgnummere: string[];
+    orgnumre: string[];
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
@@ -19,9 +19,9 @@ const erFrilansEllerSelvstendig = (value: string): boolean => {
     return value === Arbeidsform.selvstendignæringsdrivende || value === Arbeidsform.frilans;
 };
 
-const getValgtVerdi = (orgnummere: string[], arbeidsformer: Arbeidsform[]) => {
-    if (orgnummere.length > 0) {
-        return orgnummere[0];
+const getValgtVerdi = (orgnumre: string[], arbeidsformer: Arbeidsform[]) => {
+    if (orgnumre.length > 0) {
+        return orgnumre[0];
     } else if (arbeidsformer.length > 0) {
         return arbeidsformer[0];
     } else {
@@ -61,13 +61,13 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     }
 
     render() {
-        const { intl, orgnummere, arbeidsformer } = this.props;
+        const { intl, orgnumre, arbeidsformer } = this.props;
 
         return (
             <FlervalgSpørsmål
                 navn="arbeidsgiver"
                 alternativer={this.getRadioOptions()}
-                valgtVerdi={getValgtVerdi(orgnummere, arbeidsformer)}
+                valgtVerdi={getValgtVerdi(orgnumre, arbeidsformer)}
                 toKolonner={true}
                 spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={this.handleOnChange}

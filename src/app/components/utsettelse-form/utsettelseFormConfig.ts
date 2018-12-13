@@ -62,7 +62,7 @@ const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode:
     return (
         periode.årsak === UtsettelseÅrsakType.Arbeid &&
         variant === Utsettelsesvariant.Arbeid &&
-        ((periode.orgnummere !== undefined && periode.orgnummere.length > 0) ||
+        ((periode.orgnumre !== undefined && periode.orgnumre.length > 0) ||
             (periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0))
     );
 };

@@ -24,7 +24,7 @@ const cleanupOrgnr = (uttaksplan: Periode[]): Periode[] => {
         const { orgnr, ...rest } = periode as PeriodeWithOrgnr;
         return {
             ...rest,
-            ...(orgnr ? { orgnummere: [orgnr] } : undefined)
+            ...(orgnr ? { orgnumre: [orgnr] } : undefined)
         };
     });
 };

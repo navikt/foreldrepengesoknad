@@ -85,7 +85,7 @@ export interface UttaksperiodeBase extends PeriodeBase {
     samtidigUttakProsent?: string;
     gradert?: boolean;
     stillingsprosent?: string;
-    orgnummere?: string[];
+    orgnumre?: string[];
     arbeidsformer?: Arbeidsform[];
     erArbeidstaker?: boolean;
     harIkkeAktivitetskrav?: boolean;
@@ -107,7 +107,7 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
-    orgnummere?: string[];
+    orgnumre?: string[];
     erArbeidstaker: boolean;
     arbeidsformer?: Arbeidsform[];
 }

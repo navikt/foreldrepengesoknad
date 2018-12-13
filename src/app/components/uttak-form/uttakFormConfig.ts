@@ -190,7 +190,7 @@ const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
     return (
         periode.type === Periodetype.Uttak &&
         ((periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0) ||
-            (periode.orgnummere !== undefined && periode.orgnummere.length > 0))
+            (periode.orgnumre !== undefined && periode.orgnumre.length > 0))
     );
 };
 
