@@ -301,15 +301,15 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
                                         <HvorSkalDuJobbeSpørsmålFlervalg
                                             arbeidsforhold={arbeidsforhold || []}
-                                            onChange={(orgnummere, arbeidsformer) =>
+                                            onChange={(orgnumre, arbeidsformer) =>
                                                 this.onChange({
-                                                    orgnummere,
+                                                    orgnumre,
                                                     arbeidsformer,
                                                     erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                                                 })
                                             }
                                             arbeidsformer={(periode as Utsettelsesperiode).arbeidsformer || []}
-                                            orgnummere={(periode as Utsettelsesperiode).orgnummere || []}
+                                            orgnumre={(periode as Utsettelsesperiode).orgnumre || []}
                                         />
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>

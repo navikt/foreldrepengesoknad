@@ -6,10 +6,10 @@ import { Arbeidsform } from '../types/uttaksplan/periodetyper';
 import CheckboksPanelGruppeResponsive from 'common/components/skjema/elements/checkbox-panel-gruppe-responsive/CheckboksPanelGruppeResponsive';
 
 interface HvorSkalDuJobbeSpørsmålFlervalgProps {
-    onChange: (orgnummere: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
+    onChange: (orgnumre: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
     arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
-    orgnummere: string[];
+    orgnumre: string[];
 }
 
 type Props = HvorSkalDuJobbeSpørsmålFlervalgProps & InjectedIntlProps;
@@ -27,13 +27,13 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
         this.removeArbeidsgiver = this.removeArbeidsgiver.bind(this);
     }
 
-    getOptions(orgnummere: string[], arbeidsformer: Arbeidsform[]) {
+    getOptions(orgnumre: string[], arbeidsformer: Arbeidsform[]) {
         const { arbeidsforhold, intl } = this.props;
         return [
             ...arbeidsforhold.map((v) => ({
                 label: v.arbeidsgiverNavn,
                 value: v.arbeidsgiverId,
-                checked: orgnummere.includes(v.arbeidsgiverId)
+                checked: orgnumre.includes(v.arbeidsgiverId)
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
@@ -64,7 +64,7 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
         arbeidsformer.splice(arbeidsformer.indexOf(value), 1);
     }
 
-    handleOnChange(e: any, value: Arbeidsform | string, orgnummere: string[], arbeidsformer: Arbeidsform[]) {
+    handleOnChange(e: any, value: Arbeidsform | string, orgnumre: string[], arbeidsformer: Arbeidsform[]) {
         const { onChange } = this.props;
         const checked = e.target.checked;
 
@@ -75,31 +75,31 @@ class HvorSkalDuJobbeSpørsmålFlervalg extends React.Component<Props> {
                 this.removeArbeidsform(value as Arbeidsform, arbeidsformer);
             }
 
-            onChange(orgnummere, arbeidsformer);
+            onChange(orgnumre, arbeidsformer);
         } else {
             if (checked) {
-                this.addArbeidsgiver(value, orgnummere);
+                this.addArbeidsgiver(value, orgnumre);
                 this.addArbeidsform(Arbeidsform.arbeidstaker, arbeidsformer);
             } else {
-                this.removeArbeidsgiver(value, orgnummere);
+                this.removeArbeidsgiver(value, orgnumre);
                 this.removeArbeidsform(Arbeidsform.arbeidstaker, arbeidsformer);
             }
 
-            onChange(orgnummere, arbeidsformer);
+            onChange(orgnumre, arbeidsformer);
         }
     }
 
     render() {
-        const { orgnummere, arbeidsformer, intl } = this.props;
+        const { orgnumre, arbeidsformer, intl } = this.props;
 
         return (
             <CheckboksPanelGruppeResponsive
                 twoColumns={true}
                 legend={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
                 onChange={(e: any, value: Arbeidsform | string) =>
-                    this.handleOnChange(e, value, orgnummere, arbeidsformer)
+                    this.handleOnChange(e, value, orgnumre, arbeidsformer)
                 }
-                checkboxes={this.getOptions(orgnummere, arbeidsformer)}
+                checkboxes={this.getOptions(orgnumre, arbeidsformer)}
             />
         );
     }

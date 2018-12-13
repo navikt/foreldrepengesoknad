@@ -84,15 +84,15 @@ class GradertUttakForm extends React.Component<Props> {
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
-                        onChange={(orgnummere, arbeidsformer) =>
+                        onChange={(orgnumre, arbeidsformer) =>
                             onChange({
-                                orgnummere,
+                                orgnumre,
                                 arbeidsformer,
                                 erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                             })
                         }
                         arbeidsformer={periode.arbeidsformer || []}
-                        orgnummere={periode.orgnummere || []}
+                        orgnumre={periode.orgnumre || []}
                     />
                 </Block>
                 <Block

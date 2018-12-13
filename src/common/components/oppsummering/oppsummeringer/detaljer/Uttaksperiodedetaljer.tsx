@@ -21,14 +21,14 @@ const Uttaksperiodedetaljer: React.StatelessComponent<Props> = ({ periode, regis
         ønskerSamtidigUttak,
         gradert,
         stillingsprosent,
-        orgnummere,
+        orgnumre,
         arbeidsformer,
         vedlegg
     } = periode;
 
     let arbeidsformTekst = '';
     if (arbeidsformer) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnummere, registrerteArbeidsforhold).join('\r\n');
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold).join('\r\n');
     }
 
     return (
