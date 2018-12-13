@@ -20,7 +20,7 @@ type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
 const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
     const { årsak, morsAktivitetIPerioden, orgnummere, arbeidsformer, vedlegg } = periode;
 
-    let arbeidsformTekst = '';
+    let arbeidsformTekst: string[] = [];
     if (arbeidsformer) {
         arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnummere, registrerteArbeidsforhold);
     }
