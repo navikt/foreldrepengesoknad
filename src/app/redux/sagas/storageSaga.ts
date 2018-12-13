@@ -53,20 +53,31 @@ function* getAppState(action: GetStoredAppState) {
 
 function* applyStoredStateToApp(storedState: AppState, history: History) {
     if (Object.keys(storedState).length !== 0) {
-        const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
         const appState: AppState = yield select(stateSelector);
+        const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
         const { søkerinfo } = appState.api;
+
+        if (isFeatureEnabled(Feature.hentBarn) === false) {
+            delete søknad.ekstrainfo.søknadenGjelderBarnValg;
+        } else {
+            if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
+                søknad.ekstrainfo.søknadenGjelderBarnValg = {
+                    gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
+                    valgteBarn: []
+                };
+            }
+        }
+
         const valgteRegistrerteBarn = StorageSagaUtils.getValgteRegistrerteBarnISøknaden(søknad);
+        const registrerteBarn = søkerinfo ? søkerinfo.registrerteBarn : undefined;
 
         if (
             søkerinfo === undefined ||
             (søknad.erEndringssøknad && isFeatureEnabled(Feature.endringssøknad) === false) ||
             søknad.ekstrainfo.currentStegID === undefined ||
             (valgteRegistrerteBarn !== undefined &&
-                StorageSagaUtils.stemmerValgteBarnISøknadMedSøkersBarn(
-                    valgteRegistrerteBarn,
-                    søkerinfo.registrerteBarn
-                ) === false)
+                StorageSagaUtils.stemmerValgteBarnISøknadMedSøkersBarn(valgteRegistrerteBarn, registrerteBarn) ===
+                    false)
         ) {
             yield put(commonActions.setSpråk(storedState.common.språkkode));
             yield put(søknadActions.avbrytSøknad());
