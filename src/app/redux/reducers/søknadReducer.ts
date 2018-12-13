@@ -14,7 +14,7 @@ import {
     getUniqeRegistrertAnnenForelderFromBarn
 } from '../../util/validation/steg/barn';
 import { RegistrertAnnenForelder } from '../../types/Person';
-import AnnenForelder from '../../types/s\u00F8knad/AnnenForelder';
+import AnnenForelder from '../../types/søknad/AnnenForelder';
 
 export const getDefaultSøknadState = (): SøknadPartial => {
     return {
