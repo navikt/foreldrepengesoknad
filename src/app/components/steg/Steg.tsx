@@ -54,6 +54,7 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
         const { isAvailable, history } = props;
         if (isAvailable === false) {
+            props.dispatch(søknadActionCreators.setCurrentSteg(StegID.INNGANG));
             history.push(routeConfig.APP_ROUTE_PREFIX);
         }
 
