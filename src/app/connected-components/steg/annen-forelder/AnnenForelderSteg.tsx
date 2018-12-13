@@ -104,8 +104,7 @@ class AnnenForelderSteg extends React.Component<Props> {
                 <Steg {...stegProps} onPreSubmit={this.cleanupSteg}>
                     <Block
                         header={{
-                            title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn }),
-                            info: 'bla'
+                            title: getMessage(intl, 'annenForelder.label.registrertForelder', { antallBarn })
                         }}
                         visible={registrertAnnenForelder !== undefined}>
                         {registrertAnnenForelder ? <PersonaliaBox person={registrertAnnenForelder} /> : undefined}
