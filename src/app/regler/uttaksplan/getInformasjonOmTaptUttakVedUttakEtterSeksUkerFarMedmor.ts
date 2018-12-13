@@ -1,6 +1,7 @@
 import { Periode } from '../../types/uttaksplan/periodetyper';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Tidsperioden, getTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
@@ -25,11 +26,12 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
         return undefined;
     }
 
+    const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
     const førsteRegistrerteUttaksdag = førstePeriode.tidsperiode.fom;
-    const sisteUttaksdagInnenforSeksUker = getTidsperiode(familiehendelsesdato, 30).tom;
+    const sisteUttaksdagInnenforSeksUker = getTidsperiode(førsteUttaksdag, 30).tom;
     const antallUttaksdager =
         Tidsperioden({
-            fom: familiehendelsesdato,
+            fom: førsteUttaksdag,
             tom: førsteRegistrerteUttaksdag
         }).getAntallUttaksdager() - 1;
 
