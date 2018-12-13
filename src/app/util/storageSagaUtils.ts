@@ -20,7 +20,7 @@ const stemmerValgteBarnISøknadMedSøkersBarn = (
     }
     const barnSomIkkeErRegistrert = valgteBarn.filter((vBarn) => {
         const barn = registrerteBarn.find((rBarn) => {
-            return rBarn.constructedId === vBarn.constructedId;
+            return rBarn.fnr === vBarn.fnr;
         });
         return barn !== undefined;
     });

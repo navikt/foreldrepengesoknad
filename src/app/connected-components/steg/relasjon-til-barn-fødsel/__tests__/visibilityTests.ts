@@ -6,7 +6,6 @@ import { Skjemanummer } from '../../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
 const registrertBarn: RegistrertBarn = {
-    constructedId: 'mix',
     fnr: '01010101010',
     fornavn: 'fornavn',
     etternavn: 'etternavn',

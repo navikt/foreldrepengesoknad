@@ -7,7 +7,7 @@ const Environment = () => {
         LOGIN_URL: window.appSettings.LOGIN_URL,
         [Feature.endringssøknad]: window.appSettings[Feature.endringssøknad],
         [Feature.nynorsk]: window.appSettings[Feature.nynorsk],
-        [Feature.hentBarn]: window.appSettings[Feature.hentBarn]
+        [Feature.registrertBarn]: window.appSettings[Feature.registrertBarn]
     };
 };
 

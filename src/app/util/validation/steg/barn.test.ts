@@ -19,7 +19,6 @@ const farMedmor: RegistrertAnnenForelder = {
 };
 
 const barn: RegistrertBarn = {
-    constructedId: 'abc',
     fnr: '1',
     fornavn: 'a',
     etternavn: 'b',
