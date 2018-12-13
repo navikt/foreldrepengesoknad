@@ -147,6 +147,10 @@ export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): p
     return periode.type === Periodetype.Uttak;
 }
 
+export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
+    return periode.type === Periodetype.Utsettelse;
+}
+
 export function isForeldrepengerFørFødselUttaksperiode(
     periode: Periode | RecursivePartial<Periode>
 ): periode is ForeldrepengerFørFødselUttaksperiode {
