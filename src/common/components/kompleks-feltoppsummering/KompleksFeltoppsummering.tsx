@@ -4,7 +4,7 @@ import InnholdMedLedetekst from 'common/components/innhold-med-ledetekst/Innhold
 interface Props {
     className?: string;
     ledetekst: string;
-    children: JSX.Element | JSX.Element[];
+    children: JSX.Element;
 }
 
 const KompleksFeltoppsummering: React.StatelessComponent<Props> = ({ ledetekst, children, className }) => (
