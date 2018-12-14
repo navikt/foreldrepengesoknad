@@ -11,7 +11,6 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
-import HvorSkalDuJobbeSpørsmål from '../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
@@ -37,6 +36,7 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import lenker from '../../util/routing/lenker';
+import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -87,6 +87,17 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
                 return undefined;
         }
     }
+};
+
+const getVeilederForFrilansOgSNVisible = (periode: UtsettelseFormPeriodeType) => {
+    const castPeriode = periode as Utsettelsesperiode;
+
+    return (
+        castPeriode.erArbeidstaker === false &&
+        castPeriode.arbeidsformer !== undefined &&
+        (castPeriode.arbeidsformer.includes(Arbeidsform.frilans) ||
+            castPeriode.arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende))
+    );
 };
 
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
@@ -288,17 +299,17 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             {periode.årsak === UtsettelseÅrsakType.Arbeid && (
                                 <>
                                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
-                                        <HvorSkalDuJobbeSpørsmål
-                                            arbeidsforhold={arbeidsforhold}
-                                            valgtArbeidsforhold={periode.orgnr}
-                                            frilansEllerSelvstendig={periode.arbeidsform}
-                                            onChange={(orgnr, arbeidsform) =>
+                                        <HvorSkalDuJobbeSpørsmålFlervalg
+                                            arbeidsforhold={arbeidsforhold || []}
+                                            onChange={(orgnumre, arbeidsformer) =>
                                                 this.onChange({
-                                                    orgnr,
-                                                    arbeidsform,
-                                                    erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
+                                                    orgnumre,
+                                                    arbeidsformer,
+                                                    erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                                                 })
                                             }
+                                            arbeidsformer={(periode as Utsettelsesperiode).arbeidsformer || []}
+                                            orgnumre={(periode as Utsettelsesperiode).orgnumre || []}
                                         />
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>
@@ -306,11 +317,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                             {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
                                         </Veilederinfo>
                                     </Block>
-                                    <Block
-                                        visible={
-                                            periode.arbeidsform === Arbeidsform.frilans ||
-                                            periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
-                                        }>
+                                    <Block visible={getVeilederForFrilansOgSNVisible(periode)}>
                                         <Veilederinfo>
                                             <FormattedMessage id="uttaksplan.infoTilFrilansOgSelvstendig" />
                                         </Veilederinfo>
