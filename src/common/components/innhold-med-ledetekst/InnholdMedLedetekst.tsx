@@ -25,8 +25,6 @@ const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = 
                       </Element>
                   ))
                 : children}
-            {Array.isArray(children) &&
-                (children as JSX.Element[]).map((child: any) => <div key={guid()}>{child}</div>)}
         </div>
     );
 };
