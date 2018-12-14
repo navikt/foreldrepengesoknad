@@ -98,13 +98,7 @@ class GradertUttakForm extends React.Component<Props> {
                         orgnumre={periode.orgnumre || []}
                     />
                 </Block>
-                <Block
-                    visible={
-                        periode.erArbeidstaker === true ||
-                        (periode.arbeidsformer &&
-                            (periode.arbeidsformer.includes(Arbeidsform.frilans) ||
-                                periode.arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende)))
-                    }>
+                <Block visible={periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0}>
                     <Veilederinfo>
                         <FormattedHTMLMessage
                             id={
