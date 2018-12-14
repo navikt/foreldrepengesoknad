@@ -4,9 +4,11 @@ import { guid } from 'nav-frontend-js-utils';
 
 interface InnholdMedLedetekstProps {
     ledetekst: string;
-    children: JSX.Element;
+    children: JSX.Element | JSX.Element[];
     className?: string;
 }
+
+const hasListOfChildren = (children: string | string[]): boolean => (Array.isArray(children) ? true : false);
 
 const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = ({
     ledetekst,
@@ -16,13 +18,15 @@ const InnholdMedLedetekst: React.StatelessComponent<InnholdMedLedetekstProps> = 
     return (
         <div className={className}>
             <EtikettLiten>{ledetekst}</EtikettLiten>
-            {!Array.isArray(children.props.children) && children}
-            {Array.isArray(children.props.children) &&
-                children.props.children.map((child: string) => (
-                    <Element className="feltoppsummering__verdi" key={guid()}>
-                        {child}
-                    </Element>
-                ))}
+            {!Array.isArray(children) && hasListOfChildren((children as JSX.Element).props.children)
+                ? (children as JSX.Element).props.children.map((child: string) => (
+                      <Element className="feltoppsummering__verdi" key={guid()}>
+                          {child}
+                      </Element>
+                  ))
+                : children}
+            {Array.isArray(children) &&
+                (children as JSX.Element[]).map((child: any) => <div key={guid()}>{child}</div>)}
         </div>
     );
 };
