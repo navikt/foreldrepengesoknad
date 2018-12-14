@@ -17,10 +17,23 @@ export const cleanupØnskerFlerbarnsdager = (uttaksplan: Periode[]): Periode[] =
     });
 };
 
+type PeriodeWithOrgnr = Periode & { orgnr: string };
+
+const cleanupOrgnr = (uttaksplan: Periode[]): Periode[] => {
+    return uttaksplan.map((periode) => {
+        const { orgnr, ...rest } = periode as PeriodeWithOrgnr;
+        return {
+            ...rest,
+            ...(orgnr ? { orgnumre: [orgnr] } : undefined)
+        };
+    });
+};
+
 export const cleanInvalidSøknadData = (søknad: Søknad): Søknad => {
     if (søknad && søknad.uttaksplan) {
         /** Fjern ønskerFlerbarnsdager fra overføringsperiode */
         søknad.uttaksplan = cleanupØnskerFlerbarnsdager(søknad.uttaksplan);
+        søknad.uttaksplan = cleanupOrgnr(søknad.uttaksplan);
     }
     return søknad;
 };

@@ -85,8 +85,8 @@ export interface UttaksperiodeBase extends PeriodeBase {
     samtidigUttakProsent?: string;
     gradert?: boolean;
     stillingsprosent?: string;
-    orgnr?: string;
-    arbeidsform?: Arbeidsform;
+    orgnumre?: string[];
+    arbeidsformer?: Arbeidsform[];
     erArbeidstaker?: boolean;
     harIkkeAktivitetskrav?: boolean;
     vedlegg?: Attachment[];
@@ -107,9 +107,9 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
-    orgnr?: string;
+    orgnumre?: string[];
     erArbeidstaker: boolean;
-    arbeidsform?: Arbeidsform;
+    arbeidsformer?: Arbeidsform[];
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
@@ -145,6 +145,10 @@ export enum MorsAktivitet {
 
 export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
     return periode.type === Periodetype.Uttak;
+}
+
+export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
+    return periode.type === Periodetype.Utsettelse;
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(

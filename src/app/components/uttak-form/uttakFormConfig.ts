@@ -7,7 +7,8 @@ import {
     Periodetype,
     OverføringÅrsakType,
     isForeldrepengerFørFødselUttaksperiode,
-    isUttaksperiode
+    isUttaksperiode,
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
@@ -185,10 +186,11 @@ const visGradering = (payload: UttakFormPayload): boolean => {
 };
 
 const hvorSkalDuJobbeErBesvart = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
+    const periode = payload.periode as Uttaksperiode;
     return (
         periode.type === Periodetype.Uttak &&
-        (questionValueIsOk(periode.arbeidsform) || questionValueIsOk(periode.orgnr))
+        ((periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0) ||
+            (periode.orgnumre !== undefined && periode.orgnumre.length > 0))
     );
 };
 
