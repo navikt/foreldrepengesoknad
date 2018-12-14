@@ -292,7 +292,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                     />
                 </Block>
 
-                <Block visible={visibility.revisorBolk(næring)} margin="none">
+                <Block visible={visibility.revisorBolk(næring)}>
                     <NæringsrelasjonBolk
                         renderSpørsmål={() => (
                             <HarDuRevisorSpørsmål
