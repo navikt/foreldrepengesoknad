@@ -10,7 +10,7 @@ function createEnvSettingsFile(settingsFile) {
                 LOGIN_URL: '${process.env.LOGINSERVICE_URL}',
                 FEATURE_ENDRINGSSOKNAD: '${process.env.FEATURE_ENDRINGSSOKNAD}',
                 FEATURE_NYNORSK: '${process.env.FEATURE_NYNORSK}',
-                REGISTRERT_BARN: '${process.env.REGISTRERT_BARN}'
+                FEATURE_REGISTRERT_BARN: '${process.env.FEATURE_REGISTRERT_BARN}'
             };`
         );
     });
