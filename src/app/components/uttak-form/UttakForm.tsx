@@ -35,11 +35,11 @@ import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
-import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 

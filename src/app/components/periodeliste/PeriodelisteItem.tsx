@@ -5,16 +5,12 @@ import { periodelisteBem, getPeriodelisteElementId } from './Periodeliste';
 import PeriodeHeader from './PeriodeHeader';
 import { NavnPåForeldre } from 'common/types';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
-import EndrePeriodeFormContent from '../endre-periode-form-content/EndrePeriodeFormContent';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 import ToggleItemControlled from '../toggle-item/ToggleItemControlled';
-import {
-    EndrePeriodeRequestDeleteEvent,
-    EndrePeriodeChangeEvent
-} from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { onToggleItemProp } from '../toggle-list/ToggleList';
 import { getPeriodeTittel } from '../../util/uttaksplan';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import EndrePeriodeForm from '../endre-periode-form/EndrePeriodeForm';
 
 export interface Props {
     periode: Periode;
@@ -22,8 +18,6 @@ export interface Props {
     antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;
     validertPeriode: ValidertPeriode;
-    onChange: EndrePeriodeChangeEvent;
-    onRequestDelete: EndrePeriodeRequestDeleteEvent;
     onToggle: onToggleItemProp;
 }
 
@@ -33,8 +27,6 @@ const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
     antallFeriedager,
     validertPeriode,
     isExpanded,
-    onRequestDelete,
-    onChange,
     onToggle,
     intl
 }) => {
@@ -61,12 +53,10 @@ const PeriodelisteItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
                             periodelisteBem.element('content', periode.type),
                             periodelisteBem.element('content', getPeriodeFarge(periode))
                         )}>
-                        <EndrePeriodeFormContent
+                        <EndrePeriodeForm
                             periode={periode}
                             antallFeriedager={antallFeriedager}
                             validertPeriode={validertPeriode}
-                            onChange={onChange}
-                            onRequestDelete={onRequestDelete}
                             onRequestClose={() => {
                                 onToggle(periode.id);
                                 if (isExpanded) {
