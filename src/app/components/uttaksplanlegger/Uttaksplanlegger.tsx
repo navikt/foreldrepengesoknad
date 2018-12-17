@@ -28,7 +28,7 @@ import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
 
 import './uttaksplanlegger.less';
 import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
-import { PeriodelisteInfoItemData } from '../periodeliste/items/PeriodelisteInfoItem';
+import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
 import getMessage from 'common/util/i18nUtils';
 
 interface OwnProps {
@@ -171,7 +171,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             søknadsinfo.mor.harRett === false
         );
 
-        const infoItems: PeriodelisteInfoItemData[] = [];
+        const infoItems: PeriodelisteInformasjon[] = [];
         if (infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor) {
             infoItems.push({
                 id: 'infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor',
@@ -223,7 +223,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
-                                infoItems={infoItems}
+                                informasjon={infoItems}
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}

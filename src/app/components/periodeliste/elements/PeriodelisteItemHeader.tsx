@@ -20,8 +20,8 @@ export interface Advarsel {
 
 interface Props {
     isOpen?: boolean;
-    ikon: JSX.Element | undefined;
     tittel: string;
+    ikon: React.ReactNode | undefined;
     beskrivelse?: React.ReactNode;
     advarsel?: Advarsel;
     tidsperiode?: Tidsperiode;
