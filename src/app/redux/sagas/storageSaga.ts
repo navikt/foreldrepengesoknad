@@ -13,10 +13,12 @@ import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanu
 import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
+import StorageSagaUtils from '../../util/storageSagaUtils';
+
+const stateSelector = (state: AppState) => state;
 
 function* saveAppState(action: any) {
     try {
-        const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
         const cleanedAppState = {
@@ -38,6 +40,7 @@ function* getAppState(action: GetStoredAppState) {
         put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         const response: AxiosResponse = yield call(Api.getStoredAppState);
         const state: AppState = response.data;
+
         if (state) {
             yield applyStoredStateToApp(state, action.history);
         }
@@ -48,14 +51,35 @@ function* getAppState(action: GetStoredAppState) {
     }
 }
 
-function* applyStoredStateToApp(state: AppState, history: History) {
-    if (Object.keys(state).length !== 0) {
-        const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
+function* applyStoredStateToApp(storedState: AppState, history: History) {
+    if (Object.keys(storedState).length !== 0) {
+        const appState: AppState = yield select(stateSelector);
+        const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
+        const { søkerinfo } = appState.api;
+
+        if (isFeatureEnabled(Feature.registrertBarn) === false) {
+            delete søknad.ekstrainfo.søknadenGjelderBarnValg;
+        } else {
+            if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
+                søknad.ekstrainfo.søknadenGjelderBarnValg = {
+                    gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
+                    valgteBarn: []
+                };
+            }
+        }
+
+        const valgteRegistrerteBarn = StorageSagaUtils.getValgteRegistrerteBarnISøknaden(søknad);
+        const registrerteBarn = søkerinfo ? søkerinfo.registrerteBarn : undefined;
+
         if (
+            søkerinfo === undefined ||
             (søknad.erEndringssøknad && isFeatureEnabled(Feature.endringssøknad) === false) ||
-            søknad.ekstrainfo.currentStegID === undefined
+            søknad.ekstrainfo.currentStegID === undefined ||
+            (valgteRegistrerteBarn !== undefined &&
+                StorageSagaUtils.stemmerValgteBarnISøknadMedSøkersBarn(valgteRegistrerteBarn, registrerteBarn) ===
+                    false)
         ) {
-            yield put(commonActions.setSpråk(state.common.språkkode));
+            yield put(commonActions.setSpråk(storedState.common.språkkode));
             yield put(søknadActions.avbrytSøknad());
             history.push(routeConfig.APP_ROUTE_PREFIX);
         } else {
@@ -67,7 +91,12 @@ function* applyStoredStateToApp(state: AppState, history: History) {
                 søknad.erEndringssøknad = false;
             }
             yield put(søknadActions.updateSøknad(søknad));
-            yield put(commonActions.setSpråk(state.common.språkkode));
+
+            if (valgteRegistrerteBarn) {
+                yield put(søknadActions.updateSøknadenGjelderBarn({ valgteBarn: valgteRegistrerteBarn }));
+            }
+
+            yield put(commonActions.setSpråk(storedState.common.språkkode));
             yield put(uttaksplanValideringActions.validerUttaksplanAction());
         }
     }

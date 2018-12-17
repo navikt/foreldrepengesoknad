@@ -55,15 +55,15 @@ const søknad: SøknadPartial = {
     harGodkjentVilkår: false,
     harGodkjentOppsummering: false,
     sensitivInfoIkkeLagre: {
-        søknadenGjelderBarnValg: {
-            valgteBarn: [],
-            gjelderAnnetBarn: undefined
-        },
         registrertAnnenForelder
     },
     ekstrainfo: {
         uttaksplanSkjema: {},
-        currentStegID: undefined
+        currentStegID: undefined,
+        søknadenGjelderBarnValg: {
+            valgteBarn: [],
+            gjelderAnnetBarn: undefined
+        }
     }
 };
 

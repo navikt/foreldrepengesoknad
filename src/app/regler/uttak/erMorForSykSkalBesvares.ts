@@ -2,7 +2,7 @@ import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { StønadskontoType } from '../../types/uttaksplan/periodetyper';
 import { Søkersituasjon } from '../../types/søknad/Søknad';
 import { Uttaksdatoer } from '../../selectors/types';
-import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
+import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenFørsteSeksUkerFødselFarMedmor';
 import { Tidsperiode } from 'common/types';
 
 const erMorForForSykSkalBesvares = (

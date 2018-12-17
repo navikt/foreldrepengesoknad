@@ -1,9 +1,10 @@
 import moment from 'moment';
 import Person, { RegistrertBarn } from '../../types/Person';
-import { SøkerinfoDTO } from '../types/sokerinfoDTO';
+import { SøkerinfoDTO, SøkerinfoDTOBarn } from '../types/sokerinfoDTO';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { erMyndig } from '../../util/domain/personUtil';
 import { Søkerinfo } from '../../types/søkerinfo';
+import { Feature, isFeatureEnabled } from '../../Feature';
 
 const getPerson = (søkerinfo: SøkerinfoDTO): Person => {
     const { barn, ...person } = søkerinfo.søker;
@@ -20,10 +21,19 @@ const getRegistrerteBarn = (søkerinfo: SøkerinfoDTO): RegistrertBarn[] => {
     if (barn === undefined || barn.length === 0) {
         return [];
     }
-    return barn.map((b: any): RegistrertBarn => ({
-        ...b,
-        fødselsdato: moment.utc(b.fødselsdato).toDate()
-    }));
+    return barn.map((dtoBarn: SøkerinfoDTOBarn): RegistrertBarn => {
+        const { fødselsdato, annenForelder, ...rest } = dtoBarn;
+        return {
+            ...rest,
+            fødselsdato: moment.utc(fødselsdato).toDate(),
+            annenForelder: annenForelder
+                ? {
+                      ...annenForelder,
+                      fødselsdato: moment.utc(annenForelder.fødselsdato).toDate()
+                  }
+                : undefined
+        };
+    });
 };
 
 const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
@@ -41,9 +51,12 @@ const getArbeidsforhold = (søkerinfo: SøkerinfoDTO): Arbeidsforhold[] => {
     });
 };
 
-export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => ({
-    person: getPerson(søkerinfo),
-    registrerteBarn: getRegistrerteBarn(søkerinfo),
-    arbeidsforhold: getArbeidsforhold(søkerinfo),
-    søknadsinfo: søkerinfo.søknadsinfo || {}
-});
+export const getSøkerinfoFromDTO = (søkerinfo: SøkerinfoDTO): Søkerinfo => {
+    const useRegistrertBarn = isFeatureEnabled(Feature.registrertBarn);
+    return {
+        person: getPerson(søkerinfo),
+        registrerteBarn: useRegistrertBarn ? getRegistrerteBarn(søkerinfo) : [],
+        arbeidsforhold: getArbeidsforhold(søkerinfo),
+        søknadsinfo: søkerinfo.søknadsinfo || {}
+    };
+};

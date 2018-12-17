@@ -52,9 +52,6 @@ describe('søknadReducer', () => {
         expect(uttaksplan).toBeInstanceOf(Array);
         expect(uttaksplan).toHaveLength(0);
         expect(sensitivInfoIkkeLagre).toBeDefined();
-        expect(sensitivInfoIkkeLagre.søknadenGjelderBarnValg).toBeDefined();
-        expect(sensitivInfoIkkeLagre.søknadenGjelderBarnValg.valgteBarn).toBeInstanceOf(Array);
-        expect(sensitivInfoIkkeLagre.søknadenGjelderBarnValg.valgteBarn).toHaveLength(0);
     });
 
     it('should set søknad-state to its default state when AVBRYT_SØKNAD-action is dispatched', () => {

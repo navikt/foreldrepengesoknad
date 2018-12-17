@@ -54,7 +54,8 @@ const ufødtBarnErGyldig = (barn: UfødtBarn, skalLasteOppTerminbekreftelse: boo
 };
 
 const harValgtRegistrertBarn = (søknad: Søknad): boolean => {
-    return søknad.sensitivInfoIkkeLagre.søknadenGjelderBarnValg.valgteBarn.length > 0;
+    const { søknadenGjelderBarnValg } = søknad.ekstrainfo;
+    return søknadenGjelderBarnValg !== undefined && søknadenGjelderBarnValg.valgteBarn.length > 0;
 };
 
 export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {

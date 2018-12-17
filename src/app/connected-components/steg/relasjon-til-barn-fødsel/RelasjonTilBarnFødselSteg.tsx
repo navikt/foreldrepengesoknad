@@ -57,8 +57,9 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
     cleanupSteg() {
         const { barn, søknadenGjelderBarnValg, dispatch } = this.props;
-        const { gjelderAnnetBarn } = søknadenGjelderBarnValg;
-        dispatch(søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, gjelderAnnetBarn)));
+        dispatch(
+            søknadActions.updateBarn(cleanupRelasjonTilBarnFødselSteg(barn, søknadenGjelderBarnValg.gjelderAnnetBarn))
+        );
     }
 
     render() {
@@ -147,7 +148,12 @@ class RelasjonTilBarnFødselSteg extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselStegProps => {
     const { registrerteBarn = [] } = props.søkerinfo;
-    const { barn, sensitivInfoIkkeLagre, søker, annenForelder } = state.søknad;
+    const {
+        barn,
+        søker,
+        annenForelder,
+        ekstrainfo: { søknadenGjelderBarnValg }
+    } = state.søknad;
     const terminbekreftelse = (barn as UfødtBarn).terminbekreftelse || [];
 
     const stegProps: StegProps = {
@@ -164,7 +170,9 @@ const mapStateToProps = (state: AppState, props: Props): RelasjonTilBarnFødselS
         søker,
         annenForelder,
         registrerteBarn,
-        søknadenGjelderBarnValg: sensitivInfoIkkeLagre.søknadenGjelderBarnValg,
+        søknadenGjelderBarnValg: søknadenGjelderBarnValg
+            ? søknadenGjelderBarnValg
+            : { gjelderAnnetBarn: undefined, valgteBarn: [] },
         barn,
         terminbekreftelse,
         stegProps,

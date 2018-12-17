@@ -34,14 +34,14 @@ export interface SøknadenGjelderBarnValg {
 }
 
 interface SensitivSkjemaInfo {
-    søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
 interface SkjemaEkstrainfo {
+    currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
-    currentStegID: StegID | undefined;
+    søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
 }
 
 interface Søknad {

@@ -33,7 +33,7 @@ import { findMissingAttachmentsForPerioder } from '../../../util/attachments/mis
 import OvertrukneDager from './OvertrukneDager';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { Søknadsinfo } from '../../../selectors/types';
-import { getSøknadsinfo } from '../../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 
 interface StateProps {
     stegProps: StegProps;
