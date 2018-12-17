@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
-import EndrePeriodeFormRenderer from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
 
 import './periodeliste.less';
@@ -138,21 +137,14 @@ class Periodeliste extends React.Component<Props> {
                                             }
                                         />
                                     ) : (
-                                        <EndrePeriodeFormRenderer
+                                        <PeriodelisteItem
+                                            key={periode.id}
                                             periode={periode}
-                                            render={(onChange, onRequestDelete) => (
-                                                <PeriodelisteItem
-                                                    key={periode.id}
-                                                    periode={periode}
-                                                    antallFeriedager={antallFeriedager}
-                                                    navnPåForeldre={navnPåForeldre}
-                                                    validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
-                                                    isExpanded={isExpanded}
-                                                    onToggle={onToggle}
-                                                    onChange={onChange}
-                                                    onRequestDelete={onRequestDelete}
-                                                />
-                                            )}
+                                            antallFeriedager={antallFeriedager}
+                                            navnPåForeldre={navnPåForeldre}
+                                            validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                            isExpanded={isExpanded}
+                                            onToggle={onToggle}
                                         />
                                     )}
                                 </div>

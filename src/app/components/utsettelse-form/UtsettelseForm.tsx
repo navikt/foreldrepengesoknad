@@ -33,10 +33,10 @@ import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import lenker from '../../util/routing/lenker';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
