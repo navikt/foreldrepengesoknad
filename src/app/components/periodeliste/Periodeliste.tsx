@@ -1,22 +1,26 @@
 import * as React from 'react';
-import classnames from 'classnames';
 import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-
-import './periodeliste.less';
-import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import ToggleList from '../toggle-list/ToggleList';
-import PeriodelisteItem from './PeriodelisteItem';
-import PeriodelisteHull from './PeriodelisteHull';
+import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
-import { Periodene } from '../../util/uttaksplan/Periodene';
-import PeriodeFargestrek from '../periode-fargestrek/PeriodeFargestrek';
+import PeriodelistePeriode from './items/PeriodelistePeriode';
 
-export interface OwnProps {
+import './periodeliste.less';
+import PeriodelisteInfoItem, { PeriodelisteInfoItemData } from './items/PeriodelisteInfoItem';
+
+// export interface PeriodelisteInfoItem {
+//     itemId: string;
+//     renderHeader: () => JSX.Element;
+//     renderContent: () => JSX.Element;
+// }
+
+interface OwnProps {
     perioder: Periode[];
+    infoItems?: PeriodelisteInfoItemData[];
     antallFeriedager: number;
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
@@ -55,6 +59,7 @@ class Periodeliste extends React.Component<Props> {
             this.toggleList.collapseAll();
         }
     }
+
     componentWillReceiveProps(nextProps: Props) {
         if (
             nextProps.lastAddedPeriodeId !== undefined &&
@@ -63,12 +68,15 @@ class Periodeliste extends React.Component<Props> {
             this.periodeToBeFocused = nextProps.lastAddedPeriodeId;
         }
     }
+
     componentDidUpdate() {
         this.checkPeriodeFocus();
     }
+
     componentDidMount() {
         this.checkPeriodeFocus();
     }
+
     checkPeriodeFocus() {
         if (this.periodeToBeFocused) {
             focusElement(getPeriodelisteElementId(this.periodeToBeFocused));
@@ -76,6 +84,7 @@ class Periodeliste extends React.Component<Props> {
             this.periodeToBeFocused = undefined;
         }
     }
+
     handleOnItemToggle(id: string, open: boolean) {
         if (this.props.onPeriodeLukk && open === false) {
             this.props.onPeriodeLukk(id);
@@ -84,6 +93,7 @@ class Periodeliste extends React.Component<Props> {
     render() {
         const {
             perioder,
+            infoItems,
             uttaksplanValidering,
             navnPåForeldre,
             antallFeriedager,
@@ -91,63 +101,53 @@ class Periodeliste extends React.Component<Props> {
             onLeggTilPeriode,
             onFjernPeriode
         } = this.props;
-        const numPerioder = perioder.length;
-        let firstInvalidTidsperiode = false;
         return (
             <ToggleList
                 ref={(c) => (this.toggleList = c)}
                 onItemToggle={this.handleOnItemToggle}
                 render={(onToggle, isOpen) => (
                     <div className={periodelisteBem.className}>
+                        {infoItems &&
+                            infoItems.map((item) => (
+                                <PeriodelisteInfoItem
+                                    key={item.id}
+                                    id={item.id}
+                                    isExpanded={isOpen(item.id)}
+                                    renderContent={item.renderContent}
+                                    ikon={item.ikon}
+                                    tittel={item.tittel}
+                                    onToggle={onToggle}
+                                />
+                            ))}
                         {perioder.map((periode, idx) => {
-                            const isExpanded = isOpen(periode.id);
-                            const nextIsGap = idx < numPerioder - 1 && perioder[idx + 1].type === Periodetype.Hull;
-                            const erFørstePeriodeEtterForeldrepengerFørFødsel =
+                            const itemId = getPeriodelisteElementId(periode.id);
+                            const isExpanded = isOpen(itemId);
+                            const periodeKanSlettes =
                                 idx > 0 && isForeldrepengerFørFødselUttaksperiode(perioder[idx - 1]);
-                            const nesteUttaksperiode = Periodene(perioder)
-                                .finnAllePåfølgendePerioder(periode)
-                                .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring)
-                                .shift();
-                            firstInvalidTidsperiode =
-                                firstInvalidTidsperiode === false && isValidTidsperiode(periode.tidsperiode) === false;
-                            return (
-                                <div
-                                    key={periode.id}
-                                    className={classnames(
-                                        periodelisteBem.element('item', isExpanded ? 'expanded' : undefined),
-                                        periodelisteBem.element('item', nextIsGap ? 'with-gap' : undefined),
-                                        periodelisteBem.element(
-                                            'item',
-                                            firstInvalidTidsperiode ? 'firstInvalidTidsperiode' : undefined
-                                        ),
-                                        periodelisteBem.element('item', `type-${periode.type}`)
-                                    )}>
-                                    <PeriodeFargestrek periode={periode} />
-                                    <div className={periodelisteBem.element('item__strek')} />
-                                    {periode.type === Periodetype.Hull ? (
-                                        <PeriodelisteHull
-                                            key={periode.id}
-                                            periode={periode}
-                                            nesteUttaksperiode={nesteUttaksperiode}
-                                            navnPåForeldre={navnPåForeldre}
-                                            onLeggTilOpphold={onLeggTilOpphold}
-                                            onLeggTilPeriode={onLeggTilPeriode}
-                                            onFjernPeriode={
-                                                erFørstePeriodeEtterForeldrepengerFørFødsel ? undefined : onFjernPeriode
-                                            }
-                                        />
-                                    ) : (
-                                        <PeriodelisteItem
-                                            key={periode.id}
-                                            periode={periode}
-                                            antallFeriedager={antallFeriedager}
-                                            navnPåForeldre={navnPåForeldre}
-                                            validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
-                                            isExpanded={isExpanded}
-                                            onToggle={onToggle}
-                                        />
-                                    )}
-                                </div>
+                            return periode.type === Periodetype.Hull ? (
+                                <PeriodelisteHull
+                                    key={itemId}
+                                    itemId={itemId}
+                                    isExpanded={isExpanded}
+                                    onToggle={onToggle}
+                                    periode={periode}
+                                    uttaksplan={perioder}
+                                    navnPåForeldre={navnPåForeldre}
+                                    onLeggTilOpphold={onLeggTilOpphold}
+                                    onLeggTilPeriode={onLeggTilPeriode}
+                                    onFjernPeriode={periodeKanSlettes ? undefined : onFjernPeriode}
+                                />
+                            ) : (
+                                <PeriodelistePeriode
+                                    key={itemId}
+                                    id={itemId}
+                                    periode={periode}
+                                    antallFeriedager={antallFeriedager}
+                                    navnPåForeldre={navnPåForeldre}
+                                    validertPeriode={uttaksplanValidering.periodevalidering[periode.id]}
+                                    isExpanded={isExpanded}
+                                    onToggle={onToggle}
+                                />
                             );
                         })}
                     </div>
