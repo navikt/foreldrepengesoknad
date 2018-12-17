@@ -6,19 +6,19 @@ import getMessage from 'common/util/i18nUtils';
 import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 
-interface Props extends PeriodelisteInfoItemData {
+interface Props extends PeriodelisteInformasjon {
     isExpanded: boolean;
     onToggle: onToggleItemProp;
 }
 
-export interface PeriodelisteInfoItemData {
+export interface PeriodelisteInformasjon {
     id: string;
     tittel: string;
-    ikon: JSX.Element;
+    ikon: React.ReactNode;
     renderContent: () => JSX.Element;
 }
 
-const PeriodelisteInfoItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
+const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     id,
     isExpanded,
     onToggle,
@@ -41,4 +41,4 @@ const PeriodelisteInfoItem: React.StatelessComponent<Props & InjectedIntlProps> 
     );
 };
 
-export default injectIntl(PeriodelisteInfoItem);
+export default injectIntl(PeriodelisteInfo);

@@ -11,7 +11,7 @@ import { getPeriodeTittel } from '../../../util/uttaksplan';
 import { getVarighetString } from 'common/util/intlUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
-import PeriodelisteInfoItem from './PeriodelisteInfoItem';
+import PeriodelisteInfo from './PeriodelisteInfo';
 
 export interface Props {
     itemId: string;
@@ -81,7 +81,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             : getMessage(intl, 'periodeliste.hullMellomPerioder', { dager: getVarighetString(antallDager, intl) });
 
     return (
-        <PeriodelisteInfoItem
+        <PeriodelisteInfo
             id={itemId}
             tittel={tittel}
             isExpanded={isExpanded}

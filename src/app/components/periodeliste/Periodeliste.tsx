@@ -8,19 +8,13 @@ import PeriodelisteHull from './items/PeriodelisteHull';
 import { focusElement } from '../../util/focusUtils';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import PeriodelistePeriode from './items/PeriodelistePeriode';
+import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
 
 import './periodeliste.less';
-import PeriodelisteInfoItem, { PeriodelisteInfoItemData } from './items/PeriodelisteInfoItem';
-
-// export interface PeriodelisteInfoItem {
-//     itemId: string;
-//     renderHeader: () => JSX.Element;
-//     renderContent: () => JSX.Element;
-// }
 
 interface OwnProps {
     perioder: Periode[];
-    infoItems?: PeriodelisteInfoItemData[];
+    informasjon?: PeriodelisteInformasjon[];
     antallFeriedager: number;
     uttaksplanValidering: UttaksplanValideringState;
     navnPåForeldre: NavnPåForeldre;
@@ -93,7 +87,7 @@ class Periodeliste extends React.Component<Props> {
     render() {
         const {
             perioder,
-            infoItems,
+            informasjon,
             uttaksplanValidering,
             navnPåForeldre,
             antallFeriedager,
@@ -107,9 +101,9 @@ class Periodeliste extends React.Component<Props> {
                 onItemToggle={this.handleOnItemToggle}
                 render={(onToggle, isOpen) => (
                     <div className={periodelisteBem.className}>
-                        {infoItems &&
-                            infoItems.map((item) => (
-                                <PeriodelisteInfoItem
+                        {informasjon &&
+                            informasjon.map((item) => (
+                                <PeriodelisteInfo
                                     key={item.id}
                                     id={item.id}
                                     isExpanded={isOpen(item.id)}
