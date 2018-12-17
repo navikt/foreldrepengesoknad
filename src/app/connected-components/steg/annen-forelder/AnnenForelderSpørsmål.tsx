@@ -3,8 +3,8 @@ import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
 import FødselsnummerBolk from '../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../spørsmål/NavnPåAnnenForelderSpørsmål';
-import Søknad, { Søkersituasjon, Skjemanummer } from '../../../types/søknad/Søknad';
-import { InjectedIntlProps, FormattedMessage, injectIntl } from 'react-intl';
+import Søknad, { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import ErMorUførSpørsmål from '../../../spørsmål/ErMorUførSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import ErAnnenForelderInformertSpørsmål from '../../../spørsmål/ErAnnenForelderInformertSpørsmål';
@@ -113,6 +113,19 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         aleneOmOmsorg={søker.erAleneOmOmsorg}
                         onChange={(erAleneOmOmsorg) => onSøkerChange({ erAleneOmOmsorg })}
                     />
+                </Block>
+
+                <Block
+                    visible={
+                        visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) &&
+                        søker.erAleneOmOmsorg !== undefined &&
+                        søker.erAleneOmOmsorg
+                    }>
+                    <Veilederinfo>
+                        {getMessage(intl, 'annenForelder.veileder.aleneOmsorg.forBarnet', {
+                            navn: annenForelder.fornavn
+                        })}
+                    </Veilederinfo>
                 </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)}>
