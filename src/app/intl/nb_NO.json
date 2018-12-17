@@ -542,6 +542,8 @@
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapt foreldrepenger",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
+    "uttaksplan.tittelVedTapteUttaksdager":
+        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} som du ikke har søkt om eller lagt inn utsettelse for",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden {fom} til og med {tom}.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
@@ -871,7 +873,8 @@
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
-    "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
+    "periodeliste.hullMellomPerioder":
+        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} som du ikke har søkt om eller lagt inn utsettelse for",
     "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode er uten uttak eller utsettelse",
     "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikke legge inn utsettelse på en helligdag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",

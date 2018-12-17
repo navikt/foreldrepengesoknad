@@ -548,6 +548,8 @@
     "uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger": "Periode med tapte foreldrepengar",
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepengar starter {dato}. Starter du seinare, får du færre dagar med foreldrepengar.",
+    "uttaksplan.tittelVedTapteUttaksdager":
+        "Du vil mista {dager} {dager, plural, one{dag} other {dagar}} som du ikkje har søkt om eller lagt inn utsetjing for",
     "uttaksplan.infoVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag}other {dager}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden {fom} til og med {tom}.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsetjing",

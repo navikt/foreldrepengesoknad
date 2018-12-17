@@ -17,6 +17,7 @@ import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
+import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -107,7 +108,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
                 onSubmit={this.handleOnSubmit}>
                 <div className={bem.element('fargestrek')}>
-                    <PeriodeFargestrek periode={periode as Periode} forelder={forelder} />
+                    <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
                 </div>
                 {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
                     <>
