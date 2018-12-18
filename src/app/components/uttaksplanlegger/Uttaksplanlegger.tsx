@@ -172,11 +172,13 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         );
 
         const infoItems: PeriodelisteInformasjon[] = [];
+
         if (infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor) {
             infoItems.push({
                 id: 'infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor',
                 ikon: <AdvarselIkon />,
-                tittel: getMessage(intl, 'uttaksplan.tittelVedTapteUttaksdager', {
+                tittel: getMessage(intl, 'periodeliste.hull.tittel'),
+                beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', {
                     dager: infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor.antallUttaksdagerTapt
                 }),
                 renderContent: () => (

@@ -865,9 +865,10 @@
     "periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
-    "periodeliste.hullMellomPerioder": "Det er {dager} som du ikkje har søkt om eller lagt inn utsetjing for.",
-    "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode utan uttak eller utsetjing",
-    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikkje registrere opphald på ein offentleg fridag.",
+    "periodeliste.hull.tittel": "Mista foreldrepengar",
+    "periodeliste.hull.beskrivelse":
+        "{dager} {dager, plural, one{dag} other {dager}} utan registrert periode eller opphald",
+    "periodeliste.hull.fridag": "{tidsperiode}. Du kan ikkje registrere opphald på ein offentleg fridag.",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",

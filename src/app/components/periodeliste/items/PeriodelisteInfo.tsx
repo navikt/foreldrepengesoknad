@@ -2,7 +2,6 @@ import * as React from 'react';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
-import getMessage from 'common/util/i18nUtils';
 import PeriodelisteItemHeader from '../elements/PeriodelisteItemHeader';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 
@@ -14,6 +13,7 @@ interface Props extends PeriodelisteInformasjon {
 export interface PeriodelisteInformasjon {
     id: string;
     tittel: string;
+    beskrivelse?: React.ReactNode;
     ikon: React.ReactNode;
     renderContent: () => JSX.Element;
 }
@@ -25,16 +25,18 @@ const PeriodelisteInfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     renderContent,
     ikon,
     tittel,
+    beskrivelse,
     intl
 }) => {
     return (
         <PeriodelisteItemWrapper key={id} farge="yellow" isExpanded={isExpanded}>
             <PeriodelisteToggleItem
                 id={id}
-                ariaLabel={getMessage(intl, 'periodeliste.hullMellomPerioder.aria-label')}
                 isExpanded={isExpanded}
                 onToggle={onToggle}
-                renderHeader={() => <PeriodelisteItemHeader type="info" ikon={ikon} tittel={tittel} />}
+                renderHeader={() => (
+                    <PeriodelisteItemHeader type="info" ikon={ikon} tittel={tittel} beskrivelse={beskrivelse} />
+                )}
                 renderContent={renderContent}
             />
         </PeriodelisteItemWrapper>
