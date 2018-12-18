@@ -868,7 +868,7 @@
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.hull.beskrivelse":
         "{dager} {dager, plural, one{dag} other {dager}} utan registrert periode eller opphald",
-    "periodeliste.hull.fridag": "{tidsperiode}. Du kan ikkje registrere opphald på ein offentleg fridag.",
+    "periodeliste.hull.fridag": "Du kan ikkje registrere opphald på ein offentleg fridag ({tidsperiode})",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onToggleItemProp } from '../../toggle-list/ToggleList';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
 import { PeriodeHull, Periode, Periodetype, PeriodeHullÅrsak } from '../../../types/uttaksplan/periodetyper';
@@ -12,6 +12,7 @@ import { getVarighetString } from 'common/util/intlUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
 import PeriodelisteInfo from './PeriodelisteInfo';
+import Block from 'common/components/block/Block';
 
 export interface Props {
     itemId: string;
@@ -72,15 +73,8 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    const beskrivelse =
-        periode.årsak === PeriodeHullÅrsak.Fridag
-            ? getMessage(intl, 'periodeliste.hull.fridag', {
-                  dager: getVarighetString(antallDager, intl),
-                  tidsperiode: Tidsperioden(periode.tidsperiode).formaterString(intl)
-              })
-            : getMessage(intl, 'periodeliste.hull.beskrivelse', { dager: antallDager });
-
     const tittel = getMessage(intl, 'periodeliste.hull.tittel');
+    const beskrivelse = getMessage(intl, 'periodeliste.hull.beskrivelse', { dager: antallDager });
 
     return (
         <PeriodelisteInfo
@@ -90,7 +84,20 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             onToggle={onToggle}
             beskrivelse={beskrivelse}
             ikon={<AdvarselIkon />}
-            renderContent={() => <Knapperad align="left">{knapper}</Knapperad>}
+            renderContent={() => (
+                <div>
+                    <Block margin="xs" visible={periode.årsak === PeriodeHullÅrsak.Fridag}>
+                        <FormattedMessage
+                            id="periodeliste.hull.fridag"
+                            values={{
+                                dager: getVarighetString(antallDager, intl),
+                                tidsperiode: Tidsperioden(periode.tidsperiode).formaterStringKort(intl)
+                            }}
+                        />
+                    </Block>
+                    <Knapperad align="left">{knapper}</Knapperad>
+                </div>
+            )}
         />
     );
 };

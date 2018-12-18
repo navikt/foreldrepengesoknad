@@ -24,6 +24,7 @@
     "deltid": "Deltid",
 
     "tidsperiode": "Fra {fom} til {tom}",
+    "tidsperiode.kort": "{fom} - {tom}",
 
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
@@ -874,7 +875,7 @@
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.hull.beskrivelse":
         "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller opphold",
-    "periodeliste.hull.fridag": "{tidsperiode}. Du kan ikke legge inn opphold på en helligdag.",
+    "periodeliste.hull.fridag": "Du kan ikke legge inn opphold på en helligdag ({tidsperiode})",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
