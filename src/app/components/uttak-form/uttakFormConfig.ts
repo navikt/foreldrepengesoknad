@@ -224,7 +224,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
             periode.konto === StønadskontoType.Fedrekvote &&
-            periode.erMorForSyk === true,
+            periode.erMorForSyk !== undefined,
         parentQuestion: Sp.kvote,
         isRequired: (payload) => visErMorForSyk(payload)
     },
