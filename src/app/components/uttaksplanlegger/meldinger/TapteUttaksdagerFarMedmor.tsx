@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor } from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import LinkButton from '../../link-button/LinkButton';
@@ -21,7 +21,7 @@ const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLe
     return (
         <div>
             <Block margin="xs">
-                <FormattedMessage
+                <FormattedHTMLMessage
                     id="uttaksplan.infoVedTapteUttaksdager"
                     values={{
                         dager: info.antallUttaksdagerTapt,

@@ -551,7 +551,7 @@
     "uttaksplan.tittelVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag} other {dagar}} som du ikkje har søkt om eller lagt inn utsetjing for",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil mista {dager} {dager, plural, one{dag}other {dager}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden {fom} til og med {tom}.",
+        "Du vil mista {dager} {dager, plural, one{dag}other {dager}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsetjing",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",

@@ -545,7 +545,7 @@
     "uttaksplan.tittelVedTapteUttaksdager":
         "Du vil miste {dager} {dager, plural, one{dag} other {dager}} som du ikke har søkt om eller lagt inn utsettelse for",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden {fom} til og med {tom}.",
+        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
