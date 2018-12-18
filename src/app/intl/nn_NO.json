@@ -867,8 +867,10 @@
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.hull.beskrivelse":
-        "{dager} {dager, plural, one{dag} other {dager}} utan registrert periode eller opphald",
-    "periodeliste.hull.fridag": "Du kan ikkje registrere opphald på ein offentleg fridag ({tidsperiode})",
+        "{dager} {dager, plural, one{dag} other {dager}} utan registrert periode eller utsetjing",
+    "periodeliste.hull.fridag": "Du må ta ut foreldrepengar i denne perioden",
+    "periodeliste.hull.info":
+        "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",

@@ -95,6 +95,14 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
                             }}
                         />
                     </Block>
+                    <Block margin="xs" visible={periode.årsak !== PeriodeHullÅrsak.Fridag}>
+                        <FormattedMessage
+                            id="periodeliste.hull.info"
+                            values={{
+                                dager: getVarighetString(antallDager, intl)
+                            }}
+                        />
+                    </Block>
                     <Knapperad align="left">{knapper}</Knapperad>
                 </div>
             )}

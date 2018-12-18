@@ -874,8 +874,10 @@
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
     "periodeliste.hull.tittel": "Tapte foreldrepenger",
     "periodeliste.hull.beskrivelse":
-        "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller opphold",
-    "periodeliste.hull.fridag": "Du kan ikke legge inn opphold på en helligdag ({tidsperiode})",
+        "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller utsettelse",
+    "periodeliste.hull.fridag": "Du må ta ut foreldrepenger i denne perioden",
+    "periodeliste.hull.info":
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
