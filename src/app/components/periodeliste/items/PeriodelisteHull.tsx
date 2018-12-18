@@ -3,12 +3,9 @@ import { onToggleItemProp } from '../../toggle-list/ToggleList';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import LinkButton from '../../link-button/LinkButton';
-import { PeriodeHull, Periode, Periodetype, PeriodeHullÅrsak } from '../../../types/uttaksplan/periodetyper';
-import { NavnPåForeldre, Tidsperiode } from 'common/types';
+import { PeriodeHull, Periode } from '../../../types/uttaksplan/periodetyper';
+import { Tidsperiode } from 'common/types';
 import { Tidsperioden } from '../../../util/uttaksplan/Tidsperioden';
-import { Periodene } from '../../../util/uttaksplan/Periodene';
-import { getPeriodeTittel } from '../../../util/uttaksplan';
-import { getVarighetString } from 'common/util/intlUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import AdvarselIkon from '../../uttaksplan-ikon/ikoner/AdvarselIkon';
 import PeriodelisteInfo from './PeriodelisteInfo';
@@ -19,12 +16,9 @@ export interface Props {
     isExpanded: boolean;
     onToggle: onToggleItemProp;
     periode: PeriodeHull;
-    uttaksplan: Periode[];
     nesteUttaksperiode?: Periode;
-    navnPåForeldre: NavnPåForeldre;
     onLeggTilPeriode?: (tidsperiode: Tidsperiode) => void;
     onLeggTilOpphold?: (tidsperiode: Tidsperiode) => void;
-    onFjernPeriode?: (periode: PeriodeHull) => void;
 }
 
 const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> = ({
@@ -32,21 +26,17 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
     isExpanded,
     onToggle,
     periode,
-    uttaksplan,
-    navnPåForeldre,
     onLeggTilPeriode,
     onLeggTilOpphold,
-    onFjernPeriode,
     intl
 }) => {
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
+    const antallHelligdager = Tidsperioden(periode.tidsperiode).getAntallFridager();
+    const antallUttaksdager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
+    const kunHelligdager = antallHelligdager === antallUttaksdager;
+    const kunUttaksdager = antallHelligdager === 0;
+
     const knapper: React.ReactNode[] = [];
-
-    const nesteUttaksperiode = Periodene(uttaksplan)
-        .finnAllePåfølgendePerioder(periode)
-        .filter((p) => p.type === Periodetype.Uttak || p.type === Periodetype.Overføring)
-        .shift();
-
     if (onLeggTilPeriode) {
         knapper.unshift(
             <LinkButton key="periode" onClick={() => onLeggTilPeriode(periode.tidsperiode)}>
@@ -55,20 +45,10 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    if (onLeggTilOpphold && periode.årsak !== PeriodeHullÅrsak.Fridag) {
+    if (onLeggTilOpphold && kunUttaksdager === true) {
         knapper.unshift(
             <LinkButton key="opphold" onClick={() => onLeggTilOpphold(periode.tidsperiode)}>
                 {getMessage(intl, 'uttaksplan.hull.leggTil.opphold')}
-            </LinkButton>
-        );
-    }
-
-    if (onFjernPeriode && nesteUttaksperiode) {
-        knapper.unshift(
-            <LinkButton key="opphold" onClick={() => onFjernPeriode(periode)}>
-                {getMessage(intl, 'uttaksplan.hull.fjern', {
-                    nesteUttaksperiode: getPeriodeTittel(intl, nesteUttaksperiode, navnPåForeldre)
-                })}
             </LinkButton>
         );
     }
@@ -86,20 +66,23 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             ikon={<AdvarselIkon />}
             renderContent={() => (
                 <div>
-                    <Block margin="xs" visible={periode.årsak === PeriodeHullÅrsak.Fridag}>
+                    <Block margin="xs" visible={kunHelligdager}>
+                        <FormattedMessage id="periodeliste.hull.info.helligdager" />
+                    </Block>
+                    <Block margin="xs" visible={kunUttaksdager}>
                         <FormattedMessage
-                            id="periodeliste.hull.fridag"
+                            id="periodeliste.hull.info.uttaksdager"
                             values={{
-                                dager: getVarighetString(antallDager, intl),
-                                tidsperiode: Tidsperioden(periode.tidsperiode).formaterStringKort(intl)
+                                dager: antallDager
                             }}
                         />
                     </Block>
-                    <Block margin="xs" visible={periode.årsak !== PeriodeHullÅrsak.Fridag}>
+                    <Block margin="xs" visible={kunUttaksdager === false && kunHelligdager === false}>
                         <FormattedMessage
-                            id="periodeliste.hull.info"
+                            id="periodeliste.hull.info.helligdagerOgUttaksdager"
                             values={{
-                                dager: getVarighetString(antallDager, intl)
+                                dager: antallDager,
+                                antallHelligdager
                             }}
                         />
                     </Block>
