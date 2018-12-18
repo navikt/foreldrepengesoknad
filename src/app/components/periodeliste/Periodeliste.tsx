@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { NavnPåForeldre } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
@@ -92,8 +92,7 @@ class Periodeliste extends React.Component<Props> {
             navnPåForeldre,
             antallFeriedager,
             onLeggTilOpphold,
-            onLeggTilPeriode,
-            onFjernPeriode
+            onLeggTilPeriode
         } = this.props;
         return (
             <ToggleList
@@ -117,8 +116,6 @@ class Periodeliste extends React.Component<Props> {
                         {perioder.map((periode, idx) => {
                             const itemId = getPeriodelisteElementId(periode.id);
                             const isExpanded = isOpen(itemId);
-                            const periodeKanSlettes =
-                                idx > 0 && isForeldrepengerFørFødselUttaksperiode(perioder[idx - 1]);
                             return periode.type === Periodetype.Hull ? (
                                 <PeriodelisteHull
                                     key={itemId}
@@ -126,11 +123,8 @@ class Periodeliste extends React.Component<Props> {
                                     isExpanded={isExpanded}
                                     onToggle={onToggle}
                                     periode={periode}
-                                    uttaksplan={perioder}
-                                    navnPåForeldre={navnPåForeldre}
                                     onLeggTilOpphold={onLeggTilOpphold}
                                     onLeggTilPeriode={onLeggTilPeriode}
-                                    onFjernPeriode={periodeKanSlettes ? undefined : onFjernPeriode}
                                 />
                             ) : (
                                 <PeriodelistePeriode
