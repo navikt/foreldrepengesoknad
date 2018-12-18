@@ -1,9 +1,5 @@
 import { Periode, Periodetype } from '../../../types/uttaksplan/periodetyper';
-import {
-    removeDuplicateAttachmentIds,
-    removeDuplicateAttachments,
-    removePeriodetypeHullFromUttaksplan
-} from '../cleanupSøknad';
+import { removeDuplicateAttachments, removePeriodetypeHullFromUttaksplan } from '../cleanupSøknad';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 
@@ -89,7 +85,7 @@ describe('cleanupSøknad', () => {
         expect(JSON.stringify(cleandUttaksplan)).toEqual(JSON.stringify(uttaksplan));
     });
 
-    it('Removes duplicate ids refs from perioder', () => {
+    it('Removes attachments with duplicate ids from perioder', () => {
         removeDuplicateAttachments(uttaksplanMedLikeVedlegg);
         expect(uttaksplanMedLikeVedlegg[uttaksplanMedLikeVedlegg.length - 1].vedlegg!.length).toEqual(1);
     });
