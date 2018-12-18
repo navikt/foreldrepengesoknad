@@ -534,7 +534,7 @@
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
-    "uttaksplan.hull.leggTil.uttak": "Legg ny periode",
+    "uttaksplan.hull.leggTil.uttak": "Legg inn ny periode",
     "uttaksplan.infoVedOpphold":
         "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} må søke selv, senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoTilFrilansOgSelvstendig":
