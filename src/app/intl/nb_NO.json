@@ -944,6 +944,8 @@
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
+    "utsettelseskjema.info.helligdagerIFerie":
+        "Tidsperioden du har valgt inneholder helligdager som ikke kan registreres som ferie. Disse dagene vil bli egne perioder i planen, som du må legge inn informasjon om etter at du har lagt til denne utsettelsen.",
     "utsettelseskjema.veiledning.ferie":
         "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p>Arbeidsgiveren din må bekrefte perioden du skal ha ferie. Det kan de gjøre når de sender opplysninger om inntekten din til oss, eller du kan få bekreftelsen hos arbeidsgiveren og legge den ved søknaden din.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
