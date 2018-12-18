@@ -110,6 +110,7 @@ class Periodeliste extends React.Component<Props> {
                                     renderContent={item.renderContent}
                                     ikon={item.ikon}
                                     tittel={item.tittel}
+                                    beskrivelse={item.beskrivelse}
                                     onToggle={onToggle}
                                 />
                             ))}

@@ -72,13 +72,15 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    const tittel =
+    const beskrivelse =
         periode.årsak === PeriodeHullÅrsak.Fridag
-            ? getMessage(intl, 'periodeliste.hullMellomPerioder.fridag', {
+            ? getMessage(intl, 'periodeliste.hull.fridag', {
                   dager: getVarighetString(antallDager, intl),
                   tidsperiode: Tidsperioden(periode.tidsperiode).formaterString(intl)
               })
-            : getMessage(intl, 'periodeliste.hullMellomPerioder', { dager: getVarighetString(antallDager, intl) });
+            : getMessage(intl, 'periodeliste.hull.beskrivelse', { dager: antallDager });
+
+    const tittel = getMessage(intl, 'periodeliste.hull.tittel');
 
     return (
         <PeriodelisteInfo
@@ -86,6 +88,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
             tittel={tittel}
             isExpanded={isExpanded}
             onToggle={onToggle}
+            beskrivelse={beskrivelse}
             ikon={<AdvarselIkon />}
             renderContent={() => <Knapperad align="left">{knapper}</Knapperad>}
         />
