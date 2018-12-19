@@ -34,6 +34,8 @@ import OvertrukneDager from './OvertrukneDager';
 import { beregnGjenståendeUttaksdager } from 'app/util/uttaksPlanStatus';
 import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
+import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
+import { Periodene } from '../../../util/uttaksplan/Periodene';
 
 interface StateProps {
     stegProps: StegProps;
@@ -206,6 +208,17 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         );
         const overtrukneKontoer = this.getOvertrukneKontoer(uttaksstatusOvertrukneDager);
 
+        const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
+            søknad.uttaksplan,
+            søknadsinfo.søknaden.familiehendelsesdato,
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.mor.harRett === false
+        );
+
+        const planInneholderTapteDager =
+            Periodene(søknad.uttaksplan).getHull().length > 0 ||
+            infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor !== undefined;
+
         return (
             <Steg
                 {...this.props.stegProps}
@@ -266,14 +279,19 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                             />
                         )}
-                        {uttaksplanValidering.erGyldig &&
-                            missingAttachments.length > 0 && (
-                                <Veilederinfo type="advarsel">
-                                    <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
-                                </Veilederinfo>
-                            )}
+                        <Block margin="xs" visible={planInneholderTapteDager}>
+                            <Veilederinfo type="advarsel">
+                                <FormattedMessage id="uttaksplan.veileder.planenInneholderHull" />
+                            </Veilederinfo>
+                        </Block>
+                        <Block margin="xs" visible={uttaksplanValidering.erGyldig && missingAttachments.length > 0}>
+                            <Veilederinfo type="advarsel">
+                                <FormattedMessage id="oppsummering.veileder.manglendeVedlegg" />
+                            </Veilederinfo>
+                        </Block>
                     </React.Fragment>
                 )}
+
                 <BekreftGåTilUttaksplanSkjemaDialog
                     synlig={this.state.bekreftGåTilbakeDialogSynlig}
                     onGåTilbake={this.onBekreftGåTilbake}
@@ -319,8 +337,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
 
-    // const navnPåForeldre = getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person);
-
     return {
         søknad,
         tilgjengeligeStønadskontoer,
@@ -328,8 +344,6 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksstatus,
         uttaksstatusOvertrukneDager,
         søknadsinfo,
-        // navnPåForeldre,
-        // erDeltUttak: getErDeltUttak(tilgjengeligeStønadskontoer),
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
