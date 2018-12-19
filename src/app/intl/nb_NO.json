@@ -329,7 +329,7 @@
 
     "annenForelder.sectionheading": "Informasjon om den andre forelderen",
     "annenForelder.label.registrertForelder":
-        "Registrert annen forelder for {antallBarn, plural, one {barnet} other {barna}}",
+        "Informasjon om den andre forelderen {antallBarn, plural, one {barnet} other {barna}}",
     "annenForelder.label.navn": "Hva heter den andre forelderen?",
     "annenForelder.label.kanIkkeOppgiNavn": "Jeg kan ikke oppgi navnet til andre forelderen",
     "annenForelder.label.fødselsnummer": "og har fødselsnummer eller D-nummer",
