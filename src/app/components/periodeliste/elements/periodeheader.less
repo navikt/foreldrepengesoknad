@@ -1,6 +1,6 @@
-@import '../../styles/variables.less';
+@import '../../../styles/variables.less';
 
-.periodeheader {
+.periodelisteItemHeader {
     border-radius: 0.25rem;
     width: 100%;
     display: flex;
@@ -18,8 +18,11 @@
         color: #7f756c;
     }
     &__ikon {
-        padding-left: 1rem;
+        margin-left: 1rem;
         flex-grow: 0;
+        min-width: 32px;
+        text-align: center;
+        line-height: 0;
     }
     &__beskrivelse {
         padding-left: 1rem;
@@ -32,11 +35,12 @@
         flex-grow: 0;
     }
     &__tidsrom {
-        width: 11rem;
+        min-width: 11rem;
         @media (max-width: @tablet-breakpoint) {
             width: 10rem;
         }
         flex-grow: 0;
+        flex-shrink: 0;
         display: flex;
         justify-content: stretch;
         flex-wrap: nowrap;
@@ -60,7 +64,6 @@
         flex-wrap: wrap;
         &__beskrivelse {
             width: 80%;
-            padding-bottom: 0.5rem;
             order: 2;
         }
         &__tidsrom {

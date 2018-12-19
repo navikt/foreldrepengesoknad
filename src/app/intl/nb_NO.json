@@ -24,6 +24,7 @@
     "deltid": "Deltid",
 
     "tidsperiode": "Fra {fom} til {tom}",
+    "tidsperiode.kort": "{fom} - {tom}",
 
     "regnskapsfører": "regnskapsfører",
     "revisor": "revisor",
@@ -535,7 +536,7 @@
     "uttaksplan.leggTil.uttak": "Legg til periode",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
     "uttaksplan.hull.leggTil.opphold": "Legg inn ny utsettelse",
-    "uttaksplan.hull.leggTil.uttak": "Legg ny periode",
+    "uttaksplan.hull.leggTil.uttak": "Legg inn ny periode",
     "uttaksplan.infoVedOpphold":
         "Her kan du legge inn perioder hvor {navn} skal ha foreldrepenger. Husk at {navn} må søke selv, senest dagen før foreldrepengene skal tas ut for ikke å miste dager. <a href={link} class=\"lenke\" rel=\"noopener\" target=\"_blank\">Les om viktige frister.</a>",
     "uttaksplan.infoTilFrilansOgSelvstendig":
@@ -544,7 +545,7 @@
     "uttaksplan.infoVedTapteUttaksdager.tomUttaksplan":
         "Perioden med foreldrepenger starter {dato}. Starter du senere, får du færre dager med foreldrepenger.",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden {fom} til og med {tom}.",
+        "Du vil miste {dager} {dager, plural, one{dag} other {dager}} med foreldrepenger siden du starter senere enn seks uker etter fødsel. For å unngå tap av dager kan du legge til en utsettelse i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsettelse",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
@@ -872,9 +873,15 @@
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
-    "periodeliste.hullMellomPerioder": "Det er {dager} som du ikke har søkt om eller lagt inn utsettelse for.",
-    "periodeliste.hullMellomPerioder.aria-label": "Tidsperiode er uten uttak eller utsettelse",
-    "periodeliste.hullMellomPerioder.fridag": "{tidsperiode}. Du kan ikke legge inn utsettelse på en helligdag.",
+    "periodeliste.hull.tittel": "Tapte foreldrepenger",
+    "periodeliste.hull.beskrivelse":
+        "{dager} {dager, plural, one{dag} other {dager}} uten registrert periode eller utsettelse",
+    "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepenger i denne perioden",
+    "periodeliste.hull.info.uttaksdager":
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger",
+    "periodeliste.hull.info.helligdagerOgUttaksdager":
+        "Du kan miste {dager} {dager, plural, one{dag} other {dager}} om du ikke legger inn utsettelse eller periode med foreldrepenger. Du kan ikke utsette på helligdager.",
+
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
@@ -938,6 +945,8 @@
     "uttaksplan.nyttopphold.avbrytAriaLabel": "Avbryt, legg til ny utsettelse",
     "uttaksplan.nyttopphold.leggTilAriaLabel": "Ok, legg til ny utsettelse",
 
+    "utsettelseskjema.info.helligdagerIFerie":
+        "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
         "<p>Du kan utsette foreldrepengene med ferie i inntil fire uker og én dag for hvert kalenderår, i tillegg til overført ferie fra i fjor og ti feriedager fra neste år. Du kan ikke utsette på helligdager.</p>Arbeidsgiveren din må bekrefte perioden du skal ha ferie. Det kan de gjøre når de sender opplysninger om inntekten din til oss, eller du kan få bekreftelsen hos arbeidsgiveren og legge den ved søknaden din.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
@@ -946,7 +955,8 @@
         "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
-
+    "uttaksplan.veileder.planenInneholderHull":
+        "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
     "uttaksplan.validering.feiloppsummering.tittel":
         "Planen inneholder feil som du må rette opp i før du kan gå videre",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
