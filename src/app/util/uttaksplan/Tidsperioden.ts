@@ -18,6 +18,7 @@ export const Tidsperioden = (tidsperiode: Partial<Tidsperiode>) => ({
     setUttaksdager: (uttaksdager: number) =>
         tidsperiode.fom ? getTidsperiode(tidsperiode.fom, uttaksdager) : tidsperiode,
     formaterString: (intl: InjectedIntl) => tidsperiodeToString(tidsperiode, intl),
+    formaterStringKort: (intl: InjectedIntl) => tidsperiodeToStringKort(tidsperiode, intl),
     erFomEllerEtterDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato),
     erFørDato: (dato: Date) => erTidsperiodeFomEllerEtterDato(tidsperiode, dato) === false
 });
@@ -131,6 +132,17 @@ function tidsperiodeToString(tidsperiode: Partial<Tidsperiode>, intl: InjectedIn
         return formaterDatoUtenDag(fom ? fom : tom);
     }
     return getMessage(intl, 'tidsperiode', {
+        fom: fom ? formaterDatoUtenDag(fom) : '',
+        tom: tom ? formaterDatoUtenDag(tom) : ''
+    });
+}
+
+function tidsperiodeToStringKort(tidsperiode: Partial<Tidsperiode>, intl: InjectedIntl) {
+    const { fom, tom } = tidsperiode;
+    if (fom && tom && moment(fom).isSame(tom, 'day')) {
+        return formaterDatoUtenDag(fom ? fom : tom);
+    }
+    return getMessage(intl, 'tidsperiode.kort', {
         fom: fom ? formaterDatoUtenDag(fom) : '',
         tom: tom ? formaterDatoUtenDag(tom) : ''
     });

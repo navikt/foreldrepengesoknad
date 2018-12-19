@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { formaterDatoUtenDag } from 'common/util/datoUtils';
 import { InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor } from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import LinkButton from '../../link-button/LinkButton';
 import { Tidsperiode } from 'nav-datovelger';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
-import PeriodelisteInfoItem from '../../periodeliste/PeriodelisteInfoItem';
-import AdvarselIkonÅpen from '../../uttaksplan-ikon/ikoner/AdvarselIkon\u00C5pen';
+import Knapperad from 'common/components/knapperad/Knapperad';
+import Block from 'common/components/block/Block';
 
-export interface Props {
+interface Props {
     info: InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor;
     onLeggTilOpphold: (tidsperiode: Tidsperiode) => void;
 }
@@ -19,12 +19,9 @@ const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLe
         tom: Uttaksdagen(info.førsteRegistrerteUttaksdag).forrige()
     };
     return (
-        <PeriodelisteInfoItem
-            ariaLabel={
-                <FormattedMessage id="uttaksplan.infoVedTapteUttaksdager.ariaLabelTittelForTapteForeldrepenger" />
-            }
-            infoText={
-                <FormattedMessage
+        <div>
+            <Block margin="xs">
+                <FormattedHTMLMessage
                     id="uttaksplan.infoVedTapteUttaksdager"
                     values={{
                         dager: info.antallUttaksdagerTapt,
@@ -32,14 +29,13 @@ const TapteUttaksdagerFarMedmor: React.StatelessComponent<Props> = ({ info, onLe
                         tom: formaterDatoUtenDag(tidsperiodenOpphold.tom)
                     }}
                 />
-            }
-            icon={<AdvarselIkonÅpen />}
-            buttons={[
+            </Block>
+            <Knapperad align="left">
                 <LinkButton key="leggTilUtsettelse" onClick={() => onLeggTilOpphold(tidsperiodenOpphold)}>
                     <FormattedMessage id="uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse" />
                 </LinkButton>
-            ]}
-        />
+            </Knapperad>
+        </div>
     );
 };
 export default TapteUttaksdagerFarMedmor;

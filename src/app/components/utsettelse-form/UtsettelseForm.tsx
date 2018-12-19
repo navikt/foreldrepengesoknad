@@ -33,10 +33,12 @@ import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import lenker from '../../util/routing/lenker';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
+import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -260,6 +262,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             return null;
         }
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
+        const antallHelligdager = isValidTidsperiode(tidsperiode) ? Tidsperioden(tidsperiode).getAntallFridager() : 0;
+        const visInfoOmHelligdagerOgFerie =
+            antallHelligdager > 0 &&
+            periode.type === Periodetype.Utsettelse &&
+            periode.årsak === UtsettelseÅrsakType.Ferie;
         return (
             <>
                 <Block hasChildBlocks={true}>
@@ -275,7 +282,9 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             }
                         />
                     </Block>
-                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
+                    <Block
+                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
+                        margin={visInfoOmHelligdagerOgFerie ? 'xs' : undefined}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
@@ -287,6 +296,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             }
                         />
                     </Block>
+                    <Block visible={visInfoOmHelligdagerOgFerie}>
+                        <AlertStripe type="info" solid={true}>
+                            Tidsperioden du har valgt inneholder helligdager som ikke kan registreres som ferie. Disse
+                            dagene vil bli egne perioder i planen, som du må legge inn informasjon om etter at du har
+                            lagt til denne utsettelsen.
+                        </AlertStripe>
+                    </Block>
+
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
