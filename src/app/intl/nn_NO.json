@@ -338,7 +338,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
     "annenForelder.ugyldigBostedsland": "Du må gi opp kvar den andre forelderen bur",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-   "For foreldre som startar foreldrepengeperioden i 2019, kjem det ei ny teneste frå 1. januar. Da vil {navn} kunne sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
+        "For foreldre som startar foreldrepengeperioden i 2019, kjem det ei ny teneste frå 1. januar. Da vil {navn} kunne sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
     "annenForelder.veileder.aleneOmsorg.forBarnet": "De kan avtala at {navn} tek ut foreldrepengar",
 
     "boddINorgeSiste12Mnd.spørsmål": "Kvar har du budd dei siste tolv månadene?",
@@ -552,7 +552,7 @@
     "uttaksplan.tittelVedTapteUttaksdager":
         "Du vil mista {dager} {dager, plural, one{dag} other {dagar}} som du ikkje har søkt om eller lagt inn utsetjing for",
     "uttaksplan.infoVedTapteUttaksdager":
-        "Du vil mista {dager} {dager, plural, one{dag}other {dager}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
+        "Du vil mista {dager} {dager, plural, one{dag}other {dagar}} med foreldrepengar sidan du startar seinare enn seks veker etter fødsel. For å unngå tap av dagar kan du legge til en utsetjing i perioden <strong>{fom}</strong> til og med <strong>{tom}</strong>.",
     "uttaksplan.infoVedTapteUttaksdager.leggTilUtsettelse": "Legg til utsetjing",
 
     "uttaksoppsummering.gjenstående": "Foreldrepengar du har igjen",
@@ -868,7 +868,7 @@
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.hull.beskrivelse":
-        "{dager} {dager, plural, one{dag} other {dager}} utan registrert periode eller utsetjing",
+        "{dager} {dager, plural, one{dag} other {dagar}} utan registrert periode eller utsetjing",
     "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepengar i denne perioden",
     "periodeliste.hull.info.uttaksdager":
         "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar.",
