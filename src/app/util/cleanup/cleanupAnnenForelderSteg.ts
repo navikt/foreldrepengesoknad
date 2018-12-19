@@ -35,9 +35,9 @@ export const cleanupAnnenForelder = (
     const cleanedAnnenForelder: Partial<AnnenForelder> = {
         ...rest,
         kanIkkeOppgis,
-        fornavn: kanIkkeOppgis === false ? fornavn : undefined,
-        etternavn: kanIkkeOppgis === false ? etternavn : undefined,
-        fnr: kanIkkeOppgis === false ? fnr : undefined,
+        fornavn: kanIkkeOppgis === true ? undefined : fornavn,
+        etternavn: kanIkkeOppgis === true ? undefined : etternavn,
+        fnr: kanIkkeOppgis === true ? undefined : fnr,
         utenlandskFnr:
             visibility.isVisible(AnnenForelderSpørsmålKeys.fødselsnummer) && annenForelder.utenlandskFnr
                 ? utenlandskFnr
