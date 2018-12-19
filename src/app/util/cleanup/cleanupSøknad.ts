@@ -70,10 +70,28 @@ export const removePeriodetypeHullFromUttaksplan = (uttaksplan: Periode[]): Peri
     return uttaksplan.filter((p) => p.type !== Periodetype.Hull);
 };
 
+export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
+    uttaksplan.forEach((p1: Periode) => {
+        if (p1.vedlegg) {
+            const vedleggIdRefs = p1.vedlegg.map((a: Attachment) => a.id);
+            uttaksplan.forEach((p2) => {
+                if (p1 !== p2 && p1.vedlegg && p2.vedlegg) {
+                    p2.vedlegg.forEach((a2) => {
+                        if (vedleggIdRefs.includes(a2.id)) {
+                            p2.vedlegg!.splice(p2.vedlegg!.indexOf(a2), 1);
+                        }
+                    });
+                }
+            });
+        }
+    });
+};
+
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
     const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknad;
 
     const cleanedSøknad: SøknadForInnsending = { ...rest };
+    removeDuplicateAttachments(cleanedSøknad.uttaksplan);
     cleanedSøknad.vedlegg = cleanUpAttachments(cleanedSøknad);
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
         isValidTidsperiode(periode.tidsperiode)
