@@ -871,9 +871,9 @@
         "{dager} {dager, plural, one{dag} other {dagar}} utan registrert periode eller utsetjing",
     "periodeliste.hull.info.helligdager": "Du må ta ut foreldrepengar i denne perioden",
     "periodeliste.hull.info.uttaksdager":
-        "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar.",
+        "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.hull.info.helligdagerOgUttaksdager":
-        "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar. Du kan ikkje utsetje på helgedagar.",
+        "Du kan mista {dager} {dager, plural, one{dag} other {dagar}} om du ikkje legg inn utsetjing eller periode med foreldrepengar",
     "periodeliste.header.skalIkkeHaUttakFørTermin": "Ingen uttak før termin",
     "periodeliste.header.ingenUttakFørFødsel": "Ingen uttak før fødsel",
     "periodeliste.header.ariaBeskrivelse": "{periodetittel}, registrert på {foreldernavn}. {tidOgVarighet}.",
