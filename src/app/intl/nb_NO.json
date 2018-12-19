@@ -341,7 +341,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive navnet på den andre forelderen",
     "annenForelder.ugyldigBostedsland": "Du må oppgi hvor den andre forelderen bor",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "Når vi har behandlet søknaden din vil {navn} se i søknaden sin hvilken periode du skal ha foreldrepenger og eventuelle opphold. Dette gjelder for deg som skal starte foreldrepengene dine i 2019.",
+        "For foreldre som starter foreldrepengeperioden i 2019, vil det komme en ny tjeneste fra 1. januar. Da vil {navn} kunne se i sin søknad når du skal ha foreldrepenger og eventuelle opphold.",
     "annenForelder.veileder.aleneOmsorg.forBarnet": "Dere kan avtale at {navn} tar ut foreldrepenger",
 
     "boddINorgeSiste12Mnd.spørsmål": "Hvor har du bodd de siste 12 månedene?",
