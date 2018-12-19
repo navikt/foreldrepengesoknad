@@ -24,8 +24,6 @@ import søknadActions from '../../../redux/actions/søknad/søknadActionCreators
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
-import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
-import { Feature, isFeatureEnabled } from '../../../Feature';
 import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
 import Block from 'common/components/block/Block';
 import Sak, { SakType } from '../../../types/søknad/Sak';
@@ -101,7 +99,7 @@ class Velkommen extends React.Component<Props, State> {
 
     getStartSøknadKnappLabel(): string {
         const { intl } = this.props;
-        if (isFeatureEnabled(Feature.endringssøknad) && this.state.skalEndre) {
+        if (this.state.skalEndre) {
             return getMessage(intl, `velkommen.startEndringssøknadKnapp`);
         } else {
             return getMessage(intl, `velkommen.startNySøknadKnapp`);
@@ -114,10 +112,11 @@ class Velkommen extends React.Component<Props, State> {
             return null;
         }
 
-        const endringssøknadEnabled = isFeatureEnabled(Feature.endringssøknad) && sakForEndringssøknad;
+        const erSakForEndringssøknadFraInfotrygd =
+            sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
 
         return (
-            <Applikasjonsside visSpråkvelger={isFeatureEnabled(Feature.nynorsk)} margin={false}>
+            <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
 
                 <VeilederMedSnakkeboble
@@ -133,59 +132,46 @@ class Velkommen extends React.Component<Props, State> {
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
                     {sakForEndringssøknad !== undefined && (
-                        <FeatureBlock
-                            feature={Feature.endringssøknad}
-                            render={() => {
-                                const erSakForEndringssøknadFraInfotrygd = erInfotrygdSak(sakForEndringssøknad);
-                                return (
-                                    <>
-                                        <Block>
-                                            <Ingress>
-                                                <FormattedMessage
-                                                    id={
-                                                        erSakForEndringssøknadFraInfotrygd
-                                                            ? 'velkommen.intro.harInfotrygdSak'
-                                                            : 'velkommen.intro.harSak'
-                                                    }
-                                                />
-                                            </Ingress>
-                                        </Block>
-                                        {sakForEndringssøknad.type === SakType.FPSAK && (
-                                            <Block>
-                                                <SakInfo sak={sakForEndringssøknad} />
-                                            </Block>
-                                        )}
-                                        <Block>
-                                            <SøknadstypeSpørsmål
-                                                harEksisterendeSak={true}
-                                                skalEndre={this.state.skalEndre}
-                                                onChange={(skalEndre) => this.setState({ skalEndre })}
-                                                erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
-                                            />
-                                        </Block>
-                                        {this.state.skalEndre === false &&
-                                            !erSakForEndringssøknadFraInfotrygd && (
-                                                <Veilederinfo>
-                                                    <FormattedMessage id="velkommen.intro.harSak.veileder" />
-                                                </Veilederinfo>
-                                            )}
-                                        {this.state.skalEndre === true &&
-                                            erSakForEndringssøknadFraInfotrygd && (
-                                                <Veilederinfo>
-                                                    <FormattedMessage id="velkommen.intro.harInfotrygdSak.veileder" />
-                                                </Veilederinfo>
-                                            )}
-                                    </>
-                                );
-                            }}
-                        />
+                        <>
+                            <Block>
+                                <Ingress>
+                                    <FormattedMessage
+                                        id={
+                                            erSakForEndringssøknadFraInfotrygd
+                                                ? 'velkommen.intro.harInfotrygdSak'
+                                                : 'velkommen.intro.harSak'
+                                        }
+                                    />
+                                </Ingress>
+                            </Block>
+                            {sakForEndringssøknad.type === SakType.FPSAK && (
+                                <Block>
+                                    <SakInfo sak={sakForEndringssøknad} />
+                                </Block>
+                            )}
+                            <Block>
+                                <SøknadstypeSpørsmål
+                                    harEksisterendeSak={true}
+                                    skalEndre={this.state.skalEndre}
+                                    onChange={(skalEndre) => this.setState({ skalEndre })}
+                                    erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
+                                />
+                            </Block>
+                            {this.state.skalEndre === false &&
+                                !erSakForEndringssøknadFraInfotrygd && (
+                                    <Veilederinfo>
+                                        <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                    </Veilederinfo>
+                                )}
+                            {this.state.skalEndre === true &&
+                                erSakForEndringssøknadFraInfotrygd && (
+                                    <Veilederinfo>
+                                        <FormattedMessage id="velkommen.intro.harInfotrygdSak.veileder" />
+                                    </Veilederinfo>
+                                )}
+                        </>
                     )}
-                    <Block
-                        visible={
-                            sakForEndringssøknad === undefined ||
-                            endringssøknadEnabled === false ||
-                            this.state.skalEndre !== undefined
-                        }>
+                    <Block visible={sakForEndringssøknad === undefined || this.state.skalEndre !== undefined}>
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}
