@@ -127,7 +127,7 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                     ? {
                           ...state.annenForelder,
                           ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
-                          kanIkkeOppgis: undefined
+                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
                       }
                     : gjelderAnnetBarn
                         ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
