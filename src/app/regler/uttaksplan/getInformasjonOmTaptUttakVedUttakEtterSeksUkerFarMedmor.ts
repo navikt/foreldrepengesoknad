@@ -15,9 +15,10 @@ const getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor = (
     uttaksplan: Periode[],
     familiehendelsesdato: Date,
     søkerErFarEllerMedmor: boolean,
-    bareFarMedmorHarRett: boolean
+    bareFarMedmorHarRett: boolean,
+    morErUfør: boolean
 ): InformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor | undefined => {
-    if (søkerErFarEllerMedmor === false || bareFarMedmorHarRett === false) {
+    if (søkerErFarEllerMedmor === false || bareFarMedmorHarRett === false || morErUfør === true) {
         return undefined;
     }
 
