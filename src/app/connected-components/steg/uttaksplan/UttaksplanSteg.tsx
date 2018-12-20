@@ -212,7 +212,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             søknad.uttaksplan,
             søknadsinfo.søknaden.familiehendelsesdato,
             søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.mor.harRett === false
+            søknadsinfo.mor.harRett === false,
+            søknadsinfo.mor.erUfør
         );
 
         const planInneholderTapteDager =

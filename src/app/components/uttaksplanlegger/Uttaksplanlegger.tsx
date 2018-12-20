@@ -168,7 +168,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
             uttaksplan,
             søknadsinfo.søknaden.familiehendelsesdato,
             søknadsinfo.søker.erFarEllerMedmor,
-            søknadsinfo.mor.harRett === false
+            søknadsinfo.mor.harRett === false,
+            søknadsinfo.mor.erUfør
         );
 
         const infoItems: PeriodelisteInformasjon[] = [];
