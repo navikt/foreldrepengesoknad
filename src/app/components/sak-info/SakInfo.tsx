@@ -37,7 +37,8 @@ const SakInfo: React.StatelessComponent<Props> = ({ sak }) => {
                         />
                     </Normaltekst>
                     {statusTextKey && (
-                        <EtikettBase type={'fokus'}>
+                        <EtikettBase
+                            type={statusTextKey === 'saksoversikt.heading.ferdigBehandlet' ? 'suksess' : 'fokus'}>
                             <FormattedMessage id={statusTextKey} />
                         </EtikettBase>
                     )}
