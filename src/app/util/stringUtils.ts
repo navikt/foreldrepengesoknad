@@ -15,6 +15,6 @@ export const getIntlKeyForStatus = (status: FagsakStatus): string => {
             return 'velkommen.sak.status.underBehandling';
         case FagsakStatus.LOPENDE:
         case FagsakStatus.AVSLUTTET:
-            return 'velkommen.sak.status.avsluttet';
+            return 'velkommen.sak.status.ferdigBehandlet';
     }
 };
