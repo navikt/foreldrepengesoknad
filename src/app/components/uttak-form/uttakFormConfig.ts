@@ -129,7 +129,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         visibilityFilter: (payload) => visKontospørsmål(payload)
     },
     [Sp.aktivitetskravMor]: {
-        parentQuestion: Sp.tidsperiode,
+        parentQuestion: Sp.konto,
         isRequired: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
@@ -138,7 +138,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         visibilityFilter: (payload) => visAktivitetskravMor(payload)
     },
     [Sp.samtidigUttak]: {
-        parentQuestion: Sp.tidsperiode,
+        parentQuestion: Sp.konto,
         isRequired: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
