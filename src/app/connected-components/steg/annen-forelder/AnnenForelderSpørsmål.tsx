@@ -114,10 +114,10 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(erAleneOmOmsorg) => onSøkerChange({ erAleneOmOmsorg })}
                     />
                 </Block>
-
+                
                 <Block
                     visible={
-                        visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) &&
+                        (visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) && søker.rolle === 'MOR') &&
                         søker.erAleneOmOmsorg !== undefined &&
                         søker.erAleneOmOmsorg
                     }>
