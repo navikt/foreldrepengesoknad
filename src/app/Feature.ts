@@ -1,8 +1,6 @@
 import Environment from './Environment';
 
 export enum Feature {
-    endringssøknad = 'FEATURE_ENDRINGSSOKNAD',
-    nynorsk = 'FEATURE_NYNORSK',
     registrertBarn = 'FEATURE_REGISTRERT_BARN'
 }
 

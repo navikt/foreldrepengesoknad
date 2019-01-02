@@ -73,7 +73,6 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
 
         if (
             søkerinfo === undefined ||
-            (søknad.erEndringssøknad && isFeatureEnabled(Feature.endringssøknad) === false) ||
             søknad.ekstrainfo.currentStegID === undefined ||
             (valgteRegistrerteBarn !== undefined &&
                 StorageSagaUtils.stemmerValgteBarnISøknadMedSøkersBarn(valgteRegistrerteBarn, registrerteBarn) ===
@@ -83,11 +82,7 @@ function* applyStoredStateToApp(storedState: AppState, history: History) {
             yield put(søknadActions.avbrytSøknad());
             history.push(routeConfig.APP_ROUTE_PREFIX);
         } else {
-            if (isFeatureEnabled(Feature.endringssøknad)) {
-                if (søknad.erEndringssøknad === undefined) {
-                    søknad.erEndringssøknad = false;
-                }
-            } else {
+            if (søknad.erEndringssøknad === undefined) {
                 søknad.erEndringssøknad = false;
             }
             yield put(søknadActions.updateSøknad(søknad));
