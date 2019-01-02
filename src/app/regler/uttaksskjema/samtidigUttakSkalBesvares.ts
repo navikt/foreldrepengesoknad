@@ -16,7 +16,6 @@ const samtidigUttakSkalBesvares = (
         harFlerbarnsdager === false;
 
     if (
-        periode.konto === undefined ||
         isUttaksperiode(periode) === false ||
         erUttakFørFødsel ||
         erDeltUttak === false ||
