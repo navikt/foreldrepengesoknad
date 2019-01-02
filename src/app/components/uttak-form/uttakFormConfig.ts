@@ -117,20 +117,20 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
 
 export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpørsmålKeys> = {
     [Sp.tidsperiode]: {
-        isRequired: () => true,
+        isIncluded: () => true,
         isAnswered: ({ periode }) =>
             getValidTidsperiode(periode.tidsperiode as Tidsperiode) !== undefined ||
             (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin === true)
     },
     [Sp.konto]: {
         parentQuestion: Sp.tidsperiode,
-        isRequired: () => true,
+        isIncluded: () => true,
         isAnswered: ({ periode }) => questionValueIsOk(periode.konto),
         visibilityFilter: (payload) => visKontospørsmål(payload)
     },
     [Sp.aktivitetskravMor]: {
         parentQuestion: Sp.konto,
-        isRequired: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
+        isIncluded: ({ skjemaregler }) => skjemaregler.aktivitetskravMorSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.morsAktivitetIPerioden !== undefined &&
@@ -139,13 +139,13 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttak]: {
         parentQuestion: Sp.konto,
-        isRequired: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
+        isIncluded: ({ skjemaregler }) => skjemaregler.samtidigUttakSkalBesvares(),
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.ønskerSamtidigUttak),
         visibilityFilter: (payload) => visSamtidigUttak(payload)
     },
     [Sp.erMorForSyk]: {
         parentQuestion: Sp.konto,
-        isRequired: ({ skjemaregler }) => skjemaregler.erMorForSykSkalBesvares(),
+        isIncluded: ({ skjemaregler }) => skjemaregler.erMorForSykSkalBesvares(),
         isAnswered: ({ periode }) =>
             isUttaksperiode(periode) &&
             periode.konto === StønadskontoType.Fedrekvote &&
@@ -153,25 +153,25 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     },
     [Sp.samtidigUttakProsent]: {
         parentQuestion: Sp.samtidigUttak,
-        isRequired: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.ønskerSamtidigUttak === true,
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.samtidigUttakProsent)
     },
     [Sp.overføringsårsak]: {
-        isRequired: ({ skjemaregler }) => skjemaregler.overføringsårsakSkalBesvares(),
+        isIncluded: ({ skjemaregler }) => skjemaregler.overføringsårsakSkalBesvares(),
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,
-        isRequired: (payload) => visOverføringsdokumentasjon(payload),
+        isIncluded: (payload) => visOverføringsdokumentasjon(payload),
         isAnswered: ({ periode }) => periode.type === Periodetype.Overføring && questionValueIsOk(periode.årsak)
     },
     [Sp.skalHaGradering]: {
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.gradert),
-        isRequired: (payload) => visGradering(payload)
+        isIncluded: (payload) => visGradering(payload)
     },
     [Sp.stillingsprosent]: {
         parentQuestion: Sp.skalHaGradering,
-        isRequired: ({ periode }) => isUttaksperiode(periode) && periode.gradert === true,
+        isIncluded: ({ periode }) => isUttaksperiode(periode) && periode.gradert === true,
         isAnswered: ({ periode }) => isUttaksperiode(periode) && questionValueIsOk(periode.stillingsprosent)
     },
     [Sp.hvorSkalDuJobbe]: {

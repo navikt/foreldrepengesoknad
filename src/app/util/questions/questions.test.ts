@@ -21,20 +21,20 @@ const testPayload: TestPayload = {};
 
 export const questionConfig: QuestionConfig<TestPayload, TestKeys> = {
     [TestKeys.parent]: {
-        isRequired: () => true,
+        isIncluded: () => true,
         isAnswered: (payload: TestPayload) => questionValueIsOk(payload.parent)
     },
     [TestKeys.child]: {
-        isRequired: (payload) => payload.allowChildren === true,
+        isIncluded: (payload) => payload.allowChildren === true,
         isAnswered: (payload: TestPayload) => payload.child !== undefined
     },
     [TestKeys.grandchild]: {
         parentQuestion: TestKeys.child,
-        isRequired: (payload) => payload.allowChildren === true,
+        isIncluded: (payload) => payload.allowChildren === true,
         isAnswered: (payload: TestPayload) => payload.grandchild !== undefined
     },
     [TestKeys.friend]: {
-        isRequired: () => true,
+        isIncluded: () => true,
         isAnswered: (payload: TestPayload) => payload.friend !== undefined,
         visibilityFilter: ({ parent, child, grandchild }) => parent === true && child === true && grandchild === true
     }
