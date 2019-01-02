@@ -3,8 +3,8 @@ import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 import { Søknadsinfo } from '../../selectors/types';
 import { harAktivitetskrav } from '../periodeegenskaper/harAktivitetskrav';
-import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenF\u00F8rsteSeksUkerF\u00F8dselFarMedmor';
-import { erUttakFørFødsel } from '../periodeegenskaper/erUttakF\u00F8rF\u00F8dsel';
+import { erInnenFørsteSeksUkerFødselFarMedmor } from '../periodeegenskaper/erInnenFørsteSeksUkerFødselFarMedmor';
+import { erUttakFørFødsel } from '../periodeegenskaper/erUttakFørFødsel';
 
 export interface Søknadsperiode {
     erUttaksperiode: () => boolean;

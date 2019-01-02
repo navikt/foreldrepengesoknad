@@ -20,8 +20,8 @@ import { gradertUttaksperiodeErUgyldig } from './uttakGraderingValidation';
 import { samtidigUttaksperiodeErUgyldig } from './uttakSamtidigUttakProsentValidation';
 import { erUtsettelseÅrsakTypeGyldigForStartdato } from '../../uttaksplan/regler/erUtsettelseÅrsakGyldigForStartdato';
 import { Søknadsinfo } from '../../../selectors/types';
-import { getUttakSkjemaregler } from '../../../regler/uttak/uttakSkjemaregler';
-import { getSøknadsperiode } from '../../../regler/s\u00F8knadsperioden/S\u00F8knadsperioden';
+import { getUttakSkjemaregler } from '../../../regler/uttaksskjema/uttakSkjemaregler';
+import { getSøknadsperiode } from '../../../regler/søknadsperioden/Søknadsperioden';
 
 const erUtsettelsePgaArbeidEllerFerie = (periode: UtsettelseFormPeriodeType): periode is Utsettelsesperiode => {
     return (

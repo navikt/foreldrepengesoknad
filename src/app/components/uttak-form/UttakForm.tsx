@@ -40,8 +40,8 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
-import { getUttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
-import { getSøknadsperiode } from '../../regler/s\u00F8knadsperioden/S\u00F8knadsperioden';
+import { getUttakSkjemaregler } from '../../regler/uttaksskjema/uttakSkjemaregler';
+import { getSøknadsperiode } from '../../regler/søknadsperioden/Søknadsperioden';
 import { Søknadsinfo } from '../../selectors/types';
 import { selectArbeidsforhold, selectTilgjengeligeStønadskontoer } from '../../selectors/apiSelector';
 

@@ -20,7 +20,7 @@ import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { getSøknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 
 const stateSelector = (state: AppState) => state;
 

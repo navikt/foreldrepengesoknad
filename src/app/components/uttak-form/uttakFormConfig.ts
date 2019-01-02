@@ -11,8 +11,8 @@ import {
 } from '../../types/uttaksplan/periodetyper';
 import { UttakFormPeriodeType } from './UttakForm';
 import { Søknadsinfo } from '../../selectors/types';
-import { Søknadsperiode } from '../../regler/s\u00F8knadsperioden/S\u00F8knadsperioden';
-import { UttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
+import { Søknadsperiode } from '../../regler/søknadsperioden/Søknadsperioden';
+import { UttakSkjemaregler } from '../../regler/uttaksskjema/uttakSkjemaregler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',

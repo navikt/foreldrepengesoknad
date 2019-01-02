@@ -21,7 +21,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import LinkButton from '../link-button/LinkButton';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
 import { Søknadsinfo } from '../../selectors/types';
-import { getSøknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
+import { getSøknadsinfo } from '../../selectors/søknadsinfoSelector';
 
 import './endrePeriodeForm.less';
 
