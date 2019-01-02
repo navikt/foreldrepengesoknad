@@ -1,7 +1,8 @@
-import { StønadskontoType, isUttaksperiode, Periode } from '../../types/uttaksplan/periodetyper';
+import { StønadskontoType, isUttaksperiode } from '../../types/uttaksplan/periodetyper';
+import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 
 export const aktivitetskravMorSkalBesvares = (
-    periode: Periode,
+    periode: UttakFormPeriodeType,
     søkerErMor: boolean,
     annenForelderHarRett: boolean,
     erDeltUttak: boolean
@@ -19,7 +20,8 @@ export const aktivitetskravMorSkalBesvares = (
     if (erDeltUttak === false && annenForelderHarRett === false) {
         if (
             (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
-            isUttaksperiode(periode) === false
+            isUttaksperiode(periode) === false ||
+            periode.konto === StønadskontoType.Flerbarnsdager
         ) {
             return false;
         }

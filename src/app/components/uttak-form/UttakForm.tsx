@@ -199,7 +199,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         feil={feil}
                     />
                 </Block>
-                <Block visible={visibility.isVisible(UttakSpørsmålKeys.kvote)}>
+                <Block visible={visibility.isVisible(UttakSpørsmålKeys.konto)}>
                     <HvilkenKvoteSkalBenyttesSpørsmål
                         onChange={(stønadskontoType) => this.updateStønadskontoType(stønadskontoType)}
                         navnPåForeldre={søknadsinfo.navn.navnPåForeldre}

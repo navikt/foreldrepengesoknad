@@ -21,7 +21,7 @@ export const getUttakSkjemaregler = (
 ): UttakSkjemaregler => ({
     aktivitetskravMorSkalBesvares: () =>
         aktivitetskravMorSkalBesvares(
-            periode as Periode,
+            periode,
             søknadsinfo.søker.erMor,
             søknadsinfo.annenForelder.harRett,
             søknadsinfo.søknaden.erDeltUttak
