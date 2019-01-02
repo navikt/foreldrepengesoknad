@@ -10,10 +10,12 @@ import EndrePeriodeForm from '../../endre-periode-form/EndrePeriodeForm';
 import PeriodelisteToggleItem from '../elements/PeriodelisteToggleItem';
 import PeriodelisteItemWrapper from '../elements/PeriodelisteItemWrapper';
 import { getPeriodeFarge } from '../../../util/uttaksplan/styleUtils';
+import { Søknadsinfo } from '../../../selectors/types';
 
 export interface Props {
     id: string;
     periode: Periode;
+    søknadsinfo: Søknadsinfo;
     isExpanded: boolean;
     antallFeriedager: number;
     navnPåForeldre: NavnPåForeldre;

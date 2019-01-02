@@ -225,6 +225,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
+                                søknadsinfo={søknadsinfo}
                                 perioder={uttaksplan}
                                 informasjon={infoItems}
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
@@ -259,6 +260,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
+                                        søknadsinfo={søknadsinfo}
                                         antallFeriedager={antallFeriedager}
                                         erMorUfør={søknadsinfo.mor.erUfør}
                                         periodetype={periodetype}

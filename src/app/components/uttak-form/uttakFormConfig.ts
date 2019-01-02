@@ -15,6 +15,9 @@ import { erUttakEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import { uttaksdatoer } from 'app/util/uttaksplan/uttaksdatoer';
 import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
 import { Søkersituasjon } from 'app/types/søknad/Søknad';
+import { Søknadsinfo } from '../../selectors/types';
+import { Søknadsperiode } from '../../regler/s\u00F8knadsperioden/S\u00F8knadsperioden';
+import { UttakSkjemaregler } from '../../regler/uttak/uttakSkjemaregler';
 
 export enum UttakSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -34,12 +37,9 @@ export interface UttakFormPayload {
     periode: UttakFormPeriodeType;
     velgbareStønadskontotyper: StønadskontoType[];
     kanEndreStønadskonto: boolean;
-    søkerErAleneOmOmsorg: boolean;
-    søkerErFarEllerMedmor: boolean;
-    annenForelderHarRett: boolean;
-    morErUfør: boolean;
-    familiehendelsesdato: Date;
-    situasjon: Søkersituasjon;
+    søknadsinfo: Søknadsinfo;
+    søknadsperiode: Søknadsperiode;
+    skjemaregler: UttakSkjemaregler;
 }
 
 export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
@@ -47,7 +47,8 @@ export type UttakSpørsmålVisibility = QuestionVisibility<UttakSpørsmålKeys>;
 const Sp = UttakSpørsmålKeys;
 
 const erUttakFørFødsel = (payload: UttakFormPayload): boolean => {
-    const { periode, familiehendelsesdato } = payload;
+    const { periode, søknadsinfo } = payload;
+    const { familiehendelsesdato } = søknadsinfo.søknaden;
     return (
         (periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel) ||
         moment(periode.tidsperiode && (periode.tidsperiode.tom as Date)).isBefore(familiehendelsesdato, 'day')
@@ -55,12 +56,15 @@ const erUttakFørFødsel = (payload: UttakFormPayload): boolean => {
 };
 
 const erUttakInnenFørsteSeksUkerFødselFarMedmor = (payload: UttakFormPayload): boolean => {
-    if (payload.situasjon === Søkersituasjon.ADOPSJON || !payload.søkerErFarEllerMedmor) {
+    const {
+        søknadsinfo: { søknaden, søker }
+    } = payload;
+    if (søknaden.situasjon === Søkersituasjon.ADOPSJON || !søker.erFarEllerMedmor) {
         return false;
     }
 
     if (isValidTidsperiode(payload.periode.tidsperiode)) {
-        const førsteUttaksdag = uttaksdatoer(payload.familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
+        const førsteUttaksdag = uttaksdatoer(søknaden.familiehendelsesdato).førsteUttaksdagPåEllerEtterFødsel;
         const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdag).leggTil(30);
 
         if (moment(payload.periode.tidsperiode.fom).isBefore(moment(førsteUttaksdagEtterSeksUker))) {
@@ -77,17 +81,20 @@ const visKvote = (payload: UttakFormPayload): boolean => {
 };
 
 const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
-    if (søkerErFarEllerMedmor === false || periode.konto === undefined) {
+    const {
+        periode,
+        søknadsinfo: { søker, annenForelder }
+    } = payload;
+    if (søker.erFarEllerMedmor === false || periode.konto === undefined) {
         return false;
     }
-    const erDeltUttak = søkerErAleneOmOmsorg === false && annenForelderHarRett === true;
+    const erDeltUttak = søker.erAleneOmOmsorg === false && annenForelder.harRett === true;
     if (
         erDeltUttak &&
         (periode.konto === StønadskontoType.Fellesperiode || periode.konto === StønadskontoType.Foreldrepenger)
     ) {
         return true;
-    } else if (erDeltUttak === false && annenForelderHarRett === false) {
+    } else if (erDeltUttak === false && annenForelder.harRett === false) {
         if (
             (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
             isUttaksperiode(periode) === false ||
@@ -101,7 +108,10 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
 };
 
 const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
-    const { periode, søkerErFarEllerMedmor, annenForelderHarRett, søkerErAleneOmOmsorg } = payload;
+    const {
+        periode,
+        søknadsinfo: { søker, annenForelder }
+    } = payload;
     if (
         periode.konto === undefined ||
         periode.type === Periodetype.Overføring ||
@@ -110,22 +120,22 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
     ) {
         return false;
     } else if (periode.type === Periodetype.Uttak && periode.konto !== undefined) {
-        const erEgenKonto = erUttakEgenKvote(periode.konto, payload.søkerErFarEllerMedmor);
+        const erEgenKonto = erUttakEgenKvote(periode.konto, søker.erFarEllerMedmor);
         const aktivitetskravMor = visAktivitetskravMor(payload);
         const aktivitetskravMorOk =
             (aktivitetskravMor && questionValueIsOk(periode.morsAktivitetIPerioden)) || aktivitetskravMor === false;
-        const erDeltUttak = !søkerErAleneOmOmsorg && annenForelderHarRett;
+        const erDeltUttak = !søker.erAleneOmOmsorg && annenForelder.harRett;
 
         if (
             periode.konto === StønadskontoType.Fellesperiode &&
-            søkerErFarEllerMedmor === true &&
+            søker.erFarEllerMedmor === true &&
             aktivitetskravMorOk &&
             erDeltUttak
         ) {
             return true;
         }
 
-        if (periode.konto === StønadskontoType.Fellesperiode && søkerErFarEllerMedmor === false && erDeltUttak) {
+        if (periode.konto === StønadskontoType.Fellesperiode && søker.erFarEllerMedmor === false && erDeltUttak) {
             return true;
         }
 
@@ -144,7 +154,7 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
         }
 
         if (
-            søkerErFarEllerMedmor &&
+            søker.erFarEllerMedmor &&
             periode.konto === StønadskontoType.Fellesperiode &&
             aktivitetskravMorOk &&
             erDeltUttak
@@ -160,13 +170,16 @@ const visSamtidigUttak = (payload: UttakFormPayload): boolean => {
 };
 
 const visOverføringsdokumentasjon = (payload: UttakFormPayload): boolean => {
-    const { periode } = payload;
+    const {
+        periode,
+        søknadsinfo: { søker }
+    } = payload;
     if (periode.type !== Periodetype.Overføring || periode.årsak === undefined) {
         return false;
     }
     return (
         periode.årsak !== OverføringÅrsakType.aleneomsorg ||
-        (periode.årsak === OverføringÅrsakType.aleneomsorg && payload.søkerErFarEllerMedmor === true)
+        (periode.årsak === OverføringÅrsakType.aleneomsorg && søker.erFarEllerMedmor === true)
     );
 };
 
@@ -253,7 +266,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
         isRequired: (payload) =>
             visKvote(payload) &&
             payload.periode.type === Periodetype.Overføring &&
-            erUttakEgenKvote(payload.periode.konto, payload.søkerErFarEllerMedmor) === false
+            erUttakEgenKvote(payload.periode.konto, payload.søknadsinfo.søker.erFarEllerMedmor) === false
     },
     [Sp.overføringsdokumentasjon]: {
         isOptional: () => true,

@@ -20,6 +20,8 @@ import Block from 'common/components/block/Block';
 import { Knapp } from 'nav-frontend-knapper';
 import LinkButton from '../link-button/LinkButton';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
+import { Søknadsinfo } from '../../selectors/types';
+import { getSøknadsinfo } from '../../selectors/s\u00F8knadsinfoSelector';
 
 import './endrePeriodeForm.less';
 
@@ -39,6 +41,7 @@ interface OwnProps {
 
 interface StateProps {
     søknad: Søknad;
+    søknadsinfo: Søknadsinfo;
 }
 
 interface State {
@@ -93,7 +96,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, intl } = this.props;
+        const { periode, søknadsinfo, intl } = this.props;
         const { validertPeriode, antallFeriedager, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -110,6 +113,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
                         />
                     ) : (
                         <UttakForm
+                            søknadsinfo={søknadsinfo}
                             periode={periode as Uttaksperiode}
                             onChange={this.onChange}
                             kanEndreStønadskonto={!erForeldrepengerFørFødselPeriode}
@@ -150,7 +154,8 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-    søknad: state.søknad
+    søknad: state.søknad,
+    søknadsinfo: getSøknadsinfo(state)!
 });
 
 export default connect(mapStateToProps)(injectIntl(EndrePeriodeFormRenderer));

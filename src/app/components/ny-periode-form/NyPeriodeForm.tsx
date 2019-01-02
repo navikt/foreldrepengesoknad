@@ -18,8 +18,10 @@ import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
 import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
+import { Søknadsinfo } from '../../selectors/types';
 
 interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     antallFeriedager: number;
     erMorUfør: boolean | undefined;
     forelder: Forelder;
@@ -100,7 +102,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
     }
 
     render() {
-        const { intl, antallFeriedager, forelder, onCancel } = this.props;
+        const { søknadsinfo, intl, antallFeriedager, forelder, onCancel } = this.props;
         const { periode } = this.state;
 
         return (
@@ -125,6 +127,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttakForm
+                            søknadsinfo={søknadsinfo}
                             periode={periode as Partial<Uttaksperiode>}
                             kanEndreStønadskonto={true}
                             onChange={this.updatePeriode}

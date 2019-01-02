@@ -11,8 +11,10 @@ import PeriodelistePeriode from './items/PeriodelistePeriode';
 import PeriodelisteInfo, { PeriodelisteInformasjon } from './items/PeriodelisteInfo';
 
 import './periodeliste.less';
+import { Søknadsinfo } from '../../selectors/types';
 
 interface OwnProps {
+    søknadsinfo: Søknadsinfo;
     perioder: Periode[];
     informasjon?: PeriodelisteInformasjon[];
     antallFeriedager: number;
@@ -87,6 +89,7 @@ class Periodeliste extends React.Component<Props> {
     render() {
         const {
             perioder,
+            søknadsinfo,
             informasjon,
             uttaksplanValidering,
             navnPåForeldre,
@@ -128,6 +131,7 @@ class Periodeliste extends React.Component<Props> {
                                 />
                             ) : (
                                 <PeriodelistePeriode
+                                    søknadsinfo={søknadsinfo}
                                     key={itemId}
                                     id={itemId}
                                     periode={periode}
