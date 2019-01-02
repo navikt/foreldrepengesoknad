@@ -2,9 +2,9 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export enum AnnenInntektType {
-    'SLUTTPAKKE' = 'ETTERLØNN_ARBEIDSGIVER',
+    'SLUTTPAKKE' = 'ETTERLØNN_SLUTTPAKKE',
     'MILITÆRTJENESTE' = 'MILITÆR_ELLER_SIVILTJENESTE',
-    'VENTELØNN' = 'VENTELØNN',
+    'VENTELØNN' = 'VENTELØNN_VARTPENGER',
     'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET'
 }
 
