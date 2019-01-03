@@ -12,6 +12,7 @@ export interface ApiState {
     isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
+    oppslagSakerFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
