@@ -37,6 +37,7 @@ interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
     sakForEndringssøknad?: Sak;
+    oppslagSakerFeilet?: boolean;
 }
 
 interface State {
@@ -107,13 +108,22 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     render() {
-        const { person, sakForEndringssøknad, harGodkjentVilkår, dispatch, intl } = this.props;
+        const { person, sakForEndringssøknad, oppslagSakerFeilet, harGodkjentVilkår, dispatch, intl } = this.props;
         if (person === undefined) {
             return null;
         }
 
         const erSakForEndringssøknadFraInfotrygd =
             sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
+
+        const visValgForNySøknadEllerEndring = sakForEndringssøknad !== undefined || oppslagSakerFeilet === true;
+
+        const visInfoOmEndringsøknadIkkeTilgjengelig = oppslagSakerFeilet === true && this.state.skalEndre === true;
+
+        const visBekreftSkjema =
+            oppslagSakerFeilet !== true
+                ? sakForEndringssøknad === undefined || this.state.skalEndre !== undefined
+                : this.state.skalEndre === false;
 
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>
@@ -131,7 +141,7 @@ class Velkommen extends React.Component<Props, State> {
                     <Innholdstittel className="velkommen__tittel blokk-s">
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    {sakForEndringssøknad !== undefined && (
+                    {visValgForNySøknadEllerEndring && (
                         <>
                             <Block>
                                 <Ingress>
@@ -144,11 +154,12 @@ class Velkommen extends React.Component<Props, State> {
                                     />
                                 </Ingress>
                             </Block>
-                            {sakForEndringssøknad.type === SakType.FPSAK && (
-                                <Block>
-                                    <SakInfo sak={sakForEndringssøknad} />
-                                </Block>
-                            )}
+                            {sakForEndringssøknad !== undefined &&
+                                sakForEndringssøknad.type === SakType.FPSAK && (
+                                    <Block>
+                                        <SakInfo sak={sakForEndringssøknad} />
+                                    </Block>
+                                )}
                             <Block>
                                 <SøknadstypeSpørsmål
                                     harEksisterendeSak={true}
@@ -171,7 +182,12 @@ class Velkommen extends React.Component<Props, State> {
                                 )}
                         </>
                     )}
-                    <Block visible={sakForEndringssøknad === undefined || this.state.skalEndre !== undefined}>
+                    <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
+                        <Veilederinfo type="advarsel">
+                            <FormattedMessage id="velkommen.endringssøknadIkkeTilgjengelig.veileder" />
+                        </Veilederinfo>
+                    </Block>
+                    <Block visible={visBekreftSkjema}>
                         <BekreftCheckboksPanel
                             className="blokk-m"
                             checked={harGodkjentVilkår}
@@ -223,7 +239,8 @@ class Velkommen extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
-    sakForEndringssøknad: state.api.sakForEndringssøknad
+    sakForEndringssøknad: state.api.sakForEndringssøknad,
+    oppslagSakerFeilet: state.api.oppslagSakerFeilet
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));
