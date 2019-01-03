@@ -80,16 +80,14 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
     if (oppholdsperioder.length === 0) {
         return [];
     }
-    return oppholdsperioder.map((opphold) => mapOppholdsperiodeTilUttaksperiode(opphold));
+    return oppholdsperioder.map((opphold: Oppholdsperiode): Uttaksperiode => ({
+        id: opphold.id,
+        tidsperiode: opphold.tidsperiode,
+        type: Periodetype.Uttak,
+        konto: getStønadskontotypeFromOppholdsårsak(opphold.årsak),
+        forelder: opphold.forelder
+    }));
 };
-
-const mapOppholdsperiodeTilUttaksperiode = (opphold: Oppholdsperiode): Uttaksperiode => ({
-    id: opphold.id,
-    tidsperiode: opphold.tidsperiode,
-    type: Periodetype.Uttak,
-    konto: getStønadskontotypeFromOppholdsårsak(opphold.årsak),
-    forelder: opphold.forelder
-});
 
 const getStønadskontotypeFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
     switch (årsak) {
