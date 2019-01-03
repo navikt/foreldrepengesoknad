@@ -1,5 +1,5 @@
 import Sak, { FagsakStatus, SakType } from '../../types/søknad/Sak';
-import Behandling, { BehandlingTema } from '../../types/søknad/Behandling';
+import Behandling, { BehandlingStatus, BehandlingTema } from '../../types/søknad/Behandling';
 
 const getBehandling = (sak: Sak): Behandling | undefined => {
     if (sak !== undefined && sak.behandlinger !== undefined && sak.behandlinger.length > 0) {
@@ -32,10 +32,19 @@ export const erInfotrygdSak = (sak: Sak): boolean => {
     return sak.type === SakType.SAK;
 };
 
+export const harEnAvsluttetBehandling = (sak: Sak): boolean => {
+    return sak.behandlinger
+        ? sak.behandlinger.some((behandling: Behandling) => behandling.status === BehandlingStatus.AVSLUTTET)
+        : false;
+};
+
 export const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
     if (!gjelderSakForeldrepengesøknad(nyesteSak)) {
         return false;
     }
 
-    return nyesteSak.status === FagsakStatus.LOPENDE || erInfotrygdSak(nyesteSak);
+    return (
+        (nyesteSak.status !== FagsakStatus.AVSLUTTET && harEnAvsluttetBehandling(nyesteSak)) ||
+        erInfotrygdSak(nyesteSak)
+    );
 };
