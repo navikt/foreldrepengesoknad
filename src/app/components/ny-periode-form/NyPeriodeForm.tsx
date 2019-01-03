@@ -25,7 +25,7 @@ interface OwnProps {
     forelder: Forelder;
     søknad: Søknad;
     periodetype: Periodetype;
-    tidsperiode?: Tidsperiode;
+    tidsperiode?: Partial<Tidsperiode>;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
 }

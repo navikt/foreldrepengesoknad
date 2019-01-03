@@ -31,6 +31,7 @@ export const Periodene = (perioder: Periode[]) => ({
         getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
+    getFørsteUttaksdagEtterSistePeriode: () => getFørsteUttaksdagEtterSistePeriode(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -204,4 +205,11 @@ function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFø
         (p) => p.type === Periodetype.Uttak && p.konto === StønadskontoType.ForeldrepengerFørFødsel
     );
     return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
+}
+
+function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undefined {
+    if (perioder.length === 0) {
+        return undefined;
+    }
+    return Uttaksdagen(perioder[perioder.length - 1].tidsperiode.tom).neste();
 }
