@@ -83,16 +83,13 @@ const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttak
     return oppholdsperioder.map((opphold) => mapOppholdsperiodeTilUttaksperiode(opphold));
 };
 
-const mapOppholdsperiodeTilUttaksperiode = (opphold: Oppholdsperiode): Uttaksperiode => {
-    const konto: StønadskontoType = getStønadskontotypeFromOppholdsårsak(opphold.årsak);
-    return {
-        id: opphold.id,
-        tidsperiode: opphold.tidsperiode,
-        type: Periodetype.Uttak,
-        konto,
-        forelder: opphold.forelder
-    };
-};
+const mapOppholdsperiodeTilUttaksperiode = (opphold: Oppholdsperiode): Uttaksperiode => ({
+    id: opphold.id,
+    tidsperiode: opphold.tidsperiode,
+    type: Periodetype.Uttak,
+    konto: getStønadskontotypeFromOppholdsårsak(opphold.årsak),
+    forelder: opphold.forelder
+});
 
 const getStønadskontotypeFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
     switch (årsak) {
@@ -101,7 +98,7 @@ const getStønadskontotypeFromOppholdsårsak = (årsak: OppholdÅrsakType): Stø
         case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
             return StønadskontoType.Fellesperiode;
         case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
-            return StønadskontoType.Foreldrepenger;
+            return StønadskontoType.Flerbarnsdager;
         case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
             return StønadskontoType.Mødrekvote;
     }
