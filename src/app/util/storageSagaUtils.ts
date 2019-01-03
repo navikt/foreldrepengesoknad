@@ -1,7 +1,7 @@
 import { RegistrertBarn } from '../types/Person';
 import Søknad from '../types/søknad/Søknad';
 import Søker from 'app/types/søknad/Søker';
-import { AnnenInntektType } from 'app/types/søknad/AnnenInntekt';
+import { AnnenInntektType } from '../types/søknad/AnnenInntekt';
 
 const getValgteRegistrerteBarnISøknaden = (søknad: Søknad): RegistrertBarn[] | undefined => {
     const { søknadenGjelderBarnValg } = søknad.ekstrainfo;
