@@ -2,9 +2,11 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 
 export enum AnnenInntektType {
-    'SLUTTPAKKE' = 'ETTERLØNN_ARBEIDSGIVER',
+    'SLUTTPAKKE' = 'ETTERLØNN_SLUTTPAKKE',
+    'SLUTTPAKKE_V1' = 'ETTERLØNN_ARBEIDSGIVER',
     'MILITÆRTJENESTE' = 'MILITÆR_ELLER_SIVILTJENESTE',
-    'VENTELØNN' = 'VENTELØNN',
+    'VENTELØNN' = 'VENTELØNN_VARTPENGER',
+    'VENTELØNN_V1' = 'VENTELØNN',
     'JOBB_I_UTLANDET' = 'JOBB_I_UTLANDET'
 }
 
@@ -15,7 +17,7 @@ abstract class AnnenInntektBase {
 }
 
 export class SluttpakkeInntekt extends AnnenInntektBase {
-    type: AnnenInntektType.SLUTTPAKKE;
+    type: AnnenInntektType.SLUTTPAKKE | AnnenInntektType.SLUTTPAKKE_V1;
 }
 
 export class MilitærtjenesteInntekt extends AnnenInntektBase {
@@ -29,7 +31,7 @@ export class JobbIUtlandetInntekt extends AnnenInntektBase {
 }
 
 export class VentelønnInntekt extends AnnenInntektBase {
-    type: AnnenInntektType.VENTELØNN;
+    type: AnnenInntektType.VENTELØNN | AnnenInntektType.VENTELØNN_V1;
 }
 
 export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt | VentelønnInntekt;
