@@ -44,7 +44,20 @@ const getSykdomVeilederInfo = (sykdomsårsak: UtsettelseÅrsakType) => {
 
 type Props = OwnProps & InjectedIntlProps;
 
-class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
+class UtsettelsePgaSykdomPart extends React.Component<Props> {
+    getAttachmentSkjemanummer() {
+        const { sykdomsårsak } = this.props;
+        switch (sykdomsårsak) {
+            case UtsettelseÅrsakType.Sykdom:
+                return Skjemanummer.DOK_OVERFØRING_FOR_SYK;
+            case UtsettelseÅrsakType.InstitusjonSøker:
+            case UtsettelseÅrsakType.InstitusjonBarnet:
+                return Skjemanummer.DOK_INNLEGGELSE;
+            default:
+                return Skjemanummer.ANNET;
+        }
+    }
+
     render() {
         const { onChange, intl, sykdomsårsak } = this.props;
         const vedleggList = [...this.props.vedlegg];
@@ -72,7 +85,7 @@ class UtsettelsePgaSykdomPart extends React.Component<Props, {}> {
                         <VedleggSpørsmål
                             vedlegg={vedleggList}
                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-                            skjemanummer={Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM}
+                            skjemanummer={this.getAttachmentSkjemanummer()}
                             onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak: sykdomsårsak! })}
                         />
                     </Block>
