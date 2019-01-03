@@ -1,7 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
-import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
 import { skalKunneSøkeOmEndring } from '../../util/saker/sakerUtils';
@@ -14,7 +13,7 @@ function* getSaker() {
         const saker: Sak[] = response.data;
         const nyesteSak = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0];
 
-        if (skalKunneSøkeOmEndring(nyesteSak)) {
+        if (nyesteSak !== undefined && skalKunneSøkeOmEndring(nyesteSak)) {
             yield put(
                 apiActions.updateApi({
                     sakForEndringssøknad: nyesteSak
@@ -22,9 +21,11 @@ function* getSaker() {
             );
         }
     } catch (error) {
-        if (error.response && error.response.status === 401) {
-            redirectToLogin();
-        }
+        yield put(
+            apiActions.updateApi({
+                oppslagSakerFeilet: true
+            })
+        );
     } finally {
         yield put(
             apiActions.updateApi({
