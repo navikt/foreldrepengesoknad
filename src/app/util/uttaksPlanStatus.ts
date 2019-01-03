@@ -4,12 +4,15 @@ import {
     Uttaksperiode,
     StønadskontoType,
     isUttaksperiode,
-    Periodetype
+    Periodetype,
+    Oppholdsperiode,
+    OppholdÅrsakType
 } from '../types/uttaksplan/periodetyper';
 import { Stønadskontouttak } from '../components/uttaksoppsummering/Uttaksoppsummering';
 import { Forelder } from 'common/types';
 import { Perioden } from './uttaksplan/Perioden';
 import { getFloatFromString } from 'common/util/numberUtils';
+import { Periodene } from './uttaksplan/Periodene';
 
 export const finnAntallDagerÅTrekke = (dager: number, p: Periode): number => {
     if (isUttaksperiode(p)) {
@@ -35,10 +38,13 @@ export const beregnGjenståendeUttaksdager = (
     uttaksplan: Periode[],
     beregnDagerBrukt: boolean
 ): Stønadskontouttak[] => {
+    const uttakFraOppholdsperiode: Periode[] = getUttakFraOppholdsperioder(Periodene(uttaksplan).getOpphold());
+    const alleUttakIUttaksplan = [...uttaksplan, ...uttakFraOppholdsperiode];
+
     return tilgjengeligeStønadskontoer.map((konto): Stønadskontouttak => {
         let forelder: Forelder | undefined;
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
-        const uttaksplanPerioder = uttaksplan.filter((p: Uttaksperiode) => p.konto === konto.konto);
+        const uttaksplanPerioder = alleUttakIUttaksplan.filter((p: Uttaksperiode) => p.konto === konto.konto);
 
         if (konto.konto === StønadskontoType.Mødrekvote) {
             forelder = Forelder.MOR;
@@ -68,4 +74,35 @@ export const beregnGjenståendeUttaksdager = (
             forelder: forelder ? forelder : undefined
         };
     });
+};
+
+const getUttakFraOppholdsperioder = (oppholdsperioder: Oppholdsperiode[]): Uttaksperiode[] => {
+    if (oppholdsperioder.length === 0) {
+        return [];
+    }
+    return oppholdsperioder.map((opphold) => mapOppholdsperiodeTilUttaksperiode(opphold));
+};
+
+const mapOppholdsperiodeTilUttaksperiode = (opphold: Oppholdsperiode): Uttaksperiode => {
+    const konto: StønadskontoType = getStønadskontotypeFromOppholdsårsak(opphold.årsak);
+    return {
+        id: opphold.id,
+        tidsperiode: opphold.tidsperiode,
+        type: Periodetype.Uttak,
+        konto,
+        forelder: opphold.forelder
+    };
+};
+
+const getStønadskontotypeFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
+    switch (årsak) {
+        case OppholdÅrsakType.UttakFedrekvoteAnnenForelder:
+            return StønadskontoType.Fedrekvote;
+        case OppholdÅrsakType.UttakFellesperiodeAnnenForelder:
+            return StønadskontoType.Fellesperiode;
+        case OppholdÅrsakType.UttakFlerbarnsukerAnnenForelder:
+            return StønadskontoType.Foreldrepenger;
+        case OppholdÅrsakType.UttakMødrekvoteAnnenForelder:
+            return StønadskontoType.Mødrekvote;
+    }
 };
