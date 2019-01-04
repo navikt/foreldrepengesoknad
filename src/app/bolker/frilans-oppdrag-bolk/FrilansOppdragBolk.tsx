@@ -92,11 +92,11 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
         const { oppdragToEdit } = this.state;
 
         return (
-            <React.Fragment>
+            <div data-name="frilansOppdragBolk">
                 {renderSpørsmål()}
                 {showOppdragsPerioderContent && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="xs" visible={oppdragListe.length > 0}>
                             <List
                                 data={oppdragListe}
                                 renderElement={(updatedOppdrag: FrilansOppdrag, index: number) => (
@@ -109,9 +109,8 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                                 )}
                             />
                         </Block>
-
-                        <Block margin="s">
-                            <Knapp onClick={() => this.openModal()} htmlType="button">
+                        <Block>
+                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilFrilansOppdrag">
                                 <FormattedMessage id="frilansOppdrag.leggTilOppdrag" />
                             </Knapp>
                         </Block>
@@ -133,7 +132,7 @@ class FrilansOppdragBolk extends React.Component<FrilansOppdragBolkProps, Frilan
                     onEdit={this.onEditSubmit}
                     editMode={oppdragToEdit !== undefined}
                 />
-            </React.Fragment>
+            </div>
         );
     }
 }

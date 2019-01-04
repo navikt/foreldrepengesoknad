@@ -1,10 +1,11 @@
-import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { History } from 'history';
+import { MissingAttachment } from '../../../types/MissingAttachment';
 
 export enum ApiActionKeys {
     'GET_SØKERINFO' = 'getSøkerinfo',
+    'GET_SAKER' = 'getSaker',
 
     'GET_STORED_APP_STATE' = 'getStoredAppState',
     'DELETE_STORED_APP_STATE' = 'deleteStoredAppState',
@@ -29,6 +30,10 @@ export interface GetSøkerinfo {
     history: History;
 }
 
+export interface GetSaker {
+    type: ApiActionKeys.GET_SAKER;
+}
+
 export interface GetTilgjengeligeStønadskontoer {
     type: ApiActionKeys.GET_TILGJENGELIGE_STØNADSKONTOER;
     params: GetTilgjengeligeStønadskontoerParams;
@@ -47,7 +52,7 @@ export interface GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag {
 
 export interface SendSøknad {
     type: ApiActionKeys.SEND_SØKNAD;
-    søknad: Søknad;
+    missingAttachments: MissingAttachment[];
     history: History;
 }
 
@@ -67,6 +72,7 @@ export interface StoreAppState {
 export type ApiActionTypes =
     | DeleteStoredAppState
     | GetSøkerinfo
+    | GetSaker
     | GetStoredAppState
     | GetTilgjengeligeStønadskontoer
     | GetTilgjengeligeStønadskontoerAndLagUttaksplanForslag

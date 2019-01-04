@@ -14,13 +14,13 @@ export interface SetUttaksplanValidering {
     validertePerioder: { [periodeId: string]: ValidertPeriode };
     inneholderPerioder: boolean;
     stønadskontoerMedForMyeUttak: Stønadskontouttak[];
-    førsteUttakErInnenforSeksUker: boolean;
     morHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     farHarSøktUgyldigUtsettelseFørsteSeksUker: boolean;
     uttaksmengdeForFarMedmorForHøy: boolean;
     uttakErBareOpphold: boolean;
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;
+    uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
 }
 
 export type UttaksplanValideringActionTypes = SetUttaksplanValidering | ValiderUttaksplanAction;

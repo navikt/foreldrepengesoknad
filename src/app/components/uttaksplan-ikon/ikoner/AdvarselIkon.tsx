@@ -23,7 +23,7 @@ const AdvarselIkon = (props: Props) => {
                 <mask id="advarsel-b" fill="#fff">
                     <use xlinkHref="#advarsel-a" />
                 </mask>
-                <g fill={farge} mask="url(#advarsel-b)" stroke="#000000" strokeWidth="1">
+                <g fill={farge} mask="url(#advarsel-b)">
                     <path d="M0 24h24V0H0z" />
                 </g>
             </g>

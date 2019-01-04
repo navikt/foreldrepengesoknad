@@ -6,6 +6,7 @@ import storageSaga from './storageSaga';
 import søknadSaga from './søknadSaga';
 import uttakSaga from './uttakSaga';
 import uttaksplanValideringSaga from './uttaksplanValideringSaga';
+import sakerSaga from './sakerSaga';
 
 export default function* rootSaga() {
     yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
         storageSaga(),
         søknadSaga(),
         uttakSaga(),
-        uttaksplanValideringSaga()
+        uttaksplanValideringSaga(),
+        sakerSaga()
     ]);
 }

@@ -8,24 +8,33 @@ import Block from 'common/components/block/Block';
 import LinkButton from '../link-button/LinkButton';
 import FamiliehendelsedatoInfo from './FamiliehendelsedatoInfo';
 import Søknad from '../../types/søknad/Søknad';
-import { NavnPåForeldre, Forelder } from 'common/types';
+import { Forelder } from 'common/types';
 import { UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { Knapp } from 'nav-frontend-knapper';
 import NyPeriodeForm from '../ny-periode-form/NyPeriodeForm';
 import FocusContainer from '../focus-container/FocusContainer';
-
-import './uttaksplanlegger.less';
 import TomUttaksplanInfo from '../tom-uttaksplan-info/TomUttaksplanInfo';
 import HjerteIkon from '../uttaksplan-ikon/ikoner/HjerteIkon';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
 import { Periodene } from '../../util/uttaksplan/Periodene';
+import { Søknadsinfo } from '../../selectors/types';
+import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { formaterDatoUtenDag } from 'common/util/datoUtils';
+import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
+import TapteUttaksdagerFarMedmor from './meldinger/TapteUttaksdagerFarMedmor';
 
-export interface Props {
+import './uttaksplanlegger.less';
+import AdvarselIkon from '../uttaksplan-ikon/ikoner/AdvarselIkon';
+import { PeriodelisteInformasjon } from '../periodeliste/items/PeriodelisteInfo';
+import getMessage from 'common/util/i18nUtils';
+
+interface OwnProps {
     søknad: Søknad;
+    søknadsinfo: Søknadsinfo;
     uttaksplanValidering: UttaksplanValideringState;
-    navnPåForeldre: NavnPåForeldre;
     lastAddedPeriodeId: string | undefined;
     forelder: Forelder;
     onAdd: (periode: Periode) => void;
@@ -34,9 +43,11 @@ export interface Props {
     onRequestReset?: () => void;
 }
 
+type Props = OwnProps & InjectedIntlProps;
+
 interface State {
     periodetype?: Periodetype;
-    tidsperiode?: Tidsperiode;
+    tidsperiode?: Partial<Tidsperiode>;
     formIsOpen: boolean;
 }
 
@@ -72,7 +83,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
     }
 
-    openForm(periodetype: Periodetype, tidsperiode?: Tidsperiode) {
+    openForm(periodetype: Periodetype, tidsperiode?: Partial<Tidsperiode>) {
         this.setState({
             formIsOpen: true,
             periodetype,
@@ -106,8 +117,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.openForm(Periodetype.Utsettelse, tidsperiode);
     }
 
-    openNyUttaksperiodeForm(tidsperiode?: Tidsperiode) {
+    openNyUttaksperiodeForm() {
         this.lukkPeriodeliste();
+        const tidsperiode: Partial<Tidsperiode> | undefined =
+            this.props.søknad.uttaksplan.length > 0
+                ? {
+                      fom: Periodene(this.props.søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()
+                  }
+                : undefined;
+
         this.openForm(Periodetype.Uttak, tidsperiode);
     }
 
@@ -143,16 +161,46 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         const {
             søknad,
             uttaksplanValidering,
-            navnPåForeldre,
+            søknadsinfo,
             onRequestReset,
             lastAddedPeriodeId,
-            forelder
+            forelder,
+            intl
         } = this.props;
         const { barn, uttaksplan } = søknad;
-        const søkersituasjon = søknad.situasjon;
-        const erMorUfør = søknad.annenForelder.erUfør;
         const { formIsOpen, periodetype } = this.state;
         const antallFeriedager = Periodene(uttaksplan).getAntallFeriedager(forelder);
+
+        const infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor = getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor(
+            uttaksplan,
+            søknadsinfo.søknaden.familiehendelsesdato,
+            søknadsinfo.søker.erFarEllerMedmor,
+            søknadsinfo.mor.harRett === false,
+            søknadsinfo.mor.erUfør
+        );
+
+        const infoItems: PeriodelisteInformasjon[] = [];
+
+        if (infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor) {
+            infoItems.push({
+                id: 'infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor',
+                ikon: <AdvarselIkon />,
+                tittel: getMessage(intl, 'periodeliste.hull.tittel'),
+                beskrivelse: getMessage(intl, 'periodeliste.hull.beskrivelse', {
+                    dager: infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor.antallUttaksdagerTapt
+                }),
+                renderContent: () => (
+                    <TapteUttaksdagerFarMedmor
+                        info={infoOmTaptUttakVedUttakEtterSeksUkerFarMedmor}
+                        onLeggTilOpphold={this.settInnNyttOpphold}
+                    />
+                )
+            });
+        }
+
+        const informerOmNårPeriodenBegynnerÅLøpe =
+            uttaksplan.length === 0 && søknadsinfo.mor.harRett === false && søknadsinfo.søker.erFarEllerMedmor === true;
+
         return (
             <section>
                 <Block>
@@ -178,14 +226,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                     aria-hidden={true}>
                                     <HjerteIkon fylt={true} title="Hjerte" />
                                 </span>
-                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søkersituasjon} />
+                                <FamiliehendelsedatoInfo barn={barn} søkersituasjon={søknadsinfo.søknaden.situasjon} />
                             </span>
                         </header>
                         <Block visible={uttaksplan.length > 0}>
                             <Periodeliste
                                 ref={(c) => (this.periodeliste = c)}
                                 perioder={uttaksplan}
-                                navnPåForeldre={navnPåForeldre}
+                                informasjon={infoItems}
+                                navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                                 uttaksplanValidering={uttaksplanValidering}
                                 lastAddedPeriodeId={lastAddedPeriodeId}
                                 onLeggTilOpphold={this.settInnNyttOpphold}
@@ -194,15 +243,31 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                                 antallFeriedager={antallFeriedager}
                             />
                         </Block>
-                        <Block visible={uttaksplan.length === 0} margin="xl">
-                            <TomUttaksplanInfo />
+                        <Block visible={uttaksplan.length === 0}>
+                            <Block margin="l">
+                                <TomUttaksplanInfo />
+                            </Block>
+                            <Block visible={informerOmNårPeriodenBegynnerÅLøpe} margin="none">
+                                <Veilederinfo>
+                                    <FormattedMessage
+                                        id="uttaksplan.infoVedTapteUttaksdager.tomUttaksplan"
+                                        values={{
+                                            dato: formaterDatoUtenDag(
+                                                Uttaksdagen(
+                                                    søknadsinfo.uttaksdatoer.etterFødsel.sisteUttaksdagInnenforSeksUker
+                                                ).neste()
+                                            )
+                                        }}
+                                    />
+                                </Veilederinfo>
+                            </Block>
                         </Block>
                         <Block visible={formIsOpen}>
                             {periodetype !== undefined && (
                                 <FocusContainer ref={(c) => (this.nyPeriodeForm = c)}>
                                     <NyPeriodeForm
                                         antallFeriedager={antallFeriedager}
-                                        erMorUfør={erMorUfør}
+                                        erMorUfør={søknadsinfo.mor.erUfør}
                                         periodetype={periodetype}
                                         forelder={forelder}
                                         onSubmit={this.handleOnSubmit}
@@ -237,4 +302,4 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         );
     }
 }
-export default Uttaksplanlegger;
+export default injectIntl(Uttaksplanlegger);

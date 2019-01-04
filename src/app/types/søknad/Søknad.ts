@@ -9,6 +9,7 @@ import { Periode } from '../uttaksplan/periodetyper';
 import { Dekningsgrad } from 'common/types';
 import { UttaksplanSkjemadata } from '../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../util/routing/stegConfig';
+import { Omit } from 'react-redux';
 
 type Foreldrepenger = 'foreldrepenger';
 
@@ -33,18 +34,19 @@ export interface SøknadenGjelderBarnValg {
 }
 
 interface SensitivSkjemaInfo {
-    søknadenGjelderBarnValg: SøknadenGjelderBarnValg;
     registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
 interface SkjemaEkstrainfo {
+    currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
-    currentStegID: StegID | undefined;
+    søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
 }
 
 interface Søknad {
     type: Foreldrepenger;
+    saksnummer?: string;
     erEndringssøknad: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
@@ -60,8 +62,11 @@ interface Søknad {
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
+export type SøknadForInnsending = Omit<Søknad, 'ekstrainfo' | 'sensitivInfoIkkeLagre'>;
+
 export interface SøknadPartial {
     type?: Foreldrepenger;
+    saksnummer?: string;
     erEndringssøknad?: boolean;
     harGodkjentVilkår: boolean;
     harGodkjentOppsummering: boolean;
@@ -79,8 +84,6 @@ export interface SøknadPartial {
 
 export enum Skjemanummer {
     DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL = 'I000041',
-    BEKREFTELSE_FRA_ARBEIDSGIVER = 'I000065',
-    INNTEKTSOPPLYSNINGER = 'I000026',
     ETTERLØNN_ELLER_SLUTTVEDERLAG = 'I000044',
     OMSORGSOVERTAKELSESDATO = 'I000042',
     ANNET = 'I000060',

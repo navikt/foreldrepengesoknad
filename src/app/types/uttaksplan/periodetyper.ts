@@ -43,6 +43,7 @@ export enum Arbeidsform {
 
 export enum OppholdÅrsakType {
     'UttakFellesperiodeAnnenForelder' = 'UTTAK_FELLESP_ANNEN_FORELDER',
+    'UttakFlerbarnsukerAnnenForelder' = 'UTTAK_FLERBARN_ANNEN_FORELDER',
     'UttakFedrekvoteAnnenForelder' = 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
     'UttakMødrekvoteAnnenForelder' = 'UTTAK_MØDREKVOTE_ANNEN_FORELDER'
 }
@@ -81,10 +82,11 @@ export interface UttaksperiodeBase extends PeriodeBase {
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
     ønskerSamtidigUttak?: boolean;
+    samtidigUttakProsent?: string;
     gradert?: boolean;
     stillingsprosent?: string;
-    orgnr?: string;
-    arbeidsform?: Arbeidsform;
+    orgnumre?: string[];
+    arbeidsformer?: Arbeidsform[];
     erArbeidstaker?: boolean;
     harIkkeAktivitetskrav?: boolean;
     vedlegg?: Attachment[];
@@ -104,9 +106,9 @@ export interface Utsettelsesperiode extends PeriodeBase {
     årsak: UtsettelseÅrsakType;
     forelder: Forelder;
     morsAktivitetIPerioden?: MorsAktivitet;
-    orgnr?: string;
+    orgnumre?: string[];
     erArbeidstaker: boolean;
-    arbeidsform?: Arbeidsform;
+    arbeidsformer?: Arbeidsform[];
 }
 
 export interface Oppholdsperiode extends PeriodeBase {
@@ -136,11 +138,16 @@ export enum MorsAktivitet {
     'Introduksjonsprogrammet' = 'INTROPROG',
     'TrengerHjelp' = 'TRENGER_HJELP',
     'Innlagt' = 'INNLAGT',
-    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING'
+    'ArbeidOgUtdanning' = 'ARBEID_OG_UTDANNING',
+    'Uføre' = 'UFØRE'
 }
 
 export function isUttaksperiode(periode: Periode | RecursivePartial<Periode>): periode is Uttaksperiode {
     return periode.type === Periodetype.Uttak;
+}
+
+export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode>): periode is Utsettelsesperiode {
+    return periode.type === Periodetype.Utsettelse;
 }
 
 export function isForeldrepengerFørFødselUttaksperiode(

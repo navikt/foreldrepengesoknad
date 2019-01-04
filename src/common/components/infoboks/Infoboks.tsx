@@ -12,6 +12,7 @@ import './infoboks.less';
 interface InfoboksProps {
     tekst: string | React.ReactNode;
     stil?: Stil;
+    contentFullWidth?: boolean;
 }
 
 interface InfoboksState {
@@ -38,7 +39,7 @@ class Infoboks extends React.Component<Props, InfoboksState> {
     }
 
     render() {
-        const { tekst, stil = 'info', intl } = this.props;
+        const { tekst, stil = 'info', contentFullWidth, intl } = this.props;
         const { isExpanded } = this.state;
 
         const ikon = isExpanded ? <LukkInfoIkon /> : <InfoIkon />;
@@ -56,7 +57,8 @@ class Infoboks extends React.Component<Props, InfoboksState> {
                 <Collapse
                     hasNestedCollapse={true}
                     className={classNames('infoboks', {
-                        'infoboks--open': isExpanded
+                        'infoboks--open': isExpanded,
+                        'infoboks__content--fullWidth': contentFullWidth
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>

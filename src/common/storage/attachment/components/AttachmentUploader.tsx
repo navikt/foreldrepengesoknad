@@ -45,12 +45,14 @@ export default class AttachmentsUploader extends React.Component<AttachmentsUplo
         );
     }
 
-    onFileDelete(file: Attachment) {
+    onFileDelete(files: Attachment[]) {
         const { onFileDeleteStart, onFileDeleteFinish } = this.props;
-        file.pending = true;
-        onFileDeleteStart(file);
-        AttachmentApi.deleteAttachment(file).then(() => {
-            onFileDeleteFinish(file);
+        files.forEach((file: Attachment) => {
+            file.pending = true;
+            onFileDeleteStart(file);
+            AttachmentApi.deleteAttachment(file).then(() => {
+                onFileDeleteFinish(file);
+            });
         });
     }
 

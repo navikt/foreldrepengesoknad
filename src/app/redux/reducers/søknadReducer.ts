@@ -2,12 +2,6 @@ import moment from 'moment';
 import { SøknadAction, SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import Søknad, { SøknadPartial } from '../../types/søknad/Søknad';
 import { addAttachmentToState, editAttachmentInState, removeAttachmentFromState } from '../util/attachmentStateUpdates';
-import {
-    getBarnInfoFraRegistrertBarnValg,
-    getUniqeRegistrertAnnenForelderFromBarn
-} from '../../util/validation/steg/barn';
-import { RegistrertAnnenForelder } from '../../types/Person';
-import { AnnenForelderPartial } from '../../types/søknad/AnnenForelder';
 import { lagUttaksplan } from '../../util/uttaksplan/forslag/lagUttaksplan';
 import { sorterPerioder } from '../../util/uttaksplan/Periodene';
 import { UttaksplanBuilder } from '../../util/uttaksplan/builder/UttaksplanBuilder';
@@ -15,10 +9,17 @@ import { isForeldrepengerFørFødselUttaksperiode, Periode } from '../../types/u
 import { getFamiliehendelsedato } from '../../util/uttaksplan';
 import { Barn } from '../../types/søknad/Barn';
 import { guid } from 'nav-frontend-js-utils';
+import {
+    getBarnInfoFraRegistrertBarnValg,
+    getUniqeRegistrertAnnenForelderFromBarn
+} from '../../util/validation/steg/barn';
+import { RegistrertAnnenForelder } from '../../types/Person';
+import AnnenForelder from '../../types/søknad/AnnenForelder';
 
-const getDefaultState = (): SøknadPartial => {
+export const getDefaultSøknadState = (): SøknadPartial => {
     return {
         type: 'foreldrepenger',
+        saksnummer: undefined,
         annenForelder: {
             kanIkkeOppgis: false
         },
@@ -37,23 +38,14 @@ const getDefaultState = (): SøknadPartial => {
             uttaksplanSkjema: {
                 startdatoPermisjon: undefined
             },
-            currentStegID: undefined
-        },
-        sensitivInfoIkkeLagre: {
+            currentStegID: undefined,
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
             }
         },
+        sensitivInfoIkkeLagre: {},
         uttaksplan: []
-    };
-};
-
-const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): AnnenForelderPartial => {
-    return {
-        fnr: registertForelder.fnr,
-        fornavn: registertForelder.fornavn,
-        etternavn: registertForelder.etternavn
     };
 };
 
@@ -67,17 +59,15 @@ const removeEkstrauttakFørTermin = (state: SøknadPartial) => {
     );
 };
 
-const handleGjelderAnnetBarn = (
-    annenForelder: AnnenForelderPartial,
-    gjelderAnnetBarn?: boolean
-): AnnenForelderPartial => {
-    if (gjelderAnnetBarn) {
-        return { ...annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined };
-    }
-    return annenForelder;
+const getAnnenForelderFromRegistrertForelder = (registertForelder: RegistrertAnnenForelder): Partial<AnnenForelder> => {
+    return {
+        fnr: registertForelder.fnr,
+        fornavn: registertForelder.fornavn,
+        etternavn: registertForelder.etternavn
+    };
 };
 
-const søknadReducer = (state = getDefaultState(), action: SøknadAction): SøknadPartial => {
+const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction): SøknadPartial => {
     const getBuilder = (perioder?: Periode[]) => {
         return UttaksplanBuilder(
             perioder || state.uttaksplan,
@@ -87,7 +77,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
     switch (action.type) {
         case SøknadActionKeys.AVBRYT_SØKNAD:
             return {
-                ...getDefaultState()
+                ...getDefaultSøknadState()
             };
         case SøknadActionKeys.UPDATE_SØKNAD:
             return {
@@ -96,7 +86,7 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
             };
         case SøknadActionKeys.SET_SØKNAD:
             return {
-                ...getDefaultState(),
+                ...getDefaultSøknadState(),
                 ...action.payload
             };
         case SøknadActionKeys.UPDATE_BARN:
@@ -126,25 +116,30 @@ const søknadReducer = (state = getDefaultState(), action: SøknadAction): Søkn
                 }
             };
         case SøknadActionKeys.UPDATE_SØKNADEN_GJELDER_BARN: {
-            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(action.payload.valgteBarn);
-            const gjelderAnnetBarn = action.payload.gjelderAnnetBarn;
-            const barn = getBarnInfoFraRegistrertBarnValg(action.payload.gjelderAnnetBarn, action.payload.valgteBarn);
-            const updatedState: SøknadPartial = {
+            const { gjelderAnnetBarn, valgteBarn } = action.payload;
+            const barn = getBarnInfoFraRegistrertBarnValg(gjelderAnnetBarn, valgteBarn);
+            const registrertAnnenForelder = getUniqeRegistrertAnnenForelderFromBarn(valgteBarn);
+
+            return {
                 ...state,
                 barn,
                 annenForelder: registrertAnnenForelder
                     ? {
                           ...state.annenForelder,
-                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder)
+                          ...getAnnenForelderFromRegistrertForelder(registrertAnnenForelder),
+                          kanIkkeOppgis: getDefaultSøknadState().annenForelder.kanIkkeOppgis
                       }
-                    : handleGjelderAnnetBarn(state.annenForelder, gjelderAnnetBarn),
+                    : gjelderAnnetBarn
+                        ? { ...state.annenForelder, fnr: undefined, fornavn: undefined, etternavn: undefined }
+                        : state.annenForelder,
+                ekstrainfo: {
+                    ...state.ekstrainfo,
+                    søknadenGjelderBarnValg: action.payload
+                },
                 sensitivInfoIkkeLagre: {
-                    ...state.sensitivInfoIkkeLagre,
-                    søknadenGjelderBarnValg: action.payload,
                     registrertAnnenForelder
                 }
             };
-            return updatedState;
         }
 
         case SøknadActionKeys.UTTAKSPLAN_SET_PERIODER:

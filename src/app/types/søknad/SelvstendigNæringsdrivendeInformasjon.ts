@@ -1,5 +1,4 @@
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 export enum Næringstype {
     'FISKER' = 'FISKE',
@@ -11,7 +10,7 @@ export enum Næringstype {
 export class Næring {
     næringstyper: Næringstype[];
     tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
-    næringsinntekt: string;
+    næringsinntekt: number;
     pågående: boolean;
     navnPåNæringen: string;
     organisasjonsnummer: string;
@@ -27,12 +26,11 @@ export class Næring {
     harRevisor: boolean;
     revisor: Næringsrelasjon;
     kanInnhenteOpplsyningerFraRevisor: boolean;
-    vedlegg: Attachment[];
 }
 
 export class EndringAvNæringsinntektInformasjon {
     dato: Date;
-    næringsinntektEtterEndring: string;
+    næringsinntektEtterEndring: number;
     forklaring: string;
 }
 

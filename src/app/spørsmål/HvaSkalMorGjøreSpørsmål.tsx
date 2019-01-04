@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
 import Select from 'common/components/skjema/wrappers/Select';
 import getMessage from 'common/util/i18nUtils';
@@ -7,6 +7,7 @@ import { SelectChangeEvent } from '../types/dom/Events';
 import { NavnPåForeldre } from 'common/types';
 import Block from 'common/components/block/Block';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import lenker from '../util/routing/lenker';
 
 interface HvaSkalMorGjøreSpørsmålProps {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -101,11 +102,13 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
 
     renderOptions() {
         const { intl } = this.props;
-        return Object.keys(MorsAktivitet).map((aktivitetsid) => (
-            <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
-                {getMessage(intl, `morsAktivitet.${aktivitetsid}`)}
-            </option>
-        ));
+        return Object.keys(MorsAktivitet)
+            .filter((aktivitetsid) => MorsAktivitet[aktivitetsid] !== MorsAktivitet.Uføre)
+            .map((aktivitetsid) => (
+                <option value={MorsAktivitet[aktivitetsid]} key={MorsAktivitet[aktivitetsid]}>
+                    {getMessage(intl, `morsAktivitet.${aktivitetsid}`)}
+                </option>
+            ));
     }
     render() {
         const { intl, navnPåForeldre, morsAktivitetIPerioden, onChange } = this.props;
@@ -122,7 +125,10 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                         onChange={(e: SelectChangeEvent) => onChange(e.target.value as MorsAktivitet)}
                         validators={[
                             {
-                                test: () => morsAktivitetIPerioden !== undefined && morsAktivitetIPerioden.length > 0,
+                                test: () =>
+                                    morsAktivitetIPerioden !== undefined &&
+                                    morsAktivitetIPerioden !== MorsAktivitet.Uføre &&
+                                    morsAktivitetIPerioden.length > 0,
                                 failText: getMessage(intl, 'påkrevd')
                             }
                         ]}>
@@ -131,7 +137,10 @@ class HvaSkalMorGjøreSpørsmål extends React.Component<Props> {
                     </Select>
                 </Block>
                 <Block visible={visVeileder} margin="none">
-                    <Veilederinfo>{this.getVeilederTekst()}</Veilederinfo>
+                    <Veilederinfo>
+                        <span>{this.getVeilederTekst()}</span>
+                        <FormattedHTMLMessage id="aktivitetskrav.lesmer" values={{ link: lenker.morsAktivitetskrav }} />
+                    </Veilederinfo>
                 </Block>
             </>
         );

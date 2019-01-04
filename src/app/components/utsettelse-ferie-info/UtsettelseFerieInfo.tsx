@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { Permisjonsregler } from '../../types/uttaksplan/permisjonsregler';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVarighetString } from 'common/util/intlUtils';
@@ -19,7 +19,7 @@ const Ferieinfo: React.StatelessComponent<Props & InjectedIntlProps> = ({
     if (feriedager <= permisjonsregler.maksFeriedagerEttÅr) {
         return (
             <Veilederinfo>
-                <FormattedMessage id="utsettelseskjema.veiledning.ferie" />
+                <FormattedHTMLMessage tagName="div" id="utsettelseskjema.veiledning.ferie" />
             </Veilederinfo>
         );
     }

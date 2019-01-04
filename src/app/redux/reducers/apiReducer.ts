@@ -2,32 +2,41 @@ import { ApiActionKeys, ApiActionTypes } from '../actions/api/apiActionDefinitio
 import { Kvittering } from '../../types/Kvittering';
 import { Søkerinfo } from '../../types/søkerinfo';
 import { TilgjengeligStønadskonto } from '../../types/uttaksplan/periodetyper';
+import Sak from '../../types/søknad/Sak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
+    sakForEndringssøknad?: Sak;
+    isLoadingInitialAppData: boolean;
     isLoadingSøkerinfo: boolean;
-    isLoadingAppState: boolean;
+    isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    isLoadingSaker: boolean;
+    oppslagSakerFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     kvittering?: Kvittering;
     dekningsgrad100AntallUker?: number;
     dekningsgrad80AntallUker?: number;
+    fellesPeriodeUkerDekningsgrad100?: number;
+    fellesPeriodeUkerDekningsgrad80?: number;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
 
-const getDefaultState = (): ApiState => ({
-    isLoadingSøkerinfo: true,
-    isLoadingAppState: true,
+export const getDefaultApiState = (): ApiState => ({
+    isLoadingInitialAppData: true,
+    isLoadingSøkerinfo: false,
+    isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
+    isLoadingSaker: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
     tilgjengeligeStønadskontoer: []
 });
 
-const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiStatePartial => {
+const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
     switch (action.type) {
         case ApiActionKeys.UPDATE_API:
             return {
@@ -42,12 +51,12 @@ const apiReducer = (state = getDefaultState(), action: ApiActionTypes): ApiState
         case ApiActionKeys.GET_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
         case ApiActionKeys.DELETE_STORED_APP_STATE:
             return {
                 ...state,
-                isLoadingAppState: true
+                isLoadingStoredAppState: true
             };
     }
     return state;

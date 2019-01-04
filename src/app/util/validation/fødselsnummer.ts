@@ -1,6 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
+import { hasValueRule } from './common';
 const isValidFødselsnummer = require('is-valid-fodselsnummer');
 
 const MAKS_FNR_LENGTH = 30;
@@ -25,6 +26,7 @@ export const getFødselsnummerRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.fødselsnummer';
     return [
+        hasValueRule(fnr, getMessage(intl, `${intlKey}.required`)),
         {
             test: () =>
                 (!utenlandskFnr && isFødselsnummerFormatValid(fnr)) ||

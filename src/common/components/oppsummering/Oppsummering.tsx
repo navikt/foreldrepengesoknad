@@ -22,12 +22,13 @@ interface OppsummeringProps {
     søkerinfo: Søkerinfo;
     søknad: Søknad;
     uttaksplanValidering: UttaksplanValideringState;
+    antallUkerUttaksplan: number;
 }
 
 type Props = OppsummeringProps & InjectedIntlProps;
 class Oppsummering extends React.Component<Props> {
     render() {
-        const { søkerinfo, søknad, uttaksplanValidering, intl } = this.props;
+        const { søkerinfo, søknad, uttaksplanValidering, antallUkerUttaksplan, intl } = this.props;
         const { person } = søkerinfo;
         return (
             <Block margin="m">
@@ -93,6 +94,7 @@ class Oppsummering extends React.Component<Props> {
                             registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
                             uttaksplanValidering={uttaksplanValidering}
                             dekningsgrad={søknad.dekningsgrad}
+                            antallUkerUttaksplan={antallUkerUttaksplan}
                         />
                     </Oppsummeringspanel>
                 </div>
