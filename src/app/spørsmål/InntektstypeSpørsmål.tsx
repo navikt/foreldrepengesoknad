@@ -24,8 +24,8 @@ class InntektstypeSpørsmål extends React.Component<Props> {
         return [
             { value: AnnenInntektType.JOBB_I_UTLANDET, label: getMessage(intl, 'inntektstype.jobb_i_utlandet') },
 
-            { value: AnnenInntektType.VENTELØNN, label: getMessage(intl, 'inntektstype.ventelønn') },
-            { value: AnnenInntektType.SLUTTPAKKE, label: getMessage(intl, 'inntektstype.etterlønn_arbeidsgiver') },
+            { value: AnnenInntektType.VENTELØNN, label: getMessage(intl, 'inntektstype.ventelønn_vartpenger') },
+            { value: AnnenInntektType.SLUTTPAKKE, label: getMessage(intl, 'inntektstype.etterlønn_sluttpakke') },
             {
                 value: AnnenInntektType.MILITÆRTJENESTE,
                 label: getMessage(intl, 'inntektstype.militær_eller_siviltjeneste')
