@@ -8,7 +8,7 @@ import {
     Oppholdsperiode,
     Periodetype
 } from '../../types/uttaksplan/periodetyper';
-// import aktivitetskravMorUtil from '../../util/domain/aktivitetskravMor';
+import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -34,28 +34,25 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    // SøknadsXML støtter ikke enda at en utsettelse skal ha aktivitetskrav til mor. Legg tilbake denne koden når det er implementert
+    const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
+    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+        søkerErFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger
+    );
+
+    if (variant === undefined || erRelevant === false) {
+        return false;
+    }
+    if (periode.type === Periodetype.Utsettelse) {
+        if (
+            variant === Utsettelsesvariant.Ferie ||
+            (variant === Utsettelsesvariant.Arbeid && harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)) ||
+            (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak))
+        ) {
+            return true;
+        }
+    }
     return false;
-
-    // const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
-    // const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-    //     søkerErFarEllerMedmor,
-    //     annenForelderHarRettPåForeldrepenger
-    // );
-
-    // if (variant === undefined || erRelevant === false) {
-    //     return false;
-    // }
-    // if (periode.type === Periodetype.Utsettelse) {
-    //     if (
-    //         variant === Utsettelsesvariant.Ferie ||
-    //         (variant === Utsettelsesvariant.Arbeid && harRegistrertArbeidOk(variant, periode)) ||
-    //         (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak))
-    //     ) {
-    //         return true;
-    //     }
-    // }
-    // return false;
 };
 
 const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: Utsettelsesperiode) => {
