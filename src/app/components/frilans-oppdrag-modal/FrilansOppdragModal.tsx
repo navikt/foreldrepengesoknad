@@ -6,13 +6,15 @@ import { Undertittel } from 'nav-frontend-typografi';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import Knapperad from 'common/components/knapperad/Knapperad';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import BEMHelper from 'common/util/bem';
 import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
+import Input from 'common/components/skjema/wrappers/Input';
+import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;
@@ -93,15 +95,17 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                         <Input
                             label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
                             value={oppdrag.navnPåArbeidsgiver || ''}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            onChange={(value: string) =>
                                 this.updateOppdrag({
-                                    navnPåArbeidsgiver: e.target.value
+                                    navnPåArbeidsgiver: value
                                 })
                             }
+                            name="oppdragsgiverNavn"
+                            validators={getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver)}
                         />
                     </Block>
 
-                    <Block>
+                    <Block margin="xxs">
                         <TidsperiodeBolk
                             tidsperiode={oppdrag.tidsperiode || {}}
                             onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
@@ -115,6 +119,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
 
                     <Block>
                         <Checkbox
+                            name="pågåendeOppdrag"
                             checked={oppdrag.pågående || false}
                             label={getMessage(intl, 'pågående')}
                             onChange={() => {
@@ -130,10 +135,10 @@ class FrilansOppdragModal extends React.Component<Props, State> {
                     </Block>
 
                     <Knapperad>
-                        <Knapp type="standard" onClick={onRequestClose} htmlType="button">
+                        <Knapp type="standard" onClick={onRequestClose} htmlType="button" data-name="avbryt">
                             <FormattedMessage id="avbryt" />
                         </Knapp>
-                        <Hovedknapp>
+                        <Hovedknapp data-name="leggTil">
                             <FormattedMessage id="leggtil" />
                         </Hovedknapp>
                     </Knapperad>

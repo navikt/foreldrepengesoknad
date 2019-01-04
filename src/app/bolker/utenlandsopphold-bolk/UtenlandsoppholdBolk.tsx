@@ -101,7 +101,7 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
         const { oppholdToEdit } = this.state;
 
         return (
-            <>
+            <div data-type={`utenlandsoppholdBolk--${oppholdType}`}>
                 {renderSpørsmål()}
                 {showUtenlandsoppholdContent && (
                     <>
@@ -119,7 +119,10 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
                             />
                         </Block>
                         <Block margin="l">
-                            <Knapp onClick={() => this.openModal()} htmlType="button">
+                            <Knapp
+                                onClick={() => this.openModal()}
+                                htmlType="button"
+                                data-name="leggTilUtenlandsopphold">
                                 <FormattedMessage id="utenlandsopphold.leggTilLand" />
                             </Knapp>
                         </Block>
@@ -138,7 +141,7 @@ class UtenlandsoppholdBolk extends React.Component<Props, UtenlandsoppholdBolkSt
                     onEdit={this.onEdit}
                     {...utenlandsoppholdModalProps || {}}
                 />
-            </>
+            </div>
         );
     }
 }

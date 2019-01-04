@@ -34,6 +34,10 @@ router.get('/rest/storage', (req, res) => {
     res.send(MockStorage.getSoknad());
 });
 
+router.get('/rest/innsyn/saker', (req, res) => {
+    res.send(MockStorage.getSaker());
+});
+
 router.get('/rest/konto', (req, res) => {
     res.send(MockStorage.getStønadskontoer());
 });
@@ -48,6 +52,10 @@ router.delete('/rest/storage', (req, res) => {
 });
 
 router.post('/rest/soknad', (req, res) => {
+    return res.send(MockStorage.getSoknadSendt());
+});
+
+router.post('/rest/soknad/endre', (req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 

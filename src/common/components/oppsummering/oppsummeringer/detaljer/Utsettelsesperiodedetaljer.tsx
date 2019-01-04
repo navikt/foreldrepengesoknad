@@ -18,11 +18,11 @@ interface UtsettelsesperiodedetaljerProps {
 type Props = UtsettelsesperiodedetaljerProps & InjectedIntlProps;
 
 const Utsettelsesperiodedetaljer: React.StatelessComponent<Props> = ({ periode, registrerteArbeidsforhold, intl }) => {
-    const { årsak, morsAktivitetIPerioden, orgnr, arbeidsform, vedlegg } = periode;
+    const { årsak, morsAktivitetIPerioden, orgnumre, arbeidsformer, vedlegg } = periode;
 
-    let arbeidsformTekst = '';
-    if (arbeidsform) {
-        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsform, orgnr, registrerteArbeidsforhold);
+    let arbeidsformTekst: string[] = [];
+    if (arbeidsformer) {
+        arbeidsformTekst = getArbeidsformTekst(intl, arbeidsformer, orgnumre, registrerteArbeidsforhold);
     }
 
     return (

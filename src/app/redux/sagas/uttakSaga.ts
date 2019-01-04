@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { takeEvery, all, put, call, select } from 'redux-saga/effects';
 import { default as apiActions, updateApi } from '../actions/api/apiActionCreators';
 import { ApiActionKeys, GetTilgjengeligeStønadskontoer } from '../actions/api/apiActionDefinitions';
@@ -13,15 +14,59 @@ import {
     skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
 import routeConfig from '../../util/routing/routeConfig';
+import { Dekningsgrad } from 'common/types';
 
 const stateSelector = (state: AppState) => state;
 
-const opprettAktivitetsFriKonto = (kontoer: TilgjengeligStønadskonto[]): TilgjengeligStønadskonto[] => {
-    const nyeKontoer: TilgjengeligStønadskonto[] = [];
-    const aktivitetskravFrieDager = 15 * 5;
+const getAktivitetsFrieUkerForeldrepenger = (dekningsgrad: Dekningsgrad, startdatoUttak: Date): number => {
+    if (dekningsgrad === '100') {
+        return 15;
+    } else {
+        return moment(startdatoUttak).isBefore(moment(new Date(2019, 0, 1))) ? 15 : 19;
+    }
+};
 
-    nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDager });
-    nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDager });
+const getFlerbarnsuker = (dekningsgrad: Dekningsgrad, antallBarn: number): number => {
+    if (antallBarn === 2) {
+        if (dekningsgrad === '100') {
+            return 17;
+        } else {
+            return 21;
+        }
+    } else {
+        if (dekningsgrad === '100') {
+            return 46;
+        } else {
+            return 56;
+        }
+    }
+};
+
+const opprettAktivitetsFriKonto = (
+    kontoer: TilgjengeligStønadskonto[],
+    dekningsgrad: Dekningsgrad,
+    antallBarn: number,
+    startdatoUttak: Date
+): TilgjengeligStønadskonto[] => {
+    const nyeKontoer: TilgjengeligStønadskonto[] = [];
+    const aktivitetskravFrieDagerForeldrepenger = getAktivitetsFrieUkerForeldrepenger(dekningsgrad, startdatoUttak) * 5;
+
+    if (antallBarn >= 2) {
+        const flerbarnsuker = getFlerbarnsuker(dekningsgrad, antallBarn) * 5;
+
+        nyeKontoer.push({
+            ...kontoer[0],
+            dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger - flerbarnsuker
+        });
+        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
+        nyeKontoer.push({
+            konto: StønadskontoType.Flerbarnsdager,
+            dager: flerbarnsuker
+        });
+    } else {
+        nyeKontoer.push({ ...kontoer[0], dager: kontoer[0].dager - aktivitetskravFrieDagerForeldrepenger });
+        nyeKontoer.push({ konto: StønadskontoType.AktivitetsfriKvote, dager: aktivitetskravFrieDagerForeldrepenger });
+    }
 
     return nyeKontoer;
 };
@@ -61,7 +106,12 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
         if (erMorUfør === true) {
-            tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(tilgjengeligeStønadskontoer);
+            tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
+                tilgjengeligeStønadskontoer,
+                appState.søknad.dekningsgrad,
+                appState.søknad.barn.antallBarn,
+                action.params.startdatoUttak
+            );
         }
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
@@ -101,21 +151,37 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
         const stønadskontoer: StønadskontoerDTO = response.data;
         const dekningsgrad: string = action.params.dekningsgrad;
         const antallUker: number = Object.keys(stønadskontoer.kontoer)
-            .filter((konto: string) => konto !== StønadskontoType.Flerbarnsdager)
-            .reduce((sum, konto) => sum + stønadskontoer.kontoer[konto] / 5, 0);
+            .filter((konto: StønadskontoType) => konto !== StønadskontoType.Flerbarnsdager)
+            .reduce((sum: number, konto: StønadskontoType) => sum + stønadskontoer.kontoer[konto] / 5, 0);
+        const antallFellesperiodeUker: number = Object.keys(stønadskontoer.kontoer)
+            .filter(
+                (konto: StønadskontoType) =>
+                    konto === StønadskontoType.Fellesperiode || konto === StønadskontoType.Flerbarnsdager
+            )
+            .reduce((sum: number, konto: StønadskontoType) => {
+                if (konto === StønadskontoType.Fellesperiode) {
+                    return sum + stønadskontoer.kontoer[konto] / 5;
+                } else if (konto === StønadskontoType.Flerbarnsdager) {
+                    return sum - stønadskontoer.kontoer[konto] / 5;
+                } else {
+                    return 0;
+                }
+            }, 0);
 
         if (dekningsgrad === '100') {
             yield put(
                 apiActions.updateApi({
                     dekningsgrad100AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    fellesPeriodeUkerDekningsgrad100: antallFellesperiodeUker
                 })
             );
         } else {
             yield put(
                 apiActions.updateApi({
                     dekningsgrad80AntallUker: antallUker,
-                    isLoadingTilgjengeligeStønadskontoer: false
+                    isLoadingTilgjengeligeStønadskontoer: false,
+                    fellesPeriodeUkerDekningsgrad80: antallFellesperiodeUker
                 })
             );
         }

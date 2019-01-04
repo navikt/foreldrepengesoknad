@@ -73,17 +73,12 @@ export const getSkjemanummerForAndreInntekter = (annenInntektType: AnnenInntektT
             return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
         case AnnenInntektType.SLUTTPAKKE:
             return Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG;
-        case AnnenInntektType.LØNN_VED_VIDEREUTDANNING:
-            return Skjemanummer.INNTEKTSOPPLYSNINGER;
         default:
             return Skjemanummer.ANNET;
     }
 };
 
 export const isAttachmentForAnnenInntekt = (type: AttachmentType) => type === AttachmentType.ANNEN_INNTEKT;
-
-export const isAttachmentForSelvstendigNæringsdrivende = (type: AttachmentType) =>
-    type === AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE;
 
 export const isAttachmentForBarn = (type: AttachmentType) =>
     type === AttachmentType.TERMINBEKREFTELSE ||
@@ -95,6 +90,4 @@ export const isAttachmentForBarn = (type: AttachmentType) =>
 export const isAttachmentForPeriode = (type: AttachmentType) =>
     type === AttachmentType.UTSETTELSE_SYKDOM ||
     type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
-    type === AttachmentType.OVERFØRING_KVOTE ||
-    type === AttachmentType.ARBEID_VED_GRADERING ||
-    type === AttachmentType.ARBEID_VED_UTSETTELSE;
+    type === AttachmentType.OVERFØRING_KVOTE;

@@ -1,12 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-    Periode,
-    Periodetype,
-    Uttaksperiode,
-    isUttaksperiode,
-    StønadskontoType
-} from '../../types/uttaksplan/periodetyper';
+import { Periode, Periodetype, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import UtsettelsesperiodeForm, { UtsettelseFormPeriodeType } from '../utsettelse-form/UtsettelseForm';
 import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 import { RecursivePartial } from '../../types/Partial';
@@ -23,6 +17,7 @@ import PeriodeCleanup from '../../util/cleanup/periodeCleanup';
 import Søknad from '../../types/søknad/Søknad';
 import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import { UtsettelseSpørsmålVisibility } from '../utsettelse-form/utsettelseFormConfig';
+import { getPeriodeFarge } from '../../util/uttaksplan/styleUtils';
 
 interface OwnProps {
     antallFeriedager: number;
@@ -30,7 +25,7 @@ interface OwnProps {
     forelder: Forelder;
     søknad: Søknad;
     periodetype: Periodetype;
-    tidsperiode?: Tidsperiode;
+    tidsperiode?: Partial<Tidsperiode>;
     onSubmit: (periode: Periode) => void;
     onCancel: () => void;
 }
@@ -83,16 +78,6 @@ class NyPeriodeForm extends React.Component<Props, State> {
         periode: RecursivePartial<Periode>,
         visibility?: UtsettelseSpørsmålVisibility | UttakSpørsmålVisibility
     ) {
-        const { erMorUfør } = this.props;
-
-        if (isUttaksperiode(periode) && periode.konto === StønadskontoType.AktivitetsfriKvote) {
-            periode.harIkkeAktivitetskrav = erMorUfør;
-        } else {
-            if (isUttaksperiode(periode)) {
-                periode.harIkkeAktivitetskrav = false;
-            }
-        }
-
         const updatedPeriode = {
             ...this.state.periode,
             ...periode
@@ -123,7 +108,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 className={classnames(bem.className, bem.modifier(periode.type!.toLowerCase()))}
                 onSubmit={this.handleOnSubmit}>
                 <div className={bem.element('fargestrek')}>
-                    <PeriodeFargestrek periode={periode as Periode} forelder={forelder} />
+                    <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
                 </div>
                 {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
                     <>

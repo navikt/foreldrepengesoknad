@@ -4,9 +4,10 @@ import { InjectedIntl } from 'react-intl';
 import Søknad, { Søkersituasjon } from '../../types/søknad/Søknad';
 import { findOldestDate } from '../dates/dates';
 import { UfødtBarn, FødtBarn, Adopsjonsbarn, ForeldreansvarBarn, Barn } from '../../types/søknad/Barn';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
+import { getErSøkerFarEllerMedmor, formaterNavn } from '../domain/personUtil';
 import Person from '../../types/Person';
 import getMessage from 'common/util/i18nUtils';
+import { Navn } from '../../types/common';
 
 const isValidStillingsprosent = (pst: string | undefined): boolean =>
     pst !== undefined && isNaN(parseFloat(pst)) === false;
@@ -27,6 +28,23 @@ export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåFore
         return forelder === Forelder.MOR ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     }
     return forelder === Forelder.MOR ? navnPåForeldre.mor : forelder;
+};
+
+export const getNavnFromObject = ({
+    fornavn,
+    etternavn
+}: {
+    fornavn?: string;
+    etternavn?: string;
+}): Navn | undefined => {
+    if (fornavn && etternavn) {
+        return {
+            fornavn,
+            etternavn,
+            navn: formaterNavn(fornavn, etternavn)
+        };
+    }
+    return undefined;
 };
 
 export const getPeriodeForelderNavn = (periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
@@ -86,6 +104,19 @@ export const getNavnPåForeldre = (søknad: Søknad, søker: Person): NavnPåFor
     };
 };
 
+export const getUttaksprosentFromStillingsprosent = (
+    stillingsPst: number | undefined,
+    samtidigUttakPst: number | undefined
+): number | undefined => {
+    if (samtidigUttakPst) {
+        return samtidigUttakPst;
+    }
+    if (stillingsPst) {
+        return 100 - stillingsPst;
+    }
+    return undefined;
+};
+
 export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåForeldre: NavnPåForeldre): string => {
     switch (periode.type) {
         case Periodetype.Uttak:
@@ -96,7 +127,10 @@ export const getPeriodeTittel = (intl: InjectedIntl, periode: Periode, navnPåFo
                 isValidStillingsprosent(periode.stillingsprosent)
             ) {
                 return `${tittel} ${getMessage(intl, 'gradering.prosent', {
-                    stillingsprosent: prettifyProsent(periode.stillingsprosent)
+                    stillingsprosent: getUttaksprosentFromStillingsprosent(
+                        prettifyProsent(periode.stillingsprosent),
+                        periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined
+                    )
                 })}`;
             }
             return tittel;

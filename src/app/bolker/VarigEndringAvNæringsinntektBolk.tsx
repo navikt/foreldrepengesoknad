@@ -9,11 +9,14 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import VarigEndringAvNæringsinntektSpørsmål from '../spørsmål/VarigEndringAvNæringsinntektSpørsmål';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import Textarea from 'nav-frontend-skjema/lib/textarea';
-import Input from 'nav-frontend-skjema/lib/input';
-import { InputChangeEvent, TextareaChangeEvent } from '../types/dom/Events';
+import { TextareaChangeEvent } from '../types/dom/Events';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import { getTidsperiodeAvgrensningerSiste4år } from '../util/validation/andreInntekter';
+import { hasValueRule } from '../util/validation/common';
+import Input from 'common/components/skjema/wrappers/Input';
+import Textarea from 'common/components/skjema/wrappers/Textarea';
+import { getFritekstfeltRules } from '../util/validation/fritekstfelt';
+import { trimNumberFromInput } from 'common/util/numberUtils';
 
 interface VarigEndringAvNæringsinntektBolkProps {
     næring: Næring;
@@ -72,24 +75,38 @@ class VarigEndringAvNæringsinntektBolk extends React.Component<Props> {
                     </Block>
                     <Block>
                         <Input
+                            name={'inntektEtterEndring'}
                             label={getMessage(intl, 'varigEndringAvNæringsinntekt.inntektEtterEndring.label')}
-                            value={(info && info.næringsinntektEtterEndring) || ''}
-                            onChange={(e: InputChangeEvent) =>
-                                this.updateEndringAvNæringsinntektInformasjon({
-                                    næringsinntektEtterEndring: e.target.value
-                                })
+                            value={
+                                info && info.næringsinntektEtterEndring !== undefined
+                                    ? info.næringsinntektEtterEndring
+                                    : ''
                             }
+                            onChange={(v: string) => {
+                                this.updateEndringAvNæringsinntektInformasjon({
+                                    næringsinntektEtterEndring: trimNumberFromInput(v)
+                                });
+                            }}
+                            validators={[
+                                hasValueRule(
+                                    (info && isNaN(info.næringsinntektEtterEndring) === false) || '',
+                                    getMessage(intl, 'påkrevd')
+                                )
+                            ]}
                         />
                     </Block>
                     <Block>
                         <Textarea
-                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
+                            name={'forklaring'}
                             value={(info && info.forklaring) || ''}
+                            label={getMessage(intl, 'varigEndringAvNæringsinntekt.forklaring.label')}
                             onChange={(e: TextareaChangeEvent) => {
                                 this.updateEndringAvNæringsinntektInformasjon({
                                     forklaring: e.target.value
                                 });
                             }}
+                            validators={getFritekstfeltRules({ maxLength: 100 }, intl, info && info.forklaring)}
+                            maxLength={100}
                         />
                     </Block>
                 </Block>

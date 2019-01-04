@@ -7,16 +7,26 @@ import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørs
 import { Arbeidsform } from '../types/uttaksplan/periodetyper';
 
 interface HvorSkalDuJobbeSpørsmålProps {
-    onChange: (orgnr: string | undefined, frilansEllerSelvstendigNæringsdrivende: Arbeidsform | undefined) => void;
-    frilansEllerSelvstendig?: Arbeidsform;
+    onChange: (orgnr: string[], frilansEllerSelvstendigNæringsdrivende: Arbeidsform[]) => void;
+    arbeidsformer: Arbeidsform[];
     arbeidsforhold: Arbeidsforhold[];
-    valgtArbeidsforhold?: string;
+    orgnumre: string[];
 }
 
 type Props = HvorSkalDuJobbeSpørsmålProps & InjectedIntlProps;
 
 const erFrilansEllerSelvstendig = (value: string): boolean => {
     return value === Arbeidsform.selvstendignæringsdrivende || value === Arbeidsform.frilans;
+};
+
+const getValgtVerdi = (orgnumre: string[], arbeidsformer: Arbeidsform[]) => {
+    if (orgnumre.length > 0) {
+        return orgnumre[0];
+    } else if (arbeidsformer.length > 0) {
+        return arbeidsformer[0];
+    } else {
+        return undefined;
+    }
 };
 
 class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
@@ -29,9 +39,9 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     handleOnChange(value: string) {
         const { onChange } = this.props;
         if (erFrilansEllerSelvstendig(value)) {
-            onChange(undefined, value as Arbeidsform);
+            onChange([], [value as Arbeidsform]);
         } else {
-            onChange(value, Arbeidsform.arbeidstaker);
+            onChange([value], [Arbeidsform.arbeidstaker]);
         }
     }
 
@@ -40,12 +50,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
         return [
             ...arbeidsforhold.map((v) => ({
                 label: v.arbeidsgiverNavn,
-                value: v.arbeidsgiverId,
-                subtext: `${
-                    v.arbeidsgiverIdType === 'orgnr'
-                        ? `${getMessage(intl, 'orgnr')}: ${v.arbeidsgiverId}`
-                        : v.arbeidsgiverId
-                }`
+                value: v.arbeidsgiverId
             })),
             {
                 label: getMessage(intl, 'jegSkalJobbeSomSelvstendigNæringsdrivende'),
@@ -56,21 +61,17 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
     }
 
     render() {
-        const { intl, valgtArbeidsforhold, frilansEllerSelvstendig } = this.props;
-
-        const value = valgtArbeidsforhold !== undefined ? valgtArbeidsforhold : frilansEllerSelvstendig;
+        const { intl, orgnumre, arbeidsformer } = this.props;
 
         return (
-            <>
-                <FlervalgSpørsmål
-                    navn="arbeidsgiver"
-                    alternativer={this.getRadioOptions()}
-                    valgtVerdi={value}
-                    toKolonner={true}
-                    spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
-                    onChange={this.handleOnChange}
-                />
-            </>
+            <FlervalgSpørsmål
+                navn="arbeidsgiver"
+                alternativer={this.getRadioOptions()}
+                valgtVerdi={getValgtVerdi(orgnumre, arbeidsformer)}
+                toKolonner={true}
+                spørsmål={getMessage(intl, 'hvorSkalDuJobbe.spørsmål')}
+                onChange={this.handleOnChange}
+            />
         );
     }
 }

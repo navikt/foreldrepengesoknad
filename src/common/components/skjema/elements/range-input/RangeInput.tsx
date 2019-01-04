@@ -7,14 +7,17 @@ import Infoboks from 'common/components/infoboks/Infoboks';
 
 import './rangeInput.less';
 import AriaText from 'common/components/aria/AriaText';
+import BEMHelper from 'common/util/bem';
 
-export interface RangeInputValueLabelRendererOptions {
+export interface RangeInputElementRendererOptions {
     value: number;
     min: number;
     max: number;
 }
 
-export type RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendererOptions) => React.ReactElement<any>;
+export type RangeInputElementRenderer = (options: RangeInputElementRendererOptions) => React.ReactElement<any>;
+
+export type RangeValueLabelPlacement = 'above' | 'below';
 
 interface Props {
     label: string;
@@ -25,8 +28,9 @@ interface Props {
     max: number;
     step?: number;
     inputId?: string;
-    valueLabelRenderer?: RangeInputValueLabelRenderer;
-    valueLabelPlacement?: 'above' | 'below';
+    bottomContentRenderer?: RangeInputElementRenderer;
+    valueLabelRenderer?: RangeInputElementRenderer;
+    valueLabelPlacement?: RangeValueLabelPlacement;
     ariaValueChangedMessage?: (value: number) => string;
     steppers?: {
         increaseLabel: string;
@@ -39,10 +43,16 @@ interface State {
     active: boolean;
 }
 
-const defaultValueLabelRenderer: RangeInputValueLabelRenderer = (options: RangeInputValueLabelRendererOptions) => (
+const defaultValueLabelRenderer: RangeInputElementRenderer = (options: RangeInputElementRendererOptions) => (
     <div className="rangeInput__valueLabels">
         <div className="rangeInput__valueLabels__left">{options.min}</div>
         <div className="rangeInput__valueLabels__right">{options.max}</div>
+    </div>
+);
+
+const defaultBottomContentRenderer: RangeInputElementRenderer = (options: RangeInputElementRendererOptions) => (
+    <div className="rangeInput__bottomContent">
+        <span className="typo-normaltekst">{options.max - options.min}</span>
     </div>
 );
 
@@ -89,6 +99,7 @@ class RangeInput extends React.Component<Props, State> {
             valueLabelRenderer,
             steppers,
             ariaValueChangedMessage,
+            bottomContentRenderer,
             valueLabelPlacement = 'above',
             ...rest
         } = this.props;
@@ -97,11 +108,17 @@ class RangeInput extends React.Component<Props, State> {
         const id = inputId || guid();
         const labelRenderer = valueLabelRenderer || defaultValueLabelRenderer;
         const ariaLabelId = `${id}_label`;
+        const bottomRenderer = bottomContentRenderer || defaultBottomContentRenderer;
+
+        const bemWrapper = BEMHelper('rangeInputWrapper');
+        const bemRangeInput = BEMHelper('rangeInput');
+        const bemStepper = BEMHelper('rangeInput__stepper');
+
         return (
-            <div className="rangeInputWrapper">
+            <div className={bemWrapper.className}>
                 <Fieldset legend={label}>
                     {hjelpetekst && (
-                        <div className="rangeInputWrapper__help">
+                        <div className={bemWrapper.element('help')}>
                             <Infoboks tekst={hjelpetekst} />
                         </div>
                     )}
@@ -109,14 +126,14 @@ class RangeInput extends React.Component<Props, State> {
                         {valueLabelPlacement === 'above' && labelRenderer({ value, min, max })}
                     </div>
                     <div
-                        className={classnames('rangeInput', {
-                            'rangeInput--withSteppers': steppers !== undefined
+                        className={classnames(bemRangeInput.className, {
+                            [bemRangeInput.modifier('withSteppers')]: steppers !== undefined
                         })}
                         ref={(c) => (this.container = c)}
                         onBlur={this.handleBlur}
                         onFocus={this.handleFocus}>
                         {steppers && (
-                            <div className="rangeInput__stepper rangeInput__stepper--previous">
+                            <div className={`${bemStepper.className} ${bemStepper.modifier('previous')}`}>
                                 <RangeStepper
                                     direction="previous"
                                     onClick={() => (value > min ? onChange(value - 1) : null)}
@@ -124,7 +141,7 @@ class RangeInput extends React.Component<Props, State> {
                                 />
                             </div>
                         )}
-                        <div className="rangeInput__range">
+                        <div className={bemRangeInput.element('range')}>
                             <AriaText id={ariaLabelId}>{ariaLabelText}</AriaText>
                             <input
                                 {...rest}
@@ -141,7 +158,7 @@ class RangeInput extends React.Component<Props, State> {
                             </div>
                         </div>
                         {steppers && (
-                            <div className="rangeInput__stepper rangeInput__stepper--next">
+                            <div className={`${bemStepper.className} ${bemStepper.modifier('next')}`}>
                                 <RangeStepper
                                     direction="next"
                                     onClick={() => (value < max ? onChange(value + 1) : null)}
@@ -153,6 +170,7 @@ class RangeInput extends React.Component<Props, State> {
                     <div aria-live="polite">
                         {valueLabelPlacement === 'below' && labelRenderer({ value, min, max })}
                     </div>
+                    {bottomRenderer({ value, min, max })}
                 </Fieldset>
             </div>
         );

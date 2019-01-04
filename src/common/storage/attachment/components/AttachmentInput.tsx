@@ -107,7 +107,7 @@ class AttachmentInput extends React.Component<Props> {
                     type="file"
                     accept=".pdf, .jpg, .jpeg, .png"
                     onChange={(e) => this.onFileSelect(e)}
-                    multiple={false}
+                    multiple={true}
                     onClick={onClick}
                 />
             </label>

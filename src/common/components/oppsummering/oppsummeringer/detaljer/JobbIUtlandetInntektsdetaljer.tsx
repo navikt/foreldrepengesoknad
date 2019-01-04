@@ -12,7 +12,7 @@ interface JobbIUtlandetInntektsdetaljerProps {
 type Props = JobbIUtlandetInntektsdetaljerProps & InjectedIntlProps;
 
 const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIUtlandetInntekt, intl }) => {
-    const { arbeidsgiverNavn, land, erNærVennEllerFamilieMedArbeidsgiver } = jobbIUtlandetInntekt;
+    const { arbeidsgiverNavn, land } = jobbIUtlandetInntekt;
     return (
         <>
             <Feltoppsummering
@@ -22,10 +22,6 @@ const JobbIUtlandetInntektsdetaljer: React.StatelessComponent<Props> = ({ jobbIU
             <Feltoppsummering
                 feltnavn={getMessage(intl, 'oppsummering.andreInntekter.arbeidsgiverLand')}
                 verdi={countries.getName(land, 'nb')}
-            />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.andreInntekter.nærVennEllerFamilie')}
-                verdi={erNærVennEllerFamilieMedArbeidsgiver ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
             />
         </>
     );

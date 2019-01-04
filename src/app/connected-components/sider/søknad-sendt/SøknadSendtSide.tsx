@@ -107,6 +107,11 @@ class SøknadSendtSide extends React.Component<Props> {
                             ? this.buildSaksnummerMessage()
                             : this.buildReferenceNumberMessage()}
                     </Ingress>
+
+                    <Ingress className={'blokk-xs'}>
+                        <FormattedMessage id={'kvittering.behandlingstid'} />
+                    </Ingress>
+
                     <Ingress className="blokk-xs">{this.buildDittNavMessage()}</Ingress>
 
                     {person.bankkonto &&

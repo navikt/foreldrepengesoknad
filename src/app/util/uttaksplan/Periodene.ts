@@ -27,8 +27,11 @@ export const Periodene = (perioder: Periode[]) => ({
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
+    getFørstePerioderEtterFamiliehendelsesdato: (dato: Date) =>
+        getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
     getFørsteUttaksdag: () => getFørsteUttaksdag(perioder),
+    getFørsteUttaksdagEtterSistePeriode: () => getFørsteUttaksdagEtterSistePeriode(perioder),
     getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
     finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
@@ -163,6 +166,14 @@ function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendel
     );
 }
 
+function getFørstePeriodeEtterFamiliehendelsesdato(
+    perioder: Periode[],
+    familiehendelsesdato: Date
+): Periode | undefined {
+    const aktuellePerioder = getPerioderEtterFamiliehendelsesdato(perioder, familiehendelsesdato).sort(sorterPerioder);
+    return aktuellePerioder.length > 0 ? aktuellePerioder[0] : undefined;
+}
+
 function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
     return perioder.filter(
         (periode) =>
@@ -194,4 +205,11 @@ function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFø
         (p) => p.type === Periodetype.Uttak && p.konto === StønadskontoType.ForeldrepengerFørFødsel
     );
     return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
+}
+
+function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undefined {
+    if (perioder.length === 0) {
+        return undefined;
+    }
+    return Uttaksdagen(perioder[perioder.length - 1].tidsperiode.tom).neste();
 }

@@ -1,8 +1,8 @@
 import { ApiActionKeys, ApiActionTypes } from './apiActionDefinitions';
-import Søknad from '../../../types/søknad/Søknad';
 import { ApiStatePartial } from '../../reducers/apiReducer';
 import { GetTilgjengeligeStønadskontoerParams } from '../../../api/api';
 import { History } from 'history';
+import { MissingAttachment } from '../../../types/MissingAttachment';
 
 export function getSøkerinfo(history: History): ApiActionTypes {
     return {
@@ -11,10 +11,16 @@ export function getSøkerinfo(history: History): ApiActionTypes {
     };
 }
 
-export function sendSøknad(søknad: Søknad, history: History): ApiActionTypes {
+export function getSaker(): ApiActionTypes {
+    return {
+        type: ApiActionKeys.GET_SAKER
+    };
+}
+
+export function sendSøknad(missingAttachments: MissingAttachment[], history: History): ApiActionTypes {
     return {
         type: ApiActionKeys.SEND_SØKNAD,
-        søknad,
+        missingAttachments,
         history
     };
 }
@@ -74,6 +80,7 @@ export function updateApi(payload: ApiStatePartial): ApiActionTypes {
 
 export default {
     getSøkerinfo,
+    getSaker,
     sendSøknad,
     getStoredAppState,
     deleteStoredAppState,

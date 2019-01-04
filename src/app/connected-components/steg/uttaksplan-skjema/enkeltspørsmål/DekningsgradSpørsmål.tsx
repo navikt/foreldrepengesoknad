@@ -1,6 +1,5 @@
 import * as React from 'react';
-import moment from 'moment';
-import { injectIntl, InjectedIntlProps, InjectedIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, InjectedIntlProps, InjectedIntl } from 'react-intl';
 import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Dekningsgrad } from 'common/types';
@@ -32,7 +31,7 @@ interface OwnProps {
 
 type Props = OwnProps & StateProps & InjectedIntlProps & DispatchProps;
 
-const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string => {
+const getInfoboxText = (intl: InjectedIntl, erAleneOmOmsorg: boolean): string | undefined => {
     return erAleneOmOmsorg
         ? getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst')
         : getMessage(intl, 'spørsmål.dekningsgrad.hjelpetekst.aleneomsorg');
@@ -50,8 +49,6 @@ const DekningsgradSpørsmål = (props: Props) => {
         rolle,
         harAnnenForelderSøktFP,
         situasjon,
-        familiehendelseDato,
-        startdatoPermisjon,
         erEndringssøknad
     } = props;
 
@@ -63,10 +60,6 @@ const DekningsgradSpørsmål = (props: Props) => {
     }
 
     let labelKey: string = '';
-
-    // Denne koden kan fjernes når forslaget er vedtatt eller avslått
-    const førsteDatoEtter20190101OgDeltUttak =
-        !erAleneomsorg && moment(startdatoPermisjon || familiehendelseDato).isSameOrAfter(new Date(2019, 0, 1));
 
     if (erEndringssøknad) {
         labelKey = erAleneomsorg
@@ -86,8 +79,9 @@ const DekningsgradSpørsmål = (props: Props) => {
 
     const skalViseVeileder =
         dekningsgrad === '80' &&
+        erEndringssøknad === false &&
         ((situasjon === Søkersituasjon.ADOPSJON && harAnnenForelderSøktFP === false) ||
-            (situasjon === Søkersituasjon.FØDSEL && !getErSøkerFarEllerMedmor(rolle) && !erAleneomsorg));
+            (situasjon === Søkersituasjon.FØDSEL && !getErSøkerFarEllerMedmor(rolle)));
 
     return (
         <>
@@ -110,22 +104,13 @@ const DekningsgradSpørsmål = (props: Props) => {
                             value: '80'
                         }
                     ]}
-                    name="dekninsgrad"
-                    infoboksTekst={getInfoboxText(intl, erAleneomsorg)}
+                    name="dekningsgrad"
+                    infoboksTekst={erEndringssøknad === false ? undefined : getInfoboxText(intl, erAleneomsorg)}
                     onChange={(e, v: Dekningsgrad) => dispatch(søknadActionCreators.updateSøknad({ dekningsgrad: v }))}
                 />
             </Block>
             <Block visible={skalViseVeileder}>
-                <Veilederinfo>
-                    {getInfoboxText(intl, erAleneomsorg)}
-                    {førsteDatoEtter20190101OgDeltUttak === true ? (
-                        <>
-                            <br />
-                            <br />
-                            <FormattedMessage id="spørsmål.dekningsgrad.midlertidig" />
-                        </>
-                    ) : null}
-                </Veilederinfo>
+                <Veilederinfo>{erEndringssøknad === false && getInfoboxText(intl, erAleneomsorg)}</Veilederinfo>
             </Block>
         </>
     );

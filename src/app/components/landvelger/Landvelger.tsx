@@ -9,7 +9,7 @@ interface StateProps {
     defaultValue?: string;
     label: React.ReactNode;
     validators?: Validator[];
-    name?: string;
+    navn?: string;
     onChange: (value: string, event?: React.ChangeEvent<HTMLSelectElement>) => void;
     infotekst?: string;
 }
@@ -44,10 +44,10 @@ class Landvelger extends React.Component<Props> {
     }
 
     render() {
-        const { validators, onChange, infotekst, ...restProps } = this.props;
+        const { validators, onChange, navn, infotekst, ...restProps } = this.props;
         return (
             <Select
-                name="land"
+                name={navn || 'land'}
                 {...restProps}
                 infotekst={infotekst}
                 onChange={(e: SelectChangeEvent) => onChange(e.target.value, e)}

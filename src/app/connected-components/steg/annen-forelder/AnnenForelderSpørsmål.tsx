@@ -3,8 +3,8 @@ import Block from 'common/components/block/Block';
 import { Checkbox } from 'nav-frontend-skjema';
 import FødselsnummerBolk from '../../../bolker/FødselsnummerBolk';
 import NavnPåAnnenForelderSpørsmål from '../../../spørsmål/NavnPåAnnenForelderSpørsmål';
-import Søknad, { Søkersituasjon, Skjemanummer } from '../../../types/søknad/Søknad';
-import { InjectedIntlProps, FormattedMessage, injectIntl } from 'react-intl';
+import Søknad, { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import ErMorUførSpørsmål from '../../../spørsmål/ErMorUførSpørsmål';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import ErAnnenForelderInformertSpørsmål from '../../../spørsmål/ErAnnenForelderInformertSpørsmål';
@@ -85,6 +85,7 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.kanIkkeOppgis)}>
                     <Checkbox
+                        name="annenForelderKanIkkeOppgis"
                         checked={kanIkkeOppgis || false}
                         label={
                             situasjon === Søkersituasjon.ADOPSJON
@@ -113,6 +114,19 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                         onChange={(erAleneOmOmsorg) => onSøkerChange({ erAleneOmOmsorg })}
                     />
                 </Block>
+                
+                <Block
+                    visible={
+                        (visibility.isVisible(AnnenForelderSpørsmålKeys.deltOmsorg) && søker.rolle === 'MOR') &&
+                        søker.erAleneOmOmsorg !== undefined &&
+                        søker.erAleneOmOmsorg
+                    }>
+                    <Veilederinfo>
+                        {getMessage(intl, 'annenForelder.veileder.aleneOmsorg.forBarnet', {
+                            navn: annenForelder.fornavn
+                        })}
+                    </Veilederinfo>
+                </Block>
 
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger)}>
                     <RettPåForeldrepengerSpørsmål
@@ -130,9 +144,6 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                     />
                 </Block>
 
-                {/* 
-                Taes inn igjen i slutten av november
-
                 <Block
                     visible={
                         visibility.isVisible(AnnenForelderSpørsmålKeys.harRettPåForeldrepenger) &&
@@ -143,14 +154,24 @@ class AnnenForelderSpørsmål extends React.Component<Props, {}> {
                             navn: annenForelder.fornavn
                         })}
                     </Veilederinfo>
-                </Block> */}
+                </Block>
 
-                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)}>
-                    <ErAnnenForelderInformertSpørsmål
-                        navn={annenForelder.fornavn}
-                        erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
-                        onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
-                    />
+                <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.erAnnenForelderInformert)} margin="none">
+                    <Block margin={annenForelder.erInformertOmSøknaden === false ? 'xs' : 'm'}>
+                        <ErAnnenForelderInformertSpørsmål
+                            navn={annenForelder.fornavn}
+                            erAnnenForelderInformert={annenForelder.erInformertOmSøknaden}
+                            onChange={(erInformertOmSøknaden) => onAnnenForelderChange({ erInformertOmSøknaden })}
+                        />
+                    </Block>
+                    {annenForelder.erInformertOmSøknaden === false && (
+                        <Veilederinfo type="advarsel">
+                            <FormattedMessage
+                                id="erAnnenForelderInformert.veilederIkkeInformert"
+                                values={{ navn: annenForelder.fornavn }}
+                            />
+                        </Veilederinfo>
+                    )}
                 </Block>
                 <Block visible={visibility.isVisible(AnnenForelderSpørsmålKeys.datoForAleneomsorg)}>
                     <DatoInput

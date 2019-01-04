@@ -16,7 +16,7 @@ import Steg, { StegProps } from '../../../components/steg/Steg';
 import AttachmentsUploaderPure from 'common/storage/attachment/components/AttachmentUploaderPure';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import isAvailable from '../util/isAvailable';
-import { barnErGyldig } from '../../../util/validation/steg/barn';
+import { barnErGyldig, getAdopsjonAnkomstdatoValidatorer } from '../../../util/validation/steg/barn';
 import { Skjemanummer, Søkersituasjon } from '../../../types/søknad/Søknad';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import DateValues from '../../../util/validation/values';
@@ -32,6 +32,7 @@ interface StateProps {
     barn: Adopsjonsbarn;
     stegProps: StegProps;
     situasjon: Søkersituasjon;
+    erEndringssøknad: boolean;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -66,7 +67,7 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
     }
 
     render() {
-        const { barn, dispatch, stegProps, intl, situasjon } = this.props;
+        const { barn, dispatch, stegProps, intl, erEndringssøknad, situasjon } = this.props;
 
         return (
             <Steg onPreSubmit={this.cleanupSteg} {...stegProps}>
@@ -157,10 +158,11 @@ class RelasjonTilBarnAdopsjonSteg extends React.Component<Props> {
                             );
                         }}
                         dato={barn.ankomstdato}
+                        validators={getAdopsjonAnkomstdatoValidatorer(barn, intl)}
                     />
                 </Block>
 
-                <Block visible={visibility.spørsmålOmVedlegg(barn)}>
+                <Block visible={visibility.spørsmålOmVedlegg(barn, erEndringssøknad)}>
                     <Block margin="xs">
                         <Veilederinfo>
                             {getMessage(
@@ -202,7 +204,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         barn,
         stegProps,
-        situasjon: state.søknad.situasjon
+        situasjon: state.søknad.situasjon,
+        erEndringssøknad: state.søknad.erEndringssøknad
     };
 };
 

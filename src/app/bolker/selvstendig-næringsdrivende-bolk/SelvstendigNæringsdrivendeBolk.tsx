@@ -6,11 +6,13 @@ import SelvstendigNæringsdrivendeModal from '../../components/selvstendig-næri
 import Block from 'common/components/block/Block';
 import List from '../../components/list/List';
 import SelvstendigNæringsdrivendeListElement from './SelvstendigNæringsdrivendeListElement';
+import HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål from '../../spørsm\u00E5l/HarDuJobbetSomSelvstendigN\u00E6ringsdrivendeSiste10MndSpørsm\u00E5l';
+import { Søker } from '../../types/søknad/Søker';
 
 interface SelvstendigNæringsdrivendeBolkProps {
-    renderSpørsmål: () => JSX.Element;
-    showNæringsPerioderContent: boolean;
     næringListe: Næring[];
+    harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: boolean | undefined;
+    onChangeSøker: (v: Partial<Søker>) => void;
     onChange: (næring: Næring[]) => void;
 }
 
@@ -90,16 +92,25 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
     }
 
     render() {
-        const { næringListe, renderSpørsmål, showNæringsPerioderContent } = this.props;
+        const { næringListe, harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd, onChangeSøker } = this.props;
 
         const { næringToEdit } = this.state;
 
         return (
             <React.Fragment>
-                {renderSpørsmål()}
-                {showNæringsPerioderContent && (
+                <Block margin={harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd ? 'xs' : 'm'}>
+                    <HarDuJobbetSomSelvstendigNæringsdrivendeSiste10MndSpørsmål
+                        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd={
+                            harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd
+                        }
+                        onChange={(harJobbet) =>
+                            onChangeSøker({ harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: harJobbet })
+                        }
+                    />
+                </Block>
+                {harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd === true && (
                     <React.Fragment>
-                        <Block margin="xs">
+                        <Block margin="xs" visible={næringListe.length > 0}>
                             <List
                                 data={næringListe}
                                 renderElement={(updatedNæring: Næring, index: number) => (
@@ -114,12 +125,11 @@ export default class SelvstendigNæringsdrivendeBolk extends React.Component<
                                 )}
                             />
                         </Block>
-
-                        <div className="blokk-s">
-                            <Knapp onClick={() => this.openModal()} htmlType="button">
+                        <Block>
+                            <Knapp onClick={() => this.openModal()} htmlType="button" data-name="leggTilNæring">
                                 <FormattedMessage id="selvstendigNæringsdrivende.leggTilNæring" />
                             </Knapp>
-                        </div>
+                        </Block>
 
                         <SelvstendigNæringsdrivendeModal
                             næring={næringToEdit}

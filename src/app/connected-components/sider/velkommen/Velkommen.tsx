@@ -4,7 +4,7 @@ import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage }
 import { connect } from 'react-redux';
 
 import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
-import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
+import { Innholdstittel, Normaltekst, Ingress } from 'nav-frontend-typografi';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 import getMessage from 'common/util/i18nUtils';
@@ -21,26 +21,38 @@ import { HistoryProps } from '../../../types/common';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
-import './velkommen.less';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import Knapperad from 'common/components/knapperad/Knapperad';
 import { apiActionCreators } from '../../../redux/actions';
-import FeatureBlock from '../../../components/featureBlock/FeatureBlock';
-import { Feature } from '../../../Feature';
+import SøknadstypeSpørsmål from '../../../spørsmål/SøknadstypeSpørsmål';
+import Block from 'common/components/block/Block';
+import Sak, { SakType } from '../../../types/søknad/Sak';
+import SakInfo from '../../../components/sak-info/SakInfo';
+
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
+import './velkommen.less';
 
 interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
+    sakForEndringssøknad?: Sak;
+    oppslagSakerFeilet?: boolean;
 }
 
-interface OwnProps {
+interface State {
     isDinePlikterModalOpen: boolean;
     isDinePersonopplysningerModalOpen: boolean;
+    skalEndre: boolean | undefined;
 }
 
 type Props = StateProps & DispatchProps & InjectedIntlProps & HistoryProps & DispatchProps & SøkerinfoProps;
 
-class Velkommen extends React.Component<Props, OwnProps> {
+class Velkommen extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.getStartSøknadKnappLabel = this.getStartSøknadKnappLabel.bind(this);
+    }
     componentWillMount() {
         this.setState({
             isDinePlikterModalOpen: false,
@@ -71,30 +83,52 @@ class Velkommen extends React.Component<Props, OwnProps> {
         );
     }
 
-    startFørstegangssøknad() {
-        const { history, dispatch } = this.props;
-        dispatch(søknadActions.updateSøknad({ erEndringssøknad: false }));
+    startSøknad(erEndringssøknad: boolean | undefined) {
+        const { sakForEndringssøknad, history, dispatch } = this.props;
+        dispatch(
+            søknadActions.updateSøknad({
+                erEndringssøknad: erEndringssøknad === true,
+                saksnummer:
+                    erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
+                        ? sakForEndringssøknad.saksnummer
+                        : undefined
+            })
+        );
         dispatch(apiActionCreators.storeAppState());
         history.push('soknad/inngang');
     }
 
-    startEndringssøknad() {
-        const { history, dispatch } = this.props;
-        dispatch(søknadActions.updateSøknad({ erEndringssøknad: true }));
-        dispatch(apiActionCreators.storeAppState());
-        history.push('soknad/inngang');
+    getStartSøknadKnappLabel(): string {
+        const { intl } = this.props;
+        if (this.state.skalEndre) {
+            return getMessage(intl, `velkommen.startEndringssøknadKnapp`);
+        } else {
+            return getMessage(intl, `velkommen.startNySøknadKnapp`);
+        }
     }
 
     render() {
-        const { person, harGodkjentVilkår, dispatch, intl } = this.props;
-
+        const { person, sakForEndringssøknad, oppslagSakerFeilet, harGodkjentVilkår, dispatch, intl } = this.props;
         if (person === undefined) {
             return null;
         }
 
+        const erSakForEndringssøknadFraInfotrygd =
+            sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
+
+        const visValgForNySøknadEllerEndring = sakForEndringssøknad !== undefined || oppslagSakerFeilet === true;
+
+        const visInfoOmEndringsøknadIkkeTilgjengelig = oppslagSakerFeilet === true && this.state.skalEndre === true;
+
+        const visBekreftSkjema =
+            oppslagSakerFeilet !== true
+                ? sakForEndringssøknad === undefined || this.state.skalEndre !== undefined
+                : this.state.skalEndre === false;
+
         return (
-            <Applikasjonsside visSpråkvelger={false} margin={false}>
+            <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
+
                 <VeilederMedSnakkeboble
                     dialog={{
                         title: getMessage(intl, 'velkommen.bobletittel', {
@@ -104,55 +138,85 @@ class Velkommen extends React.Component<Props, OwnProps> {
                     }}
                 />
                 <div className="velkommen">
-                    <Innholdstittel className="velkommen__tittel blokk-m">
+                    <Innholdstittel className="velkommen__tittel blokk-s">
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
-                    <BekreftCheckboksPanel
-                        className="blokk-m"
-                        checked={harGodkjentVilkår}
-                        label={getMessage(intl, 'velkommen.samtykke')}
-                        onChange={() => {
-                            dispatch(
-                                søknadActions.updateSøknad({
-                                    harGodkjentVilkår: !harGodkjentVilkår
-                                })
-                            );
-                        }}>
-                        <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
-                    </BekreftCheckboksPanel>
-                    <Knapperad>
-                        <Hovedknapp
-                            className="velkommen__startSøknadKnapp blokk-m"
-                            disabled={!harGodkjentVilkår}
-                            onClick={() => this.startFørstegangssøknad()}>
-                            {getMessage(intl, 'velkommen.startNySøknadKnapp')}
-                        </Hovedknapp>
-
-                        <FeatureBlock
-                            feature={Feature.endringssøknad}
-                            render={() => (
-                                <Hovedknapp
-                                    className="velkommen__startSøknadKnapp blokk-m"
-                                    disabled={!harGodkjentVilkår}
-                                    onClick={() => this.startEndringssøknad()}>
-                                    {getMessage(intl, 'velkommen.startEndringssøknadKnapp')}
-                                </Hovedknapp>
-                            )}
-                        />
-                    </Knapperad>
-                    <Normaltekst className="velkommen__personopplysningerLink">
-                        <a
-                            className="lenke"
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.setState({
-                                    isDinePersonopplysningerModalOpen: true
-                                });
+                    {visValgForNySøknadEllerEndring && (
+                        <>
+                            <Block>
+                                <Ingress>
+                                    <FormattedMessage
+                                        id={
+                                            erSakForEndringssøknadFraInfotrygd
+                                                ? 'velkommen.intro.harInfotrygdSak'
+                                                : 'velkommen.intro.harSak'
+                                        }
+                                    />
+                                </Ingress>
+                            </Block>
+                            {sakForEndringssøknad !== undefined &&
+                                sakForEndringssøknad.type === SakType.FPSAK && (
+                                    <Block>
+                                        <SakInfo sak={sakForEndringssøknad} />
+                                    </Block>
+                                )}
+                            <Block>
+                                <SøknadstypeSpørsmål
+                                    harEksisterendeSak={true}
+                                    skalEndre={this.state.skalEndre}
+                                    onChange={(skalEndre) => this.setState({ skalEndre })}
+                                    erSakForEndringssøknadFraInfotrygd={erSakForEndringssøknadFraInfotrygd}
+                                />
+                            </Block>
+                            {this.state.skalEndre === false &&
+                                !erSakForEndringssøknadFraInfotrygd && (
+                                    <Veilederinfo>
+                                        <FormattedMessage id="velkommen.intro.harSak.veileder" />
+                                    </Veilederinfo>
+                                )}
+                            {this.state.skalEndre === true &&
+                                erSakForEndringssøknadFraInfotrygd && (
+                                    <Veilederinfo>
+                                        <FormattedMessage id="velkommen.intro.harInfotrygdSak.veileder" />
+                                    </Veilederinfo>
+                                )}
+                        </>
+                    )}
+                    <Block visible={visInfoOmEndringsøknadIkkeTilgjengelig}>
+                        <Veilederinfo type="advarsel">
+                            <FormattedMessage id="velkommen.endringssøknadIkkeTilgjengelig.veileder" />
+                        </Veilederinfo>
+                    </Block>
+                    <Block visible={visBekreftSkjema}>
+                        <BekreftCheckboksPanel
+                            className="blokk-m"
+                            checked={harGodkjentVilkår}
+                            label={getMessage(intl, 'velkommen.samtykke')}
+                            onChange={() => {
+                                dispatch(søknadActions.updateSøknad({ harGodkjentVilkår: !harGodkjentVilkår }));
                             }}>
-                            <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                        </a>
-                    </Normaltekst>
+                            <Normaltekst>{this.getBekreftCheckboksPanelLabelHeader()}</Normaltekst>
+                        </BekreftCheckboksPanel>
+                        <Knapperad>
+                            <Hovedknapp
+                                className="velkommen__startSøknadKnapp blokk-m"
+                                disabled={!harGodkjentVilkår}
+                                onClick={() => this.startSøknad(this.state.skalEndre)}>
+                                {this.getStartSøknadKnappLabel()}
+                            </Hovedknapp>
+                        </Knapperad>
+                        <Normaltekst className="velkommen__personopplysningerLink">
+                            <a
+                                className="lenke"
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.setState({ isDinePersonopplysningerModalOpen: true });
+                                }}>
+                                <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
+                            </a>
+                        </Normaltekst>
+                    </Block>
                 </div>
 
                 <DinePlikterModal
@@ -174,7 +238,9 @@ class Velkommen extends React.Component<Props, OwnProps> {
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
     person: props.søkerinfo.person,
-    harGodkjentVilkår: state.søknad.harGodkjentVilkår
+    harGodkjentVilkår: state.søknad.harGodkjentVilkår,
+    sakForEndringssøknad: state.api.sakForEndringssøknad,
+    oppslagSakerFeilet: state.api.oppslagSakerFeilet
 });
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

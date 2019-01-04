@@ -3,7 +3,6 @@ import Søknad from '../types/søknad/Søknad';
 import Environment from '../../app/Environment';
 import { AppState } from '../redux/reducers';
 import { storageParser } from '../util/storage/parser';
-import { cleanUpSøknad } from '../util/søknad/cleanup';
 import { formaterDato } from 'common/util/datoUtils';
 
 export interface GetTilgjengeligeStønadskontoerParams {
@@ -20,6 +19,8 @@ export interface GetTilgjengeligeStønadskontoerParams {
 
 const apiBaseUrl = Environment.REST_API_URL;
 const uttakBaseUrl = Environment.UTTAK_API_URL;
+const sendSøknadUrl = `${apiBaseUrl}/soknad`;
+const sendEndringssøknadUrl = `${sendSøknadUrl}/endre`;
 
 function getSøkerinfo() {
     return axios.get(`${apiBaseUrl}/sokerinfo`, {
@@ -27,6 +28,13 @@ function getSøkerinfo() {
         withCredentials: true
     });
 }
+
+const getSaker = () => {
+    return axios.get(`${apiBaseUrl}/innsyn/saker`, {
+        timeout: 60 * 1000,
+        withCredentials: true
+    });
+};
 
 function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
     const {
@@ -60,10 +68,11 @@ function getUttakskontoer(params: GetTilgjengeligeStønadskontoerParams) {
 }
 
 function sendSøknad(søknad: Søknad) {
-    const url = `${apiBaseUrl}/soknad`;
+    const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-    return axios.post(url, cleanUpSøknad(søknad), {
+    return axios.post(url, søknad, {
         withCredentials: true,
+        timeout: 30 * 1000,
         headers: {
             'content-type': 'application/json;'
         }
@@ -91,6 +100,7 @@ function deleteStoredAppState() {
 
 const Api = {
     getSøkerinfo,
+    getSaker,
     getUttakskontoer,
     sendSøknad,
     getStoredAppState,

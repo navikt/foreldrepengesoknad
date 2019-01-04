@@ -11,10 +11,6 @@ import { RecursivePartial } from '../../../types/Partial';
 import HvorSkalDuJobbeSpørsmål from '../../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import { UttakSpørsmålKeys, UttakSpørsmålVisibility } from '../uttakFormConfig';
 import { getStillingsprosentRegler } from '../../../util/validation/stillingsprosent';
-import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import { Skjemanummer } from '../../../types/søknad/Søknad';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getVarighetString } from 'common/util/intlUtils';
 import { finnAntallDagerÅTrekke } from '../../../util/uttaksPlanStatus';
@@ -22,8 +18,9 @@ import { Perioden } from '../../../util/uttaksplan/Perioden';
 
 interface OwnProps {
     onChange: (periode: RecursivePartial<Uttaksperiode>) => void;
-    periode: RecursivePartial<Uttaksperiode>;
+    periode: Uttaksperiode;
     visibility: UttakSpørsmålVisibility;
+    visAntallDagerUttak: boolean;
     arbeidsforhold?: Arbeidsforhold[];
 }
 
@@ -39,7 +36,7 @@ class GradertUttakForm extends React.Component<Props> {
     }
 
     render() {
-        const { periode, arbeidsforhold, visibility, intl, onChange } = this.props;
+        const { periode, arbeidsforhold, visibility, intl, onChange, visAntallDagerUttak } = this.props;
 
         const pst = getFloatFromString(periode.stillingsprosent || '');
         const uttaksdager = Perioden(periode as Periode).getAntallUttaksdager();
@@ -50,6 +47,7 @@ class GradertUttakForm extends React.Component<Props> {
                   })
                 : undefined;
 
+        const visAntallDagerUttakInfo = visAntallDagerUttak && varighet !== undefined;
         return (
             <>
                 <Block>
@@ -80,32 +78,27 @@ class GradertUttakForm extends React.Component<Props> {
                             }
                             value={periode.stillingsprosent || ''}
                             maxLength={4}
-                            validators={getStillingsprosentRegler(true, periode.stillingsprosent || '', intl)}
+                            validators={getStillingsprosentRegler(false, periode.stillingsprosent || '', intl)}
                         />
                     </Block>
-                    {varighet && <div className="comment">{varighet}</div>}
+                    {visAntallDagerUttakInfo && <div className="comment">{varighet}</div>}
                 </Block>
 
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.hvorSkalDuJobbe)}>
                     <HvorSkalDuJobbeSpørsmål
                         arbeidsforhold={arbeidsforhold || []}
-                        onChange={(orgnr, arbeidsform) =>
+                        onChange={(orgnumre, arbeidsformer) =>
                             onChange({
-                                orgnr,
-                                arbeidsform,
-                                erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
+                                orgnumre,
+                                arbeidsformer,
+                                erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                             })
                         }
-                        frilansEllerSelvstendig={periode.arbeidsform}
-                        valgtArbeidsforhold={periode.orgnr}
+                        arbeidsformer={periode.arbeidsformer || []}
+                        orgnumre={periode.orgnumre || []}
                     />
                 </Block>
-                <Block
-                    visible={
-                        periode.erArbeidstaker === true ||
-                        periode.arbeidsform === Arbeidsform.frilans ||
-                        periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
-                    }>
+                <Block visible={periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0}>
                     <Veilederinfo>
                         <FormattedHTMLMessage
                             id={
@@ -115,14 +108,6 @@ class GradertUttakForm extends React.Component<Props> {
                             }
                         />
                     </Veilederinfo>
-                    {periode.arbeidsform === Arbeidsform.arbeidstaker && (
-                        <VedleggSpørsmål
-                            vedlegg={periode.vedlegg as Attachment[]}
-                            onChange={(vedlegg) => onChange({ vedlegg })}
-                            attachmentType={AttachmentType.ARBEID_VED_GRADERING}
-                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
-                        />
-                    )}
                 </Block>
             </>
         );

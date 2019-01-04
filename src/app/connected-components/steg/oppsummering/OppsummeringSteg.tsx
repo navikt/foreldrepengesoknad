@@ -15,11 +15,6 @@ import { StegID } from '../../../util/routing/stegConfig';
 import { Kvittering } from '../../../types/Kvittering';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import isAvailable from '../util/isAvailable';
-import {
-    findMissingAttachments,
-    mapMissingAttachmentsToSøknad,
-    MissingAttachment
-} from '../../../util/søknad/missingAttachmentUtil';
 import Oppsummering from 'common/components/oppsummering/Oppsummering';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { UttaksplanValideringState } from '../../../redux/reducers/uttaksplanValideringReducer';
@@ -33,6 +28,8 @@ import { søknadStegPath } from '../StegRoutes';
 import { AlertStripeAdvarselSolid } from 'nav-frontend-alertstriper';
 import Block from 'common/components/block/Block';
 import LinkButton from '../../../components/link-button/LinkButton';
+import { MissingAttachment } from '../../../types/MissingAttachment';
+import { findMissingAttachments } from '../../../util/attachments/missingAttachmentUtil';
 
 interface StateProps {
     person: Person;
@@ -44,6 +41,7 @@ interface StateProps {
     missingAttachments: MissingAttachment[];
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    antallUkerUttaksplan: number;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -59,6 +57,7 @@ class OppsummeringSteg extends React.Component<Props> {
             dispatch(
                 apiActionCreators.getTilgjengeligeStønadskonter(getStønadskontoParams(søknad), this.props.history)
             );
+            dispatch(apiActionCreators.getTilgjengeligeStønadsuker(getStønadskontoParams(søknad)));
         }
     }
 
@@ -67,16 +66,8 @@ class OppsummeringSteg extends React.Component<Props> {
     }
 
     sendSøknad() {
-        const { søknad, missingAttachments, dispatch } = this.props;
-        dispatch(
-            apiActionCreators.sendSøknad(
-                {
-                    ...mapMissingAttachmentsToSøknad(missingAttachments, søknad),
-                    uttaksplan: [...(søknad.uttaksplan || [])]
-                },
-                this.props.history
-            )
-        );
+        const { missingAttachments, dispatch } = this.props;
+        dispatch(apiActionCreators.sendSøknad(missingAttachments, this.props.history));
     }
     gotoUttaksplan() {
         const { history } = this.props;
@@ -93,6 +84,7 @@ class OppsummeringSteg extends React.Component<Props> {
             stegProps,
             missingAttachments,
             isLoadingTilgjengeligeStønadskontoer,
+            antallUkerUttaksplan,
             dispatch,
             intl
         } = this.props;
@@ -123,6 +115,7 @@ class OppsummeringSteg extends React.Component<Props> {
                             søkerinfo={søkerinfo}
                             søknad={søknad}
                             uttaksplanValidering={uttaksplanValidering}
+                            antallUkerUttaksplan={antallUkerUttaksplan}
                         />
                         {uttaksplanValidering.erGyldig &&
                             missingAttachments.length > 0 && (
@@ -166,6 +159,10 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     };
 
     const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api);
+    const antallUkerUttaksplan =
+        state.søknad.dekningsgrad === '100'
+            ? state.api.dekningsgrad100AntallUker!
+            : state.api.dekningsgrad80AntallUker!;
 
     return {
         person,
@@ -176,7 +173,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         missingAttachments,
         stegProps,
         tilgjengeligeStønadskontoer,
-        isLoadingTilgjengeligeStønadskontoer
+        isLoadingTilgjengeligeStønadskontoer,
+        antallUkerUttaksplan
     };
 };
 

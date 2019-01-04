@@ -8,8 +8,7 @@ import {
     Oppholdsperiode,
     Periodetype
 } from '../../types/uttaksplan/periodetyper';
-// import aktivitetskravMorUtil from '../../util/domain/aktivitetskravMor';
-import { RecursivePartial } from '../../types/Partial';
+import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -27,6 +26,7 @@ export interface UtsettelseFormPayload {
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
     annenForelderHarRettPåForeldrepenger: boolean;
+    familiehendelsesdato: Date;
 }
 
 export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørsmålKeys>;
@@ -34,38 +34,33 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    // SøknadsXML støtter ikke enda at en utsettelse skal ha aktivitetskrav til mor. Legg tilbake denne koden når det er implementert
+    const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
+    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
+        søkerErFarEllerMedmor,
+        annenForelderHarRettPåForeldrepenger
+    );
+
+    if (variant === undefined || erRelevant === false) {
+        return false;
+    }
+    if (periode.type === Periodetype.Utsettelse) {
+        if (
+            variant === Utsettelsesvariant.Ferie ||
+            (variant === Utsettelsesvariant.Arbeid && harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)) ||
+            (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak))
+        ) {
+            return true;
+        }
+    }
     return false;
-
-    // const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
-    // const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-    //     søkerErFarEllerMedmor,
-    //     annenForelderHarRettPåForeldrepenger
-    // );
-
-    // if (variant === undefined || erRelevant === false) {
-    //     return false;
-    // }
-    // if (periode.type === Periodetype.Utsettelse) {
-    //     if (
-    //         variant === Utsettelsesvariant.Ferie ||
-    //         (variant === Utsettelsesvariant.Arbeid && harRegistrertArbeidOk(variant, periode)) ||
-    //         (variant === Utsettelsesvariant.Sykdom && questionValueIsOk(periode.årsak))
-    //     ) {
-    //         return true;
-    //     }
-    // }
-    // return false;
 };
 
-const harRegistrertArbeidOk = (
-    variant: Utsettelsesvariant | undefined,
-    periode: RecursivePartial<Utsettelsesperiode>
-) => {
+const harRegistrertArbeidOk = (variant: Utsettelsesvariant | undefined, periode: Utsettelsesperiode) => {
     return (
         periode.årsak === UtsettelseÅrsakType.Arbeid &&
         variant === Utsettelsesvariant.Arbeid &&
-        (questionValueIsOk(periode.orgnr) || questionValueIsOk(periode.arbeidsform))
+        ((periode.orgnumre !== undefined && periode.orgnumre.length > 0) ||
+            (periode.arbeidsformer !== undefined && periode.arbeidsformer.length > 0))
     );
 };
 
@@ -79,26 +74,28 @@ export const utsettelseFormConfig: QuestionConfig<UtsettelseFormPayload, Utsette
     [Sp.sykdomsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk(periode.årsak),
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Sykdom
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Sykdom
     },
     [Sp.ferieinfo]: {
         isAnswered: () => true,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Ferie
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Ferie
     },
     [Sp.arbeidsplass]: {
         isAnswered: ({ variant, periode }) =>
-            periode.type === Periodetype.Utsettelse ? harRegistrertArbeidOk(variant, periode) : true,
+            periode.type === Periodetype.Utsettelse
+                ? harRegistrertArbeidOk(variant, periode as Utsettelsesperiode)
+                : true,
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.Arbeid
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.Arbeid
     },
     [Sp.oppholdsårsak]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Oppholdsperiode).årsak),
         parentQuestion: Sp.variant,
-        condition: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
+        isRequired: ({ variant }) => variant === Utsettelsesvariant.UttakAnnenForelder
     },
     [Sp.morsAktivitet]: {
         isAnswered: ({ periode }) => questionValueIsOk((periode as Utsettelsesperiode).morsAktivitetIPerioden),
-        condition: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
+        isRequired: (payload) => skalViseSpørsmålOmMorsAktivitet(payload)
     }
 };
 

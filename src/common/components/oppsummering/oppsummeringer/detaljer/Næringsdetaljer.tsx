@@ -5,8 +5,6 @@ import { Næring } from '../../../../../app/types/søknad/SelvstendigNæringsdri
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
-import OppsummeringAvDokumentasjon from 'common/components/oppsummering-av-dokumentasjon/OppsummeringAvDokumentasjon';
-import { næringsinntektSisteÅrMåDokumenteres } from '../../../../../app/util/domain/næringer';
 
 interface NæringsdetaljerProps {
     næring: Næring;
@@ -30,8 +28,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
         revisor,
         harRegnskapsfører,
         regnskapsfører,
-        harRevisor,
-        vedlegg
+        harRevisor
     } = næring;
 
     return (
@@ -42,18 +39,22 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                     .map((næringstype) => getMessage(intl, `næringstype.${næringstype.toLowerCase()}`))
                     .join(', ')}
             />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
-                verdi={organisasjonsnummer}
-            />
-            <Feltoppsummering
-                feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
-                verdi={stillingsprosent}
-            />
+            {organisasjonsnummer !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.orgnr')}
+                    verdi={organisasjonsnummer}
+                />
+            )}
+            {stillingsprosent !== undefined && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.stillingsprosent')}
+                    verdi={stillingsprosent}
+                />
+            )}
             {næringsinntekt !== undefined && (
                 <Feltoppsummering
                     feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.næringsinntekt')}
-                    verdi={næringsinntekt}
+                    verdi={`${næringsinntekt}`}
                 />
             )}
             <Feltoppsummering
@@ -107,7 +108,7 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                             intl,
                             'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring'
                         )}
-                        verdi={endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}
+                        verdi={`${endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}`}
                     />
                     <Feltoppsummering
                         feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.forklaring')}
@@ -134,6 +135,13 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                         verdi={regnskapsfører.erNærVennEllerFamilie ? getMessage(intl, 'ja') : getMessage(intl, 'nei')}
                     />
                 </>
+            )}
+
+            {harRegnskapsfører === false && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.regnskapsfører')}
+                    verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRegnskapsfører')}
+                />
             )}
 
             {harRegnskapsfører === false &&
@@ -164,10 +172,10 @@ const Næringsdetaljer: React.StatelessComponent<Props> = ({ næring, intl }: Pr
                     </>
                 )}
 
-            {næringsinntektSisteÅrMåDokumenteres(næring) && (
-                <OppsummeringAvDokumentasjon
-                    vedlegg={vedlegg || []}
-                    ledetekst={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.dokumentasjon')}
+            {harRevisor === false && (
+                <Feltoppsummering
+                    feltnavn={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.revisor')}
+                    verdi={getMessage(intl, 'oppsummering.selvstendigNæringsdrivende.harIkkeRevisor')}
                 />
             )}
         </>

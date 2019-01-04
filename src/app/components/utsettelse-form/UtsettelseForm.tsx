@@ -6,15 +6,14 @@ import {
     Oppholdsperiode,
     Periodetype,
     Utsettelsesperiode,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    TilgjengeligStønadskonto
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
-import HvorSkalDuJobbeSpørsmål from '../../spørsmål/HvorSkalDuJobbeSpørsmål';
 import UtsettelsePgaFerieInfo from './partials/UtsettelsePgaFerieInfo';
 import { Forelder, NavnPåForeldre, Tidsperiode } from 'common/types';
 import { harAktivtArbeidsforhold } from '../../util/domain/arbeidsforhold';
-import DateValues from '../../util/validation/values';
 import { getUtsettelseFormVisibility, UtsettelseSpørsmålKeys } from './utsettelseFormConfig';
 import HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål from '../../spørsmål/HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål';
 import Block from 'common/components/block/Block';
@@ -22,10 +21,10 @@ import UtsettelseTidsperiodeSpørsmål from './partials/UtsettelseTidsperiodeSp�
 import { getFamiliehendelsedato, getNavnPåForeldre } from '../../util/uttaksplan';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
 import getMessage from 'common/util/i18nUtils';
-import Søknad, { Skjemanummer } from '../../types/søknad/Søknad';
+import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
 import { getErSøkerFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
@@ -33,9 +32,12 @@ import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
+import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
+import lenker from '../../util/routing/lenker';
+import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
+import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
 
@@ -52,6 +54,8 @@ interface StateProps {
     arbeidsforhold: Arbeidsforhold[];
     søkerErFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    familiehendelsesdato: Date;
 }
 
 type Props = OwnProps & StateProps & InjectedIntlProps;
@@ -84,6 +88,17 @@ export const getVariantFromPeriode = (periode: UtsettelseFormPeriodeType): Utset
                 return undefined;
         }
     }
+};
+
+const getVeilederForFrilansOgSNVisible = (periode: UtsettelseFormPeriodeType) => {
+    const castPeriode = periode as Utsettelsesperiode;
+
+    return (
+        castPeriode.erArbeidstaker === false &&
+        castPeriode.arbeidsformer !== undefined &&
+        (castPeriode.arbeidsformer.includes(Arbeidsform.frilans) ||
+            castPeriode.arbeidsformer.includes(Arbeidsform.selvstendignæringsdrivende))
+    );
 };
 
 class UtsettelsesperiodeForm extends React.Component<Props, State> {
@@ -127,7 +142,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                 value: Utsettelsesvariant.Ferie
             },
             {
-                label: 'Jeg skal jobbe heltid',
+                label: getMessage(intl, 'jegskaljobbeheltid'),
                 value: Utsettelsesvariant.Arbeid
             },
             {
@@ -164,7 +179,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         type: Periodetype.Utsettelse,
                         årsak: UtsettelseÅrsakType.Arbeid,
                         forelder,
-                        erArbeidstaker: undefined
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Ferie) {
                     this.onChange({
@@ -174,7 +189,12 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                         erArbeidstaker: this.props.arbeidsforhold.length > 0
                     });
                 } else if (variant === Utsettelsesvariant.Sykdom) {
-                    this.onChange({ type: Periodetype.Utsettelse, årsak: undefined, forelder, erArbeidstaker: false });
+                    this.onChange({
+                        type: Periodetype.Utsettelse,
+                        årsak: undefined,
+                        forelder,
+                        erArbeidstaker: this.props.arbeidsforhold.length > 0
+                    });
                 }
             }
         }
@@ -205,7 +225,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     getVisibility() {
-        const { periode, søknad, søkerErFarEllerMedmor } = this.props;
+        const { periode, søknad, søkerErFarEllerMedmor, familiehendelsesdato } = this.props;
         const { variant } = this.state;
 
         return getUtsettelseFormVisibility({
@@ -213,7 +233,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger
+            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger,
+            familiehendelsesdato
         });
     }
 
@@ -226,6 +247,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             navnPåForeldre,
             harOverlappendePerioder,
             onCancel,
+            tilgjengeligeStønadskontoer,
             intl
         } = this.props;
         const { variant } = this.state;
@@ -236,6 +258,11 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             return null;
         }
         const tidsperiode = periode.tidsperiode as Partial<Tidsperiode>;
+        const antallHelligdager = isValidTidsperiode(tidsperiode) ? Tidsperioden(tidsperiode).getAntallFridager() : 0;
+        const visInfoOmHelligdagerOgFerie =
+            antallHelligdager > 0 &&
+            periode.type === Periodetype.Utsettelse &&
+            periode.årsak === UtsettelseÅrsakType.Ferie;
         return (
             <>
                 <Block hasChildBlocks={true}>
@@ -251,17 +278,32 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             }
                         />
                     </Block>
-                    <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}>
+                    <Block
+                        visible={visibility.isVisible(UtsettelseSpørsmålKeys.variant)}
+                        margin={visInfoOmHelligdagerOgFerie ? 'xs' : undefined}>
                         <HvaErGrunnenTilAtDuSkalUtsetteDittUttakSpørsmål
                             variant={variant}
                             radios={this.getUtsettelseÅrsakRadios()}
                             onChange={(v) => this.onVariantChange(v)}
+                            validatorer={
+                                periode.type === Periodetype.Utsettelse
+                                    ? getUtsettelseÅrsakTypeValidators(periode.årsak, tidsperiode.fom, intl)
+                                    : undefined
+                            }
                         />
                     </Block>
+                    <Block visible={visInfoOmHelligdagerOgFerie}>
+                        <AlertStripe type="info" solid={true}>
+                            Tidsperioden du har valgt inneholder helligdager som ikke kan registreres som ferie. Disse
+                            dagene vil bli egne perioder i planen, som du må legge inn informasjon om etter at du har
+                            lagt til denne utsettelsen.
+                        </AlertStripe>
+                    </Block>
+
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
-                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, DateValues.today.toDate())}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold)}
                             forelder={Forelder.MOR}
                         />
                     </Block>
@@ -270,35 +312,25 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                             {periode.årsak === UtsettelseÅrsakType.Arbeid && (
                                 <>
                                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.arbeidsplass)}>
-                                        <HvorSkalDuJobbeSpørsmål
-                                            arbeidsforhold={arbeidsforhold}
-                                            valgtArbeidsforhold={periode.orgnr}
-                                            frilansEllerSelvstendig={periode.arbeidsform}
-                                            onChange={(orgnr, arbeidsform) =>
+                                        <HvorSkalDuJobbeSpørsmålFlervalg
+                                            arbeidsforhold={arbeidsforhold || []}
+                                            onChange={(orgnumre, arbeidsformer) =>
                                                 this.onChange({
-                                                    orgnr,
-                                                    arbeidsform,
-                                                    erArbeidstaker: arbeidsform === Arbeidsform.arbeidstaker
+                                                    orgnumre,
+                                                    arbeidsformer,
+                                                    erArbeidstaker: arbeidsformer.includes(Arbeidsform.arbeidstaker)
                                                 })
                                             }
+                                            arbeidsformer={(periode as Utsettelsesperiode).arbeidsformer || []}
+                                            orgnumre={(periode as Utsettelsesperiode).orgnumre || []}
                                         />
                                     </Block>
                                     <Block visible={periode.erArbeidstaker === true}>
                                         <Veilederinfo>
                                             {getMessage(intl, 'vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse')}
                                         </Veilederinfo>
-                                        <VedleggSpørsmål
-                                            vedlegg={periode.vedlegg as Attachment[]}
-                                            onChange={(vedlegg) => this.onChange({ vedlegg })}
-                                            attachmentType={AttachmentType.ARBEID_VED_UTSETTELSE}
-                                            skjemanummer={Skjemanummer.BEKREFTELSE_FRA_ARBEIDSGIVER}
-                                        />
                                     </Block>
-                                    <Block
-                                        visible={
-                                            periode.arbeidsform === Arbeidsform.frilans ||
-                                            periode.arbeidsform === Arbeidsform.selvstendignæringsdrivende
-                                        }>
+                                    <Block visible={getVeilederForFrilansOgSNVisible(periode)}>
                                         <Veilederinfo>
                                             <FormattedMessage id="uttaksplan.infoTilFrilansOgSelvstendig" />
                                         </Veilederinfo>
@@ -336,13 +368,14 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                     oppholdsårsak={periode.årsak}
                                     navnAnnenForelder={søknad.annenForelder.fornavn}
                                     søkerErFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
+                                    tilgjengeligeStønadskontoer={tilgjengeligeStønadskontoer}
                                 />
                             </Block>
                             {periode.årsak !== undefined && (
                                 <Veilederinfo>
-                                    <FormattedMessage
+                                    <FormattedHTMLMessage
                                         id="uttaksplan.infoVedOpphold"
-                                        values={{ navn: søknad.annenForelder.fornavn }}
+                                        values={{ navn: søknad.annenForelder.fornavn, link: lenker.viktigeFrister }}
                                     />
                                 </Veilederinfo>
                             )}
@@ -367,7 +400,9 @@ const mapStateToProps = (state: AppState): StateProps => {
         søknad: state.søknad,
         arbeidsforhold: state.api.søkerinfo!.arbeidsforhold || [],
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(state.søknad.søker.rolle),
-        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!)
+        navnPåForeldre: getNavnPåForeldre(state.søknad, state.api.søkerinfo!.person!),
+        tilgjengeligeStønadskontoer: state.api.tilgjengeligeStønadskontoer,
+        familiehendelsesdato: getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon)
     };
 };
 

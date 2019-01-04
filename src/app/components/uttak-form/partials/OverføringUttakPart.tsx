@@ -15,6 +15,7 @@ interface Props {
     vedlegg?: Attachment[];
     navnAnnenForelder: string;
     søkerErFarEllerMedmor: boolean;
+    erEndringssøknad: boolean;
     onChange: (periode: RecursivePartial<Overføringsperiode>) => void;
 }
 
@@ -48,7 +49,7 @@ const getVeilederInfotekst = (årsak: OverføringÅrsakType, navnAnnenForelder: 
 
 class OverføringUttakPart extends React.Component<Props> {
     render() {
-        const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder } = this.props;
+        const { onChange, søkerErFarEllerMedmor, årsak, vedlegg, navnAnnenForelder, erEndringssøknad } = this.props;
         const vedleggList = vedlegg || [];
 
         return (
@@ -58,6 +59,7 @@ class OverføringUttakPart extends React.Component<Props> {
                         annenForelderNavn={navnAnnenForelder}
                         årsak={årsak}
                         onChange={(å) => onChange({ årsak: å })}
+                        visAleneomsorgSomMuligÅrsak={erEndringssøknad}
                     />
                 </Block>
                 <Block visible={visVedlegg(søkerErFarEllerMedmor, årsak)}>

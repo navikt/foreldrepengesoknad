@@ -27,7 +27,7 @@ const bem = BEMHelper('datoInput');
 
 class DatoInput extends React.Component<Props, {}> {
     render() {
-        const { id, label, postfix, feil, intl, onChange, kalender, ...rest } = this.props;
+        const { id, label, postfix, feil, intl, onChange, kalender, name, ...rest } = this.props;
         const avgrensningerTekst = this.props.avgrensninger
             ? getAvgrensningerDescriptionForInput(intl, this.props.avgrensninger)
             : undefined;

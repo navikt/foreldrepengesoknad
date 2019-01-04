@@ -95,39 +95,20 @@ class AntallBarnBolk extends React.Component<Props> {
                 </Block>
                 <Block visible={antallBarnVerdi === '3'}>
                     <Select
+                        name="antallBarnSelect"
                         bredde="xs"
                         label={<Labeltekst intlId={getSelectText(situasjon, erBarnetFødt)} />}
+                        value={antallBarn}
                         onChange={(evt: React.ChangeEvent<HTMLSelectElement>) =>
                             this.onSelectChange(parseInt(evt.target.value, 10))
                         }>
-                        {antallBarn === undefined && (
-                            <option value="" selected={antallBarn === undefined}>
-                                {intl.formatMessage({
-                                    id: 'antallBarn.select.velg'
-                                })}
-                            </option>
-                        )}
-                        <option value={3} selected={antallBarn === 3}>
-                            3
-                        </option>
-                        <option value={4} selected={antallBarn === 4}>
-                            4
-                        </option>
-                        <option value={5} selected={antallBarn === 5}>
-                            5
-                        </option>
-                        <option value={6} selected={antallBarn === 6}>
-                            6
-                        </option>
-                        <option value={7} selected={antallBarn === 7}>
-                            7
-                        </option>
-                        <option value={8} selected={antallBarn === 8}>
-                            8
-                        </option>
-                        <option value={9} selected={antallBarn === 9}>
-                            9
-                        </option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                        <option value={7}>7</option>
+                        <option value={8}>8</option>
+                        <option value={9}>9</option>
                     </Select>
                 </Block>
             </React.Fragment>

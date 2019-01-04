@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -22,20 +22,17 @@ import HarDuRegnskapsførerSpørsmål from '../../spørsmål/HarDuRegnskapsføre
 import HarDuRevisorSpørsmål from '../../spørsmål/HarDuRevisorSpørsmål';
 import KanInnhenteOpplysningerFraRevisorSpørsmål from '../../spørsmål/KanInnhenteOpplysningerFraRevisorSpørsmål';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
-import { getStillingsprosentRegler } from '../../util/validation/stillingsprosent';
 import ModalForm from 'common/components/modalForm/ModalForm';
-import { getFloatFromString } from 'common/util/numberUtils';
 import { getOrganisasjonsnummerRegler } from '../../util/validation/organisasjonsnummer';
 import visibility from './visibility';
 import { default as cleanupNæring } from '../../util/cleanup/cleanupNæring';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
-import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
-import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
-import { Skjemanummer } from '../../types/søknad/Søknad';
-import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål from '../../spørsmål/HarDuBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅreneSpørsmål';
 import { removeSpacesFromString } from '../../util/stringUtils';
+import { hasValueRule } from '../../util/validation/common';
+import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
+import { trimNumberFromInput } from 'common/util/numberUtils';
+import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 
 export interface SelvstendigNæringsdrivendeModalProps {
     næring?: Næring;
@@ -76,7 +73,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.onSubmit = this.onSubmit.bind(this);
         this.updateNæring = this.updateNæring.bind(this);
         this.toggleNæringstype = this.toggleNæringstype.bind(this);
-        this.handleStillingsprosentBlur = this.handleStillingsprosentBlur.bind(this);
     }
 
     updateNæring(næringProperties: NæringPartial): void {
@@ -86,30 +82,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 ...næringProperties
             }
         });
-    }
-
-    updateVedleggList(vedlegg: Attachment[]) {
-        const { næring } = this.state;
-        this.setState({
-            næring: {
-                ...næring,
-                vedlegg
-            }
-        });
-    }
-
-    updateVedleggItem(vedlegg: Attachment) {
-        const { næring } = this.state;
-        if (næring && næring.vedlegg) {
-            const index = næring.vedlegg.indexOf(vedlegg);
-            næring.vedlegg[index] = vedlegg;
-            this.setState({
-                næring: {
-                    ...næring,
-                    vedlegg: næring.vedlegg
-                }
-            });
-        }
     }
 
     onSubmit(): void {
@@ -130,13 +102,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
         this.updateNæring({ næringstyper: newNæringstyper });
     }
 
-    handleStillingsprosentBlur(e: React.FocusEvent<HTMLInputElement>) {
-        const pst = getFloatFromString(e.target.value);
-        this.updateNæring({
-            stillingsprosent: pst ? pst.toFixed(1) : e.target.value
-        });
-    }
-
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { næring } = this.state;
@@ -149,7 +114,6 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
             organisasjonsnummer,
             registrertINorge,
             registrertILand,
-            stillingsprosent,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
             harRegnskapsfører,
             harRevisor,
@@ -168,7 +132,8 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 isOpen={isOpen}
                 renderFormButtons={visibility.formButtons(næring)}
                 submitLabel={getMessage(intl, 'leggtil')}
-                cancelLabel={getMessage(intl, 'avbryt')}>
+                cancelLabel={getMessage(intl, 'avbryt')}
+                noSummary={true}>
                 <Block>
                     <NæringstypeSpørsmål næringstyper={næringstyper || []} onChange={this.toggleNæringstype} />
                 </Block>
@@ -185,6 +150,23 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }
                         value={navnPåNæringen || ''}
                         throttled={false}
+                        validators={getFritekstfeltRules({ maxLength: 100 }, intl, navnPåNæringen)}
+                    />
+                </Block>
+
+                <Block visible={visibility.næringRegistrertINorge(næring)}>
+                    <ErNæringenRegistrertINorgeSpørsmål
+                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
+                        registrertINorge={registrertINorge}
+                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
+                    />
+                </Block>
+
+                <Block visible={visibility.næringRegistrertILand(næring)}>
+                    <Landvelger
+                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
+                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
+                        defaultValue={registrertILand}
                     />
                 </Block>
 
@@ -220,6 +202,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
 
                 <Block visible={visibility.tidsperiode(næring)}>
                     <Checkbox
+                        name="pågåendeVirksomhet"
                         checked={pågående || false}
                         label={getMessage(intl, 'annenInntekt.modal.pågående')}
                         onChange={() => {
@@ -240,69 +223,17 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         label={getMessage(intl, 'annenInntekt.spørsmål.næringsinntekt')}
                         onChange={(v: string) => {
                             const næringPartial: NæringPartial = {
-                                næringsinntekt: v
+                                næringsinntekt: trimNumberFromInput(v)
                             };
                             this.updateNæring(næringPartial);
                         }}
-                        value={næringsinntekt || ''}
-                    />
-                </Block>
-
-                <Block visible={visibility.dokumentasjonAvInntektSisteÅr(næring)}>
-                    <Veilederinfo>
-                        Du må legge ved dokumentasjon av inntekten din for det siste året. Dette kan for eksempel være
-                        kopi personinntektsskjema, næringsoppgave eller resultatregnskap.
-                    </Veilederinfo>
-                    <AttachmentsUploader
-                        attachments={næring.vedlegg || []}
-                        onFilesUploadStart={(attachments: Attachment[]) => {
-                            this.updateVedleggList([...(næring.vedlegg || []), ...attachments]);
-                        }}
-                        onFileUploadFinish={(vedlegg: Attachment) => this.updateVedleggItem(vedlegg)}
-                        onFileDeleteStart={(vedlegg: Attachment) => {
-                            this.updateVedleggItem(vedlegg);
-                        }}
-                        onFileDeleteFinish={(vedlegg: Attachment) => {
-                            const vedleggList = næring.vedlegg || [];
-                            const index = vedleggList.indexOf(vedlegg);
-                            vedleggList.splice(index, 1);
-                            this.updateVedleggList(vedleggList);
-                        }}
-                        attachmentType={AttachmentType.SELVSTENDIGNÆRINGSDRIVENDE}
-                        skjemanummer={Skjemanummer.INNTEKTSOPPLYSNINGER_FRILANS_ELLER_SELVSTENDIG}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertINorge(næring)}>
-                    <ErNæringenRegistrertINorgeSpørsmål
-                        navnPåNæringen={this.state.næring.navnPåNæringen || ''}
-                        registrertINorge={registrertINorge}
-                        onChange={(v: boolean) => this.updateNæring({ registrertINorge: v })}
-                    />
-                </Block>
-
-                <Block visible={visibility.næringRegistrertILand(næring)}>
-                    <Landvelger
-                        onChange={(v: string) => this.updateNæring({ registrertILand: v })}
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.registrertILand')}
-                        defaultValue={registrertILand}
-                    />
-                </Block>
-
-                <Block visible={visibility.stillingsprosent(næring)}>
-                    <Input
-                        name="selvstendigNæringsdrivende-stillingsprosent"
-                        bredde="XS"
-                        label={getMessage(intl, 'selvstendigNæringsdrivende.modal.stillingsprosent')}
-                        onChange={(v: string) =>
-                            this.updateNæring({
-                                stillingsprosent: v
-                            })
-                        }
-                        onBlur={this.handleStillingsprosentBlur}
-                        value={stillingsprosent || ''}
-                        validators={getStillingsprosentRegler(false, stillingsprosent || '', intl)}
-                        maxLength={4}
+                        value={næringsinntekt === undefined || isNaN(næringsinntekt) ? '' : næringsinntekt}
+                        validators={[
+                            hasValueRule(
+                                (næringsinntekt && isNaN(næringsinntekt) === false) || '',
+                                getMessage(intl, 'påkrevd')
+                            )
+                        ]}
                     />
                 </Block>
 
@@ -393,6 +324,12 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                             })
                         }
                     />
+                </Block>
+
+                <Block visible={visibility.formButtons(næring)} margin="none">
+                    <Veilederinfo>
+                        <FormattedMessage id="selvstendigNæringsdrivende.modal.veileder.blikontaktet" />
+                    </Veilederinfo>
                 </Block>
             </ModalForm>
         );

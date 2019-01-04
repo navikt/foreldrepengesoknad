@@ -13,10 +13,12 @@ import { cleanInvalidSøknadData } from '../../util/storageCleanup/storageCleanu
 import { isFeatureEnabled, Feature } from '../../Feature';
 import { History } from 'history';
 import routeConfig from '../../util/routing/routeConfig';
+import StorageSagaUtils from '../../util/storageSagaUtils';
 
-function* saveAppState() {
+const stateSelector = (state: AppState) => state;
+
+function* saveAppState(action: any) {
     try {
-        const stateSelector = (state: AppState) => state;
         const appState: AppState = yield select(stateSelector);
         const { sensitivInfoIkkeLagre, ...søknad } = appState.søknad;
         const cleanedAppState = {
@@ -27,7 +29,7 @@ function* saveAppState() {
     } catch {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false
             })
         );
     }
@@ -35,39 +37,62 @@ function* saveAppState() {
 
 function* getAppState(action: GetStoredAppState) {
     try {
-        put(apiActions.updateApi({ isLoadingAppState: true }));
+        put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         const response: AxiosResponse = yield call(Api.getStoredAppState);
         const state: AppState = response.data;
+
         if (state) {
             yield applyStoredStateToApp(state, action.history);
         }
     } catch {
-        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: false }));
     } finally {
-        yield put(apiActions.updateApi({ isLoadingAppState: false }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: false, isLoadingInitialAppData: false }));
     }
 }
 
-function* applyStoredStateToApp(state: AppState, history: History) {
-    if (Object.keys(state).length !== 0) {
-        const søknad: Søknad = cleanInvalidSøknadData(state.søknad);
+function* applyStoredStateToApp(storedState: AppState, history: History) {
+    if (Object.keys(storedState).length !== 0) {
+        const appState: AppState = yield select(stateSelector);
+        const søknad: Søknad = cleanInvalidSøknadData(storedState.søknad);
+        søknad.søker = StorageSagaUtils.upgradeAndreInntekterFromV1ToV2(søknad.søker);
+        const { søkerinfo } = appState.api;
+
+        if (isFeatureEnabled(Feature.registrertBarn) === false) {
+            delete søknad.ekstrainfo.søknadenGjelderBarnValg;
+        } else {
+            if (søknad.ekstrainfo.søknadenGjelderBarnValg === undefined) {
+                søknad.ekstrainfo.søknadenGjelderBarnValg = {
+                    gjelderAnnetBarn: søknad.barn.erBarnetFødt !== undefined,
+                    valgteBarn: []
+                };
+            }
+        }
+
+        const valgteRegistrerteBarn = StorageSagaUtils.getValgteRegistrerteBarnISøknaden(søknad);
+        const registrerteBarn = søkerinfo ? søkerinfo.registrerteBarn : undefined;
+
         if (
-            (søknad.erEndringssøknad && isFeatureEnabled(Feature.endringssøknad) === false) ||
-            søknad.ekstrainfo.currentStegID === undefined
+            søkerinfo === undefined ||
+            søknad.ekstrainfo.currentStegID === undefined ||
+            (valgteRegistrerteBarn !== undefined &&
+                StorageSagaUtils.stemmerValgteBarnISøknadMedSøkersBarn(valgteRegistrerteBarn, registrerteBarn) ===
+                    false)
         ) {
-            yield put(commonActions.setSpråk(state.common.språkkode));
+            yield put(commonActions.setSpråk(storedState.common.språkkode));
             yield put(søknadActions.avbrytSøknad());
             history.push(routeConfig.APP_ROUTE_PREFIX);
         } else {
-            if (isFeatureEnabled(Feature.endringssøknad)) {
-                if (søknad.erEndringssøknad === undefined) {
-                    søknad.erEndringssøknad = false;
-                }
-            } else {
+            if (søknad.erEndringssøknad === undefined) {
                 søknad.erEndringssøknad = false;
             }
             yield put(søknadActions.updateSøknad(søknad));
-            yield put(commonActions.setSpråk(state.common.språkkode));
+
+            if (valgteRegistrerteBarn) {
+                yield put(søknadActions.updateSøknadenGjelderBarn({ valgteBarn: valgteRegistrerteBarn }));
+            }
+
+            yield put(commonActions.setSpråk(storedState.common.språkkode));
             yield put(uttaksplanValideringActions.validerUttaksplanAction());
         }
     }
@@ -75,33 +100,35 @@ function* applyStoredStateToApp(state: AppState, history: History) {
 
 function* deleteStoredAppState() {
     try {
-        yield put(apiActions.updateApi({ isLoadingAppState: true }));
+        yield put(apiActions.updateApi({ isLoadingStoredAppState: true }));
         yield call(Api.deleteStoredAppState);
     } catch {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false
             })
         );
     } finally {
         yield put(
             apiActions.updateApi({
-                isLoadingAppState: false
+                isLoadingStoredAppState: false,
+                isLoadingInitialAppData: false
             })
         );
     }
 }
 
 const THROTTLE_INTERVAL_MS = 2500;
+const THROTTLE_INTERVAL_UTTAKSPLAN = 15000;
 
 export default function* storageSaga() {
     yield all([
         takeEvery(ApiActionKeys.GET_STORED_APP_STATE, getAppState),
         takeEvery(ApiActionKeys.DELETE_STORED_APP_STATE, deleteStoredAppState),
         throttle(THROTTLE_INTERVAL_MS, ApiActionKeys.STORE_APP_STATE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
-        throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_ADD_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_DELETE_PERIODE, saveAppState),
+        throttle(THROTTLE_INTERVAL_UTTAKSPLAN, SøknadActionKeys.UTTAKSPLAN_UPDATE_PERIODE, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, saveAppState),
         throttle(THROTTLE_INTERVAL_MS, SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, saveAppState)
     ]);

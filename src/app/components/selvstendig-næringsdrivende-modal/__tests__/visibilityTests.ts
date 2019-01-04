@@ -4,7 +4,6 @@ import {
     Næringsrelasjon,
     Næringstype
 } from '../../../types/søknad/SelvstendigNæringsdrivendeInformasjon';
-import { date1YearAgo, dateMoreThan1YearAgo } from '../../../util/validation/values';
 
 describe('SelvstendigNæringsdrivendeModal visibility', () => {
     describe('Navn på næringen', () => {
@@ -18,106 +17,17 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
         });
     });
 
-    describe('Organisasjonsnummer', () => {
+    describe('Næring registrert i Norge', () => {
         beforeEach(() => {
             fns.navnPåNæringen = jest.fn(() => true);
         });
-
-        it('should be visible if navnPåNæringen is visible and not undefined', () => {
-            expect(fns.organisasjonsnummer({ navnPåNæringen: 'something' })).toBe(true);
+        it('should be visible if navn på næringen is defined and visible', () => {
+            expect(fns.næringRegistrertINorge({ navnPåNæringen: 'abc' })).toBe(true);
         });
 
-        it('should be hidden if navnPåNæringen is undefined or not visible', () => {
-            expect(fns.organisasjonsnummer({})).toBe(false);
-            fns.navnPåNæringen = jest.fn(() => false);
-            expect(fns.organisasjonsnummer({ navnPåNæringen: 'something ' })).toBe(false);
-        });
-    });
-
-    describe('Tidsperiode', () => {
-        describe('visibility', () => {
-            beforeEach(() => {
-                fns.organisasjonsnummer = jest.fn(() => true);
-            });
-
-            it('should be visible if organisasjonsnummer is visible and not undefined', () => {
-                expect(fns.tidsperiode({ organisasjonsnummer: '123456789' })).toBe(true);
-            });
-
-            it('should be hidden if organisasjonsnummer is undefined or not visible', () => {
-                expect(fns.tidsperiode({})).toBe(false);
-                fns.organisasjonsnummer = jest.fn(() => false);
-                expect(fns.tidsperiode({ organisasjonsnummer: '123456789 ' })).toBe(false);
-            });
-        });
-
-        describe('complete', () => {
-            it('should be complete if fom is defined, and pågående=true or tom !== undefined', () => {
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: true })).toBe(true);
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), tom: new Date() } })).toBe(true);
-            });
-
-            it('should be incomplete if not pågående and fom/tom is undefined', () => {
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: {} })).toBe(false);
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: false })).toBe(false);
-            });
-        });
-    });
-
-    describe('Dokumentasjon av næringsinntekt', () => {
-        beforeEach(() => {
-            fns.næringsinntekt = jest.fn(() => true);
-        });
-
-        it('should be visible if næringsinntekt is defined and visible, and oppstartsdato is 1 year ago or less', () => {
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '123',
-                    tidsperiode: { fom: date1YearAgo.toDate() }
-                })
-            ).toBe(true);
-        });
-
-        it('should be hidden if næringsinntekt is not defined or not visible', () => {
-            expect(fns.dokumentasjonAvInntektSisteÅr({ tidsperiode: { fom: date1YearAgo.toDate() } })).toBe(false);
-            fns.næringsinntekt = jest.fn(() => false);
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '213',
-                    tidsperiode: { fom: date1YearAgo.toDate() }
-                })
-            ).toBe(false);
-        });
-
-        it('should be hidden if oppstartsdato is more than 1 year ago', () => {
-            fns.næringsinntekt = jest.fn(() => true);
-            expect(
-                fns.dokumentasjonAvInntektSisteÅr({
-                    næringsinntekt: '111',
-                    tidsperiode: { fom: dateMoreThan1YearAgo.toDate() }
-                })
-            ).toBe(false);
-        });
-    });
-
-    describe('Næring registrert i Norge', () => {
-        beforeEach(() => {
-            fns.tidsperiodeUtfylt = jest.fn(() => true);
-            fns.tidsperiode = jest.fn(() => true);
-            fns.næringsinntekt = jest.fn(() => true);
-        });
-
-        it('should be visible if næringsinntekt field is defined and visible', () => {
-            expect(fns.næringRegistrertINorge({ næringsinntekt: '1111' })).toBe(true);
-        });
-
-        it('should be hidden if næringsinntekt field is visible but its value is undefined', () => {
+        it('should be hidden if navn på næringen is visible but its value is undefined or empty', () => {
             expect(fns.næringRegistrertINorge({})).toBe(false);
-        });
-
-        it('should be visible if tidsperiode is complete and visible when næringsinntekt is not visible', () => {
-            fns.næringsinntekt = jest.fn(() => false);
-            expect(fns.næringRegistrertINorge({})).toBe(true);
+            expect(fns.næringRegistrertINorge({ navnPåNæringen: '' })).toBe(false);
         });
     });
 
@@ -138,25 +48,72 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
         });
     });
 
-    describe('Stillingsprosent', () => {
-        it('should be visible if registrertINorge is true and visible', () => {
+    describe('Organisasjonsnummer', () => {
+        beforeEach(() => {
+            fns.navnPåNæringen = jest.fn(() => true);
             fns.næringRegistrertINorge = jest.fn(() => true);
-            expect(fns.stillingsprosent({ registrertINorge: true })).toBe(true);
         });
 
-        it('should be visible if registrertILand is defined and visible, and registrertINorge is false', () => {
-            fns.næringRegistrertILand = jest.fn(() => true);
-            expect(fns.stillingsprosent({ registrertINorge: false, registrertILand: 'country' }));
+        it('should be visible if registrert i norge is visible and not undefined', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: true })).toBe(true);
         });
 
-        it('should be hidden if registrertILand is not visible', () => {
-            fns.næringRegistrertILand = jest.fn(() => false);
-            expect(fns.stillingsprosent({ registrertINorge: false })).toBe(false);
+        it('should be visible if registrert i utlandet and registrertILand is defined', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: true, registrertILand: 'japan' })).toBe(true);
         });
 
-        it('should be hidden if registrertINorge is not visible', () => {
-            fns.næringRegistrertINorge = jest.fn(() => false);
-            expect(fns.stillingsprosent({ registrertINorge: true })).toBe(false);
+        it('should be hidden if registrert norge is undefined', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: undefined })).toBe(false);
+        });
+
+        it('should be hidden if registrert norge is false', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: false })).toBe(false);
+        });
+
+        it('should be hidden if registrert norge is is false and registrertILand is undefined', () => {
+            expect(fns.organisasjonsnummer({ registrertINorge: false, registrertILand: undefined })).toBe(false);
+        });
+    });
+
+    describe('Tidsperiode', () => {
+        describe('visibility', () => {
+            beforeEach(() => {
+                fns.næringRegistrertINorge = jest.fn(() => true);
+                fns.organisasjonsnummer = jest.fn(() => true);
+            });
+
+            it('should be visible if registrertINorge and organisasjonsnummer is defined', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: '123123123' })).toBe(true);
+            });
+
+            it('should be hidden if registrertINorge and organisasjonsnummer is not defined', () => {
+                expect(fns.tidsperiode({ registrertINorge: true })).toBe(false);
+            });
+
+            it('should be hidden if registrertINorge and organisasjonsnummer is empty', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: '' })).toBe(false);
+            });
+
+            it('should be visible if registrertINorge === false and registrertILand has value', () => {
+                fns.organisasjonsnummer = jest.fn(() => false);
+                expect(fns.tidsperiode({ registrertINorge: false, registrertILand: 'abc' })).toBe(true);
+            });
+
+            it('should be hidden if registrertINorge === true and organisasjonsnummer is undefined or not visible', () => {
+                expect(fns.tidsperiode({ registrertINorge: true, organisasjonsnummer: undefined })).toBe(false);
+            });
+        });
+
+        describe('complete', () => {
+            it('should be complete if fom is defined, and pågående=true or tom !== undefined', () => {
+                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: true })).toBe(true);
+                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), tom: new Date() } })).toBe(true);
+            });
+
+            it('should be incomplete if not pågående and fom/tom is undefined', () => {
+                expect(fns.tidsperiodeUtfylt({ tidsperiode: {} })).toBe(false);
+                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: false })).toBe(false);
+            });
         });
     });
 

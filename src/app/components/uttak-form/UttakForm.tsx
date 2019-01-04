@@ -5,7 +5,8 @@ import {
     StønadskontoType,
     Uttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Overføringsperiode
+    Overføringsperiode,
+    MorsAktivitet
 } from '../../types/uttaksplan/periodetyper';
 import { Forelder, Tidsperiode, NavnPåForeldre } from 'common/types';
 import { RecursivePartial } from '../../types/Partial';
@@ -34,11 +35,11 @@ import { erUttakAvAnnenForeldersKvote } from '../../util/uttaksplan/uttakUtils';
 import { Uttaksdagen } from '../../util/uttaksplan/Uttaksdagen';
 import { getDefaultPermisjonStartdato } from '../../util/uttaksplan/permisjonUtils';
 import { getPermisjonsregler } from '../../util/uttaksplan/permisjonsregler';
-import { EndrePeriodeChangeEvent } from '../endre-periode-form-renderer/EndrePeriodeFormRenderer';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
+import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -131,7 +132,8 @@ class UttaksperiodeForm extends React.Component<Props> {
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
                 harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
+                morsAktivitetIPerioden: konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
             });
         } else {
             this.onChange({
@@ -139,7 +141,8 @@ class UttaksperiodeForm extends React.Component<Props> {
                 konto,
                 forelder: this.props.søkerErFarEllerMedmor ? Forelder.FARMEDMOR : Forelder.MOR,
                 harIkkeAktivitetskrav: konto === StønadskontoType.AktivitetsfriKvote ? true : undefined,
-                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined
+                ønskerFlerbarnsdager: konto === StønadskontoType.Flerbarnsdager ? true : undefined,
+                morsAktivitetIPerioden: konto === StønadskontoType.AktivitetsfriKvote ? MorsAktivitet.Uføre : undefined
             });
         }
     }
@@ -271,16 +274,20 @@ class UttaksperiodeForm extends React.Component<Props> {
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.samtidigUttak)} margin="none">
                             <SamtidigUttakPart
-                                onChange={(ønskerSamtidigUttak) => this.onChange({ ønskerSamtidigUttak })}
+                                onChange={this.onChange}
                                 ønskerSamtidigUttak={periode.ønskerSamtidigUttak}
+                                visibility={visibility}
+                                navnAnnenForelder={søknad.annenForelder.fornavn}
+                                periode={periode}
                             />
                         </Block>
                         <Block visible={visibility.isVisible(UttakSpørsmålKeys.skalHaGradering)} margin="none">
                             <GradertUttakPart
                                 visibility={visibility}
-                                periode={periode}
+                                periode={periode as Uttaksperiode}
                                 arbeidsforhold={arbeidsforhold}
                                 onChange={this.onChange}
+                                visAntallDagerUttak={periode.ønskerSamtidigUttak !== true}
                             />
                         </Block>
                     </>
@@ -291,6 +298,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         hasChildBlocks={true}
                         margin="none">
                         <OverføringUttakPart
+                            erEndringssøknad={søknad.erEndringssøknad}
                             navnAnnenForelder={søknad.annenForelder.fornavn}
                             årsak={periode.årsak}
                             søkerErFarEllerMedmor={søkerErFarEllerMedmor}

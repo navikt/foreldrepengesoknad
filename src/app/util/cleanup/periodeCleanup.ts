@@ -7,19 +7,36 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    Periode
+    Periode,
+    isUttaksperiode,
+    StønadskontoType
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import { Søker } from '../../types/søknad/Søker';
 import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
-import { shouldPeriodeHaveAttachment } from '../søknad/missingAttachmentUtil';
-import { UttakSpørsmålVisibility, UttakSpørsmålKeys } from '../../components/uttak-form/uttakFormConfig';
+import { UttakSpørsmålVisibility } from '../../components/uttak-form/uttakFormConfig';
 import { UtsettelseFormPeriodeType } from '../../components/utsettelse-form/UtsettelseForm';
 import { UtsettelseSpørsmålVisibility } from '../../components/utsettelse-form/utsettelseFormConfig';
 import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
+import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
+
+const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
+    if (isUttaksperiode(periode)) {
+        const validPeriodeTypes: StønadskontoType[] = [
+            StønadskontoType.Fellesperiode,
+            StønadskontoType.Foreldrepenger,
+            StønadskontoType.AktivitetsfriKvote
+        ];
+        if (validPeriodeTypes.includes(periode.konto)) {
+            return true;
+        }
+    }
+
+    return false;
+};
 
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
@@ -40,8 +57,8 @@ const cleanupUtsettelse = (
         tidsperiode: periode.tidsperiode,
         forelder: periode.forelder,
         morsAktivitetIPerioden,
-        orgnr: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnr : undefined,
-        arbeidsform: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsform : undefined,
+        orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
+        arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
         vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
             ? periode.vedlegg
@@ -61,14 +78,15 @@ const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: Uttak
         tidsperiode: periode.tidsperiode,
         gradert: periode.gradert,
         morsAktivitetIPerioden:
-            visibility && visibility.isVisible(UttakSpørsmålKeys.aktivitetskravMor)
+            periodeKontotypeHasAktivitetskrav(periode) && periode.morsAktivitetIPerioden
                 ? periode.morsAktivitetIPerioden
                 : undefined,
         ønskerSamtidigUttak: periode.ønskerSamtidigUttak,
+        samtidigUttakProsent: periode.ønskerSamtidigUttak === true ? periode.samtidigUttakProsent : undefined,
         stillingsprosent: periode.gradert === true ? periode.stillingsprosent : undefined,
-        arbeidsform: periode.gradert === true ? periode.arbeidsform : undefined,
+        arbeidsformer: periode.gradert === true ? periode.arbeidsformer : undefined,
         harIkkeAktivitetskrav: periode.harIkkeAktivitetskrav,
-        orgnr: periode.gradert === true ? periode.orgnr : undefined,
+        orgnumre: periode.gradert === true ? periode.orgnumre : undefined,
         erArbeidstaker: periode.gradert ? periode.erArbeidstaker : undefined,
         ønskerFlerbarnsdager: periode.ønskerFlerbarnsdager,
         erMorForSyk: periode.erMorForSyk

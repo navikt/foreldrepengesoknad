@@ -9,14 +9,12 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
-import InntektstypeVelger from '../inntektstype-velger/InntektstypeVelger';
 import { Checkbox, Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import Landvelger from '../landvelger/Landvelger';
-import ErArbeidsgiverNærVennEllerFamilie from '../../spørsmål/ErArbeidsgiverNærVennEllerFamilieSpørsmål';
 import { InputChangeEvent } from '../../types/dom/Events';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import AnnenInntektVedleggInfo from './AnnenInntektVedleggInfo';
@@ -26,6 +24,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getSkjemanummerForAndreInntekter } from 'common/storage/attachment/components/util';
 import { hasValueRule } from '../../util/validation/common';
+import InntektstypeSpørsmål from '../../spørsmål/InntektstypeSpørsmål';
 
 export interface AnnenInntektModalProps {
     annenInntekt?: AnnenInntekt;
@@ -121,11 +120,9 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 submitLabel={getMessage(intl, 'leggtil')}
                 cancelLabel={getMessage(intl, 'avbryt')}>
                 <Block>
-                    <InntektstypeVelger
-                        label={''}
+                    <InntektstypeSpørsmål
+                        inntektstype={annenInntekt.type}
                         onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
-                        defaultValue={annenInntekt.type}
-                        validators={[hasValueRule(annenInntekt.type, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
                 <Block visible={visibility.land(annenInntekt)}>
@@ -142,6 +139,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
+                        name="arbeidsgiverNavn"
                         label={getMessage(intl, 'annenInntekt.spørsmål.arbeidsgiver')}
                         onChange={(e: InputChangeEvent) => {
                             const utlandInntekt: JobbIUtlandetInntektPartial = {
@@ -150,19 +148,6 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
                         value={(annenInntekt as JobbIUtlandetInntekt).arbeidsgiverNavn || ''}
-                    />
-                </Block>
-                <Block visible={visibility.erNærVennEllerFamilie(annenInntekt)}>
-                    <ErArbeidsgiverNærVennEllerFamilie
-                        erArbeidsgiverNærVennEllerFamilie={
-                            (annenInntekt as JobbIUtlandetInntekt).erNærVennEllerFamilieMedArbeidsgiver
-                        }
-                        onChange={(v: boolean) => {
-                            const utlandInntekt: JobbIUtlandetInntektPartial = {
-                                erNærVennEllerFamilieMedArbeidsgiver: v
-                            };
-                            this.updateAnnenInntekt(utlandInntekt);
-                        }}
                     />
                 </Block>
                 <Block>
@@ -187,6 +172,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                     <Checkbox
                         checked={annenInntekt.pågående || false}
                         label={getMessage(intl, 'pågående')}
+                        name="pågåendeInntektskilde"
                         onChange={() => {
                             this.updateAnnenInntekt({
                                 pågående: !annenInntekt.pågående,
