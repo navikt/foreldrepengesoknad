@@ -217,8 +217,8 @@
     "ikkeMyndig.ingress":
         "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden sammen med deg. Du må derfor fylle ut søknaden på papir og sende den i posten.",
     "ikkeMyndig.tittel": "Hei, {navn}!",
-    "inntektstype.etterlønn_arbeidsgiver": "Sluttvederlag, sluttpakke eller etterlønn",
-    "inntektstype.etterlønn_arbeidsgiver_info":
+    "inntektstype.etterlønn_sluttpakke": "Sluttvederlag, sluttpakke eller etterlønn",
+    "inntektstype.etterlønn_sluttpakke_info":
         "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
     "inntektstype.frilans": "Frilans",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
@@ -230,8 +230,8 @@
     "inntektstype.militær_eller_siviltjeneste_info":
         "Du må legge ved dokumentasjon på perioden fra tjenestestedet ditt.",
     "inntektstype.selvstendigNæringsdrivende": "Selvstendig næringsdrivende",
-    "inntektstype.ventelønn": "Vartpenger og ventelønn",
-    "inntektstype.ventelønn_info":
+    "inntektstype.ventelønn_vartpenger": "Vartpenger og ventelønn",
+    "inntektstype.ventelønn_vartpenger_info":
         "Du må legge ved dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden vartpengene eller ventelønnen gjelder for.",
     "ja": "Ja",
     "jeg": "jeg",
