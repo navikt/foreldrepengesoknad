@@ -47,7 +47,7 @@ type Props = OwnProps & InjectedIntlProps;
 
 interface State {
     periodetype?: Periodetype;
-    tidsperiode?: Tidsperiode;
+    tidsperiode?: Partial<Tidsperiode>;
     formIsOpen: boolean;
 }
 
@@ -83,7 +83,7 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.settInnNyPeriode = this.settInnNyPeriode.bind(this);
     }
 
-    openForm(periodetype: Periodetype, tidsperiode?: Tidsperiode) {
+    openForm(periodetype: Periodetype, tidsperiode?: Partial<Tidsperiode>) {
         this.setState({
             formIsOpen: true,
             periodetype,
@@ -117,8 +117,15 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         this.openForm(Periodetype.Utsettelse, tidsperiode);
     }
 
-    openNyUttaksperiodeForm(tidsperiode?: Tidsperiode) {
+    openNyUttaksperiodeForm() {
         this.lukkPeriodeliste();
+        const tidsperiode: Partial<Tidsperiode> | undefined =
+            this.props.søknad.uttaksplan.length > 0
+                ? {
+                      fom: Periodene(this.props.søknad.uttaksplan).getFørsteUttaksdagEtterSistePeriode()
+                  }
+                : undefined;
+
         this.openForm(Periodetype.Uttak, tidsperiode);
     }
 
