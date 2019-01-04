@@ -98,6 +98,16 @@ function deleteStoredAppState() {
     return axios.delete(url, { withCredentials: true });
 }
 
+const log = (error: any) => {
+    return axios.post(`${apiBaseUrl}/log`, error, {
+        timeout: 15 * 1000,
+        withCredentials: true,
+        headers: {
+            'content-type': 'application/json;'
+        }
+    });
+};
+
 const Api = {
     getSøkerinfo,
     getSaker,
@@ -105,7 +115,8 @@ const Api = {
     sendSøknad,
     getStoredAppState,
     storeAppState,
-    deleteStoredAppState
+    deleteStoredAppState,
+    log
 };
 
 export default Api;

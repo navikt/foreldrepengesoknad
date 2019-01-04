@@ -12,6 +12,7 @@ import './styles/app.less';
 import * as countries from 'i18n-iso-countries';
 import { Normaltekst } from 'nav-frontend-typografi';
 import ApplicationInfo from './components/applicationInfo/ApplicationInfo';
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
 countries.registerLocale(require('i18n-iso-countries/langs/nb.json'));
 countries.registerLocale(require('i18n-iso-countries/langs/nn.json'));
@@ -20,15 +21,17 @@ Modal.setAppElement('#appContainer');
 const root = document.getElementById('app');
 
 render(
-    <Provider store={store}>
-        <IntlProvider>
-            <Router>
-                <Normaltekst tag="div">
-                    <Foreldrepengesøknad />
-                    <ApplicationInfo />
-                </Normaltekst>
-            </Router>
-        </IntlProvider>
-    </Provider>,
+    <ErrorBoundary>
+        <Provider store={store}>
+            <IntlProvider>
+                <Router>
+                    <Normaltekst tag="div">
+                        <Foreldrepengesøknad />
+                        <ApplicationInfo />
+                    </Normaltekst>
+                </Router>
+            </IntlProvider>
+        </Provider>
+    </ErrorBoundary>,
     root
 );
