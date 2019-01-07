@@ -1,4 +1,7 @@
 const express = require('express');
+const server = express();
+server.use(express.json());
+
 const path = require('path');
 const mustacheExpress = require('mustache-express');
 const Promise = require('promise');
@@ -44,6 +47,10 @@ const startServer = (html) => {
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
+    server.post('/log', (req, res) => {
+        console.log(req.body.message, req.body.trace, req.body.componentStack, req.body.browserInfo);
+        res.sendStatus(200);
+    });
 
     server.get(/^\/(?!.*dist).*$/, (req, res) => {
         res.send(html);

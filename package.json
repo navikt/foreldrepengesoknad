@@ -112,6 +112,7 @@
         "i18n-iso-countries": "3.6.3",
         "is-valid-fodselsnummer": "3.0.1",
         "jsdom": "11.9.0",
+        "lodash": "^4.17.11",
         "lodash.throttle": "4.1.1",
         "moment": "2.22.1",
         "mustache-express": "1.2.5",
