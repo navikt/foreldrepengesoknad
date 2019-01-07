@@ -9,7 +9,6 @@ const getDecorator = require('./src/build/scripts/decorator');
 const createEnvSettingsFile = require('./src/build/scripts/envSettings');
 var compression = require('compression');
 
-const server = express();
 server.use(compression());
 
 server.set('views', `${__dirname}/dist`);
