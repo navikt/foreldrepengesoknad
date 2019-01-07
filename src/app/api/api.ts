@@ -99,11 +99,11 @@ function deleteStoredAppState() {
 }
 
 const log = (error: any) => {
-    return axios.post(`${apiBaseUrl}/log`, error, {
+    return axios.post('/log', error, {
         timeout: 15 * 1000,
         withCredentials: true,
         headers: {
-            'content-type': 'application/json;'
+            'content-type': 'application/json'
         }
     });
 };

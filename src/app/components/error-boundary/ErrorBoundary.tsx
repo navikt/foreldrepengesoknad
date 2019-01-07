@@ -19,11 +19,12 @@ class ErrorBoundary extends React.Component<{}, State> {
         }
     }
 
-    logError(error: Error | null | undefined, browserInfo: BrowserInfo | null | false, reactStackTrace?: object) {
+    logError(error: Error | null | undefined, browserInfo: BrowserInfo | null | false, reactStackTrace?: any) {
         Api.log({
             message: error ? error.message : undefined,
             trace: error ? error.stack : undefined,
-            reactStackTrace,
+            componentStack:
+                reactStackTrace && reactStackTrace.componentStack ? reactStackTrace.componentStack : undefined,
             browserInfo
         });
     }
