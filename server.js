@@ -25,6 +25,12 @@ server.use((req, res, next) => {
     next();
 });
 
+var winston = require('winston');
+const logger = winston.createLogger({
+    format: winston.format.json(),
+    transports: [new winston.transports.Console()]
+});
+
 const renderApp = (decoratorFragments) =>
     new Promise((resolve, reject) => {
         server.render('index.html', decoratorFragments, (err, html) => {
@@ -47,7 +53,8 @@ const startServer = (html) => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
     server.post('/log', (req, res) => {
-        console.log(req.body.message, req.body.trace, req.body.componentStack, req.body.browserInfo);
+        const { message, ...rest } = req.body;
+        logger.warn(message, { ...rest });
         res.sendStatus(200);
     });
 
