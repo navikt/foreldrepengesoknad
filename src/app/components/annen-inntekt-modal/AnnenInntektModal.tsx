@@ -9,7 +9,7 @@ import {
     JobbIUtlandetInntekt,
     JobbIUtlandetInntektPartial
 } from '../../types/søknad/AnnenInntekt';
-import { Checkbox, Input } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import AttachmentsUploader from 'common/storage/attachment/components/AttachmentUploader';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
@@ -153,35 +153,22 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 <Block>
                     <TidsperiodeBolk
                         tidsperiode={tidsperiode}
+                        pågående={tidsperiode.pågående}
+                        visPågåendePeriodeCheckbox={true}
                         onChange={(changedTidsperiode: TidsperiodeMedValgfriSluttdato) =>
                             this.updateAnnenInntekt({ tidsperiode: changedTidsperiode })
                         }
-                        sluttdatoDisabled={annenInntekt.pågående}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(annenInntekt.tidsperiode)}
                         datoValidatorer={{
                             fra: [hasValueRule(tidsperiode.fom, getMessage(intl, 'påkrevd'))],
                             til: [
                                 {
-                                    test: () => tidsperiode.tom !== undefined || annenInntekt.pågående === true,
+                                    test: () => tidsperiode.tom !== undefined || tidsperiode.pågående === true,
                                     failText: getMessage(intl, 'påkrevd')
                                 }
                             ]
                         }}
                         kalenderplassering="fullskjerm"
-                    />
-                    <Checkbox
-                        checked={annenInntekt.pågående || false}
-                        label={getMessage(intl, 'pågående')}
-                        name="pågåendeInntektskilde"
-                        onChange={() => {
-                            this.updateAnnenInntekt({
-                                pågående: !annenInntekt.pågående,
-                                tidsperiode: {
-                                    ...annenInntekt.tidsperiode,
-                                    tom: undefined
-                                }
-                            });
-                        }}
                     />
                 </Block>
                 <Block visible={visibility.vedlegg(annenInntekt)}>

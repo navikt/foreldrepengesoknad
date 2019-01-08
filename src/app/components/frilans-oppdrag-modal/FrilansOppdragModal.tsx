@@ -1,20 +1,18 @@
 import * as React from 'react';
-import Modal, { ModalProps } from 'nav-frontend-modal';
-import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
-import Knapp, { Hovedknapp } from 'nav-frontend-knapper';
-import { Undertittel } from 'nav-frontend-typografi';
+import { ModalProps } from 'nav-frontend-modal';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import Knapperad from 'common/components/knapperad/Knapperad';
-import { Checkbox } from 'nav-frontend-skjema';
-import BEMHelper from 'common/util/bem';
-import './frilansOppdragModal.less';
 import TidsperiodeBolk from '../../bolker/tidsperiode-bolk/TidsperiodeBolk';
 import { TidsperiodeMedValgfriSluttdato } from 'common/types';
 import { FrilansOppdrag, FrilansOppdragPartial } from '../../types/søknad/FrilansInformasjon';
 import { getAndreInntekterTidsperiodeAvgrensninger } from '../../util/validation/andreInntekter';
 import Input from 'common/components/skjema/wrappers/Input';
 import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
+import { hasValueRule } from '../../util/validation/common';
+import ModalForm from 'common/components/modalForm/ModalForm';
+
+import './frilansOppdragModal.less';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;
@@ -65,10 +63,7 @@ class FrilansOppdragModal extends React.Component<Props, State> {
         });
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        event.stopPropagation();
-
+    onSubmit(): void {
         const { onAdd, onEdit, editMode } = this.props;
         const { oppdrag } = this.state;
 
@@ -82,68 +77,48 @@ class FrilansOppdragModal extends React.Component<Props, State> {
     render() {
         const { intl, onRequestClose, ...modalProps } = this.props;
         const { oppdrag } = this.state;
-        const cls = BEMHelper('frilansOppdragModal');
+        const tidsperiode = oppdrag.tidsperiode !== undefined ? oppdrag.tidsperiode : {};
 
         return (
-            <Modal className={cls.className} onRequestClose={onRequestClose} {...modalProps}>
-                <form onSubmit={this.onSubmit}>
-                    <Undertittel className={cls.element('title')}>
-                        <FormattedMessage id="frilansOppdrag.modal.tittel" />
-                    </Undertittel>
+            <ModalForm
+                title={getMessage(intl, 'frilansOppdrag.modal.tittel')}
+                renderFormButtons={true}
+                onSubmit={this.onSubmit}
+                noSummary={true}
+                onRequestClose={onRequestClose}
+                submitLabel={getMessage(intl, 'leggtil')}
+                cancelLabel={getMessage(intl, 'avbryt')}
+                {...modalProps}>
+                <Block>
+                    <Input
+                        label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
+                        value={oppdrag.navnPåArbeidsgiver || ''}
+                        onChange={(value: string) =>
+                            this.updateOppdrag({
+                                navnPåArbeidsgiver: value
+                            })
+                        }
+                        name="oppdragsgiverNavn"
+                        validators={[
+                            hasValueRule(oppdrag.navnPåArbeidsgiver, getMessage(intl, 'påkrevd')),
+                            ...getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver)
+                        ]}
+                    />
+                </Block>
 
-                    <Block>
-                        <Input
-                            label={getMessage(intl, 'frilansOppdrag.modal.oppdragsgiver')}
-                            value={oppdrag.navnPåArbeidsgiver || ''}
-                            onChange={(value: string) =>
-                                this.updateOppdrag({
-                                    navnPåArbeidsgiver: value
-                                })
-                            }
-                            name="oppdragsgiverNavn"
-                            validators={getFritekstfeltRules({ maxLength: 100 }, intl, oppdrag.navnPåArbeidsgiver)}
-                        />
-                    </Block>
-
-                    <Block margin="xxs">
-                        <TidsperiodeBolk
-                            tidsperiode={oppdrag.tidsperiode || {}}
-                            onChange={(tidsperiode: TidsperiodeMedValgfriSluttdato) =>
-                                this.updateOppdrag({ tidsperiode })
-                            }
-                            kalenderplassering="fullskjerm"
-                            sluttdatoDisabled={oppdrag.pågående}
-                            datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(oppdrag.tidsperiode)}
-                        />
-                    </Block>
-
-                    <Block>
-                        <Checkbox
-                            name="pågåendeOppdrag"
-                            checked={oppdrag.pågående || false}
-                            label={getMessage(intl, 'pågående')}
-                            onChange={() => {
-                                this.updateOppdrag({
-                                    pågående: !oppdrag.pågående,
-                                    tidsperiode: {
-                                        ...oppdrag.tidsperiode,
-                                        tom: undefined
-                                    }
-                                });
-                            }}
-                        />
-                    </Block>
-
-                    <Knapperad>
-                        <Knapp type="standard" onClick={onRequestClose} htmlType="button" data-name="avbryt">
-                            <FormattedMessage id="avbryt" />
-                        </Knapp>
-                        <Hovedknapp data-name="leggTil">
-                            <FormattedMessage id="leggtil" />
-                        </Hovedknapp>
-                    </Knapperad>
-                </form>
-            </Modal>
+                <Block margin="xxs">
+                    <TidsperiodeBolk
+                        tidsperiode={tidsperiode || {}}
+                        pågående={tidsperiode.pågående}
+                        visPågåendePeriodeCheckbox={true}
+                        onChange={(changedTidsperiode: TidsperiodeMedValgfriSluttdato) =>
+                            this.updateOppdrag({ tidsperiode: changedTidsperiode })
+                        }
+                        kalenderplassering="fullskjerm"
+                        datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(oppdrag.tidsperiode)}
+                    />
+                </Block>
+            </ModalForm>
         );
     }
 }
