@@ -56,7 +56,7 @@ const Feilsidemelding: React.StatelessComponent<Props> = ({ containerId, illustr
                 {uuid && (
                     <div className="blokk-l">
                         <Ingress>
-                            <FormattedMessage id="'feilside.uuid" values={{ uuid }} />
+                            <FormattedMessage id="feilside.uuid" values={{ uuid }} />
                         </Ingress>
                     </div>
                 )}
