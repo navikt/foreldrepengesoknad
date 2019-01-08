@@ -2,6 +2,7 @@ import { getUtsettelseSkjemanummer } from '../utsettelseSkjemanummer';
 import {
     MorsAktivitet,
     Periodetype,
+    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType
 } from '../../../types/uttaksplan/periodetyper';
@@ -12,6 +13,7 @@ import DateValues from '../../validation/values';
 const periodeMock: Utsettelsesperiode = {
     id: 'asdf',
     type: Periodetype.Utsettelse,
+    konto: StønadskontoType.ForeldrepengerFørFødsel,
     årsak: UtsettelseÅrsakType.InstitusjonBarnet,
     forelder: Forelder.FARMEDMOR,
     erArbeidstaker: false,

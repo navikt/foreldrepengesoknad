@@ -1,4 +1,9 @@
-import { Utsettelsesperiode, Periodetype, UtsettelseÅrsakType } from '../../../types/uttaksplan/periodetyper';
+import {
+    Utsettelsesperiode,
+    Periodetype,
+    UtsettelseÅrsakType,
+    StønadskontoType
+} from '../../../types/uttaksplan/periodetyper';
 import { Forelder } from 'common/types';
 import { splittPeriodeMedHelligdager, getFriperioderITidsperiode } from '../builder/UttaksplanBuilder';
 import { Tidsperiode } from 'nav-datovelger/src/datovelger/types';
@@ -13,6 +18,7 @@ describe('UttaksplanBuilder', () => {
                 fom: new Date(2018, 11, 20),
                 tom: new Date(2018, 11, 28)
             },
+            konto: StønadskontoType.Foreldrepenger,
             forelder: Forelder.MOR,
             erArbeidstaker: false
         };
@@ -29,6 +35,7 @@ describe('UttaksplanBuilder', () => {
                 fom: new Date(2018, 11, 20),
                 tom: new Date(2019, 0, 5)
             },
+            konto: StønadskontoType.Foreldrepenger,
             forelder: Forelder.MOR,
             erArbeidstaker: false
         };
