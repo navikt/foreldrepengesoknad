@@ -169,6 +169,7 @@
     "feilside.ingress": "Ver vennleg og prøv igjen seinare. Dersom det framleis oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukarstøtte",
     "feilside.tittel": "Det oppstod ein feil",
+    "feilside.uuid": "{uuid}",
     "foreldreansvar.antallBarn": "Tal på barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Hald fram",
