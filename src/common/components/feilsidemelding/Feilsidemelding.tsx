@@ -4,6 +4,7 @@ import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
 import { VeilederProps } from '../veileder/Veileder';
 import VeilederMedSnakkeboble from '../veileder-med-snakkeboble/VeilederMedSnakkeboble';
 import './feilsidemelding.less';
+import { FormattedMessage } from 'react-intl';
 
 export interface Props {
     containerId?: string;
@@ -20,6 +21,7 @@ export interface Props {
     ingress: React.ReactNode;
     language?: string;
     setLanguage?: (languageCode: string) => void;
+    uuid?: string;
 }
 
 const Feilsidemelding: React.StatelessComponent<Props> = ({
@@ -27,6 +29,7 @@ const Feilsidemelding: React.StatelessComponent<Props> = ({
     illustrasjon,
     tittel,
     ingress,
+    uuid,
     language,
     setLanguage
 }) => {
@@ -58,6 +61,13 @@ const Feilsidemelding: React.StatelessComponent<Props> = ({
                 <div className="blokk-l">
                     <Ingress>{ingress}</Ingress>
                 </div>
+                {uuid && (
+                    <div className="blokk-l">
+                        <Ingress>
+                            <FormattedMessage id="'feilside.uuid" values={{ uuid }} />
+                        </Ingress>
+                    </div>
+                )}
             </div>
         </div>
     );
