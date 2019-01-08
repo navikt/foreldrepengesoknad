@@ -27,7 +27,10 @@ function* sendSøknad(action: SendSøknad) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
                 error && error.response && error.response.status === 413 ? error.response.data.message : undefined,
-            uuid: error && error.response && error.response.uuid ? error.response.uuid : undefined
+            uuid:
+                error && error.response && error.response.data && error.response.data.uuid
+                    ? error.response.data.uuid
+                    : undefined
         });
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));
