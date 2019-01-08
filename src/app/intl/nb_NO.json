@@ -170,6 +170,7 @@
     "feilside.ingress": "Vennligst prøv igjen senere. Dersom det fremdeles oppstår feil, {lenke}.",
     "feilside.ingress.lenke": "kontakt brukerstøtte",
     "feilside.tittel": "Det oppstod en feil",
+    "feilside.uuid": "{uuid}",
     "foreldreansvar.antallBarn": "Antall barn",
     "foreldreansvar.overtakelsedato": "Dato for foreldreansvar",
     "fortsettknapp.label": "Fortsett",
