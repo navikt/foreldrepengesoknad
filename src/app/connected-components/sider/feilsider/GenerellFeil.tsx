@@ -19,6 +19,11 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
             ? props.history.location.state.errorMessage
             : undefined;
 
+    const uuid =
+        props.history.location.state && props.history.location.state.uuid
+            ? props.history.location.state.uuid
+            : undefined;
+
     return (
         <Applikasjonsside visSpråkvelger={false} margin={false}>
             <DocumentTitle title={getMessage(props.intl, 'dokument.tittel.feilside.generell')} />
@@ -28,6 +33,7 @@ const GenerellFeil: React.StatelessComponent<Props> = (props: Props) => {
                     tekst: getMessage(props.intl, 'feilside.bobletekst')
                 }}
                 tittel={getMessage(props.intl, 'feilside.tittel')}
+                uuid={uuid}
                 ingress={
                     errorMessage ? (
                         errorMessage
