@@ -1,19 +1,22 @@
 import * as React from 'react';
+import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { connect, DispatchProp } from 'react-redux';
-import getMessage from 'common/util/i18nUtils';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import { Ingress, Innholdstittel } from 'nav-frontend-typografi';
 import DocumentTitle from 'react-document-title';
 import Lenke from 'nav-frontend-lenker';
-import Person from '../../../types/Person';
-import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { Ingress, Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import moment from 'moment';
+
+import getMessage from 'common/util/i18nUtils';
+import Person from '../../../types/Person';
 import { Kvittering } from '../../../types/Kvittering';
 import SpotlightLetter from 'common/components/ikoner/SpotlightLetter';
 import Applikasjonsside from '../Applikasjonsside';
+import lenker from '../../../util/routing/lenker';
+import Block from 'common/components/block/Block';
+import BEMHelper from 'common/util/bem';
 
 import './søknadSendtSide.less';
-import lenker from '../../../util/routing/lenker';
 
 interface StateProps {
     person: Person;
@@ -92,36 +95,64 @@ class SøknadSendtSide extends React.Component<Props> {
 
     render() {
         const { intl, person } = this.props;
+        const bem = BEMHelper('søknadSendt');
         return (
             <Applikasjonsside visSøknadstittel={true}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.søknadSendt')} />
 
-                <div className="søknadSendt">
-                    <SpotlightLetter className="blokk-m søknadSendt__spotlightLetter" />
-                    <Innholdstittel className="søknadSendt__tittel  blokk-s">
-                        {this.buildHeadlineMessage()}
-                    </Innholdstittel>
+                <div className={bem.className}>
+                    <Block margin="m">
+                        <SpotlightLetter className={bem.element('spotlightLetter')} />
+                    </Block>
 
-                    <Ingress className="blokk-xs">
-                        {this.props.kvittering.saksNr
-                            ? this.buildSaksnummerMessage()
-                            : this.buildReferenceNumberMessage()}
-                    </Ingress>
+                    <Block margin="s">
+                        <Innholdstittel className={bem.element('tittel')}>{this.buildHeadlineMessage()}</Innholdstittel>
+                    </Block>
 
-                    <Ingress className={'blokk-xs'}>
-                        <FormattedMessage id={'kvittering.behandlingstid'} />
-                    </Ingress>
+                    <Block margin="m">
+                        <Ingress>
+                            {this.props.kvittering.saksNr
+                                ? this.buildSaksnummerMessage()
+                                : this.buildReferenceNumberMessage()}
+                        </Ingress>
+                    </Block>
 
-                    <Ingress className="blokk-xs">{this.buildDittNavMessage()}</Ingress>
+                    <Block margin="xs">
+                        <Undertittel>
+                            <FormattedMessage id="kvittering.behandlingstid.tittel" />
+                        </Undertittel>
+                    </Block>
+                    <Block margin="s">
+                        <Ingress>
+                            <FormattedMessage id={'kvittering.behandlingstid'} />
+                        </Ingress>
+                    </Block>
+
+                    <Block margin="xs">
+                        <Undertittel>
+                            <FormattedMessage id="kvittering.innsyn.tittel" />
+                        </Undertittel>
+                    </Block>
+                    <Block margin="s">
+                        <Ingress>{this.buildDittNavMessage()}</Ingress>
+                    </Block>
 
                     {person.bankkonto &&
                         person.bankkonto.kontonummer && (
-                            <Ingress className="blokk-m">
-                                {this.buildBankAccountMessage(person.bankkonto.kontonummer)}
-                            </Ingress>
+                            <>
+                                <Block margin="xs">
+                                    <Undertittel>
+                                        <FormattedMessage id="kvittering.kontonummer.tittel" />
+                                    </Undertittel>
+                                </Block>
+                                <Block margin="m">
+                                    <Ingress>{this.buildBankAccountMessage(person.bankkonto.kontonummer)}</Ingress>
+                                </Block>
+                            </>
                         )}
 
                     <Hovedknapp
+                        className={bem.element('avsluttKnapp')}
                         onClick={() => ((window as any).location = 'https://tjenester.nav.no/dittnav/oversikt')}>
                         {getMessage(intl, 'avslutt')}
                     </Hovedknapp>

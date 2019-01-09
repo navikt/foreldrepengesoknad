@@ -247,12 +247,15 @@
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
+    "kvittering.behandlingstid.tittel": "Når kan jeg få svar?",
     "kvittering.behandlingstid":
         "NAV trenger oppdaterte opplysninger for å behandle søknaden din. Derfor kan du tidligst få svar på søknaden din fire uker før foreldrepengeperioden din starter.",
     "kvittering.dinProfilLink": "Din profil",
     "kvittering.headline": "Takk for søknaden",
+    "kvittering.innsyn.tittel": "Hvor finner jeg status på min søknad?",
     "kvittering.innsyn": "Det vil ta noen dager før søknaden er synlig på {lenke}.",
     "kvittering.innsyn.lenke": "dine foreldrepenger",
+    "kvittering.kontonummer.tittel": "Hvor blir pengene utbetalt?",
     "kvittering.kontonummer":
         "Hvis søknaden din blir innvilget, blir foreldrepengene dine enten utbetalt av arbeidsgiver eller av NAV til  kontonummeret ditt {kontonummer}. Du kan endre kontonummeret på {dinProfilLink}.",
     "kvittering.referanseId": "Vi mottok søknaden den {date} kl. {timeOfDay}.",

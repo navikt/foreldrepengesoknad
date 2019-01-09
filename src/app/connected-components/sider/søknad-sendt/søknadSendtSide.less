@@ -2,15 +2,17 @@
 .søknadSendt {
     display: flex;
     flex-direction: column;
-    margin: 2rem;
+    &__spotlightLetter {
+        margin-top: 2rem;
+        width: 100%;
+        align-self: center;
+    }
     &__tittel {
         text-align: center;
     }
-    &__spotlightLetter {
-        align-self: center;
-    }
     &__avsluttKnapp {
         align-self: center;
+        margin-bottom: 2.5rem;
         height: @button-height;
     }
 }
