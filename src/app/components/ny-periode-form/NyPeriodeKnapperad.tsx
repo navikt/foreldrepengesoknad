@@ -23,7 +23,7 @@ const NyPeriodeKnapperad: React.StatelessComponent<Props> = ({
             </Knapp>
         )}
         {periodeKanLeggesTil && (
-            <Hovedknapp htmlType="submit" aria-label={ariaLabelLeggTil}>
+            <Hovedknapp data-name="leggTilPeriode" htmlType="submit" aria-label={ariaLabelLeggTil}>
                 <FormattedMessage id="leggtil" />
             </Hovedknapp>
         )}
