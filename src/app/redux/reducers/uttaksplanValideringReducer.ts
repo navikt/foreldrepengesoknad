@@ -8,6 +8,7 @@ import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksop
 export enum PeriodeValideringErrorKey {
     'PÅKREVD_VERDI_MANGLER' = 'påkrevd',
     'SKJEMA_IKKE_KOMPLETT' = 'skjemaIkkeKomplett',
+    'STØNADSKONTO_MANGLER' = 'stønadskontoMangler',
     'UGYLDIG_TIDSPERIODE' = 'ugyldigTidsperiode',
     'DATO_IKKE_UTTAKSDAG' = 'datoErIkkeUttaksdag',
     'UGYLDIG_GRADERING_VERDI' = 'ugyldigGraderingVerdi',
