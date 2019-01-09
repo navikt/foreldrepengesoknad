@@ -429,7 +429,7 @@
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
     "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
-        "For å legge inn ein periode før fødselsdato, må du gå tilbake til forrige steg og gjere dette der.",
+        "For å legge inn ein periode før fødselsdato, må du gå tilbake til  førre steg og gjere dette der.",
 
     "periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
