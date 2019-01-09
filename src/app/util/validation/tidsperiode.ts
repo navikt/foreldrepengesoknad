@@ -32,7 +32,7 @@ export const getTomTidsperiodeRegler = (
           ]
         : [
               hasValueRule(tom, getMessage(intl, 'påkrevd')),
-              dateIsSameOrAfterRule(tom, fom, getMessage(intl, `${intlKey}.etterFraDato`))
+              dateIsSameOrAfterRule(fom, tom, getMessage(intl, `${intlKey}.etterFraDato`))
           ];
 };
 
