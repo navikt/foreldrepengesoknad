@@ -293,7 +293,8 @@ class Uttaksplanlegger extends React.Component<Props, State> {
                             onClick={() => this.openNyUttaksperiodeForm()}
                             htmlType="button"
                             ref={(c) => (this.leggTilUttakKnapp = c)}
-                            aria-expanded={formIsOpen}>
+                            aria-expanded={formIsOpen}
+                            data-name="openNyPeriodeForm">
                             <FormattedMessage id="uttaksplan.leggTil.uttak" />
                         </Knapp>
                     </Knapperad>
