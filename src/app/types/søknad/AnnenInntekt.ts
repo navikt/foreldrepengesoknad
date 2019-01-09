@@ -39,7 +39,6 @@ export type AnnenInntekt = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUt
 export interface AnnenInntektPartialInterface {
     type: AnnenInntektType;
     tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>;
-    pågående: boolean;
     vedlegg: Attachment[];
 }
 

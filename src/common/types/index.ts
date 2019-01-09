@@ -20,4 +20,5 @@ export interface Tidsperiode {
 export interface TidsperiodeMedValgfriSluttdato {
     fom: Date;
     tom?: Date;
+    pågående?: boolean;
 }

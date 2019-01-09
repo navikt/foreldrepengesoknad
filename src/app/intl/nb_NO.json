@@ -437,6 +437,7 @@
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
     "påkrevd": "Påkrevd",
+    "påkrevdHvisIkkePågående": "Påkrevd hvis perioden ikke er pågående",
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å komme videre i søknaden.",
     "rediger": "Rediger",
     "regnskapsfører": "regnskapsfører",
