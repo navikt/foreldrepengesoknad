@@ -1,23 +1,27 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import moment from 'moment';
+import { guid } from 'nav-frontend-js-utils';
+import { Normaltekst } from 'nav-frontend-typografi';
+import { Avgrensninger } from 'nav-datovelger';
+import { Checkbox, SkjemaGruppe } from 'nav-frontend-skjema';
+
 import getMessage from 'common/util/i18nUtils';
 import Block from 'common/components/block/Block';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { Tidsperiode } from 'common/types';
-import { Avgrensninger } from 'nav-datovelger';
-import { Validator } from 'common/lib/validation/types/index';
+import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from 'common/types';
 import DatoInput from 'common/components/skjema/wrappers/DatoInput';
 import BEMHelper from 'common/util/bem';
 import { getVarighetString } from 'common/util/intlUtils';
 import { Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 
-import './tidsperiodeBolk.less';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { SkjemaGruppe } from 'nav-frontend-skjema';
 import { Feil } from 'common/components/skjema/elements/skjema-input-element/types';
 import { KalenderPlassering } from 'nav-datovelger/dist/datovelger/types';
 import { DateValue } from '../../types/common';
-import { guid } from 'nav-frontend-js-utils';
+import { InputChangeEvent } from '../../types/dom/Events';
+import { Validator } from 'common/lib/validation/types';
+import { getTidsperiodeRegler } from '../../util/validation/tidsperiode';
+
+import './tidsperiodeBolk.less';
 
 export interface DatoAvgrensninger {
     helgedagerIkkeTillatt?: boolean;
@@ -31,9 +35,9 @@ export interface DatoValidatorer {
 }
 
 interface TidsperiodeBolkProps {
-    tidsperiode: Partial<Tidsperiode>;
+    tidsperiode: Partial<TidsperiodeMedValgfriSluttdato | Tidsperiode>;
+    pågående?: boolean;
     startdatoDisabled?: boolean;
-    sluttdatoDisabled?: boolean;
     datoAvgrensninger?: DatoAvgrensninger;
     datoValidatorer?: DatoValidatorer;
     feil?: Feil;
@@ -48,6 +52,7 @@ interface TidsperiodeBolkProps {
     defaultMånedTom?: Date;
     kalenderplassering?: KalenderPlassering;
     kanVelgeUgyldigDato?: boolean;
+    visPågåendePeriodeCheckbox?: boolean;
 }
 
 type Props = TidsperiodeBolkProps & InjectedIntlProps;
@@ -58,27 +63,43 @@ class TidsperiodeBolk extends React.Component<Props> {
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
-    handleOnChange(tidsperiode: Partial<Tidsperiode>) {
+    handleOnChange(tidsperiode: Partial<TidsperiodeMedValgfriSluttdato>) {
         const { onChange } = this.props;
         onChange(tidsperiode);
+    }
+
+    getValidators() {
+        const { tidsperiode, intl, visPågåendePeriodeCheckbox, datoValidatorer, pågående } = this.props;
+        const tidsperiodeValidators = getTidsperiodeRegler(tidsperiode, intl, visPågåendePeriodeCheckbox, pågående);
+
+        if (datoValidatorer) {
+            if (datoValidatorer.fra && tidsperiodeValidators.fra) {
+                tidsperiodeValidators.fra.push(...datoValidatorer.fra);
+            }
+
+            if (datoValidatorer.til && tidsperiodeValidators.til) {
+                tidsperiodeValidators.til.push(...datoValidatorer.til);
+            }
+        }
+        return tidsperiodeValidators;
     }
 
     render() {
         const {
             tidsperiode,
+            pågående,
             datoAvgrensninger,
-            datoValidatorer,
             visVarighet,
             feil,
             intl,
             varighetRenderer,
             startdatoDisabled,
-            sluttdatoDisabled,
             defaultMånedFom,
             defaultMånedTom,
             datoInputLabelProps,
             kanVelgeUgyldigDato,
-            kalenderplassering
+            kalenderplassering,
+            visPågåendePeriodeCheckbox = false
         } = this.props;
         const bem = BEMHelper('tidsperiodeBolk');
 
@@ -98,6 +119,9 @@ class TidsperiodeBolk extends React.Component<Props> {
         }
         const fraInputId = guid();
         const tilInputId = guid();
+
+        const validators = this.getValidators();
+
         return (
             <SkjemaGruppe feil={feil}>
                 <div className={bem.className}>
@@ -117,7 +141,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 disabled={startdatoDisabled}
                                 dato={tidsperiode.fom}
                                 avgrensninger={datoAvgrensninger && datoAvgrensninger.fra}
-                                validators={datoValidatorer && datoValidatorer.fra}
+                                validators={validators.fra}
                                 dayPickerProps={{ initialMonth: defaultMånedFom }}
                                 kalender={{ plassering: kalenderplassering }}
                             />
@@ -138,9 +162,9 @@ class TidsperiodeBolk extends React.Component<Props> {
                                 }}
                                 kanVelgeUgyldigDato={kanVelgeUgyldigDato}
                                 dato={tidsperiode.tom}
-                                disabled={sluttdatoDisabled}
+                                disabled={pågående || false}
                                 avgrensninger={tilAvgrensninger}
-                                validators={datoValidatorer && datoValidatorer.til}
+                                validators={validators.til}
                                 dayPickerProps={{
                                     initialMonth: defaultMånedTom || tidsperiode.fom
                                 }}
@@ -148,6 +172,7 @@ class TidsperiodeBolk extends React.Component<Props> {
                             />
                         </Block>
                     </div>
+
                     {visVarighet &&
                         varighetIDager !== undefined && (
                             <Normaltekst className={bem.element('varighet')}>
@@ -156,6 +181,23 @@ class TidsperiodeBolk extends React.Component<Props> {
                                     : getVarighetString(varighetIDager, intl)}
                             </Normaltekst>
                         )}
+                </div>
+
+                <div className={bem.element('pågående-checkbox')}>
+                    <Block visible={visPågåendePeriodeCheckbox}>
+                        <Checkbox
+                            name="pågående"
+                            checked={pågående || false}
+                            label={getMessage(intl, 'pågående')}
+                            onChange={(e: InputChangeEvent) => {
+                                this.handleOnChange({
+                                    ...tidsperiode,
+                                    tom: undefined,
+                                    pågående: e.target.checked
+                                });
+                            }}
+                        />
+                    </Block>
                 </div>
             </SkjemaGruppe>
         );
