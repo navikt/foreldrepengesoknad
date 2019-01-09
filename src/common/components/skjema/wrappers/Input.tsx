@@ -66,7 +66,7 @@ export default class Input extends React.Component<InputWrapperProps, InputWrapp
                 label={<InputLabel label={label} infotekst={infotekst} inputId={id} />}
                 onChange={this.handleOnChange}
                 value={value}
-                autoComplete="false"
+                autoComplete="off"
             />
         );
     }
