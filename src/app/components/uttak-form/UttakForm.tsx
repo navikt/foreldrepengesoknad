@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import PT from 'prop-types';
 import {
     Periodetype,
@@ -40,6 +41,7 @@ import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../vedlegg-spørsmål/VedleggSpørsmål';
 import ErMorForSykSpørsmål from 'app/spørsmål/ErMorForSykSpørsmål';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
+import { isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
 
 export type UttakFormPeriodeType = RecursivePartial<Uttaksperiode> | RecursivePartial<Overføringsperiode>;
 
@@ -197,6 +199,13 @@ class UttaksperiodeForm extends React.Component<Props> {
             ? { feilmelding: getMessage(intl, 'periodeliste.overlappendePeriode') }
             : undefined;
 
+        const periodeErNyOgFørFamiliehendelsesdatoFeil: Feil | undefined =
+            periode.id === undefined &&
+            isValidTidsperiode(tidsperiode) &&
+            moment(tidsperiode.fom).isBefore(familiehendelsesdato)
+                ? { feilmelding: getMessage(intl, 'periodeliste.nyPeriodeErFørFamiliehendelsesdato') }
+                : undefined;
+
         return (
             <React.Fragment>
                 <Block margin={periode.konto === StønadskontoType.ForeldrepengerFørFødsel ? 'xs' : 'm'}>
@@ -206,7 +215,7 @@ class UttaksperiodeForm extends React.Component<Props> {
                         familiehendelsesdato={familiehendelsesdato}
                         onChange={(v: Partial<Tidsperiode>) => this.onChange({ tidsperiode: v })}
                         tidsperiode={tidsperiode}
-                        feil={feil}
+                        feil={feil || periodeErNyOgFørFamiliehendelsesdatoFeil}
                     />
                 </Block>
                 <Block visible={visibility.isVisible(UttakSpørsmålKeys.kvote)}>
@@ -310,7 +319,10 @@ class UttaksperiodeForm extends React.Component<Props> {
 
                 {periode.id === undefined && (
                     <NyPeriodeKnapperad
-                        periodeKanLeggesTil={visibility.areAllQuestionsAnswered()}
+                        periodeKanLeggesTil={
+                            visibility.areAllQuestionsAnswered() &&
+                            periodeErNyOgFørFamiliehendelsesdatoFeil === undefined
+                        }
                         onCancel={onCancel}
                         ariaLabelAvbryt={getMessage(intl, 'uttaksplan.nyperiode.avbrytAriaLabel')}
                         ariaLabelLeggTil={getMessage(intl, 'uttaksplan.nyperiode.leggTilAriaLabel')}
