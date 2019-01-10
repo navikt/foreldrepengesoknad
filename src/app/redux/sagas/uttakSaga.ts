@@ -15,6 +15,7 @@ import {
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
 import routeConfig from '../../util/routing/routeConfig';
 import { Dekningsgrad } from 'common/types';
+import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
 
 const stateSelector = (state: AppState) => state;
 
@@ -93,6 +94,8 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
         const appState: AppState = yield select(stateSelector);
         const erMorUfør = appState.søknad.annenForelder.erUfør;
+        const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
+        const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
@@ -105,7 +108,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
-        if (erMorUfør === true) {
+        if (erMorUfør === true || morHarIkkeRett === true) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
