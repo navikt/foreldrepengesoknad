@@ -17,7 +17,6 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
-import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 import { spørsmålOmVedleggVisible } from '../../connected-components/steg/relasjon-til-barn-adopsjon/visibility';
 import {
     getAttachmentTypeForPeriode,
@@ -34,14 +33,24 @@ import {
     dokumentasjonBehøvesForUttaksperiode
 } from '../uttaksplan/utsettelsesperiode';
 import { MissingAttachment } from '../../types/MissingAttachment';
+import AnnenForelder from '../../types/søknad/AnnenForelder';
+import { getErSøkerFarEllerMedmor } from '../domain/personUtil';
 
 const isAttachmentMissing = (attachments?: Attachment[]) => attachments === undefined || attachments.length === 0;
 
-export function shouldPeriodeHaveAttachment(periode: Periode, søkerErFarEllerMedmor: boolean): boolean {
+export function shouldPeriodeHaveAttachment(
+    periode: Periode,
+    søkerErFarEllerMedmor: boolean,
+    annenForelder: AnnenForelder
+): boolean {
     if (periode.type === Periodetype.Overføring) {
         return dokumentasjonBehøvesForOverføringsperiode(søkerErFarEllerMedmor, periode as Overføringsperiode);
     } else if (periode.type === Periodetype.Utsettelse) {
-        return dokumentasjonBehøvesForUtsettelsesperiode(periode as Utsettelsesperiode);
+        return dokumentasjonBehøvesForUtsettelsesperiode(
+            periode as Utsettelsesperiode,
+            søkerErFarEllerMedmor,
+            annenForelder
+        );
     } else if (periode.type === Periodetype.Uttak) {
         return dokumentasjonBehøvesForUttaksperiode(periode as Uttaksperiode);
     } else {
@@ -85,21 +94,29 @@ export const findMissingAttachmentsForBarn = (søknad: Søknad, api: ApiState): 
     return missingAttachments;
 };
 
-export const hasPeriodeMissingAttachment = (periode: Periode, søkerRolle: SøkerRolle): boolean => {
+export const hasPeriodeMissingAttachment = (
+    periode: Periode,
+    søkerRolle: SøkerRolle,
+    annenForelder: AnnenForelder
+): boolean => {
     return (
-        shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle)) &&
+        shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søkerRolle), annenForelder) &&
         isAttachmentMissing(periode.vedlegg)
     );
 };
 
-export const findMissingAttachmentsForPerioder = (perioder: Periode[], søkerRolle: SøkerRolle): MissingAttachment[] => {
+export const findMissingAttachmentsForPerioder = (
+    perioder: Periode[],
+    søkerRolle: SøkerRolle,
+    annenForelder: AnnenForelder
+): MissingAttachment[] => {
     if (!perioder) {
         return [];
     }
 
     const missingAttachments = [];
     for (const periode of perioder) {
-        if (hasPeriodeMissingAttachment(periode, søkerRolle)) {
+        if (hasPeriodeMissingAttachment(periode, søkerRolle, annenForelder)) {
             missingAttachments.push({
                 index: perioder.indexOf(periode),
                 skjemanummer: getSkjemanummerForPeriode(periode),
@@ -129,10 +146,14 @@ export const findMissingAttachmentsForAndreInntekter = (søknad: Søknad): Missi
     return missingAttachments;
 };
 
-export const findMissingAttachments = (søknad: Søknad, api: ApiState): MissingAttachment[] => {
+export const findMissingAttachments = (
+    søknad: Søknad,
+    api: ApiState,
+    annenForelder: AnnenForelder
+): MissingAttachment[] => {
     const missingAttachments = [];
     missingAttachments.push(...findMissingAttachmentsForBarn(søknad, api));
-    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle));
+    missingAttachments.push(...findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle, annenForelder));
     missingAttachments.push(...findMissingAttachmentsForAndreInntekter(søknad));
     return missingAttachments;
 };

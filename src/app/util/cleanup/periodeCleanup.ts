@@ -45,7 +45,7 @@ const cleanupUtsettelse = (
 ): Utsettelsesperiode => {
     const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
         getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelder.harRettPåForeldrepenger
+        annenForelder
     )
         ? periode.morsAktivitetIPerioden
         : undefined;
@@ -61,18 +61,23 @@ const cleanupUtsettelse = (
         orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
             ? periode.vedlegg
             : undefined
     };
 };
 
-const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: UttakSpørsmålVisibility): Uttaksperiode => {
+const cleanupUttak = (
+    periode: Uttaksperiode,
+    søker: Søker,
+    annenForelder: AnnenForelder,
+    visibility?: UttakSpørsmålVisibility
+): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
             ? periode.vedlegg
             : undefined,
         forelder: periode.forelder,
@@ -134,7 +139,7 @@ export const cleanupNyPeriode = (
         case Periodetype.Utsettelse:
             return cleanupUtsettelse(periode as Utsettelsesperiode, søker, annenForelder);
         case Periodetype.Uttak:
-            return cleanupUttak(periode as Uttaksperiode, søker, visibility as UttakSpørsmålVisibility);
+            return cleanupUttak(periode as Uttaksperiode, søker, annenForelder, visibility as UttakSpørsmålVisibility);
         case Periodetype.Opphold:
             return cleanupOpphold(periode as Oppholdsperiode);
     }
@@ -161,7 +166,12 @@ function applyChangesAndCleanPeriode(
             ...periode,
             ...(periodeChanges as Uttaksperiode)
         };
-        updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søker, visibility as UttakSpørsmålVisibility);
+        updatedPeriode = PeriodeCleanup.cleanupUttak(
+            updatedPeriode,
+            søker,
+            søknad.annenForelder,
+            visibility as UttakSpørsmålVisibility
+        );
     } else if (type === Periodetype.Overføring) {
         updatedPeriode = {
             ...periode,
