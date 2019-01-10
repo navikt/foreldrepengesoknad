@@ -199,7 +199,11 @@ class Uttaksplanlegger extends React.Component<Props, State> {
         }
 
         const informerOmNårPeriodenBegynnerÅLøpe =
-            uttaksplan.length === 0 && søknadsinfo.mor.harRett === false && søknadsinfo.søker.erFarEllerMedmor === true;
+            uttaksplan.length === 0 &&
+            søknadsinfo.søker.erFarEllerMedmor &&
+            !søknadsinfo.søker.erAleneOmOmsorg &&
+            !søknadsinfo.mor.harRett &&
+            !søknadsinfo.mor.erUfør;
 
         return (
             <section>
