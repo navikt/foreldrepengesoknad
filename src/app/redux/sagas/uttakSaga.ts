@@ -108,13 +108,32 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
-        if (erMorUfør === true || morHarIkkeRett === true) {
+        if (morHarIkkeRett) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
                 appState.søknad.barn.antallBarn,
                 action.params.startdatoUttak
             );
+
+            if (erMorUfør === false) {
+                const aktivitetsFriKvoteDager = tilgjengeligeStønadskontoer.find(
+                    (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote
+                )!.dager;
+                tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer
+                    .map((konto) => {
+                        if (konto.konto === StønadskontoType.AktivitetsfriKvote) {
+                            konto.dager = 0;
+                        }
+
+                        if (konto.konto === StønadskontoType.Foreldrepenger) {
+                            konto.dager = konto.dager + aktivitetsFriKvoteDager;
+                        }
+
+                        return konto;
+                    })
+                    .filter((konto) => konto.dager !== 0);
+            }
         }
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
