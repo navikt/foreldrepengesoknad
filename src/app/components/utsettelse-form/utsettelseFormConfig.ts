@@ -9,6 +9,7 @@ import {
     Periodetype
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from 'app/util/domain/aktivitetskravMor';
+import AnnenForelder from '../../types/søknad/AnnenForelder';
 
 export enum UtsettelseSpørsmålKeys {
     'tidsperiode' = 'tidsperiode',
@@ -25,7 +26,7 @@ export interface UtsettelseFormPayload {
     periode: UtsettelseFormPeriodeType;
     søkerErAleneOmOmsorg: boolean;
     søkerErFarEllerMedmor: boolean;
-    annenForelderHarRettPåForeldrepenger: boolean;
+    annenForelder: AnnenForelder;
     familiehendelsesdato: Date;
 }
 
@@ -34,11 +35,8 @@ export type UtsettelseSpørsmålVisibility = QuestionVisibility<UtsettelseSpørs
 const Sp = UtsettelseSpørsmålKeys;
 
 const skalViseSpørsmålOmMorsAktivitet = (payload: UtsettelseFormPayload): boolean => {
-    const { variant, søkerErFarEllerMedmor, annenForelderHarRettPåForeldrepenger, periode } = payload;
-    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-        søkerErFarEllerMedmor,
-        annenForelderHarRettPåForeldrepenger
-    );
+    const { variant, søkerErFarEllerMedmor, annenForelder, periode } = payload;
+    const erRelevant = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder);
 
     if (variant === undefined || erRelevant === false) {
         return false;

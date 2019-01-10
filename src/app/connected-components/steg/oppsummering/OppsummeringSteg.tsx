@@ -158,7 +158,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         isAvailable: isAvailable(StegID.OPPSUMMERING, søknad, props.søkerinfo, state.uttaksplanValidering.erGyldig)
     };
 
-    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api);
+    const missingAttachments: MissingAttachment[] = findMissingAttachments(søknad, state.api, søknad.annenForelder);
     const antallUkerUttaksplan =
         state.søknad.dekningsgrad === '100'
             ? state.api.dekningsgrad100AntallUker!

@@ -237,8 +237,8 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
             periode,
             søkerErAleneOmOmsorg: søknad.søker.erAleneOmOmsorg,
             søkerErFarEllerMedmor,
-            annenForelderHarRettPåForeldrepenger: søknad.annenForelder.harRettPåForeldrepenger,
-            familiehendelsesdato
+            familiehendelsesdato,
+            annenForelder: søknad.annenForelder
         });
     }
 
