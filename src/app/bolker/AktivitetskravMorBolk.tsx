@@ -8,6 +8,7 @@ import { MorsAktivitet } from '../types/uttaksplan/periodetyper';
 import HvaSkalMorGjøreSpørsmål from '../spørsmål/HvaSkalMorGjøreSpørsmål';
 import { getMorsAktivitetSkjemanummer } from '../util/skjemanummer/morsAktivitetSkjemanummer';
 import VedleggSpørsmål from '../components/vedlegg-spørsmål/VedleggSpørsmål';
+import { handleDuplicates } from 'common/storage/attachment/components/util';
 
 export interface AktivitetskravMorChangeEvent {
     morsAktivitetIPerioden?: MorsAktivitet;
@@ -16,7 +17,7 @@ export interface AktivitetskravMorChangeEvent {
 
 interface OwnProps {
     morsAktivitetIPerioden?: MorsAktivitet;
-    vedlegg?: Attachment[];
+    vedlegg: Attachment[];
     navnPåForeldre: NavnPåForeldre;
     onChange: (event: AktivitetskravMorChangeEvent) => void;
 }
@@ -40,8 +41,14 @@ class AktivitetskravMorBolk extends React.Component<Props> {
                     <VedleggSpørsmål
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={getMorsAktivitetSkjemanummer(this.props.morsAktivitetIPerioden)}
-                        vedlegg={vedlegg}
-                        onChange={(v) => onChange({ vedlegg: v })}
+                        vedlegg={
+                            vedlegg
+                                ? (vedlegg as Attachment[]).filter(
+                                      (a: Attachment) => a.type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON
+                                  )
+                                : []
+                        }
+                        onChange={(v: Attachment[]) => onChange({ vedlegg: handleDuplicates(vedlegg, v) })}
                     />
                 </Block>
             </>

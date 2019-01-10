@@ -91,3 +91,7 @@ export const isAttachmentForPeriode = (type: AttachmentType) =>
     type === AttachmentType.UTSETTELSE_SYKDOM ||
     type === AttachmentType.MORS_AKTIVITET_DOKUMENTASJON ||
     type === AttachmentType.OVERFØRING_KVOTE;
+
+export const handleDuplicates = (vedlegg: Attachment[], newVedlegg: Attachment[]): Attachment[] => {
+    return Array.from(new Set(vedlegg.concat(newVedlegg)));
+};

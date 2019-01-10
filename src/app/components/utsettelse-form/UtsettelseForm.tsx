@@ -5,9 +5,9 @@ import {
     Arbeidsform,
     Oppholdsperiode,
     Periodetype,
+    TilgjengeligStønadskonto,
     Utsettelsesperiode,
-    UtsettelseÅrsakType,
-    TilgjengeligStønadskonto
+    UtsettelseÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import UtsettelsePgaSykdomPart, { UtsettelsePgaSykdomChangePayload } from './partials/UtsettelsePgaSykdomPart';
 import OppholdsårsakSpørsmål from './partials/OppholdsårsakSpørsmål';
@@ -24,9 +24,9 @@ import getMessage from 'common/util/i18nUtils';
 import Søknad from '../../types/søknad/Søknad';
 import Arbeidsforhold from '../../types/Arbeidsforhold';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { InjectedIntlProps, injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedHTMLMessage, FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RecursivePartial } from '../../types/Partial';
-import { getErSøkerFarEllerMedmor, formaterNavn } from '../../util/domain/personUtil';
+import { formaterNavn, getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
@@ -37,7 +37,7 @@ import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksp
 import lenker from '../../util/routing/lenker';
 import HvorSkalDuJobbeSpørsmålFlervalg from 'app/spørsmål/HvorSkalDuJobbeSpørsmålFlervalg';
 import { EndrePeriodeChangeEvent } from '../endre-periode-form/EndrePeriodeForm';
-import { Tidsperioden, isValidTidsperiode } from '../../util/uttaksplan/Tidsperioden';
+import { isValidTidsperiode, Tidsperioden } from '../../util/uttaksplan/Tidsperioden';
 import AlertStripe from 'nav-frontend-alertstriper';
 
 export type UtsettelseFormPeriodeType = RecursivePartial<Utsettelsesperiode> | RecursivePartial<Oppholdsperiode>;
@@ -358,7 +358,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                                 <AktivitetskravMorBolk
                                     navnPåForeldre={navnPåForeldre}
                                     morsAktivitetIPerioden={periode.morsAktivitetIPerioden}
-                                    vedlegg={periode.vedlegg as Attachment[]}
+                                    vedlegg={(periode.vedlegg as Attachment[]) || []}
                                     onChange={(periodeData) => this.onChange(periodeData)}
                                 />
                             </Block>
