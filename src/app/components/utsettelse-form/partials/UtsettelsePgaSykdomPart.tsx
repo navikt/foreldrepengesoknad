@@ -10,7 +10,6 @@ import { Attachment } from 'common/storage/attachment/types/Attachment';
 import { Skjemanummer } from '../../../types/søknad/Søknad';
 import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
 import VedleggSpørsmål from '../../vedlegg-spørsmål/VedleggSpørsmål';
-import { handleDuplicates } from 'common/storage/attachment/components/util';
 
 export interface UtsettelsePgaSykdomChangePayload {
     sykdomsårsak: UtsettelseÅrsakType;
@@ -60,8 +59,8 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
     }
 
     render() {
-        const { onChange, intl, sykdomsårsak, vedlegg } = this.props;
-        const vedleggList = [...vedlegg];
+        const { onChange, intl, sykdomsårsak } = this.props;
+        const vedleggList = [...this.props.vedlegg];
         return (
             <>
                 <Block>
@@ -84,18 +83,10 @@ class UtsettelsePgaSykdomPart extends React.Component<Props> {
                     <Block>
                         <Veilederinfo>{getSykdomVeilederInfo(sykdomsårsak!)}</Veilederinfo>
                         <VedleggSpørsmål
-                            vedlegg={
-                                vedlegg !== undefined
-                                    ? (vedlegg as Attachment[]).filter(
-                                          (a: Attachment) => a.type === AttachmentType.UTSETTELSE_SYKDOM
-                                      )
-                                    : []
-                            }
+                            vedlegg={vedleggList}
                             attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
                             skjemanummer={this.getAttachmentSkjemanummer()}
-                            onChange={(v: Attachment[]) =>
-                                onChange({ vedlegg: handleDuplicates(vedlegg, v), sykdomsårsak: sykdomsårsak! })
-                            }
+                            onChange={(vedlegg) => onChange({ vedlegg, sykdomsårsak: sykdomsårsak! })}
                         />
                     </Block>
                 )}
