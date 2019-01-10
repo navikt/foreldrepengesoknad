@@ -107,6 +107,7 @@
         "date-holidays": "1.2.5",
         "detect-browser": "^3.0.1",
         "express": "4.16.3",
+        "formik": "^1.4.2",
         "git-revision-webpack-plugin": "3.0.3",
         "history": "4.7.2",
         "i18n-iso-countries": "3.6.3",
