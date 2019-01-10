@@ -430,6 +430,8 @@
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
+    "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
+        "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
@@ -713,6 +715,8 @@
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.stønadskontoMangler":
+        "Perioden er ikke gyldig. Slett perioden og legg den inn på nytt.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
