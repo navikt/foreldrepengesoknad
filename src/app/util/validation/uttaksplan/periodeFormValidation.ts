@@ -125,7 +125,7 @@ export const validerPeriodeForm = (
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
+        annenForelder,
         familiehendelsesdato
     });
 };

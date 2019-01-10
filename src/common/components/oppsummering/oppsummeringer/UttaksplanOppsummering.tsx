@@ -8,6 +8,7 @@ import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideri
 import Feltoppsummering from 'common/components/feltoppsummering/Feltoppsummering';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import AnnenForelder from '../../../../app/types/søknad/AnnenForelder';
 
 interface OwnProps {
     perioder: Periode[];
@@ -17,6 +18,7 @@ interface OwnProps {
     uttaksplanValidering: UttaksplanValideringState;
     dekningsgrad: Dekningsgrad;
     antallUkerUttaksplan: number;
+    annenForelder: AnnenForelder;
 }
 
 type Props = OwnProps & InjectedIntlProps;

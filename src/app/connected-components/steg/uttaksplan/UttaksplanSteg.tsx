@@ -349,7 +349,11 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
-        missingAttachments: findMissingAttachmentsForPerioder(søknad.uttaksplan, søknad.søker.rolle)
+        missingAttachments: findMissingAttachmentsForPerioder(
+            søknad.uttaksplan,
+            søknad.søker.rolle,
+            søknad.annenForelder
+        )
     };
 };
 

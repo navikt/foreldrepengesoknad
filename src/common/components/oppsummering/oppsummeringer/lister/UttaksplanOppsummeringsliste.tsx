@@ -20,6 +20,7 @@ import { NavnPåForeldre, Tidsperiode } from 'common/types';
 import { getStønadskontoNavn } from '../../../../../app/util/uttaksplan';
 import Arbeidsforhold from '../../../../../app/types/Arbeidsforhold';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
+import AnnenForelder from '../../../../../app/types/søknad/AnnenForelder';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -27,6 +28,7 @@ interface UttaksplanOppsummeringslisteProps {
     erFarEllerMedmor: boolean;
     registrerteArbeidsforhold: Arbeidsforhold[];
     uttaksplanValidering: UttaksplanValideringState;
+    annenForelder: AnnenForelder;
 }
 
 type Props = UttaksplanOppsummeringslisteProps & InjectedIntlProps;
@@ -77,12 +79,17 @@ class UttaksplanOppsummeringsliste extends React.Component<Props> {
     }
 
     createOppsummeringslisteelementPropsForUtsettelsesperiode(periode: Utsettelsesperiode) {
-        const { registrerteArbeidsforhold, intl } = this.props;
+        const { registrerteArbeidsforhold, erFarEllerMedmor, annenForelder, intl } = this.props;
         return {
             venstrestiltTekst: getMessage(intl, 'oppsummering.utsettelse.pga'),
             høyrestiltTekst: this.formatTidsperiode(periode.tidsperiode),
             content: (
-                <Utsettelsesperiodedetaljer periode={periode} registrerteArbeidsforhold={registrerteArbeidsforhold} />
+                <Utsettelsesperiodedetaljer
+                    periode={periode}
+                    registrerteArbeidsforhold={registrerteArbeidsforhold}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                    annenForelder={annenForelder}
+                />
             )
         };
     }

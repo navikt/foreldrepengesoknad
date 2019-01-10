@@ -13,10 +13,11 @@ import RelasjonTilBarnOppsummering from 'common/components/oppsummering/oppsumme
 import UtenlandsoppholdOppsummering from 'common/components/oppsummering/oppsummeringer/UtenlandsoppholdOppsummering';
 import InntektOppsummering from 'common/components/oppsummering/oppsummeringer/InntektOppsummering';
 import Oppsummeringspanel from 'common/components/oppsummeringspanel/Oppsummeringspanel';
-import './oppsummering.less';
 import UttaksplanOppsummering from 'common/components/oppsummering/oppsummeringer/UttaksplanOppsummering';
 import { getNavnPåForeldre } from '../../../app/util/uttaksplan';
 import { UttaksplanValideringState } from 'app/redux/reducers/uttaksplanValideringReducer';
+
+import './oppsummering.less';
 
 interface OppsummeringProps {
     søkerinfo: Søkerinfo;
@@ -90,6 +91,7 @@ class Oppsummering extends React.Component<Props> {
                         <UttaksplanOppsummering
                             perioder={søknad.uttaksplan}
                             navnPåForeldre={getNavnPåForeldre(søknad, søkerinfo.person)}
+                            annenForelder={søknad.annenForelder}
                             erFarEllerMedmor={getErSøkerFarEllerMedmor(søknad.søker.rolle)}
                             registrerteArbeidsforhold={søkerinfo.arbeidsforhold}
                             uttaksplanValidering={uttaksplanValidering}
