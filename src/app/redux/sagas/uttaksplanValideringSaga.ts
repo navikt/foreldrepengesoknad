@@ -28,7 +28,7 @@ const validerPeriode = (appState: AppState, periode: Periode): ValidertPeriode =
     const { tilgjengeligeStønadskontoer } = appState.api;
     const familiehendelsesdato = getFamiliehendelsedato(barn, situasjon);
     const advarsler = [];
-    if (hasPeriodeMissingAttachment(periode, søker.rolle)) {
+    if (hasPeriodeMissingAttachment(periode, søker.rolle, annenForelder)) {
         advarsler.push({ advarselKey: PeriodeAdvarselKey.MANGLENDE_VEDLEGG });
     }
     return {
