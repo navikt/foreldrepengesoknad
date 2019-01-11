@@ -36,7 +36,9 @@ function* getSøkerinfo(action: GetSøkerinfo) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
         } else {
-            action.history.push(routeConfig.GENERELL_FEIL_URL);
+            action.history.push(routeConfig.GENERELL_FEIL_URL, {
+                uuid: extractUUID(error)
+            });
         }
         yield put(apiActions.updateApi({ isLoadingInitialAppData: false }));
     } finally {
