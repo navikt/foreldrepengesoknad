@@ -46,7 +46,7 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgivaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgivaren din kan sende den tidlegast fire veker før foreldrepengeperioden startar, eller før du skal utsetje. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
+        "Husk å be arbeidsgivaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgivaren din kan sende den tidlegast {dato}. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskjelde",
     "annenInntekt.modal.land": "Kva land har du jobba i?",
