@@ -162,7 +162,9 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 isLoadingTilgjengeligeStønadskontoer: false
             })
         );
-        action.history.push(routeConfig.GENERELL_FEIL_URL);
+        action.history.push(routeConfig.GENERELL_FEIL_URL, {
+            uuid: extractUUID(error)
+        });
     }
 }
 
