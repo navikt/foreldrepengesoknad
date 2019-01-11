@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
+import moment from 'moment';
 import Block from 'common/components/block/Block';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -24,11 +25,14 @@ import { HistoryProps } from '../../../types/common';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYtelserWrapper';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
+import { Periode } from 'app/types/uttaksplan/periodetyper';
+import { formatDate } from 'app/util/dates/dates';
 
 interface StateProps {
     stegProps: StegProps;
     arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
+    uttaksplan: Periode[];
 }
 
 type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
@@ -53,7 +57,12 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søker, arbeidsforhold, dispatch, intl } = this.props;
+        const { stegProps, søker, arbeidsforhold, uttaksplan, dispatch, intl } = this.props;
+        const fireUkerFørFørsteUttaksdag = formatDate(
+            moment(uttaksplan[0].tidsperiode.fom)
+                .subtract(4, 'weeks')
+                .toDate()
+        );
         const { harHattAnnenInntektSiste10Mnd } = søker;
         const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
 
@@ -72,9 +81,14 @@ class AndreInntekterSteg extends React.Component<Props> {
                     }}>
                     <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
                     {harArbeidsforhold && (
-                        <Veilederinfo>
-                            <FormattedMessage id="annenInntekt.arbeidsforhold.veileder" />
-                        </Veilederinfo>
+                        <>
+                            <Veilederinfo>
+                                <FormattedMessage
+                                    id="annenInntekt.arbeidsforhold.veileder"
+                                    values={{ dato: fireUkerFørFørsteUttaksdag }}
+                                />
+                            </Veilederinfo>
+                        </>
                     )}
                 </Block>
 
@@ -129,7 +143,7 @@ class AndreInntekterSteg extends React.Component<Props> {
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const { søknad } = state;
     const { history } = props;
-    const { søker } = søknad;
+    const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
 
     const stegProps: StegProps = {
@@ -148,7 +162,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     return {
         søker,
         arbeidsforhold,
-        stegProps
+        stegProps,
+        uttaksplan
     };
 };
 
