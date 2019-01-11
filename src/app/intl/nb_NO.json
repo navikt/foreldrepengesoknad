@@ -409,7 +409,7 @@
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.veileder.manglendeVedlegg":
-        "Husk å sende oss dokumentasjonen som mangler innen 14 dager. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
+        "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "orgnr": "Organisasjonsnummer",
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
@@ -805,9 +805,9 @@
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=248825&veiledertype=privatperson&method=mail\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">skjemaet for utsettelse</a>.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen gis i digital inntektsmelding.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen gis i digital inntektsmelding.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",
