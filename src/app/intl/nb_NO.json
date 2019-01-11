@@ -253,7 +253,8 @@
     "kvittering.dinProfilLink": "Din profil",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Hvor finner jeg status på min søknad?",
-    "kvittering.innsyn": "Det vil ta noen dager før søknaden er synlig på {lenke}.",
+    "kvittering.innsyn.fpsak": "Du kan følge med på statusen i saken på {lenke}.",
+    "kvittering.innsyn.infotrygd": "Det tar 4 uker før søknaden din er synlig på {lenke}.",
     "kvittering.innsyn.lenke": "dine foreldrepenger",
     "kvittering.kontonummer.tittel": "Hvor blir pengene utbetalt?",
     "kvittering.kontonummer":
