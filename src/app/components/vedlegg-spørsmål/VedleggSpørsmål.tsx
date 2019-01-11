@@ -50,7 +50,7 @@ class VedleggSpørsmål extends React.Component<Props> {
         const { vedlegg, skjemanummer, attachmentType } = this.props;
         return (
             <AttachmentsUploader
-                attachments={vedlegg || []}
+                attachments={vedlegg ? vedlegg.filter((a: Attachment) => a.type === attachmentType) : []}
                 onFilesUploadStart={(nyeVedlegg) => {
                     this.updateVedleggList([...(vedlegg || []), ...nyeVedlegg]);
                 }}

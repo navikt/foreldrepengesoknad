@@ -1,15 +1,15 @@
 import {
     ForeldrepengerFørFødselUttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
+    isUttaksperiode,
     Oppholdsperiode,
     Overføringsperiode,
+    Periode,
     Periodetype,
+    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Uttaksperiode,
-    Periode,
-    isUttaksperiode,
-    StønadskontoType
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -22,6 +22,9 @@ import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { erÅrsakSykdomEllerInstitusjonsopphold } from '../uttaksplan/utsettelsesperiode';
 
 const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
@@ -38,15 +41,28 @@ const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
     return false;
 };
 
+const fjernIrrelevanteVedleggForUtsettelse = (
+    attachments: Attachment[],
+    fjernDokumentasjonForMorsAktivitet: boolean,
+    fjernDokumentasjonForSykdom: boolean
+) => {
+    if (fjernDokumentasjonForMorsAktivitet) {
+        attachments = attachments.filter((a: Attachment) => a.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON);
+    }
+
+    if (fjernDokumentasjonForSykdom) {
+        attachments = attachments.filter((a: Attachment) => a.type !== AttachmentType.UTSETTELSE_SYKDOM);
+    }
+    return attachments;
+};
+
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
     søker: Søker,
     annenForelder: AnnenForelder
 ): Utsettelsesperiode => {
-    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-        getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelder
-    )
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
+    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(erSøkerFarEllerMedmor, annenForelder)
         ? periode.morsAktivitetIPerioden
         : undefined;
 
@@ -62,7 +78,12 @@ const cleanupUtsettelse = (
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
         vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
-            ? periode.vedlegg
+            ? periode.vedlegg &&
+              fjernIrrelevanteVedleggForUtsettelse(
+                  periode.vedlegg,
+                  morsAktivitetIPerioden === undefined,
+                  !erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak)
+              )
             : undefined
     };
 };

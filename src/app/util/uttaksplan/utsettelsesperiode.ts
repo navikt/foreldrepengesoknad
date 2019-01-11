@@ -10,6 +10,11 @@ import {
 import AnnenForelder from '../../types/søknad/AnnenForelder';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 
+export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType) =>
+    årsak === UtsettelseÅrsakType.Sykdom ||
+    årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
+    årsak === UtsettelseÅrsakType.InstitusjonSøker;
+
 export const dokumentasjonBehøvesForUtsettelsesperiode = (
     { årsak }: Utsettelsesperiode,
     erFarEllerMedmor: boolean,
@@ -17,9 +22,7 @@ export const dokumentasjonBehøvesForUtsettelsesperiode = (
 ): boolean => {
     return (
         aktivitetskravMorUtil.skalBesvaresVedUtsettelse(erFarEllerMedmor, annenForelder) ||
-        årsak === UtsettelseÅrsakType.Sykdom ||
-        årsak === UtsettelseÅrsakType.InstitusjonBarnet ||
-        årsak === UtsettelseÅrsakType.InstitusjonSøker
+        erÅrsakSykdomEllerInstitusjonsopphold(årsak)
     );
 };
 
