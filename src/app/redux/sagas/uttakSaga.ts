@@ -16,6 +16,7 @@ import {
 import routeConfig from '../../util/routing/routeConfig';
 import { Dekningsgrad } from 'common/types';
 import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 const stateSelector = (state: AppState) => state;
 
