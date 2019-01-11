@@ -106,7 +106,7 @@ describe('SelvstendigNæringsdrivendeModal visibility', () => {
 
         describe('complete', () => {
             it('should be complete if fom is defined, and pågående=true or tom !== undefined', () => {
-                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date() }, pågående: true })).toBe(true);
+                expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), pågående: true } })).toBe(true);
                 expect(fns.tidsperiodeUtfylt({ tidsperiode: { fom: new Date(), tom: new Date() } })).toBe(true);
             });
 

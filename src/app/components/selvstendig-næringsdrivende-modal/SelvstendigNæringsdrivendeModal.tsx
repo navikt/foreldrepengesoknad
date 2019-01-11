@@ -2,7 +2,6 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
-import { Checkbox } from 'nav-frontend-skjema';
 import Input from 'common/components/skjema/wrappers/Input';
 import {
     Næring,
@@ -105,12 +104,11 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
     render() {
         const { intl, isOpen, onCancel } = this.props;
         const { næring } = this.state;
+        const tidsperiode = næring.tidsperiode !== undefined ? næring.tidsperiode : {};
         const {
             navnPåNæringen,
             næringstyper,
             næringsinntekt,
-            tidsperiode,
-            pågående,
             organisasjonsnummer,
             registrertINorge,
             registrertILand,
@@ -189,31 +187,15 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                 <Block visible={visibility.tidsperiode(næring)} margin="xxs">
                     <TidsperiodeBolk
                         tidsperiode={tidsperiode || {}}
+                        pågående={tidsperiode.pågående}
+                        visPågåendePeriodeCheckbox={true}
                         onChange={(v: TidsperiodeMedValgfriSluttdato) => this.updateNæring({ tidsperiode: v })}
-                        sluttdatoDisabled={pågående}
                         datoAvgrensninger={getAndreInntekterTidsperiodeAvgrensninger(tidsperiode)}
                         datoInputLabelProps={{
                             fom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.fom', { navnPåNæringen }),
                             tom: getMessage(intl, 'selvstendigNæringsdrivende.tidsperiode.tom', { navnPåNæringen })
                         }}
                         kalenderplassering="fullskjerm"
-                    />
-                </Block>
-
-                <Block visible={visibility.tidsperiode(næring)}>
-                    <Checkbox
-                        name="pågåendeVirksomhet"
-                        checked={pågående || false}
-                        label={getMessage(intl, 'annenInntekt.modal.pågående')}
-                        onChange={() => {
-                            this.updateNæring({
-                                pågående: !pågående,
-                                tidsperiode: {
-                                    ...tidsperiode,
-                                    tom: undefined
-                                }
-                            });
-                        }}
                     />
                 </Block>
 

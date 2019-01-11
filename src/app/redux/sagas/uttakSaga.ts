@@ -15,6 +15,8 @@ import {
 } from '../../util/uttaksplan/tidsregler/førJuli2018';
 import routeConfig from '../../util/routing/routeConfig';
 import { Dekningsgrad } from 'common/types';
+import { selectSøkerErFarEllerMedmor } from 'app/selectors/utledetSøknadsinfoSelectors';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 const stateSelector = (state: AppState) => state;
 
@@ -93,6 +95,8 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
         yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
         const appState: AppState = yield select(stateSelector);
         const erMorUfør = appState.søknad.annenForelder.erUfør;
+        const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
+        const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;
         const response = yield call(Api.getUttakskontoer, action.params);
         const stønadskontoer: StønadskontoerDTO = response.data;
         let tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[] = [];
@@ -105,13 +109,32 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
-        if (erMorUfør === true) {
+        if (morHarIkkeRett) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
                 appState.søknad.barn.antallBarn,
                 action.params.startdatoUttak
             );
+
+            if (erMorUfør === false) {
+                const aktivitetsFriKvoteDager = tilgjengeligeStønadskontoer.find(
+                    (konto) => konto.konto === StønadskontoType.AktivitetsfriKvote
+                )!.dager;
+                tilgjengeligeStønadskontoer = tilgjengeligeStønadskontoer
+                    .map((konto) => {
+                        if (konto.konto === StønadskontoType.AktivitetsfriKvote) {
+                            konto.dager = 0;
+                        }
+
+                        if (konto.konto === StønadskontoType.Foreldrepenger) {
+                            konto.dager = konto.dager + aktivitetsFriKvoteDager;
+                        }
+
+                        return konto;
+                    })
+                    .filter((konto) => konto.dager !== 0);
+            }
         }
         if (
             skalTilgjengeligeKontoerJusteresPgaFamiliehendelsesdatoFørJuli2018(
@@ -140,7 +163,9 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
                 isLoadingTilgjengeligeStønadskontoer: false
             })
         );
-        action.history.push(routeConfig.GENERELL_FEIL_URL);
+        action.history.push(routeConfig.GENERELL_FEIL_URL, {
+            uuid: extractUUID(error)
+        });
     }
 }
 

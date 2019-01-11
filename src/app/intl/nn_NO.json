@@ -46,7 +46,7 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgivaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgivaren din kan sende den tidlegast fire veker før foreldrepengeperioden startar, eller før du skal utsetje. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
+        "Husk å be arbeidsgivaren din om å sende inntektsmelding til NAV. Vi treng den for å kunne behandle søknaden din. Arbeidsgivaren din kan sende den tidlegast {dato}. Vi vil i somme tilfelle kontakte arbeidsgivaren når vi behandlar søknaden.",
     "annenInntekt.fom": "Når starta du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskjelde",
     "annenInntekt.modal.land": "Kva land har du jobba i?",
@@ -246,15 +246,16 @@
     "komponent.bekreftDialog.avbrytLabel": "Avbryt",
     "komponent.bekreftDialog.bekreftLabel": "Ok",
     "komponent.språkvelger.endreMålform": "Endre målform til nynorsk",
-    "kvittering.behandlingstid.tittel": "Når kan jeg få svar?",
+    "kvittering.behandlingstid.tittel": "Når kan eg få svar?",
     "kvittering.behandlingstid":
         "NAV treng oppdaterte opplysningar for å behandle søknaden din. Derfor kan du tidlegast få svar på søknaden din fire veker før foreldrepengeperioden din startar.",
     "kvittering.dinProfilLink": "Din profil",
     "kvittering.headline": "Takk for søknaden",
-    "kvittering.innsyn.tittel": "Hvor finner jeg status på min søknad?",
-    "kvittering.innsyn": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
+    "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
+    "kvittering.innsyn.fpsak": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
+    "kvittering.innsyn.infotrygd": "Det tar 4 veker før søknaden din er synlig på {lenke}.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
-    "kvittering.kontonummer.tittel": "Hvor blir pengene utbetalt?",
+    "kvittering.kontonummer.tittel": "Kvar blir pengane betalte ut?",
     "kvittering.kontonummer":
         "Dersom søknaden din blir innvilga, blir foreldrepengane dine anten betalte ut av arbeidsgivar eller av NAV til kontonummeret ditt (kontonummer). Du kan endre kontonummeret på (link).",
     "kvittering.referanseId": "Vi fekk søknaden {date} kl. {timeOfDay}.",
@@ -408,7 +409,7 @@
     "oppsummering.veileder":
         "Les gjennom oppsummeringa før du sender inn søknaden. Dersom du treng å gjere endringar, kan du gå tilbake.",
     "oppsummering.veileder.manglendeVedlegg":
-        "Du må sende inn manglande vedlegg innan 14 dagar. Dersom vi ikkje får vedlegga innan fristen, manglar vi nødvendige opplysningar for å behandle saka di. Vi kan då avgjere saka di med dei opplysningane vi har tilgjengeleg, og du kan risikere å få avslag.",
+        "Du må sende inn manglande vedlegg innan 3 veker. Dersom vi ikkje får vedlegga innan fristen, manglar vi nødvendige opplysningar for å behandle saka di. Vi kan då avgjere saka di med dei opplysningane vi har tilgjengeleg, og du kan risikere å få avslag.",
     "orgnr": "Organisasjonsnummer",
     "overføringsårsaktype.ALENEOMSORG": "Eg er blitt åleine om omsorga",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikkje rett på foreldrepengar",
@@ -428,6 +429,9 @@
     "periodeliste.hull.tittel": "Mista foreldrepengar",
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode": "Perioden med foreldrepengar overlappar andre periodar, du må endre datoane",
+    "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
+        "For å legge inn ein periode før fødselsdato, må du gå tilbake til  førre steg og gjere dette der.",
+
     "periodeliste.utsettelsesårsak": "Utsetjing - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsetjing - årsak ikkje vald",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
@@ -435,6 +439,7 @@
     "pgasykdom": "På grunn av sjukdom",
     "pågående": "Eg jobbar her framleis",
     "påkrevd": "Påkravd",
+    "påkrevdHvisIkkePågående": "Påkrevd hvis perioden ikke er pågående",
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å kome vidare i søknaden.",
     "rediger": "Rediger",
     "regnskapsfører": "rekneskapsførar",
@@ -711,6 +716,8 @@
         "For å kome vidare i søknaden må du leggje til en periode med foreldrepengar eller en utsetjing",
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosenten kan bare inneholde tall",
+    "uttaksplan.validering.feil.stønadskontoMangler":
+        "Perioden er ikkje gyldig. Slett perioden og legg den inn på nytt.",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikkje gyldig",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         " Du kan ikkje søke om utsetjing på grunn av ferie eller arbeid tilbake i tid.",
@@ -802,9 +809,9 @@
     "vedlegg.veileder.adopsjon":
         "Du må leggje ved adopsjonsbevillinga og stadfesting på datoen då du tok over omsorga.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden, og i kva stillingsprosent. Arbeidsgivaren kan gi stadfestinga i digital inntektsmelding eller ved å signere på <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=248825&veiledertype=privatperson&method=mail\"class=\"lenke\"rel=\"noopener\"target=\"_blank\"> skjemaet for utsetjing </a>.",
+        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden, og i kva stillingsprosent. Arbeidsgivaren gir stadfestinga i digital inntektsmelding.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden og i kva stillingsprosent. Arbeidsgivaren kan gi stadfestinga i digital inntektsmelding eller ved å signere på skjemaet for utsetjing.",
+        "Arbeidsgivaren din må stadfeste at du skal jobbe i denne perioden og i kva stillingsprosent. Arbeidsgivaren gir stadfestinga i digital inntektsmelding.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikkje registrert i folkeregisteret. Derfor må du leggje ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakinga av omsorga.",

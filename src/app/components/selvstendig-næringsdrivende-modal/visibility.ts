@@ -45,10 +45,10 @@ const tidsperiodeVisible: VisibilityFunction<NæringPartial> = (næring: Næring
 };
 
 const tidsperiodeErUtfylt: VisibilityFunction<NæringPartial> = (næring: NæringPartial): boolean => {
-    const { tidsperiode, pågående } = næring;
+    const { tidsperiode } = næring;
     if (tidsperiode !== undefined) {
         const { fom, tom } = tidsperiode;
-        return fom !== undefined && (tom !== undefined || pågående === true);
+        return fom !== undefined && (tom !== undefined || tidsperiode.pågående === true);
     }
     return false;
 };

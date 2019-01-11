@@ -80,6 +80,10 @@ const validerUttakForm = (payload: UttakFormPayload): PeriodeValideringsfeil[] |
     const visibility = getUttakFormVisibility(payload);
     const valideringsfeil: PeriodeValideringsfeil[] = [];
 
+    if (payload.periode.konto === undefined) {
+        valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.STØNADSKONTO_MANGLER });
+    }
+
     if (uttakTidsperiodeErGyldig(payload.periode, payload.familiehendelsesdato) === false) {
         valideringsfeil.push({ feilKey: PeriodeValideringErrorKey.UGYLDIG_TIDSPERIODE });
     }
@@ -125,7 +129,7 @@ export const validerPeriodeForm = (
         variant: getVariantFromPeriode(periode),
         søkerErAleneOmOmsorg: søker.erAleneOmOmsorg,
         søkerErFarEllerMedmor: getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelderHarRettPåForeldrepenger: annenForelder.harRettPåForeldrepenger,
+        annenForelder,
         familiehendelsesdato
     });
 };

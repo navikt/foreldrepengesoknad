@@ -6,6 +6,7 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
 import routeConfig from '../../util/routing/routeConfig';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -36,7 +37,9 @@ function* getSøkerinfo(action: GetSøkerinfo) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
         } else {
-            action.history.push(routeConfig.GENERELL_FEIL_URL);
+            action.history.push(routeConfig.GENERELL_FEIL_URL, {
+                uuid: extractUUID(error)
+            });
         }
         yield put(apiActions.updateApi({ isLoadingInitialAppData: false }));
     } finally {

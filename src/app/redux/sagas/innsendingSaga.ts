@@ -7,6 +7,7 @@ import routeConfig from '../../util/routing/routeConfig';
 import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 function* sendSøknad(action: SendSøknad) {
     try {
@@ -27,10 +28,7 @@ function* sendSøknad(action: SendSøknad) {
         action.history.push(`${routeConfig.GENERELL_FEIL_URL}`, {
             errorMessage:
                 error && error.response && error.response.status === 413 ? error.response.data.message : undefined,
-            uuid:
-                error && error.response && error.response.data && error.response.data.uuid
-                    ? error.response.data.uuid
-                    : undefined
+            uuid: extractUUID(error)
         });
     } finally {
         yield put(apiActions.updateApi({ søknadSendingInProgress: false }));

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { injectIntl, FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect, DispatchProp } from 'react-redux';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import DocumentTitle from 'react-document-title';
@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import getMessage from 'common/util/i18nUtils';
 import Person from '../../../types/Person';
-import { Kvittering } from '../../../types/Kvittering';
+import { Kvittering, LeveranseStatus } from '../../../types/Kvittering';
 import SpotlightLetter from 'common/components/ikoner/SpotlightLetter';
 import Applikasjonsside from '../Applikasjonsside';
 import lenker from '../../../util/routing/lenker';
@@ -79,9 +79,14 @@ class SøknadSendtSide extends React.Component<Props> {
     }
 
     buildDittNavMessage() {
+        const { kvittering } = this.props;
         return (
             <FormattedMessage
-                id="kvittering.innsyn"
+                id={
+                    kvittering.leveranseStatus === LeveranseStatus.GOSYS
+                        ? 'kvittering.innsyn.infotrygd'
+                        : 'kvittering.innsyn.fpsak'
+                }
                 values={{
                     lenke: (
                         <Lenke href={lenker.innsyn}>

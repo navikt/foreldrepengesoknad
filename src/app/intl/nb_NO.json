@@ -46,7 +46,7 @@
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
-        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst fire uker før foreldrepengeperioden starter, eller før du skal utsette. Vi vil i noen tilfeller kontakte arbeidsgiver i forbindelse med behandling av søknaden.",
+        "Husk å be arbeidsgiveren din sende inntektsmelding til NAV. Vi trenger den for å kunne behandle søknaden din. Arbeidsgiver kan sende den tidligst {dato}. Vi vil i noen tilfeller kontakte arbeidsgiver i forbindelse med behandling av søknaden.",
     "annenInntekt.fom": "Når startet du {navnPåNæringen}?",
     "annenInntekt.leggTilInntekt": "Legg til inntektskilde",
     "annenInntekt.modal.land": "Hvilket land har du jobbet i?",
@@ -253,7 +253,8 @@
     "kvittering.dinProfilLink": "Din profil",
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Hvor finner jeg status på min søknad?",
-    "kvittering.innsyn": "Det vil ta noen dager før søknaden er synlig på {lenke}.",
+    "kvittering.innsyn.fpsak": "Du kan følge med på statusen i saken på {lenke}.",
+    "kvittering.innsyn.infotrygd": "Du kan følge med på statusen i saken på {lenke}. Det tar 4 uker før søknaden din er synlig.",
     "kvittering.innsyn.lenke": "dine foreldrepenger",
     "kvittering.kontonummer.tittel": "Hvor blir pengene utbetalt?",
     "kvittering.kontonummer":
@@ -409,7 +410,7 @@
     "oppsummering.veileder":
         "Les gjennom oppsummeringen før du sender inn søknaden. Hvis du trenger å gjøre endringer kan du gå tilbake.",
     "oppsummering.veileder.manglendeVedlegg":
-        "Husk å sende oss dokumentasjonen som mangler innen 14 dager. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
+        "Husk å sende oss dokumentasjonen som mangler innen 3 uker. Hvis vi mangler nødvendige opplysninger når vi skal behandle søknaden, kan du få avslag.",
     "orgnr": "Organisasjonsnummer",
     "overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{annenForelderNavn} har ikke rett på foreldrepenger",
@@ -430,6 +431,8 @@
     "periodeliste.lukk": "Lukk",
     "periodeliste.overlappendePeriode":
         "Perioden med foreldrepenger overlapper med andre perioder, du må endre datoene",
+    "periodeliste.nyPeriodeErFørFamiliehendelsesdato":
+        "For å legge inn en periode før fødselsdato, må du gå tilbake til forrige steg og gjøre det der.",
     "periodeliste.utsettelsesårsak": "Utsettelse - {årsak}",
     "periodeliste.utsettelsesårsak.ukjent": "Utsettelse - årsak ikke valgt",
     "periodetype.hull.tittel": "Ubrukt tidsperiode",
@@ -437,6 +440,7 @@
     "pgasykdom": "På grunn av sykdom",
     "pågående": "Pågående",
     "påkrevd": "Påkrevd",
+    "påkrevdHvisIkkePågående": "Påkrevd hvis perioden ikke er pågående",
     "radiopanelgruppe.required.feilmelding": "Du må svare på spørsmålet for å komme videre i søknaden.",
     "rediger": "Rediger",
     "regnskapsfører": "regnskapsfører",
@@ -712,6 +716,8 @@
     "uttaksplan.validering.feil.ugyldigGraderingVerdi": "Stillingsprosenten du skal jobbe kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigSamtidigUttakProsent": "Samtidig uttaksprosent kan bare inneholde tall",
     "uttaksplan.validering.feil.ugyldigTidsperiode": "Perioden er ikke gyldig",
+    "uttaksplan.validering.feil.stønadskontoMangler":
+        "Perioden er ikke gyldig. Slett perioden og legg den inn på nytt.",
     "uttaksplan.validering.feil.ugyldigÅrsakOgTidsperiode":
         "Du kan ikke søke om utsettelse på grunn av ferie eller arbeid tilbake i tid.",
     "uttaksplan.validering.feil.uttaksplanKunOpphold": "Du kan ikke ha en uttaksplan med kun opphold.",
@@ -800,9 +806,9 @@
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på <a href=\"https://www.nav.no/no/Person/Skjemaer-for-privatpersoner/skjemaveileder/vedlegg?key=248825&veiledertype=privatperson&method=mail\" class=\"lenke\" rel=\"noopener\" target=\"_blank\">skjemaet for utsettelse</a>.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen gis i digital inntektsmelding.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedUtsettelse":
-        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen kan gis i digital inntektsmelding eller ved å signere på skjemaet for utsettelse.",
+        "Arbeidsgiveren din må bekrefte at du skal jobbe i denne perioden og i hvilken stillingsprosent. Bekreftelsen gis i digital inntektsmelding.",
     "vedlegg.veileder.fødselsattest":
         "Barnet ditt er ikke registrert i folkeregisteret. Derfor må du legge ved fødselsattesten til barnet.",
     "vedlegg.veileder.omsorgsovertakelse": "Du må laste opp dokumentasjon av dato for overtakelsen av omsorgen",

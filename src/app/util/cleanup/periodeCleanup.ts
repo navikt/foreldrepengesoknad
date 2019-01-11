@@ -1,15 +1,15 @@
 import {
     ForeldrepengerFørFødselUttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
+    isUttaksperiode,
     Oppholdsperiode,
     Overføringsperiode,
+    Periode,
     Periodetype,
+    StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    Uttaksperiode,
-    Periode,
-    isUttaksperiode,
-    StønadskontoType
+    Uttaksperiode
 } from '../../types/uttaksplan/periodetyper';
 import aktivitetskravMorUtil from '../domain/aktivitetskravMor';
 import AnnenForelder from '../../types/søknad/AnnenForelder';
@@ -22,6 +22,9 @@ import { UttakFormPeriodeType } from '../../components/uttak-form/UttakForm';
 import { RecursivePartial } from '../../types/Partial';
 import Søknad from '../../types/søknad/Søknad';
 import { shouldPeriodeHaveAttachment } from '../attachments/missingAttachmentUtil';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
+import { AttachmentType } from 'common/storage/attachment/types/AttachmentType';
+import { erÅrsakSykdomEllerInstitusjonsopphold } from '../uttaksplan/utsettelsesperiode';
 
 const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
     if (isUttaksperiode(periode)) {
@@ -38,15 +41,28 @@ const periodeKontotypeHasAktivitetskrav = (periode: Periode) => {
     return false;
 };
 
+const fjernIrrelevanteVedleggForUtsettelse = (
+    attachments: Attachment[],
+    fjernDokumentasjonForMorsAktivitet: boolean,
+    fjernDokumentasjonForSykdom: boolean
+) => {
+    if (fjernDokumentasjonForMorsAktivitet) {
+        attachments = attachments.filter((a: Attachment) => a.type !== AttachmentType.MORS_AKTIVITET_DOKUMENTASJON);
+    }
+
+    if (fjernDokumentasjonForSykdom) {
+        attachments = attachments.filter((a: Attachment) => a.type !== AttachmentType.UTSETTELSE_SYKDOM);
+    }
+    return attachments;
+};
+
 const cleanupUtsettelse = (
     periode: Utsettelsesperiode,
     søker: Søker,
     annenForelder: AnnenForelder
 ): Utsettelsesperiode => {
-    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(
-        getErSøkerFarEllerMedmor(søker.rolle),
-        annenForelder.harRettPåForeldrepenger
-    )
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søker.rolle);
+    const morsAktivitetIPerioden = aktivitetskravMorUtil.skalBesvaresVedUtsettelse(erSøkerFarEllerMedmor, annenForelder)
         ? periode.morsAktivitetIPerioden
         : undefined;
 
@@ -61,18 +77,28 @@ const cleanupUtsettelse = (
         orgnumre: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.orgnumre : undefined,
         arbeidsformer: periode.årsak === UtsettelseÅrsakType.Arbeid ? periode.arbeidsformer : undefined,
         erArbeidstaker: periode.erArbeidstaker,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
-            ? periode.vedlegg
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
+            ? periode.vedlegg &&
+              fjernIrrelevanteVedleggForUtsettelse(
+                  periode.vedlegg,
+                  morsAktivitetIPerioden === undefined,
+                  !erÅrsakSykdomEllerInstitusjonsopphold(periode.årsak)
+              )
             : undefined
     };
 };
 
-const cleanupUttak = (periode: Uttaksperiode, søker: Søker, visibility?: UttakSpørsmålVisibility): Uttaksperiode => {
+const cleanupUttak = (
+    periode: Uttaksperiode,
+    søker: Søker,
+    annenForelder: AnnenForelder,
+    visibility?: UttakSpørsmålVisibility
+): Uttaksperiode => {
     const uttaksperiode: Uttaksperiode = {
         type: Periodetype.Uttak,
         id: periode.id,
         konto: periode.konto,
-        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle))
+        vedlegg: shouldPeriodeHaveAttachment(periode, getErSøkerFarEllerMedmor(søker.rolle), annenForelder)
             ? periode.vedlegg
             : undefined,
         forelder: periode.forelder,
@@ -134,7 +160,7 @@ export const cleanupNyPeriode = (
         case Periodetype.Utsettelse:
             return cleanupUtsettelse(periode as Utsettelsesperiode, søker, annenForelder);
         case Periodetype.Uttak:
-            return cleanupUttak(periode as Uttaksperiode, søker, visibility as UttakSpørsmålVisibility);
+            return cleanupUttak(periode as Uttaksperiode, søker, annenForelder, visibility as UttakSpørsmålVisibility);
         case Periodetype.Opphold:
             return cleanupOpphold(periode as Oppholdsperiode);
     }
@@ -161,7 +187,12 @@ function applyChangesAndCleanPeriode(
             ...periode,
             ...(periodeChanges as Uttaksperiode)
         };
-        updatedPeriode = PeriodeCleanup.cleanupUttak(updatedPeriode, søker, visibility as UttakSpørsmålVisibility);
+        updatedPeriode = PeriodeCleanup.cleanupUttak(
+            updatedPeriode,
+            søker,
+            søknad.annenForelder,
+            visibility as UttakSpørsmålVisibility
+        );
     } else if (type === Periodetype.Overføring) {
         updatedPeriode = {
             ...periode,
