@@ -7,6 +7,7 @@ import routeConfig from '../../util/routing/routeConfig';
 import { cleanUpSøknad } from '../../util/cleanup/cleanupSøknad';
 import { AppState } from '../reducers';
 import { mapMissingAttachmentsOnSøknad } from '../../util/attachments/missingAttachmentUtil';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 function* sendSøknad(action: SendSøknad) {
     try {

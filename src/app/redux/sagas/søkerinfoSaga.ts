@@ -6,6 +6,7 @@ import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
 import routeConfig from '../../util/routing/routeConfig';
+import { extractUUID } from '../../api/utils/errorUtil';
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
