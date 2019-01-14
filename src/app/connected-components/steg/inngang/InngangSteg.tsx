@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { Formik } from 'formik';
 
 import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -120,34 +121,41 @@ class InngangSteg extends React.Component<Props, {}> {
         const { rolle } = søker;
 
         return (
-            <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
-                <Block>
-                    <SøkersituasjonSpørsmål situasjon={situasjon} onChange={this.updateSituasjonAndRolleInState} />
-                </Block>
-                <Block visible={visibility.søkerRolleSpørsmål({ velgbareRoller, situasjon })}>
-                    <SøkerrolleSpørsmål
-                        rolle={rolle}
-                        roller={velgbareRoller}
-                        onChange={(nyRolle: SøkerRolle) =>
-                            dispatch(
-                                søknadActions.updateSøker({
-                                    rolle: nyRolle
-                                })
-                            )
-                        }
-                    />
-                </Block>
-                <Block visible={visibility.papirsøknadInfo(situasjon)}>
-                    <Veilederinfo>
-                        <Block margin="xs">
-                            <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+            <Formik initialValues={{}} onSubmit={() => null}>
+                <form>
+                    <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
+                        <Block>
+                            <SøkersituasjonSpørsmål
+                                situasjon={situasjon}
+                                onChange={this.updateSituasjonAndRolleInState}
+                            />
                         </Block>
-                        <Lenke href={lenker.papirsøknad}>
-                            <FormattedMessage id="papirsøknad.lenke" />
-                        </Lenke>
-                    </Veilederinfo>
-                </Block>
-            </Steg>
+                        <Block visible={visibility.søkerRolleSpørsmål({ velgbareRoller, situasjon })}>
+                            <SøkerrolleSpørsmål
+                                rolle={rolle}
+                                roller={velgbareRoller}
+                                onChange={(nyRolle: SøkerRolle) =>
+                                    dispatch(
+                                        søknadActions.updateSøker({
+                                            rolle: nyRolle
+                                        })
+                                    )
+                                }
+                            />
+                        </Block>
+                        <Block visible={visibility.papirsøknadInfo(situasjon)}>
+                            <Veilederinfo>
+                                <Block margin="xs">
+                                    <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                                </Block>
+                                <Lenke href={lenker.papirsøknad}>
+                                    <FormattedMessage id="papirsøknad.lenke" />
+                                </Lenke>
+                            </Veilederinfo>
+                        </Block>
+                    </Steg>
+                </form>
+            </Formik>
         );
     }
 }
@@ -164,7 +172,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const stegProps: StegProps = {
         id: StegID.INNGANG,
         renderFortsettKnapp: inngangErGyldig(situasjon, kjønn, erRolleGyldig),
-        renderFormTag: true,
+        renderFormTag: false,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
         nesteStegID: resolveStegToRender(state)
