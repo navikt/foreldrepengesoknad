@@ -44,7 +44,8 @@ const Sirkelknapp: React.StatelessComponent<SirkelknappProps> = ({
             onTouchStart={preventDoubleTapZoom}
             aria-labelledby={labelId}
             className={classnames(`sirkelknapp`, `sirkelknapp--${stil}`, `sirkelknapp--${size}`, {
-                'sirkelknapp--pressed': toggle && toggle.pressed
+                'sirkelknapp--pressed': toggle && toggle.pressed,
+                'sirkelknapp--disabled': disabled
             })}
             disabled={disabled}
             aria-pressed={toggle ? toggle.pressed : undefined}>

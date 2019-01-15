@@ -12,6 +12,7 @@ import { Forelder } from 'common/types';
 import { getTidsperiode, Tidsperioden } from '../Tidsperioden';
 import { sorterPerioder } from '../Periodene';
 import { DateValue } from '../../../types/common';
+import { dateIsSameOrAfter } from '../../../../app/util/dates/dates';
 
 const deltUttakAdopsjonMor = (
     famDato: Date,
@@ -195,8 +196,84 @@ const deltUttakFødselMor = (
     return perioder.sort(sorterPerioder);
 };
 
-const deltUttakFødselFarMedmor = () => {
-    return [];
+const deltUttakFødselFarMedmor = (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    antallDagerFellesperiodeFarMedmor: number | undefined,
+    antallUkerFellesperiodeFarMedmor: number | undefined,
+    morSinSisteUttaksdag: Date,
+    farSinFørsteUttaksdag: Date
+): Periode[] => {
+    if (dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)) {
+        return [];
+    }
+
+    const perioder: Periode[] = [];
+    const hullMellomFarOgMorDager = Tidsperioden({
+        fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
+        tom: farSinFørsteUttaksdag
+    }).getAntallUttaksdager();
+    const startDatoUttak = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
+    let sisteUttaksDag = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
+    const fkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+        (konto) => konto.konto === StønadskontoType.Fedrekvote
+    );
+    const fellesKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+        (konto) => konto.konto === StønadskontoType.Fellesperiode
+    );
+
+    if (hullMellomFarOgMorDager > 1) {
+        const hullPeriode: Periode = {
+            id: guid(),
+            type: Periodetype.Hull,
+            tidsperiode: getTidsperiode(Uttaksdagen(morSinSisteUttaksdag).neste(), hullMellomFarOgMorDager)
+        };
+
+        perioder.push(hullPeriode);
+    }
+
+    if (fkKonto !== undefined) {
+        const fedrekvotePeriode: Periode = {
+            id: guid(),
+            type: Periodetype.Uttak,
+            forelder: Forelder.FARMEDMOR,
+            konto: StønadskontoType.Fedrekvote,
+            tidsperiode: getTidsperiode(startDatoUttak, fkKonto.dager),
+            ønskerSamtidigUttak: false,
+            gradert: false
+        };
+
+        sisteUttaksDag = Uttaksdagen(fedrekvotePeriode.tidsperiode.tom).neste();
+
+        perioder.push(fedrekvotePeriode);
+    }
+
+    if (fellesKonto !== undefined) {
+        let antallDagerFellesperiode = 0;
+
+        if (antallUkerFellesperiodeFarMedmor !== undefined && antallUkerFellesperiodeFarMedmor !== 0) {
+            antallDagerFellesperiode = 5 * antallUkerFellesperiodeFarMedmor;
+        }
+
+        if (antallDagerFellesperiodeFarMedmor !== undefined && antallDagerFellesperiodeFarMedmor !== 0) {
+            antallDagerFellesperiode = antallDagerFellesperiode + antallDagerFellesperiodeFarMedmor;
+        }
+
+        if (antallDagerFellesperiode > 0) {
+            const fellesPeriode: Periode = {
+                id: guid(),
+                type: Periodetype.Uttak,
+                forelder: Forelder.FARMEDMOR,
+                konto: StønadskontoType.Fellesperiode,
+                tidsperiode: getTidsperiode(sisteUttaksDag, antallDagerFellesperiode),
+                ønskerSamtidigUttak: false,
+                gradert: false
+            };
+
+            perioder.push(fellesPeriode);
+        }
+    }
+
+    return perioder;
 };
 
 const deltUttakFødsel = (
@@ -204,12 +281,26 @@ const deltUttakFødsel = (
     erFarEllerMedmor: boolean,
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
-    fellesperiodeukerMor: number | undefined
+    fellesperiodeukerMor: number | undefined,
+    antallDagerFellesperiodeFarMedmor: number | undefined,
+    antallUkerFellesperiodeFarMedmor: number | undefined,
+    morSinSisteUttaksdag: Date | undefined,
+    farSinFørsteUttaksdag: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakFødselMor(famDato, tilgjengeligeStønadskontoer, startdatoPermisjon, fellesperiodeukerMor);
     } else {
-        return deltUttakFødselFarMedmor();
+        const tilgjengeligeStønadskontoerUtenFPP = tilgjengeligeStønadskontoer.filter(
+            (konto) => konto.konto !== StønadskontoType.ForeldrepengerFørFødsel
+        );
+
+        return deltUttakFødselFarMedmor(
+            tilgjengeligeStønadskontoerUtenFPP,
+            antallDagerFellesperiodeFarMedmor,
+            antallUkerFellesperiodeFarMedmor,
+            morSinSisteUttaksdag!,
+            farSinFørsteUttaksdag!
+        );
     }
 };
 
@@ -220,7 +311,11 @@ export const deltUttak = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined,
-    harAnnenForelderSøktFP: boolean | undefined
+    harAnnenForelderSøktFP: boolean | undefined,
+    antallDagerFellesperiodeFarMedmor: number | undefined,
+    antallUkerFellesperiodeFarMedmor: number | undefined,
+    morSinSisteUttaksdag: Date | undefined,
+    farSinFørsteUttaksdag: Date | undefined
 ) => {
     if (situasjon === Søkersituasjon.ADOPSJON) {
         return deltUttakAdopsjon(
@@ -239,7 +334,11 @@ export const deltUttak = (
             erFarEllerMedmor,
             tilgjengeligeStønadskontoer,
             startdatoPermisjon,
-            fellesperiodeukerMor
+            fellesperiodeukerMor,
+            antallDagerFellesperiodeFarMedmor,
+            antallUkerFellesperiodeFarMedmor,
+            morSinSisteUttaksdag,
+            farSinFørsteUttaksdag
         );
     }
 
