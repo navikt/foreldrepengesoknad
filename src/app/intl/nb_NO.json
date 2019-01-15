@@ -254,7 +254,8 @@
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Hvor finner jeg status på min søknad?",
     "kvittering.innsyn.fpsak": "Du kan følge med på statusen i saken på {lenke}.",
-    "kvittering.innsyn.infotrygd": "Du kan følge med på statusen i saken på {lenke}. Det tar 4 uker før søknaden din er synlig.",
+    "kvittering.innsyn.infotrygd":
+        "Du kan følge med på statusen i saken på {lenke}. Det tar 4 uker før søknaden din er synlig.",
     "kvittering.innsyn.lenke": "dine foreldrepenger",
     "kvittering.kontonummer.tittel": "Hvor blir pengene utbetalt?",
     "kvittering.kontonummer":
@@ -480,6 +481,10 @@
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Hvor lang periode med foreldrepenger ønsker du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepenger?",
     "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag med foreldrepenger?",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
+    "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
+    "spørsmål.farFellesperiode.uker.label": "Antall uker",
+    "spørsmål.farFellesperiode.dager.label": "Antall dager",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noe utsettelse i perioden med foreldrepenger?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noe av fellesperioden?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label":

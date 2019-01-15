@@ -19,6 +19,8 @@ import { FormattedMessage } from 'react-intl';
 import { findOldestDate } from '../../../util/dates/dates';
 import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
+import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
+import AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål from './enkeltspørsmål/AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål';
 
 export interface ScenarioProps {
     søknad: Søknad;
@@ -29,17 +31,27 @@ export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => (
-    <>
-        <Veilederinfo>
-            <FormattedMessage
-                id="uttaksplan.skjema.informasjonTilAnnenForelder"
-                values={{ navn: søknad.annenForelder.fornavn }}
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
+    const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
+    return (
+        <>
+            <Veilederinfo>
+                <FormattedMessage
+                    id="uttaksplan.skjema.informasjonTilAnnenForelder"
+                    values={{ navn: søknad.annenForelder.fornavn }}
+                />
+            </Veilederinfo>
+            <DekningsgradSpørsmål />
+            <MorSinSisteUttaksdagSpørsmål
+                visible={harSvartPåDekningsgradSpørsmål}
+                navnMor={søknad.annenForelder.fornavn}
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
             />
-        </Veilederinfo>
-        <DekningsgradSpørsmål />
-    </>
-);
+            <FarSinFørsteUttaksdagSpørsmål visible={true} />
+            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål visible={true} />
+        </>
+    );
+};
 
 const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode, navnPåForeldre }) => {
     const harSvartPåStartdato =
