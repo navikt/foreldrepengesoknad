@@ -210,7 +210,7 @@
     "hvilkenkontoskalbrukesforannenforeldersuttak.spørsmål": "Kva del av foreldrepengane skal { navn } bruke?",
     "hvilkenkvoteskalbenyttes.spørsmål": "Kva del av foreldrepengane skal du ta ut?",
     "hvorSkalDuJobbe.spørsmål": "Kvar skal du jobbe?",
-    "iNorgeNeste12Mnd.alternativ.boINorge": "berre bu i Noreg",
+    "iNorgeNeste12annenInntekt.modal.land.girIkkeStotte2Mnd.alternativ.boINorge": "berre bu i Noreg",
     "iNorgeNeste12Mnd.alternativ.boIUtlandet": "bu i utlandet heilt eller delvis",
     "iNorgeNeste12Mnd.spørsmål": "Kvar skal du bu dei neste tolv månadene?",
     "ikkeMyndig.boblelenketekst": "Her kan du laste ned papirsøknaden",
@@ -223,7 +223,7 @@
     "inntektstype.frilans": "Frilansar",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
-        "Sidan du har jobba i eit anna land, må vi hente inn dokumentasjon derfrå. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
+        "Sidan du har jobba i {land}, må vi hente inn dokumentasjon derfrå. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn frå arbeidsgivaren under vidare- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.militær_eller_siviltjeneste": "Militærteneste eller obligatorisk sivilforsvarsteneste",
