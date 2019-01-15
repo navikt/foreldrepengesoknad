@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import Block from 'common/components/block/Block';
 import getMessage from 'common/util/i18nUtils';
+import * as countries from 'i18n-iso-countries';
 import {
     AnnenInntekt,
     AnnenInntektPartial,
@@ -125,6 +126,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                         onChange={(type: AnnenInntektType) => this.updateAnnenInntekt({ type })}
                     />
                 </Block>
+
                 <Block visible={visibility.land(annenInntekt)}>
                     <Landvelger
                         defaultValue={(annenInntekt as JobbIUtlandetInntekt).land}
@@ -135,8 +137,10 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
+                        visBareEuOgEftaLand
                     />
                 </Block>
+
                 <Block visible={visibility.arbeidsgiverNavn(annenInntekt)}>
                     <Input
                         name="arbeidsgiverNavn"
@@ -194,7 +198,15 @@ class AnnenInntektModal extends React.Component<Props, State> {
                 </Block>
                 <Block visible={annenInntekt.type === AnnenInntektType.JOBB_I_UTLANDET}>
                     <Veilederinfo>
-                        <FormattedMessage id="inntektstype.jobb_i_utlandet_info" />
+                        <FormattedMessage
+                            id="inntektstype.jobb_i_utlandet_info"
+                            values={{
+                                land:
+                                    (annenInntekt as JobbIUtlandetInntekt).land !== undefined
+                                        ? countries.getName((annenInntekt as JobbIUtlandetInntekt).land, intl.locale)
+                                        : 'annet land'
+                            }}
+                        />
                     </Veilederinfo>
                 </Block>
             </ModalForm>
