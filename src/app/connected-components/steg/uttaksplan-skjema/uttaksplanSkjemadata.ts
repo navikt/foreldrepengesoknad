@@ -23,7 +23,7 @@ export interface UttaksplanSkjemadata {
     planlagtOppholdSkjemaValid?: boolean;
     valgtAdopsjonStartdato?: ValgalternativerAdopsjonStartdato;
     valgtStartdatoAleneomsorgFarMedmor?: ValgalternativerAleneomsorgFarMedmor;
-    farSinFørsteUttaksdagSpørsmål?: Date;
+    farSinFørsteUttaksdag?: Date;
     antallUkerFellesperiodeFarMedmor?: number;
     antallDagerFellesperiodeFarMedmor?: number;
 }

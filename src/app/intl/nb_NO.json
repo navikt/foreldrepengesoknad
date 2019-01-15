@@ -781,6 +781,8 @@
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allerede lagt inn utenlandsopphold i denne perioden",
     "valideringsfeil.utenlandsopphold.senere": "Du må legge inn en dato som er innenfor de neste tolv månedene.",
     "valideringsfeil.utenlandsopphold.tidligere": "Du må legge inn en dato som er innenfor de siste tolv månedene.",
+    "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
+        "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Norge da barnet ble født?",
     "varigEndringAvNæringsinntekt.dato.label": "Oppgi dato for endringen",
     "varigEndringAvNæringsinntekt.forklaring.label":

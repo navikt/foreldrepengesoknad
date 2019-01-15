@@ -1,34 +1,92 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl';
 import UttaksplanSkjemaSpørsmål, { UttaksplanSkjemaspørsmålProps } from '../UttaksplanSkjemaSpørsmål';
-import PlussMinusTeller from 'app/components/pluss-minus-teller/PlussMinusTeller';
 import { Element } from 'nav-frontend-typografi';
+import { Validator } from 'common/lib/validation/types';
+import getMessage from 'common/util/i18nUtils';
+import Block from 'common/components/block/Block';
+import ValiderbarUkerDagerTeller from 'common/lib/validation/elements/ValiderbarUkerDagerTeller';
 
-type Props = UttaksplanSkjemaspørsmålProps;
+interface AntallUkerOgDagerFellesperiodeFarMedmorProps {
+    antallUkerFellesperiode: number;
+    intl: InjectedIntl;
+}
 
-const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponent<Props> = ({ visible }) => (
+type Props = AntallUkerOgDagerFellesperiodeFarMedmorProps & UttaksplanSkjemaspørsmålProps;
+
+const getUkerOgDagerRegler = (
+    uker: number = 0,
+    maksUker: number,
+    dager: number = 0,
+    intl: InjectedIntl
+): Validator[] => {
+    const maksDager = maksUker * 5;
+    const valgtAntallDager = uker * 5 + dager;
+
+    return [
+        {
+            test: () => valgtAntallDager <= maksDager && valgtAntallDager >= 0,
+            failText: getMessage(intl, 'valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor', {
+                uker: maksUker
+            })
+        }
+    ];
+};
+
+const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponent<Props> = ({
+    visible,
+    antallUkerFellesperiode,
+    intl
+}) => (
     <UttaksplanSkjemaSpørsmål
         visible={visible}
-        render={(data, onChange) => (
-            <>
-                <Element>
-                    <FormattedMessage id="spørsmål.farFellesperiode.label" />
-                </Element>
-                <PlussMinusTeller
-                    name="antallDagerFellesperiodeFarMedmor"
-                    label="spørsmål.farFellesperiode.dager.label"
-                />
-                <PlussMinusTeller
-                    name="antallUkerFellesperiodeFarMedmor"
-                    label="spørsmål.farFellesperiode.dager.label"
-                />
-                <PlussMinusTeller
-                    name="antallDagerFellesperiodeFarMedmor"
-                    label="spørsmål.farFellesperiode.dager.label"
-                />
-            </>
-        )}
+        render={(data, onChange) => {
+            const { antallUkerFellesperiodeFarMedmor, antallDagerFellesperiodeFarMedmor } = data;
+
+            return (
+                <>
+                    <Block margin="xxs">
+                        <Element>
+                            <FormattedMessage id="spørsmål.farFellesperiode.label" />
+                        </Element>
+                    </Block>
+                    <Block margin="xxs">
+                        <ValiderbarUkerDagerTeller
+                            validators={getUkerOgDagerRegler(
+                                antallUkerFellesperiodeFarMedmor,
+                                antallUkerFellesperiode,
+                                antallDagerFellesperiodeFarMedmor,
+                                intl
+                            )}
+                            name="farMedmorFellesperiode"
+                            ukeLegend={getMessage(intl, 'spørsmål.farFellesperiode.uker.label')}
+                            dagLegend={getMessage(intl, 'spørsmål.farFellesperiode.dager.label')}
+                            stepperProps={[
+                                {
+                                    value:
+                                        antallUkerFellesperiodeFarMedmor !== undefined
+                                            ? antallUkerFellesperiodeFarMedmor
+                                            : 0,
+                                    min: 0,
+                                    max: antallUkerFellesperiode,
+                                    onChange: (uker: number) => onChange({ antallUkerFellesperiodeFarMedmor: uker })
+                                },
+                                {
+                                    value:
+                                        antallDagerFellesperiodeFarMedmor !== undefined
+                                            ? antallDagerFellesperiodeFarMedmor
+                                            : 0,
+                                    min: 0,
+                                    max: 4,
+                                    onChange: (dager: number) => onChange({ antallDagerFellesperiodeFarMedmor: dager })
+                                }
+                            ]}
+                        />
+                    </Block>
+                </>
+            );
+        }}
     />
 );
 
-export default AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål;
+export default injectIntl(AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål);

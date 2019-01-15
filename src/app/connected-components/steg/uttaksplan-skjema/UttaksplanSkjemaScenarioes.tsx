@@ -16,7 +16,7 @@ import { NavnPåForeldre } from 'common/types';
 import { getFamiliehendelsedato } from '../../../util/uttaksplan';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { FormattedMessage } from 'react-intl';
-import { findOldestDate } from '../../../util/dates/dates';
+import { findOldestDate, dateIsSameOrAfter } from '../../../util/dates/dates';
 import Block from 'common/components/block/Block';
 import { Uttaksdagen } from '../../../util/uttaksplan/Uttaksdagen';
 import FarSinFørsteUttaksdagSpørsmål from './enkeltspørsmål/FarSinFørsteUttaksdagSpørsmål';
@@ -31,8 +31,9 @@ export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
 }
 
-const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
+const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode }) => {
     const harSvartPåDekningsgradSpørsmål = søknad.dekningsgrad !== undefined;
+    const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = søknad.ekstrainfo.uttaksplanSkjema;
     return (
         <>
             <Veilederinfo>
@@ -47,8 +48,14 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad }) => {
                 navnMor={søknad.annenForelder.fornavn}
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
             />
-            <FarSinFørsteUttaksdagSpørsmål visible={true} />
-            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål visible={true} />
+            <FarSinFørsteUttaksdagSpørsmål visible={morSinSisteUttaksdag !== undefined} />
+            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                visible={
+                    farSinFørsteUttaksdag !== undefined &&
+                    !dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag)
+                }
+                antallUkerFellesperiode={antallUkerFellesperiode}
+            />
         </>
     );
 };

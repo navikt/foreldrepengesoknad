@@ -14,8 +14,8 @@ const FarSinFørsteUttaksdagSpørsmål: React.StatelessComponent<Props> = ({ vis
                 name="farSinFørsteUttaksdagSpørsmål"
                 id="farSinFørsteUttaksdagSpørsmål"
                 label={getMessage(intl, 'spørsmål.farSinFørsteUttaksdagSpørsmål.label')}
-                onChange={(farSinFørsteUttaksdagSpørsmål: Date) => onChange({ farSinFørsteUttaksdagSpørsmål })}
-                dato={data.farSinFørsteUttaksdagSpørsmål}
+                onChange={(farSinFørsteUttaksdag: Date) => onChange({ farSinFørsteUttaksdag })}
+                dato={data.farSinFørsteUttaksdag}
             />
         )}
     />
