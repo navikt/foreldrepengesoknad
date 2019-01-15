@@ -94,6 +94,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
     try {
         yield put(updateApi({ isLoadingTilgjengeligeStønadskontoer: true }));
         const appState: AppState = yield select(stateSelector);
+        const annenForelderErUkjent = appState.søknad.annenForelder.kanIkkeOppgis;
         const erMorUfør = appState.søknad.annenForelder.erUfør;
         const søkerErFarEllerMedmor = selectSøkerErFarEllerMedmor(appState);
         const morHarIkkeRett = !appState.søknad.annenForelder.harRettPåForeldrepenger && søkerErFarEllerMedmor;
@@ -109,7 +110,7 @@ function* getStønadskontoer(action: GetTilgjengeligeStønadskontoer) {
 
         tilgjengeligeStønadskontoer = fjernFlerbarnsdagerFraFellesperiode(tilgjengeligeStønadskontoer);
 
-        if (morHarIkkeRett) {
+        if (morHarIkkeRett && !annenForelderErUkjent) {
             tilgjengeligeStønadskontoer = opprettAktivitetsFriKonto(
                 tilgjengeligeStønadskontoer,
                 appState.søknad.dekningsgrad,
