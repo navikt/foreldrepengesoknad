@@ -606,7 +606,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og varighet av studiet",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
         "har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen",
-    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepenger i samme periode?",
+    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal {navnAnnenForelder} ha foreldrepenger i samme periode?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal dere ha foreldrepenger samtidig?",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.hull.fjern": "Bruk {nesteUttaksperiode}",
