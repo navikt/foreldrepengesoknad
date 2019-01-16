@@ -62,7 +62,7 @@ class Infoboks extends React.Component<Props, InfoboksState> {
                     })}
                     isOpened={isExpanded}
                     springConfig={{ stiffness: 250, damping: 30 }}>
-                    {isExpanded ? <div className="infoboks__wrapper typo-normaltekst">{tekst}</div> : <span />}
+                    {isExpanded ? <div className="infoboks__wrapper typo-normal">{tekst}</div> : <span />}
                 </Collapse>
             </React.Fragment>
         );
