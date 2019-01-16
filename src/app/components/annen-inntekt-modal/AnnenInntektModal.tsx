@@ -137,7 +137,7 @@ class AnnenInntektModal extends React.Component<Props, State> {
                             };
                             this.updateAnnenInntekt(utlandInntekt);
                         }}
-                        visBareEuOgEftaLand
+                        visBareEuOgEftaLand={true}
                     />
                 </Block>
 
