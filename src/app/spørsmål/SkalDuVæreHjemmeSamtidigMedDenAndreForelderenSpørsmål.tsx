@@ -6,6 +6,7 @@ import JaNeiSpørsmål from '../components/ja-nei-spørsmål/JaNeiSpørsmål';
 interface SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmålProps {
     onChange: (ønskerSamtidigUttak: boolean) => void;
     ønskerSamtidigUttak?: boolean;
+    navnAnnenForelder: string;
 }
 
 type Props = SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmålProps & InjectedIntlProps;
@@ -13,12 +14,13 @@ type Props = SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmålProps & Inj
 const SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål: React.StatelessComponent<Props> = ({
     intl,
     ønskerSamtidigUttak,
+    navnAnnenForelder,
     onChange
 }) => (
     <>
         <JaNeiSpørsmål
             navn="samtidigUttak"
-            spørsmål={getMessage(intl, 'uttaksplan.fellesdel.samtidigUttak.spørsmål')}
+            spørsmål={getMessage(intl, 'uttaksplan.fellesdel.samtidigUttak.spørsmål', { navnAnnenForelder })}
             valgtVerdi={ønskerSamtidigUttak}
             onChange={(v) => onChange(v)}
         />
