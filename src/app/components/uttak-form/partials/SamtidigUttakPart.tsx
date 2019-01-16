@@ -54,6 +54,7 @@ class SamtidigUttakPart extends React.Component<Props> {
                     <SkalDuVæreHjemmeSamtidigMedDenAndreForelderenSpørsmål
                         onChange={(øs) => onChange({ ønskerSamtidigUttak: øs })}
                         ønskerSamtidigUttak={ønskerSamtidigUttak}
+                        navnAnnenForelder={navnAnnenForelder}
                     />
                 </Block>
                 <Block visible={ønskerSamtidigUttak === true} margin="none">
