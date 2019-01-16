@@ -536,6 +536,8 @@
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjelder et annet barn",
     "terminbekreftelseDato.spørsmål": "Når er terminbekreftelsen datert?",
     "termindato.spørsmål": "Når er termindatoen?",
+    "termindato.infotekst":
+        "Hvis du har fått en dato for planlagt keisersnitt, legger du inn denne datoen som termindato.",
     "tidsintervall": "{fom} - {tom}",
     "tidsperiode": "Fra {fom} til {tom}",
     "tidsperiode.kort": "{fom} - {tom}",
