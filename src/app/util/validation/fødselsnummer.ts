@@ -19,7 +19,7 @@ const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
     return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
 };
 
-export const erOverSeksten = (fnr: string): boolean => {
+export const isSixteenOrOlder = (fnr: string): boolean => {
     const dato = fnr.substr(0, 2);
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
@@ -52,7 +52,7 @@ export const getFødselsnummerRegler = (
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
         },
         {
-            test: () => (!utenlandskFnr && erOverSeksten(fnr)) || utenlandskFnr === true,
+            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
             failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];

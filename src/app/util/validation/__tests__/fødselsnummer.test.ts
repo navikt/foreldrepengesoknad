@@ -1,6 +1,6 @@
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { erOverSeksten, getFødselsnummerRegler } from '../fødselsnummer';
+import { isSixteenOrOlder, getFødselsnummerRegler } from '../fødselsnummer';
 import moment from 'moment';
 
 const intl = {} as InjectedIntl;
@@ -51,22 +51,25 @@ describe('Fødselsnummer validation', () => {
 
     describe('helper functions', () => {
         describe('erOverSeksten function', () => {
-            it('returns true if input fnr proves that person is sixteen or older', () => {
-                const fnrForPersonExactlySixteenOfAge: string = moment()
+            it('returns true if input fnr proves that person is sixteen', () => {
+                const fnr: string = moment()
                     .utc()
                     .subtract(16, 'year')
                     .format('DDMMYY')
                     .toString();
 
-                const fnrForPersonAtOlderThanSixteen: string = moment()
+                expect(isSixteenOrOlder(fnr)).toBeTruthy();
+            });
+
+            it('returns true if input fnr proves that person is older than sixteen', () => {
+                const fnr: string = moment()
                     .utc()
                     .subtract(16, 'year')
                     .subtract(1, 'day')
                     .format('DDMMYY')
                     .toString();
 
-                expect(erOverSeksten(fnrForPersonExactlySixteenOfAge)).toBeTruthy();
-                expect(erOverSeksten(fnrForPersonAtOlderThanSixteen)).toBeTruthy();
+                expect(isSixteenOrOlder(fnr)).toBeTruthy();
             });
 
             it('returns false if input fnr proves that person is under sixteen', () => {
@@ -77,13 +80,13 @@ describe('Fødselsnummer validation', () => {
                     .format('DDMMYY')
                     .toString();
 
-                expect(erOverSeksten(fnr)).toBeFalsy();
+                expect(isSixteenOrOlder(fnr)).toBeFalsy();
             });
 
             it('should throw exception if input is invalid', () => {
-                expect(() => erOverSeksten('qwerty')).toThrowError();
-                expect(() => erOverSeksten('')).toThrowError();
-                expect(() => erOverSeksten('351399')).toThrowError();
+                expect(() => isSixteenOrOlder('qwerty')).toThrowError();
+                expect(() => isSixteenOrOlder('')).toThrowError();
+                expect(() => isSixteenOrOlder('351399')).toThrowError();
             });
         });
     });
