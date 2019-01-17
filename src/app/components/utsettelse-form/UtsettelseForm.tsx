@@ -31,7 +31,6 @@ import { AppState } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import NyPeriodeKnapperad from '../ny-periode-form/NyPeriodeKnapperad';
 import AktivitetskravMorBolk from '../../bolker/AktivitetskravMorBolk';
-import { getEgenKvote } from '../../util/uttaksplan/uttakUtils';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { getUtsettelseÅrsakTypeValidators } from '../../util/validation/uttaksplan/utsettelseÅrsak';
 import lenker from '../../util/routing/lenker';
@@ -125,9 +124,6 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
     }
 
     onChange(periode: UtsettelseFormPeriodeType) {
-        if (periode.type === Periodetype.Utsettelse) {
-            (periode as Utsettelsesperiode).konto = getEgenKvote(this.props.søkerErFarEllerMedmor);
-        }
         this.props.onChange(periode, this.getVisibility());
         if (this.context.validForm) {
             this.context.validForm.validateAll();
@@ -298,9 +294,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>
                         <AlertStripe type="info" solid={true}>
-                            Tidsperioden du har valgt inneholder helligdager som ikke kan registreres som ferie. Disse
-                            dagene vil bli egne perioder i planen, som du må legge inn informasjon om etter at du har
-                            lagt til denne utsettelsen.
+                            <FormattedMessage id="utsettelse.helligdager" />
                         </AlertStripe>
                     </Block>
 

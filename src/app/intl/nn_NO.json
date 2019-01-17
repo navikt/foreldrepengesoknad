@@ -223,7 +223,7 @@
     "inntektstype.frilans": "Frilansar",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
     "inntektstype.jobb_i_utlandet_info":
-        "Sidan du har jobba i eit anna land, må vi hente inn dokumentasjon derfrå. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
+        "Sidan du har jobba i {land}, må vi hente inn dokumentasjon derfrå. Derfor kan det ta litt lenger tid før du får svar på søknaden din.",
     "inntektstype.lønn_under_utdanning": "Lønn frå arbeidsgivaren under vidare- eller etterutdanning",
     "inntektstype.lønn_under_utdanning_info": "Trenger vi noe tekst her?",
     "inntektstype.militær_eller_siviltjeneste": "Militærteneste eller obligatorisk sivilforsvarsteneste",
@@ -479,6 +479,10 @@
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Kor lang periode med foreldrepengar ønskjer du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepengar?",
     "spørsmål.morSinSisteUttaksdag.label": "Når har {navnMor} den siste dagen sin med foreldrepengar?",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
+    "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
+    "spørsmål.farFellesperiode.uker.label": "Antall uker",
+    "spørsmål.farFellesperiode.dager.label": "Antall dager",
     "spørsmål.planlagtOppholdIUttak.label": "Har du planlagt noka utsetjing i perioden med foreldrepengar?",
     "spørsmål.skalHaDelAvFellesperiodeSpørsmål.label": "Skal du ha noko av fellesperioden?",
     "spørsmål.skalStarteRettEtterMorSpørsmål.label":
@@ -534,6 +538,8 @@
     "søknadenGjelderAnnetBarn.spørsmål": "Søknaden min gjeld eit anna barn",
     "terminbekreftelseDato.spørsmål": "Når er terminstadfestinga datert?",
     "termindato.spørsmål": "Når er termindatoen?",
+    "termindato.infotekst":
+        "Dersom du har fått ein dato for planlagd keisarsnitt, legg du inn denne datoen som termindato.",
     "tidsintervall": "{fom} - {tom}",
     "tidsperiode": "Fra {fom} til {tom}",
     "tidsperiode.kort": "{fom} - {tom}",
@@ -544,6 +550,8 @@
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Kva land budde du i?",
     "utenlandsopphold.tittel": "Legg til utanlandsopphald",
     "utenlandsopphold.tittel.endre": "Endre utanlandsopphald",
+    "utsettelse.helligdager":
+        "Perioden du har valt går over heilagdagar. Du kan ikkje ha ferie på heilagdagar. Du må leggje til periode med foreldrepengar i planen din, dette gjer du etter at du har lagt til utsetjinga.",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Eg er innlagd på helseinstitusjon",
     "utsettelse.sykdom.alternativ.SYKDOM": "Eg er for sjuk til å ta meg av barnet",
@@ -604,7 +612,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt3": "oppstart og kor lenge studiet varer",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt4":
         "har mor søkt om permisjon frå studiet ein periode må dette kome fram i stadfestinga",
-    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal den andre forelderen ha foreldrepengar i same perioden?",
+    "uttaksplan.fellesdel.samtidigUttak.spørsmål": "Skal {navnAnnenForelder} ha foreldrepengar i same perioden?",
     "uttaksplan.fellesdel.samtidigUttak.veileder": "Skal de ha foreldrepengar samtidig?",
     "uttaksplan.fristerLinkTekst": "nav.no",
     "uttaksplan.hull.fjern": "Bruk av neste periode {nesteUttaksperiode}",
@@ -755,6 +763,7 @@
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fyllast ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikkje gi opp ditt eige fødselsnummer",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive eit gyldig fødselsnummer, elleve siffer",
+    "valideringsfeil.fødselsnummer.underSeksten": "Den andre forelderen må være over seksten",
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummeret må ha ni siffer",
     "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer":
         "Organisasjonsnummeret er ikkje eit gyldig norsk organisasjonsnummer",
@@ -778,6 +787,8 @@
     "valideringsfeil.utenlandsopphold.overlapp": "Du har allereie lagt inn utanlandsopphald i denne perioden.",
     "valideringsfeil.utenlandsopphold.senere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
     "valideringsfeil.utenlandsopphold.tidligere": "Du må leggje inn ein dato som er innanfor dei siste tolv månadene.",
+    "valideringsfeil.uttaksplanskjema.forMangeUkerPeriodeFarMedmor":
+        "Du kan maksimalt ta ut {uker} uker med fellesperiode.",
     "varDuINorgeDaBarnetBleFødt.spørsmål": "Var du i Noreg då barnet blei født?",
     "varigEndringAvNæringsinntekt.dato.label": "Gi opp dato for endringa",
     "varigEndringAvNæringsinntekt.forklaring.label":

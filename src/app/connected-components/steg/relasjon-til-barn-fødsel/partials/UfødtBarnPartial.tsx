@@ -76,6 +76,7 @@ class UfødtBarnPartial extends React.Component<Props> {
                                 id="termindato"
                                 name="termindato"
                                 label={getMessage(intl, 'termindato.spørsmål')}
+                                infotekst={getMessage(intl, 'termindato.infotekst')}
                                 onChange={(termindato: Date) => {
                                     dispatch(
                                         søknadActions.updateBarn({
