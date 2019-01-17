@@ -6,6 +6,7 @@ import './numberStepper.less';
 
 export interface Props {
     value: number;
+    ariaLabel: string;
     stepSize?: number;
     max?: number;
     min?: number;
@@ -14,7 +15,7 @@ export interface Props {
 
 const bem = BEMHelper('numberStepper');
 
-const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepSize = 1, onChange }) => {
+const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepSize = 1, ariaLabel, onChange }) => {
     const canDecrease = min === undefined || value > min;
     const canIncrease = max === undefined || value < max;
     return (
@@ -30,7 +31,7 @@ const NumberStepper: React.StatelessComponent<Props> = ({ value, min, max, stepS
             <div className={bem.element('input')}>
                 <input
                     className="skjemaelement__input input--fullbredde"
-                    aria-label="Verdi"
+                    aria-label={ariaLabel}
                     type="number"
                     value={value}
                     onChange={(evt) => onChange(parseInt(evt.target.value, 10))}
