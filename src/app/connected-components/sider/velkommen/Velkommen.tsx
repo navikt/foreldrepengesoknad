@@ -31,6 +31,7 @@ import SakInfo from '../../../components/sak-info/SakInfo';
 
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
+
 import './velkommen.less';
 
 interface StateProps {
@@ -237,7 +238,7 @@ class Velkommen extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
-    person: props.søkerinfo.person,
+    person: props.søkerinfo ? props.søkerinfo.person : undefined,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
     sakForEndringssøknad: state.api.sakForEndringssøknad,
     oppslagSakerFeilet: state.api.oppslagSakerFeilet
