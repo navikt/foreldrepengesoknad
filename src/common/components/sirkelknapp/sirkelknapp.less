@@ -6,10 +6,17 @@
     color: white;
     border-color: @c-buttonBlue;
 }
+
+.sirkelknappDisabled() {
+    background-color: @c-buttonDisabled;
+    border-color: @c-buttonDisabledBorder;
+    color: @c-buttonDisabledBorder;
+}
+
 .sirkelknappHvit() {
-    background-color: white;
     color: @c-buttonBlue;
     border-color: @c-buttonBlue;
+    background-color: white;
 }
 
 .sirkelknapp  {
@@ -27,6 +34,8 @@
         display: block;
         width: 100%;
         text-align: center;
+        margin-left: -1px;
+        margin-top: -1px;
     }
     &--info {
         background-color: #a3e0f4;
@@ -37,15 +46,7 @@
         height: 32px;
     }
 
-    .rangeIcon {
-        background-color: #0067c5;
-        position: relative;
-        bottom: 1px;
-        right: 1px;
-        border-radius: 50%;
-
-        &:hover {
-            background-color: #005b82;
-        }
+    &--disabled {
+        .sirkelknappDisabled();
     }
 }

@@ -54,12 +54,33 @@ describe('Forslag til uttaksplan', () => {
             );
             expect(overlappendePerioder).toBeUndefined();
         });
-        it('far/medmor: skal ikke få foreslått plan', () => {
+        it('far/medmor: skal ikke få foreslått plan gitt ikke valgt fellesperiode', () => {
             const uttaksplan = lagUttaksplan(
                 { ...søknad, søker: { ...søknad.søker, rolle: SøkerRolle.FAR } },
                 tilgjengeligeKontoerDeltUttak
             );
             expect(uttaksplan.length).toBe(0);
+        });
+        it('far/medmor: skal få foreslått plan gitt valgt fellesperiode', () => {
+            const farSøknad = {
+                antallUkerFellesperiodeFarMedmor: 8,
+                antallDagerFellesperiodeFarMedmor: 0,
+                morSinSisteUttaksdag: new Date(2019, 0, 1),
+                farSinFørsteUttaksdag: new Date(2019, 0, 2)
+            };
+
+            const uttaksplan = lagUttaksplan(
+                {
+                    ...søknad,
+                    søker: { ...søknad.søker, rolle: SøkerRolle.FAR },
+                    ekstrainfo: {
+                        ...søknad.ekstrainfo,
+                        uttaksplanSkjema: { ...søknad.ekstrainfo.uttaksplanSkjema, ...farSøknad }
+                    }
+                },
+                tilgjengeligeKontoerDeltUttak
+            );
+            expect(uttaksplan.length).toBe(2);
         });
     });
     describe('Ikke delt uttaksplan', () => {
