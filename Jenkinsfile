@@ -18,10 +18,8 @@ node {
 
     stage("Checkout") {
         cleanWs()
-        withCredentials([string(credentialsId: 'OAUTH_TOKEN', variable: 'token')]) {
-            withEnv(['HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088']) {
-                sh(script: "git clone https://${token}:x-oauth-basic@github.com/${project}/${app}.git -b ${branch} .")
-            }
+        withEnv(['HTTPS_PROXY=http://webproxy-utvikler.nav.no:8088']) {
+            sh(script: "git clone https://github.com/${project}/${app}.git -b ${branch} .")
         }
         commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
         commitHashShort = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
@@ -142,12 +140,6 @@ node {
             try {
                 timeout(time: 15, unit: 'MINUTES') {
                     input id: 'deploy', message: "Check status here:  https://jira.adeo.no/browse/${deploy}"
-                }
-
-                // Tag production build
-                withCredentials([string(credentialsId: 'OAUTH_TOKEN', variable: 'token')]) {
-                    sh ("git tag -a ${releaseVersion} -m ${releaseVersion}")
-                    sh ("git push https://${token}:x-oauth-basic@github.com/${project}/${app}.git --tags")
                 }
 
                 slackSend([
