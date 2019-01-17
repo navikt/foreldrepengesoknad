@@ -50,7 +50,8 @@ const webpackConfig = {
                     fallback: 'style-loader',
                     use: [
                         {
-                            loader: 'css-loader'
+                            loader: 'css-loader',
+                            options: { minimize: true }
                         },
                         {
                             loader: 'postcss-loader'
