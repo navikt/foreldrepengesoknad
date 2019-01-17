@@ -1,6 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import * as getMessage from 'common/util/i18nUtils';
-import { getFødselsnummerRegler } from '../fødselsnummer';
+import { erOverSeksten, getFødselsnummerRegler } from '../fødselsnummer';
+import moment from 'moment';
 
 const intl = {} as InjectedIntl;
 
@@ -46,5 +47,44 @@ describe('Fødselsnummer validation', () => {
         expect(callMatchingApplicantsFødselsnummerValidator(VALID_NORWEGIAN_FNR, false, VALID_NORWEGIAN_FNR)).toEqual(
             false
         );
+    });
+
+    describe('helper functions', () => {
+        describe('erOverSeksten function', () => {
+            it('returns true if input fnr proves that person is sixteen or older', () => {
+                const fnrForPersonExactlySixteenOfAge: string = moment()
+                    .utc()
+                    .subtract(16, 'year')
+                    .format('DDMMYY')
+                    .toString();
+
+                const fnrForPersonAtOlderThanSixteen: string = moment()
+                    .utc()
+                    .subtract(16, 'year')
+                    .subtract(1, 'day')
+                    .format('DDMMYY')
+                    .toString();
+
+                expect(erOverSeksten(fnrForPersonExactlySixteenOfAge)).toBeTruthy();
+                expect(erOverSeksten(fnrForPersonAtOlderThanSixteen)).toBeTruthy();
+            });
+
+            it('returns false if input fnr proves that person is under sixteen', () => {
+                const fnr: string = moment()
+                    .utc()
+                    .subtract(16, 'year')
+                    .add(1, 'day')
+                    .format('DDMMYY')
+                    .toString();
+
+                expect(erOverSeksten(fnr)).toBeFalsy();
+            });
+
+            it('should throw exception if input is invalid', () => {
+                expect(() => erOverSeksten('qwerty')).toThrowError();
+                expect(() => erOverSeksten('')).toThrowError();
+                expect(() => erOverSeksten('351399')).toThrowError();
+            });
+        });
     });
 });

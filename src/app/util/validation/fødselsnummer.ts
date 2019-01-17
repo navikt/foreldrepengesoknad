@@ -19,11 +19,16 @@ const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
     return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
 };
 
-const erOverSeksten = (fnr: string): boolean => {
+export const erOverSeksten = (fnr: string): boolean => {
     const dato = fnr.substr(0, 2);
     const mnd = fnr.substr(2, 2);
     const år = fnr.substr(4, 2);
     const fødselsdato = moment(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
+
+    if (!fødselsdato.isValid()) {
+        throw new Error('Illegal argument');
+    }
+
     return fødselsdato.isBefore(moment().subtract(16, 'year'));
 };
 
