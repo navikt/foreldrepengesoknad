@@ -294,9 +294,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     </Block>
                     <Block visible={visInfoOmHelligdagerOgFerie}>
                         <AlertStripe type="info" solid={true}>
-                            Tidsperioden du har valgt inneholder helligdager som ikke kan registreres som ferie. Disse
-                            dagene vil bli egne perioder i planen, som du må legge inn informasjon om etter at du har
-                            lagt til denne utsettelsen.
+                            <FormattedMessage id="utsettelse.helligdager" />
                         </AlertStripe>
                     </Block>
 

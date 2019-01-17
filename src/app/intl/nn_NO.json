@@ -550,6 +550,8 @@
     "utenlandsopphold.select.spørsmål.tidligereOpphold": "Kva land budde du i?",
     "utenlandsopphold.tittel": "Legg til utanlandsopphald",
     "utenlandsopphold.tittel.endre": "Endre utanlandsopphald",
+    "utsettelse.helligdager":
+        "Perioden du har valt går over heilagdagar. Du kan ikkje ha ferie på heilagdagar. Du må leggje til periode med foreldrepengar i planen din, dette gjer du etter at du har lagt til utsetjinga.",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_BARNET": "Barnet er innlagt på helseinstitusjon",
     "utsettelse.sykdom.alternativ.INSTITUSJONSOPPHOLD_SØKER": "Eg er innlagd på helseinstitusjon",
     "utsettelse.sykdom.alternativ.SYKDOM": "Eg er for sjuk til å ta meg av barnet",
