@@ -763,6 +763,7 @@
     "valideringsfeil.fødselsnummer.required": "Fødselsnummer må fylles ut",
     "valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer": "Du kan ikke oppgi ditt eget fødselsnummer",
     "valideringsfeil.fødselsnummer.ugyldigFødselsnummer": "Du må skrive et gyldig fødselsnummer 11 siffer",
+    "valideringsfeil.fødselsnummer.underSeksten": "Den andre forelderen må være over seksten",
     "valideringsfeil.organisasjonsnummer.er9tall": "Organisasjonsnummer må bestå av 9 tall",
     "valideringsfeil.organisasjonsnummer.erUgyldigOrgNummer":
         "Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer",
