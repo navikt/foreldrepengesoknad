@@ -34,7 +34,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
     "annenForelder.veileder.aleneOmsorg.forBarnet": "De kan avtala at {navn} tek ut foreldrepengar",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "For foreldre som startar foreldrepengeperioden i 2019, kjem det ei ny teneste frå 1. januar. Da vil {navn} kunne sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
+        "Dersom de starta foreldrepengeperioden 1. januar 2019 eller seinare, vil {navn} sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepengar?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
