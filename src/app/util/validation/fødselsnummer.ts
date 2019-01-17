@@ -1,4 +1,5 @@
 import { InjectedIntl } from 'react-intl';
+import moment from 'moment';
 import { Validator } from 'common/lib/validation/types/index';
 import getMessage from 'common/util/i18nUtils';
 import { hasValueRule } from './common';
@@ -16,6 +17,19 @@ const isFødselsnummerFormatValid = (fnr: string): boolean => {
 
 const isUtenlandskFødselsnummerValid = (fnr: string): boolean => {
     return fnr === undefined || fnr === '' || fnr.length <= MAKS_FNR_LENGTH;
+};
+
+export const isSixteenOrOlder = (fnr: string): boolean => {
+    const dato = fnr.substr(0, 2);
+    const mnd = fnr.substr(2, 2);
+    const år = fnr.substr(4, 2);
+    const fødselsdato = moment(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
+
+    if (!fødselsdato.isValid()) {
+        throw new Error('Illegal argument');
+    }
+
+    return fødselsdato.isBefore(moment().subtract(16, 'year'));
 };
 
 export const getFødselsnummerRegler = (
@@ -36,6 +50,10 @@ export const getFødselsnummerRegler = (
         {
             test: () => søkersFødselsnummer !== fnr,
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
+        },
+        {
+            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
+            failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];
 };
