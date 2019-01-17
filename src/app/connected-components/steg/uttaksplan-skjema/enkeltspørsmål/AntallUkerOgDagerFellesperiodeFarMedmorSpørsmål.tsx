@@ -69,7 +69,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
                                             : 0,
                                     min: 0,
                                     max: antallUkerFellesperiode,
-                                    onChange: (uker: number) => onChange({ antallUkerFellesperiodeFarMedmor: uker })
+                                    onChange: (uker: number) => onChange({ antallUkerFellesperiodeFarMedmor: uker }),
+                                    ariaLabel: 'Antall uker'
                                 },
                                 {
                                     value:
@@ -78,7 +79,8 @@ const AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål: React.StatelessComponen
                                             : 0,
                                     min: 0,
                                     max: 4,
-                                    onChange: (dager: number) => onChange({ antallDagerFellesperiodeFarMedmor: dager })
+                                    onChange: (dager: number) => onChange({ antallDagerFellesperiodeFarMedmor: dager }),
+                                    ariaLabel: 'Antall dager'
                                 }
                             ]}
                         />
