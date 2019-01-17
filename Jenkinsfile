@@ -7,7 +7,7 @@ node {
     def commitHash, commitHashShort, commitUrl
     def project = "navikt"
     def app = "foreldrepengesoknad"
-    def committer, committerEmail, changelog, releaseVersion
+    def committer, committerEmail, releaseVersion
     def appConfig = "nais.yaml"
     def dockerRepo = "repo.adeo.no:5443"
     def branch = "master"
@@ -26,7 +26,6 @@ node {
         commitUrl = "https://github.com/${project}/${app}/commit/${commitHash}"
         committer = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
         committerEmail = sh(script: 'git log -1 --pretty=format:"%ae"', returnStdout: true).trim()
-        changelog = sh(script: 'git log `git describe --tags --abbrev=0`..HEAD --oneline', returnStdout: true)
 
         releaseVersion = "${env.major_version}.${env.BUILD_NUMBER}-${commitHashShort}"
         echo "release version: ${releaseVersion}"
@@ -54,7 +53,7 @@ node {
 
         slackSend([
             color: 'good',
-            message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${project}/${app}@master by ${committer} passed  (${changelog})"
+            message: "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> (<${commitUrl}|${commitHashShort}>) of ${project}/${app}@master by ${committer} passed"
          ])
     }
 
