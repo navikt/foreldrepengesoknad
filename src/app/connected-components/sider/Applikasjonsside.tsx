@@ -11,7 +11,7 @@ import Språkvelger from 'common/components/språkvelger/Språkvelger';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
-import ModalWrapper from 'nav-frontend-modal';
+import UtløptSesjonModal from 'app/components/utløpt-sesjon-modal/UtløptSesjonModal';
 
 export interface OwnProps {
     visSøknadstittel?: boolean;
@@ -59,13 +59,7 @@ class Sidemal extends React.Component<Props> {
                     </Søknadstittel>
                 )}
                 <div className={cls}>{children}</div>
-                <ModalWrapper
-                    closeButton={false}
-                    isOpen={sessionHasExpired}
-                    contentLabel="Sesjonen er utløpt"
-                    onRequestClose={() => {}}>
-                    <div>Din sesjon er utløpt!</div>
-                </ModalWrapper>
+                <UtløptSesjonModal erÅpen={sessionHasExpired} />
             </React.Fragment>
         );
     }
