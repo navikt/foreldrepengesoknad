@@ -17,7 +17,7 @@ interface State {
     expanded: boolean;
 }
 
-const BEM = BEMHelper('toggleItem');
+const bem = BEMHelper('toggleItem');
 
 class ToggleItem extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -39,23 +39,23 @@ class ToggleItem extends React.Component<Props, State> {
         return (
             <div
                 className={classnames(
-                    BEM.className,
+                    bem.className,
                     expanded && expandedHeaderClassName ? expandedHeaderClassName : undefined
                 )}>
                 <a
                     id={id}
                     href="#"
-                    className={BEM.element('header')}
+                    className={bem.element('header')}
                     onClick={this.toggleExpanded}
                     tabIndex={0}
                     aria-expanded={expanded}>
-                    <div className={BEM.element('header__content')}>{renderHeader()}</div>
-                    <div className={BEM.element('header__arrow')}>
+                    <div className={bem.element('header__content')}>{renderHeader()}</div>
+                    <div className={bem.element('header__arrow')}>
                         <ToggleArrow expanded={expanded} />
                     </div>
                 </a>
                 {expanded ? (
-                    <div className={classnames(BEM.element('content'), expandedContentClassName)}>
+                    <div className={classnames(bem.element('content'), expandedContentClassName)}>
                         {renderContent()}
                     </div>
                 ) : (
