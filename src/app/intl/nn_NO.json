@@ -748,6 +748,7 @@
         "Startar du foreldrepengane seinare enn omsorgsovertakinga, mistar du dagar.",
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
+    "uttaksplanSkjema.info.manglerVedlegg": "Du har ikke lastet opp påkrevd dokumentasjon.",
     "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mykje av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgjande feil:",
