@@ -8,6 +8,9 @@ export interface Props {
 
 import './focusContainer.less';
 import { focusFirstElement } from '../../util/focusUtils';
+import BEMHelper from 'common/util/bem';
+
+const bem = BEMHelper('focusContainer');
 
 class FocusContainer extends React.Component<Props> {
     container: HTMLElement | null;
@@ -22,7 +25,7 @@ class FocusContainer extends React.Component<Props> {
         return (
             <div
                 ref={(c) => (this.container = c)}
-                className="focusContainer"
+                className={bem.className}
                 tabIndex={focusOnContainer === undefined ? undefined : -1}
                 aria-labelledby={focusOnContainer ? focusOnContainer.ariaLabelId : undefined}>
                 {children}

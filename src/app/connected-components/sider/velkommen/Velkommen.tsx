@@ -32,6 +32,7 @@ import SakInfo from '../../../components/sak-info/SakInfo';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
 import './velkommen.less';
+import BEMHelper from 'common/util/bem';
 
 interface StateProps {
     person?: Person;
@@ -125,6 +126,8 @@ class Velkommen extends React.Component<Props, State> {
                 ? sakForEndringssøknad === undefined || this.state.skalEndre !== undefined
                 : this.state.skalEndre === false;
 
+        const bem = BEMHelper('velkommen');
+
         return (
             <Applikasjonsside visSpråkvelger={true} margin={false}>
                 <DocumentTitle title={getMessage(intl, 'dokument.tittel.velkommen')} />
@@ -137,8 +140,8 @@ class Velkommen extends React.Component<Props, State> {
                         text: getMessage(intl, 'velkommen.bobletekst')
                     }}
                 />
-                <div className="velkommen">
-                    <Innholdstittel className="velkommen__tittel blokk-s">
+                <div className={bem.className}>
+                    <Innholdstittel className={`${bem.element('tittel')} blokk-s`}>
                         {getMessage(intl, 'velkommen.tittel')}
                     </Innholdstittel>
                     {visValgForNySøknadEllerEndring && (
@@ -199,13 +202,13 @@ class Velkommen extends React.Component<Props, State> {
                         </BekreftCheckboksPanel>
                         <Knapperad>
                             <Hovedknapp
-                                className="velkommen__startSøknadKnapp blokk-m"
+                                className={`${bem.element('startSøknadKnapp')} blokk-m`}
                                 disabled={!harGodkjentVilkår}
                                 onClick={() => this.startSøknad(this.state.skalEndre)}>
                                 {this.getStartSøknadKnappLabel()}
                             </Hovedknapp>
                         </Knapperad>
-                        <Normaltekst className="velkommen__personopplysningerLink">
+                        <Normaltekst className={bem.element('personopplysningerLink')}>
                             <a
                                 className="lenke"
                                 href="#"

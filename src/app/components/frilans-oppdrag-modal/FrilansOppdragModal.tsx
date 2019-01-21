@@ -12,7 +12,7 @@ import { getFritekstfeltRules } from '../../util/validation/fritekstfelt';
 import { hasValueRule } from '../../util/validation/common';
 import ModalForm from 'common/components/modalForm/ModalForm';
 
-import './frilansOppdragModal.less';
+// import './frilansOppdragModal.less';
 
 export interface FrilansOppdragModalProps extends ModalProps {
     oppdrag?: FrilansOppdrag;
