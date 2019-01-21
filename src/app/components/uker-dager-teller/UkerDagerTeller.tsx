@@ -5,6 +5,7 @@ import { Feil } from 'common/components/skjema/elements/skjema-input-element/typ
 import Block from 'common/components/block/Block';
 
 import './ukerDagerTeller.less';
+import BEMHelper from 'common/util/bem';
 
 export interface Props {
     ukeLegend: string;
@@ -16,10 +17,11 @@ export interface Props {
 
 const UkerDagerTeller: React.StatelessComponent<Props> = (props) => {
     const { ukeLegend, dagLegend, feil, ukeStepper, dagStepper } = props;
+    const bem = BEMHelper('ukerDagerTeller');
     return (
         <SkjemaGruppe feil={feil}>
-            <div className="ukerDagerTeller">
-                <div className="ukerDagerTeller__ukerFelt">
+            <div className={bem.className}>
+                <div className={bem.element('ukerFelt')}>
                     <Block margin="xxs">
                         <Fieldset legend={ukeLegend}>
                             <NumberStepper {...ukeStepper} />
