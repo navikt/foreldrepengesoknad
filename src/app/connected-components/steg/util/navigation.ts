@@ -1,9 +1,7 @@
 import { Søkersituasjon } from '../../../types/søknad/Søknad';
-import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
 
-export const resolveStegToRender = (state: AppState): StegID | undefined => {
-    const { situasjon } = state.søknad;
+export const resolveStegToRender = (situasjon: Søkersituasjon): StegID | undefined => {
     if (situasjon === Søkersituasjon.FØDSEL) {
         return StegID.RELASJON_TIL_BARN_FØDSEL;
     } else if (situasjon === Søkersituasjon.FORELDREANSVAR) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 
 import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -29,13 +29,17 @@ import lenker from '../../../util/routing/lenker';
 
 export interface StateProps {
     kjønn: Kjønn;
-    situasjon?: Søkersituasjon;
+    situasjon: Søkersituasjon;
     valgtRolle: SøkerRolle;
     velgbareRoller: SøkerRolle[];
     stegProps: StegProps;
     søker: Søker;
     erEndringssøknad: boolean;
     saksnummer?: string;
+}
+
+interface MyFormValues {
+    søkersituasjon: Søkersituasjon;
 }
 
 export type Props = SøkerinfoProps & StateProps & DispatchProps & HistoryProps;
@@ -103,59 +107,58 @@ class InngangSteg extends React.Component<Props, {}> {
         }
     }
 
-    getNextStegID() {
-        const { situasjon } = this.props;
-        switch (situasjon) {
-            case Søkersituasjon.FØDSEL:
-                return StegID.RELASJON_TIL_BARN_FØDSEL;
-            case Søkersituasjon.FORELDREANSVAR:
-                return StegID.RELASJON_TIL_BARN_FORELDREANSVAR;
-            case Søkersituasjon.ADOPSJON:
-                return StegID.RELASJON_TIL_BARN_ADOPSJON;
-        }
-        return undefined;
-    }
-
     render() {
-        const { velgbareRoller, situasjon, søker, dispatch, stegProps } = this.props;
+        const { velgbareRoller, søker, dispatch, kjønn, stegProps } = this.props;
+        const erRolleGyldig = velgbareRoller.some((r) => r === søker.rolle);
         const { rolle } = søker;
 
         return (
-            <Formik initialValues={{}} onSubmit={() => null}>
-                <form>
-                    <Steg {...stegProps} onPreSubmit={this.cleanupSøknad} nesteStegID={this.getNextStegID()}>
-                        <Block>
-                            <SøkersituasjonSpørsmål
-                                situasjon={situasjon}
-                                onChange={this.updateSituasjonAndRolleInState}
-                            />
-                        </Block>
-                        <Block visible={visibility.søkerRolleSpørsmål({ velgbareRoller, situasjon })}>
-                            <SøkerrolleSpørsmål
-                                rolle={rolle}
-                                roller={velgbareRoller}
-                                onChange={(nyRolle: SøkerRolle) =>
-                                    dispatch(
-                                        søknadActions.updateSøker({
-                                            rolle: nyRolle
-                                        })
-                                    )
-                                }
-                            />
-                        </Block>
-                        <Block visible={visibility.papirsøknadInfo(situasjon)}>
-                            <Veilederinfo>
-                                <Block margin="xs">
-                                    <FormattedMessage id="velkommen.foreldreansvar.veileder" />
-                                </Block>
-                                <Lenke href={lenker.papirsøknad}>
-                                    <FormattedMessage id="papirsøknad.lenke" />
-                                </Lenke>
-                            </Veilederinfo>
-                        </Block>
-                    </Steg>
-                </form>
-            </Formik>
+            <Formik
+                initialValues={{}}
+                onSubmit={(values: MyFormValues) => this.updateSituasjonAndRolleInState(values.søkersituasjon)}
+                render={(formikBag: FormikProps<MyFormValues>) => (
+                    <form onSubmit={formikBag.handleSubmit}>
+                        <Steg
+                            {...stegProps}
+                            renderFortsettKnapp={inngangErGyldig(formikBag.values.søkersituasjon, kjønn, erRolleGyldig)}
+                            nesteStegID={resolveStegToRender(formikBag.values.søkersituasjon)}>
+                            <Block>
+                                <SøkersituasjonSpørsmål
+                                    situasjon={formikBag.values.søkersituasjon}
+                                    onChange={formikBag.handleChange}
+                                />
+                            </Block>
+                            <Block
+                                visible={visibility.søkerRolleSpørsmål({
+                                    velgbareRoller,
+                                    situasjon: formikBag.values.søkersituasjon
+                                })}>
+                                <SøkerrolleSpørsmål
+                                    rolle={rolle}
+                                    roller={velgbareRoller}
+                                    onChange={(nyRolle: SøkerRolle) =>
+                                        dispatch(
+                                            søknadActions.updateSøker({
+                                                rolle: nyRolle
+                                            })
+                                        )
+                                    }
+                                />
+                            </Block>
+                            <Block visible={visibility.papirsøknadInfo(formikBag.values.søkersituasjon)}>
+                                <Veilederinfo>
+                                    <Block margin="xs">
+                                        <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                                    </Block>
+                                    <Lenke href={lenker.papirsøknad}>
+                                        <FormattedMessage id="papirsøknad.lenke" />
+                                    </Lenke>
+                                </Veilederinfo>
+                            </Block>
+                        </Steg>
+                    </form>
+                )}
+            />
         );
     }
 }
@@ -166,16 +169,13 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const søker = state.søknad.søker;
     const valgtRolle = state.søknad.søker.rolle;
     const velgbareRoller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
-    const erRolleGyldig = velgbareRoller.some((r) => r === søker.rolle);
     const erEndringssøknad = state.søknad.erEndringssøknad;
 
     const stegProps: StegProps = {
         id: StegID.INNGANG,
-        renderFortsettKnapp: inngangErGyldig(situasjon, kjønn, erRolleGyldig),
         renderFormTag: false,
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        nesteStegID: resolveStegToRender(state)
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo)
     };
 
     return {

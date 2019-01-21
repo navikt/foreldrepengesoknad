@@ -20,7 +20,7 @@ import {
 } from './visibility/annenForelderStegVisibility';
 import cleanupAnnenForelderSteg from '../../../util/cleanup/cleanupAnnenForelderSteg';
 import { default as søknadActions } from '../../../redux/actions/søknad/søknadActionCreators';
-import { resolveStegToRender } from '../util/navigation';
+// import { resolveStegToRender } from '../util/navigation';
 import Søknad, { Søkersituasjon } from '../../../types/søknad/Søknad';
 import AnnenForelderSpørsmål from './AnnenForelderSpørsmål';
 import { Barn } from '../../../types/søknad/Barn';
@@ -153,7 +153,7 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         id: StegID.ANNEN_FORELDER,
         renderFortsettKnapp: skalFortsettKnappRendres(state.søknad, visibility),
         renderFormTag: true,
-        previousStegID: resolveStegToRender(state),
+        // previousStegID: resolveStegToRender(state),
         history: props.history,
         isAvailable: isAvailable(StegID.ANNEN_FORELDER, state.søknad, props.søkerinfo)
     };
