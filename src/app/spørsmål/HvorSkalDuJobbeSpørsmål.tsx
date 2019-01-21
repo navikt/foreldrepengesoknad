@@ -49,7 +49,7 @@ class HvorSkalDuJobbeSpørsmål extends React.Component<Props> {
         const { arbeidsforhold, intl } = this.props;
         return [
             ...arbeidsforhold.map((v) => ({
-                label: v.arbeidsgiverNavn,
+                label: v.arbeidsgiverIdType === 'orgnr' ? v.arbeidsgiverNavn : getMessage(intl, 'arbeidsgiver'),
                 value: v.arbeidsgiverId
             })),
             {

@@ -8,5 +8,4 @@ interface Arbeidsforhold {
 }
 
 export type ArbeidsforholdPartial = Partial<Arbeidsforhold>;
-
 export default Arbeidsforhold;
