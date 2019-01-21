@@ -208,10 +208,11 @@ const deltUttakFødselFarMedmor = (
     }
 
     const perioder: Periode[] = [];
-    const hullMellomFarOgMorDager = Tidsperioden({
-        fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
-        tom: farSinFørsteUttaksdag
-    }).getAntallUttaksdager();
+    const hullMellomFarOgMorDager =
+        Tidsperioden({
+            fom: Uttaksdagen(morSinSisteUttaksdag).neste(),
+            tom: farSinFørsteUttaksdag
+        }).getAntallUttaksdager() - 1;
     const startDatoUttak = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
     let sisteUttaksDag = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
     const fkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
@@ -221,7 +222,7 @@ const deltUttakFødselFarMedmor = (
         (konto) => konto.konto === StønadskontoType.Fellesperiode
     );
 
-    if (hullMellomFarOgMorDager > 1) {
+    if (hullMellomFarOgMorDager > 0) {
         const hullPeriode: Periode = {
             id: guid(),
             type: Periodetype.Hull,
