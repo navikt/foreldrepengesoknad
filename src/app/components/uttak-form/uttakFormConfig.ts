@@ -93,7 +93,8 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
             isUttaksperiode(periode) === false ||
             (isUttaksperiode(periode) &&
                 periode.konto === StønadskontoType.Foreldrepenger &&
-                periode.erMorForSyk !== true) ||
+                ((periode.erMorForSyk !== true && visErMorForSyk(payload)) ||
+                    (periode.erMorForSyk !== undefined && !visErMorForSyk(payload)))) ||
             periode.konto === StønadskontoType.Flerbarnsdager
         ) {
             return false;
