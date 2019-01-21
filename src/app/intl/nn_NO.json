@@ -253,7 +253,8 @@
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
     "kvittering.innsyn.fpsak": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
-    "kvittering.innsyn.infotrygd": "Det tar 4 veker før søknaden din er synlig på {lenke}. «dine foreldrepengar». Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
+    "kvittering.innsyn.infotrygd":
+        "Det tar 4 veker før søknaden din er synlig på {lenke}. Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
     "kvittering.kontonummer.tittel": "Kvar blir pengane betalte ut?",
     "kvittering.kontonummer":
