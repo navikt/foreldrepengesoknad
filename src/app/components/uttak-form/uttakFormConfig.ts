@@ -91,6 +91,10 @@ const visAktivitetskravMor = (payload: UttakFormPayload): boolean => {
         if (
             (isUttaksperiode(periode) && periode.harIkkeAktivitetskrav === true) ||
             isUttaksperiode(periode) === false ||
+            (isUttaksperiode(periode) &&
+                periode.konto === StønadskontoType.Foreldrepenger &&
+                ((periode.erMorForSyk !== true && visErMorForSyk(payload)) ||
+                    (periode.erMorForSyk !== undefined && !visErMorForSyk(payload)))) ||
             periode.konto === StønadskontoType.Flerbarnsdager
         ) {
             return false;
@@ -200,7 +204,8 @@ const visErMorForSyk = (payload: UttakFormPayload) => {
     if (
         isValidTidsperiode(tidsperiode) &&
         erUttakInnenFørsteSeksUkerFødselFarMedmor(payload) &&
-        payload.periode.konto === StønadskontoType.Fedrekvote &&
+        (payload.periode.konto === StønadskontoType.Fedrekvote ||
+            payload.periode.konto === StønadskontoType.Foreldrepenger) &&
         !payload.velgbareStønadskontotyper.includes(StønadskontoType.Flerbarnsdager)
     ) {
         return true;
@@ -223,7 +228,7 @@ export const uttaksperiodeFormConfig: QuestionConfig<UttakFormPayload, UttakSpø
     [Sp.erMorForSyk]: {
         isAnswered: ({ periode }) =>
             periode.type === Periodetype.Uttak &&
-            periode.konto === StønadskontoType.Fedrekvote &&
+            (periode.konto === StønadskontoType.Fedrekvote || periode.konto === StønadskontoType.Foreldrepenger) &&
             periode.erMorForSyk !== undefined,
         parentQuestion: Sp.kvote,
         isRequired: (payload) => visErMorForSyk(payload)

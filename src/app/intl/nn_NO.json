@@ -34,7 +34,7 @@
     "annenForelder.ugyldigNavn": "Du må skrive namnet på den andre forelderen ",
     "annenForelder.veileder.aleneOmsorg.forBarnet": "De kan avtala at {navn} tek ut foreldrepengar",
     "annenForelder.veileder.rettigheterOgDelingAvUttaksplan":
-        "For foreldre som startar foreldrepengeperioden i 2019, kjem det ei ny teneste frå 1. januar. Da vil {navn} kunne sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
+        "Dersom de starta foreldrepengeperioden 1. januar 2019 eller seinare, vil {navn} sjå i søknaden sin når du skal ha foreldrepengar og eventuelle opphald.",
     "annenForelderRettPåForeldrepenger.spørsmål": "Har {navn} rett til foreldrepengar?",
     "annenInntekt.alternativ.hatt": "Ja",
     "annenInntekt.alternativ.ikkeHatt": "Nei",
@@ -253,7 +253,8 @@
     "kvittering.headline": "Takk for søknaden",
     "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
     "kvittering.innsyn.fpsak": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
-    "kvittering.innsyn.infotrygd": "Det tar 4 veker før søknaden din er synlig på {lenke}.",
+    "kvittering.innsyn.infotrygd":
+        "Det tar 4 veker før søknaden din er synlig på {lenke}. «dine foreldrepengar». Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
     "kvittering.kontonummer.tittel": "Kvar blir pengane betalte ut?",
     "kvittering.kontonummer":
@@ -478,8 +479,8 @@
     "spørsmål.dekningsgrad.label.deltUttakMor": "Kor lang periode med foreldrepengar ønskjer de?",
     "spørsmål.dekningsgrad.label.ikkeDeltUttak": "Kor lang periode med foreldrepengar ønskjer du?",
     "spørsmål.harAnnenForelderSøktFP.label": "Har {navnAnnenForelder} foreldrepengar?",
-    "spørsmål.morSinSisteUttaksdag.label": "Når har {navnMor} den siste dagen sin med foreldrepengar?",
-    "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din første dag med foreldrepenger?",
+    "spørsmål.morSinSisteUttaksdag.label": "Når er {navnMor} sin siste dag med foreldrepengar?",
+    "spørsmål.farSinFørsteUttaksdagSpørsmål.label": "Når er din fyrste dag med foreldrepengar?",
     "spørsmål.farFellesperiode.label": "Hvor mye fellesperiode skal du ha?",
     "spørsmål.farFellesperiode.uker.label": "Antall uker",
     "spørsmål.farFellesperiode.dager.label": "Antall dager",

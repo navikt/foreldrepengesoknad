@@ -7,13 +7,16 @@ export interface LinkButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 }
 
 import './linkButton.less';
+import BEMHelper from 'common/util/bem';
+
+const bem = BEMHelper('linkButton');
 
 const LinkButton: React.StatelessComponent<LinkButtonProps> = (props) => {
     const { className, color, ...rest } = props;
     return (
         <button
             type="button"
-            className={classNames('linkButton', className, color ? `linkButton--${color}` : undefined)}
+            className={classNames(bem.className, className, color ? `linkButton--${color}` : undefined)}
             {...rest}
         />
     );

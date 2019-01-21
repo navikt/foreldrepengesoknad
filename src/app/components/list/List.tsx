@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './list.less';
+import BEMHelper from 'common/util/bem';
 
 interface ListProps<T> {
     data: T[];
@@ -7,11 +8,13 @@ interface ListProps<T> {
     className?: string;
 }
 
+const bem = BEMHelper('list');
+
 export default class List<T> extends React.Component<ListProps<T>> {
     render() {
         const { data, renderElement, className } = this.props;
         return (
-            <ul className={`list ${className}`}>
+            <ul className={`${bem.className} ${className}`}>
                 {data.map((dataObject: T, i: number) => renderElement(dataObject, i))}
             </ul>
         );
