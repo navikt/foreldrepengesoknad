@@ -80,7 +80,20 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 };
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
-    return søknad.barn.erBarnetFødt === false && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold);
+    if (søknad.barn.erBarnetFødt === false && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
+        if ((søknad.barn as UfødtBarn).termindato !== undefined) {
+            const antallArbeidsforhold = søkerinfo.arbeidsforhold.length;
+            for (let i = 0; i < antallArbeidsforhold; i++) {
+                const sluttdato = søkerinfo.arbeidsforhold[i].tom;
+                if (sluttdato) {
+                    if ((søknad.barn as UfødtBarn).termindato > sluttdato) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 };
 
 export const getUniqeRegistrertAnnenForelderFromBarn = (
