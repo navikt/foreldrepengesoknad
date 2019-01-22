@@ -11,7 +11,7 @@ import Modal from 'nav-frontend-modal';
 import './utløptSesjonModal.less';
 
 const cls = BEMHelper('utløptSesjonModal');
-const AVSLUTT_HREF = 'https://www.nav.no';
+const AVSLUTT_HREF = 'https://familie.nav.no';
 
 interface OwnProps {
     erÅpen: boolean;

@@ -869,8 +869,9 @@
     "vi": "vi",
     "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?",
 
-    "sesjonUtløpt.tittel": "Du er logget ut",
-    "sesjonUtløpt.ingress": "Du må logge inn på nytt for å fortsette med søknaden.</br>Ønsker du å fortsette?",
-    "sesjonUtløpt.avslutt": "Nei, jeg vil avslutte",
-    "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette"
+    "sesjonUtløpt.tittel": "Du er no logga ut",
+    "sesjonUtløpt.ingress":
+        "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
+    "sesjonUtløpt.avslutt": "Nei, eg vil avslutte",
+    "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje"
 }
