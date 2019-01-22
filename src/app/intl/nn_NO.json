@@ -867,5 +867,10 @@
     "velkommen.startNySøknadKnapp": "Begynn med søknaden",
     "velkommen.tittel": "Velkomen til søknad om foreldrepengar",
     "vi": "vi",
-    "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?"
+    "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?",
+
+    "sesjonUtløpt.tittel": "Du er logget ut",
+    "sesjonUtløpt.ingress": "Du må logge inn på nytt for å fortsette med søknaden.</br>Ønsker du å fortsette?",
+    "sesjonUtløpt.avslutt": "Nei, jeg vil avslutte",
+    "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette"
 }
