@@ -1,4 +1,5 @@
 import { takeEvery, all, call, put, select, throttle } from 'redux-saga/effects';
+import _ from 'lodash';
 import Api from '../../api/api';
 import { ApiActionKeys, GetStoredAppState } from '../actions/api/apiActionDefinitions';
 import { default as apiActions } from '../actions/api/apiActionCreators';
@@ -25,13 +26,15 @@ function* saveAppState(action: any) {
             ...appState,
             søknad: søknad as Søknad
         };
+
         yield call(Api.storeAppState, cleanedAppState);
-    } catch {
-        yield put(
-            apiActions.updateApi({
-                isLoadingStoredAppState: false
-            })
-        );
+    } catch (error) {
+        const update = {
+            isLoadingStoredAppState: false,
+            ...(_.get(error, 'response.status') === 401 ? { sessionHasExpired: true } : {})
+        };
+
+        yield put(apiActions.updateApi(update));
     }
 }
 
