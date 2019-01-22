@@ -21,8 +21,10 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 
 import './steg.less';
 import DocumentTitle from 'react-document-title';
+import { HistoryProps } from 'app/types/common';
+import { Søkerinfo } from 'app/types/søkerinfo';
 
-export interface StegProps {
+export interface StegHOCProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     fortsettKnappLabel?: string;
@@ -31,7 +33,7 @@ export interface StegProps {
     isAvailable?: boolean;
     nesteStegID?: StegID;
     previousStegID?: StegID;
-    isFormik?: boolean;
+    søkerinfo: Søkerinfo;
     errorSummaryRenderer?: () => React.ReactNode;
     onSubmit?: (event?: FormSubmitEvent) => void;
     onPreSubmit?: () => void;
@@ -47,9 +49,9 @@ interface State {
     visAvbrytDialog: boolean;
 }
 
-type Props = StateProps & StegProps & InjectedIntlProps;
+type Props = StateProps & StegHOCProps & InjectedIntlProps & HistoryProps;
 
-class Steg extends React.Component<Props & DispatchProps, State> {
+class StegHOC extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {
         super(props);
 
@@ -64,12 +66,12 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
-        this.handleFortsett = this.handleFortsett.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
         this.getStegConfig = this.getStegConfig.bind(this);
+        this.shouldRenderFortsettKnapp = this.shouldRenderFortsettKnapp.bind(this);
     }
 
     updateCurrentSteg(currentSteg: StegID) {
@@ -82,26 +84,14 @@ class Steg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleOnSubmit(event?: FormSubmitEvent) {
-        event!.preventDefault();
-        event!.stopPropagation();
         if (this.props.onSubmit) {
             this.props.onSubmit(event);
-            // if (this.props.isFormik) {
-            //     setTimeout(() => this.navigateToNextStep(), 0);
-            // }
             return;
         }
         const { onPreSubmit, onRequestNavigateToNextStep } = this.props;
         if (onPreSubmit) {
             onPreSubmit();
         }
-        if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
-            this.navigateToNextStep();
-        }
-    }
-
-    handleFortsett() {
-        const { onRequestNavigateToNextStep } = this.props;
         if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
             this.navigateToNextStep();
         }
@@ -149,6 +139,10 @@ class Steg extends React.Component<Props & DispatchProps, State> {
         });
     }
 
+    shouldRenderFortsettKnapp(isStegValid: boolean): boolean {
+        return isStegValid;
+    }
+
     shouldHideBackButton(): boolean {
         const activeStegId = this.props.id;
         const stegConfig = this.getStegConfig();
@@ -189,7 +183,6 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 <Block>
                     <Stegindikator id={id} erEndringssøknad={erEndringssøknad} />
                 </Block>
-                {this.props.children}
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp>{fortsettKnappLabel || stegConfig[id].fortsettKnappLabel}</FortsettKnapp>
@@ -215,9 +208,9 @@ class Steg extends React.Component<Props & DispatchProps, State> {
                 {renderFormTag ? (
                     <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
                 ) : (
-                    <form onSubmit={this.handleOnSubmit} className={bem.className} aria-live="assertive">
+                    <div className={bem.className} aria-live="assertive">
                         {this.renderContent()}
-                    </form>
+                    </div>
                 )}
                 <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
                 <AvbrytSøknadDialog
@@ -232,4 +225,4 @@ class Steg extends React.Component<Props & DispatchProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({ erEndringssøknad: state.søknad.erEndringssøknad });
 
-export default connect(mapStateToProps)(injectIntl(Steg));
+export default connect(mapStateToProps)(injectIntl(StegHOC));

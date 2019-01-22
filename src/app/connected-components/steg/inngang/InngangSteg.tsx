@@ -38,7 +38,7 @@ export interface StateProps {
     saksnummer?: string;
 }
 
-interface MyFormValues {
+interface InngangStegValues {
     søkersituasjon: Søkersituasjon;
 }
 
@@ -115,48 +115,52 @@ class InngangSteg extends React.Component<Props, {}> {
         return (
             <Formik
                 initialValues={{}}
-                onSubmit={(values: MyFormValues) => this.updateSituasjonAndRolleInState(values.søkersituasjon)}
-                render={(formikBag: FormikProps<MyFormValues>) => (
-                    <form onSubmit={formikBag.handleSubmit}>
-                        <Steg
-                            {...stegProps}
-                            renderFortsettKnapp={inngangErGyldig(formikBag.values.søkersituasjon, kjønn, erRolleGyldig)}
-                            nesteStegID={resolveStegToRender(formikBag.values.søkersituasjon)}>
-                            <Block>
-                                <SøkersituasjonSpørsmål
-                                    situasjon={formikBag.values.søkersituasjon}
-                                    onChange={formikBag.handleChange}
-                                />
-                            </Block>
-                            <Block
-                                visible={visibility.søkerRolleSpørsmål({
-                                    velgbareRoller,
-                                    situasjon: formikBag.values.søkersituasjon
-                                })}>
-                                <SøkerrolleSpørsmål
-                                    rolle={rolle}
-                                    roller={velgbareRoller}
-                                    onChange={(nyRolle: SøkerRolle) =>
-                                        dispatch(
-                                            søknadActions.updateSøker({
-                                                rolle: nyRolle
-                                            })
-                                        )
-                                    }
-                                />
-                            </Block>
-                            <Block visible={visibility.papirsøknadInfo(formikBag.values.søkersituasjon)}>
-                                <Veilederinfo>
-                                    <Block margin="xs">
-                                        <FormattedMessage id="velkommen.foreldreansvar.veileder" />
-                                    </Block>
-                                    <Lenke href={lenker.papirsøknad}>
-                                        <FormattedMessage id="papirsøknad.lenke" />
-                                    </Lenke>
-                                </Veilederinfo>
-                            </Block>
-                        </Steg>
-                    </form>
+                onSubmit={(values: InngangStegValues) => this.updateSituasjonAndRolleInState(values.søkersituasjon)}
+                validate={() => {
+                    console.log('ran validation');
+                    return { søkersituasjon: 'test' };
+                }}
+                render={(formikBag: FormikProps<InngangStegValues>) => (
+                    <Steg
+                        {...stegProps}
+                        renderFortsettKnapp={inngangErGyldig(formikBag.values.søkersituasjon, kjønn, erRolleGyldig)}
+                        nesteStegID={resolveStegToRender(formikBag.values.søkersituasjon)}
+                        onSubmit={formikBag.handleSubmit}
+                        isFormik={true}>
+                        <Block>
+                            <SøkersituasjonSpørsmål
+                                situasjon={formikBag.values.søkersituasjon}
+                                onChange={formikBag.handleChange}
+                            />
+                        </Block>
+                        <Block
+                            visible={visibility.søkerRolleSpørsmål({
+                                velgbareRoller,
+                                situasjon: formikBag.values.søkersituasjon
+                            })}>
+                            <SøkerrolleSpørsmål
+                                rolle={rolle}
+                                roller={velgbareRoller}
+                                onChange={(nyRolle: SøkerRolle) =>
+                                    dispatch(
+                                        søknadActions.updateSøker({
+                                            rolle: nyRolle
+                                        })
+                                    )
+                                }
+                            />
+                        </Block>
+                        <Block visible={visibility.papirsøknadInfo(formikBag.values.søkersituasjon)}>
+                            <Veilederinfo>
+                                <Block margin="xs">
+                                    <FormattedMessage id="velkommen.foreldreansvar.veileder" />
+                                </Block>
+                                <Lenke href={lenker.papirsøknad}>
+                                    <FormattedMessage id="papirsøknad.lenke" />
+                                </Lenke>
+                            </Veilederinfo>
+                        </Block>
+                    </Steg>
                 )}
             />
         );
