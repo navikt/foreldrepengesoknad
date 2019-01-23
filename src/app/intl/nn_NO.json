@@ -873,5 +873,6 @@
     "sesjonUtløpt.ingress":
         "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
     "sesjonUtløpt.avslutt": "Nei, eg vil avslutte",
-    "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje"
+    "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje",
+    "arbeidsgiver": "Arbeidsgjevar"
 }

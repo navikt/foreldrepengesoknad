@@ -870,5 +870,6 @@
     "sesjonUtløpt.ingress":
         "Du har vært innlogget i en time, derfor må du logge inn på nytt for å fortsette med søknaden.<br />Ønsker du å fortsette?",
     "sesjonUtløpt.avslutt": "Nei, jeg vil avslutte",
-    "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette"
+    "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette",
+    "arbeidsgiver": "Arbeidsgiver"
 }

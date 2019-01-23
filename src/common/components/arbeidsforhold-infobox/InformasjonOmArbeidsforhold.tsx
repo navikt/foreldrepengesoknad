@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-
-import { Element, Normaltekst, EtikettLiten } from 'nav-frontend-typografi';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
-
 import { formatDate } from '../../../app/util/dates/dates';
-
 import getMessage from 'common/util/i18nUtils';
 import BEMHelper from 'common/util/bem';
 
@@ -16,10 +13,8 @@ interface InformasjonOmArbeidsforholdProps {
     arbeidsforhold: Arbeidsforhold;
 }
 
-const InformasjonOmArbeidsforhold: React.StatelessComponent<InformasjonOmArbeidsforholdProps & InjectedIntlProps> = ({
-    arbeidsforhold,
-    intl
-}) => {
+type Props = InformasjonOmArbeidsforholdProps & InjectedIntlProps;
+const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold, intl }: Props) => {
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
         <div className={cls.className}>
@@ -37,7 +32,11 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<InformasjonOmArbeids
                     })}
                 </EtikettLiten>
             </div>
-            <Element>{arbeidsforhold.arbeidsgiverNavn}</Element>
+            <Element>
+                {arbeidsforhold.arbeidsgiverIdType === 'orgnr'
+                    ? arbeidsforhold.arbeidsgiverNavn
+                    : getMessage(intl, 'annenInntekt.arbeidsforhold.arbeidsgiver')}
+            </Element>
             <Normaltekst>
                 {getMessage(intl, 'annenInntekt.arbeidsforhold.periode', {
                     fom: formatDate(arbeidsforhold.fom),
