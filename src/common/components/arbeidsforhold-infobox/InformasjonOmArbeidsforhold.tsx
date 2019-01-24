@@ -52,7 +52,9 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({
                 })}
             </Normaltekst>
             {kanViseEtikettOmMotattInntektsmelding && (
-                <EtikettBase type={motattInnteksmelding ? 'suksess' : 'fokus'}>
+                <EtikettBase
+                    className={cls.element('inntektsmeldingEtikett')}
+                    type={motattInnteksmelding ? 'suksess' : 'fokus'}>
                     <FormattedMessage
                         id={
                             motattInnteksmelding
