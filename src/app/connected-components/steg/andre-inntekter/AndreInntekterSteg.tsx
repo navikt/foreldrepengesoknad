@@ -27,12 +27,14 @@ import YtelseInfoWrapper from 'common/components/ytelser-infobox/InformasjonOmYt
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import { Periode } from 'app/types/uttaksplan/periodetyper';
 import { formatDate } from 'app/util/dates/dates';
+import Sak from '../../../types/søknad/Sak';
 
 interface StateProps {
     stegProps: StegProps;
     arbeidsforhold: Arbeidsforhold[];
     søker: Søker;
     uttaksplan: Periode[];
+    nyesteSak?: Sak;
 }
 
 type Props = SøkerinfoProps & HistoryProps & StateProps & InjectedIntlProps & DispatchProps;
@@ -57,7 +59,7 @@ class AndreInntekterSteg extends React.Component<Props> {
     }
 
     render() {
-        const { stegProps, søker, arbeidsforhold, uttaksplan, dispatch, intl } = this.props;
+        const { stegProps, søker, arbeidsforhold, uttaksplan, nyesteSak, dispatch, intl } = this.props;
         const fireUkerFørFørsteUttaksdag = formatDate(
             moment(uttaksplan[0].tidsperiode.fom)
                 .subtract(4, 'weeks')
@@ -79,7 +81,7 @@ class AndreInntekterSteg extends React.Component<Props> {
                         title: getMessage(intl, 'annenInntekt.arbeidsforhold.label'),
                         info: getMessage(intl, 'annenInntekt.arbeidsforhold.infotekst')
                     }}>
-                    <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} />
+                    <InformasjonOmArbeidsforholdWrapper arbeidsforhold={arbeidsforhold} nyesteSak={nyesteSak} />
                     {harArbeidsforhold && (
                         <>
                             <Veilederinfo>
@@ -141,10 +143,11 @@ class AndreInntekterSteg extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => {
-    const { søknad } = state;
+    const { søknad, api } = state;
     const { history } = props;
     const { søker, uttaksplan } = søknad;
     const { arbeidsforhold } = props.søkerinfo;
+    const { nyesteSak } = api;
 
     const stegProps: StegProps = {
         id: StegID.ANDRE_INNTEKTER,
@@ -163,7 +166,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         søker,
         arbeidsforhold,
         stegProps,
-        uttaksplan
+        uttaksplan,
+        nyesteSak
     };
 };
 

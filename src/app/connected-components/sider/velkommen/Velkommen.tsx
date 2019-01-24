@@ -30,15 +30,17 @@ import Sak, { SakType } from '../../../types/søknad/Sak';
 import SakInfo from '../../../components/sak-info/SakInfo';
 
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
-import { erInfotrygdSak } from '../../../util/saker/sakerUtils';
-import './velkommen.less';
+import { erInfotrygdSak, skalKunneSøkeOmEndring } from '../../../util/saker/sakerUtils';
 import BEMHelper from 'common/util/bem';
+
+import './velkommen.less';
 
 interface StateProps {
     person?: Person;
     harGodkjentVilkår: boolean;
-    sakForEndringssøknad?: Sak;
     oppslagSakerFeilet?: boolean;
+    nyesteSak?: Sak;
+    erNyesteSakKlarForEndring?: boolean;
 }
 
 interface State {
@@ -85,13 +87,13 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     startSøknad(erEndringssøknad: boolean | undefined) {
-        const { sakForEndringssøknad, history, dispatch } = this.props;
+        const { nyesteSak, history, erNyesteSakKlarForEndring, dispatch } = this.props;
         dispatch(
             søknadActions.updateSøknad({
                 erEndringssøknad: erEndringssøknad === true,
                 saksnummer:
-                    erEndringssøknad === true && sakForEndringssøknad && sakForEndringssøknad.saksnummer
-                        ? sakForEndringssøknad.saksnummer
+                    erEndringssøknad === true && erNyesteSakKlarForEndring && nyesteSak && nyesteSak.saksnummer
+                        ? nyesteSak.saksnummer
                         : undefined
             })
         );
@@ -109,21 +111,28 @@ class Velkommen extends React.Component<Props, State> {
     }
 
     render() {
-        const { person, sakForEndringssøknad, oppslagSakerFeilet, harGodkjentVilkår, dispatch, intl } = this.props;
+        const {
+            person,
+            oppslagSakerFeilet,
+            harGodkjentVilkår,
+            dispatch,
+            nyesteSak,
+            erNyesteSakKlarForEndring,
+            intl
+        } = this.props;
         if (person === undefined) {
             return null;
         }
 
-        const erSakForEndringssøknadFraInfotrygd =
-            sakForEndringssøknad !== undefined && erInfotrygdSak(sakForEndringssøknad);
+        const erSakForEndringssøknadFraInfotrygd: boolean =
+            erNyesteSakKlarForEndring === true && nyesteSak !== undefined && erInfotrygdSak(nyesteSak);
 
-        const visValgForNySøknadEllerEndring = sakForEndringssøknad !== undefined || oppslagSakerFeilet === true;
-
+        const visValgForNySøknadEllerEndring = erNyesteSakKlarForEndring !== undefined || oppslagSakerFeilet === true;
         const visInfoOmEndringsøknadIkkeTilgjengelig = oppslagSakerFeilet === true && this.state.skalEndre === true;
 
         const visBekreftSkjema =
             oppslagSakerFeilet !== true
-                ? sakForEndringssøknad === undefined || this.state.skalEndre !== undefined
+                ? !erNyesteSakKlarForEndring || this.state.skalEndre !== undefined
                 : this.state.skalEndre === false;
 
         const bem = BEMHelper('velkommen');
@@ -157,10 +166,11 @@ class Velkommen extends React.Component<Props, State> {
                                     />
                                 </Ingress>
                             </Block>
-                            {sakForEndringssøknad !== undefined &&
-                                sakForEndringssøknad.type === SakType.FPSAK && (
+                            {nyesteSak &&
+                                erNyesteSakKlarForEndring &&
+                                nyesteSak.type === SakType.FPSAK && (
                                     <Block>
-                                        <SakInfo sak={sakForEndringssøknad} />
+                                        <SakInfo sak={nyesteSak} />
                                     </Block>
                                 )}
                             <Block>
@@ -239,11 +249,17 @@ class Velkommen extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state: AppState, props: Props): StateProps => ({
-    person: props.søkerinfo.person,
-    harGodkjentVilkår: state.søknad.harGodkjentVilkår,
-    sakForEndringssøknad: state.api.sakForEndringssøknad,
-    oppslagSakerFeilet: state.api.oppslagSakerFeilet
-});
+const mapStateToProps = (state: AppState, props: Props): StateProps => {
+    const nyesteSak = state.api.nyesteSak;
+    const erNyesteSakKlarForEndring: boolean = nyesteSak !== undefined && skalKunneSøkeOmEndring(nyesteSak);
+
+    return {
+        person: props.søkerinfo.person,
+        harGodkjentVilkår: state.søknad.harGodkjentVilkår,
+        oppslagSakerFeilet: state.api.oppslagSakerFeilet,
+        nyesteSak: state.api.nyesteSak,
+        erNyesteSakKlarForEndring
+    };
+};
 
 export default connect<StateProps>(mapStateToProps)(injectIntl(Velkommen));

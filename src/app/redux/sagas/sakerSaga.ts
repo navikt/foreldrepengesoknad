@@ -3,7 +3,6 @@ import { ApiActionKeys } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import Sak from '../../types/søknad/Sak';
-import { skalKunneSøkeOmEndring } from '../../util/saker/sakerUtils';
 
 function* getSaker() {
     try {
@@ -13,13 +12,11 @@ function* getSaker() {
         const saker: Sak[] = response.data;
         const nyesteSak = saker.sort((a, b) => b.opprettet.localeCompare(a.opprettet))[0];
 
-        if (nyesteSak !== undefined && skalKunneSøkeOmEndring(nyesteSak)) {
-            yield put(
-                apiActions.updateApi({
-                    sakForEndringssøknad: nyesteSak
-                })
-            );
-        }
+        yield put(
+            apiActions.updateApi({
+                nyesteSak
+            })
+        );
     } catch (error) {
         yield put(
             apiActions.updateApi({
