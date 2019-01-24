@@ -35,7 +35,7 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsf
             <Element>
                 {arbeidsforhold.arbeidsgiverIdType === 'orgnr'
                     ? arbeidsforhold.arbeidsgiverNavn
-                    : getMessage(intl, 'annenInntekt.arbeidsforhold.arbeidsgiver')}
+                    : getMessage(intl, 'arbeidsgiver')}
             </Element>
             <Normaltekst>
                 {getMessage(intl, 'annenInntekt.arbeidsforhold.periode', {
