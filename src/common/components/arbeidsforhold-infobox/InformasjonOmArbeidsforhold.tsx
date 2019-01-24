@@ -1,28 +1,20 @@
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { Element, EtikettLiten, Normaltekst } from 'nav-frontend-typografi';
 
 import Arbeidsforhold from '../../../app/types/Arbeidsforhold';
 import { formatDate } from '../../../app/util/dates/dates';
 import getMessage from 'common/util/i18nUtils';
 import BEMHelper from 'common/util/bem';
-import EtikettBase from 'nav-frontend-etiketter';
 
 import './arbeidsforhold.less';
 
 interface InformasjonOmArbeidsforholdProps {
     arbeidsforhold: Arbeidsforhold;
-    kanViseEtikettOmMotattInntektsmelding: boolean;
-    motattInnteksmelding: boolean;
 }
 
 type Props = InformasjonOmArbeidsforholdProps & InjectedIntlProps;
-const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({
-    arbeidsforhold,
-    kanViseEtikettOmMotattInntektsmelding,
-    motattInnteksmelding,
-    intl
-}: Props) => {
+const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({ arbeidsforhold, intl }: Props) => {
     const cls = BEMHelper('arbeidsforholdInfoBox');
     return (
         <div className={cls.className}>
@@ -51,19 +43,6 @@ const InformasjonOmArbeidsforhold: React.StatelessComponent<Props> = ({
                     tom: arbeidsforhold.tom ? formatDate(arbeidsforhold.tom) : getMessage(intl, 'pågående')
                 })}
             </Normaltekst>
-            {kanViseEtikettOmMotattInntektsmelding && (
-                <EtikettBase
-                    className={cls.element('inntektsmeldingEtikett')}
-                    type={motattInnteksmelding ? 'suksess' : 'fokus'}>
-                    <FormattedMessage
-                        id={
-                            motattInnteksmelding
-                                ? 'annenInntekt.arbeidsforhold.inntektsmelding.mottatt'
-                                : 'annenInntekt.arbeidsforhold.inntektsmelding.ikkeMottatt'
-                        }
-                    />
-                </EtikettBase>
-            )}
         </div>
     );
 };

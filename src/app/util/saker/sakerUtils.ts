@@ -48,8 +48,3 @@ export const skalKunneSøkeOmEndring = (nyesteSak: Sak): boolean => {
         erInfotrygdSak(nyesteSak)
     );
 };
-
-const byDesciendingOrder = (x: Behandling, y: Behandling) => x.opprettetTidspunkt.localeCompare(y.opprettetTidspunkt);
-
-export const finnNyesteBehandling = (behandlinger: Behandling[]): Behandling =>
-    behandlinger.sort(byDesciendingOrder)[0];

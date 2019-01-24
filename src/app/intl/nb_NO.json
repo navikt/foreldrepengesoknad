@@ -43,8 +43,6 @@
     "annenInntekt.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
     "annenInntekt.arbeidsforhold.label": "Dine arbeidsforhold",
     "annenInntekt.arbeidsforhold.organisasjonsnummer": "ORG.NR: {organisasjonsnummer}",
-    "annenInntekt.arbeidsforhold.inntektsmelding.mottatt": "Inntektsmelding mottatt",
-    "annenInntekt.arbeidsforhold.inntektsmelding.ikkeMottatt": "Inntektsmelding ikke mottatt",
     "annenInntekt.arbeidsforhold.periode": "{fom} - {tom}",
     "annenInntekt.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
     "annenInntekt.arbeidsforhold.veileder":
