@@ -16,7 +16,7 @@ interface ArbeidsforholdInfoWrapperProps {
     nyesteSak?: Sak;
 }
 
-const kanViseEtikettOmMotattInntektsmelding = (arbeidsforhold: Arbeidsforhold[], sak?: Sak): boolean => {
+export const kanViseEtikettOmMotattInntektsmelding = (arbeidsforhold: Arbeidsforhold[], sak?: Sak): boolean => {
     return (
         sak === undefined ||
         (sak !== undefined &&
@@ -25,7 +25,7 @@ const kanViseEtikettOmMotattInntektsmelding = (arbeidsforhold: Arbeidsforhold[],
     );
 };
 
-const harInntektsmeldingBlittMottatt = (sak?: Sak): boolean => {
+export const harInntektsmeldingBlittMottatt = (sak?: Sak): boolean => {
     return (
         sak !== undefined &&
         sak.status === FagsakStatus.OPPRETTET &&
