@@ -2,7 +2,7 @@ import Arbeidsforhold from '../../types/Arbeidsforhold';
 import moment from 'moment';
 
 const tomDatoErFørEllerLikSisteDag = (tom: Date, sisteDag: Date): boolean => {
-    return moment(tom).isSameOrBefore(sisteDag);
+    return moment(sisteDag).isSameOrBefore(tom);
 };
 
 export const harAktivtArbeidsforhold = (arbeidsforhold: Arbeidsforhold[] | undefined, sisteDag?: Date): boolean => {
