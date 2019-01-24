@@ -6,7 +6,7 @@ import Sak from '../../types/søknad/Sak';
 
 export interface ApiState {
     søkerinfo?: Søkerinfo;
-    nyesteSak?: Sak;
+    sakForEndringssøknad?: Sak;
     isLoadingInitialAppData: boolean;
     isLoadingSøkerinfo: boolean;
     isLoadingStoredAppState: boolean;
