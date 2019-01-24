@@ -9,6 +9,7 @@ import { findOldestDate } from '../../dates/dates';
 import { Validator } from 'common/lib/validation/types';
 import { InjectedIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
+import Arbeidsforhold from '../../../types/Arbeidsforhold';
 
 const fødtBarnErGyldig = (barn: FødtBarn) => {
     return (
@@ -80,20 +81,28 @@ export const barnErGyldig = (søknad: Søknad, søkerinfo: Søkerinfo): boolean 
 };
 
 export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo: Søkerinfo): boolean => {
+    let trengerLasteOppterminbekreftelse = false;
+
     if (søknad.barn.erBarnetFødt === false && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
-        if ((søknad.barn as UfødtBarn).termindato !== undefined) {
-            const antallArbeidsforhold = søkerinfo.arbeidsforhold.length;
-            for (let i = 0; i < antallArbeidsforhold; i++) {
-                const sluttdato = søkerinfo.arbeidsforhold[i].tom;
-                if (sluttdato) {
-                    if ((søknad.barn as UfødtBarn).termindato > sluttdato) {
-                        return true;
-                    }
+        trengerLasteOppterminbekreftelse = true;
+    }
+    if (søkerinfo.arbeidsforhold.length < 1) {
+        trengerLasteOppterminbekreftelse = true;
+    }
+    if ((søknad.barn as UfødtBarn).termindato !== undefined && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
+        søkerinfo.arbeidsforhold.forEach((a: Arbeidsforhold) => {
+            const sluttdato = a.tom;
+            if (sluttdato) {
+                if ((søknad.barn as UfødtBarn).termindato > sluttdato) {
+                    trengerLasteOppterminbekreftelse = true;
+                }
+                if ((søknad.barn as UfødtBarn).termindato < sluttdato) {
+                    trengerLasteOppterminbekreftelse = false;
                 }
             }
-        }
+        });
     }
-    return false;
+    return trengerLasteOppterminbekreftelse;
 };
 
 export const getUniqeRegistrertAnnenForelderFromBarn = (
