@@ -89,7 +89,7 @@ export const skalSøkerLasteOppTerminbekreftelse = (søknad: Søknad, søkerinfo
     if (søkerinfo.arbeidsforhold.length < 1) {
         trengerLasteOppterminbekreftelse = true;
     }
-    if ((søknad.barn as UfødtBarn).termindato !== undefined) {
+    if ((søknad.barn as UfødtBarn).termindato !== undefined && !harAktivtArbeidsforhold(søkerinfo.arbeidsforhold)) {
         søkerinfo.arbeidsforhold.forEach((a: Arbeidsforhold) => {
             const sluttdato = a.tom;
             if (sluttdato) {
