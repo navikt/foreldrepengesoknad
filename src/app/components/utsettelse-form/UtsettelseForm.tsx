@@ -301,7 +301,7 @@ class UtsettelsesperiodeForm extends React.Component<Props, State> {
                     <Block visible={visibility.isVisible(UtsettelseSpørsmålKeys.ferieinfo)} hasChildBlocks={true}>
                         <UtsettelsePgaFerieInfo
                             antallFeriedager={antallFeriedager}
-                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold)}
+                            aktivtArbeidsforhold={harAktivtArbeidsforhold(arbeidsforhold, tidsperiode.tom)}
                             forelder={Forelder.MOR}
                         />
                     </Block>
