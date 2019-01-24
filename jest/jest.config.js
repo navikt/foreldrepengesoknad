@@ -7,6 +7,7 @@ module.exports = {
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
         '\\.(css|jpg|png|svg|less)$': '<rootDir>/node_modules/jest-css-modules',
+        'nav-(.*)-style': '<rootDir>/jest/mockFile.js',
         '^uttaksplan/(.*)': '<rootDir>/src/uttaksplan/$1',
         '^common/(.*)': '<rootDir>/src/common/$1'
     },
