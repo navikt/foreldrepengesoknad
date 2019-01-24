@@ -564,7 +564,7 @@
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må leggje ved stadfesting frå legen din. Den må gjere greie for korleis sjukdommen eller skaden gjer deg heilt avhengig av hjelp til å ta deg av barnet, og kor lenge det vil vare. Det er ikkje nok med vanleg sjukmelding.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold.",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.ferievarsel.ulovlig":
