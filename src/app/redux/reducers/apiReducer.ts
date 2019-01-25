@@ -22,6 +22,7 @@ export interface ApiState {
     dekningsgrad80AntallUker?: number;
     fellesPeriodeUkerDekningsgrad100?: number;
     fellesPeriodeUkerDekningsgrad80?: number;
+    systemerIkkeTilgjengelig: boolean;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -35,7 +36,8 @@ export const getDefaultApiState = (): ApiState => ({
     sessionHasExpired: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
-    tilgjengeligeStønadskontoer: []
+    tilgjengeligeStønadskontoer: [],
+    systemerIkkeTilgjengelig: false
 });
 
 const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
