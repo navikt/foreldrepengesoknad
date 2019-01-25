@@ -127,6 +127,7 @@
     "dinePlikter.sectionheading": "Pliktene dine",
     "dokument.tittel.feilside.generell": "Feil - Søknad om foreldrepengar - NAV",
     "dokument.tittel.feilside.ikkeMyndig": "Ikkje myndig - Søknad om foreldrepengar - NAV",
+    "dokument.tittel.ikkeTilgjengelig": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
     "dokument.tittel.søknadSendt": "Søknad motteken - Søknad om foreldrepengar - NAV",
@@ -875,5 +876,9 @@
         "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
     "sesjonUtløpt.avslutt": "Nei, eg vil avslutte",
     "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje",
-    "arbeidsgiver": "Arbeidsgjevar"
+    "arbeidsgiver": "Arbeidsgjevar",
+
+    "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
+    "feilside.ikkeTilgjengelig.melding":
+        "Det virker dessverre som om en av våre systemer en nede akkurat nå. Vi jobber med å rette feilen, prøv igjen litt senere. Beklager ulempen dette medfører."
 }
