@@ -128,6 +128,7 @@
     "dinePlikter.sectionheading": "Dine plikter",
     "dokument.tittel.feilside.generell": "Feil - Søknad om foreldrepenger - NAV",
     "dokument.tittel.feilside.ikkeMyndig": "Ikke myndig - Søknad om foreldrepenger - NAV",
+    "dokument.tittel.ikkeTilgjengelig": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.loadingScreen": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepenger - NAV",
     "dokument.tittel.søknadSendt": "Søknad mottatt - Søknad om foreldrepenger - NAV",
@@ -874,7 +875,7 @@
     "sesjonUtløpt.fortsett": "Ja, jeg vil fortsette",
     "arbeidsgiver": "Arbeidsgiver",
 
-    "feilside.ikkeTilgjengelig.tittel": "Oops, nå gikk noe galt",
+    "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
     "feilside.ikkeTilgjengelig.melding":
-        "Det virker dessverre som om en av våre systemer en nede akkurat nå. Vi jobber med å rette feilen, prøv igjen litt senere. Beklager ulempen dette medfører."
+        "Det virker dessverre som om et av våre systemer en nede akkurat nå. Vi jobber med å rette feilen, prøv igjen litt senere. Beklager ulempen dette medfører."
 }
