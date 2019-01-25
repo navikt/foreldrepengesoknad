@@ -127,6 +127,7 @@
     "dinePlikter.sectionheading": "Pliktene dine",
     "dokument.tittel.feilside.generell": "Feil - Søknad om foreldrepengar - NAV",
     "dokument.tittel.feilside.ikkeMyndig": "Ikkje myndig - Søknad om foreldrepengar - NAV",
+    "dokument.tittel.ikkeTilgjengelig": "Søknad om foreldrepenger - NAV",
     "dokument.tittel.loadingScreen": "Søknad om foreldrepengar - NAV",
     "dokument.tittel.steg": "{steg} - Søknad om foreldrepengar - NAV",
     "dokument.tittel.søknadSendt": "Søknad motteken - Søknad om foreldrepengar - NAV",
@@ -254,7 +255,7 @@
     "kvittering.innsyn.tittel": "Kvar finn eg status på søknaden min?",
     "kvittering.innsyn.fpsak": "Det tek nokre dagar før søknaden er synleg på {lenke}.",
     "kvittering.innsyn.infotrygd":
-        "Det tar 4 veker før søknaden din er synlig på {lenke}. «dine foreldrepengar». Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
+        "Det tar 3 veker før søknaden din er synlig på {lenke}. Når søknaden er synleg, har du også høve til å ettersende dokumentasjon.",
     "kvittering.innsyn.lenke": "dine foreldrepengar",
     "kvittering.kontonummer.tittel": "Kvar blir pengane betalte ut?",
     "kvittering.kontonummer":
@@ -564,11 +565,11 @@
     "utsettelse.sykdom.vedlegg.info.sykdom":
         "Du må leggje ved stadfesting frå legen din. Den må gjere greie for korleis sjukdommen eller skaden gjer deg heilt avhengig av hjelp til å ta deg av barnet, og kor lenge det vil vare. Det er ikkje nok med vanleg sjukmelding.",
     "utsettelseskjema.ferie.utenArbeidsforhold":
-        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold.",
+        "Du kan ikkje leggje inn utsetjing på grunn av ferie fordi du ikkje er registrert med eit arbeidsforhold i valgt tidsperiode.",
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til saman {ukerOgDager} med ferie. For å ha opphald lengre enn fire veker og én dag må du ha overført ferie frå i fjor eller ta ut ferie frå neste år. Arbeidsgivaren din må stadfeste når du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
+        "Du har lagt inn til saman {ukerOgDager} med ferie. Du kan maksimalt leggje inn ti veker og to dagar med ferie. Arbeidsgivaren din må stadfeste perioden du skal ha ferie. Det gjer de anten i den digitale inntektsmeldinga til NAV, eller på papirskjema om inntektsopplysningar.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over ein periode med helgedagar. Du kan ikkje ha ferie på helgedagar. Desse dagane vert lagt til som foreldrepengar i planen din, du må velge kva del av foreldrepengane du ynskjer å bruke.",
     "utsettelseskjema.veiledning.ferie":
@@ -748,6 +749,7 @@
         "Startar du foreldrepengane seinare enn omsorgsovertakinga, mistar du dagar.",
     "uttaksplanSkjema.info.reservertMor":
         "Dersom du startar uttaket ditt i dei første seks vekene etter fødselen, må du kunne dokumentere at mor er for sjuk til å ta seg av barnet, eller at ho er innlagd på sjukehus eller helseinstitusjon.",
+    "uttaksplanSkjema.info.manglerVedlegg": "Du har ikkje lasta opp påkrevd dokumentasjon.",
     "uttaksteg.overtruknedager.info": "Du har tatt {varighet} for mykje av {konto}",
     "validerbarForm.ukjentFeil": "Verdien er ikkje gyldig",
     "validering.oppsummeringstittel": "Du må rette opp i følgjande feil:",
@@ -867,5 +869,16 @@
     "velkommen.startNySøknadKnapp": "Begynn med søknaden",
     "velkommen.tittel": "Velkomen til søknad om foreldrepengar",
     "vi": "vi",
-    "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?"
+    "væreINorgeVedFødsel.spørsmål": "Skal du vere i Noreg når barnet blir født?",
+
+    "sesjonUtløpt.tittel": "Du er no logga ut",
+    "sesjonUtløpt.ingress":
+        "Du har vore innlogga i ein time, difor må du logge inn på nytt for å fortsetje med søknaden.<br />Ønskjer du å fortsetje?",
+    "sesjonUtløpt.avslutt": "Nei, eg vil avslutte",
+    "sesjonUtløpt.fortsett": "Ja, eg vil fortsetje",
+    "arbeidsgiver": "Arbeidsgjevar",
+
+    "feilside.ikkeTilgjengelig.tittel": "Søknaden er ikke tilgjengelig akkurat nå",
+    "feilside.ikkeTilgjengelig.melding":
+        "Det virker dessverre som om en av våre systemer en nede akkurat nå. Vi jobber med å rette feilen, prøv igjen litt senere. Beklager ulempen dette medfører."
 }

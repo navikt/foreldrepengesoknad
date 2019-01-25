@@ -11,6 +11,7 @@ import Språkvelger from 'common/components/språkvelger/Språkvelger';
 import BEMHelper from 'common/util/bem';
 import getMessage from 'common/util/i18nUtils';
 import Søknadstittel from 'common/components/søknadstittel/Søknadstittel';
+import UtløptSesjonModal from 'app/components/utløpt-sesjon-modal/UtløptSesjonModal';
 
 export interface OwnProps {
     visSøknadstittel?: boolean;
@@ -21,6 +22,7 @@ export interface OwnProps {
 interface StateProps {
     språkkode: Språkkode;
     erEndringssøknad: boolean;
+    sessionHasExpired: boolean;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedIntlProps;
@@ -36,6 +38,7 @@ class Sidemal extends React.Component<Props> {
             språkkode,
             children,
             erEndringssøknad,
+            sessionHasExpired,
             margin = true,
             dispatch
         } = this.props;
@@ -56,6 +59,7 @@ class Sidemal extends React.Component<Props> {
                     </Søknadstittel>
                 )}
                 <div className={cls}>{children}</div>
+                <UtløptSesjonModal erÅpen={sessionHasExpired} />
             </React.Fragment>
         );
     }
@@ -63,7 +67,8 @@ class Sidemal extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
     språkkode: state.common.språkkode,
-    erEndringssøknad: state.søknad.erEndringssøknad
+    erEndringssøknad: state.søknad.erEndringssøknad,
+    sessionHasExpired: state.api.sessionHasExpired
 });
 
 export default connect(mapStateToProps)(injectIntl(Sidemal));

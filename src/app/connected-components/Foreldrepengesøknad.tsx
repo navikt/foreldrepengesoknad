@@ -14,6 +14,7 @@ import { Søkerinfo } from '../types/søkerinfo';
 import LoadingScreen from '../components/loading-screen/LoadingScreen';
 import Søknad from '../types/søknad/Søknad';
 import { StegID } from '../util/routing/stegConfig';
+import IkkeTilgjengelig from './sider/feilsider/ikke-tilgjengelig/IkkeTilgjengelig';
 
 interface StateProps {
     søknad: Partial<Søknad>;
@@ -22,6 +23,7 @@ interface StateProps {
     isLoadingInitialAppData: boolean;
     isSendSøknadInProgress: boolean;
     søknadHasBeenReceived: boolean;
+    systemerIkkeTilgjengelig: boolean;
 }
 
 type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -84,7 +86,8 @@ class Foreldrepengesøknad extends React.Component<Props> {
             isLoadingInitialAppData,
             isSendSøknadInProgress,
             isLoadingSaker,
-            søknadHasBeenReceived
+            søknadHasBeenReceived,
+            systemerIkkeTilgjengelig
         } = this.props;
 
         if (isLoadingInitialAppData || isSendSøknadInProgress || isLoadingSaker) {
@@ -93,6 +96,8 @@ class Foreldrepengesøknad extends React.Component<Props> {
             return <Route component={() => <IkkeMyndig søkerinfo={søkerinfo!} />} />;
         } else if (søknadHasBeenReceived) {
             return <Route component={SøknadSendtSide} />;
+        } else if (systemerIkkeTilgjengelig) {
+            return <IkkeTilgjengelig />;
         }
 
         return this.renderSøknadRoutes(søkerinfo!);
@@ -105,7 +110,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
     isLoadingInitialAppData: state.api.isLoadingInitialAppData,
     isLoadingSaker: state.api.isLoadingSaker,
     isSendSøknadInProgress: state.api.søknadSendingInProgress,
-    søknadHasBeenReceived: state.api.søknadHasBeenReceived
+    søknadHasBeenReceived: state.api.søknadHasBeenReceived,
+    systemerIkkeTilgjengelig: state.api.systemerIkkeTilgjengelig
 });
 
 export default withRouter(connect<StateProps, {}, {}>(mapStateToProps)(Foreldrepengesøknad));

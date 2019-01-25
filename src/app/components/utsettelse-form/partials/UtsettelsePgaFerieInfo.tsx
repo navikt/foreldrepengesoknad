@@ -26,11 +26,7 @@ class UtsettelsePgaFerieInfo extends React.Component<Props, {}> {
 
         return antallFeriedager !== undefined ? (
             <Block margin="s">
-                <UtsettelseFerieInfo
-                    forelderNavn="Frode"
-                    feriedager={antallFeriedager}
-                    permisjonsregler={getPermisjonsregler()}
-                />
+                <UtsettelseFerieInfo feriedager={antallFeriedager} permisjonsregler={getPermisjonsregler()} />
             </Block>
         ) : null;
     }

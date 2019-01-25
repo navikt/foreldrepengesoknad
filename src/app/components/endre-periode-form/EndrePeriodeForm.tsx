@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import AlertStripe from 'nav-frontend-alertstriper';
+import { Knapp } from 'nav-frontend-knapper';
+
 import { Periode, Periodetype, StønadskontoType, Uttaksperiode } from '../../types/uttaksplan/periodetyper';
 import BEMHelper from 'common/util/bem';
 import { RecursivePartial } from '../../types/Partial';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import { DispatchProps } from 'common/redux/types';
 import søknadActionCreators from '../../redux/actions/søknad/søknadActionCreators';
 import BekreftDialog from 'common/components/dialog/BekreftDialog';
@@ -17,9 +20,11 @@ import { UttakSpørsmålVisibility } from '../uttak-form/uttakFormConfig';
 import UtsettelseForm from '../utsettelse-form/UtsettelseForm';
 import UttakForm from '../uttak-form/UttakForm';
 import Block from 'common/components/block/Block';
-import { Knapp } from 'nav-frontend-knapper';
 import LinkButton from '../link-button/LinkButton';
 import { ValidertPeriode } from '../../redux/reducers/uttaksplanValideringReducer';
+
+import { shouldPeriodeHaveAttachment } from '../../util/attachments/missingAttachmentUtil';
+import { getErSøkerFarEllerMedmor } from '../../util/domain/personUtil';
 
 import './endrePeriodeForm.less';
 
@@ -93,7 +98,7 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
     }
 
     render() {
-        const { periode, intl } = this.props;
+        const { periode, intl, søknad } = this.props;
         const { validertPeriode, antallFeriedager, onRequestClose } = this.props;
         const erForeldrepengerFørFødselPeriode =
             periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel;
@@ -101,6 +106,17 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
         return (
             <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
                 <>
+                    <Block
+                        visible={shouldPeriodeHaveAttachment(
+                            periode,
+                            getErSøkerFarEllerMedmor(søknad.søker.rolle),
+                            søknad.annenForelder
+                        )}>
+                        <AlertStripe type="advarsel">
+                            <FormattedMessage id="uttaksplanSkjema.info.manglerVedlegg" />
+                        </AlertStripe>
+                    </Block>
+
                     {periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold ? (
                         <UtsettelseForm
                             periode={periode}

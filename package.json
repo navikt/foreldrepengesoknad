@@ -16,7 +16,7 @@
         "start-mock-api-server": "node ./mock-api-server.js",
         "start": "node ./src/build/scripts/start-dev.js",
         "start-no-decorator": "node ./src/build/scripts/start-dev-nodecorator.js",
-        "precommit": "pretty-quick --staged",
+        "precommit": "npm run jest && pretty-quick --staged",
         "jest": "jest --config ./jest/jest.config.js",
         "jest-watch": "jest --watch --verbose --config ./jest/jest.config.js"
     },

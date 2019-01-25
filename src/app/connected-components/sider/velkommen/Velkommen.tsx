@@ -240,7 +240,7 @@ class Velkommen extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState, props: Props): StateProps => ({
-    person: props.søkerinfo.person,
+    person: props.søkerinfo && props.søkerinfo.person,
     harGodkjentVilkår: state.søknad.harGodkjentVilkår,
     sakForEndringssøknad: state.api.sakForEndringssøknad,
     oppslagSakerFeilet: state.api.oppslagSakerFeilet

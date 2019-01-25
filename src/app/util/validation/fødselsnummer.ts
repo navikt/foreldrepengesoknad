@@ -50,10 +50,6 @@ export const getFødselsnummerRegler = (
         {
             test: () => søkersFødselsnummer !== fnr,
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
-        },
-        {
-            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
-            failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];
 };

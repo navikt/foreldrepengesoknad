@@ -12,6 +12,7 @@ export interface ApiState {
     isLoadingStoredAppState: boolean;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     isLoadingSaker: boolean;
+    sessionHasExpired: boolean;
     oppslagSakerFeilet?: boolean;
     søknadSendingInProgress: boolean;
     søknadHasBeenReceived: boolean;
@@ -21,6 +22,8 @@ export interface ApiState {
     dekningsgrad80AntallUker?: number;
     fellesPeriodeUkerDekningsgrad100?: number;
     fellesPeriodeUkerDekningsgrad80?: number;
+    søkerinfoLastetCounter: number;
+    systemerIkkeTilgjengelig: boolean;
 }
 
 export type ApiStatePartial = Partial<ApiState>;
@@ -31,9 +34,12 @@ export const getDefaultApiState = (): ApiState => ({
     isLoadingStoredAppState: false,
     isLoadingTilgjengeligeStønadskontoer: false,
     isLoadingSaker: false,
+    sessionHasExpired: false,
     søknadSendingInProgress: false,
     søknadHasBeenReceived: false,
-    tilgjengeligeStønadskontoer: []
+    tilgjengeligeStønadskontoer: [],
+    systemerIkkeTilgjengelig: false,
+    søkerinfoLastetCounter: 0
 });
 
 const apiReducer = (state = getDefaultApiState(), action: ApiActionTypes): ApiStatePartial => {
