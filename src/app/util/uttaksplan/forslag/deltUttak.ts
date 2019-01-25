@@ -65,8 +65,21 @@ const deltUttakAdopsjonMor = (
     }
 };
 
-const deltUttakAdopsjonFarMedmor = () => {
-    return [];
+const deltUttakAdopsjonFarMedmorSøkteSist = (
+    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    antallDagerFellesperiodeFarMedmor: number | undefined,
+    antallUkerFellesperiodeFarMedmor: number | undefined,
+    morSinSisteUttaksdag: Date,
+    farSinFørsteUttaksdag: Date
+) => {
+    // Oppfører seg identisk som fødselsscenario
+    return deltUttakFødselFarMedmor(
+        tilgjengeligeStønadskontoer,
+        antallDagerFellesperiodeFarMedmor,
+        antallUkerFellesperiodeFarMedmor,
+        morSinSisteUttaksdag,
+        farSinFørsteUttaksdag
+    );
 };
 
 const deltUttakAdopsjon = (
@@ -75,7 +88,11 @@ const deltUttakAdopsjon = (
     tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
     startdatoPermisjon: DateValue,
     fellesperiodeukerMor: number | undefined,
-    harAnnenForelderSøktFP: boolean | undefined
+    harAnnenForelderSøktFP: boolean | undefined,
+    antallDagerFellesperiodeFarMedmor: number | undefined,
+    antallUkerFellesperiodeFarMedmor: number | undefined,
+    morSinSisteUttaksdag: Date | undefined,
+    farSinFørsteUttaksdag: Date | undefined
 ) => {
     if (!erFarEllerMedmor) {
         return deltUttakAdopsjonMor(
@@ -86,7 +103,17 @@ const deltUttakAdopsjon = (
             harAnnenForelderSøktFP
         );
     } else {
-        return deltUttakAdopsjonFarMedmor();
+        if (harAnnenForelderSøktFP) {
+            return deltUttakAdopsjonFarMedmorSøkteSist(
+                tilgjengeligeStønadskontoer,
+                antallDagerFellesperiodeFarMedmor,
+                antallUkerFellesperiodeFarMedmor,
+                morSinSisteUttaksdag!,
+                farSinFørsteUttaksdag!
+            );
+        } else {
+            return [];
+        }
     }
 };
 
@@ -325,7 +352,11 @@ export const deltUttak = (
             tilgjengeligeStønadskontoer,
             startdatoPermisjon,
             fellesperiodeukerMor,
-            harAnnenForelderSøktFP
+            harAnnenForelderSøktFP,
+            antallDagerFellesperiodeFarMedmor,
+            antallUkerFellesperiodeFarMedmor,
+            morSinSisteUttaksdag,
+            farSinFørsteUttaksdag
         );
     }
 
