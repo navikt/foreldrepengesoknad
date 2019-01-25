@@ -570,7 +570,7 @@
     "utsettelseskjema.ferievarsel.kreveroverforing":
         "Du har lagt inn til sammen {ukerOgDager} med ferie. For å ha opphold lengre enn fire uker og én dag må du ha overført ferie fra i fjor eller ta ut ferie fra neste år. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.ferievarsel.ulovlig":
-        "{ukerOgDager} med ferie er registrert for {forelderNavn}. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
+        "Du har lagt inn til sammen {ukerOgDager} med ferie. Du kan maksimalt legge inn ti uker og to dager med ferie. Arbeidsgiveren din må bekrefte når du skal ha ferie. Det gjør de enten i digital inntektsmelding til NAV, eller på papirskjema om inntektsopplysninger.",
     "utsettelseskjema.info.helligdagerIFerie":
         "Ferien du har lagt inn går over en periode med helligdager. Du kan ikke ha ferie på helligdager. Disse dagene vil bli lagt til som foreldrepenger i planen din, du må velge hvilken del av foreldrepengene du ønsker å bruke.",
     "utsettelseskjema.veiledning.ferie":
