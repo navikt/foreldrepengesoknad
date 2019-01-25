@@ -1,12 +1,13 @@
-import { all, put, call, takeLatest } from 'redux-saga/effects';
+import { all, put, call, takeLatest, select } from 'redux-saga/effects';
 import { ApiActionKeys, GetSøkerinfo } from '../actions/api/apiActionDefinitions';
 import Api from '../../api/api';
 import { redirectToLogin } from '../../util/routing/login';
 import { default as apiActions } from '../actions/api/apiActionCreators';
 import { getSøkerinfoFromDTO } from '../../api/utils/søkerinfoUtils';
 import { Søkerinfo } from '../../types/søkerinfo';
-import routeConfig from '../../util/routing/routeConfig';
-import { extractUUID } from '../../api/utils/errorUtil';
+import { AppState } from '../reducers';
+
+const stateSelector = (state: AppState) => state;
 
 function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
     if (!søkerinfo) {
@@ -16,8 +17,10 @@ function shouldUseStoredDataIfTheyExist(søkerinfo?: Søkerinfo): boolean {
 }
 
 function* getSøkerinfo(action: GetSøkerinfo) {
+    const appState: AppState = yield select(stateSelector);
+    const søkerinfoLastetCounter = appState.api.søkerinfoLastetCounter + 1;
     try {
-        yield put(apiActions.updateApi({ isLoadingSøkerinfo: true }));
+        yield put(apiActions.updateApi({ isLoadingSøkerinfo: true, søkerinfoLastetCounter }));
         const response = yield call(Api.getSøkerinfo);
         const søkerinfo: Søkerinfo = getSøkerinfoFromDTO(response.data);
         const useStorage = shouldUseStoredDataIfTheyExist(søkerinfo);
@@ -37,11 +40,12 @@ function* getSøkerinfo(action: GetSøkerinfo) {
         if (error.response && error.response.status === 401) {
             redirectToLogin();
         } else {
-            action.history.push(routeConfig.GENERELL_FEIL_URL, {
-                uuid: extractUUID(error)
-            });
+            if (søkerinfoLastetCounter <= 1) {
+                yield put(apiActions.getSøkerinfo(action.history));
+            } else {
+                yield put(apiActions.updateApi({ isLoadingInitialAppData: false, systemerIkkeTilgjengelig: true }));
+            }
         }
-        yield put(apiActions.updateApi({ isLoadingInitialAppData: false }));
     } finally {
         yield put(
             apiActions.updateApi({
