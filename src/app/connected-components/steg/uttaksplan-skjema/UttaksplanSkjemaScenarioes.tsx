@@ -99,6 +99,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
     const startdatoPermisjon = søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon;
     const stebarnsadopsjon = (søknad.barn as Adopsjonsbarn).adopsjonAvEktefellesBarn;
     const adoptertIUtlandet = (søknad.barn as Adopsjonsbarn).adoptertIUtlandet;
+    const { farSinFørsteUttaksdag, morSinSisteUttaksdag } = skjema;
 
     return (
         <>
@@ -121,6 +122,22 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
                 visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP !== true}
                 barn={søknad.barn as Adopsjonsbarn}
+            />
+            <MorSinSisteUttaksdagSpørsmål
+                visible={søknad.dekningsgrad !== undefined && skjema.harAnnenForelderSøktFP === true}
+                navnMor={søknad.annenForelder.fornavn}
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+            />
+            <FarSinFørsteUttaksdagSpørsmål
+                visible={morSinSisteUttaksdag !== undefined && skjema.harAnnenForelderSøktFP === true}
+            />
+            <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
+                visible={
+                    farSinFørsteUttaksdag !== undefined &&
+                    !dateIsSameOrAfter(morSinSisteUttaksdag, farSinFørsteUttaksdag) &&
+                    skjema.harAnnenForelderSøktFP === true
+                }
+                antallUkerFellesperiode={antallUkerFellesperiode}
             />
             <Block
                 visible={
