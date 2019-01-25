@@ -4,7 +4,7 @@ import Veileder from 'common/components/veileder/Veileder';
 import { Innholdstittel, Ingress } from 'nav-frontend-typografi';
 import Applikasjonsside from '../../Applikasjonsside';
 import getMessage from 'common/util/i18nUtils';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, InjectedIntlProps, FormattedMessage } from 'react-intl';
 import DocumentTitle from 'react-document-title';
 
 import './ikkeTilgjengelig.less';
@@ -21,14 +21,15 @@ const Feilmeldingsplakat: React.StatelessComponent<InjectedIntlProps> = ({ intl 
         </div>
         <div className={bem.element('tittel')}>
             <Block margin="s">
-                <Innholdstittel tag="h1">Oops, nå gikk noe galt</Innholdstittel>
+                <Innholdstittel tag="h1">
+                    <FormattedMessage id="feilside.ikkeTilgjengelig.tittel" />
+                </Innholdstittel>
             </Block>
         </div>
         <div className={bem.element('innhold')}>
             <Block margin="l">
                 <Ingress>
-                    Det virker dessverre som om en av våre systemer en nede akkurat nå. Vi jobber med å rette feilen,
-                    prøv igjen litt senere. Beklager ulempen dette medfører.
+                    <FormattedMessage id="feilside.ikkeTilgjengelig.melding" />
                 </Ingress>
             </Block>
         </div>
