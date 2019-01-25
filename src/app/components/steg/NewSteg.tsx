@@ -2,7 +2,6 @@ import * as React from 'react';
 import { getStegConfig, StegConfigItem, StegID } from '../../util/routing/stegConfig';
 import { History } from 'history';
 import FortsettKnapp from 'common/components/fortsett-knapp/FortsettKnapp';
-import ValiderbarForm, { FormSubmitEvent, ValiderbarFormProps } from 'common/lib/validation/elements/ValiderbarForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import getMessage from 'common/util/i18nUtils';
 import { søknadStegPath } from '../../connected-components/steg/StegRoutes';
@@ -21,10 +20,9 @@ import søknadActionCreators from '../../redux/actions/søknad/søknadActionCrea
 
 import './steg.less';
 import DocumentTitle from 'react-document-title';
-import { HistoryProps } from 'app/types/common';
-import { Søkerinfo } from 'app/types/søkerinfo';
+import { FormSubmitEvent } from 'common/lib/validation/elements/ValiderbarForm';
 
-export interface StegHOCProps {
+export interface NewStegProps {
     id: StegID;
     renderFortsettKnapp?: boolean;
     fortsettKnappLabel?: string;
@@ -33,9 +31,10 @@ export interface StegHOCProps {
     isAvailable?: boolean;
     nesteStegID?: StegID;
     previousStegID?: StegID;
-    søkerinfo: Søkerinfo;
+    isFormik?: boolean;
+    isSubmitting: boolean;
+    onSubmit: (e: FormSubmitEvent) => void;
     errorSummaryRenderer?: () => React.ReactNode;
-    onSubmit?: (event?: FormSubmitEvent) => void;
     onPreSubmit?: () => void;
     onRequestNavigateToNextStep?: () => boolean;
     confirmNavigateToPreviousStep?: (callback: () => void) => void;
@@ -49,9 +48,9 @@ interface State {
     visAvbrytDialog: boolean;
 }
 
-type Props = StateProps & StegHOCProps & InjectedIntlProps & HistoryProps;
+type Props = StateProps & NewStegProps & InjectedIntlProps;
 
-class StegHOC extends React.Component<Props & DispatchProps, State> {
+class NewSteg extends React.Component<Props & DispatchProps, State> {
     constructor(props: Props & DispatchProps) {
         super(props);
 
@@ -66,12 +65,12 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
+        this.handleFortsett = this.handleFortsett.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
         this.getStegConfig = this.getStegConfig.bind(this);
-        this.shouldRenderFortsettKnapp = this.shouldRenderFortsettKnapp.bind(this);
     }
 
     updateCurrentSteg(currentSteg: StegID) {
@@ -83,15 +82,14 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
         this.props.history.push(routeConfig.APP_ROUTE_PREFIX);
     }
 
-    handleOnSubmit(event?: FormSubmitEvent) {
-        if (this.props.onSubmit) {
-            this.props.onSubmit(event);
-            return;
-        }
-        const { onPreSubmit, onRequestNavigateToNextStep } = this.props;
-        if (onPreSubmit) {
-            onPreSubmit();
-        }
+    handleOnSubmit(e: FormSubmitEvent) {
+        console.log('proxy submit');
+
+        this.props.onSubmit(e);
+    }
+
+    handleFortsett() {
+        const { onRequestNavigateToNextStep } = this.props;
         if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
             this.navigateToNextStep();
         }
@@ -139,10 +137,6 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
         });
     }
 
-    shouldRenderFortsettKnapp(isStegValid: boolean): boolean {
-        return isStegValid;
-    }
-
     shouldHideBackButton(): boolean {
         const activeStegId = this.props.id;
         const stegConfig = this.getStegConfig();
@@ -183,6 +177,7 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
                 <Block>
                     <Stegindikator id={id} erEndringssøknad={erEndringssøknad} />
                 </Block>
+                {this.props.children}
                 {renderFortsettKnapp === true && (
                     <Block>
                         <FortsettKnapp>{fortsettKnappLabel || stegConfig[id].fortsettKnappLabel}</FortsettKnapp>
@@ -193,25 +188,15 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
     }
 
     render() {
-        const { renderFormTag, intl } = this.props;
         const { visAvbrytDialog } = this.state;
 
         const bem = BEMHelper('steg');
-        const formProps: ValiderbarFormProps = {
-            className: bem.className,
-            summaryTitle: getMessage(intl, 'validering.oppsummeringstittel'),
-            onSubmit: this.handleOnSubmit
-        };
 
         return (
             <React.Fragment>
-                {renderFormTag ? (
-                    <ValiderbarForm {...formProps}>{this.renderContent()}</ValiderbarForm>
-                ) : (
-                    <div className={bem.className} aria-live="assertive">
-                        {this.renderContent()}
-                    </div>
-                )}
+                <form onSubmit={(e) => this.handleOnSubmit(e)} className={bem.className} aria-live="assertive">
+                    {this.renderContent()}
+                </form>
                 <StegFooter onAvbryt={() => this.setState({ visAvbrytDialog: true })} />
                 <AvbrytSøknadDialog
                     synlig={visAvbrytDialog}
@@ -225,4 +210,4 @@ class StegHOC extends React.Component<Props & DispatchProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({ erEndringssøknad: state.søknad.erEndringssøknad });
 
-export default connect(mapStateToProps)(injectIntl(StegHOC));
+export default connect(mapStateToProps)(injectIntl(NewSteg));

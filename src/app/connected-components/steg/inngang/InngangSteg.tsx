@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikProps, FormikActions } from 'formik';
 
 import { AppState } from '../../../redux/reducers';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -10,7 +10,6 @@ import { Søkersituasjon, SøkerRolle } from '../../../types/søknad/Søknad';
 
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 
-import Steg, { StegProps } from '../../../components/steg/Steg';
 import Block from 'common/components/block/Block';
 import SøkersituasjonSpørsmål from '../../../spørsmål/SøkersituasjonSpørsmål';
 import SøkerrolleSpørsmål from '../../../spørsmål/SøkerrolleSpørsmål';
@@ -26,13 +25,14 @@ import visibility from './visibility';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../util/routing/lenker';
+import NewSteg, { NewStegProps } from 'app/components/steg/NewSteg';
 
 export interface StateProps {
     kjønn: Kjønn;
     situasjon: Søkersituasjon;
     valgtRolle: SøkerRolle;
     velgbareRoller: SøkerRolle[];
-    stegProps: StegProps;
+    stegProps: NewStegProps;
     søker: Søker;
     erEndringssøknad: boolean;
     saksnummer?: string;
@@ -75,6 +75,7 @@ class InngangSteg extends React.Component<Props, {}> {
 
     updateSituasjonAndRolleInState(situasjon: Søkersituasjon) {
         const { søker, dispatch } = this.props;
+        console.log('tried submitting');
         const updatedSøker: SøkerPartial = {
             ...søker,
             rolle: this.resolveSøkerRolle(situasjon)
@@ -115,17 +116,17 @@ class InngangSteg extends React.Component<Props, {}> {
         return (
             <Formik
                 initialValues={{}}
-                onSubmit={(values: InngangStegValues) => this.updateSituasjonAndRolleInState(values.søkersituasjon)}
-                validate={() => {
-                    console.log('ran validation');
-                    return { søkersituasjon: 'test' };
+                onSubmit={(values: InngangStegValues, actions: FormikActions<InngangStegValues>) => {
+                    actions.setSubmitting(false);
+                    this.updateSituasjonAndRolleInState(values.søkersituasjon);
                 }}
                 render={(formikBag: FormikProps<InngangStegValues>) => (
-                    <Steg
+                    <NewSteg
                         {...stegProps}
                         renderFortsettKnapp={inngangErGyldig(formikBag.values.søkersituasjon, kjønn, erRolleGyldig)}
                         nesteStegID={resolveStegToRender(formikBag.values.søkersituasjon)}
                         onSubmit={formikBag.handleSubmit}
+                        isSubmitting={formikBag.isSubmitting}
                         isFormik={true}>
                         <Block>
                             <SøkersituasjonSpørsmål
@@ -160,7 +161,7 @@ class InngangSteg extends React.Component<Props, {}> {
                                 </Lenke>
                             </Veilederinfo>
                         </Block>
-                    </Steg>
+                    </NewSteg>
                 )}
             />
         );
@@ -175,11 +176,12 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
     const velgbareRoller = kjønn && situasjon ? getSøkerrollerForBruker(kjønn, situasjon) : [];
     const erEndringssøknad = state.søknad.erEndringssøknad;
 
-    const stegProps: StegProps = {
+    const stegProps: NewStegProps = {
         id: StegID.INNGANG,
         renderFormTag: false,
         history: props.history,
-        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo)
+        isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
+        onSubmit: () => null
     };
 
     return {
