@@ -8,21 +8,29 @@ import getMessage from 'common/util/i18nUtils';
 import Lenke from 'nav-frontend-lenker';
 import lenker from '../../../../util/routing/lenker';
 import Block from 'common/components/block/Block';
-import { getPermisjonsregler } from '../../../../util/uttaksplan/permisjonsregler';
 
 export interface OwnProps {
     navnPåForeldre: NavnPåForeldre;
     ukerFellesperiode: number;
     annenForelderErFarEllerMedmor: boolean;
+    antallUkerFedreKvote: number;
+    antallUkerMødreKvote: number;
 }
 
 const FordelingFellesperiodeSpørsmål: React.StatelessComponent<
     OwnProps & UttaksplanSkjemaspørsmålProps & InjectedIntlProps
-> = ({ visible, annenForelderErFarEllerMedmor, navnPåForeldre, ukerFellesperiode, intl }) => {
-    const permisjonsregler = getPermisjonsregler();
+> = ({
+    visible,
+    annenForelderErFarEllerMedmor,
+    navnPåForeldre,
+    ukerFellesperiode,
+    antallUkerFedreKvote,
+    antallUkerMødreKvote,
+    intl
+}) => {
     const infotekst = getMessage(intl, 'uttaksplan.skjema.fordeling.veiledning', {
-        pakrevdForelder1: permisjonsregler.antallUkerForeldrepengerFørFødsel + permisjonsregler.antallUkerMødrekvote,
-        pakrevdForelder2: permisjonsregler.antallUkerFedrekvote,
+        pakrevdForelder1: antallUkerMødreKvote,
+        pakrevdForelder2: antallUkerFedreKvote,
         navnForelder1: navnPåForeldre.mor,
         navnForelder2: navnPåForeldre.farMedmor
     });

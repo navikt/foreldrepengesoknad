@@ -26,6 +26,8 @@ export interface ScenarioProps {
     søknad: Søknad;
     navnPåForeldre: NavnPåForeldre;
     antallUkerFellesperiode: number;
+    antallUkerMødreKvote: number | undefined;
+    antallUkerFedreKvote: number | undefined;
 }
 export interface Props extends ScenarioProps {
     scenario: UttaksplanSkjemaScenario;
@@ -60,7 +62,13 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
     );
 };
 
-const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode, navnPåForeldre }) => {
+const Scenario3: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    antallUkerFellesperiode,
+    navnPåForeldre,
+    antallUkerFedreKvote,
+    antallUkerMødreKvote
+}) => {
     const harSvartPåStartdato =
         søknad.ekstrainfo.uttaksplanSkjema.startdatoPermisjon !== undefined ||
         søknad.ekstrainfo.uttaksplanSkjema.skalIkkeHaUttakFørTermin === true;
@@ -80,13 +88,21 @@ const Scenario3: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                         ukerFellesperiode={antallUkerFellesperiode}
                         navnPåForeldre={navnPåForeldre}
                         annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
+                        antallUkerFedreKvote={antallUkerFedreKvote!}
+                        antallUkerMødreKvote={antallUkerMødreKvote!}
                     />
                 )}
         </>
     );
 };
 
-const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUkerFellesperiode, navnPåForeldre }) => {
+const Scenario4: React.StatelessComponent<ScenarioProps> = ({
+    søknad,
+    antallUkerFellesperiode,
+    navnPåForeldre,
+    antallUkerFedreKvote,
+    antallUkerMødreKvote
+}) => {
     /** Mor og far, adopsjon, begge har rett, adopterer alene, bare en har rett */
     const skjema = søknad.ekstrainfo.uttaksplanSkjema;
     const latestDate =
@@ -162,6 +178,8 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                         ukerFellesperiode={antallUkerFellesperiode}
                         navnPåForeldre={navnPåForeldre}
                         annenForelderErFarEllerMedmor={navnPåForeldre.farMedmor === søknad.annenForelder.fornavn}
+                        antallUkerMødreKvote={antallUkerMødreKvote!}
+                        antallUkerFedreKvote={antallUkerFedreKvote!}
                     />
                 )}
         </>
