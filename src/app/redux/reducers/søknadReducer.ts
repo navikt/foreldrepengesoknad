@@ -42,8 +42,11 @@ export const getDefaultSøknadState = (): SøknadPartial => {
             søknadenGjelderBarnValg: {
                 valgteBarn: [],
                 gjelderAnnetBarn: undefined
-            },
-            begrunnelseForEndringTilbakeITid: undefined
+            }
+        },
+        endringTilbakeITid: {
+            begrunnelse: undefined,
+            vedlegg: []
         },
         sensitivInfoIkkeLagre: {},
         uttaksplan: []
@@ -211,12 +214,12 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         }
 
-        case SøknadActionKeys.SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID: {
+        case SøknadActionKeys.SET_ENDRING_TILBAKE_I_TID: {
             return {
                 ...state,
-                ekstrainfo: {
-                    ...state.ekstrainfo,
-                    begrunnelseForEndringTilbakeITid: action.payload
+                endringTilbakeITid: {
+                    ...state.endringTilbakeITid,
+                    ...action.payload
                 }
             };
         }

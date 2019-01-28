@@ -15,25 +15,27 @@ import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
 interface OwnProps {
     årsak: EndringTilbakeITidÅrsak;
     begrunnelse?: string;
+    vedlegg?: Attachment[];
     onBegrunnelseChange: (begrunnelse: string) => void;
-    onVedleggUpload: (vedlegg: Attachment[]) => void;
+    onVedleggChange: (vedlegg: Attachment[]) => void;
 }
 
 type Props = OwnProps & InjectedIntlProps;
 
 const BegrunnelseForIkkeÅSøkeTidligere = (props: Props) => {
-    const { årsak, begrunnelse, intl, onBegrunnelseChange, onVedleggUpload } = props;
+    const { begrunnelse, vedlegg, intl, årsak, onBegrunnelseChange, onVedleggChange } = props;
+
     const veilederMessage = `uttaksplan.endringTilbakeITid.veileder.${årsak}`;
     const begrunnelseLabel = `uttaksplan.endringTilbakeITid.begrunnelse.${årsak}`;
 
     return (
         <div className="blokk-m">
-            <Block margin="s">
+            <Block margin="xs">
                 <Veilederinfo stil="normal" type="info">
                     <Normaltekst>{getMessage(intl, veilederMessage)}</Normaltekst>
                 </Veilederinfo>
             </Block>
-            <Block margin="m">
+            <Block margin="s">
                 <Textarea
                     value={begrunnelse || ''}
                     name="begrunnelseForIkkeÅSøkeTidligere"
@@ -44,9 +46,10 @@ const BegrunnelseForIkkeÅSøkeTidligere = (props: Props) => {
                 />
             </Block>
             <VedleggSpørsmål
+                vedlegg={vedlegg || []}
                 attachmentType={AttachmentType.BEGRUNNELSE_FOR_IKKE_Å_SØKE_TIDLIGERE}
-                onChange={(vedlegg: Attachment[]) => {
-                    onVedleggUpload(vedlegg);
+                onChange={(endredeVedlegg: Attachment[]) => {
+                    onVedleggChange(endredeVedlegg);
                 }}
                 skjemanummer={Skjemanummer.ANNET}
             />

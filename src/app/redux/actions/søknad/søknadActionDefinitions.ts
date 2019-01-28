@@ -1,4 +1,4 @@
-import Søknad, { SøknadenGjelderBarnValg, SøknadPartial } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, EndringTilbakeITid } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -32,7 +32,7 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
-    'SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID' = 'setBegrunnelseForEndringTilbakeITid',
+    'SET_ENDRING_TILBAKE_I_TID' = 'setEndringTilbakeITid',
     'SET_CURRENT_STEG' = 'setCurrentSteg'
 }
 
@@ -151,9 +151,9 @@ export interface SetCurrentSteg {
     stegID: StegID;
 }
 
-export interface SetBegrunnelseForEndringTilbakeITid {
-    type: SøknadActionKeys.SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID;
-    payload: string;
+export interface SetEndringTilbakeITid {
+    type: SøknadActionKeys.SET_ENDRING_TILBAKE_I_TID;
+    payload: Partial<EndringTilbakeITid>;
 }
 
 export type SøknadAction =
@@ -179,4 +179,4 @@ export type SøknadAction =
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
     | SetCurrentSteg
-    | SetBegrunnelseForEndringTilbakeITid;
+    | SetEndringTilbakeITid;

@@ -37,12 +37,16 @@ interface SensitivSkjemaInfo {
     registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
+export interface EndringTilbakeITid {
+    begrunnelse: string;
+    vedlegg: Attachment[];
+}
+
 interface SkjemaEkstrainfo {
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
-    begrunnelseForEndringTilbakeITid?: string;
 }
 
 interface Søknad {
@@ -60,6 +64,7 @@ interface Søknad {
     vedlegg?: Attachment[];
     dekningsgrad: Dekningsgrad;
     ekstrainfo: SkjemaEkstrainfo;
+    endringTilbakeITid: Partial<EndringTilbakeITid>;
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 
@@ -80,6 +85,7 @@ export interface SøknadPartial {
     vedlegg?: Attachment[];
     dekningsgrad?: Dekningsgrad;
     ekstrainfo: SkjemaEkstrainfo;
+    endringTilbakeITid: Partial<EndringTilbakeITid>;
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
 }
 

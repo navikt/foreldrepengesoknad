@@ -5,7 +5,7 @@ import lenker from '../../../util/routing/lenker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import Søknad from '../../../types/søknad/Søknad';
+import Søknad, { EndringTilbakeITid } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
@@ -53,7 +53,7 @@ interface StateProps {
     isLoadingTilgjengeligeStønadskontoer: boolean;
     missingAttachments: MissingAttachment[];
     årsakTilEndringTilbakeITid: EndringTilbakeITidÅrsak;
-    begrunnelseForIkkeÅSøkeTidligere?: string;
+    endringTilbakeITid: Partial<EndringTilbakeITid>;
 }
 
 interface UttaksplanStegState {
@@ -172,11 +172,19 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
     }
 
     handleBegrunnelseChange = (begrunnelse: string) => {
-        this.props.dispatch(søknadActions.setBegrunnelseForEndringTilbakeITid(begrunnelse));
+        this.props.dispatch(
+            søknadActions.setEndringTilbakeITid({
+                begrunnelse
+            })
+        );
     };
 
-    handleBegrunnelseVedleggUpload = (vedlegg: Attachment[]) => {
-        // TODO: Lagre vedlegg i store på et eller annet vis
+    handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
+        this.props.dispatch(
+            søknadActions.setEndringTilbakeITid({
+                vedlegg
+            })
+        );
     };
 
     getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
@@ -206,7 +214,7 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             dispatch,
             missingAttachments,
             årsakTilEndringTilbakeITid,
-            begrunnelseForIkkeÅSøkeTidligere,
+            endringTilbakeITid,
             søknadsinfo
         } = this.props;
 
@@ -299,9 +307,10 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                         {årsakTilEndringTilbakeITid !== EndringTilbakeITidÅrsak.Ingen && (
                             <BegrunnelseForIkkeÅSøkeTidligere
                                 årsak={årsakTilEndringTilbakeITid}
-                                begrunnelse={begrunnelseForIkkeÅSøkeTidligere}
+                                begrunnelse={endringTilbakeITid.begrunnelse}
+                                vedlegg={endringTilbakeITid.vedlegg}
                                 onBegrunnelseChange={this.handleBegrunnelseChange}
-                                onVedleggUpload={this.handleBegrunnelseVedleggUpload}
+                                onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
 
@@ -377,7 +386,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
         årsakTilEndringTilbakeITid,
-        begrunnelseForIkkeÅSøkeTidligere: state.søknad.ekstrainfo.begrunnelseForEndringTilbakeITid,
+        endringTilbakeITid: state.søknad.endringTilbakeITid,
         missingAttachments: findMissingAttachmentsForPerioder(
             søknad.uttaksplan,
             søknad.søker.rolle,
