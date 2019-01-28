@@ -32,6 +32,7 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
+    'SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID' = 'setBegrunnelseForEndringTilbakeITid',
     'SET_CURRENT_STEG' = 'setCurrentSteg'
 }
 
@@ -150,6 +151,11 @@ export interface SetCurrentSteg {
     stegID: StegID;
 }
 
+export interface SetBegrunnelseForEndringTilbakeITid {
+    type: SøknadActionKeys.SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID;
+    payload: string;
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -172,4 +178,5 @@ export type SøknadAction =
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
-    | SetCurrentSteg;
+    | SetCurrentSteg
+    | SetBegrunnelseForEndringTilbakeITid;

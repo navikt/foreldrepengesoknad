@@ -42,6 +42,7 @@ interface SkjemaEkstrainfo {
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
     lastAddedPeriodeId?: string;
     søknadenGjelderBarnValg?: SøknadenGjelderBarnValg;
+    begrunnelseForEndringTilbakeITid?: string;
 }
 
 interface Søknad {

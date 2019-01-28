@@ -19,7 +19,8 @@ import {
     UttaksplanUpdateSkjemadata,
     UttaksplanLagForslag,
     SetCurrentSteg,
-    AvbrytSøknad
+    AvbrytSøknad,
+    SetBegrunnelseForEndringTilbakeITid
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -148,6 +149,11 @@ const setCurrentSteg = (stegID: StegID): SetCurrentSteg => ({
     stegID
 });
 
+const setBegrunnelseForEndringTilbakeITid = (payload: string): SetBegrunnelseForEndringTilbakeITid => ({
+    type: SøknadActionKeys.SET_BEGRUNNELSE_FOR_ENDRING_TILBAKE_I_TID,
+    payload
+});
+
 export default {
     updateAnnenForelder,
     updateBarn,
@@ -170,5 +176,6 @@ export default {
     uttaksplanLagForslag,
     avbrytSøknad,
     setSøknad,
-    setCurrentSteg
+    setCurrentSteg,
+    setBegrunnelseForEndringTilbakeITid
 };

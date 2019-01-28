@@ -7,5 +7,6 @@ export enum AttachmentType {
     UTSETTELSE_SYKDOM = 'utsettelseSykdomUttaksplan',
     MORS_AKTIVITET_DOKUMENTASJON = 'morsaktivitetdokumentasjon',
     OVERFØRING_KVOTE = 'dokumentasjonOverføringAvKvote',
-    ALENEOMSORG = 'dokumentasjonAvAleneomsorg'
+    ALENEOMSORG = 'dokumentasjonAvAleneomsorg',
+    BEGRUNNELSE_FOR_IKKE_Å_SØKE_TIDLIGERE = 'begrunnelseForIkkeÅSøkeTidligere'
 }

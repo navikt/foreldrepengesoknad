@@ -9,7 +9,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto, EndringTilbakeITidÅrsak } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -36,6 +36,9 @@ import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
+import { finnÅrsakTilEndringTilbakeITid } from 'app/util/uttaksplan/uttakUtils';
+import BegrunnelseForIkkeÅSøkeTidligere from './BegrunnelseForIkkeÅSøkeTidligere';
+import { Attachment } from 'common/storage/attachment/types/Attachment';
 
 interface StateProps {
     stegProps: StegProps;
@@ -49,6 +52,8 @@ interface StateProps {
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     missingAttachments: MissingAttachment[];
+    årsakTilEndringTilbakeITid: EndringTilbakeITidÅrsak;
+    begrunnelseForIkkeÅSøkeTidligere?: string;
 }
 
 interface UttaksplanStegState {
@@ -166,6 +171,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
+    handleBegrunnelseChange = (begrunnelse: string) => {
+        this.props.dispatch(søknadActions.setBegrunnelseForEndringTilbakeITid(begrunnelse));
+    };
+
+    handleBegrunnelseVedleggUpload = (vedlegg: Attachment[]) => {
+        // TODO: Lagre vedlegg i store på et eller annet vis
+    };
+
     getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
         return uttaksstatusOvertrukneDager.filter((konto) => konto.antallDager < 0);
     }
@@ -192,6 +205,8 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             lastAddedPeriodeId,
             dispatch,
             missingAttachments,
+            årsakTilEndringTilbakeITid,
+            begrunnelseForIkkeÅSøkeTidligere,
             søknadsinfo
         } = this.props;
 
@@ -280,6 +295,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                                 navnPåForeldre={søknadsinfo.navn.navnPåForeldre}
                             />
                         )}
+                        {søknad.erEndringssøknad}
+                        {årsakTilEndringTilbakeITid !== EndringTilbakeITidÅrsak.Ingen && (
+                            <BegrunnelseForIkkeÅSøkeTidligere
+                                årsak={årsakTilEndringTilbakeITid}
+                                begrunnelse={begrunnelseForIkkeÅSøkeTidligere}
+                                onBegrunnelseChange={this.handleBegrunnelseChange}
+                                onVedleggUpload={this.handleBegrunnelseVedleggUpload}
+                            />
+                        )}
+
                         <Block margin="xs" visible={planInneholderTapteDager}>
                             <Veilederinfo type="advarsel">
                                 <FormattedMessage id="uttaksplan.veileder.planenInneholderHull" />
@@ -330,6 +355,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         false
     );
 
+    const årsakTilEndringTilbakeITid: EndringTilbakeITidÅrsak = finnÅrsakTilEndringTilbakeITid(søknad.uttaksplan);
+
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
         renderFortsettKnapp: isLoadingTilgjengeligeStønadskontoer !== true,
@@ -349,6 +376,8 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
+        årsakTilEndringTilbakeITid,
+        begrunnelseForIkkeÅSøkeTidligere: state.søknad.ekstrainfo.begrunnelseForEndringTilbakeITid,
         missingAttachments: findMissingAttachmentsForPerioder(
             søknad.uttaksplan,
             søknad.søker.rolle,
