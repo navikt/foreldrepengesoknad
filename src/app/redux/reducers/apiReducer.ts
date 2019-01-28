@@ -22,6 +22,10 @@ export interface ApiState {
     dekningsgrad80AntallUker?: number;
     fellesPeriodeUkerDekningsgrad100?: number;
     fellesPeriodeUkerDekningsgrad80?: number;
+    fedreKvoteUkerDekningsgrad100?: number;
+    fedreKvoteUkerDekningsgrad80?: number;
+    mødreKvoteUkerDekningsgrad100?: number;
+    mødreKvoteUkerDekningsgrad80?: number;
     søkerinfoLastetCounter: number;
     systemerIkkeTilgjengelig: boolean;
 }
