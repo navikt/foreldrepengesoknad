@@ -193,13 +193,23 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
                     return 0;
                 }
             }, 0);
+        const fedreKvote = Object.keys(stønadskontoer.kontoer).find(
+            (konto: StønadskontoType) => konto === StønadskontoType.Fedrekvote
+        );
+        const mødreKvote = Object.keys(stønadskontoer.kontoer).find(
+            (konto: StønadskontoType) => konto === StønadskontoType.Mødrekvote
+        );
+        const fedreKvoteUker = fedreKvote !== undefined ? stønadskontoer.kontoer[fedreKvote] / 5 : undefined;
+        const mødreKvoteUker = mødreKvote !== undefined ? stønadskontoer.kontoer[mødreKvote] / 5 : undefined;
 
         if (dekningsgrad === '100') {
             yield put(
                 apiActions.updateApi({
                     dekningsgrad100AntallUker: antallUker,
                     isLoadingTilgjengeligeStønadskontoer: false,
-                    fellesPeriodeUkerDekningsgrad100: antallFellesperiodeUker
+                    fellesPeriodeUkerDekningsgrad100: antallFellesperiodeUker,
+                    fedreKvoteUkerDekningsgrad100: fedreKvoteUker,
+                    mødreKvoteUkerDekningsgrad100: mødreKvoteUker
                 })
             );
         } else {
@@ -207,7 +217,9 @@ function* getStønadskontoUker(action: GetTilgjengeligeStønadskontoer) {
                 apiActions.updateApi({
                     dekningsgrad80AntallUker: antallUker,
                     isLoadingTilgjengeligeStønadskontoer: false,
-                    fellesPeriodeUkerDekningsgrad80: antallFellesperiodeUker
+                    fellesPeriodeUkerDekningsgrad80: antallFellesperiodeUker,
+                    fedreKvoteUkerDekningsgrad80: fedreKvoteUker,
+                    mødreKvoteUkerDekningsgrad80: mødreKvoteUker
                 })
             );
         }
