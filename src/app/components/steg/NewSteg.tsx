@@ -83,8 +83,6 @@ class NewSteg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleOnSubmit(e: FormSubmitEvent) {
-        console.log('proxy submit');
-
         this.addNavigateToNextStepToCallbackQueue();
         this.props.onSubmit(e);
     }

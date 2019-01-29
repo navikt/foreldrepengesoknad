@@ -75,7 +75,7 @@ class InngangSteg extends React.Component<Props, {}> {
 
     updateSituasjonAndRolleInState(situasjon: Søkersituasjon) {
         const { søker, dispatch } = this.props;
-        console.log('tried submitting');
+
         const updatedSøker: SøkerPartial = {
             ...søker,
             rolle: this.resolveSøkerRolle(situasjon)
