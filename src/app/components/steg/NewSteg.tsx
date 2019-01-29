@@ -65,11 +65,11 @@ class NewSteg extends React.Component<Props & DispatchProps, State> {
         };
 
         this.handleOnSubmit = this.handleOnSubmit.bind(this);
-        this.handleFortsett = this.handleFortsett.bind(this);
         this.navigateToPreviousStep = this.navigateToPreviousStep.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
+        this.addNavigateToNextStepToCallbackQueue = this.addNavigateToNextStepToCallbackQueue.bind(this);
         this.getStegConfig = this.getStegConfig.bind(this);
     }
 
@@ -85,14 +85,12 @@ class NewSteg extends React.Component<Props & DispatchProps, State> {
     handleOnSubmit(e: FormSubmitEvent) {
         console.log('proxy submit');
 
+        this.addNavigateToNextStepToCallbackQueue();
         this.props.onSubmit(e);
     }
 
-    handleFortsett() {
-        const { onRequestNavigateToNextStep } = this.props;
-        if (onRequestNavigateToNextStep === undefined || onRequestNavigateToNextStep()) {
-            this.navigateToNextStep();
-        }
+    addNavigateToNextStepToCallbackQueue() {
+        setTimeout(() => this.navigateToNextStep(), 0);
     }
 
     navigateToNextStep(): void {

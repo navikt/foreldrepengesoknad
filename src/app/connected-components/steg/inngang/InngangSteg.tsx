@@ -181,7 +181,8 @@ const mapStateToProps = (state: AppState, props: Props): StateProps => {
         renderFormTag: false,
         history: props.history,
         isAvailable: isAvailable(StegID.INNGANG, state.søknad, props.søkerinfo),
-        onSubmit: () => null
+        onSubmit: () => null,
+        isSubmitting: false
     };
 
     return {
