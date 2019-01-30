@@ -6,7 +6,8 @@ import {
     date3YearsAgo,
     today,
     tomorrow,
-    date15YearsAnd3MonthsAgo
+    date15YearsAnd3MonthsAgo,
+    date21DaysAhead
 } from '../validation/values';
 const moment = require('moment');
 
@@ -63,6 +64,8 @@ export const dateIs1YearAheadOrLess = (date: DateValue): boolean =>
     moment(date).isBetween(today, date1YearAhead, 'day', '[]');
 export const dateIs1YearAgoOrLess = (date: DateValue): boolean =>
     moment(date).isBetween(date1YearAgo, today, 'day', '[]');
+export const dateIs3WeeksOrMoreFromNow = (date: DateValue): boolean =>
+    moment(date).isSameOrAfter(date21DaysAhead, 'day');
 
 export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
     if (date && otherDate) {

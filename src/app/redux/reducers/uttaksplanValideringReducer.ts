@@ -37,6 +37,7 @@ export interface UttaksplanValideringState {
     uttaksplanStarterMedOpphold: boolean;
     uttaksplanSlutterMedOpphold: boolean;
     uttaksplanGraderingStørreEnnSamtidigUttak: boolean;
+    uttaksplanStarterMerEnnTreUkerFremITid: boolean;
 }
 
 export interface PeriodeValideringsfeil {
@@ -66,7 +67,8 @@ const getDefaultState = (): UttaksplanValideringState => {
         uttakErBareOpphold: false,
         uttaksplanStarterMedOpphold: false,
         uttaksplanSlutterMedOpphold: false,
-        uttaksplanGraderingStørreEnnSamtidigUttak: false
+        uttaksplanGraderingStørreEnnSamtidigUttak: false,
+        uttaksplanStarterMerEnnTreUkerFremITid: false
     };
 };
 
@@ -92,7 +94,8 @@ const uttaksplanValideringReducer = (
                 action.uttakErBareOpphold === false &&
                 action.uttaksplanStarterMedOpphold === false &&
                 action.uttaksplanSlutterMedOpphold === false &&
-                action.uttaksplanGraderingStørreEnnSamtidigUttak === false;
+                action.uttaksplanGraderingStørreEnnSamtidigUttak === false &&
+                action.uttaksplanStarterMerEnnTreUkerFremITid === false;
             return {
                 ...state,
                 periodevalidering: action.validertePerioder,
@@ -105,7 +108,8 @@ const uttaksplanValideringReducer = (
                 uttakErBareOpphold: action.uttakErBareOpphold === true,
                 uttaksplanStarterMedOpphold: action.uttaksplanStarterMedOpphold === true,
                 uttaksplanSlutterMedOpphold: action.uttaksplanSlutterMedOpphold === true,
-                uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true
+                uttaksplanGraderingStørreEnnSamtidigUttak: action.uttaksplanGraderingStørreEnnSamtidigUttak === true,
+                uttaksplanStarterMerEnnTreUkerFremITid: action.uttaksplanStarterMerEnnTreUkerFremITid === true
             };
     }
     return state;

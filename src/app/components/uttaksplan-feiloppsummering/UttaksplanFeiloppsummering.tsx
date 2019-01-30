@@ -134,6 +134,13 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             });
         }
 
+        if (uttaksplanValidering.uttaksplanStarterMerEnnTreUkerFremITid === true) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getMessage(intl, 'uttaksplan.validering.feil.periodeTreUkerFremITidKreverVedlegg')
+            });
+        }
+
         return (
             <Feiloppsummering
                 show={erSynlig === true && uttaksplanValidering.erGyldig === false}
