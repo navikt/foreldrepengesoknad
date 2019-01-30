@@ -50,7 +50,10 @@ const Scenario1: React.StatelessComponent<ScenarioProps> = ({ søknad, antallUke
                 navnMor={søknad.annenForelder.fornavn}
                 familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
             />
-            <FarSinFørsteUttaksdagSpørsmål visible={morSinSisteUttaksdag !== undefined} />
+            <FarSinFørsteUttaksdagSpørsmål
+                visible={morSinSisteUttaksdag !== undefined}
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
+            />
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
                     farSinFørsteUttaksdag !== undefined &&
@@ -146,6 +149,7 @@ const Scenario4: React.StatelessComponent<ScenarioProps> = ({
             />
             <FarSinFørsteUttaksdagSpørsmål
                 visible={morSinSisteUttaksdag !== undefined && skjema.harAnnenForelderSøktFP === true}
+                familiehendelsesdato={getFamiliehendelsedato(søknad.barn, søknad.situasjon)}
             />
             <AntallUkerOgDagerFellesperiodeFarMedmorSpørsmål
                 visible={
