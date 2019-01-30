@@ -25,6 +25,10 @@ export const isSixteenOrOlder = (fnr: string): boolean => {
     const år = fnr.substr(4, 2);
     const fødselsdato = moment(`${dato}-${mnd}-${år}`, 'DD-MM-YY');
 
+    if (fødselsdato.get('year') > moment().get('year')) {
+        fødselsdato.subtract(100, 'year');
+    }
+
     if (!fødselsdato.isValid()) {
         throw new Error('Illegal argument');
     }
@@ -50,6 +54,10 @@ export const getFødselsnummerRegler = (
         {
             test: () => søkersFødselsnummer !== fnr,
             failText: getMessage(intl, `${intlKey}.ugyldigEgetFødselsnummer`)
+        },
+        {
+            test: () => (!utenlandskFnr && isSixteenOrOlder(fnr)) || utenlandskFnr === true,
+            failText: getMessage(intl, `${intlKey}.underSeksten`)
         }
     ];
 };
