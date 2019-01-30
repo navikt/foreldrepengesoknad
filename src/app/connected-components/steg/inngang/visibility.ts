@@ -13,7 +13,7 @@ const søkerRolleSpørsmålVisible: VisibilityFunction<SøkerRolleSpørsmålVisi
     data: SøkerRolleSpørsmålVisibleData
 ) => {
     return (
-        data.velgbareRoller.length > 0 &&
+        data.velgbareRoller.length > 1 &&
         data.situasjon !== Søkersituasjon.FORELDREANSVAR &&
         data.situasjon !== Søkersituasjon.ADOPSJON &&
         data.situasjon !== undefined

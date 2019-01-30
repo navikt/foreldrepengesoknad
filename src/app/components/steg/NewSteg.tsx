@@ -31,8 +31,8 @@ export interface NewStegProps {
     isAvailable?: boolean;
     nesteStegID?: StegID;
     previousStegID?: StegID;
-    isFormik?: boolean;
     isSubmitting: boolean;
+    isValid: boolean;
     onSubmit: (e: FormSubmitEvent) => void;
     errorSummaryRenderer?: () => React.ReactNode;
     onPreSubmit?: () => void;
@@ -69,8 +69,13 @@ class NewSteg extends React.Component<Props & DispatchProps, State> {
         this.renderContent = this.renderContent.bind(this);
         this.handleNavigateToPreviousStepClick = this.handleNavigateToPreviousStepClick.bind(this);
         this.updateCurrentSteg = this.updateCurrentSteg.bind(this);
-        this.addNavigateToNextStepToCallbackQueue = this.addNavigateToNextStepToCallbackQueue.bind(this);
         this.getStegConfig = this.getStegConfig.bind(this);
+    }
+
+    componentDidUpdate(previousProps: Props) {
+        if (previousProps.isSubmitting === true && this.props.isSubmitting === false && this.props.isValid) {
+            this.navigateToNextStep();
+        }
     }
 
     updateCurrentSteg(currentSteg: StegID) {
@@ -83,12 +88,7 @@ class NewSteg extends React.Component<Props & DispatchProps, State> {
     }
 
     handleOnSubmit(e: FormSubmitEvent) {
-        this.addNavigateToNextStepToCallbackQueue();
         this.props.onSubmit(e);
-    }
-
-    addNavigateToNextStepToCallbackQueue() {
-        setTimeout(() => this.navigateToNextStep(), 0);
     }
 
     navigateToNextStep(): void {

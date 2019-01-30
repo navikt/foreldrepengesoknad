@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import RadioPanelGruppeResponsive from 'common/components/skjema/elements/radio-panel-gruppe-responsive/RadioPanelGruppeResponsive';
 import getMessage from 'common/util/i18nUtils';
 import { Søkersituasjon } from '../types/søknad/Søknad';
 import { RadioProps } from 'nav-frontend-skjema/lib/radio-panel-gruppe';
+import RadioPanelGruppeResponsiveField from 'common/lib/formik/fields/RadioPanelGruppeResponsiveField';
 
 interface SøkersituasjonProps {
     situasjon?: Søkersituasjon;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    navn: string;
 }
 
 type Props = SøkersituasjonProps & InjectedIntlProps;
 
 const SøkersituasjonSpørsmål = (props: Props) => {
-    const { onChange, situasjon, intl } = props;
+    const { situasjon, navn, intl } = props;
 
     const getSituasjonOption = (key: Søkersituasjon): RadioProps => ({
         label: intl.formatMessage({
@@ -23,7 +23,7 @@ const SøkersituasjonSpørsmål = (props: Props) => {
     });
 
     return (
-        <RadioPanelGruppeResponsive
+        <RadioPanelGruppeResponsiveField
             checked={situasjon}
             legend={getMessage(intl, 'søkersituasjon.spørsmål')}
             radios={[
@@ -31,8 +31,7 @@ const SøkersituasjonSpørsmål = (props: Props) => {
                 getSituasjonOption(Søkersituasjon.ADOPSJON),
                 getSituasjonOption(Søkersituasjon.FORELDREANSVAR)
             ]}
-            name="søkersituasjon"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>, v: Søkersituasjon) => onChange(e)}
+            name={navn}
         />
     );
 };
