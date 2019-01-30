@@ -51,6 +51,11 @@ describe('Fødselsnummer validation', () => {
 
     describe('helper functions', () => {
         describe('erOverSeksten function', () => {
+            it('should not parse year to a future date if birth year 1966 or before', () => {
+                expect(isSixteenOrOlder('010166')).toBeTruthy();
+                expect(isSixteenOrOlder('010167')).toBeTruthy();
+            });
+
             it('returns true if input fnr proves that person is sixteen', () => {
                 const fnr: string = moment()
                     .utc()
