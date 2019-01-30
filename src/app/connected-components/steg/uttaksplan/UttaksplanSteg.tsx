@@ -5,11 +5,11 @@ import lenker from '../../../util/routing/lenker';
 import { StegID } from '../../../util/routing/stegConfig';
 import { default as Steg, StegProps } from '../../../components/steg/Steg';
 import { AppState } from '../../../redux/reducers';
-import Søknad, { EndringTilbakeITid } from '../../../types/søknad/Søknad';
+import Søknad, { Tilleggsopplysninger, Opplysning } from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import { Periode, TilgjengeligStønadskonto, EndringTilbakeITidÅrsak } from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto, SenEndringÅrsak } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -36,9 +36,9 @@ import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
-import { finnÅrsakTilEndringTilbakeITid } from 'app/util/uttaksplan/uttakUtils';
-import BegrunnelseForIkkeÅSøkeTidligere from './BegrunnelseForIkkeÅSøkeTidligere';
+import { finnÅrsakTilSenEndring } from 'app/util/uttaksplan/uttakUtils';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
+import BegrunnelseForSenEndring from './BegrunnelseForSenEndring';
 
 interface StateProps {
     stegProps: StegProps;
@@ -52,8 +52,9 @@ interface StateProps {
     uttaksplanValidering: UttaksplanValideringState;
     isLoadingTilgjengeligeStønadskontoer: boolean;
     missingAttachments: MissingAttachment[];
-    årsakTilEndringTilbakeITid: EndringTilbakeITidÅrsak;
-    endringTilbakeITid: Partial<EndringTilbakeITid>;
+    årsakTilSenEndring: SenEndringÅrsak;
+    vedleggForSenEndring: Attachment[];
+    tilleggsopplysninger: Tilleggsopplysninger;
 }
 
 interface UttaksplanStegState {
@@ -171,20 +172,14 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
         }
     }
 
-    handleBegrunnelseChange = (begrunnelse: string) => {
+    handleBegrunnelseChange = (årsak: string) => (begrunnelse: string) => {
         this.props.dispatch(
-            søknadActions.setEndringTilbakeITid({
-                begrunnelse
-            })
+            søknadActions.setTilleggsopplysning(Opplysning.BEGRUNNELSE_FOR_SEN_ENDRING, begrunnelse, årsak)
         );
     };
 
     handleBegrunnelseVedleggChange = (vedlegg: Attachment[]) => {
-        this.props.dispatch(
-            søknadActions.setEndringTilbakeITid({
-                vedlegg
-            })
-        );
+        this.props.dispatch(søknadActions.setVedleggForSenEndring(vedlegg));
     };
 
     getOvertrukneKontoer(uttaksstatusOvertrukneDager: Stønadskontouttak[]) {
@@ -213,8 +208,9 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
             lastAddedPeriodeId,
             dispatch,
             missingAttachments,
-            årsakTilEndringTilbakeITid,
-            endringTilbakeITid,
+            årsakTilSenEndring,
+            vedleggForSenEndring,
+            tilleggsopplysninger,
             søknadsinfo
         } = this.props;
 
@@ -304,12 +300,16 @@ class UttaksplanSteg extends React.Component<Props, UttaksplanStegState> {
                             />
                         )}
                         {søknad.erEndringssøknad}
-                        {årsakTilEndringTilbakeITid !== EndringTilbakeITidÅrsak.Ingen && (
-                            <BegrunnelseForIkkeÅSøkeTidligere
-                                årsak={årsakTilEndringTilbakeITid}
-                                begrunnelse={endringTilbakeITid.begrunnelse}
-                                vedlegg={endringTilbakeITid.vedlegg}
-                                onBegrunnelseChange={this.handleBegrunnelseChange}
+                        {årsakTilSenEndring !== SenEndringÅrsak.Ingen && (
+                            <BegrunnelseForSenEndring
+                                årsak={årsakTilSenEndring}
+                                begrunnelse={
+                                    tilleggsopplysninger.begrunnelseForSenEndring
+                                        ? tilleggsopplysninger.begrunnelseForSenEndring.tekst
+                                        : ''
+                                }
+                                vedlegg={vedleggForSenEndring}
+                                onBegrunnelseChange={this.handleBegrunnelseChange(årsakTilSenEndring)}
                                 onVedleggChange={this.handleBegrunnelseVedleggChange}
                             />
                         )}
@@ -364,7 +364,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         false
     );
 
-    const årsakTilEndringTilbakeITid: EndringTilbakeITidÅrsak = finnÅrsakTilEndringTilbakeITid(søknad.uttaksplan);
+    const årsakTilSenEndring: SenEndringÅrsak = finnÅrsakTilSenEndring(søknad.uttaksplan);
 
     const stegProps: StegProps = {
         id: StegID.UTTAKSPLAN,
@@ -385,8 +385,9 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         uttaksplanValidering: state.uttaksplanValidering,
         perioder: søknad.uttaksplan,
         isLoadingTilgjengeligeStønadskontoer,
-        årsakTilEndringTilbakeITid,
-        endringTilbakeITid: state.søknad.endringTilbakeITid,
+        årsakTilSenEndring,
+        vedleggForSenEndring: søknad.vedleggForSenEndring,
+        tilleggsopplysninger: søknad.tilleggsopplysninger,
         missingAttachments: findMissingAttachmentsForPerioder(
             søknad.uttaksplan,
             søknad.søker.rolle,

@@ -44,10 +44,8 @@ export const getDefaultSøknadState = (): SøknadPartial => {
                 gjelderAnnetBarn: undefined
             }
         },
-        endringTilbakeITid: {
-            begrunnelse: undefined,
-            vedlegg: []
-        },
+        vedleggForSenEndring: undefined,
+        tilleggsopplysninger: {},
         sensitivInfoIkkeLagre: {},
         uttaksplan: []
     };
@@ -214,12 +212,23 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         }
 
-        case SøknadActionKeys.SET_ENDRING_TILBAKE_I_TID: {
+        case SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING: {
             return {
                 ...state,
-                endringTilbakeITid: {
-                    ...state.endringTilbakeITid,
-                    ...action.payload
+                vedleggForSenEndring: action.payload
+            };
+        }
+
+        case SøknadActionKeys.SET_TILLEGGSOPPLYSNING: {
+            const { opplysning, tekst, ekstraInformasjon } = action.payload;
+            return {
+                ...state,
+                tilleggsopplysninger: {
+                    ...state.tilleggsopplysninger,
+                    [opplysning]: {
+                        ekstraInformasjon,
+                        tekst
+                    }
                 }
             };
         }

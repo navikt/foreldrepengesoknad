@@ -20,7 +20,8 @@ import {
     UttaksplanLagForslag,
     SetCurrentSteg,
     AvbrytSøknad,
-    SetEndringTilbakeITid
+    SetVedleggForSenEndring,
+    SetTilleggsopplysning
 } from './søknadActionDefinitions';
 import {
     FødtBarnPartial,
@@ -32,7 +33,7 @@ import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
 import { SøkerPartial } from '../../../types/søknad/Søker';
 import { Attachment } from 'common/storage/attachment/types/Attachment';
-import { SøknadenGjelderBarnValg, EndringTilbakeITid } from '../../../types/søknad/Søknad';
+import { SøknadenGjelderBarnValg, Opplysning } from '../../../types/søknad/Søknad';
 import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import { UttaksplanSkjemadata } from '../../../connected-components/steg/uttaksplan-skjema/uttaksplanSkjemadata';
 import { StegID } from '../../../util/routing/stegConfig';
@@ -149,8 +150,17 @@ const setCurrentSteg = (stegID: StegID): SetCurrentSteg => ({
     stegID
 });
 
-const setEndringTilbakeITid = (payload: Partial<EndringTilbakeITid>): SetEndringTilbakeITid => ({
-    type: SøknadActionKeys.SET_ENDRING_TILBAKE_I_TID,
+const setTilleggsopplysning = (
+    opplysning: Opplysning,
+    tekst: string,
+    ekstraInformasjon?: string
+): SetTilleggsopplysning => ({
+    type: SøknadActionKeys.SET_TILLEGGSOPPLYSNING,
+    payload: { opplysning, tekst, ekstraInformasjon }
+});
+
+const setVedleggForSenEndring = (payload: Attachment[]): SetVedleggForSenEndring => ({
+    type: SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING,
     payload
 });
 
@@ -177,5 +187,6 @@ export default {
     avbrytSøknad,
     setSøknad,
     setCurrentSteg,
-    setEndringTilbakeITid
+    setVedleggForSenEndring,
+    setTilleggsopplysning
 };

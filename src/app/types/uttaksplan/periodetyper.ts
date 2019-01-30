@@ -58,7 +58,7 @@ export enum PeriodeHullÅrsak {
     'Fridag' = 'Fridag'
 }
 
-export enum EndringTilbakeITidÅrsak {
+export enum SenEndringÅrsak {
     'Sykdom' = 'SYKDOM',
     'Uttak' = 'UTTAK',
     'SykdomOgUttak' = 'SYKDOM_OG_UTTAK',

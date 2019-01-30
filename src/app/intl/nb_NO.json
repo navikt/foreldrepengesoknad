@@ -741,15 +741,12 @@
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
 
-    "uttaksplan.endringTilbakeITid.veileder.SYKDOM":
-        "Siden du søker om en eller flere perioder med utsettelse tilbake i tid så trenger du å begrunne hvorfor du ikke har søkt om utsettelsen på forhånd. Du har også mulighet til å laste opp relevant dokumentasjon.",
-    "uttaksplan.endringTilbakeITid.veileder.UTTAK":
-        "Siden du søker om en eller flere perioder med uttak mer enn 3 måneder tilbake i tid så trenger du å begrunne hvorfor du ikke har søkt om uttaket tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
-    "uttaksplan.endringTilbakeITid.veileder.SYKDOM_OG_UTTAK": "Beep boop, jeg er en robot.",
-    "uttaksplan.endringTilbakeITid.begrunnelse.SYKDOM": " Hva er grunnen til at du søker om utsettelse tilbake i tid?",
-    "uttaksplan.endringTilbakeITid.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har kunnet søke tidligere?",
-    "uttaksplan.endringTilbakeITid.begrunnelse.SYKDOM_OG_UTTAK":
-        "Hva er grunnen til at du ikke har kunnet søke tidligere?",
+    "uttaksplan.senEndring.veileder.SYKDOM":
+        "Når du søker om utsettelse tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.UTTAK":
+        "Når du søker om foreldrepenger tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM": "Hva er grunnen til at du ikke har søkt om utsettelse tidligere?",
+    "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
 
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
@@ -828,7 +825,7 @@
     "vedlegg.lastoppknapp.selvstendignæringdrivendeDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.terminbekreftelse": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
-    "vedlegg.lastoppknapp.begrunnelseForIkkeÅSøkeTidligere": "Legg ved dokumentasjon ...",
+    "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":

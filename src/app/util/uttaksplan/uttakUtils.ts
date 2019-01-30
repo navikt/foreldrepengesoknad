@@ -1,9 +1,9 @@
 import {
     StønadskontoType,
     Periode,
-    EndringTilbakeITidÅrsak,
     Periodetype,
-    UtsettelseÅrsakType
+    UtsettelseÅrsakType,
+    SenEndringÅrsak
 } from '../../types/uttaksplan/periodetyper';
 import moment from 'moment';
 
@@ -38,17 +38,13 @@ const erUttakMerEnnTreMånederSiden = (periode: Periode) =>
             .subtract(3, 'months')
     );
 
-export const finnÅrsakTilEndringTilbakeITid = (uttaksplan: Periode[]): EndringTilbakeITidÅrsak => {
+export const finnÅrsakTilSenEndring = (uttaksplan: Periode[]): SenEndringÅrsak => {
     const inneholderTidligereUtsettelserPgaSykdom = uttaksplan.filter(erUtsettelsePgaSykdomTilbakeITid).length > 0;
     const inneholderUttakMerEnnTreMånederTilbakeITid = uttaksplan.filter(erUttakMerEnnTreMånederSiden).length > 0;
 
     if (inneholderTidligereUtsettelserPgaSykdom) {
-        return inneholderUttakMerEnnTreMånederTilbakeITid
-            ? EndringTilbakeITidÅrsak.SykdomOgUttak
-            : EndringTilbakeITidÅrsak.Sykdom;
+        return inneholderUttakMerEnnTreMånederTilbakeITid ? SenEndringÅrsak.SykdomOgUttak : SenEndringÅrsak.Sykdom;
     } else {
-        return inneholderUttakMerEnnTreMånederTilbakeITid
-            ? EndringTilbakeITidÅrsak.Uttak
-            : EndringTilbakeITidÅrsak.Ingen;
+        return inneholderUttakMerEnnTreMånederTilbakeITid ? SenEndringÅrsak.Uttak : SenEndringÅrsak.Ingen;
     }
 };
