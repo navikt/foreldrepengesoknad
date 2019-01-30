@@ -20,7 +20,7 @@ import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/utta
 import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
 import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
-import { uttaksplanStarterMerEnnTreUkerFremITid } from 'app/util/validation/uttaksplan/uttaksplanStarterMerEnnFireUkerFremITid';
+import { uttaksplanStarterMerEnnTreUkerFremITid } from 'app/util/validation/uttaksplan/uttaksplanStarterMerEnnTreUkerFremITid';
 
 const stateSelector = (state: AppState) => state;
 
