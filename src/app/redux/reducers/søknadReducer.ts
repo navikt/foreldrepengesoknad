@@ -238,9 +238,11 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
                 ...state,
                 ekstrainfo: {
                     ...state.ekstrainfo,
+                    lastAddedPeriodeId: undefined,
                     currentStegID: action.stegID
                 }
             };
+
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;

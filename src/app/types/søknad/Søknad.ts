@@ -47,7 +47,7 @@ export interface Tilleggsopplysning {
 }
 
 export interface Tilleggsopplysninger {
-    [s: string]: Tilleggsopplysning;
+    begrunnelseForSenEndring?: Tilleggsopplysning;
 }
 
 interface SkjemaEkstrainfo {

@@ -15,7 +15,8 @@ export function setUttaksplanValidering(
     uttakErBareOpphold: boolean,
     uttaksplanStarterMedOpphold: boolean,
     uttaksplanSlutterMedOpphold: boolean,
-    uttaksplanGraderingStørreEnnSamtidigUttak: boolean
+    uttaksplanGraderingStørreEnnSamtidigUttak: boolean,
+    begrunnelseForSenEndringErGyldig: boolean
 ): UttaksplanValideringActionTypes {
     return {
         type: UttaksplanValideringActionKeys.SET_UTTAKSPLAN_VALIDERING,
@@ -28,7 +29,8 @@ export function setUttaksplanValidering(
         uttakErBareOpphold,
         uttaksplanStarterMedOpphold,
         uttaksplanSlutterMedOpphold,
-        uttaksplanGraderingStørreEnnSamtidigUttak
+        uttaksplanGraderingStørreEnnSamtidigUttak,
+        begrunnelseForSenEndringErGyldig
     };
 }
 

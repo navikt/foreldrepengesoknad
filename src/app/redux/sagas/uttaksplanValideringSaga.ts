@@ -1,25 +1,28 @@
+import get from 'lodash/get';
 import { takeEvery, all, put, select } from 'redux-saga/effects';
-import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
+
 import { AppState } from '../reducers';
-import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { begrunnelseForSenEndringErGyldig } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
+import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
+import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
+import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
+import { getFamiliehendelsedato } from '../../util/uttaksplan';
+import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
+import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
+import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
+import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
 import { Periode } from '../../types/uttaksplan/periodetyper';
-import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
-import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 import { Periodene } from '../../util/uttaksplan/Periodene';
 import { Periodevalidering, ValidertPeriode, PeriodeAdvarselKey } from '../reducers/uttaksplanValideringReducer';
+import { setUttaksplanValidering } from '../actions/uttaksplanValidering/uttaksplanValideringActionCreators';
+import { SøknadActionKeys } from '../actions/søknad/søknadActionDefinitions';
 import { Stønadskontouttak } from '../../components/uttaksoppsummering/Uttaksoppsummering';
-import { getUttaksstatus } from '../../util/uttaksplan/uttaksstatus';
-import { getFamiliehendelsedato } from '../../util/uttaksplan';
-import { harMorHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakMorValidation';
-import { erUttaksmengdeForFarMedmorForHøy } from 'app/util/validation/uttaksplan/erUttaksmengdeForFarMedmorForHøy';
-import { getErSøkerFarEllerMedmor } from 'app/util/domain/personUtil';
-import { harFarHarSøktUgyldigUttakFørsteSeksUker } from '../../util/validation/uttaksplan/uttakFarValidation';
 import { uttaksplanErBareOpphold } from 'app/util/validation/uttaksplan/uttaksplanErBareOpphold';
-import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
-import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
-import { getErDeltUttak } from '../../util/uttaksplan/forslag/util';
 import { uttaksplanGraderingStørreEnnSamtidigUttak } from 'app/util/validation/uttaksplan/uttaksplanGraderingStørreEnnSamtidigUttak';
-import { hasPeriodeMissingAttachment } from '../../util/attachments/missingAttachmentUtil';
+import { uttaksplanSlutterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanSlutterMedOpphold';
+import { uttaksplanStarterMedOpphold } from 'app/util/validation/uttaksplan/uttaksplanStarterMedOpphold';
+import { UttaksplanValideringActionKeys } from '../actions/uttaksplanValidering/uttaksplanValideringActionDefinitions';
+import { validerPeriodeForm } from '../../util/validation/uttaksplan/periodeFormValidation';
 
 const stateSelector = (state: AppState) => state;
 
@@ -100,7 +103,10 @@ function* validerUttaksplanSaga() {
             uttaksplanErBareOpphold(uttaksplan),
             uttaksplanStarterMedOpphold(uttaksplan),
             uttaksplanSlutterMedOpphold(uttaksplan),
-            uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan)
+            uttaksplanGraderingStørreEnnSamtidigUttak(uttaksplan),
+            begrunnelseForSenEndringErGyldig(
+                get(appState, 'søknad.tilleggsopplysninger.begrunnelseForSenEndring.tekst')
+            )
         )
     );
 }
@@ -112,4 +118,5 @@ export default function* uttaksplanValideringSaga() {
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_SET_PERIODER, validerUttaksplanSaga)]);
     yield all([takeEvery(SøknadActionKeys.UTTAKSPLAN_LAG_FORSLAG, validerUttaksplanSaga)]);
     yield all([takeEvery(UttaksplanValideringActionKeys.VALIDER_UTTAKSPLAN, validerUttaksplanSaga)]);
+    yield all([takeEvery(SøknadActionKeys.SET_TILLEGGSOPPLYSNING, validerUttaksplanSaga)]);
 }
