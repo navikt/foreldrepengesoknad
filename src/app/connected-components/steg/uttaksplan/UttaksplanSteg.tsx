@@ -36,6 +36,7 @@ import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
+import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 
 interface StateProps {
     stegProps: StegProps;
@@ -338,6 +339,15 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         isAvailable: isAvailable(StegID.UTTAKSPLAN, søknad, søkerinfo)
     };
 
+    let perioder = søknad.uttaksplan;
+    const { søknaden, søker } = søknadsinfo!;
+
+    if (søknaden.erFødsel && søknaden.erDeltUttak && søker.erFarEllerMedmor) {
+        const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
+        const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
+        perioder = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(perioder, sisteUttaksdatoMor, førsteUttaksdatoFar);
+    }
+
     return {
         søknad,
         tilgjengeligeStønadskontoer,
@@ -347,7 +357,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
         søknadsinfo,
         lastAddedPeriodeId: søknad.ekstrainfo.lastAddedPeriodeId,
         uttaksplanValidering: state.uttaksplanValidering,
-        perioder: søknad.uttaksplan,
+        perioder,
         isLoadingTilgjengeligeStønadskontoer,
         missingAttachments: findMissingAttachmentsForPerioder(
             søknad.uttaksplan,

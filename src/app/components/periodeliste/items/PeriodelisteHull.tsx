@@ -45,7 +45,7 @@ const PeriodelisteHullItem: React.StatelessComponent<Props & InjectedIntlProps> 
         );
     }
 
-    if (onLeggTilOpphold && kunUttaksdager === true) {
+    if (onLeggTilOpphold) {
         knapper.unshift(
             <LinkButton key="opphold" onClick={() => onLeggTilOpphold(periode.tidsperiode)}>
                 {getMessage(intl, 'uttaksplan.hull.leggTil.opphold')}
