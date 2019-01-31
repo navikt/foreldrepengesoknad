@@ -37,6 +37,19 @@ interface SensitivSkjemaInfo {
     registrertAnnenForelder?: RegistrertAnnenForelder;
 }
 
+export enum Opplysning {
+    'BEGRUNNELSE_FOR_SEN_ENDRING' = 'begrunnelseForSenEndring'
+}
+
+export interface Tilleggsopplysning {
+    tekst: string;
+    ekstraInformasjon?: string;
+}
+
+export interface Tilleggsopplysninger {
+    begrunnelseForSenEndring?: Tilleggsopplysning;
+}
+
 interface SkjemaEkstrainfo {
     currentStegID: StegID | undefined;
     uttaksplanSkjema: Partial<UttaksplanSkjemadata>;
@@ -59,10 +72,20 @@ interface Søknad {
     vedlegg?: Attachment[];
     dekningsgrad: Dekningsgrad;
     ekstrainfo: SkjemaEkstrainfo;
+    vedleggForSenEndring: Attachment[];
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
+    tilleggsopplysninger: Tilleggsopplysninger;
 }
 
-export type SøknadForInnsending = Omit<Søknad, 'ekstrainfo' | 'sensitivInfoIkkeLagre'>;
+interface SøknadEndretForInnsending {
+    tilleggsopplysninger?: string;
+}
+
+export type SøknadForInnsending = Omit<
+    Søknad,
+    'ekstrainfo' | 'sensitivInfoIkkeLagre' | 'vedleggForSenEndring' | 'tilleggsopplysninger'
+> &
+    SøknadEndretForInnsending;
 
 export interface SøknadPartial {
     type?: Foreldrepenger;
@@ -79,7 +102,9 @@ export interface SøknadPartial {
     vedlegg?: Attachment[];
     dekningsgrad?: Dekningsgrad;
     ekstrainfo: SkjemaEkstrainfo;
+    vedleggForSenEndring?: Attachment[];
     sensitivInfoIkkeLagre: SensitivSkjemaInfo;
+    tilleggsopplysninger: Tilleggsopplysninger;
 }
 
 export enum Skjemanummer {

@@ -57,6 +57,8 @@ const søknad: SøknadPartial = {
     sensitivInfoIkkeLagre: {
         registrertAnnenForelder
     },
+    vedleggForSenEndring: undefined,
+    tilleggsopplysninger: {},
     ekstrainfo: {
         uttaksplanSkjema: {},
         currentStegID: undefined,

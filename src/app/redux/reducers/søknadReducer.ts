@@ -44,6 +44,8 @@ export const getDefaultSøknadState = (): SøknadPartial => {
                 gjelderAnnetBarn: undefined
             }
         },
+        vedleggForSenEndring: undefined,
+        tilleggsopplysninger: {},
         sensitivInfoIkkeLagre: {},
         uttaksplan: []
     };
@@ -210,14 +212,37 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
             };
         }
 
+        case SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING: {
+            return {
+                ...state,
+                vedleggForSenEndring: action.payload
+            };
+        }
+
+        case SøknadActionKeys.SET_TILLEGGSOPPLYSNING: {
+            const { opplysning, tekst, ekstraInformasjon } = action.payload;
+            return {
+                ...state,
+                tilleggsopplysninger: {
+                    ...state.tilleggsopplysninger,
+                    [opplysning]: {
+                        ekstraInformasjon,
+                        tekst
+                    }
+                }
+            };
+        }
+
         case SøknadActionKeys.SET_CURRENT_STEG:
             return {
                 ...state,
                 ekstrainfo: {
                     ...state.ekstrainfo,
+                    lastAddedPeriodeId: undefined,
                     currentStegID: action.stegID
                 }
             };
+
         case SøknadActionKeys.UPLOAD_ATTACHMENT:
             const pendingAttachment = action.payload;
             pendingAttachment.pending = true;

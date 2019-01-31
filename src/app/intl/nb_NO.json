@@ -740,6 +740,18 @@
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneholder perioder med tapte foreldrepenger. Du står i fare for å miste dager om du ikke legger inn en utsettelse eller periode med foreldrepenger.",
+
+    "uttaksplan.senEndring.veileder.SYKDOM":
+        "Når du søker om utsettelse tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.UTTAK":
+        "Når du søker om foreldrepenger tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
+        "Når du søker om foreldrepenger eller utsettelse tilbake tid, må du fortelle hva som er grunnen til at du ikke har søkt tidligere. Du har også mulighet til å laste opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM": "Hva er grunnen til at du ikke har søkt om utsettelse tidligere?",
+    "uttaksplan.senEndring.begrunnelse.UTTAK": "Hva er grunnen til at du ikke har søkt om foreldrepenger tidligere?",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
+        "Hva er grunnen til at du ikke har søkt om foreldrepenger og utsettelse tidligere?",
+
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Starter du foreldrepengene senere enn omsorgsovertakelsen eller når dere kommer til Norge vil du miste dager.",
     "uttaksplanSkjema.info.dekningsgrad80":
@@ -817,6 +829,7 @@
     "vedlegg.lastoppknapp.selvstendignæringdrivendeDokumentasjon": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.terminbekreftelse": "Last opp dokumentasjon her",
     "vedlegg.lastoppknapp.utsettelseSykdomUttaksplan": "Last opp dokumentasjon her",
+    "vedlegg.lastoppknapp.senEndring": "Last opp dokumentasjon ...",
     "vedlegg.liste.tittel": "Valgte vedlegg ({størrelse})",
     "vedlegg.veileder.adopsjon": "Du må legge ved adopsjonsbevillingen og bekreftelse på datoen du overtok omsorgen.",
     "vedlegg.veileder.dokumentasjonAvArbeidVedGradering":

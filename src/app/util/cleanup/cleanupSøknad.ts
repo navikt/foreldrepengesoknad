@@ -9,6 +9,7 @@ import {
     OppholdÅrsakType
 } from '../../types/uttaksplan/periodetyper';
 import { isValidTidsperiode } from '../uttaksplan/Tidsperioden';
+import stringifyTilleggsopplysninger from './stringifyTilleggsopplysninger';
 
 const isArrayOfAttachments = (object: object) => {
     return (
@@ -90,19 +91,27 @@ export const removeDuplicateAttachments = (uttaksplan: Periode[]) => {
 };
 
 export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
-    const { ekstrainfo, sensitivInfoIkkeLagre, ...rest } = søknad;
-
+    const { ekstrainfo, sensitivInfoIkkeLagre, vedleggForSenEndring, tilleggsopplysninger, ...rest } = søknad;
     const cleanedSøknad: SøknadForInnsending = { ...rest };
+
     removeDuplicateAttachments(cleanedSøknad.uttaksplan);
-    cleanedSøknad.vedlegg = cleanUpAttachments(cleanedSøknad);
+    cleanedSøknad.vedlegg = cleanUpAttachments({ cleanedSøknad, vedleggForSenEndring });
     cleanedSøknad.uttaksplan = cleanedSøknad.uttaksplan.filter((periode: Periode) =>
         isValidTidsperiode(periode.tidsperiode)
     );
+
     cleanedSøknad.uttaksplan = changeClientonlyKontotypes(
         cleanedSøknad.uttaksplan,
         søknad.annenForelder.harRettPåForeldrepenger
     );
+
     cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
     cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
+
+    const tilleggsopplysningerTilSaksbehandler = stringifyTilleggsopplysninger(tilleggsopplysninger);
+    if (tilleggsopplysningerTilSaksbehandler.length > 0) {
+        cleanedSøknad.tilleggsopplysninger = tilleggsopplysningerTilSaksbehandler;
+    }
+
     return cleanedSøknad;
 };

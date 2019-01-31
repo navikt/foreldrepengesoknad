@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
-import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
-import { SummaryError } from 'common/lib/validation/types';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import getMessage from 'common/util/i18nUtils';
-import { Periode } from '../../types/uttaksplan/periodetyper';
-import { Periodene } from '../../util/uttaksplan/Periodene';
+
+import { begrunnelseSenEndringMaxLength } from 'app/util/validation/uttaksplan/begrunnelseForSenEndringValidation';
+import { getFritekstErrorMessage } from 'app/util/validation/fritekstfelt';
 import { getPeriodelisteElementId } from '../periodeliste/Periodeliste';
-import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
-import { Stønadskontouttak } from '../uttaksoppsummering/Uttaksoppsummering';
 import { getStønadskontoNavn } from '../../util/uttaksplan';
 import { NavnPåForeldre } from 'common/types';
+import { Periode } from '../../types/uttaksplan/periodetyper';
+import { Periodene } from '../../util/uttaksplan/Periodene';
+import { Stønadskontouttak } from '../uttaksoppsummering/Uttaksoppsummering';
+import { SummaryError } from 'common/lib/validation/types';
+import { uttaksplanleggerDomId } from '../uttaksplanlegger/Uttaksplanlegger';
+import { ValidertPeriode, UttaksplanValideringState } from '../../redux/reducers/uttaksplanValideringReducer';
+import Feiloppsummering from 'common/lib/validation/errors/Feiloppsummering';
+import getMessage from 'common/util/i18nUtils';
 
 interface OwnProps {
     uttaksplan: Periode[];
@@ -131,6 +134,13 @@ class UttaksplanFeiloppsummering extends React.Component<Props, {}> {
             feil.push({
                 name: uttaksplanleggerDomId,
                 text: getMessage(intl, 'uttaksplan.validering.feil.graderingsProsentErHøyereEnnSamtidigUttak')
+            });
+        }
+
+        if (uttaksplanValidering.begrunnelseForSenEndringErGyldig === false) {
+            feil.push({
+                name: uttaksplanleggerDomId,
+                text: getFritekstErrorMessage(intl, begrunnelseSenEndringMaxLength)
             });
         }
 
