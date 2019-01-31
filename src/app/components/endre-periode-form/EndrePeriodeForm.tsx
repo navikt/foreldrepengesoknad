@@ -107,11 +107,14 @@ class EndrePeriodeFormRenderer extends React.Component<Props, State> {
             <ValiderbarForm className={bem.className} validateBeforeSubmit={true}>
                 <>
                     <Block
-                        visible={shouldPeriodeHaveAttachment(
-                            periode,
-                            getErSøkerFarEllerMedmor(søknad.søker.rolle),
-                            søknad.annenForelder
-                        )}>
+                        visible={
+                            shouldPeriodeHaveAttachment(
+                                periode,
+                                getErSøkerFarEllerMedmor(søknad.søker.rolle),
+                                søknad.annenForelder
+                            ) &&
+                            (periode.vedlegg === undefined || (periode.vedlegg && periode.vedlegg.length === 0))
+                        }>
                         <AlertStripe type="advarsel">
                             <FormattedMessage id="uttaksplanSkjema.info.manglerVedlegg" />
                         </AlertStripe>

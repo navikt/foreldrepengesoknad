@@ -29,6 +29,8 @@ interface StateProps {
     antallUkerFellesperiode: number | undefined;
     scenario: UttaksplanSkjemaScenario;
     isLoadingTilgjengeligeStønadskontoer: boolean;
+    antallUkerFedreKvote: number | undefined;
+    antallUkerMødreKvote: number | undefined;
 }
 
 type Props = SøkerinfoProps & StateProps & InjectedIntlProps & DispatchProps & HistoryProps;
@@ -67,7 +69,9 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
             antallUkerFellesperiode,
             navnPåForeldre,
             scenario,
-            isLoadingTilgjengeligeStønadskontoer
+            isLoadingTilgjengeligeStønadskontoer,
+            antallUkerFedreKvote,
+            antallUkerMødreKvote
         } = this.props;
         const søknad = this.props.søknad as Søknad;
         return (
@@ -88,6 +92,8 @@ class UttaksplanSkjemaSteg extends React.Component<Props> {
                         søknad={søknad}
                         navnPåForeldre={navnPåForeldre}
                         antallUkerFellesperiode={antallUkerFellesperiode || 0}
+                        antallUkerFedreKvote={antallUkerFedreKvote}
+                        antallUkerMødreKvote={antallUkerMødreKvote}
                     />
                 )}
             </Steg>
@@ -111,7 +117,15 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
     const familiehendelsesdato = getFamiliehendelsedato(state.søknad.barn, state.søknad.situasjon);
     const scenario = getUttaksplanSkjemaScenario(state.søknad);
     const {
-        api: { isLoadingTilgjengeligeStønadskontoer, fellesPeriodeUkerDekningsgrad100, fellesPeriodeUkerDekningsgrad80 }
+        api: {
+            isLoadingTilgjengeligeStønadskontoer,
+            fellesPeriodeUkerDekningsgrad100,
+            fellesPeriodeUkerDekningsgrad80,
+            fedreKvoteUkerDekningsgrad100,
+            fedreKvoteUkerDekningsgrad80,
+            mødreKvoteUkerDekningsgrad100,
+            mødreKvoteUkerDekningsgrad80
+        }
     } = state;
     const søknad = { ...state.søknad };
     const skjemadata = søknad.ekstrainfo.uttaksplanSkjema;
@@ -132,6 +146,10 @@ const mapStateToProps = (state: AppState, props: SøkerinfoProps & HistoryProps)
         navnPåForeldre: getNavnPåForeldre(state.søknad, props.søkerinfo.person),
         antallUkerFellesperiode:
             søknad.dekningsgrad === '100' ? fellesPeriodeUkerDekningsgrad100 : fellesPeriodeUkerDekningsgrad80,
+        antallUkerFedreKvote:
+            søknad.dekningsgrad === '100' ? fedreKvoteUkerDekningsgrad100 : fedreKvoteUkerDekningsgrad80,
+        antallUkerMødreKvote:
+            søknad.dekningsgrad === '100' ? mødreKvoteUkerDekningsgrad100 : mødreKvoteUkerDekningsgrad80,
         scenario,
         isLoadingTilgjengeligeStønadskontoer
     };

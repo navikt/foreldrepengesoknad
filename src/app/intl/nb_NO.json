@@ -607,7 +607,7 @@
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.kvalifiseringsprogrammet":
         "Du må legge ved bekreftelse fra programarrangøren at {navnMor} deltar i kvalifiseringsprogrammet til NAV.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.trengerhjelp":
-        "Du må legge ved bekreftelse fra legen til {navnMor}. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+        "Du må legge ved bekreftelse som {navnMor} får fra legen sin. Den må beskrive hvordan sykdommen eller skaden gjør {navnMor} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning":
         "Du må legge ved bekreftelse på at {navnMor} er fulltidsstudent. Bekreftelsen må vise",
     "uttaksplan.fellesdel.hvaSkalMorGjøre.veileder.utdanning.punkt1": "navn og fødselsnummer",
@@ -662,7 +662,7 @@
     "uttaksplan.overføring.vedlegg.info.insititusjonsoppholdAnnenForelder":
         "Du må legge ved bekreftelse på innleggelsen fra sykehuset eller helseinstitusjonen, som også viser perioden det gjelder.",
     "uttaksplan.overføring.vedlegg.info.sykdomAnnenForelder":
-        "Du må legge ved bekreftelse fra legen til {navnAnnenForelder}. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
+        "Du må legge ved bekreftelse som {navnAnnenForelder} får fra sin lege. Den må beskrive hvordan sykdommen eller skaden gjør {navnAnnenForelder} helt avhengig av hjelp til å ta seg av barnet, og hvor lenge det vil vare. Det er ikke nok med vanlig sykmelding.",
     "uttaksplan.overføring.årsak.spørsmål": "Hvorfor skal du overta {annenForelderNavn} sin kvote?",
     "uttaksplan.skjema.fordeling.annenForeldersFellesperiode":
         "{annenForeldersNavn} kan ta ut {antallUker} uker av fellesperioden",
