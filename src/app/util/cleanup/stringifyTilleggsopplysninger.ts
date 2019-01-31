@@ -8,15 +8,20 @@ const tilSaksbehandling = {
         'på grunn av sykdom tilbake i tid og uttak mer enn tre måneder tilbake i tid'
 };
 
-const stringifyTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string | undefined => {
+const stringifyTilleggsopplysninger = (tilleggsopplysninger: Tilleggsopplysninger): string => {
     const opplysninger = Object.keys(tilleggsopplysninger);
-    if (opplysninger.length < 0) {
-        return undefined;
+    if (opplysninger.length === 0) {
+        return '';
     }
 
     return opplysninger
         .map((opplysningKey) => {
             const { tekst, ekstraInformasjon } = tilleggsopplysninger[opplysningKey];
+
+            if (tekst.length === 0) {
+                return '';
+            }
+
             const beskrivelseAvOpplysning = tilSaksbehandling[opplysningKey];
 
             let beskrivelseTilSaksbehandling = 'Generell opplysning';

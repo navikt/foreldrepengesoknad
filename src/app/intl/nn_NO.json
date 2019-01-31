@@ -741,6 +741,18 @@
     "uttaksplan.varighet.uttak.gradert": "{varighet}",
     "uttaksplan.veileder.planenInneholderHull":
         "Planen din inneheld periodar med tapte foreldrepengar. Du står i fare for å miste dagar om du ikkje legg inn ei utsetjing eller ein periode med foreldrepengar.",
+
+    "uttaksplan.senEndring.veileder.SYKDOM":
+        "Når du søkjer om utsetjing tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.UTTAK":
+        "Når du søkjer om foreldrepengar tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.veileder.SYKDOM_OG_UTTAK":
+        "Når du søkjer om foreldrepengar eller utsetjing tilbake i tid, må du fortelje kva som er årsaka til at du ikkje har søkt tidlegare. Du har også moglegheit til å lasta opp relevant dokumentasjon.",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM": "Kva er årsaka til at du ikkje har søkt om utsetjing tidlegare?",
+    "uttaksplan.senEndring.begrunnelse.UTTAK": "Kva er årsaka til at du ikkje har søkt om foreldrepengar tidlegare?",
+    "uttaksplan.senEndring.begrunnelse.SYKDOM_OG_UTTAK":
+        "Kva er årsaka til at du ikkje har søkt om foreldrepengar og utsetjing tidlegare?",
+
     "uttaksplanSkjema.info.adoptertIUtlandet":
         "Startar du foreldrepengane seinare enn omsorgsovertakinga eller når de kjem til Noreg, mistar du dagar.",
     "uttaksplanSkjema.info.dekningsgrad80":

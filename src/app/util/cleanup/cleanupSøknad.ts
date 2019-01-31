@@ -107,7 +107,11 @@ export const cleanUpSøknad = (søknad: Søknad): SøknadForInnsending => {
 
     cleanedSøknad.uttaksplan = changeClientonlyOppholdsÅrsaker(cleanedSøknad.uttaksplan);
     cleanedSøknad.uttaksplan = removePeriodetypeHullFromUttaksplan(cleanedSøknad.uttaksplan);
-    cleanedSøknad.tilleggsopplysninger = stringifyTilleggsopplysninger(tilleggsopplysninger);
+
+    const tilleggsopplysningerTilSaksbehandler = stringifyTilleggsopplysninger(tilleggsopplysninger);
+    if (tilleggsopplysningerTilSaksbehandler.length > 0) {
+        cleanedSøknad.tilleggsopplysninger = tilleggsopplysningerTilSaksbehandler;
+    }
 
     return cleanedSøknad;
 };
