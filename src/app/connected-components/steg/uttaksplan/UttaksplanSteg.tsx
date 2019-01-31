@@ -9,12 +9,7 @@ import Søknad from '../../../types/søknad/Søknad';
 import { DispatchProps } from 'common/redux/types';
 import { SøkerinfoProps } from '../../../types/søkerinfo';
 import { HistoryProps } from '../../../types/common';
-import {
-    Periode,
-    TilgjengeligStønadskonto,
-    isUtsettelsesperiode,
-    Periodetype
-} from '../../../types/uttaksplan/periodetyper';
+import { Periode, TilgjengeligStønadskonto } from '../../../types/uttaksplan/periodetyper';
 import isAvailable from '../util/isAvailable';
 import søknadActions from '../../../redux/actions/søknad/søknadActionCreators';
 import Veilederinfo from 'common/components/veileder-info/Veilederinfo';
@@ -41,9 +36,7 @@ import { Søknadsinfo } from '../../../selectors/types';
 import { getSøknadsinfo } from '../../../selectors/søknadsinfoSelector';
 import getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor from '../../../regler/uttaksplan/getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor';
 import { Periodene } from '../../../util/uttaksplan/Periodene';
-import { Tidsperioden, getTidsperiode } from 'app/util/uttaksplan/Tidsperioden';
-import { Uttaksdagen } from 'app/util/uttaksplan/Uttaksdagen';
-import { guid } from 'nav-frontend-js-utils';
+import { hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar } from 'app/regler/uttaksplan/hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar';
 
 interface StateProps {
     stegProps: StegProps;
@@ -101,62 +94,6 @@ const getVeilederInfoText = (søknad: Søknad) => {
                     values={{ navnAnnenForelder: annenForelder.fornavn }}
                 />
             );
-        }
-    }
-};
-
-const settInnHullGittHullMellomMorSluttdatoOgFarStartdato = (
-    perioder: Periode[],
-    morSluttdato: Date | undefined,
-    farStartdato: Date | undefined
-): Periode[] => {
-    if (morSluttdato === undefined || farStartdato === undefined) {
-        return perioder;
-    } else {
-        if (perioder.length > 0) {
-            const førstePeriode = perioder[0];
-
-            if (isUtsettelsesperiode(førstePeriode)) {
-                return perioder;
-            } else {
-                const førsteUttaksdato = førstePeriode.tidsperiode.fom;
-
-                const hullMellomFarOgMorDager =
-                    Tidsperioden({
-                        fom: Uttaksdagen(morSluttdato).neste(),
-                        tom: Uttaksdagen(førsteUttaksdato).denneEllerNeste()
-                    }).getAntallUttaksdager() - 1;
-
-                if (hullMellomFarOgMorDager > 0) {
-                    const hullPeriode: Periode = {
-                        id: guid(),
-                        type: Periodetype.Hull,
-                        tidsperiode: getTidsperiode(Uttaksdagen(morSluttdato).neste(), hullMellomFarOgMorDager)
-                    };
-
-                    perioder.unshift(hullPeriode);
-                }
-
-                return perioder;
-            }
-        } else {
-            const hullMellomFarOgMorDager =
-                Tidsperioden({
-                    fom: Uttaksdagen(morSluttdato).neste(),
-                    tom: Uttaksdagen(farStartdato).denneEllerNeste()
-                }).getAntallUttaksdager() - 1;
-
-            if (hullMellomFarOgMorDager > 0) {
-                const hullPeriode: Periode = {
-                    id: guid(),
-                    type: Periodetype.Hull,
-                    tidsperiode: getTidsperiode(Uttaksdagen(morSluttdato).neste(), hullMellomFarOgMorDager)
-                };
-
-                perioder.unshift(hullPeriode);
-            }
-
-            return perioder;
         }
     }
 };
@@ -407,11 +344,7 @@ const mapStateToProps = (state: AppState, props: HistoryProps & SøkerinfoProps)
     if (søknadsinfo!.søknaden.erFødsel && søknadsinfo!.søknaden.erDeltUttak && søknadsinfo!.søker.erFarEllerMedmor) {
         const sisteUttaksdatoMor = state.søknad.ekstrainfo.uttaksplanSkjema.morSinSisteUttaksdag;
         const førsteUttaksdatoFar = state.søknad.ekstrainfo.uttaksplanSkjema.farSinFørsteUttaksdag;
-        perioder = settInnHullGittHullMellomMorSluttdatoOgFarStartdato(
-            perioder,
-            sisteUttaksdatoMor,
-            førsteUttaksdatoFar
-        );
+        perioder = hullMellomSisteUttaksdatoMorFørsteUttaksdatoFar(perioder, sisteUttaksdatoMor, førsteUttaksdatoFar);
     }
 
     return {
