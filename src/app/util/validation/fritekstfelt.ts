@@ -7,12 +7,14 @@ interface FritekstfeltValidationOptions {
     maxLength?: number;
 }
 
+export const getFritekstErrorMessage = (intl: InjectedIntl, maxLength: number) =>
+    getMessage(intl, 'valideringsfeil.fritekst.kanIkkeVæreLengreEnn', { maxLength });
+
 export const getFritekstfeltRules = (
     options: FritekstfeltValidationOptions,
     intl: InjectedIntl,
     value?: string
 ): Validator[] => {
-    const intlKey = 'valideringsfeil.fritekst';
     const rules = [];
 
     if (value) {
@@ -21,7 +23,7 @@ export const getFritekstfeltRules = (
                 maxLengthIsGreaterThanOrEqualToStringLengthRule(
                     options.maxLength,
                     value,
-                    getMessage(intl, `${intlKey}.kanIkkeVæreLengreEnn`, { maxLength: options.maxLength })
+                    getFritekstErrorMessage(intl, options.maxLength)
                 )
             );
         }

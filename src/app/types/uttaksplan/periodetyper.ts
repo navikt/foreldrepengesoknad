@@ -58,6 +58,13 @@ export enum PeriodeHullÅrsak {
     'Fridag' = 'Fridag'
 }
 
+export enum SenEndringÅrsak {
+    'Sykdom' = 'SYKDOM',
+    'Uttak' = 'UTTAK',
+    'SykdomOgUttak' = 'SYKDOM_OG_UTTAK',
+    'Ingen' = 'INGEN'
+}
+
 export interface Helligdag {
     dato: Date;
     navn: string;

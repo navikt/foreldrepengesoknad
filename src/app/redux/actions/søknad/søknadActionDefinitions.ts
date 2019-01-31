@@ -1,4 +1,4 @@
-import Søknad, { SøknadenGjelderBarnValg, SøknadPartial } from '../../../types/søknad/Søknad';
+import Søknad, { SøknadenGjelderBarnValg, SøknadPartial, Tilleggsopplysning } from '../../../types/søknad/Søknad';
 import { BarnPartial } from '../../../types/søknad/Barn';
 import { AnnenForelderPartial } from '../../../types/søknad/AnnenForelder';
 import { InformasjonOmUtenlandsoppholdPartial } from '../../../types/søknad/InformasjonOmUtenlandsopphold';
@@ -32,6 +32,8 @@ export enum SøknadActionKeys {
     'UTTAKSPLAN_UPDATE_PERIODE' = 'uttaksplanUpdatePeriode',
     'UTTAKSPLAN_UPDATE_SKJEMADATA' = 'uttaksplanUpdateSkjemadata',
     'UTTAKSPLAN_LAG_FORSLAG' = 'uttaksplanLagForslag',
+    'SET_VEDLEGG_FOR_SEN_ENDRING' = 'setVedleggForSenEndring',
+    'SET_TILLEGGSOPPLYSNING' = 'setTilleggsopplysning',
     'SET_CURRENT_STEG' = 'setCurrentSteg'
 }
 
@@ -150,6 +152,18 @@ export interface SetCurrentSteg {
     stegID: StegID;
 }
 
+export interface SetVedleggForSenEndring {
+    type: SøknadActionKeys.SET_VEDLEGG_FOR_SEN_ENDRING;
+    payload: Attachment[];
+}
+
+export interface SetTilleggsopplysning {
+    type: SøknadActionKeys.SET_TILLEGGSOPPLYSNING;
+    payload: Tilleggsopplysning & {
+        opplysning: string;
+    };
+}
+
 export type SøknadAction =
     | SetSøknad
     | AvbrytSøknad
@@ -172,4 +186,6 @@ export type SøknadAction =
     | UttaksplanUpdatePeriode
     | UttaksplanUpdateSkjemadata
     | UttaksplanLagForslag
-    | SetCurrentSteg;
+    | SetCurrentSteg
+    | SetVedleggForSenEndring
+    | SetTilleggsopplysning;
