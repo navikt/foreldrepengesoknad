@@ -9,7 +9,8 @@ function* uploadAttachment(action: UploadAttachment) {
     try {
         const response = yield call(AttachmentApi.saveAttachment, attachment);
         const uri: string = response.headers.location || 'mockurl';
-        yield put(søknadActions.uploadAttachmentSuccess(attachment, uri));
+        const uuid: string = response.data;
+        yield put(søknadActions.uploadAttachmentSuccess(attachment, uri, uuid));
     } catch (error) {
         yield put(søknadActions.uploadAttachmentFailed(error, attachment));
     }
