@@ -121,6 +121,7 @@ export interface UploadAttachmentSuccess {
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS;
     attachment: Attachment;
     url: string;
+    uuid: string;
 }
 
 export interface UploadAttachmentFailed {

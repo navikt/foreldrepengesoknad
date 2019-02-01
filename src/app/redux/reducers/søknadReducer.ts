@@ -251,7 +251,9 @@ const søknadReducer = (state = getDefaultSøknadState(), action: SøknadAction)
         case SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS:
             const uploadedAttachment = action.attachment;
             const url = action.url;
+            const uuid = action.uuid;
             uploadedAttachment.url = url;
+            uploadedAttachment.uuid = uuid;
             uploadedAttachment.pending = false;
             uploadedAttachment.uploaded = true;
             return editAttachmentInState(uploadedAttachment, state);
