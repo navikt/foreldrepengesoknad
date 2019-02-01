@@ -120,7 +120,10 @@ describe('søknadReducer', () => {
             state.vedlegg = [attachment];
             return state;
         });
-        const newSøknadState = reducer(defaultState, actions.uploadAttachmentSuccess(mockedAttachment, 'someUrl'));
+        const newSøknadState = reducer(
+            defaultState,
+            actions.uploadAttachmentSuccess(mockedAttachment, 'someUrl', 'uuid')
+        );
         expect(attachmentReducerUtils.editAttachmentInState).toHaveBeenCalledWith(mockedAttachment, defaultState);
         expect(newSøknadState.vedlegg![0].pending).toBe(false);
         expect(newSøknadState.vedlegg![0].uploaded).toBe(true);

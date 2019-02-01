@@ -90,10 +90,11 @@ const uploadAttachment = (payload: Attachment) => ({
     payload
 });
 
-const uploadAttachmentSuccess = (attachment: Attachment, url: string): UploadAttachmentSuccess => ({
+const uploadAttachmentSuccess = (attachment: Attachment, url: string, uuid: string): UploadAttachmentSuccess => ({
     type: SøknadActionKeys.UPLOAD_ATTACHMENT_SUCCESS,
     attachment,
-    url
+    url,
+    uuid
 });
 
 const uploadAttachmentFailed = (error: string, attachment: Attachment): UploadAttachmentFailed => ({
