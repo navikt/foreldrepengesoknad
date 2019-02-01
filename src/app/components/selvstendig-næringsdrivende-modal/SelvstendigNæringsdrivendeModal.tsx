@@ -242,6 +242,7 @@ class SelvstendigNæringsdrivendeModal extends React.Component<Props, State> {
                         }}
                         dato={næring.oppstartsdato}
                         kalender={{ plassering: 'fullskjerm' }}
+                        validators={[hasValueRule(næring && næring.oppstartsdato, getMessage(intl, 'påkrevd'))]}
                     />
                 </Block>
                 <Block visible={visibility.varigEndringAvNæringsinntekt(næring)}>
