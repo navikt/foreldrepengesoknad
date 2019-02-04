@@ -9,7 +9,7 @@ import FlervalgSpørsmål from '../components/flervalg-spørsmål/FlervalgSpørs
 
 interface HvilkenKvoteSkalBenyttesSpørsmålProps {
     onChange: (stønadskonto: StønadskontoType) => void;
-    stønadskonto?: StønadskontoType;
+    valgtKvote?: StønadskontoType;
     navnPåForeldre: NavnPåForeldre;
     velgbareStønadskontoer: StønadskontoType[];
 }
@@ -17,7 +17,7 @@ interface HvilkenKvoteSkalBenyttesSpørsmålProps {
 type Props = HvilkenKvoteSkalBenyttesSpørsmålProps & InjectedIntlProps;
 
 const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
-    const { stønadskonto, navnPåForeldre, velgbareStønadskontoer, intl, onChange } = props;
+    const { valgtKvote, navnPåForeldre, velgbareStønadskontoer, intl, onChange } = props;
     const radios = velgbareStønadskontoer.map((konto): RadioProps => ({
         label: getStønadskontoNavn(intl, konto, navnPåForeldre),
         value: `${konto}`
@@ -25,7 +25,7 @@ const HvilkenKvoteSkalBenyttesSpørsmål = (props: Props) => {
 
     return (
         <FlervalgSpørsmål
-            valgtVerdi={stønadskonto}
+            valgtVerdi={valgtKvote}
             alternativer={radios}
             navn="kvote"
             toKolonner={true}

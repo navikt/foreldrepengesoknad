@@ -150,6 +150,14 @@ export function isUtsettelsesperiode(periode: Periode | RecursivePartial<Periode
     return periode.type === Periodetype.Utsettelse;
 }
 
+export function isOverføringsperiode(periode: Periode | RecursivePartial<Periode>): periode is Overføringsperiode {
+    return periode.type === Periodetype.Overføring;
+}
+
+export function isOppholdsperiode(periode: Periode | RecursivePartial<Periode>): periode is Oppholdsperiode {
+    return periode.type === Periodetype.Opphold;
+}
+
 export function isForeldrepengerFørFødselUttaksperiode(
     periode: Periode | RecursivePartial<Periode>
 ): periode is ForeldrepengerFørFødselUttaksperiode {

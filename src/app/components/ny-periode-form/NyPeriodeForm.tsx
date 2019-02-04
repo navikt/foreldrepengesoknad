@@ -110,7 +110,7 @@ class NyPeriodeForm extends React.Component<Props, State> {
                 <div className={bem.element('fargestrek')}>
                     <PeriodeFargestrek farge={getPeriodeFarge(periode as Periode, forelder)} />
                 </div>
-                {(periode.type === Periodetype.Utsettelse || periode.type === Periodetype.Opphold) && (
+                {periode.type === Periodetype.Utsettelse && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.utsettelse.tittel')} />
                         <UtsettelsesperiodeForm
@@ -121,7 +121,9 @@ class NyPeriodeForm extends React.Component<Props, State> {
                         />
                     </>
                 )}
-                {(periode.type === Periodetype.Uttak || periode.type === Periodetype.Overføring) && (
+                {(periode.type === Periodetype.Uttak ||
+                    periode.type === Periodetype.Overføring ||
+                    periode.type === Periodetype.Opphold) && (
                     <>
                         <PeriodeFormTittel tittel={getMessage(intl, 'nyPeriodeForm.uttak.tittel')} />
                         <UttakForm

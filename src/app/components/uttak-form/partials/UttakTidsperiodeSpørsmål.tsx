@@ -7,7 +7,8 @@ import {
     Periode,
     isForeldrepengerFørFødselUttaksperiode,
     ForeldrepengerFørFødselUttaksperiode,
-    Periodetype
+    Periodetype,
+    isUttaksperiode
 } from '../../../types/uttaksplan/periodetyper';
 import { getDatoavgrensningerForStønadskonto } from '../../../util/uttaksplan/uttaksperiodeUtils';
 import { UttakFormPeriodeType } from '../UttakForm';
@@ -72,9 +73,10 @@ const UttakTidsperiodeSpørsmål: React.StatelessComponent<Props & InjectedIntlP
         !erForeldrepengerFørFødsel &&
         isValidTidsperiode(tidsperiode) &&
         moment(tidsperiode.fom).isBefore(familiehendelsesdato);
+    const konto = isUttaksperiode(periode) ? periode.konto : undefined;
 
     const datoAvgrensninger = getDatoavgrensningerForStønadskonto(
-        periode.konto,
+        konto,
         familiehendelsesdato,
         tidsperiode,
         ugyldigeTidsperioder
